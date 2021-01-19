@@ -124,7 +124,7 @@
             display: flex;
             flex-direction: column;
             padding: 14px;
-            background-image: url("/static/image/ey1/service/bg_service01.png");
+            background-image: url("/static/image/common/service/bg_service01.png");
             background-size: auto 100%;
             background-position: top 0 right 0;
             height: 100%;
@@ -198,134 +198,6 @@
             margin-top: 5px;
         }
 
-        .pop-wrap__1IH1p {
-            position: fixed;
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 99;
-        }
-
-        .pop-mask__DEeLI {
-            width: 100%;
-            height: 100%;
-            background: #000;
-            opacity: 0.5;
-        }
-
-        .pop-block__3IvYO {
-            position: absolute;
-            width: 85%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #FFFFFF;
-            border-radius: 8px;
-        }
-
-        .pop-block__3IvYO .close__1h41k {
-            position: absolute;
-            top: -25px;
-            right: 0;
-            width: 21px;
-            height: 21px;
-        }
-
-        .pop-block__3IvYO .close__1h41k img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .pop-block__3IvYO .tip__38vK4 {
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-            height: 40px;
-            text-align: right;
-        }
-
-        .pop-block__3IvYO .tip__38vK4 span {
-            padding: 0 5px;
-            font-size: 12px;
-            color: #fff;
-            background: #e42a30;
-            border-radius: 9px 0 0 9px;
-        }
-
-        .pop-block__3IvYO .title__1e5NJ,
-        .pop-block__3IvYO .content__lVia6 {
-            margin: 5px 17px;
-            color: #A6A9B2;
-            font-size: 12px;
-        }
-
-        .pop-block__3IvYO .title-img__2jWH6 {
-            width: 100%;
-        }
-
-        .pop-block__3IvYO .title-img__2jWH6 img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead {
-            margin-top: 12px;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead span {
-            padding: 2px 0;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .content-img__xFIdd {
-            width: 100%;
-            height: 100px;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .content-img__xFIdd img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .content-link__2HB3c {
-            width: 100%;
-            height: 100%;
-            background-color: #F7F7F7;
-            border-radius: 10px;
-            padding: 3px;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .link__2LVEX {
-            position: relative;
-            width: 180px;
-            margin: 10px auto;
-            background: #ffffff;
-            border: 1px solid #A6A9B2;
-            border-radius: 10px;
-            color: #414655;
-            text-align: center;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .link__2LVEX::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-            background: url("/static/image/_new/service/popup/popup_ic_search.png") no-repeat;
-            width: 12px;
-            height: 12px;
-            background-size: cover;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .url-image__2WT1X {
-            width: 100%;
-        }
-
-        .pop-block__3IvYO .content-cell__36ead .url-image__2WT1X>img {
-            width: 100%;
-        }
-
         .btn-prev__25YFA {
             position: absolute;
             top: 0;
@@ -375,7 +247,8 @@
                         <div>Main Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
-                    <div class="btn-next__3cUsV"><img src="/static/image/ey1/webview/ic_service_arrow.png?v=99124533.1">
+                    <div class="btn-next__3cUsV"><img
+                            src="/static/image/common/service/ic_service_arrow.png?v=99124533.1">
                     </div>
                 </div>
             </div>
@@ -400,8 +273,8 @@
         let w =
             window.open(
                 url,
-                'mobile service',
-                `width=800, height=800`
+                '在线客服',
+                `toolbar=yes, width=800, height=800`
             );
 
         w.document.title = "在线客服";

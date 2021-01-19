@@ -10,12 +10,12 @@
       <span
         >派彩：
         <span
-          v-if="themetpl() === 'sg1'"
-          :class="{ [$style['is-negative']]: total.payoff > 0 }"
-          >{{ total.payoff ? toCurrency(total.payoff) : "0.00" }}</span
+          v-if="themetpl() === 'ey1'"
+          :class="{ [$style['is-negative']]: total.payoff < 0 }"
+          >{{ total.payoff ? toCurrency(+total.payoff) : "0.00" }}</span
         >
-        <span v-else :class="{ [$style['is-negative']]: total.payoff < 0 }">{{
-          +total.payoff ? toCurrency(+total.payoff) : "0.00"
+        <span v-else :class="{ [$style['is-negative']]: total.payoff > 0 }">{{
+          total.payoff ? toCurrency(total.payoff) : "0.00"
         }}</span></span
       >
     </div>
@@ -39,10 +39,10 @@
         <div :class="$style['card-title']">
           <span :class="$style['header']">{{ info.username }}</span>
           <span
-            v-if="themetpl() === 'sg1'"
+            v-if="themetpl() === 'ey1'"
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff > 0 }
+              { [$style['is-negative']]: info.payoff < 0 }
             ]"
             >{{ toCurrency(info.payoff) }}</span
           >
@@ -50,9 +50,9 @@
             v-else
             :class="[
               $style['payout'],
-              { [$style['is-negative']]: info.payoff < 0 }
+              { [$style['is-negative']]: info.payoff > 0 }
             ]"
-            >{{ toCurrency(+info.payoff) }}</span
+            >{{ toCurrency(info.payoff) }}</span
           >
         </div>
         <div>

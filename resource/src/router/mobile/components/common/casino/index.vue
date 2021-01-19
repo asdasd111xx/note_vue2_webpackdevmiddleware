@@ -164,7 +164,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      favoriteGame: "getFavoriteGame",
+      favoriteGame: "getFavoriteGame"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -236,6 +236,7 @@ export default {
   },
   created() {
     this.getGameLabelList();
+    localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
@@ -255,7 +256,7 @@ export default {
       // 電子分類預設資料
       const defaultData = [
         {
-          label: "",
+          label: "all",
           name: this.$t("S_ALL")
         },
         // 活動先註解不開放，後續開放只要搜 activity_open
@@ -389,8 +390,8 @@ export default {
       this.showInfinite = false;
       this.isGameDataReceive = false;
       this.gameData = [];
-
-      if (this.paramsData.label === "favorite") {
+      //非搜尋頁面才篩選“最愛”
+      if (this.paramsData.label === "favorite" && !this.isShowSearch) {
         setTimeout(() => {
           this.gameData = this.favoriteData;
         }, 300);

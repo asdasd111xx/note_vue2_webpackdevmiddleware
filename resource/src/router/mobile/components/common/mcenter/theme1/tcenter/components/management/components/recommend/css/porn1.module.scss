@@ -1,291 +1,304 @@
 @import "@/css/variable.scss";
 
 .main-class {
-    position: relative;
+  position: relative;
 }
 
 .code-wrap {
-    padding: 0 6%;
-    background-color: #e9dacc;
+  padding: 0 6%;
+  background-color: #e9dacc;
 
-    > div {
-        height: 37px;
-        line-height: 37px;
-        font-size: 14px;
-    }
+  >div {
+    height: 37px;
+    line-height: 37px;
+    font-size: 14px;
+  }
 }
 
 .title {
-    float: left;
-    color: $main_discover_color1;
+  float: left;
+  color: $main_discover_color1;
 }
 
 .code {
-    float: right;
-    color: $main_title_color1;
+  float: right;
+  color: $main_title_color1;
 }
 
 .promote-wrap {
-    padding: 12px 6%;
-    background-color: #fff;
+  padding: 12px 6%;
+  background-color: #fff;
 }
 
 .qrcode-wrap {
-    float: left;
-    border: 1px solid #aaa;
+  float: left;
+  border: 1px solid #aaa;
 
-    > img {
-        display: block;
-    }
+  >img {
+    display: block;
+  }
 }
 
 .button-wrap {
-    float: right;
-    width: calc(100% - 131px - 10px);
+  float: right;
+  width: calc(100% - 131px - 10px);
 
-    > div {
-        height: 33px;
-        margin: 8px 0;
-        padding: 0 4%;
-        border: 1px solid #aaa;
-        border-radius: 3px;
+  >div {
+    height: 33px;
+    margin: 8px 0;
+    padding: 0 4%;
+    border: 1px solid #aaa;
+    border-radius: 3px;
 
-        &::before {
-            content: "";
-            display: inline-block;
-            height: 100%;
-            vertical-align: middle;
-        }
+    &::before {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
     }
+  }
 }
 
 .icon {
-    display: inline-block;
-    width: 17px;
-    height: 17px;
-    margin-right: 3px;
-    background-position: 50% 50%;
-    background-size: 17px 17px;
-    background-repeat: no-repeat;
-    vertical-align: middle;
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin-right: 3px;
+  background-position: 50% 50%;
+  background-size: 17px 17px;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
 
 .icon-qrcode {
-    background-image: url("/static/image/_new/mcenter/tcenter/icon_qrcode.png");
+  background-image: url("/static/image/_new/mcenter/tcenter/icon_qrcode.png");
 }
 
 .icon-copy {
-    background-image: url("/static/image/_new/mcenter/tcenter/icon_copy.png");
+  background-image: url("/static/image/_new/mcenter/tcenter/icon_copy.png");
 }
 
 .button-text {
-    overflow: hidden;
-    display: inline-block;
-    width: calc(100% - 8% - 17px - 3px);
-    line-height: 14px;
-    font-size: 14px;
-    vertical-align: middle;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  width: calc(100% - 8% - 17px - 3px);
+  line-height: 14px;
+  font-size: 14px;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .button-create {
+  display: inline-block;
+  height: 19px;
+  margin-top: 10px;
+
+  >span {
     display: inline-block;
-    height: 19px;
-    margin-top: 10px;
+    line-height: 14px;
+    color: #222;
+    font-size: 14px;
+    vertical-align: middle;
+  }
 
-    > span {
-        display: inline-block;
-        line-height: 14px;
-        color: #222;
-        font-size: 14px;
-        vertical-align: middle;
-    }
-
-    &::before {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-    }
+  &::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
 }
 
 .icon-arrow {
-    width: 10px;
-    height: 10px;
-    margin-right: 3px;
-    background-image: url("/static/image/_new/mcenter/tcenter/icon_arrow.png");
-    background-position: 50% 50%;
-    background-size: 10px 10px;
-    background-repeat: no-repeat;
+  width: 10px;
+  height: 10px;
+  margin-right: 3px;
+  background-image: url("/static/image/_new/mcenter/tcenter/icon_arrow.png");
+  background-position: 50% 50%;
+  background-size: 10px 10px;
+  background-repeat: no-repeat;
 
-    &.active {
-        background-image: url("/static/image/_new/mcenter/tcenter/icon_arrow_active.png");
-    }
+  &.active {
+    background-image: url("/static/image/_new/mcenter/tcenter/icon_arrow_active.png");
+  }
 }
 
 .register-wrap {
-    padding: 0 6% 20px;
-    background-color: #fff;
+  padding: 0 6% 20px;
+  background-color: #fff;
 
-    button {
-        display: block;
-        width: 40%;
-        height: 45px;
-        line-height: 45px;
-        margin-top: 42px;
-        margin-left: auto;
-        border: none;
-        border-radius: 3px;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-        color: #fff;
-        font-size: 13px;
-        text-align: center;
-        outline: none;
-    }
+  button {
+    display: block;
+    width: 40%;
+    height: 45px;
+    line-height: 45px;
+    margin-top: 42px;
+    margin-left: auto;
+    border: none;
+    border-radius: 3px;
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+    outline: none;
+  }
 }
 
 .line {
-    height: 1px;
-    margin-bottom: 15px;
-    background-color: #ddd;
+  height: 1px;
+  margin-bottom: 15px;
+  background-color: #ddd;
 }
 
 .input-group {
-    position: relative;
-    padding-top: 5px;
-    margin-bottom: 10px;
-    font-size: 12px;
+  position: relative;
+  padding-top: 5px;
+  margin-bottom: 10px;
+  font-size: 12px;
 }
 
 .input-title {
-    padding: 0 5px;
-    color: #222;
+  padding: 0 5px;
+  color: #222;
 }
 
 .placeholder {
-    position: relative;
-    padding: 0 5px 5px;
-    border-bottom: 1px solid #2693fc;
-    color: #aaa;
-    font-size: 14px;
+  position: relative;
+  padding: 0 5px 5px;
+  border-bottom: 1px solid #2693fc;
+  color: #aaa;
+  font-size: 14px;
 
-    &.password,
-    &.password_confirm {
-        padding-right: 40px;
+  &.password,
+  &.password_confirm {
+    padding-right: 40px;
+  }
+
+  &.error {
+    border-color: #ff5454;
+  }
+
+  input {
+    top: 0;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0 5px;
+    border: none;
+    color: #222;
+    outline: none;
+
+    &.show-placeholder {
+      opacity: 0.4;
+      position: absolute;
     }
-
-    &.error {
-        border-color: #ff5454;
-    }
-
-    input {
-        top: 0;
-        bottom: 5px;
-        left: 0;
-        width: 100%;
-        margin: 0;
-        padding: 0 5px;
-        border: none;
-        color: #222;
-        outline: none;
-
-        &.show-placeholder {
-            opacity: 0.4;
-            position: absolute;
-        }
-    }
+  }
 }
 
 .error-message {
-    padding: 5px;
-    color: #ff1010;
-    font-size: 12px;
+  padding: 5px;
+  color: #ff1010;
+  font-size: 12px;
 }
 
 .btn-show-password {
-    position: absolute;
-    right: 5px;
-    bottom: 7px;
-    width: 30px;
-    height: 30px;
-    background-image: url("/static/image/_new/mcenter/tcenter/btn_eye.png");
-    background-position: 50% 50%;
-    background-size: 30px 30px;
-    background-repeat: no-repeat;
+  position: absolute;
+  right: 5px;
+  bottom: 7px;
+  width: 30px;
+  height: 30px;
+  background-image: url("/static/image/_new/mcenter/tcenter/btn_eye.png");
+  background-position: 50% 50%;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
 
-    &.active {
-        background-image: url("/static/image/_new/mcenter/tcenter/btn_eye_active.png");
-    }
+  &.active {
+    background-image: url("/static/image/_new/mcenter/tcenter/btn_eye_active.png");
+  }
 }
 
 .captcha-unit {
+  display: block;
+  height: 30px;
+  margin: 0;
+  position: relative;
+  border-bottom: 1px solid #2693fc;
+  padding: 0 5px 5px;
+  font-size: 14px;
+
+  &.error {
+    border-color: #ff5454;
+  }
+
+  input {
     display: block;
-    height: 30px;
+    width: 100%;
+    height: 100%;
+    padding: 0 40px 0 0;
+    color: #000;
+    border: none;
+    outline: none;
     margin: 0;
-    position: relative;
-    border-bottom: 1px solid #2693fc;
-    padding: 0 5px 5px;
-    font-size: 14px;
-    input {
-        display: block;
-        width: 100%;
-        height: 100%;
-        padding: 0 40px 0 0;
-        color: #000;
-        border: none;
-        outline: none;
-        margin: 0;
 
-        &::placeholder {
-            opacity: 0.4;
-            position: absolute;
-        }
+    &::placeholder {
+      opacity: 0.4;
+      position: absolute;
     }
+  }
 
-    .input-icon {
-        display: inline-block;
-        position: absolute;
-        top: calc(50% - 9px);
-        left: 0;
-        width: 30px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-right: 1px solid rgba(128, 128, 128, 0.26);
+  .input-icon {
+    display: inline-block;
+    position: absolute;
+    top: calc(50% - 9px);
+    left: 0;
+    width: 30px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(128, 128, 128, 0.26);
 
-        > img {
-            width: 18px;
-            height: 18px;
-        }
+    >img {
+      width: 18px;
+      height: 18px;
     }
+  }
+
+}
+
+.captcha-error {
+  padding: 5px;
+  color: #ff1010;
+  font-size: 12px;
+  position: absolute;
+
 }
 
 .captcha-unit-captcha {
-    position: relative;
-    margin-bottom: 19px;
-    display: flex;
-    align-items: center;
+  position: relative;
+  display: flex;
+  align-items: center;
 
-    .captchaImg {
-        position: absolute;
-        right: 30px;
-        width: 62px;
-        height: 21px;
-        background-color: #000;
+  .captchaImg {
+    position: absolute;
+    right: 30px;
+    width: 62px;
+    height: 21px;
+    background-color: #000;
+  }
+
+  .captchaText-refresh {
+    width: 20px;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 10px);
+    margin: 0px 5px;
+
+    >img {
+      width: 20px;
+      height: 20px;
     }
-
-    .captchaText-refresh {
-        width: 20px;
-        position: absolute;
-        right: 0;
-        top: calc(50% - 10px);
-        margin: 0px 5px;
-
-        > img {
-            width: 20px;
-            height: 20px;
-        }
-    }
+  }
 }

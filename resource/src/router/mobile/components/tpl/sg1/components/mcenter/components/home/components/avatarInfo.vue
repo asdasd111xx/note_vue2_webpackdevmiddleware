@@ -39,6 +39,7 @@
       <div>
         <span> 观影60秒计时奖励 </span>
         <span :class="$style['money-symbol']">¥</span>
+        <!-- <span> 最高送6元 </span> -->
         <span> 最高送999元 </span>
       </div>
     </div>
@@ -175,7 +176,7 @@ export default {
 
 .info-wrap {
   height: 70px;
-  padding: 10px 9px;
+  padding: 10px 4px;
   width: 100%;
 
   > div {
@@ -188,7 +189,7 @@ export default {
   }
 
   div:last-of-type {
-    color: $main_text_color1;
+    color: #be9e7f;
     font-size: 12px;
     height: 50%;
 

@@ -10,8 +10,8 @@ export default {
       isShowPop: false,
 
       // 控制詳細頁卡片顏色
-      colorRepeatIndex: null,
-    }
+      colorRepeatIndex: null
+    };
   },
   computed: {
     ...mapGetters({
@@ -28,87 +28,99 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['actionSetGlobalMessage']),
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserBankList() {
       this.isRevice = false;
 
-      return axios({
+      // C02.221 回傳銀行卡清單與狀態/查詢會員出款銀行
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/user_bank/list",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`,
         params: {
+          lang: "zh-cn",
           common: false
         }
       }).then(response => {
-        const { ret, result } = response.data;
         this.isRevice = true;
-        if (!response || result !== "ok") {
+        const { data, status, errorCode } = response;
+
+        if (errorCode !== "00" || status !== "000") {
           return;
         }
 
-        this.bank_card = ret.filter((item, index) => index < 3);
-      })
+        this.bank_card = data.filter((item, index) => index < 3);
+      });
     },
     onClickDetail(info) {
-      this.colorRepeatIndex = index
+      this.colorRepeatIndex = index;
 
       this.bank_cardDetail = info;
-      this.$emit('update:isAudit', false)
+      this.$emit("update:isAudit", false);
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {
-        this.$emit('update:isAudit', true);
+        this.$emit("update:isAudit", true);
         return;
       }
     },
     onDelete() {
-      axios({
+      this.isRevice = false;
+
+      // 申請刪除會員銀行卡 C02.243
+      goLangApiRequest({
         method: "put",
-        url: `/api/v1/c/player/user_bank/${this.bank_cardDetail.id}/delete/apply`,
-        data: {
-          userBankId: this.bank_cardDetail.id
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/ApplyDeletePlayer/${this.bank_cardDetail.id}`,
+        params: {
+          lang: "zh-cn",
+          bankID: this.bank_cardDetail.id
         }
       }).then(response => {
-        const { result } = response.data;
-        if (!response || result !== 'ok') {
+        this.isRevice = true;
+        this.isShowPop = false;
+        this.$emit("update:editStatus", false);
+
+        const { status, errorCode, msg } = response;
+
+        if (errorCode !== "00" || status !== "000") {
+          this.actionSetGlobalMessage({ msg: msg });
           return;
         }
 
-        this.isShowPop = false;
-        this.$emit('update:editStatus', false);
-
-        this.getUserBankList().then(() => {
-          // 更新 bank_cardDetail
-          let temp = this.bank_card.find(item => {
-            return item.id === this.bank_cardDetail.id;
+        this.getUserBankList()
+          .then(() => {
+            // 更新 bank_cardDetail
+            let temp = this.bank_card.find(item => {
+              return item.id === this.bank_cardDetail.id;
+            });
+            this.bank_cardDetail = temp;
           })
-          this.bank_cardDetail = temp;
-        }).then(() => {
-          if (this.memInfo.config.manual_delete_bank_card) {
-            this.actionSetGlobalMessage({ msg: '删除审核中' });
-            switch (this.themeTPL) {
-              case 'porn1':
-                this.actionSetGlobalMessage({ msg: '银行卡删除审核中' });
-                break;
+          .then(() => {
+            if (this.memInfo.config.manual_delete_bank_card) {
+              this.actionSetGlobalMessage({ msg: "删除审核中" });
+              switch (this.themeTPL) {
+                case "porn1":
+                  this.actionSetGlobalMessage({ msg: "银行卡删除审核中" });
+                  break;
 
-              case 'ey1':
-                this.actionSetGlobalMessage({ msg: '删除审核中' });
-                break;
-            }
-          } else {
-            switch (this.themeTPL) {
-              case 'porn1':
-                this.actionSetGlobalMessage({ msg: '银行卡刪除成功' });
-                break;
+                case "ey1":
+                  this.actionSetGlobalMessage({ msg: "删除审核中" });
+                  break;
+              }
+            } else {
+              switch (this.themeTPL) {
+                case "porn1":
+                  this.actionSetGlobalMessage({ msg: "银行卡刪除成功" });
+                  break;
 
-              case 'ey1':
-                this.actionSetGlobalMessage({ msg: '刪除成功' });
-                break;
+                case "ey1":
+                  this.actionSetGlobalMessage({ msg: "刪除成功" });
+                  break;
+              }
+              this.$emit("update:showDetail", false);
+              this.setPageStatus(1, "walletCardInfo", true);
             }
-            this.$emit("update:showDetail", false);
-            this.setPageStatus(1, "walletCardInfo", true);
-          }
-        })
-      })
+          });
+      });
     }
-  },
-}
+  }
+};

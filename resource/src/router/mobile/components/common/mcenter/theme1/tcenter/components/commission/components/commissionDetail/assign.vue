@@ -2,7 +2,7 @@
   <div :class="$style['assign-list-wrap']">
     <div :class="$style['total-block']">
       <span>笔数：{{ detailList.length }}</span>
-      <span>返利总计：{{ allTotal.amount }}</span>
+      <span>返利总计：{{ String(allTotal.amount) | amountFormat }}</span>
     </div>
 
     <div :class="$style['list-block']">
@@ -55,7 +55,7 @@
 
 <script>
 import axios from "axios";
-import EST from "@/lib/EST"
+import EST from "@/lib/EST";
 import { format, toDate, parseISO } from "date-fns";
 import { API_COMMISSIOM_DETAIL_LIST } from "@/config/api";
 import { mapActions } from "vuex";
@@ -131,8 +131,8 @@ export default {
       this.showInfinite = false;
       this.isLoading = true;
       this.showPage = 0;
-
       const params = {
+        period: this.currentInfo.period,
         start_at: this.getDate,
         end_at: this.getDate
       };

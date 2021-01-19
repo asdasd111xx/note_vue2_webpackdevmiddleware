@@ -586,12 +586,12 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionGetMemInfoV3");
     await dispatch("actionGetMobileInfo");
 
-    const defaultLang =
-      ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-      state.webInfo.is_production
-        ? "vi"
-        : "zh-cn";
-    await getLang(state.webInfo.language, defaultLang);
+    // const defaultLang =
+    //   ["47", "70", "71"].includes(state.memInfo.user.domain) &&
+    //   state.webInfo.is_production
+    //     ? "vi"
+    //     : "zh-cn";
+    await getLang(state.webInfo.language, "zh-cn");
 
     // 設定網站設定檔資訊 (start)
     let configInfo;
@@ -606,7 +606,10 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
     dispatch("actionSetSiteConfig", configInfo);
     dispatch("actionSetNews");
-    dispatch("actionSetRechargeConfig");
+
+    if (["porn1", "sg1"].includes(state.webDomain.site)) {
+      dispatch("actionSetRechargeConfig");
+    }
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
 
@@ -1334,7 +1337,6 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     method: "get",
     url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/System/switch"
   }).then(res => {
-    console.log("api switch test");
     if (res && res.data) {
       commit(types.SET_YABOCONFIG, res.data);
     }
@@ -1345,7 +1347,11 @@ export const actionSetGlobalMessage = ({ commit }, data) => {
   commit(types.SET_GLOBALMESSAGE, data);
 };
 
-export const actionSetRechargeConfig = ({ commit }, data) => {
+export const actionSetRechargeConfig = ({ commit, state }, data) => {
+  if (!["porn1", "sg1"].includes(state.webDomain.site)) {
+    return Promise.resolve(null);
+  }
+
   const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin) {
     return;
@@ -1661,7 +1667,10 @@ export const actionVerificationFormData = (
 
     case "password":
     case "confirm_password":
-      val = val.replace(/[\W]/g, "").substring(0, 50);
+      val = val
+        .replace(/[\W]/g, "")
+        .substring(0, 50)
+        .toLowerCase();
       break;
 
     case "name":
@@ -1701,6 +1710,11 @@ export const actionVerificationFormData = (
     case "address":
       val = val.substring(0, 100);
       break;
+
+    case "mail":
+      regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+      val = val.replace(regex, "").substring(0, 20);
+      break;
     // case "USDT-address":
     //   val = val.substring(0, 42);
     //   break;
@@ -1724,7 +1738,7 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
     method: "get",
     url: configInfo.BBOS_DOMIAN + "/Domain/List",
     reqHeaders: {
-      Vendor: state.memInfo.user.domain
+      Vendor: state.webDomain.domain
     },
     params: {
       lang: "zh-tw"
@@ -1806,15 +1820,16 @@ export const actionSetAgentUserConfig = ({ commit }) =>
     }
   });
 
-export const actionSetWebDomain = ({ commit }) =>
-  axios({
+export const actionSetWebDomain = ({ commit }) => {
+  return axios({
     method: "get",
-    url: "/conf/domain"
+    url: "/conf/domain",
+    timeout: 5000
   })
     .then(res => {
       let result = {
         domain: "",
-        site: "porn1"
+        site: ""
       };
 
       console.log("[conf/domain]:", {
@@ -1823,32 +1838,36 @@ export const actionSetWebDomain = ({ commit }) =>
       });
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
+      if (!site || !domain) {
+        window.location.href = "/500";
+        return;
+      }
       result["site"] = site;
       result["domain"] = domain;
       commit(types.SET_WEB_DOMAIN, result);
     })
     .catch(res => {
       console.log("[conf/domain]:", res);
-      commit(types.SET_WEB_DOMAIN, { site: "porn1", domain: "67" });
+      window.location.href = "/500";
     });
+};
 
 // SWAG設定
 export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
   let configInfo;
-  if (state.webInfo.is_production) {
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   return bbosRequest({
     method: "get",
     url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
     reqHeaders: {
-      Vendor: state.memInfo.user.domain
+      Vendor: state.webDomain.domain
     },
     params: {
       lang: "zh-cn"
@@ -1870,21 +1889,20 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
   if (!hasLogin) {
     return;
   }
-  let configInfo;
-  if (state.webInfo.is_production) {
+
+  if (state.webDomain) {
     configInfo =
-      siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
-  } else {
-    configInfo =
-      siteConfigTest[`site_${state.webInfo.alias}`] || siteConfigTest.preset;
   }
 
   return bbosRequest({
     method: "get",
     url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
     reqHeaders: {
-      Vendor: state.memInfo.user.domain
+      Vendor: state.webDomain.domain
     },
     params: {
       lang: "zh-cn"
@@ -1895,4 +1913,47 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
     }
     commit(types.SET_SWAG_BALANCE, res.data);
   });
+};
+
+/**
+ * 取得會員可用出款帳戶 C04.27
+ * @method actionGetWithdrawAccount
+ */
+export const actionGetWithdrawAccount = ({ state, dispatch }) => {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return goLangApiRequest({
+    method: "get",
+    url:
+      configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Ext/Withdraw/User/Account/List",
+    params: {
+      lang: "zh-cn"
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
+
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg: msg
+        });
+        return;
+      }
+
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg: msg
+      });
+    });
 };

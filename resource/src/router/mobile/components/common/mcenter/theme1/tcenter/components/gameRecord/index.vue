@@ -14,7 +14,6 @@
                     hasSearch,
                     searchTabs,
                     currentCondition,
-                    gameList,
                     currentPage,
                     changeSearchCondition,
                     onSearch,
@@ -220,14 +219,14 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     limitDate(key, val) {
       let _value = Vue.moment(val).format("YYYY/MM/DD");
-      let _today = Vue.moment(new Date())
+      let _today = Vue.moment(EST(new Date()))
         .add(-29, "days")
         .format("YYYY/MM/DD");
-
       if (_value < _today) {
         this.checkDate = false;
         this.actionSetGlobalMessage({ msg: "查询纪录不能超过30天" });
         this.inqStart = this.endDate;
+        this.checkDate = true;
       } else if (this.inqStart > this.inqEnd) {
         this.checkDate = false;
         this.inqStart = this.endDate;
@@ -239,36 +238,41 @@ export default {
       }
     },
     gameVendor() {
-      // bbosRequest({
-      //   method: "get",
-      //   url: this.siteConfig.BBOS_DOMIAN +
-      //     "/Vender/List",
-      //   reqHeaders: {
-      //     Vendor: this.memInfo.user.domain
-      //   },
-      //   params: {
-      //     lang: "zh-cn"
-      //   }
-      // }).then(res => {
-      //   this.allvendor = res.data;
-      // })
-
-      axios({
+      return axios({
         method: "get",
         url: "/api/v1/c/vendors"
-      }).then(res => {
-        var bbin = { text: "BBIN", value: "bbin" };
-        for (var i = 0; i < res.data.ret.length; i++) {
-          if (res.data.ret[i].vendor === "bbin") {
-            this.allvendor.push(bbin);
+      })
+        .then(res => {
+          const { ret, result, msg } = res.data;
+
+          if (result !== "ok") {
+            this.actionSetGlobalMessage({ msg });
+            return;
           }
-          let obj = {
-            text: `${res.data.ret[i].alias}`,
-            value: `${res.data.ret[i].vendor}`
-          };
-          this.allvendor.push(obj);
-        }
-      });
+
+          let bbin = { text: "BBIN", value: "bbin" };
+
+          // 整理 API 原始資料，先撇除 bbin 有關的 vendor
+          let originData = ret
+            .map(item => {
+              return {
+                text: item.alias,
+                value: item.vendor
+              };
+            })
+            .filter(item => {
+              return item.value !== "bbin";
+            });
+
+          // 再最前面添加 bbin 的 vendor
+          originData.unshift(bbin);
+
+          this.allvendor.push(...originData);
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     }
   },
   filters: {

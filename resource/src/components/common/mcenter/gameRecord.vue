@@ -114,11 +114,7 @@ export default {
           .filter(key => this.gameData[key].switch === "Y")
           .reduce((init, key) => {
             // 過濾重複的 vendor
-            if (
-              init.some(
-                info => info.value === this.gameData[key].vendor
-              )
-            ) {
+            if (init.some(info => info.value === this.gameData[key].vendor)) {
               return init;
             }
 
@@ -134,8 +130,7 @@ export default {
     },
     control1stData() {
       return this.inq1st.list.filter(
-        (item, index) =>
-          index < this.maxResults.main * this.showPage.main
+        (item, index) => index < this.maxResults.main * this.showPage.main
       );
     },
     control2ndData() {
@@ -153,10 +148,8 @@ export default {
         switch (newValue) {
           case "main":
             this.showInfinite = false;
-            this.setTabState(true)
-            this.setHeaderTitle(
-              this.$text("S_TEAM_CENTER", "我的推广")
-            );
+            this.setTabState(true);
+            this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
             break;
           case "bet":
             this.setTabState(false);
@@ -167,6 +160,9 @@ export default {
         }
       },
       immediate: true
+    },
+    currentCondition(changeIndex) {
+      this.changeSearchCondition(changeIndex);
     }
   },
   created() {
@@ -178,7 +174,6 @@ export default {
   },
   methods: {
     changeSearchCondition(value) {
-
       this.inq1st = {
         list: [],
         total: {},
@@ -260,15 +255,18 @@ export default {
       });
     },
     onSearchBet(username) {
-      if (username === this.selectedUser) return;
+      this.showInfinite = false;
+      this.isLoading = true;
+      this.showPage.bet = 0;
+      if (username === this.selectedUser) {
+        this.$router.push({ params: { page: "bet" } });
+        this.showInfinite = true;
+        return;
+      }
       this.selectedUser = username;
       this.onInquireBet();
     },
     onInquireBet() {
-      this.showInfinite = false;
-      this.isLoading = true;
-      this.showPage.bet = 0;
-
       bbosRequest({
         method: "get",
         url:
@@ -283,9 +281,7 @@ export default {
           startAt: Vue.moment(this.currentStart).format(
             "YYYY-MM-DD 00:00:00-04:00"
           ),
-          endAt: Vue.moment(this.currentEnd).format(
-            "YYYY-MM-DD 23:59:59-04:00"
-          )
+          endAt: Vue.moment(this.currentEnd).format("YYYY-MM-DD 23:59:59-04:00")
         }
       })
         .then(response => {
@@ -316,9 +312,7 @@ export default {
           let dateArr = [];
           this.inq2nd.list.map(item => {
             if (dateArr.includes(item.day)) {
-              result
-                .find(i => i.day === item.day)
-                .list.push({ ...item });
+              result.find(i => i.day === item.day).list.push({ ...item });
             } else {
               dateArr.push(item.day);
               result.push({
@@ -354,10 +348,8 @@ export default {
               $state.loaded();
 
               if (
-                Math.ceil(
-                  this.inq1st.list.length /
-                  this.maxResults.main
-                ) === this.showPage.main
+                Math.ceil(this.inq1st.list.length / this.maxResults.main) ===
+                this.showPage.main
               ) {
                 $state.complete();
               }
@@ -379,10 +371,8 @@ export default {
               $state.loaded();
 
               if (
-                Math.ceil(
-                  this.inq2nd.list.length /
-                  this.maxResults.bet
-                ) === this.showPage.bet
+                Math.ceil(this.inq2nd.list.length / this.maxResults.bet) ===
+                this.showPage.bet
               ) {
                 $state.complete();
               }

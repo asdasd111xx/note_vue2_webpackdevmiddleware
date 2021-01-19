@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="$style['back']" @click="$router.push('/mobile/mcenter/home')">
+    <div :class="$style['back']" @click="$router.back()">
       <img
         :src="$getCdnPath(`/static/image/common/btn_back_grey.png`)"
         alt="back"

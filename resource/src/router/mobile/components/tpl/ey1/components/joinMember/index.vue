@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import joinMember from '@/router/web/components/page/join_member';
-import mobileContainer from '../common/mobileContainer'
+import { mapGetters } from "vuex";
+import joinMember from "@/router/web/components/page/join_member";
+import mobileContainer from "../common/mobileContainer";
 
 export default {
   components: {
@@ -27,41 +27,46 @@ export default {
   data() {
     return {
       script: null
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: "getLoginStatus"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
+        onClick: () => {
+          this.$router.back();
+        },
         hasClose: true,
-        title: this.$text("S_REGISTER", "注册"),
+        title: this.$text("S_REGISTER", "注册")
       };
-    },
+    }
   },
   created() {
     if (this.loginStatus) {
-      this.$router.push('/mobile');
+      this.$router.push("/mobile");
       return;
     }
 
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement('script');
-      this.script.setAttribute('type', 'text/javascript');
-      this.script.setAttribute('data-name', 'esabgnixob');
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
 
       if (window.location.host.includes("localhost")) {
-        this.script.setAttribute('src', 'https://eyt.66boxing.com/mobile/esabgnixob.js');
+        this.script.setAttribute(
+          "src",
+          "https://eyt.66boxing.com/mobile/esabgnixob.js"
+        );
       } else {
-        this.script.setAttribute('src', 'esabgnixob.js');
+        this.script.setAttribute("src", "esabgnixob.js");
       }
 
       document.head.appendChild(this.script);
     }
-  },
+  }
 };
 </script>
 
@@ -70,7 +75,7 @@ export default {
 @import "~@/css/page/joinMem.module.scss";
 
 .join-member-wrap {
-  min-height: 100vh;
+  min-height: calc(100vh - 43px);
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/static/image/ey1/common/bg.png");

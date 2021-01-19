@@ -193,10 +193,11 @@ export default {
 
 .img-wrap {
   position: relative;
+  width: 100vw;
 
   img {
     display: block;
-    max-width: 100%;
+    width: 100%;
   }
 
   span {
@@ -213,7 +214,7 @@ export default {
     bottom: calc(4vw - 3px);
     right: 4%;
     font-weight: 700;
-    color: #000000;
+    color: #4d4d4d;
     background-image: url("/static/image/sg1/mcenter/makeMoney/img001_btn.png");
     background-size: 48px auto;
   }

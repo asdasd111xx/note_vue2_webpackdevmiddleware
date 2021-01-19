@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { getCookie } from "@/lib/cookie";
 import vipUser from "./vipUser";
@@ -112,6 +112,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserDetail() {
       // yaboRequest({
       //   method: "get",
@@ -132,10 +133,20 @@ export default {
           cid: getCookie("cid")
         }
       }).then(res => {
+        if (res.code === "M00001") {
+          this.actionSetGlobalMessage({ msg: "请重新登入", code: res.code });
+          return;
+        }
+
         this.userVipInfo = res.data;
 
-        // 起始預設 config_id 為分類中的第一筆
-        this.currentConfigID = this.userVipInfo[0].config_id;
+        if (localStorage.getItem("vip_config_id")) {
+          this.currentConfigID = localStorage.getItem("vip_config_id");
+          localStorage.removeItem("vip_config_id");
+        } else {
+          // 起始預設 config_id 為分類中的第一筆
+          this.currentConfigID = this.userVipInfo[0].config_id;
+        }
       });
     },
     getVipLevel() {
@@ -162,11 +173,16 @@ export default {
           cid: getCookie("cid")
         }
       }).then(res => {
+        if (res.code === "M00001") {
+          this.actionSetGlobalMessage({ msg: "请重新登入", code: res.code });
+          return;
+        }
         this.vipLevelList = res.data;
       });
     },
     handleConfigId(value) {
       this.currentConfigID = value;
+      localStorage.setItem("vip_config_id", value);
     }
   },
   watch: {

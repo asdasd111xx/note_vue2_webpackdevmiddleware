@@ -86,7 +86,7 @@ export default {
         return;
       }
 
-      location.href = openGameLink;
+      location.replace(openGameLink);
       return;
     } else {
       console.log("open-game-link 遺失");

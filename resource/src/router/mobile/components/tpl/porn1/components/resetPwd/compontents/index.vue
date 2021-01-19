@@ -217,25 +217,56 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
       this.verification(key, this.pwdResetInfo[key].value);
+      let newPwd = document.getElementById("newPwd"),
+        confNewPwd = document.getElementById("confNewPwd"),
+        pwd = document.getElementById("pwd");
+
       if (this.isShowPwd) {
-        document.getElementById("newPwd").type = "password";
-        document.getElementById("confNewPwd").type = "password";
-        document.getElementById("pwd").type = "password";
+        if (newPwd) {
+          newPwd.type = "password";
+        }
+        if (confNewPwd) {
+          confNewPwd.type = "password";
+        }
+        if (pwd) {
+          pwd.type = "password";
+        }
       } else {
-        document.getElementById("newPwd").type = "text";
-        document.getElementById("confNewPwd").type = "text";
-        document.getElementById("pwd").type = "text";
+        if (newPwd) {
+          newPwd.type = "text";
+        }
+        if (confNewPwd) {
+          confNewPwd.type = "text";
+        }
+        if (pwd) {
+          pwd.type = "text";
+        }
       }
       this.isShowPwd = !this.isShowPwd;
     },
     verification(id, value) {
       if (id !== "email") {
-        this.pwdResetInfo[id].value = value.replace(/[\W]/g, "");
+        this.actionVerificationFormData({
+          target: "password",
+          value: value
+        }).then(val => {
+          this.pwdResetInfo[id].value = val;
+        });
       }
-      this.pwdResetInfo[id].value = value.replace(" ", "").trim();
+      this.pwdResetInfo[id].value = value.trim();
+
+      if (
+        id === "confNewPwd" &&
+        this.pwdResetInfo["confNewPwd"].value !==
+          this.pwdResetInfo["newPwd"].value
+      ) {
+        this.errMsg = "确认密码预设要跟密码一致";
+      } else {
+        this.errMsg = "";
+      }
 
       const data = this.pwdResetInfo[id];
       const re = new RegExp(data.regExp);
@@ -243,19 +274,6 @@ export default {
 
       if (!re.test(value)) {
         this.errMsg = msg;
-      } else {
-        this.errMsg = "";
-      }
-
-      if (
-        this.pwdResetInfo["confNewPwd"].value !==
-        this.pwdResetInfo["newPwd"].value
-      ) {
-        this.errMsg = "确认密码预设要跟密码一致";
-      }
-
-      if (!value) {
-        this.errMsg = "请输入6-12位字母或数字";
       }
     },
     pwdModifySubmit() {

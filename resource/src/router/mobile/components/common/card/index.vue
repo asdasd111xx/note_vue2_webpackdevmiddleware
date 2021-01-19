@@ -180,6 +180,7 @@ export default {
   },
   created() {
     this.getGameLabelList();
+    localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
@@ -196,7 +197,7 @@ export default {
       // 電子分類預設資料
       const defaultData = [
         {
-          label: "",
+          label: "all",
           name: this.$t("S_ALL")
         },
         {

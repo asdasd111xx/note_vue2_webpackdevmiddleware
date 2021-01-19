@@ -19,7 +19,6 @@
           v-model="captchaText"
           :placeholder="'请输入验证码'"
           @input="verification($event.target.value, 'captchaText')"
-          type="tel"
         />
         <img
           v-if="captchaImg"
@@ -73,6 +72,9 @@ export default {
     },
     isShowCaptcha: {
       type: Boolean
+    },
+    friend_captcha_type: {
+      type: Boolean
     }
   },
   data() {
@@ -89,7 +91,10 @@ export default {
       memInfo: "getMemInfo"
     }),
     captchaType() {
-      return this.memInfo.config.default_captcha_type;
+      // console.log(`captchaType is friend_captcha_type?  ${this.friend_captcha_type}`);
+      return this.friend_captcha_type
+        ? this.memInfo.config.friend_captcha_type
+        : this.memInfo.config.default_captcha_type;
     }
   },
   mounted() {

@@ -25,12 +25,12 @@
           />
         </div>
         <span :class="$style['title']"> {{ "帐户资料" }}</span>
-        <div :class="$style['btn-icon']">
+        <!-- <div :class="$style['btn-icon']">
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/common/btn_help.png`)"
             @click="$router.push('/mobile/mcenter/helpCenter')"
           />
-        </div>
+        </div> -->
       </div>
 
       <div :class="$style['wiithdraw-account-wrap']">
@@ -91,7 +91,11 @@
           <div :class="$style['form-input']">
             <template v-if="themeTPL === 'ey1'">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="(option, key) in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="key"
+                >
                   {{ option }}
                 </option>
               </select>

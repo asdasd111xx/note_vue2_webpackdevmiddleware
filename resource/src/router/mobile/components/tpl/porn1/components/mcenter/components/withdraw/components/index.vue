@@ -53,7 +53,9 @@
                 @click="onClickMaintain(item.maintain)"
               >
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
                 {{ $t("S_MAINTAIN") }}
@@ -104,7 +106,9 @@
               >
                 {{ $t("S_MAINTAIN") }}
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
               </span>
@@ -597,12 +601,9 @@ import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/w
 import withdrawMoreMethod from "./withdrawMoreMethod";
 
 import {
-  API_MCENTER_WITHDRAW,
   API_TRADE_RELAY,
   API_CRYPTO_MONEY,
   API_WITHDRAW,
-  API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO,
   API_WITHDRAW_WRITE_2
 } from "@/config/api";
 import common from "@/api/common";
@@ -1122,9 +1123,10 @@ export default {
         const balance = Number(this.withdrawData.cash.available_balance);
 
         if (this.withdrawValue > Math.floor(balance)) {
-          this.errTips = ["porn1", "sg1"].includes(this.themeTPL)
-            ? "提现金额不可大於中心钱包余额"
-            : "提现金额不可大于最高提现金额";
+          // this.errTips = ["porn1", "sg1"].includes(this.themeTPL)
+          //   ? "提现金额不可大於中心钱包余额"
+          //   : "提现金额不可大于最高提现金额";
+          this.errTips = "提现金额不可大于最高提现金额";
           return;
         }
 

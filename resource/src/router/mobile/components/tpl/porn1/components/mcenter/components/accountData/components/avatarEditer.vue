@@ -175,6 +175,13 @@ export default {
               .then(res => {
                 this.isSend = false;
                 if (res && res.data && res.data.result === "ok") {
+                  let reader = new FileReader();
+                  reader.readAsDataURL(data);
+                  reader.onloadend = function() {
+                    let base64data = reader.result;
+                    localStorage.setItem("tmp-avatar-img", base64data);
+                  };
+
                   this.actionSetGlobalMessage({
                     msg: "上传成功",
                     cb: () => {

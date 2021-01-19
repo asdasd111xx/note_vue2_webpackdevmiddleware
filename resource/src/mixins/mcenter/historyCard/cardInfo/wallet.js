@@ -1,5 +1,5 @@
-import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -8,7 +8,7 @@ export default {
       wallet_card: [],
       wallet_cardDetail: {},
       isShowPop: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
@@ -22,98 +22,106 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
+    }
   },
   methods: {
-    ...mapActions(['actionSetGlobalMessage']),
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserWalletList() {
       this.isRevice = false;
 
-      return axios({
-        method: "get",
-        url: "/api/v1/c/player/user_virtual_bank/list",
+      //  C02.241 查詢會員電子錢包
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
+          lang: "zh-cn",
           common: false
         }
       }).then(response => {
-        const { ret, result } = response.data;
         this.isRevice = true;
+        const { data, status, errorCode } = response;
 
-        if (!response || result !== "ok") {
+        if (errorCode !== "00" || status !== "000") {
           return;
         }
 
-        this.wallet_card = ret.filter((item, index) => index < 15);
-      })
+        this.wallet_card = data.filter((item, index) => index < 15);
+      });
     },
     getWalletDetail(info) {
       this.wallet_cardDetail = info;
-      this.$emit('update:isAudit', false)
+      this.$emit("update:isAudit", false);
       this.$emit("update:showDetail", true);
 
       if (info.auditing) {
-        this.$emit('update:isAudit', true);
+        this.$emit("update:isAudit", true);
       }
     },
     moveCard() {
       const { address, virtual_bank_id } = this.wallet_cardDetail;
 
-      axios({
+      // 編輯會員電子錢包 C02.240 (取代C02.145)
+      goLangApiRequest({
         method: "put",
-        url: "/api/v1/c/player/user_virtual_bank",
-        data: {
-          old_address: address,
-          virtual_bank_id: String(virtual_bank_id),
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/VirtualBank/Edit`,
+        params: {
+          lang: "zh-cn",
+          oldAddress: address,
+          virtualBankId: String(virtual_bank_id),
           common: true
         }
       }).then(response => {
-        const { result } = response.data;
-        if (!response || result !== 'ok') {
+        const { status, errorCode } = response;
+
+        if (errorCode !== "00" || status !== "000") {
           return;
         }
 
-        this.actionSetGlobalMessage({ msg: '移至我的电子钱包 成功' });
+        this.actionSetGlobalMessage({ msg: "移至我的电子钱包 成功" });
         this.getUserWalletList().then(() => {
           // 切換當前頁面狀態
           this.$emit("update:showDetail", false);
-          this.$emit('update:editStatus', false);
+          this.$emit("update:editStatus", false);
           this.setPageStatus(1, "walletCardInfo", true);
-        })
-      })
+        });
+      });
     },
     onDelete() {
-      axios({
+      goLangApiRequest({
         method: "put",
-        url: `/api/v1/c/player/user_virtual_bank/${this.wallet_cardDetail.id}/delete/apply`,
-        data: {
-          userVirtualBankId: this.wallet_cardDetail.id
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/VirtualBank/ApplyDeletePlayer/${this.wallet_cardDetail.id}`,
+        params: {
+          lang: "zh-cn",
+          bankID: this.wallet_cardDetail.id
         }
       }).then(response => {
-        const { result } = response.data;
-        if (!response || result !== 'ok') {
+        const { status, errorCode } = response;
+
+        if (errorCode !== "00" || status !== "000") {
           return;
         }
 
         this.isShowPop = false;
-        this.$emit('update:editStatus', false);
+        this.$emit("update:editStatus", false);
 
-        this.getUserWalletList().then(() => {
-          // 更新 wallet_cardDetail
-          let temp = this.wallet_card.find(item => {
-            return item.id === this.wallet_cardDetail.id;
+        this.getUserWalletList()
+          .then(() => {
+            // 更新 wallet_cardDetail
+            let temp = this.wallet_card.find(item => {
+              return item.id === this.wallet_cardDetail.id;
+            });
+            this.wallet_cardDetail = temp;
           })
-          this.wallet_cardDetail = temp;
-        }).then(() => {
-          if (this.memInfo.config.manual_delete_bank_card) {
-            this.actionSetGlobalMessage({ msg: '删除审核中' });
-          } else {
-            this.actionSetGlobalMessage({ msg: '刪除成功' });
-            this.$emit("update:showDetail", false);
-            this.setPageStatus(1, "walletCardInfo", true);
-          }
-        })
-      })
+          .then(() => {
+            if (this.memInfo.config.manual_delete_bank_card) {
+              this.actionSetGlobalMessage({ msg: "删除审核中" });
+            } else {
+              this.actionSetGlobalMessage({ msg: "刪除成功" });
+              this.$emit("update:showDetail", false);
+              this.setPageStatus(1, "walletCardInfo", true);
+            }
+          });
+      });
     }
   }
-}
-
+};

@@ -10,7 +10,11 @@
             :class="$style['news-item']"
           >
             <h4 :class="$style['news-title']">{{ item.title }}</h4>
-            <p :class="$style['news-content']" v-html="item.content" />
+            <p
+              :class="$style['news-content']"
+              v-html="item.content.replace('\n', '<br>')"
+              v-if="item.content"
+            />
           </div>
         </div>
         <div :class="[$style['no-remind'], 'clearfix']">
@@ -32,7 +36,11 @@
             :key="item.id"
             :class="$style['news-item']"
           >
-            <p :class="$style['news-content']" v-html="item.content" />
+            <p
+              v-html="item.content.replace('\n', '<br>')"
+              v-if="item.content"
+              :class="$style['news-content']"
+            />
           </div>
         </div>
       </div>
@@ -89,10 +97,6 @@ export default {
       if (this.isTick) {
         localStorage.setItem("do-not-show-home-post", true);
       }
-
-      //   if (!!this.sitePostList) {
-      //     localStorage.setItem('is-show-popup-announcement', true);
-      //   }
 
       this.$emit("close", !!this.sitePostList);
     }

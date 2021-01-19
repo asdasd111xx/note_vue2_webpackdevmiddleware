@@ -9,7 +9,7 @@
       <div>还没有新公告</div>
     </div>
   </div>
-  <div v-else :class="$style['post-wrap']">
+  <div v-else-if="postData" :class="$style['post-wrap']">
     <div v-if="$route.query.pid" :class="$style['post-content']">
       <div :class="[$style['content-title'], 'clearfix']">
         <div :class="$style['icon-post']">
@@ -70,16 +70,9 @@ import { mapGetters } from "vuex";
 import { API_GET_POST } from "@/config/api";
 import ajax from "@/lib/ajax";
 import EST from "@/lib/EST";
-
+import mixin from "@/mixins/mcenter/message/message";
 export default {
-  filters: {
-    dateFormat(date) {
-      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
-    },
-    shortDateFormat(date) {
-      return Vue.moment(EST(date)).format("YYYY-MM-DD");
-    }
-  },
+  mixins: [mixin],
   data() {
     return {
       hasReceive: false,
@@ -90,24 +83,19 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    $style() {
+      return this[`$style_default`];
+    },
     currentPost() {
-      if (!this.$route.query.pid) {
+      if (!this.$route.query.pid || this.postData.length == 0) {
+        this.$router.back();
         return null;
       }
+
       return this.postData.find(post => post.id === this.$route.query.pid);
     }
   },
-  methods: {
-    setContent(content) {
-      if (!content) {
-        return;
-      }
-      let urlRegex = /(https?:\/\/[^\s]+)/g;
-      return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
-        return '<a href="' + url + '" target="_blank">' + url + "</a>";
-      });
-    }
-  },
+  methods: {},
   created() {
     ajax({
       method: "get",
@@ -136,7 +124,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" module="$style_default">
 .no-data {
   position: relative;
   min-height: calc(100vh - 43px - 42px - 10px);

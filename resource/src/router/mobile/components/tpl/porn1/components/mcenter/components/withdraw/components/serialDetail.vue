@@ -1,6 +1,6 @@
 <template>
   <div :class="sliderClass">
-    <div :class="[$style['serial-header'], [$style[theme]]]">
+    <div :class="[$style['serial-header'], [$style[themeTPL]]]">
       <div :class="$style['btn-prev']">
         <img
           :src="

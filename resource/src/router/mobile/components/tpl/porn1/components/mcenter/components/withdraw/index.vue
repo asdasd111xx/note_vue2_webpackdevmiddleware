@@ -60,11 +60,11 @@ export default {
         "tmp_w_withdrawCurrency",
         JSON.stringify(this.$refs.withdraw.withdrawCurrency)
       );
-      localStorage.setItem("tmp_w_amount", this.$refs.withdraw.withdrawValue);
-      localStorage.setItem(
-        "tmp_w_actualAmount",
-        JSON.stringify(this.$refs.withdraw.actualMoney)
-      );
+      // localStorage.setItem("tmp_w_amount", this.$refs.withdraw.withdrawValue);
+      // localStorage.setItem(
+      //   "tmp_w_actualAmount",
+      //   JSON.stringify(this.$refs.withdraw.actualMoney)
+      // );
       localStorage.setItem(
         "tmp_w_withdrawPwd",
         this.$refs.withdraw.withdrawPwd

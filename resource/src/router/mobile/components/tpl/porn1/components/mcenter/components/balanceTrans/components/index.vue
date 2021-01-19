@@ -47,7 +47,9 @@
           >
             {{ $t("S_MAINTAIN") }}
             <img
-              :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+              "
               :class="$style['balance-wrench']"
             />
           </span>
@@ -95,7 +97,9 @@
           >
             {{ $t("S_MAINTAIN") }}
             <img
-              :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+              "
               :class="$style['balance-wrench']"
             />
           </span>
@@ -105,6 +109,7 @@
         </div>
 
         <div
+          v-if="Object.keys(balanceInfo).length > 2"
           :class="[$style['balance-item'], $style['collapse']]"
           @click="toggleShowMore"
         >
@@ -123,7 +128,7 @@
       </template>
     </div>
     <!-- 億元：自動免轉 -->
-    <template v-if="['ey1'].includes(themeTPL)">
+    <template v-if="['ey1'].includes(themeTPL) && isNeedShowAutotransferSwitch">
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -134,7 +139,10 @@
           >
         </div>
 
-        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+        <div
+          v-if="isNeedShowManualtransferSwitch"
+          :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`"
+        >
           <input
             :checked="isAutotransfer"
             type="checkbox"
@@ -155,7 +163,9 @@
       </div>
     </template>
     <!-- 鴨博：自動免轉 -->
-    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+    <template
+      v-if="['porn1'].includes(themeTPL) && isNeedShowAutotransferSwitch"
+    >
       <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
         <div :class="$style['balance-tip-wrap']">
           {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
@@ -166,7 +176,10 @@
           >
         </div>
 
-        <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+        <div
+          v-if="isNeedShowManualtransferSwitch"
+          :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`"
+        >
           <input
             :checked="isAutotransfer"
             type="checkbox"
@@ -187,8 +200,62 @@
       </div>
     </template>
 
+    <!-- 絲瓜：自動免轉 -->
+    <template v-if="['sg1'].includes(themeTPL) && isNeedShowAutotransferSwitch">
+      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
+        <div :class="$style['balance-tip-wrap']">
+          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
+          <span :class="$style['balance-auto-tip']"
+            >({{
+              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
+            }})</span
+          >
+        </div>
+
+        <label
+          v-if="isNeedShowManualtransferSwitch"
+          :class="[
+            $style['balance-auto-switch'],
+            { [$style.active]: isAutotransfer }
+          ]"
+          @click="
+            () => {
+              if (isReceiveAuto) {
+                if (isAutotransfer) {
+                  closeAutotransfer();
+                } else {
+                  enableAutotransfer();
+                }
+              }
+            }
+          "
+        >
+          <span />
+        </label>
+
+        <!-- <div :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`">
+          <input
+            :checked="isAutotransfer"
+            type="checkbox"
+            @click="
+              () => {
+                if (isReceiveAuto) {
+                  if (isAutotransfer) {
+                    closeAutotransfer();
+                  } else {
+                    enableAutotransfer();
+                  }
+                }
+              }
+            "
+          />
+          <label />
+        </div> -->
+      </div>
+    </template>
+
     <!-- 手動轉換功能 -->
-    <template v-if="!isAutotransfer">
+    <template v-if="!isAutotransfer && isNeedShowManualtransferSwitch">
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
         <template v-if="['ey1'].includes(themeTPL)">
           <span :class="$style['wallet-title']">
@@ -382,6 +449,8 @@ export default {
       total: 0,
       isAutotransfer: "",
       isReceiveAuto: false,
+      isNeedShowAutotransferSwitch: false,
+      isNeedShowManualtransferSwitch: false,
       AutotransferLock: false,
       recentlyData: {},
       tranOutList: {},
@@ -458,6 +527,20 @@ export default {
   created() {
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
+
+      this.isNeedShowAutotransferSwitch = this.memInfo.config.auto_transfer;
+      this.isNeedShowManualtransferSwitch = this.memInfo.config.manual_transfer;
+      //只開放單種轉帳 將使用者重設轉帳方式
+      if (
+        !this.isNeedShowAutotransferSwitch ||
+        !this.isNeedShowManualtransferSwitch
+      ) {
+        if (this.isNeedShowManualtransferSwitch) {
+          this.closeAutotransfer();
+        } else {
+          this.enableAutotransfer();
+        }
+      }
       this.isReceiveAuto = true;
       //   http://fb.vir888.com/default.asp?438355#3743844
       //   進到轉帳頁面不需自動回收額度
@@ -623,7 +706,7 @@ export default {
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
         success: () => {
-          this.actionSetGlobalMessage({ msg: "回收成功" });
+          // this.actionSetGlobalMessage({ msg: "回收成功" });
           this.isAutotransfer = true;
           this.backAccount({}, true);
           this.actionSetUserdata(true);
@@ -678,9 +761,9 @@ export default {
         success: () => {
           this.lockSec = 0;
           this.actionSetUserBalance().then(() => {
-            if (!fromAuto) {
-              this.actionSetGlobalMessage({ msg: "回收成功" });
-            }
+            // if (!fromAuto) {
+            //   this.actionSetGlobalMessage({ msg: "回收成功" });
+            // }
             this.tranOut = "";
             if (afterSetUserBalance) {
               afterSetUserBalance();

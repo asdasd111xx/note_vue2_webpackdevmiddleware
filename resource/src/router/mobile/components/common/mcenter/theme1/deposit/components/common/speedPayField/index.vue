@@ -134,7 +134,6 @@ export default {
         {
           objKey: "depositMethod",
           title: "充值方式",
-          curMethodId: this.speedField.depositMethod,
           selectTitle: "请选择充值方式",
           selectData: [
             {
@@ -166,25 +165,7 @@ export default {
             : this.methodId === 3 || this.methodId === 6,
           isError: false
         },
-        {
-          objKey: "bankBranch",
-          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
-          value: this.speedField.bankBranch,
-          placeholderText: this.$text(
-            "S_ENTER_DEPOSIT_BRANCH",
-            "请输入银行支行"
-          ),
-          showCondition:
-            this.speedField.depositMethod === "2" ||
-            this.speedField.depositMethod === "4",
-          isError:
-            this.showError &&
-            this.requiredFields.find(
-              item => item.name === "method" && item.required
-            ) &&
-            !this.speedField.bankBranch &&
-            ["2", "4"].includes(this.speedField.depositMethod)
-        },
+
         {
           objKey: "depositTime",
           title: "充值时间(北京)",
@@ -246,6 +227,25 @@ export default {
               item => item.name === "pay_username" && item.required
             ) &&
             !this.speedField.depositName
+        },
+        {
+          objKey: "bankBranch",
+          title: this.$text("S_DEPOSIT_BRANCH", "银行支行"),
+          value: this.speedField.bankBranch,
+          placeholderText: this.$text(
+            "S_ENTER_DEPOSIT_BRANCH",
+            "请输入银行支行"
+          ),
+          showCondition:
+            this.speedField.depositMethod === "2" ||
+            this.speedField.depositMethod === "4",
+          isError:
+            this.showError &&
+            this.requiredFields.find(
+              item => item.name === "method" && item.required
+            ) &&
+            !this.speedField.bankBranch &&
+            ["2", "4"].includes(this.speedField.depositMethod)
         },
         {
           objKey: "serialNumber",

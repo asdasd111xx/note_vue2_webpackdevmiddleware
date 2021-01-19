@@ -7,28 +7,41 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import mobileContainer from '../common/mobileContainer';
+import { mapGetters } from "vuex";
+import mobileContainer from "../common/mobileContainer";
 
 export default {
   components: {
     mobileContainer,
-    discoverHome: () => import('./components/discoverHome'),
-    discoverSponsor: () => import('./components/discoverSponsor')
+    discoverHome: () => import("./components/discoverHome"),
+    discoverSponsor: () => import("./components/discoverSponsor")
+  },
+  data() {
+    return {
+      hasPrev: true
+    };
+  },
+  created() {
+    // 跳轉頁面需要有返回及不顯示tabbar
+    if (this.$route.query.prev !== undefined) {
+      this.hasPrev = this.$route.query.prev === "true";
+    }
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     isAdult() {
-      if (localStorage.getItem('content_rating')) {
-        return localStorage.getItem('content_rating') === "1" ? true : false;
+      if (localStorage.getItem("content_rating")) {
+        return localStorage.getItem("content_rating") === "1" ? true : false;
       } else {
-        return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+        return (
+          this.memInfo.config.content_rating && this.memInfo.user.content_rating
+        );
       }
     },
     headerConfig() {
-      const name = this.$route.params.page || 'home';
+      const name = this.$route.params.page || "home";
       const trans = {
         // home: this.$text('S_DISCOVER', '发现'),
         // sponsor: '联盟伙伴',
@@ -38,17 +51,17 @@ export default {
       };
 
       return {
-        prev: true,
+        prev: this.hasPrev,
         isBackgroundGradient: true,
-        hasSearchBtn: name === 'home' && this.isAdult,
-        title: '联盟伙伴',
+        hasSearchBtn: name === "home" && this.isAdult,
+        title: "联盟伙伴",
         onClick: () => {
           this.$router.back();
         }
       };
     },
     template() {
-      return 'discover-sponsor';
+      return "discover-sponsor";
       // if (this.isAdult) {
       //   return this.$route.params.page ? `discover-${this.$route.params.page}` : 'discover-sponsor';
       // } else {

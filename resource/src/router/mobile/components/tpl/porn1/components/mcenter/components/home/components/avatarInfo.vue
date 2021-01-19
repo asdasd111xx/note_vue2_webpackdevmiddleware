@@ -87,7 +87,12 @@ export default {
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
-      const imgSrcIndex = this.memInfo.user.image;
+      const tmpCustomImage = localStorage.getItem("tmp-avatar-img");
+      if (tmpCustomImage) {
+        this.avatarSrc = tmpCustomImage;
+        return;
+      }
+
       if (this.memInfo.user && this.memInfo.user.custom) {
         axios({
           method: "get",
@@ -104,11 +109,13 @@ export default {
               `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
             );
           });
-      } else {
-        this.avatarSrc = this.$getCdnPath(
-          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-        );
+        return;
       }
+
+      const imgSrcIndex = this.memInfo.user.image;
+      this.avatarSrc = this.$getCdnPath(
+        `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
+      );
     },
     getUserViplevel() {
       let cid = getCookie("cid");
@@ -175,7 +182,7 @@ export default {
 
 .info-wrap {
   height: 70px;
-  padding: 10px 9px;
+  padding: 10px 4px;
   width: 100%;
 
   > div {

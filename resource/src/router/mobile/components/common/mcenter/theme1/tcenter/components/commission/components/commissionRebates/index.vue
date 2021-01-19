@@ -129,7 +129,7 @@
           (2)系统于每小时会计算一小时前的返利金额，若未达最低返利金额或可领次数已达上限，当次不提供领取。
         </div>
         <div>
-          (3)周期结算后剩余的返利金额，系统于上午３点主动派发。
+          (3)周期结算后剩余的返利金额，系统于上午{{ dispatch_hour }}点主动派发。
         </div>
         <div>
           (4)另考虑到资料刷新同步或平台维护时，可能造成试算领取存在误差，如有遗漏或偏差敬请见谅。
@@ -173,7 +173,7 @@ export default {
       maintainsList: "",
       rebateState: "",
       amountResult: 0,
-      dispatch_hour: 0
+      dispatch_hour: null
     };
   },
   computed: {
@@ -233,6 +233,7 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
+          this.dispatch_hour = response.data.auto_dispatch_hour;
           this.immediateData = response.data.entries;
 
           // 測試資料
@@ -276,3 +277,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>
+<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>

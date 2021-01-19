@@ -232,7 +232,7 @@
         <ul :class="$style['pop-list']">
           <li v-for="item in bankList" :key="item.id" @click="setBank(item)">
             <!-- <img :src="`https://bbos.bbin-asia.com/elibom/bank/${item.id}.png`" /> -->
-            <img v-lazy="getBankImage(item.swift_code)" />
+            <img v-lazy="getBankImage(item.image_url)" />
             {{ item.name }}
             <icon
               v-if="item.id === formData.bank_id"
@@ -259,11 +259,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import message from "@/router/mobile/components/common/message";
 import popupVerification from "@/components/popupVerification";
 import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -285,15 +285,20 @@ export default {
     // 真實姓名不送
     // this.formData.account_name = this.memInfo.user.name;
 
-    axios({
+    goLangApiRequest({
       method: "get",
-      url: "/api/payment/v1/c/withdraw/bank/list"
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Withdraw/Bank/List`,
+      params: {
+        lang: "zh-cn"
+      }
     }).then(response => {
-      if (!response.data || response.data.result !== "ok") {
+      const { data, status, errorCode } = response;
+
+      if (errorCode !== "00" || status !== "000") {
         return;
       }
 
-      this.bankList = response.data.ret;
+      this.bankList = data;
     });
   },
   beforeDestroy() {

@@ -39,7 +39,7 @@
         </li>
       </ul>
       <div v-if="selectMenu === 'time'" :class="$style['search-tips']">
-        *当前系统支持查询最近30日的投注纪录
+        *当前系统支持查询最近30日的纪录
       </div>
       <div
         v-if="selectMenu === 'time'"
@@ -128,8 +128,8 @@
     <template v-if="!isLoading">
       <template v-if="mainListData.length > 0">
         <div :class="$style['total-wrap']">
-          <div>首存金额: {{ mainTotal.amount }}</div>
-          <div>礼金: {{ mainTotal.total_invite_gift }}</div>
+          <div>首存金额: {{ mainTotal.amount | commaFormat }}</div>
+          <div>礼金: {{ mainTotal.total_invite_gift | commaFormat }}</div>
         </div>
         <div :class="$style['info-list']">
           <div
@@ -141,7 +141,7 @@
               <div :class="$style['friend-name']">
                 {{ info.username }}
               </div>
-              <div>礼金: {{ info.total_invite_gift }}</div>
+              <div>礼金: {{ info.total_invite_gift | commaFormat }}</div>
             </div>
             <div :class="$style['item-content']">
               <div :class="$style['item-detail']">
@@ -157,7 +157,7 @@
                   首存金额
                 </div>
                 <div :class="$style['item-detail-result']">
-                  {{ info.amount }}
+                  {{ info.amount | commaFormat }}
                 </div>
               </div>
               <div :class="$style['item-detail']">
@@ -165,7 +165,7 @@
                   推荐礼金
                 </div>
                 <div :class="$style['item-detail-result']">
-                  {{ info.deposit_gift }}
+                  {{ info.deposit_gift | commaFormat }}
                 </div>
               </div>
               <div
@@ -176,7 +176,7 @@
                   推荐人奖励
                 </div>
                 <div :class="$style['item-detail-result']">
-                  {{ info.invite_gift }}
+                  {{ info.invite_gift | commaFormat }}
                 </div>
               </div>
               <div :class="$style['item-detail']">
@@ -264,7 +264,7 @@ export default {
         }
       ],
       selectMenu: "",
-      selectType: { name: "全部", key: "all", status: 0 },
+      selectType: { name: "已派发", key: "dispatch", status: 1 },
       isCustomTime: false,
       currentSelectTime: this.$t("S_TODDAY"),
       selectTime: this.$t("S_TODDAY"),
@@ -519,6 +519,11 @@ export default {
 
         $state.loaded();
       });
+    }
+  },
+  filters: {
+    commaFormat(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
 };

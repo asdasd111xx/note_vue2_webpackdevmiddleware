@@ -11,36 +11,36 @@
 export default {
   methods: {
     open(info) {
-      window.open(info.requestUrl, '_blank')
+      window.open(info.requestUrl, "_blank");
     }
   },
   computed: {
     list() {
       return [
         {
-          key: 'sponsor_swaglive',
+          key: "sponsor_swaglive"
         },
         {
-          key: 'sponsor_sigualive',
+          key: "sponsor_sigualive"
         },
         {
-          key: 'sponsor_hglive',
+          key: "sponsor_hglive"
         },
         {
-          key: 'sponsor_aglive',
+          key: "sponsor_aglive"
         },
         {
-          key: 'sponsor_suncity',
+          key: "sponsor_suncity"
         },
         {
-          key: 'sponsor_bbin',
+          key: "sponsor_bbin"
         },
         {
-          key: 'sponsor_csball',
+          key: "sponsor_csball"
         },
         {
-          key: 'sponsor_kycard',
-        },
+          key: "sponsor_kycard"
+        }
       ];
     }
   }

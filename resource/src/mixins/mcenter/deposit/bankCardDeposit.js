@@ -9,7 +9,9 @@ import { mapActions, mapGetters } from "vuex";
 import BigNumber from "bignumber.js/bignumber";
 import ajax from "@/lib/ajax";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import bbosRequest from "@/api/bbosRequest";
+
 import { getCookie } from "@/lib/cookie";
 
 export default {
@@ -39,7 +41,7 @@ export default {
       },
       isShowPop: false,
       checkSuccess: false,
-      yourBankData: [],
+      yourBankList: [],
       webviewOpenUrl: "",
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
@@ -87,13 +89,14 @@ export default {
     allBanks() {
       // 銀行匯款一律吃 your_Bank 裡面所有的資料
       if (
-        this.yourBankData.length > 0 &&
+        this.yourBankList.length > 0 &&
         this.curPayInfo.payment_type_id === 5
       ) {
-        return this.yourBankData.map(bankInfo => ({
+        return this.yourBankList.map(bankInfo => ({
           label: bankInfo.name,
           value: bankInfo.id,
-          swift_code: bankInfo.swift_code
+          swift_code: bankInfo.swift_code,
+          image_url: bankInfo.image_url
         }));
       }
 
@@ -101,10 +104,12 @@ export default {
         return [];
       }
 
+      // 在線支付 & 點卡儲值 => 吃當前支付方式的 banks
       return this.curPayInfo.banks.map(bankInfo => ({
         label: bankInfo.name,
         value: bankInfo.id,
-        swift_code: bankInfo.swift_code
+        swift_code: bankInfo.swift_code,
+        image_url: bankInfo.image_url
       }));
     },
     /**
@@ -180,11 +185,11 @@ export default {
       return total;
     },
     /**
-     * 設定銀行
+     * 設定當前選擇的銀行
      *
      * @return object
      */
-    bankSelectValue: {
+    curSelectedBank: {
       get() {
         if (Object.keys(this.selectedBank).length === 0) {
           return "";
@@ -432,8 +437,8 @@ export default {
 
       return false;
     },
-    isOtherBank() {
-      // 判斷是否為其他銀行
+    isSelectBankPaymentMethod() {
+      // 不知道什麼情況會是 true , 待判斷之後刪除 ?
       // 極速到帳(payment_method_id = 6)、銀行轉帳(payment_method_id = 3)皆有其他銀行選項
       const speedAccount =
         this.curPayInfo.payment_method_id === 6 &&
@@ -464,6 +469,14 @@ export default {
       }
 
       // 取得銀行群組
+      // return goLangApiRequest({
+      //   method: "get",
+      //   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`,
+      //   params: {
+      //     username: this.username,
+      //     lang: "zh-cn"
+      //   }
+      // })
       return bbosRequest({
         method: "get",
         url: this.siteConfig.BBOS_DOMIAN + "/Ext/V2/Vendor/Payment/Group",
@@ -505,17 +518,26 @@ export default {
             const filterData = res.data.payment_group.filter(
               info => !info.is_link
             )[0];
+            // const filterData = res.data.ret.payment_group.filter(
+            //   info => !info.is_link
+            // )[0];
 
+            // 目前為第一個支付群組
             this.curModeGroup = filterData || {};
+            // 根據第一個支付群組，選擇第一筆支付方式
             this.curPayInfo = filterData
               ? filterData.payment_group_content[0]
               : {};
+            // 該參數顯示上方支付群組用
             this.depositData = res.data.payment_group;
-            // this.isDepositAi = res.data.deposit_ai;
+            // this.depositData = res.data.ret.payment_group;
+            // this.isDepositAi = res.data.ret.deposit_ai;
 
-            if (res.data.your_bank) {
-              this.yourBankData = res.data.your_bank;
-            }
+            this.yourBankList = res.data.your_bank;
+            // this.yourBankList = res.data.ret.your_bank;
+
+            // 110/01/09 defaultCurPayBank 再判斷能放哪，使用銀行這塊能再改寫
+            this.defaultCurPayBank();
 
             // if (this.isDepositAi) {
             //   this.PassRoadOrAi();
@@ -529,15 +551,17 @@ export default {
 
             if (
               this.curModeGroup.channel_display &&
-              (this.curPayInfo.bank_id || this.selectedBank.value)
+              (this.curPayInfo.bank_id || this.curSelectedBank.value)
             ) {
               // this.isShow = false 防非同步造成的問題
               this.isShow = false;
               this.getPayPass();
               return { result: res.data };
+              // return { result: res.data.ret };
             }
 
             return { result: res.data };
+            // return { result: res.data.ret };
           }
 
           return res;
@@ -622,18 +646,18 @@ export default {
       this.isShow = true;
       this.actionSetIsLoading(true);
 
-      const nowBankId = !this.curPayInfo.bank_id
-        ? this.selectedBank.value
-        : this.curPayInfo.bank_id;
+      const nowBankId = this.curPayInfo.bank_id
+        ? this.curPayInfo.bank_id
+        : this.curSelectedBank.value;
 
       // 取得銀行群組
-      ajax({
+      return ajax({
         method: "get",
         url: API_MCENTER_DEPOSIT_CHANNEL,
         errorAlert: false,
         params: {
           payment_method_id: this.curPayInfo.payment_method_id,
-          bank_id: !this.isOtherBank ? nowBankId : "",
+          bank_id: this.isSelectBankPaymentMethod ? "" : nowBankId,
           username: this.username
         },
         fail: res => {
@@ -666,6 +690,7 @@ export default {
      * @param {Object} mode - 支付群組資訊
      */
     changeMode(mode) {
+      // 目前 Only 代客充值
       if (mode.is_link && mode.link) {
         window.open(mode.link, "third");
         return;
@@ -679,15 +704,13 @@ export default {
         this.changePayMode(this.curModeGroup.payment_group_content[0], 0);
       }
 
-      if (mode.uri) {
-        return;
-      }
-
       [this.curPayInfo] = this.curModeGroup.payment_group_content;
 
       if (
         this.curModeGroup.channel_display &&
-        (this.curPayInfo.bank_id || this.selectedBank.value || this.isOtherBank)
+        (this.curPayInfo.bank_id ||
+          this.curSelectedBank.value ||
+          this.isSelectBankPaymentMethod)
       ) {
         this.getPayPass();
       }
@@ -719,18 +742,14 @@ export default {
 
       if (
         this.curModeGroup.channel_display &&
-        ((!this.curPayInfo.bank_id && this.isOtherBank) ||
-          this.curPayInfo.bank_id ||
-          this.selectedBank.value)
+        (this.curPayInfo.bank_id ||
+          this.curSelectedBank.value ||
+          this.isSelectBankPaymentMethod)
       ) {
         this.getPayPass();
       }
 
-      // 銀行轉帳(payment_type_id === 5)，將您的銀行，預設成當前選擇的支付銀行
-      if (
-        this.yourBankData.length > 0 &&
-        this.curPayInfo.payment_type_id === 5
-      ) {
+      if (this.allBanks && this.allBanks.length > 0) {
         this.defaultCurPayBank();
       }
 
@@ -787,7 +806,6 @@ export default {
       this.curPassRoad = {};
 
       this.moneyValue = "";
-      this.isSelectValue = "";
 
       this.isDisableDepositInput = false;
       this.isErrorMoney = false;
@@ -806,6 +824,34 @@ export default {
 
         this.speedField[info] = "";
       });
+
+      Date.prototype.Format = function(fmt) {
+        var o = {
+          "M+": this.getMonth() + 1, //月份
+          "d+": this.getDate(), //日
+          "h+": this.getHours(), //小時
+          "m+": this.getMinutes(), //分
+          "s+": this.getSeconds(), //秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+          S: this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+        return fmt;
+      };
+      //預設當前時間
+      this.speedField["depositTime"] = new Date().Format("yyyy-MM-dd hh:mm:ss");
     },
     /**
      * 送出存款表單
@@ -820,86 +866,19 @@ export default {
       }
 
       this.nameCheckFail = false;
-      let isPWA =
-        getCookie("platform") === "G" ||
-        window.location.host === "yaboxxxapp01.com";
-      let isWebView =
-        getCookie("platform") === "H" ||
-        window.location.host === "yaboxxxapp02.com";
-      let newWindow;
-      if (isPWA) {
-        newWindow = window.open("", "", "_blank", true);
-      }
 
-      console.log("newWindow:", newWindow);
-      console.log("isPWA:", isPWA, ",isWebView:", isWebView);
+      let newWindow = "";
+      newWindow = window.open(
+        "",
+        "",
+        "width=1024, height=768, target=_blank, toolbar=yes"
+      );
 
       const newWindowHref = uri => {
         setTimeout(() => {
           newWindow.location.href = uri;
         }, 200);
       };
-
-      // 第三方存款 似乎都不會進到此判斷?
-      if (this.curModeGroup.uri) {
-        return ajax({
-          method: "get",
-          url: this.curModeGroup.uri,
-          errorAlert: false
-        }).then(response => {
-          this.isShow = false;
-          this.actionSetIsLoading(false);
-          let _isWebview =
-            getCookie("platform") === "H" ||
-            window.location.host === "yaboxxxapp02.com";
-          let _isPWA =
-            getCookie("platform") === "G" ||
-            window.location.host === "yaboxxxapp01.com";
-
-          if (response && response.result === "ok") {
-            console.log(response.ret.uri);
-
-            // 流量分析事件 - 成功
-            window.dataLayer.push({
-              event: "ga_click",
-              eventCategory: "deposit",
-              eventAction: "pay",
-              eventLabel: "success"
-            });
-
-            if (_isWebview) {
-              this.webviewOpenUrl = response.ret.uri;
-              // setTimeout(function () { document.location.href = response.ret.uri; }, 250);
-              return { status: "third" };
-            } else if (_isPWA) {
-              newWindowHref(response.ret.uri);
-              return { status: "third" };
-            }
-            window.open(response.ret.uri, "third");
-            return { status: "third" };
-          }
-
-          // 流量分析事件 - 失敗
-          window.dataLayer.push({
-            event: "ga_click",
-            eventCategory: "deposit",
-            eventAction: "pay",
-            eventLabel: "failure"
-          });
-
-          if (response && response.result !== "ok") {
-            this.actionSetGlobalMessage({
-              msg: response.msg
-            });
-          }
-
-          if (_isPWA) {
-            newWindow.close();
-          }
-
-          return { status: "error" };
-        });
-      }
 
       // 代客充值
       if (this.curPayInfo.external_url) {
@@ -911,16 +890,11 @@ export default {
           eventLabel: "success"
         });
 
-        if (isWebView) {
-          this.webviewOpenUrl = this.curPayInfo.external_url;
-          return Promise.resolve({ status: "credit" });
-        } else if (isPWA) {
-          newWindowHref(this.curPayInfo.external_url);
-          return Promise.resolve({ status: "credit" });
-        }
-
-        window.open(this.curPayInfo.external_url, "credit");
+        newWindowHref(this.curPayInfo.external_url);
         return Promise.resolve({ status: "credit" });
+
+        // window.open(this.curPayInfo.external_url, "credit");
+        // return Promise.resolve({ status: "credit" });
       }
 
       this.isShow = true;
@@ -930,7 +904,7 @@ export default {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
         method_id: this.curPayInfo.payment_method_id,
-        bank_id: this.selectedBank.value || this.curPayInfo.bank_id,
+        bank_id: this.curSelectedBank.value || this.curPayInfo.bank_id,
         amount: this.moneyValue
       };
 
@@ -964,30 +938,52 @@ export default {
         };
       }
 
-      return ajax({
+      let _isPWA =
+        getCookie("platform") === "G" ||
+        window.location.host === "yaboxxxapp01.com";
+
+      return axios({
         method: "post",
         url: API_TRADE_RELAY,
-        errorAlert: false,
-        params: paramsData,
-        fail: res => {
-          if (res && res.data && res.data.msg && res.data.code) {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-            });
-          }
+        data: {
+          ...paramsData
         }
-      }).then(response => {
-        this.isShow = false;
-        this.actionSetIsLoading(false);
-        let _isWebview =
-          getCookie("platform") === "H" ||
-          window.location.host === "yaboxxxapp02.com";
-        let _isPWA =
-          getCookie("platform") === "G" ||
-          window.location.host === "yaboxxxapp01.com";
+      })
+        .then(response => {
+          this.isShow = false;
+          this.actionSetIsLoading(false);
 
-        if (response && response.result === "ok") {
+          const { result, ret, msg, code } = response.data;
+
+          let _isWebview =
+            getCookie("platform") === "H" ||
+            window.location.host === "yaboxxxapp02.com";
+
+          // let _isPWA =
+          //   getCookie("platform") === "G" ||
+          //   window.location.host === "yaboxxxapp01.com";
+
+          if (result !== "ok") {
+            // 流量分析事件 - 失敗
+            window.dataLayer.push({
+              event: "ga_click",
+              eventCategory: "deposit",
+              eventAction: "pay",
+              eventLabel: "failure"
+            });
+
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+
+            if (_isPWA) {
+              newWindow.close();
+            }
+
+            return { status: "error" };
+          }
+
           // 流量分析事件 - 成功
           window.dataLayer.push({
             event: "ga_click",
@@ -996,42 +992,40 @@ export default {
             eventLabel: "success"
           });
 
-          console.log(response.ret, _isWebview);
+          console.log(ret, _isWebview);
 
           // 如有回傳限制時間
-          if (response.ret.remit.limit_time) {
-            this.limitTime = response.ret.remit.limit_time;
+          if (ret.remit.limit_time) {
+            this.limitTime = ret.remit.limit_time;
           }
 
-          if (response.ret.deposit.url) {
+          if (ret.deposit.url) {
             if (_isWebview) {
-              this.webviewOpenUrl = response.ret.deposit.url;
+              this.webviewOpenUrl = ret.deposit.url;
               // setTimeout(function () { document.location.href = response.ret.deposit.url; }, 250);
               return { status: "third" };
             } else if (_isPWA) {
-              newWindowHref(response.ret.deposit.url);
+              newWindowHref(ret.deposit.url);
               return { status: "third" };
             }
-
-            window.open(response.ret.deposit.url, "third");
+            window.open(ret.deposit.url, "third");
             return { status: "third" };
           }
 
-          if (response.ret.wallet.url) {
+          if (ret.wallet.url) {
             if (_isWebview) {
-              this.webviewOpenUrl = response.ret.wallet.url;
-              // setTimeout(function () { document.location.href = response.ret.wallet.url; }, 250);
+              this.webviewOpenUrl = ret.wallet.url;
+              // setTimeout(function () { document.location.href = ret.wallet.url; }, 250);
               return { status: "third" };
             } else if (_isPWA) {
-              newWindowHref(response.ret.wallet.url);
+              newWindowHref(ret.wallet.url);
               return { status: "third" };
             }
-
-            window.open(response.ret.wallet.url, "third");
+            window.open(ret.wallet.url, "third");
             return { status: "third" };
           }
 
-          Object.keys(response.ret).forEach(info => {
+          Object.keys(ret).forEach(info => {
             if (
               info === "deposit" ||
               info === "wallet" ||
@@ -1040,21 +1034,18 @@ export default {
             ) {
               return;
             }
-
             if (
-              response.ret[info] &&
+              ret[info] &&
               (info === "is_deposit" ||
                 info === "is_wallet" ||
                 info === "is_crypto" ||
                 info === "is_remit")
             ) {
               const typeKey = info.split("_")[1];
-
-              this.orderData.orderInfo = response.ret[typeKey];
+              this.orderData.orderInfo = ret[typeKey];
               this.orderData.methodType = typeKey;
             }
-
-            this.orderData[info] = response.ret[info];
+            this.orderData[info] = ret[info];
           });
 
           if (_isPWA) {
@@ -1062,10 +1053,7 @@ export default {
           }
 
           // CGPay 不需要進入詳細入款單
-          if (
-            this.curPayInfo.payment_method_id === 16 &&
-            response.result === "ok"
-          ) {
+          if (this.curPayInfo.payment_method_id === 16) {
             // 將「confirmOneBtn」彈窗打開
             this.setPopupStatus(true, "funcTips");
             this.confirmPopupObj = {
@@ -1073,55 +1061,58 @@ export default {
               btnText: "关闭",
               cb: () => {
                 this.closePopup();
-
                 this.$emit("update:headerSetting", this.initHeaderSetting);
                 this.resetStatus();
-                this.getPayGroup().then(() => {
-                  this.defaultCurPayBank();
-                });
+                this.getPayGroup();
               }
             };
-
             return { status: "third" };
           }
 
           return { status: "local" };
-        }
 
-        // 流量分析事件 - 失敗
-        window.dataLayer.push({
-          event: "ga_click",
-          eventCategory: "deposit",
-          eventAction: "pay",
-          eventLabel: "failure"
+          // 停權？
+          // if (
+          //   code === "TM020058" ||
+          //   code === "TM020059" ||
+          //   code === "TM020060"
+          // ) {
+          //   this.actionSetGlobalMessage({
+          //     msg,
+          //     code
+          //   });
+          //   window.location.reload();
+          //   return { status: "error" };
+          // }
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+
+          this.isShow = false;
+          this.actionSetIsLoading(false);
+
+          if (_isPWA) {
+            newWindow.close();
+          }
+
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+
+          // 提交申請單時，如存款金額低於交易費，後台需阻擋且重新撈取新的單筆限額
+          if (code === 1500720069) {
+            this.getPayPass().then(() => {
+              this.verification("money", this.moneyValue);
+              this.checkOrderData();
+              this.getSingleLimit(
+                this.depositInterval.minMoney,
+                this.depositInterval.maxMoney,
+                "placeholder"
+              );
+            });
+          }
         });
-
-        if (response && response.result !== "ok") {
-          this.actionSetGlobalMessage({
-            msg: response.msg,
-            code: response.code
-          });
-        }
-
-        if (_isPWA) {
-          newWindow.close();
-        }
-
-        if (
-          response.code === "TM020058" ||
-          response.code === "TM020059" ||
-          response.code === "TM020060"
-        ) {
-          this.actionSetGlobalMessage({
-            msg: response.msg,
-            code: response.code
-          });
-          window.location.reload();
-          return { status: "error" };
-        }
-
-        return { status: "error" };
-      });
     },
     /**
      * 複製
@@ -1137,7 +1128,8 @@ export default {
     checkOrderData() {
       // 金額輸入錯誤
       if (
-        ((this.isErrorMoney || !this.moneyValue) && !this.curModeGroup.uri) ||
+        this.isErrorMoney ||
+        !this.moneyValue ||
         (this.depositInterval.minMoney &&
           this.depositInterval.minMoney > this.moneyValue) ||
         (this.depositInterval.maxMoney &&
@@ -1156,21 +1148,21 @@ export default {
           },
           deposit_at: {
             key: "depositTime",
-            alertMessage: this.$text("S_ENTER_DEPOSIT_TIME", "请输入存款时间")
+            alertMessage: this.$text("S_ENTER_DEPOSIT_TIME", "请输入充值时间")
           },
           pay_account: {
             key: "depositAccount",
             alertMessage: this.$text(
               "S_ENTER_DEPOSIT_ACCOUNT",
-              "请输入存款帐号"
+              "请输入充值帐号"
             )
           },
           pay_username: {
             key: "depositName",
             alertMessage:
               this.curPayInfo.payment_type_id === 6
-                ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入存款昵称")
-                : this.$text("S_ENTER_DEPOSIT_NAME", "请输入存款人姓名")
+                ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
+                : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名")
           },
           sn: {
             key: "serialNumber",
@@ -1220,10 +1212,8 @@ export default {
         return item.value === this.curPayInfo.bank_id;
       });
 
-      if (target) {
-        this.isSelectValue = target.label;
-        this.bankSelectValue = target;
-      }
+      // 110/01/09 待再優化使用銀行這塊
+      this.curSelectedBank = target || this.allBanks[0] || {};
     },
     getSingleLimit(minMoney, maxMoney, type = null) {
       let str = type === "placeholder" ? "单笔充值金额：" : "";
@@ -1335,9 +1325,10 @@ export default {
           }
         })
         .catch(error => {
+          const { msg, code } = error.response.data;
           this.actionSetGlobalMessage({
-            msg: error.response.data.msg,
-            code: error.response.data.code
+            msg: msg,
+            code: code
           });
         });
     },

@@ -5,21 +5,11 @@
     :class="$style.container"
   >
     <div slot="content">
-      <!-- <div :class="$style['img-wrap']">
-        <img
-          :class="$style['img-wrap']"
-          :src="`/static/image/ey1/mcenter/makeMoney/pic_promotion_banner.png`"
-        />
-      </div> -->
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/ey1/mcenter/makeMoney/img_proxy01.png`"
         />
-        <!-- <span>{{ agentLink.agentCode }}</span>
-        <div :class="$style['copy-btn']">
-          复制
-        </div> -->
       </div>
       <div :class="$style['img-wrap']">
         <img
@@ -53,7 +43,7 @@ export default {
   computed: {
     ...mapGetters({
       agentLink: "getAgentLink",
-      promotionLink: 'getPromotionLink'
+      promotionLink: "getPromotionLink"
     }),
     headerConfig() {
       return {
@@ -115,10 +105,11 @@ export default {
 
 .img-wrap {
   position: relative;
+  width: 100vw;
 
   img {
     display: block;
-    max-width: 100%;
+    width: 100%;
   }
 
   span {

@@ -31,9 +31,9 @@ export default {
         prev: true,
         onClick: () => {
           if (this.$route.params.date) {
-            this.$router.back();
+            this.$router.replace("/mobile/mcenter/tcenter/management/member");
           } else {
-            this.$router.replace("/mobile/mcenter/home");
+            this.$router.back();
           }
         }
       };

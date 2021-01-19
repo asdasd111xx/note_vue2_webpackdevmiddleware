@@ -11,6 +11,7 @@
   "ROUTER_NO_SERVICE_TITLE": "访问受限制",
   "ROUTER_NO_SERVICE_TEXT1": "尊敬的用户，由于相关法规限制，您所在的地区无法使用鸭博娱乐产品，如有任何疑问，请通过在线客服，或发邮件至",
   "ROUTER_NO_SERVICE_TEXT2": "我们将第一时间给您回复，对您造成的不便，我们深表歉意，感谢您的理解与支持！",
+  "ROUTER_NO_SERVICE_TEXTSG": "尊敬的用户，由于相关法规限制，您所在的地区无法使用丝瓜直播产品，如有任何疑问，请通过在线客服，或发邮件至",
   "ROUTER_UPUP_TITLE": "网站升级中",
   "ROUTER_UPUP_TEXT_1": "目前网站进行系统维护中，如有不便之处，敬请见谅。我们很快回来!请您稍后回来继续游戏喔!",
   "ROUTER_UPUP_TEXT_2": "我们很快回来！请您稍后回来继续游戏喔！",
@@ -49,8 +50,9 @@
   "S_JM_SURE_SEND": "确认送出",
   "S_COMFIRM_AND_LOGIN": "确认送出",
   "S_JM_FIELD_REQUIRE": "该栏位不得为空",
-  "S_USERNAME_ERROR": "请输入4-20位英文小写、数字，首字不得为数字0",
+  "S_USERNAME_ERROR": "请输入4-20码英文小写、数字，首字不得为数字0",
   "S_PASSWORD_ERROR": "请输入6-12位字母或数字",
+  "S_PASSWORD_ERROR_AGENT": "请输入6-12码英文小写、数字",
   "S_JM_PASSWD_CONFIRM_ERROR": "确认密码错误，请重新输入",
   "S_PASSWD_CONFIRM_ERROR": "确认密码预设要跟密码一致",
   "S_NO_SYMBOL_DIGIT_CHEN": "请勿输入数字、空白及特殊符号",
@@ -91,7 +93,6 @@
   "S_OLD_PWD": "旧密码",
   "S_NEW_PWD": "新密码",
   "S_CHK_PWD": "确认新密码",
-  "S_PWD_SAME": "新密码不可与原密码相同",
   "S_OLD_PW_NOT_COMPLETE": "旧密码不完整，请重新输入",
   "S_NEW_PW_NOT_COMPLETE": "新密码不完整，请重新输入",
   "S_EDIT_SUCCESS": "修改成功",
@@ -1740,5 +1741,6 @@
   "S_BIRD_BALANCE": "鸟蛋余额",
   "S_WHAT_BIRD": "什么是鸟蛋",
   "S_TO_USE": "如何使用",
-  "S_GO_BIRD": "前往蜂鸟"
+  "S_GO_BIRD": "前往蜂鸟",
+  "S_LEADERBOARD": "打码王"
 }

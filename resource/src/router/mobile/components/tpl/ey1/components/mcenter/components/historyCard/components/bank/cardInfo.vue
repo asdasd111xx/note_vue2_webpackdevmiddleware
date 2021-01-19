@@ -19,7 +19,7 @@
           >
             <div :class="[$style['card-top'], 'clearfix']">
               <div :class="$style['card-logo']">
-                <img v-lazy="getBankImage(item.swift_code)" />
+                <img v-lazy="getBankImage(item.image_url)" />
               </div>
               <div :class="$style['card-info']">
                 <div :class="$style['card-name']">
@@ -64,7 +64,7 @@
         <div :class="$style['bankcard-item']">
           <div :class="[$style['card-top'], 'clearfix']">
             <div :class="$style['card-logo']">
-              <img v-lazy="getBankImage(bank_cardDetail.swift_code)" />
+              <img v-lazy="getBankImage(bank_cardDetail.image_url)" />
             </div>
 
             <div :class="$style['card-info']">
@@ -157,9 +157,9 @@ export default {
     this.getUserBankList();
   },
   methods: {
-    getBankImage(swiftCode) {
+    getBankImage(image_url) {
       return {
-        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        src: image_url,
         error: this.$getCdnPath(
           "/static/image/common/default/bank_card_default.png"
         ),

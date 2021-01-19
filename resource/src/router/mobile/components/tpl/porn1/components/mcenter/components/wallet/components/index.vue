@@ -110,7 +110,9 @@
               >
                 {{ $t("S_MAINTAIN") }}
                 <img
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                   :class="$style['balance-wrench']"
                 />
               </span>
@@ -134,7 +136,9 @@
                 <img
                   v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
                   :class="$style['maintain-tip-img']"
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
+                  :src="
+                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                  "
                 />
               </template>
               <template v-else>
@@ -667,24 +671,19 @@ export default {
         headers: {
           cid: cid
         }
-      })
-        .then(res => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1500);
-          const url = res.data.uri + "&cors=embed";
-          newWindow.location = url;
-        })
-        .catch(error => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1500);
+      }).then(res => {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
+        if (res && res.data && res.data.uri) {
+          newWindow.location = res.data.uri + "&cors=embed";
+          return;
+        } else {
           newWindow.close();
-
-          if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
-        });
+          this.actionSetGlobalMessage({ msg: res.msg });
+          return;
+        }
+      });
       return;
 
       // localStorage.setItem("iframe-third-url-title", target.name);

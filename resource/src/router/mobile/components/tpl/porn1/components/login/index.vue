@@ -296,14 +296,6 @@ export default {
       return true;
     }
   },
-  beforeCreate() {
-    if (this.$route.query.logout) {
-      setCookie("cid", "");
-      setCookie("y_token", "");
-      setCookie("aid", "");
-      window.location.replace("/mobile/login");
-    }
-  },
   created() {
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
       this.script = document.createElement("script");

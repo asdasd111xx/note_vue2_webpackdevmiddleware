@@ -38,6 +38,11 @@ export default {
   created() {
     let platform = getCookie("platform");
     this.platform = platform;
+    if (localStorage.getItem("appTips")) {
+      this.isShow = false;
+    } else {
+      this.isShow = true;
+    }
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),
@@ -46,12 +51,14 @@ export default {
 
       this.timer = setTimeout(() => {
         this.isShow = false;
+        localStorage.setItem("appTips", false);
         this.$emit("close");
       }, 300);
     },
     handleClick() {
       this.show = false;
-      window.open("/mobile/install", "_blank");
+      // window.open("/mobile/install", "_blank");
+      this.$router.push("/mobile/install");
     }
   }
 };

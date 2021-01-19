@@ -116,7 +116,8 @@ export default {
       "actionSetSwagBalance"
     ]),
     initSWAGConfig(onlyCheckMaintain = false, fromClick = false) {
-      if (this.isCheckingInit) {
+      const enable = localStorage.getItem("enable-swag") !== "false";
+      if (this.isCheckingInit || !enable) {
         return new Promise((resolve, reject) => {
           resolve(false);
         });
@@ -290,9 +291,9 @@ export default {
         })
           .then(res => {
             if (res && res.data && res.data.result === "ok") {
-              this.actionSetGlobalMessage({
-                msg: "回收成功"
-              });
+              // this.actionSetGlobalMessage({
+              //   msg: "回收成功"
+              // });
 
               setTimeout(() => {
                 this.balanceBackLock = false;

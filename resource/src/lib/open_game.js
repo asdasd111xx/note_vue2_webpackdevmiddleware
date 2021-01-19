@@ -24,7 +24,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   // }
 
   if (!vendor || !kind) {
-    fail({ data: { msg: "vendor 遗失" } });
+    fail({ data: { msg: "vendor fail" } });
     return;
   }
 

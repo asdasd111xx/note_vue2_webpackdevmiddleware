@@ -77,10 +77,12 @@ export default {
       };
 
       // 08/28: 如果有需要判斷本站或第三方，才把註解拿掉
-      // const sort = this.rewardOnlyLocal ? ['today', 'yesterday', 'monthly'] : ['today', 'yesterday', 'expected'];
+      const sort = this.rewardOnlyLocal
+        ? ["today", "yesterday", "monthly"]
+        : ["today", "yesterday", "expected"];
 
       // 因 Android & iOS 寫死，固定回傳第三方資料
-      const sort = ["today", "yesterday", "expected"];
+      // const sort = ["today", "yesterday", "expected"];
 
       return sort.map(key => ({
         key,
@@ -100,17 +102,20 @@ export default {
       const sort = this.rewardOnlyLocal
         ? ["today", "yesterday", "monthly"]
         : ["today", "yesterday", "expected"];
-      // 當本站＋第三方時，要顯示「投注返利」以及「盈亏返利」
-      // 僅有本站時，要顯示「投注返利」
-      // 僅有第三方時，要顯示「盈亏返利」
-      const text =
-        this.memInfo.config.wage.length === 2 || this.rewardOnlyLocal
-          ? this.$text("S_BET_REBATE", "投注返利")
-          : "";
-      const oauthText =
-        this.memInfo.config.wage.length === 2 || !this.rewardOnlyLocal
-          ? this.$text("S_LOSS_REBATE", "盈亏返利")
-          : "";
+      // 2021-01-13
+      /**
+       *  DSN-Cindy 編輯 2021/1/8 下午 06:54 [Revised 2021/1/8] 編輯
+       * 【補充說明】
+      今日已領 :
+      只要今日有領取投注或盈虧返利時，顯示【XX返利+金額】  例. 投注返利  100.00
+      不需與後台開關連動；兩者都無數值時，顯示暫無資料
+
+      昨日已領 :
+      只要昨日有領取投注或盈虧返利時，顯示【XX返利+金額】  例. 投注返利  100.00
+      不需與後台開關連動；兩者都無數值時，顯示暫無資料
+       */
+      const text = this.$text("S_BET_REBATE", "投注返利");
+      const oauthText = this.$text("S_LOSS_REBATE", "盈亏返利");
       const wage = this.rewardOnlyLocal ? "local" : "oauth2";
 
       // const sort = ["today", "yesterday", "expected"];

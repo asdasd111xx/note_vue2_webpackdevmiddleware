@@ -1,99 +1,112 @@
 @import "@/css/variable.scss";
 
 .record-wrap {
-    position: relative;
-    padding: 0 14px;
-    width: 100%;
+  background-color: #f8f8f8;
+  position: relative;
+  padding: 0 14px;
+  width: 100%;
 }
-.total-block {
-    display: flex;
-    justify-content: space-between;
-    color: $main_text_color3;
-    font-size: 12px;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 1px solid #eee;
 
-    span {
-        &:nth-child(2) {
-            flex: 2;
-            text-align: center;
-        }
+.total-block {
+  display: flex;
+  justify-content: space-between;
+  color: $main_text_color3;
+  font-size: 12px;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #eeeeee;
+
+  span {
+    &:nth-child(2) {
+      flex: 2;
+      text-align: center;
     }
+  }
 }
 
 .list-block {
-    position: relative;
-    margin-top: 10px;
+  position: relative;
+  margin-top: 10px;
 
-    .date {
-        background: $main_background_white1;
-        font-size: 16px;
-        font-weight: 700;
-        padding: 7.5px 0;
-    }
+  .date {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 7.5px 0;
+  }
 }
+
 .card {
-    background: $main_white_color1;
-    color: $main_text_color3;
-    border-radius: 8px;
-    margin-bottom: 9px;
+  background: $main_white_color1;
+  color: $main_text_color3;
+  border-radius: 8px;
+  margin-bottom: 9px;
 
-    div {
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        padding: 9px 9px 0 12px;
+  div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 9px 9px 0 12px;
 
-        &:last-of-type {
-            padding-bottom: 9px;
-        }
-
-        &.bet {
-            margin-left: 7px;
-        }
+    &:last-of-type {
+      padding-bottom: 9px;
     }
 
-    .card-title {
-        padding: 6px 9px 6px 12px;
+    &.bet {
+      margin-left: 7px;
+    }
+  }
 
-        line-height: 21px;
-        border-bottom: 1px solid #eee;
+  .card-title {
+    padding: 6px 9px 6px 12px;
 
-        .header {
-            font-size: 16px;
-            font-weight: 700;
-        }
+    line-height: 21px;
+    border-bottom: 1px solid #eee;
 
-        .payout {
-            &.is-negative {
-                color: $main_error_color1;
-            }
-
-            &::before {
-                content: "派彩：";
-                position: relative;
-                color: $main_text_color3;
-            }
-        }
+    .header {
+      font-size: 16px;
+      font-weight: 700;
     }
 
-    .game-name {
-        font-size: 16px;
-        line-height: 21px;
-        font-weight: 700;
+    .payout {
+      &.is-negative {
+        color: $main_error_color1;
+      }
 
-        &::before {
-            content: "";
-            position: relative;
-            display: inline-block;
-            width: 3px;
-            height: 14px;
-            top: 1px;
-            margin-right: 5px;
-            background: linear-gradient(#d2bba4, #f1e5db);
-        }
+      &::before {
+        content: "派彩：";
+        position: relative;
+        color: $main_text_color3;
+      }
     }
+  }
+
+  .game-name {
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 700;
+
+    &::before {
+      content: "";
+      position: relative;
+      display: inline-block;
+      width: 3px;
+      height: 14px;
+      top: 1px;
+      margin-right: 5px;
+    }
+
+    &.porn1::before {
+      background: linear-gradient(#d2bba4, #f1e5db);
+    }
+
+    &.ey1::before {
+      background: linear-gradient(#fe2a2a, #b60303);
+    }
+
+    &.sg1::before {
+      background: linear-gradient(#fe593c, #e61938);
+    }
+  }
 }
 
 // .is-number {
@@ -101,117 +114,5 @@
 // }
 
 .is-negative {
-    color: #ff5454;
+  color: #ff5454;
 }
-
-// .is-text {
-//     text-align: left;
-// }
-
-// .table {
-//     margin-top: 12px;
-//     margin-bottom: 32px;
-//     width: 100%;
-//     color: #000;
-//     font-size: 12px;
-//     border-collapse: collapse;
-//     border-spacing: 0;
-//     text-align: center;
-
-//     thead {
-//         tr {
-//             background: #DDD;
-//             color: #676767;
-//         }
-
-//         th {
-//             padding: 6px 1.5%;
-//             font-style: normal;
-//             font-weight: normal;
-
-//             &.is-sorted {
-//                 color: #545D6E;
-//             }
-
-//             &.sort {
-//                 cursor: pointer;
-
-//             }
-//         }
-//     }
-
-//     tbody {
-//         tr {
-//             &:nth-child(odd) {
-//                 background: #FFF;
-//             }
-
-//             &:nth-child(even) {
-//                 background: #EEE;
-//             }
-//         }
-
-//         td {
-//             position: relative;
-//             padding: 12px 1.5%;
-
-//             &.is-last {
-//                 padding-right: 22px;
-//             }
-
-//             .icon-more {
-//                 position: absolute;
-//                 top: 50%;
-//                 right: 4px;
-//                 margin-top: -8px;
-//                 color: #999;
-
-//                 > svg {
-//                     display: block;
-//                 }
-//             }
-//         }
-//     }
-
-//     tfoot {
-//         tr {
-//             background: #DDD;
-
-//             &.sub-total {
-//                 background: #E6E6E6;
-//             }
-//         }
-
-//         td {
-//             padding: 12px 1.5%;
-
-//             &.is-last {
-//                 padding-right: 22px;
-//             }
-//         }
-//     }
-// }
-
-// .icon-group {
-//     display: inline-block;
-//     width: 10px;
-//     height: 10px;
-// }
-
-// .icon {
-//     width: 5px;
-//     height: 10px;
-//     float: left;
-// }
-
-// @media screen and (min-width: 480px) {
-//     .table {
-//         font-size: 15px;
-//     }
-// }
-
-// @media screen and (min-width: 768px) {
-//     .table {
-//         font-size: 24px;
-//     }
-// }

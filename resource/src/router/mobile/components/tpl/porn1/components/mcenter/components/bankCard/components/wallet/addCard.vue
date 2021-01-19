@@ -210,7 +210,7 @@
                 :key="item.id"
                 @click="setBank(item)"
               >
-                <img v-lazy="getBankImage(item.swift_code)" />
+                <img v-lazy="getBankImage(item.image_url)" />
                 {{ item.name }}
                 <icon
                   v-if="item.id === selectTarget.walletId"
@@ -250,6 +250,7 @@ import i18n from "@/config/i18n";
 // import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import popupTip from "../popupTip";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -490,82 +491,94 @@ export default {
       this.lockStatus = lock;
     },
     getUserBindList() {
-      return axios({
-        method: "get",
-        url: "/api/v1/c/player/user_virtual_bank/list",
+      //  C02.241 查詢會員電子錢包
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
+          lang: "zh-cn",
           common: true
         }
       }).then(response => {
-        const { ret, result } = response.data;
+        const { data, status, errorCode } = response;
+        this.isRevice = true;
 
-        if (!response || result !== "ok") {
+        if (errorCode !== "00" || status !== "000") {
           return;
         }
 
-        this.userBindWalletList = ret.filter((item, index) => index < 15);
+        this.userBindWalletList = data.filter((item, index) => index < 15);
       });
     },
     getWalletList() {
-      axios({
+      // C02.141 取得廳主支援的電子錢包列表
+      goLangApiRequest({
         method: "get",
-        url: "/api/payment/v1/c/virtual/bank/list"
-      }).then(response => {
-        const { ret, result } = response.data;
-
-        if (!response || result !== "ok") {
-          return;
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/VirtualBank/List`,
+        params: {
+          lang: "zh-cn"
         }
+      })
+        .then(response => {
+          const { data, status, errorCode } = response;
 
-        // 預設錢包
-        this.walletList = ret;
-
-        // Yabo：辨别目前使用者已绑定的錢包，並過濾出尚未綁定的錢包
-        // 億元：如果已綁定過相同類型錢包時，錢包類型就不出現選項。因此 CGPay 與 購寶 只能綁定一組的條件已符合
-        // Yabo 目前與 億元　等同條件判斷
-        if (
-          ["porn1", "sg1"].includes(this.themeTPL) ||
-          (["ey1"].includes(this.themeTPL) &&
-            this.userLevelObj.virtual_bank_single)
-        ) {
-          let idArr = [
-            ...new Set(
-              this.userBindWalletList.map(item => {
-                return item.virtual_bank_id;
-              })
-            )
-          ];
-
-          if (idArr) {
-            this.walletList = ret.filter(item => {
-              if (!idArr.includes(item.id)) {
-                return item;
-              }
-            });
+          if (errorCode !== "00" || status !== "000") {
+            return;
           }
-        } else {
-          // 億元：沒有開啟綁定一組開關，需 Check 是否有綁定 CGPay 與 購寶
-          let idArr = [
-            ...new Set(
-              this.userBindWalletList.filter(item => {
-                return (
-                  item.virtual_bank_id === 21 || item.virtual_bank_id === 37
-                );
-              })
-            )
-          ].map(item => {
-            return item.virtual_bank_id;
-          });
 
-          if (idArr) {
-            this.walletList = ret.filter(item => {
-              if (!idArr.includes(item.id)) {
-                return item;
-              }
+          // 預設錢包
+          this.walletList = data;
+
+          // Yabo：辨别目前使用者已绑定的錢包，並過濾出尚未綁定的錢包
+          // 億元：如果已綁定過相同類型錢包時，錢包類型就不出現選項。因此 CGPay 與 購寶 只能綁定一組的條件已符合
+          // Yabo 目前與 億元　等同條件判斷
+          if (
+            ["porn1", "sg1"].includes(this.themeTPL) ||
+            (["ey1"].includes(this.themeTPL) &&
+              this.userLevelObj.virtual_bank_single)
+          ) {
+            let idArr = [
+              ...new Set(
+                this.userBindWalletList.map(item => {
+                  return item.virtual_bank_id;
+                })
+              )
+            ];
+
+            if (idArr) {
+              this.walletList = data.filter(item => {
+                if (!idArr.includes(item.id)) {
+                  return item;
+                }
+              });
+            }
+          } else {
+            // 億元：沒有開啟綁定一組開關，需 Check 是否有綁定 CGPay 與 購寶
+            let idArr = [
+              ...new Set(
+                this.userBindWalletList.filter(item => {
+                  return (
+                    item.virtual_bank_id === 21 || item.virtual_bank_id === 37
+                  );
+                })
+              )
+            ].map(item => {
+              return item.virtual_bank_id;
             });
+
+            if (idArr) {
+              this.walletList = data.filter(item => {
+                if (!idArr.includes(item.id)) {
+                  return item;
+                }
+              });
+            }
           }
-        }
-      });
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
     submitByNormal() {
       if (this.lockStatus) {
@@ -575,19 +588,22 @@ export default {
       this.lockStatus = true;
       this.errorMsg = "";
 
-      axios({
+      // C02.239 新增會員電子錢包
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/user_virtual_bank",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank`,
+        params: {
+          lang: "zh-cn",
           address: this.formData["walletAddress"].value,
-          virtual_bank_id: this.selectTarget.walletId
+          virtualBankId: this.selectTarget.walletId
         }
       })
         .then(response => {
-          const { result, msg } = response.data;
           this.lockStatus = false;
 
-          if (result !== "ok" || result === "error") {
+          const { data, status, errorCode, msg } = response;
+
+          if (errorCode !== "00" || status !== "000") {
             this.errorMsg = `${msg}`;
             return;
           }
@@ -597,9 +613,13 @@ export default {
             cb: this.clearMsgCallback
           });
         })
-        .catch(res => {
-          if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}`;
+        .catch(error => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.msg
+          ) {
+            this.errorMsg = `${error.response.data.msg}`;
             this.lockStatus = false;
             return;
           }
@@ -638,9 +658,13 @@ export default {
             cb: this.clearMsgCallback
           });
         })
-        .catch(res => {
-          if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}`;
+        .catch(error => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.msg
+          ) {
+            this.errorMsg = `${error.response.data.msg}`;
             this.lockStatus = false;
             return;
           }
@@ -700,9 +724,9 @@ export default {
         e.preventDefault();
       }
     },
-    getBankImage(swiftCode) {
+    getBankImage(image_url) {
       return {
-        src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
+        src: image_url,
         error: this.$getCdnPath(
           `/static/image/common/default/bank_card_default.png`
         ),

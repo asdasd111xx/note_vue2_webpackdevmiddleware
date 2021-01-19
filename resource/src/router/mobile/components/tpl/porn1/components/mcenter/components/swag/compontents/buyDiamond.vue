@@ -76,6 +76,7 @@
             { [$style['selected']]: item.amount === currentSelRate.amount }
           ]"
           @click="!item.loading ? selectedRate(item) : {}"
+          :key="key"
         >
           <template v-if="!item.loading">
             <div :class="$style['price']">{{ `¥ ${item.amount}` }}</div>
