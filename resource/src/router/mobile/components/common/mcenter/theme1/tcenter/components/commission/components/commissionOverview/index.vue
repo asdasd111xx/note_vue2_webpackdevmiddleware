@@ -38,7 +38,7 @@
             <icon v-else name="chevron-down" width="10" height="10" />
           </div>
           <div :class="$style.title">{{ info.text }}</div>
-          <div :class="$style.amount">{{ info.amount }}</div>
+          <div :class="$style.amount">{{ info.amount | amountFormat }}</div>
         </div>
 
         <!-- 預估返利(第三方) -->
@@ -55,7 +55,7 @@
                   { [$style.deficit]: +summaryContent[index].amount < 0 }
                 ]"
               >
-                {{ summaryContent[index].amount }}
+                {{ summaryContent[index].amount | amountFormat }}
               </div>
             </div>
 
@@ -212,7 +212,7 @@
               </div>
 
               <div :class="$style.amount">
-                {{ summaryContent[index].amount }}
+                {{ summaryContent[index].amount | amountFormat }}
               </div>
             </div>
 
@@ -230,7 +230,7 @@
                 {{ summaryContent[index].oauthText }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].oauthAmount }}
+                {{ summaryContent[index].oauthAmount | amountFormat }}
               </div>
             </div>
           </div>
