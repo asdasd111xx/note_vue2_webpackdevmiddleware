@@ -93,7 +93,7 @@ export default {
     }
   },
   mounted() {
-    this.connectWS();
+    this.connectMessage();
 
     if (!this.videoInfo.url) return;
     let obj = {
@@ -137,59 +137,10 @@ export default {
     );
 
     window.YABO_SOCKET_VIDEO_DISCONNECT = this.onDisconnect;
-    window.YABO_SOCKET_VIDEO_CONNECT = this.connectWS;
-
-    //活動開關
-    if (this.isActiveBouns) {
-      this.player.on("playing", () => {
-        if (this.player.seeking() || !this.isInit) return;
-        this.isPlaying = true;
-        if (window.YABO_SOCKET && !this.keepPlay) {
-          this.onSend("PLAY");
-        }
-        this.keepPlay = false;
-
-        if (this.isUnloginMode) {
-          this.unloginModeAction("play");
-        }
-      });
-
-      // 快轉
-      this.player.on("seeking", () => {});
-
-      if (this.isUnloginMode) {
-        this.unloginModeAction("play");
-      }
-    }
-
-    // 快轉
-    this.player.on("seeking", () => {});
-
-    this.player.on("seeked", () => {});
-
-    this.player.on("pause", () => {
-      if (this.player.seeking()) return;
-      this.isPlaying = false;
-      if (window.YABO_SOCKET && !this.keepPlay) {
-        this.onSend("STOP");
-        this.$refs.bonunsProcess.playCueTime("stop");
-      }
-      this.keepPlay = false;
-
-      if (this.isUnloginMode) {
-        this.unloginModeAction("pause");
-      }
-    });
-
-    this.player.on("ended", () => {
-      this.$refs.bonunsProcess.playCueTime("stop");
-      this.isPlaying = false;
-      if (window.YABO_SOCKET) this.onSend("STOP");
-    });
-
-    this.player.on("play", () => {
-      this.handleClickVideo();
-    });
+    window.YABO_SOCKET_VIDEO_CONNECT = () => {
+      this.connectMessage(true);
+    };
+    this.initPlayerEvent();
   },
   methods: {
     ...mapActions(["actionSetYaboConfig", "actionSetVideoBounsPageStatus"]),
@@ -198,6 +149,59 @@ export default {
       if (this.breakwaitCallback) {
         this.breakwaitCallback();
       }
+    },
+    initPlayerEvent() {
+      //活動開關
+      if (this.isActiveBouns) {
+        this.player.on("playing", () => {
+          if (this.player.seeking() || !this.isInit) return;
+          this.isPlaying = true;
+          if (window.YABO_SOCKET && !this.keepPlay) {
+            this.onSend("PLAY");
+          }
+          this.keepPlay = false;
+
+          if (this.isUnloginMode) {
+            this.unloginModeAction("play");
+          }
+        });
+
+        // 快轉
+        this.player.on("seeking", () => {});
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("play");
+        }
+      }
+
+      // 快轉
+      this.player.on("seeking", () => {});
+
+      this.player.on("seeked", () => {});
+
+      this.player.on("pause", () => {
+        if (this.player.seeking()) return;
+        this.isPlaying = false;
+        if (window.YABO_SOCKET && !this.keepPlay) {
+          this.onSend("STOP");
+          this.$refs.bonunsProcess.playCueTime("stop");
+        }
+        this.keepPlay = false;
+
+        if (this.isUnloginMode) {
+          this.unloginModeAction("pause");
+        }
+      });
+
+      this.player.on("ended", () => {
+        this.$refs.bonunsProcess.playCueTime("stop");
+        this.isPlaying = false;
+        if (window.YABO_SOCKET) this.onSend("STOP");
+      });
+
+      this.player.on("play", () => {
+        this.handleClickVideo();
+      });
     },
     //   點擊進圖條任務彈窗
     handleClickProcess() {
@@ -247,7 +251,7 @@ export default {
       }
     },
     // 連接websocket message
-    connectWS() {
+    connectMessage(fromReconnect) {
       if (!this.loginStatus) {
         if (!this.isUnloginMode) {
           const bonunsProcess = this.$refs.bonunsProcess;
@@ -266,6 +270,17 @@ export default {
         const bonunsProcess = this.$refs.bonunsProcess;
         const bonunsDialog = this.$refs.bonunsDialog;
         bonunsProcess.processType = "process";
+
+        if (window.YABO_SOCKET_RECONECT_STATUS) {
+          bonunsProcess.isInit = false;
+          this.player.off("playing");
+          this.player.off("play");
+          this.player.off("pause");
+          this.playerPause();
+          setTimeout(() => {
+            this.initPlayerEvent();
+          }, 300);
+        }
       } else {
         this.setReconnect();
       }
@@ -346,6 +361,7 @@ export default {
               case "OPEN":
                 bonunsProcess.isInit = true;
                 bonunsDialog.isInit = true;
+                bonunsProcess.playCueTime("stop");
                 break;
               case "RISK":
                 bonunsProcess.processType = "done";
@@ -490,38 +506,25 @@ export default {
         cb();
       }
     },
-    setReconnect(timer = true) {
-      if (this.reconnectTimer) return;
-
-      this.reconnectTimer = setTimeout(
-        () => {
-          if (this.isDebug) {
-            console.log("[WS]: Video active Reconnecting...");
-          }
-          window.YABO_SOCKET_RECONNECT();
-          this.connectWS();
-          window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
-          const bonunsProcess = this.$refs.bonunsProcess;
-          bonunsProcess.processType = "loading";
-        },
-        timer ? 3000 : 400
-      );
+    setReconnect() {
+      bonunsProcess.processType = "loading";
+      if (this.isDebug) {
+        console.log("[WS]: Video active Reconnecting...");
+      }
+      window.YABO_SOCKET_RECONNECT();
     },
     // 檢查連線狀態
     setCheckTimer() {
-      clearInterval(this.checkTimer);
+      clearTimeout(this.checkTimer);
       this.checkTimer = null;
-
-      this.checkTimer = setInterval(() => {
+      this.checkTimer = setTimeout(() => {
         if (this.isDebug) {
-          console.log(
-            `[WS]: State:${window.YABO_SOCKET.readyState} Check fail.`
-          );
+          console.log(`[WS]: State: Check fail.`);
         }
-        this.setReconnect(false);
-        clearInterval(this.checkTimer);
+        this.setReconnect();
+        clearTimeout(this.checkTimer);
         this.checkTimer = null;
-      }, 20000);
+      }, 15000);
     }
   },
   created() {
