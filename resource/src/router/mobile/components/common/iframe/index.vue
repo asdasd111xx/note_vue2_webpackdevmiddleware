@@ -128,12 +128,6 @@ export default {
         // case "SWAG":
         if (localStorage.getItem("iframe-third-url")) {
           const vendor = query.vendor;
-          if (vendor === "SL") {
-            this.src = localStorage
-              .getItem("iframe-third-url")
-              .replace(window.location.origin, "");
-            return;
-          }
           this.src = localStorage.getItem("iframe-third-url");
           return;
         }
