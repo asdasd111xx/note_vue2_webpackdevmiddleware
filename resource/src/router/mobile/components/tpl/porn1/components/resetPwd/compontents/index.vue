@@ -220,14 +220,30 @@ export default {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
       this.verification(key, this.pwdResetInfo[key].value);
+      let newPwd = document.getElementById("newPwd"),
+        confNewPwd = document.getElementById("confNewPwd"),
+        pwd = document.getElementById("pwd");
+
       if (this.isShowPwd) {
-        document.getElementById("newPwd").type = "password";
-        document.getElementById("confNewPwd").type = "password";
-        document.getElementById("pwd").type = "password";
+        if (newPwd) {
+          newPwd.type = "password";
+        }
+        if (confNewPwd) {
+          confNewPwd.type = "password";
+        }
+        if (pwd) {
+          pwd.type = "password";
+        }
       } else {
-        document.getElementById("newPwd").type = "text";
-        document.getElementById("confNewPwd").type = "text";
-        document.getElementById("pwd").type = "text";
+        if (newPwd) {
+          newPwd.type = "text";
+        }
+        if (confNewPwd) {
+          confNewPwd.type = "text";
+        }
+        if (pwd) {
+          pwd.type = "text";
+        }
       }
       this.isShowPwd = !this.isShowPwd;
     },

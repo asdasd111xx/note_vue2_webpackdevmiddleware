@@ -91,7 +91,11 @@
           <div :class="$style['form-input']">
             <template v-if="themeTPL === 'ey1'">
               <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option v-for="option in phoneHeadOption" v-bind:value="option">
+                <option
+                  v-for="(option, key) in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="key"
+                >
                   {{ option }}
                 </option>
               </select>
