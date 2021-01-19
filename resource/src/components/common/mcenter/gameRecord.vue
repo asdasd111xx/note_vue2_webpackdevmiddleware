@@ -31,8 +31,12 @@ import bbosRequest from "@/api/bbosRequest";
 
 export default {
   props: {
-    inqGame: {
+    inqVendor: {
       type: String,
+      required: true
+    },
+    inqKind: {
+      type: Number,
       required: true
     },
     inqStart: {
@@ -59,7 +63,8 @@ export default {
       currentPage: "", // 當前所呈現的頁面內容
       selectedUser: "", // 第一層所選擇的使用者
       currentAcc: "",
-      currentGame: "",
+      currentVendor: "",
+      currentKind: 0,
       currentStart: "",
       currentEnd: "",
       inq1st: {
@@ -166,7 +171,8 @@ export default {
     }
   },
   created() {
-    this.currentGame = this.inqGame;
+    this.currentVendor = this.inqVendor;
+    this.currentKind = this.inqKind;
     this.currentStart = this.inqStart;
     this.currentEnd = this.inqEnd;
 
@@ -192,19 +198,22 @@ export default {
         .add(range, "days")
         .format("YYYY-MM-DD");
 
-      this.$emit("update:inqGame", "");
+      this.$emit("update:inqVendor", "");
+      this.$emit("update:inqKind", 0);
       this.$emit("update:inqStart", date);
       this.$emit("update:inqEnd", date);
 
-      this.currentGame = this.inqGame;
+      this.currentVendor = this.inqVendor;
+      this.currentKind = this.inqKind;
       this.currentStart = date;
       this.currentEnd = date;
 
       this.onInquire();
     },
     onSearch() {
-      this.currentGame = this.inqGame;
+      this.currentVendor = this.inqVendor;
       this.currentStart = this.inqStart;
+      this.currentKind = this.inqKind;
       this.currentEnd = this.inqEnd;
       this.onInquire();
     },
@@ -213,11 +222,20 @@ export default {
       this.isLoading = true;
       this.showPage.main = 0;
 
+      let _params = {};
+
+      if (this.currentVendor && this.currentKind) {
+        _params = {
+          vendor: this.currentVendor,
+          kind: this.currentKind
+        };
+      }
+
       ajax({
         method: "get",
         url: apis.API_FRIEND_WAGER_REPORT,
         params: {
-          vendor: this.currentGame,
+          ..._params,
           start_at: Vue.moment(this.currentStart).format(
             "YYYY-MM-DD 00:00:00-04:00"
           ),
@@ -267,6 +285,19 @@ export default {
       this.onInquireBet();
     },
     onInquireBet() {
+      this.showInfinite = false;
+      this.isLoading = true;
+      this.showPage.bet = 0;
+
+      let _params = {};
+
+      if (this.currentVendor && this.currentKind) {
+        _params = {
+          vendor: this.currentVendor,
+          kind: this.currentKind
+        };
+      }
+
       bbosRequest({
         method: "get",
         url:
@@ -281,7 +312,10 @@ export default {
           startAt: Vue.moment(this.currentStart).format(
             "YYYY-MM-DD 00:00:00-04:00"
           ),
-          endAt: Vue.moment(this.currentEnd).format("YYYY-MM-DD 23:59:59-04:00")
+          endAt: Vue.moment(this.currentEnd).format(
+            "YYYY-MM-DD 23:59:59-04:00"
+          ),
+          ..._params
         }
       })
         .then(response => {
