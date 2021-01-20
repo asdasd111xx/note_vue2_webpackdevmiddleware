@@ -49,7 +49,7 @@
         :key="`video-type-${i}`"
         :class="$style['video-cell']"
       >
-        <div :class="$style['video-type']">
+        <div v-if="videoData.list" :class="[$style['video-type'], 'clearfix']">
           <div :class="$style['type-name']">{{ videoData.name }}</div>
           <div
             :class="$style['btn-more']"
@@ -67,7 +67,7 @@
           </div>
         </div>
 
-        <div :class="$style['video-block']">
+        <div :class="$style['video-block']" v-if="videoData.list">
           <div
             v-for="video in videoData.list.slice(0, 4)"
             :key="`video-${video.id}`"
@@ -162,9 +162,11 @@ export default {
       );
       setTimeout(() => {
         videoList.forEach(item => {
-          item.list.forEach(i => {
-            getEncryptImage(i);
-          });
+          if (item && item.list) {
+            item.list.forEach(i => {
+              getEncryptImage(i);
+            });
+          }
         });
       }, 300);
 
