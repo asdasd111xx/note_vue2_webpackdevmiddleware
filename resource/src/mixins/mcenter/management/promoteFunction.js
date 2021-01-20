@@ -62,6 +62,8 @@ export default {
           break;
       }
 
+      this.$copyText(value);
+
       // this.$copyText(value).then(() => {
       //   this.isPopup = true;
       //   this.popupType = type;
