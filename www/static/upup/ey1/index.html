@@ -264,6 +264,7 @@
 
     function service(target) {
         let url = 'https://ey.italking.asia/guest.php?gid=EY';
+        url = localStorage.getItem('service-url') || url;
 
         // if (url && target === 2) {
         //     url = url.replace('gid=default', 'gid=yb04')

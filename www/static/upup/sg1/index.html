@@ -324,6 +324,7 @@
 
         function service(target) {
             let url = 'http://siguacs.net/chat/text/chat_1s9Boh.html?skill=8ae482827620a5e001766515b8d2545d';
+            url = localStorage.getItem('service-url') || url;
 
             let w =
                 window.open(
