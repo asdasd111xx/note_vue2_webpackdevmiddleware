@@ -1890,6 +1890,7 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
     return;
   }
 
+  let configInfo = {};
   if (state.webDomain) {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||

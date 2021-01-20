@@ -334,8 +334,8 @@
   document.getElementById('username').innerText = user || '尊敬的用户';
 
   function service(target) {
-    let url = 'https://yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
-
+    let url = 'https://clt.yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
+    url = localStorage.getItem('service-url') || url;
     // if (url && target === 2) {
     //   url = url.replace('gid=default', 'gid=yb04')
     //     .replace('gid=yb01', 'gid=yb04');
