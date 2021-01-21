@@ -456,7 +456,7 @@
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="[$style['btn-wrap']]">
           <div :class="[$style['submit-btn']]">
-            <div @click="linkToRecharge">额度转让&nbsp;返佣70%</div>
+            <div @click="linkToRecharge">额度转让&nbsp;实时返佣</div>
           </div>
 
           <div

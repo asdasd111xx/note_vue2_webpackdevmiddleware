@@ -496,8 +496,7 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
-          lang: "zh-cn",
-          common: true
+          lang: "zh-cn"
         }
       }).then(response => {
         const { data, status, errorCode } = response;

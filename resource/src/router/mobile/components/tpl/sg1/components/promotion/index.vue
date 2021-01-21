@@ -2,11 +2,23 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
-        <div :class="$style['promotion-gift']" @click="onGiftClick">
+        <div
+          :class="[$style['promotion-gift'], $style['right']]"
+          @click="onGiftClick"
+        >
           <span>
-            自领优惠
+            {{ giftList[0].name }}
           </span>
           <div v-show="hasNewGift" :class="$style['red-dot']" />
+        </div>
+
+        <div
+          :class="[$style['promotion-gift'], $style['left']]"
+          @click="onGiftClick(giftList[1])"
+        >
+          <span>
+            {{ giftList[1].name }}
+          </span>
         </div>
       </div>
       <div :class="$style['type-wrap']">
@@ -35,7 +47,9 @@
           <div :class="$style['text-wrap']">
             <div :class="$style.time">
               <img
-                :src="$getCdnPath('/static/image/_new/promotion/icon_time.png')"
+                :src="
+                  $getCdnPath('/static/image/common/promotion/icon_time.png')
+                "
               />
               <span v-if="info.end_time"
                 >{{ info.start_time }} ~ {{ info.end_time }}</span
@@ -98,6 +112,18 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    giftList() {
+      return [
+        {
+          alias: "",
+          name: "自领优惠"
+        },
+        {
+          alias: "verify_promotion",
+          name: "审核查询"
+        }
+      ];
+    },
     headerConfig() {
       return {
         title: this.$text("S_PROMOTIONS", "优惠活动")
@@ -105,6 +131,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getPromotionList(id) {
       this.tabId = +id;
       // this.$nextTick(() => {
@@ -126,37 +153,44 @@ export default {
         this.tabList[0].name = "全部";
       });
     },
-    onGiftClick() {
+    onGiftClick(target) {
       let url = "";
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/scUrl`
-      }).then(res => {
-        url = res.data;
-        if (!url) {
-          return;
-        }
-        axios({
+      if (target.alias === "verify_promotion") {
+        localStorage.setItem("iframe-third-url-title", target.name);
+        this.$router.push(
+          `/mobile/iframe/promotion?alias=${target.alias}&fullscreen=true`
+        );
+      } else {
+        goLangApiRequest({
           method: "get",
-          url: "/api/v1/c/link/customize",
-          params: {
-            code: "promotion",
-            client_uri: url
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/scUrl`
+        }).then(res => {
+          url = res.data;
+          if (!url) {
+            return;
           }
-        })
-          .then(res => {
-            if (res && res.data && res.data.ret && res.data.ret.uri) {
-              localStorage.setItem("iframe-third-url", res.data.ret.uri);
-              localStorage.setItem("iframe-third-url-title", "自领优惠");
-              this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
+          axios({
+            method: "get",
+            url: "/api/v1/c/link/customize",
+            params: {
+              code: "promotion",
+              client_uri: url
             }
           })
-          .catch(error => {
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          });
-      });
+            .then(res => {
+              if (res && res.data && res.data.ret && res.data.ret.uri) {
+                localStorage.setItem("iframe-third-url", res.data.ret.uri);
+                localStorage.setItem("iframe-third-url-title", "自领优惠");
+                this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
+              }
+            })
+            .catch(error => {
+              if (error && error.data && error.data.msg) {
+                this.actionSetGlobalMessage({ msg: error.data.msg });
+              }
+            });
+        });
+      }
     },
     onClick(target) {
       axios({
@@ -319,21 +353,6 @@ $fixed_spacing_height: 43px;
   }
 }
 
-.latest-wrap {
-  position: absolute;
-  background: url("/static/image/_new/promotion/pic_latest.png");
-  background-position: 50% 50%;
-  background-size: cover;
-  top: 6px;
-  left: -8px;
-  width: 47px;
-  height: 25px;
-  color: $main_white_color1;
-  font-size: 12px;
-  text-align: center;
-  line-height: 20px;
-}
-
 .text-wrap {
   padding: 2px 7px;
 }
@@ -383,7 +402,6 @@ $fixed_spacing_height: 43px;
   position: absolute;
   top: 11px;
   z-index: 10;
-  right: 14px;
   border-radius: 3px;
   width: 70px;
   height: 20px;
@@ -392,6 +410,14 @@ $fixed_spacing_height: 43px;
   justify-content: center;
   color: #731c25;
   background: linear-gradient(to left, #f4b22e 0%, #f9d388 100%);
+
+  &.right {
+    right: 14px;
+  }
+
+  &.left {
+    left: 14px;
+  }
 
   > .red-dot {
     position: absolute;

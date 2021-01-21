@@ -16,8 +16,12 @@ export default {
   },
   created() {
     getDoamin().then(res => {
-      this.domain = res || "";
-      this.themeTPL = res && res.site ? res.site : "porn1";
+      if (res && res.site) {
+        this.domain = res;
+        this.themeTPL = res.site;
+      } else {
+        window.location.href = "/500";
+      }
     });
 
     if (versionFile) {
@@ -31,7 +35,7 @@ export default {
         store.state &&
         store.state.webInfo &&
         store.state.webInfo.on_service_url;
-      localStorage.setItem("service-url", on_service_url);
+      localStorage.setItem("service-url", on_service_url || "");
 
       if (this.domain.site === "ey1") {
         window.location.href = `/static/upup/ey1/index.html?username=${this.username}`;
