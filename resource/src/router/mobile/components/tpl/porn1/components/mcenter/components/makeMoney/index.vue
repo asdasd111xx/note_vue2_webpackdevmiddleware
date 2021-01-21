@@ -18,7 +18,7 @@
           :class="$style['img-wrap']"
           :src="`/static/image/porn1/mcenter/makeMoney/img001.png`"
         />
-        <span>{{ agentLink.agentCode }}</span>
+        <span :class="$style['agent-code']">{{ agentLink.agentCode }}</span>
         <div @click="copyCode" :class="$style['copy-btn']">
           复制
         </div>
@@ -41,6 +41,18 @@
           :src="`/static/image/porn1/mcenter/makeMoney/img003.png`"
         />
       </div>
+      <div :class="$style['img-wrap']">
+        <img
+          :class="$style['img-wrap']"
+          :src="`/static/image/porn1/mcenter/makeMoney/btn_promote2.png`"
+        />
+      </div>
+      <div :class="$style['img-wrap']">
+        <img
+          :class="$style['img-wrap']"
+          :src="`/static/image/porn1/mcenter/makeMoney/img004.png`"
+        />
+      </div>
     </div>
   </mobile-container>
 </template>
@@ -57,9 +69,7 @@ export default {
     mobileContainer
   },
   data() {
-    return {
-      yToken: ""
-    };
+    return {};
   },
   created() {
     const query = this.$route.query;
@@ -101,9 +111,7 @@ export default {
       })
         .then(res => {
           if (res.data && res.data.data) {
-            this.yToken = res.data.data;
             setCookie("y_token", res.data.data);
-            console.log("authToken:", res.data.data);
 
             axios({
               method: "put",
@@ -203,14 +211,6 @@ export default {
     width: 100%;
   }
 
-  span {
-    position: absolute;
-    bottom: 4vw;
-    left: 46%;
-    font-weight: 700;
-    color: #424654;
-  }
-
   .copy-btn {
     padding: 3px 10px;
     position: absolute;
@@ -223,5 +223,16 @@ export default {
     background-image: linear-gradient(top, #bd9d7d, #f9ddbd);
     border-radius: 20px;
   }
+}
+
+.agent-code {
+  font-size: 14px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #997458;
+  position: absolute;
+  bottom: 4vw;
+  left: 46%;
 }
 </style>
