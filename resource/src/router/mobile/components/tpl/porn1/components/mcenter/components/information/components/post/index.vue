@@ -57,7 +57,7 @@
               {{ post.enable_at | shortDateFormat }}
             </div>
           </div>
-          <div :class="$style.content" v-html="post.content" />
+          <div :class="$style['content']" v-html="post.content" />
         </div>
       </div>
     </div>
@@ -241,7 +241,9 @@ export default {
   margin-left: 10px;
 
   p {
-    overflow: hidden;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -260,7 +262,8 @@ export default {
   line-height: 20px;
   color: #414655;
   font-size: 14px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -283,7 +286,6 @@ export default {
 
 .post-time {
   float: right;
-  width: 66px;
   line-height: 22px;
   color: #a6a9b2;
   font-size: 12px;
@@ -296,7 +298,8 @@ export default {
   margin-top: 3px;
   color: #a6a9b2;
   font-size: 12px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
