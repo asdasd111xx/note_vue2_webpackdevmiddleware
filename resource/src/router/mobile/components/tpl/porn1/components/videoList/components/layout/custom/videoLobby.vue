@@ -11,7 +11,7 @@
       <span @click="msg = '正在上线 敬请期待'">发现</span>
     </div>
 
-    <div :class="$style['category-wrap']">
+    <div :class="$style['category-wrap']" v-if="videoTag">
       <div
         :class="$style['tag-block']"
         v-for="(info, index) in videoTag.slice(0, 8)"
@@ -205,17 +205,6 @@ export default {
       });
     },
     getVideoTag() {
-      //   try {
-      //     let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);
-      //     if (videolistStorage) {
-      //       this.videoTag = JSON.parse(
-      //         localStorage.getItem(`${this.source}-video-tag`)
-      //       );
-      //     }
-      //   } catch (e) {
-      //     console.log(e);
-      //   }
-
       return pornRequest({
         url: "/video/tag",
         method: "get",
@@ -228,37 +217,11 @@ export default {
           return;
         }
 
-        // try {
-        //   localStorage.setItem(
-        //     `${this.source}-video-tag`,
-        //     JSON.stringify(response.result)
-        //   );
-        //   localStorage.setItem(
-        //     `${this.source}-video-tag-timestamp`,
-        //     Date.now()
-        //   );
-        // } catch (e) {
-        //   console.log(e);
-        // }
-
         this.videoTag = response.result;
       });
     },
     // 取得影片排序
     getVideoSort() {
-      //   try {
-      //     let videolistStorage = localStorage.getItem(
-      //       `${this.source}-video-sort`
-      //     );
-      //     if (videolistStorage) {
-      //       this.videoSort = JSON.parse(
-      //         localStorage.getItem(`${this.source}-video-sort`)
-      //       );
-      //     }
-      //   } catch (e) {
-      //     console.log(e);
-      //   }
-
       return pornRequest({
         method: "get",
         url: "/video/sort",
@@ -270,19 +233,6 @@ export default {
         if (response.status !== 200) {
           return;
         }
-
-        // try {
-        //   localStorage.setItem(
-        //     `${this.source}-video-sort`,
-        //     JSON.stringify(response.result)
-        //   );
-        //   localStorage.setItem(
-        //     `${this.source}-video-sort-timestamp`,
-        //     Date.now()
-        //   );
-        // } catch (e) {
-        //   console.log(e);
-        // }
 
         this.videoSort = [...response.result];
       });
@@ -467,10 +417,9 @@ export default {
   }
 
   .video-type {
-    display: flex;
-    justify-content: space-between;
     font-weight: 700;
-    padding: 10px 0 15px;
+    margin: 10px 0 15px;
+    width: 100%;
 
     .type-name {
       font-size: 17px;
@@ -479,6 +428,9 @@ export default {
 
     .btn-more {
       color: #989292;
+      position: absolute;
+      right: 0;
+      top: 0;
     }
 
     .icon-arrow {
