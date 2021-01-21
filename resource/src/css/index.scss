@@ -181,7 +181,7 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-  border: unset;
+  // border: unset;
   box-shadow: none;
   outline: none;
 }
