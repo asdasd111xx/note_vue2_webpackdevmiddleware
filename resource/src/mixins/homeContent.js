@@ -76,15 +76,6 @@ export default {
             }, 70000);
           }
         }
-
-        if (temp.event === "outer_maintain") {
-          this.swagMaintainTimer = setTimeout(() => {
-            this.initSWAGConfig(true);
-            clearTimeout(this.swagMaintainTimer);
-            this.swagMaintainTimer = null;
-            return;
-          }, 1000);
-        }
       }
     }
   },
