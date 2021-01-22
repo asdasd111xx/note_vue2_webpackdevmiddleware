@@ -307,6 +307,10 @@ export default {
         }
       });
 
+      if (this.$route.query.label == "favorite") {
+        this.isFavorite = "favorite";
+        this.paramsData.label = "favorite";
+      }
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
@@ -328,7 +332,7 @@ export default {
       //     });
       //     return;
       // }
-      this.updateGameData();
+      this.updateGameData(this.paramsData.label);
     },
     /**
      * 設定搜尋文字
