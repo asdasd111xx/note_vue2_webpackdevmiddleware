@@ -139,6 +139,21 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    } else {
+      if (this.loginStatus) {
+        this.isShowPromotion =
+          localStorage.getItem("is-show-promotion") === "true";
+        this.actionSetUserdata(true).then(() => {
+          this.isShowPromotion = this.memInfo.user.show_promotion;
+          localStorage.setItem(
+            "is-show-promotion",
+            this.memInfo.user.show_promotion
+          );
+        });
+      } else {
+        this.isShowPromotion = true;
+        return;
+      }
     }
   },
   computed: {
@@ -148,10 +163,12 @@ export default {
       promotionLink: "getPromotionLink"
     }),
     headerConfig() {
+      let hasRecommendGift = this.isShowPromotion;
       return {
         prev: true,
         title: "推广赚钱",
-        customLinkTitle: this.$route.query.check ? "" : "礼金明细",
+        customLinkTitle:
+          this.$route.query.check || !hasRecommendGift ? "" : "礼金明细",
         customLinkAction: () => {
           this.$router.push("/mobile/mcenter/tcenter/recommendGift");
         },
@@ -184,7 +201,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionSetAgentLink",
+      "actionSetUserdata"
+    ]),
     copyCode() {
       this.$copyText(this.getAgentLink).then(() => {
         this.actionSetGlobalMessage({ msg: "复制成功" });

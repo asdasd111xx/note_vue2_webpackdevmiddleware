@@ -14,7 +14,6 @@ export default {
     return {
       stopScroll: false,
       isReceive: false,
-      isShowAllTag: false,
       isSliding: false,
       isTop: false,
       isShow: false,
@@ -43,8 +42,7 @@ export default {
         { name: "makemoney", text: "推广", path: "makemoney" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
-      timer: null,
-      swagMaintainTimer: null
+      timer: null
     };
   },
   watch: {
@@ -190,7 +188,7 @@ export default {
     }
   },
   mounted() {
-    $(window).on("resize", this.onResize);
+    window.addEventListener("resize", this.onResize);
 
     // 首頁選單列表預設拿local
     const cache = this.getAllGameFromCache();
@@ -199,7 +197,7 @@ export default {
       this.$nextTick(() => {
         this.isReceive = true;
         setTimeout(() => {
-          $(window).trigger("resize");
+          this.onResize();
           let defaultType =
             this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
           if (localStorage.getItem("home-menu-type")) {
@@ -244,7 +242,9 @@ export default {
     });
   },
   beforeDestroy() {
-    $(window).off("resize", this.onResize);
+    window.removeEventListener("resize", this.onResize);
+    clearTimeout(this.swagMaintainTimer);
+    this.swagMaintainTimer = null;
   },
   methods: {
     ...mapActions([
@@ -309,6 +309,7 @@ export default {
       });
     },
     onResize() {
+      console.log("re");
       // 計算外框高度
       setTimeout(() => {
         // 跑馬燈 header footer

@@ -56,7 +56,7 @@
     }
   }
 
-  &.support-cell>title {
+  &.support-cell > title {
     height: 20px;
     line-height: 20px;
     display: contents;
@@ -78,9 +78,9 @@
 
   &.active {
     height: 100%;
-    max-height: unset;
+    max-height: 100%;
     opacity: 1;
-    overflow: unset;
+    overflow: hidden;
   }
 }
 
@@ -98,21 +98,26 @@
   &.full-block {
     display: block;
 
-    >.cell-title {
+    > .cell-title {
       font-size: 15px;
       font-weight: 500;
     }
 
-    >.cell-content {
+    > .cell-content {
       font-size: 12px;
     }
   }
 }
 
-.content-text {
-  width: 45%;
-  display: inline-block;
-  min-height: 410px;
+.content {
+  display: flex;
+
+  .content-text {
+    width: 45%;
+    margin-right: 45px;
+    display: inline-block;
+    min-height: 410px;
+  }
 }
 
 .arrow-btn {
@@ -127,7 +132,7 @@
   transition: transform 0.31s;
   width: 16px;
 
-  >img {
+  > img {
     bottom: 0;
     height: 16px;
     margin: auto;
@@ -219,7 +224,7 @@
     display: inline-flex;
     align-items: center;
     color: #222222;
-    max-width: 50%;
+    max-width: 55%;
     text-align: right;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -239,7 +244,7 @@
     width: 22px;
     margin-left: 5px;
 
-    >img {
+    > img {
       width: 100%;
       height: 100%;
     }
@@ -397,7 +402,7 @@
   height: 292px;
   margin: 20% auto 0;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
@@ -430,11 +435,13 @@
 }
 
 .content-img {
+  margin-bottom: 5px;
   width: 45%;
-  float: right;
+  display: flex;
+  //float: right;
   height: 100%;
 
-  >img {
+  > img {
     width: 100%;
     height: 100%;
   }
@@ -464,7 +471,7 @@
     align-items: center;
     background-color: $main_white_color1;
 
-    >span {
+    > span {
       width: 100%;
     }
 
@@ -475,7 +482,7 @@
       align-items: center;
       margin-right: 5px;
 
-      >img {
+      > img {
         height: 100%;
       }
     }
@@ -487,7 +494,7 @@
     display: flex;
     align-items: center;
 
-    >img {
+    > img {
       height: 14px;
       width: 14px;
     }
@@ -554,7 +561,7 @@
     width: 100%;
     height: 100%;
 
-    >span {
+    > span {
       color: #414655;
       margin-top: 14px;
       font-family: Microsoft JhengHei;
@@ -576,7 +583,7 @@
   position: relative;
   display: flex;
 
-  >img {
+  > img {
     position: fixed;
     bottom: 45px;
     right: 18px;
@@ -590,13 +597,12 @@
   border: 1px #000000 solid;
   border-collapse: collapse;
 
-  >tr {
+  > tr {
     border: 1px #000000 solid;
 
-    >td {
+    > td {
       border: 1px #000000 solid;
       text-align: center;
     }
   }
-
 }

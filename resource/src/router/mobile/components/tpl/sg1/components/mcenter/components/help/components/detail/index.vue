@@ -27,12 +27,12 @@
 import { API_WITHDRAW_RECORD } from "@/config/api";
 import { mapGetters } from "vuex";
 import ajax from "@/lib/ajax";
-import depositRecord from "./depositRecord";
+import buymethod from "./buymethod";
+import depositRecord from "@/router/mobile/components/tpl/porn1/components/mcenter/components/help/components/detail/depositRecord";
 import member from "@/api/member";
 import mobileContainer from "../../../../../common/mobileContainer";
-import withdrawRecord from "./withdrawRecord";
-import buymethod from "./buymethod";
 import usage from "./usage";
+import withdrawRecord from "@/router/mobile/components/tpl/porn1/components/mcenter/components/help/components/detail/withdrawRecord";
 
 export default {
   components: {
@@ -50,7 +50,14 @@ export default {
   created() {
     let query = this.$route.query;
     if (
-      ["withdraw", "deposit", "gameintro", "support", "buymethod", "usage"].includes(query.type)
+      [
+        "withdraw",
+        "deposit",
+        "gameintro",
+        "support",
+        "buymethod",
+        "usage"
+      ].includes(query.type)
     ) {
       this.type = query.type;
     } else {
@@ -69,10 +76,10 @@ export default {
       return isApp;
     },
     beforeDestroy() {
-      document.title = '';
+      document.title = "";
     },
     headerConfig() {
-      let title = '';
+      let title = "";
 
       switch (this.type) {
         case "withdraw":
@@ -84,11 +91,11 @@ export default {
           break;
 
         case "buymethod":
-          title = 'SWAG 钻石购买说明';
+          title = "SWAG 钻石购买说明";
           break;
 
         case "usage":
-          title = 'SWAG 钻石使用方法';
+          title = "SWAG 钻石使用方法";
           break;
 
         default:
@@ -100,9 +107,11 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            if (localStorage.getItem('help-center-back')) {
-              this.$router.replace(`/mobile/${localStorage.getItem('help-center-back')}`);
-              localStorage.removeItem('help-center-back');
+            if (localStorage.getItem("help-center-back")) {
+              this.$router.replace(
+                `/mobile/${localStorage.getItem("help-center-back")}`
+              );
+              localStorage.removeItem("help-center-back");
             } else {
               this.$router.back();
             }

@@ -456,9 +456,10 @@ export default {
 
 .red-dot {
   position: absolute;
-  right: -4px;
+  right: -2px;
   background: red;
   border-radius: 50%;
+  border: 1px solid #ffffff;
   width: 6px;
   height: 6px;
   top: -2px;

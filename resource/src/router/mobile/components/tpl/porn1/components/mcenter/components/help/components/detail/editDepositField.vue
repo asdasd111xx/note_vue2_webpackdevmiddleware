@@ -5,9 +5,7 @@
         <div :class="$style['alert-title']">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
           <div :class="$style['alert-close-wrap']" @click="closeFuc(false)">
-            <div>
-              <icon name="times" width="20" height="20" />
-            </div>
+            <icon name="times" width="20" height="20" />
           </div>
         </div>
         <div :class="$style['alert-body-wrap']">
@@ -73,13 +71,16 @@
 </template>
 
 <script>
-import ajax from '@/lib/ajax';
-import { API_TRADE_RELAY } from '@/config/api';
-import { mapGetters } from 'vuex';
+import ajax from "@/lib/ajax";
+import { API_TRADE_RELAY } from "@/config/api";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    speedPayField: () => import(/* webpackChunkName: 'speedPayField' */ './components/speedPayField')
+    speedPayField: () =>
+      import(
+        /* webpackChunkName: 'speedPayField' */ "./components/speedPayField"
+      )
   },
   props: {
     requiredFields: {
@@ -88,28 +89,28 @@ export default {
     },
     closeFuc: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     depositData: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
     return {
       speedField: {
-        depositMethod: '',
-        depositTime: '',
-        depositAccount: '',
-        depositName: '',
-        bankBranch: '',
-        serialNumber: ''
+        depositMethod: "",
+        depositTime: "",
+        depositAccount: "",
+        depositName: "",
+        bankBranch: "",
+        serialNumber: ""
       }
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
+      memInfo: "getMemInfo"
     }),
     resultSpeedField: {
       get() {
@@ -122,26 +123,29 @@ export default {
     isSubmitDisabled() {
       const checkItemMap = {
         method: {
-          key: 'bankBranch'
+          key: "bankBranch"
         },
         deposit_at: {
-          key: 'depositTime'
+          key: "depositTime"
         },
         pay_account: {
-          key: 'depositAccount'
+          key: "depositAccount"
         },
         pay_username: {
-          key: 'depositName'
+          key: "depositName"
         },
         sn: {
-          key: 'serialNumber'
+          key: "serialNumber"
         }
       };
-      return this.requiredFields.find((item) => {
+      return this.requiredFields.find(item => {
         const check = checkItemMap[item.name];
 
         // 存款方式不是存款方式不是ATM或銀行櫃台 則不需檢查銀行支行的必填
-        if (item.name === 'method' && !['2', '4'].includes(this.speedField.depositMethod)) {
+        if (
+          item.name === "method" &&
+          !["2", "4"].includes(this.speedField.depositMethod)
+        ) {
           return false;
         }
 
@@ -150,13 +154,12 @@ export default {
     }
   },
   created() {
-    console.log(this.depositData)
     this.speedField = {
       ...this.speedField,
       depositTime: this.depositData.deposit_at,
       depositAccount: this.depositData.pay_account,
       depositName: this.depositData.pay_username,
-      depositMethod: String(this.depositData.method) || '1',
+      depositMethod: String(this.depositData.method) || "1",
       bankBranch: this.depositData.branch,
       serialNumber: this.depositData.sn
     };
@@ -164,11 +167,11 @@ export default {
   methods: {
     saveDepositData() {
       if (this.isSubmitDisabled) {
-        return { status: 'ok' };
+        return { status: "ok" };
       }
 
       return ajax({
-        method: 'put',
+        method: "put",
         url: API_TRADE_RELAY,
         errorAlert: true,
         params: {
@@ -180,26 +183,26 @@ export default {
           branch: this.speedField.bankBranch,
           sn: this.speedField.serialNumber
         }
-      }).then((response) => {
+      }).then(response => {
         this.closeFuc(false);
 
-        if (response.result === 'ok') {
+        if (response.result === "ok") {
           // 流量分析事件 - 成功
           window.dataLayer.push({
-            event: 'ga_click',
-            eventCategory: 'deposit',
-            eventAction: 'submit',
-            eventLabel: 'success'
+            event: "ga_click",
+            eventCategory: "deposit",
+            eventAction: "submit",
+            eventLabel: "success"
           });
           return;
         }
 
         // 流量分析事件 - 失敗
         window.dataLayer.push({
-          event: 'ga_click',
-          eventCategory: 'deposit',
-          eventAction: 'submit',
-          eventLabel: 'failure'
+          event: "ga_click",
+          eventCategory: "deposit",
+          eventAction: "submit",
+          eventLabel: "failure"
         });
       });
     }
@@ -207,4 +210,3 @@ export default {
 };
 </script>
 <style lang="scss" src="../../css/edit.module.scss" module></style>
-
