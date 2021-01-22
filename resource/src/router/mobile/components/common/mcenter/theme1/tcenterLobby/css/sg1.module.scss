@@ -1,0 +1,33 @@
+@import "./porn1.module.scss";
+
+.title {
+  background-image: url('/static/image/sg1/mcenter/tcenter/promote_topbg.png');
+}
+
+.main {
+  background-image: url('/static/image/sg1/mcenter/tcenter/promote_bg.png');
+}
+
+
+.title-commission {
+  background: linear-gradient(#FFD780, #FFC180);
+  color: #333333;
+  font-weight: bolder;
+}
+
+
+.special {
+  .special-title {
+
+    &::before {
+      content: "";
+      position: relative;
+      display: inline-block;
+      width: 3px;
+      height: 16px;
+      top: 2.5px;
+      margin-right: 7px;
+      background: linear-gradient(#FE593C, #E61938);
+    }
+  }
+}

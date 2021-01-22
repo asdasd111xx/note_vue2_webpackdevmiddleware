@@ -233,6 +233,10 @@ export default {
     rewardRulesSg1: () =>
       import(
         /* webpackChunkName: 'rewardRulesSg1' */ "../../tpl/sg1/components/mcenter/components/rewardRules"
+      ),
+    tcenterLobbySg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterLobbySg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterLobby"
       )
   }
 };
