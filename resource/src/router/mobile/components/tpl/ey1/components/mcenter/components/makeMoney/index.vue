@@ -38,7 +38,9 @@ export default {
     mobileContainer
   },
   data() {
-    return {};
+    return {
+      isShowPromotion: true
+    };
   },
   computed: {
     ...mapGetters({
@@ -46,10 +48,11 @@ export default {
       promotionLink: "getPromotionLink"
     }),
     headerConfig() {
+      let hasRecommendGift = this.isShowPromotion;
       return {
         prev: true,
         title: "一键快赚",
-        customLinkTitle: "礼金明细",
+        customLinkTitle: hasRecommendGift ? "礼金明细" : "",
         customLinkAction: () => {
           this.$router.push("/mobile/mcenter/tcenter/recommendGift");
         },
@@ -83,9 +86,27 @@ export default {
   },
   created() {
     this.actionSetAgentLink();
+    if (this.loginStatus) {
+      this.isShowPromotion =
+        localStorage.getItem("is-show-promotion") === "true";
+      this.actionSetUserdata(true).then(() => {
+        this.isShowPromotion = this.memInfo.user.show_promotion;
+        localStorage.setItem(
+          "is-show-promotion",
+          this.memInfo.user.show_promotion
+        );
+      });
+    } else {
+      this.isShowPromotion = true;
+      return;
+    }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionSetAgentLink",
+      "actionSetUserdata"
+    ]),
     copyCode() {
       this.$copyText(this.getAgentLink).then(() => {
         this.actionSetGlobalMessage({ msg: "复制成功" });
