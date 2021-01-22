@@ -3,12 +3,16 @@
     :class="[
       $style['detail-wrap'],
       {
-        [$style['ey1']]: theme === 'ey1',
-      },
+        [$style['ey1']]: theme === 'ey1'
+      }
     ]"
   >
     <div v-if="data" :class="$style['detail-content-wrap']">
-      <div v-for="(item, index) in data" :class="$style['detail-block']">
+      <div
+        v-for="(item, index) in data"
+        :class="$style['detail-block']"
+        :key="index"
+      >
         <div :class="[$style['detail-cell'], $style['item-status']]">
           <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
@@ -36,7 +40,7 @@
                 }
               "
               :class="[
-                { [$style['processing']]: item.status === 'processing' },
+                { [$style['processing']]: item.status === 'processing' }
               ]"
             >
               {{ getStatus(item.status) }}
@@ -45,9 +49,9 @@
             <div
               v-if="
                 item.status === 'processing' ||
-                item.status === 'complete' ||
-                item.method_id === 25 ||
-                item.method_id === 402
+                  item.status === 'complete' ||
+                  item.method_id === 25 ||
+                  item.method_id === 402
               "
               :class="$style['processing-icon']"
               @click="showDetailPop(item)"
@@ -62,6 +66,7 @@
           <div
             v-if="item.hasOwnProperty(col.key)"
             :class="$style['detail-cell']"
+            :key="`col-'${index}`"
           >
             <div :class="$style['title']">
               {{ $text(col.title) }}
@@ -112,12 +117,12 @@
 </template>
 
 <script>
-import { getCookie } from '@/lib/cookie';
-import { mapGetters, mapActions } from 'vuex';
-import editDepositField from './editDepositField';
-import member from '@/api/member';
-import mixin from '@/mixins/mcenter/deposit/recordDeposit';
-import axios from 'axios';
+import { getCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
+import editDepositField from "./editDepositField";
+import member from "@/api/member";
+import mixin from "@/mixins/mcenter/deposit/recordDeposit";
+import axios from "axios";
 
 export default {
   mixins: [mixin],
@@ -146,66 +151,69 @@ export default {
         // 申请金额
         { key: "amount", title: "S_APPLICATION_AMOUNT" },
         // 实际到帐
-        { key: "actual_deposit", title: "S_REAL_ENTER" },
-      ],
+        { key: "actual_deposit", title: "S_REAL_ENTER" }
+      ]
     };
   },
   mounted() {
     this.getData();
-    document.title = "8日内充值记录"
+    document.title = "8日内充值记录";
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     showDetailPop(item) {
       this.detailRate = item;
     },
     getData() {
       let params = {
         first_result: 0,
-        max_results: 10,
-      }
+        max_results: 10
+      };
 
-      let cid = getCookie('cid');
-      if (!cid) return
+      let cid = getCookie("cid");
+      if (!cid) return;
 
       axios({
-        method: 'get',
-        url: '/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/list',
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/list",
         errorAlert: false,
         params: params
-      }).then((res) => {
-        if (res && res.data && res.data.result === 'ok') {
-          this.data = res.data.ret;
-          this.total = res.data.pagination.total;
-        }
-      }).catch((error) => {
-        this.actionSetGlobalMessage({ msg: error.response.data.msg, code: error.response.data.code });
-      });
+      })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.data = res.data.ret;
+            this.total = res.data.pagination.total;
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
     },
     getStatus(status) {
       status = status.toLowerCase();
 
       switch (status) {
-        case 'submit_data':
-          return this.$text('S_SUBMIT_DEPOSIT', '提交资料');
-        case 'cancel':
-          return this.$text('S_CANCEL', '取消');
-        case 'complete':
-          return this.$text('S_CR_SUCCESS', '成功');
+        case "submit_data":
+          return this.$text("S_SUBMIT_DEPOSIT", "提交资料");
+        case "cancel":
+          return this.$text("S_CANCEL", "取消");
+        case "complete":
+          return this.$text("S_CR_SUCCESS", "成功");
         default:
-          return this.$text('S_PROCESSING_TEXT', '处理中');
+          return this.$text("S_PROCESSING_TEXT", "处理中");
       }
     },
     openEdit(info) {
@@ -213,8 +221,8 @@ export default {
       this.getSingleInfo(info.order_number);
       this.getData();
     }
-  },
+  }
 };
 </script>
 
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module />

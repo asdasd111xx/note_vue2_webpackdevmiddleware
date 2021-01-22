@@ -3,8 +3,8 @@
     :class="[
       $style['detail-wrap'],
       {
-        [$style['ey1']]: theme === 'ey1',
-      },
+        [$style['ey1']]: theme === 'ey1'
+      }
     ]"
   >
     <!-- 狀態暫時移除 -->
@@ -29,7 +29,11 @@
       />
     </div> -->
     <div v-if="data" :class="$style['detail-content-wrap']">
-      <div v-for="(item, index) in data" :class="$style['detail-block']">
+      <div
+        v-for="(item, index) in data"
+        :class="$style['detail-block']"
+        :key="index"
+      >
         <div :class="[$style['detail-cell'], $style['item-status']]">
           <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
@@ -54,7 +58,7 @@
                 }
               "
               :class="[
-                { [$style['processing']]: item.status === 'processing' },
+                { [$style['processing']]: item.status === 'processing' }
               ]"
             >
               {{ getStatus(item.status) }}
@@ -75,6 +79,7 @@
           <div
             v-if="item.hasOwnProperty(col.key)"
             :class="$style['detail-cell']"
+            :key="`col-'${index}`"
           >
             <div :class="$style['title']">
               {{ $text(col.title) }}
@@ -123,11 +128,11 @@
 </template>
 
 <script>
-import { getCookie } from '@/lib/cookie';
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
-import editWithdrawField from './editWithdrawField'
-import member from '@/api/member';
+import { getCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
+import editWithdrawField from "./editWithdrawField";
+import member from "@/api/member";
 
 export default {
   components: {
@@ -161,7 +166,7 @@ export default {
       ],
       editOpen: false,
       withdrawData: {},
-      thirdUrl: ''
+      thirdUrl: ""
     };
   },
   mounted() {
@@ -170,22 +175,20 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      memInfo: 'getMemInfo',
-      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus",
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
+    }
     // isApp() {
     //   let isApp = !!((this.$route.query && this.$route.query.app) || (this.$route.query && this.$route.query.APP))
     //   return isApp
     // },
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     showDetailPop(item) {
       // withdraw_rate
       this.detailRate = item;
@@ -195,52 +198,59 @@ export default {
 
       // 已申請
       if (status == 0) {
-        this.data = this.data.filter((info) => info.status === 'finished' || info.locked)
-        return
+        this.data = this.data.filter(
+          info => info.status === "finished" || info.locked
+        );
+        return;
       }
 
       // 未完成
       if (status == 1) {
-        this.data = this.data.filter((info) => info.process && !info.locked)
-        return
+        this.data = this.data.filter(info => info.process && !info.locked);
+        return;
       }
     },
     getData() {
       let params = {
         first_result: 0,
-        max_results: 10,
-      }
+        max_results: 10
+      };
 
-      let cid = getCookie('cid');
-      if (!cid) return
+      let cid = getCookie("cid");
+      if (!cid) return;
 
       axios({
-        method: 'get',
-        url: '/api/payment/v1/c/withdraw/list',
+        method: "get",
+        url: "/api/payment/v1/c/withdraw/list",
         errorAlert: false,
         params: params
-      }).then((res) => {
-        if (res && res.data && res.data.result === 'ok') {
-          this.data = res.data.ret;
-          this.total = res.data.pagination.total;
-          this.filterStatus();
-        }
-      }).catch((error) => {
-        this.actionSetGlobalMessage({ msg: error.response.data.msg, code: error.response.data.code });
-      });
+      })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            this.data = res.data.ret;
+            this.total = res.data.pagination.total;
+            this.filterStatus();
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
     },
     getStatus(status) {
       status = status.toLowerCase();
       switch (status) {
         //   (處理中/processing、已完成/finished、已確認/confirm、已取消/cancel、已拒絕/reject)
-        case 'processing':
-          return this.$text('S_PROCESSING_TEXT', '处理中');
-        case 'cancel':
-          return this.$text('S_CANCEL', '取消');
-        case 'reject':
-          return this.$text('S_CANCEL_TEXT', '拒绝');
+        case "processing":
+          return this.$text("S_PROCESSING_TEXT", "处理中");
+        case "cancel":
+          return this.$text("S_CANCEL", "取消");
+        case "reject":
+          return this.$text("S_CANCEL_TEXT", "拒绝");
         default:
-          return this.$text('S_CR_SUCCESS', '成功');
+          return this.$text("S_CR_SUCCESS", "成功");
       }
     },
     openEdit(info) {
@@ -248,8 +258,8 @@ export default {
       this.withdrawData = info;
       this.getData();
     }
-  },
+  }
 };
 </script>
 
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module />

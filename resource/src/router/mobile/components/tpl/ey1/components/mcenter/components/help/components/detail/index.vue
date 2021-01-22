@@ -21,10 +21,10 @@
 import { API_WITHDRAW_RECORD } from "@/config/api";
 import { mapGetters } from "vuex";
 import ajax from "@/lib/ajax";
-import depositRecord from "@/router/mobile/components/tpl/porn1/components/mcenter/components/help/components/detail/depositRecord.vue";
+import depositRecord from "@/router/mobile/components/tpl/porn1/components/mcenter/components/help/components/detail/depositRecord";
 import member from "@/api/member";
 import mobileContainer from "../../../../../common/mobileContainer";
-import withdrawRecord from "@/router/mobile/components/tpl/porn1/components/mcenter/components/help/components/detail/withdrawRecord.vue";
+import withdrawRecord from "@/router/mobile/components/tpl/porn1/components/mcenter/components/help/components/detail/withdrawRecord";
 
 export default {
   components: {
@@ -85,7 +85,7 @@ export default {
 };
 </script>
 
-<style  lang="scss" module>
+<style lang="scss" module>
 @import "../../css/index.module.scss";
 .detail-wrap {
   background-color: unset;
