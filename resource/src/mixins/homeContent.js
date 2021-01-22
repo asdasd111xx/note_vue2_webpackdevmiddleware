@@ -300,7 +300,6 @@ export default {
       });
     },
     onResize() {
-      console.log("re");
       // 計算外框高度
       setTimeout(() => {
         // 跑馬燈 header footer
