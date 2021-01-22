@@ -24,7 +24,7 @@
               :class="$style['edit']"
               @click="openEdit(item)"
             >
-              {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
+              提交资料
             </div>
 
             <div
