@@ -78,9 +78,9 @@
 
   &.active {
     height: 100%;
-    max-height: 100%;
+    max-height: unset;
     opacity: 1;
-    overflow: hidden;
+    overflow: unset;
   }
 }
 
@@ -109,15 +109,10 @@
   }
 }
 
-.content {
-  display: flex;
-
-  .content-text {
-    width: 45%;
-    margin-right: 45px;
-    display: inline-block;
-    min-height: 410px;
-  }
+.content-text {
+  width: 45%;
+  display: inline-block;
+  min-height: 410px;
 }
 
 .arrow-btn {
@@ -435,10 +430,8 @@
 }
 
 .content-img {
-  margin-bottom: 5px;
   width: 45%;
-  display: flex;
-  //float: right;
+  float: right;
   height: 100%;
 
   > img {
