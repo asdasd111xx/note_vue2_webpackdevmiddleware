@@ -603,7 +603,7 @@ export default {
           const { data, status, errorCode, msg } = response;
 
           if (errorCode !== "00" || status !== "000") {
-            this.errorMsg = `${msg}`;
+            this.actionSetGlobalMessage({ msg });
             return;
           }
 
@@ -613,15 +613,9 @@ export default {
           });
         })
         .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errorMsg = `${error.response.data.msg}`;
-            this.lockStatus = false;
-            return;
-          }
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+          this.lockStatus = false;
         });
     },
     submitByToken() {
@@ -648,7 +642,7 @@ export default {
           this.lockStatus = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}`;
+            this.actionSetGlobalMessage({ msg });
             return;
           }
 
@@ -658,15 +652,10 @@ export default {
           });
         })
         .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errorMsg = `${error.response.data.msg}`;
-            this.lockStatus = false;
-            return;
-          }
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+          this.lockStatus = false;
+          return;
         });
     },
     setBank(bank) {

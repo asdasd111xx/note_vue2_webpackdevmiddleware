@@ -453,12 +453,14 @@ export default {
 
             this.actionSetUserdata(true);
             setTimeout(() => {
+              this.isVerifyForm = false;
               this.isSendRecharge = false;
             }, 1500);
           })
           .catch(error => {
             this.setErrorCode(error.response.data);
             setTimeout(() => {
+              this.isVerifyForm = false;
               this.isSendRecharge = false;
             }, 1500);
           });

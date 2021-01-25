@@ -93,9 +93,7 @@
                     <div :class="$style['btn-next']">
                       <img
                         :src="
-                          $getCdnPath(
-                            `/static/image/common/arrow_next.png`
-                          )
+                          $getCdnPath(`/static/image/common/arrow_next.png`)
                         "
                       />
                     </div>
@@ -143,11 +141,7 @@
               <div v-if="item.btnShow" :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
                   <img
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/arrow_next.png`
-                      )
-                    "
+                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
                   />
                 </div>
               </div>
@@ -160,29 +154,45 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import axios from 'axios';
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   components: {
-    accountWrap: () => import(/* webpackChunkName: 'accountWrap' */'./accountWrap'),
-    editName: () => import(/* webpackChunkName: 'editName' */'./form/editName'),
-    editAlias: () => import(/* webpackChunkName: 'editAlias' */'./form/editAlias'),
-    editEmail: () => import(/* webpackChunkName: 'editEmail' */'./form/editEmail'),
-    editPhone: () => import(/* webpackChunkName: 'editPhone' */'./form/editPhone'),
-    editBirthday: () => import(/* webpackChunkName: 'editBirthday' */'./form/editBirthday'),
-    editGender: () => import(/* webpackChunkName: 'editGender' */'./form/editGender'),
-    editQq: () => import(/* webpackChunkName: 'editQq' */'./form/editQq'),
-    editWeixin: () => import(/* webpackChunkName: 'editWeixin' */'./form/editWeixin'),
-    editLine: () => import(/* webpackChunkName: 'editLine' */'./form/editLine'),
-    editFacebook: () => import(/* webpackChunkName: 'editFacebook' */'./form/editFacebook'),
-    editZalo: () => import(/* webpackChunkName: 'editZalo' */'./form/editZalo'),
-    editWithdrawPwd: () => import(/* webpackChunkName: 'editWithdrawPwd' */'./form/editWithdrawPwd'),
+    accountWrap: () =>
+      import(/* webpackChunkName: 'accountWrap' */ "./accountWrap"),
+    editName: () =>
+      import(/* webpackChunkName: 'editName' */ "./form/editName"),
+    editAlias: () =>
+      import(/* webpackChunkName: 'editAlias' */ "./form/editAlias"),
+    editEmail: () =>
+      import(/* webpackChunkName: 'editEmail' */ "./form/editEmail"),
+    editPhone: () =>
+      import(/* webpackChunkName: 'editPhone' */ "./form/editPhone"),
+    editBirthday: () =>
+      import(/* webpackChunkName: 'editBirthday' */ "./form/editBirthday"),
+    editGender: () =>
+      import(/* webpackChunkName: 'editGender' */ "./form/editGender"),
+    editQq: () => import(/* webpackChunkName: 'editQq' */ "./form/editQq"),
+    editWeixin: () =>
+      import(/* webpackChunkName: 'editWeixin' */ "./form/editWeixin"),
+    editLine: () =>
+      import(/* webpackChunkName: 'editLine' */ "./form/editLine"),
+    editFacebook: () =>
+      import(/* webpackChunkName: 'editFacebook' */ "./form/editFacebook"),
+    editZalo: () =>
+      import(/* webpackChunkName: 'editZalo' */ "./form/editZalo"),
+    editWithdrawPwd: () =>
+      import(
+        /* webpackChunkName: 'editWithdrawPwd' */ "./form/editWithdrawPwd"
+      ),
+    editSkype: () =>
+      import(/* webpackChunkName: 'editSkype' */ "./form/editSkype")
   },
   data() {
     return {
       currentTab: 0,
-      currentEdit: '',
+      currentEdit: "",
       showSuccess: false,
       addressInfo: {
         id: "",
@@ -190,7 +200,7 @@ export default {
         name: "",
         phone: "",
         address: ""
-      },
+      }
     };
   },
   created() {
@@ -198,23 +208,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-      memInfo: 'getMemInfo',
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   mounted() {
-    if (localStorage.getItem('set-account-success')) {
+    if (localStorage.getItem("set-account-success")) {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     handleClick(field) {
       if (field.key === "phone") {
         //   手機未驗證能設定
@@ -233,7 +241,19 @@ export default {
         return;
       }
 
-      if (['alias', 'name', 'phone', 'email', 'qq', 'weixin', 'line', 'withdrawPwd'].includes(field.key)) {
+      if (
+        [
+          "alias",
+          "name",
+          "phone",
+          "email",
+          "qq",
+          "weixin",
+          "line",
+          "withdrawPwd",
+          "skype"
+        ].includes(field.key)
+      ) {
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
@@ -249,7 +269,10 @@ export default {
         //     path: `/mobile/mcenter/accountData/${field.key}`
         //   });
         // }
-        localStorage.setItem('set-address-data-empty', this.addressInfo.id === '');
+        localStorage.setItem(
+          "set-address-data-empty",
+          this.addressInfo.id === ""
+        );
         this.$router.push({
           path: `/mobile/mcenter/accountData/${field.key}`
         });
@@ -260,35 +283,40 @@ export default {
     },
     editedSuccess(msg) {
       this.actionSetUserdata(true);
-      this.currentEdit = '';
+      this.currentEdit = "";
       this.showSuccess = true;
-      localStorage.removeItem('set-account-success');
+      localStorage.removeItem("set-account-success");
       setTimeout(() => {
         this.showSuccess = false;
-      }, 3000)
+      }, 3000);
     },
     getAddress() {
       axios({
-        method: 'get',
-        url: '/api/v1/c/player/address',
-      }).then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          if (res.data.ret.length > 0) {
-            this.addressInfo = res.data.ret.find((data) => data.is_default);
-            if (localStorage.getItem('set-address-default')) {
-              if (this.addressInfo.is_default != res.data.ret[parseInt(localStorage.getItem('set-address-default'))].is_default) {
-                this.getAddress();
-              } else {
-                localStorage.removeItem('set-address-default');
+        method: "get",
+        url: "/api/v1/c/player/address"
+      })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            if (res.data.ret.length > 0) {
+              this.addressInfo = res.data.ret.find(data => data.is_default);
+              if (localStorage.getItem("set-address-default")) {
+                if (
+                  this.addressInfo.is_default !=
+                  res.data.ret[
+                    parseInt(localStorage.getItem("set-address-default"))
+                  ].is_default
+                ) {
+                  this.getAddress();
+                } else {
+                  localStorage.removeItem("set-address-default");
+                }
               }
             }
           }
-        }
-      }).catch(error => {
-
-      })
+        })
+        .catch(error => {});
     }
   }
-}
+};
 </script>
 <style lang="scss" src="../../css/index.module.scss" module></style>
