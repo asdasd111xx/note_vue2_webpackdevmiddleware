@@ -287,7 +287,7 @@ export default {
         if (welfare) {
           let swag = welfare.vendors.find(i => i.vendor === "SWAG");
           const isEnableSWAG =
-            swag.type && swag.type.toLowerCase() === "thirdparty";
+            swag && swag.type && swag.type.toLowerCase() === "thirdparty";
           localStorage.setItem("enable-swag", isEnableSWAG);
         }
         try {
