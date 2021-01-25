@@ -117,7 +117,7 @@
                 )
               "
             />
-            {{ data.name }}
+            <div>{{ data.name }}</div>
           </div>
         </div>
       </div>
