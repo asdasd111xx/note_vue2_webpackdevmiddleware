@@ -158,6 +158,10 @@ export default {
       import(
         /* webpackChunkName: 'accountDataWithdrawpwdSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
       ),
+    accountDataSkypeSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataSkypeSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
+      ),
     accountDataReceiptAddressSg1: () =>
       import(
         /* webpackChunkName: 'accountDataReceiptAddressSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editReceiptAddress"

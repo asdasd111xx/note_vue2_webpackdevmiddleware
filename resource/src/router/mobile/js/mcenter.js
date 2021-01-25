@@ -71,6 +71,11 @@ export default {
           component
         },
         {
+          path: "skype",
+          name: "mcenter-accountData-skype",
+          component
+        },
+        {
           path: "receiptAddress",
           name: "mcenter-accountData-receiptAddress",
           component
