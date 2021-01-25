@@ -59,8 +59,6 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
 import mixin from "@/mixins/mcenter/recharge/recharge";
-import axios from "axios";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
 
@@ -72,7 +70,6 @@ export default {
   created() {
     this.getUserDetail();
     this.actionSetRechargeBonusConfig().then(() => {
-
       let data = this.rechargeBonusConfig;
 
       // 確保目前開放的欄位 first / monthly / weekly
@@ -111,22 +108,17 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
+    }
   },
   methods: {
-    ...mapActions([
-      "actionSetRechargeBonusConfig"
-    ]),
+    ...mapActions(["actionSetRechargeBonusConfig"]),
     commaFormat(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     getUserDetail() {
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
-        headers: {
-          cid: getCookie("cid")
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`
       }).then(res => {
         this.userVipInfo = res.data;
         this.vipTitleName = res.data[0].config_name;
@@ -136,6 +128,9 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/page/vipDetail/index.vipRewardRules.scss" module="$style_porn1"></style>
-<style lang="scss" src="@/css/page/vipDetail/sg1.vipRewardRules.scss" module="$style_sg1"></style>
-
+<style lang="scss" module="$style_porn1">
+@import "@/css/page/vipDetail/index.vipRewardRules.scss";
+</style>
+<style lang="scss" module="$style_sg1">
+@import "@/css/page/vipDetail/sg1.vipRewardRules.scss";
+</style>
