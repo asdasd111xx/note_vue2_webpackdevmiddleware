@@ -144,7 +144,7 @@ export default target => {
       let url = store.state.webInfo.on_service_url;
       newWindow = window.open(
         url,
-        "在线客服",
+        "_blank",
         `toolbar=yes, width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`,
         "true"
       );
