@@ -198,7 +198,7 @@ export default {
           type = "card";
           break;
       }
-      let resultUrl = `${this.BBOSDomain}/cdn/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
+      let resultUrl = `${this.BBOSDomain}/elibom/gameIcon/${type}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath("/static/image/casino/event_icon.png");

@@ -3,15 +3,15 @@
     <div :class="[$style['tag-wrap'], $style[source]]">
       <swiper ref="tag-swiper" :options="options">
         <swiper-slide
-          v-for="(info, index) in videoTag"
-          :key="info.id"
+          v-for="info in videoTag"
+          :key="`tag-${info.id}`"
           :class="[
             $style['tag-item'],
             $style[source],
             { [$style.active]: info.id === +videoType.id }
           ]"
         >
-          <span @click="onChangeVideoType(index)">
+          <span @click="onChangeVideoType(info.id, info.title)">
             {{ info.title }}
           </span>
           <div :class="$style['line']" />
@@ -53,7 +53,10 @@
         :class="[$style['all-tag-wrap'], $style[source], 'clearfix']"
       >
         <template v-for="(tag, index) in videoTag">
-          <div :key="`all-tag-${index}`" @click="onChangeVideoType(index)">
+          <div
+            :key="`all-tag-${index}`"
+            @click="onChangeVideoType(tag.id, tag.title)"
+          >
             {{ tag.title }}
           </div>
         </template>
@@ -73,7 +76,7 @@
           </div>
           <div
             :class="[$style['btn-more'], $style[source]]"
-            @click.stop="handleMore(i, videoData)"
+            @click.stop="handleMore(videoData)"
           >
             更多
           </div>
@@ -88,7 +91,7 @@
             :key="`video-${video.id}`"
             :href="`/mobile/videoPlay/${video.id}`"
             :class="[$style['video'], $style[source]]"
-            @click.stop="handleVideo(i, video)"
+            @click.stop="handleVideo(video)"
           >
             <img :src="defaultImg" :img-id="video.id" />
             <div>{{ video.title }}</div>
@@ -211,6 +214,13 @@ export default {
       default:
         break;
     }
+    if (this.$route.query.id && this.$route.query.title) {
+      this.videoType.id = this.$route.query.id;
+      this.videoType.title = this.$route.query.title;
+    } else {
+      this.$route.query.id = this.videoType.id = 0;
+      this.$route.query.title = this.videoType.title = "全部";
+    }
 
     this.initData();
   },
@@ -225,18 +235,23 @@ export default {
       this.getVideoRecommand();
       this.getVideoList();
     },
-    handleVideo(tag, video) {
+    handleVideo(video) {
       window.location.replace(
-        `${window.location.pathname}${window.location.search}#${tag}`
+        `${window.location.pathname}${window.location.search}#${this.$route.query.id}`
       );
       this.openVideo("videoPlay", {
         params: { id: video.id },
-        query: { source: this.$route.query.source }
+        // query: { source: this.$route.query.source }
+        query: {
+          source: this.$route.query.source,
+          tagId: +this.videoType.id || 0,
+          sortId: +video.id || 0
+        }
       });
     },
-    handleMore(tag, videoData) {
+    handleMore(videoData) {
       window.location.replace(
-        `${window.location.pathname}${window.location.search}#${tag}`
+        `${window.location.pathname}${window.location.search}#${this.$route.query.id}`
       );
       this.openVideo("videoList", {
         query: {
@@ -302,14 +317,26 @@ export default {
       });
     },
     // 切換當前影片分類
-    onChangeVideoType(index) {
+    onChangeVideoType(index, title) {
       this.onShowAllTag(false);
       this.videoType = { ...this.videoTag[index] };
 
+      this.videoType.id = index;
+      this.videoType.title = title;
+      // this.$nextTick(() => {
+      //   this.$refs["tag-swiper"].$swiper.slideTo(index);
+      // });
       this.$nextTick(() => {
-        this.$refs["tag-swiper"].$swiper.slideTo(index);
+        this.$router.replace({
+          query: {
+            source: this.$route.query.source,
+            id: this.videoType.id,
+            title: this.videoType.title
+          }
+        });
       });
     },
+
     // 開啟影片分類選單
     onShowAllTag(value) {
       this.isShowAllTag = value;
@@ -394,16 +421,18 @@ export default {
         this.resetTimer = null;
         this.videoList = [...response.result];
         this.$nextTick(() => {
-          if (window.location.hash) {
-            const hash = Number(window.location.hash.replace("#", "")) || 0;
-            const wrap = document.getElementById("video-list-wrap");
-            const cell = document.getElementsByClassName(
-              this.$style["video-cell"]
-            );
-            if (wrap && cell && cell[0]) {
-              wrap.scrollTop = cell[0].offsetHeight * hash;
-            }
-          }
+          this.videoType.id = this.$route.query.id;
+          this.videoType.title = this.$route.query.title;
+          // if (window.location.hash) {
+          //   const hash = Number(window.location.hash.replace("#", "")) || 0;
+          //   const wrap = document.getElementById("video-list-wrap");
+          //   const cell = document.getElementsByClassName(
+          //     this.$style["video-cell"]
+          //   );
+          //   if (wrap && cell && cell[0]) {
+          //     wrap.scrollTop = cell[0].offsetHeight * hash;
+          //   }
+          // }
         });
       });
     },

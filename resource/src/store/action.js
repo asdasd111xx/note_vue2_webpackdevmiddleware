@@ -1745,7 +1745,17 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
     }
   }).then(res => {
     if (res && res.data) {
-      commit(types.SET_BBOSDOMAIN, res.data[0]);
+      let length = res.data.length;
+      let result = "";
+      if (length > 0) {
+        let domainList = res.data.filter(
+          i => !i.replace("https://").includes(":")
+        );
+        result = domainList[Math.floor(Math.random() * domainList.length)];
+        commit(types.SET_BBOSDOMAIN, result);
+      } else {
+        commit(types.SET_BBOSDOMAIN, res.data[0]);
+      }
     }
   });
 };

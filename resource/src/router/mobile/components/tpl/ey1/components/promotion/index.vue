@@ -115,7 +115,7 @@ export default {
         },
         {
           alias: "verify_promotion",
-          name: ""
+          name: "审核查询"
         }
       ];
     },
