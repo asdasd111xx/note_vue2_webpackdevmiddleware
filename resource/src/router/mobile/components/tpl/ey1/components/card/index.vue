@@ -33,9 +33,18 @@ export default {
       const target = this.memInfo.vendors.find(
         item => item.vendor === vendor && item.kind === 5
       );
+      let title = "";
+      if (target && target.vendor === "leg" && target.kind === 5) {
+        // 454045
+        // 【文案需求】鴨博娛樂 - 首頁 - 遊戲入口全面調整（C-3704）
+        title = "LEG乐游";
+      } else {
+        title = target ? target.alias : "";
+      }
+
       return {
         prev: true,
-        title: target ? target.alias : "",
+        title: title,
         hasSearchBtn: true,
         onClick: () => {
           this.$router.back();
