@@ -98,6 +98,11 @@
         >
           <div
             v-for="(data, index) in specialData"
+            :style="
+              specialData.length > 2
+                ? { width: `${100 / specialData.length}%` }
+                : {}
+            "
             :key="data.name"
             :class="[
               $style['special-data'],
@@ -106,17 +111,19 @@
             ]"
             @click="$router.push(data.path)"
           >
-            <img
-              :class="[
-                $style['img-icon'],
-                { [$style['less']]: specialData.length < 3 }
-              ]"
-              :src="
-                $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/tcenter/${data.image}.png`
-                )
-              "
-            />
+            <div :class="[$style['special-data-img']]">
+              <img
+                :class="[
+                  $style['img-icon'],
+                  { [$style['less']]: specialData.length < 3 }
+                ]"
+                :src="
+                  $getCdnPath(
+                    `/static/image/${themeTPL}/mcenter/tcenter/${data.image}.png`
+                  )
+                "
+              />
+            </div>
             <div>{{ data.name }}</div>
           </div>
         </div>
@@ -143,7 +150,7 @@ export default {
   data() {
     return {
       isShowRebate: true,
-      specialData: [
+      specialList: [
         {
           showType: true,
           name: "推广信息",
@@ -180,6 +187,9 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    specialData() {
+      return this.specialList.filter(i => i.showType);
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
