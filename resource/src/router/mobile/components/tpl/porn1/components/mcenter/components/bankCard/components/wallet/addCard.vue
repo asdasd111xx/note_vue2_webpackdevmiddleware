@@ -357,7 +357,7 @@ export default {
           text = "请输入STICPAY注册信箱";
           break;
         case 37:
-          text = "请点击二维码綁定";
+          text = "请点击二维码绑定";
           this.isGoBaoWallet = true;
           this.getWalletTipInfo();
           break;
