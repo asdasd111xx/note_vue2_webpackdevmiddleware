@@ -23,10 +23,14 @@
           </div>
           <div :class="$style['total-bonus-amount']">
             <animatedNumber
+              v-if="animatedNumber.value !== '--'"
               :value="animatedNumber.value"
               :formatValue="formatMoney"
               :duration="animatedNumber.duration"
             />
+            <span v-else>
+              {{ animatedNumber.value }}
+            </span>
           </div>
         </div>
       </div>
@@ -336,6 +340,7 @@ export default {
           this.setCurrentUsers();
 
           if (!this.jackpotData.jpGrand) {
+            this.animatedNumber.value = "--";
             return;
           }
 
