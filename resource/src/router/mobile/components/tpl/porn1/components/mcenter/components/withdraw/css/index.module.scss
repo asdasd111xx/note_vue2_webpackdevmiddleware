@@ -13,25 +13,25 @@
   align-items: center;
   margin-top: 11px;
 
-  > div {
+  >div {
     width: 50%;
   }
 
-  > .balance-wrap {
-    > div:first-child {
+  >.balance-wrap {
+    >div:first-child {
       text-align: center;
 
-      > img {
+      >img {
         width: 14px;
         height: 14px;
       }
 
-      > span {
+      >span {
         color: #5e626d;
       }
     }
 
-    > div:last-child {
+    >div:last-child {
       color: #be9e7f;
       text-align: center;
       font-size: 16px;
@@ -60,7 +60,7 @@
   justify-content: center;
   font-weight: bold;
 
-  > img {
+  >img {
     width: 18px;
     height: 18px;
   }
@@ -86,12 +86,12 @@
     opacity: 0.5;
   }
 
-  > img {
+  >img {
     width: 25px;
     height: 25px;
   }
 
-  > span {
+  >span {
     padding: 0 0 0 10px;
     width: 80%;
     overflow: hidden;
@@ -107,7 +107,7 @@
     }
   }
 
-  > .check-box {
+  >.check-box {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -128,14 +128,14 @@
   .transfergo-img {
     width: 20px;
     height: 15px;
-    transform: translateX(-100%);
   }
 
   .currency-text {
     position: relative;
     width: 100%;
-    max-width: 90px;
+    max-width: 95px;
     font-size: 12px;
+    padding-left: 10px;
 
     &::after {
       content: "";
@@ -166,7 +166,7 @@
   width: 100%;
   margin-top: 5px;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -234,7 +234,7 @@
   justify-content: center;
   float: right;
 
-  > span {
+  >span {
     font-size: 14px;
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
@@ -265,7 +265,7 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  > div {
+  >div {
     margin: 0 auto;
     height: 45px;
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
@@ -405,7 +405,7 @@
       color: #be9e7f;
     }
 
-    > span:last-child {
+    >span:last-child {
       float: right;
     }
 
@@ -478,7 +478,7 @@
   margin-top: 5px;
   -webkit-text-security: disc;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -502,8 +502,8 @@
 }
 
 @media screen and (min-width: $phone) {
-  > .balance-wrap {
-    > div:last-child {
+  >.balance-wrap {
+    >div:last-child {
       font-size: 17px;
     }
   }
@@ -525,7 +525,7 @@
   }
 
   .withdraw-input {
-    > input {
+    >input {
       font-size: 17px;
 
       &::placeholder {
@@ -540,7 +540,7 @@
   }
 
   .withdraw-max {
-    > span {
+    >span {
       font-size: 15px;
     }
   }
@@ -550,11 +550,12 @@
   }
 
   .submit-btn {
-    > div {
+    >div {
       font-size: 15px;
     }
   }
 }
+
 .offer {
   height: 30px;
   background-color: $main_white_color1;
