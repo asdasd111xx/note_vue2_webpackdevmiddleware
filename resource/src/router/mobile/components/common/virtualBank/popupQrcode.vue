@@ -109,9 +109,7 @@ export default {
       if (this.virtualBankId === 37) {
         return "绑定购宝钱包";
       } else if (this.virtualBankId === 21) {
-        return ["porn1", "sg1"].includes(this.themeTPL)
-          ? "绑定CGPay"
-          : "扫描绑定";
+        return "绑定CGPay";
       }
     }
   },
