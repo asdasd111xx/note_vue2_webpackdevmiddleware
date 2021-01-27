@@ -265,11 +265,11 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),
-    // $style() {
-    //   const style =
-    //     this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-    //   return style;
-    // },
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
@@ -457,4 +457,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./css/index.scss" module></style>
+<style lang="scss" src="./css/index.scss" module="$style_porn1"></style>
