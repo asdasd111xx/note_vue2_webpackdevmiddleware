@@ -144,9 +144,8 @@ export default target => {
       let url = store.state.webInfo.on_service_url;
       newWindow = window.open(
         url,
-        "_blank",
-        `toolbar=yes, width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`,
-        "true"
+        "",
+        `toolbar=yes, width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`
       );
 
       // 在線客服流量分析事件
