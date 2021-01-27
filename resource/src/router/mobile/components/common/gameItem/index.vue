@@ -9,7 +9,6 @@
         `${!gameInfo.url && !gameInfo.code ? 'no-activity' : 'show'}`
       ])
     "
-    @click="onEnter"
   >
     <div
       v-if="gameInfo.code && gameInfo.status < 4"
@@ -22,7 +21,7 @@
       {{ vendorName }}
     </div>
     <!-- 遊戲圖片區塊 -->
-    <div :class="getClass(['game-box-wrap'])">
+    <div :class="getClass(['game-box-wrap'])" @click="onEnter">
       <!-- 行動裝置點擊圖片開啟遊戲 -->
       <div :class="[getClass(['game-box']), 'clearfix']">
         <img v-lazy="getImg" />
