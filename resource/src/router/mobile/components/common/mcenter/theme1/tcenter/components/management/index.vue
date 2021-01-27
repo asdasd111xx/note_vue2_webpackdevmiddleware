@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="!$route.params.date" :class="$style['top-link-wrap']">
+    <div
+      v-if="!$route.params.date && subSabState"
+      :class="$style['top-link-wrap']"
+    >
       <div
         :class="{ [$style.active]: $route.params.page === 'promote' }"
         @click="$router.replace('/mobile/mcenter/tcenter/management/promote')"
@@ -30,7 +33,12 @@
       <recommend />
     </template>
     <template v-else-if="$route.params.page === 'friends'">
-      <first-friends />
+      <first-friends
+        :set-header-title="setHeaderTitle"
+        :set-back-func="setBackFunc"
+        :set-tab-state="setTabState"
+        :set-sub-tab-state="setSubTabState"
+      />
     </template>
   </div>
 </template>
@@ -60,8 +68,17 @@ export default {
     },
     setHeaderTitle: {
       type: Function,
-      required: true
+      default: () => {}
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
+  },
+  data() {
+    return {
+      subSabState: true
+    };
   },
   computed: {
     ...mapGetters({
@@ -83,6 +100,11 @@ export default {
       name: "mcenter-tcenter-management",
       params: { page: "member" }
     });
+  },
+  methods: {
+    setSubTabState(state) {
+      this.subSabState = state;
+    }
   }
 };
 </script>
