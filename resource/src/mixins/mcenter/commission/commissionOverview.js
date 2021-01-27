@@ -1,8 +1,8 @@
 import { format, getMonth, getYear, parseISO } from "date-fns";
+import { mapActions, mapGetters } from "vuex";
 
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";
-import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -166,8 +166,10 @@ export default {
   },
   created() {
     this.getSummary();
+    this.actionSetSystemTime();
   },
   methods: {
+    ...mapActions(["actionSetSystemTime"]),
     /**
      * 取得收益概況
      */
