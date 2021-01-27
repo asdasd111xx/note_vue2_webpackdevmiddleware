@@ -210,8 +210,10 @@ export default {
   created() {
     this.getImmediateData();
     this.bankRebateMaintains();
+    this.actionSetSystemTime();
   },
   methods: {
+    ...mapActions(["actionSetSystemTime"]),
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({
         success: response => {

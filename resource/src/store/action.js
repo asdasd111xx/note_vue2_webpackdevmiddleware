@@ -576,7 +576,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
   commit(types.SETENV, "mem");
 
   return (async () => {
-    dispatch("actionSetSystemTime");
+    // dispatch("actionSetSystemTime");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 

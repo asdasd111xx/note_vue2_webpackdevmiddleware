@@ -237,11 +237,14 @@ export default {
 
         if (!amount || amount === 0) {
           errorMessage = "请输入转让金额";
-        } else if (limit && amount < limit) {
-          errorMessage = "转帐金额低于最低限额";
-        } else if (amount > this.maxRechargeBalance) {
-          // errorMessage = "馀额不足";
-        } else {
+        }
+        // 客端不判斷金額大小
+        // else if (limit && amount < limit) {
+        //   // errorMessage = "转帐金额低于最低限额";
+        // } else if (amount > this.maxRechargeBalance) {
+        //   // errorMessage = "馀额不足";
+        // }
+        else {
           errorMessage = "";
         }
       }
