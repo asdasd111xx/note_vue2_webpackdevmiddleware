@@ -235,7 +235,7 @@ export default {
           .replace(/[^0-9]/g, "")
           .substring(0, 16);
 
-        if (!amount || amount === 0) {
+        if (this.formData.amount !== "" && amount === 0) {
           errorMessage = "请输入转让金额";
         }
         // 客端不判斷金額大小
