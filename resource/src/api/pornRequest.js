@@ -48,7 +48,6 @@ export default ({
   // }
 
   let api = window.PermissionRequest;
-  console.log(api);
   if (!api) {
     window.PermissionRequest = axios.create({});
     api = window.PermissionRequest;
