@@ -56,12 +56,13 @@ export default {
         // this.data = this.noticeData.pop();
         let temp = this.noticeData[this.noticeData.length - 1];
         if (temp.event === "vendor_maintain_notice") {
-          // this.timer = setInterval(() => {
           this.getMaintainList();
-          // clearInterval(this.timer);
-          // this.timer = null;
-          // return;
-          // }, 70000);
+          clearInterval(this.timer);
+          this.timer = setInterval(() => {
+            this.getMaintainList();
+            this.timer = null;
+            return;
+          }, 70000);
         }
 
         if (temp.event === "outer_maintain" && temp.vendor === "swag") {
