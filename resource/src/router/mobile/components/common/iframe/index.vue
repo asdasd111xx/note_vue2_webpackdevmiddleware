@@ -128,6 +128,40 @@ export default {
         // case "SWAG":
         if (localStorage.getItem("iframe-third-url")) {
           const vendor = query.vendor;
+          if (vendor === "SL") {
+            window.sportEvent = type => {
+              if (type === "GO_IM_SPORT") {
+                if (!this.loginStatus) {
+                  this.actionSetGlobalMessage({
+                    code: "M00001",
+                    origin: "home"
+                  });
+                  return;
+                } else {
+                  const openGameSuccessFunc = res => {
+                    this.isShowLoading = false;
+                  };
+
+                  const openGameFailFunc = res => {
+                    this.isShowLoading = false;
+
+                    if (res && res.data) {
+                      let data = res.data;
+                      this.actionSetGlobalMessage({
+                        msg: data.msg,
+                        code: data.code
+                      });
+                    }
+                  };
+                  openGame(
+                    { vendor: "boe", kind: 1 },
+                    openGameSuccessFunc,
+                    openGameFailFunc
+                  );
+                }
+              }
+            };
+          }
           this.src = localStorage.getItem("iframe-third-url");
           return;
         }
@@ -418,6 +452,7 @@ export default {
         });
     },
     onListener(e) {
+      console.log(e);
       // //  需要監聽的白名單
       // let whiteList = [window.location.origin,
       //   'https://play.qybtv.xyz',
