@@ -142,12 +142,8 @@ export default target => {
 
     if (linkTo.includes("service")) {
       let url = store.state.webInfo.on_service_url;
-      newWindow = window.open(
-        url,
-        "_blank",
-        `toolbar=yes, width=${store.state.webInfo.on_service_w}, height=${store.state.webInfo.on_service_h}`,
-        "true"
-      );
+      console.log(url);
+      window.open(url);
 
       // 在線客服流量分析事件
       window.dataLayer.push({
