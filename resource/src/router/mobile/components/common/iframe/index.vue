@@ -603,7 +603,7 @@ export default {
 .header {
   margin: 0 auto;
   max-width: $mobile_max_width;
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 3;
   width: 100%;
@@ -703,14 +703,14 @@ export default {
 }
 
 .close-fullscreen {
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 43px;
   margin: 0 auto;
   transform: rotate(90deg);
   height: 18px;
   margin: 0 auto;
   left: calc(50% - 9px);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 0 5px 5px 0;
   opacity: 1;
   display: flex;
