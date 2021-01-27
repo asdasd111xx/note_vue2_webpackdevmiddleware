@@ -257,11 +257,15 @@ export default {
         });
       }
       this.pwdResetInfo[id].value = value.trim();
-
+      console.log(`123   ${id}`);
       if (
-        id === "confNewPwd" &&
-        this.pwdResetInfo["confNewPwd"].value !==
-          this.pwdResetInfo["newPwd"].value
+        (id === "confNewPwd" &&
+          this.pwdResetInfo["confNewPwd"].value !==
+            this.pwdResetInfo["newPwd"].value) ||
+        (id === "newPwd" &&
+          this.pwdResetInfo["confNewPwd"].value != "" &&
+          this.pwdResetInfo["confNewPwd"].value !==
+            this.pwdResetInfo["newPwd"].value)
       ) {
         this.errMsg = "确认密码预设要跟密码一致";
       } else {
