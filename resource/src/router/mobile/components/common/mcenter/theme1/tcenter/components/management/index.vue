@@ -20,7 +20,15 @@
         :class="{ [$style.active]: $route.params.page === 'friends' }"
         @click="$router.replace('/mobile/mcenter/tcenter/management/friends')"
       >
-        <span>{{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}</span>
+        <span>
+          <template v-if="themeTPL === 'ey1'">
+            {{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}
+          </template>
+
+          <template v-else>
+            下级好友
+          </template>
+        </span>
       </div>
     </div>
     <template v-if="$route.params.page === 'member'">
@@ -89,6 +97,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   created() {
