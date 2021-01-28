@@ -62,7 +62,7 @@
             :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
           />
         </div>
-        <div>{{ $text("S_BETHISTORYBTN", "投注纪录") }}</div>
+        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
       </div>
       <div
         :class="$style['cell']"

@@ -10,30 +10,36 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { getCookie } from '@/lib/cookie';
-import yaboRequest from '@/api/yaboRequest';
+import { mapGetters, mapActions } from "vuex";
+import { getCookie } from "@/lib/cookie";
+import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {
-    bankCardDeposit: () => import(/* webpackChunkName: 'bankCardDeposit' */'./components/bankCardDeposit'),
-    recordDeposit: () => import(/* webpackChunkName: 'recordDeposit' */'./components/recordDeposit')
+    bankCardDeposit: () =>
+      import(
+        /* webpackChunkName: 'bankCardDeposit' */ "./components/bankCardDeposit"
+      ),
+    recordDeposit: () =>
+      import(
+        /* webpackChunkName: 'recordDeposit' */ "./components/recordDeposit"
+      )
   },
 
   data() {
     return {
-      tabCurrent: 'deposit',
+      tabCurrent: "deposit",
       headerSetting: {
-        title: this.$text('S_ONLINE_DEPOSIT', '线上存款'),
+        title: this.$text("S_ONLINE_DEPOSIT", "线上存款"),
         leftBtns: {
-          icon: 'arrow',
+          icon: "arrow",
           onClick: () => {
-            if (this.nowTabCurrent === 'deposit') {
-              this.$router.push('/mobile/mcenter');
+            if (this.nowTabCurrent === "deposit") {
+              this.$router.push("/mobile/mcenter");
               return;
             }
             this.actionSetUserBalance();
-            this.nowTabCurrent = 'deposit';
+            this.nowTabCurrent = "deposit";
           }
         },
         balance: true,
@@ -43,12 +49,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig',
-      loginStatus: 'getLoginStatus',
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus"
     }),
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     nowTabCurrent: {
@@ -57,22 +64,22 @@ export default {
       },
       set(val) {
         this.tabCurrent = val;
-        if (val === 'record') {
+        if (val === "record") {
           this.headerSetting = {
-            title: this.$text('S_DEPOSIT_RECORD', '8日内存款纪录'),
+            title: this.$text("S_DEPOSIT_RECORD", "8日内存款记录"),
             leftBtns: this.headerSetting.leftBtns,
             balance: true
           };
           return;
         }
         this.headerSetting = {
-          title: this.$text('S_ONLINE_DEPOSIT', '线上存款'),
+          title: this.$text("S_ONLINE_DEPOSIT", "线上存款"),
           leftBtns: this.headerSetting.leftBtns,
           rightBtns: {
-            icon: 'regular/calendar-check',
+            icon: "regular/calendar-check",
             onClick: () => {
               this.actionSetUserBalance();
-              this.nowTabCurrent = 'record';
+              this.nowTabCurrent = "record";
             }
           }
         };
@@ -89,25 +96,23 @@ export default {
   },
   created() {
     if (!this.loginStatus) {
-      this.$router.push('/mobile/login');
+      this.$router.push("/mobile/login");
     }
 
     this.isFastPay();
   },
   methods: {
-    ...mapActions([
-      'actionSetUserBalance'
-    ]),
+    ...mapActions(["actionSetUserBalance"]),
     isFastPay() {
-      if (this.memInfo.config.deposit.includes('迅付')) {
+      if (this.memInfo.config.deposit.includes("迅付")) {
         this.headerSetting = {
           title: this.headerSetting.title,
           leftBtns: this.headerSetting.leftBtns,
           rightBtns: {
-            icon: 'regular/calendar-check',
+            icon: "regular/calendar-check",
             onClick: () => {
               this.actionSetUserBalance();
-              this.nowTabCurrent = 'record';
+              this.nowTabCurrent = "record";
             }
           }
         };
