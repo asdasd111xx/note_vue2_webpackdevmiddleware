@@ -2,6 +2,7 @@
   <mobile-container
     :header-config="headerConfig"
     :update-search-status="updateSearchStatus"
+    :has-footer="false"
   >
     <div slot="content" class="content-wrap">
       <casino-wrap
