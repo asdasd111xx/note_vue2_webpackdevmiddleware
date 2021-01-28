@@ -284,7 +284,7 @@ export default {
         } else if (!info.last_login || this.isOnline(info)) {
           return "在线";
         } else {
-          return this.dateFormat(info.last_online);
+          return this.dateFormat(info.last_online, "YYYY-MM-DD HH:mm:ss");
         }
       };
 
@@ -331,7 +331,7 @@ export default {
           {
             key: "register_time",
             alias: "注册时间",
-            value: this.dateFormat(item.created_at)
+            value: this.dateFormat(item.created_at, "YYYY-MM-DD HH:mm:ss")
           },
           {
             key: "register_method",

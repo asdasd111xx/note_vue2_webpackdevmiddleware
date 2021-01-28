@@ -158,6 +158,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",
       promotionLink: "getPromotionLink"
