@@ -118,7 +118,7 @@ export default {
         {
           key: "recommendGift",
           text: this.$text("S_RECOMMEND_GIFT", "推荐礼金"),
-          show: true
+          show: this.memInfo.config.festival
         }
       ].filter(item => item.show);
     },

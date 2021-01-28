@@ -11,7 +11,12 @@
         @click="$router.back()"
       />
       <div :class="$style['title-label']">我的推广</div>
-      <div :class="$style['title-commission']">收益概况</div>
+      <div
+        :class="$style['title-commission']"
+        @click="$router.push('/mobile/mcenter/tcenter/commission/summary')"
+      >
+        收益概况
+      </div>
     </div>
     <div :class="$style['main']">
       <!-- <div :class="[$style['top-bg']]"></div> -->
@@ -180,6 +185,12 @@ export default {
   },
   created() {
     this.getRebateSwitch();
+    console.log(123);
+    this.specialData.forEach(element => {
+      if (element.name === "推荐礼金") {
+        element.showType = this.memInfo.config.festival;
+      }
+    });
   },
   watch: {},
   computed: {

@@ -8,6 +8,22 @@
   background-image: url('/static/image/sg1/mcenter/tcenter/promote_bg.png');
 }
 
+.top-data {
+  font-weight: inherit;
+
+  .list-data {
+
+    .list-name {
+      color: #F8E1A1;
+    }
+
+    .list-value {
+      color: #FFFFFF;
+    }
+  }
+
+}
+
 
 .title-commission {
   background: linear-gradient(#FFD780, #FFC180);
@@ -28,6 +44,14 @@
       top: 2.5px;
       margin-right: 7px;
       background: linear-gradient(#FE593C, #E61938);
+    }
+
+  }
+
+  .special-content {
+
+    .special-data {
+      color: #414655
     }
   }
 }
