@@ -146,7 +146,7 @@ export default {
         url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
         params: {
-          bind_type: queryType ? queryType : this.bindType,
+          // bind_type: queryType ? queryType : this.bindType,
           wallet_gateway_id: id
         }
       })

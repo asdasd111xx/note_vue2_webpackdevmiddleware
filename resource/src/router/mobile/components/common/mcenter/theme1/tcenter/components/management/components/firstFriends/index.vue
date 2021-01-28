@@ -315,7 +315,7 @@ export default {
           },
           {
             key: "cash_balance",
-            alias: "主帐户馀额",
+            alias: "主帐户余额",
             value: this.commaFormat(item.cash.balance)
           },
           {
