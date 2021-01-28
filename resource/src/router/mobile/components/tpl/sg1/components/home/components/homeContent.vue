@@ -205,7 +205,7 @@
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
     </div>
-    <page-loading :isShow="isShowLoading" />
+    <page-loading :isShow="isLoading" />
   </div>
 </template>
 
