@@ -27,7 +27,7 @@ export default {
       selectedIndex: 0,
       currentLevel: 0,
       showPromotion: false,
-      isShowLoading: false,
+      isLoading: false,
       isCheckWithdraw: false,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
@@ -601,7 +601,7 @@ export default {
           ) {
             userId = this.memInfo.user.id;
           }
-          this.isShowLoading = true;
+          this.isLoading = true;
 
           switch (game.vendor) {
             case "SWAG":
@@ -664,7 +664,7 @@ export default {
                     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`
                   }).then(res => {
                     localStorage.removeItem("is-open-game");
-                    this.isShowLoading = false;
+                    this.isLoading = false;
 
                     if (res && res.status !== "000") {
                       if (res.msg) {
@@ -787,14 +787,14 @@ export default {
             return;
           }
 
-          this.isShowLoading = true;
+          this.isLoading = true;
 
           const openGameSuccessFunc = res => {
-            this.isShowLoading = false;
+            this.isLoading = false;
           };
 
           const openGameFailFunc = res => {
-            this.isShowLoading = false;
+            this.isLoading = false;
 
             if (res && res.data) {
               let data = res.data;
