@@ -1874,11 +1874,7 @@ export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
     }
   }).then(res => {
     if (res.errorCode !== "00" || res.status !== "000") {
-      // dispatch("actionSetGlobalMessage", {
-      //   msg: res.msg,
-      //   code: res.code
-      // });
-      return;
+      return res;
     }
     commit(types.SET_SWAG_CONFIG, res.data);
   });

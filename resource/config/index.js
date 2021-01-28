@@ -120,11 +120,6 @@ module.exports = {
         changeOrigin: true,
         secure: false
       },
-      "/swag": {
-        target: domain,
-        changeOrigin: true,
-        secure: false
-      },
       "/exsport": {
         target: domain,
         changeOrigin: true,

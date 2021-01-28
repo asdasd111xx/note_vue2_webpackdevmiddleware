@@ -119,6 +119,7 @@ export default {
       const enable = localStorage.getItem("enable-swag") !== "false";
       if (this.isCheckingInit || !enable) {
         return new Promise((resolve, reject) => {
+          this.isLoading = false;
           resolve(false);
         });
       }
@@ -134,6 +135,7 @@ export default {
       }
       return this.actionSetSwagConfig().then(() => {
         setTimeout(() => {
+          this.isLoading = false;
           this.isCheckingInit = false;
         }, 1000);
 
@@ -221,6 +223,8 @@ export default {
         origin = (params && params.origin) || "home";
 
       this.initSWAGConfig(true, true).then(result => {
+        this.isLoading = false;
+
         if (!result) {
           return;
         }

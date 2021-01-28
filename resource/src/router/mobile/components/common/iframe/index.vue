@@ -108,7 +108,7 @@ export default {
 
     const params = this.$route.params;
     const query = this.$route.query;
-    const vendor = query.vendor;
+    const vendor = query.vendor || params.page || "";
     if (!params.page) {
       this.src = localStorage.getItem("iframe-third-url");
       return;
@@ -116,16 +116,7 @@ export default {
 
     switch (params.page.toUpperCase()) {
       case "THIRDPARTY":
-        // vendor
-        // case "APB":
-        // case "BALE":
-        // case "STB":
-        // case "JPB":
-        // case "DSC":
-        // case "PPV":
-        // case "SF":
-        // case "SL":
-        // case "SWAG":
+      case "SWAG":
         if (localStorage.getItem("iframe-third-url")) {
           const vendor = query.vendor;
           if (vendor === "SL") {
@@ -503,6 +494,7 @@ export default {
 
           case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
           case "EVENT_THIRDPARTY_DEPOSIT":
+            // localStorage.setItem("iframe-third-url-swag", "https://yabo.care/");
             this.$router.push("/mobile/mcenter/swag?tab=0&prev=back");
             return;
 
