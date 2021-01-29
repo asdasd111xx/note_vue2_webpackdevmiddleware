@@ -730,7 +730,7 @@ export default {
         this.walletTipInfo = [
           {
             key: "CGPay",
-            text: `可输入${this.selectTarget.walletName}帐号或扫码绑定`
+            text: `可输入${this.selectTarget.walletName}帐号`
           },
           {
             key: "CGPay",

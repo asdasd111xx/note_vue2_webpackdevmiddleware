@@ -17,7 +17,8 @@
             :class="[
               $style['value-item'],
               {
-                [$style['red']]: item === '冻结' || item === '停权'
+                [$style['red']]:
+                  item === '停用' || item === '冻结' || item === '停权'
               },
               {
                 [$style['blue']]: item === '启用'
