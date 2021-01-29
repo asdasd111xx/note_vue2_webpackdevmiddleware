@@ -2,6 +2,7 @@
 
 .content-wrap {
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .section {
@@ -67,7 +68,8 @@
   height: 0;
   max-height: 0;
   opacity: 0.6;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
   transition: all 0.31s ease-out;
   position: relative;
 
@@ -75,7 +77,8 @@
     height: 100%;
     max-height: unset;
     opacity: 1;
-    overflow: unset;
+    overflow-y: unset;
+    overflow-x: unset;
   }
 }
 
@@ -222,7 +225,8 @@
     float: right;
     color: #222222;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     text-overflow: ellipsis;
     max-width: 50%;
   }
@@ -308,6 +312,7 @@
   list-style: none;
   background: #fefffe;
   overflow-y: scroll;
+  overflow-y: hidden;
 
   li {
     height: 50px;
