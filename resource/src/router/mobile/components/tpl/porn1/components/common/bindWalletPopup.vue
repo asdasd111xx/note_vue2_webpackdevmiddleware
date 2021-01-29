@@ -322,7 +322,7 @@ export default {
         url: "/api/v1/c/ext/inpay",
         data: {
           api_uri: "/api/trade/v2/c/withdraw/bind_wallet_by_token",
-          bind_type: "deposit",
+          // bind_type: "deposit",
           wallet_gateway_id: 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
           wallet_token: this.formData["CGPPwd"].value

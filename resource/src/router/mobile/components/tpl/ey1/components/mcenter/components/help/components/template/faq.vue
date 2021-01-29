@@ -11,9 +11,7 @@
           {{ categorys[category_currentIndex] }}
         </div>
         <div :class="[$style['arrow-btn']]">
-          <img
-            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
       <div
@@ -49,7 +47,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in limitTable">
+                  <tr v-for="(item, index) in limitTable" :key="`t-${index}`">
                     <td :class="$style['limit-value']">
                       {{ item.limit }}
                     </td>
@@ -64,6 +62,7 @@
           <template v-else>
             <div
               v-for="(item, index) in item.content"
+              :key="`s-${index}`"
               :class="$style['text-block']"
               v-html="item"
               @click="linkTo('service')"
@@ -74,9 +73,7 @@
         <div
           :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
         >
-          <img
-            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
     </div>
@@ -88,7 +85,7 @@
           <span @click="category_isShowPop = false">{{
             $text("S_CANCEL", "取消")
           }}</span>
-          选择游戏类别
+          选择问题类别
         </div>
         <ul :class="$style['pop-list']">
           <li
@@ -121,14 +118,14 @@ export default {
         {
           limit: "0.01元",
           platform:
-            "MG电子、PT电子、HB电子、开元棋牌、PG电子、FG电子、SW电子、KA电子",
+            "MG电子、PT电子、HB电子、开元棋牌、PG电子、FG电子、SW电子、KA电子"
         },
         { limit: "0.02元", platform: "AG电子、SG电子" },
         { limit: "0.05元", platform: "易游电子" },
         {
           limit: "0.1元",
           platform:
-            "BB电子、JDB电子、PP电子、大满贯电子、AW电子、ACE电子、MT电子、WM电子、PS电子、TP电子、乐游棋牌",
+            "BB电子、JDB电子、PP电子、大满贯电子、AW电子、ACE电子、MT电子、WM电子、PS电子、TP电子、乐游棋牌"
         },
         { limit: "0.16元", platform: "CQ9电子" },
         { limit: "0.2元", platform: "GNS电子" },
@@ -136,26 +133,26 @@ export default {
         {
           limit: "1元",
           platform:
-            "BB彩票、XBB电子、易游棋牌、XBB彩票、XBB棋牌、JDB棋牌、FG棋牌、VR彩票",
+            "BB彩票、XBB电子、易游棋牌、XBB彩票、XBB棋牌、JDB棋牌、FG棋牌、VR彩票"
         },
         { limit: "2元", platform: "皇冠体育、XBB棋牌" },
         { limit: "5元", platform: "IM体育" },
         {
           limit: "10元",
           platform:
-            "BB视讯、GD视讯、BB体育、沙巴体育、EVO视讯、MG视讯、eBET视讯、性感百家乐、XBB视讯-轮盘/骰宝",
+            "BB视讯、GD视讯、BB体育、沙巴体育、EVO视讯、MG视讯、eBET视讯、性感百家乐、XBB视讯-轮盘/骰宝"
         },
         {
           limit: "20元",
-          platform: "AG视讯、AB视讯、BG视讯、XBB视讯-百家乐/龙虎斗",
-        },
-      ],
+          platform: "AG视讯、AB视讯、BG视讯、XBB视讯-百家乐/龙虎斗"
+        }
+      ]
     };
   },
   created() {
     this.isCategoryMode = true;
     this.source = info;
-  },
+  }
 };
 </script>
 

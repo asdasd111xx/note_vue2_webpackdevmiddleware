@@ -39,7 +39,7 @@
         </li>
       </ul>
       <div v-if="selectMenu === 'time'" :class="$style['search-tips']">
-        *当前系统支持查询最近30日的纪录
+        *当前系统支持查询最近30日的记录
       </div>
       <div
         v-if="selectMenu === 'time'"

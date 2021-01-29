@@ -185,7 +185,6 @@ export default {
   },
   created() {
     this.getRebateSwitch();
-    console.log(123);
     this.specialData.forEach(element => {
       if (element.name === "推荐礼金") {
         element.showType = this.memInfo.config.festival;
