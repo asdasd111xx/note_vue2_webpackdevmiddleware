@@ -61,6 +61,7 @@ export default {
         },
         success: () => {
           this.actionSetUserdata(true);
+          localStorage.removeItem("is-shown-announcement");
           window.location.reload(true);
         }
       });
