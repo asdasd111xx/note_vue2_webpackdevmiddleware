@@ -240,7 +240,6 @@ export default {
     }
   },
   created() {
-    this.$route.query.label = this.paramsData.label;
     localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
@@ -352,7 +351,7 @@ export default {
         this.gameData = [];
         return;
       }
-      this.updateGameData(this.$route.query.label);
+      this.updateGameData();
     },
     /**
      * 設定遊戲分類
