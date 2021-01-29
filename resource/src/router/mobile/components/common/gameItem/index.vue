@@ -431,7 +431,7 @@ export default {
       if (this.isBackEnd || this.isSetFavorite) {
         return;
       }
-      this.isSetFavorite = true;
+
       const actionType = this.checkFavorite
         ? "deleteFavoriteGame"
         : "setFavoriteGame";
@@ -443,6 +443,7 @@ export default {
           code
         }
       }).then(() => {
+        this.isSetFavorite = true;
         this.isFavorite = !this.isFavorite;
         this.actionSetFavoriteGame(vendor).then(() => {
           setTimeout(() => {
