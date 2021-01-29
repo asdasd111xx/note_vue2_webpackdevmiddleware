@@ -2,6 +2,7 @@
 
 .content-wrap {
   overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .section {
@@ -72,7 +73,8 @@
   height: 0;
   max-height: 0;
   opacity: 0.6;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
   transition: all 0.31s ease-out;
   position: relative;
 
@@ -80,7 +82,8 @@
     height: 100%;
     max-height: unset;
     opacity: 1;
-    overflow: unset;
+    overflow-y: unset;
+    overflow-x: unset;
   }
 }
 
@@ -112,7 +115,7 @@
 .content-text {
   width: 45%;
   display: inline-block;
-  min-height: 470px;
+  min-height: 410px;
 }
 
 .arrow-btn {
@@ -222,7 +225,8 @@
     max-width: 55%;
     text-align: right;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     white-space: nowrap;
   }
 
@@ -363,6 +367,7 @@
   list-style: none;
   background: #fefffe;
   overflow-y: scroll;
+  overflow-x: hidden;
 
   li {
     height: 50px;
@@ -453,6 +458,7 @@
 //
 .help-wrap {
   overflow-x: hidden;
+  overflow-y: scroll;
   color: $main_text_color3;
   position: relative;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
@@ -598,5 +604,4 @@
       text-align: center;
     }
   }
-
 }

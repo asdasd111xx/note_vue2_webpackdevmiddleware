@@ -22,7 +22,8 @@
   background: #ffffff;
   border-radius: 8px;
   margin: 0 auto;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   &.deposit {
     height: auto;
