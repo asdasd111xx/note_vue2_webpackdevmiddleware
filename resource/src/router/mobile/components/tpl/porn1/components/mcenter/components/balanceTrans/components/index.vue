@@ -820,6 +820,11 @@ export default {
             this.transferMoney = "";
 
             this.btnLock = false;
+
+            // 0129 暫解，待後續優化
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           },
           fail: res => {
             this.btnLock = false;
