@@ -5,8 +5,6 @@
   "display": "standalone",
   "background_color": "#fff",
   "description": "鸭脖娱乐",
-  "orientation": "landscape",
-  "scope": "/mobile/",
   "icons": [
     {
       "src": "../pwa/porn1/48.png",
@@ -26,6 +24,11 @@
     {
       "src": "../pwa/porn1/144.png",
       "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "../pwa/porn1/167.png",
+      "sizes": "167x167",
       "type": "image/png"
     },
     {

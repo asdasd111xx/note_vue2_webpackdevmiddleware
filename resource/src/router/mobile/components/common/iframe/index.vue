@@ -61,7 +61,7 @@
       :class="[$style['iframe'], $style[$route.params.page]]"
       :src="src"
       @load="onLoadiframe"
-      allow="fullscreen"
+      allow="geolocation"
       allowfullscreen="allowfullscreen"
       frameborder="0"
       crossorigin
