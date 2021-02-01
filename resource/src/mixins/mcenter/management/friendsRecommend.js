@@ -180,27 +180,27 @@ export default {
     },
 
     checkInput() {
-      // 無認證直接呼叫
-      if (this.memInfo.config.friend_captcha_type === 0) {
-        this.handleSend();
-        return;
-      } else {
-        this.$validator.validateAll("form-page").then(response => {
-          if (!response) {
-            // this.msg = this.$text("S_JM_MSG_COMPLETE");
-            Object.keys(this.allValue).forEach(key => {
-              if (this.allValue[key]) {
-                return;
-              }
-              if (key === "captcha_text") {
-                this.captchaError = true;
-              } else {
-                this.allText[key].error = true;
-              }
-            });
-            return;
-          }
-
+      this.$validator.validateAll("form-page").then(response => {
+        console.log(response);
+        if (!response) {
+          // this.msg = this.$text("S_JM_MSG_COMPLETE");
+          Object.keys(this.allValue).forEach(key => {
+            if (this.allValue[key]) {
+              return;
+            }
+            if (key === "captcha_text") {
+              this.captchaError = true;
+            } else {
+              this.allText[key].error = true;
+            }
+          });
+          return;
+        }
+        // 無認證直接呼叫
+        if (this.memInfo.config.friend_captcha_type === 0) {
+          this.handleSend();
+          return;
+        } else {
           if (this.allInput.some(key => this.allText[key].error)) {
             return;
           }
@@ -215,8 +215,8 @@ export default {
           }
 
           this.showCaptchaPopup();
-        });
-      }
+        }
+      });
     },
     /**
      * 註冊
