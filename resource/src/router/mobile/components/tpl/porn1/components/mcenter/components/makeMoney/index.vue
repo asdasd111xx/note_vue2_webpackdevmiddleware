@@ -147,12 +147,16 @@ export default {
       if (this.loginStatus) {
         this.isShowPromotion =
           localStorage.getItem("is-show-promotion") === "true";
+
         this.actionSetUserdata(true).then(() => {
-          this.isShowPromotion = this.memInfo.user.show_promotion;
-          localStorage.setItem(
-            "is-show-promotion",
-            this.memInfo.user.show_promotion
-          );
+          // 我的推廣開關 && 禮金開關需同時開啟，才顯示禮金明細
+          this.isShowPromotion =
+            this.memInfo.user.show_promotion && this.memInfo.config.festival;
+          localStorage.setItem("is-show-promotion", this.isShowPromotion);
+          // localStorage.setItem(
+          //   "is-show-promotion",
+          //   this.memInfo.user.show_promotion
+          // );
         });
       } else {
         this.isShowPromotion = true;
@@ -162,6 +166,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      memInfo: "getMemInfo",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       agentLink: "getAgentLink",

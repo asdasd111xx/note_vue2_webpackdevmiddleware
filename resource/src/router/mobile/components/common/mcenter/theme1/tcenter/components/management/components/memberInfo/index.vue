@@ -2,6 +2,7 @@
   <div>
     <template v-if="$route.params.date">
       <div :class="[$style['date-wrap'], 'clearfix']">
+        <!-- 億元 -->
         <template v-if="['ey1'].includes(themeTPL)">
           <div
             :class="{ [$style.active]: $route.params.date === 'week' }"
@@ -33,6 +34,7 @@
           </div>
         </template>
 
+        <!-- 鴨博/絲瓜 -->
         <template v-if="['porn1', 'sg1'].includes(themeTPL)">
           <div
             :class="{ [$style.active]: $route.params.date === 'today' }"
@@ -62,7 +64,8 @@
               )
             "
           >
-            <span>{{ $text("S_NEARLY_THIRTY_DAYS", "近30天") }}</span>
+            <!-- <span>{{ $text("S_NEARLY_THIRTY_DAYS", "近30天") }}</span> -->
+            <span>近30日</span>
           </div>
         </template>
       </div>

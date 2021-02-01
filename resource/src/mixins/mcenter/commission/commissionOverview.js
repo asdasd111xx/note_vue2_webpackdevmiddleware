@@ -24,7 +24,11 @@ export default {
      * 當前時間
      */
     currentTime() {
-      return format(new Date(this.systemTime), "yyyy/MM/dd HH:mm:ss+20:00"); // +20:00 自動減12小時變成美東時間
+      if (this.systemTime) {
+        return format(new Date(this.systemTime), "yyyy/MM/dd HH:mm:ss+20:00"); // +20:00 自動減12小時變成美東時間
+      } else {
+        return "";
+      }
     },
     /**
      * 當前年份
@@ -165,8 +169,8 @@ export default {
     }
   },
   created() {
-    this.getSummary();
     this.actionSetSystemTime();
+    this.getSummary();
   },
   methods: {
     ...mapActions(["actionSetSystemTime"]),
