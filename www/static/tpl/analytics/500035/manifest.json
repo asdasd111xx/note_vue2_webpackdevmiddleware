@@ -5,6 +5,8 @@
   "display": "standalone",
   "background_color": "#fff",
   "description": "丝瓜直播QA 測試站",
+  "orientation": "landscape",
+  "scope": "/mobile/",
   "icons": [
     {
       "src": "../pwa/sg1/48.png",
