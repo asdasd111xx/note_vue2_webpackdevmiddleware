@@ -30,7 +30,7 @@ export default {
   created() {
     this.actionSetUserdata().then(() => {
       this.isInit = true;
-      if (this.memInfo.user.show_promotion) {
+      if (!this.memInfo.user.show_promotion) {
         this.$router.push("/mobile/mcenter");
       }
     });
