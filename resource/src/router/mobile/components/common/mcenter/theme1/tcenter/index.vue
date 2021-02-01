@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
+    <div v-if="tabState && isInit" :class="[$style['tab-wrap'], 'clearfix']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -27,6 +27,14 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  created() {
+    this.actionSetUserdata().then(() => {
+      this.isInit = true;
+      if (this.memInfo.user.show_promotion) {
+        this.$router.push("/mobile/mcenter");
+      }
+    });
+  },
   components: {
     gameRecord: () =>
       import(
@@ -61,7 +69,8 @@ export default {
   },
   data() {
     return {
-      tabState: true
+      tabState: true,
+      isInit: false
       // headerConfig: {
       //   title: this.$text("S_TEAM_CENTER", "我的推广"),
       //   prev: true,
@@ -129,7 +138,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionChangePage"]),
+    ...mapActions(["actionChangePage", "actionSetUserdata"]),
     setTabCurrent(tabKey) {
       // 點擊類別 & 再次點擊，來預設path以render畫面
       switch (this.tabItem[tabKey].key) {

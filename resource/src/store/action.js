@@ -534,7 +534,7 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員、代理共用-設定系統時間
 export const actionSetSystemTime = ({ commit }, func = () => {}) => {
-  common.systemTime({
+  return common.systemTime({
     success: response => {
       if (response.result === "ok") {
         commit(types.SETSYSTEMTIME, response.ret);
