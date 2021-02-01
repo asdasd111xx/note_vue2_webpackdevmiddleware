@@ -583,8 +583,8 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
-    await dispatch("actionGetMemInfoV3");
     await dispatch("actionGetMobileInfo");
+    dispatch("actionGetMemInfoV3");
 
     // const defaultLang =
     //   ["47", "70", "71"].includes(state.memInfo.user.domain) &&
@@ -654,7 +654,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         }
       });
       // 取得會員存款連結
-      await mcenter.deposit(params, {
+      mcenter.deposit(params, {
         success: response => {
           if (response.result === "ok") {
             dispatch("actionSetMcenterDeposit", response.ret);

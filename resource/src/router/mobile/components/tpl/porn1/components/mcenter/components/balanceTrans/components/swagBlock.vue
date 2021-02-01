@@ -51,7 +51,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceTran from '@/components/mcenter/components/balanceTran';
+import balanceTran from "@/components/mcenter/components/balanceTran";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 
@@ -63,30 +63,25 @@ export default {
   },
   computed: {
     ...mapGetters({
-      hasBank: 'getHasBank'
-    }),
+      hasBank: "getHasBank"
+    })
   },
   data() {
     return {
       swagDiamondBalance: "0"
-    }
+    };
   },
   watch: {
     swagBalance(val) {
       this.swagDiamondBalance = val.balance;
-    },
+    }
   },
   created() {
     this.initSWAGConfig();
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage',
-      'actionGetRechargeStatus',
-      'actionGetMemInfoV3',
-      'actionSetSwagBalance'
-    ]),
-  },
+    ...mapActions(["actionSetGlobalMessage"])
+  }
 };
 </script>
 <style lang="scss" module>
