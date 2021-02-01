@@ -24,9 +24,10 @@ export default {
       },
       friendsTrans: {
         1: "会员注册",
-        2: "代理注册",
+        2: "直属新增",
         3: "厅主新增",
-        4: "厅主批量"
+        4: "厅主批量",
+        5: "代理新增"
       },
       firstFriends: {
         depth: 1,

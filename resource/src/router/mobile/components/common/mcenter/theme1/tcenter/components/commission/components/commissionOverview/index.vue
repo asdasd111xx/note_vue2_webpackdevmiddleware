@@ -243,6 +243,7 @@
 <script>
 import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 import { mapGetters } from "vuex";
+import EST from "@/lib/EST";
 
 export default {
   mixins: [commissionOverview],
@@ -272,7 +273,8 @@ export default {
     },
     monthRange() {
       // Get 目前年/月/日
-      const now = new Date();
+      const now = EST(new Date(), "", true);
+      // console.log(now, new Date());
       let year = now.getFullYear();
       let month = now.getMonth() + 1;
       let day = now.getDate();
