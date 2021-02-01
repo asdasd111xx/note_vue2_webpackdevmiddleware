@@ -47,9 +47,7 @@ export default {
   },
   watch: {
     isReceive() {
-      setTimeout(() => {
-        this.onResize();
-      }, 300);
+      this.onResize();
     },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
@@ -186,27 +184,25 @@ export default {
     const cache = this.getAllGameFromCache();
 
     const setDefaultSelected = () => {
-      this.$nextTick(() => {
-        this.isReceive = true;
-        setTimeout(() => {
-          this.onResize();
-          let defaultType =
-            this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
-          if (localStorage.getItem("home-menu-type")) {
-            defaultType = localStorage.getItem("home-menu-type");
-          }
+      this.isReceive = true;
+      setTimeout(() => {
+        this.onResize();
+        let defaultType =
+          this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
+        if (localStorage.getItem("home-menu-type")) {
+          defaultType = localStorage.getItem("home-menu-type");
+        }
 
-          let defaultIndex = this.typeList.findIndex(type => {
-            return type.icon.toLowerCase() === defaultType.toLowerCase();
-          });
+        let defaultIndex = this.typeList.findIndex(type => {
+          return type.icon.toLowerCase() === defaultType.toLowerCase();
+        });
 
-          defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+        defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
 
-          const selectIndex = this.typeList.length / 3 + defaultIndex;
-          this.onChangeSelectIndex(selectIndex);
-          this.isShow = true;
-        }, 300);
-      });
+        const selectIndex = this.typeList.length / 3 + defaultIndex;
+        this.onChangeSelectIndex(selectIndex);
+        this.isShow = true;
+      }, 300);
     };
 
     if (!cache) {
@@ -304,7 +300,7 @@ export default {
       // 計算外框高度
       setTimeout(() => {
         // 跑馬燈 header footer
-        let extraHeight = 30 + 43 + 60 + 5;
+        let extraHeight = 30 + 43 + 60 + 8;
         let homeSliderHeight = document.getElementById("home-slider")
           ? document.getElementById("home-slider").offsetHeight
           : 0;
@@ -315,12 +311,11 @@ export default {
         } else {
           extraHeight += homeSliderHeight + 50;
         }
-
         this.wrapHeight =
           document.body.offsetHeight - extraHeight > 0
             ? document.body.offsetHeight - extraHeight
             : 225;
-      }, 50);
+      }, 300);
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
