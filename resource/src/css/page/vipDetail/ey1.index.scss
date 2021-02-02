@@ -1,40 +1,39 @@
 @import "./porn1.index.scss";
 
 .table-header {
-    grid-template-columns: 70px repeat(7, 1fr);
+  grid-template-columns: 45px repeat(7, 1fr);
 }
 
-
 .table-body {
-    .content {
-        grid-template-columns: 70px repeat(7, 1fr);
-    }
+  .content {
+    grid-template-columns: 45px repeat(7, 1fr);
+  }
 }
 
 .title {
-    &::before {
-        background: linear-gradient(#fe2a2a, #b60303);
-    }
+  &::before {
+    background: linear-gradient(#fe2a2a, #b60303);
+  }
 }
 
 .title-desc {
-    padding: 10px 20px 13px 30px;
-    font-size: 12px;
+  padding: 10px 20px 13px 30px;
+  font-size: 12px;
 }
 
 .table-header {
-    .header-item {
-        width: 100%;
-    }
+  .header-item {
+    width: 100%;
+  }
 }
 
 .table-body .content .item:first-of-type {
-    padding: 0;
+  padding: 0;
 }
 
 // render 每個 level 的 icon
 @for $i from 0 through 10 {
-    .content:nth-child(#{$i + 1}) .item:first-of-type::before {
-        display: none;
-    }
+  .content:nth-child(#{$i + 1}) .item:first-of-type::before {
+    display: none;
+  }
 }
