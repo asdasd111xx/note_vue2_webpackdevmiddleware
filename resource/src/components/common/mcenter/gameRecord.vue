@@ -188,12 +188,8 @@ export default {
       this.currentCondition = value;
       this.hasSearch = value === "range";
 
-      if (value === "range") {
-        return;
-      }
-
       const now = EST(new Date(), "", true);
-      const range = value === "today" ? 0 : -1;
+      const range = value === "today" || value === "range" ? 0 : -1;
       const date = Vue.moment(now)
         .add(range, "days")
         .format("YYYY-MM-DD");
@@ -207,6 +203,13 @@ export default {
       this.currentKind = this.inqKind;
       this.currentStart = date;
       this.currentEnd = date;
+
+      if (value === "range") {
+        // 選項欄文字預設 設回「全部」
+        let o = document.body.getElementsByTagName("option");
+        o[0].selected = true;
+        return;
+      }
 
       this.onInquire();
     },

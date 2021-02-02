@@ -1,6 +1,6 @@
 import Vue from "vue";
-import { API_FIRST_LEVEL_FRIENDS } from "@/config/api";
-import ajax from "@/lib/ajax";
+import { mapActions } from "vuex";
+import axios from "axios";
 
 /**
  * @param {String} current - 當前頁數
@@ -11,27 +11,39 @@ export default {
     return {
       isReceive: false,
       showInfinite: true,
-      friendsTrans: {
-        1: "S_MEMBER_REGISTER",
-        2: "S_AGENT_JOIN_2",
-        3: "S_HALL_CREATE",
-        4: "S_HALL_CREATE_LOT"
+      // 目前同 Android
+      depthMapping: {
+        2: "第二级",
+        3: "第三级",
+        4: "第四级",
+        5: "第五级",
+        6: "第六级",
+        7: "第七级",
+        8: "第八级",
+        9: "第九级"
       },
-      firstFriends: [],
-      subInfoIndex: -1, // 要顯示詳細資料的索引值(for mobile)
+      friendsTrans: {
+        1: "会员注册",
+        2: "直属新增",
+        3: "厅主新增",
+        4: "厅主批量",
+        5: "代理新增"
+      },
+      firstFriends: {
+        depth: 1,
+        total: 0,
+        list: []
+      },
       firstResult: 0,
-      maxResults: 10,
+      maxResults: 50,
       pageNow: 1,
       pageAll: 1,
-      sort: "",
-      order: {
-        created_at: false,
-        last_online: false
-      },
       showinfo: [-5]
     };
   },
-  filters: {
+
+  methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     /**
      * 金額格式化
      * @method commaFormat
@@ -52,42 +64,59 @@ export default {
       return Vue.moment(value)
         .utcOffset(-4)
         .format(format);
-    }
-  },
-  created() {
-    // this.getFirstFriends();
-  },
-  methods: {
+    },
     /**
      * 取的一級好友資料
      * @method getFirstFriends
      * @param {Object} params - 排序
      */
     getFirstFriends(params) {
-      return ajax({
+      this.isReceive = false;
+
+      // this.firstFriends = {
+      //   depth: 1,
+      //   total: 0,
+      //   list: []
+      // };
+
+      return axios({
         method: "get",
-        url: API_FIRST_LEVEL_FRIENDS,
+        url: "/api/v1/c/player/friends",
         params: {
           ...params,
           first_result: this.firstResult,
           max_results: this.maxResults
-        },
-        success: ({ result, ret, pagination }) => {
+        }
+      })
+        .then(res => {
+          this.isReceive = true;
+          const { ret, result, msg, pagination, depth } = res.data;
+
           if (result !== "ok" || ret.length === 0) {
-            return;
+            return Promise.resolve({ status: "error" });
           }
 
-          this.firstFriends = ret.reduce((init, info) => {
-            return [...init, info];
-          }, this.firstFriends);
+          this.firstFriends = {
+            depth,
+            total: pagination.total,
+            list: ret
+          };
 
           if (pagination.total === "0") {
-            return;
+            return Promise.resolve({ status: "error" });
           }
 
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);
-        }
-      });
+
+          return Promise.resolve({ status: "ok" });
+        })
+        .catch(error => {
+          this.isReceive = true;
+          const { msg } = error?.response?.data;
+          if (msg) this.actionSetGlobalMessage({ msg });
+
+          return Promise.resolve({ status: "error" });
+        });
     },
     /**
      * 會員是否在線
@@ -106,32 +135,6 @@ export default {
       }
 
       return lastLogin > lastOnline;
-    },
-    /**
-     * 排序
-     * @method onSort
-     * @param {String} key - 要排序的欄位
-     */
-    onSort(key) {
-      this.sort = key;
-      this.order[key] = !this.order[key];
-      this.getFirstFriends({
-        sort: key,
-        order: this.order[key] ? "asc" : "desc"
-      });
-    },
-    /**
-     * 手機版一級好友詳細資料索引切換
-     * @method onChangeSubInfo
-     * @param {Number} value - 索引值
-     */
-    onChangeSubInfo(value) {
-      if (this.subInfoIndex === value) {
-        this.subInfoIndex = -1;
-        return;
-      }
-
-      this.subInfoIndex = value;
     },
     /**
      * 捲動加載

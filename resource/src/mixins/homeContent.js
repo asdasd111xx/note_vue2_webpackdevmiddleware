@@ -14,7 +14,6 @@ export default {
     return {
       stopScroll: false,
       isReceive: false,
-      isShowAllTag: false,
       isSliding: false,
       isTop: false,
       isShow: false,
@@ -43,28 +42,25 @@ export default {
         { name: "makemoney", text: "推广", path: "makemoney" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
-      timer: null,
-      // develop branch 防報錯
-      isMaintainSwag: false
+      timer: null
     };
   },
   watch: {
     isReceive() {
-      setTimeout(() => {
-        this.onResize();
-      }, 300);
+      this.onResize();
     },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
         // this.data = this.noticeData.pop();
         let temp = this.noticeData[this.noticeData.length - 1];
         if (temp.event === "vendor_maintain_notice") {
-          // this.timer = setInterval(() => {
           this.getMaintainList();
-          // clearInterval(this.timer);
-          // this.timer = null;
-          // return;
-          // }, 70000);
+          clearInterval(this.timer);
+          this.timer = setInterval(() => {
+            this.getMaintainList();
+            this.timer = null;
+            return;
+          }, 70000);
         }
 
         if (temp.event === "outer_maintain" && temp.vendor === "swag") {
@@ -182,33 +178,31 @@ export default {
     }
   },
   mounted() {
-    $(window).on("resize", this.onResize);
+    window.addEventListener("resize", this.onResize);
 
     // 首頁選單列表預設拿local
     const cache = this.getAllGameFromCache();
 
     const setDefaultSelected = () => {
-      this.$nextTick(() => {
-        this.isReceive = true;
-        setTimeout(() => {
-          $(window).trigger("resize");
-          let defaultType =
-            this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
-          if (localStorage.getItem("home-menu-type")) {
-            defaultType = localStorage.getItem("home-menu-type");
-          }
+      this.isReceive = true;
+      setTimeout(() => {
+        this.onResize();
+        let defaultType =
+          this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
+        if (localStorage.getItem("home-menu-type")) {
+          defaultType = localStorage.getItem("home-menu-type");
+        }
 
-          let defaultIndex = this.typeList.findIndex(type => {
-            return type.icon.toLowerCase() === defaultType.toLowerCase();
-          });
+        let defaultIndex = this.typeList.findIndex(type => {
+          return type.icon.toLowerCase() === defaultType.toLowerCase();
+        });
 
-          defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+        defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
 
-          const selectIndex = this.typeList.length / 3 + defaultIndex;
-          this.onChangeSelectIndex(selectIndex);
-          this.isShow = true;
-        }, 300);
-      });
+        const selectIndex = this.typeList.length / 3 + defaultIndex;
+        this.onChangeSelectIndex(selectIndex);
+        this.isShow = true;
+      }, 300);
     };
 
     if (!cache) {
@@ -236,7 +230,9 @@ export default {
     });
   },
   beforeDestroy() {
-    $(window).off("resize", this.onResize);
+    window.removeEventListener("resize", this.onResize);
+    clearTimeout(this.swagMaintainTimer);
+    this.swagMaintainTimer = null;
   },
   methods: {
     ...mapActions([
@@ -304,7 +300,7 @@ export default {
       // 計算外框高度
       setTimeout(() => {
         // 跑馬燈 header footer
-        let extraHeight = 30 + 43 + 60 + 5;
+        let extraHeight = 30 + 43 + 60 + 8;
         let homeSliderHeight = document.getElementById("home-slider")
           ? document.getElementById("home-slider").offsetHeight
           : 0;
@@ -315,12 +311,11 @@ export default {
         } else {
           extraHeight += homeSliderHeight + 50;
         }
-
         this.wrapHeight =
           document.body.offsetHeight - extraHeight > 0
             ? document.body.offsetHeight - extraHeight
             : 225;
-      }, 50);
+      }, 300);
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {

@@ -62,7 +62,7 @@
             :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
           />
         </div>
-        <div>{{ $text("S_BETHISTORYBTN", "投注纪录") }}</div>
+        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
       </div>
       <div
         :class="$style['cell']"
@@ -110,7 +110,10 @@ export default {
       //   vipData: {},
       createdTime: "",
       imgID: 0,
-      imgIndex: 0
+      imgIndex: 0,
+      isShowPromotion: localStorage.getItem("is-show-promotion")
+        ? localStorage.getItem("is-show-promotion") === "true"
+        : true
     };
   },
   computed: {
@@ -163,7 +166,12 @@ export default {
     },
     goToRebate() {
       if (this.loginStatus) {
-        this.getRebateSwitch();
+        this.isShowPromotion =
+          localStorage.getItem("is-show-promotion") === "true";
+
+        this.isShowPromotion
+          ? this.getRebateSwitch()
+          : this.actionSetGlobalMessage({ msg: "实时返佣升级中" });
       } else {
         this.$router.push("/mobile/login");
       }

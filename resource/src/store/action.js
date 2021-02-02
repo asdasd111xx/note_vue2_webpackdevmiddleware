@@ -534,7 +534,7 @@ export const actionSetCasinoLoadingStatus = ({ commit }, status) => {
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員、代理共用-設定系統時間
 export const actionSetSystemTime = ({ commit }, func = () => {}) => {
-  common.systemTime({
+  return common.systemTime({
     success: response => {
       if (response.result === "ok") {
         commit(types.SETSYSTEMTIME, response.ret);
@@ -576,15 +576,15 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
   commit(types.SETENV, "mem");
 
   return (async () => {
-    dispatch("actionSetSystemTime");
+    // dispatch("actionSetSystemTime");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
-    await dispatch("actionGetMemInfoV3");
     await dispatch("actionGetMobileInfo");
+    dispatch("actionGetMemInfoV3");
 
     // const defaultLang =
     //   ["47", "70", "71"].includes(state.memInfo.user.domain) &&
@@ -654,7 +654,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         }
       });
       // 取得會員存款連結
-      await mcenter.deposit(params, {
+      mcenter.deposit(params, {
         success: response => {
           if (response.result === "ok") {
             dispatch("actionSetMcenterDeposit", response.ret);
@@ -1745,7 +1745,17 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
     }
   }).then(res => {
     if (res && res.data) {
-      commit(types.SET_BBOSDOMAIN, res.data[0]);
+      let length = res.data.length;
+      let result = "";
+      if (length > 0) {
+        let domainList = res.data.filter(
+          i => !i.replace("https://").includes(":")
+        );
+        result = domainList[Math.floor(Math.random() * domainList.length)];
+        commit(types.SET_BBOSDOMAIN, result);
+      } else {
+        commit(types.SET_BBOSDOMAIN, res.data[0]);
+      }
     }
   });
 };

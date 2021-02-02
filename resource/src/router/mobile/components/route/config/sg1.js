@@ -158,6 +158,10 @@ export default {
       import(
         /* webpackChunkName: 'accountDataWithdrawpwdSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
       ),
+    accountDataSkypeSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataSkypeSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
+      ),
     accountDataReceiptAddressSg1: () =>
       import(
         /* webpackChunkName: 'accountDataReceiptAddressSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editReceiptAddress"
@@ -233,6 +237,10 @@ export default {
     rewardRulesSg1: () =>
       import(
         /* webpackChunkName: 'rewardRulesSg1' */ "../../tpl/sg1/components/mcenter/components/rewardRules"
+      ),
+    tcenterLobbySg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterLobbySg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterLobby"
       )
   }
 };

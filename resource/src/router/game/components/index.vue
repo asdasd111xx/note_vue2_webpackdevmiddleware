@@ -81,10 +81,10 @@ export default {
 
       this.isLoading = false;
 
-      if (!isMobileFuc() && (vendor === "sp" || vendor === "mg")) {
-        this.urlData = openGameLink;
-        return;
-      }
+      // if (!isMobileFuc() && (vendor === "sp" || vendor === "mg")) {
+      //   this.urlData = openGameLink;
+      //   return;
+      // }
 
       location.replace(openGameLink);
       return;

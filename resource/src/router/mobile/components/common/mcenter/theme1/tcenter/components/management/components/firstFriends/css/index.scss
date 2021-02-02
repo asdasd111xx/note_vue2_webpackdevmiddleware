@@ -1,249 +1,260 @@
 @import "~@/css/variable.scss";
 
 .first-friends-table {
-    margin-top: 10px;
+  margin-top: 10px;
+
+  &.porn1,
+  &.sg1 {
+    margin-top: 0;
+  }
+}
+
+.card-wrap {
+  padding: 0 13px;
 }
 
 .thead {
-    .row {
-        background-color: #eee;
-    }
+  .row {
+    background-color: #eee;
+  }
 
-    .column {
-        padding: 2% 0;
-        color: #666;
-    }
+  .column {
+    padding: 2% 0;
+    color: #666;
+  }
 
-    .balance {
-        width: 32%;
-    }
+  .balance {
+    width: 32%;
+  }
 }
 
 .tbody {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 
-    .row {
-        &:nth-child(odd) {
-            background-color: #fff;
-        }
-
-        &:nth-child(even) {
-            background-color: #f6f6f6;
-        }
+  .row {
+    &:nth-child(odd) {
+      background-color: #fff;
     }
 
-    .column {
-        padding: 4% 0;
-        color: #2d2d2d;
+    &:nth-child(even) {
+      background-color: #f6f6f6;
+    }
+  }
+
+  .column {
+    padding: 4% 0;
+    color: #2d2d2d;
+  }
+
+  .balance {
+    text-align: center;
+  }
+
+  .status {
+    .enable {
+      width: 100%;
+      float: left;
     }
 
-    .balance {
-        text-align: center;
+    .disable,
+    .locked,
+    .bankrupt {
+      width: 100%;
+      float: left;
+      color: #ff5454;
     }
+  }
 
-    .status {
-        .enable {
-            width: 100%;
-            float: left;
-        }
-
-        .disable,
-        .locked,
-        .bankrupt {
-            width: 100%;
-            float: left;
-            color: #ff5454;
-        }
-    }
-
-    .balance {
-        text-align: right;
-    }
+  .balance {
+    text-align: right;
+  }
 }
 
 .column {
-    float: left;
-    line-height: 16px;
-    font-size: 12px;
-    word-break: break-word;
+  float: left;
+  line-height: 16px;
+  font-size: 12px;
+  word-break: break-word;
 
-    span {
-        display: inline-block;
-        vertical-align: middle;
-    }
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 .number {
-    width: 10%;
-    text-align: right;
+  width: 10%;
+  text-align: right;
 }
 
 .online,
 .username,
 .status,
 .balance {
-    text-align: center;
+  text-align: center;
 }
 
 .online {
-    width: 14%;
+  width: 14%;
 }
 
 .username {
-    width: 20%;
+  width: 20%;
 }
 
 .status {
-    width: 20%;
+  width: 20%;
 }
 
 .balance {
-    width: 33%;
+  width: 33%;
 }
 
 .money {
-    max-width: 70%;
+  max-width: 70%;
 }
 
 .icon-online {
-    width: 12px;
-    height: 12px;
-    background-image: url("/static/image/_new/mcenter/tcenter/ic_noonline.png");
-    background-position: 0 0;
-    background-size: 12px;
-    background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+  background-image: url("/static/image/_new/mcenter/tcenter/ic_noonline.png");
+  background-position: 0 0;
+  background-size: 12px;
+  background-repeat: no-repeat;
 
-    &.active {
-        background-image: url("/static/image/_new/mcenter/tcenter/ic_mailnew.png");
-    }
+  &.active {
+    background-image: url("/static/image/_new/mcenter/tcenter/ic_mailnew.png");
+  }
 }
 
 .icon-info {
-    width: 16px;
-    height: 16px;
-    margin: 0 2% 0 4%;
-    background: url("/static/image/_new/mcenter/tcenter/btn_expand2.png") 0 0 no-repeat;
-    background-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin: 0 2% 0 4%;
+  background: url("/static/image/_new/mcenter/tcenter/btn_expand2.png") 0 0
+    no-repeat;
+  background-size: 16px;
 
-    &.expend {
-        background: url("/static/image/_new/mcenter/tcenter/btn_collapse2.png") 0 0 no-repeat;
-    }
+  &.expend {
+    background: url("/static/image/_new/mcenter/tcenter/btn_collapse2.png") 0 0
+      no-repeat;
+  }
 }
 
 .info-wrap {
-    clear: both;
-    padding: 10px 6%;
-    background-color: #f6f6f6;
+  clear: both;
+  padding: 10px 6%;
+  background-color: #f6f6f6;
 }
 
 .info-row {
-    line-height: 20px;
-    font-size: 14px;
-    padding: 2.5px 0;
+  line-height: 20px;
+  font-size: 14px;
+  padding: 2.5px 0;
 
-    div {
-        overflow: hidden;
-        float: left;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+  div {
+    overflow: hidden;
+    float: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .info-status {
+    .enable {
+      // color: #009685;
+      color: #000;
     }
 
-    .info-status {
-        .enable {
-            // color: #009685;
-            color: #000;
-        }
-
-        .disable,
-        .locked,
-        .bankrupt {
-            color: #ff5454;
-        }
+    .disable,
+    .locked,
+    .bankrupt {
+      color: #ff5454;
     }
+  }
 }
 
 .title {
-    width: 35%;
-    color: #000;
+  width: 35%;
+  color: #000;
 }
 
 .info,
 .info-online,
 .info-status {
-    width: 65%;
+  width: 65%;
 }
 
 .info {
-    color: #000;
+  color: #000;
 }
 
 .info-online {
-    .active {
-        color: #0091d2;
-    }
+  .active {
+    color: #0091d2;
+  }
 }
 
 .no-data {
-    padding-top: 40px;
-    text-align: center;
+  padding-top: 40px;
+  text-align: center;
 
-    img {
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        margin-bottom: 14px;
-    }
+  img {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 14px;
+  }
 
-    p {
-        font-size: 14px;
-        color: #a6a9b2;
-    }
+  p {
+    font-size: 14px;
+    color: #a6a9b2;
+  }
 }
 
 @media screen and (min-width: $phone) {
-    .column {
-        line-height: 15px;
-        font-size: 15px;
-    }
+  .column {
+    line-height: 15px;
+    font-size: 15px;
+  }
 
-    .icon-online {
-        width: 13px;
-        height: 13px;
-        background-size: 13px;
-    }
+  .icon-online {
+    width: 13px;
+    height: 13px;
+    background-size: 13px;
+  }
 
-    .icon-info {
-        width: 19px;
-        height: 19px;
-        background-size: 19px;
-    }
+  .icon-info {
+    width: 19px;
+    height: 19px;
+    background-size: 19px;
+  }
 
-    .info-row {
-        line-height: 15px;
-        font-size: 15px;
-    }
+  .info-row {
+    line-height: 15px;
+    font-size: 15px;
+  }
 }
 
 @media screen and (min-width: $pad) {
-    .column {
-        line-height: 24px;
-        font-size: 24px;
-    }
+  .column {
+    line-height: 24px;
+    font-size: 24px;
+  }
 
-    .icon-online {
-        width: 21px;
-        height: 21px;
-        background-size: 21px;
-    }
+  .icon-online {
+    width: 21px;
+    height: 21px;
+    background-size: 21px;
+  }
 
-    .icon-info {
-        width: 30px;
-        height: 30px;
-        background-size: 30px;
-    }
+  .icon-info {
+    width: 30px;
+    height: 30px;
+    background-size: 30px;
+  }
 
-    .info-row {
-        line-height: 24px;
-        font-size: 24px;
-    }
+  .info-row {
+    line-height: 24px;
+    font-size: 24px;
+  }
 }

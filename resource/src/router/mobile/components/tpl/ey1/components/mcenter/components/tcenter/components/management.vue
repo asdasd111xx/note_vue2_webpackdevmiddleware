@@ -5,7 +5,11 @@
     :has-footer="false"
   >
     <div slot="content" :class="$style['content-wrap']">
-      <tcenter func="management" />
+      <tcenter
+        func="management"
+        :set-header-title="setHeaderTitle"
+        :set-back-func="setBackFunc"
+      />
     </div>
   </mobile-container>
 </template>
@@ -21,12 +25,8 @@ export default {
   },
   data() {
     return {
-      divHeight: 0
-    };
-  },
-  computed: {
-    headerConfig() {
-      return {
+      divHeight: 0,
+      headerConfig: {
         title: this.$text("S_TEAM_CENTER", "我的推广"),
         prev: true,
         onClick: () => {
@@ -36,7 +36,30 @@ export default {
             this.$router.back();
           }
         }
-      };
+      }
+    };
+  },
+  computed: {
+    // headerConfig() {
+    //   return {
+    //     title: this.$text("S_TEAM_CENTER", "我的推广"),
+    //     prev: true,
+    //     onClick: () => {
+    //       if (this.$route.params.date) {
+    //         this.$router.replace("/mobile/mcenter/tcenter/management/member");
+    //       } else {
+    //         this.$router.back();
+    //       }
+    //     }
+    //   };
+    // }
+  },
+  methods: {
+    setHeaderTitle(value) {
+      this.$set(this.headerConfig, "title", value);
+    },
+    setBackFunc(cb) {
+      this.$set(this.headerConfig, "onClick", cb);
     }
   },
   mounted() {

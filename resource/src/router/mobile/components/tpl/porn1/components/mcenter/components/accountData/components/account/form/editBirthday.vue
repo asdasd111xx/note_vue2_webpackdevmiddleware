@@ -76,13 +76,18 @@ export default {
     }
   },
   mounted() {
+    this.actionSetSystemTime();
     this.$refs.input.focus();
     setTimeout(() => {
       this.$refs.input.click();
     });
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionSetSystemTime"
+    ]),
     handleClickText() {
       document.getElementById("birthday-input").click();
     },

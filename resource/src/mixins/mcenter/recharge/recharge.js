@@ -235,13 +235,16 @@ export default {
           .replace(/[^0-9]/g, "")
           .substring(0, 16);
 
-        if (!amount || amount === 0) {
+        if (this.formData.amount !== "" && amount === 0) {
           errorMessage = "请输入转让金额";
-        } else if (limit && amount < limit) {
-          errorMessage = "转帐金额低于最低限额";
-        } else if (amount > this.maxRechargeBalance) {
-          // errorMessage = "馀额不足";
-        } else {
+        }
+        // 客端不判斷金額大小
+        // else if (limit && amount < limit) {
+        //   // errorMessage = "转帐金额低于最低限额";
+        // } else if (amount > this.maxRechargeBalance) {
+        //   // errorMessage = "馀额不足";
+        // }
+        else {
           errorMessage = "";
         }
       }
@@ -453,12 +456,14 @@ export default {
 
             this.actionSetUserdata(true);
             setTimeout(() => {
+              this.isVerifyForm = false;
               this.isSendRecharge = false;
             }, 1500);
           })
           .catch(error => {
             this.setErrorCode(error.response.data);
             setTimeout(() => {
+              this.isVerifyForm = false;
               this.isSendRecharge = false;
             }, 1500);
           });
@@ -474,7 +479,7 @@ export default {
           ),
           end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
           category: "ingroup_transfer",
-          firstResult: 0 // 每頁起始筆數
+          first_result: 0 // 每頁起始筆數
           // maxResults: 20, // 每頁顯示幾筆
         }
       })

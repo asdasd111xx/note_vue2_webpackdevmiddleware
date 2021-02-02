@@ -357,7 +357,7 @@ export default {
           text = "请输入STICPAY注册信箱";
           break;
         case 37:
-          text = "请点击二维码綁定";
+          text = "请点击二维码绑定";
           this.isGoBaoWallet = true;
           this.getWalletTipInfo();
           break;
@@ -496,8 +496,7 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
-          lang: "zh-cn",
-          common: true
+          lang: "zh-cn"
         }
       }).then(response => {
         const { data, status, errorCode } = response;
@@ -604,7 +603,7 @@ export default {
           const { data, status, errorCode, msg } = response;
 
           if (errorCode !== "00" || status !== "000") {
-            this.errorMsg = `${msg}`;
+            this.actionSetGlobalMessage({ msg });
             return;
           }
 
@@ -614,15 +613,9 @@ export default {
           });
         })
         .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errorMsg = `${error.response.data.msg}`;
-            this.lockStatus = false;
-            return;
-          }
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+          this.lockStatus = false;
         });
     },
     submitByToken() {
@@ -638,7 +631,7 @@ export default {
         url: "/api/v1/c/ext/inpay",
         data: {
           api_uri: "/api/trade/v2/c/withdraw/bind_wallet_by_token",
-          bind_type: "withdraw",
+          // bind_type: "withdraw",
           wallet_gateway_id: 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
           wallet_token: this.formData["CGPPwd"].value
@@ -649,7 +642,7 @@ export default {
           this.lockStatus = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}`;
+            this.actionSetGlobalMessage({ msg });
             return;
           }
 
@@ -659,15 +652,10 @@ export default {
           });
         })
         .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errorMsg = `${error.response.data.msg}`;
-            this.lockStatus = false;
-            return;
-          }
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+          this.lockStatus = false;
+          return;
         });
     },
     setBank(bank) {
@@ -742,7 +730,7 @@ export default {
         this.walletTipInfo = [
           {
             key: "CGPay",
-            text: `可输入${this.selectTarget.walletName}帐号或扫码绑定`
+            text: `可输入${this.selectTarget.walletName}帐号`
           },
           {
             key: "CGPay",

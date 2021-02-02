@@ -1,56 +1,109 @@
 <template>
-  <div :class="[$style['field-editer'], 'clearfix']">
-    <div :class="$style['field-title']">{{ $text("S_SKYPE") }}</div>
-    <div :class="$style['input-wrap']">
-      <div :class="$style['field-value']">
-        <input
-          ref="input"
-          v-model="value"
-          :placeholder="`请输入${$text('S_SKYPE')}`"
-          :class="$style.input"
-          maxlength="100"
-          type="text"
-        />
+  <div slot="content" :class="$style['content-wrap']">
+    <account-header :header-config="headerConfig" />
+    <div :class="[$style.wrap, 'clearfix']">
+      <!-- 錯誤訊息 -->
+      <div :class="$style['top-tips']">
+        <div v-show="tipMsg">
+          {{ tipMsg }}
+        </div>
       </div>
-      <div :class="$style['btn-wrap']">
-        <span :class="$style['btn-cancel']" @click="$emit('cancel')">
-          {{ $text("S_CANCEL", "取消") }}
-        </span>
-        <span :class="$style['btn-confirm']" @click="handleSubmit()">
-          {{ $text("S_CONFIRM", "確認") }}
-        </span>
+      <div :class="$style.block">
+        <div :class="$style.title">{{ $text("S_SKYPE") }}</div>
+        <div :class="$style['input-wrap']">
+          <input
+            ref="input"
+            v-model="value"
+            :value="value"
+            :placeholder="`请输入${$text('S_SKYPE')}`"
+            :class="$style.input"
+            maxlength="50"
+            type="text"
+            @input="onInput"
+          />
+        </div>
       </div>
     </div>
+    <service-tips />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
+import member from "@/api/member";
 import mcenter from "@/api/mcenter";
+import serviceTips from "../../serviceTips";
+import accountHeader from "../../accountHeader";
 
 export default {
+  components: {
+    accountHeader,
+    serviceTips
+  },
   data() {
     return {
-      value: ""
+      value: "",
+      tipMsg: ""
     };
   },
   mounted() {
     this.$refs.input.focus();
   },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
+    headerConfig() {
+      return {
+        prev: true,
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.$text("S_SKYPE"),
+        onClickFunc: () => {
+          this.handleSubmit();
+        },
+        funcBtn: this.$text("S_COMPLETE", "完成"),
+        funcBtnActive: !!this.value && !this.tipMsg
+      };
+    }
+  },
+  created() {
+    if (this.memInfo.user.qq_num) {
+      this.$router.push("/mobile/mcenter/accountData");
+    }
+  },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions(["actionSetUserdata", "actionSetＭcenterBindMessage"]),
+    onInput(e) {
+      this.tipMsg = "";
+      this.value = e.target.value;
+      // if (this.value === '') {
+      //   this.tipMsg = this.$text('S_CR_NUT_NULL');
+      // }
+
+      // if (!/^[0-9]+$/.test(this.value)) {
+      //   this.tipMsg = this.$text('S_JM_AGENT_INPUT_NUMBER', '仅允许输入数字');
+      // }
+    },
     handleSubmit() {
+      if (this.tipMsg) {
+        return;
+      }
+
       mcenter.accountDataSet({
         params: {
           skype: this.value.substring(0, 50)
         },
         success: () => {
           localStorage.setItem("set-account-success", true);
+          this.$router.push("/mobile/mcenter/accountData");
           this.$emit("success");
         },
         fail: res => {
           if (res && res.data && res.data.msg) {
-            this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
+            this.tipMsg = `${res.data.msg}`;
           }
         }
       });

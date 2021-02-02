@@ -63,16 +63,6 @@ export default {
       }
 
       this.$copyText(value);
-
-      // this.$copyText(value).then(() => {
-      //   this.isPopup = true;
-      //   this.popupType = type;
-
-      //   // 三秒後自動關閉
-      //   setTimeout(() => {
-      //     this.onPopupClose();
-      //   }, 3000);
-      // });
     },
     /**
      * 顯示 QR Code(for mobile)

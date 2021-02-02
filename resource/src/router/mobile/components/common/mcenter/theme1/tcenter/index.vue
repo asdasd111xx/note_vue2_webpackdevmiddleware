@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
+    <div v-if="tabState && isInit" :class="[$style['tab-wrap'], 'clearfix']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -18,6 +18,7 @@
       :is="func"
       :set-tab-state="setTabState"
       :set-header-title="setHeaderTitle"
+      :set-back-func="setBackFunc"
     />
   </div>
 </template>
@@ -26,6 +27,14 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  created() {
+    this.actionSetUserdata().then(() => {
+      this.isInit = true;
+      if (!this.memInfo.user.show_promotion) {
+        this.$router.push("/mobile/mcenter");
+      }
+    });
+  },
   components: {
     gameRecord: () =>
       import(
@@ -48,35 +57,44 @@ export default {
     func: {
       type: String,
       required: true
+    },
+    setHeaderTitle: {
+      type: Function,
+      default: () => {}
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
     return {
       tabState: true,
-      headerConfig: {
-        title: this.$text("S_TEAM_CENTER", "我的推广"),
-        prev: true,
-        onClick: () => {
-          if (
-            this.func === "management" &&
-            this.$route.params.page === "member" &&
-            this.$route.params.date
-          ) {
-            this.$router.push("/mobile/mcenter/tcenter/management/member");
-            return;
-          }
+      isInit: false
+      // headerConfig: {
+      //   title: this.$text("S_TEAM_CENTER", "我的推广"),
+      //   prev: true,
+      //   onClick: () => {
+      //     if (
+      //       this.func === "management" &&
+      //       this.$route.params.page === "member" &&
+      //       this.$route.params.date
+      //     ) {
+      //       this.$router.push("/mobile/mcenter/tcenter/management/member");
+      //       return;
+      //     }
 
-          if (
-            (this.func === "gameRecord" && this.$route.params.page === "bet") ||
-            (this.func === "commission" && this.$route.params.page === "detail")
-          ) {
-            this.$router.back();
-            return;
-          }
+      //     if (
+      //       (this.func === "gameRecord" && this.$route.params.page === "bet") ||
+      //       (this.func === "commission" && this.$route.params.page === "detail")
+      //     ) {
+      //       this.$router.back();
+      //       return;
+      //     }
 
-          this.$router.push("/mobile/mcenter");
-        }
-      }
+      //     this.$router.push("/mobile/mcenter");
+      //   }
+      // }
     };
   },
   computed: {
@@ -109,7 +127,7 @@ export default {
         {
           key: "recommendGift",
           text: this.$text("S_RECOMMEND_GIFT", "推荐礼金"),
-          show: true
+          show: this.memInfo.config.festival
         }
       ].filter(item => item.show);
     },
@@ -120,7 +138,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionChangePage"]),
+    ...mapActions(["actionChangePage", "actionSetUserdata"]),
     setTabCurrent(tabKey) {
       // 點擊類別 & 再次點擊，來預設path以render畫面
       switch (this.tabItem[tabKey].key) {
@@ -147,9 +165,6 @@ export default {
     },
     setTabState(state) {
       this.tabState = state;
-    },
-    setHeaderTitle(value) {
-      this.$set(this.headerConfig, "title", value);
     }
   }
 };

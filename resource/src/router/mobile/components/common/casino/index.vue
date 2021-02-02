@@ -217,6 +217,15 @@ export default {
     }
   },
   watch: {
+    "$route.query.label"() {
+      this.$nextTick(() => {
+        this.gameData = [];
+        this.updateGameData(this.$route.query.label);
+        this.actionSetFavoriteGame(this.vendor);
+        return;
+      });
+    },
+
     vendor() {
       this.paramsData.first_result = 0;
 
@@ -235,11 +244,11 @@ export default {
     }
   },
   created() {
-    this.getGameLabelList();
     localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
+    this.getGameLabelList();
   },
   methods: {
     ...mapActions(["actionSetFavoriteGame"]),
@@ -278,10 +287,11 @@ export default {
       // 抓取遊戲導覽清單
       ajax({
         method: "get",
-        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`
+        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
+        success: response => {
+          this.labelData = defaultData.concat(response.ret);
+        }
       }).then(response => {
-        this.labelData = defaultData.concat(response.ret);
-
         if (this.loginStatus) {
           let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
           this.labelData = this.labelData.concat(favData);
@@ -307,6 +317,10 @@ export default {
         }
       });
 
+      if (this.$route.query.label == "favorite") {
+        this.isFavorite = "favorite";
+        this.paramsData.label = "favorite";
+      }
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
@@ -328,7 +342,7 @@ export default {
       //     });
       //     return;
       // }
-      this.updateGameData();
+      this.updateGameData(this.$route.query.label);
     },
     /**
      * 設定搜尋文字
@@ -360,6 +374,7 @@ export default {
         }
       });
       this.isFavorite = value === "favorite";
+      return;
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
@@ -381,7 +396,7 @@ export default {
       //     });
       //     return;
       // }
-      this.updateGameData();
+      //this.updateGameData(this.$route.query.label);
     },
     /**
      * 重新取得遊戲資料
@@ -497,6 +512,10 @@ export default {
     },
     updateSearchStatus() {
       this.$emit("update:isShowSearch");
+    },
+    beforeDestroy() {
+      clearTimeout(this.updateGameData);
+      clearTimeout(this.infiniteHandler);
     }
   }
 };

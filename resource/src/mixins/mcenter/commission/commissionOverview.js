@@ -1,8 +1,8 @@
 import { format, getMonth, getYear, parseISO } from "date-fns";
+import { mapActions, mapGetters } from "vuex";
 
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";
-import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -24,7 +24,11 @@ export default {
      * 當前時間
      */
     currentTime() {
-      return format(new Date(this.systemTime), "yyyy/MM/dd HH:mm:ss+20:00"); // +20:00 自動減12小時變成美東時間
+      if (this.systemTime) {
+        return format(new Date(this.systemTime), "yyyy/MM/dd HH:mm:ss+20:00"); // +20:00 自動減12小時變成美東時間
+      } else {
+        return "";
+      }
     },
     /**
      * 當前年份
@@ -165,9 +169,11 @@ export default {
     }
   },
   created() {
+    this.actionSetSystemTime();
     this.getSummary();
   },
   methods: {
+    ...mapActions(["actionSetSystemTime"]),
     /**
      * 取得收益概況
      */

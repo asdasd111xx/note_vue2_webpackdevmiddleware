@@ -1,13 +1,20 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
-      <div
-        v-if="loginStatus"
-        :class="$style['promotion-gift']"
-        @click="onGiftClick"
-      >
-        <img src="/static/image/ey1/promotion/ic-gift.png" />
-        <div v-show="hasNewGift" :class="$style['red-dot']" />
+      <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
+        <div
+          :class="[$style['promotion-gift'], $style['right']]"
+          @click="onGiftClick"
+        >
+          <img src="/static/image/ey1/promotion/ic-gift.png" />
+          <div v-show="hasNewGift" :class="$style['red-dot']" />
+        </div>
+        <div
+          :class="[$style['promotion-gift'], $style['left']]"
+          @click="onGiftClick(giftList[1])"
+        >
+          <img src="/static/image/ey1/promotion/ic_review.png" />
+        </div>
       </div>
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
@@ -32,11 +39,12 @@
           <div :class="$style['image-wrap']">
             <img v-lazy="info.image" />
           </div>
-          <!-- <div :class="$style['latest-wrap']">最新</div> -->
           <div :class="$style['text-wrap']">
             <div :class="$style.time">
               <img
-                :src="$getCdnPath('/static/image/_new/promotion/icon_time.png')"
+                :src="
+                  $getCdnPath('/static/image/common/promotion/icon_time.png')
+                "
               />
               <span v-if="info.end_time"
                 >{{ info.start_time }} ~ {{ info.end_time }}</span
@@ -50,15 +58,14 @@
   </mobile-container>
 </template>
 <script>
-import { API_PROMOTION_LIST } from "@/config/api";
-import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
+import { API_PROMOTION_LIST } from "@/config/api";
 import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
-
 export default {
   components: {
     mobileContainer,
@@ -100,6 +107,18 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    giftList() {
+      return [
+        {
+          alias: "",
+          name: ""
+        },
+        {
+          alias: "verify_promotion",
+          name: "审核查询"
+        }
+      ];
+    },
     headerConfig() {
       return {
         title: this.$text("S_PROMOTIONS", "优惠活动")
@@ -132,48 +151,46 @@ export default {
         this.tabList[0].name = "全部";
       });
     },
-    onGiftClick() {
-      // let newWindow = '';
-      // newWindow = window.open('');
-
+    onGiftClick(target) {
       let url = "";
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/scUrl`
-      }).then(res => {
-        url = res.data;
-        if (!url) {
-          return;
-        }
-        axios({
+      if (target.alias === "verify_promotion") {
+        localStorage.setItem("iframe-third-url-title", target.name);
+        this.$router.push(
+          `/mobile/iframe/promotion?alias=${target.alias}&fullscreen=true`
+        );
+      } else {
+        goLangApiRequest({
           method: "get",
-          url: "/api/v1/c/link/customize",
-          params: {
-            code: "promotion",
-            client_uri: url
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/scUrl`
+        }).then(res => {
+          url = res.data;
+          if (!url) {
+            return;
           }
-        })
-          .then(res => {
-            if (res && res.data && res.data.ret && res.data.ret.uri) {
-              // newWindow.location.href = res.data.ret.uri + '&v=m';
-              localStorage.setItem("iframe-third-url", res.data.ret.uri);
-              localStorage.setItem("iframe-third-url-title", "领取优惠");
-              this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
+          axios({
+            method: "get",
+            url: "/api/v1/c/link/customize",
+            params: {
+              code: "promotion",
+              client_uri: url
             }
           })
-          .catch(error => {
-            // newWindow.close();
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          });
-      });
+            .then(res => {
+              if (res && res.data && res.data.ret && res.data.ret.uri) {
+                localStorage.setItem("iframe-third-url", res.data.ret.uri);
+                localStorage.setItem("iframe-third-url-title", "自领优惠");
+                this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
+              }
+            })
+            .catch(error => {
+              if (error && error.data && error.data.msg) {
+                this.actionSetGlobalMessage({ msg: error.data.msg });
+              }
+            });
+        });
+      }
     },
     onClick(target) {
-      if (!target.link) {
-        return;
-      }
-
       axios({
         method: "get",
         url: "/api/v1/c/link/customize",
@@ -184,20 +201,16 @@ export default {
       })
         .then(res => {
           if (res && res.data && res.data.ret && res.data.ret.uri) {
-            // newWindow.location.href = res.data.ret.uri + '&v=m';
             localStorage.setItem("iframe-third-url", res.data.ret.uri);
             localStorage.setItem("iframe-third-url-title", target.name);
             localStorage.setItem(
               "iframe-third-origin",
               `promotion?tab=${this.tabId}`
             );
-            this.$router.push(
-              `/mobile/iframe/promotion?hasFooter=false&hasHeader=true`
-            );
+            this.$router.push(`/mobile/iframe/promotion`);
           }
         })
         .catch(error => {
-          // newWindow.close();
           if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage({ msg: error.data.msg });
           }
@@ -227,8 +240,18 @@ $fixed_spacing_height: 43px;
   z-index: 1;
 }
 
+.promotion-gift-wrap {
+  width: 100%;
+  max-width: $mobile_max_width;
+  height: 43px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
 @media (orientation: landscape) {
-  .type-wrap {
+  .type-wrap,
+  .promotion-gift-wrap {
     max-width: $mobile_max_landscape_width !important;
   }
 }
@@ -277,21 +300,6 @@ $fixed_spacing_height: 43px;
   }
 }
 
-.latest-wrap {
-  position: absolute;
-  background: url("/static/image/_new/promotion/pic_latest.png");
-  background-position: 50% 50%;
-  background-size: cover;
-  top: 6px;
-  left: -8px;
-  width: 47px;
-  height: 25px;
-  color: $main_white_color1;
-  font-size: 12px;
-  text-align: center;
-  line-height: 20px;
-}
-
 .text-wrap {
   padding: 2px 7px;
 }
@@ -308,10 +316,9 @@ $fixed_spacing_height: 43px;
 }
 
 .promotion-gift {
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 10;
-  right: 14px;
   width: 24px;
   height: 43px;
   display: flex;
@@ -320,6 +327,14 @@ $fixed_spacing_height: 43px;
   > img {
     width: 24px;
     height: 24px;
+  }
+
+  &.right {
+    right: 14px;
+  }
+
+  &.left {
+    left: 14px;
   }
 
   > .red-dot {

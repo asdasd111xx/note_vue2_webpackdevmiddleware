@@ -47,8 +47,8 @@ export default {
       let params = {
         vendor: this.lobbyInfo.vendor,
         kind: this.lobbyInfo.kind,
-        firstResult: 0,
-        maxResults: 36
+        first_result: 0,
+        max_results: 36
       };
 
       return axios({

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="!$route.params.date" :class="$style['top-link-wrap']">
+    <div
+      v-if="!$route.params.date && subSabState"
+      :class="$style['top-link-wrap']"
+    >
       <div
         :class="{ [$style.active]: $route.params.page === 'promote' }"
         @click="$router.replace('/mobile/mcenter/tcenter/management/promote')"
@@ -17,7 +20,15 @@
         :class="{ [$style.active]: $route.params.page === 'friends' }"
         @click="$router.replace('/mobile/mcenter/tcenter/management/friends')"
       >
-        <span>{{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}</span>
+        <span>
+          <template v-if="themeTPL === 'ey1'">
+            {{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}
+          </template>
+
+          <template v-else>
+            下级好友
+          </template>
+        </span>
       </div>
     </div>
     <template v-if="$route.params.page === 'member'">
@@ -30,7 +41,12 @@
       <recommend />
     </template>
     <template v-else-if="$route.params.page === 'friends'">
-      <first-friends />
+      <first-friends
+        :set-header-title="setHeaderTitle"
+        :set-back-func="setBackFunc"
+        :set-tab-state="setTabState"
+        :set-sub-tab-state="setSubTabState"
+      />
     </template>
   </div>
 </template>
@@ -60,8 +76,17 @@ export default {
     },
     setHeaderTitle: {
       type: Function,
-      required: true
+      default: () => {}
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
+  },
+  data() {
+    return {
+      subSabState: true
+    };
   },
   computed: {
     ...mapGetters({
@@ -72,6 +97,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   created() {
@@ -83,6 +111,11 @@ export default {
       name: "mcenter-tcenter-management",
       params: { page: "member" }
     });
+  },
+  methods: {
+    setSubTabState(state) {
+      this.subSabState = state;
+    }
   }
 };
 </script>

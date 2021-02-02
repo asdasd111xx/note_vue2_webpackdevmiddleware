@@ -57,9 +57,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   }
 
   //XBB棋牌須額外修改platform=AIO 移除上滑全屏遮罩
-  if (vendor === "lg_card" || vendor === "lg_yb_card") {
-    temp.is_pwa = 1;
-  }
+  // if (vendor === "lg_card" || vendor === "lg_yb_card") {
+  // }
+  temp.is_pwa = 1;
 
   return game.gameLink(
     {
@@ -118,24 +118,18 @@ export default (params, success = () => {}, fail = () => {}) => {
         }
 
         setTimeout(() => {
-          try {
-            let isWebview = getCookie("platform") === "H";
-            if (isWebview) {
-              window.location.href = link;
+          let isWebview = getCookie("platform") === "H";
+          if (isWebview) {
+            window.location.replace(link);
+          } else {
+            if (embedGame) {
+              localStorage.setItem("iframe-third-url", link);
+              localStorage.setItem("iframe-third-url-title", gameTitle);
             } else {
-              if (embedGame) {
-                localStorage.setItem("iframe-third-url", link);
-                localStorage.setItem("iframe-third-url-title", gameTitle);
-              } else {
-                newWindow.location = link;
-              }
+              newWindow.location.replace(link);
             }
-          } catch (e) {
-            newWindow ? newWindow.close() : "";
-            console.log(e);
-            console.log("另开视窗失败 请关闭阻挡弹出式视窗");
-            // window.open(link, '', '_blank', true);
           }
+
           success();
 
           if (embedGame) {

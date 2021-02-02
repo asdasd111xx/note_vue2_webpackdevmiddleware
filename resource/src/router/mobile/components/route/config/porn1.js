@@ -236,6 +236,10 @@ export default {
       import(
         /* webpackChunkName: 'accountDataWithdrawpwdPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
       ),
+    accountDataSkypePorn1: () =>
+      import(
+        /* webpackChunkName: 'accountDataSkypePorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
+      ),
     walletPorn1: () =>
       import(
         /* webpackChunkName: 'walletPorn1' */ "../../tpl/porn1/components/mcenter/components/wallet"
@@ -255,6 +259,10 @@ export default {
     swagPorn1: () =>
       import(
         /* webpackChunkName: 'swagPorn1' */ "../../tpl/porn1/components/mcenter/components/swag"
+      ),
+    tcenterLobbyPorn1: () =>
+      import(
+        /* webpackChunkName: 'tcenterLobbyPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"
       )
   },
   agcenter: {

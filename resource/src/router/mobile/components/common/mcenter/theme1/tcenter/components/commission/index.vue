@@ -250,7 +250,7 @@ export default {
 
       if (_value < _today) {
         this.checkDate = false;
-        this.actionSetGlobalMessage({ msg: "查询纪录不能超过30天" });
+        this.actionSetGlobalMessage({ msg: "查询记录不能超过30天" });
         this.inqStart = this.endDate;
         this.checkDate = true;
       } else if (this.inqStart > this.inqEnd) {

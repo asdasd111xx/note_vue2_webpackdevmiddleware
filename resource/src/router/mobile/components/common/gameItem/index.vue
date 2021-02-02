@@ -9,7 +9,6 @@
         `${!gameInfo.url && !gameInfo.code ? 'no-activity' : 'show'}`
       ])
     "
-    @click="onEnter"
   >
     <div
       v-if="gameInfo.code && gameInfo.status < 4"
@@ -22,7 +21,7 @@
       {{ vendorName }}
     </div>
     <!-- 遊戲圖片區塊 -->
-    <div :class="getClass(['game-box-wrap'])">
+    <div :class="getClass(['game-box-wrap'])" @click="onEnter">
       <!-- 行動裝置點擊圖片開啟遊戲 -->
       <div :class="[getClass(['game-box']), 'clearfix']">
         <img v-lazy="getImg" />
@@ -198,7 +197,7 @@ export default {
           type = "card";
           break;
       }
-      let resultUrl = `${this.BBOSDomain}/cdn/image/${type}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
+      let resultUrl = `${this.BBOSDomain}/elibom/gameIcon/${type}/Game_${this.gameInfo.code}.png`;
 
       if (!this.gameInfo.code && this.gameInfo.status > 1) {
         resultUrl = this.$getCdnPath("/static/image/casino/event_icon.png");
@@ -432,7 +431,7 @@ export default {
       if (this.isBackEnd || this.isSetFavorite) {
         return;
       }
-      this.isSetFavorite = true;
+
       const actionType = this.checkFavorite
         ? "deleteFavoriteGame"
         : "setFavoriteGame";
@@ -444,6 +443,7 @@ export default {
           code
         }
       }).then(() => {
+        this.isSetFavorite = true;
         this.isFavorite = !this.isFavorite;
         this.actionSetFavoriteGame(vendor).then(() => {
           setTimeout(() => {
