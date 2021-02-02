@@ -8,11 +8,7 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/pic_vip_1.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/pic_vip_1.png`)"
               alt="icon"
             />
           </div>
@@ -36,11 +32,7 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/pic_vip_2.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/pic_vip_2.png`)"
               alt="icon"
             />
           </div>
@@ -66,11 +58,7 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/pic_vip_3.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/pic_vip_3.png`)"
               alt="icon"
             />
           </div>
@@ -83,11 +71,7 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/pic_vip_4.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/pic_vip_4.png`)"
               alt="icon"
             />
           </div>
@@ -110,17 +94,10 @@
           </div>
         </div>
 
-        <div
-          v-if="['porn1', 'sg1'].includes(themeTPL)"
-          :class="$style['cell']"
-        >
+        <div v-if="['porn1', 'sg1'].includes(themeTPL)" :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/pic_vip_5.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/pic_vip_5.png`)"
               alt="icon"
             />
           </div>
@@ -133,11 +110,7 @@
         <div v-if="['ey1'].includes(themeTPL)" :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/pic_vip_4.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/pic_vip_4.png`)"
               alt="icon"
             />
           </div>
@@ -158,7 +131,7 @@
         :class="$style['vip-detail']"
         @click="$router.push('/mobile/mcenter/accountVIP/detail')"
       >
-        查看VIP详请 》
+        查看VIP详情 》
       </div>
     </template>
   </div>

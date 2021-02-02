@@ -14,7 +14,7 @@
 import { mapGetters } from "vuex";
 import { getCookie } from "@/lib/cookie";
 import mobileContainer from "../../../common/mobileContainer";
-import vipDetail from '@/router/mobile/components/tpl/porn1/components/mcenter/components/vipDetail/components/index';
+import vipDetail from "@/router/mobile/components/tpl/porn1/components/mcenter/components/vipDetail/components/index";
 
 export default {
   components: {
@@ -44,7 +44,7 @@ export default {
         (this.$route.query && this.$route.query.APP)
       );
       if (isApp) {
-        document.title = "VIP详请";
+        document.title = "VIP详情";
       }
       return isApp;
     },
@@ -58,7 +58,7 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: "VIP详请"
+        title: "VIP详情"
       };
     }
   },
