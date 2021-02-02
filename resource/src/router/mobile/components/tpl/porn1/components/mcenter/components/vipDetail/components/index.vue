@@ -2,7 +2,7 @@
   <div>
     <div :class="$style['table-container']">
       <!-- Content-Title -->
-      <template v-if="['porn1'].includes(this.themeTPL)">
+      <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
         <div :class="$style['title']">返水比例</div>
       </template>
 
@@ -14,42 +14,40 @@
         </div>
       </template>
 
-      <!-- 絲瓜不顯示返水比例表格 -->
-      <template v-if="['porn1', 'ey1'].includes(this.themeTPL)">
-        <div :class="$style['table-wrap']">
-          <div :class="$style['table-header']">
+      <!-- 返水比例表格 -->
+      <div :class="$style['table-wrap']">
+        <div :class="$style['table-header']">
+          <div
+            v-for="(item, index) in detailData.titleList"
+            :key="`titleList-${index}`"
+            :class="$style['header-item']"
+          >
+            {{ item }}
+          </div>
+        </div>
+
+        <div :class="$style['table-body']">
+          <div
+            v-for="(cells, index) in detailData.vipList"
+            :key="`list-${index}`"
+            :class="$style['content']"
+          >
             <div
-              v-for="(item, index) in detailData.titleList"
-              :key="`titleList-${index}`"
-              :class="$style['header-item']"
+              v-for="(item, num) in cells"
+              :key="`cells-${num}`"
+              :class="$style['item']"
             >
               {{ item }}
             </div>
           </div>
-
-          <div :class="$style['table-body']">
-            <div
-              v-for="(cells, index) in detailData.vipList"
-              :key="`list-${index}`"
-              :class="$style['content']"
-            >
-              <div
-                v-for="(item, num) in cells"
-                :key="`cells-${num}`"
-                :class="$style['item']"
-              >
-                {{ item }}
-              </div>
-            </div>
-          </div>
-
-          <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
-            <div :class="$style['table-desc']">
-              ※当日返水将会在次日北京时间16：00-16：30派发
-            </div>
-          </template>
         </div>
-      </template>
+
+        <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
+          <div :class="$style['table-desc']">
+            ※当日返水将会在次日北京时间16：00-16：30派发
+          </div>
+        </template>
+      </div>
 
       <!-- Content-Rule -->
       <div :class="$style['desc-wrap']">
@@ -87,6 +85,9 @@
 /* global $ */
 import { mapGetters } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
+import yaboData from "./json/yabo.json";
+import eyData from "./json/ey.json";
+import sgData from "./json/sg.json";
 
 export default {
   components: {
@@ -114,130 +115,11 @@ export default {
       switch (this.themeTPL) {
         case "porn1":
         case "sg1":
-          data.titleList = [
-            "VIP等级",
-            "体育电竞",
-            "视讯返水",
-            "电子返水",
-            "捕鱼返水",
-            "棋牌返水",
-            "热门返水",
-            "返水上限"
-          ];
+          data.titleList =
+            this.themeTPL === "porn1" ? yaboData.titleList : sgData.titleList;
 
-          // Only 鴨博只有返水比例表格
-          data.vipList = [
-            [
-              "VIP0",
-              "0.38%",
-              "0.40%",
-              "1.10%",
-              "0.80%",
-              "0.60%",
-              "1.00%",
-              "10,888"
-            ],
-            [
-              "VIP1",
-              "0.38%",
-              "0.45%",
-              "1.20%",
-              "0.80%",
-              "0.65%",
-              "1.20%",
-              "12,888"
-            ],
-            [
-              "VIP2",
-              "0.38%",
-              "0.45%",
-              "1.30%",
-              "0.90%",
-              "0.70%",
-              "1.40%",
-              "16,888"
-            ],
-            [
-              "VIP3",
-              "0.40%",
-              "0.50%",
-              "1.40%",
-              "0.90%",
-              "0.75%",
-              "1.60%",
-              "18,888"
-            ],
-            [
-              "VIP4",
-              "0.45%",
-              "0.55%",
-              "1.50%",
-              "1.00%",
-              "0.80%",
-              "1.80%",
-              "28,888"
-            ],
-            [
-              "VIP5",
-              "0.45%",
-              "0.60%",
-              "1.60%",
-              "1.00%",
-              "0.85%",
-              "2.00%",
-              "38,888"
-            ],
-            [
-              "VIP6",
-              "0.50%",
-              "0.65%",
-              "1.70%",
-              "1.10%",
-              "0.90%",
-              "2.20%",
-              "58,888"
-            ],
-            [
-              "VIP7",
-              "0.55%",
-              "0.70%",
-              "1.80%",
-              "1.10%",
-              "0.95%",
-              "2.40%",
-              "88,888"
-            ],
-            [
-              "VIP8",
-              "0.68%",
-              "0.75%",
-              "1.90%",
-              "1.20%",
-              "1.00%",
-              "2.60%",
-              "128,888"
-            ],
-            [
-              "VIP9",
-              "0.80%",
-              "0.85%",
-              "2.00%",
-              "1.20%",
-              "1.10%",
-              "2.80%",
-              "188,888"
-            ],
-            [
-              "VIP10",
-              "1.00%",
-              "1.00%",
-              "2.10%",
-              "1.30%",
-              "1.20%",
-              "3.00%",
-              "388,888"
-            ]
-          ];
+          data.vipList =
+            this.themeTPL === "porn1" ? yaboData.vipList : sgData.vipList;
 
           data.ruleList = [
             {
@@ -294,58 +176,8 @@ export default {
           break;
 
         case "ey1":
-          data.titleList = [
-            "VIP等级",
-            "当日存款",
-            "累积存款",
-            "累积总有效投注",
-            "90天保级投注",
-            "晋级礼金",
-            "每周领",
-            "每周领"
-          ];
-
-          data.vipList = [
-            [
-              "VIP10",
-              "1万",
-              "1.25亿",
-              "10亿",
-              "1,100万",
-              "100万",
-              "9,000",
-              "1.5万"
-            ],
-            [
-              "VIP9",
-              "1万",
-              "6,250万",
-              "5亿",
-              "500万",
-              "50万",
-              "5,000",
-              "7,000"
-            ],
-            [
-              "VIP8",
-              "5,000",
-              "1,875万",
-              "1.5亿",
-              "100万",
-              "15.5万",
-              "1,500",
-              "2,000"
-            ],
-            ["VIP7", "5,000", "250万", "2,000万", "20万", "1.88万", "200", "-"],
-            ["VIP6", "1,000", "75万", "600万", "6万", "5,000", "60", "-"],
-            ["VIP5", "1,000", "12.5万", "100万", "1万", "1,000", "10", "-"],
-            ["VIP4", "500", "1.25万", "10万", "1,000", "120", "-", "-"],
-            ["VIP3", "500", "2,500", "2万", "200", "50", "-", "-"],
-            ["VIP2", "100", "750", "6,000", "60", "20", "-", "-"],
-            ["VIP1", "100", "250", "2,000", "20", "10", "-", "-"],
-            ["VIP0", "-", "-", "-", "-", "-", "-", "-"]
-          ];
-
+          data.titleList = eyData.titleList;
+          data.vipList = eyData.vipList;
           data.ruleList = [
             {
               number: "❶",

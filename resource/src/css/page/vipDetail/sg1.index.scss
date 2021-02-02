@@ -1,5 +1,15 @@
 @import "./porn1.index.scss";
 
+.table-header {
+  grid-template-columns: 45px repeat(6, 1fr);
+}
+
+.table-body {
+  .content {
+    grid-template-columns: 45px repeat(6, 1fr);
+  }
+}
+
 .title {
   &::before {
     background: linear-gradient(#fe593c, #e61938);
