@@ -462,7 +462,8 @@ export default {
       transOutText: "请选择帐户",
       transInList: [],
       transOutList: [],
-      bonus: {}
+      bonus: {},
+      isInitTranList: false
     };
   },
   watch: {
@@ -555,12 +556,7 @@ export default {
       }
     });
     // this.getRecentlyOpened()
-    const params = [this.getBalanceAll()];
-    Promise.all(params).then(() => {
-      // do something
-      this.setTranInList();
-      this.setTranOutList();
-    });
+    this.initTranList(true);
   },
   mounted() {
     //   保留輸入資料
@@ -586,7 +582,17 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage"
     ]),
+    initTranList(reload) {
+      this.getBalanceAll().then(() => {
+        this.setTranInList(reload);
+        this.setTranOutList(reload);
+        this.isInitTranList = true;
+      });
+    },
     verification() {
+      if (!this.transferMoney) {
+        return;
+      }
       this.transferMoney = this.transferMoney
         .replace(" ", "")
         .trim()
@@ -606,7 +612,12 @@ export default {
       this.setTranOutList();
       localStorage.setItem("tranfer-tranIn", JSON.stringify(vendor));
     },
-    setTranInList() {
+    setTranInList(reload) {
+      if (reload) {
+        this.transInList = [];
+        this.tranIn = "";
+        this.transInText = "请选择帐户";
+      }
       const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 維護時不可轉入
       Object.keys(this.membalance.vendor).forEach(index => {
@@ -623,7 +634,12 @@ export default {
       });
       this.transInList = list;
     },
-    setTranOutList() {
+    setTranOutList(reload) {
+      if (reload) {
+        this.transOutList = [];
+        this.tranOut = "";
+        this.transOutText = "请选择帐户";
+      }
       const list = [{ value: "", text: this.$t("S_SELECT_ACCOUNT") }];
       // 轉出列表只塞有額度的平台（額度需>=1，只有小數位不允許轉）
       // 維護時不可轉出
@@ -740,24 +756,6 @@ export default {
         }
       });
     },
-    getBalanceAll(status) {
-      if (status === "lockStatus" && this.balanceLock) {
-        return;
-      }
-
-      this.balanceLock = true;
-      this.actionSetUserBalance().then(() => {
-        this.timer = setInterval(() => {
-          if (this.lockSec >= 15) {
-            clearInterval(this.timer);
-            this.lockSec = 0;
-            this.balanceLock = false;
-            return;
-          }
-          this.lockSec += 1;
-        }, 1000);
-      });
-    },
     backAccount({ afterSetUserBalance } = {}, fromAuto) {
       mcenter.balanceTranBack({
         success: () => {
@@ -820,13 +818,9 @@ export default {
             this.lockSec = 0;
             this.actionSetUserBalance();
             this.transferMoney = "";
-
             this.btnLock = false;
-
-            // 0129 暫解，待後續優化
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
+            this.isInitTranList = false;
+            this.initTranList(true);
           },
           fail: res => {
             this.btnLock = false;
