@@ -79,7 +79,7 @@
                 {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].valid_user }}
+                {{ summaryContent[index].valid_user | amountFormat }}
                 {{ $text("S_PERSON", "人") }}
               </div>
             </div>
@@ -111,7 +111,7 @@
                 {{ $text("S_SENT_RAKEBACK", "已派返水") }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].dispatched_rebate }}
+                {{ summaryContent[index].dispatched_rebate | amountFormat }}
               </div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
@@ -119,7 +119,7 @@
                 {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].dispatched_offer }}
+                {{ summaryContent[index].dispatched_offer | amountFormat }}
               </div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
@@ -127,7 +127,7 @@
                 {{ $text("S_MEM_DEPOSIT", "会员入款") }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].deposit }}
+                {{ summaryContent[index].deposit | amountFormat }}
               </div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
@@ -140,7 +140,7 @@
                   { [$style.deficit]: +summaryContent[index].withdraw < 0 }
                 ]"
               >
-                {{ summaryContent[index].withdraw }}
+                {{ summaryContent[index].withdraw | amountFormat }}
               </div>
             </div>
             <div :class="[$style.detail, 'clearfix']">
@@ -148,7 +148,7 @@
                 {{ $text("S_PLATFORM_COST", "平台费") }}
               </div>
               <div :class="$style.amount">
-                {{ summaryContent[index].vendor_fee }}
+                {{ summaryContent[index].vendor_fee | amountFormat }}
               </div>
             </div>
             <div

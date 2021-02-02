@@ -558,9 +558,9 @@ export default {
     const params = [this.getBalanceAll()];
     Promise.all(params).then(() => {
       // do something
+      this.setTranInList();
+      this.setTranOutList();
     });
-    this.setTranInList();
-    this.setTranOutList();
   },
   mounted() {
     //   保留輸入資料
