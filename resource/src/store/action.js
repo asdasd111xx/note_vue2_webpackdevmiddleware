@@ -810,7 +810,7 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 };
 // 會員端-設定會員餘額
 export const actionSetUserBalance = ({ commit, dispatch }) => {
-  axios({
+  return axios({
     method: "get",
     url: "/api/v1/c/vendor/all/balance"
   })
