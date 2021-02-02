@@ -648,11 +648,13 @@ export default {
     },
     getBalanceAll(status) {
       if (status === "lockStatus" && this.balanceLock) {
-        return;
+        return new Promise((resolve, reject) => {
+          resolve(false);
+        });
       }
 
       this.balanceLock = true;
-      this.actionSetUserBalance().then(() => {
+      return this.actionSetUserBalance().then(() => {
         this.timer = setInterval(() => {
           if (this.lockSec >= 15) {
             clearInterval(this.timer);
