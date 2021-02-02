@@ -4,12 +4,12 @@
 @for $i from 0 through 10 {
   .content:nth-child(#{$i + 1}) .item:first-of-type::before {
     content: "";
-    position: relative;
+    position: absolute;
     background-image: url("/static/image/common/vip/detail/ic_vip#{$i}.png");
     background-size: contain;
     width: 25px;
     height: 25px;
-    left: 0px;
+    left: 3px;
   }
 }
 
@@ -20,6 +20,10 @@
 .table-body {
   .content {
     grid-template-columns: 70px repeat(6, 1fr);
+
+    & .item:first-of-type {
+      padding-left: 25px;
+    }
   }
 }
 

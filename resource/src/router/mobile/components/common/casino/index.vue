@@ -218,8 +218,12 @@ export default {
   },
   watch: {
     "$route.query.label"() {
-      this.getGameLabelList();
-      this.actionSetFavoriteGame(this.vendor);
+      this.$nextTick(() => {
+        this.gameData = [];
+        this.updateGameData(this.$route.query.label);
+        this.actionSetFavoriteGame(this.vendor);
+        return;
+      });
     },
 
     vendor() {
@@ -370,6 +374,7 @@ export default {
         }
       });
       this.isFavorite = value === "favorite";
+      return;
       // 活動先註解不開放，後續開放只要搜 activity_open
       // if (!this.paramsData.label || this.paramsData.label === 'activity') {
       //     ajax({
@@ -391,7 +396,7 @@ export default {
       //     });
       //     return;
       // }
-      this.updateGameData(this.$route.query.label);
+      //this.updateGameData(this.$route.query.label);
     },
     /**
      * 重新取得遊戲資料
