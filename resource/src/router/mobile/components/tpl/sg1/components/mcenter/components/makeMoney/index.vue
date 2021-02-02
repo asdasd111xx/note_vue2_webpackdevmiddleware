@@ -141,8 +141,8 @@ export default {
         });
     } else {
       if (this.loginStatus) {
-        this.isShowPromotion =
-          localStorage.getItem("is-show-promotion") === "true";
+        // this.isShowPromotion =
+        //   localStorage.getItem("is-show-promotion") === "true";
 
         this.actionSetUserdata(true).then(() => {
           // 我的推廣開關 && 禮金開關需同時開啟，才顯示禮金明細
