@@ -67,7 +67,9 @@ export default {
     mobileContainer
   },
   data() {
-    return {};
+    return {
+      isShowPromotion: true
+    };
   },
   created() {
     const query = this.$route.query;
