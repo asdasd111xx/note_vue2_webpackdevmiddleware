@@ -50,7 +50,12 @@
             <span :class="$style['content-left']">
               损益
             </span>
-            <div :class="$style['content-right']">
+            <div
+              :class="[
+                $style['content-right'],
+                { [$style['is-negative']]: caculateList.sub_profit < 0 }
+              ]"
+            >
               {{ caculateList.sub_profit }}
             </div>
           </div>
