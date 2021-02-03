@@ -1,3 +1,4 @@
+@import "@/css/variable.scss";
 .content-wrap {
   .content-item {
     margin-top: 10px;
@@ -24,6 +25,10 @@
         .content-right {
           float: right;
           color: #222;
+
+          &.is-negative {
+            color: $main_error_color1;
+          }
         }
       }
     }
