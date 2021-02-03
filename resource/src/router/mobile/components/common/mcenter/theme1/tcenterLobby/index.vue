@@ -22,7 +22,7 @@
       <!-- <div :class="[$style['top-bg']]"></div> -->
       <div v-if="friendsStatistics" :class="$style['top-data']">
         <div
-          v-if="isShowRebate"
+          v-if="isShowRebate2"
           :class="$style['list-data']"
           @click="$router.push('/mobile/mcenter/tcenter/commission/rebate')"
         >
@@ -38,7 +38,7 @@
         <div :class="$style['list-data']">
           <div :class="$style['list-name']">今日活跃会员</div>
           <div :class="$style['list-value']">
-            {{ friendsStatistics.today_has_login }}
+            {{ isShowRebate ? friendsStatistics.today_has_login : subValidBet }}
           </div>
         </div>
       </div>
@@ -46,7 +46,9 @@
         <div :class="$style['regist-content']">
           <div :class="$style['regist-title']">今日注册</div>
           <div :class="$style['regist-value']">
-            {{ friendsStatistics.today_register }}
+            {{
+              isShowRebate ? friendsStatistics.today_has_login : subUserCount
+            }}
           </div>
         </div>
         <div :class="$style['regist-content']">
@@ -154,6 +156,9 @@ export default {
   mixins: [friendsStatistics],
   data() {
     return {
+      isShowRebate2: false,
+      subValidBet: 0,
+      subUserCount: 0,
       isShowRebate: true,
       specialList: [
         {
@@ -185,6 +190,7 @@ export default {
   },
   created() {
     this.getRebateSwitch();
+
     this.specialData.forEach(element => {
       if (element.name === "推荐礼金") {
         element.showType = this.memInfo.config.festival;
@@ -227,6 +233,15 @@ export default {
 
         if (response.status === "000") {
           this.isShowRebate = response.data.show_real_time;
+
+          if (this.isShowRebate == true) {
+            this.isShowRebate2 = false;
+          } else {
+            this.isShowRebate2 = true;
+            this.subValidBet = friendsStatistics.valid_bet | "--";
+            this.subUserCount = friendsStatistics.today_has_login | "--";
+          }
+
           return;
         }
       });
