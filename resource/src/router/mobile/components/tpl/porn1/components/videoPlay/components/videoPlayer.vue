@@ -285,7 +285,7 @@ export default {
         this.setReconnect();
       }
     },
-    onDisconnect() {
+    onDisconnect(e) {
       if (this.isDebug) {
         console.log("[WS]: Video active loading...");
       }

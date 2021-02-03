@@ -242,6 +242,15 @@ export default {
           if (this.isDebug) {
             console.log("[WS]: onClose:", e);
           }
+
+          //彩金未開放
+          if (e.reason === "NO ACTIVITY") {
+            if (window.YABO_SOCKET_VIDEO_DISCONNECT) {
+              window.YABO_SOCKET_VIDEO_DISCONNECT();
+            }
+            return;
+          }
+
           this.reconnectYaboWS();
         };
         window.YABO_SOCKET.onopen = e => {
