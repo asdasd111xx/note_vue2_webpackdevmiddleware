@@ -22,7 +22,7 @@
       <!-- <div :class="[$style['top-bg']]"></div> -->
       <div v-if="friendsStatistics" :class="$style['top-data']">
         <div
-          v-if="isShowRebate"
+          v-if="!isShowRebate"
           :class="$style['list-data']"
           @click="$router.push('/mobile/mcenter/tcenter/commission/rebate')"
         >
@@ -32,13 +32,15 @@
         <div :class="$style['list-data']">
           <div :class="$style['list-name']">今日有效投注</div>
           <div :class="$style['list-value']">
-            {{ friendsStatistics.valid_bet }}
+            {{ isShowRebate ? subValidBet : friendsStatistics.valid_bet }}
           </div>
         </div>
         <div :class="$style['list-data']">
           <div :class="$style['list-name']">今日活跃会员</div>
           <div :class="$style['list-value']">
-            {{ friendsStatistics.today_has_login }}
+            {{
+              isShowRebate ? subUserCount : friendsStatistics.today_has_login
+            }}
           </div>
         </div>
       </div>
@@ -154,6 +156,8 @@ export default {
   mixins: [friendsStatistics],
   data() {
     return {
+      subValidBet: 0,
+      subUserCount: 0,
       isShowRebate: true,
       specialList: [
         {
@@ -185,6 +189,7 @@ export default {
   },
   created() {
     this.getRebateSwitch();
+
     this.specialData.forEach(element => {
       if (element.name === "推荐礼金") {
         element.showType = this.memInfo.config.festival;
@@ -226,7 +231,16 @@ export default {
         this.isReceive = true;
 
         if (response.status === "000") {
-          this.isShowRebate = response.data.show_real_time;
+          this.isShowRebate = response.data.ret.show_real_time;
+          if (this.isShowRebate) {
+            this.subValidBet = response.data.total.sub_valid_bet
+              ? response.data.total.sub_valid_bet
+              : "--";
+            this.subUserCount = response.data.total.sub_user_count
+              ? response.data.total.sub_user_count
+              : "--";
+          }
+
           return;
         }
       });
