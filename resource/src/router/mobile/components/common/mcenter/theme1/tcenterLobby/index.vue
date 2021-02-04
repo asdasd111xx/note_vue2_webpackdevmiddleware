@@ -50,25 +50,25 @@
         <div :class="$style['regist-content']">
           <div :class="$style['regist-title']">今日注册</div>
           <div :class="$style['regist-value']">
-            {{ friendsStatistics.today_register }}
+            {{ formatToPrice(friendsStatistics.today_register) }}
           </div>
         </div>
         <div :class="$style['regist-content']">
           <div :class="$style['regist-title']">本月注册</div>
           <div :class="$style['regist-value']">
-            {{ friendsStatistics.month_register }}
+            {{ formatToPrice(friendsStatistics.month_register) }}
           </div>
         </div>
         <div :class="$style['regist-content']">
           <div :class="$style['regist-title']">注册总数</div>
           <div :class="$style['regist-value']">
-            {{ friendsStatistics.user_count }}
+            {{ formatToPrice(friendsStatistics.user_count) }}
           </div>
         </div>
         <div :class="$style['regist-content']">
           <div :class="$style['regist-title']">今日损益</div>
           <div :class="$style['regist-value']">
-            {{ friendsStatistics.payoff }}
+            {{ getNoRoundText(friendsStatistics.payoff) }}
           </div>
         </div>
       </div>
@@ -218,6 +218,18 @@ export default {
   },
   mounted() {},
   methods: {
+    formatToPrice(value) {
+      //千分位
+      return `${Number(value)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    },
+    getNoRoundText(value) {
+      //千分位＋小數點後兩位
+      return `${Number(value)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    },
     getRebateSwitch() {
       this.isReceive = false;
 
@@ -235,16 +247,12 @@ export default {
         if (response.status === "000") {
           this.isShowRebate = response.data.ret.show_real_time;
           if (this.isShowRebate) {
-            if (response.data.total.valid_bet.sub_valid_bet) {
-              this.subValidBet = Number(
-                response.data.total.valid_bet.sub_valid_bet
-              ).toFixed(2);
-            } else {
-              this.subValidBet = "--";
-            }
+            this.subValidBet = response.data.total.valid_bet.sub_valid_bet
+              ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)
+              : "--";
 
             this.subUserCount = response.data.total.valid_bet.sub_user_count
-              ? response.data.total.valid_bet.sub_user_count
+              ? this.formatToPrice(response.data.total.valid_bet.sub_user_count)
               : "--";
           }
 
