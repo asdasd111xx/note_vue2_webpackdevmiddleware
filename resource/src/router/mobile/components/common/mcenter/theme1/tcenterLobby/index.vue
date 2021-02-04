@@ -233,10 +233,12 @@ export default {
         if (response.status === "000") {
           this.isShowRebate = response.data.ret.show_real_time;
           if (this.isShowRebate) {
-            this.subValidBet = response.data.total.sub_valid_bet | "--";
-            this.subUserCount = response.data.total.sub_user_count | "--";
-          } else {
-            console.log(this.friendsStatistics.today_has_login);
+            this.subValidBet = response.data.total.sub_valid_bet
+              ? response.data.total.sub_valid_bet
+              : "--";
+            this.subUserCount = response.data.total.sub_user_count
+              ? response.data.total.sub_user_count
+              : "--";
           }
 
           return;
