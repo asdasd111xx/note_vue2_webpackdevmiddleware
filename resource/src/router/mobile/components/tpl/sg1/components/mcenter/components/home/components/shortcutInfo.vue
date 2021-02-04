@@ -188,7 +188,7 @@ export default {
         params: { lang: "zh-cn" }
       })
         .then(response => {
-          if (response.status === "000" && response.data.show_real_time) {
+          if (response.status === "000" && response.data.ret.show_real_time) {
             this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
           } else {
             this.$router.push("/mobile/mcenter/tcenter/commission/summary");
