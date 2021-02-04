@@ -45,7 +45,9 @@ export default {
   computed: {
     ...mapGetters({
       agentLink: "getAgentLink",
-      promotionLink: "getPromotionLink"
+      promotionLink: "getPromotionLink",
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus"
     }),
     headerConfig() {
       let hasRecommendGift = this.isShowPromotion;
@@ -87,14 +89,18 @@ export default {
   created() {
     this.actionSetAgentLink();
     if (this.loginStatus) {
-      this.isShowPromotion =
-        localStorage.getItem("is-show-promotion") === "true";
+      // this.isShowPromotion =
+      //   localStorage.getItem("is-show-promotion") === "true";
+
       this.actionSetUserdata(true).then(() => {
-        this.isShowPromotion = this.memInfo.user.show_promotion;
-        localStorage.setItem(
-          "is-show-promotion",
-          this.memInfo.user.show_promotion
-        );
+        // 我的推廣開關 && 禮金開關需同時開啟，才顯示禮金明細
+        this.isShowPromotion =
+          this.memInfo.user.show_promotion && this.memInfo.config.festival;
+        localStorage.setItem("is-show-promotion", this.isShowPromotion);
+        // localStorage.setItem(
+        //   "is-show-promotion",
+        //   this.memInfo.user.show_promotion
+        // );
       });
     } else {
       this.isShowPromotion = true;
