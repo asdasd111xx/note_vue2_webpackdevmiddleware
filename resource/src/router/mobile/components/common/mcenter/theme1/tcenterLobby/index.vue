@@ -22,7 +22,7 @@
       <!-- <div :class="[$style['top-bg']]"></div> -->
       <div v-if="friendsStatistics" :class="$style['top-data']">
         <div
-          v-if="isShowRebate2"
+          v-if="!isShowRebate"
           :class="$style['list-data']"
           @click="$router.push('/mobile/mcenter/tcenter/commission/rebate')"
         >
@@ -32,13 +32,15 @@
         <div :class="$style['list-data']">
           <div :class="$style['list-name']">今日有效投注</div>
           <div :class="$style['list-value']">
-            {{ friendsStatistics.valid_bet }}
+            {{ isShowRebate ? subValidBet : friendsStatistics.valid_bet }}
           </div>
         </div>
         <div :class="$style['list-data']">
           <div :class="$style['list-name']">今日活跃会员</div>
           <div :class="$style['list-value']">
-            {{ isShowRebate ? friendsStatistics.today_has_login : subValidBet }}
+            {{
+              isShowRebate ? subUserCount : friendsStatistics.today_has_login
+            }}
           </div>
         </div>
       </div>
@@ -46,9 +48,7 @@
         <div :class="$style['regist-content']">
           <div :class="$style['regist-title']">今日注册</div>
           <div :class="$style['regist-value']">
-            {{
-              isShowRebate ? friendsStatistics.today_has_login : subUserCount
-            }}
+            {{ friendsStatistics.today_register }}
           </div>
         </div>
         <div :class="$style['regist-content']">
@@ -156,7 +156,6 @@ export default {
   mixins: [friendsStatistics],
   data() {
     return {
-      isShowRebate2: false,
       subValidBet: 0,
       subUserCount: 0,
       isShowRebate: true,
@@ -232,14 +231,12 @@ export default {
         this.isReceive = true;
 
         if (response.status === "000") {
-          this.isShowRebate = response.data.show_real_time;
-
-          if (this.isShowRebate == true) {
-            this.isShowRebate2 = false;
+          this.isShowRebate = response.data.ret.show_real_time;
+          if (this.isShowRebate) {
+            this.subValidBet = response.data.total.sub_valid_bet | "--";
+            this.subUserCount = response.data.total.sub_user_count | "--";
           } else {
-            this.isShowRebate2 = true;
-            this.subValidBet = friendsStatistics.valid_bet | "--";
-            this.subUserCount = friendsStatistics.today_has_login | "--";
+            console.log(this.friendsStatistics.today_has_login);
           }
 
           return;
