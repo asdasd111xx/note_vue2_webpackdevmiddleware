@@ -6,7 +6,8 @@
         <div :class="$style['title']">全球数字货币交易所</div>
 
         <div
-          v-for="item in list"
+          v-for="(item, index) in list"
+          :key="index"
           :class="$style['info-item']"
           @click="item.onClick"
         >
@@ -34,8 +35,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   data() {
     return {
-      huobi_url: "",
-      binance_url: "",
+      urls: [],
       list: [
         {
           alias: "Huobi Global",
@@ -45,47 +45,60 @@ export default {
           ),
           onClick: () => {
             // window.open("https://www.huobi.com/zh-cn/register");
-            window.open(this.huobi_url);
+            window.open(this.urls[0]);
           }
         },
         {
-          alias: "Binance",
-          name: "币安",
+          alias: "58Coin",
+          name: "58Coin",
           iconSrc: this.$getCdnPath(
             `/static/image/common/mcenter/deposit/ic_binance.png`
           ),
           onClick: () => {
             // window.open("https://accounts.binance.com/cn/register");
-            window.open(this.binance_url);
+            window.open(this.urls[1]);
           }
         }
       ]
     };
   },
   created() {
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=huobi&needToken=false`
-    }).then(res => {
-      this.huobi_url =
-        res && res.data
-          ? res.data.uri
-          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+    this.getUrl({ urlName: "huobi" }).then(url => {
+      if (!url) return;
+      this.urls[0] = url;
     });
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=binance&needToken=false`
-    }).then(res => {
-      this.binance_url =
-        res && res.data
-          ? res.data.uri
-          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+
+    this.getUrl({ urlName: "58coin" }).then(url => {
+      if (!url) return;
+      this.urls[1] = url;
     });
   },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     })
+  },
+  methods: {
+    getUrl({ urlName }) {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&needToken=false`,
+        params: {
+          urlName
+        }
+      }).then(res => {
+        const { data, status, errorCode } = res;
+        if (status !== "000" || errorCode !== "00") {
+          return Promise.resolve(false);
+        }
+
+        const url = data.uri
+          ? data.uri
+          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+
+        return Promise.resolve(url);
+      });
+    }
   }
 };
 </script>

@@ -159,8 +159,7 @@ export default {
           placeholder: "必填"
         }
       },
-      huobi_url: "",
-      binance_url: "",
+      urls: [],
       usdtTipsList: [
         {
           name: "火币",
@@ -169,17 +168,18 @@ export default {
           ),
           onClick: () => {
             // window.open("https://www.huobi.pr/");
-            window.open(this.huobi_url);
+            window.open(this.urls[0]);
           }
         },
         {
-          name: "币安",
+          name: "58Coin",
           iconSrc: this.$getCdnPath(
             `/static/image/common/mcenter/deposit/ic_binance.png`
           ),
           onClick: () => {
             // window.open("https://www.binancezh.pro/");
-            window.open(this.binance_url);
+
+            window.open(this.urls[1]);
           }
         }
       ],
@@ -221,23 +221,14 @@ export default {
         break;
     }
 
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=huobi&needToken=false`
-    }).then(res => {
-      this.huobi_url =
-        res && res.data
-          ? res.data.uri
-          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+    this.getUrl({ urlName: "huobi" }).then(url => {
+      if (!url) return;
+      this.urls[0] = url;
     });
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=binance&needToken=false`
-    }).then(res => {
-      this.binance_url =
-        res && res.data
-          ? res.data.uri
-          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+
+    this.getUrl({ urlName: "58coin" }).then(url => {
+      if (!url) return;
+      this.urls[1] = url;
     });
   },
   computed: {
@@ -381,6 +372,26 @@ export default {
       //   lock = true;
       // }
       // // this.lockStatus = lock;
+    },
+    getUrl({ urlName }) {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&needToken=false`,
+        params: {
+          urlName
+        }
+      }).then(res => {
+        const { data, status, errorCode } = res;
+        if (status !== "000" || errorCode !== "00") {
+          return Promise.resolve(false);
+        }
+
+        const url = data.uri
+          ? data.uri
+          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+
+        return Promise.resolve(url);
+      });
     }
   }
 };
