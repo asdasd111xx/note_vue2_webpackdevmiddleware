@@ -61,11 +61,9 @@ export default {
         if (res && res.data && res.data.result === "ok") {
           setCookie("cid", "");
           setCookie("aid", "");
-          localStorage.removeItem("home-menu-type");
-          localStorage.removeItem("content_rating");
-          localStorage.removeItem("is-open-game");
+          window.RESET_LOCAL_SETTING();
+          // 不在提示首頁公告
           localStorage.removeItem("do-not-show-home-post");
-          localStorage.removeItem("is-shown-announcement");
           // GA流量統計
           window.dataLayer.push({
             ga_uid: undefined
@@ -76,11 +74,9 @@ export default {
       .catch(error => {
         setCookie("cid", "");
         setCookie("aid", "");
-        localStorage.removeItem("home-menu-type");
-        localStorage.removeItem("content_rating");
-        localStorage.removeItem("is-open-game");
+        window.RESET_LOCAL_SETTING();
+        // 不在提示首頁公告
         localStorage.removeItem("do-not-show-home-post");
-        localStorage.removeItem("is-shown-announcement");
         if (error.response.data.code === "M00001") {
           // GA流量統計
           window.dataLayer.push({

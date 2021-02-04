@@ -53,20 +53,6 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem("new_user")) {
-      localStorage.setItem("content_rating", "1");
-      localStorage.removeItem("new_user");
-      mcenter.accountDataSet({
-        params: {
-          content_rating: 1
-        },
-        success: () => {
-          this.actionSetUserdata(true);
-          window.location.reload(true);
-        }
-      });
-    }
-
     // 先顯示彈跳公告關閉後再顯示一般公告
     // 顯示過公告 localStorage.getItem('is-shown-announcement')
     // 不在提示 localStorage.getItem('do-not-show-home-post')

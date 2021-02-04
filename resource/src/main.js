@@ -48,6 +48,26 @@ if (window && window.parent) {
     "*"
   );
 }
+window.RESET_LOCAL_SETTING = reload => {
+  // 首頁選單選單
+  localStorage.removeItem("home-menu-type");
+  // 遊戲開啟暫存
+  localStorage.removeItem("is-open-game");
+  // 是否顯示過首頁公告
+  localStorage.removeItem("is-shown-announcement");
+  // 預選頭貼
+  localStorage.removeItem("tmp-avatar-img");
+  // 預選頭貼
+  localStorage.removeItem("new_user");
+  // 色站開關
+  localStorage.removeItem("content_rating");
+  // swag內部開關
+  localStorage.removeItem("enable-swag");
+
+  if (reload) {
+    window.location.reload(true);
+  }
+};
 
 /* plugins css - start */
 /* eslint-disable */
