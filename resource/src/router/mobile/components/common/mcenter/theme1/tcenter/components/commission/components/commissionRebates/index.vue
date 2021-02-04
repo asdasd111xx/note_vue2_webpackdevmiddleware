@@ -7,14 +7,13 @@
         :class="$style['content-item']"
       >
         <div :class="$style['rebate-header']">
-          <template>
-            <div>{{ caculateList.period }}</div>
-            <div>
-              {{ caculateList.start_at | dateFormat }}~{{
-                caculateList.end_at | dateFormat
-              }}
-            </div>
-          </template>
+          <div>{{ caculateList.period }}</div>
+
+          <div v-if="caculateList.state !== 3 && caculateList.self_times !== 0">
+            {{ caculateList.start_at | dateFormat }}~{{
+              caculateList.end_at | dateFormat
+            }}
+          </div>
         </div>
 
         <div :class="$style['rebate-body']">
@@ -40,9 +39,13 @@
               {{ $text("S_VALID_BET", "有效投注") }}
             </span>
             <div :class="$style['content-right']">
-              <template>{{
-                caculateList.sub_valid_bet | roundTwoPoints | commaFormat
-              }}</template>
+              <template v-if="caculateList.sub_valid_bet">
+                {{ caculateList.sub_valid_bet | roundTwoPoints | commaFormat }}
+              </template>
+
+              <template v-else>
+                --
+              </template>
             </div>
           </div>
 
@@ -56,7 +59,7 @@
                 { [$style['is-negative']]: caculateList.sub_profit < 0 }
               ]"
             >
-              {{ caculateList.sub_profit }}
+              {{ caculateList.sub_profit ? caculateList.sub_profit : "--" }}
             </div>
           </div>
 
@@ -65,7 +68,7 @@
               返利
             </span>
             <div :class="$style['content-right']">
-              {{ caculateList.amount }}
+              {{ caculateList.amount ? caculateList.amount : "--" }}
             </div>
           </div>
 
@@ -85,7 +88,15 @@
               可领取次数
             </span>
             <div :class="$style['content-right']">
-              {{ caculateList.self_times }}
+              <template
+                v-if="caculateList.state === 3 && caculateList.self_times === 0"
+              >
+                已达上限
+              </template>
+
+              <template v-else>
+                {{ caculateList.self_times }}
+              </template>
             </div>
           </div>
         </div>
