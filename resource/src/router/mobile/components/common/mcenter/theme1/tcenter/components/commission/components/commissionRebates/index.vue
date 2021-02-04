@@ -240,8 +240,8 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          this.dispatch_hour = response.data.auto_dispatch_hour;
-          this.immediateData = response.data.entries;
+          this.dispatch_hour = response.data.ret.auto_dispatch_hour;
+          this.immediateData = response.data.ret.entries;
 
           // 測試資料
           // this.immediateData = [
