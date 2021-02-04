@@ -302,7 +302,7 @@ export default {
         // 單一總彩金
         case "jdb":
         case "wm":
-        case "ps":
+        // case "ps":
         case "gti":
           this.jackpotType = 1;
           this.totalBonusTitle = this.vendor.toUpperCase();
