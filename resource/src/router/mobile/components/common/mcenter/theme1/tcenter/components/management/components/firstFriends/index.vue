@@ -6,7 +6,6 @@
       :list="currentSavedFreindList"
       @click="clickTargetFriend"
     />
-
     <template v-if="themeTPL === 'ey1'">
       <div :class="$style.thead">
         <div :class="[$style.row, 'clearfix']">

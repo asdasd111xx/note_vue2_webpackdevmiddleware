@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['breakcrumb']">
+  <div :class="$style['breakcrumb']" id="breakcrumb_id">
     <span
       v-for="(friend, index) in list"
       :key="friend.id"
@@ -36,6 +36,12 @@ export default {
       return this.list.length - 1;
     }
   },
+  updated() {
+    let dom = document.getElementById("breakcrumb_id");
+
+    if (!dom) return;
+    dom.scrollLeft = this.depth * 25;
+  },
   methods: {
     clickTarget(id, index) {
       // 有需要此需求再開啟
@@ -49,8 +55,9 @@ export default {
 @import "~@/css/variable.scss";
 
 .breakcrumb {
-  height: 37px;
-  line-height: 37px;
+  display: flex;
+  align-items: center;
+  height: 40px;
   color: #a2a2a2;
   background: #fefffe;
   padding: 0 18px;

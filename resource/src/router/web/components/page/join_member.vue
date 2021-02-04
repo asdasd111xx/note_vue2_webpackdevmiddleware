@@ -951,7 +951,6 @@ export default {
           }
 
           self.actionSetUserdata(true);
-          localStorage.setItem("new_user", true);
           this.actionSetGlobalMessage({
             msg: "注册成功",
             cb: () => {
@@ -963,7 +962,7 @@ export default {
                 localStorage.removeItem("password");
               }
 
-              window.location.reload(true);
+              window.RESET_LOCAL_SETTING(true);
             }
           });
           return;
