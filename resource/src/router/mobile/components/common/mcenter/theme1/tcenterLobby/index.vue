@@ -95,14 +95,14 @@
       <div
         :class="[
           $style['special'],
-          { [$style['less']]: specialData.length < 3 },
+          { [$style['less']]: specialData.length < 3 }
         ]"
       >
         <div :class="$style['special-title']">特色功能</div>
         <div
           :class="[
             $style['special-content'],
-            { [$style['less']]: specialData.length < 3 },
+            { [$style['less']]: specialData.length < 3 }
           ]"
         >
           <div
@@ -116,7 +116,7 @@
             :class="[
               $style['special-data'],
               { [$style['less']]: specialData.length < 3 },
-              { [$style['first']]: index === 0 },
+              { [$style['first']]: index === 0 }
             ]"
             @click="$router.push(data.path)"
           >
@@ -124,7 +124,7 @@
               <img
                 :class="[
                   $style['img-icon'],
-                  { [$style['less']]: specialData.length < 3 },
+                  { [$style['less']]: specialData.length < 3 }
                 ]"
                 :src="
                   $getCdnPath(
@@ -166,33 +166,33 @@ export default {
           showType: true,
           name: "推广信息",
           image: "ic_information",
-          path: "/mobile/mcenter/tcenter/management/promote",
+          path: "/mobile/mcenter/tcenter/management/promote"
         },
         {
           showType: true,
           name: "下级好友",
           image: "ic_friend",
-          path: "/mobile/mcenter/tcenter/management/friends",
+          path: "/mobile/mcenter/tcenter/management/friends"
         },
         {
           showType: true,
           name: "游戏记录",
           image: "ic_gamerecord",
-          path: "/mobile/mcenter/tcenter/gameRecord/main",
+          path: "/mobile/mcenter/tcenter/gameRecord/main"
         },
         {
           showType: true,
           name: "推荐礼金",
           image: "ic_giftmoney",
-          path: "/mobile/mcenter/tcenter/recommendGift",
-        },
-      ],
+          path: "/mobile/mcenter/tcenter/recommendGift"
+        }
+      ]
     };
   },
   created() {
     this.getRebateSwitch();
 
-    this.specialData.forEach((element) => {
+    this.specialData.forEach(element => {
       if (element.name === "推荐礼金") {
         element.showType = this.memInfo.config.festival;
       }
@@ -202,10 +202,10 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     specialData() {
-      return this.specialList.filter((i) => i.showType);
+      return this.specialList.filter(i => i.showType);
     },
     $style() {
       const style =
@@ -214,7 +214,7 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
+    }
   },
   mounted() {},
   methods: {
@@ -226,28 +226,33 @@ export default {
         method: "get",
         url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
         reqHeaders: {
-          Vendor: this.memInfo.user.domain,
+          Vendor: this.memInfo.user.domain
         },
-        params: { lang: "zh-cn" },
-      }).then((response) => {
+        params: { lang: "zh-cn" }
+      }).then(response => {
         this.isReceive = true;
 
         if (response.status === "000") {
           this.isShowRebate = response.data.ret.show_real_time;
           if (this.isShowRebate) {
-            this.subValidBet = response.data.total.sub_valid_bet
-              ? response.data.total.sub_valid_bet
-              : "--";
-            this.subUserCount = response.data.total.sub_user_count
-              ? response.data.total.sub_user_count
+            if (response.data.total.valid_bet.sub_valid_bet) {
+              this.subValidBet = Number(
+                response.data.total.valid_bet.sub_valid_bet
+              ).toFixed(2);
+            } else {
+              this.subValidBet = "--";
+            }
+
+            this.subUserCount = response.data.total.valid_bet.sub_user_count
+              ? response.data.total.valid_bet.sub_user_count
               : "--";
           }
 
           return;
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
