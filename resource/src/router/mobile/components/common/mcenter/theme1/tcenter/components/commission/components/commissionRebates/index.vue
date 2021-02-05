@@ -203,6 +203,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
       );
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     isShowPopup: {
       get() {
         return this.togglePopup;
@@ -251,8 +254,13 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          this.dispatch_hour = response.data.ret.auto_dispatch_hour;
-          this.immediateData = response.data.ret.entries;
+          if (this.themeTPL === "ey1") {
+            this.dispatch_hour = response.data.auto_dispatch_hour;
+            this.immediateData = response.data.entries;
+          } else {
+            this.dispatch_hour = response.data.ret.auto_dispatch_hour;
+            this.immediateData = response.data.ret.entries;
+          }
 
           // 測試資料
           // this.immediateData = [

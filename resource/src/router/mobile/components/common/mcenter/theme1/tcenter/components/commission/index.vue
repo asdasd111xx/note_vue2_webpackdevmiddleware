@@ -143,6 +143,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     start: {
       get() {
         return format(new Date(this.startTime), "yyyy-MM-dd"); // 格式化成原生 input date 可以使用的格式
@@ -237,7 +240,10 @@ export default {
         this.isReceive = true;
 
         if (response.status === "000") {
-          this.isShowRebate = response.data.ret.show_real_time;
+          this.isShowRebate =
+            this.themeTPL === "ey1"
+              ? response.data.show_real_time
+              : response.data.ret.show_real_time;
           return;
         }
       });
