@@ -14,7 +14,11 @@
         <div :class="$style['partner-title']">
           合作伙伴
         </div>
-        <div v-for="item in partners" :class="$style['partner-cell']">
+        <div
+          v-for="(item, index) in partners"
+          :class="$style['partner-cell']"
+          :key="index"
+        >
           <img
             :src="
               $getCdnPath(`/static/image/ey1/mcenter/about/logo_${item}.png`)
@@ -27,36 +31,49 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
     return {
-      version: '',
+      version: "",
       partners: [
-        'bbin', 'xbb', 'ag', 'ob', 'pt', 'mg', 'jdb', 'saba', 'cs', 'im', 'ky', 'cq9'
+        "bbin",
+        "xbb",
+        "ag",
+        "ob",
+        "pt",
+        "mg",
+        "jdb",
+        "saba",
+        "cs",
+        "im",
+        "ky",
+        "cq9"
       ]
-    }
+    };
   },
   components: {
-    mobileContainer,
+    mobileContainer
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: `关於${this.siteConfig.SITE_NAME}娱乐`,
+        onClick: () => {
+          this.$router.back();
+        },
+        title: `关於${this.siteConfig.SITE_NAME}娱乐`
       };
-    },
+    }
   },
   mounted() {
-    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
+    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
   }
 };
 </script>
