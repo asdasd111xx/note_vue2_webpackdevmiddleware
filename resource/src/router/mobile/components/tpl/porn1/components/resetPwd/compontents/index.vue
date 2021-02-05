@@ -257,7 +257,6 @@ export default {
         });
       }
       this.pwdResetInfo[id].value = value.trim();
-      console.log(`123   ${id}`);
       if (
         (id === "confNewPwd" &&
           this.pwdResetInfo["confNewPwd"].value !==

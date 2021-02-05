@@ -1842,10 +1842,14 @@ export const actionSetWebDomain = ({ commit }) => {
         site: ""
       };
 
-      console.log("[conf/domain]:", {
-        ...res.data,
-        version: version.find(i => i.site === res.data.site).version
-      });
+      console.log(
+        "%c [conf/domain]:",
+        "background: #222; color: yellow; font-size:14px",
+        {
+          ...res.data,
+          version: version.find(i => i.site === res.data.site).version
+        }
+      );
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
       if (!site || !domain) {
