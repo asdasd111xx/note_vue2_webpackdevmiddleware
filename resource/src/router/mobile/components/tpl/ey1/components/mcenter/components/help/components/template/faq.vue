@@ -51,9 +51,10 @@
                     <td :class="$style['limit-value']">
                       {{ item.limit }}
                     </td>
-                    <td :class="$style['limit-platform']">
-                      {{ item.platform }}
-                    </td>
+                    <td
+                      :class="$style['limit-platform']"
+                      v-html="item.platform"
+                    ></td>
                   </tr>
                 </tbody>
               </table>
@@ -118,33 +119,33 @@ export default {
         {
           limit: "0.01元",
           platform:
-            "MG电子、PT电子、HB电子、开元棋牌、PG电子、FG电子、SW电子、KA电子"
+            "●MG电子、PT电子、HB电子、FG电子、SW电子、KA电子<br />●开元棋牌"
         },
-        { limit: "0.02元", platform: "AG电子、SG电子" },
-        { limit: "0.05元", platform: "易游电子" },
+        { limit: "0.02元", platform: "●AG电子、SG电子" },
+        { limit: "0.05元", platform: "●FC电子" },
         {
           limit: "0.1元",
           platform:
-            "BB电子、JDB电子、PP电子、大满贯电子、AW电子、ACE电子、MT电子、WM电子、PS电子、TP电子、乐游棋牌"
+            "●BB电子、JDB电子、PP电子、大满贯电子、MT电子、WM电子、PS电子<br />●乐游棋牌"
         },
-        { limit: "0.16元", platform: "CQ9电子" },
-        { limit: "0.2元", platform: "GNS电子" },
-        { limit: "0.5元", platform: "ISB电子、BNG电子、Gti电子" },
+        { limit: "0.16元", platform: "●CQ9电子" },
+        { limit: "0.2元", platform: "●GNS电子" },
+        { limit: "0.5元", platform: "●ISB电子、BNG电子" },
         {
           limit: "1元",
           platform:
-            "BB彩票、XBB电子、易游棋牌、XBB彩票、XBB棋牌、JDB棋牌、FG棋牌、VR彩票"
+            "●XBB电子<br />●BB彩票、XBB彩票、VR彩票<br />●XBB棋牌、JDB棋牌、FG棋牌、MT棋牌、ACE棋牌"
         },
-        { limit: "2元", platform: "皇冠体育、XBB棋牌" },
-        { limit: "5元", platform: "IM体育" },
+        { limit: "2元", platform: "●皇冠体育" },
+        { limit: "5元", platform: "●IM体育、IM电竞" },
         {
           limit: "10元",
           platform:
-            "BB视讯、GD视讯、BB体育、沙巴体育、EVO视讯、MG视讯、eBET视讯、性感百家乐、XBB视讯-轮盘/骰宝"
+            "●BB体育、沙巴体育、亿元体育、NewBB体育<br />●BB视讯、EVO视讯、MG视讯、eBET视讯、XBB视讯-轮盘/骰宝"
         },
         {
           limit: "20元",
-          platform: "AG视讯、AB视讯、BG视讯、XBB视讯-百家乐/龙虎斗"
+          platform: "●AG视讯、AB视讯、BG视讯、XBB视讯-百家乐/龙虎斗"
         }
       ]
     };

@@ -273,10 +273,12 @@ export default {
 
         if (window.YABO_SOCKET_RECONECT_STATUS) {
           bonunsProcess.isInit = false;
-          this.player.off("playing");
-          this.player.off("play");
-          this.player.off("pause");
-          this.playerPause();
+          if (this.player) {
+            this.player.off("playing");
+            this.player.off("play");
+            this.player.off("pause");
+            this.playerPause();
+          }
           setTimeout(() => {
             this.initPlayerEvent();
           }, 300);
@@ -357,6 +359,8 @@ export default {
           //狀態
           // 'OPEN', 'PLAY', 'STOP', 'CLOSE', 'BREAK', 'FULL', 'POOR', 'BREAK_WAIT'
           this.$nextTick(() => {
+            let mission = data.Mession;
+
             switch (data.Status) {
               case "OPEN":
                 bonunsProcess.isInit = true;
@@ -367,6 +371,7 @@ export default {
                 bonunsProcess.processType = "done";
                 break;
               case "FULL":
+                this.mission = mission;
                 bonunsProcess.isForceWait = true;
                 bonunsProcess.processType = "wait";
                 this.isFULL = true;
@@ -392,7 +397,6 @@ export default {
                 this.$nextTick(() => bonunsProcess.playCueTime("stop"));
                 break;
               case "WAIT":
-                let mission = data.Mession;
                 this.mission = mission;
                 bonunsProcess.isForceWait = true;
 
