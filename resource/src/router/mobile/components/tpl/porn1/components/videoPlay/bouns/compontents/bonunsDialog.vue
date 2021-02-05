@@ -73,7 +73,7 @@
 
           <!-- 右邊第一個按鈕 -->
           <div
-            v-if="isUnloginMode"
+            v-if="isUnloginMode && !loginStatus"
             @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
@@ -101,11 +101,14 @@
             去推广
           </div>
           <div
-            v-else
+            v-else-if="!loginStatus"
             @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
+          </div>
+          <div v-else @click="handleAcionType" :class="$style['active-btn']">
+            {{ getActionName(missionActionType) }}
           </div>
         </div>
       </template>
@@ -169,9 +172,9 @@
   </div>
 </template>
 <script>
-import { getCookie } from '@/lib/cookie';
-import yaboRequest from '@/api/yaboRequest';
-import { mapGetters } from 'vuex';
+import { getCookie } from "@/lib/cookie";
+import yaboRequest from "@/api/yaboRequest";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -188,6 +191,9 @@ export default {
     }
   },
   watch: {
+    type() {
+      console.log(this.type);
+    },
     earnCellNum() {
       if (this.earnCellNum < 0) {
         this.earnCellNum = 6; //暫時防呆
@@ -211,25 +217,25 @@ export default {
       limitAmount: 0, //最高彩金
       missionDesc: "", //任務標題
       missionActionType: 0, //任務動作 去充值 去綁定 去推廣
-      isFinishMissio: false,//是否完成今年任務,
+      isFinishMissio: false, //是否完成今年任務,
       tagId: 0
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      siteConfig: 'getSiteConfig',
-      loginStatus: 'getLoginStatus',
-    }),
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus"
+    })
   },
   mounted() {
-    window.addEventListener('resize', this.getDialogHeight);
+    window.addEventListener("resize", this.getDialogHeight);
     setTimeout(() => {
       this.$nextTick(() => this.getDialogHeight());
     });
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.getDialogHeight);
+    window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
     handleBack() {
@@ -242,21 +248,23 @@ export default {
       if (this.isFinishMission) {
         if (split && split.length > 0 && split[1]) {
           let max = split[1];
-          return `恭喜您今年已获得最高奖励${Number(max) ? max : "999元"}<br />下一年会重新开始发放观影${Number(max) ? max : "999元"}奖励`
+          return `恭喜您今年已获得最高奖励${
+            Number(max) ? max : "999元"
+          }<br />下一年会重新开始发放观影${Number(max) ? max : "999元"}奖励`;
         }
         return `恭喜您已获得最高奖励999元<br />下一年会重新开始发放观影奖励999元`;
       }
 
-      if (this.type.includes('wait') && this.missionActionType === 7) {
-        let split = desc.split(' ');
+      if (this.type.includes("wait") && this.missionActionType === 7) {
+        let split = desc.split(" ");
         if (split && split.length > 0 && split[1]) {
           let max = split[1];
-          return `恭喜您已获得最高奖励${Number(max) ? max : "999元"}`
+          return `恭喜您已获得最高奖励${Number(max) ? max : "999元"}`;
         }
         return `恭喜您已获得最高奖励999元`;
       }
 
-      let split = desc.split(' ');
+      let split = desc.split(" ");
       if (split && split.length > 0) {
         return `${split[split.length - 1]}<br />即可继续享有观影送钱！`;
       }
@@ -301,26 +309,28 @@ export default {
       }
     },
     unlockTag() {
-      let cid = getCookie('cid');
+      let cid = getCookie("cid");
       yaboRequest({
-        method: 'put',
+        method: "put",
         url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
         params: {
           cid: cid,
           userid: this.memInfo.user.id,
           tagId: this.tagId,
           domain: this.memInfo.user.domain
-        },
-      }).then((res) => {
-        setTimeout(() => {
-          this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
-        }, 200)
-      }).catch(e => {
-        console.log(e)
-      });
+        }
+      })
+        .then(res => {
+          setTimeout(() => {
+            this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
+          }, 200);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     getDialogHeight() {
-      let t = document.getElementById('earn-wrap');
+      let t = document.getElementById("earn-wrap");
       if (t && t.offsetHeight) {
         this.dialogHeight = t.offsetHeight;
       }
@@ -328,13 +338,12 @@ export default {
     handleClose() {
       this.isClose = true;
       setTimeout(() => {
-        this.$emit('close', this.type.includes('wait') ? true : false)
+        this.$emit("close", this.type.includes("wait") ? true : false);
         this.isShow = false;
         this.isClose = false;
-      }, 300)
+      }, 300);
     }
-  },
+  }
 };
 </script>
 <style src="../index.scss" lang="scss" module></style>
-
