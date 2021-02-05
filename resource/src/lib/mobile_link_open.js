@@ -243,6 +243,12 @@ export default target => {
 
   // 遊戲連結
   if (linkType === "games") {
+    // 億元電子
+    if (linkTo === "lg_ey_casino") {
+      router.push(`/mobile/casino/lg_ey_casino`);
+      return;
+    }
+
     if (!store.state.gameData[linkTo]) {
       console.log("游戏未开放");
       return;
