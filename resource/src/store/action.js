@@ -1954,9 +1954,9 @@ export const actionGetWithdrawAccount = ({ state, dispatch }) => {
 
       if (errorCode !== "00" || status !== "000") {
         dispatch("actionSetGlobalMessage", {
-          msg: msg
+          msg
         });
-        return;
+        return Promise.resolve(false);
       }
 
       return Promise.resolve(data);
@@ -1964,7 +1964,49 @@ export const actionGetWithdrawAccount = ({ state, dispatch }) => {
     .catch(error => {
       const { msg } = error.response.data;
       dispatch("actionSetGlobalMessage", {
-        msg: msg
+        msg
+      });
+    });
+};
+
+/**
+ * 取得維護一覽表
+ * @method actionGetServiceMaintain
+ */
+export const actionGetServiceMaintain = ({ state, dispatch }) => {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return axios({
+    method: "get",
+    url: "/api/v1/c/service/maintain/list"
+  })
+    .then(res => {
+      const { result, ret, msg, code } = res.data;
+      const target = null;
+
+      if (result !== "ok") {
+        dispatch("actionSetGlobalMessage", {
+          msg,
+          code
+        });
+        return Promise.resolve(false);
+      }
+
+      return Promise.resolve(ret);
+    })
+    .catch(error => {
+      const { msg, code } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg,
+        code
       });
     });
 };

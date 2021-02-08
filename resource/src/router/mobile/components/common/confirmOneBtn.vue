@@ -1,10 +1,23 @@
 <template>
   <transition name="fade">
     <div v-show="isShow" class="dialog">
-      <div>
-        <div class="confirm-title">
-          {{ data.msg }}
+      <div
+        class="dialog-wrap"
+        :style="{ maxWidth: data.content ? 'none' : '270px' }"
+      >
+        <div
+          class="confirm-title"
+          :style="{ padding: data.content ? '20px 10px' : '30px 10px' }"
+        >
+          {{ data.title }}
         </div>
+
+        <div
+          v-if="data.content"
+          class="confirm-content"
+          v-html="data.content"
+        />
+
         <div
           :class="[
             'confirm-btn-wrap',
@@ -12,10 +25,9 @@
               ey1: themeTPL === 'ey1'
             }
           ]"
+          @click="handleClick"
         >
-          <div @click="handleClick">
-            {{ data.btnText }}
-          </div>
+          {{ data.btnText }}
         </div>
       </div>
     </div>
@@ -82,19 +94,19 @@ export default {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.dialog > div {
+.dialog-wrap {
   background-color: rgba($color: white, $alpha: 1);
   border-radius: 10px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+
   width: 80%;
   max-width: 270px;
   min-height: 135px;
+
   color: black;
   text-align: center;
   font-size: 18px;
   line-height: 24px;
-  height: 24px;
   font-weight: 700;
 }
 
@@ -106,9 +118,16 @@ export default {
   color: #414655;
 }
 
+.confirm-content {
+  font-size: 14px;
+  padding: 0 10px;
+  text-align: left;
+  color: #a6a9b2;
+}
+
 .confirm-btn-wrap {
   color: #d1b79c;
-  margin-top: 12px;
+  padding: 20px 0;
 
   &.ey1 {
     color: #e42a30;

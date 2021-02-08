@@ -297,12 +297,6 @@ export default {
     //     }
     // }
   },
-  created() {
-    // this.actionSetIsLoading(true);
-    this.updateAmount().then(() => {
-      this.getWithdrawAccount();
-    });
-  },
   methods: {
     ...mapActions([
       "actionSetIsLoading",
@@ -341,14 +335,24 @@ export default {
         url: "/api/v2/c/withdraw/check"
       })
         .then(res => {
-          if (res.data.result === "ok") {
-            return res.data;
-          } else {
-            this.actionSetGlobalMessage({ msg: res.data.msg });
+          const { ret, result, msg, code } = res.data;
+
+          if (!res || result !== "ok") {
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+            return;
           }
+
+          return res.data;
         })
-        .catch(res => {
-          this.actionSetGlobalMessage({ msg: res.response.data.msg });
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
         });
     },
     /**
@@ -415,11 +419,12 @@ export default {
           if (res.data && res.data.msg) {
             this.actionSetGlobalMessage({
               msg: res.data.msg,
-              cb: () => {
-                if (res.data.code == "C600001") {
-                  this.$router.back();
-                }
-              }
+              code: res.data.code
+              // cb: () => {
+              //   if (res.data.code == "C600001") {
+              //     this.$router.back();
+              //   }
+              // }
             });
           }
         }
@@ -439,14 +444,27 @@ export default {
       axios({
         method: "get",
         url: API_AGCENTER_USER_LEVELS
-      }).then(response => {
-        const { result, ret } = response.data;
-        if (!response || result !== "ok") {
-          return;
-        }
+      })
+        .then(res => {
+          const { ret, result, msg, code } = res.data;
 
-        this.userLevelObj = ret;
-      });
+          if (!res || result !== "ok") {
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+            return;
+          }
+
+          this.userLevelObj = ret;
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+        });
     },
     /**
      * 回傳使用者出入款統計資料
@@ -456,11 +474,27 @@ export default {
       axios({
         method: "get",
         url: "/api/v1/c/user-stat/deposit-withdraw"
-      }).then(res => {
-        if (res && res.data) {
-          this.userWithdrawCount = res.data.ret.withdraw_count;
-        }
-      });
+      })
+        .then(res => {
+          const { ret, result, msg, code } = res.data;
+
+          if (!res || result !== "ok") {
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+            return;
+          }
+
+          this.userWithdrawCount = ret.withdraw_count;
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+        });
     },
     /**
      * 回傳目前開放的電子錢包
@@ -471,15 +505,27 @@ export default {
       axios({
         method: "get",
         url: "/api/payment/v1/c/virtual/bank/list"
-      }).then(response => {
-        const { ret, result } = response.data;
+      })
+        .then(res => {
+          const { ret, result, msg, code } = res.data;
 
-        if (!response || result !== "ok") {
-          return;
-        }
+          if (!res || result !== "ok") {
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+            return;
+          }
 
-        this.nowOpenWallet = ret;
-      });
+          this.nowOpenWallet = ret;
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+        });
     }
   }
 };

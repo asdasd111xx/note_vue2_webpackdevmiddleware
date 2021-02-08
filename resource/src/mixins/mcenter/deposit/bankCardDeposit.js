@@ -1038,7 +1038,7 @@ export default {
             // 將「confirmOneBtn」彈窗打開
             this.setPopupStatus(true, "funcTips");
             this.confirmPopupObj = {
-              msg: "支付成功",
+              title: "支付成功",
               btnText: "关闭",
               cb: () => {
                 this.closePopup();
@@ -1240,8 +1240,8 @@ export default {
             this.walletData["CGPay"].balance = "--";
 
             this.actionSetGlobalMessage({
-              msg: msg,
-              code: code
+              msg,
+              code
             });
             return;
           }
@@ -1250,11 +1250,12 @@ export default {
           // this.walletData["CGPay"].balance = "--";
         })
         .catch(error => {
+          const { msg, code } = error.response.data;
           this.walletData["CGPay"].balance = "--";
 
           this.actionSetGlobalMessage({
-            msg: error.response.data.msg,
-            code: error.response.data.code
+            msg,
+            code
           });
         });
     },
@@ -1287,7 +1288,7 @@ export default {
                   this.setPopupStatus(true, "funcTips");
 
                   this.confirmPopupObj = {
-                    msg: ["porn1", "sg1"].includes(this.themeTPL)
+                    title: ["porn1", "sg1"].includes(this.themeTPL)
                       ? "汇率已失效"
                       : "汇率已失效，请再次确认汇率",
                     btnText: "刷新汇率",
@@ -1308,8 +1309,8 @@ export default {
         .catch(error => {
           const { msg, code } = error.response.data;
           this.actionSetGlobalMessage({
-            msg: msg,
-            code: code
+            msg,
+            code
           });
         });
     },

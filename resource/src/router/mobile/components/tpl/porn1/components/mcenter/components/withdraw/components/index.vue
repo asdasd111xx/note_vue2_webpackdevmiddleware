@@ -575,7 +575,7 @@
         />
       </template>
 
-      <!-- 刷新匯率 -->
+      <!-- 刷新匯率 || 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
       </template>
@@ -668,7 +668,8 @@ export default {
       bonus: {},
 
       confirmPopupObj: {
-        msg: "",
+        title: "",
+        content: "",
         btnText: "",
         cb: () => {}
       }
@@ -767,30 +768,69 @@ export default {
     }
   },
   created() {
-    // 刷新 Player Api
-    this.actionSetUserdata(true);
-    this.getUserLevel();
-    this.getUserStat();
-    this.getNowOpenWallet();
-    this.getBounsAccount();
+    // 判斷分項維護優先度最高
+    this.actionGetServiceMaintain().then(data => {
+      // priority: player_deposit_and_withdraw > player_withdraw
+      let target =
+        data.find(item => item.service === "player_deposit_and_withdraw") ||
+        data.find(item => item.service === "player_withdraw");
 
-    this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
-    this.firstDeposit = this.memInfo.user.first_deposit;
-    if (this.depositBeforeWithdraw && !this.firstDeposit) {
-      this.widthdrawTipsType = "deposit";
-      this.setPopupStatus(true, "check");
-      return;
-    }
+      if (target && target.is_maintain) {
+        this.isLoading = false;
 
-    // 綁定銀行卡內無常用帳號
-    // common.bankCardCheck({
-    //   success: ({ result, ret }) => {
-    //     if (result !== "ok") {
-    //       return;
-    //     }
-    //     this.hasBankCard = ret;
-    //   }
-    // });
+        // 有開維護優先權最高
+        let formatDate = EST(target.end_at);
+
+        this.setPopupStatus(true, "funcTips");
+        this.confirmPopupObj = {
+          title: "系统讯息",
+          content: `
+          <div>充值目前进行维护中，如有不便之处，敬请见谅!</div>
+          <div>预计完成：当地时间(GMT+时区时间)</div>
+          <span>${formatDate}</span>
+          `,
+          btnText: "返回帐户资料",
+          cb: () => {
+            this.closePopup();
+            this.$router.push("/mobile/mcenter");
+          }
+        };
+
+        return;
+      } else {
+        // 沒有維護則跑原本流程
+
+        this.updateAmount().then(() => {
+          this.getWithdrawAccount();
+          // 刷新 Player Api
+          this.actionSetUserdata(true);
+          this.getUserLevel();
+          this.getUserStat();
+          this.getNowOpenWallet();
+          this.getBounsAccount();
+        });
+
+        this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
+        this.firstDeposit = this.memInfo.user.first_deposit;
+        if (this.depositBeforeWithdraw && !this.firstDeposit) {
+          this.widthdrawTipsType = "deposit";
+          this.setPopupStatus(true, "check");
+          return;
+        }
+
+        // 綁定銀行卡內無常用帳號
+        // common.bankCardCheck({
+        //   success: ({ result, ret }) => {
+        //     if (result !== "ok") {
+        //       return;
+        //     }
+        //     this.hasBankCard = ret;
+        //   }
+        // });
+
+        return;
+      }
+    });
   },
   mounted() {
     // 按下一鍵歸戶後，需再更新 withdraw/info 這支 API
@@ -1033,7 +1073,9 @@ export default {
       );
     }
   },
+
   methods: {
+    ...mapActions(["actionGetServiceMaintain"]),
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
@@ -1595,40 +1637,54 @@ export default {
         params: {
           ..._params
         }
-      }).then(response => {
-        const { result, ret } = response.data;
-        if (!response || result !== "ok") return;
+      })
+        .then(response => {
+          const { result, ret, msg, code } = response.data;
+          if (!response || result !== "ok") {
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+            return;
+          }
 
-        this.cryptoMoney = ret.crypto_amount;
-        this.isClickCoversionBtn = true;
-        this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+          this.cryptoMoney = ret.crypto_amount;
+          this.isClickCoversionBtn = true;
+          this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
 
-        // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
-        if (this.countdownSec && !this.timer) {
-          this.timer = setInterval(() => {
-            if (this.countdownSec === 0) {
-              // 將「confirmOneBtn」彈窗打開
-              this.setPopupStatus(true, "funcTips");
+          // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
+          if (this.countdownSec && !this.timer) {
+            this.timer = setInterval(() => {
+              if (this.countdownSec === 0) {
+                // 將「confirmOneBtn」彈窗打開
+                this.setPopupStatus(true, "funcTips");
 
-              this.confirmPopupObj = {
-                msg: ["porn1", "sg1"].includes(this.themeTPL)
-                  ? "汇率已失效"
-                  : "汇率已失效，请再次确认汇率",
-                btnText: "刷新汇率",
-                cb: () => {
-                  this.convertCryptoMoney();
-                  this.closePopup();
-                }
-              };
+                this.confirmPopupObj = {
+                  title: ["porn1", "sg1"].includes(this.themeTPL)
+                    ? "汇率已失效"
+                    : "汇率已失效，请再次确认汇率",
+                  btnText: "刷新汇率",
+                  cb: () => {
+                    this.convertCryptoMoney();
+                    this.closePopup();
+                  }
+                };
 
-              this.resetTimerStatus();
-              this.cryptoMoney = "--";
-              return;
-            }
-            this.countdownSec -= 1;
-          }, 1000);
-        }
-      });
+                this.resetTimerStatus();
+                this.cryptoMoney = "--";
+                return;
+              }
+              this.countdownSec -= 1;
+            }, 1000);
+          }
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+        });
     },
     resetTimerStatus() {
       clearInterval(this.timer);
