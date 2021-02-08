@@ -137,6 +137,7 @@ export default {
           // case 'outer_maintain':
           case "maintain_notice":
           case "verification_code":
+          case "service_maintain_notice":
             this.data = temp;
             this.show();
             return;
@@ -194,6 +195,9 @@ export default {
         case "C_WS_WAGE":
           this.$router.push("/mobile/mcenter/wallet");
           break;
+
+        case "C_WS_SERVICE_MAINTAIN":
+          break;
       }
     },
     show() {
@@ -220,6 +224,16 @@ export default {
 
         case "verification_code":
           string = `验证码:${this.data.code}，效期10分钟，仅能够使用一次，感谢支持!`;
+          return string;
+
+        case "service_maintain_notice":
+          const type =
+            this.data.service === "player_deposit_and_withdraw"
+              ? "充值与提现"
+              : this.data.service === "player_withdraw"
+              ? "提现"
+              : "";
+          string = `即将进行 ${type} 维护，于 ${this.data.countdown} 分钟后开始`;
           return string;
 
         default:

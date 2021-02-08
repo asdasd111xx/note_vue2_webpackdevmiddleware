@@ -1499,7 +1499,7 @@ export default {
         this.confirmPopupObj = {
           title: "系统讯息",
           content: `
-          <div>充值目前进行维护中，如有不便之处，敬请见谅!</div>
+          <div>充值与提现目前进行维护中，如有不便之处，敬请见谅!</div>
           <div>预计完成：当地时间(GMT+时区时间)</div>
           <span>${formatDate}</span>
           `,
