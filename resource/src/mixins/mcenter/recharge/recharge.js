@@ -538,9 +538,9 @@ export default {
           }
         });
       };
-
       const code = data.code;
       const msg = data.msg;
+      console.log(code);
       switch (code) {
         case "M00001":
         case "C600001":
@@ -575,6 +575,7 @@ export default {
           break;
         case "C650012":
         case "C650013":
+        case 40128:
           this.errorMessage.keyring = msg;
           break;
         case "C650023":
