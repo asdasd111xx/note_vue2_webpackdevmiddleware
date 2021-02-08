@@ -122,7 +122,7 @@ export default {
           show: true
         },
         {
-          initName: "关於丝瓜直播",
+          initName: "关于丝瓜直播",
           name: "S_ABOUT_SGLIVE",
           path: "/mobile/mcenter/about",
           pageName: "about",
