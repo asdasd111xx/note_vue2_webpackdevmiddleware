@@ -281,7 +281,7 @@ export default {
         case 5:
           return "去查看";
         case 6:
-          return "去充值";
+          return "去推广";
         default:
           return;
       }
@@ -305,7 +305,7 @@ export default {
           this.unlockTag();
           return;
         case 6:
-          this.$router.push(`/mobile/mcenter/deposit${redirect}`);
+          this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
         default:
           return;
