@@ -242,29 +242,16 @@ export default {
       this.$router.back();
     },
     getDesc(desc) {
-      //   暫時修改標題
-      //   return desc;
-
-      if (this.isFinishMission) {
-        if (split && split.length > 0 && split[1]) {
-          let max = split[1];
-          return `恭喜您今年已获得最高奖励${
-            Number(max) ? max : "999元"
-          }<br />下一年会重新开始发放观影${Number(max) ? max : "999元"}奖励`;
-        }
-        return `恭喜您已获得最高奖励999元<br />下一年会重新开始发放观影奖励999元`;
-      }
-
-      if (this.type.includes("wait") && this.missionActionType === 7) {
-        let split = desc.split(" ");
-        if (split && split.length > 0 && split[1]) {
-          let max = split[1];
-          return `恭喜您已获得最高奖励${Number(max) ? max : "999元"}`;
-        }
-        return `恭喜您已获得最高奖励999元`;
-      }
-
       let split = desc.split(" ");
+      //  今年額滿
+      if (this.isFinishMission) {
+        if (split && split.length > 0) {
+          let max = split[1];
+          return `${split[1]}<br />${split[2]}`;
+        }
+      }
+
+      // 任務
       if (split && split.length > 0) {
         return `${split[split.length - 1]}<br />即可继续享有观影送钱！`;
       }
