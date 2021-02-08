@@ -538,7 +538,6 @@ export default {
           }
         });
       };
-
       const code = data.code;
       const msg = data.msg;
       switch (code) {
@@ -575,6 +574,7 @@ export default {
           break;
         case "C650012":
         case "C650013":
+        case 40128:
           this.errorMessage.keyring = msg;
           break;
         case "C650023":

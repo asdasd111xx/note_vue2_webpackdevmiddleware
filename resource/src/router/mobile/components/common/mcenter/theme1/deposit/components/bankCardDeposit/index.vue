@@ -1049,7 +1049,7 @@
         <bind-wallet-popup :walletType="bindWalletType" @close="closePopup" />
       </template>
 
-      <!-- 支付成功 || 刷新匯率 -->
+      <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
       </template>
@@ -1065,6 +1065,7 @@ import blockListTips from "@/router/mobile/components/tpl/porn1/components/commo
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from "vue2-datepicker";
+import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
@@ -1126,7 +1127,8 @@ export default {
       },
 
       confirmPopupObj: {
-        msg: "",
+        title: "",
+        content: "",
         btnText: "",
         cb: () => {}
       }
@@ -1468,15 +1470,12 @@ export default {
       switch (this.entryBlockStatusData.status) {
         case 1:
           return `您已多次提单未完成支付，请尝试其他充值通道，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
-          break;
 
         case 2:
           return `您有提单未完成支付，请尝试其它充值通道。若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
-          break;
 
         case 3:
           return `为了保证您的使用安全，规避IP监控，我方将为您暂停${this.entryBlockStatusData.block_times}小时的充值服务功能，如需继续存款，请联繫我方客服。祝您游戏愉快!`;
-          break;
 
         default:
           break;
@@ -1485,9 +1484,38 @@ export default {
   },
   created() {
     this.initHeaderSetting = this.headerSetting;
-    this.getPayGroup();
-    this.checkEntryBlockStatus();
-    this.actionSetRechargeConfig();
+
+    // 判斷分項維護優先度最高
+    this.actionGetServiceMaintain().then(data => {
+      let target = data.find(
+        item => item.service === "player_deposit_and_withdraw"
+      );
+
+      if (target && target.is_maintain) {
+        // 有開維護優先權最高
+        let formatDate = EST(target.end_at);
+
+        this.setPopupStatus(true, "funcTips");
+        this.confirmPopupObj = {
+          title: "系统讯息",
+          content: `
+          <div>充值与提现目前进行维护中，如有不便之处，敬请见谅!</div>
+          <div>预计完成：当地时间(GMT+时区时间)</div>
+          <span>${formatDate}</span>
+          `,
+          btnText: "返回帐户资料",
+          cb: () => {
+            this.closePopup();
+            this.$router.push("/mobile/mcenter");
+          }
+        };
+      } else {
+        // 沒有維護則跑原本流程
+        this.getPayGroup();
+        this.checkEntryBlockStatus();
+        this.actionSetRechargeConfig();
+      }
+    });
   },
   destroyed() {
     this.resetTimerStatus();
@@ -1497,7 +1525,8 @@ export default {
       "actionSetUserBalance",
       "actionSetRechargeConfig",
       "actionVerificationFormData",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
+      "actionGetServiceMaintain"
     ]),
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
@@ -1731,20 +1760,28 @@ export default {
         params: {
           lang: "zh-cn"
         }
-      }).then(res => {
-        this.isBlockChecked = true;
-        if (res.status === "000" && res.data && res.data.ret) {
-          this.entryBlockStatusData = res.data.ret;
-        } else {
-          // 存款功能無法使用
-          if (res.code !== "TM020074") {
-            this.actionSetGlobalMessage({
-              msg: res.msg,
-              code: res.code
-            });
+      })
+        .then(res => {
+          this.isBlockChecked = true;
+          if (res.status === "000" && res.data && res.data.ret) {
+            this.entryBlockStatusData = res.data.ret;
+          } else {
+            // 存款功能無法使用
+            if (res.code !== "TM020074") {
+              this.actionSetGlobalMessage({
+                msg: res.msg,
+                code: res.code
+              });
+            }
           }
-        }
-      });
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+        });
     },
     // 代客充值
     goToValetDeposit() {

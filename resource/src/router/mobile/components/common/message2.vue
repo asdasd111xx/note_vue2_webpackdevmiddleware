@@ -199,6 +199,11 @@ export default {
             );
             break;
 
+          // 充值/提現相關，有開維護
+          case "M00009":
+            this.$router.push("/mobile/mcenter");
+            break;
+
           default:
             break;
         }
