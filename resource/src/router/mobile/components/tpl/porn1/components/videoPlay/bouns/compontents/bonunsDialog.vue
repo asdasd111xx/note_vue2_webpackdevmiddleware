@@ -305,6 +305,8 @@ export default {
           this.unlockTag();
           return;
         case 6:
+          this.$router.push(`/mobile/mcenter/deposit${redirect}`);
+          return;
         default:
           return;
       }
