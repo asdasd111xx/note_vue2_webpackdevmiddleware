@@ -540,7 +540,6 @@ export default {
       };
       const code = data.code;
       const msg = data.msg;
-      console.log(code);
       switch (code) {
         case "M00001":
         case "C600001":

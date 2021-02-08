@@ -488,6 +488,10 @@ export default {
       this.isCustomTime = true;
       this.currentCustomDate = "";
       this.selectMenu = "";
+      this.pagination = {};
+      this.mainTotal = {};
+      this.mainListData = [];
+      this.isLoading = true;
       this.updateGame();
     },
     /**
