@@ -216,7 +216,7 @@ export default {
       const bonunsDialog = this.$refs.bonunsDialog;
       if (this.mission) {
         this.dialogType = "tips-wait";
-        bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 7;
+        bonunsDialog.isFinishMission = Number(this.mission.ActionType) === 6;
         bonunsDialog.missionDesc = this.mission.Description;
         bonunsDialog.missionActionType = this.mission.ActionType;
         bonunsDialog.isShow = true;
@@ -404,6 +404,8 @@ export default {
                   this.dialogType = "tips-wait";
                   bonunsProcess.processType =
                     Number(mission.ActionType) === 6 ? "next" : "wait";
+                  bonunsDialog.isFinishMission =
+                    Number(this.mission.ActionType) === 6;
                   bonunsDialog.tagId = mission.TagId;
                   bonunsDialog.missionDesc = mission.Description;
                   bonunsDialog.missionActionType = Number(mission.ActionType);
