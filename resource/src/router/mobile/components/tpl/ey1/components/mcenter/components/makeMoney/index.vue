@@ -132,7 +132,7 @@ export default {
 
 .img-wrap {
   position: relative;
-  width: 100vw;
+  width: 100%;
 
   img {
     display: block;

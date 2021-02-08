@@ -281,6 +281,7 @@ export default {
         case 5:
           return "去查看";
         case 6:
+          return "去充值";
         default:
           return;
       }

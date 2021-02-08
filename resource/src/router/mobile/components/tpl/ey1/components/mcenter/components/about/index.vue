@@ -68,7 +68,7 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: `关於${this.siteConfig.SITE_NAME}娱乐`
+        title: `关于${this.siteConfig.SITE_NAME}娱乐`
       };
     }
   },
