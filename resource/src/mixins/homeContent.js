@@ -303,7 +303,7 @@ export default {
         let extraHeight = 30 + 43 + 60 + 8;
         let homeSliderHeight = document.getElementById("home-slider")
           ? document.getElementById("home-slider").offsetHeight
-          : 0;
+          : 120;
 
         // 上方功能列
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
