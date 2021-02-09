@@ -297,22 +297,27 @@ export default {
       });
     },
     onResize() {
-      let extraHeight = 30 + 43 + 60 + 8;
-      let homeSliderHeight = document.getElementById("home-slider")
-        ? document.getElementById("home-slider").offsetHeight
-        : 120;
+      // 計算外框高度
+      setTimeout(() => {
+        // 跑馬燈 header footer
+        let extraHeight = 30 + 43 + 60 + 8;
+        let homeSliderHeight =
+          document.getElementById("home-slider") &&
+          document.getElementById("home-slider").offsetHeight
+            ? document.getElementById("home-slider").offsetHeight
+            : 120;
 
-      // 上方功能列
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-        extraHeight += homeSliderHeight + 72;
-      } else {
-        extraHeight += homeSliderHeight + 50;
-      }
-
-      this.wrapHeight =
-        document.body.offsetHeight - extraHeight > 0
-          ? document.body.offsetHeight - extraHeight
-          : 225;
+        // 上方功能列
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          extraHeight += homeSliderHeight + 72;
+        } else {
+          extraHeight += homeSliderHeight + 50;
+        }
+        this.wrapHeight =
+          document.body.offsetHeight - extraHeight > 0
+            ? document.body.offsetHeight - extraHeight
+            : 225;
+      }, 300);
     },
     onTypeTouchStart(e) {
       if (this.isSliding) {
