@@ -301,9 +301,11 @@ export default {
       setTimeout(() => {
         // 跑馬燈 header footer
         let extraHeight = 30 + 43 + 60 + 8;
-        let homeSliderHeight = document.getElementById("home-slider")
-          ? document.getElementById("home-slider").offsetHeight
-          : 120;
+        let homeSliderHeight =
+          document.getElementById("home-slider") &&
+          document.getElementById("home-slider").offsetHeight
+            ? document.getElementById("home-slider").offsetHeight
+            : 120;
 
         // 上方功能列
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
