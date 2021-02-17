@@ -437,14 +437,16 @@ export default {
       this.isSendRecharge = true;
 
       return this.actionGetRechargeStatus("recharge").then(() => {
+        let data = { ...this.formData };
+        if (this.rechargeConfig.sms_verify) {
+          data["amount"] = Number(this.formData.amount);
+          data["phone"] = "86-" + this.formData.phone;
+        }
+
         axios({
           method: "post",
           url: "/api/v1/c/recharge",
-          data: {
-            ...this.formData,
-            amount: Number(this.formData.amount),
-            phone: "86-" + this.formData.phone
-          }
+          data: data
         })
           .then(res => {
             this.actionSetUserBalance();
