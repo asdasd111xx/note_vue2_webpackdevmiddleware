@@ -66,29 +66,33 @@ export default {
           key: "target_username",
           title: "转入帐号",
           error: "",
-          placeholder: "请输入下线帐号"
+          placeholder: "请输入下线帐号",
+          show: true
         },
         {
           key: "amount",
           title: "转让金额",
           error: "",
-          placeholder: `请输入转让金额`
+          placeholder: `请输入转让金额`,
+          show: true
         },
         {
           key: "phone",
           title: "手机号码",
           error: "",
           placeholder: "请输入手机号码",
-          maxlength: 11
+          maxlength: 11,
+          show: this.rechargeConfig.sms_verify
         },
         {
           key: "keyring",
           title: "获取验证码",
           error: "",
           placeholder: "请输入验证码",
-          maxlength: 6
+          maxlength: 6,
+          show: this.rechargeConfig.sms_verify
         }
-      ];
+      ].filter(i => i.show);
     },
     hasBonusRule() {
       return (
