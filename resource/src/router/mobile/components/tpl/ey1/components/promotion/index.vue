@@ -178,7 +178,7 @@ export default {
             .then(res => {
               if (res && res.data && res.data.ret && res.data.ret.uri) {
                 localStorage.setItem("iframe-third-url", res.data.ret.uri);
-                localStorage.setItem("iframe-third-url-title", "自领优惠");
+                localStorage.setItem("iframe-third-url-title", "领取优惠");
                 this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
               }
             })
