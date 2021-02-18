@@ -248,6 +248,15 @@ export default {
     }
   },
   created() {
+    if (!document.querySelector('script[data-name="esabgnixob"]')) {
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
+      this.script.setAttribute("src", "esabgnixob.js");
+
+      document.head.appendChild(this.script);
+    }
+
     this.actionSetUserdata(true);
     this.actionSetUserLevels().then(() => {
       // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
