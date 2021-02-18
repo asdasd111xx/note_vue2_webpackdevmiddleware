@@ -30,7 +30,6 @@ body,
 }
 
 @media (orientation: landscape) {
-
   body,
   #footer,
   #header,
@@ -55,7 +54,7 @@ body,
 /* Slider */
 .slider {
   height: 100%;
-  animation: slide-in .31s forwards;
+  animation: slide-in 0.31s forwards;
   opacity: 1;
   -webkit-opacity: 1;
   animation-timing-function: forwards;
@@ -63,7 +62,7 @@ body,
 
   overflow-x: hidden;
   overflow-y: auto;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -73,7 +72,7 @@ body,
 }
 
 .slider-close {
-  animation: slide-out .31s !important;
+  animation: slide-out 0.31s !important;
 }
 
 :global {
@@ -169,7 +168,10 @@ body,
     }
   }
 
-  .video-js .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-vertical .vjs-volume-bar,
+  .video-js
+    .vjs-volume-panel
+    .vjs-volume-control.vjs-slider-active.vjs-volume-vertical
+    .vjs-volume-bar,
   .video-js .vjs-big-play-button,
   .vjs-flat-skin .vjs-fullscreen-control,
   .vjs-flat-skin .vjs-subtitles-button,
