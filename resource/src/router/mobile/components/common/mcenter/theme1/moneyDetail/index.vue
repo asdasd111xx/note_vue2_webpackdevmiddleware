@@ -4,6 +4,7 @@
       <div
         v-if="$route.params.page !== 'detail' || !detailInfo"
         :class="[$style['top-link'], 'clearfix']"
+        :style="{ width: screenWidthSize + 'px' }"
       >
         <div :class="$style['link-wrap']" @click="changeCondition('category')">
           <div>{{ currentCategory.text }}</div>
@@ -211,7 +212,8 @@ export default {
       pageNow: 1, // 當前頁
       pageAll: 1, // 總頁數
       isLoading: true,
-      categoryOpt: []
+      categoryOpt: [],
+      screenWidthSize: null
     };
   },
   computed: {
@@ -283,8 +285,16 @@ export default {
       this.setDefaultSWAG();
     }
   },
+  mounted() {
+    this.screenWidthSize = document.body.offsetWidth;
+
+    window.addEventListener("resize", this.onResize);
+  },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    onResize() {
+      this.screenWidthSize = document.body.offsetWidth;
+    },
     getData(cacheParams = null) {
       this.isLoading = true;
       let params = {};
