@@ -1,5 +1,8 @@
 <template>
-  <div v-if="detailList" :class="$style['detail-list-wrap']">
+  <div
+    v-if="detailList"
+    :class="[$style['detail-list-wrap'], { [$style['no-padding']]: isEmbed }]"
+  >
     <div v-for="(info, date) in detailList" :key="date">
       <div :class="$style['detail-date']">{{ date }}</div>
       <div
@@ -78,6 +81,12 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    isEmbed() {
+      return (
+        this.$route.name === "mcenter-creditTrans" ||
+        this.$route.name === "mcenter-swag"
+      );
     }
   },
   props: {
