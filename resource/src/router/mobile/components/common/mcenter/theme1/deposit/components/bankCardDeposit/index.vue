@@ -1493,7 +1493,8 @@ export default {
 
       if (target && target.is_maintain) {
         // 有開維護優先權最高
-        let formatDate = EST(target.end_at);
+        // let formatDate = EST(target.end_at);
+        let formatDate = target.end_at;
 
         this.setPopupStatus(true, "funcTips");
         this.confirmPopupObj = {
