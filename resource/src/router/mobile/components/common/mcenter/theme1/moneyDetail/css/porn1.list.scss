@@ -1,5 +1,9 @@
 .detail-list-wrap {
   padding-top: 50px;
+
+  &.no-padding {
+    padding-top: unset;
+  }
 }
 
 .detail-date {
