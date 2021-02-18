@@ -169,7 +169,7 @@ export default {
   font-weight: 400;
   text-align: center;
   color: #555555;
-  border: 0.6px solid #dddddd;
+  border: 1px solid #dddddd;
   border-collapse: collapse;
 
   th {
