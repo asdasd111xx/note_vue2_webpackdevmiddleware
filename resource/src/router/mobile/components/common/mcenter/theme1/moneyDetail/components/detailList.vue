@@ -42,6 +42,7 @@
       </div>
     </div>
   </div>
+
   <div v-else :class="$style['no-data-wrap']">
     <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)" />
     <div :class="$style.tips">暂时没有新的{{ currentCategory.text }}记录</div>
