@@ -172,9 +172,9 @@ export default {
           }
         },
         {
-          name: "58Coin",
+          name: "58COIN",
           iconSrc: this.$getCdnPath(
-            `/static/image/common/mcenter/deposit/ic_binance.png`
+            `/static/image/common/mcenter/deposit/ic_58coin.png`
           ),
           onClick: () => {
             // window.open("https://www.binancezh.pro/");

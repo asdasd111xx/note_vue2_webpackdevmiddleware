@@ -49,10 +49,10 @@ export default {
           }
         },
         {
-          alias: "58Coin",
-          name: "58Coin",
+          alias: "58COIN",
+          // name: "58COIN",
           iconSrc: this.$getCdnPath(
-            `/static/image/common/mcenter/deposit/ic_binance.png`
+            `/static/image/common/mcenter/deposit/ic_58coin.png`
           ),
           onClick: () => {
             // window.open("https://accounts.binance.com/cn/register");
