@@ -1354,14 +1354,16 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
 
   const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin) {
-    return;
+    return Promise.resolve(null);
   }
-  axios({
+
+  return axios({
     method: "get",
     url: "/api/v1/c/recharge/config"
   }).then(res => {
     if (res && res.data && res.data.result === "ok") {
       commit(types.SET_RECHARGECONFIG, res.data.ret);
+      return res.data.ret;
     }
   });
 };
