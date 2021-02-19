@@ -498,16 +498,21 @@ export default {
         params: {
           lang: "zh-cn"
         }
-      }).then(response => {
-        const { data, status, errorCode } = response;
-        this.isRevice = true;
+      })
+        .then(response => {
+          const { data, status, errorCode } = response;
+          this.isRevice = true;
 
-        if (errorCode !== "00" || status !== "000") {
-          return;
-        }
+          if (errorCode !== "00" || status !== "000") {
+            return;
+          }
 
-        this.userBindWalletList = data.filter((item, index) => index < 15);
-      });
+          this.userBindWalletList = data.filter((item, index) => index < 15);
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({ msg, code });
+        });
     },
     getWalletList() {
       // C02.141 取得廳主支援的電子錢包列表

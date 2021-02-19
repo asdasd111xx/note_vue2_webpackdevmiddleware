@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from "vuex";
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
 import ajax from "@/lib/ajax";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -15,8 +16,8 @@ export default {
       isShowPopBankList: false,
       isVerifyPhone: false,
       formData: {
-        account_name: "",
-        bank_id: "",
+        accountName: "",
+        bankId: "",
         province: "",
         city: "",
         branch: "",
@@ -122,7 +123,7 @@ export default {
   created() {
     // 已經有真實姓名時不送該欄位
     if (this.memInfo.user.name) {
-      delete this.formData["account_name"];
+      delete this.formData["accountName"];
     }
 
     if (
@@ -187,20 +188,33 @@ export default {
 
       // 已經有真實姓名時不送該欄位
       if (this.memInfo.user.name) {
-        delete this.formData["account_name"];
+        delete this.formData["accountName"];
       }
 
       const params = {
         ...this.formData,
+        lang: "zh-cn",
         phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
       };
 
-      ajax({
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/user_bank",
-        errorAlert: false,
-        params,
-        success: () => {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank`,
+        params
+      })
+        .then(response => {
+          const { status, errorCode, msg } = response;
+
+          if (errorCode !== "00" || status !== "000") {
+            this.lockStatus = false;
+            this.errorMsg = msg;
+
+            if (this.addBankCardStep === "one") {
+              this.msg = msg;
+            }
+            return;
+          }
+
           this.msg = "绑定成功";
           this.lockStatus = false;
           this.addBankCardStep === "one";
@@ -208,28 +222,53 @@ export default {
           if (!this.memInfo.user.name) {
             this.actionSetUserdata(true);
           }
-        },
-        fail: error => {
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+
           this.lockStatus = false;
-          this.errorMsg = error.data.msg;
+          this.errorMsg = msg;
 
           if (this.addBankCardStep === "one") {
-            this.msg = error.data.msg;
+            this.msg = msg;
           }
-        }
-      });
+        });
+
+      // ajax({
+      //   method: "post",
+      //   url: "/api/v1/c/player/user_bank",
+      //   errorAlert: false,
+      //   params,
+      //   success: () => {
+      //     this.msg = "绑定成功";
+      //     this.lockStatus = false;
+      //     this.addBankCardStep === "one";
+
+      //     if (!this.memInfo.user.name) {
+      //       this.actionSetUserdata(true);
+      //     }
+      //   },
+      //   fail: error => {
+      //     this.lockStatus = false;
+      //     this.errorMsg = error.data.msg;
+
+      //     if (this.addBankCardStep === "one") {
+      //       this.msg = error.data.msg;
+      //     }
+      //   }
+      // });
     },
     setBank(bank) {
       this.isShowPopBankList = false;
-      this.formData.bank_id = bank.id;
+      this.formData.bankId = bank.id;
       this.currentBank = bank.name;
       this.checkData();
     },
     checkData(value, key) {
-      if (key === "account_name" && this.memInfo.user.name === "") {
+      if (key === "accountName" && this.memInfo.user.name === "") {
         this.actionVerificationFormData({ target: "name", value: value }).then(
           val => {
-            this.formData.account_name = val;
+            this.formData.accountName = val;
           }
         );
       }
@@ -282,8 +321,8 @@ export default {
           }
 
           // 需要填入時才檢查
-          if (key === "account_name" && this.memInfo.user.name === "") {
-            return this.formData["account_name"];
+          if (key === "accountName" && this.memInfo.user.name === "") {
+            return this.formData["accountName"];
           }
 
           if (
