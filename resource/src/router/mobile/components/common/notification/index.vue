@@ -229,11 +229,11 @@ export default {
         case "service_maintain_notice":
           const type =
             this.data.service === "player_deposit_and_withdraw"
-              ? "充值与提现"
+              ? "存款与取款"
               : this.data.service === "player_withdraw"
-              ? "提现"
+              ? "取款"
               : "";
-          string = `即将进行 ${type} 维护，于 ${this.data.countdown} 分钟后开始`;
+          string = `即将进行 ${type} 维护，于 <span style="color: red;">${this.data.countdown}</span> 分钟后开始`;
           return string;
 
         default:

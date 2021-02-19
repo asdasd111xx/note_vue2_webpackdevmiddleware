@@ -586,6 +586,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import ajax from "@/lib/ajax";
@@ -772,32 +773,40 @@ export default {
     this.actionGetServiceMaintain().then(data => {
       // priority: player_deposit_and_withdraw > player_withdraw
       let target =
-        data.find(item => item.service === "player_deposit_and_withdraw") ||
-        data.find(item => item.service === "player_withdraw");
+        data.find(
+          item =>
+            item.service === "player_deposit_and_withdraw" && item.is_maintain
+        ) ||
+        data.find(
+          item => item.service === "player_withdraw" && item.is_maintain
+        );
 
-      if (target && target.is_maintain) {
+      if (target) {
         this.isLoading = false;
 
         // 有開維護優先權最高
         // let formatDate = EST(target.end_at);
-        let formatDate = target.end_at;
+        let formatDate = Vue.moment(target.end_at).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
 
         const type =
           target.service === "player_deposit_and_withdraw"
-            ? "充值与提现"
+            ? "存款与取款"
             : target.service === "player_withdraw"
-            ? "提现"
+            ? "取款"
             : "";
 
         this.setPopupStatus(true, "funcTips");
         this.confirmPopupObj = {
           title: "系统讯息",
           content: `
-          <div>${type}目前进行维护中，如有不便之处，敬请见谅!</div>
+          <div style="font-size: 16px; font-weight: 700;">${type} 目前进行维护中，如有不便之处，敬请见谅!</div>
+          <br />
           <div>预计完成：当地时间(GMT+时区时间)</div>
           <span>${formatDate}</span>
           `,
-          btnText: "返回帐户资料",
+          btnText: "返回我的",
           cb: () => {
             this.closePopup();
             this.$router.push("/mobile/mcenter");

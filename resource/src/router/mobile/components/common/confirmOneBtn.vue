@@ -1,10 +1,7 @@
 <template>
   <transition name="fade">
     <div v-show="isShow" class="dialog">
-      <div
-        class="dialog-wrap"
-        :style="{ maxWidth: data.content ? 'none' : '270px' }"
-      >
+      <div class="dialog-wrap">
         <div
           class="confirm-title"
           :style="{ padding: data.content ? '20px 10px' : '30px 10px' }"
