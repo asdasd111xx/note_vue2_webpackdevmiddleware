@@ -194,7 +194,8 @@ export default {
       const params = {
         ...this.formData,
         lang: "zh-cn",
-        phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
+        phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+        kind: "pwa"
       };
 
       goLangApiRequest({
