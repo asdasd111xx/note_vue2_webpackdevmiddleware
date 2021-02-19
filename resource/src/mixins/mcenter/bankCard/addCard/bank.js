@@ -194,13 +194,15 @@ export default {
       const params = {
         ...this.formData,
         lang: "zh-cn",
-        phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
-        kind: "pwa"
+        phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
       };
 
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank`,
+        headers: {
+          kind: "pwa"
+        },
         params
       })
         .then(response => {
