@@ -214,7 +214,8 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      BBOSDomain: "getBBOSDomain"
     })
   },
   methods: {
@@ -242,10 +243,9 @@ export default {
       if (this.jackpotData.jpMinor.length > 0) {
         this.currentBonus = [];
         this.jackpotData.jpMinor.forEach(i => {
-          let imgSrc = `${this.siteConfig.BBOS_DOMIAN_CDN}/image/${this.$route.name}/${this.vendor}/Game_${i.code}.png`;
           this.currentBonus.push({
             ...i,
-            imgSrc: imgSrc
+            imgSrc: `${this.BBOSDomain}/elibom/gameIcon/${this.$route.name}/Game_${i.code}.png`
           });
         });
         this.swiperOpts = {

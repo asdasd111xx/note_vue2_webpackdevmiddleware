@@ -15,15 +15,15 @@
           </div>
           <input
             v-else
-            v-model="formData.account_name"
+            v-model="formData.accountName"
             type="text"
             placeholder="请输入持卡人姓名，仅支持中文、“·”"
-            @input="checkData($event.target.value, 'account_name')"
+            @input="checkData($event.target.value, 'accountName')"
           />
-          <div :class="$style['clear-input']" v-if="formData.account_name">
+          <div :class="$style['clear-input']" v-if="formData.accountName">
             <img
               :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-              @click="formData.account_name = ''"
+              @click="formData.accountName = ''"
             />
           </div>
         </div>
@@ -235,7 +235,7 @@
             <img v-lazy="getBankImage(item.image_url)" />
             {{ item.name }}
             <icon
-              v-if="item.id === formData.bank_id"
+              v-if="item.id === formData.bankId"
               :class="$style['select-icon']"
               name="check"
             />
@@ -283,7 +283,7 @@ export default {
   mixins: [bankMixin],
   created() {
     // 真實姓名不送
-    // this.formData.account_name = this.memInfo.user.name;
+    // this.formData.accountName = this.memInfo.user.name;
 
     goLangApiRequest({
       method: "get",
