@@ -1058,6 +1058,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { getCookie } from "@/lib/cookie";
@@ -1487,24 +1488,32 @@ export default {
 
     // 判斷分項維護優先度最高
     this.actionGetServiceMaintain().then(data => {
-      let target = data.find(
-        item => item.service === "player_deposit_and_withdraw"
-      );
+      let target =
+        data.find(
+          item =>
+            item.service === "player_deposit_and_withdraw" && item.is_maintain
+        ) ||
+        data.find(
+          item => item.service === "player_withdraw" && item.is_maintain
+        );
 
-      if (target && target.is_maintain) {
+      if (target) {
         // 有開維護優先權最高
         // let formatDate = EST(target.end_at);
-        let formatDate = target.end_at;
+        let formatDate = Vue.moment(target.end_at).format(
+          "YYYY-MM-DD HH:mm:ss"
+        );
 
         this.setPopupStatus(true, "funcTips");
         this.confirmPopupObj = {
           title: "系统讯息",
           content: `
-          <div>充值与提现目前进行维护中，如有不便之处，敬请见谅!</div>
+          <div style="font-size: 16px; font-weight: 700;">存款与取款 目前进行维护中，如有不便之处，敬请见谅!</div>
+          <br />
           <div>预计完成：当地时间(GMT+时区时间)</div>
           <span>${formatDate}</span>
           `,
-          btnText: "返回帐户资料",
+          btnText: "返回我的",
           cb: () => {
             this.closePopup();
             this.$router.push("/mobile/mcenter");
