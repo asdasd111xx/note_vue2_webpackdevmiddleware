@@ -733,6 +733,7 @@ export const actionSetUserdata = (
         case "500035":
         case "80":
         case "81":
+        case "100009":
           configInfo = siteConfigOfficial[`site_80`];
           break;
         case "500015":

@@ -7,7 +7,6 @@ import { basic, getVersion } from "./basic";
 export const preset = {
   ...basic,
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
-  BBOS_DOMIAN_CDN: "https://bbos.bbin-asia.com/cdn",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2/cxbb/",
