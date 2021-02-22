@@ -412,7 +412,7 @@ export default {
                       return;
                     }
                     this.time -= 1;
-                  }, 1000);
+                  }, 1500);
                 }
               })
               .catch(error => {

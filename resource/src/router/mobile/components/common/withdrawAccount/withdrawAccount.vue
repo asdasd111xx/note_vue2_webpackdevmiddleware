@@ -560,7 +560,7 @@ export default {
                   return;
                 }
                 this.countdownSec -= 1;
-              }, 1000);
+              }, 1500);
             });
           } else {
             if (res.data && res.data.msg) {
