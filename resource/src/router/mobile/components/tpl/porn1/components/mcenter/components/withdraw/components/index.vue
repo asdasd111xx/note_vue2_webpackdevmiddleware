@@ -783,35 +783,7 @@ export default {
 
       if (target) {
         this.isLoading = false;
-
-        // 有開維護優先權最高
-        // let formatDate = EST(target.end_at);
-        let formatDate = Vue.moment(target.end_at).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
-
-        const type =
-          target.service === "player_deposit_and_withdraw"
-            ? "存款与取款"
-            : target.service === "player_withdraw"
-            ? "取款"
-            : "";
-
-        this.setPopupStatus(true, "funcTips");
-        this.confirmPopupObj = {
-          title: "系统讯息",
-          content: `
-          <div style="font-size: 16px; font-weight: 700;">${type} 目前进行维护中，如有不便之处，敬请见谅!</div>
-          <br />
-          <div>预计完成：当地时间(GMT+时区时间)</div>
-          <span>${formatDate}</span>
-          `,
-          btnText: "返回我的",
-          cb: () => {
-            this.closePopup();
-            this.$router.push("/mobile/mcenter");
-          }
-        };
+        this.handleServiceMain(target);
 
         return;
       } else {
@@ -1811,6 +1783,51 @@ export default {
       } else {
         return this.actualMoney.toFixed(2);
       }
+    },
+    handleServiceMain(target) {
+      // 現在當地時間的"時區"
+      const now_timezone = Vue.moment(new Date()).utcOffset() / 60;
+
+      // 取得結束日期的"時區"
+      const target_timezone = Vue.moment(target.end_at).utcOffset() / 60;
+
+      let timezone = null;
+      let formatDate = null;
+
+      if (now_timezone === target_timezone) {
+        timezone = now_timezone;
+        formatDate = Vue.moment(target.end_at).format("YYYY-MM-DD HH:mm:ss");
+      } else {
+        timezone = now_timezone - target_timezone;
+        formatDate = Vue.moment(target.end_at)
+          .add(timezone, "hours")
+          .format("YYYY-MM-DD HH:mm:ss");
+      }
+
+      const type =
+        target.service === "player_deposit_and_withdraw"
+          ? "存款与取款"
+          : target.service === "player_withdraw"
+          ? "取款"
+          : "";
+
+      this.setPopupStatus(true, "funcTips");
+      this.confirmPopupObj = {
+        title: "系统讯息",
+        content: `
+          <div style="font-size: 16px;">${type} 目前进行维护中，如有不便之处，敬请见谅!</div>
+          <br />
+          <div>预计完成：当地时间(GMT${timezone > 0 ? "+" : "-"}${
+          timezone > 10 ? timezone : "0" + timezone
+        }:00)</div>
+          <span style="margin-left: 30%">${formatDate}</span>
+          `,
+        btnText: "返回我的",
+        cb: () => {
+          this.closePopup();
+          this.$router.push("/mobile/mcenter");
+        }
+      };
     }
   },
   destroyed() {
