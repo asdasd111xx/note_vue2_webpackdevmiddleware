@@ -105,7 +105,11 @@ export default {
       this.$emit("update:isShowShare", false);
     },
     downloadImage() {
-      this.$router.push("/mobile/shareDownload");
+      if (this.$route.query.test) {
+        window.open("/mobile/shareDownload?dw=1");
+      } else {
+        this.$router.push("/mobile/shareDownload");
+      }
     }
   }
 };

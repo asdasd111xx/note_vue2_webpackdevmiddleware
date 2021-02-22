@@ -56,6 +56,21 @@ export default {
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
     }
   },
+  mounted() {
+    if (this.$route.query.dw) {
+      let a = document.createElement("a");
+      a.download = "qrcode.gif";
+      a.href =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Noto_Emoji_KitKat_263a.svg/1200px-Noto_Emoji_KitKat_263a.svg.png";
+
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      return;
+    }
+  },
   created() {
     if (this.loginStatus) {
       // 已登入：註冊頁
