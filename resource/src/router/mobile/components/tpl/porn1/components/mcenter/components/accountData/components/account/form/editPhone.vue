@@ -390,7 +390,7 @@ export default {
           return;
         }
         this.countdownSec -= 1;
-      }, 1000);
+      }, 1500);
     },
     showCaptchaPopup() {
       this.actionSetUserdata(true).then(() => {
