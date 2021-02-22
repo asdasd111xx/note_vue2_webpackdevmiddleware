@@ -233,7 +233,7 @@ export default {
               : this.data.service === "player_withdraw"
               ? "取款"
               : "";
-          string = `即将进行 ${type} 维护，于 <span style="color: red;">${this.data.countdown}</span> 分钟后开始`;
+          string = `即将进行 ${type}功能 维护，于 <span style="color: red;">${this.data.countdown}</span> 分钟后开始`;
           return string;
 
         default:
