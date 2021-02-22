@@ -1815,7 +1815,7 @@ export default {
       this.confirmPopupObj = {
         title: "系统讯息",
         content: `
-          <div style="font-size: 16px;">${type} 目前进行维护中，如有不便之处，敬请见谅!</div>
+          <div style="font-size: 16px;">${type}功能 目前进行维护中，如有不便之处，敬请见谅!</div>
           <br />
           <div>预计完成：当地时间(GMT${timezone > 0 ? "+" : "-"}${
           timezone > 10 ? timezone : "0" + timezone
