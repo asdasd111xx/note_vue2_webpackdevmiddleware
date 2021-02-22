@@ -1488,14 +1488,10 @@ export default {
 
     // 判斷分項維護優先度最高
     this.actionGetServiceMaintain().then(data => {
-      let target =
-        data.find(
-          item =>
-            item.service === "player_deposit_and_withdraw" && item.is_maintain
-        ) ||
-        data.find(
-          item => item.service === "player_withdraw" && item.is_maintain
-        );
+      let target = data.find(
+        item =>
+          item.service === "player_deposit_and_withdraw" && item.is_maintain
+      );
 
       if (target) {
         this.handleServiceMain(target);
