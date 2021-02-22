@@ -43,7 +43,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://siguaxxxapp02.com/';
 
 // Beta
-//
+// const domain = "https://sgbe1.grtymart.com/";
 module.exports = {
   build: {
     env: require("./prod.env"),
