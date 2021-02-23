@@ -119,7 +119,7 @@ export default {
   watch: {
     qrcodeLink(val) {
       if (val.includes("base64")) {
-        this.downloadText = "长按下载图片";
+        this.downloadText = "保存图片";
       } else {
         this.downloadText = "点击截屏保存";
       }
