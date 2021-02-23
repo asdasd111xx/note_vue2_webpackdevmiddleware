@@ -1818,7 +1818,9 @@ export default {
           <div style="font-size: 16px;">${type}功能 目前进行维护中，如有不便之处，敬请见谅!</div>
           <br />
           <div>预计完成：当地时间(GMT${timezone > 0 ? "+" : "-"}${
-          timezone > 10 ? timezone : "0" + timezone
+          Math.abs(timezone) > 10
+            ? Math.abs(timezone)
+            : "0" + Math.abs(timezone)
         }:00)</div>
           <span style="margin-left: 30%">${formatDate}</span>
           `,
