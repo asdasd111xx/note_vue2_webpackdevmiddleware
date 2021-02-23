@@ -163,6 +163,7 @@ export const site_100009 = {
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜直播",
   // todo待beta domain完成
+  BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
