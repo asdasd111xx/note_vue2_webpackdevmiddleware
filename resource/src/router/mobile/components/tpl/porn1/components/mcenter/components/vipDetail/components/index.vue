@@ -159,7 +159,7 @@ export default {
             {
               number: "❺",
               title: "每月红包",
-              content: `会员在上个月成功充值100元以上，即可在每月5号获得上个月相应等级的每月红包彩金。(${
+              content: `会员在上个月有过至少1次的成功充值，即可在每月5号获得上个月相应等级的每月红包彩金。(${
                 this.themeTPL === "porn1"
                   ? "每月红包12倍流水即可提现"
                   : this.themeTPL === "sg1"
