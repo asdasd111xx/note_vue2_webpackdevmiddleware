@@ -17,10 +17,15 @@
         <div :class="$style.title">交易时间</div>
         <div :class="$style.text">{{ detailInfo.created_at | dateFormat }}</div>
       </div>
-      <div v-if="detailInfo.ref_id" :class="[$style.detail, 'clearfix']">
+      <div
+        v-if="detailInfo.ref_id || detailInfo.trans_id"
+        :class="[$style.detail, 'clearfix']"
+      >
         <div :class="$style.title">订单号码</div>
         <div :class="$style.text">
-          <span>{{ detailInfo.ref_id }}</span>
+          <span>{{
+            detailInfo.ref_id ? detailInfo.ref_id : detailInfo.trans_id
+          }}</span>
           <div :class="$style.copyImg" @click="oncopy">
             <img
               :src="$getCdnPath(`/static/image/common/ic_copy.png`)"
