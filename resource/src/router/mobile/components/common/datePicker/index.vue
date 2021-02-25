@@ -116,18 +116,21 @@ export default {
       if (this.currentYear === this.maxLimitYear) {
         if (this.minLimitMonth > this.maxLimitMonth) {
           let i = this.maxLimitMonth;
-          this.currentMonth = i;
-          months.push(i);
+          let target = i < 10 ? "0" + i : i;
+          this.currentMonth = target;
+          months.push(target);
         } else {
           for (let i = this.minLimitMonth; i <= this.maxLimitMonth; i += 1) {
-            this.currentMonth = i;
-            months.push(i);
+            let target = i < 10 ? "0" + i : i;
+            this.currentMonth = target;
+            months.push(target);
           }
         }
       } else {
         for (let i = 12; this.minLimitMonth <= i; i -= 1) {
-          this.currentMonth = i;
-          months.unshift(i);
+          let target = i < 10 ? "0" + i : i;
+          this.currentMonth = target;
+          months.unshift(target);
         }
       }
 
@@ -139,7 +142,8 @@ export default {
 
       if (this.currentMonth === this.maxLimitMonth) {
         for (let i = 1; i <= this.maxLimitDay; i += 1) {
-          days.push(i);
+          let target = i < 10 ? "0" + i : i;
+          days.push(target);
         }
       } else {
         const lastDay = Vue.moment(
@@ -148,11 +152,13 @@ export default {
 
         if (this.currentMonth === this.minLimitMonth) {
           for (let i = lastDay; this.minLimitDay <= i; i -= 1) {
-            days.unshift(i);
+            let target = i < 10 ? "0" + i : i;
+            days.unshift(target);
           }
         } else {
           for (let i = 1; i <= lastDay; i += 1) {
-            days.push(i);
+            let target = i < 10 ? "0" + i : i;
+            days.push(target);
           }
         }
       }
