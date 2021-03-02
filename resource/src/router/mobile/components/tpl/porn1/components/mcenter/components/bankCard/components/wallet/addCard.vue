@@ -68,112 +68,158 @@
         </div>
       </template>
 
-      <!-- Input -->
-      <div v-if="selectTarget.walletName" :class="$style['info-item']">
-        <p :class="$style['input-title']">
+      <template v-if="!selectTarget.oneClickBindingMode">
+        <!-- Input -->
+        <!-- 錢包地址 -->
+        <div v-if="selectTarget.walletName" :class="$style['info-item']">
+          <p :class="$style['input-title']">
+            {{ formData["walletAddress"].title }}
+          </p>
+
+          <div
+            :class="[
+              $style['input-wrap'],
+              { [$style['disable']]: selectTarget.walletId === 37 }
+            ]"
+          >
+            <input
+              v-model="formData['walletAddress'].value"
+              type="text"
+              :placeholder="formData['walletAddress'].placeholder"
+              @input="verification('walletAddress')"
+              @blur="verification('walletAddress')"
+            />
+          </div>
+
+          <div
+            v-if="
+              (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
+                selectTarget.walletId === 37
+            "
+            :class="$style['qrcode']"
+            @click="setPopupStatus(true, 'qrcode')"
+          >
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/${themeTPL}/mcenter/bankCard/ic_qrcode.png`
+                )
+              "
+              alt="qrcode"
+            />
+          </div>
+        </div>
+
+        <!-- CGPay 支付密碼欄位 -->
+        <div v-if="selectTarget.walletId === 21" :class="$style['info-item']">
+          <p :class="$style['input-title']">
+            {{ formData["CGPPwd"].title }}
+          </p>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="formData['CGPPwd'].value"
+              type="password"
+              :placeholder="formData['CGPPwd'].placeholder"
+              @input="verification('CGPPwd')"
+              @blur="verification('CGPPwd')"
+            />
+          </div>
+        </div>
+      </template>
+
+      <!-- 僅限選擇 CGPay && 一鍵模式 -->
+      <template
+        v-if="
+          ['porn1', 'sg1'].includes(themeTPL) &&
+            selectTarget.walletId === 21 &&
+            selectTarget.oneClickBindingMode
+        "
+      >
+        <p :class="[$style['input-title'], $style['shift-top']]">
           {{ formData["walletAddress"].title }}
         </p>
+      </template>
 
-        <div
-          :class="[
-            $style['input-wrap'],
-            { [$style['disable']]: isGoBaoWallet }
-          ]"
-        >
-          <input
-            v-model="formData['walletAddress'].value"
-            type="text"
-            :placeholder="formData['walletAddress'].placeholder"
-            @input="verification('walletAddress')"
-            @blur="verification('walletAddress')"
-          />
-        </div>
-
-        <div
-          v-if="
-            (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
-              isGoBaoWallet
-          "
-          :class="$style['qrcode']"
-          @click="setPopupStatus(true, 'qrcode')"
-        >
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/bankCard/ic_qrcode.png`
-              )
-            "
-            alt="qrcode"
-          />
-        </div>
-      </div>
-
-      <!-- CGPay 支付密碼欄位 -->
-      <div v-if="selectTarget.walletId === 21" :class="$style['info-item']">
-        <p :class="$style['input-title']">
-          {{ formData["CGPPwd"].title }}
+      <!-- 億元：確認鈕上方text -->
+      <template
+        v-if="
+          ['ey1'].includes(themeTPL) &&
+            !selectTarget.oneClickBindingMode &&
+            selectTarget.walletName
+        "
+      >
+        <p :class="$style['wallet-tip']">
+          请认真校对钱包地址，地址错误资金将无法到帐
         </p>
-        <div :class="$style['input-wrap']">
-          <input
-            v-model="formData['CGPPwd'].value"
-            type="password"
-            :placeholder="formData['CGPPwd'].placeholder"
-            @input="verification('CGPPwd')"
-            @blur="verification('CGPPwd')"
-          />
-        </div>
-      </div>
+      </template>
 
       <!-- Confirm Button -->
-      <div :class="$style['info-confirm']">
-        <!-- Yabo : 上方 Tip 顯示 -->
-        <template
-          v-if="['porn1', 'sg1'].includes(themeTPL) && selectTarget.walletName"
-        >
-          <li
-            v-for="(item, index) in walletTipInfo"
-            :key="`${item.key}-${index}`"
+      <div
+        :class="$style['info-confirm']"
+        :style="{
+          flexDirection: selectTarget.oneClickBindingMode
+            ? 'column-reverse'
+            : 'column'
+        }"
+      >
+        <!-- 上方 Tip 顯示 -->
+        <template v-if="selectTarget.walletName">
+          <ul
+            :class="[
+              {
+                [$style['onTop']]:
+                  !selectTarget.oneClickBindingMode && walletTipInfo.length > 0
+              },
+              {
+                [$style['onBottom']]:
+                  selectTarget.oneClickBindingMode && walletTipInfo.length > 0
+              },
+              {
+                [$style['no-button']]:
+                  !selectTarget.oneClickBindingMode &&
+                  walletTipInfo.length > 0 &&
+                  selectTarget.walletId === 37
+              }
+            ]"
           >
-            {{ item.text }}
-            <a v-if="item.hasLink" :href="item.dataObj.src" target="_blank">
-              {{ item.dataObj.text }}
-            </a>
-            <span v-if="item.hasPopupTip" @click="item.dataObj.cb">
-              {{ item.dataObj.text }}
-            </span>
-          </li>
-        </template>
+            <li
+              v-for="(item, index) in walletTipInfo"
+              :key="`${item.key}-${index}`"
+            >
+              {{ item.text }}
 
-        <!-- 億元：確認鈕上方text -->
-        <template v-if="['ey1'].includes(themeTPL) && selectTarget.walletName">
-          <p v-if="!isGoBaoWallet">
-            请认真校对钱包地址，地址错误资金将无法到帐
-          </p>
+              <a v-if="item.hasLink" :href="item.dataObj.src" target="_blank">
+                {{ item.dataObj.text }}
+              </a>
+
+              <span v-if="item.hasCallback" @click="item.dataObj.cb">
+                {{ item.dataObj.text }}
+              </span>
+            </li>
+          </ul>
         </template>
 
         <!-- 確認鈕 -->
-        <!-- 針對 CGpay -->
         <div
-          v-if="selectTarget.walletId === 21"
-          :class="[$style['submit'], { [$style['disabled']]: lockStatus }]"
-          @click="submitByToken"
-        >
-          {{ $text("S_CONFIRM", "确认") }}
-        </div>
-
-        <!-- 新增一般錢包 -->
-        <div
-          v-else
           :class="[
             $style['submit'],
-            { [$style['disabled']]: lockStatus },
             {
-              [$style['hidden']]: isGoBaoWallet
+              [$style['disabled']]:
+                lockStatus && !selectTarget.oneClickBindingMode
+            },
+            {
+              [$style['hidden']]:
+                selectTarget.walletId === 37 &&
+                !selectTarget.oneClickBindingMode
             }
           ]"
-          @click="submitByNormal"
+          @click="handleSmbmit"
         >
-          {{ $text("S_CONFIRM", "确认") }}
+          {{
+            selectTarget.oneClickBindingMode
+              ? "一键绑定"
+              : $text("S_CONFIRM", "确认")
+          }}
         </div>
       </div>
     </div>
@@ -274,13 +320,13 @@ export default {
         walletId: "",
         walletName: "",
         swiftCode: "",
-        fixed: false
+        fixed: false,
+        oneClickBindingMode: false
       },
+      // Server 回傳的可用錢包的列表
       walletList: [],
       filterWalletList: [],
       userBindWalletList: [],
-
-      isGoBaoWallet: false,
 
       // 彈窗顯示狀態統整
       showPopStatus: {
@@ -301,7 +347,12 @@ export default {
           placeholder: "请输入CGP安全防护码"
         }
       },
+
+      // 確認按鈕鎖定狀態
       lockStatus: true,
+      // Ajax 是否正在觸發
+      isReceive: false,
+
       errorMsg: "",
       msg: "",
 
@@ -324,11 +375,13 @@ export default {
     }
   },
   watch: {
+    "selectTarget.oneClickBindingMode"() {
+      this.getWalletTipInfo();
+    },
     "selectTarget.walletId"(value) {
       // 不確定點擊相同錢包時，是否要清除資料?假如有，將以下 code 搬至 setBank
       this.formData["CGPPwd"].value = "";
       this.formData["walletAddress"].value = "";
-      this.isGoBaoWallet = false;
       this.walletTipInfo = [];
 
       let text = "";
@@ -358,7 +411,6 @@ export default {
           break;
         case 37:
           text = "请点击二维码绑定";
-          this.isGoBaoWallet = true;
           this.getWalletTipInfo();
           break;
         case 38:
@@ -585,11 +637,11 @@ export default {
         });
     },
     submitByNormal() {
-      if (this.lockStatus) {
+      if (this.isReceive) {
         return;
       }
 
-      this.lockStatus = true;
+      this.isReceive = true;
       this.errorMsg = "";
 
       // C02.239 新增會員電子錢包
@@ -603,7 +655,7 @@ export default {
         }
       })
         .then(response => {
-          this.lockStatus = false;
+          this.isReceive = false;
 
           const { data, status, errorCode, msg } = response;
 
@@ -620,15 +672,15 @@ export default {
         .catch(error => {
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
-          this.lockStatus = false;
+          this.isReceive = false;
         });
     },
     submitByToken() {
-      if (this.lockStatus) {
+      if (this.isReceive) {
         return;
       }
 
-      this.lockStatus = true;
+      this.isReceive = true;
       this.errorMsg = "";
 
       axios({
@@ -644,7 +696,7 @@ export default {
       })
         .then(response => {
           const { result, msg, code } = response.data;
-          this.lockStatus = false;
+          this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
             this.actionSetGlobalMessage({ msg });
@@ -659,8 +711,52 @@ export default {
         .catch(error => {
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
-          this.lockStatus = false;
+          this.isReceive = false;
           return;
+        });
+    },
+    /*
+    // 取得電子錢包綁定帳號資訊
+    */
+    getBindWalletInfo() {
+      if (this.isReceive) {
+        return Promise.resolve(false);
+      }
+
+      this.isReceive = true;
+
+      // walletGatewayId = 3 -> CGPay
+      // walletGatewayId = 2 -> 購寶
+      let id = null;
+
+      if (this.selectTarget.walletId === 37) {
+        id = 2;
+      } else if (this.selectTarget.walletId === 21) {
+        id = 3;
+      }
+
+      return axios({
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
+        method: "get",
+        params: {
+          wallet_gateway_id: id
+        }
+      })
+        .then(res => {
+          const { result, ret, msg } = res.data;
+          this.isReceive = false;
+
+          if (result !== "ok") {
+            this.actionSetGlobalMessage({ msg });
+            return Promise.resolve(false);
+          }
+
+          return Promise.resolve(ret.html);
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.isReceive = false;
+          this.actionSetGlobalMessage({ msg, code });
         });
     },
     setBank(bank) {
@@ -668,6 +764,13 @@ export default {
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
+
+      // 僅 CGpay && 購寶 有一鍵綁定
+      if ([21, 37].includes(this.selectTarget.walletId)) {
+        this.selectTarget.oneClickBindingMode = true;
+      } else {
+        this.selectTarget.oneClickBindingMode = false;
+      }
     },
     clearMsgCallback() {
       const { query } = this.$route;
@@ -729,14 +832,31 @@ export default {
       };
     },
     getWalletTipInfo() {
-      if (["ey1"].includes(this.themeTPL)) return;
+      const id = this.selectTarget.walletId;
+      const bindingMode = this.selectTarget.oneClickBindingMode;
 
-      if (this.selectTarget.walletId === 21) {
+      // CGPay
+      if (id === 21) {
+        let _data = {
+          key: "CGPay",
+          text: bindingMode
+            ? `试试`
+            : `可输入${this.selectTarget.walletName}帐号、扫码绑定或试试`,
+          hasCallback: true,
+          dataObj: {
+            text: bindingMode ? `其它绑定方式` : `一键绑定`,
+            cb: () => {
+              if (bindingMode) {
+                this.selectTarget.oneClickBindingMode = false;
+              } else {
+                this.selectTarget.oneClickBindingMode = true;
+              }
+            }
+          }
+        };
+
         this.walletTipInfo = [
-          {
-            key: "CGPay",
-            text: `可输入${this.selectTarget.walletName}帐号`
-          },
+          _data,
           {
             key: "CGPay",
             text: `没有${this.selectTarget.walletName}帐号？`,
@@ -747,18 +867,33 @@ export default {
             }
           }
         ];
+
         return;
       }
 
-      if (this.selectTarget.walletId === 37) {
+      // 購寶
+      if (id === 37) {
+        let _data = {
+          key: "goBao",
+          text: `试试`,
+          hasCallback: true,
+          dataObj: {
+            text: bindingMode ? `扫码绑定` : `一键绑定`,
+            cb: () => {
+              if (bindingMode) {
+                this.selectTarget.oneClickBindingMode = false;
+              } else {
+                this.selectTarget.oneClickBindingMode = true;
+              }
+            }
+          }
+        };
+
         this.walletTipInfo = [
+          _data,
           {
             key: "goBao",
-            text: "请使用扫码绑定"
-          },
-          {
-            key: "goBao",
-            text: `没有${this.selectTarget.walletName}帐号？`,
+            text: `没有${this.selectTarget.walletName}？`,
             hasLink: true,
             dataObj: {
               src: "https://www.gamewallet.asia/",
@@ -769,12 +904,15 @@ export default {
         return;
       }
 
-      if (this.selectTarget.swiftCode === "BBUSDTCN1") {
+      if (
+        ["porn1", "sg1"].includes(this.themeTPL) &&
+        this.selectTarget.swiftCode === "BBUSDTCN1"
+      ) {
         this.walletTipInfo = [
           {
             key: "USDT",
             text: `还没有数字货币帐号？`,
-            hasPopupTip: true,
+            hasCallback: true,
             dataObj: {
               text: "点我查看交易所",
               cb: () => {
@@ -783,6 +921,21 @@ export default {
             }
           }
         ];
+        return;
+      }
+    },
+    handleSmbmit() {
+      if (this.selectTarget.oneClickBindingMode) {
+        this.getBindWalletInfo().then(url => {
+          window.open(url);
+        });
+      } else {
+        // CGPay
+        if (this.selectTarget.walletId === 21) {
+          this.submitByToken();
+        } else {
+          this.submitByNormal();
+        }
         return;
       }
     },
