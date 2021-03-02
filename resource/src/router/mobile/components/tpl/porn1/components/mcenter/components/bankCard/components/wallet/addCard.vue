@@ -926,8 +926,22 @@ export default {
     },
     handleSmbmit() {
       if (this.selectTarget.oneClickBindingMode) {
+        // 呼叫 API 前另需視窗
+        let newWindow = "";
+        newWindow = window.open();
+        const newWindowHref = uri => {
+          try {
+            newWindow.location = uri;
+          } catch (e) {
+            console.log(e);
+            console.log(newWindow);
+            console.log(uri);
+          }
+        };
+
         this.getBindWalletInfo().then(url => {
-          window.open(url);
+          newWindowHref(url);
+          return;
         });
       } else {
         // CGPay
