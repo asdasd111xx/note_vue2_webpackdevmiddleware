@@ -438,6 +438,11 @@ export default {
       // eslint-disable-next-line no-restricted-globals
       this.rebateType = status;
 
+      //切換為反水歷史更新總計值
+      if (item === "history") {
+        this.getTotalRebateByUser();
+      }
+
       if (item === this.mcenterBankRebateType) {
         return;
       }

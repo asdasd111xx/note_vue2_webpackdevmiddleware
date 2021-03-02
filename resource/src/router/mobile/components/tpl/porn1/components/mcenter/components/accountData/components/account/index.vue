@@ -75,6 +75,27 @@
                 <div :class="$style['field-value']">
                   <template>
                     <span
+                      v-if="field.key === 'birthday'"
+                      :class="[
+                        $style['field-text'],
+                        { [$style.yet]: field.status === 'yet' }
+                      ]"
+                    >
+                      <date-picker
+                        v-if="field.status === 'yet'"
+                        v-model="birthdayValue"
+                        :placeholder="'添加日期，确保您已满18岁'"
+                        type="date"
+                        format="YYYY-MM-DD"
+                        value-type="format"
+                        @input="onInputBirthday(birthdayValue)"
+                      />
+                      <span v-else>
+                        {{ field.value }}
+                      </span>
+                    </span>
+                    <span
+                      v-else
                       :class="[
                         $style['field-text'],
                         { [$style.yet]: field.status === 'yet' }
@@ -156,6 +177,10 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import DatePicker from "vue2-datepicker";
+import Vue from "vue";
+import mcenter from "@/api/mcenter";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
 
 export default {
   components: {
@@ -187,13 +212,15 @@ export default {
         /* webpackChunkName: 'editWithdrawPwd' */ "./form/editWithdrawPwd"
       ),
     editSkype: () =>
-      import(/* webpackChunkName: 'editSkype' */ "./form/editSkype")
+      import(/* webpackChunkName: 'editSkype' */ "./form/editSkype"),
+    DatePicker
   },
   data() {
     return {
       currentTab: 0,
       currentEdit: "",
       showSuccess: false,
+      birthdayValue: "",
       addressInfo: {
         id: "",
         is_default: false,
@@ -209,20 +236,27 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      systemTime: "getSystemTime"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   mounted() {
+    this.actionSetSystemTime();
     if (localStorage.getItem("set-account-success")) {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetSystemTime",
+      "actionSetGlobalMessage"
+    ]),
+
     handleClick(field) {
       if (field.key === "phone") {
         //   手機未驗證能設定
@@ -235,6 +269,10 @@ export default {
         if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
           return;
         }
+      }
+
+      if (field.key === "birthday") {
+        return;
       }
 
       if (!field.btnShow) {
@@ -315,6 +353,38 @@ export default {
           }
         })
         .catch(error => {});
+    },
+    onInputBirthday(e) {
+      this.tipMsg = "";
+      this.birthdayValue = e;
+      if (this.value === "") {
+        this.tipMsg = this.$text("S_CR_NUT_NULL");
+      }
+
+      const valueDate = new Date(this.birthdayValue);
+      const limit = new Date(Vue.moment(this.systemTime).add(-18, "year"));
+      if (valueDate > limit) {
+        this.actionSetGlobalMessage({ msg: "年龄未满十八岁,无法游戏" });
+        this.birthdayValue = "";
+      } else {
+        mcenter.accountDataSet({
+          params: {
+            birthday: Vue.moment(this.birthdayValue).format()
+          },
+          success: () => {
+            this.editedSuccess();
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          },
+          fail: res => {
+            if (res && res.data && res.data.msg) {
+              this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
+            }
+          }
+        });
+      }
     }
   }
 };

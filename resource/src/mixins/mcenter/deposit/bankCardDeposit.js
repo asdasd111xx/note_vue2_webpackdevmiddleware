@@ -502,6 +502,13 @@ export default {
             if (extraArray && extraArray.switchPromotionTypeCGPay) {
               this.cgPromotionMessage = extraArray.valuePromotionTypeCGPay;
             }
+            //新增檢查 當充值方式“只有”外部連結時 直接外開
+            if (res.data.ret.payment_group.length === 1) {
+              if (res.data.ret.payment_group[0].is_link) {
+                this.changeMode(res.data.ret.payment_group[0]);
+                return;
+              }
+            }
 
             const filterData = res.data.ret.payment_group.filter(
               info => !info.is_link

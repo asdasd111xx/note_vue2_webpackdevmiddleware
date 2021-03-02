@@ -781,3 +781,48 @@ input {
 
 
 }
+
+// 日期套件
+:global {
+  .mx-datepicker {
+    width: 100%;
+
+    .mx-input {
+      height: 33px;
+      line-height: 33px;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+
+      // Chrome/Opera/Safari
+      &::-webkit-input-placeholder {
+        color: #cbced8;
+      }
+
+      // Firefox 19+
+      &::-moz-placeholder {
+        color: #cbced8;
+      }
+
+      // IE 10+
+      &:-ms-input-placeholder {
+        color: #cbced8;
+      }
+
+      // Firefox 18-
+      &:-moz-placeholder {
+        color: #cbced8;
+      }
+    }
+  }
+
+  .mx-icon-calendar {
+    right: 0;
+    display: none;
+  }
+
+  .mx-icon-clear {
+    right: 0;
+  }
+}

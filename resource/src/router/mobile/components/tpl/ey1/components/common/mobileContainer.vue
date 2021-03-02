@@ -103,7 +103,7 @@ export default {
 <style lang="scss" module>
 .container {
   min-width: 320px;
-  min-height: calc(100vh);
+  // min-height: calc(100vh);//行動網頁版會有功能列 可視滿版會有滑動問題
 }
 
 .has-header {
