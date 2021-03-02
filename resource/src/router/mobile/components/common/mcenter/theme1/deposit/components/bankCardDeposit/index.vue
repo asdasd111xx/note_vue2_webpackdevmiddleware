@@ -1153,6 +1153,9 @@ export default {
       }
     },
     curPayInfo(value) {
+      if(!this.curPayInfo.payment_method_name){
+        return;
+      }
       if (this.curPayInfo.payment_method_name === "代客充值") {
         this.checkSuccess = true;
       }
@@ -1455,9 +1458,9 @@ export default {
           this.curPayInfo.payment_type_id === 6
             ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
             : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名"),
-        showCondition: this.curPayInfo.field.find(
+        showCondition: this.curPayInfo.field ? this.curPayInfo.field.find(
           e => e.name === "pay_username" && e.required
-        ),
+        ): false,
         isError:
           this.showError &&
           this.curPayInfo.field.find(

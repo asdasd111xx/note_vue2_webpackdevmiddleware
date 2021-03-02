@@ -226,7 +226,29 @@ export default {
           this.paramsData.label = this.$route.query.label;
           return;
         }
+        if (
+          !defaultData
+            .concat(response.ret)
+            .some(item => item.label === this.paramsData.label)
+        ) {
+          this.paramsData.label = "";
+        }
+
+        if (this.$route.query.label) {
+          this.paramsData.label = this.$route.query.label;
+          return;
+        }
+
+        if (this.$route.params.type) {
+          this.paramsData.label = this.$route.params.type;
+          return;
+        }
       });
+      if (this.$route.query.label == "favorite") {
+        this.isFavorite = "favorite";
+        this.paramsData.label = "favorite";
+      }
+      this.updateGameData(this.$route.query.label);
     },
     /**
      * 設定搜尋文字
@@ -258,7 +280,7 @@ export default {
         first_result: 0
       };
       this.isFavorite = value === "favorite";
-      this.updateGameData();
+      this.updateGameData(this.$route.query.label);
     },
     /**
      * 重新取得遊戲資料
@@ -275,9 +297,16 @@ export default {
         return;
       }
 
-      this.$nextTick(() => {
+      if (
+        (!this.paramsData.label || this.paramsData.label === "activity") &&
+        this.activityData.events
+      ) {
+        this.gameData = [...this.activityData.events];
+      }
+
+      setTimeout(() => {
         this.showInfinite = true;
-      });
+      }, 300);
     },
     /**
      * 捲動加載

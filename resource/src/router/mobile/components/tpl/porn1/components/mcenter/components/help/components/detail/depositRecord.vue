@@ -217,7 +217,7 @@ export default {
       }
     },
     openEdit(info) {
-      this.editOpen = true;
+      // this.editOpen = true;
       this.getSingleInfo(info.order_number);
       this.getData();
     }

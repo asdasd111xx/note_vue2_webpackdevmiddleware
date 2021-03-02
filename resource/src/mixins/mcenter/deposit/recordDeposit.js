@@ -185,7 +185,7 @@ export default {
         if (response.result === "ok") {
           this.singleDeposit = response.ret;
         }
-
+        this.editOpen = true;
         this.isShow = false;
         this.actionSetIsLoading(false);
       });

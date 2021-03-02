@@ -17,6 +17,10 @@
   line-height: 16px;
   font-size: 14px;
   color: $main_text_color3;
+
+  &.shift-top {
+    transform: translateY(15px);
+  }
 }
 
 // 錢包類型
@@ -63,6 +67,12 @@
     right: 1px;
     bottom: 2px;
   }
+}
+
+.wallet-tip {
+  font-size: 12px;
+  color: $main_text_color2;
+  margin: 20px 0 0;
 }
 
 .input-wrap {
@@ -143,13 +153,39 @@
 }
 
 .info-confirm {
-  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
   color: $main_text_color2;
+
+  .confirm-remind {
+    margin-top: 20px;
+  }
+
+  ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+
+    &.onTop {
+      margin-block-start: 20px;
+      margin-block-end: 0;
+    }
+
+    &.onBottom {
+      margin-block-start: 0;
+      margin-block-end: 20px;
+    }
+
+    &.no-button {
+      margin-block-start: 18px;
+      margin-block-end: 20px;
+    }
+  }
 
   li {
     position: relative;
     list-style-type: none;
-    padding-left: 10px;
+    padding: 4px 0 2.5px 10px;
 
     &::before {
       content: "";
@@ -184,7 +220,7 @@
   color: #fff;
   text-align: center;
   border-radius: 3px;
-  margin-top: 20px;
+  margin: 20px 0;
 
   &.disabled {
     opacity: 0.5;
@@ -195,6 +231,11 @@
 
   &.hidden {
     display: none;
+  }
+
+  &.has-text::before {
+    content: "钱包地址";
+    position: relative;
   }
 }
 
