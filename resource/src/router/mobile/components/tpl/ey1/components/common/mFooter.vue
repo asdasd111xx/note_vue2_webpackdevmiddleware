@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -49,29 +49,45 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: "getLoginStatus"
     }),
     list() {
       return [
-        { key: 'home', name: this.$text('S_HOME', '首页'), path: '/mobile' },
-        { key: 'promotion', name: this.$text('S_PROMOTION', '优惠'), path: '/mobile/promotion' },
-        { key: 'service', name: this.$text('S_SERVIEC', '客服'), path: '/mobile/service?prev=false' },
-        { key: 'gift', name: this.$text('S_GIFT', '礼包'), path: '/mobile/gift' },
-        { key: 'mcenter-home', name: this.$text('S_INFORMATION', '我的'), path: '/mobile/mcenter/home' }
+        { key: "home", name: this.$text("S_HOME", "首页"), path: "/mobile" },
+        {
+          key: "promotion",
+          name: this.$text("S_PROMOTION", "优惠"),
+          path: "/mobile/promotion"
+        },
+        {
+          key: "service",
+          name: this.$text("S_SERVIEC", "客服"),
+          path: "/mobile/service?prev=false"
+        },
+        {
+          key: "gift",
+          name: this.$text("S_GIFT", "礼包"),
+          path: "/mobile/gift"
+        },
+        {
+          key: "mcenter-home",
+          name: this.$text("S_INFORMATION", "我的"),
+          path: "/mobile/mcenter/home"
+        }
       ];
     }
   },
   methods: {
     onClick({ key, path }) {
-      if (key === 'discover') {
-        localStorage.removeItem('discover-tag');
+      if (key === "discover") {
+        localStorage.removeItem("discover-tag");
       }
 
       this.$router.push(path);
     },
     isActive(key) {
-      if (key === 'gift') {
-        return ['gift', 'giftDetail'].indexOf(this.$route.name) >= 0;
+      if (key === "gift") {
+        return ["gift", "giftDetail"].indexOf(this.$route.name) >= 0;
       }
       return key === this.$route.name;
     }
@@ -90,7 +106,7 @@ export default {
   bottom: 0;
   width: 100%;
   min-height: 60px;
-  z-index: 2;
+  z-index: 5;
   background: -webkit-linear-gradient(top, #ffffff, #f8e6e6);
   background: -o-linear-gradient(bottom, #ffffff, #f8e6e6);
   background: -moz-linear-gradient(bottom, #ffffff, #f8e6e6);
