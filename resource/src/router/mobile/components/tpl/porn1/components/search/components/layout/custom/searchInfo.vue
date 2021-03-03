@@ -80,11 +80,12 @@ export default {
       total: 0
     };
   },
-  watch: {
-    keyWord() {
-      this.setSearchList();
-    }
-  },
+  // watch: {
+  // 如果需要邊輸入邊搜尋，再打開
+  //   keyWord() {
+  //     this.setSearchList();
+  //   }
+  // },
   mounted() {
     this.setSearchList();
   },
@@ -126,7 +127,7 @@ export default {
         this.isLoading = false;
         this.isReceive = false;
 
-        if (response.status !== 200) {
+        if (response.status !== 200 || !response.result.data) {
           return;
         }
 
