@@ -116,7 +116,11 @@
               </span>
             </div>
 
-            <div :class="[$style['balance-item'], $style['collapse']]" @click="toggleShowMore">
+            <div
+              v-if="Object.keys(balanceTran.balanceInfo).length > 2"
+              :class="[$style['balance-item'], $style['collapse']]"
+              @click="toggleShowMore"
+            >
               <span :class="$style['balance-item-vendor']">收起</span>
               <div :class="[$style['icon']]">
                 <img
