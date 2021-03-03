@@ -82,7 +82,6 @@ export default {
 .content-wrap {
   background-color: $main_background_white1;
   color: #414655;
-  height: calc(100vh + 43px);
   overflow-y: scroll;
 }
 </style>
