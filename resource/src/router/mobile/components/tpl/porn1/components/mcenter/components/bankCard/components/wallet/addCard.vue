@@ -127,19 +127,6 @@
         </div>
       </template>
 
-      <!-- 僅限選擇 CGPay && 一鍵模式 -->
-      <template
-        v-if="
-          ['porn1', 'sg1'].includes(themeTPL) &&
-            selectTarget.walletId === 21 &&
-            selectTarget.oneClickBindingMode
-        "
-      >
-        <p :class="[$style['input-title'], $style['shift-top']]">
-          {{ formData["walletAddress"].title }}
-        </p>
-      </template>
-
       <!-- 億元：確認鈕上方text -->
       <template
         v-if="

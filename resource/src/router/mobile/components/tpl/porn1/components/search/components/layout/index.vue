@@ -17,6 +17,7 @@
 
     <template v-else>
       <component
+        ref="searchInfo"
         :is="currentLayout.searchInfo"
         :key-word="currentLayout.keyWord"
         :siteId="currentLayout.siteId"
@@ -55,27 +56,33 @@ export default {
   },
   created() {
     const params = {
+      prev: true,
+      hasSearchBar: true,
       keyWord: "",
-      headerInfo: {
-        prev: true,
-        hasSearchBar: true,
-        keyWord: "",
-        onClick: () => {
-          this.$router.back();
-        },
-        onSearchClick: keyWord => {
-          this.setKeyWord(keyWord);
+      onClick: () => {
+        this.$router.back();
+        localStorage.removeItem("v-search-word");
+      },
+      onSearchClick: keyWord => {
+        if (!keyWord) {
+          return;
         }
+
+        this.setKeyWord(keyWord);
+        localStorage.setItem("v-search-word", keyWord);
+
+        // 呼叫搜索頁面底下的 Function 呼叫搜尋 Api
+        this.$refs.searchInfo.setSearchList();
       }
     };
 
     switch (this.source) {
       case "smallPig":
-        params.headerInfo.isSmallPigSearch = "smallPigSearch"
+        params.isSmallPigSearch = "smallPigSearch";
         this.currentLayout = {
           ...params,
           searchInfo: "smallPigSearchInfo",
-          siteId: 2,
+          siteId: 2
         };
         break;
 
@@ -133,15 +140,18 @@ export default {
     }
 
     if (this.source !== "yabo") {
-      this.$emit("update:headerConfig", this.currentLayout.headerInfo);
+      this.$emit("update:headerConfig", this.currentLayout);
+    }
+
+    // Local 有文字預先做搜索
+    if (localStorage.getItem("v-search-word")) {
+      const keyWord = localStorage.getItem("v-search-word");
+      this.setKeyWord(keyWord);
+      localStorage.removeItem("v-search-word");
     }
   },
   methods: {
     setKeyWord(keyWord) {
-      if (!keyWord) {
-        return;
-      }
-
       this.currentLayout.keyWord = keyWord;
     }
   },
