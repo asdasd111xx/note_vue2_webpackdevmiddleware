@@ -1,5 +1,5 @@
 <template>
-  <div :class="['withdraw-wrap']">
+  <div :class="$style['withdraw-wrap']">
     <balance-tran :class="[$style['balance-tran-container'], 'clearfix']">
       <!-- 個別餘額 -->
       <template scope="{ balanceTran }">
