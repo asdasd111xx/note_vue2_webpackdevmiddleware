@@ -15,12 +15,18 @@
             @click="$router.push('/mobile/mcenter/bonus')"
           >
             <span :class="$style['balance-item-vendor']">
-              <template v-if="['porn1', 'sg1'].includes(themeTPL)">{{ $text("S_BONUS", "红利彩金") }}</template>
+              <template v-if="['porn1', 'sg1'].includes(themeTPL)">{{
+                $text("S_BONUS", "红利彩金")
+              }}</template>
 
-              <template v-if="['ey1'].includes(themeTPL)">{{ $text("S_BONUS_ACCOUNT", "红利帐户") }}</template>
+              <template v-if="['ey1'].includes(themeTPL)">{{
+                $text("S_BONUS_ACCOUNT", "红利帐户")
+              }}</template>
             </span>
 
-            <span :class="$style['balance-item-money']">{{ bonus.balance ? bonus.balance : "" }}</span>
+            <span :class="$style['balance-item-money']">{{
+              bonus.balance ? bonus.balance : ""
+            }}</span>
           </div>
 
           <template v-if="!isShowMore">
@@ -39,9 +45,7 @@
               ]"
             >
               <span :class="$style['balance-item-vendor']">
-                {{
-                item.text
-                }}
+                {{ item.text }}
               </span>
               <span
                 v-if="item.maintain"
@@ -57,13 +61,14 @@
                 {{ $t("S_MAINTAIN") }}
               </span>
               <span v-else :class="$style['balance-item-money']">
-                {{
-                item.amount
-                }}
+                {{ item.amount }}
               </span>
             </div>
 
-            <div :class="[$style['balance-item'], $style['expend']]" @click="toggleShowMore">
+            <div
+              :class="[$style['balance-item'], $style['expend']]"
+              @click="toggleShowMore"
+            >
               <span :class="$style['balance-item-vendor']">更多</span>
               <div :class="[$style['icon']]">
                 <img
@@ -92,9 +97,7 @@
               ]"
             >
               <span :class="$style['balance-item-vendor']">
-                {{
-                item.text
-                }}
+                {{ item.text }}
               </span>
               <span
                 v-if="item.maintain"
@@ -110,13 +113,15 @@
                 />
               </span>
               <span v-else :class="$style['balance-item-money']">
-                {{
-                item.amount
-                }}
+                {{ item.amount }}
               </span>
             </div>
 
-            <div :class="[$style['balance-item'], $style['collapse']]" @click="toggleShowMore">
+            <div
+              v-if="Object.keys(balanceTran.balanceInfo).length > 3"
+              :class="[$style['balance-item'], $style['collapse']]"
+              @click="toggleShowMore"
+            >
               <span :class="$style['balance-item-vendor']">收起</span>
               <div :class="[$style['icon']]">
                 <img
@@ -155,10 +160,15 @@
                   0
             "
             :class="$style['withdraw-status-tip']"
-          >银行卡提现一次，开通数字货币提现功能</span>
+            >银行卡提现一次，开通数字货币提现功能</span
+          >
 
           <!-- 非首次出款 + 強制使用 CGPay 出款 -->
-          <span v-else-if="forceStatus === 2" :class="$style['withdraw-status-tip']">仅限使用 CGPay 出款</span>
+          <span
+            v-else-if="forceStatus === 2"
+            :class="$style['withdraw-status-tip']"
+            >仅限使用 CGPay 出款</span
+          >
         </div>
 
         <!-- 列出所有帐号 -->
@@ -185,9 +195,9 @@
             ]"
           />
           <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
-          <span
-            :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]"
-          >{{ parseCardName(item.alias, item.withdrawType) }}</span>
+          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">{{
+            parseCardName(item.alias, item.withdrawType)
+          }}</span>
 
           <!-- CGPay USDT -->
           <template v-if="item.bank_id === 2009">
@@ -211,7 +221,9 @@
                   setPopupStatus(true, 'currency');
                 }
               "
-            >{{ withdrawCurrency.alias }}</div>
+            >
+              {{ withdrawCurrency.alias }}
+            </div>
           </template>
         </div>
       </div>
@@ -240,10 +252,9 @@
       >
         <div :class="$style['bank-card-cell']">
           {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
-          <span
-            v-if="forceStatus === 2"
-            :class="$style['withdraw-status-tip']"
-          >（请使用 CGPay 出款）</span>
+          <span v-if="forceStatus === 2" :class="$style['withdraw-status-tip']"
+            >（请使用 CGPay 出款）</span
+          >
         </div>
 
         <!-- 列出所有帳號-->
@@ -264,7 +275,9 @@
               { [$style['checked']]: item.id === selectedCard.id }
             ]"
           />
-          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">{{ item.alias }}</span>
+          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">{{
+            item.alias
+          }}</span>
 
           <!-- CGPay USDT -->
           <template v-if="item.bank_id === 2009">
@@ -288,7 +301,9 @@
                   setPopupStatus(true, 'currency');
                 }
               "
-            >{{ withdrawCurrency.alias }}</div>
+            >
+              {{ withdrawCurrency.alias }}
+            </div>
           </template>
         </div>
       </div>
@@ -358,12 +373,18 @@
           :placeholder="valuePlaceholder"
         />
         <span :class="[$style['withdraw-max']]">
-          <span @click="handleMaxWithdraw">{{ $text("S_WITHRAW_MAX2", "最高提现") }}</span>
+          <span @click="handleMaxWithdraw">{{
+            $text("S_WITHRAW_MAX2", "最高提现")
+          }}</span>
         </span>
       </div>
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
-        <span>使用{{ selectedCard.name }}出款，额外赠送{{ offer() }}元(CNY)优惠</span>
+        <span
+          >使用{{ selectedCard.name }}出款，额外赠送{{
+            offer()
+          }}元(CNY)优惠</span
+        >
       </div>
       <!-- 到帳金額 -->
       <div
@@ -377,15 +398,17 @@
       >
         <span :class="$style['money-currency']">
           {{
-          `${
-          selectedCard.name && !isSelectedUSDT
-          ? `${selectedCard.name}到帐`
-          : "实际提现金额"
-          }`
+            `${
+              selectedCard.name && !isSelectedUSDT
+                ? `${selectedCard.name}到帐`
+                : "实际提现金额"
+            }`
           }}
         </span>
         <span :class="$style['money-currency']">¥</span>
-        <span :class="$style['money-currency']">{{ actualMoneyPlusOffer() }}</span>
+        <span :class="$style['money-currency']">{{
+          actualMoneyPlusOffer()
+        }}</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -393,7 +416,9 @@
       <!-- 匯率試算 -->
       <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
         <!-- <span :class="$style['money-currency']">¥</span> -->
-        <span :class="$style['money-currency']">{{ selectedCard.name }}到帐</span>
+        <span :class="$style['money-currency']"
+          >{{ selectedCard.name }}到帐</span
+        >
         <span :class="$style['money-currency']">{{ cryptoMoney }}</span>
 
         <div
@@ -405,7 +430,9 @@
             }
           ]"
           @click="convertCryptoMoney"
-        >{{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}</div>
+        >
+          {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
+        </div>
       </div>
 
       <!-- 錯誤訊息 -->
@@ -467,7 +494,9 @@
         <br />可提现金额会扣除未兑现红利总计
       </div>
 
-      <div v-else>{{ hasBindingBankCard ? "" : "请先绑定一张银行卡，用于收款" }}</div>
+      <div v-else>
+        {{ hasBindingBankCard ? "" : "请先绑定一张银行卡，用于收款" }}
+      </div>
     </div>
 
     <!-- 流水檢查 -->
