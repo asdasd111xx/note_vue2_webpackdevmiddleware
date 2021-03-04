@@ -312,6 +312,7 @@ export default {
       },
       // Server 回傳的可用錢包的列表
       walletList: [],
+      // 當選擇某種特定錢包的列表
       filterWalletList: [],
       userBindWalletList: [],
 
@@ -430,61 +431,31 @@ export default {
       }
     },
     walletList() {
-      // Yabo
-      if (
-        ["porn1", "sg1"].includes(this.themeTPL) &&
-        this.$route.query.wallet
-      ) {
-        switch (this.$route.query.wallet) {
-          case "CGPay":
-            this.filterWalletList = this.walletList.filter(item => {
-              return item.id === 21;
-            });
-            break;
+      // 在有指定選擇特定錢包的狀況下
+      if (this.$route.query.wallet) {
+        let wallet = this.$route.query.wallet;
+        let mapping = {
+          CGPay: 21,
+          goBao: 37,
+          usdt: 39 // USDT(ERC20)
+        };
 
-          case "goBao":
-            this.filterWalletList = this.walletList.filter(item => {
-              return item.id === 37;
-            });
-            break;
+        this.filterWalletList = this.walletList.filter(item => {
+          return item.id === mapping[wallet];
+        });
 
-          // 目前僅開放 USDT(ERC20)
-          case "usdt":
-            this.filterWalletList = this.walletList.filter(item => {
-              // return item.swift_code === "BBUSDTCN1";
-              return item.id === 39;
-            });
-            break;
-        }
-
-        this.setBank(this.filterWalletList[0]);
-        this.selectTarget.fixed = true;
-      }
-
-      // 億元
-      // 從首頁 or 提現頁進來，且只選擇 CGPay
-      if (["ey1"].includes(this.themeTPL) && this.$route.query.wallet) {
-        switch (this.$route.query.wallet) {
-          case "CGPay":
-            let item = this.walletList.find(item => {
-              return item.id === 21;
-            });
-
-            // 如果使用者未綁定，導到 CGPay 指定頁面
-            if (item) {
-              this.setBank(item);
-              this.selectTarget.fixed = true;
-            } else {
-              // 如果已綁定，導到卡片管理-添加電子錢包
-              this.$router.replace({
-                path: "bankcard",
-                query: { type: "wallet" },
-                replace: true
-              });
-              this.setPageStatus(1, "walletCardInfo", true);
-            }
-
-            break;
+        // 如果使用者未綁定特定卡片，則導到 特定卡片 指定選項
+        if (this.filterWalletList.length > 0) {
+          this.setBank(this.filterWalletList[0]);
+          this.selectTarget.fixed = true;
+        } else {
+          // 如果已綁定 or 沒有開放該特定卡片的時候，則導到卡片管理-添加電子錢包
+          this.$router.replace({
+            path: "bankcard",
+            query: { type: "wallet" },
+            replace: true
+          });
+          this.setPageStatus(1, "walletCardInfo", true);
         }
       }
     }
@@ -499,7 +470,7 @@ export default {
       let oldWallet_length = this.userBindWalletList.length;
 
       if (!document.hidden) {
-        console.log("visibilitychange event");
+        console.log("Visibilitychange event");
 
         // 預設為舊錢包長度
         let newWallet_length = oldWallet_length;
@@ -512,6 +483,8 @@ export default {
 
           // 如果在外部 App or Web 有綁定成功
           if (newWallet_length > oldWallet_length) {
+            console.log("wallet length change");
+
             this.actionSetGlobalMessage({
               msg: "绑定成功",
               cb: this.clearMsgCallback

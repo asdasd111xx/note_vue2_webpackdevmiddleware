@@ -168,11 +168,9 @@ export default {
           case "porn1":
           case "sg1":
             return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
-            break;
 
           case "ey1":
             return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
-            break;
         }
       }
 
@@ -183,7 +181,6 @@ export default {
           return this.showDetail
             ? this.$text("S_BANKCARD", "银行卡")
             : this.$text("S_CARD_MANAGEMENT", "卡片管理");
-          break;
 
         // 錢包-卡片管理
         case "walletCardInfo":
@@ -193,13 +190,11 @@ export default {
               return this.showDetail
                 ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
                 : this.$text("S_CARD_MANAGEMENT", "卡片管理");
-              break;
 
             case "ey1":
               return this.showDetail
                 ? this.$text("S_VIRTUAL_BANKCARD", "电子钱包")
                 : this.$text("S_CARD_MANAGEMENT", "卡片管理");
-              break;
           }
 
           break;
@@ -207,7 +202,6 @@ export default {
         // 添加銀行卡
         case "addBankCard":
           return this.$text("S_ADD_BANKCARD", "添加银行卡");
-          break;
 
         // 添加錢包
         case "addWalletCard":
@@ -215,11 +209,9 @@ export default {
             case "porn1":
             case "sg1":
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
-              break;
 
             case "ey1":
               return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
-              break;
           }
           break;
       }
@@ -354,20 +346,14 @@ export default {
           this.$router.back();
           return;
 
-          break;
-
         // 當頁面停留在添加卡片
         case "addBankCard":
           this.setPageStatus(0, "bankCardInfo", true);
           return;
 
-          break;
-
         case "addWalletCard":
           this.setPageStatus(1, "walletCardInfo", true);
           return;
-
-          break;
       }
       this.$router.back();
     }
