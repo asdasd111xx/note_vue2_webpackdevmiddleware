@@ -341,7 +341,6 @@ export default {
       isReceive: false,
 
       errorMsg: "",
-      msg: "",
 
       walletTipInfo: []
     };
@@ -416,17 +415,16 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let data = this.noticeData[0];
 
-        if (data.event === "trade_bind_wallet" && data.result === "ok") {
-          // Todo 將所有 msg 替換成 actionSetGlobalMessage
+        // 針對 Qrcode 掃碼，因不會跳轉至其它 App 或 Web，仍停留在目前 App 時才進行推播流程
+        // 故已排除在開啟外部 App or Web 時，如收到推播成功，則不會進行任何動作
+        if (
+          data.event === "trade_bind_wallet" &&
+          data.result === "ok" &&
+          !document.hidden
+        ) {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
-            cb: () => {
-              if (this.$route.query.redirect) {
-                this.$router.back();
-              } else {
-                this.setPageStatus(1, "walletCardInfo", true);
-              }
-            }
+            cb: this.clearMsgCallback
           });
         }
       }
@@ -476,7 +474,6 @@ export default {
             if (item) {
               this.setBank(item);
               this.selectTarget.fixed = true;
-              return;
             } else {
               // 如果已綁定，導到卡片管理-添加電子錢包
               this.$router.replace({
@@ -485,7 +482,6 @@ export default {
                 replace: true
               });
               this.setPageStatus(1, "walletCardInfo", true);
-              return;
             }
 
             break;
@@ -496,6 +492,33 @@ export default {
   created() {
     Promise.all([this.getUserBindList()]).then(() => {
       this.getWalletList();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      // 取得當下進來頁面時的綁定錢包的長度
+      let oldWallet_length = this.userBindWalletList.length;
+
+      if (!document.hidden) {
+        console.log("visibilitychange event");
+
+        // 預設為舊錢包長度
+        let newWallet_length = oldWallet_length;
+
+        Promise.all([this.getUserBindList()]).then(() => {
+          this.getWalletList();
+
+          // 呼叫 API 新錢包長度
+          newWallet_length = this.userBindWalletList.length;
+
+          // 如果在外部 App or Web 有綁定成功
+          if (newWallet_length > oldWallet_length) {
+            this.actionSetGlobalMessage({
+              msg: "绑定成功",
+              cb: this.clearMsgCallback
+            });
+          }
+        });
+      }
     });
   },
   methods: {
@@ -782,20 +805,24 @@ export default {
       }
 
       switch (redirect) {
+        // case "deposit":
+        //   this.$router.push(`/mobile/mcenter/deposit`);
+        //   return;
+        // case "wallet":
+        //   this.$router.push(`/mobile/mcenter/wallet`);
+        //   return;
         case "deposit":
-          this.$router.push(`/mobile/mcenter/deposit`);
-          return;
         case "wallet":
-          this.$router.push(`/mobile/mcenter/wallet`);
-          return;
         case "withdraw":
         case "balanceTrans":
           this.$router.push(`/mobile/mcenter/${redirect}`);
           return;
+
         case "liveStream":
         case "home":
           this.$router.push(`/mobile/${redirect}`);
           return;
+
         default:
           this.setPageStatus(1, "walletCardInfo", true);
           return;
@@ -916,6 +943,7 @@ export default {
         // 呼叫 API 前另需視窗
         let newWindow = "";
         newWindow = window.open();
+
         const newWindowHref = uri => {
           try {
             newWindow.location = uri;
@@ -928,6 +956,15 @@ export default {
 
         this.getBindWalletInfo().then(url => {
           newWindowHref(url);
+
+          // // 外開視窗 Close 時的 Callback
+          // newWindow.onbeforeunload = e => {
+          //   console.log("onbeforeunload");
+          // };
+
+          // newWindow.onunload = e => {
+          //   console.log("onunload");
+          // };
           return;
         });
       } else {
