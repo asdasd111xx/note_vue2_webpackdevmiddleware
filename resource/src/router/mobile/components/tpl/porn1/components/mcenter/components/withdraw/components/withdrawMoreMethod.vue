@@ -188,8 +188,11 @@ export default {
           break;
 
         case "goBao":
-          this.setPopupStatus(true, "qrcode");
-          this.bank_id = 37;
+          // this.setPopupStatus(true, "qrcode");
+          // this.bank_id = 37;
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=withdraw&type=wallet&wallet=goBao"
+          );
           break;
       }
     }
