@@ -12,6 +12,13 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
+        <!-- 訪客文案 -->
+        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
+          <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
+          <div :class="$style['visitor-get']">
+            {{ `领取彩金：${guestAmount}元` }}
+          </div>
+        </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <div v-show="errMsg">
@@ -278,6 +285,13 @@
           {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
+      <div
+        v-if="themeTPL != 'ey1'"
+        :class="$style['has-visitor']"
+        @click.stop="$router.push('/mobile/login')"
+      >
+        已有会员帐号
+      </div>
       <slot name="bottom-content" />
     </div>
     <page-loading :is-show="isLoading" />
@@ -301,6 +315,7 @@ import slideVerification from "@/components/slideVerification";
 import split from "lodash/split";
 import vSelect from "vue-select";
 import Vue from "vue";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -332,6 +347,7 @@ export default {
       joinMemInfo,
       captchaImg: "",
       aid: "",
+      guestAmount: 0,
       allValue: {
         username: "",
         password: "",
@@ -488,6 +504,9 @@ export default {
           }
           return true;
         });
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   created() {
@@ -627,6 +646,10 @@ export default {
           ];
         });
       });
+
+    if (!this.loginStatus) {
+      this.getGuestBalance();
+    }
   },
   methods: {
     ...mapActions([
@@ -898,17 +921,24 @@ export default {
 
       const self = this;
       const platform = getCookie("platform");
+      //訪客轉正式帳號
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
 
-      bbosRequest({
-        method: "post",
-        url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
+        // RD5帳號註冊
+        // bbosRequest({
+        //   method: "post",
+        //   url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
         reqHeaders: {
           Vendor: this.memInfo.user.domain,
           kind: platform === "H" ? "h" : "pwa"
         },
         params: {
           ...params,
-          host: window.location.host
+          host: window.location.host,
+          deviceId: getCookie("uuidAccount"),
+          lang: "zh-cn"
         },
         fail: error => {
           setTimeout(() => {
@@ -920,20 +950,20 @@ export default {
           }
         }
       }).then(res => {
+        console.log("test guest register to RD5 sucess!!");
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
-        if (res.data && res.data.cookie) {
+        if (res.data && res.data.ret.cookie) {
           try {
             const { cookie } = res.data;
             for (const [key, value] of Object.entries(cookie)) {
               setCookie(key, value);
             }
           } catch (e) {
-            setCookie("cid", res.data.cookie.cid);
+            setCookie("cid", res.data.ret.cookie.cid);
           }
-
           // GA流量統計
           window.dataLayer.push({
             dep: 2,
@@ -944,12 +974,10 @@ export default {
             ga_hall_id: 3820325,
             ga_domain_id: this.memInfo.user.domain
           });
-
           if (this.isWebview) {
             appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
             return;
           }
-
           self.actionSetUserdata(true);
           this.actionSetGlobalMessage({
             msg: "注册成功",
@@ -961,31 +989,24 @@ export default {
                 localStorage.removeItem("username");
                 localStorage.removeItem("password");
               }
-
               window.RESET_LOCAL_SETTING(true);
             }
           });
           return;
         }
-
         if (captchaInfo && captchaInfo.slideFuc) {
           captchaInfo.slideFuc.reset();
         }
-
         this.allValue.captcha_text = "";
-
         if (res.response && res.response.status === 429) {
           this.errMsg = "操作太频繁，请稍候再试";
           return;
         }
-
         if (res.status !== "000") {
           this.getCaptcha();
-
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
               this.allTip[item] = res.errors[item];
-
               // msg: "验证码错误"
               if (item === "captcha_text") {
                 if (document.getElementById("captcha")) {
@@ -995,7 +1016,6 @@ export default {
             });
             return;
           }
-
           this.errMsg = res.msg;
         }
       });
@@ -1007,6 +1027,22 @@ export default {
       } catch (error) {
         return error;
       }
+    },
+
+    // 取得訪客餘額
+    getGuestBalance() {
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
+        params: {
+          account: getCookie("uuidAccount"),
+          cid: getCookie("guestCid")
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.guestAmount = res.data.totalAmount;
+        }
+      });
     }
   }
 };

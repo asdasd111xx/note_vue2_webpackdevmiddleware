@@ -91,12 +91,27 @@
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
+        <span
+          :class="$style['visitor-title']"
+          @click="$router.push('/mobile/joinmember')"
+          >访客彩金</span
+        >
+        <span
+          :class="$style['visitor-money']"
+          @click="$router.push('/mobile/joinmember')"
+          >{{ `${guestAmount}元` }}</span
+        >
+        <span
+          :class="$style['visitor-money']"
+          @click="$router.push('/mobile/joinmember')"
+          >领取</span
+        >
         <span @click="$router.push('/mobile/login')">{{
           $text("S_LOGON", "登录")
         }}</span>
-        <span @click="$router.push('/mobile/joinmember')">{{
+        <!-- <span @click="$router.push('/mobile/joinmember')">{{
           $text("S_REGISTER", "注册")
-        }}</span>
+        }}</span> -->
         <img
           :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
           @click="handleClickAsk"
@@ -164,6 +179,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -188,7 +205,8 @@ export default {
     return {
       currentMenu: "",
       msg: "",
-      source: this.$route.query.source
+      source: this.$route.query.source,
+      guestAmount: 0
     };
   },
   computed: {
@@ -216,6 +234,11 @@ export default {
       return this.$route.path.split("/").filter(path => path);
     }
   },
+  created() {
+    if (!this.loginStatus) {
+      this.getGuestBalance();
+    }
+  },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     // 自訂幫助中心事件
@@ -240,14 +263,14 @@ export default {
       if (this.loginStatus) {
         this.$router.push({ name: "mcenter-information" });
       } else {
-        this.$router.push("/mobile/login");
+        this.$router.push("/mobile/joinmember");
       }
     },
     handleClickSetting() {
       if (this.loginStatus) {
         this.$router.push("/mobile/mcenter/setting");
       } else {
-        this.$router.push("/mobile/login");
+        this.$router.push("/mobile/joinmember");
       }
     },
     goSearch() {
@@ -259,6 +282,22 @@ export default {
       }
 
       this.$router.push({ path: "search", query: { source: this.source } });
+    },
+
+    // 取得訪客餘額
+    getGuestBalance() {
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
+        params: {
+          account: getCookie("uuidAccount"),
+          cid: getCookie("guestCid")
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.guestAmount = res.data.totalAmount;
+        }
+      });
     }
   }
 };
@@ -365,6 +404,21 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+
+  .visitor-title {
+    color: #f9e8b4;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    padding-right: 5px;
+  }
+  .visitor-money {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    padding-right: 5px;
   }
 }
 

@@ -449,7 +449,7 @@ export default {
     // 前往會員中心
     onGoToMcenter(path) {
       if (!this.loginStatus) {
-        this.$router.push("/mobile/login");
+        this.$router.push("/mobile/joinmember");
         return;
       }
 
@@ -586,7 +586,7 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
-
+      console.log(123);
       switch (game.type) {
         case "thirdparty":
           let userId = "guest";
@@ -603,7 +603,7 @@ export default {
           switch (game.vendor) {
             case "SWAG":
               if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
+                this.$router.push("/mobile/joinmember");
                 return;
               } else {
                 localStorage.setItem("is-open-game", true);
@@ -686,7 +686,7 @@ export default {
 
                 // 未登入開關 未開啟時需登入可進入
                 if (!this.loginStatus) {
-                  this.$router.push("/mobile/login");
+                  this.$router.push("/mobile/joinmember");
                   return;
                 } else {
                   getThridUrl();
@@ -698,7 +698,7 @@ export default {
           switch (game.vendor) {
             case "agent":
               if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
+                this.$router.push("/mobile/joinmember");
                 return;
               }
               this.$router.push("/mobile/mcenter/makeMoney");
@@ -743,7 +743,7 @@ export default {
             case "lg_yb_card":
             case "lg_yb_casino":
               if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
+                this.$router.push("/mobile/joinmember");
                 return;
               }
 
@@ -766,7 +766,7 @@ export default {
         // 大廳
         case "game_lobby":
           if (!this.loginStatus) {
-            this.$router.push("/mobile/login");
+            this.$router.push("/mobile/joinmember");
             return;
           }
 
@@ -780,7 +780,7 @@ export default {
         case "game":
         default:
           if (!this.loginStatus) {
-            this.$router.push("/mobile/login");
+            this.$router.push("/mobile/joinmember");
             return;
           }
 

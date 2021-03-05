@@ -79,7 +79,6 @@ export default {
             this.getWsV2RSA();
           });
         }
-
         this.connectYaboWS();
       }
     },
@@ -212,12 +211,23 @@ export default {
       try {
         this.isConnecting = true;
         let cid = getCookie("cid") || "";
-        if (!cid) return;
-        let uri =
-          this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
-          `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${
-            this.memInfo.user.id
-          }&timestamp=${new Date().getTime()}`;
+        let uri = "";
+        if (!cid) {
+          let guestCid = getCookie("guestCid");
+          let guestUserid = getCookie("guestUserid");
+          uri =
+            this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
+            `?cid=${guestCid}&domain=${
+              this.memInfo.user.domain
+            }&userid=${guestUserid}&timestamp=${new Date().getTime()}`;
+        } else {
+          uri =
+            this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
+            `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${
+              this.memInfo.user.id
+            }&timestamp=${new Date().getTime()}`;
+        }
+
         window.YABO_SOCKET = new WebSocket(uri);
         window.YABO_SOCKET.onmessage = e => {
           let data = JSON.parse(e.data);
