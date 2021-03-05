@@ -779,11 +779,15 @@ export default {
         // 開啟遊戲
         case "game":
         default:
-          if (!this.loginStatus) {
-            this.$router.push("/mobile/login");
-            return;
+          switch (game.vendor) {
+            case "sigua_ly":
+              break;
+            default:
+              if (!this.loginStatus) {
+                this.$router.push("/mobile/login");
+                return;
+              }
           }
-
           this.isLoading = true;
 
           const openGameSuccessFunc = res => {
