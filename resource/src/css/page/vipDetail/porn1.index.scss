@@ -2,7 +2,7 @@
 
 @mixin grid-style {
   display: grid;
-  grid-template-columns: 45px repeat(7, 1fr);
+  // grid-template-columns: 45px repeat(6, 1fr); // 改由 vue 去自動針對個數來調整
   min-height: 43px;
   text-align: center;
 }
