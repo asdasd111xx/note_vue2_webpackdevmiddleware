@@ -475,11 +475,6 @@ export default {
         // 預設為舊錢包長度
         let newWallet_length = oldWallet_length;
 
-        // this.actionSetGlobalMessage({
-        //   msg: "绑定成功",
-        //   cb: this.clearMsgCallback
-        // });
-
         Promise.all([this.getUserBindList()]).then(() => {
           this.getWalletList();
 
@@ -796,16 +791,17 @@ export default {
         case "withdraw":
         case "balanceTrans":
           this.$router.push(`/mobile/mcenter/${redirect}`);
-          return;
+          break;
 
         case "liveStream":
         case "home":
           this.$router.push(`/mobile/${redirect}`);
-          return;
+          break;
 
         default:
-          this.setPageStatus(1, "walletCardInfo", true);
-          return;
+          // this.setPageStatus(1, "walletCardInfo", true);
+          this.$router.back();
+          break;
       }
     },
     verifyNumber(e) {
