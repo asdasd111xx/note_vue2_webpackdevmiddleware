@@ -475,27 +475,27 @@ export default {
         // 預設為舊錢包長度
         let newWallet_length = oldWallet_length;
 
-        this.actionSetGlobalMessage({
-          msg: "绑定成功",
-          cb: this.clearMsgCallback
-        });
-
-        // Promise.all([this.getUserBindList()]).then(() => {
-        //   this.getWalletList();
-
-        //   // 呼叫 API 新錢包長度
-        //   newWallet_length = this.userBindWalletList.length;
-
-        //   // 如果在外部 App or Web 有綁定成功
-        //   if (newWallet_length > oldWallet_length) {
-        //     console.log("wallet length change");
-
-        //     this.actionSetGlobalMessage({
-        //       msg: "绑定成功",
-        //       cb: this.clearMsgCallback
-        //     });
-        //   }
+        // this.actionSetGlobalMessage({
+        //   msg: "绑定成功",
+        //   cb: this.clearMsgCallback
         // });
+
+        Promise.all([this.getUserBindList()]).then(() => {
+          this.getWalletList();
+
+          // 呼叫 API 新錢包長度
+          newWallet_length = this.userBindWalletList.length;
+
+          // 如果在外部 App or Web 有綁定成功
+          if (newWallet_length > oldWallet_length) {
+            console.log("wallet length change");
+
+            this.actionSetGlobalMessage({
+              msg: "绑定成功",
+              cb: this.clearMsgCallback
+            });
+          }
+        });
       }
     });
   },
@@ -753,8 +753,8 @@ export default {
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
 
-      // 僅 CGpay && 購寶 有一鍵綁定
-      if ([21, 37].includes(this.selectTarget.walletId)) {
+      // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
+      if ([21].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
       } else {
         this.selectTarget.oneClickBindingMode = false;
@@ -867,27 +867,45 @@ export default {
 
       // 購寶
       if (id === 37) {
+        // 等購寶有一鍵綁定需求才註解掉
+        // let _data = {
+        //   key: "goBao",
+        //   text: `试试`,
+        //   hasCallback: true,
+        //   dataObj: {
+        //     text: bindingMode ? `扫码绑定` : `一键绑定`,
+        //     cb: () => {
+        //       if (bindingMode) {
+        //         this.selectTarget.oneClickBindingMode = false;
+        //       } else {
+        //         this.selectTarget.oneClickBindingMode = true;
+        //       }
+        //     }
+        //   }
+        // };
+        //  this.walletTipInfo = [
+        //   _data,
+        //   {
+        //     key: "goBao",
+        //     text: `没有${this.selectTarget.walletName}？`,
+        //     hasLink: true,
+        //     dataObj: {
+        //       src: "https://www.gamewallet.asia/",
+        //       text: "立即申请"
+        //     }
+        //   }
+        // ];
+
         let _data = {
           key: "goBao",
-          text: `试试`,
-          hasCallback: true,
-          dataObj: {
-            text: bindingMode ? `扫码绑定` : `一键绑定`,
-            cb: () => {
-              if (bindingMode) {
-                this.selectTarget.oneClickBindingMode = false;
-              } else {
-                this.selectTarget.oneClickBindingMode = true;
-              }
-            }
-          }
+          text: `请使用扫码绑定`
         };
 
         this.walletTipInfo = [
           _data,
           {
             key: "goBao",
-            text: `没有${this.selectTarget.walletName}？`,
+            text: `没有${this.selectTarget.walletName}帐号？`,
             hasLink: true,
             dataObj: {
               src: "https://www.gamewallet.asia/",
