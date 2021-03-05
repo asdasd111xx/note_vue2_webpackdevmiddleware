@@ -466,6 +466,10 @@ export default {
     });
 
     document.addEventListener("visibilitychange", () => {
+      console.log("Route.query.redirect: ", this.$route.query.redirect);
+      const redirect = this.$route?.query?.redirect;
+      console.log("const: ", redirect);
+
       // 取得當下進來頁面時的綁定錢包的長度
       let oldWallet_length = this.userBindWalletList.length;
 
@@ -487,7 +491,7 @@ export default {
 
             this.actionSetGlobalMessage({
               msg: "绑定成功",
-              cb: this.clearMsgCallback
+              cb: this.clearMsgCallback(redirect)
             });
           }
         });
@@ -755,10 +759,10 @@ export default {
         this.selectTarget.oneClickBindingMode = false;
       }
     },
-    clearMsgCallback() {
+    clearMsgCallback(_redirect = null) {
       const { query } = this.$route;
 
-      let redirect = query.redirect;
+      let redirect = _redirect || query.redirect;
 
       console.log(redirect);
 
