@@ -466,9 +466,8 @@ export default {
     });
 
     document.addEventListener("visibilitychange", () => {
-      console.log("Route.query.redirect: ", this.$route.query.redirect);
+      // 記錄當前 redirect，因用手機外開至其它 App 時，再關閉外開網頁時，router 會改變
       const redirect = this.$route?.query?.redirect;
-      console.log("const: ", redirect);
 
       // 取得當下進來頁面時的綁定錢包的長度
       let oldWallet_length = this.userBindWalletList.length;
@@ -762,9 +761,7 @@ export default {
     clearMsgCallback(_redirect = null) {
       const { query } = this.$route;
 
-      let redirect = _redirect || query.redirect;
-
-      console.log(redirect);
+      let redirect = _redirect || query?.redirect;
 
       if (!redirect) {
         this.setPageStatus(1, "walletCardInfo", true);
@@ -795,17 +792,16 @@ export default {
         case "withdraw":
         case "balanceTrans":
           this.$router.push(`/mobile/mcenter/${redirect}`);
-          break;
+          return;
 
         case "liveStream":
         case "home":
           this.$router.push(`/mobile/${redirect}`);
-          break;
+          return;
 
         default:
-          // this.setPageStatus(1, "walletCardInfo", true);
-          this.$router.back();
-          break;
+          this.setPageStatus(1, "walletCardInfo", true);
+          return;
       }
     },
     verifyNumber(e) {
