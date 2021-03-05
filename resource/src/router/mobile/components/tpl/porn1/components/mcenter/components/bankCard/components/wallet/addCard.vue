@@ -475,27 +475,27 @@ export default {
         // 預設為舊錢包長度
         let newWallet_length = oldWallet_length;
 
-        this.actionSetGlobalMessage({
-          msg: "绑定成功",
-          cb: this.clearMsgCallback
-        });
-
-        // Promise.all([this.getUserBindList()]).then(() => {
-        //   this.getWalletList();
-
-        //   // 呼叫 API 新錢包長度
-        //   newWallet_length = this.userBindWalletList.length;
-
-        //   // 如果在外部 App or Web 有綁定成功
-        //   if (newWallet_length > oldWallet_length) {
-        //     console.log("wallet length change");
-
-        //     this.actionSetGlobalMessage({
-        //       msg: "绑定成功",
-        //       cb: this.clearMsgCallback
-        //     });
-        //   }
+        // this.actionSetGlobalMessage({
+        //   msg: "绑定成功",
+        //   cb: this.clearMsgCallback
         // });
+
+        Promise.all([this.getUserBindList()]).then(() => {
+          this.getWalletList();
+
+          // 呼叫 API 新錢包長度
+          newWallet_length = this.userBindWalletList.length;
+
+          // 如果在外部 App or Web 有綁定成功
+          if (newWallet_length > oldWallet_length) {
+            console.log("wallet length change");
+
+            this.actionSetGlobalMessage({
+              msg: "绑定成功",
+              cb: this.clearMsgCallback
+            });
+          }
+        });
       }
     });
   },
