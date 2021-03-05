@@ -15,12 +15,12 @@
 }
 
 .table-header {
-  grid-template-columns: 70px repeat(6, 1fr);
+  // grid-template-columns: 70px repeat(6, 1fr);
 }
 
 .table-body {
   .content {
-    grid-template-columns: 70px repeat(6, 1fr);
+    // grid-template-columns: 70px repeat(6, 1fr);
 
     & .item:first-of-type {
       padding-left: 25px;

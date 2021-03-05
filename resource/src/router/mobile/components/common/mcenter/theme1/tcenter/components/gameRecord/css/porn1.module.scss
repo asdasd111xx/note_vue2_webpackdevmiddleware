@@ -60,6 +60,7 @@ $buttonTextColor: #fff;
   &.start-date,
   &.end-date {
     position: relative;
+    cursor: pointer;
   }
 
   &.start-date {
@@ -124,6 +125,7 @@ $buttonTextColor: #fff;
   padding-top: 40px;
   text-align: center;
   background-color: #f8f8f8;
+
   img {
     display: inline-block;
     width: 60px;

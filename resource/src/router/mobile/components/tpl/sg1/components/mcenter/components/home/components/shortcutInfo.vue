@@ -79,11 +79,18 @@
         </div>
         <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
       </div>
-      <div :class="$style['cell']" @click="goToRebate">
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/bankRebate')
+            : $router.push('/mobile/login')
+        "
+      >
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
         </div>
-        <div>实时返佣</div>
+        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
       </div>
     </div>
   </div>

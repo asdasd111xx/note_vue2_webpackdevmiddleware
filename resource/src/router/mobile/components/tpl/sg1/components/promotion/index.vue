@@ -2,23 +2,13 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
-        <div
-          :class="[$style['promotion-gift'], $style['right']]"
-          @click="onGiftClick"
-        >
-          <span>
-            {{ giftList[0].name }}
-          </span>
+        <div :class="[$style['promotion-gift'], $style['right']]" @click="onGiftClick(giftList[0])">
+          <span>{{ giftList[0].name }}</span>
           <div v-show="hasNewGift" :class="$style['red-dot']" />
         </div>
 
-        <div
-          :class="[$style['promotion-gift'], $style['left']]"
-          @click="onGiftClick(giftList[1])"
-        >
-          <span>
-            {{ giftList[1].name }}
-          </span>
+        <div :class="[$style['promotion-gift'], $style['left']]" @click="onGiftClick(giftList[1])">
+          <span>{{ giftList[1].name }}</span>
         </div>
       </div>
       <div :class="$style['type-wrap']">
@@ -51,9 +41,7 @@
                   $getCdnPath('/static/image/common/promotion/icon_time.png')
                 "
               />
-              <span v-if="info.end_time"
-                >{{ info.start_time }} ~ {{ info.end_time }}</span
-              >
+              <span v-if="info.end_time">{{ info.start_time }} ~ {{ info.end_time }}</span>
               <span v-else>{{ $text("S_NOW_DATE", "即日起") }}</span>
             </div>
           </div>
@@ -115,7 +103,7 @@ export default {
     giftList() {
       return [
         {
-          alias: "",
+          alias: "self_collect_promotion",
           name: "自领优惠"
         },
         {
@@ -155,42 +143,10 @@ export default {
     },
     onGiftClick(target) {
       let url = "";
-      if (target.alias === "verify_promotion") {
-        localStorage.setItem("iframe-third-url-title", target.name);
-        this.$router.push(
-          `/mobile/iframe/promotion?alias=${target.alias}&fullscreen=true`
-        );
-      } else {
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/scUrl`
-        }).then(res => {
-          url = res.data;
-          if (!url) {
-            return;
-          }
-          axios({
-            method: "get",
-            url: "/api/v1/c/link/customize",
-            params: {
-              code: "promotion",
-              client_uri: url
-            }
-          })
-            .then(res => {
-              if (res && res.data && res.data.ret && res.data.ret.uri) {
-                localStorage.setItem("iframe-third-url", res.data.ret.uri);
-                localStorage.setItem("iframe-third-url-title", "自领优惠");
-                this.$router.push(`/mobile/iframe/promotion?fullscreen=true`);
-              }
-            })
-            .catch(error => {
-              if (error && error.data && error.data.msg) {
-                this.actionSetGlobalMessage({ msg: error.data.msg });
-              }
-            });
-        });
-      }
+      localStorage.setItem("iframe-third-url-title", target.name);
+      this.$router.push(
+        `/mobile/iframe/promotion?alias=${target.alias}&fullscreen=true`
+      );
     },
     onClick(target) {
       axios({

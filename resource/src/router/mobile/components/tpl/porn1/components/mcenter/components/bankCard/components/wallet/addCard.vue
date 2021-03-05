@@ -127,19 +127,6 @@
         </div>
       </template>
 
-      <!-- 僅限選擇 CGPay && 一鍵模式 -->
-      <template
-        v-if="
-          ['porn1', 'sg1'].includes(themeTPL) &&
-            selectTarget.walletId === 21 &&
-            selectTarget.oneClickBindingMode
-        "
-      >
-        <p :class="[$style['input-title'], $style['shift-top']]">
-          {{ formData["walletAddress"].title }}
-        </p>
-      </template>
-
       <!-- 億元：確認鈕上方text -->
       <template
         v-if="
@@ -325,6 +312,7 @@ export default {
       },
       // Server 回傳的可用錢包的列表
       walletList: [],
+      // 當選擇某種特定錢包的列表
       filterWalletList: [],
       userBindWalletList: [],
 
@@ -354,7 +342,6 @@ export default {
       isReceive: false,
 
       errorMsg: "",
-      msg: "",
 
       walletTipInfo: []
     };
@@ -429,79 +416,46 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let data = this.noticeData[0];
 
-        if (data.event === "trade_bind_wallet" && data.result === "ok") {
-          // Todo 將所有 msg 替換成 actionSetGlobalMessage
+        // 針對 Qrcode 掃碼，因不會跳轉至其它 App 或 Web，仍停留在目前 App 時才進行推播流程
+        // 故已排除在開啟外部 App or Web 時，如收到推播成功，則不會進行任何動作
+        if (
+          data.event === "trade_bind_wallet" &&
+          data.result === "ok" &&
+          !document.hidden
+        ) {
           this.actionSetGlobalMessage({
             msg: "绑定成功",
-            cb: () => {
-              if (this.$route.query.redirect) {
-                this.$router.back();
-              } else {
-                this.setPageStatus(1, "walletCardInfo", true);
-              }
-            }
+            cb: this.clearMsgCallback
           });
         }
       }
     },
     walletList() {
-      // Yabo
-      if (
-        ["porn1", "sg1"].includes(this.themeTPL) &&
-        this.$route.query.wallet
-      ) {
-        switch (this.$route.query.wallet) {
-          case "CGPay":
-            this.filterWalletList = this.walletList.filter(item => {
-              return item.id === 21;
-            });
-            break;
+      // 在有指定選擇特定錢包的狀況下
+      if (this.$route.query.wallet) {
+        let wallet = this.$route.query.wallet;
+        let mapping = {
+          CGPay: 21,
+          goBao: 37,
+          usdt: 39 // USDT(ERC20)
+        };
 
-          case "goBao":
-            this.filterWalletList = this.walletList.filter(item => {
-              return item.id === 37;
-            });
-            break;
+        this.filterWalletList = this.walletList.filter(item => {
+          return item.id === mapping[wallet];
+        });
 
-          // 目前僅開放 USDT(ERC20)
-          case "usdt":
-            this.filterWalletList = this.walletList.filter(item => {
-              // return item.swift_code === "BBUSDTCN1";
-              return item.id === 39;
-            });
-            break;
-        }
-
-        this.setBank(this.filterWalletList[0]);
-        this.selectTarget.fixed = true;
-      }
-
-      // 億元
-      // 從首頁 or 提現頁進來，且只選擇 CGPay
-      if (["ey1"].includes(this.themeTPL) && this.$route.query.wallet) {
-        switch (this.$route.query.wallet) {
-          case "CGPay":
-            let item = this.walletList.find(item => {
-              return item.id === 21;
-            });
-
-            // 如果使用者未綁定，導到 CGPay 指定頁面
-            if (item) {
-              this.setBank(item);
-              this.selectTarget.fixed = true;
-              return;
-            } else {
-              // 如果已綁定，導到卡片管理-添加電子錢包
-              this.$router.replace({
-                path: "bankcard",
-                query: { type: "wallet" },
-                replace: true
-              });
-              this.setPageStatus(1, "walletCardInfo", true);
-              return;
-            }
-
-            break;
+        // 如果使用者未綁定特定卡片，則導到 特定卡片 指定選項
+        if (this.filterWalletList.length > 0) {
+          this.setBank(this.filterWalletList[0]);
+          this.selectTarget.fixed = true;
+        } else {
+          // 如果已綁定 or 沒有開放該特定卡片的時候，則導到卡片管理-添加電子錢包
+          this.$router.replace({
+            path: "bankcard",
+            query: { type: "wallet" },
+            replace: true
+          });
+          this.setPageStatus(1, "walletCardInfo", true);
         }
       }
     }
@@ -509,6 +463,35 @@ export default {
   created() {
     Promise.all([this.getUserBindList()]).then(() => {
       this.getWalletList();
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      // 取得當下進來頁面時的綁定錢包的長度
+      let oldWallet_length = this.userBindWalletList.length;
+
+      if (!document.hidden) {
+        console.log("Visibilitychange event");
+
+        // 預設為舊錢包長度
+        let newWallet_length = oldWallet_length;
+
+        Promise.all([this.getUserBindList()]).then(() => {
+          this.getWalletList();
+
+          // 呼叫 API 新錢包長度
+          newWallet_length = this.userBindWalletList.length;
+
+          // 如果在外部 App or Web 有綁定成功
+          if (newWallet_length > oldWallet_length) {
+            console.log("wallet length change");
+
+            this.actionSetGlobalMessage({
+              msg: "绑定成功",
+              cb: this.clearMsgCallback
+            });
+          }
+        });
+      }
     });
   },
   methods: {
@@ -795,20 +778,24 @@ export default {
       }
 
       switch (redirect) {
+        // case "deposit":
+        //   this.$router.push(`/mobile/mcenter/deposit`);
+        //   return;
+        // case "wallet":
+        //   this.$router.push(`/mobile/mcenter/wallet`);
+        //   return;
         case "deposit":
-          this.$router.push(`/mobile/mcenter/deposit`);
-          return;
         case "wallet":
-          this.$router.push(`/mobile/mcenter/wallet`);
-          return;
         case "withdraw":
         case "balanceTrans":
           this.$router.push(`/mobile/mcenter/${redirect}`);
           return;
+
         case "liveStream":
         case "home":
           this.$router.push(`/mobile/${redirect}`);
           return;
+
         default:
           this.setPageStatus(1, "walletCardInfo", true);
           return;
@@ -929,6 +916,7 @@ export default {
         // 呼叫 API 前另需視窗
         let newWindow = "";
         newWindow = window.open();
+
         const newWindowHref = uri => {
           try {
             newWindow.location = uri;
@@ -941,6 +929,15 @@ export default {
 
         this.getBindWalletInfo().then(url => {
           newWindowHref(url);
+
+          // // 外開視窗 Close 時的 Callback
+          // newWindow.onbeforeunload = e => {
+          //   console.log("onbeforeunload");
+          // };
+
+          // newWindow.onunload = e => {
+          //   console.log("onunload");
+          // };
           return;
         });
       } else {

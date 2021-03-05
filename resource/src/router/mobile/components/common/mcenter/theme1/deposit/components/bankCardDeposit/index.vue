@@ -1153,7 +1153,7 @@ export default {
       }
     },
     curPayInfo(value) {
-      if(!this.curPayInfo.payment_method_name){
+      if (!this.curPayInfo.payment_method_name) {
         return;
       }
       if (this.curPayInfo.payment_method_name === "代客充值") {
@@ -1458,9 +1458,11 @@ export default {
           this.curPayInfo.payment_type_id === 6
             ? this.$text("S_ENTER_DEPOSIT_NICKNAME", "请输入充值昵称")
             : this.$text("S_ENTER_DEPOSIT_NAME", "请输入充值人姓名"),
-        showCondition: this.curPayInfo.field ? this.curPayInfo.field.find(
-          e => e.name === "pay_username" && e.required
-        ): false,
+        showCondition: this.curPayInfo.field
+          ? this.curPayInfo.field.find(
+              e => e.name === "pay_username" && e.required
+            )
+          : false,
         isError:
           this.showError &&
           this.curPayInfo.field.find(
@@ -1541,54 +1543,43 @@ export default {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
     handleBindWallet() {
-      if (["porn1", "sg1"].includes(this.themeTPL)) {
-        switch (this.curPayInfo.payment_method_id) {
-          // CGPay
-          case 16:
-          // CGPay-USDT
-          case 25:
-            this.$router.push(
-              "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
-            );
-            break;
-
-          // 購寶
-          case 22:
-            this.$router.push(
-              "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao"
-            );
-
-            break;
-
-          // usdt
-          case 402:
-            this.$router.push(
-              "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
-            );
-
-            break;
-        }
+      // 億元 USDT 的部份仍以彈窗顯示
+      if (
+        ["ey1"].includes(this.themeTPL) &&
+        this.curPayInfo.payment_method_id === 402
+      ) {
+        this.bindWalletType = "USDT";
+        this.setPopupStatus(true, "bindWallet");
         return;
       }
 
-      if (["ey1"].includes(this.themeTPL)) {
-        switch (this.curPayInfo.payment_method_id) {
-          case 22:
-            this.qrcodeObj.bank_id = 37;
-            this.setPopupStatus(true, "qrcode");
-            break;
+      switch (this.curPayInfo.payment_method_id) {
+        // CGPay
+        case 16:
+        // CGPay-USDT
+        case 25:
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
+          );
+          break;
 
-          default:
-            if (this.curPayInfo.payment_method_id === 402) {
-              this.bindWalletType = "USDT";
-            } else {
-              this.bindWalletType = "CGPay";
-            }
-            this.setPopupStatus(true, "bindWallet");
-            break;
-        }
-        return;
+        // 購寶
+        case 22:
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao"
+          );
+
+          break;
+
+        // usdt
+        case 402:
+          this.$router.push(
+            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
+          );
+
+          break;
       }
+      return;
     },
     modeChange(listItem, index) {
       if (this.submitStatus === "stepTwo") {

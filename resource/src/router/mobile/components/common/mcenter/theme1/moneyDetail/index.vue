@@ -26,9 +26,11 @@
           <span :class="{ [$style['arrow-top']]: showCondition === 'date' }" />
         </div>
       </div>
+
       <div
         v-if="showCondition === 'category'"
         :class="[$style['record-select']]"
+        :style="{ width: screenWidthSize + 'px' }"
       >
         <div :class="[$style['select-wrap'], 'clearfix']">
           <div
@@ -44,7 +46,12 @@
           </div>
         </div>
       </div>
-      <div v-if="showCondition === 'date'" :class="[$style['record-select']]">
+
+      <div
+        v-if="showCondition === 'date'"
+        :class="[$style['record-select']]"
+        :style="{ width: screenWidthSize + 'px' }"
+      >
         <div :class="[$style['select-wrap'], 'clearfix']">
           <div :class="$style['select-tip']">
             *当前系统支持查询最近30日的交易记录
@@ -108,6 +115,7 @@
         </div>
       </div>
     </template>
+
     <detail-info
       v-if="
         $route.params.page === 'detail' &&

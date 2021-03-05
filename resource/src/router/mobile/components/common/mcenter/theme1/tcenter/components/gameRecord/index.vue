@@ -45,23 +45,21 @@
           :class="[$style['form-search'], 'clearfix']"
         >
           <div :class="$style['field-game-wrap']">
-            <div :class="$style.title">
-              {{ $text("S_PLEASE_SELECT_TYPE") }}
-            </div>
+            <div :class="$style.title">{{ $text("S_PLEASE_SELECT_TYPE") }}</div>
 
             <select :class="$style.select" @change="setParamsData($event)">
-              <option v-for="info in allvendor" :key="`list-${info.value}`">
-                {{ info.alias }}
-              </option>
+              <option v-for="info in allvendor" :key="`list-${info.value}`">{{ info.alias }}</option>
             </select>
           </div>
 
-          <div :class="[$style['field-date-wrap'], $style['start-date']]">
-            <div :class="$style.title">
-              {{ $text("S_STARTED_DAY") }}
-            </div>
+          <div
+            :class="[$style['field-date-wrap'], $style['start-date']]"
+            @click="handleClickInqStartDate"
+          >
+            <div :class="$style.title">{{ $text("S_STARTED_DAY") }}</div>
             <input
               v-model="inqStart"
+              ref="inqStartInput"
               :class="$style.date"
               :min="fromDate"
               :max="inqEnd"
@@ -71,12 +69,14 @@
             />
             <span>{{ inqStart | dateFormat }}</span>
           </div>
-          <div :class="[$style['field-date-wrap'], $style['end-date']]">
-            <div :class="$style.title">
-              {{ $text("S_END_DAY") }}
-            </div>
+          <div
+            :class="[$style['field-date-wrap'], $style['end-date']]"
+            @click="handleClickInqEndDate"
+          >
+            <div :class="$style.title">{{ $text("S_END_DAY") }}</div>
             <input
               v-model="inqEnd"
+              ref="inqEndInput"
               :class="$style.date"
               :min="inqStart"
               :max="endDate"
@@ -101,9 +101,7 @@
                   }
                 }
               "
-            >
-              {{ $text("S_INQUIRE") }}
-            </div>
+            >{{ $text("S_INQUIRE") }}</div>
           </div>
         </div>
 
@@ -117,37 +115,22 @@
             :hasSearch="hasSearch"
             @onInquire="onSearchBet"
           />
-          <infinite-loading
-            v-if="showInfinite"
-            ref="infiniteLoading"
-            @infinite="infiniteHandler"
-          >
+          <infinite-loading v-if="showInfinite" ref="infiniteLoading" @infinite="infiniteHandler">
             <span slot="no-more" />
             <span slot="no-results" />
           </infinite-loading>
         </template>
 
         <template v-if="currentPage === 'bet' && inq2nd.list.length">
-          <table-2nd
-            :list="control2ndData"
-            :total="inq2nd.total"
-            :counts="inq2nd.counts"
-          />
+          <table-2nd :list="control2ndData" :total="inq2nd.total" :counts="inq2nd.counts" />
 
-          <infinite-loading
-            v-if="showInfinite"
-            ref="infiniteLoading"
-            @infinite="infiniteHandler"
-          >
+          <infinite-loading v-if="showInfinite" ref="infiniteLoading" @infinite="infiniteHandler">
             <span slot="no-more" />
             <span slot="no-results" />
           </infinite-loading>
         </template>
 
-        <div
-          v-if="currentPage === 'main' && mainNoData && !hasSearch"
-          :class="$style['no-data']"
-        >
+        <div v-if="currentPage === 'main' && mainNoData && !hasSearch" :class="$style['no-data']">
           <img src="/static/image/_new/mcenter/ic_nodata.png" />
           <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
@@ -217,6 +200,14 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    handleClickInqStartDate() {
+      const el = this.$refs["inqStartInput"];
+      el.click();
+    },
+    handleClickInqEndDate() {
+      const el = this.$refs["inqEndInput"];
+      el.click();
+    },
     limitDate(key, val) {
       let _value = Vue.moment(val).format("YYYY/MM/DD");
       let _today = Vue.moment(EST(new Date()))

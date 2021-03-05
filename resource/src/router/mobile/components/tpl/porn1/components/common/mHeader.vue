@@ -34,6 +34,7 @@
         {{ headerConfig.title }}
       </div>
     </div>
+
     <template v-if="headerConfig.hasSearchBar">
       <div :class="[$style['search-wrap'], $style[source]]">
         <input

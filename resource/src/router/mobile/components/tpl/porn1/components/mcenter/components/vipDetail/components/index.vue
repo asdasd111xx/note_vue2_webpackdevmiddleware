@@ -16,7 +16,7 @@
 
       <!-- 返水比例表格 -->
       <div :class="$style['table-wrap']">
-        <div :class="$style['table-header']">
+        <div :class="$style['table-header']" :style="rowColumn">
           <div
             v-for="(item, index) in detailData.titleList"
             :key="`titleList-${index}`"
@@ -31,6 +31,7 @@
             v-for="(cells, index) in detailData.vipList"
             :key="`list-${index}`"
             :class="$style['content']"
+            :style="rowColumn"
           >
             <div
               v-for="(item, num) in cells"
@@ -105,6 +106,28 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    rowColumn() {
+      let count = this.detailData.titleList.length;
+
+      let rowColumn = {};
+
+      switch (this.themeTPL) {
+        // 絲瓜 Vip 有 Icon
+        case "sg1":
+          rowColumn = {
+            gridTemplateColumns: `70px repeat(${count - 1} ,1fr)`
+          };
+          break;
+
+        default:
+          rowColumn = {
+            gridTemplateColumns: `45px repeat(${count - 1} ,1fr)`
+          };
+          break;
+      }
+
+      return rowColumn;
+    },
     detailData() {
       let data = {
         titleList: [],
@@ -159,7 +182,7 @@ export default {
             {
               number: "❺",
               title: "每月红包",
-              content: `会员在上个月成功充值100元以上，即可在每月5号获得上个月相应等级的每月红包彩金。(${
+              content: `会员在上个月成功充值100元以上，即可在每月5号前获得上个月相应等级的每月红包彩金。(${
                 this.themeTPL === "porn1"
                   ? "每月红包12倍流水即可提现"
                   : this.themeTPL === "sg1"
