@@ -475,22 +475,27 @@ export default {
         // 預設為舊錢包長度
         let newWallet_length = oldWallet_length;
 
-        Promise.all([this.getUserBindList()]).then(() => {
-          this.getWalletList();
-
-          // 呼叫 API 新錢包長度
-          newWallet_length = this.userBindWalletList.length;
-
-          // 如果在外部 App or Web 有綁定成功
-          if (newWallet_length > oldWallet_length) {
-            console.log("wallet length change");
-
-            this.actionSetGlobalMessage({
-              msg: "绑定成功",
-              cb: this.clearMsgCallback
-            });
-          }
+        this.actionSetGlobalMessage({
+          msg: "绑定成功",
+          cb: this.clearMsgCallback
         });
+
+        // Promise.all([this.getUserBindList()]).then(() => {
+        //   this.getWalletList();
+
+        //   // 呼叫 API 新錢包長度
+        //   newWallet_length = this.userBindWalletList.length;
+
+        //   // 如果在外部 App or Web 有綁定成功
+        //   if (newWallet_length > oldWallet_length) {
+        //     console.log("wallet length change");
+
+        //     this.actionSetGlobalMessage({
+        //       msg: "绑定成功",
+        //       cb: this.clearMsgCallback
+        //     });
+        //   }
+        // });
       }
     });
   },
@@ -760,6 +765,8 @@ export default {
 
       let redirect = query.redirect;
 
+      console.log(redirect);
+
       if (!redirect) {
         this.setPageStatus(1, "walletCardInfo", true);
         return;
@@ -929,15 +936,6 @@ export default {
 
         this.getBindWalletInfo().then(url => {
           newWindowHref(url);
-
-          // // 外開視窗 Close 時的 Callback
-          // newWindow.onbeforeunload = e => {
-          //   console.log("onbeforeunload");
-          // };
-
-          // newWindow.onunload = e => {
-          //   console.log("onunload");
-          // };
           return;
         });
       } else {
