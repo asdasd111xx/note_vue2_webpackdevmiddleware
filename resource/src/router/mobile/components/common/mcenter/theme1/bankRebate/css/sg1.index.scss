@@ -56,6 +56,17 @@
         background: linear-gradient(#fed3cb, #ffc5ce);
       }
     }
+
+
+    .rebate-btn {
+      a {
+        background: linear-gradient(to left, #fe593c, #e61938);
+
+        &.disable {
+          background: linear-gradient(to left, #fed3cb, #ffc5ce);
+        }
+      }
+    }
   }
 
   .rebate-nodata {
