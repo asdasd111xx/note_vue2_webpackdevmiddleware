@@ -23,7 +23,7 @@ steps:
       - run
       - build
       - $_CDN_HOST2
-      waitFor:
+    waitFor:
       - A
 
   # - name: gcr.io/cloud-builders/yarn:node-8.12.0
