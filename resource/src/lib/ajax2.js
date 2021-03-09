@@ -35,11 +35,7 @@ export default ({
     .then(response => {
       if (response.data.result === "error") {
         if (response.data.msg && errorAlert) {
-          alert(
-            `${response.data.msg} ${
-              response.data.code ? `(${response.data.code})` : ""
-            }`
-          );
+          alert(`${response.data.msg}`);
         }
         fail(response);
         apiErrorAlarm({ url, response });
