@@ -253,10 +253,10 @@ export default {
               startDate: Vue.moment(this.estToday).format("MM/DD"),
               endDate: Vue.moment(this.estToday).format("MM/DD"),
               startFullDate: Vue.moment(this.estToday).format(
-                "YYYY/MM/DD 00:00:00"
+                "YYYY-MM-DD 00:00:00"
               ),
               endFullDate: Vue.moment(this.estToday).format(
-                "YYYY/MM/DD 23:59:59"
+                "YYYY-MM-DD 23:59:59"
               )
             },
             yesterday: {
@@ -268,10 +268,10 @@ export default {
                 .format("MM/DD"),
               startFullDate: Vue.moment(this.estToday)
                 .add(-1, "days")
-                .format("YYYY/MM/DD 00:00:00"),
+                .format("YYYY-MM-DD 00:00:00"),
               endFullDate: Vue.moment(this.estToday)
                 .add(-1, "days")
-                .format("YYYY/MM/DD 23:59:59")
+                .format("YYYY-MM-DD 23:59:59")
             },
             week: {
               startDate: Vue.moment(this.estToday)
@@ -280,9 +280,9 @@ export default {
               endDate: Vue.moment(this.estToday).format("MM/DD"),
               startFullDate: Vue.moment(this.estToday)
                 .add(-6, "days")
-                .format("YYYY/MM/DD 00:00:00"),
+                .format("YYYY-MM-DD 00:00:00"),
               endFullDate: Vue.moment(this.estToday).format(
-                "YYYY/MM/DD 23:59:59"
+                "YYYY-MM-DD 23:59:59"
               )
             }
           };
