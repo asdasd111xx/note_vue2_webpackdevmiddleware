@@ -43,6 +43,7 @@
     "slick-carousel": "1.6",
     "socket.io-client": "^2.3.0",
     "swiper": "5.3.7",
+    "uuid": "^8.3.2",
     "v-viewer": "1.0.1",
     "validator": "10.11.0",
     "vee-validate": "2.0.6",

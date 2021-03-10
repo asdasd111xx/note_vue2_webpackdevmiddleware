@@ -252,7 +252,7 @@ export default {
     onListClick(item) {
       if (item.pageName === "super") {
         if (!this.loginStatus) {
-          this.$router.push("/mobile/login");
+          this.$router.push("/mobile/joinmember");
           return;
         }
 
@@ -270,7 +270,7 @@ export default {
 
       if (item.pageName === "mypromotion") {
         if (!this.loginStatus) {
-          this.$router.push("/mobile/login");
+          this.$router.push("/mobile/joinmember");
           return;
         }
       }

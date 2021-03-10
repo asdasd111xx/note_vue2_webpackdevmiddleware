@@ -33,6 +33,8 @@ import openGame from "@/lib/open_game";
 import router from "../router";
 import version from "@/config/version.json";
 import yaboRequest from "@/api/yaboRequest";
+import { getCookie, setCookie } from "@/lib/cookie";
+import { v4 as uuidv4 } from "uuid";
 
 let memstatus = true;
 let agentstatus = true;
@@ -703,6 +705,14 @@ export const actionSetUserdata = (
         }
       });
   }
+  //判斷uuid
+  let uuidAccount = "";
+  if (getCookie("uuidAccount")) {
+    uuidAccount = getCookie("uuidAccount");
+  } else {
+    uuidAccount = uuidv4();
+    setCookie("uuidAccount", uuidAccount);
+  }
 
   return member.data({
     timeout: 10000,
@@ -716,6 +726,56 @@ export const actionSetUserdata = (
       commit(types.SETGAMEDATA, temp.vendors);
       if (temp.user.id === 0 && temp.user.username === "unknown") {
         commit(types.ISLOGIN, false);
+
+        //訪客註冊
+        let configInfo = {};
+        if (state.webDomain) {
+          configInfo =
+            siteConfigTest[`site_${state.webDomain.domain}`] ||
+            siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+            siteConfigTest[`site_${state.webInfo.alias}`] ||
+            siteConfigOfficial.preset;
+        }
+        goLangApiRequest({
+          method: "put",
+          url:
+            configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
+          params: {
+            account: uuidAccount
+          }
+        })
+          .then(res => {
+            if (res.status === "000") {
+              let guestCid = res.data.cid;
+              let guestUserid = res.data.userid;
+              setCookie("guestCid", guestCid);
+              setCookie("guestUserid", guestUserid);
+            } else {
+              //訪客登入
+              goLangApiRequest({
+                method: "post",
+                url:
+                  configInfo.YABO_GOLANG_API_DOMAIN +
+                  "/cxbb/Account/guestlogin",
+                params: {
+                  account: uuidAccount
+                }
+              })
+                .then(res => {
+                  if (res.status === "000") {
+                    let guestCid = res.data.cid;
+                    let guestUserid = res.data.userid;
+
+                    setCookie("guestCid", guestCid);
+                    setCookie("guestUserid", guestUserid);
+                  } else {
+                  }
+                })
+                .catch(error => {});
+            }
+          })
+          .catch(error => {});
+
         return;
       }
       commit(types.ISLOGIN, true);
