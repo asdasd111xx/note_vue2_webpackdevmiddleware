@@ -47,6 +47,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Vue from "vue";
+import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
 
 export default {
   data() {
@@ -85,7 +87,7 @@ export default {
   },
   created() {
     // 測試訊息
-    // setInterval(() => {
+    // setTimeout(() => {
     //   this.show();
     //   this.data = {
     //     content: "maintain_notice",
@@ -244,7 +246,7 @@ export default {
       }, 3000);
     },
     getTime(string) {
-      return Vue.moment(string).format("llll");
+      return format(new Date(), "E aaa hh:mm", { locale: zhCN });
     },
     getText(key) {
       const event = this.data.event;
