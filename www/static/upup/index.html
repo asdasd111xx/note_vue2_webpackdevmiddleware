@@ -334,16 +334,11 @@
   document.getElementById('username').innerText = user || '尊敬的用户';
 
   function service(target) {
-
+    let newWindow = '';
+    newWindow = window.open();
     function openService(url) {
       let defaultUrl = 'https://abn.yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
-      url = url || localStorage.getItem('service-url') || defaultUrl;
-
-      window.open(
-        url,
-        '在线客服',
-        `toolbar=yes, width=800, height=800`
-      )
+      newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;
     }
 
     function getComm(domain) {

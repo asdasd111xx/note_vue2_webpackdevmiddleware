@@ -264,16 +264,11 @@
 
 
     function service(target) {
-
+        let newWindow = '';
+        newWindow = window.open();
         function openService(url) {
             let defaultUrl = 'https://ey.italking.asia/guest.php?gid=EY';
-            url = url || localStorage.getItem('service-url') || defaultUrl;
-
-            window.open(
-                url,
-                '在线客服',
-                `toolbar=yes, width=800, height=800`
-            )
+            newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;
         }
 
         function getComm(domain) {
