@@ -80,8 +80,6 @@
         }
     </style>
     <style type="text/css">
-        @charset "UTF-8";
-
         /* RWD 斷點 */
         .container__2GB8l {
             position: relative;
@@ -323,17 +321,37 @@
         document.getElementById('username').innerText = user || '尊敬的用户';
 
         function service(target) {
-            let url = 'https://clt.siguacs.net/chat/text/chat_1s9Boh.html?skill=8ae482827620a5e001766515b8d2545d';
-            url = localStorage.getItem('service-url') || url;
+            let newWindow = '';
+            newWindow = window.open();
+            function openService(url) {
+                let defaultUrl = 'https://abn.siguacs.net/chat/text/chat_1s9Boh.html?skill=8ae482827620a5e001766515b8d2545d';
+                newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;
+            }
 
-            let w =
-                window.open(
-                    url,
-                    '在线客服',
-                    `toolbar=yes, width=800, height=800`
-                );
+            function getComm(domain) {
+                fetch(`/tpl/${domain}/comm.json`).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    if (data && data.on_service_url) {
+                        openService(data.on_service_url)
+                    } else {
+                        openService()
+                    }
+                }).catch(function () {
+                    openService()
+                });
+            }
 
-            w.document.title = "在线客服";
+            fetch('/conf/domain').then(function (response) {
+                console.log(response);
+                return response.json();
+            }).then(function (data) {
+                if (data.domain) {
+                    getComm(data.domain)
+                }
+            }).catch(function (e) {
+                openService()
+            });
         }
     </script>
 
