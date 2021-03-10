@@ -949,7 +949,11 @@ export default {
         };
 
         this.getBindWalletInfo().then(url => {
-          newWindowHref(url);
+          if (url) {
+            newWindowHref(url);
+          } else {
+            newWindow.close();
+          }
           return;
         });
       } else {
