@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import shortcutInfo from './components/shortcutInfo';
-import memList from './components/memList';
-import avatarInfo from './components/avatarInfo'
-import appTip from './components/appTip'
+import { mapGetters, mapActions } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import shortcutInfo from "./components/shortcutInfo";
+import memList from "./components/memList";
+import avatarInfo from "./components/avatarInfo";
+import appTip from "./components/appTip";
 export default {
   components: {
     mobileContainer,
@@ -26,29 +26,28 @@ export default {
   },
   data() {
     return {
-      isShowAppTip: true,
+      isShowAppTip: true
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus'
+      loginStatus: "getLoginStatus"
     }),
     headerConfig() {
       return {
         isMCenter: true,
-        title: this.$text('S_INFORMATION', '我的'),
+        title: this.$text("S_INFORMATION", "我的")
       };
-    },
+    }
   },
-  created() {
-  },
+  created() {},
   methods: {
     goMessage() {
       if (!this.loginStatus) {
-        this.$router.push('/mobile/login');
+        this.$router.push("/mobile/joinmember");
         return;
       }
-      this.$router.push('/mobile/mcenter/information/message');
+      this.$router.push("/mobile/mcenter/information/message");
     }
   }
 };

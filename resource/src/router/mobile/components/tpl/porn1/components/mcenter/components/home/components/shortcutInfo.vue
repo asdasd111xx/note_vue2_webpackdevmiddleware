@@ -6,7 +6,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/accountVIP')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <img
@@ -22,7 +22,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/makeMoney')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <img
@@ -41,7 +41,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/wallet')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <div>
@@ -54,7 +54,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/betRecord')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <div>
@@ -69,7 +69,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/moneyDetail')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <div>
@@ -84,7 +84,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <div>
@@ -158,7 +158,7 @@ export default {
       });
     },
     goLogin() {
-      this.$router.push("/mobile/login");
+      this.$router.push("/mobile/joinmember");
     },
     countDays(ceatedTime) {
       const startTime = moment(ceatedTime);
