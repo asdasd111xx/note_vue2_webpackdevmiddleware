@@ -43,7 +43,7 @@
 
               <div :class="$style['result-item']">
                 <div>
-                  {{ $text("S_COMPUTING_PREMIUM_AMOUNT", "結算返水金额") }}
+                  {{ $text("S_COMPUTING_PREMIUM_AMOUNT", "结算返水金额") }}
                 </div>
                 <span>{{ data.rebate }}</span>
               </div>

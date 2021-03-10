@@ -35,7 +35,7 @@ export default {
         list: []
       },
       firstResult: 0,
-      maxResults: 50,
+      maxResults: 200,
       pageNow: 1,
       pageAll: 1,
       showinfo: [-5]
