@@ -22,14 +22,15 @@
     tr {
       height: 40px;
       line-height: 40px;
+      background-color: #fff;
 
-      &:nth-child(odd) {
-        background-color: #fff;
-      }
+      // &:nth-child(odd) {
+      //   background-color: #fff;
+      // }
 
-      &:nth-child(even) {
-        background-color: #eee;
-      }
+      // &:nth-child(even) {
+      //   background-color: #eee;
+      // }
     }
 
     td {
