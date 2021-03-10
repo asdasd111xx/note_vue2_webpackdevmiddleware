@@ -79,7 +79,8 @@ export default {
       ],
       data: {},
       isShow: false,
-      closeTimer: null
+      closeTimer: null,
+      noticeQueue: []
     };
   },
   created() {
@@ -90,17 +91,33 @@ export default {
     //     content: "maintain_notice",
     //     event: "maintain_notice",
     //     message: {
-    //       countdown: 978,
+    //       countdown: 978
     //     },
     //     id: new Date()
-    //   }
-    // }, 2500)
+    //   };
+    // }, 1500);
   },
   watch: {
+    noticeQueue() {
+      if (this.noticeQueue && this.noticeQueue.length > 0 && !this.isShow) {
+        const target = this.noticeQueue[0];
+        this.data = target;
+        switch (target.showType) {
+          case "showToast":
+            this.showToast(`${target.showContent}`);
+            break;
+
+          case "show":
+          default:
+            this.show();
+            break;
+        }
+      }
+    },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
-        // this.data = this.noticeData.pop();
         let temp = this.noticeData[this.noticeData.length - 1];
+
         if (temp.extend && temp.extend === "verification_code") {
           return;
         }
@@ -108,24 +125,36 @@ export default {
         const event = temp.event;
         switch (event) {
           case "notice":
-            this.data = temp;
-            if (this.lang[this.data.content]) {
-              switch (this.data.content) {
+            if (this.lang[temp.content]) {
+              switch (temp.content) {
                 case "C_WS_RECYCLE_FAIL":
-                  this.showToast(
-                    `${this.data.vendorName["zh-cn"]}${
-                      this.lang[this.data.content]
+                  this.noticeQueue.push({
+                    ...temp,
+                    showType: "showToast",
+                    showContent: `${temp.vendorName["zh-cn"]}${
+                      this.lang[temp.content]
                     }`
-                  );
+                  });
                   return;
                 case "C_WS_RECYCLE_ALL_FAIL":
-                  this.showToast(this.lang[this.data.content]);
+                  this.noticeQueue.push({
+                    ...temp,
+                    showType: "showToast",
+                    showContent: `${this.lang[temp.content]}`
+                  });
                   return;
                 case "C_WS_RECYCLE_OK":
-                  this.showToast(this.lang[this.data.content]);
+                  this.noticeQueue.push({
+                    ...temp,
+                    showType: "showToast",
+                    showContent: `${this.lang[temp.content]}`
+                  });
                   return;
                 default:
-                  this.show();
+                  this.noticeQueue.push({
+                    ...temp,
+                    showType: "show"
+                  });
                   return;
               }
             } else {
@@ -138,8 +167,10 @@ export default {
           case "maintain_notice":
           case "verification_code":
           case "service_maintain_notice":
-            this.data = temp;
-            this.show();
+            this.noticeQueue.push({
+              ...temp,
+              showType: "show"
+            });
             return;
 
           default:
@@ -206,9 +237,10 @@ export default {
         this.isShow = false;
         setTimeout(() => {
           this.$emit("close");
+          this.noticeQueue.pop();
           clearTimeout(this.closeTimer);
           this.closeTimer = null;
-        }, 800);
+        }, 100);
       }, 3000);
     },
     getTime(string) {
@@ -244,21 +276,11 @@ export default {
     },
     showToast(message) {
       this.actionSetGlobalMessage({
-        msg: message
+        msg: message,
+        cb: () => {
+          this.noticeQueue.pop();
+        }
       });
-    },
-    deleMsg(id) {
-      clearTimeout(this.closeTimer);
-      this.closeTimer = null;
-      this.isShow = false;
-      setTimeout(() => {
-        this.$emit("close");
-      }, 300);
-
-      //   const resultMsg = cloneDeep(this.noticeData);
-      //   const index = resultMsg.findIndex((data) => data.id === id);
-      //   resultMsg.splice(index, 1);
-      //   this.actionNoticeData(resultMsg);
     }
   }
 };
