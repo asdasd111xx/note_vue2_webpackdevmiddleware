@@ -334,21 +334,42 @@
   document.getElementById('username').innerText = user || '尊敬的用户';
 
   function service(target) {
-    let url = 'https://clt.yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
-    url = localStorage.getItem('service-url') || url;
-    // if (url && target === 2) {
-    //   url = url.replace('gid=default', 'gid=yb04')
-    //     .replace('gid=yb01', 'gid=yb04');
-    // }
 
-    let w =
+    function openService(url) {
+      let defaultUrl = 'https://abn.yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
+      url = url || localStorage.getItem('service-url') || defaultUrl;
+
       window.open(
         url,
         '在线客服',
         `toolbar=yes, width=800, height=800`
-      );
+      )
+    }
 
-    w.document.title = "在线客服";
+    function getComm(domain) {
+      fetch(`/tpl/${domain}/comm.json`).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        if (data && data.on_service_url) {
+          openService(data.on_service_url)
+        } else {
+          openService()
+        }
+      }).catch(function () {
+        openService()
+      });
+    }
+
+    fetch('/conf/domain').then(function (response) {
+      console.log(response);
+      return response.json();
+    }).then(function (data) {
+      if (data.domain) {
+        getComm(data.domain)
+      }
+    }).catch(function (e) {
+      openService()
+    });
   }
 </script>
 
