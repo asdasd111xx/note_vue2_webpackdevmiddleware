@@ -127,7 +127,10 @@ export default {
       this.$router.push("/mobile/service");
     },
     oncopy() {
-      this.$copyText(this.detailInfo.ref_id);
+      let numberId = this.detailInfo.ref_id
+        ? this.detailInfo.ref_id
+        : this.detailInfo.trans_id;
+      this.$copyText(numberId);
       this.msg = "已复制到剪贴板";
     }
   },
