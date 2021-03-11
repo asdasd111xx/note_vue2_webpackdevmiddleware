@@ -40,7 +40,7 @@
               <div class="halfcircle" id="fixed"></div>
             </div>
           </div>
-          <span>{{ isUnloginMode ? "" : curMin }}</span>
+          <span>{{ curMin }}</span>
         </template>
 
         <!-- 一般顯示 -->
@@ -48,9 +48,7 @@
           <span v-if="processType === 'earn'" :class="$style['earn']">
             {{ `+${earnCoin} ` }}元</span
           >
-          <span v-else-if="processType === 'process'">{{
-            isUnloginMode ? "" : curMin
-          }}</span>
+          <span v-else-if="processType === 'process'">{{ curMin }}</span>
         </template>
       </div>
     </div>
@@ -108,27 +106,31 @@ export default {
       window.YABO_SOCKET_RECONECT_STATUS = undefined;
     },
     isUnloginMode(val) {
+      console.log(`isUnloginMode is ${val}`);
       if (val) {
         this.processType = "process";
-        this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
-        this.earnCoin = "999";
-      }
-    },
-    processType(val) {
-      if (this.isUnloginMode) {
-        this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
-      } else {
+        // this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
         this.curCoinSrc = this.coinType.find(
           i => i.key == this.processType
         ).src;
+        // this.earnCoin = "999";
       }
+    },
+    processType(val) {
+      console.log(`processType is ${val}`);
+      // if (this.isUnloginMode) {
+      //   this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+      // } else {
+      this.curCoinSrc = this.coinType.find(i => i.key == this.processType).src;
+      // }
     }
   },
   mounted() {
-    if (this.isUnloginMode) {
-      this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
-      this.earnCoin = "999";
-    }
+    console.log(123);
+    // if (this.isUnloginMode) {
+    //   this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
+    //   this.earnCoin = "999";
+    // }
   },
   methods: {
     //   賺得彩金後變換樣式3秒後還原

@@ -154,6 +154,7 @@ export default {
       //活動開關
       if (this.isActiveBouns) {
         this.player.on("playing", () => {
+          // console.log("pause?");
           if (this.player.seeking() || !this.isInit) return;
           this.isPlaying = true;
           if (window.YABO_SOCKET && !this.keepPlay) {
@@ -231,11 +232,12 @@ export default {
     handleClickVideo() {
       if (!this.isActiveBouns) return;
       // 餘額夠可播放
-      if (!this.loginStatus && !this.isUnloginMode) {
-        this.dialogType = "tips";
-        this.$refs.bonunsDialog.isShow = true;
-        this.playerPause();
-      } else if (this.$refs.bonunsDialog.isShow) {
+      // if (!this.loginStatus && !this.isUnloginMode) {
+      //   this.dialogType = "tips";
+      //   this.$refs.bonunsDialog.isShow = true;
+      //   this.playerPause();
+      // } else
+      if (this.$refs.bonunsDialog.isShow) {
         this.playerPause();
         return;
       }
@@ -252,14 +254,14 @@ export default {
     },
     // 連接websocket message
     connectMessage(fromReconnect) {
-      if (!this.loginStatus) {
-        if (!this.isUnloginMode) {
-          const bonunsProcess = this.$refs.bonunsProcess;
-          const bonunsDialog = this.$refs.bonunsDialog;
-          bonunsProcess.processType = "process";
-        }
-        return;
-      }
+      // if (!this.loginStatus) {
+      //   if (!this.isUnloginMode) {
+      //     const bonunsProcess = this.$refs.bonunsProcess;
+      //     const bonunsDialog = this.$refs.bonunsDialog;
+      //     bonunsProcess.processType = "process";
+      //   }
+      //   return;
+      // }
 
       if (window.YABO_SOCKET && window.YABO_SOCKET.readyState === 1) {
         if (this.isDebug) {
@@ -542,15 +544,17 @@ export default {
         let noLoginVideoSwitch = this.yaboConfig.find(
           i => i.name === "NoLoginVideoSwitch"
         ).value;
-        this.isUnloginMode = !this.loginStatus && noLoginVideoSwitch == "true";
-        this.$refs.bonunsProcess.processType = "process";
+        // this.isUnloginMode = !this.loginStatus && noLoginVideoSwitch == "true";
 
-        this.$nextTick(() => {
-          if (!this.loginStatus && !this.isUnloginMode) {
-            this.$refs.bonunsDialog.isShow = true;
-            this.dialogType = "tips";
-          }
-        });
+        this.isUnloginMode = false;
+        this.$refs.bonunsProcess.processType = "process";
+        console.log("123     " + this.isUnloginMode);
+        // this.$nextTick(() => {
+        //   if (!this.loginStatus && !this.isUnloginMode) {
+        //     this.$refs.bonunsDialog.isShow = true;
+        //     this.dialogType = "tips";
+        //   }
+        // });
       }
 
       setTimeout(() => {

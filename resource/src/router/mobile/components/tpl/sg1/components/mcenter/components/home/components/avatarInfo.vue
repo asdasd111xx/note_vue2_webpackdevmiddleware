@@ -4,7 +4,7 @@
     @click="
       loginStatus
         ? $router.push('/mobile/mcenter/accountData')
-        : $router.push('/mobile/login')
+        : $router.push('/mobile/joinmember')
     "
   >
     <!-- 大頭照 -->
@@ -26,7 +26,7 @@
           <span :class="$style['vip-level']"> VIP{{ viplevel }} </span>
         </template>
         <template v-else>
-          <span @click.stop="$router.push('/mobile/login')">
+          <span @click.stop="$router.push('/mobile/joinmember')">
             点击{{ $text("S_LOG_IN_REGISTER", "登录/注册") }}
           </span>
         </template>
