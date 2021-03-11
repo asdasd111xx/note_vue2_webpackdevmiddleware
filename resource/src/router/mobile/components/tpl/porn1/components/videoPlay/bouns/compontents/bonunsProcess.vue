@@ -106,7 +106,6 @@ export default {
       window.YABO_SOCKET_RECONECT_STATUS = undefined;
     },
     isUnloginMode(val) {
-      console.log(`isUnloginMode is ${val}`);
       if (val) {
         this.processType = "process";
         // this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
@@ -117,7 +116,6 @@ export default {
       }
     },
     processType(val) {
-      console.log(`processType is ${val}`);
       // if (this.isUnloginMode) {
       //   this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
       // } else {
@@ -126,7 +124,6 @@ export default {
     }
   },
   mounted() {
-    console.log(123);
     // if (this.isUnloginMode) {
     //   this.curCoinSrc = this.coinType.find(i => i.key == "earn").src;
     //   this.earnCoin = "999";

@@ -154,7 +154,6 @@ export default {
       //活動開關
       if (this.isActiveBouns) {
         this.player.on("playing", () => {
-          // console.log("pause?");
           if (this.player.seeking() || !this.isInit) return;
           this.isPlaying = true;
           if (window.YABO_SOCKET && !this.keepPlay) {
