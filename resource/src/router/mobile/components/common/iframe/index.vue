@@ -471,7 +471,17 @@ export default {
 
         switch (data.event) {
           case "EVENT_THIRDPARTY_SWITCH_GAME":
-            this.linkToGame(data.data);
+            if (this.loginStatus) {
+              this.linkToGame(data.data);
+            } else {
+              this.actionSetGlobalMessage({
+                msg: "请重新登入",
+                cb: () => {
+                  this.$router.push("/mobile/login");
+                }
+              });
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_CLOSE":
