@@ -33,10 +33,10 @@
           v-else-if="missionDesc && type.includes('wait')"
           v-html="getDesc(missionDesc)"
         ></div>
-        <template v-else-if="isUnloginMode">
+        <!-- <template v-else-if="isUnloginMode">
           加入娱乐会员<br />
           享有观影送钱
-        </template>
+        </template> -->
         <template v-else>
           <span style="margin-top: 10%;display: block;">
             {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
@@ -54,13 +54,13 @@
       >
         <div :class="$style['bouns-func']">
           <!-- 左邊第一個按鈕 -->
-          <div v-if="isUnloginMode" @click="handleClose">
+          <!-- <div v-if="isUnloginMode" @click="handleClose">
             继续观影
-          </div>
+          </div> -->
           <div
-            v-else-if="
+            v-if="
               (missionDesc && type.includes('wait')) ||
-                (earnCellNum === hadEarnNum && loginStatus)
+                earnCellNum === hadEarnNum
             "
             @click="handleClose"
           >
@@ -72,15 +72,15 @@
           </div>
 
           <!-- 右邊第一個按鈕 -->
-          <div
+          <!-- <div
             v-if="isUnloginMode && !loginStatus"
             @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
-          </div>
+          </div> -->
           <div
-            v-else-if="type.includes('poor')"
+            v-if="type.includes('poor')"
             @click="$router.push('/mobile/mcenter/deposit')"
             :class="$style['active-btn']"
           >
@@ -100,13 +100,13 @@
           >
             去推广
           </div>
-          <div
+          <!-- <div
             v-else-if="!loginStatus"
             @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
-          </div>
+          </div> -->
           <div v-else @click="handleAcionType" :class="$style['active-btn']">
             {{ getActionName(missionActionType) }}
           </div>
@@ -266,6 +266,7 @@ export default {
         case 4:
           return "去推广";
         case 5:
+        case 7:
           return "去查看";
         case 6:
           return "去推广";
@@ -294,6 +295,8 @@ export default {
         case 6:
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
+        case 7:
+          this.$router.push(`/mobile/joinmember`);
         default:
           return;
       }

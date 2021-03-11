@@ -213,7 +213,7 @@ export default {
     ...mapGetters({
       membalance: "getMemBalance",
       loginStatus: "getLoginStatus",
-      siteconfig: "getSiteConfig"
+      siteConfig: "getSiteConfig"
     }),
     mainClass() {
       const style = this.$style;

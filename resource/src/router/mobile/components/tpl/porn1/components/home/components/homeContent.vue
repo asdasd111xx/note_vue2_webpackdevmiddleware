@@ -134,7 +134,9 @@
                 :class="[
                   {
                     [$style['maintain-mask-1']]:
-                      game.imageType === 1 || game.vendor === 'SWAG'
+                      game.imageType === 1 ||
+                      game.imageType === 2 ||
+                      game.vendor === 'SWAG'
                   },
                   { [$style['maintain-mask-2']]: game.imageType === 0 },
                   { [$style['swag']]: game.vendor === 'SWAG' }
