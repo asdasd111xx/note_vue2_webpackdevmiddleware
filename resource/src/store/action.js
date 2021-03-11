@@ -927,13 +927,55 @@ export const actionSetAppQrcode = ({ commit }) =>
     }
   });
 
-// 會員端-設定跑馬燈
+// 會員端-設定跑馬燈 (首頁)
 export const actionSetNews = ({ commit }) =>
   member.news({
     success: response => {
       commit(types.SETNEWS, response.ret);
     }
   });
+
+// 會員端-設定跑馬燈 (充值/提現)
+export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return goLangApiRequest({
+    method: "get",
+    url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Announcement/List",
+    params: {
+      configType: type,
+      active: 1
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
+
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg
+        });
+        return;
+      }
+
+      commit(types.SET_ANNOUNCEMENTLIST, data);
+      return;
+    })
+    .catch(error => {
+      const { msg, code } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg,
+        code
+      });
+    });
+};
 // 會員端-設定公告
 export const actionSetPost = ({ commit }, postType = 1) =>
   member.post({

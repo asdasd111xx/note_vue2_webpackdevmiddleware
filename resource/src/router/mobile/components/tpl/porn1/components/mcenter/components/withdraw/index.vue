@@ -1,6 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
+      <marquee :list="marqueeList" :titleList="marqueeTitle" />
       <!-- 一件回收 -->
       <balance-back :has-link="true" />
       <withdraw ref="withdraw" />
@@ -10,10 +11,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import ajax from "@/lib/ajax";
 import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import mobileContainer from "../../../common/mobileContainer";
 import withdraw from "@/router/mobile/components/tpl/porn1/components/mcenter/components/withdraw/components/index";
+import marquee from "@/router/mobile/components/common/marquee/marquee";
 
 export default {
   data() {
@@ -26,11 +27,13 @@ export default {
       ),
     mobileContainer,
     withdraw,
-    balanceBack
+    balanceBack,
+    marquee
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      announcementList: "getAnnouncementList"
     }),
     headerConfig() {
       return {
@@ -47,9 +50,25 @@ export default {
           }
         }
       };
+    },
+    marqueeList() {
+      return this.announcementList;
+    },
+    marqueeTitle() {
+      let arr = this.marqueeList.map(item => {
+        return {
+          title: item.title,
+          switch: item.announceSwitch
+        };
+      });
+      return arr;
     }
   },
+  created() {
+    this.actionSetAnnouncementList({ type: 2 });
+  },
   methods: {
+    ...mapActions(["actionSetAnnouncementList"]),
     // 暫存目前選擇的銀行卡及金額
     saveCurrentValue(fromRule) {
       localStorage.setItem(
