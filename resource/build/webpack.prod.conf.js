@@ -1,35 +1,35 @@
-let path = require('path');
-let utils = require('./utils');
-let webpack = require('webpack');
-let config = require('../config');
-let merge = require('webpack-merge');
-let baseWebpackConfig = require('./webpack.base.conf');
-let HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserJSPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+let path = require("path");
+let utils = require("./utils");
+let webpack = require("webpack");
+let config = require("../config");
+let merge = require("webpack-merge");
+let baseWebpackConfig = require("./webpack.base.conf");
+let HtmlWebpackPlugin = require("html-webpack-plugin");
+const TerserJSPlugin = require("terser-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
 
 let env =
-  process.env.NODE_ENV === 'testing'
-    ? require('../config/test.env')
+  process.env.NODE_ENV === "testing"
+    ? require("../config/test.env")
     : config.build.env;
 
 console.log(
-  '[debug]webpack.prod ==> process.env.CDN_HOST:',
+  "[debug]webpack.prod ==> process.env.CDN_HOST:",
   process.env.CDN_HOST
 );
 let webpackConfig = merge(baseWebpackConfig, {
-  mode: 'production',
+  mode: "production",
   // 出錯後強制退出編譯，避免部署流程發布錯誤的程式
   bail: true,
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: config.build.productionSourceMap ? "#source-map" : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('[name].[chunkhash].js'),
+    filename: utils.assetsPath("[name].[chunkhash].js"),
     chunkFilename: config.build.bundleAnalyzerReport
-      ? utils.assetsPath('[id].[name].[chunkhash].js')
-      : utils.assetsPath('[id].[chunkhash].js')
+      ? utils.assetsPath("[id].[name].[chunkhash].js")
+      : utils.assetsPath("[id].[chunkhash].js")
   },
   plugins: [
     // new webpack.ProvidePlugin({
@@ -40,20 +40,19 @@ let webpackConfig = merge(baseWebpackConfig, {
     // }),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      "process.env": env
     }),
     // extract css into its own file
     new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css')
+      filename: utils.assetsPath("css/[name].[contenthash].css")
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename:
-        process.env.NODE_ENV === 'testing' ? 'index.html' : config.build.index,
-      template: 'index.html',
-      scriptLoading: 'defer',
+        process.env.NODE_ENV === "testing" ? "index.html" : config.build.index,
+      template: "index.html",
       inject: true,
       minify: {
         removeComments: true,
@@ -63,17 +62,17 @@ let webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      chunksSortMode: "dependency"
     }),
     new HtmlWebpackTagsPlugin({
       tags: [
-        `/public/js/jquery-3.3.1.min.js`,
-        `/public/js/semantic-2.2.12.min.js`,
-        `/public/js/jquery.cloud9carousel.js`,
+        `${process.env.CDN_HOST}/public/js/jquery-3.3.1.min.js`,
+        `${process.env.CDN_HOST}/public/js/semantic-2.2.12.min.js`,
+        `${process.env.CDN_HOST}/public/js/jquery.cloud9carousel.js`,
         {
-          path: '//g.alicdn.com/sd/ncpc/nc.js?t=',
-          type: 'js',
-          attributes: { charset: 'utf-8' }
+          path: "//g.alicdn.com/sd/ncpc/nc.js?t=",
+          type: "js",
+          attributes: { charset: "utf-8" }
         }
       ],
       publicPath: false,
@@ -91,14 +90,14 @@ let webpackConfig = merge(baseWebpackConfig, {
 });
 
 if (config.build.productionGzip) {
-  let CompressionWebpackPlugin = require('compression-webpack-plugin');
+  let CompressionWebpackPlugin = require("compression-webpack-plugin");
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
       test: new RegExp(
-        `\\.(${config.build.productionGzipExtensions.join('|')})$`
+        `\\.(${config.build.productionGzipExtensions.join("|")})$`
       ),
       threshold: 10240,
       minRatio: 0.8
@@ -107,11 +106,11 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.bundleAnalyzerReport) {
-  let BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  let BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
     .BundleAnalyzerPlugin;
   const param = {};
   if (process.env.ANALYZER_MODE_STATIC) {
-    param.analyzerMode = 'static';
+    param.analyzerMode = "static";
   }
   webpackConfig.plugins.push(new BundleAnalyzerPlugin(param));
 }
