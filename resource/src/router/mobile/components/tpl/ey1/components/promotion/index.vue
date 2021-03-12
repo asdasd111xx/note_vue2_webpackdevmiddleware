@@ -2,11 +2,17 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
-        <div :class="[$style['promotion-gift'], $style['right']]" @click="onGiftClick(giftList[0])">
+        <div
+          :class="[$style['promotion-gift'], $style['right']]"
+          @click="onGiftClick(giftList[0])"
+        >
           <img src="/static/image/ey1/promotion/ic-gift.png" />
           <div v-show="hasNewGift" :class="$style['red-dot']" />
         </div>
-        <div :class="[$style['promotion-gift'], $style['left']]" @click="onGiftClick(giftList[1])">
+        <div
+          :class="[$style['promotion-gift'], $style['left']]"
+          @click="onGiftClick(giftList[1])"
+        >
           <img src="/static/image/ey1/promotion/ic_review.png" />
         </div>
       </div>
@@ -40,7 +46,9 @@
                   $getCdnPath('/static/image/common/promotion/icon_time.png')
                 "
               />
-              <span v-if="info.end_time">{{ info.start_time }} ~ {{ info.end_time }}</span>
+              <span v-if="info.end_time"
+                >{{ info.start_time }} ~ {{ info.end_time }}</span
+              >
               <span v-else>{{ $text("S_NOW_DATE", "即日起") }}</span>
             </div>
           </div>
@@ -103,7 +111,7 @@ export default {
       return [
         {
           alias: "self_collect_promotion",
-          name: "自领优惠"
+          name: "领取优惠"
         },
         {
           alias: "verify_promotion",
