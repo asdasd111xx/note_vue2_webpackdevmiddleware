@@ -125,7 +125,14 @@ export default {
                 if (!this.loginStatus) {
                   this.actionSetGlobalMessage({
                     code: "M00001",
-                    origin: "home"
+                    // origin: "home"
+                    cb: () => {
+                      if (this.themeTPL === "ey1") {
+                        this.$router.push("/mobile/login");
+                      } else {
+                        this.$router.push("/mobile/joinmember");
+                      }
+                    }
                   });
                   return;
                 } else {
@@ -477,7 +484,11 @@ export default {
               this.actionSetGlobalMessage({
                 msg: "请重新登入",
                 cb: () => {
-                  this.$router.push("/mobile/login");
+                  if (this.themeTPL === "ey1") {
+                    this.$router.push("/mobile/login");
+                  } else {
+                    this.$router.push("/mobile/joinmember");
+                  }
                 }
               });
             }

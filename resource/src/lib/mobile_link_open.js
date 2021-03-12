@@ -162,7 +162,7 @@ export default target => {
         newWindow = window.open(store.state.qrcodeInfo.url);
         return;
       }
-      router.push("/mobile/login");
+      router.push("/mobile/joinmember");
       return;
     }
 
@@ -226,7 +226,7 @@ export default target => {
 
     if (linkTo === "cgPay") {
       if (!store.state.loginStatus) {
-        router.push("/mobile/login");
+        router.push("/mobile/joinmember");
         return;
       }
 
@@ -257,7 +257,7 @@ export default target => {
     const { vendor, kind } = store.state.gameData[linkTo];
     const code = linkItem;
     if (!store.state.loginStatus) {
-      router.push("/mobile/login");
+      router.push("/mobile/joinmember");
       return;
     }
 

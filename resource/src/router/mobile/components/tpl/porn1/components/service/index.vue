@@ -12,7 +12,7 @@
             $router.push(
               loginStatus
                 ? '/mobile/mcenter/feedback/sendFeedback'
-                : '/mobile/login'
+                : '/mobile/joinmember'
             )
           "
         >
