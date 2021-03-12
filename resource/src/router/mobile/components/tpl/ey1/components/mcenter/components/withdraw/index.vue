@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <!-- 額度轉讓連結 false -->
-      <balance-back :has-link="false" :back-router="backRouter" />
+      <!-- <balance-back :has-link="false" :back-router="backRouter" /> -->
       <withdraw ref="withdraw" />
     </div>
   </mobile-container>
@@ -11,14 +11,14 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
-import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
+// import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import mobileContainer from "../../../common/mobileContainer";
 import withdraw from "@/router/mobile/components/tpl/porn1/components/mcenter/components/withdraw/components/index";
 
 export default {
   data() {
     return {
-      backRouter: "mcenter/withdraw"
+      // backRouter: "mcenter/withdraw"
     };
   },
   components: {
@@ -27,8 +27,8 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     mobileContainer,
-    withdraw,
-    balanceBack
+    withdraw
+    // balanceBack
   },
   computed: {
     ...mapGetters({

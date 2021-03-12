@@ -1,5 +1,23 @@
 <template>
   <div :class="$style['withdraw-wrap']">
+    <!-- 跑馬燈 -->
+    <marquee :list="marqueeList" :titleList="marqueeTitle" />
+
+    <!-- 一件回收 -->
+    <!-- 鴨博 -->
+    <balance-back
+      v-if="['porn1', 'sg1'].includes(themeTPL)"
+      :has-link="true"
+      :hasTopSpace="false"
+    />
+    <!-- 億元 -->
+    <balance-back
+      v-if="['ey1'].includes(themeTPL)"
+      :has-link="false"
+      :hasTopSpace="false"
+      :back-router="'mcenter/withdraw'"
+    />
+
     <balance-tran :class="[$style['balance-tran-container'], 'clearfix']">
       <!-- 個別餘額 -->
       <template scope="{ balanceTran }">
@@ -587,6 +605,8 @@ import withdrawCurrency from "@/router/mobile/components/common/pickerView/picke
 import widthdrawTips from "./widthdrawTips";
 import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
 import withdrawMoreMethod from "./withdrawMoreMethod";
+import marquee from "@/router/mobile/components/common/marquee/marquee";
+import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 
 import {
   API_TRADE_RELAY,
@@ -609,7 +629,9 @@ export default {
     blockListTips,
     withdrawCurrency,
     withdrawMoreMethod,
-    withdrawAccount
+    withdrawAccount,
+    marquee,
+    balanceBack
   },
   mixins: [mixin],
   data() {
@@ -784,6 +806,7 @@ export default {
           this.getUserStat();
           this.getNowOpenWallet();
           this.getBounsAccount();
+          this.actionSetAnnouncementList({ type: 2 });
         });
 
         this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
@@ -827,7 +850,8 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       webInfo: "getWebInfo",
-      hasBindingBankCard: "getHasBank"
+      hasBindingBankCard: "getHasBank",
+      announcementList: "getAnnouncementList"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -1047,11 +1071,23 @@ export default {
           this.selectedCard.bank_id == 2016) &&
         this.selectedCard.offer_percent > 0
       );
+    },
+    marqueeList() {
+      return this.announcementList;
+    },
+    marqueeTitle() {
+      let arr = this.marqueeList.map(item => {
+        return {
+          title: item.title,
+          switch: item.announceSwitch
+        };
+      });
+      return arr;
     }
   },
 
   methods: {
-    ...mapActions(["actionGetServiceMaintain"]),
+    ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList"]),
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },

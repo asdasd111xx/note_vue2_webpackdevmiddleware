@@ -1,9 +1,8 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
-      <marquee :list="marqueeList" :titleList="marqueeTitle" />
       <!-- 一件回收 -->
-      <balance-back :has-link="true" :hasTopSpace="false" />
+      <!-- <balance-back :has-link="true" :hasTopSpace="false" /> -->
       <withdraw ref="withdraw" />
     </div>
   </mobile-container>
@@ -11,10 +10,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
+// import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import mobileContainer from "../../../common/mobileContainer";
 import withdraw from "@/router/mobile/components/tpl/porn1/components/mcenter/components/withdraw/components/index";
-import marquee from "@/router/mobile/components/common/marquee/marquee";
 
 export default {
   data() {
@@ -26,14 +24,12 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     mobileContainer,
-    withdraw,
-    balanceBack,
-    marquee
+    withdraw
+    // balanceBack
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
-      announcementList: "getAnnouncementList"
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -50,25 +46,9 @@ export default {
           }
         }
       };
-    },
-    marqueeList() {
-      return this.announcementList;
-    },
-    marqueeTitle() {
-      let arr = this.marqueeList.map(item => {
-        return {
-          title: item.title,
-          switch: item.announceSwitch
-        };
-      });
-      return arr;
     }
   },
-  created() {
-    this.actionSetAnnouncementList({ type: 2 });
-  },
   methods: {
-    ...mapActions(["actionSetAnnouncementList"]),
     // 暫存目前選擇的銀行卡及金額
     saveCurrentValue(fromRule) {
       localStorage.setItem(
