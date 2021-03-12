@@ -1763,7 +1763,7 @@ export const actionVerificationFormData = (
       break;
 
     case "money":
-      val = val.replace(/[^0-9.]/g, "").substring(0, 13);
+      val = val.replace(/[^0-9]/g, "").substring(0, 13);
       break;
 
     case "withdrawPwd":
