@@ -258,17 +258,17 @@ export default {
     ]),
 
     handleClick(field) {
-      if (field.key === "phone") {
+      if (field.key === "phone" || field.key === "email") {
         //   手機未驗證能設定
-        if (!field.verification) {
+        if (!field.verification || field.btnShow) {
           this.$router.push({
-            path: `/mobile/mcenter/accountData/phone`
+            path: `/mobile/mcenter/accountData/${field.key}`
           });
         }
         // 只能設定一次
-        if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
-          return;
-        }
+        // if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
+        //   return;
+        // }
       }
 
       if (field.key === "birthday") {
@@ -284,7 +284,6 @@ export default {
           "alias",
           "name",
           "phone",
-          "email",
           "qq",
           "weixin",
           "line",

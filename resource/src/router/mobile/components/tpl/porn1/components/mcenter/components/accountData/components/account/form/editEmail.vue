@@ -125,7 +125,9 @@ export default {
         value: "",
         verification: false,
         isShow: true
-      }
+      },
+      edit: false,
+      verifiSucc: false
     };
   },
   created() {
@@ -138,6 +140,8 @@ export default {
       if (response && response.result === "ok") {
         this.info.verification = response.ret.config[this.info.key].code;
         this.info.isShow = response.ret.config[this.info.key].display;
+        this.edit = response.ret.config.email.editable;
+        this.verifiSucc = response.ret.user.email; //是否已驗證
       }
     });
   },
@@ -158,7 +162,10 @@ export default {
     oldEmail() {
       return {
         label: this.$text("S_ORIGINAL_EMAIL"),
-        isShow: this.fieldValue && this.info.status === "already"
+        // 目前億元/鴨博皆接開關判斷可不可修改信箱
+        isShow:
+          (this.fieldValue && this.info.status === "already") ||
+          (this.verifiSucc ? this.edit : this.verifiSucc)
       };
     },
     newEmail() {
