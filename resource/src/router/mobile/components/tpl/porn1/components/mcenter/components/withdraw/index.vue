@@ -3,7 +3,7 @@
     <div slot="content" :class="$style['content-wrap']">
       <marquee :list="marqueeList" :titleList="marqueeTitle" />
       <!-- 一件回收 -->
-      <balance-back :has-link="true" />
+      <balance-back :has-link="true" :hasTopSpace="false" />
       <withdraw ref="withdraw" />
     </div>
   </mobile-container>

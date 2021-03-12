@@ -2,7 +2,10 @@
   <balance-tran class="clearfix">
     <template scope="{ balanceTran , balanceBack}">
       <div>
-        <div :class="[$style['balance-wrap'], 'clearfix']">
+        <div
+          :class="[$style['balance-wrap'], 'clearfix']"
+          :style="{ marginTop: hasTopSpace ? '3%' : null }"
+        >
           <div :class="$style['balance-total-item']">
             <img
               :src="
@@ -88,6 +91,10 @@ export default {
     };
   },
   props: {
+    hasTopSpace: {
+      type: Boolean,
+      default: true
+    },
     hasLink: {
       type: Boolean,
       default: false
