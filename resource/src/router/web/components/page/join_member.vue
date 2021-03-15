@@ -911,6 +911,16 @@ export default {
         }
       }
 
+      if (this.themeTPL === "ey1") {
+        this.normalRegist();
+      } else {
+        this.guestRegist();
+      }
+    },
+    //訪客註冊
+    guestRegist() {
+      //訪客轉正式帳號
+
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -921,15 +931,10 @@ export default {
 
       const self = this;
       const platform = getCookie("platform");
-      //訪客轉正式帳號
+
       goLangApiRequest({
         method: "put",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
-
-        // RD5帳號註冊
-        // bbosRequest({
-        //   method: "post",
-        //   url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
         reqHeaders: {
           Vendor: this.memInfo.user.domain,
           kind: platform === "H" ? "h" : "pwa"
@@ -950,7 +955,6 @@ export default {
           }
         }
       }).then(res => {
-        console.log("test guest register to RD5 sucess!!");
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);
@@ -1020,6 +1024,114 @@ export default {
         }
       });
     },
+
+    //一般註冊
+    normalRegist() {
+      // RD5帳號註冊;
+
+      const params = {
+        ...this.allValue,
+        captchaText: this.allValue.captcha_text,
+        confirmPassword: this.allValue.confirm_password,
+        aid: this.aid || getCookie("aid") || "",
+        speedy: true
+      };
+
+      const self = this;
+      const platform = getCookie("platform");
+
+      bbosRequest({
+        method: "post",
+        url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain,
+          kind: platform === "H" ? "h" : "pwa"
+        },
+        params: {
+          ...params,
+          host: window.location.host,
+          lang: "zh-cn"
+        },
+        fail: error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+          if (error && error.status === 429) {
+            this.errMsg = "操作太频繁，请稍候再试";
+            return;
+          }
+        }
+      }).then(res => {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
+        if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
+        if (res.data && res.data.ret.cookie) {
+          try {
+            const { cookie } = res.data;
+            for (const [key, value] of Object.entries(cookie)) {
+              setCookie(key, value);
+            }
+          } catch (e) {
+            setCookie("cid", res.data.ret.cookie.cid);
+          }
+          // GA流量統計
+          window.dataLayer.push({
+            dep: 2,
+            event: "ga_click",
+            eventCategory: "sign_up",
+            eventAction: "sign_up",
+            eventLabel: "sign_up",
+            ga_hall_id: 3820325,
+            ga_domain_id: this.memInfo.user.domain
+          });
+          if (this.isWebview) {
+            appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+            return;
+          }
+          self.actionSetUserdata(true);
+          this.actionSetGlobalMessage({
+            msg: "注册成功",
+            cb: () => {
+              if (localStorage.getItem("rememberPwd")) {
+                localStorage.setItem("username", this.allValue.username);
+                localStorage.setItem("password", this.allValue.password);
+              } else {
+                localStorage.removeItem("username");
+                localStorage.removeItem("password");
+              }
+              window.RESET_LOCAL_SETTING(true);
+            }
+          });
+          return;
+        }
+        if (captchaInfo && captchaInfo.slideFuc) {
+          captchaInfo.slideFuc.reset();
+        }
+        this.allValue.captcha_text = "";
+        if (res.response && res.response.status === 429) {
+          this.errMsg = "操作太频繁，请稍候再试";
+          return;
+        }
+        if (res.status !== "000") {
+          this.getCaptcha();
+          if (res.errors && Object.keys(res.errors)) {
+            Object.keys(res.errors).forEach(item => {
+              this.allTip[item] = res.errors[item];
+              // msg: "验证码错误"
+              if (item === "captcha_text") {
+                if (document.getElementById("captcha")) {
+                  document.getElementById("captcha").focus();
+                }
+              }
+            });
+            return;
+          }
+          this.errMsg = res.msg;
+        }
+      });
+    },
+
     // eslint-disable-next-line
     onLabelClick(fieldKey) {
       try {
