@@ -119,7 +119,7 @@ export default {
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
         let temp = this.noticeData[this.noticeData.length - 1];
-
+        this.noticeData.pop();
         if (temp.extend && temp.extend === "verification_code") {
           return;
         }
