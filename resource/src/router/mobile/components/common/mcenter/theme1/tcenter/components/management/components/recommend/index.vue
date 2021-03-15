@@ -184,8 +184,6 @@ import friendsRecommend from "@/mixins/mcenter/management/friendsRecommend";
 import promoteFunction from "@/mixins/mcenter/management/promoteFunction";
 import message from "@/router/mobile/components/common/message";
 import { mapGetters, mapActions } from "vuex";
-import puzzleVerification from "@/components/puzzleVerification";
-import slideVerification from "@/components/slideVerification";
 import popupVerification from "@/components/popupVerification";
 import * as apis from "@/config/api";
 import { getCookie, setCookie } from "@/lib/cookie";
@@ -194,8 +192,6 @@ export default {
   components: {
     popup: () => import(/* webpackChunkName: 'popup' */ "../popup/index"),
     message,
-    slideVerification,
-    puzzleVerification,
     popupVerification
   },
   mixins: [friendsRecommend, promoteFunction],
@@ -266,8 +262,9 @@ export default {
         return;
       }
 
-      // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-      this.toggleCaptcha = true;
+      if ([2, 3, 4, 5].includes(this.memInfo.config.friend_captcha_type)) {
+        this.toggleCaptcha = true;
+      }
     },
     handleSend() {
       this.onSubmit();

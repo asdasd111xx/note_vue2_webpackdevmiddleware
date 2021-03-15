@@ -5,7 +5,10 @@
       @click="$emit('update:isShowCaptcha', false)"
     />
 
-    <div :class="$style['slide-block']">
+    <div v-if="[4].includes(captchaType)" id="vaptcha-container" />
+    <div v-if="[5].includes(captchaType)" id="NECaptcha-container" />
+
+    <div v-if="[1, 2].includes(captchaType)" :class="$style['slide-block']">
       <!-- 滑動認證 -->
       <slide-verification
         v-if="captchaType === 2"
@@ -56,14 +59,15 @@
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import bbosRequest from "@/api/bbosRequest";
-import puzzleVerification from "@/components/puzzleVerification";
 import slideVerification from "@/components/slideVerification";
+import thirdyVerification from "@/components/thirdyVerification";
+
 import axios from "axios";
 
 export default {
   components: {
     slideVerification,
-    puzzleVerification
+    thirdyVerification
   },
   props: {
     captcha: {
@@ -82,7 +86,10 @@ export default {
       info: null,
       captchaText: "", // 圖形驗證
       isGetCaptchaImg: false,
-      captchaImg: ""
+      captchaImg: "",
+
+      vaptchaObj: {},
+      necaptcha: {}
     };
   },
   computed: {
@@ -91,7 +98,6 @@ export default {
       memInfo: "getMemInfo"
     }),
     captchaType() {
-      // console.log(`captchaType is friend_captcha_type?  ${this.friend_captcha_type}`);
       return this.friend_captcha_type
         ? this.memInfo.config.friend_captcha_type
         : this.memInfo.config.default_captcha_type;
@@ -118,10 +124,66 @@ export default {
       case 3:
         this.showPuzzleCaptcha();
         break;
+
+      //手繪驗證
+      case 4:
+      //行為驗證
+      case 5:
+        this.loadScript();
+        break;
     }
   },
   methods: {
     ...mapActions(["actionVerificationFormData"]),
+    loadScript() {
+      let src;
+      let callback;
+      switch (this.captchaType) {
+        //手繪驗證
+        case 4:
+          src = "https://v.vaptcha.com/v3.js";
+          callback = () => {
+            this.vaptchaInit();
+          };
+          break;
+        //行為驗證
+        case 5:
+        default:
+          src = "http://cstaticdun.126.net/load.min.js";
+          callback = () => {
+            this.necCaptchaInit();
+          };
+          break;
+      }
+
+      if (
+        document.querySelector('script[script-type="third-party-verification"]')
+      ) {
+        callback();
+        return;
+      }
+
+      let script = document.createElement("script");
+      script.setAttribute("script-type", "third-party-verification");
+      script.type = "text/javascript";
+      script.src = src;
+
+      if (!("onload" in script)) {
+        script.onreadystatechange = function() {
+          if (this.readyState !== "complete" && this.readyState !== "loaded")
+            return;
+          this.onreadystatechange = null;
+          callback();
+        };
+      }
+
+      script.onload = function() {
+        this.onload = null;
+        callback();
+      };
+
+      document.body.appendChild(script);
+    },
     getCaptchaImage() {
       if (this.isGetCaptchaImg) {
         return;
@@ -147,6 +209,85 @@ export default {
       if (dataInfo.data) {
         this.$emit("update:isShowCaptcha", false);
       }
+    },
+    vaptchaInit() {
+      let _self = this;
+      vaptcha({
+        vid: "5f9691bd456d5799dec0189a", // 验证单元id
+        // type: "embed", // 显示类型 点击式
+        type: "click",
+        scene: 0, // 场景值 默认0
+        container: "#vaptcha-container", // 容器，可为Element 或者 selector
+        offline_server: "", //离线模式服务端地址，若尚未配置离线模式，请填写任意地址即可。
+        //可选参数
+        lang: "zh-CN" // 语言 默认auto,可选值auto,zh-CN,en,zh-TW,jp
+        //https: true, // 使用https 默认 true
+        //style: 'dark' //按钮样式 默认dark，可选值 dark,light
+        //color: '#57ABFF' //按钮颜色 默认值#57ABFF
+      }).then(function(result) {
+        _self.vaptchaObj = result; //将VAPTCHA验证实例保存到局部变量中
+        _self.vaptchaObj.render(); // 调用验证实例 vpObj 的 render 方法加载验证按钮
+
+        //获取token的方式一：
+        //vaptchaObj.renderTokenInput('.login-form')//以form的方式提交数据时，使用此函数向表单添加token值
+        //获取token的方式二：
+        _self.vaptchaObj.listen("pass", function() {
+          let data = {
+            token: _self.vaptchaObj.getToken(),
+            vid: "5f9691bd456d5799dec0189a"
+          };
+          console.log(_self.vaptchaObj, data);
+          _self.$emit("update:captcha", data);
+          setTimeout(() => {
+            _self.vaptchaObj = null;
+          }, 1000);
+        });
+
+        //关闭验证弹窗时触发
+        _self.vaptchaObj.listen("close", function() {
+          _self.vaptchaObj.reset(); //重置验证码
+          _self.$emit("update:isShowCaptcha", false);
+        });
+      });
+    },
+    necCaptchaInit() {
+      let _self = this;
+
+      initNECaptcha(
+        {
+          // config对象，参数配置
+          captchaId: "8b50788c733744ec8028695f31187233",
+          element: "#NECaptcha-container",
+          mode: "popup",
+          width: "320px",
+          onVerify(err, result) {
+            console.log(err, result);
+            if (err) return;
+
+            let data = {
+              validate: result.validate,
+              captchaId: _self.necaptcha.captchaId
+            };
+            _self.$emit("update:captcha", data);
+            setTimeout(() => {
+              _self.necaptcha = null;
+              _self.$emit("update:isShowCaptcha", false);
+            }, 1000);
+          }
+        },
+        function onload(instance) {
+          console.log(instance);
+          _self.necaptcha = instance;
+          _self.necaptcha.popUp();
+          // 初始化成功后得到验证实例instance，可以调用实例的方法
+        },
+        function onerror(err) {
+          // 初始化失败后触发该函数，err对象描述当前错误信息
+          console.log(err);
+          alert(err);
+          _self.$emit("update:isShowCaptcha", false);
+        }
+      );
     },
     showPuzzleCaptcha() {
       let captcha = new TencentCaptcha("2028894711", res => {

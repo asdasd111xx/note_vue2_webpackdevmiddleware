@@ -186,7 +186,6 @@ export default {
 
     checkInput() {
       this.$validator.validateAll("form-page").then(response => {
-        console.log(response);
         if (!response) {
           // this.msg = this.$text("S_JM_MSG_COMPLETE");
           Object.keys(this.allValue).forEach(key => {

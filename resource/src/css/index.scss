@@ -30,6 +30,7 @@ body,
 }
 
 @media (orientation: landscape) {
+
   body,
   #footer,
   #header,
@@ -168,10 +169,7 @@ body,
     }
   }
 
-  .video-js
-    .vjs-volume-panel
-    .vjs-volume-control.vjs-slider-active.vjs-volume-vertical
-    .vjs-volume-bar,
+  .video-js .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-vertical .vjs-volume-bar,
   .video-js .vjs-big-play-button,
   .vjs-flat-skin .vjs-fullscreen-control,
   .vjs-flat-skin .vjs-subtitles-button,
@@ -197,4 +195,33 @@ button {
   border: unset;
   box-shadow: none;
   outline: none;
+}
+
+// vaptcha
+#vaptcha-container {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  width: 90%;
+  height: auto;
+  background: white;
+  padding: 5px;
+  height: 264px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iframe-sdk {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  height: 360px !important;
 }
