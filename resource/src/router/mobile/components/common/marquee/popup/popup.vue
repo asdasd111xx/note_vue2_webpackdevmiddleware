@@ -27,8 +27,14 @@
       </div>
 
       <div class="clearfix">
-        <div :class="[$style['modal-button-center']]" @click="closePop()">
-          关闭
+        <div
+          :class="[
+            $style['modal-button'],
+            { [$style[themeTPL]]: origin !== 'home' }
+          ]"
+          @click="closePop()"
+        >
+          {{ isShowTick ? "知道了" : "关闭" }}
         </div>
       </div>
     </div>
@@ -175,44 +181,22 @@ export default {
 }
 
 .modal-button {
-  float: left;
-  width: 50%;
+  width: 100%;
   height: 50px;
   line-height: 50px;
   text-align: center;
   font-size: 18px;
 
-  &:first-child {
-    color: #000;
-    border-right: 1px solid #eee;
+  &.porn1 {
+    color: #d1b79c;
   }
 
-  &:last-child {
-    color: #d2b79c;
-  }
-
-  &.ey1:last-child {
+  &.ey1 {
     color: #e42a30;
   }
 
-  &.porn1:last-child {
-    color: #d2b79c;
+  &.sg1 {
+    color: #bf8646;
   }
-}
-
-.modal-button-center {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-size: 18px;
-}
-
-.post-header {
-  font-size: 18px;
-  font-weight: normal;
-  text-align: center;
-  width: 100%;
-  margin-bottom: 5px;
 }
 </style>

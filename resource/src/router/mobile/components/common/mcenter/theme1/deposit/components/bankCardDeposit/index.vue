@@ -7,6 +7,7 @@
       {{ topPromotionMessage }}
     </div> -->
     <marquee
+      v-if="marqueeList && marqueeList.length > 0"
       :list="marqueeList"
       :titleList="marqueeTitle"
       :origin="'deposit'"

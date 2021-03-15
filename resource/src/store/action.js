@@ -959,10 +959,15 @@ export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
       const { data, status, errorCode, msg } = res;
 
       if (errorCode !== "00" || status !== "000") {
-        dispatch("actionSetGlobalMessage", {
-          msg
-        });
-        return;
+        if (msg) {
+          dispatch("actionSetGlobalMessage", {
+            msg
+          });
+          return;
+        }
+
+        // errorCode: "01" status: "000" = 意指查詢動作執行成功，但無資料返回的情境
+        return [];
       }
 
       commit(types.SET_ANNOUNCEMENTLIST, data);

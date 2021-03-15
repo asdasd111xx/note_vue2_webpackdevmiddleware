@@ -2,6 +2,7 @@
   <div :class="$style['withdraw-wrap']">
     <!-- 跑馬燈 -->
     <marquee
+      v-if="marqueeList && marqueeList.length > 0"
       :list="marqueeList"
       :titleList="marqueeTitle"
       :origin="'withdraw'"
