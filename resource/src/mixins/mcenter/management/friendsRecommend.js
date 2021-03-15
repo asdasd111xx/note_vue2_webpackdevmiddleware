@@ -6,6 +6,7 @@ import axios from "axios";
 import isMobile from "@/lib/is_mobile";
 import bbosRequest from "@/api/bbosRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   provide() {
@@ -92,8 +93,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
@@ -228,18 +233,36 @@ export default {
         return;
       }
 
-      axios({
-        method: "post",
-        url: API_FIRST_LEVEL_REGISTER,
-        errorAlert: false,
-        data: {
-          ...this.allValue,
-          captcha_text: this.allValue["captcha_text"],
-          code: this.agentCode,
-          created_by: 2
-        }
-      }).then(result => {
-        if (result.data.result === "ok") {
+      let registFc;
+
+      if (this.themeTPL === "ey1") {
+        registFc = axios({
+          method: "post",
+          url: API_FIRST_LEVEL_REGISTER,
+          errorAlert: false,
+          data: {
+            ...this.allValue,
+            captcha_text: this.allValue["captcha_text"],
+            code: this.agentCode,
+            created_by: 2
+          }
+        });
+      } else {
+        registFc = goLangApiRequest({
+          method: "post",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/ByUpper`,
+          params: {
+            ...this.allValue,
+            confirmPassword: this.allValue["confirm_password"],
+            captchaText: this.allValue["captcha_text"],
+            code: this.agentCode,
+            created_by: 2,
+            lang: "zh-cn"
+          }
+        });
+      }
+      registFc.then(result => {
+        if (result.data.result === "ok" || result.status === "000") {
           this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
 
           this.isShow = false;
