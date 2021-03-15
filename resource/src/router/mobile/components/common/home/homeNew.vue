@@ -1,5 +1,5 @@
 <template>
-  <marquee :list="newslist" :titleList="newsTitle" />
+  <marquee :list="newslist" :titleList="newsTitle" :origin="'home'" />
 </template>
 
 <script>

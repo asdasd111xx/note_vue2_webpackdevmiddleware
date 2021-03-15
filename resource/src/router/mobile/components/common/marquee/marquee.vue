@@ -23,36 +23,26 @@
       </div>
     </div>
 
-    <template v-if="newsPopControl.status">
-      <div class="mask" />
-      <div class="modal-wrap">
-        <div class="modal-content">
-          <div class="modal-news">
-            <div
-              v-for="(item, sort) in newslist"
-              :key="`news-${sort}`"
-              class="news-item"
-            >
-              <h4 class="news-title">{{ item.title }}</h4>
-              <p
-                class="news-text"
-                v-html="item.content.replace('\n', '<br>')"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="modal-button" @click="togglePopup">
-          关闭
-        </div>
-      </div>
+    <template v-if="showPopStatus.isShow">
+      <!-- 跑馬燈內容彈窗 -->
+      <popup
+        v-if="showPopStatus.type === 'popup'"
+        :list="newslist"
+        :origin="origin"
+        @close="togglePopup"
+      />
     </template>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import popup from "./popup/popup";
 
 export default {
+  components: {
+    popup
+  },
   props: {
     list: {
       type: Array,
@@ -61,6 +51,10 @@ export default {
     titleList: {
       type: Array,
       default: []
+    },
+    origin: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -68,12 +62,17 @@ export default {
       commonClass: ["news-content-wrap", "clearfix"],
       totalWidth: 0,
       currentLeft: 0,
-      paused: false
+      paused: false,
+
+      // 彈窗顯示狀態統整
+      showPopStatus: {
+        isShow: false,
+        type: "popup"
+      }
     };
   },
   computed: {
     ...mapGetters({
-      newsPopControl: "getNewsPopControl",
       siteConfig: "getSiteConfig"
     }),
     themeTPL() {
@@ -88,16 +87,39 @@ export default {
       return this.titleList;
     }
   },
+  created() {
+    if (
+      this.origin === "deposit" &&
+      !localStorage.getItem("do-not-show-deposit-post")
+    ) {
+      this.togglePopup();
+    }
+
+    if (
+      this.origin === "withdraw" &&
+      !localStorage.getItem("do-not-show-withdraw-post")
+    ) {
+      this.togglePopup();
+    }
+  },
   mounted() {
     this.currentLeft = this.$refs.container.offsetWidth;
+
     this.totalWidth =
       this.$refs.news.offsetWidth > this.currentLeft
         ? this.$refs.news.offsetWidth
         : 1.5 * this.currentLeft;
+
     this.startMove();
   },
   methods: {
-    ...mapActions(["actionNewsPopControl"]),
+    ...mapActions([""]),
+    setPopupStatus(isShow, type) {
+      this.showPopStatus = {
+        isShow,
+        type
+      };
+    },
     // 開啟最新消息方式
     togglePopup() {
       if (this.newsTitleList?.length < 0) {
@@ -105,16 +127,16 @@ export default {
       }
 
       this.paused = !this.paused;
+
       if (!this.paused) {
         this.startMove();
       }
-      document.querySelector("body").style = !this.newsPopControl.status
+
+      document.querySelector("body").style = !this.showPopStatus.isShow
         ? "overflow: hidden"
         : "";
-      this.actionNewsPopControl({
-        // type: this.dataSource,
-        status: !this.newsPopControl.status
-      });
+
+      this.setPopupStatus(!this.showPopStatus.isShow, "popup");
     },
     startMove() {
       if (this.paused || !this.$refs.container) return;

@@ -6,7 +6,12 @@
     >
       {{ topPromotionMessage }}
     </div> -->
-    <marquee :list="marqueeList" :titleList="marqueeTitle" />
+    <marquee
+      :list="marqueeList"
+      :titleList="marqueeTitle"
+      :origin="'deposit'"
+    />
+
     <swiper
       v-if="depositData.length > 1"
       :options="categoryOptions"

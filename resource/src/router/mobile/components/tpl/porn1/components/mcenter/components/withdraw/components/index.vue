@@ -1,7 +1,11 @@
 <template>
   <div :class="$style['withdraw-wrap']">
     <!-- 跑馬燈 -->
-    <marquee :list="marqueeList" :titleList="marqueeTitle" />
+    <marquee
+      :list="marqueeList"
+      :titleList="marqueeTitle"
+      :origin="'withdraw'"
+    />
 
     <!-- 一件回收 -->
     <!-- 鴨博 -->
