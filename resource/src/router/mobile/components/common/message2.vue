@@ -169,6 +169,7 @@ export default {
           // 停權
           case "C600001":
           case "C50029":
+          case "C50062":
           case "TM020058":
           case "TM020059":
           case "TM020060":

@@ -198,8 +198,10 @@ export default {
   memInfoV3: {},
   // 會員端-登入狀態
   loginStatus: false,
-  // 會員端-跑馬燈
+  // 會員端-跑馬燈 (首頁)
   news: [],
+  // 會員端-跑馬燈 (充值/提現)
+  announcementList: [],
   // 會員端-公告
   post: {
     config: {},

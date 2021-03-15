@@ -921,36 +921,60 @@ export default {
 
       const self = this;
       const platform = getCookie("platform");
-      //訪客轉正式帳號
-      goLangApiRequest({
-        method: "put",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
 
-        // RD5帳號註冊
-        // bbosRequest({
-        //   method: "post",
-        //   url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain,
-          kind: platform === "H" ? "h" : "pwa"
-        },
-        params: {
-          ...params,
-          host: window.location.host,
-          deviceId: getCookie("uuidAccount"),
-          lang: "zh-cn"
-        },
-        fail: error => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1000);
-          if (error && error.status === 429) {
-            this.errMsg = "操作太频繁，请稍候再试";
-            return;
+      let registFn;
+      if (this.themeTPL === "ey1") {
+        //一般註冊
+        registFn = bbosRequest({
+          method: "post",
+          url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
+          reqHeaders: {
+            Vendor: this.memInfo.user.domain,
+            kind: platform === "H" ? "h" : "pwa"
+          },
+          params: {
+            ...params,
+            host: window.location.host,
+            lang: "zh-cn"
+          },
+          fail: error => {
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1000);
+            if (error && error.status === 429) {
+              this.errMsg = "操作太频繁，请稍候再试";
+              return;
+            }
           }
-        }
-      }).then(res => {
-        console.log("test guest register to RD5 sucess!!");
+        });
+      } else {
+        //訪客註冊
+        registFn = goLangApiRequest({
+          method: "put",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
+          headers: {
+            Vendor: this.memInfo.user.domain,
+            kind: platform === "H" ? "h" : "pwa"
+          },
+          params: {
+            ...params,
+            host: window.location.host,
+            deviceId: getCookie("uuidAccount"),
+            lang: "zh-cn"
+          },
+          fail: error => {
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1000);
+            if (error && error.status === 429) {
+              this.errMsg = "操作太频繁，请稍候再试";
+              return;
+            }
+          }
+        });
+      }
+
+      registFn.then(res => {
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);
@@ -1020,6 +1044,7 @@ export default {
         }
       });
     },
+
     // eslint-disable-next-line
     onLabelClick(fieldKey) {
       try {

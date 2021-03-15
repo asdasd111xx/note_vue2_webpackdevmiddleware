@@ -69,8 +69,8 @@ export default {
     if (!this.loginStatus) {
       this.$router.push("/mobile/login");
     }
-
-    this.getGameList();
+    this.getUserViplevel();
+    // this.getGameList();
   },
   methods: {
     updateSearchStatus() {

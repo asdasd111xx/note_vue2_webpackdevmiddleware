@@ -66,7 +66,8 @@ export default {
     }
   },
   created() {
-    this.getGameList();
+    this.getUserViplevel();
+    // this.getGameList();
   },
   watch: {
     searchText(value) {

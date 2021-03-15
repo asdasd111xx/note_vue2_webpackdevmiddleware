@@ -37,10 +37,10 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.back();
+          this.$router.push(`/mobile/home`);
         },
         hasClose: true,
-        title: this.$text("S_REGISTER", "注册")
+        title: "领取彩金"
       };
     }
   },

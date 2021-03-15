@@ -266,7 +266,15 @@ export default {
               //   (key === 'email' && userConfig.user[key]) ||
               //   (key === 'email' && this.mcenterUserField.config.email.code)
               // ,
-              btnShow: !keyValue || !userConfig.user[key], // 未驗證 或者 未填 可修改
+              //!keyValue || !userConfig.user[key], // 未驗證 或者 未填 可修改
+
+              btnShow:
+                !keyValue ||
+                !userConfig.user[key] ||
+                (key === "phone" &&
+                  this.mcenterUserField.config.phone.editable) ||
+                (key === "email" &&
+                  this.mcenterUserField.config.email.editable), //未驗證 或者 未填 可修改 或者 修改開關
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };

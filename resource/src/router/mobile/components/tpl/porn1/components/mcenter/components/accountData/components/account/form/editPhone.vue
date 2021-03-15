@@ -170,7 +170,9 @@ export default {
         isShow: true
       },
       toggleCaptcha: false,
-      captcha: null
+      captcha: null,
+      edit: false,
+      verifiSucc: false
     };
   },
   computed: {
@@ -264,8 +266,8 @@ export default {
     oldPhone() {
       return {
         label: this.$text("S_ORIGINAL_PHONE"),
-        // 目前億元/鴨博皆不可修改手機號碼
-        isShow: false
+        // 目前億元/鴨博皆接開關判斷可不可修改手機號碼
+        isShow: this.verifiSucc ? this.edit : this.verifiSucc
         // isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone && this.hasVerified
       };
     },
@@ -313,6 +315,8 @@ export default {
         this.info.verification = response.ret.config[this.info.key].code;
         this.hasVerified = response.ret.user.phone;
         this.phoneHeadOption = response.ret.config.phone.country_codes;
+        this.edit = response.ret.config.phone.editable;
+        this.verifiSucc = response.ret.user.phone; //是否已驗證
       }
     });
   },

@@ -1,15 +1,23 @@
 import axios from "axios";
 import { gameList } from "@/config/api";
-import { mapActions } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapActions, mapGetters } from "vuex";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
     return {
       isReceive: false,
-      gameData: []
+      gameData: [],
+      userViplevel: 0,
+      needFilterGameData: []
     };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
+    }),
     lobbyInfo() {
       let info = {};
       const vendor = this.$route.params.vendor;
@@ -39,6 +47,37 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    getUserViplevel() {
+      let cid = getCookie("cid");
+      if (!cid && this.loginStatus) {
+        return;
+      }
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
+        headers: {
+          cid: cid
+        }
+      }).then(res => {
+        this.userViplevel = res.data
+          ? res.data[0] && res.data[0].now_level_id
+          : 0;
+        this.getFilterList();
+      });
+    },
+    getFilterList() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Vip/Filter`,
+        params: {
+          vipId: this.userViplevel
+        }
+      }).then(response => {
+        this.needFilterGameData =
+          response.status === "000" ? response.data : [];
+        this.getGameList();
+      });
+    },
     getGameList(searchText = "") {
       if (this.isReceive) return;
 
@@ -66,7 +105,23 @@ export default {
             return;
           }
 
-          this.gameData = ret;
+          // console.log(
+          //   `this.needFilterGameData.length is ${this.needFilterGameData.length}   ` +
+          //     this.needFilterGameData
+          // );
+          // console.log(`ret.length is ${ret.length}   ` + ret);
+          this.gameData = ret.filter(data => {
+            return !this.needFilterGameData.find(filterData => {
+              return (
+                filterData.gameCode === data.code &&
+                filterData.gameType === data.vendor
+              );
+            });
+          });
+
+          // console.log(
+          //   `this.gameData.length is ${this.gameData.length}   ` + this.gameData
+          // );
         })
         .catch(error => {
           this.isReceive = false;

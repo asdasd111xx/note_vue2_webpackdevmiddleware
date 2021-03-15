@@ -84,7 +84,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/login')
+            : $router.push('/mobile/joinmember')
         "
       >
         <div>

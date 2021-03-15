@@ -255,19 +255,35 @@ export default {
       vendor: temp
     };
   },
-  // 會員端-設定跑馬燈
+  // 會員端-設定跑馬燈 (首頁)
   [types.SETNEWS](state, obj) {
     const apiData = [];
 
     Object.keys(obj).forEach(index => {
       apiData[index] = {
         // time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
-        time: obj[index].created_at,
-        content: obj[index].content,
-        id: obj[index].id
+        id: obj[index].id,
+        title: obj[index].created_at,
+        content: obj[index].content
       };
     });
     state.news = apiData;
+  },
+  // 會員端-設定跑馬燈 (充值/提現)
+  [types.SET_ANNOUNCEMENTLIST](state, obj) {
+    const apiData = [];
+
+    Object.keys(obj).forEach(index => {
+      apiData[index] = {
+        id: obj[index].id,
+        announceSwitch: obj[index].announceSwitch,
+        title: obj[index].title,
+        content: obj[index].value,
+        sequence: obj[index].sequence
+      };
+    });
+
+    state.announcementList = apiData;
   },
   // 會員端-設定公告
   [types.SETPOST](state, { config, ret }) {
@@ -562,12 +578,12 @@ export default {
     state.BBosDomain = data;
   },
   [types.SET_SWAG_CONFIG](state, data) {
-    state.swagConfig = data
+    state.swagConfig = data;
   },
   [types.SET_SWAG_BALANCE](state, data) {
     state.swagBalance = {
       ...data,
-      balance: +data.balance === 0 ? '0' : Number(data.balance).toFixed(0)
-    }
-  },
+      balance: +data.balance === 0 ? "0" : Number(data.balance).toFixed(0)
+    };
+  }
 };

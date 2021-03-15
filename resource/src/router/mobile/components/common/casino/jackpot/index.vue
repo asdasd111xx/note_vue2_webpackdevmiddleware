@@ -558,12 +558,11 @@ export default {
 }
 
 .multi-bonus-cell {
-  padding: 0 7px;
   font-weight: 400;
   color: #313131;
+  display: flex;
 
   > div {
-    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -578,10 +577,8 @@ export default {
   }
 
   > div:nth-child(3) {
-    text-align: left;
-    position: absolute;
-    right: 7px;
-    max-width: 25%;
+    text-align: right;
+    width: 30%;
   }
 }
 </style>

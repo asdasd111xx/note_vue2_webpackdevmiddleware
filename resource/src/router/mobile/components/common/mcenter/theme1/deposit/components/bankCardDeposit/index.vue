@@ -1,11 +1,18 @@
 <template>
   <div :class="[$style['mode-wrap']]">
-    <div
+    <!-- <div
       v-if="['porn1', 'sg1'].includes(themeTPL) && topPromotionMessage"
       :class="$style['top-promotion']"
     >
       {{ topPromotionMessage }}
-    </div>
+    </div> -->
+    <marquee
+      v-if="marqueeList && marqueeList.length > 0"
+      :list="marqueeList"
+      :titleList="marqueeTitle"
+      :origin="'deposit'"
+    />
+
     <swiper
       v-if="depositData.length > 1"
       :options="categoryOptions"
@@ -1070,6 +1077,7 @@ import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
+import marquee from "@/router/mobile/components/common/marquee/marquee";
 
 export default {
   components: {
@@ -1085,7 +1093,8 @@ export default {
     blockListTips,
     bindWalletPopup,
     popupQrcode,
-    confirmOneBtn
+    confirmOneBtn,
+    marquee
   },
   mixins: [mixin],
   props: {
@@ -1213,7 +1222,8 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      noticeData: "getNoticeData"
+      noticeData: "getNoticeData",
+      announcementList: "getAnnouncementList"
     }),
     $style() {
       const style =
@@ -1486,6 +1496,18 @@ export default {
         default:
           break;
       }
+    },
+    marqueeList() {
+      return this.announcementList;
+    },
+    marqueeTitle() {
+      let arr = this.marqueeList.map(item => {
+        return {
+          title: item.title,
+          switch: item.announceSwitch
+        };
+      });
+      return arr;
     }
   },
   created() {
@@ -1507,6 +1529,7 @@ export default {
         this.getPayGroup();
         this.checkEntryBlockStatus();
         this.actionSetRechargeConfig();
+        this.actionSetAnnouncementList({ type: 1 });
       }
     });
   },
@@ -1519,7 +1542,8 @@ export default {
       "actionSetRechargeConfig",
       "actionVerificationFormData",
       "actionSetGlobalMessage",
-      "actionGetServiceMaintain"
+      "actionGetServiceMaintain",
+      "actionSetAnnouncementList"
     ]),
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
