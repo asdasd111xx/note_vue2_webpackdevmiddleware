@@ -242,19 +242,28 @@ export default {
       this.$router.back();
     },
     getDesc(desc) {
-      let split = desc.split(" ");
-      //  今年額滿
-      if (this.isFinishMission) {
-        if (split && split.length > 0) {
-          let max = split[1];
-          return `${split[1]}<br />${split[2]}`;
+      let split = desc.split(" ");
+      // //  今年額滿
+      // if (this.isFinishMission) {
+      //   if (split && split.length > 0) {
+      //     let max = split[1];
+      //     return `${split[1]}<br />${split[2]}`;
+      //   }
+      // }
+
+      // // 任務
+      // if (split && split.length > 0) {
+      //   return `${split[split.length - 1]}<br />即可继续享有观影送钱！`;
+      // }
+      let result = "";
+      for (let idx in split) {
+        if (idx === 0) {
+          result += split[0];
+        } else {
+          result += split[idx] + "<br />";
         }
       }
-
-      // 任務
-      if (split && split.length > 0) {
-        return `${split[split.length - 1]}<br />即可继续享有观影送钱！`;
-      }
+      return result;
     },
     getActionName() {
       switch (this.missionActionType) {
