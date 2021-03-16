@@ -607,7 +607,8 @@ export default {
         // 不驗證直接設定手機
         return mcenter.accountPhoneEdit({
           params: {
-            phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`
+            phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
+            old_phone:this.oldValue?this.oldValue:this.newValue
           },
           success: () => {
             setTimeout(() => {

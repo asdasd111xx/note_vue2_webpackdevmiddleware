@@ -334,7 +334,8 @@ export default {
       // 不驗證直接設定信箱
       return mcenter.accountMailEdit({
         params: {
-          email: this.newValue
+          email: this.newValue,
+          old_email:this.oldValue?this.oldValue:this.newValue
         },
         success: () => {
           localStorage.setItem("set-account-success", true);
