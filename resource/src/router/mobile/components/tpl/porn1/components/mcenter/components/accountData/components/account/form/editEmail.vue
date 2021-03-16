@@ -32,7 +32,7 @@
       <template v-if="newEmail.isShow">
         <div :class="$style.block">
           <div :class="$style.title">
-            {{ $text("S_NEW_EMAIL2", "邮箱帐号") }}
+            {{ newEmail.label }}
           </div>
           <div :class="$style['input-wrap']">
             <input
@@ -127,7 +127,7 @@ export default {
         isShow: true
       },
       edit: false,
-      verifiSucc: false
+      hasVerified: false
     };
   },
   created() {
@@ -141,7 +141,8 @@ export default {
         this.info.verification = response.ret.config[this.info.key].code;
         this.info.isShow = response.ret.config[this.info.key].display;
         this.edit = response.ret.config.email.editable;
-        this.verifiSucc = response.ret.user.email; //是否已驗證
+        this.hasVerified = response.ret.user.email; //是否已驗證
+        
       }
     });
   },
@@ -165,13 +166,16 @@ export default {
         // 目前億元/鴨博皆接開關判斷可不可修改信箱
         isShow:
           (this.fieldValue && this.info.status === "already") ||
-          (this.verifiSucc ? this.edit : this.verifiSucc)
+          (this.hasVerified ? this.edit : this.hasVerified)
       };
     },
     newEmail() {
+
+      const emailLabel=(this.fieldValue && this.info.status === "already") ||
+          (this.hasVerified ? this.edit : this.hasVerified)
       return {
         label:
-          this.fieldValue && this.info.status === "already"
+          emailLabel
             ? this.$text("S_NEW_EMAIL")
             : this.$text("SS_E_MAIL"),
         isShow: true

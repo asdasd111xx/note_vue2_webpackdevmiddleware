@@ -90,11 +90,12 @@
                   />
                 </div>
               </span>
-              <!-- 拼圖驗證 -->
-              <puzzle-verification
-                v-if="memInfo.config.login_captcha_type === 3"
-                ref="puzzleVer"
-                :puzzle-obj.sync="puzzleObj"
+              <!-- 3拼圖驗證/4手繪/5行為驗證 -->
+              <thirdy-verification
+                v-if="[3, 4, 5].includes(memInfo.config.login_captcha_type)"
+                ref="thirdyObj"
+                :page-type="'login'"
+                :thirdy-obj.sync="thirdyObj"
               />
               <!-- 驗證碼 -->
               <div
@@ -205,7 +206,7 @@
 import { mapGetters } from "vuex";
 import loginForm from "@/mixins/loginForm";
 import slideVerification from "@/components/slideVerification";
-import puzzleVerification from "@/components/puzzleVerification";
+import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
 
@@ -223,7 +224,7 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     slideVerification,
-    puzzleVerification,
+    thirdyVerification,
     mobileContainer
   },
   mixins: [loginForm],
@@ -235,12 +236,12 @@ export default {
   },
   data() {
     return {
-      puzzleData: null,
+      thirdyData: null,
       script: null
     };
   },
   watch: {
-    puzzleObj() {
+    thirdyObj() {
       this.errMsg = "";
     }
   },
@@ -252,12 +253,12 @@ export default {
       memInfo: "getMemInfo",
       onlineService: "getOnlineService"
     }),
-    puzzleObj: {
+    thirdyObj: {
       get() {
-        return this.puzzleData;
+        return this.thirdyData;
       },
       set(value) {
-        this.puzzleData = value;
+        this.thirdyData = value;
       }
     },
     headerConfig() {
