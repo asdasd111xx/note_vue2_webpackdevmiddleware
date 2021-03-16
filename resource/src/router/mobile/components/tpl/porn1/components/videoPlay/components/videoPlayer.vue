@@ -547,7 +547,6 @@ export default {
 
         this.isUnloginMode = false;
         this.$refs.bonunsProcess.processType = "process";
-        console.log("123     " + this.isUnloginMode);
         // this.$nextTick(() => {
         //   if (!this.loginStatus && !this.isUnloginMode) {
         //     this.$refs.bonunsDialog.isShow = true;
