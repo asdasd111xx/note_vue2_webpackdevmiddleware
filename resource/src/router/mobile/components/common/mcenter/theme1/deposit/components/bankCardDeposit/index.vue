@@ -7,7 +7,7 @@
       {{ topPromotionMessage }}
     </div> -->
     <marquee
-      v-if="marqueeList && marqueeList.length > 0"
+      v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
       :list="marqueeList"
       :titleList="marqueeTitle"
       :origin="'deposit'"
@@ -1123,6 +1123,7 @@ export default {
       // 彈窗參數(待之後整理)
       showRealStatus: false,
       isShowMethodsPop: false,
+      isDoneMarquee: false,
 
       // 彈窗顯示狀態統整
       showPopStatus: {
@@ -1529,8 +1530,12 @@ export default {
         this.getPayGroup();
         this.checkEntryBlockStatus();
         this.actionSetRechargeConfig();
-        this.actionSetAnnouncementList({ type: 1 });
       }
+    });
+  },
+  mounted() {
+    this.actionSetAnnouncementList({ type: 1 }).then(() => {
+      this.isDoneMarquee = true;
     });
   },
   destroyed() {

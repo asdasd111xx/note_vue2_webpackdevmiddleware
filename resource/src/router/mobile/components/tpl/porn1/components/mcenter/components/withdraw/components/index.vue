@@ -2,7 +2,7 @@
   <div :class="$style['withdraw-wrap']">
     <!-- 跑馬燈 -->
     <marquee
-      v-if="marqueeList && marqueeList.length > 0"
+      v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
       :list="marqueeList"
       :titleList="marqueeTitle"
       :origin="'withdraw'"
@@ -652,6 +652,8 @@ export default {
       isSendSubmit: false,
       isSerial: false,
       isShowMore: true,
+      isDoneMarquee: false,
+
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -811,7 +813,6 @@ export default {
           this.getUserStat();
           this.getNowOpenWallet();
           this.getBounsAccount();
-          this.actionSetAnnouncementList({ type: 2 });
         });
 
         this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
@@ -848,6 +849,10 @@ export default {
     // if (this.memInfo.auto_transfer.enable) {
     //   this.balanceBack();
     // }
+
+    this.actionSetAnnouncementList({ type: 2 }).then(() => {
+      this.isDoneMarquee = true;
+    });
   },
   computed: {
     ...mapGetters({

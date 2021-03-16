@@ -85,22 +85,30 @@ export default {
     // 只取跑馬燈 Title 的資料
     newsTitleList() {
       return this.titleList;
+    },
+    // 確認跑馬燈的資料中，有任一 announceSwitch 開啟
+    hasAnySwitch() {
+      return this.newslist.find(item => item.announceSwitch === 1);
     }
   },
   created() {
-    if (
-      this.origin === "deposit" &&
-      !localStorage.getItem("do-not-show-deposit-post")
-    ) {
-      this.togglePopup();
-    }
+    if (this.list?.length <= 0 || !this.hasAnySwitch) return;
 
-    if (
-      this.origin === "withdraw" &&
-      !localStorage.getItem("do-not-show-withdraw-post")
-    ) {
-      this.togglePopup();
-    }
+    this.$nextTick(() => {
+      if (
+        this.origin === "deposit" &&
+        !localStorage.getItem("do-not-show-deposit-post")
+      ) {
+        this.togglePopup();
+      }
+
+      if (
+        this.origin === "withdraw" &&
+        !localStorage.getItem("do-not-show-withdraw-post")
+      ) {
+        this.togglePopup();
+      }
+    });
   },
   mounted() {
     this.currentLeft = this.$refs.container.offsetWidth;
@@ -198,6 +206,7 @@ export default {
 
   .title-item {
     padding-right: 10px;
+    white-space: nowrap;
   }
 }
 
