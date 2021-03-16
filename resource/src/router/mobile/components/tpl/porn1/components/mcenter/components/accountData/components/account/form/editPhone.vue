@@ -171,8 +171,7 @@ export default {
       },
       toggleCaptcha: false,
       captcha: null,
-      edit: false,
-      verifiSucc: false
+      edit: false
     };
   },
   computed: {
@@ -267,16 +266,18 @@ export default {
       return {
         label: this.$text("S_ORIGINAL_PHONE"),
         // 目前億元/鴨博皆接開關判斷可不可修改手機號碼
-        isShow: this.verifiSucc ? this.edit : this.verifiSucc
+        isShow: this.hasVerified ? this.edit : this.hasVerified
         // isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone && this.hasVerified
       };
     },
     newPhone() {
+      const phoneLabel=this.hasVerified ? this.edit : this.hasVerified
       return {
         // label: this.memInfo.phone.phone && !this.isfromWithdraw
         //   ? this.$text('S_NEW_PHONE')
         //   : this.$text('S_TEL'),
-        label: this.$text("S_TEL", "手机号码"),
+        // label: this.$text("S_TEL", "手机号码"),
+        label:phoneLabel? this.$text('S_NEW_PHONE') : this.$text('S_TEL'),
         isShow: true
       };
     },
@@ -289,8 +290,7 @@ export default {
     sendBtn() {
       return {
         label: this.$text("S_GET_VERIFICATION_CODE", "获取验证码"),
-        isShow:
-          this.info.verification || this.isfromWithdraw || this.isfromSWAG,
+        isShow:this.info.verification || this.isfromWithdraw || this.isfromSWAG,
         countdownSec: this.countdownSec
       };
     }
@@ -313,10 +313,9 @@ export default {
     }).then(response => {
       if (response && response.result === "ok") {
         this.info.verification = response.ret.config[this.info.key].code;
-        this.hasVerified = response.ret.user.phone;
+        this.hasVerified = response.ret.user.phone;//是否已驗證
         this.phoneHeadOption = response.ret.config.phone.country_codes;
         this.edit = response.ret.config.phone.editable;
-        this.verifiSucc = response.ret.user.phone; //是否已驗證
       }
     });
   },
@@ -367,8 +366,9 @@ export default {
           }
         } else {
           //   this.tipMsg = '手机格式不符合要求';
-          if (!this.hasVerified) {
-            this.isVerifyPhone = false;
+          // if (!this.hasVerified)
+          if (this.edit) {
+            this.isVerifyPhone = true;
           }
         }
       }
