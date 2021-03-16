@@ -608,7 +608,7 @@ export default {
         return mcenter.accountPhoneEdit({
           params: {
             phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
-            old_phone:this.oldValue?this.oldValue:this.newValue
+            old_phone:this.oldValue?`${this.phoneHead.replace("+", "")}-${this.oldValue}`:`${this.phoneHead.replace("+", "")}-${this.newValue}`
           },
           success: () => {
             setTimeout(() => {
