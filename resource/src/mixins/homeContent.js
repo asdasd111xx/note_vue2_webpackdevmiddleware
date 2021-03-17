@@ -660,11 +660,17 @@ export default {
                 //     newWindow.close();
                 // })
                 // return;
+                let cid = !this.loginStatus
+                  ? getCookie("guestCid")
+                  : getCookie("cid");
 
                 const getThridUrl = () =>
                   goLangApiRequest({
                     method: "get",
-                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`
+                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`,
+                    headers: {
+                      cid: cid
+                    }
                   }).then(res => {
                     localStorage.removeItem("is-open-game");
                     this.isLoading = false;
