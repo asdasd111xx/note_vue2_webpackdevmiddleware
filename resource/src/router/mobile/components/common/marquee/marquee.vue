@@ -29,6 +29,7 @@
         v-if="showPopStatus.type === 'popup'"
         :list="newslist"
         :origin="origin"
+        :isFirstShow="isFirstShow"
         @close="togglePopup"
       />
     </template>
@@ -63,6 +64,8 @@ export default {
       totalWidth: 0,
       currentLeft: 0,
       paused: false,
+
+      isFirstShow: false,
 
       // 彈窗顯示狀態統整
       showPopStatus: {
@@ -99,6 +102,7 @@ export default {
         this.origin === "deposit" &&
         !localStorage.getItem("do-not-show-deposit-post")
       ) {
+        this.isFirstShow = true;
         this.togglePopup();
       }
 
@@ -106,6 +110,7 @@ export default {
         this.origin === "withdraw" &&
         !localStorage.getItem("do-not-show-withdraw-post")
       ) {
+        this.isFirstShow = true;
         this.togglePopup();
       }
     });
@@ -160,6 +165,7 @@ export default {
       // switchType = 1 為開啟 popup ; 0 則不顯示
       if (switchType === 0) return;
       this.togglePopup();
+      this.isFirstShow = false;
     }
   }
 };
@@ -198,6 +204,10 @@ export default {
 
   &.ey1 {
     color: #ff7171;
+  }
+
+  &.sg1 {
+    color: #be9e7f;
   }
 }
 

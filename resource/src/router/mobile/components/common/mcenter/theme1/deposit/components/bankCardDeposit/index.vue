@@ -1530,12 +1530,10 @@ export default {
         this.getPayGroup();
         this.checkEntryBlockStatus();
         this.actionSetRechargeConfig();
+        this.actionSetAnnouncementList({ type: 1 }).then(() => {
+          this.isDoneMarquee = true;
+        });
       }
-    });
-  },
-  mounted() {
-    this.actionSetAnnouncementList({ type: 1 }).then(() => {
-      this.isDoneMarquee = true;
     });
   },
   destroyed() {

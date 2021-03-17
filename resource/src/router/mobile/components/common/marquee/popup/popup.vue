@@ -53,6 +53,9 @@ export default {
     list: {
       type: Array,
       default: []
+    },
+    isFirstShow: {
+      type: Boolean
     }
   },
   data() {
@@ -68,15 +71,20 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     isShowTick() {
-      let isFromDeposit =
+      let hasTickDepositPost =
         this.origin === "deposit" &&
         localStorage.getItem("do-not-show-deposit-post");
 
-      let isFromWithdraw =
+      let hasTickWithdrawPost =
         this.origin === "withdraw" &&
         localStorage.getItem("do-not-show-withdraw-post");
 
-      if (isFromDeposit || isFromWithdraw || this.origin === "home") {
+      if (
+        hasTickDepositPost ||
+        hasTickWithdrawPost ||
+        !this.isFirstShow ||
+        this.origin === "home"
+      ) {
         return false;
       }
 

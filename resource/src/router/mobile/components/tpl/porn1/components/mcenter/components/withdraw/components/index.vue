@@ -813,6 +813,9 @@ export default {
           this.getUserStat();
           this.getNowOpenWallet();
           this.getBounsAccount();
+          this.actionSetAnnouncementList({ type: 2 }).then(() => {
+            this.isDoneMarquee = true;
+          });
         });
 
         this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
@@ -849,10 +852,6 @@ export default {
     // if (this.memInfo.auto_transfer.enable) {
     //   this.balanceBack();
     // }
-
-    this.actionSetAnnouncementList({ type: 2 }).then(() => {
-      this.isDoneMarquee = true;
-    });
   },
   computed: {
     ...mapGetters({
