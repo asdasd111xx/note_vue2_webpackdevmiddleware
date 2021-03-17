@@ -156,8 +156,9 @@
       <page-loading :is-show="isLoading" />
       <popup-verification
         v-if="isShowCaptcha"
-        :is-show-captcha.sync="isShowCaptcha"
-        :captcha.sync="captchaData"
+        @show-captcha="showCaptcha"
+        @set-captcha="setCaptcha"
+        :page-type="'default'"
       />
     </div>
   </transition>
@@ -200,8 +201,8 @@ export default {
       countdownSec: 0,
       checkBankSwitch: false,
       timer: null,
-      toggleCaptcha: false,
-      captcha: null,
+      thirdyCaptchaObj: null,
+      isShowCaptcha: false,
       checkFormData: false,
       isLoading: false,
       ttl: 60,
@@ -303,29 +304,13 @@ export default {
     showKeyring() {
       return this.memInfo.config.player_user_bank_mobile;
     },
-    isShowCaptcha: {
-      get() {
-        return this.toggleCaptcha;
-      },
-      set(value) {
-        return (this.toggleCaptcha = value);
-      }
-    },
-    captchaData: {
-      get() {
-        return this.captcha;
-      },
-      set(value) {
-        return (this.captcha = value);
-      }
-    },
     redirect() {
       let redirect = this.$route.query.redirect || "home";
       return redirect;
     }
   },
   watch: {
-    captchaData(val) {
+    thirdyCaptchaObj(val) {
       this.sendKeyring();
     }
   },
@@ -335,6 +320,12 @@ export default {
       "actionSetGlobalMessage",
       "actionVerificationFormData"
     ]),
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
+    },
+    showCaptcha() {
+      this.isShowCaptcha = !this.isShowCaptcha;
+    },
     onClose(isBack) {
       if (this.isSlider) {
         this.$nextTick(() => {
@@ -511,8 +502,8 @@ export default {
           return;
         }
 
-        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-        this.toggleCaptcha = true;
+        // 彈驗證窗並利用Watch thirdyCaptchaObj來呼叫 getKeyring()
+        this.showCaptcha();
       });
     },
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
@@ -541,7 +532,7 @@ export default {
           phone: `${this.phoneHead.replace("+", "")}-${
             this.formData.phone.value
           }`,
-          captcha_text: this.captchaData ? this.captchaData : ""
+          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : ""
         }
       })
         .then(res => {

@@ -3,11 +3,16 @@
     <div :class="$style['mask']" />
     <div :class="$style['modal-wrap']">
       <!-- 彈窗內容 -->
-      <div :class="$style['modal-content']">
+      <div
+        :class="[
+          $style['modal-content'],
+          { [$style['hasBorderBottom']]: origin === 'home' }
+        ]"
+      >
         <!-- 內容顯示 -->
         <div :class="$style['modal-news']">
           <div v-for="item in list" :key="item.id" :class="$style['news-item']">
-            <h4 :class="$style['news-title']">{{ item.title }}</h4>
+            <pre :class="$style['news-title']">{{ item.title }}</pre>
             <p
               :class="$style['news-content']"
               v-html="item.content.replace('\n', '<br>')"
@@ -53,6 +58,9 @@ export default {
     list: {
       type: Array,
       default: []
+    },
+    isFirstShow: {
+      type: Boolean
     }
   },
   data() {
@@ -68,15 +76,20 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     isShowTick() {
-      let isFromDeposit =
+      let hasTickDepositPost =
         this.origin === "deposit" &&
         localStorage.getItem("do-not-show-deposit-post");
 
-      let isFromWithdraw =
+      let hasTickWithdrawPost =
         this.origin === "withdraw" &&
         localStorage.getItem("do-not-show-withdraw-post");
 
-      if (isFromDeposit || isFromWithdraw || this.origin === "home") {
+      if (
+        hasTickDepositPost ||
+        hasTickWithdrawPost ||
+        !this.isFirstShow ||
+        this.origin === "home"
+      ) {
         return false;
       }
 
@@ -125,7 +138,10 @@ export default {
 
 .modal-content {
   padding: 15px 20px;
-  border-bottom: 1px solid #eee;
+
+  &.hasBorderBottom {
+    border-bottom: 1px solid #eee;
+  }
 }
 
 .modal-news {
@@ -168,10 +184,13 @@ export default {
 
 .news-title {
   line-height: 23px;
-  margin-bottom: 5px;
+  margin: 0 0 5px;
   font-size: 18px;
   font-weight: normal;
   color: #414655;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
 .news-content {

@@ -120,8 +120,9 @@
 
     <popup-verification
       v-if="isShowCaptcha"
-      :is-show-captcha.sync="isShowCaptcha"
-      :captcha.sync="captchaData"
+      @show-captcha="showCaptcha"
+      @set-captcha="setCaptcha"
+      :page-type="'default'"
     />
     <service-tips :type="'phone'" />
   </div>
@@ -169,8 +170,8 @@ export default {
         verification: false,
         isShow: true
       },
-      toggleCaptcha: false,
-      captcha: null,
+      thirdyCaptchaObj: null,
+      isShowCaptcha: false,
       edit: false
     };
   },
@@ -187,22 +188,6 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    isShowCaptcha: {
-      get() {
-        return this.toggleCaptcha;
-      },
-      set(value) {
-        return (this.toggleCaptcha = value);
-      }
-    },
-    captchaData: {
-      get() {
-        return this.captcha;
-      },
-      set(value) {
-        return (this.captcha = value);
-      }
     },
     isfromSWAG() {
       return this.$route.query.redirect
@@ -271,13 +256,13 @@ export default {
       };
     },
     newPhone() {
-      const phoneLabel=this.hasVerified ? this.edit : this.hasVerified
+      const phoneLabel = this.hasVerified ? this.edit : this.hasVerified;
       return {
         // label: this.memInfo.phone.phone && !this.isfromWithdraw
         //   ? this.$text('S_NEW_PHONE')
         //   : this.$text('S_TEL'),
         // label: this.$text("S_TEL", "手机号码"),
-        label:phoneLabel? this.$text('S_NEW_PHONE') : this.$text('S_TEL'),
+        label: phoneLabel ? this.$text("S_NEW_PHONE") : this.$text("S_TEL"),
         isShow: true
       };
     },
@@ -290,13 +275,14 @@ export default {
     sendBtn() {
       return {
         label: this.$text("S_GET_VERIFICATION_CODE", "获取验证码"),
-        isShow:this.info.verification || this.isfromWithdraw || this.isfromSWAG,
+        isShow:
+          this.info.verification || this.isfromWithdraw || this.isfromSWAG,
         countdownSec: this.countdownSec
       };
     }
   },
   watch: {
-    captchaData(val) {
+    thirdyCaptchaObj() {
       this.handleSend();
     }
   },
@@ -313,7 +299,7 @@ export default {
     }).then(response => {
       if (response && response.result === "ok") {
         this.info.verification = response.ret.config[this.info.key].code;
-        this.hasVerified = response.ret.user.phone;//是否已驗證
+        this.hasVerified = response.ret.user.phone; //是否已驗證
         this.phoneHeadOption = response.ret.config.phone.country_codes;
         this.edit = response.ret.config.phone.editable;
       }
@@ -331,6 +317,16 @@ export default {
       "actionVerificationFormData",
       "actionSetGlobalMessage"
     ]),
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
+    },
+    showCaptcha(toggle) {
+      if (toggle !== undefined) {
+        this.isShowCaptcha = toggle;
+      } else {
+        this.isShowCaptcha = !this.isShowCaptcha;
+      }
+    },
     verification(value, target) {
       this.tipMsg = "";
 
@@ -404,8 +400,8 @@ export default {
           return;
         }
 
-        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-        this.toggleCaptcha = true;
+        // 彈驗證窗並利用Watch thirdyCaptchaObj 來呼叫 getKeyring()
+        this.showCaptcha();
       });
     },
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
@@ -428,7 +424,7 @@ export default {
 
       this.isSendSMS = true;
       let captchaParams = {};
-      captchaParams["captcha_text"] = this.captchaData || "";
+      captchaParams["captcha_text"] = this.thirdyCaptchaObj || "";
 
       let params = {
         phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
@@ -466,10 +462,10 @@ export default {
               }
             }
             this.isSendSMS = false;
-            this.toggleCaptcha = false;
+            this.showCaptcha(false);
           })
           .catch(error => {
-            this.toggleCaptcha = false;
+            this.showCaptcha(false);
             this.countdownSec = "";
             this.isSendSMS = false;
             console.log(error.response);
@@ -523,10 +519,10 @@ export default {
               }
             }
             this.isSendSMS = false;
-            this.toggleCaptcha = false;
+            this.showCaptcha(false);
           })
           .catch(error => {
-            this.toggleCaptcha = false;
+            this.showCaptcha(false);
             this.countdownSec = "";
             this.isSendSMS = false;
 
@@ -608,7 +604,9 @@ export default {
         return mcenter.accountPhoneEdit({
           params: {
             phone: `${this.phoneHead.replace("+", "")}-${this.newValue}`,
-            old_phone:this.oldValue?this.oldValue:this.newValue
+            old_phone: this.oldValue
+              ? `${this.phoneHead.replace("+", "")}-${this.oldValue}`
+              : `${this.phoneHead.replace("+", "")}-${this.newValue}`
           },
           success: () => {
             setTimeout(() => {

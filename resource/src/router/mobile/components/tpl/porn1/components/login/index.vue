@@ -93,9 +93,9 @@
               <!-- 3拼圖驗證/4手繪/5行為驗證 -->
               <thirdy-verification
                 v-if="[3, 4, 5].includes(memInfo.config.login_captcha_type)"
-                ref="thirdyObj"
+                ref="thirdyCaptchaObj"
+                @set-captcha="setCaptcha"
                 :page-type="'login'"
-                :thirdy-obj.sync="thirdyObj"
               />
               <!-- 驗證碼 -->
               <div
@@ -236,12 +236,12 @@ export default {
   },
   data() {
     return {
-      thirdyData: null,
+      thirdyCaptchaObj: null,
       script: null
     };
   },
   watch: {
-    thirdyObj() {
+    thirdyCaptchaObj() {
       this.errMsg = "";
     }
   },
@@ -253,14 +253,6 @@ export default {
       memInfo: "getMemInfo",
       onlineService: "getOnlineService"
     }),
-    thirdyObj: {
-      get() {
-        return this.thirdyData;
-      },
-      set(value) {
-        this.thirdyData = value;
-      }
-    },
     headerConfig() {
       return {
         prev: true,
@@ -318,6 +310,9 @@ export default {
   methods: {
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
+    },
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
     }
   }
 };

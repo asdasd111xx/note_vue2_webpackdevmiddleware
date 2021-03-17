@@ -260,8 +260,10 @@ export default {
           }
         });
       }
-      registFc.then(result => {
-        if (result.data.result === "ok" || result.status === "000") {
+      registFc.then(newResult => {
+        let result = this.themeTPL === "ey1" ? newResult.data : newResult;
+
+        if (result.result === "ok" || result.status === "000") {
           this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
 
           this.isShow = false;
@@ -279,37 +281,40 @@ export default {
 
           this.$emit("close");
         } else {
-          if (result.data.errors) {
-            this.getCaptcha();
-            if (result.data.errors.username) {
-              this.texts.username.error = result.data.errors.username;
+          if (result.errors) {
+            if (this.memInfo.config.friend_captcha_type === 1) {
+              this.getCaptcha();
+            }
+
+            if (result.errors.username) {
+              this.texts.username.error = result.errors.username;
               this.allText.username.error = true;
             }
 
-            if (result.data.errors.password) {
-              this.texts.password.error = result.data.errors.password;
+            if (result.errors.password) {
+              this.texts.password.error = result.errors.password;
               this.allText.password.error = true;
             }
 
-            if (result.data.errors.confirm_password) {
+            if (result.errors.confirm_password) {
               this.texts.confirm_password.error =
-                result.data.errors.confirm_password;
+                result.errors.confirm_password;
               this.allText.confirm_password.error = true;
             }
 
-            if (result.data.errors.name) {
-              this.texts.name.error = result.data.errors.name;
+            if (result.errors.name) {
+              this.texts.name.error = result.errors.name;
               this.allText.name.error = true;
             }
 
-            if (result.data.errors.captcha_text) {
-              this.captchaErrorMsg = result.data.errors.captcha_text;
+            if (result.errors.captcha_text) {
+              this.captchaErrorMsg = result.errors.captcha_text;
               this.captchaError = true;
             }
             return;
           }
 
-          this.msg = result.data.msg;
+          this.msg = result.msg;
           return;
         }
       });

@@ -216,8 +216,9 @@
     </div>
     <popup-verification
       v-if="isShowCaptcha"
-      :is-show-captcha.sync="isShowCaptcha"
-      :captcha.sync="captchaData"
+      @show-captcha="showCaptcha"
+      @set-captcha="setCaptcha"
+      :page-type="'default'"
     />
   </div>
 </template>
@@ -255,8 +256,8 @@ export default {
       keyring: "",
       password: "",
       confirm_password: "",
-      toggleCaptcha: false,
-      captcha: null
+      thirdyCaptchaObj: null,
+      isShowCaptcha: false
     };
   },
   currentMethod() {
@@ -288,22 +289,6 @@ export default {
         noBottomBorder: true
       };
     },
-    isShowCaptcha: {
-      get() {
-        return this.toggleCaptcha;
-      },
-      set(value) {
-        return (this.toggleCaptcha = value);
-      }
-    },
-    captchaData: {
-      get() {
-        return this.captcha;
-      },
-      set(value) {
-        return (this.captcha = value);
-      }
-    },
     checkSubmit() {
       if (this.currentMethod === "phone-step-1") {
         return this.username && this.keyring;
@@ -316,7 +301,7 @@ export default {
     }
   },
   watch: {
-    captchaData() {
+    thirdyCaptchaObj() {
       this.getKeyring();
     }
   },
@@ -329,6 +314,16 @@ export default {
       "actionSetGlobalMessage",
       "actionVerificationFormData"
     ]),
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
+    },
+    showCaptcha(toggle) {
+      if (toggle !== undefined) {
+        this.isShowCaptcha = toggle;
+      } else {
+        this.isShowCaptcha = !this.isShowCaptcha;
+      }
+    },
     toggleEye(key) {
       let pwd = document.getElementById("pwd"),
         confPwd = document.getElementById("confPwd");
@@ -448,7 +443,7 @@ export default {
         }
 
         // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-        this.toggleCaptcha = true;
+        this.showCaptcha();
       });
     },
     // 忘記密碼發送簡訊(驗證碼)
@@ -469,7 +464,7 @@ export default {
         url: "/api/v1/c/player/forget/password/sms",
         data: {
           username: this.username,
-          captcha_text: this.captchaData ? this.captchaData : ""
+          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : ""
         }
       })
         .then(res => {
@@ -512,9 +507,7 @@ export default {
           }
         });
 
-      if (this.toggleCaptcha) {
-        this.toggleCaptcha = false;
-      }
+      this.showCaptcha(false);
     },
     // 驗證簡訊(驗證碼)
     verifySms(type) {

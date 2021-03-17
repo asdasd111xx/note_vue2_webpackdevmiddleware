@@ -257,10 +257,10 @@ export default {
       // }
       let result = "";
       for (let idx in split) {
-        if (idx === 0) {
+        if (idx === "0") {
           result += split[0];
         } else {
-          result += split[idx] + "<br />";
+          result += "<br />" + split[idx];
         }
       }
       return result;

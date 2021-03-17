@@ -89,7 +89,7 @@
                       !formData.amount
                   }
                 ]"
-                @click="showCaptcha"
+                @click="showCaptchaPopup"
               >
                 {{ ttl > 0 ? `${ttl}s` : "获取验证码" }}
               </div>
@@ -145,8 +145,9 @@
     <tips-credit-trans />
     <popup-verification
       v-if="isShowCaptcha"
-      :is-show-captcha.sync="isShowCaptcha"
-      :captcha.sync="captchaData"
+      @show-captcha="showCaptcha"
+      @set-captcha="setCaptcha"
+      :page-type="'default'"
     />
   </div>
 </template>
@@ -164,8 +165,8 @@ export default {
   data() {
     return {
       showSerial: false,
-      captcha: null,
-      toggleCaptcha: false
+      thirdyCaptchaObj: null,
+      isShowCaptcha: false
     };
   },
   components: {
@@ -177,39 +178,29 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo"
-    }),
-    isShowCaptcha: {
-      get() {
-        return this.toggleCaptcha;
-      },
-      set(value) {
-        return (this.toggleCaptcha = value);
-      }
-    },
-    captchaData: {
-      get() {
-        return this.captcha;
-      },
-      set(value) {
-        return (this.captcha = value);
-      }
-    }
+    })
   },
   created() {
     this.getRechargeBalance();
     this.actionSetRechargeConfig();
   },
   watch: {
-    captchaData(val) {
-      this.getKeyring();
+    thirdyCaptchaObj(val) {
+      this.getKeyring(val);
     }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetUserdata"]),
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
+    },
+    showCaptcha() {
+      this.isShowCaptcha = !this.isShowCaptcha;
+    },
     toggleSerial() {
       this.showSerial = !this.showSerial;
     },
-    showCaptcha() {
+    showCaptchaPopup() {
       if (!this.formData.phone) {
         return;
       }
@@ -218,7 +209,7 @@ export default {
 
       Promise.all(params).then(res => {
         if (res[0] === true) {
-          this.toggleCaptcha = true;
+          this.showCaptcha();
         }
       });
     }

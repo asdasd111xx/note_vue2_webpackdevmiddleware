@@ -29,6 +29,7 @@
         v-if="showPopStatus.type === 'popup'"
         :list="newslist"
         :origin="origin"
+        :isFirstShow="isFirstShow"
         @close="togglePopup"
       />
     </template>
@@ -64,6 +65,8 @@ export default {
       currentLeft: 0,
       paused: false,
 
+      isFirstShow: false,
+
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -85,22 +88,32 @@ export default {
     // 只取跑馬燈 Title 的資料
     newsTitleList() {
       return this.titleList;
+    },
+    // 確認跑馬燈的資料中，有任一 announceSwitch 開啟
+    hasAnySwitch() {
+      return this.newslist.find(item => item.announceSwitch === 1);
     }
   },
   created() {
-    if (
-      this.origin === "deposit" &&
-      !localStorage.getItem("do-not-show-deposit-post")
-    ) {
-      this.togglePopup();
-    }
+    if (this.list?.length <= 0 || !this.hasAnySwitch) return;
 
-    if (
-      this.origin === "withdraw" &&
-      !localStorage.getItem("do-not-show-withdraw-post")
-    ) {
-      this.togglePopup();
-    }
+    this.$nextTick(() => {
+      if (
+        this.origin === "deposit" &&
+        !localStorage.getItem("do-not-show-deposit-post")
+      ) {
+        this.isFirstShow = true;
+        this.togglePopup();
+      }
+
+      if (
+        this.origin === "withdraw" &&
+        !localStorage.getItem("do-not-show-withdraw-post")
+      ) {
+        this.isFirstShow = true;
+        this.togglePopup();
+      }
+    });
   },
   mounted() {
     this.currentLeft = this.$refs.container.offsetWidth;
@@ -152,6 +165,7 @@ export default {
       // switchType = 1 為開啟 popup ; 0 則不顯示
       if (switchType === 0) return;
       this.togglePopup();
+      this.isFirstShow = false;
     }
   }
 };
@@ -191,6 +205,10 @@ export default {
   &.ey1 {
     color: #ff7171;
   }
+
+  &.sg1 {
+    color: #be9e7f;
+  }
 }
 
 .news-content-text {
@@ -198,6 +216,7 @@ export default {
 
   .title-item {
     padding-right: 10px;
+    white-space: nowrap;
   }
 }
 
