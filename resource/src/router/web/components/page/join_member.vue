@@ -778,7 +778,10 @@ export default {
       }
 
       if (key === "confirm_password") {
-        if (this.allValue.confirm_password !== this.allValue.password) {
+        if (this.allValue.confirm_password === "") {
+          this.allTip.confirm_password = this.joinMemInfo["password"].errorMsg;
+          return;
+        } else if (this.allValue.confirm_password !== this.allValue.password) {
           this.allTip.confirm_password = msg;
           return;
         } else {
@@ -979,14 +982,19 @@ export default {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
-        if (res.data && res.data.ret.cookie) {
+
+        let cookieData;
+        if (res.data) {
+          cookieData = this.themeTPL === "ey1" ? res.data : res.data.ret;
+        }
+        if (cookieData && res.data && cookieData.cookie) {
           try {
             const { cookie } = res.data;
             for (const [key, value] of Object.entries(cookie)) {
               setCookie(key, value);
             }
           } catch (e) {
-            setCookie("cid", res.data.ret.cookie.cid);
+            setCookie("cid", cookieData.cid);
           }
           // GA流量統計
           window.dataLayer.push({
