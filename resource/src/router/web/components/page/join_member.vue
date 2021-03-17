@@ -994,7 +994,7 @@ export default {
               setCookie(key, value);
             }
           } catch (e) {
-            setCookie("cid", cookieData.cid);
+            setCookie("cid", cookieData.cookie.cid);
           }
           // GA流量統計
           window.dataLayer.push({
