@@ -102,11 +102,13 @@ export default {
 
         // 拼圖驗證
         case 3:
-          if (!this.thirdyObj) {
+        case 4:
+        case 5:
+          if (!this.thirdyCaptchaObj) {
             this.errMsg = "请先点击按钮进行验证";
             return;
           }
-          this.loginCheck({ captcha: this.thirdyObj });
+          this.loginCheck({ captcha: this.thirdyCaptchaObj });
           this.thirdyData = null;
           break;
 
@@ -218,7 +220,7 @@ export default {
         this.isLoading = false;
 
         // 重置驗證碼
-        if (this.$refs.thirdyObj) this.$refs.thirdyObj.ret = null;
+        if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
         this.captcha = "";
 
         if (

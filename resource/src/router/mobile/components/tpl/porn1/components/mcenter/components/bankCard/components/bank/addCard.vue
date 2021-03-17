@@ -246,8 +246,9 @@
 
     <popup-verification
       v-if="isShowCaptcha"
-      :is-show-captcha.sync="isShowCaptcha"
-      :captcha.sync="captchaData"
+      @show-captcha="showCaptcha"
+      @set-captcha="setCaptcha"
+      :page-type="'default'"
     />
 
     <message v-if="msg" @close="clearMsg">

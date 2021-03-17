@@ -261,11 +261,13 @@
           </div>
         </form>
 
-        <puzzle-verification
-          v-if="memInfo.config.register_captcha_type === 3"
-          ref="puzzleVer"
-          :class="$style['puzzle-block']"
-          :puzzle-obj.sync="puzzleObj"
+        <!-- 3拼圖驗證/4手繪/5行為驗證 -->
+        <thirdy-verification
+          v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
+          ref="thirdyCaptchaObj"
+          @set-captcha="setCaptcha"
+          :class="$style['thirdy-block']"
+          :page-type="'register'"
         />
       </div>
 
@@ -310,7 +312,7 @@ import datepickerLang from "@/lib/datepicker_lang";
 import joinMemInfo from "@/config/joinMemInfo";
 import mcenter from "@/api/mcenter";
 import member from "@/api/member";
-import puzzleVerification from "@/components/puzzleVerification";
+import thirdyVerification from "@/components/thirdyVerification";
 import slideVerification from "@/components/slideVerification";
 import split from "lodash/split";
 import vSelect from "vue-select";
@@ -320,7 +322,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   components: {
     slideVerification,
-    puzzleVerification,
+    thirdyVerification,
     vSelect,
     datepicker,
     pageLoading: () =>
@@ -408,7 +410,7 @@ export default {
       countryCode: "",
       verifyTips: "",
       lock: false,
-      puzzleData: null,
+      thirdyCaptchaObj: null,
       registerData: [],
       selectData: {
         phone: {
@@ -435,14 +437,6 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
-    puzzleObj: {
-      get() {
-        return this.puzzleData;
-      },
-      set(value) {
-        this.puzzleData = value;
-      }
-    },
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
@@ -677,7 +671,10 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     getCaptcha() {
-      if (this.isGetCaptcha) {
+      if (
+        this.isGetCaptcha ||
+        this.memInfo.config.register_captcha_type !== 1
+      ) {
         return;
       }
 
@@ -890,8 +887,8 @@ export default {
       }
 
       // 拼圖
-      if (this.memInfo.config.register_captcha_type === 3) {
-        if (!this.puzzleObj) {
+      if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
+        if (!this.thirdyCaptchaObj) {
           this.allTip["confirm_password"] = "请先点击按钮进行验证";
           this.isLoading = false;
           return;
@@ -899,8 +896,8 @@ export default {
           this.allTip["confirm_password"] = "";
         }
 
-        this.allValue.captcha_text = this.puzzleObj;
-        this.puzzleData = null;
+        this.allValue.captcha_text = this.thirdyCaptchaObj;
+        this.thirdyCaptchaObj = null;
       }
 
       // 圖形
@@ -981,7 +978,7 @@ export default {
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);
-        if (this.$refs.puzzleVer) this.$refs.puzzleVer.ret = null;
+        if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
 
         let cookieData;
         if (res.data) {
@@ -1076,6 +1073,10 @@ export default {
           this.guestAmount = res.data.totalAmount;
         }
       });
+    },
+
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
     }
   }
 };

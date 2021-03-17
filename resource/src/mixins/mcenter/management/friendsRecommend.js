@@ -282,7 +282,10 @@ export default {
           this.$emit("close");
         } else {
           if (result.errors) {
-            this.getCaptcha();
+            if (this.memInfo.config.friend_captcha_type === 1) {
+              this.getCaptcha();
+            }
+
             if (result.errors.username) {
               this.texts.username.error = result.errors.username;
               this.allText.username.error = true;

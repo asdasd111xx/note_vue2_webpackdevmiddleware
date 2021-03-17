@@ -80,7 +80,7 @@
               @keydown.13="onSubmit"
             />
             <input
-              v-else="key === 'password' || key === 'confirm_password'"
+              v-else-if="key === 'password' || key === 'confirm_password'"
               v-validate="'required'"
               :class="[
                 {
@@ -154,9 +154,9 @@
         </div>
         <popup-verification
           v-if="isShowCaptcha"
-          :is-show-captcha.sync="isShowCaptcha"
-          :captcha.sync="captchaData"
-          :friend_captcha_type="true"
+          @show-captcha="showCaptcha"
+          @set-captcha="setCaptcha"
+          :page-type="'friends'"
         />
         <button @click="checkInput">{{ $text("S_ADD") }}</button>
       </div>
@@ -200,12 +200,14 @@ export default {
       puzzleData: null,
       isGetCaptcha: false, // 重新取得驗證碼
       captchaImg: "",
-      toggleCaptcha: false
+      thirdyCaptchaObj: null,
+      isShowCaptcha: false
     };
   },
   watch: {
-    captchaData() {
-      if (this.memInfo.config.friend_captcha_type != 1) {
+    thirdyCaptchaObj(val) {
+      if (this.memInfo.config.friend_captcha_type != 1 && val) {
+        this.allValue["captcha_text"] = val;
         this.onSubmit();
       }
     }
@@ -228,22 +230,6 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
-    isShowCaptcha: {
-      get() {
-        return this.toggleCaptcha;
-      },
-      set(value) {
-        return (this.toggleCaptcha = value);
-      }
-    },
-    captchaData: {
-      get() {
-        return this.allValue["captcha_text"];
-      },
-      set(value) {
-        return (this.allValue["captcha_text"] = value);
-      }
     }
   },
   created() {
@@ -263,11 +249,17 @@ export default {
       }
 
       if ([2, 3, 4, 5].includes(this.memInfo.config.friend_captcha_type)) {
-        this.toggleCaptcha = true;
+        this.showCaptcha();
       }
     },
     handleSend() {
       this.onSubmit();
+    },
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
+    },
+    showCaptcha() {
+      this.isShowCaptcha = !this.isShowCaptcha;
     }
   }
 };

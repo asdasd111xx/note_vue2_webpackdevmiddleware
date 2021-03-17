@@ -31,8 +31,8 @@ export default {
       time: 0,
       msg: "",
       smsTimer: null,
-      toggleCaptcha: false,
-      captcha: null
+      thirdyCaptchaObj: null,
+      isShowCaptcha: false
     };
   },
   computed: {
@@ -42,22 +42,6 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    isShowCaptcha: {
-      get() {
-        return this.toggleCaptcha;
-      },
-      set(value) {
-        return (this.toggleCaptcha = value);
-      }
-    },
-    captchaData: {
-      get() {
-        return this.captcha;
-      },
-      set(value) {
-        return (this.captcha = value);
-      }
     },
     username() {
       if (!this.memInfo.user.name) {
@@ -107,7 +91,7 @@ export default {
         this.errorMsg = "";
       }
     },
-    captchaData() {
+    thirdyCaptchaObj() {
       this.getKeyring();
     },
     "formData.phone"() {
@@ -173,6 +157,12 @@ export default {
       "actionVerificationFormData",
       "actionSetGlobalMessage"
     ]),
+    setCaptcha(obj) {
+      this.thirdyCaptchaObj = obj;
+    },
+    showCaptcha() {
+      this.isShowCaptcha = !this.isShowCaptcha;
+    },
     sendData() {
       if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
         this.NextStepStatus = false;
@@ -371,8 +361,8 @@ export default {
           return;
         }
 
-        // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-        this.toggleCaptcha = true;
+        // 彈驗證窗並利用Watch thirdyCaptchaObj 來呼叫 getKeyring()
+        this.showCaptcha();
       });
     },
     getKeyring() {
@@ -382,7 +372,7 @@ export default {
       this.lockStatus = true;
 
       let captchaParams = {};
-      captchaParams["captcha_text"] = this.captchaData || "";
+      captchaParams["captcha_text"] = this.thirdyCaptchaObj || "";
 
       axios({
         method: "post",

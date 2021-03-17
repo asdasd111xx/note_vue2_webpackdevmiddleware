@@ -366,7 +366,7 @@ export default {
         });
     },
     // 獲取驗證碼
-    getKeyring() {
+    getKeyring(captcha) {
       if (!this.formData.phone && this.isSendKeyring) {
         return;
       }
@@ -378,7 +378,7 @@ export default {
         url: "/api/v1/c/player/valet/recharge/sms",
         data: {
           phone: "86-" + this.formData.phone,
-          captcha_text: this.captchaData ? this.captchaData : ""
+          captcha_text: captcha ? captcha : ""
         }
       })
         .then(res => {
