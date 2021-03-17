@@ -601,6 +601,9 @@ export default {
           ) {
             userId = this.memInfo.user.id;
           }
+          if (!this.loginStatus) {
+            userId = getCookie("guestUserid");
+          }
           this.isLoading = true;
 
           switch (game.vendor) {
