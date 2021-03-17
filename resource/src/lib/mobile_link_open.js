@@ -259,6 +259,13 @@ export default target => {
 
     if (!store.state.gameData[linkTo]) {
       console.log("游戏未开放");
+      if (!store.state.loginStatus) {
+        if (store.state.webDomain.site === "ey1") {
+          router.push("/mobile/login");
+        } else {
+          router.push("/mobile/joinmember");
+        }
+      }
       return;
     }
 
