@@ -74,11 +74,7 @@ export default {
         }
       }).then(response => {
         this.needFilterGameData =
-          response.status === "000"
-            ? response.errorCode === "00"
-              ? response.data
-              : []
-            : [];
+          response.status === "000" ? response.data : [];
         this.getGameList();
       });
     },

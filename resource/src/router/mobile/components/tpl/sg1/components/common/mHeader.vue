@@ -78,7 +78,7 @@
         @click="setMenuState('balance')"
       >
         <span>
-          {{ membalance.total }}
+          {{ membalance.total + "元" }}
         </span>
         <div>
           <img
