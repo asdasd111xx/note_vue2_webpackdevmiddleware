@@ -94,7 +94,7 @@ export default {
           break;
         // 網易行為驗證
         case 5:
-          src = "http://cstaticdun.126.net/load.min.js";
+          src = "https://cstaticdun.126.net/load.min.js";
           callback = () => {
             this.necCaptchaInit();
           };
