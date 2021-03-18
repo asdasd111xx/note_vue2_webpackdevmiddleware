@@ -16,7 +16,7 @@
           class="title-item"
           v-for="(item, index) in newsTitleList"
           :key="index"
-          @click="handleClick(item.switch)"
+          @click="handleClick()"
         >
           {{ item.title }}
         </span>
@@ -161,9 +161,7 @@ export default {
         window.requestAnimationFrame(this.startMove);
       }
     },
-    handleClick(switchType = 1) {
-      // switchType = 1 為開啟 popup ; 0 則不顯示
-      if (switchType === 0) return;
+    handleClick() {
       this.togglePopup();
       this.isFirstShow = false;
     }
