@@ -106,7 +106,10 @@ export default (params, success = () => {}, fail = () => {}) => {
         //   localStorage.setItem("open-game-link", ret.url + query);
         // }
 
-        localStorage.setItem("open-game-link", ret.url + query);
+        localStorage.setItem(
+          "open-game-link",
+          ret.url.replace("exit_option=3", "exit_option=0") + query
+        );
 
         // 開啟遊戲時強制關閉下方最愛遊戲框
         store.dispatch("actionSetCollectionStatus", false);
