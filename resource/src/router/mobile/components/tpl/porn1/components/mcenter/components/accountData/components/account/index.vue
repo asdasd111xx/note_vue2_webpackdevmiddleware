@@ -260,7 +260,7 @@ export default {
     handleClick(field) {
       if (field.key === "phone" || field.key === "email") {
         //   手機未驗證能設定
-        if (!field.verification || field.btnShow) {
+        if (field.btnShow) {
           this.$router.push({
             path: `/mobile/mcenter/accountData/${field.key}`
           });

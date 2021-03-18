@@ -18,7 +18,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://yb0t.66apples.com';
 
 // 亿元
-// const domain = "https://eyt.66boxing.com/";
+//const domain = "https://eyt.66boxing.com/";
 // Demo
 // const domain = 'https://eyd.688lg.com/';
 // const domain = 'https://ey01.66poo.com/';
@@ -34,7 +34,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://eyd.66apples.com/';
 
 // 丝瓜
-// const domain = "https://sgtt.66boxing.com/";
+//const domain = "https://sgtt.66boxing.com/";
 // Demo
 // const domain = 'https://sgt.66relish.com/';
 // Prod

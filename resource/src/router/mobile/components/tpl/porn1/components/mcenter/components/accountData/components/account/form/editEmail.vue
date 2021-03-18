@@ -161,23 +161,35 @@ export default {
       return this.memInfo.email.email;
     },
     oldEmail() {
+      const emailShow=false;
+      if(this.fieldValue){
+        if(this.edit){
+          this.emailShow=true
+        }else if(this.hasVerified){
+          this.emailShow=this.edit
+        }
+      }
       return {
         label: this.$text("S_ORIGINAL_EMAIL"),
         // 目前億元/鴨博皆接開關判斷可不可修改信箱
-        isShow:
-          (this.fieldValue && this.info.status === "already") ||
-          (this.hasVerified ? this.edit : this.hasVerified)
+        isShow:this.emailShow
       };
     },
     newEmail() {
 
-      const emailLabel=(this.fieldValue && this.info.status === "already") ||
-          (this.hasVerified ? this.edit : this.hasVerified)
+       const emailLabel=false;
+      if(this.fieldValue){
+        if(this.edit){
+          this.emailLabel=true
+        }else if(this.hasVerified){
+          this.emailLabel=this.edit
+        }
+      }
       return {
         label:
-          emailLabel
+          this.emailLabel
             ? this.$text("S_NEW_EMAIL")
-            : this.$text("SS_E_MAIL"),
+            : this.$text("S_NEW_EMAIL2"),
         isShow: true
       };
     },
