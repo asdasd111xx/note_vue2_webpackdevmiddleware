@@ -11,7 +11,11 @@
       >
         <!-- 內容顯示 -->
         <div :class="$style['modal-news']">
-          <div v-for="item in list" :key="item.id" :class="$style['news-item']">
+          <div
+            v-for="item in wrappedList"
+            :key="item.id"
+            :class="$style['news-item']"
+          >
             <pre :class="$style['news-title']">{{ item.title }}</pre>
             <p
               :class="$style['news-content']"
@@ -94,6 +98,13 @@ export default {
       }
 
       return true;
+    },
+    wrappedList() {
+      if (this.isShowTick) {
+        return this.list.filter(item => item.announceSwitch === 1);
+      } else {
+        return this.list;
+      }
     }
   },
   methods: {

@@ -1679,19 +1679,26 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     });
 };
 
-export const actionSetUserLevels = ({ commit }) => {
+export const actionSetUserLevels = ({ commit, dispatch }) => {
   return axios({
     method: "get",
     url: "/api/v1/c/levels/by_user"
-  }).then(response => {
-    const { ret, result } = response.data;
+  })
+    .then(response => {
+      const { ret, result } = response.data;
 
-    if (!response || result !== "ok") {
-      return;
-    }
+      if (!response || result !== "ok") {
+        return;
+      }
 
-    commit(types.SET_USER_LEVELS, ret);
-  });
+      commit(types.SET_USER_LEVELS, ret);
+    })
+    .catch(error => {
+      dispatch("actionSetGlobalMessage", {
+        msg: error.response?.data?.msg,
+        code: error.response?.data?.code
+      });
+    });
 };
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
