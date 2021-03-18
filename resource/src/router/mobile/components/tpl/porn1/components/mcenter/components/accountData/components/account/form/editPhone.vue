@@ -248,21 +248,26 @@ export default {
       };
     },
     oldPhone() {
+      let hasVerified = this.hasVerified ? this.edit : this.hasVerified;
+      let isShow = this.isfromWithdraw ? false : hasVerified;
       return {
         label: this.$text("S_ORIGINAL_PHONE"),
-        // 目前億元/鴨博皆接開關判斷可不可修改手機號碼
-        isShow: this.hasVerified ? this.edit : this.hasVerified
-        // isShow: this.isfromWithdraw ? false : this.memInfo.phone.phone && this.hasVerified
+        isShow: isShow
       };
     },
     newPhone() {
-      const phoneLabel = this.hasVerified ? this.edit : this.hasVerified;
+      let hasVerified = this.hasVerified
+        ? this.$text("S_NEW_PHONE")
+        : this.$text("S_TEL");
+      let phoneLabel = this.isfromWithdraw
+        ? this.$text("S_TEL", "手机号码")
+        : hasVerified;
       return {
         // label: this.memInfo.phone.phone && !this.isfromWithdraw
         //   ? this.$text('S_NEW_PHONE')
         //   : this.$text('S_TEL'),
         // label: this.$text("S_TEL", "手机号码"),
-        label: phoneLabel ? this.$text("S_NEW_PHONE") : this.$text("S_TEL"),
+        label: phoneLabel,
         isShow: true
       };
     },

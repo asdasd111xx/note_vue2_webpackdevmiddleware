@@ -201,6 +201,18 @@ export default {
 
       this.isLoading = true;
       const platform = getCookie("platform");
+      let params = {
+        username: this.username,
+        password: this.password.toLowerCase(),
+        captcha: this.captcha,
+        host: window.location.host,
+        ...validate
+      };
+
+      if (this.memInfo.config.login_captcha_type === 1) {
+        params["aid"] = this.aid || getCookie("aid") || "";
+      }
+
       return bbosRequest({
         method: "put",
         url: this.siteConfig.BBOS_DOMIAN + "/Login",
@@ -208,14 +220,7 @@ export default {
           Vendor: this.memInfo.user.domain,
           kind: platform === "H" ? "h" : "pwa"
         },
-        params: {
-          username: this.username,
-          password: this.password.toLowerCase(),
-          captcha: this.captcha,
-          aid: this.aid || getCookie("aid") || "",
-          host: window.location.host,
-          ...validate
-        }
+        params: params
       }).then(res => {
         this.isLoading = false;
 

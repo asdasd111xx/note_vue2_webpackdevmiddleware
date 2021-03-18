@@ -168,11 +168,27 @@ export default {
         return;
       }
 
+      let scene = "";
+      switch (this.pageType) {
+        case "login":
+          scene = 1;
+          break;
+        case "register":
+          scene = 2;
+          break;
+        case "friends":
+          scene = 3;
+          break;
+        case "default":
+          scene = 0;
+          break;
+      }
+
       vaptcha({
         vid: "5f9691bd456d5799dec0189a", // 验证单元id
         type: "invisible",
         // embed click invisible
-        scene: 0, // 场景值 默认0
+        scene: scene, // 场景值 默认0
         container: `#vaptcha-container-${_self.captchaMode}`, // 容器，可为Element 或者 selector
         offline_server: "", //离线模式服务端地址，若尚未配置离线模式，请填写任意地址即可。
         //可选参数
