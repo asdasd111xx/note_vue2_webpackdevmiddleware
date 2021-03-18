@@ -97,7 +97,7 @@
                   </template>
                 </div> -->
 
-                <template
+                <!-- <template
                   v-if="
                     ['ey1'].includes(themeTPL) &&
                       [5, 6].includes(info.payment_type_id)
@@ -106,7 +106,7 @@
                   <div :class="$style['pay-sub-title']">
                     返利1%无上限
                   </div>
-                </template>
+                </template> -->
 
                 <img
                   v-if="
