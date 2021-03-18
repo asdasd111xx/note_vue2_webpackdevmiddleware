@@ -249,14 +249,38 @@ export default {
     },
     oldPhone() {
       let hasVerified = this.hasVerified ? this.edit : this.hasVerified;
-      let isShow = this.isfromWithdraw ? false : hasVerified;
+      //let isShow = this.isfromWithdraw ? false : hasVerified;
+
+      const phoneShow=false;
+      if(this.memInfo.phone.phone){
+        if(!this.isfromWithdraw){
+          if(this.edit){
+            this.phoneShow=true
+          }else if(this.hasVerified){
+            this.phoneShow=this.edit
+          }
+        } 
+      }
+      
       return {
         label: this.$text("S_ORIGINAL_PHONE"),
-        isShow: isShow
+        isShow: this.phoneShow
       };
     },
     newPhone() {
-      let hasVerified = this.hasVerified
+
+      const phoneShow=false;
+      if(this.memInfo.phone.phone){
+        if(!this.isfromWithdraw){
+          if(this.edit){
+            this.phoneShow=true
+          }else if(this.hasVerified){
+            this.phoneShow=this.edit
+          }
+        } 
+      }     
+
+      let hasVerified = this.phoneShow
         ? this.$text("S_NEW_PHONE")
         : this.$text("S_TEL");
       let phoneLabel = this.isfromWithdraw
