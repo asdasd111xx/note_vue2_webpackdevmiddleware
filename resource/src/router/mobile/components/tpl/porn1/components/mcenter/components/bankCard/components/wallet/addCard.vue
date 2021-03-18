@@ -571,51 +571,36 @@ export default {
           // 預設錢包
           this.walletList = data;
 
-          // Yabo：辨别目前使用者已绑定的錢包，並過濾出尚未綁定的錢包
-          // 億元：如果已綁定過相同類型錢包時，錢包類型就不出現選項。因此 CGPay 與 購寶 只能綁定一組的條件已符合
-          // Yabo 目前與 億元　等同條件判斷
-          if (
-            ["porn1", "sg1"].includes(this.themeTPL) ||
-            (["ey1"].includes(this.themeTPL) &&
-              this.userLevelObj.virtual_bank_single)
-          ) {
-            let idArr = [
-              ...new Set(
-                this.userBindWalletList.map(item => {
-                  return item.virtual_bank_id;
-                })
-              )
-            ];
-
-            if (idArr) {
-              this.walletList = data.filter(item => {
-                if (!idArr.includes(item.id)) {
-                  return item;
+          // 使用者所有已綁定的錢包ID
+          const allBindingWalletIDs = [
+            ...new Set(
+              this.userBindWalletList.filter(item => {
+                // CGPay || 購寶，只能綁定過一次(不論存放常用 or 歷史)
+                if ([21, 37].includes(item.virtual_bank_id)) {
+                  return [21, 37].includes(item.virtual_bank_id);
+                } else if (
+                  // 億元沒開限綁一組，則可添加多個同種類錢包，
+                  ["ey1"].includes(this.themeTPL) &&
+                  !this.userLevelObj.virtual_bank_single
+                ) {
+                  return;
+                } else {
+                  // 億元開限綁一組的情況，在常用底下已有綁定過該種類，則不可重複綁(目前先不考慮歷史)
+                  // 鴨博/絲瓜亦同
+                  return item.common;
                 }
-              });
-            }
-          } else {
-            // 億元：沒有開啟綁定一組開關，需 Check 是否有綁定 CGPay 與 購寶
-            let idArr = [
-              ...new Set(
-                this.userBindWalletList.filter(item => {
-                  return (
-                    item.virtual_bank_id === 21 || item.virtual_bank_id === 37
-                  );
-                })
-              )
-            ].map(item => {
-              return item.virtual_bank_id;
-            });
+              })
+            )
+          ].map(item => {
+            return item.virtual_bank_id;
+          });
 
-            if (idArr) {
-              this.walletList = data.filter(item => {
-                if (!idArr.includes(item.id)) {
-                  return item;
-                }
-              });
+          // 過濾可選擇的錢包列表
+          this.walletList = data.filter(item => {
+            if (!allBindingWalletIDs.includes(item.id)) {
+              return item;
             }
-          }
+          });
         })
         .catch(error => {
           const { msg } = error.response.data;
