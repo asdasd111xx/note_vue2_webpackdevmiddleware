@@ -239,7 +239,7 @@ export default {
           captchaId: "8b50788c733744ec8028695f31187233",
           element: `#NECaptcha-container-${_self.captchaMode}`,
           mode: "popup",
-          width: "320px",
+          width: "300px",
           onVerify(err, result) {
             console.log(err, result);
             if (err) return;
@@ -254,6 +254,9 @@ export default {
               _self.necaptcha = null;
               _self.$emit("show-captcha", false);
             }, 1000);
+          },
+          onClose(){
+            _self.$emit("show-captcha", false);
           }
         },
         function onload(instance) {
