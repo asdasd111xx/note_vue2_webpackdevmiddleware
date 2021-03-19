@@ -379,14 +379,18 @@ export default {
         // 億元 不客端判斷手機號碼位數
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
           this.tipMsg = "";
-
+        
           if (this.isfromWithdraw || this.isfromSWAG) {
             this.isVerifyPhone = true;
             return;
           }
 
           // 廳主端設置手機 未驗證
-          if (!this.hasVerified) {
+          // if (!this.hasVerified) {
+          //   this.isVerifyPhone = true;
+          // }
+          // 廳主端設置手機 修改開關
+          if (this.edit) {
             this.isVerifyPhone = true;
           }
         } else {
