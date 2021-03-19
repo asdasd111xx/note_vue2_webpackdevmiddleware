@@ -163,10 +163,14 @@ export default {
     oldEmail() {
       const emailShow=false;
       if(this.fieldValue){
-        if(this.edit){
+        if(this.edit && !this.info.verification){
           this.emailShow=true
-        }else if(this.hasVerified){
-          this.emailShow=this.edit
+        }else if(this.info.verification){
+          if(this.hasVerified){
+            this.emailShow=true
+          }
+        }else{
+          this.emailShow=false
         }
       }
       return {
@@ -177,12 +181,16 @@ export default {
     },
     newEmail() {
 
-       const emailLabel=false;
+    const emailLabel=false;
       if(this.fieldValue){
-        if(this.edit){
+        if(this.edit && !this.info.verification){
           this.emailLabel=true
-        }else if(this.hasVerified){
-          this.emailLabel=this.edit
+        }else if(this.info.verification){
+          if(this.hasVerified){
+            this.emailLabel=true
+          }
+        }else{
+          this.emailLabel=false
         }
       }
       return {

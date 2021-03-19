@@ -254,10 +254,14 @@ export default {
       const phoneShow=false;
       if(this.memInfo.phone.phone){
         if(!this.isfromWithdraw){
-          if(this.edit){
+          if(this.edit && !this.info.verification){
             this.phoneShow=true
-          }else if(this.hasVerified){
-            this.phoneShow=this.edit
+          }else if(this.info.verification){
+            if(this.hasVerified){
+              this.phoneShow=true
+            }
+          }else{
+          this.emailShow=false
           }
         } 
       }
@@ -272,10 +276,14 @@ export default {
       const phoneShow=false;
       if(this.memInfo.phone.phone){
         if(!this.isfromWithdraw){
-          if(this.edit){
+          if(this.edit && !this.info.verification){
             this.phoneShow=true
-          }else if(this.hasVerified){
-            this.phoneShow=this.edit
+          }else if(this.info.verification){
+            if(this.hasVerified){
+              this.phoneShow=true
+            }
+          }else{
+            this.emailLabel=false
           }
         } 
       }     
@@ -364,15 +372,17 @@ export default {
           val => {
             if (target === "newValue") {
               this.newValue = val;
+              if (value === "") {
+                this.isVerifyPhone = false;
+              }
             }
 
             if (target === "oldValue") {
               this.oldValue = val;
-            }
-
-            if (value === "") {
               this.isVerifyPhone = false;
             }
+
+
           }
         );
 
@@ -393,13 +403,14 @@ export default {
           if (this.edit) {
             this.isVerifyPhone = true;
           }
-        } else {
-          //   this.tipMsg = '手机格式不符合要求';
-          // if (!this.hasVerified)
-          if (this.edit) {
-            this.isVerifyPhone = true;
-          }
-        }
+        } 
+        // else {
+        //   //   this.tipMsg = '手机格式不符合要求';
+        //   // if (!this.hasVerified){       
+        //   //   this.isVerifyPhone = true;
+        //   // }
+
+        // }
       }
 
       if (target === "code") {

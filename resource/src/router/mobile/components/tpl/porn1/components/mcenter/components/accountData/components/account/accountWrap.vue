@@ -269,7 +269,7 @@ export default {
               //!keyValue || !userConfig.user[key], // 未驗證 或者 未填 可修改
 
               btnShow:
-                this.mcenterUserField.config[key].editable||!(this.memInfo[key][key]),
+                this.mcenterUserField.config[key].editable||!(this.memInfo[key][key])||(key === 'phone' && this.mcenterUserField.config.phone.code)||(key === 'email' && this.mcenterUserField.config.email.code),
                  //未驗證 或者 未填 可修改 或者 修改開關
               verification: this.verification[key],
               isShow: userConfig.config[key].display
