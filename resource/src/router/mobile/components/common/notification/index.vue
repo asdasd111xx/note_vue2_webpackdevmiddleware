@@ -82,7 +82,8 @@ export default {
       data: {},
       isShow: false,
       closeTimer: null,
-      noticeQueue: []
+      noticeQueue: [],
+      timestamp: ""
     };
   },
   created() {
@@ -118,13 +119,16 @@ export default {
     },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
-        let temp = this.noticeData[this.noticeData.length - 1];
+        let _noticeData = this.noticeData.slice();
+        let temp = _noticeData[this.noticeData.length - 1];
         this.noticeData.pop();
+
         if (temp.extend && temp.extend === "verification_code") {
           return;
         }
 
         const event = temp.event;
+        console.log(Date.now());
         switch (event) {
           case "notice":
             if (this.lang[temp.content]) {
@@ -132,6 +136,7 @@ export default {
                 case "C_WS_RECYCLE_FAIL":
                   this.noticeQueue.push({
                     ...temp,
+                    timestamp: Date.now(),
                     showType: "showToast",
                     showContent: `${temp.vendorName["zh-cn"]}${
                       this.lang[temp.content]
@@ -141,6 +146,7 @@ export default {
                 case "C_WS_RECYCLE_ALL_FAIL":
                   this.noticeQueue.push({
                     ...temp,
+                    timestamp: Date.now(),
                     showType: "showToast",
                     showContent: `${this.lang[temp.content]}`
                   });
@@ -148,6 +154,7 @@ export default {
                 case "C_WS_RECYCLE_OK":
                   this.noticeQueue.push({
                     ...temp,
+                    timestamp: Date.now(),
                     showType: "showToast",
                     showContent: `${this.lang[temp.content]}`
                   });
@@ -155,6 +162,7 @@ export default {
                 default:
                   this.noticeQueue.push({
                     ...temp,
+                    timestamp: Date.now(),
                     showType: "show"
                   });
                   return;
@@ -171,6 +179,7 @@ export default {
           case "service_maintain_notice":
             this.noticeQueue.push({
               ...temp,
+              timestamp: Date.now(),
               showType: "show"
             });
             return;
@@ -239,11 +248,13 @@ export default {
         this.isShow = false;
         setTimeout(() => {
           this.$emit("close");
-          this.noticeQueue.pop();
+          this.noticeQueue = this.noticeQueue.filter(
+            i => i.timestamp !== this.data.timestamp
+          );
           clearTimeout(this.closeTimer);
           this.closeTimer = null;
-        }, 100);
-      }, 3000);
+        }, 150);
+      }, 3150);
     },
     getTime(string) {
       return format(new Date(), "E aaa hh:mm", { locale: zhCN });

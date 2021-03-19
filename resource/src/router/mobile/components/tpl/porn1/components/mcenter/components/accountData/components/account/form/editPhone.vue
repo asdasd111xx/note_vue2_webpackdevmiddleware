@@ -124,7 +124,7 @@
       @set-captcha="setCaptcha"
       :page-type="'default'"
     />
-    <service-tips :type="'phone'" />
+    <service-tips :type="'phone'"/>
   </div>
 </template>
 <script>
@@ -254,10 +254,14 @@ export default {
       const phoneShow=false;
       if(this.memInfo.phone.phone){
         if(!this.isfromWithdraw){
-          if(this.edit){
+          if(this.edit && !this.info.verification){
             this.phoneShow=true
-          }else if(this.hasVerified){
-            this.phoneShow=this.edit
+          }else if(this.info.verification){
+            if(this.hasVerified){
+              this.phoneShow=true
+            }
+          }else{
+          this.emailShow=false
           }
         } 
       }
@@ -272,10 +276,14 @@ export default {
       const phoneShow=false;
       if(this.memInfo.phone.phone){
         if(!this.isfromWithdraw){
-          if(this.edit){
+          if(this.edit && !this.info.verification){
             this.phoneShow=true
-          }else if(this.hasVerified){
-            this.phoneShow=this.edit
+          }else if(this.info.verification){
+            if(this.hasVerified){
+              this.phoneShow=true
+            }
+          }else{
+            this.emailLabel=false
           }
         } 
       }     
@@ -364,38 +372,45 @@ export default {
           val => {
             if (target === "newValue") {
               this.newValue = val;
+              if (value === "") {
+                this.isVerifyPhone = false;
+              }
             }
 
             if (target === "oldValue") {
               this.oldValue = val;
-            }
-
-            if (value === "") {
               this.isVerifyPhone = false;
             }
+
+
           }
         );
 
         // 億元 不客端判斷手機號碼位數
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
           this.tipMsg = "";
-
+        
           if (this.isfromWithdraw || this.isfromSWAG) {
             this.isVerifyPhone = true;
             return;
           }
 
           // 廳主端設置手機 未驗證
-          if (!this.hasVerified) {
-            this.isVerifyPhone = true;
-          }
-        } else {
-          //   this.tipMsg = '手机格式不符合要求';
-          // if (!this.hasVerified)
+          // if (!this.hasVerified) {
+          //   this.isVerifyPhone = true;
+          // }
+          // 廳主端設置手機 修改開關
           if (this.edit) {
             this.isVerifyPhone = true;
           }
-        }
+        } 
+        // else {
+        //   //   this.tipMsg = '手机格式不符合要求';
+        //   // if (!this.hasVerified){       
+        //   //   this.isVerifyPhone = true;
+        //   // }
+
+        // }
       }
 
       if (target === "code") {

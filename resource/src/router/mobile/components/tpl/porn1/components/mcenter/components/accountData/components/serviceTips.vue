@@ -3,7 +3,7 @@
     <!-- <template v-if="theme === 'ey1' || type !== 'phone'">
       为了你的隐私安全，信息在确认后将无法修改
     </template> -->
-    <div>
+    <div v-if="serviceShow">
       为了你的隐私安全，信息在确认后将无法修改
     </div>
     <br />
@@ -27,6 +27,9 @@ export default {
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    serviceShow(){
+      return this.type ?!(this.type!=="phone" || this.type!=="email") :true
     }
   }
 };
