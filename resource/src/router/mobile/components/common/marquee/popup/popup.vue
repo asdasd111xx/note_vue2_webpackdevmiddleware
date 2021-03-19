@@ -16,7 +16,7 @@
             :key="item.id"
             :class="$style['news-item']"
           >
-            <pre :class="$style['news-title']">{{ item.title }}</pre>
+            <pre :class="$style['news-title']" v-html="item.title" />
             <p
               :class="$style['news-content']"
               v-html="item.content.replace('\n', '<br>')"

@@ -101,7 +101,6 @@ export default {
     switch (this.captchaType) {
       default:
       case 0:
-        this.$emit("set-captcha", data);
         this.$emit("show-captcha", false);
         return;
 

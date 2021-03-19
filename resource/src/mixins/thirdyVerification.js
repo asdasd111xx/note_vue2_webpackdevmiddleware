@@ -216,9 +216,9 @@ export default {
           console.log(_self.vaptchaObj, data);
           _self.$emit("set-captcha", data);
           _self.$emit("show-captcha", false);
-          _self.vaptchaObj = null;
+          _self.vaptchaObj.reset();
+          // _self.vaptchaObj = null;
         });
-        // _self.vaptchaObj.reset(); //重置验证码
 
         //关闭验证弹窗时触发
         _self.vaptchaObj.listen("close", function() {
@@ -251,11 +251,12 @@ export default {
             _self.$emit("set-captcha", data);
 
             setTimeout(() => {
-              _self.necaptcha = null;
+              _self.necaptcha.refresh();
+              // _self.necaptcha = null;
               _self.$emit("show-captcha", false);
             }, 1000);
           },
-          onClose(){
+          onClose() {
             _self.$emit("show-captcha", false);
           }
         },
