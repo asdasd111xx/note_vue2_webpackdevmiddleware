@@ -89,7 +89,7 @@
         </div>
       </template>
     </div>
-    <service-tips />
+    <service-tips :type="'email'" />
   </div>
 </template>
 

@@ -124,7 +124,7 @@
       @set-captcha="setCaptcha"
       :page-type="'default'"
     />
-    <service-tips :type="'phone'" />
+    <service-tips :type="'phone'"/>
   </div>
 </template>
 <script>
