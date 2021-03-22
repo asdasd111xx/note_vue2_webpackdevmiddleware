@@ -242,7 +242,7 @@ export default {
       this.$router.back();
     },
     getDesc(desc) {
-      let split = desc.split(" ");
+      let split = desc.split(" ");
       // //  今年額滿
       // if (this.isFinishMission) {
       //   if (split && split.length > 0) {
