@@ -36,7 +36,7 @@
               type="date"
               @input="limitDate('start', $event.target.value)"
             />
-            <span>{{ start | dateFormat }}</span>
+            <span>{{ dateFormat(start) }}</span>
           </div>
           <div :class="$style['form-date-end']">
             <div :class="$style['form-title']">
@@ -52,7 +52,7 @@
               type="date"
               @input="limitDate('end', $event.target.value)"
             />
-            <span>{{ end | dateFormat }}</span>
+            <span>{{ dateFormat(end) }}</span>
           </div>
         </div>
 
@@ -153,7 +153,11 @@ export default {
         return format(new Date(this.startTime), "yyyy-MM-dd"); // 格式化成原生 input date 可以使用的格式
       },
       set(date) {
-        this.startTime = date;
+        if (!date) {
+          return;
+        } else {
+          this.startTime = date;
+        }
       }
     },
     end: {
@@ -161,7 +165,11 @@ export default {
         return format(new Date(this.endTime), "yyyy-MM-dd"); // 格式化成原生 input date 可以使用的格式
       },
       set(date) {
-        this.endTime = date;
+        if (!date) {
+          return;
+        } else {
+          this.endTime = date;
+        }
       }
     },
     getCommissionInfo: {
@@ -187,15 +195,6 @@ export default {
       } else {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
-      }
-    }
-  },
-  filters: {
-    dateFormat(value) {
-      if (value) {
-        return Vue.moment(value).format("YYYY/MM/DD");
-      } else {
-        return "";
       }
     }
   },
@@ -230,10 +229,8 @@ export default {
       this.$router.replace(`/mobile/mcenter/tcenter/commission/${page}`);
     },
     onInquire() {
-      if (this.startTime !== this.endTime) {
-        this.onSearch();
-        this.hasSearch = false;
-      }
+      this.onSearch();
+      this.hasSearch = false;
     },
     getRebateSwitch() {
       this.isReceive = false;
@@ -267,10 +264,19 @@ export default {
       if (_value < _today) {
         this.actionSetGlobalMessage({ msg: "查询记录不能超过30天" });
         this.start = this.endDate;
-      } else if (this.start > this.end) {
-        this.start = this.endDate;
       } else if (this.end > this.endDate) {
         this.end = this.endDate;
+      } else if (this.start > this.end) {
+        let endTemp = this.end;
+        this.end = this.start > this.endDate ? this.endDate : this.start;
+        this.start = endTemp;
+      }
+    },
+    dateFormat(value) {
+      if (value) {
+        return Vue.moment(value).format("YYYY/MM/DD");
+      } else {
+        return "";
       }
     }
   }
