@@ -3,11 +3,12 @@
     <!-- <template v-if="theme === 'ey1' || type !== 'phone'">
       为了你的隐私安全，信息在确认后将无法修改
     </template> -->
-    <div v-if="serviceShow">
+   
+    <template v-if="!edit">
       为了你的隐私安全，信息在确认后将无法修改
-    </div>
+    </template>
     <br />
-    如需帮助，请
+      如需帮助，请
     <span @click="$router.push('/mobile/service')">联系客服</span>
   </div>
 </template>
@@ -19,7 +20,13 @@ export default {
   props: {
     type: {
       type: String
+    },
+    edit:{
+      type: Boolean
     }
+  },
+  mounted(){
+    this.show=!this.edit
   },
   computed: {
     ...mapGetters({
@@ -27,11 +34,8 @@ export default {
     }),
     theme() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    serviceShow(){
-      return this.type ?!(this.type!=="phone" || this.type!=="email") :true
     }
-  }
+  },
 };
 </script>
 <style src="../css/index.module.scss" lang="scss" module />

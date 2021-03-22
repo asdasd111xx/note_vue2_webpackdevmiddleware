@@ -74,7 +74,6 @@ export default {
       let src;
       let callback;
       this.showMask = true;
-      console.log(this.pageType, this.captchaType);
 
       switch (this.captchaType) {
         // 騰訊拼圖驗證

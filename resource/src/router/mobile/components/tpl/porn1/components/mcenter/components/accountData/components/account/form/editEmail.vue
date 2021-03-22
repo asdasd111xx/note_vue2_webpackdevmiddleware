@@ -15,7 +15,7 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="oldValue"
-              :placeholder="oldEmail.label"
+              :placeholder="oldEmail.placeholerLabel"
               :class="$style.input"
               type="text"
             />
@@ -89,7 +89,7 @@
         </div>
       </template>
     </div>
-    <service-tips :type="'email'" />
+    <service-tips :edit="edit" :type="'email'"/>
   </div>
 </template>
 
@@ -127,7 +127,8 @@ export default {
         isShow: true
       },
       edit: false,
-      hasVerified: false
+      hasVerified: false,
+      emailShow:false
     };
   },
   created() {
@@ -143,6 +144,17 @@ export default {
         this.edit = response.ret.config.email.editable;
         this.hasVerified = response.ret.user.email; //是否已驗證
         
+        if(this.fieldValue){
+          if(this.edit && !this.info.verification){
+            this.emailShow=true
+          }else if(this.info.verification){
+            if(this.hasVerified){
+              this.emailShow=true
+            }
+          }else{
+            this.emailShow=false
+          }
+        }
       }
     });
   },
@@ -161,41 +173,17 @@ export default {
       return this.memInfo.email.email;
     },
     oldEmail() {
-      const emailShow=false;
-      if(this.fieldValue){
-        if(this.edit && !this.info.verification){
-          this.emailShow=true
-        }else if(this.info.verification){
-          if(this.hasVerified){
-            this.emailShow=true
-          }
-        }else{
-          this.emailShow=false
-        }
-      }
       return {
-        label: this.$text("S_PLS_ENTER_NEW_EMAIL"),
+        label: this.$text("S_ORIGINAL_EMAIL"),
+        placeholerLabel: this.$text("S_PLS_ENTER_NEW_EMAIL"),
         // 目前億元/鴨博皆接開關判斷可不可修改信箱
         isShow:this.emailShow
       };
     },
     newEmail() {
-
-    const emailLabel=false;
-      if(this.fieldValue){
-        if(this.edit && !this.info.verification){
-          this.emailLabel=true
-        }else if(this.info.verification){
-          if(this.hasVerified){
-            this.emailLabel=true
-          }
-        }else{
-          this.emailLabel=false
-        }
-      }
       return {
         label:
-          this.emailLabel
+          this.emailShow
             ? this.$text("S_NEW_EMAIL")
             : this.$text("S_NEW_EMAIL2"),
         isShow: true
