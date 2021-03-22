@@ -29,6 +29,7 @@
 
             <input
               v-model="start"
+              ref="startInput"
               :min="fromDate"
               :max="end"
               :id="`start`"
@@ -44,6 +45,7 @@
 
             <input
               v-model="end"
+              ref="endInput"
               :min="start"
               :max="endDate"
               :id="`end`"
@@ -54,7 +56,7 @@
           </div>
         </div>
 
-        <div :class="$style['submit-form-row']">
+        <div :class="[$style['submit-form-row']]">
           <div :class="$style.submit" @click="onInquire">
             {{ $text("S_INQUIRE", "查询") }}
           </div>
@@ -215,6 +217,14 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    handleClickInqStartDate() {
+      const el = this.$refs["startInput"];
+      el.click();
+    },
+    handleClickInqEndDate() {
+      const el = this.$refs["endInput"];
+      el.click();
+    },
     onClick(page) {
       this.hasSearch = page === "record";
       this.$router.replace(`/mobile/mcenter/tcenter/commission/${page}`);
@@ -255,18 +265,12 @@ export default {
         .format("YYYY/MM/DD");
 
       if (_value < _today) {
-        this.checkDate = false;
         this.actionSetGlobalMessage({ msg: "查询记录不能超过30天" });
-        this.inqStart = this.endDate;
-        this.checkDate = true;
-      } else if (this.inqStart > this.inqEnd) {
-        this.checkDate = false;
-        this.inqStart = this.endDate;
-      } else if (this.inqEnd > this.endDate) {
-        this.checkDate = false;
-        this.inqEnd = this.endDate;
-      } else {
-        this.checkDate = true;
+        this.start = this.endDate;
+      } else if (this.start > this.end) {
+        this.start = this.endDate;
+      } else if (this.end > this.endDate) {
+        this.end = this.endDate;
       }
     }
   }
