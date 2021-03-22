@@ -27,7 +27,7 @@
             </template>
             <input
               v-model="oldValue"
-              :placeholder="oldPhone.label"
+              :placeholder="oldPhone.placeholerLabel"
               :class="$style.input"
               @input="verification($event.target.value, 'oldValue')"
               type="tel"
@@ -124,7 +124,7 @@
       @set-captcha="setCaptcha"
       :page-type="'default'"
     />
-    <service-tips :type="'phone'"/>
+    <service-tips :edit="edit" :type="'phone'" />
   </div>
 </template>
 <script>
@@ -172,7 +172,8 @@ export default {
       },
       thirdyCaptchaObj: null,
       isShowCaptcha: false,
-      edit: false
+      edit: false,
+      phoneShow:false
     };
   },
   computed: {
@@ -248,45 +249,13 @@ export default {
       };
     },
     oldPhone() {
-      let hasVerified = this.hasVerified ? this.edit : this.hasVerified;
-      //let isShow = this.isfromWithdraw ? false : hasVerified;
-
-      const phoneShow=false;
-      if(this.memInfo.phone.phone){
-        if(!this.isfromWithdraw){
-          if(this.edit && !this.info.verification){
-            this.phoneShow=true
-          }else if(this.info.verification){
-            if(this.hasVerified){
-              this.phoneShow=true
-            }
-          }else{
-          this.emailShow=false
-          }
-        } 
-      }
-      
       return {
-        label: this.$text("S_PLEASE_ENTER_MOBILE_NUMBER"),
+        label: this.$text("S_ORIGINAL_PHONE"),
+        placeholerLabel:this.$text("S_PLEASE_ENTER_MOBILE_NUMBER"),
         isShow: this.phoneShow
       };
     },
-    newPhone() {
-
-      const phoneShow=false;
-      if(this.memInfo.phone.phone){
-        if(!this.isfromWithdraw){
-          if(this.edit && !this.info.verification){
-            this.phoneShow=true
-          }else if(this.info.verification){
-            if(this.hasVerified){
-              this.phoneShow=true
-            }
-          }else{
-            this.emailLabel=false
-          }
-        } 
-      }     
+    newPhone() {   
 
       let hasVerified = this.phoneShow
         ? this.$text("S_NEW_PHONE")
@@ -339,6 +308,21 @@ export default {
         this.hasVerified = response.ret.user.phone; //是否已驗證
         this.phoneHeadOption = response.ret.config.phone.country_codes;
         this.edit = response.ret.config.phone.editable;
+
+        let verified = this.hasVerified ? this.edit : this.hasVerified;
+        if(this.memInfo.phone.phone){
+          if(!this.isfromWithdraw){
+            if(this.edit && !this.info.verification){
+              this.phoneShow=true
+            }else if(this.info.verification){
+              if(verified){
+                this.phoneShow=true
+              }
+            }else{
+              this.phoneShow=false
+            }
+          } 
+        }
       }
     });
   },
