@@ -242,7 +242,8 @@ export default {
         msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
       });
       this.timer = setInterval(() => {
-        if (this.countdownSec === 0) {
+        if (this.countdownSec <= 1) {
+          this.countdownSec = 0;
           clearInterval(this.timer);
           this.timer = null;
           return;
