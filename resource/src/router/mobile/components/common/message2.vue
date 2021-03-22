@@ -246,8 +246,10 @@ export default {
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
-  // min-width: 200px;
-  padding: 15px;
+  padding: 10px 12px;
+  color: white;
+  max-width: 65vw;
+  width: max-content;
   color: white;
   text-align: center;
 }
