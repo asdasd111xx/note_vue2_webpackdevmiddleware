@@ -59,9 +59,16 @@ export default {
           cid: cid
         }
       }).then(res => {
-        this.userViplevel = res.data
-          ? res.data[0] && res.data[0].now_level_id
-          : 0;
+        console.log(123);
+        if (res && res.status === "000" && res.errorCode === "00") {
+          let useVip = res.data.find(vip => {
+            return vip.complex;
+          });
+          this.userViplevel = useVip ? useVip.now_level_id : 0;
+        } else {
+          this.userViplevel = 0;
+        }
+
         this.getFilterList();
       });
     },
