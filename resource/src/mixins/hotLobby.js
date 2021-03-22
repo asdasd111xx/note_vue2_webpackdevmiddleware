@@ -59,7 +59,6 @@ export default {
           cid: cid
         }
       }).then(res => {
-        console.log(123);
         if (res && res.status === "000" && res.errorCode === "00") {
           let useVip = res.data.find(vip => {
             return vip.complex;
