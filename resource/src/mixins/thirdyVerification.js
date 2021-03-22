@@ -101,6 +101,7 @@ export default {
           break;
 
         default:
+          this.$emit("set-captcha", {});
           return;
       }
 
