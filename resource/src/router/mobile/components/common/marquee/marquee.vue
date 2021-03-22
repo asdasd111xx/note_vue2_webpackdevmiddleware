@@ -17,9 +17,8 @@
           v-for="(item, index) in newsTitleList"
           :key="index"
           @click="handleClick()"
-        >
-          {{ item.title }}
-        </span>
+          v-html="item.title"
+        />
       </div>
     </div>
 
@@ -211,10 +210,10 @@ export default {
 
 .news-content-text {
   position: relative;
+  white-space: nowrap;
 
   .title-item {
     padding-right: 10px;
-    white-space: nowrap;
   }
 }
 
