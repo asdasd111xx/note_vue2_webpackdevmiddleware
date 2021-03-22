@@ -128,7 +128,6 @@ export default {
         }
 
         const event = temp.event;
-        console.log(Date.now());
         switch (event) {
           case "notice":
             if (this.lang[temp.content]) {
