@@ -78,7 +78,7 @@
         @click="setMenuState('balance')"
       >
         <span>
-          {{ membalance.total + "元" }}
+          {{ getLoginMoney + "元" }}
         </span>
         <div>
           <img
@@ -229,6 +229,9 @@ export default {
     },
     path() {
       return this.$route.path.split("/").filter(path => path);
+    },
+    getLoginMoney() {
+      return this.membalance.total;
     }
   },
   created() {
