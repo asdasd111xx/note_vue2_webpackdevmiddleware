@@ -174,7 +174,7 @@ export default {
         }
       }
       return {
-        label: this.$text("S_ORIGINAL_EMAIL"),
+        label: this.$text("S_PLS_ENTER_NEW_EMAIL"),
         // 目前億元/鴨博皆接開關判斷可不可修改信箱
         isShow:this.emailShow
       };
@@ -285,7 +285,7 @@ export default {
       this.isSendSMS = true;
       const getOldEmail = () => {
         if (this.fieldValue) {
-          return this.info.status === "ok" ? this.newValue : this.oldValue;
+          return this.info.status === "ok" ? this.newValue : this.oldValue?this.oldValue:this.newValue;
         }
         return "";
       };
