@@ -510,7 +510,7 @@ export default {
             }
             return;
           case "EVENT_THIRDPARTY_LOGIN":
-            this.$router.replace("/mobile/login?prev=home");
+            this.$router.replace("/mobile/joinmember?prev=home");
             return;
 
           case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":

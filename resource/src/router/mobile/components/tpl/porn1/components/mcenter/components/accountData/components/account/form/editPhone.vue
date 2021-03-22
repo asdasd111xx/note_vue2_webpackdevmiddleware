@@ -102,7 +102,7 @@
               v-if="sendBtn.isShow"
               :class="[
                 $style['btn-send'],
-                { [$style.active]: isVerifyPhone && !timer }
+                { [$style.active]: isVerifyPhone && !timer && newValue}
               ]"
               @click="showCaptchaPopup"
             >
@@ -267,7 +267,7 @@ export default {
       }
       
       return {
-        label: this.$text("S_ORIGINAL_PHONE"),
+        label: this.$text("S_PLEASE_ENTER_MOBILE_NUMBER"),
         isShow: this.phoneShow
       };
     },
@@ -374,6 +374,8 @@ export default {
               this.newValue = val;
               if (value === "") {
                 this.isVerifyPhone = false;
+              }else{
+                this.isVerifyPhone = true;
               }
             }
 
@@ -403,7 +405,11 @@ export default {
           if (this.edit) {
             this.isVerifyPhone = true;
           }
-        } 
+        }else{
+          if (this.edit) {
+            this.isVerifyPhone = true;
+          }
+        }
         // else {
         //   //   this.tipMsg = '手机格式不符合要求';
         //   // if (!this.hasVerified){       

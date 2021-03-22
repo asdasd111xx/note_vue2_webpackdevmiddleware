@@ -824,10 +824,15 @@ export default {
 
           const openGameSuccessFunc = res => {
             this.isLoading = false;
+            // BB捕魚切換樣式跑版問題
+            if (game.vendor === "bbin" && game.kind === 3) {
+              window.GAME_RELOAD = true;
+            }
           };
 
           const openGameFailFunc = res => {
             this.isLoading = false;
+            window.GAME_RELOAD = undefined;
 
             if (res && res.data) {
               let data = res.data;
