@@ -6,7 +6,14 @@
       />
     </div>
 
-    <div ref="container" :class="['news-content', `${themeTPL}`]">
+    <div
+      ref="container"
+      :class="[
+        'news-content',
+        `${themeTPL}`,
+        { notHome: !isDepositOrWithdraw }
+      ]"
+    >
       <div
         ref="news"
         class="news-content-text"
@@ -65,7 +72,7 @@ export default {
       paused: false,
 
       isFirstShow: false,
-
+      isDepositOrWithdraw: false,
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -102,7 +109,7 @@ export default {
         : 1.5 * this.currentLeft;
 
     this.startMove();
-
+    this.isDepositOrWithdraw = this.$route.name === "home";
     if (this.list?.length <= 0 || !this.hasAnySwitch) {
       return;
     } else if (
@@ -193,14 +200,18 @@ export default {
   min-width: calc(100vw - 51px);
 
   &.porn1 {
-    color: #be9e7f;
+    color: #9ca3bf;
   }
 
   &.ey1 {
-    color: #be9e7f;
+    color: #ff7171;
   }
 
   &.sg1 {
+    color: #be9e7f;
+  }
+
+  &.notHome {
     color: #be9e7f;
   }
 }
