@@ -95,7 +95,9 @@ export default {
     })
   },
   created() {
-    this.initCaptcha();
+    if ([3, 4, 5].includes(this.captchaType)) {
+      this.initCaptcha();
+    }
   },
   mounted() {
     switch (this.captchaType) {

@@ -443,7 +443,7 @@ export default {
         }
 
         // 彈驗證窗並利用Watch captchaData來呼叫 getKeyring()
-        this.showCaptcha();
+        this.showCaptcha(true);
       });
     },
     // 忘記密碼發送簡訊(驗證碼)
