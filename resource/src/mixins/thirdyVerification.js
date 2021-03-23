@@ -114,7 +114,10 @@ export default {
       }
 
       let script = document.createElement("script");
-      script.setAttribute("script-type", "third-party-verification");
+      script.setAttribute(
+        "script-type",
+        `third-party-verification-${this.captchaType}`
+      );
       script.type = "text/javascript";
       script.src = src;
 
