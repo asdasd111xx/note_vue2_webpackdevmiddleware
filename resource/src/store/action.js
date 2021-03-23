@@ -1888,21 +1888,6 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       siteConfigOfficial.preset;
   }
 
-  // return yaboRequest({
-  //   method: 'get',
-  //   url: configInfo.YABO_API_DOMAIN + '/system/domain',
-  // }).then((res) => {
-  //   if (res && res.data) {
-  //     commit(types.SET_SYSTEMDOMAIN, res.data);
-  //     let domainList = res.data.filter(i => i.name === "XXX-DOMAIN-URL" && i.type === "du");
-
-  //     // 暫時先取第一組
-  //     if (domainList && domainList.length > 0) {
-  //       commit(types.SET_PORNDOMAIN, domainList[0].value);
-  //     }
-  //   }
-  // });
-
   return goLangApiRequest({
     method: "get",
     url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/System/domain"
@@ -1913,8 +1898,11 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
         i => i.name === "XXX-DOMAIN-URL" && i.type === "du"
       );
 
-      // 暫時先取第一組
+      let result =
+        domainList[Math.floor(Math.random() * domainList.length)].value;
       if (domainList && domainList.length > 0) {
+        commit(types.SET_PORNDOMAIN, result);
+      } else {
         commit(types.SET_PORNDOMAIN, domainList[0].value);
       }
     }

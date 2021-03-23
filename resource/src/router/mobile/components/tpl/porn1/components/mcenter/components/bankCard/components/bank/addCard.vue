@@ -152,11 +152,7 @@
             <input
               v-model="formData.phone"
               type="text"
-              :placeholder="
-                ['porn1', 'sg1'].includes(themeTPL)
-                  ? '11位手机号码'
-                  : '请输入手机号码'
-              "
+              :placeholder="'请输入手机号码'"
               :class="$style['phone-input']"
               maxlength="36"
               @input="verification('phone')"
