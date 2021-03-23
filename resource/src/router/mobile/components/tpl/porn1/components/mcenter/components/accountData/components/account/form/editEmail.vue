@@ -22,7 +22,7 @@
             <div :class="$style['clear-input']" v-if="oldValue">
               <img
                 :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                @click="oldValue = ''"
+                @click="(oldValue = ''), (buttonShow = false)"
               />
             </div>
           </div>
@@ -74,7 +74,9 @@
               v-if="sendBtn.isShow"
               :class="[
                 $style['btn-send'],
-                { [$style.active]: newValue && !timer }
+                {
+                  [$style.active]: isActive()
+                }
               ]"
               @click="handleSend()"
             >
@@ -89,7 +91,7 @@
         </div>
       </template>
     </div>
-    <service-tips :edit="edit" :type="'email'"/>
+    <service-tips :edit="edit" :type="'email'" />
   </div>
 </template>
 
@@ -128,7 +130,8 @@ export default {
       },
       edit: false,
       hasVerified: false,
-      emailShow:false
+      emailShow: false,
+      buttonShow: true
     };
   },
   created() {
@@ -143,16 +146,16 @@ export default {
         this.info.isShow = response.ret.config[this.info.key].display;
         this.edit = response.ret.config.email.editable;
         this.hasVerified = response.ret.user.email; //是否已驗證
-        
-        if(this.fieldValue){
-          if(this.edit && !this.info.verification){
-            this.emailShow=true
-          }else if(this.info.verification){
-            if(this.hasVerified){
-              this.emailShow=true
+
+        if (this.fieldValue) {
+          if (this.edit && !this.info.verification) {
+            this.emailShow = true;
+          } else if (this.info.verification) {
+            if (this.hasVerified) {
+              this.emailShow = true;
             }
-          }else{
-            this.emailShow=false
+          } else {
+            this.emailShow = false;
           }
         }
       }
@@ -177,15 +180,14 @@ export default {
         label: this.$text("S_ORIGINAL_EMAIL"),
         placeholerLabel: this.$text("S_PLS_ENTER_NEW_EMAIL"),
         // 目前億元/鴨博皆接開關判斷可不可修改信箱
-        isShow:this.emailShow
+        isShow: this.emailShow
       };
     },
     newEmail() {
       return {
-        label:
-          this.emailShow
-            ? this.$text("S_NEW_EMAIL")
-            : this.$text("S_NEW_EMAIL2"),
+        label: this.emailShow
+          ? this.$text("S_NEW_EMAIL")
+          : this.$text("S_NEW_EMAIL2"),
         isShow: true
       };
     },
@@ -274,7 +276,11 @@ export default {
       this.isSendSMS = true;
       const getOldEmail = () => {
         if (this.fieldValue) {
-          return this.info.status === "ok" ? this.newValue : this.oldValue?this.oldValue:this.newValue;
+          return this.info.status === "ok"
+            ? this.newValue
+            : this.oldValue
+            ? this.oldValue
+            : this.newValue;
         }
         return "";
       };
@@ -344,7 +350,7 @@ export default {
       return mcenter.accountMailEdit({
         params: {
           email: this.newValue,
-          old_email:this.oldValue?this.oldValue:this.newValue
+          old_email: this.oldValue ? this.oldValue : this.newValue
         },
         success: () => {
           localStorage.setItem("set-account-success", true);
@@ -357,6 +363,12 @@ export default {
           }
         }
       });
+    },
+    isActive() {
+      if (this.buttonShow) {
+        return this.newValue && !this.timer;
+      }
+      return this.newValue && this.oldValue && !this.timer;
     }
   }
 };

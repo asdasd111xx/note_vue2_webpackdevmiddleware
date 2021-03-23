@@ -183,6 +183,7 @@ export default {
 }
 
 .news-content {
+  position: relative;
   display: block;
   line-height: 12px;
   margin-left: 6px;
@@ -205,7 +206,8 @@ export default {
 }
 
 .news-content-text {
-  position: relative;
+  position: absolute;
+  padding-left: 20px;
   white-space: nowrap;
 
   .title-item {

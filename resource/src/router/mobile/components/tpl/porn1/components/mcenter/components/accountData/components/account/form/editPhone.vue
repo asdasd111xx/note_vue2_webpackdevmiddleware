@@ -35,7 +35,7 @@
             <div :class="$style['clear-input']" v-if="oldValue">
               <img
                 :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                @click="oldValue = ''"
+                @click="(oldValue = ''), (buttonShow = false)"
               />
             </div>
           </div>
@@ -102,10 +102,15 @@
               v-if="sendBtn.isShow"
               :class="[
                 $style['btn-send'],
-                { [$style.active]: isVerifyPhone && !timer && newValue}
+                {
+                  [$style.active]: isActive()
+                }
               ]"
               @click="showCaptchaPopup"
             >
+              <!-- [$style.active]: oldValue
+                    ? newValue && oldValue && isVerifyPhone && !timer
+                    : newValue && isVerifyPhone && !timer -->
               <template>
                 <span v-if="sendBtn.countdownSec">{{
                   `${countdownSec}s`
@@ -173,7 +178,8 @@ export default {
       thirdyCaptchaObj: null,
       isShowCaptcha: false,
       edit: false,
-      phoneShow:false
+      phoneShow: false,
+      buttonShow: true
     };
   },
   computed: {
@@ -251,12 +257,11 @@ export default {
     oldPhone() {
       return {
         label: this.$text("S_ORIGINAL_PHONE"),
-        placeholerLabel:this.$text("S_PLEASE_ENTER_MOBILE_NUMBER"),
+        placeholerLabel: this.$text("S_PLEASE_ENTER_MOBILE_NUMBER"),
         isShow: this.phoneShow
       };
     },
-    newPhone() {   
-
+    newPhone() {
       let hasVerified = this.phoneShow
         ? this.$text("S_NEW_PHONE")
         : this.$text("S_TEL");
@@ -310,18 +315,18 @@ export default {
         this.edit = response.ret.config.phone.editable;
 
         let verified = this.hasVerified ? this.edit : this.hasVerified;
-        if(this.memInfo.phone.phone){
-          if(!this.isfromWithdraw){
-            if(this.edit && !this.info.verification){
-              this.phoneShow=true
-            }else if(this.info.verification){
-              if(verified){
-                this.phoneShow=true
+        if (this.memInfo.phone.phone) {
+          if (!this.isfromWithdraw) {
+            if (this.edit && !this.info.verification) {
+              this.phoneShow = true;
+            } else if (this.info.verification) {
+              if (verified) {
+                this.phoneShow = true;
               }
-            }else{
-              this.phoneShow=false
+            } else {
+              this.phoneShow = false;
             }
-          } 
+          }
         }
       }
     });
@@ -358,7 +363,7 @@ export default {
               this.newValue = val;
               if (value === "") {
                 this.isVerifyPhone = false;
-              }else{
+              } else {
                 this.isVerifyPhone = true;
               }
             }
@@ -367,15 +372,13 @@ export default {
               this.oldValue = val;
               this.isVerifyPhone = false;
             }
-
-
           }
         );
 
         // 億元 不客端判斷手機號碼位數
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
           this.tipMsg = "";
-        
+
           if (this.isfromWithdraw || this.isfromSWAG) {
             this.isVerifyPhone = true;
             return;
@@ -389,14 +392,14 @@ export default {
           if (this.edit) {
             this.isVerifyPhone = true;
           }
-        }else{
+        } else {
           if (this.edit) {
             this.isVerifyPhone = true;
           }
         }
         // else {
         //   //   this.tipMsg = '手机格式不符合要求';
-        //   // if (!this.hasVerified){       
+        //   // if (!this.hasVerified){
         //   //   this.isVerifyPhone = true;
         //   // }
 
@@ -654,6 +657,14 @@ export default {
           }
         });
       }
+    },
+    isActive() {
+      if (this.buttonShow) {
+        return this.newValue && this.isVerifyPhone && !this.timer;
+      }
+      return (
+        this.newValue && this.oldValue && this.isVerifyPhone && !this.timer
+      );
     }
   }
 };
