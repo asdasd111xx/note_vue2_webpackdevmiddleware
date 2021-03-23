@@ -193,11 +193,11 @@ export default {
   min-width: calc(100vw - 51px);
 
   &.porn1 {
-    color: #9ca3bf;
+    color: #be9e7f;
   }
 
   &.ey1 {
-    color: #ff7171;
+    color: #be9e7f;
   }
 
   &.sg1 {
