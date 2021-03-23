@@ -17,7 +17,7 @@
           v-for="(item, index) in newsTitleList"
           :key="index"
           @click="handleClick()"
-          v-html="item.title"
+          v-html="item.title.replace(/<br>/g, '')"
         />
       </div>
     </div>
@@ -93,27 +93,6 @@ export default {
       return this.newslist.find(item => item.announceSwitch === 1);
     }
   },
-  created() {
-    if (this.list?.length <= 0 || !this.hasAnySwitch) return;
-
-    this.$nextTick(() => {
-      if (
-        this.origin === "deposit" &&
-        !localStorage.getItem("do-not-show-deposit-post")
-      ) {
-        this.isFirstShow = true;
-        this.togglePopup();
-      }
-
-      if (
-        this.origin === "withdraw" &&
-        !localStorage.getItem("do-not-show-withdraw-post")
-      ) {
-        this.isFirstShow = true;
-        this.togglePopup();
-      }
-    });
-  },
   mounted() {
     this.currentLeft = this.$refs.container.offsetWidth;
 
@@ -123,6 +102,18 @@ export default {
         : 1.5 * this.currentLeft;
 
     this.startMove();
+
+    if (this.list?.length <= 0 || !this.hasAnySwitch) {
+      return;
+    } else if (
+      (this.origin === "deposit" &&
+        !localStorage.getItem("do-not-show-deposit-post")) ||
+      (this.origin === "withdraw" &&
+        !localStorage.getItem("do-not-show-withdraw-post"))
+    ) {
+      this.isFirstShow = true;
+      this.togglePopup();
+    }
   },
   methods: {
     ...mapActions([""]),
@@ -134,24 +125,29 @@ export default {
     },
     // 開啟最新消息方式
     togglePopup() {
-      if (this.newsTitleList?.length < 0) {
-        return;
+      if (this.isFirstShow) {
+        document.querySelector("body").style = !this.showPopStatus.isShow
+          ? "overflow: hidden"
+          : "";
+
+        this.setPopupStatus(!this.showPopStatus.isShow, "popup");
+      } else {
+        this.paused = !this.paused;
+
+        if (!this.paused) {
+          this.startMove();
+        }
+
+        document.querySelector("body").style = !this.showPopStatus.isShow
+          ? "overflow: hidden"
+          : "";
+
+        this.setPopupStatus(!this.showPopStatus.isShow, "popup");
       }
-
-      this.paused = !this.paused;
-
-      if (!this.paused) {
-        this.startMove();
-      }
-
-      document.querySelector("body").style = !this.showPopStatus.isShow
-        ? "overflow: hidden"
-        : "";
-
-      this.setPopupStatus(!this.showPopStatus.isShow, "popup");
     },
     startMove() {
       if (this.paused || !this.$refs.container) return;
+
       if (Math.abs(this.currentLeft) < this.totalWidth) {
         this.currentLeft -= this.$refs.container.offsetWidth / 350;
         window.requestAnimationFrame(this.startMove);
@@ -161,8 +157,8 @@ export default {
       }
     },
     handleClick() {
-      this.togglePopup();
       this.isFirstShow = false;
+      this.togglePopup();
     }
   }
 };
@@ -214,6 +210,7 @@ export default {
 
   .title-item {
     padding-right: 10px;
+    white-space: nowrap;
   }
 }
 
