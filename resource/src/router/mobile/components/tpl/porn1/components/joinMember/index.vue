@@ -37,7 +37,7 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.push(`/mobile/home`);
+          this.$router.back();
         },
         hasClose: true,
         title: "领取彩金"
