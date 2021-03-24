@@ -750,6 +750,9 @@ export default {
           this.actionSetUserdata(true);
 
           this.AutotransferLock = false;
+
+          // this.isInitTranList = false;
+          this.initTranList(true);
         },
         fail: () => {
           this.AutotransferLock = false;
