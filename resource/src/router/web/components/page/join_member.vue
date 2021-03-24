@@ -912,7 +912,10 @@ export default {
       }
 
       let allInputDone = Object.values(this.allTip).find(data => data != "");
-      if (allInputDone) return;
+      if (allInputDone) {
+        this.isLoading = false;
+        return;
+      }
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
