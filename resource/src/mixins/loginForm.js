@@ -60,7 +60,7 @@ export default {
     ...mapActions(["actionIsLogin", "actionSetGlobalMessage"]),
     linktoJoin() {
       this.$nextTick(() => {
-        this.$router.push("/mobile/joinmember");
+        this.$router.push("/mobile/joinmember?login=1");
       });
     },
     keyDownSubmit() {
