@@ -520,7 +520,7 @@ export default {
             return;
 
           case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
-            this.$router.push("/mobile/mcenter/deposit&prev=back");
+            this.$router.push("/mobile/mcenter/deposit?prev=back");
             return;
 
           case "EVENT_THIRDPARTY_HOME":
