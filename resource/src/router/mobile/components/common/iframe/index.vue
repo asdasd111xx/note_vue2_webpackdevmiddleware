@@ -519,6 +519,14 @@ export default {
             this.$router.push("/mobile/mcenter/swag?tab=0&prev=back");
             return;
 
+          case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
+            this.$router.push("/mobile/mcenter/deposit&prev=back");
+            return;
+
+          case "EVENT_THIRDPARTY_HOME":
+            this.$router.push("/mobile");
+            return;
+
           default:
             return;
         }

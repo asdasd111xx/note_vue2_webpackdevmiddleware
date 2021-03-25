@@ -361,15 +361,13 @@ export default {
           val => {
             if (target === "newValue") {
               this.newValue = val;
-              if (value === "") {
-                this.isVerifyPhone = false;
-              } else {
-                this.isVerifyPhone = true;
-              }
             }
 
             if (target === "oldValue") {
               this.oldValue = val;
+            }
+
+            if (value === "") {
               this.isVerifyPhone = false;
             }
           }
@@ -389,21 +387,15 @@ export default {
           //   this.isVerifyPhone = true;
           // }
           // 廳主端設置手機 修改開關
-          if (this.edit) {
+          if (this.info.verification) {
             this.isVerifyPhone = true;
           }
         } else {
-          if (this.edit) {
-            this.isVerifyPhone = true;
+          // this.tipMsg = '手机格式不符合要求';
+          if (!this.hasVerified) {
+            this.isVerifyPhone = false;
           }
         }
-        // else {
-        //   //   this.tipMsg = '手机格式不符合要求';
-        //   // if (!this.hasVerified){
-        //   //   this.isVerifyPhone = true;
-        //   // }
-
-        // }
       }
 
       if (target === "code") {

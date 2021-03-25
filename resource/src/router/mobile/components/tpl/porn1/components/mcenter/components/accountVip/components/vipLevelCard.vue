@@ -39,11 +39,7 @@
         >
           <div :class="$style['card-thumb-cell']">
             <img
-              :src="
-                $getCdnPath(
-                  `/static/image/common/vip/vipcard_bg.png`
-                )
-              "
+              :src="$getCdnPath(`/static/image/common/vip/vipcard_bg.png`)"
               alt="vipcard_bg"
             />
             <div :class="$style['card-level-text']">
@@ -55,9 +51,7 @@
               v-if="item.seq <= userVipInfo.now_level_seq"
               :class="$style['card-level-image']"
               :src="
-                $getCdnPath(
-                  `/static/image/common/vip/ic_vip${item.seq}.png`
-                )
+                $getCdnPath(`/static/image/common/vip/ic_vip${item.seq}.png`)
               "
               alt="vipLevel_bg"
             />
@@ -66,9 +60,7 @@
               v-else
               :class="$style['card-level-image']"
               :src="
-                $getCdnPath(
-                  `/static/image/common/vip/ic_s_vip${item.seq}.png`
-                )
+                $getCdnPath(`/static/image/common/vip/ic_s_vip${item.seq}.png`)
               "
               alt="vipLevel_bg"
             />
@@ -159,8 +151,11 @@ export default {
     },
     vipLevelOption() {
       return {
-        slidesPerView: "auto"
-        // allowTouchMove: false
+        freeMode: true,
+        freeModeSticky: true,
+        slidesPerView: "auto",
+        centeredSlides: true,
+        centeredSlidesBounds: true // 設置居中後，使第一个和最后一个 Slide 始终贴合边缘
       };
     },
     vipCardOption() {
