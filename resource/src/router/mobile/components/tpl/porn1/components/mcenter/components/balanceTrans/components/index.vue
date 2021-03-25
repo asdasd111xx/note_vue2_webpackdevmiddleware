@@ -586,6 +586,7 @@ export default {
       this.getBalanceAll().then(() => {
         this.setTranInList(reload);
         this.setTranOutList(reload);
+        this.transferMoney = null;
         this.isInitTranList = true;
       });
     },
@@ -751,7 +752,6 @@ export default {
 
           this.AutotransferLock = false;
 
-          // this.isInitTranList = false;
           this.initTranList(true);
         },
         fail: () => {
@@ -820,7 +820,6 @@ export default {
 
             this.lockSec = 0;
             this.actionSetUserBalance();
-            this.transferMoney = "";
             this.btnLock = false;
             this.isInitTranList = false;
             this.initTranList(true);
