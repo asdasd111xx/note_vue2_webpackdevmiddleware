@@ -20,16 +20,28 @@
           {{ this.$text("S_FEEDBACK", "意见反馈") }}
         </div>
       </div>
-      <div :class="$style['avatar-info-wrap']">
-        <div :class="$style['avatar-wrap']">
-          <img :src="avatarSrc" />
+
+      <div :class="$style['userInfo-block']">
+        <div :class="$style['avatar-info-wrap']">
+          <div :class="$style['avatar-wrap']">
+            <img :src="avatarSrc" />
+          </div>
+          <div :class="$style['info-wrap']">
+            <span
+              >Hi,&nbsp;
+              {{ name }}
+            </span>
+            <span>欢迎来到客服中心</span>
+          </div>
         </div>
-        <div :class="$style['info-wrap']">
-          <span
-            >Hi,&nbsp;
-            {{ name }}
-          </span>
-          <span>欢迎来到客服中心</span>
+
+        <div :class="$style['line']" />
+
+        <div :class="$style['add-wrap']">
+          <span>添加桌面客服，随时享受一对一在线解答</span>
+          <span :class="$style['add-bottom']" @click="handleAddClick"
+            >立即添加</span
+          >
         </div>
       </div>
 
@@ -241,6 +253,9 @@ export default {
     clickPopTip() {
       this.isShowPop = true;
     },
+    handleAddClick() {
+      this.$router.push("/mobile/install");
+    },
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
@@ -278,22 +293,31 @@ export default {
   height: 100vh;
 }
 
-.avatar-info-wrap {
-  height: 90px;
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background-color: white;
-  margin: 0 14px;
-  margin-top: 30px;
+.userInfo-block {
   border-radius: 5px;
+
+  background-color: white;
+  margin: 30px 21px;
 
   -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.line {
+  background: #eee;
+  width: 100%;
+  height: 2px;
+}
+
+.avatar-info-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 19px 15px;
 
   .info-wrap {
     padding: 10px;
-    height: 100%;
+    line-height: 24px;
 
     span {
       height: 50%;
@@ -314,6 +338,23 @@ export default {
       height: 100%;
       border-radius: 50%;
     }
+  }
+}
+
+.add-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 15px;
+  font-size: 12px;
+  color: #be9e7f;
+  font-weight: bold;
+
+  .add-bottom {
+    color: #fff;
+    background: linear-gradient(#fe593c, #e61938);
+    border-radius: 36px;
+    padding: 3px 12px;
   }
 }
 
