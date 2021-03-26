@@ -1516,26 +1516,35 @@ export default {
     this.initHeaderSetting = this.headerSetting;
 
     // 判斷分項維護優先度最高
-    this.actionGetServiceMaintain().then(data => {
-      let target = data.find(
-        item =>
-          item.service === "player_deposit_and_withdraw" && item.is_maintain
-      );
+    this.actionGetServiceMaintain()
+      .then(data => {
+        let target = data.find(
+          item =>
+            item.service === "player_deposit_and_withdraw" && item.is_maintain
+        );
 
-      if (target) {
-        this.handleServiceMain(target);
+        if (target) {
+          this.handleServiceMain(target);
 
-        return;
-      } else {
+          return Promise.reject();
+        }
+      })
+      .then(() => {
         // 沒有維護則跑原本流程
-        this.getPayGroup();
-        this.checkEntryBlockStatus();
-        this.actionSetRechargeConfig();
-        this.actionSetAnnouncementList({ type: 1 }).then(() => {
-          this.isDoneMarquee = true;
+        const params = [
+          this.getPayGroup(),
+          this.checkEntryBlockStatus(),
+          this.actionSetRechargeConfig(),
+          this.actionSetAnnouncementList({ type: 1 })
+        ];
+        Promise.all(params).then(() => {
+          // 起始時沒有任何錯誤才顯示跑馬燈
+          if (!this.showPopStatus.isShow) {
+            this.isDoneMarquee = true;
+          }
         });
-      }
-    });
+      })
+      .catch(err => {});
   },
   destroyed() {
     this.resetTimerStatus();
@@ -1760,7 +1769,7 @@ export default {
     checkEntryBlockStatus() {
       // 使用者存款封鎖狀態
       this.isBlockChecked = false;
-      bbosRequest({
+      return bbosRequest({
         method: "get",
         url:
           this.siteConfig.BBOS_DOMIAN + "/Ext/V2/CreateEntryBlock/User/Check",
@@ -1924,7 +1933,7 @@ export default {
         }
       };
     },
-    setDefaultDate(){
+    setDefaultDate() {
       Date.prototype.Format = function(fmt) {
         var o = {
           "M+": this.getMonth() + 1, //月份
@@ -1953,7 +1962,6 @@ export default {
       //預設當前時間
       this.speedField["depositTime"] = new Date().Format("yyyy-MM-dd hh:mm:ss");
     }
-    
   }
 };
 </script>
