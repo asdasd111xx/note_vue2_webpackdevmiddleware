@@ -724,6 +724,7 @@ export default {
       }
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
+        errorAlert: false,
         success: () => {
           // this.actionSetGlobalMessage({ msg: "回收成功" });
           this.isAutotransfer = true;
@@ -732,8 +733,9 @@ export default {
 
           this.AutotransferLock = false;
         },
-        fail: () => {
+        fail: error => {
           this.AutotransferLock = false;
+          this.actionSetGlobalMessage({ msg: error.data.msg });
         }
       });
 
