@@ -1495,6 +1495,10 @@ export const actionSetVideoBounsPageStatus = ({ commit }, data) => {
   commit(types.SET_VIDEO_BOUNS_PAGE_STATUS, data);
 };
 
+export const actionSetShowRedEnvelope = ({ commit }, data) => {
+  commit(types.SET_REDENVELOPE, data);
+};
+
 export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
   if (window.CHECKRECHARGETSTATUS) {
     return;

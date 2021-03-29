@@ -216,6 +216,11 @@
       </div>
     </div>
     <page-loading :isShow="isLoading" />
+    <envelope
+      v-if="needShowRedEnvelope"
+      @closeEvelope="closeEvelope"
+      :redEnvelopeData="redEnvelopeData"
+    />
   </div>
 </template>
 
@@ -233,7 +238,11 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      )
   },
   mounted() {}
 };

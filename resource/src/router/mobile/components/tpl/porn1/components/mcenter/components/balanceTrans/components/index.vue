@@ -417,6 +417,11 @@
         ></div>
       </div>
     </message>
+    <envelope
+      v-if="needShowRedEnvelope"
+      @closeEvelope="closeEvelope"
+      :redEnvelopeData="redEnvelopeData"
+    />
   </div>
 </template>
 
@@ -429,10 +434,15 @@ import mcenter from "@/api/mcenter";
 import message from "@/router/mobile/components/common/message";
 import yaboRequest from "@/api/yaboRequest";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
-    message
+    message,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      )
   },
   data() {
     return {
@@ -463,19 +473,26 @@ export default {
       transInList: [],
       transOutList: [],
       bonus: {},
-      isInitTranList: false
+      isInitTranList: false,
+      needShowRedEnvelope: false,
+      redEnvelopeData: {}
     };
   },
   watch: {
     transferMoney(val) {
       localStorage.setItem("tranfer-money", val);
+    },
+    showRedEnvelope() {
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
     }
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     $style() {
       const style =
@@ -580,7 +597,8 @@ export default {
     ...mapActions([
       "actionSetUserBalance",
       "actionSetUserdata",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
+      "actionSetShowRedEnvelope"
     ]),
     initTranList(reload) {
       this.getBalanceAll().then(() => {
@@ -724,6 +742,7 @@ export default {
       }
       this.AutotransferLock = true;
       mcenter.balanceTranAutoEnable({
+        errorAlert: false,
         success: () => {
           // this.actionSetGlobalMessage({ msg: "回收成功" });
           this.isAutotransfer = true;
@@ -732,8 +751,9 @@ export default {
 
           this.AutotransferLock = false;
         },
-        fail: () => {
+        fail: error => {
           this.AutotransferLock = false;
+          this.actionSetGlobalMessage({ msg: error.data.msg });
         }
       });
 
@@ -807,35 +827,82 @@ export default {
         return;
       }
 
-      mcenter.balanceTran(
-        {
-          params: {
-            amount: money
-          },
-          success: () => {
-            this.actionSetGlobalMessage({ msg: "转帐成功" });
-            localStorage.removeItem("tranfer-money");
-            localStorage.removeItem("tranfer-tranIn");
-            localStorage.removeItem("tranfer-tranOut");
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        mcenter.balanceTran(
+          {
+            params: {
+              amount: money
+            },
+            success: () => {
+              this.actionSetGlobalMessage({ msg: "转帐成功" });
+              localStorage.removeItem("tranfer-money");
+              localStorage.removeItem("tranfer-tranIn");
+              localStorage.removeItem("tranfer-tranOut");
 
-            this.lockSec = 0;
-            this.actionSetUserBalance();
-            this.btnLock = false;
-            this.isInitTranList = false;
-            this.initTranList(true);
+              this.lockSec = 0;
+              this.actionSetUserBalance();
+              this.btnLock = false;
+              this.isInitTranList = false;
+              this.initTranList(true);
+            },
+            fail: res => {
+              this.btnLock = false;
+              this.actionSetGlobalMessage({
+                code: res.data.code,
+                origin: "balanceTrans",
+                msg: res.data.msg
+              });
+            }
           },
-          fail: res => {
-            this.btnLock = false;
-            this.actionSetGlobalMessage({
-              code: res.data.code,
-              origin: "balanceTrans",
-              msg: res.data.msg
-            });
+          source,
+          target
+        );
+      } else {
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+          params: {
+            cid: getCookie("cid")
           }
-        },
-        source,
-        target
-      );
+        }).then(res => {
+          console.log(res);
+          if (res.status === "000") {
+            if (res.data.status != -1) {
+              this.actionSetShowRedEnvelope(res.data);
+            } else {
+              mcenter.balanceTran(
+                {
+                  params: {
+                    amount: money
+                  },
+                  success: () => {
+                    this.actionSetGlobalMessage({ msg: "转帐成功" });
+                    localStorage.removeItem("tranfer-money");
+                    localStorage.removeItem("tranfer-tranIn");
+                    localStorage.removeItem("tranfer-tranOut");
+
+                    this.lockSec = 0;
+                    this.actionSetUserBalance();
+                    this.btnLock = false;
+                    this.isInitTranList = false;
+                    this.initTranList(true);
+                  },
+                  fail: res => {
+                    this.btnLock = false;
+                    this.actionSetGlobalMessage({
+                      code: res.data.code,
+                      origin: "balanceTrans",
+                      msg: res.data.msg
+                    });
+                  }
+                },
+                source,
+                target
+              );
+            }
+          }
+        });
+      }
     },
     getRecentlyOpened() {
       mcenter.lastVendor({
@@ -843,6 +910,10 @@ export default {
           this.recentlyData = response.ret;
         }
       });
+    },
+
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
     }
   }
 };

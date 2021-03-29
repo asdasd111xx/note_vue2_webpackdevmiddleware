@@ -56,7 +56,8 @@ export default {
   },
   methods: {
     backPre() {
-      this.$router.push("/mobile/mcenter");
+      // this.$router.push("/mobile/mcenter");
+      this.$router.back();
     }
   }
 };

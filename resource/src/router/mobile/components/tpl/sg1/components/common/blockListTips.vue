@@ -97,6 +97,6 @@ export default {
   text-align: center;
   padding: 15px 0;
   border-top: 2px solid #f9f9f8;
-  color: #93c1ff;
+  color: #be9e7f;
 }
 </style>

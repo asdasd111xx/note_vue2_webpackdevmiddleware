@@ -585,5 +585,9 @@ export default {
       ...data,
       balance: +data.balance === 0 ? "0" : Number(data.balance).toFixed(0)
     };
+  },
+  // 是否需顯示紅包
+  [types.SET_REDENVELOPE](state, data) {
+    state.showRedEnvelope = data;
   }
 };

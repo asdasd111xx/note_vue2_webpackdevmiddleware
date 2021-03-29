@@ -53,7 +53,8 @@ export default {
     },
     handleClick() {
       this.show = false;
-      window.open("/mobile/install", "_blank");
+      // window.open("/mobile/install", "_blank");
+      this.$router.push("/mobile/install");
     }
   }
 };

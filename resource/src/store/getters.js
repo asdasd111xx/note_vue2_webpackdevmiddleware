@@ -207,5 +207,6 @@ export default {
   getPromotionLink: state => state.promotionLink,
   getBBOSDomain: state => state.BBosDomain,
   getSwagConfig: state => state.swagConfig,
-  getSwagBalance: state => state.swagBalance
+  getSwagBalance: state => state.swagBalance,
+  getShowRedEnvelope: state => state.showRedEnvelope
 };

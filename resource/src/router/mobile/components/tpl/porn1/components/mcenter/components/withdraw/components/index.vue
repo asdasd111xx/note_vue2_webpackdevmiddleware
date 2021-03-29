@@ -786,25 +786,27 @@ export default {
   },
   created() {
     // 判斷分項維護優先度最高
-    this.actionGetServiceMaintain().then(data => {
-      // priority: player_deposit_and_withdraw > player_withdraw
-      let target =
-        data.find(
-          item =>
-            item.service === "player_deposit_and_withdraw" && item.is_maintain
-        ) ||
-        data.find(
-          item => item.service === "player_withdraw" && item.is_maintain
-        );
+    this.actionGetServiceMaintain()
+      .then(data => {
+        // priority: player_deposit_and_withdraw > player_withdraw
+        let target =
+          data.find(
+            item =>
+              item.service === "player_deposit_and_withdraw" && item.is_maintain
+          ) ||
+          data.find(
+            item => item.service === "player_withdraw" && item.is_maintain
+          );
 
-      if (target) {
-        this.isLoading = false;
-        this.handleServiceMain(target);
+        if (target) {
+          this.isLoading = false;
+          this.handleServiceMain(target);
 
-        return;
-      } else {
+          return Promise.reject();
+        }
+      })
+      .then(() => {
         // 沒有維護則跑原本流程
-
         this.updateAmount().then(() => {
           this.getWithdrawAccount();
           // 刷新 Player Api
@@ -813,9 +815,7 @@ export default {
           this.getUserStat();
           this.getNowOpenWallet();
           this.getBounsAccount();
-          this.actionSetAnnouncementList({ type: 2 }).then(() => {
-            this.isDoneMarquee = true;
-          });
+          this.actionSetAnnouncementList({ type: 2 });
         });
 
         this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
@@ -825,20 +825,12 @@ export default {
           this.setPopupStatus(true, "check");
           return;
         }
-
-        // 綁定銀行卡內無常用帳號
-        // common.bankCardCheck({
-        //   success: ({ result, ret }) => {
-        //     if (result !== "ok") {
-        //       return;
-        //     }
-        //     this.hasBankCard = ret;
-        //   }
-        // });
-
-        return;
-      }
-    });
+      })
+      .then(() => {
+        if (!this.showPopStatus.isShow) {
+          this.isDoneMarquee = true;
+        }
+      });
   },
   mounted() {
     // 按下一鍵歸戶後，需再更新 withdraw/info 這支 API
