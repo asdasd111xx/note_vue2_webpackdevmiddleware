@@ -29,6 +29,8 @@ export default {
       showPromotion: false,
       isLoading: false,
       isCheckWithdraw: false,
+      needShowRedEnvelope: false,
+      redEnvelopeData: {},
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
@@ -46,6 +48,14 @@ export default {
     };
   },
   watch: {
+    showRedEnvelope() {
+      // if(this.showRedEnvelope.data.status != -1){
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
+      // }
+
+      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
+    },
     isReceive() {
       this.onResize();
     },
@@ -87,7 +97,8 @@ export default {
       hasBank: "getHasBank",
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
-      noticeData: "getNoticeData"
+      noticeData: "getNoticeData",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     isAdult() {
       if (localStorage.getItem("content_rating")) {
@@ -239,7 +250,8 @@ export default {
       "actionSetGlobalMessage",
       "actionGetRechargeStatus",
       "actionGetMemInfoV3",
-      "actionSetYaboConfig"
+      "actionSetYaboConfig",
+      "actionSetShowRedEnvelope"
     ]),
     getImg(info) {
       return {
@@ -820,42 +832,98 @@ export default {
                 return;
               }
           }
-          this.isLoading = true;
 
-          const openGameSuccessFunc = res => {
-            this.isLoading = false;
-            // BB捕魚切換樣式跑版問題
-            if (game.vendor === "bbin" && game.kind === 3) {
-              window.GAME_RELOAD = true;
-            }
-          };
+          if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+            this.isLoading = true;
 
-          const openGameFailFunc = res => {
-            this.isLoading = false;
-            window.GAME_RELOAD = undefined;
+            const openGameSuccessFunc = res => {
+              this.isLoading = false;
+              // BB捕魚切換樣式跑版問題
+              if (game.vendor === "bbin" && game.kind === 3) {
+                window.GAME_RELOAD = true;
+              }
+            };
 
-            if (res && res.data) {
-              let data = res.data;
-              this.actionSetGlobalMessage({
-                msg: data.msg,
-                code: data.code,
-                origin: "home"
-              });
-            }
-          };
+            const openGameFailFunc = res => {
+              this.isLoading = false;
+              window.GAME_RELOAD = undefined;
 
-          openGame(
-            {
-              kind: game.kind,
-              vendor: game.vendor,
-              code: game.code,
-              gameType: game.type,
-              gameName: game.name
-            },
-            openGameSuccessFunc,
-            openGameFailFunc
-          );
-          return;
+              if (res && res.data) {
+                let data = res.data;
+                this.actionSetGlobalMessage({
+                  msg: data.msg,
+                  code: data.code,
+                  origin: "home"
+                });
+              }
+            };
+
+            openGame(
+              {
+                kind: game.kind,
+                vendor: game.vendor,
+                code: game.code,
+                gameType: game.type,
+                gameName: game.name
+              },
+              openGameSuccessFunc,
+              openGameFailFunc
+            );
+            return;
+          } else {
+            goLangApiRequest({
+              method: "get",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+              params: {
+                cid: getCookie("cid")
+              }
+            }).then(res => {
+              console.log(res);
+              if (res.status === "000") {
+                if (res.data.status != -1) {
+                  // commit(types.SET_REDENVELOPE, res.data);
+                  this.actionSetShowRedEnvelope(res.data);
+                } else {
+                  this.isLoading = true;
+
+                  const openGameSuccessFunc = res => {
+                    this.isLoading = false;
+                    // BB捕魚切換樣式跑版問題
+                    if (game.vendor === "bbin" && game.kind === 3) {
+                      window.GAME_RELOAD = true;
+                    }
+                  };
+
+                  const openGameFailFunc = res => {
+                    this.isLoading = false;
+                    window.GAME_RELOAD = undefined;
+
+                    if (res && res.data) {
+                      let data = res.data;
+                      this.actionSetGlobalMessage({
+                        msg: data.msg,
+                        code: data.code,
+                        origin: "home"
+                      });
+                    }
+                  };
+
+                  openGame(
+                    {
+                      kind: game.kind,
+                      vendor: game.vendor,
+                      code: game.code,
+                      gameType: game.type,
+                      gameName: game.name
+                    },
+                    openGameSuccessFunc,
+                    openGameFailFunc
+                  );
+                  return;
+                }
+              }
+            });
+          }
       }
     },
     getUserViplevel() {
@@ -903,6 +971,10 @@ export default {
             // console.log("取維護狀態XXXX");
           });
       }
+    },
+
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
     }
   }
 };

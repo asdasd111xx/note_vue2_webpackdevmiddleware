@@ -57,6 +57,11 @@
       :game-show-favor="gameShowFavor"
       :game-show-button="gameShowButton"
     />
+    <envelope
+      v-if="needShowRedEnvelope"
+      @closeEvelope="closeEvelope"
+      :redEnvelopeData="redEnvelopeData"
+    />
   </div>
 </template>
 
@@ -82,7 +87,11 @@ export default {
     gameSearch,
     gameLabel,
     gameItem,
-    InfiniteLoading
+    InfiniteLoading,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      )
   },
   props: {
     slotSort: {
@@ -123,6 +132,8 @@ export default {
       isReceive: false,
       showInfinite: true,
       isFavorite: false,
+      needShowRedEnvelope: false,
+      redEnvelopeData: {},
       paramsData: {
         kind: 5,
         label: "hot", // 棋牌遊戲分類預設“棋牌遊戲”
@@ -142,7 +153,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       favoriteGame: "getFavoriteGame",
-      siteconfig: "getSiteConfig"
+      siteconfig: "getSiteConfig",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -176,6 +188,14 @@ export default {
       }
 
       this.setSearchText("");
+    },
+    showRedEnvelope() {
+      // if(this.showRedEnvelope.data.status != -1){
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
+      // }
+
+      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
     }
   },
   created() {
@@ -366,6 +386,10 @@ export default {
     },
     updateSearchStatus() {
       this.$emit("update:isShowSearch");
+    },
+
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
     }
   }
 };

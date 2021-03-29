@@ -66,6 +66,11 @@
       :game-show-favor="gameShowFavor"
       :game-show-button="gameShowButton"
     />
+    <envelope
+      v-if="needShowRedEnvelope"
+      @closeEvelope="closeEvelope"
+      :redEnvelopeData="redEnvelopeData"
+    />
   </div>
 </template>
 
@@ -96,7 +101,11 @@ export default {
     gameLabel,
     gameItem,
     InfiniteLoading,
-    jackpot
+    jackpot,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      )
   },
   props: {
     slotSort: {
@@ -143,6 +152,8 @@ export default {
       showInfinite: false,
       isFavorite: false,
       tabItem: "",
+      needShowRedEnvelope: false,
+      redEnvelopeData: {},
       paramsData: {
         kind: 3,
         label: "hot",
@@ -164,7 +175,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      favoriteGame: "getFavoriteGame"
+      favoriteGame: "getFavoriteGame",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -241,6 +253,14 @@ export default {
         return;
       }
       this.setSearchText("");
+    },
+    showRedEnvelope() {
+      // if(this.showRedEnvelope.data.status != -1){
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
+      // }
+
+      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
     }
   },
   created() {
@@ -426,6 +446,10 @@ export default {
       // this.$nextTick(() => {
       //   this.showInfinite = true;
       // });
+    },
+
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
     },
     /**
      * 捲動加載
