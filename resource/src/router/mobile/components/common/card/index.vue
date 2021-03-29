@@ -202,7 +202,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetFavoriteGame"]),
+    ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
     redirectBankCard() {
       return `card-${this.vendor}-${this.paramsData.label}`;
     },
@@ -386,6 +386,9 @@ export default {
 
     closeEvelope() {
       this.needShowRedEnvelope = false;
+      this.actionSetGlobalMessage({
+        msg: "红包派发中，到帐后即可畅玩游戏"
+      });
     }
   }
 };
