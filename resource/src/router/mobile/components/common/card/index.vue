@@ -190,12 +190,8 @@ export default {
       this.setSearchText("");
     },
     showRedEnvelope() {
-      // if(this.showRedEnvelope.data.status != -1){
       this.needShowRedEnvelope = true;
       this.redEnvelopeData = this.showRedEnvelope;
-      // }
-
-      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
     }
   },
   created() {

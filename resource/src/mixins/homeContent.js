@@ -881,7 +881,6 @@ export default {
               console.log(res);
               if (res.status === "000") {
                 if (res.data.status != -1) {
-                  // commit(types.SET_REDENVELOPE, res.data);
                   this.actionSetShowRedEnvelope(res.data);
                 } else {
                   this.isLoading = true;
