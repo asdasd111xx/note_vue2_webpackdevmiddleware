@@ -375,8 +375,10 @@ export default {
                 this.mission = mission;
                 bonunsProcess.isForceWait = true;
                 bonunsProcess.processType = "wait";
-                bonunsDialog.isFinishMission =
-                  Number(this.mission.ActionType) === 6;
+                if (this.mission) {
+                  bonunsDialog.isFinishMission =
+                    Number(this.mission.ActionType) === 6;
+                }
                 this.isFULL = true;
                 // bonunsDialog.isShow = true;
                 // this.dialogType = 'tips-full';
