@@ -267,7 +267,7 @@ export default {
     this.getGameLabelList();
   },
   methods: {
-    ...mapActions(["actionSetFavoriteGame"]),
+    ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
     setJackpotData(data) {
       this.jackpotData = data;
     },
@@ -446,6 +446,9 @@ export default {
 
     closeEvelope() {
       this.needShowRedEnvelope = false;
+      this.actionSetGlobalMessage({
+        msg: "红包派发中，到帐后即可畅玩游戏"
+      });
     },
     /**
      * 捲動加載
