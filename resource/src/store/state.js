@@ -452,5 +452,6 @@ export default {
   webDomain: {},
   BBosDomain: {},
   swagConfig: {},
-  swagBalance: {}
+  swagBalance: {},
+  showRedEnvelope: false
 };

@@ -11,6 +11,8 @@
 import { mapGetters, mapActions } from "vuex";
 import openGame from "@/lib/open_game";
 import isMobile from "@/lib/is_mobile";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   props: {
@@ -60,7 +62,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     /**
      * 點擊立即遊戲
      * @method onEnter
@@ -93,27 +95,72 @@ export default {
         return;
       }
 
-      this.isShowLoading = true;
-      const openGameSuccessFunc = res => {
-        this.isShowLoading = false;
-        window.GAME_RELOAD = true;
-      };
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        this.isShowLoading = true;
+        const openGameSuccessFunc = res => {
+          this.isShowLoading = false;
+          window.GAME_RELOAD = true;
+        };
 
-      const openGameFailFunc = res => {
-        this.isShowLoading = false;
-        window.GAME_RELOAD = undefined;
+        const openGameFailFunc = res => {
+          this.isShowLoading = false;
+          window.GAME_RELOAD = undefined;
 
-        if (res && res.data) {
-          let data = res.data;
-          this.actionSetGlobalMessage({
-            msg: data.msg,
-            code: data.code,
-            origin: `hotLobby-${this.$route.params.vendor}`
-          });
-        }
-      };
+          if (res && res.data) {
+            let data = res.data;
+            this.actionSetGlobalMessage({
+              msg: data.msg,
+              code: data.code,
+              origin: `hotLobby-${this.$route.params.vendor}`
+            });
+          }
+        };
 
-      openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
+        openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
+        return;
+      } else {
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+          params: {
+            cid: getCookie("cid")
+          }
+        }).then(res => {
+          console.log(res);
+          if (res.status === "000") {
+            if (res.data.status != -1) {
+              this.actionSetShowRedEnvelope(res.data);
+            } else {
+              this.isShowLoading = true;
+              const openGameSuccessFunc = res => {
+                this.isShowLoading = false;
+                window.GAME_RELOAD = true;
+              };
+
+              const openGameFailFunc = res => {
+                this.isShowLoading = false;
+                window.GAME_RELOAD = undefined;
+
+                if (res && res.data) {
+                  let data = res.data;
+                  this.actionSetGlobalMessage({
+                    msg: data.msg,
+                    code: data.code,
+                    origin: `hotLobby-${this.$route.params.vendor}`
+                  });
+                }
+              };
+
+              openGame(
+                { vendor, kind, code },
+                openGameSuccessFunc,
+                openGameFailFunc
+              );
+              return;
+            }
+          }
+        });
+      }
     }
   }
 };
