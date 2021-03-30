@@ -22,6 +22,11 @@
     <template v-if="isShowSearch">
       <game-search :update-search-status="updateSearchStatus" />
     </template>
+    <envelope
+      v-if="needShowRedEnvelope"
+      @closeEvelope="closeEvelope"
+      :redEnvelopeData="redEnvelopeData"
+    />
   </div>
 </template>
 
@@ -34,7 +39,11 @@ import mixin from "@/mixins/hotLobby";
 export default {
   components: {
     gameSearch,
-    gameItem
+    gameItem,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      )
   },
   mixins: [mixin],
   props: {
@@ -48,12 +57,26 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      needShowRedEnvelope: false,
+      redEnvelopeData: {}
+    };
+  },
+  watch: {
+    showRedEnvelope() {
+      // if(this.showRedEnvelope.data.status != -1){
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
+      // }
+
+      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
+    }
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     $style() {
       return (
@@ -75,6 +98,13 @@ export default {
   methods: {
     updateSearchStatus() {
       this.$emit("update:isShowSearch");
+    },
+
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
+      this.actionSetGlobalMessage({
+        msg: "红包派发中，到帐后即可畅玩游戏"
+      });
     }
   }
 };

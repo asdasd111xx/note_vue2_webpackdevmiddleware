@@ -58,7 +58,7 @@ export default {
       if (!this.envelopeOpenType) {
         this.envelopeOpenType = true;
         this.encelopeMessage = this.redEnvelopeData.resultMessage;
-        switch (this.redEnvelopeData) {
+        switch (this.redEnvelopeData.status) {
           case 0:
             this.buttonText = "去充值";
             break;
@@ -70,7 +70,7 @@ export default {
         }
         return;
       } else {
-        if (this.redEnvelopeData === 0) {
+        if (this.redEnvelopeData.status === 0) {
           this.$router.push(`/mobile/mcenter/deposit`);
         } else {
           this.closeEvelope();
@@ -141,6 +141,7 @@ export default {
   display: flex;
   flex-direction: column;
   color: #fbf0bb;
+  text-align: center;
 }
 
 .envelope-ground {
