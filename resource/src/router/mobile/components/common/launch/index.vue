@@ -52,7 +52,7 @@ export default {
       clearInterval(this.timer);
       this.timer = null;
       this.$nextTick(() => {
-        this.$router.push("/mobile");
+        this.$router.push(`/mobile?t=${Date.now}`);
       });
     }
   }

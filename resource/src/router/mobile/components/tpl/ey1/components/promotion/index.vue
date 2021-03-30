@@ -155,7 +155,9 @@ export default {
       let url = "";
       localStorage.setItem("iframe-third-url-title", target.name);
       this.$router.push(
-        `/mobile/iframe/promotion?alias=${target.alias}&fullscreen=true`
+        `/mobile/iframe/promotion?alias=${target.alias}&fullscreen=${
+          target.alias === "self_collect_promotion" ? "false" : "true"
+        }`
       );
     },
     onClick(target) {
