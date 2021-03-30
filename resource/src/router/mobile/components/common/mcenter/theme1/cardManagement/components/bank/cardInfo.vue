@@ -1,7 +1,7 @@
 <template>
   <div :class="$style['my-card']">
     <!-- 卡片管理列表 -->
-    <template v-if="!showDetail">
+    <template v-if="!statusList.showDetail">
       <div v-if="isRevice && bank_card.length > 0">
         <div
           :class="[$style['card-count'], 'clearfix']"
@@ -47,7 +47,7 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template v-if="isRevice && bank_card.length < 3">
+      <template v-if="isRevice && isCommon && bank_card.length < 3">
         <div :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"
@@ -65,7 +65,7 @@
     </template>
 
     <!-- 卡片詳細資料 -->
-    <template v-if="showDetail && bank_cardDetail">
+    <template v-if="statusList.showDetail && bank_cardDetail">
       <div v-if="bank_cardDetail.auditing" :class="$style['audit-block']">
         <div>删除审核中</div>
         <span>审核通过后，系统会自动刪除銀行卡</span>
@@ -78,12 +78,23 @@
         :type="'bankCard'"
       />
 
-      <div v-if="editStatus" :class="$style['edit-bankcard']">
+      <div v-if="statusList.editDetail" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
+          <template v-if="['ey1'].includes(this.themeTPL)">
+            <div :class="$style['edit-option-item']" @click="moveCard">
+              {{ isCommon ? "移至历史帐号" : "移至我的卡片" }}
+            </div>
+          </template>
+
           <div
             v-if="memInfo.config.delete_bank_card"
-            :class="[$style['edit-option-item'], $style['confirm']]"
+            :class="[
+              $style['edit-option-item'],
+              {
+                [$style['confirm']]: ['porn1', 'sg1'].includes(this.themeTPL)
+              }
+            ]"
             @click="isShowPop = true"
           >
             解除绑定
@@ -91,7 +102,9 @@
 
           <div
             :class="[$style['edit-option-item'], $style['cancel']]"
-            @click="$emit('update:editStatus', false)"
+            @click="
+              $emit('update:statusList', { key: 'editDetail', value: false })
+            "
           >
             取消
           </div>
@@ -142,23 +155,14 @@ export default {
       type: Function,
       default: () => {}
     },
-    showDetail: {
-      type: Boolean,
-      required: true
-    },
-    editStatus: {
-      type: Boolean,
-      required: true
-    },
-    isAudit: {
-      type: Boolean,
+    statusList: {
+      type: Object,
       required: true
     }
   },
   created() {
     this.getUserBankList();
-  },
-  methods: {}
+  }
 };
 </script>
 

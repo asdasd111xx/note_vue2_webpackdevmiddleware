@@ -8,9 +8,13 @@ export default {
       currentPage: null,
       isShowTab: null,
 
-      editDetailStatus: false,
-      isAuditStatus: false,
-      showDetailStatus: false,
+      syncStatusList: {
+        editDetail: false,
+        isAudit: false,
+        showDetail: false,
+        sameTypeWallet: false
+      },
+
       step: "one"
     };
   },
@@ -47,28 +51,12 @@ export default {
       }
       return false;
     },
-    showDetail: {
+    statusList: {
       get() {
-        return this.showDetailStatus;
+        return this.syncStatusList;
       },
-      set(value) {
-        this.showDetailStatus = value;
-      }
-    },
-    editStatus: {
-      get() {
-        return this.editDetailStatus;
-      },
-      set(value) {
-        this.editDetailStatus = value;
-      }
-    },
-    isAudit: {
-      get() {
-        return this.isAuditStatus;
-      },
-      set(value) {
-        this.isAuditStatus = value;
+      set({ key, value }) {
+        this.syncStatusList[key] = value;
       }
     },
     addBankCardStep: {
@@ -92,7 +80,7 @@ export default {
     changePage(value) {
       this.currentPage = value;
     },
-    changeToHistory() {
+    goToHistory() {
       this.$router.push("/mobile/mcenter/historyCard");
     }
   }

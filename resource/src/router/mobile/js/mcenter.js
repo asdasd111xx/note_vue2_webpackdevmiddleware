@@ -108,12 +108,18 @@ export default {
       // 綁定銀行卡
       path: "bankCard",
       name: "mcenter-bankCard",
+      meta: {
+        common: true
+      },
       component
     },
     {
       // 歷史銀行卡/電子錢包
       path: "historyCard",
       name: "mcenter-historyCard",
+      meta: {
+        common: false
+      },
       component
     },
     {
