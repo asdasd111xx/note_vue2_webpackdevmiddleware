@@ -74,9 +74,6 @@ export default {
     if (code) {
       temp.code = code;
     }
-    if (vendor === "cq9") {
-      return;
-    }
 
     if (localStorage.getItem("open-game-link")) {
       let openGameLink = localStorage.getItem("open-game-link");
@@ -88,11 +85,16 @@ export default {
       //   this.urlData = openGameLink;
       //   return;
       // }
+      if (vendor === "cq9") {
+        location.href = openGameLink;
+      } else {
+        location.replace(openGameLink);
+      }
 
-      location.replace(openGameLink);
       return;
     } else {
       console.log("open-game-link 遺失");
+      return;
       // 舊版開啟方式
       game.gameLink(
         {
