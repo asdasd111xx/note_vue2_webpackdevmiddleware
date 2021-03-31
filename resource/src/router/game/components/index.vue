@@ -85,11 +85,11 @@ export default {
       //   this.urlData = openGameLink;
       //   return;
       // }
-      if (vendor === "cq9") {
-        location.href = openGameLink;
-      } else {
-        location.replace(openGameLink);
-      }
+      // if (vendor === "cq9") {
+      //   location.href = openGameLink;
+      // } else {
+      location.replace(openGameLink);
+      // }
 
       return;
     } else {
