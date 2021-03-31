@@ -52,9 +52,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   if (!embedGame && !isWebview) {
     newWindow = window.open("", gameTitle, option);
     setTimeout(() => {
-      if (vendor != "cq9") {
-        newWindow.location = "/game/loading/true";
-      }
+      // if (vendor != "cq9") {
+      newWindow.location = "/game/loading/true";
+      // }
     }, 200);
   }
 
