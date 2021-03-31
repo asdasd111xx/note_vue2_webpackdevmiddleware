@@ -126,11 +126,11 @@ export default (params, success = () => {}, fail = () => {}) => {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
             } else {
-              if (vendor === "cq9") {
-                newWindow.location.replace(ret.url + query);
-              } else {
-                newWindow.location.replace(link);
-              }
+              // if (vendor === "cq9") {
+              //   newWindow.location.replace(ret.url + query);
+              // } else {
+              newWindow.location.replace(link);
+              // }
             }
           }
 

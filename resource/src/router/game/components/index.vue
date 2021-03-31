@@ -74,6 +74,9 @@ export default {
     if (code) {
       temp.code = code;
     }
+    if (vendor === "cq9") {
+      return;
+    }
 
     if (localStorage.getItem("open-game-link")) {
       let openGameLink = localStorage.getItem("open-game-link");
