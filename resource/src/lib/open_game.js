@@ -52,9 +52,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   if (!embedGame && !isWebview) {
     newWindow = window.open("", gameTitle, option);
     setTimeout(() => {
-      // if (vendor != "cq9") {
       newWindow.location = "/game/loading/true";
-      // }
     }, 200);
   }
 
@@ -128,11 +126,7 @@ export default (params, success = () => {}, fail = () => {}) => {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
             } else {
-              if (vendor === "cq9") {
-                newWindow.location.href = link;
-              } else {
-                newWindow.location.replace(link);
-              }
+              newWindow.location.replace(link);
             }
           }
 
