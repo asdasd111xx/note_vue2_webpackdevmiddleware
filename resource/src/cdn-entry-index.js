@@ -1,7 +1,7 @@
 const main = () => import(/* webpackChunkName: 'main' */ "./main");
-let cdnHost = "/";
+let cdnHost = "";
 let h;
-
+// nignx F5 DC x-cdn header
 function getCDNHost() {
   fetch(`/conf/domain`)
     .then(function(response) {
@@ -10,7 +10,6 @@ function getCDNHost() {
       return response.json();
     })
     .then(function(data) {
-      console.log(data);
       if (data.site === "porn1" && data.domain === "67") {
         cdnHost = h.get(`x-cdn-yb`);
       } else if (
@@ -21,9 +20,12 @@ function getCDNHost() {
       } else if (data.site === "ey1" && data.domain === "41") {
         cdnHost = h.get(`x-cdn-ey`);
       } else {
-        cdnHost = "/";
+        cdnHost = "";
       }
-      __webpack_public_path__ = `https://${cdnHost}/`;
+
+      console.log("__webpack_public_path__:", cdnHost);
+      window.SCRIPT_CDN_HOST = cdnHost ? `https://${cdnHost}/` : "";
+      __webpack_public_path__ = cdnHost ? `https://${cdnHost}/` : "/";
     })
     .catch(function(e) {
       console.log(e);

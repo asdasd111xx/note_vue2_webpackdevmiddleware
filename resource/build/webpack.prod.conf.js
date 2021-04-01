@@ -53,6 +53,7 @@ let webpackConfig = merge(baseWebpackConfig, {
       filename:
         process.env.NODE_ENV === "testing" ? "index.html" : config.build.index,
       template: "index.html",
+      scriptLoading: "defer",
       inject: true,
       minify: {
         removeComments: true,
@@ -64,21 +65,21 @@ let webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: "dependency"
     }),
-    new HtmlWebpackTagsPlugin({
-      tags: [
-        `${process.env.CDN_HOST}/public/js/jquery-3.3.1.min.js`,
-        `${process.env.CDN_HOST}/public/js/semantic-2.2.12.min.js`,
-        `${process.env.CDN_HOST}/public/js/jquery.cloud9carousel.js`,
-        {
-          path: "//g.alicdn.com/sd/ncpc/nc.js?t=",
-          type: "js",
-          attributes: { charset: "utf-8" }
-        }
-      ],
-      publicPath: false,
-      append: false,
-      hash: true
-    }),
+    // new HtmlWebpackTagsPlugin({
+    //   tags: [
+    //     `/public/js/jquery-3.3.1.min.js`,
+    //     `/public/js/semantic-2.2.12.min.js`,
+    //     `/public/js/jquery.cloud9carousel.js`,
+    //     {
+    //       path: "//g.alicdn.com/sd/ncpc/nc.js?t=",
+    //       type: "js",
+    //       attributes: { charset: "utf-8" }
+    //     }
+    //   ],
+    //   publicPath: false,
+    //   append: false,
+    //   hash: true
+    // }),
     new webpack.IgnorePlugin({
       resourceRegExp: /^\.\/locale$/,
       contextRegExp: /moment$/
