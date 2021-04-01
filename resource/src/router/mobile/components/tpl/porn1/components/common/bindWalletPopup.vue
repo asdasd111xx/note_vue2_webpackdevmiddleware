@@ -170,18 +170,18 @@ export default {
             // window.open("https://www.huobi.pr/");
             window.open(this.urls[0]);
           }
-        },
-        {
-          name: "58COIN",
-          iconSrc: this.$getCdnPath(
-            `/static/image/common/mcenter/deposit/ic_58coin.png`
-          ),
-          onClick: () => {
-            // window.open("https://www.binancezh.pro/");
-
-            window.open(this.urls[1]);
-          }
         }
+        // {
+        //   name: "58COIN",
+        //   iconSrc: this.$getCdnPath(
+        //     `/static/image/common/mcenter/deposit/ic_58coin.png`
+        //   ),
+        //   onClick: () => {
+        //     // window.open("https://www.binancezh.pro/");
+
+        //     window.open(this.urls[1]);
+        //   }
+        // }
       ],
 
       // 彈窗顯示狀態統整
@@ -226,10 +226,10 @@ export default {
       this.urls[0] = url;
     });
 
-    this.getUrl({ urlName: "58coin" }).then(url => {
-      if (!url) return;
-      this.urls[1] = url;
-    });
+    // this.getUrl({ urlName: "58coin" }).then(url => {
+    //   if (!url) return;
+    //   this.urls[1] = url;
+    // });
   },
   computed: {
     ...mapGetters({
@@ -475,7 +475,7 @@ export default {
 
   .icon-block {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 
     .item {
       width: 49%;
