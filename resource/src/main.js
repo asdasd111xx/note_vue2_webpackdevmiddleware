@@ -41,7 +41,7 @@ import router from "./router";
 import store from "./store";
 import text from "./lib/text";
 import vStyle from "./lib/vStyle";
-
+import LoadScript from "vue-plugin-load-script";
 if (window && window.parent) {
   window.parent.postMessage(
     { event: "SELF_INTO", data: { msg: "iframe loaded." } },
@@ -111,6 +111,9 @@ if (cid) {
 //   }, 1500);
 // };
 
+console.log("build loadscript:", window.SCRIPT_CDN_HOST);
+const script_cdn_host = window.SCRIPT_CDN_HOST ? window.SCRIPT_CDN_HOST : "/";
+Vue.use(LoadScript);
 Vue.use(Vuex);
 Vue.use(VueRx);
 Vue.use(VeeValidate, { inject: true });
@@ -129,6 +132,11 @@ Vue.component(VueQrcode.name, VueQrcode);
 Vue.use(depositLink);
 Vue.use(VueCropper);
 Vue.component("icon", Icon);
+Vue.loadScript(`//g.alicdn.com/sd/ncpc/nc.js?t=${Date.now()}`);
+Vue.loadScript(`${script_cdn_host}public/js/jquery-3.3.1.min.js`).then(() => {
+  Vue.loadScript(`${script_cdn_host}public/js/semantic-2.2.12.min.js`);
+  Vue.loadScript(`${script_cdn_host}public/js/jquery.cloud9carousel.js`);
+});
 
 /* eslint-disable no-new */
 new Vue({

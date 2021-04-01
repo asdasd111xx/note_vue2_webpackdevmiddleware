@@ -10,7 +10,7 @@ const domain = "https://yb01.66boxing.com/";
 // Demo
 // const domain = 'https://yb0t.66relish.com/';
 // Prod
-// const domain = 'https://yaboxxxapp01.com/';
+// const domain = "https://yaboxxxapp01.com/";
 // const domain = 'https://yaboxxxapp02.com/';
 
 // Beta
