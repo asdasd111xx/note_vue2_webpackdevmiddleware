@@ -6,6 +6,11 @@
       <home-new />
       <home-content />
       <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
+      <envelope
+        v-if="needShowRedEnvelope"
+        @closeEvelope="closeEvelope"
+        :redEnvelopeData="redEnvelopeData"
+      />
     </div>
   </mobile-container>
 </template>
@@ -27,19 +32,26 @@ export default {
     homeSlider,
     homeNew,
     homeContent,
-    popup
+    popup,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      )
   },
   data() {
     return {
       updateBalance: null,
       isShowPop: false,
-      sitePostList: null
+      sitePostList: null,
+      needShowRedEnvelope: false,
+      redEnvelopeData: {}
     };
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      post: "getPost"
+      post: "getPost",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     headerConfig() {
       return {
@@ -89,6 +101,14 @@ export default {
       } else {
         document.querySelector("body").style = "";
       }
+    },
+    showRedEnvelope() {
+      // if(this.showRedEnvelope.data.status != -1){
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
+      // }
+
+      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
     }
   },
   mounted() {
@@ -111,7 +131,8 @@ export default {
     ...mapActions([
       "actionSetPost",
       "actionSetUserBalance",
-      "actionSetUserdata"
+      "actionSetUserdata",
+      "actionSetShowRedEnvelope"
     ]),
     onClick() {
       this.$router.push("/mobile");
@@ -129,6 +150,12 @@ export default {
           });
         }, 250);
       }
+    },
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
+      this.actionSetGlobalMessage({
+        msg: "红包派发中，到帐后即可畅玩游戏"
+      });
     }
   }
 };

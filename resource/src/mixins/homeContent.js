@@ -29,8 +29,6 @@ export default {
       showPromotion: false,
       isLoading: false,
       isCheckWithdraw: false,
-      needShowRedEnvelope: false,
-      redEnvelopeData: {},
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
@@ -48,14 +46,6 @@ export default {
     };
   },
   watch: {
-    showRedEnvelope() {
-      // if(this.showRedEnvelope.data.status != -1){
-      this.needShowRedEnvelope = true;
-      this.redEnvelopeData = this.showRedEnvelope;
-      // }
-
-      // console.log(`showRedEnvelope is ${this.showRedEnvelope}`);
-    },
     isReceive() {
       this.onResize();
     },
@@ -97,8 +87,7 @@ export default {
       hasBank: "getHasBank",
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
-      noticeData: "getNoticeData",
-      showRedEnvelope: "getShowRedEnvelope"
+      noticeData: "getNoticeData"
     }),
     isAdult() {
       if (localStorage.getItem("content_rating")) {
@@ -970,13 +959,6 @@ export default {
             // console.log("取維護狀態XXXX");
           });
       }
-    },
-
-    closeEvelope() {
-      this.needShowRedEnvelope = false;
-      this.actionSetGlobalMessage({
-        msg: "红包派发中，到帐后即可畅玩游戏"
-      });
     }
   }
 };

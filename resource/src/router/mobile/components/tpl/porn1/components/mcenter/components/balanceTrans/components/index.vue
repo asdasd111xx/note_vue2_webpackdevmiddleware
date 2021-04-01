@@ -914,6 +914,7 @@ export default {
 
     closeEvelope() {
       this.needShowRedEnvelope = false;
+      this.initTranList(true);
       this.actionSetGlobalMessage({
         msg: "红包派发中，到帐后即可畅玩游戏"
       });

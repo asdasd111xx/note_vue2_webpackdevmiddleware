@@ -142,6 +142,8 @@ export default {
   flex-direction: column;
   color: #fbf0bb;
   text-align: center;
+  width: 200px;
+  word-break: break-all;
 }
 
 .envelope-ground {
