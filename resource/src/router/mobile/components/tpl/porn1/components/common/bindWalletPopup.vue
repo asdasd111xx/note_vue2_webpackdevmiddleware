@@ -16,11 +16,11 @@
           <div :class="$style['content']">
             <div :class="$style['title']">{{ title }}</div>
 
-            <p
+            <!-- <p
               :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]"
             >
               {{ errorMsg }}
-            </p>
+            </p> -->
 
             <div :class="$style['info-item']">
               <div :class="$style['input-title']">
@@ -95,14 +95,7 @@
 
           <div :class="$style['button-block']">
             <template v-if="walletType === 'USDT'">
-              <span
-                :class="[
-                  $style['submit'],
-                  {
-                    [$style['disable']]: !formData['walletAddress'].value
-                  }
-                ]"
-                @click="submitByNormal"
+              <span :class="[$style['submit']]" @click="submitByNormal"
                 >送出</span
               >
             </template>
@@ -145,6 +138,7 @@ export default {
   },
   data() {
     return {
+      isReceive: false,
       errorMsg: "",
       title: "",
       formData: {
@@ -261,12 +255,11 @@ export default {
       this.$emit("close");
     },
     submitByNormal() {
-      // if (this.lockStatus) {
-      //   return;
-      // }
+      if (this.isReceive) {
+        return;
+      }
 
-      // this.lockStatus = true;
-      this.errorMsg = "";
+      this.isReceive = true;
 
       axios({
         method: "post",
@@ -278,10 +271,13 @@ export default {
       })
         .then(response => {
           const { result, msg } = response.data;
-          // this.lockStatus = false;
+
+          this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}`;
+            this.actionSetGlobalMessage({
+              msg: msg
+            });
             return;
           }
 
@@ -293,20 +289,25 @@ export default {
           });
         })
         .catch(res => {
+          this.isReceive = false;
+
           if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}`;
-            // this.lockStatus = false;
+            this.actionSetGlobalMessage({
+              msg: res.response.data.msg
+            });
+
             return;
           }
         });
     },
     submitByToken() {
-      // if (this.lockStatus) {
-      //   return;
-      // }
+      if (this.isReceive) {
+        return;
+      }
 
-      // this.lockStatus = true;
-      this.errorMsg = "";
+      this.isReceive = true;
+
+      // 请输入钱包位址
 
       axios({
         method: "post",
@@ -321,10 +322,13 @@ export default {
       })
         .then(response => {
           const { result, msg } = response.data;
-          // this.lockStatus = false;
+
+          this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
-            this.errorMsg = `${msg}`;
+            this.actionSetGlobalMessage({
+              msg: msg
+            });
             return;
           }
 
@@ -336,9 +340,13 @@ export default {
           });
         })
         .catch(res => {
+          this.isReceive = false;
+
           if (res.response && res.response.data && res.response.data.msg) {
-            this.errorMsg = `${res.response.data.msg}`;
-            // this.lockStatus = false;
+            this.actionSetGlobalMessage({
+              msg: res.response.data.msg
+            });
+
             return;
           }
         });
@@ -371,7 +379,6 @@ export default {
       // if (this.selectTarget.bank_id === 21 && !this.formData["CGPPwd"].value) {
       //   lock = true;
       // }
-      // // this.lockStatus = lock;
     },
     getUrl({ urlName }) {
       return goLangApiRequest({

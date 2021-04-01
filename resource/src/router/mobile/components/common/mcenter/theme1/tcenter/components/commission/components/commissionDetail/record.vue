@@ -26,7 +26,7 @@
       </div>
 
       <div class="main-wrap">
-        <template v-if="friendsList.length">
+        <template v-if="friendsList && friendsList.length > 0">
           <table :class="$style['main-table']">
             <thead>
               <tr>
