@@ -8,6 +8,7 @@
         [$style['has-footer']]: hasFooter
       }
     ]"
+    :style="resizeOverFlow ? { 'overflow-y': 'auto' } : {}"
   >
     <m-header
       v-if="headerConfig && !isApp"
@@ -95,6 +96,18 @@ export default {
     },
     path() {
       return this.$route.path.split("/").filter(path => path);
+    },
+    resizeOverFlow() {
+      switch (this.$route.name) {
+        case "home":
+        case "mcenter-home":
+        case "discover":
+        case "promotion":
+        case "service":
+          return true;
+        default:
+          return false;
+      }
     }
   }
 };
@@ -103,8 +116,8 @@ export default {
 <style lang="scss" module>
 .container {
   min-width: 320px;
-  overflow-y: auto;
-  // min-height: calc(100vh);//行動網頁版會有功能列 可視滿版會有滑動問題
+  // overflow-y: auto;
+  // min-height: calc(100vh); //行動網頁版會有功能列 可視滿版會有滑動問題
 }
 
 .has-header {

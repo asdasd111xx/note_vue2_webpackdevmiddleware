@@ -173,7 +173,10 @@ export default {
       ? this.memInfo.user.show_promotion
       : true;
     this.getMaintainList();
-    if (this.siteConfig.MOBILE_WEB_TPL === "porn1") {
+    if (
+      this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
+      this.siteConfig.MOBILE_WEB_TPL === "sg1"
+    ) {
       this.initSWAGConfig(true);
     }
   },

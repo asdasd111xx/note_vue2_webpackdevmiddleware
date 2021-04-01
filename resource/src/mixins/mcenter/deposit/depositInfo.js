@@ -256,7 +256,7 @@ export default {
           objKey: "yourBank",
           title:
             this.orderData.method_id === 3
-              ? this.$text("S_USE_BANK", "使用银行")
+              ? this.$text("S_YOUR_BANK", "您的银行")
               : this.$text("S_PAY_MODE", "支付方式"),
           value: this.orderData.method_name,
           isFontBold: false
