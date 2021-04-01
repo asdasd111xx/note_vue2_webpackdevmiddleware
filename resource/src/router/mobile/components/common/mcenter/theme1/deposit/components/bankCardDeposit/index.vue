@@ -1715,6 +1715,7 @@ export default {
 
           if (response.status === "third") {
             // this.resetStatus();
+            this.moneyValue = "";
             this.cryptoMoney = "--";
             this.resetTimerStatus();
           }
