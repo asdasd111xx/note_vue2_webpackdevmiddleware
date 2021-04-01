@@ -446,6 +446,7 @@ export default {
   },
   data() {
     return {
+      updateBalance: null,
       balanceLock: true,
       btnLock: false,
       timer: null,
@@ -592,6 +593,14 @@ export default {
       localStorage.removeItem("tranfer-tranIn");
       localStorage.removeItem("tranfer-tranOut");
     }
+
+    this.updateBalance = setInterval(() => {
+      this.actionSetUserBalance();
+    }, 20000);
+  },
+  beforeDestroy() {
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
   },
   methods: {
     ...mapActions([
@@ -601,7 +610,7 @@ export default {
       "actionSetShowRedEnvelope"
     ]),
     initTranList(reload) {
-      this.getBalanceAll().then(() => {
+      this.actionSetUserBalance().then(() => {
         this.setTranInList(reload);
         this.setTranOutList(reload);
         this.transferMoney = null;
