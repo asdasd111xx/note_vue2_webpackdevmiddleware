@@ -47,18 +47,18 @@ export default {
             // window.open("https://www.huobi.com/zh-cn/register");
             window.open(this.urls[0]);
           }
-        },
-        {
-          alias: "58COIN",
-          // name: "58COIN",
-          iconSrc: this.$getCdnPath(
-            `/static/image/common/mcenter/deposit/ic_58coin.png`
-          ),
-          onClick: () => {
-            // window.open("https://accounts.binance.com/cn/register");
-            window.open(this.urls[1]);
-          }
         }
+        // {
+        //   alias: "58COIN",
+        //   // name: "58COIN",
+        //   iconSrc: this.$getCdnPath(
+        //     `/static/image/common/mcenter/deposit/ic_58coin.png`
+        //   ),
+        //   onClick: () => {
+        //     // window.open("https://accounts.binance.com/cn/register");
+        //     window.open(this.urls[1]);
+        //   }
+        // }
       ]
     };
   },
@@ -68,10 +68,10 @@ export default {
       this.urls[0] = url;
     });
 
-    this.getUrl({ urlName: "58coin" }).then(url => {
-      if (!url) return;
-      this.urls[1] = url;
-    });
+    // this.getUrl({ urlName: "58coin" }).then(url => {
+    //   if (!url) return;
+    //   this.urls[1] = url;
+    // });
   },
   computed: {
     ...mapGetters({
