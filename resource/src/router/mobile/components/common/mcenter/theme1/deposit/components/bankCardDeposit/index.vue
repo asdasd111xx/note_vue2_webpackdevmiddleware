@@ -159,7 +159,7 @@
             <span :class="$style['select-bank-title']"
               >{{
                 curPayInfo.payment_type_id === 5
-                  ? $text("S_USE_BANK", "使用银行")
+                  ? $text("S_YOUR_BANK", "您的银行")
                   : curPayInfo.payment_method_id === 2
                   ? $text("S_SELECT_POINT_CARD", "请选择点卡")
                   : $text("S_SELECT_BANKS", "请选择银行")

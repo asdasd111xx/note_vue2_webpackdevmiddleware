@@ -21,7 +21,7 @@
                 {{
                   depositData.type_id === 6
                     ? $text("S_PAY_MODE", "支付方式")
-                    : $text("S_USE_BANK", "使用银行")
+                    : $text("S_YOUR_BANK", "您的银行")
                 }}
               </div>
               <div :class="$style['value']">
