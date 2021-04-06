@@ -29,6 +29,7 @@ export default {
       showPromotion: false,
       isLoading: false,
       isCheckWithdraw: false,
+      RedEnvelopeTouchType: true,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
@@ -825,7 +826,10 @@ export default {
               }
           }
 
-          if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          if (
+            this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
+            !this.RedEnvelopeTouchType
+          ) {
             this.isLoading = true;
 
             const openGameSuccessFunc = res => {
@@ -863,6 +867,7 @@ export default {
             );
             return;
           } else {
+            this.RedEnvelopeTouchType = false;
             goLangApiRequest({
               method: "get",
               url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,

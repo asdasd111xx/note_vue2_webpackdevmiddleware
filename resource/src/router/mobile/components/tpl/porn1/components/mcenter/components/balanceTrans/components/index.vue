@@ -446,6 +446,7 @@ export default {
   },
   data() {
     return {
+      updateBalance: null,
       balanceLock: true,
       btnLock: false,
       timer: null,
@@ -475,6 +476,7 @@ export default {
       bonus: {},
       isInitTranList: false,
       needShowRedEnvelope: false,
+      RedEnvelopeTouchType: true,
       redEnvelopeData: {}
     };
   },
@@ -592,6 +594,14 @@ export default {
       localStorage.removeItem("tranfer-tranIn");
       localStorage.removeItem("tranfer-tranOut");
     }
+
+    this.updateBalance = setInterval(() => {
+      this.actionSetUserBalance();
+    }, 20000);
+  },
+  beforeDestroy() {
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
   },
   methods: {
     ...mapActions([
@@ -601,7 +611,7 @@ export default {
       "actionSetShowRedEnvelope"
     ]),
     initTranList(reload) {
-      this.getBalanceAll().then(() => {
+      this.actionSetUserBalance().then(() => {
         this.setTranInList(reload);
         this.setTranOutList(reload);
         this.transferMoney = null;
@@ -827,7 +837,10 @@ export default {
         return;
       }
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      if (
+        this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
+        !this.RedEnvelopeTouchType
+      ) {
         mcenter.balanceTran(
           {
             params: {
@@ -858,6 +871,7 @@ export default {
           target
         );
       } else {
+        this.RedEnvelopeTouchType = false;
         goLangApiRequest({
           method: "get",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,

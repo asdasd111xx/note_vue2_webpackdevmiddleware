@@ -39,6 +39,11 @@ export default {
       default: {}
     }
   },
+  data() {
+    return {
+      needShowRedEnvelope: true
+    };
+  },
   computed: {
     ...mapGetters({
       isBackEnd: "getIsBackEnd",
@@ -95,7 +100,10 @@ export default {
         return;
       }
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      if (
+        this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
+        !this.RedEnvelopeTouchType
+      ) {
         this.isShowLoading = true;
         const openGameSuccessFunc = res => {
           this.isShowLoading = false;
@@ -119,6 +127,7 @@ export default {
         openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
         return;
       } else {
+        this.RedEnvelopeTouchType = false;
         goLangApiRequest({
           method: "get",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
