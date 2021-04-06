@@ -116,8 +116,11 @@ export default {
       "actionSetSwagBalance"
     ]),
     initSWAGConfig(onlyCheckMaintain = false, fromClick = false) {
-      const enable = localStorage.getItem("enable-swag") !== "false";
-      if (this.isCheckingInit) {
+      let isProd =
+        this.memInfo.user.domain === "67" || this.memInfo.user.domain == "80";
+      const enable = localStorage.getItem("enable-swag") !== "false" && isProd;
+
+      if (this.isCheckingInit || !enable) {
         return new Promise((resolve, reject) => {
           this.isLoading = false;
           resolve(false);
