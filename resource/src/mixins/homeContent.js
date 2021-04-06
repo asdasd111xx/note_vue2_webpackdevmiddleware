@@ -638,81 +638,190 @@ export default {
             // 絲瓜小說 → DZ
             default:
               localStorage.setItem("is-open-game", true);
-              this.actionSetYaboConfig().then(() => {
-                let noLoginVideoSwitch;
-
-                if (this.yaboConfig) {
-                  noLoginVideoSwitch = this.yaboConfig.find(
-                    i => i.name === "NoLoginVideoSwitch"
-                  ).value;
-                }
-
-                // // 第三方開啟有問題時 可調整iframe內嵌
-                // let newWindow = window.open('');
-                // goLangApiRequest({
-                //     method: 'get',
-                //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
-                //     headers: {
-                //         'x-domain': this.memInfo.user.domain
-                //     },
-                // }).then(res => {
-                //     if (res.data) {
-                //         newWindow.location.href = res.data;
-                //     } else {
-                //         newWindow.close();
-                //     }
-                // }).catch(error => {
-                //     newWindow.close();
-                // })
-                // return;
-                let cid = !this.loginStatus
-                  ? getCookie("guestCid")
-                  : getCookie("cid");
-
-                const getThridUrl = () =>
-                  goLangApiRequest({
-                    method: "get",
-                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`,
-                    headers: {
-                      cid: cid
-                    }
-                  }).then(res => {
-                    localStorage.removeItem("is-open-game");
-                    this.isLoading = false;
-
-                    if (res && res.status !== "000") {
-                      if (res.msg) {
-                        this.actionSetGlobalMessage({ msg: res.msg });
-                      }
-                      return;
-                    } else {
-                      localStorage.setItem("iframe-third-url", res.data);
-                      localStorage.setItem("iframe-third-url-title", game.name);
-                      this.$router.push(
-                        `/mobile/iframe/thirdParty?vendor=${game.vendor}`
-                      );
-                      return;
-                    }
-                  });
-
-                // 未登入開關 開啟時未登入可進入
-                if (noLoginVideoSwitch === "true") {
-                  getThridUrl();
-                  return;
-                }
-
-                // 未登入開關 未開啟時需登入可進入
-                if (!this.loginStatus) {
-                  if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-                    this.$router.push("/mobile/login");
-                  } else {
-                    this.$router.push("/mobile/joinmember");
+              if (
+                game.vendor === "SL" &&
+                this.siteConfig.MOBILE_WEB_TPL != "ey1" &&
+                this.RedEnvelopeTouchType
+              ) {
+                this.RedEnvelopeTouchType = false;
+                goLangApiRequest({
+                  method: "get",
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+                  params: {
+                    cid: getCookie("cid")
                   }
-                  return;
-                } else {
-                  getThridUrl();
-                }
-              });
+                }).then(res => {
+                  console.log(res);
+                  if (res.status === "000") {
+                    if (res.data.status != -1) {
+                      this.actionSetShowRedEnvelope(res.data);
+                    } else {
+                      this.isLoading = true;
+                      this.actionSetYaboConfig().then(() => {
+                        let noLoginVideoSwitch;
+
+                        if (this.yaboConfig) {
+                          noLoginVideoSwitch = this.yaboConfig.find(
+                            i => i.name === "NoLoginVideoSwitch"
+                          ).value;
+                        }
+
+                        // // 第三方開啟有問題時 可調整iframe內嵌
+                        // let newWindow = window.open('');
+                        // goLangApiRequest({
+                        //     method: 'get',
+                        //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
+                        //     headers: {
+                        //         'x-domain': this.memInfo.user.domain
+                        //     },
+                        // }).then(res => {
+                        //     if (res.data) {
+                        //         newWindow.location.href = res.data;
+                        //     } else {
+                        //         newWindow.close();
+                        //     }
+                        // }).catch(error => {
+                        //     newWindow.close();
+                        // })
+                        // return;
+                        let cid = !this.loginStatus
+                          ? getCookie("guestCid")
+                          : getCookie("cid");
+
+                        const getThridUrl = () =>
+                          goLangApiRequest({
+                            method: "get",
+                            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`,
+                            headers: {
+                              cid: cid
+                            }
+                          }).then(res => {
+                            localStorage.removeItem("is-open-game");
+                            this.isLoading = false;
+
+                            if (res && res.status !== "000") {
+                              if (res.msg) {
+                                this.actionSetGlobalMessage({ msg: res.msg });
+                              }
+                              return;
+                            } else {
+                              localStorage.setItem(
+                                "iframe-third-url",
+                                res.data
+                              );
+                              localStorage.setItem(
+                                "iframe-third-url-title",
+                                game.name
+                              );
+                              this.$router.push(
+                                `/mobile/iframe/thirdParty?vendor=${game.vendor}`
+                              );
+                              return;
+                            }
+                          });
+
+                        // 未登入開關 開啟時未登入可進入
+                        if (noLoginVideoSwitch === "true") {
+                          getThridUrl();
+                          return;
+                        }
+
+                        // 未登入開關 未開啟時需登入可進入
+                        if (!this.loginStatus) {
+                          if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                            this.$router.push("/mobile/login");
+                          } else {
+                            this.$router.push("/mobile/joinmember");
+                          }
+                          return;
+                        } else {
+                          getThridUrl();
+                        }
+                      });
+                      return;
+                    }
+                  }
+                });
+              } else {
+                this.actionSetYaboConfig().then(() => {
+                  let noLoginVideoSwitch;
+
+                  if (this.yaboConfig) {
+                    noLoginVideoSwitch = this.yaboConfig.find(
+                      i => i.name === "NoLoginVideoSwitch"
+                    ).value;
+                  }
+
+                  // // 第三方開啟有問題時 可調整iframe內嵌
+                  // let newWindow = window.open('');
+                  // goLangApiRequest({
+                  //     method: 'get',
+                  //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
+                  //     headers: {
+                  //         'x-domain': this.memInfo.user.domain
+                  //     },
+                  // }).then(res => {
+                  //     if (res.data) {
+                  //         newWindow.location.href = res.data;
+                  //     } else {
+                  //         newWindow.close();
+                  //     }
+                  // }).catch(error => {
+                  //     newWindow.close();
+                  // })
+                  // return;
+                  let cid = !this.loginStatus
+                    ? getCookie("guestCid")
+                    : getCookie("cid");
+
+                  const getThridUrl = () =>
+                    goLangApiRequest({
+                      method: "get",
+                      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${userId}`,
+                      headers: {
+                        cid: cid
+                      }
+                    }).then(res => {
+                      localStorage.removeItem("is-open-game");
+                      this.isLoading = false;
+
+                      if (res && res.status !== "000") {
+                        if (res.msg) {
+                          this.actionSetGlobalMessage({ msg: res.msg });
+                        }
+                        return;
+                      } else {
+                        localStorage.setItem("iframe-third-url", res.data);
+                        localStorage.setItem(
+                          "iframe-third-url-title",
+                          game.name
+                        );
+                        this.$router.push(
+                          `/mobile/iframe/thirdParty?vendor=${game.vendor}`
+                        );
+                        return;
+                      }
+                    });
+
+                  // 未登入開關 開啟時未登入可進入
+                  if (noLoginVideoSwitch === "true") {
+                    getThridUrl();
+                    return;
+                  }
+
+                  // 未登入開關 未開啟時需登入可進入
+                  if (!this.loginStatus) {
+                    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                      this.$router.push("/mobile/login");
+                    } else {
+                      this.$router.push("/mobile/joinmember");
+                    }
+                    return;
+                  } else {
+                    getThridUrl();
+                  }
+                });
+              }
           }
           return;
         case "link_to":
