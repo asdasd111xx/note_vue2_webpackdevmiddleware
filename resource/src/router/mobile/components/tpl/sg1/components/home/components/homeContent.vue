@@ -100,9 +100,7 @@
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
               { [$style['is-third']]: [4].includes(game.imageType) }
             ]"
-            @click.stop="
-              isMaintainSwag && game.vendor === 'SWAG' ? {} : onOpenGame(game)
-            "
+            @click.stop="onOpenGame(game)"
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">
@@ -206,11 +204,6 @@
       </div>
     </div>
     <page-loading :isShow="isLoading" />
-    <envelope
-      v-if="needShowRedEnvelope"
-      @closeEvelope="closeEvelope"
-      :redEnvelopeData="redEnvelopeData"
-    />
   </div>
 </template>
 
@@ -228,11 +221,7 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     Swiper,
-    SwiperSlide,
-    envelope: () =>
-      import(
-        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
-      )
+    SwiperSlide
   },
   mounted() {}
 };

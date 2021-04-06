@@ -19,9 +19,9 @@
         :options="monthOptions"
         :style="{ overflow: 'visible' }"
       >
-        <swiper-slide v-for="value in monthData" :key="value">{{
-          value
-        }}</swiper-slide>
+        <swiper-slide v-for="value in monthData" :key="value">
+          {{ value &lt; 10 ? "0" + value : value }}
+        </swiper-slide>
       </swiper>
     </div>
     <div :class="$style.wrap">
@@ -31,9 +31,9 @@
         :options="dayOptions"
         :style="{ overflow: 'visible' }"
       >
-        <swiper-slide v-for="value in dayData" :key="value">{{
-          value
-        }}</swiper-slide>
+        <swiper-slide v-for="value in dayData" :key="value">
+          {{ value &lt; 10 ? "0" + value : value }}
+        </swiper-slide>
       </swiper>
     </div>
   </div>
@@ -116,21 +116,18 @@ export default {
       if (this.currentYear === this.maxLimitYear) {
         if (this.minLimitMonth > this.maxLimitMonth) {
           let i = this.maxLimitMonth;
-          let target = i < 10 ? "0" + i : i;
-          this.currentMonth = target;
-          months.push(target);
+          this.currentMonth = i;
+          months.push(i);
         } else {
           for (let i = this.minLimitMonth; i <= this.maxLimitMonth; i += 1) {
-            let target = i < 10 ? "0" + i : i;
-            this.currentMonth = target;
-            months.push(target);
+            this.currentMonth = i;
+            months.push(i);
           }
         }
       } else {
         for (let i = 12; this.minLimitMonth <= i; i -= 1) {
-          let target = i < 10 ? "0" + i : i;
-          this.currentMonth = target;
-          months.unshift(target);
+          this.currentMonth = i;
+          months.unshift(i);
         }
       }
 
@@ -142,8 +139,7 @@ export default {
 
       if (this.currentMonth === this.maxLimitMonth) {
         for (let i = 1; i <= this.maxLimitDay; i += 1) {
-          let target = i < 10 ? "0" + i : i;
-          days.push(target);
+          days.push(i);
         }
       } else {
         const lastDay = Vue.moment(
@@ -152,13 +148,11 @@ export default {
 
         if (this.currentMonth === this.minLimitMonth) {
           for (let i = lastDay; this.minLimitDay <= i; i -= 1) {
-            let target = i < 10 ? "0" + i : i;
-            days.unshift(target);
+            days.unshift(i);
           }
         } else {
           for (let i = 1; i <= lastDay; i += 1) {
-            let target = i < 10 ? "0" + i : i;
-            days.push(target);
+            days.push(i);
           }
         }
       }
