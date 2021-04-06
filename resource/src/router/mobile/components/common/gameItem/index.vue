@@ -81,6 +81,7 @@ export default {
   data() {
     return {
       isShowLoading: false,
+      RedEnvelopeTouchType: true,
       isFavorite: false // 客端顯示是否最愛
     };
   },
@@ -407,7 +408,10 @@ export default {
         return;
       }
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      if (
+        this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
+        !this.RedEnvelopeTouchType
+      ) {
         this.isShowLoading = true;
 
         const openGameSuccessFunc = res => {
@@ -431,6 +435,7 @@ export default {
         openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
         return;
       } else {
+        this.RedEnvelopeTouchType = false;
         goLangApiRequest({
           method: "get",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
