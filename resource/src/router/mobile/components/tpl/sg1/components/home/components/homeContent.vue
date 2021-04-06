@@ -100,9 +100,7 @@
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
               { [$style['is-third']]: [4].includes(game.imageType) }
             ]"
-            @click.stop="
-              isMaintainSwag && game.vendor === 'SWAG' ? {} : onOpenGame(game)
-            "
+            @click.stop="onOpenGame(game)"
           >
             <template v-if="game.imageType === 4">
               <div :class="[$style['third-iamge-wrap']]">

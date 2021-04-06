@@ -290,7 +290,7 @@ export default {
           let swag = welfare.vendors.find(i => i.vendor === "SWAG");
           const isEnableSWAG =
             swag && swag.type && swag.type.toLowerCase() === "thirdparty";
-          localStorage.setItem("enable-swag", isEnableSWAG || false);
+          // localStorage.setItem("enable-swag", isEnableSWAG || false);
         }
         try {
           localStorage.setItem("game-list", JSON.stringify(response.data));

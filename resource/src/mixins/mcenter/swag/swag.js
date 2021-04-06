@@ -117,7 +117,7 @@ export default {
     ]),
     initSWAGConfig(onlyCheckMaintain = false, fromClick = false) {
       const enable = localStorage.getItem("enable-swag") !== "false";
-      if (this.isCheckingInit || !enable) {
+      if (this.isCheckingInit) {
         return new Promise((resolve, reject) => {
           this.isLoading = false;
           resolve(false);
