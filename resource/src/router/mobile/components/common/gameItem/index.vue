@@ -407,77 +407,60 @@ export default {
 
         return;
       }
+      this.isShowLoading = true;
 
-      if (
-        this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
-        !this.RedEnvelopeTouchType
-      ) {
-        this.isShowLoading = true;
+      const openGameSuccessFunc = res => {
+        this.isShowLoading = false;
+        window.GAME_RELOAD = true;
+      };
 
-        const openGameSuccessFunc = res => {
-          this.isShowLoading = false;
-          window.GAME_RELOAD = true;
-        };
+      const openGameFailFunc = res => {
+        this.isShowLoading = false;
+        window.GAME_RELOAD = undefined;
 
-        const openGameFailFunc = res => {
-          this.isShowLoading = false;
-          window.GAME_RELOAD = undefined;
+        if (res && res.data) {
+          let data = res.data;
 
-          if (res && res.data) {
-            let data = res.data;
+          if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
+            if (data.code === "C50101" || data.code === "C50100") {
+              goLangApiRequest({
+                method: "get",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+                params: {
+                  cid: getCookie("cid")
+                }
+              }).then(res => {
+                console.log(res);
+                if (res.status === "000") {
+                  if (res.data.status != -1) {
+                    this.actionSetShowRedEnvelope(res.data);
+                  } else {
+                    this.actionSetGlobalMessage({
+                      msg: data.msg,
+                      code: data.code,
+                      origin: this.redirectCard()
+                    });
+                  }
+                }
+              });
+            } else {
+              this.actionSetGlobalMessage({
+                msg: data.msg,
+                code: data.code,
+                origin: this.redirectCard()
+              });
+            }
+          } else {
             this.actionSetGlobalMessage({
               msg: data.msg,
               code: data.code,
               origin: this.redirectCard()
             });
           }
-        };
-        openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
-        return;
-      } else {
-        this.RedEnvelopeTouchType = false;
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
-          params: {
-            cid: getCookie("cid")
-          }
-        }).then(res => {
-          console.log(res);
-          if (res.status === "000") {
-            if (res.data.status != -1) {
-              this.actionSetShowRedEnvelope(res.data);
-            } else {
-              this.isShowLoading = true;
-
-              const openGameSuccessFunc = res => {
-                this.isShowLoading = false;
-                window.GAME_RELOAD = true;
-              };
-
-              const openGameFailFunc = res => {
-                this.isShowLoading = false;
-                window.GAME_RELOAD = undefined;
-
-                if (res && res.data) {
-                  let data = res.data;
-                  this.actionSetGlobalMessage({
-                    msg: data.msg,
-                    code: data.code,
-                    origin: this.redirectCard()
-                  });
-                }
-              };
-              openGame(
-                { vendor, kind, code },
-                openGameSuccessFunc,
-                openGameFailFunc
-              );
-              return;
-            }
-          }
-        });
-      }
+        }
+      };
+      openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
+      return;
     },
     /**
      * 切換最愛遊戲
