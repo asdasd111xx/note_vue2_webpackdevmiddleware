@@ -934,101 +934,74 @@ export default {
                 return;
               }
           }
+          this.isLoading = true;
 
-          if (
-            this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
-            !this.RedEnvelopeTouchType
-          ) {
-            this.isLoading = true;
+          const openGameSuccessFunc = res => {
+            this.isLoading = false;
+            // BB捕魚切換樣式跑版問題
+            if (game.vendor === "bbin" && game.kind === 3) {
+              window.GAME_RELOAD = true;
+            }
+          };
 
-            const openGameSuccessFunc = res => {
-              this.isLoading = false;
-              // BB捕魚切換樣式跑版問題
-              if (game.vendor === "bbin" && game.kind === 3) {
-                window.GAME_RELOAD = true;
-              }
-            };
+          const openGameFailFunc = res => {
+            this.isLoading = false;
+            window.GAME_RELOAD = undefined;
 
-            const openGameFailFunc = res => {
-              this.isLoading = false;
-              window.GAME_RELOAD = undefined;
+            if (res && res.data) {
+              let data = res.data;
 
-              if (res && res.data) {
-                let data = res.data;
+              if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
+                if (data.code === "C50101" || data.code === "C50100") {
+                  goLangApiRequest({
+                    method: "get",
+                    url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+                    params: {
+                      cid: getCookie("cid")
+                    }
+                  }).then(res => {
+                    console.log(res);
+                    if (res.status === "000") {
+                      if (res.data.status != -1) {
+                        this.actionSetShowRedEnvelope(res.data);
+                      } else {
+                        this.actionSetGlobalMessage({
+                          msg: data.msg,
+                          code: data.code,
+                          origin: "home"
+                        });
+                      }
+                    }
+                  });
+                } else {
+                  this.actionSetGlobalMessage({
+                    msg: data.msg,
+                    code: data.code,
+                    origin: "home"
+                  });
+                }
+              } else {
                 this.actionSetGlobalMessage({
                   msg: data.msg,
                   code: data.code,
                   origin: "home"
                 });
               }
-            };
+            }
+          };
 
-            openGame(
-              {
-                kind: game.kind,
-                vendor: game.vendor,
-                code: game.code,
-                gameType: game.type,
-                gameName: game.name
-              },
-              openGameSuccessFunc,
-              openGameFailFunc
-            );
-            return;
-          } else {
-            this.RedEnvelopeTouchType = false;
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
-              params: {
-                cid: getCookie("cid")
-              }
-            }).then(res => {
-              console.log(res);
-              if (res.status === "000") {
-                if (res.data.status != -1) {
-                  this.actionSetShowRedEnvelope(res.data);
-                } else {
-                  this.isLoading = true;
-
-                  const openGameSuccessFunc = res => {
-                    this.isLoading = false;
-                    // BB捕魚切換樣式跑版問題
-                    if (game.vendor === "bbin" && game.kind === 3) {
-                      window.GAME_RELOAD = true;
-                    }
-                  };
-
-                  const openGameFailFunc = res => {
-                    this.isLoading = false;
-                    window.GAME_RELOAD = undefined;
-
-                    if (res && res.data) {
-                      let data = res.data;
-                      this.actionSetGlobalMessage({
-                        msg: data.msg,
-                        code: data.code,
-                        origin: "home"
-                      });
-                    }
-                  };
-
-                  openGame(
-                    {
-                      kind: game.kind,
-                      vendor: game.vendor,
-                      code: game.code,
-                      gameType: game.type,
-                      gameName: game.name
-                    },
-                    openGameSuccessFunc,
-                    openGameFailFunc
-                  );
-                  return;
-                }
-              }
-            });
-          }
+          openGame(
+            {
+              kind: game.kind,
+              vendor: game.vendor,
+              code: game.code,
+              gameType: game.type,
+              gameName: game.name
+            },
+            openGameSuccessFunc,
+            openGameFailFunc
+          );
+          return;
       }
     },
     getUserViplevel() {
