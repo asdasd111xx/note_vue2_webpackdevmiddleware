@@ -27,6 +27,47 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    isCommon() {
+      return this.$route.meta.common;
+    },
+    isBindNowOpenAllWallets() {
+      // 根據目前已綁定的 ID 與目前有開放的所有銀行 ID 做比對
+      let nowBindWalletCount = 0;
+      let idArr = [
+        ...new Set(
+          this.wallet_card.map(item => {
+            return item.virtual_bank_id;
+          })
+        )
+      ];
+
+      if (idArr) {
+        this.nowOpenWallet.forEach(item => {
+          if (idArr.includes(item.id)) {
+            nowBindWalletCount += 1;
+          }
+        });
+
+        return nowBindWalletCount >= this.nowOpenWallet.length ? true : false;
+      }
+
+      return false;
+    },
+    isShowAddCardButton() {
+      switch (this.themeTPL) {
+        case "porn1":
+        case "sg1":
+          return !this.isBindNowOpenAllWallets;
+
+        case "ey1":
+          return (
+            (!this.userLevelObj.virtual_bank_single &&
+              this.wallet_card.length < 15) ||
+            (this.userLevelObj.virtual_bank_single &&
+              this.wallet_card.length < this.nowOpenWallet.length)
+          );
+      }
     }
   },
   methods: {
@@ -73,7 +114,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
           lang: "zh-cn",
-          common: true
+          common: this.isCommon
         }
       })
         .then(response => {
@@ -96,7 +137,12 @@ export default {
       this.colorRepeatIndex = index;
 
       this.wallet_cardDetail = info;
+
       this.hasSameTypeCard = false;
+      this.$emit("update:statusList", {
+        key: "hasSameTypeWallet",
+        value: false
+      });
 
       // Find the mutiple same type card
       let count = this.wallet_card.filter(item => {
@@ -105,13 +151,26 @@ export default {
 
       if (count > 1) {
         this.hasSameTypeCard = true;
+        this.$emit("update:statusList", {
+          key: "hasSameTypeWallet",
+          value: true
+        });
       }
 
-      this.$emit("update:isAudit", false);
-      this.$emit("update:showDetail", true);
+      this.$emit("update:statusList", {
+        key: "isAudit",
+        value: false
+      });
+      this.$emit("update:statusList", {
+        key: "showDetail",
+        value: true
+      });
 
       if (info.auditing) {
-        this.$emit("update:isAudit", true);
+        this.$emit("update:statusList", {
+          key: "isAudit",
+          value: true
+        });
         return;
       }
     },
@@ -126,7 +185,7 @@ export default {
           lang: "zh-cn",
           oldAddress: address,
           virtualBankId: String(virtual_bank_id),
-          common: false
+          common: !this.isCommon
         }
       })
         .then(response => {
@@ -136,11 +195,19 @@ export default {
             return;
           }
 
-          this.actionSetGlobalMessage({ msg: "移至历史帐号 成功" });
+          this.actionSetGlobalMessage({
+            msg: this.isCommon ? "移至历史帐号 成功" : "移至我的电子钱包 成功"
+          });
           this.getUserWalletList().then(() => {
             // 切換當前頁面狀態
-            this.$emit("update:showDetail", false);
-            this.$emit("update:editStatus", false);
+            this.$emit("update:statusList", {
+              key: "showDetail",
+              value: false
+            });
+            this.$emit("update:statusList", {
+              key: "editStatus",
+              value: false
+            });
             this.setPageStatus(1, "walletCardInfo", true);
           });
         })
@@ -168,7 +235,11 @@ export default {
           }
 
           this.isShowPop = false;
-          this.$emit("update:editStatus", false);
+
+          this.$emit("update:statusList", {
+            key: "editStatus",
+            value: false
+          });
 
           this.getUserWalletList()
             .then(() => {
@@ -190,7 +261,10 @@ export default {
                     this.actionSetGlobalMessage({ msg: "删除审核中" });
                     break;
                 }
-                this.$emit("update:isAudit", true);
+                this.$emit("update:statusList", {
+                  key: "isAudit",
+                  value: true
+                });
                 return;
               } else {
                 switch (this.themeTPL) {
@@ -203,7 +277,10 @@ export default {
                     this.actionSetGlobalMessage({ msg: "刪除成功" });
                     break;
                 }
-                this.$emit("update:showDetail", false);
+                this.$emit("update:statusList", {
+                  key: "showDetail",
+                  value: false
+                });
                 this.setPageStatus(1, "walletCardInfo", true);
                 return;
               }

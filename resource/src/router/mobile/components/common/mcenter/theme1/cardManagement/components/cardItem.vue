@@ -9,6 +9,10 @@
         [$style['virtual-bankcard-item']]:
           ['ey1'].includes(themeTPL) && type === 'wallet'
       },
+      {
+        [$style['history']]:
+          ['ey1'].includes(themeTPL) && type === 'wallet' && !isCommon
+      },
       $style[`colorIndex-${colorRepeatIndex}`]
     ]"
     @click="handleItem"
@@ -111,6 +115,10 @@ export default {
     },
     colorRepeatIndex() {
       return this.index % 3;
+    },
+    isCommon() {
+      // 是否為常用(true) or 歷史(false)
+      return this.$route.meta.common;
     }
   },
   methods: {
