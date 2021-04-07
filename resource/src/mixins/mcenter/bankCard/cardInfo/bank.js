@@ -25,6 +25,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    isCommon() {
+      return this.$route.meta.common;
     }
   },
   methods: {
@@ -38,7 +41,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`,
         params: {
           lang: "zh-cn",
-          common: true
+          common: this.isCommon
         }
       })
         .then(response => {
@@ -60,13 +63,63 @@ export default {
       this.colorRepeatIndex = index;
 
       this.bank_cardDetail = info;
-      this.$emit("update:isAudit", false);
-      this.$emit("update:showDetail", true);
+      this.$emit("update:statusList", {
+        key: "isAudit",
+        value: false
+      });
+      this.$emit("update:statusList", { key: "showDetail", value: true });
 
       if (info.auditing) {
-        this.$emit("update:isAudit", true);
+        this.$emit("update:statusList", {
+          key: "isAudit",
+          value: true
+        });
         return;
       }
+    },
+    moveCard() {
+      this.isRevice = false;
+
+      const { account } = this.bank_cardDetail;
+
+      // 編輯會員出款帳號資料 C02.142
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank`,
+        params: {
+          lang: "zh-cn",
+          oldAccount: account,
+          common: !this.isCommon
+        }
+      })
+        .then(response => {
+          const { status, errorCode } = response;
+          this.isRevice = true;
+
+          if (errorCode !== "00" || status !== "000") {
+            return;
+          }
+
+          this.actionSetGlobalMessage({ msg: "移至历史帐号 成功" });
+          this.getUserBankList().then(() => {
+            // 切換當前頁面狀態
+            this.$emit("update:statusList", {
+              key: "showDetail",
+              value: false
+            });
+
+            this.$emit("update:statusList", {
+              key: "editStatus",
+              value: false
+            });
+            this.setPageStatus(0, "bankCardInfo", true);
+          });
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.isRevice = true;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
     onDelete() {
       this.isRevice = false;
@@ -83,7 +136,10 @@ export default {
         .then(response => {
           this.isRevice = true;
           this.isShowPop = false;
-          this.$emit("update:editStatus", false);
+          this.$emit("update:statusList", {
+            key: "editStatus",
+            value: false
+          });
 
           const { status, errorCode, msg } = response;
 
@@ -112,7 +168,10 @@ export default {
                     this.actionSetGlobalMessage({ msg: "删除审核中" });
                     break;
                 }
-                this.$emit("update:isAudit", true);
+                this.$emit("update:statusList", {
+                  key: "isAudit",
+                  value: true
+                });
                 return;
               } else {
                 switch (this.themeTPL) {
@@ -125,7 +184,10 @@ export default {
                     this.actionSetGlobalMessage({ msg: "刪除成功" });
                     break;
                 }
-                this.$emit("update:showDetail", false);
+                this.$emit("update:statusList", {
+                  key: "showDetail",
+                  value: false
+                });
                 this.setPageStatus(0, "bankCardInfo", true);
                 return;
               }
@@ -136,7 +198,10 @@ export default {
 
           this.isRevice = true;
           this.isShowPop = false;
-          this.$emit("update:editStatus", false);
+          this.$emit("update:statusList", {
+            key: "editStatus",
+            value: false
+          });
           this.actionSetGlobalMessage({ msg });
         });
     }
