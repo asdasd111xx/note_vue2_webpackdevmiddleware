@@ -1,77 +1,125 @@
 <template>
+  <!-- 卡片區塊 -->
   <div
     :class="[
+      $style['card'],
+      $style['card--rounded'],
       {
-        [$style['bankcard-item']]:
-          type === 'bankCard' || ['porn1', 'sg1'].includes(themeTPL)
+        [getClass(
+          'card--shape-square',
+          `card--bg-repeat-gradient-${colorRepeatIndex}`
+        )]: isSquare
       },
       {
-        [$style['virtual-bankcard-item']]:
-          ['ey1'].includes(themeTPL) && type === 'wallet'
+        [getClass(
+          'card--shape-rectangle',
+          'card--bg-common-gradient'
+        )]: isRectangle
       },
       {
-        [$style['history']]:
-          ['ey1'].includes(themeTPL) && type === 'wallet' && !isCommon
-      },
-      $style[`colorIndex-${colorRepeatIndex}`]
+        [$style['card--bg-history-gradient']]: isRectangle && !isCommon
+      }
     ]"
     @click="handleItem"
   >
-    <!-- 銀行卡 -->
-    <template v-if="type === 'bankCard'">
-      <div :class="[$style['card-top'], 'clearfix']">
-        <div :class="$style['card-logo']">
-          <img v-lazy="getBankImage(data.image_url)" />
-        </div>
+    <!-- 卡片內容 -->
+    <div
+      :class="[
+        $style['card__logo'],
+        {
+          [$style['card__logo--top-20']]: isSquare
+        },
+        {
+          [$style['card__logo--top-15']]: isRectangle
+        }
+      ]"
+    >
+      <img
+        :class="$style['card__logo-img']"
+        v-lazy="getBankImage(data.image_url)"
+      />
+    </div>
 
-        <div :class="$style['card-info']">
-          <div :class="$style['card-name']">
-            {{ data.bank_name }}
-          </div>
+    <div :class="$style['card__name']">
+      {{
+        data.bank_name
+          ? data.bank_name
+          : data.virtual_bank_name
+          ? data.virtual_bank_name
+          : ""
+      }}
+    </div>
 
-          <div :class="$style['card-type']">
-            {{ data.type }}
-          </div>
-        </div>
-      </div>
+    <div
+      v-if="data.type"
+      :class="[
+        $style['card__type'],
+        $style[`card__type--color-${colorRepeatIndex}`]
+      ]"
+    >
+      {{ data.type }}
+    </div>
 
-      <div :class="$style['card-number']">
-        {{ data.account.slice(0, 4) }} **** ****
-        <span>{{ data.account.slice(-4) }}</span>
-      </div>
-    </template>
+    <div
+      :class="[
+        $style['card__number'],
+        {
+          [$style[`card__number--color-${colorRepeatIndex}`]]: isSquare
+        },
+        {
+          [getClass('card__number--small', 'mt-3')]: isRectangle
+        },
+        {
+          [$style['mt-10']]: data.type
+        },
+        {
+          [$style['mt-30']]: !data.type && isSquare
+        }
+      ]"
+    >
+      <span>
+        {{
+          data.account
+            ? data.account.slice(0, 4)
+            : data.address
+            ? data.address.slice(0, 4)
+            : ""
+        }}
+        **** ****
+      </span>
 
-    <!-- 錢包 -->
-    <template v-if="type === 'wallet'">
-      <div :class="[$style['card-top'], 'clearfix']">
-        <div :class="$style['card-logo']">
-          <img v-lazy="getBankImage(data.image_url)" />
-        </div>
+      <span
+        :class="{
+          [$style['card__number--color-pointer']]: isSquare
+        }"
+      >
+        {{
+          data.account
+            ? data.account.slice(-4)
+            : data.address
+            ? data.address.slice(-4)
+            : ""
+        }}
+      </span>
+    </div>
 
-        <div :class="$style['card-info']">
-          <div :class="$style['card-name']">
-            {{ data.virtual_bank_name }}
-          </div>
+    <div
+      v-if="!isDetailPage && data.auditing"
+      :class="[
+        $style['card__status-audit'],
+        {
+          [$style['card__status-audit--theme-square']]: isSquare
+        },
+        {
+          [$style['card__status-audit--theme-rectangle']]: isRectangle
+        }
+      ]"
+    >
+      删除审核中
+    </div>
 
-          <template v-if="['ey1'].includes(themeTPL)">
-            <div :class="$style['card-number']">
-              {{ data.address.slice(0, 4) }} **** ****
-              <span>{{ data.address.slice(-4) }}</span>
-            </div>
-          </template>
-        </div>
-      </div>
-
-      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-        <div :class="$style['card-number']">
-          {{ data.address.slice(0, 4) }} **** ****
-          <span>{{ data.address.slice(-4) }}</span>
-        </div>
-      </template>
-    </template>
-
-    <div v-if="!isDetailPage && data.auditing" :class="$style['audit-tip']">
-      删除审核中
+    <div v-if="isStopped" :class="[$style['card__status-stopped']]">
+      停用
     </div>
   </div>
 </template>
@@ -98,9 +146,6 @@ export default {
       require: true
     }
   },
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -119,9 +164,44 @@ export default {
     isCommon() {
       // 是否為常用(true) or 歷史(false)
       return this.$route.meta.common;
+    },
+    isStopped() {
+      let isStop = false;
+
+      switch (this.type) {
+        case "bankCard":
+          isStop = !this.data?.enable;
+          break;
+
+        case "wallet":
+          isStop = !this.data?.virtual;
+          break;
+
+        default:
+          break;
+      }
+
+      return isStop || this.data?.banned;
+    },
+    isSquare() {
+      return (
+        ["porn1", "sg1"].includes(this.themeTPL) || this.type === "bankCard"
+      );
+    },
+    isRectangle() {
+      return ["ey1"].includes(this.themeTPL) && this.type === "wallet";
     }
   },
   methods: {
+    getClass(...args) {
+      let classArr = [];
+      args.forEach(item => {
+        classArr.push(this.$style[`${item}`]);
+      });
+
+      classArr = classArr.join(" ");
+      return classArr;
+    },
     getBankImage(image_url) {
       return {
         src: image_url,
@@ -145,16 +225,6 @@ export default {
 
 <style
   lang="scss"
-  src="@/css/page/bankCard/porn1.cardInfo.module.scss"
+  src="@/css/page/bankCard/cardItem.module.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="@/css/page/bankCard/ey1.cardInfo.module.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
-  src="@/css/page/bankCard/sg1.cardInfo.module.scss"
-  module="$style_sg1"
 ></style>

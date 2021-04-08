@@ -1,0 +1,151 @@
+@import "~@/css/variable.scss";
+
+$linear_first_color: (#45b784, #d57175, #4378be);
+$linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
+
+// 卡片
+.card {
+  position: relative;
+
+  &--rounded {
+    border-radius: 8px;
+  }
+
+  &--shape-square {
+    height: 130px;
+    padding: 21px 16px 21px 64px;
+    margin-top: -15px;
+    color: $main_white_color1;
+
+    &:nth-child(1) {
+      margin-top: 0;
+    }
+  }
+
+  &--shape-rectangle {
+    height: 70px;
+    padding: 15px 16px 15px 64px;
+    margin-bottom: 10px;
+    color: $main_text_color3;
+  }
+
+  &--bg-common-gradient {
+    background-image: -webkit-linear-gradient(top, #ffe0e2, #eaa8ab);
+    background-image: linear-gradient(top, #ffe0e2, #eaa8ab);
+  }
+
+  &--bg-history-gradient {
+    background-image: -webkit-linear-gradient(top, #fde6e7, #f4dbdc);
+    background-image: linear-gradient(top, #fde6e7, #f4dbdc);
+  }
+
+  @for $i from 0 to 3 {
+    &--bg-repeat-gradient-#{$i} {
+      background-image: linear-gradient(
+        top,
+        nth($linear_first_color, $i + 1),
+        nth($linear_end_color, $i + 1)
+      );
+
+      background-image: -webkit-linear-gradient(
+        top,
+        nth($linear_first_color, $i + 1),
+        nth($linear_end_color, $i + 1)
+      );
+    }
+
+    &__type--color-#{$i},
+    &__number--color-#{$i} {
+      color: nth($linear_end_color, $i + 1);
+    }
+  }
+
+  &__logo {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 50%;
+
+    &--top-20 {
+      top: 20px;
+    }
+
+    &--top-15 {
+      top: 15px;
+    }
+
+    &-img {
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  &__name {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  &__number {
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-weight: 700;
+
+    &--small {
+      font-size: 14px;
+      letter-spacing: 0;
+      font-weight: 400;
+    }
+
+    &--color-pointer {
+      color: $main_white_color1;
+    }
+  }
+
+  // 刪除審核中
+  &__status-audit {
+    position: absolute;
+    font-size: 12px;
+    top: 10px;
+    right: 10px;
+
+    &--theme-square {
+      color: #eee;
+    }
+
+    &--theme-rectangle {
+      color: #db6372;
+    }
+  }
+
+  // 停用
+  &__status-stopped {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 20px;
+    color: #db6372;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px 0px 10px 0px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.mt-3 {
+  margin-top: 3px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
