@@ -263,7 +263,8 @@ export default {
         smallPig: true,
         data: {
           tag: this.videoType.title,
-          siteId: this.siteId
+          siteId: this.siteId,
+          page: 1
         }
       }).then(response => {
         if (response.status !== 200) {

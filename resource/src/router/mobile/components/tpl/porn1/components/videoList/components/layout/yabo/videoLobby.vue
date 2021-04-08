@@ -109,6 +109,7 @@ import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
+import { setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -200,14 +201,17 @@ export default {
   created() {
     switch (this.source) {
       case "yabo":
+        setCookie("s_id", "9");
         this.setHeaderTitle(this.$text("鸭脖视频", "鸭脖视频"));
         break;
 
       case "gay":
+        setCookie("s_id", "7");
         this.setHeaderTitle("男男视频");
         break;
 
       case "les":
+        setCookie("s_id", "");
         this.setHeaderTitle("女女视频");
         break;
 
@@ -405,7 +409,8 @@ export default {
         url: `/video/videolist`,
         data: {
           tag: this.videoType.title === "全部" ? "" : this.videoType.title,
-          siteId: this.siteId
+          siteId: this.siteId,
+          page: 1
         }
       }).then(response => {
         if (response.status !== 200) {

@@ -762,6 +762,7 @@ export default {
           this.AutotransferLock = false;
         },
         fail: error => {
+          this.isAutotransfer = false;
           this.AutotransferLock = false;
           this.actionSetGlobalMessage({ msg: error.data.msg });
         }
@@ -785,6 +786,7 @@ export default {
           this.initTranList(true);
         },
         fail: () => {
+          this.isAutotransfer = true;
           this.AutotransferLock = false;
         }
       });

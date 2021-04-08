@@ -28,6 +28,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -78,6 +79,7 @@ export default {
 
     switch (this.source) {
       case "smallPig":
+        setCookie("s_id", "");
         params.isSmallPigSearch = "smallPigSearch";
         this.currentLayout = {
           ...params,
@@ -87,6 +89,7 @@ export default {
         break;
 
       case "gay":
+        setCookie("s_id", "7");
         this.currentLayout = {
           ...params,
           searchInfo: "gaySearchInfo",
@@ -95,6 +98,7 @@ export default {
         break;
 
       case "les":
+        setCookie("s_id", "");
         this.currentLayout = {
           ...params,
           searchInfo: "lesSearchInfo",
@@ -103,6 +107,7 @@ export default {
         break;
 
       case "yabo":
+        setCookie("s_id", "9");
         this.currentLayout = {
           searchHome: "yaboSearchHome",
           searchInfo: "yaboSearchInfo",

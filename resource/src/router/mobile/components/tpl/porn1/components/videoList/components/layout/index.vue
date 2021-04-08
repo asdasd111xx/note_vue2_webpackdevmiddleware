@@ -27,6 +27,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -48,11 +49,11 @@ export default {
     },
     setHeaderTitle: {
       type: Function,
-      default: () => { }
+      default: () => {}
     },
     setHasSearchBtn: {
       type: Function,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
@@ -63,6 +64,7 @@ export default {
   created() {
     switch (this.source) {
       case "yabo":
+        setCookie("s_id", "9");
         this.currentLayout = {
           siteId: 1,
           videoLobby: "yaboVideoLobby",
@@ -74,6 +76,7 @@ export default {
         break;
 
       case "smallPig":
+        setCookie("s_id", "");
         this.currentLayout = {
           siteId: 2,
           videoLobby: "smallPigVideoLobby",
@@ -85,6 +88,7 @@ export default {
         break;
 
       case "gay":
+        setCookie("s_id", "7");
         this.currentLayout = {
           siteId: 3,
           videoLobby: "gayVideoLobby",
@@ -96,6 +100,7 @@ export default {
         break;
 
       case "les":
+        setCookie("s_id", "7");
         this.currentLayout = {
           siteId: 4,
           videoLobby: "lesVideoLobby",

@@ -39,6 +39,9 @@ import { v4 as uuidv4 } from "uuid";
 let memstatus = true;
 let agentstatus = true;
 
+// 測試站
+window.enableNewApi = false || !!getCookie("testapi");
+
 // Webview介接(客端、廳主端)
 export const actionSetWebview = ({ commit }) => {
   commit(types.SETWEBVIEW);
@@ -1892,6 +1895,31 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       siteConfigOfficial.preset;
   }
 
+  const enableNewApi = window.enableNewApi;
+  if (enableNewApi) {
+    let body = {
+      spaceId: 102,
+      secretKey:
+        "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
+    };
+
+    axios
+      .post("http://104.155.239.78/api/v1/video/getspaceIdJWT", body)
+      .then(function(res) {
+        console.log(res.data);
+        Vue.cookie.set(
+          "s_jwt",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMTAyIn0.VAYlewJ5OgLAsPNPEaMkwaMg2J6z74HBATk7Q7U2uW8"
+        );
+        if (res.data && res.data.result && res.data.status === 100) {
+          Vue.cookie.set("s_jwt", res.data.result);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
   return goLangApiRequest({
     method: "get",
     url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/System/domain"
@@ -1902,6 +1930,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
         i => i.name === "XXX-DOMAIN-URL" && i.type === "du"
       );
 
+      // 使用隨機一組domain
       let result =
         domainList[Math.floor(Math.random() * domainList.length)].value;
       if (domainList && domainList.length > 0) {

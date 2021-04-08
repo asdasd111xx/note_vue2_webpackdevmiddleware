@@ -129,6 +129,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      "actionSetGlobalMessage",
       "actionSetPost",
       "actionSetUserBalance",
       "actionSetUserdata",
