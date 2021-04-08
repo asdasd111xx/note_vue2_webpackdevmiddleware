@@ -34,22 +34,29 @@
         </div>
       </div>
 
-      <div :class="$style['info-card']" @click="clickService()">
+      <div
+        :class="[$style[`info-card-${item.classTitle}`]]"
+        v-for="(item, index) in serviceData"
+        :key="`service-${index}`"
+        @click="clickService(item.classTitle)"
+      >
         <div>
           <div>
             <img
               :src="
-                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+                $getCdnPath(
+                  `/static/image/common/service/ic_${item.titleImg}.png`
+                )
               "
             />
             &nbsp;
-            <span>在线客服</span>
+            <span>{{ item.title }}</span>
           </div>
-          <div>Main Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
+          <div>{{ item.smallTitle }}</div>
+          <div>{{ item.content }}</div>
         </div>
 
-        <div :class="$style['btn-next']">
+        <div v-if="item.buttonShow" :class="$style['btn-next']">
           <img
             :src="
               $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
@@ -150,7 +157,27 @@ export default {
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      hasPrev: true
+      hasPrev: true,
+      serviceData: [
+        {
+          classTitle: "service",
+          titleImg: "service01",
+          title: "在线客服",
+          smallTitle: "Main Customer Support",
+          content: "7*24小时专线服务 贴心至上",
+          buttonShow: true,
+          isShow: true
+        },
+        {
+          classTitle: "qq",
+          titleImg: "service021",
+          title: "企鹅客服：3118452330",
+          smallTitle: "Main Customer Support",
+          content: "亿元萌妹专业服务 联系更便利",
+          buttonShow: false,
+          isShow: true
+        }
+      ]
     };
   },
   created() {
@@ -210,8 +237,43 @@ export default {
           break;
       }
     },
-    clickService(type = "") {
-      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+    clickService(title, type = "") {
+      switch (title) {
+        default:
+        case "service":
+          mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+          break;
+        // 企鹅客服
+        case "qq":
+          let newWindow = "";
+          newWindow = window.open();
+          this.isLoading = true;
+          let target = "customer_service_qq";
+
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target}&needToken=false`
+          })
+            .then(res => {
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 1500);
+              const url = res.data.uri + "&cors=embed";
+              newWindow.location = url;
+              console.log(url);
+            })
+            .catch(error => {
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 1500);
+              newWindow.close();
+
+              if (error && error.data && error.data.msg) {
+                this.actionSetGlobalMessage({ msg: error.data.msg });
+              }
+            });
+          return;
+      }
     },
     clickPopTip() {
       this.isShowPop = true;
@@ -322,9 +384,9 @@ div.container {
   }
 }
 
-.info-card {
+@mixin info-card($color1, $color2, $backgroundImg) {
   color: white;
-  background: linear-gradient(to left, #f6d2bd, #e5997a);
+  background: linear-gradient(to left, $color1, $color2);
   box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
   margin: 15px;
   height: 100px;
@@ -335,7 +397,7 @@ div.container {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/common/service/bg_service01.png");
+    background-image: url($backgroundImg);
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -361,6 +423,22 @@ div.container {
       height: 24px;
     }
   }
+}
+
+.info-card-service {
+  @include info-card(
+    #f6d2bd,
+    #e5997a,
+    "/static/image/common/service/bg_service01.png"
+  );
+}
+
+.info-card-qq {
+  @include info-card(
+    #f9c4c7,
+    #e56b6e,
+    "/static/image/common/service/bg_service021.png"
+  );
 }
 
 .btn-next {
