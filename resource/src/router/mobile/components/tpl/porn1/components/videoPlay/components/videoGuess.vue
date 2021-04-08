@@ -51,6 +51,7 @@ import videoTag from "./videoTag";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
+import { setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -77,20 +78,20 @@ export default {
     siteId() {
       switch (this.source) {
         case "yabo":
+          setCookie("s_id", "9");
           return 1;
-          break;
 
         case "smallPig":
+          setCookie("s_id", "");
           return 2;
-          break;
 
         case "gay":
+          setCookie("s_id", "9");
           return 3;
-          break;
 
         case "les":
+          setCookie("s_id", "9");
           return 4;
-          break;
 
         default:
           break;

@@ -40,6 +40,7 @@ import videoGuess from "@/router/mobile/components/tpl/porn1/components/videoPla
 import videoTag from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoTag";
 import mobileContainer from "../common/mobileContainer";
 import pornRequest from "@/api/pornRequest";
+import { setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -63,20 +64,20 @@ export default {
     siteId() {
       switch (this.source) {
         case "yabo":
+          setCookie("s_id", "9");
           return 1;
-          break;
 
         case "smallPig":
+          setCookie("s_id", "");
           return 2;
-          break;
 
         case "gay":
+          setCookie("s_id", "9");
           return 3;
-          break;
 
         case "les":
+          setCookie("s_id", "9");
           return 4;
-          break;
 
         default:
           break;

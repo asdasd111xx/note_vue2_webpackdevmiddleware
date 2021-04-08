@@ -1,22 +1,50 @@
-import { PORN_DOMAIN, S_PORN_DOMAIN } from "@/api/config";
-
 import axios from "axios";
 import querystring from "querystring";
 import store from "@/store";
+import { getCookie } from "@/lib/cookie";
+
+// 鸭博娱乐色站 api domain
+const PORN_DOMAIN =
+  store && store.state && store.state.pornDoamin
+    ? `${store.state.pornDoamin}/api/v1`
+    : "https://venzheng.com/api/v1";
+
+// 色站Lucas機器 測試站 api domain
+const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
+const enableNewApi = window.enableNewApi;
 
 export default ({
   method = "get",
   params = {},
   data = {},
-  timeout = 30000,
+  timeout = 10000,
   reqHeaders = {},
   url = "",
   // smallPig = false,
   fail = () => {}
 }) => {
+  const host = enableNewApi ? "http://104.155.239.78/api/v1" : PORN_DOMAIN;
+  let _data = data;
+  let _params = params;
+
+  if (enableNewApi) {
+    _data["jwt"] = getCookie("s_jwt") || "";
+    _data["videoSpaceId"] = getCookie("s_id") || "";
+    _data["tagId"] = _data.tag;
+
+    _params["jwt"] = getCookie("s_jwt") || "";
+    _params["videoSpaceId"] = getCookie("s_id") || "";
+    _params["tagId"] = _data.tag;
+
+    delete _params["siteId"];
+    delete _params["tag"];
+    delete _data["siteId"];
+    delete _data["tag"];
+  }
+
   const obj = {
     method,
-    url: PORN_DOMAIN + url,
+    url: host + url,
     timeout,
     headers: {
       ...reqHeaders
@@ -24,7 +52,7 @@ export default ({
     params: {
       ...params
     },
-    data: querystring.stringify(data)
+    data: querystring.stringify(_data)
   };
 
   const domain =
@@ -65,7 +93,7 @@ export default ({
     })
     .catch(error => {
       console.log("[PORN request error]");
-      console.log(error.response);
+      console.log(error);
       return error;
     });
 };
