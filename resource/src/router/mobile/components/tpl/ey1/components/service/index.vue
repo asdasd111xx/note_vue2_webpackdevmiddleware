@@ -261,6 +261,10 @@ export default {
               const url = res.data.uri + "&cors=embed";
               newWindow.location = url;
               console.log(url);
+
+              setTimeout(() => {
+                newWindow.close();
+              }, 3000);
             })
             .catch(error => {
               setTimeout(() => {

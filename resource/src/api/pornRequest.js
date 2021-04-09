@@ -28,18 +28,20 @@ export default ({
   let _params = params;
 
   if (enableNewApi) {
-    _data["jwt"] = getCookie("s_jwt") || "";
-    _data["videoSpaceId"] = getCookie("s_id") || "";
-    _data["tagId"] = _data.tag;
+    if (method && method.toLocaleUpperCase() === "post") {
+      _data["jwt"] = getCookie("s_jwt") || "";
+      _data["videoSpaceId"] = getCookie("s_id") || "";
+      _data["tagId"] = _data.tag;
 
+      delete _data["siteId"];
+      delete _data["tag"];
+    }
     _params["jwt"] = getCookie("s_jwt") || "";
     _params["videoSpaceId"] = getCookie("s_id") || "";
     _params["tagId"] = _data.tag;
 
     delete _params["siteId"];
     delete _params["tag"];
-    delete _data["siteId"];
-    delete _data["tag"];
   }
 
   const obj = {
@@ -54,6 +56,10 @@ export default ({
     },
     data: querystring.stringify(_data)
   };
+
+  if (enableNewApi && method && method.toLocaleUpperCase() === "post") {
+    obj["data"] = data;
+  }
 
   const domain =
     store &&

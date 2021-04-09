@@ -1897,20 +1897,16 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   const enableNewApi = window.enableNewApi;
   if (enableNewApi) {
-    let body = {
-      spaceId: 102,
-      secretKey:
-        "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
-    };
+    var bodyFormData = new FormData();
+    bodyFormData.append("spaceId", 102);
+    bodyFormData.append(
+      "secretKey",
+      "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
+    );
 
     axios
-      .post("http://104.155.239.78/api/v1/video/getspaceIdJWT", body)
+      .post("http://104.155.239.78/api/v1/video/getspaceIdJWT", bodyFormData)
       .then(function(res) {
-        console.log(res.data);
-        Vue.cookie.set(
-          "s_jwt",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMTAyIn0.VAYlewJ5OgLAsPNPEaMkwaMg2J6z74HBATk7Q7U2uW8"
-        );
         if (res.data && res.data.result && res.data.status === 100) {
           Vue.cookie.set("s_jwt", res.data.result);
         }

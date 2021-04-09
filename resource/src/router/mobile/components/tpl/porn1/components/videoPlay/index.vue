@@ -111,6 +111,22 @@ export default {
     });
   },
   created() {
+    // axios({
+    //   method: "get",
+    //   url: "http://104.155.239.78/api/v1/video/tag",
+    //   params: {
+    //     jwt:
+    //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMTAyIn0.VAYlewJ5OgLAsPNPEaMkwaMg2J6z74HBATk7Q7U2uW8",
+    //     videoSpaceId: 7
+    //   }
+    // })
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+
     if (localStorage.getItem("content_rating")) {
       if (localStorage.getItem("content_rating") !== "1") {
         this.$router.push("/mobile");
