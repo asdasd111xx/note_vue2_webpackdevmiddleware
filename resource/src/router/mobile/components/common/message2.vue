@@ -167,7 +167,7 @@ export default {
           // 重新登入
           case "M00001":
           // 停權
-          case "C600001":
+          // case "C600001":
           case "C50029":
           case "C50062":
           case "TM020058":
