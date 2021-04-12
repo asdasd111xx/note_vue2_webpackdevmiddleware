@@ -72,11 +72,11 @@ export default {
           return 2;
 
         case "gay":
-          setCookie("s_id", "9");
+          setCookie("s_id", "7");
           return 3;
 
         case "les":
-          setCookie("s_id", "9");
+          setCookie("s_id", "");
           return 4;
 
         default:
