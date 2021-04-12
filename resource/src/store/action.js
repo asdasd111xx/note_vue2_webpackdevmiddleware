@@ -40,7 +40,7 @@ let memstatus = true;
 let agentstatus = true;
 
 // 測試站
-window.enableNewApi = false || !!getCookie("testapi");
+window.enableNewApi = true || !!getCookie("testapi");
 
 // Webview介接(客端、廳主端)
 export const actionSetWebview = ({ commit }) => {
@@ -1905,7 +1905,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     );
 
     axios
-      .post("http://104.155.239.78/api/v1/video/getspaceIdJWT", bodyFormData)
+      .post("https://sxqa2.777xqa.com/api/v1/video/getspaceIdJWT", bodyFormData)
       .then(function(res) {
         if (res.data && res.data.result && res.data.status === 100) {
           Vue.cookie.set("s_jwt", res.data.result);
