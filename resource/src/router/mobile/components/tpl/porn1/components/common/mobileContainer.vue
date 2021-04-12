@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import axios from "axios";
 import { getCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   components: {
@@ -51,6 +51,9 @@ export default {
     return {
       hasUnreadMessage: false
     };
+  },
+  methods: {
+    ...mapActions(["actionSetGlobalMessage"])
   },
   props: {
     headerConfig: {
@@ -75,14 +78,30 @@ export default {
       axios({
         method: "get",
         url: "/api/v1/c/player/messages"
-      }).then(res => {
-        const ret = res.data.ret;
-        ret.forEach(i => {
-          if (i.read === false) {
-            this.hasUnreadMessage = true;
+      })
+        .then(res => {
+          if (res && res.data) {
+            const data = res.data;
+            if (data && res.data.ret) {
+              const ret = res.data.ret;
+              ret.forEach(i => {
+                if (i.read === false) {
+                  this.hasUnreadMessage = true;
+                }
+              });
+            }
+
+            if (data && data.msg && data.code) {
+              this.actionSetGlobalMessage({ msg: data.msg, code: data.code });
+            }
+          }
+        })
+        .catch(e => {
+          const data = e.response.data;
+          if (data && data.msg && data.code) {
+            this.actionSetGlobalMessage({ msg: data.msg, code: data.code });
           }
         });
-      });
     }
   },
   computed: {
