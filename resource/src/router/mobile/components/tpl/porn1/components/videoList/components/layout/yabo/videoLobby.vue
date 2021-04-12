@@ -1,22 +1,20 @@
 <template>
   <div :class="$style['video-lobby-container']">
     <div :class="[$style['tag-wrap'], $style[source]]">
-      <swiper ref="tag-swiper" :options="options">
-        <swiper-slide
-          v-for="info in videoTag"
-          :key="`tag-${info.id}`"
-          :class="[
-            $style['tag-item'],
-            $style[source],
-            { [$style.active]: info.id === +videoType.id }
-          ]"
-        >
-          <span @click="onChangeVideoType(info.id, info.title)">
-            {{ info.title }}
-          </span>
-          <div :class="$style['line']" />
-        </swiper-slide>
-      </swiper>
+      <div
+        v-for="info in videoTag"
+        :key="`tag-${info.id}`"
+        :class="[
+          $style['tag-item'],
+          $style[source],
+          { [$style.active]: info.id === +videoType.id }
+        ]"
+      >
+        <span @click="onChangeVideoType(info.id, info.title)">
+          {{ info.title }}
+        </span>
+        <div :class="$style['line']" />
+      </div>
 
       <div
         :class="[
@@ -47,20 +45,20 @@
           "
         />
       </div>
+    </div>
 
-      <div
-        v-if="isShowAllTag"
-        :class="[$style['all-tag-wrap'], $style[source], 'clearfix']"
-      >
-        <template v-for="(tag, index) in videoTag">
-          <div
-            :key="`all-tag-${index}`"
-            @click="onChangeVideoType(tag.id, tag.title)"
-          >
-            {{ tag.title }}
-          </div>
-        </template>
-      </div>
+    <div
+      v-show="isShowAllTag"
+      :class="[$style['all-tag-wrap'], $style[source], 'clearfix']"
+    >
+      <template v-for="(tag, index) in videoTag">
+        <div
+          :key="`all-tag-${index}`"
+          @click="onChangeVideoType(tag.id, tag.title)"
+        >
+          {{ tag.title }}
+        </div>
+      </template>
     </div>
 
     <div :class="[$style['video-list-wrap'], 'clearfix']" id="video-list-wrap">
@@ -105,17 +103,13 @@
 <script>
 import axios from "axios";
 import find from "lodash/find";
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
 import { setCookie } from "@/lib/cookie";
 
 export default {
-  components: {
-    Swiper,
-    SwiperSlide
-  },
+  components: {},
   props: {
     setHeaderTitle: {
       type: Function,
@@ -282,17 +276,6 @@ export default {
       };
     },
     getVideoTag() {
-      //   try {
-      //     let videolistStorage = localStorage.getItem(`${this.source}-video-tag`);
-      //     if (videolistStorage) {
-      //       this.videoTag = JSON.parse(
-      //         localStorage.getItem(`${this.source}-video-tag`)
-      //       );
-      //     }
-      //   } catch (e) {
-      //     console.log(e);
-      //   }
-
       return pornRequest({
         url: "/video/tag",
         method: "get",
@@ -303,34 +286,20 @@ export default {
         if (response.status !== 200) {
           return;
         }
-
-        // try {
-        //   localStorage.setItem(
-        //     `${this.source}-video-tag`,
-        //     JSON.stringify([{ id: 0, title: "全部" }, ...response.result])
-        //   );
-        //   localStorage.setItem(
-        //     `${this.source}-video-tag-timestamp`,
-        //     Date.now()
-        //   );
-        // } catch (e) {
-        //   console.log(e);
-        // }
-
         this.videoTag = [{ id: 0, title: "全部" }, ...response.result];
       });
     },
     // 切換當前影片分類
     onChangeVideoType(index, title) {
       this.onShowAllTag(false);
-      this.videoType = { ...this.videoTag[index] };
 
-      this.videoType.id = index;
-      this.videoType.title = title;
-      // this.$nextTick(() => {
-      //   this.$refs["tag-swiper"].$swiper.slideTo(index);
-      // });
-      this.$nextTick(() => {
+      if (
+        this.$route.query.id !== String(index) &&
+        this.$route.query.title !== title
+      ) {
+        this.videoType = { ...this.videoTag[index] };
+        this.videoType.id = index;
+        this.videoType.title = title;
         this.$router.replace({
           query: {
             source: this.$route.query.source,
@@ -338,7 +307,7 @@ export default {
             title: this.videoType.title
           }
         });
-      });
+      }
     },
 
     // 開啟影片分類選單
@@ -347,19 +316,6 @@ export default {
     },
     // 取得影片排序
     getVideoSort() {
-      //   try {
-      //     let videolistStorage = localStorage.getItem(
-      //       `${this.source}-video-sort`
-      //     );
-      //     if (videolistStorage) {
-      //       this.videoSort = JSON.parse(
-      //         localStorage.getItem(`${this.source}-video-sort`)
-      //       );
-      //     }
-      //   } catch (e) {
-      //     console.log(e);
-      //   }
-
       return pornRequest({
         method: "get",
         url: "/video/sort",
@@ -370,19 +326,6 @@ export default {
         if (response.status !== 200) {
           return;
         }
-
-        // try {
-        //   localStorage.setItem(
-        //     `${this.source}-video-sort`,
-        //     JSON.stringify(response.result)
-        //   );
-        //   localStorage.setItem(
-        //     `${this.source}-video-sort-timestamp`,
-        //     Date.now()
-        //   );
-        // } catch (e) {
-        //   console.log(e);
-        // }
 
         this.videoSort = [...response.result];
       });
@@ -424,7 +367,12 @@ export default {
         }
 
         this.resetTimer = null;
-        this.videoList = [...response.result];
+        if (response.result && response.result.length > 0) {
+          this.videoList = [...response.result];
+        } else {
+          this.videoList = [];
+        }
+
         this.$nextTick(() => {
           this.videoType.id = this.$route.query.id;
           this.videoType.title = this.$route.query.title;
@@ -467,6 +415,10 @@ export default {
   position: fixed;
   top: 43px;
   z-index: 2;
+  display: -ms-flexbox;
+  display: flex;
+  transition-property: transform;
+  overflow-x: auto;
 
   &.yabo {
     background: $main_white_color1;
@@ -489,7 +441,13 @@ export default {
 
 .tag-item {
   width: auto;
-  line-height: 44px;
+  line-height: 42px;
+  margin: 0px 15px;
+  flex-shrink: 0;
+  height: 100%;
+  text-align: center;
+  position: relative;
+  transition-property: transform;
 
   &.yabo {
     color: #bcbdc1;
@@ -567,12 +525,14 @@ export default {
 
 .all-tag-wrap {
   position: absolute;
-  top: 50px;
+  top: 84px;
   right: 0;
   left: 0;
   z-index: 2;
+  border-radius: 0 0 10px 10px;
   background-color: #fff;
-  max-height: calc(100vh - 150px);
+  height: 29%;
+  min-height: 250px;
   overflow-y: scroll;
 
   > div {

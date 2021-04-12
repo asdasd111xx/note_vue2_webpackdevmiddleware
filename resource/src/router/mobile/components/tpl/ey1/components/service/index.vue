@@ -261,6 +261,10 @@ export default {
               const url = res.data.uri + "&cors=embed";
               newWindow.location = url;
               console.log(url);
+
+              setTimeout(() => {
+                newWindow.close();
+              }, 3000);
             })
             .catch(error => {
               setTimeout(() => {
@@ -384,7 +388,7 @@ div.container {
   }
 }
 
-@mixin info-card($color1, $color2, $backgroundImg) {
+@mixin info-card($color1, $color2, $backgroundImg, $smallTitleColor) {
   color: white;
   background: linear-gradient(to left, $color1, $color2);
   box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
@@ -415,7 +419,7 @@ div.container {
     }
 
     > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
+      color: $smallTitleColor;
     }
 
     > div > img {
@@ -429,7 +433,8 @@ div.container {
   @include info-card(
     #f6d2bd,
     #e5997a,
-    "/static/image/common/service/bg_service01.png"
+    "/static/image/common/service/bg_service01.png",
+    hsla(0, 0%, 100%, 0.5)
   );
 }
 
@@ -437,7 +442,8 @@ div.container {
   @include info-card(
     #f9c4c7,
     #e56b6e,
-    "/static/image/common/service/bg_service021.png"
+    "/static/image/common/service/bg_service021.png",
+    #ffffff
   );
 }
 
