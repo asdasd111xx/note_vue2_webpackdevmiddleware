@@ -1898,7 +1898,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
   const enableNewApi = window.enableNewApi;
   if (enableNewApi) {
     var bodyFormData = new FormData();
-    bodyFormData.append("spaceId", 102);
+    bodyFormData.append("spaceId", 1);
     bodyFormData.append(
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"

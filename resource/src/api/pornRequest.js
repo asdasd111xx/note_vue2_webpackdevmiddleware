@@ -23,7 +23,7 @@ export default ({
   // smallPig = false,
   fail = () => {}
 }) => {
-  const host = enableNewApi ? "http://104.155.239.78/api/v1" : PORN_DOMAIN;
+  const host = enableNewApi ? "https://sxqa2.777xqa.com/api/v1" : PORN_DOMAIN;
   let _data = data;
   let _params = params;
 
