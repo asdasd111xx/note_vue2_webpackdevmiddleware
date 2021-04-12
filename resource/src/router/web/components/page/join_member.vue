@@ -367,9 +367,9 @@ export default {
         facebook: "",
         skype: "",
         zalo: "",
-        withdraw_password: {
-          value: ["", "", "", ""]
-        },
+        // withdraw_password: {
+        //   value: ["", "", "", ""]
+        // },
         captcha_text: ""
       },
       allTip: {
