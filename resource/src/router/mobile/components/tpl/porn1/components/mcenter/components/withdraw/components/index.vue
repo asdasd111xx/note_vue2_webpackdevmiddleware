@@ -1032,6 +1032,7 @@ export default {
 
         // 增加判空，否則報 map 錯誤
         if (
+          this.withdrawData &&
           this.withdrawData.user_virtual_bank &&
           this.withdrawData.user_virtual_bank.ret &&
           this.withdrawData.user_virtual_bank.ret.length > 0
