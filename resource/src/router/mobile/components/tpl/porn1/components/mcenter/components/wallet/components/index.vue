@@ -473,7 +473,17 @@ export default {
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
-            this.$router.push("/mobile/mcenter/bankCard");
+            // this.$router.push("/mobile/mcenter/bankCard");
+            switch (this.themeTPL) {
+              case "porn1":
+              case "sg1":
+                this.$router.push("/mobile/mcenter/bankCard");
+                break;
+
+              case "ey1":
+                this.checkWithdrawData("bankCard");
+                break;
+            }
           }
         }
       ];
