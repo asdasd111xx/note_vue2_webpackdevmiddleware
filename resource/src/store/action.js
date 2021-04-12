@@ -40,7 +40,7 @@ let memstatus = true;
 let agentstatus = true;
 
 // 測試站
-window.enableNewApi = true && !getCookie("testapi");
+window.enableNewApi = false || !!getCookie("testapi");
 
 // Webview介接(客端、廳主端)
 export const actionSetWebview = ({ commit }) => {
