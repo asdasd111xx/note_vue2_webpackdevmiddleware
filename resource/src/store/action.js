@@ -32,15 +32,11 @@ import member from "@/api/member";
 import openGame from "@/lib/open_game";
 import router from "../router";
 import version from "@/config/version.json";
-import yaboRequest from "@/api/yaboRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { v4 as uuidv4 } from "uuid";
 
 let memstatus = true;
 let agentstatus = true;
-
-// 測試站
-window.enableNewApi = true || !!getCookie("testapi");
 
 // Webview介接(客端、廳主端)
 export const actionSetWebview = ({ commit }) => {
@@ -1895,17 +1891,23 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       siteConfigOfficial.preset;
   }
 
-  const enableNewApi = window.enableNewApi;
-  if (enableNewApi) {
-    var bodyFormData = new FormData();
-    bodyFormData.append("spaceId", 1);
+  let spaceId = 1;
+  if (configInfo.MOBILE_WEB_TPL === "porn1") {
+    spaceId = 1;
+  } else if (configInfo.MOBILE_WEB_TPL === "sg1") {
+    spaceId = 14;
+  }
+
+  const getV2Token = uri => {
+    let bodyFormData = new FormData();
+    bodyFormData.append("spaceId", spaceId);
     bodyFormData.append(
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
     );
 
     axios
-      .post("https://sxqa2.777xqa.com/api/v1/video/getspaceIdJWT", bodyFormData)
+      .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
       .then(function(res) {
         if (res.data && res.data.result && res.data.status === 100) {
           Vue.cookie.set("s_jwt", res.data.result);
@@ -1914,14 +1916,39 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       .catch(function(error) {
         console.log(error);
       });
-  }
+  };
 
   return goLangApiRequest({
     method: "get",
-    url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/System/domain"
+    url: `${
+      configInfo.YABO_GOLANG_API_DOMAIN
+    }/cxbb/System/domain?t=${Date.now()}`
   }).then(res => {
     if (res && res.data) {
       commit(types.SET_SYSTEMDOMAIN, res.data);
+
+      let domainListV2 = res.data.filter(
+        i => i.name === "XXX-DOMAIN-URL-V2" && i.type === "du"
+      );
+
+      if (domainListV2 && domainListV2.length > 0) {
+        setCookie("s_enable", 1);
+
+        let tmp =
+          domainListV2[Math.floor(Math.random() * domainListV2.length)].value;
+        if (tmp && tmp.length > 0) {
+          commit(types.SET_PORNDOMAIN, tmp);
+          getV2Token(tmp);
+          return;
+        } else {
+          commit(types.SET_PORNDOMAIN, domainListV2[0].value);
+          getV2Token(domainListV2[0].value);
+          return;
+        }
+      }
+
+      console.log("not found v2");
+      setCookie("s_enable", "");
       let domainList = res.data.filter(
         i => i.name === "XXX-DOMAIN-URL" && i.type === "du"
       );

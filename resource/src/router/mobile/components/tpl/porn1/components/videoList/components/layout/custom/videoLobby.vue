@@ -99,6 +99,7 @@ import pornRequest from "@/api/pornRequest";
 import message from "@/router/mobile/components/common/message";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -174,6 +175,7 @@ export default {
     }
   },
   created() {
+    setCookie("s_id", "13");
     this.setHeaderTitle("小猪视频");
     this.setHasSearchBtn(false);
     this.initData();
@@ -210,7 +212,6 @@ export default {
       return pornRequest({
         url: "/video/tag",
         method: "get",
-        smallPig: true,
         params: {
           siteId: this.siteId
         }
@@ -227,7 +228,6 @@ export default {
       return pornRequest({
         method: "get",
         url: "/video/sort",
-        smallPig: true,
         params: {
           siteId: this.siteId
         }
@@ -243,7 +243,6 @@ export default {
     getVideoRecommand() {
       return pornRequest({
         url: `/video/recommand`,
-        smallPig: true,
         params: {
           siteId: this.siteId
         }
@@ -260,7 +259,6 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/videolist`,
-        smallPig: true,
         data: {
           tag: this.videoType.title,
           siteId: this.siteId,
@@ -278,7 +276,12 @@ export default {
         }
 
         this.resetTimer = null;
-        this.videoList = [...response.result];
+        if (response.result && response.result.length > 0) {
+          this.videoList = [...response.result];
+        } else {
+          this.videoList = [];
+        }
+
         this.$nextTick(() => {
           if (window.location.hash) {
             const hash = Number(window.location.hash.replace("#", "")) || 0;

@@ -11,7 +11,7 @@ const PORN_DOMAIN =
 
 // 色站Lucas機器 測試站 api domain
 const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
-const enableNewApi = window.enableNewApi;
+const enableNewApi = !!getCookie("s_enable");
 
 export default ({
   method = "get",
@@ -20,10 +20,9 @@ export default ({
   timeout = 10000,
   reqHeaders = {},
   url = "",
-  // smallPig = false,
   fail = () => {}
 }) => {
-  const host = enableNewApi ? "https://sxqa2.777xqa.com/api/v1" : PORN_DOMAIN;
+  const host = PORN_DOMAIN;
   let _data = data;
   let _params = params;
 
@@ -60,26 +59,6 @@ export default ({
   if (enableNewApi && method && method.toLocaleUpperCase() === "post") {
     obj["data"] = data;
   }
-
-  const domain =
-    store &&
-    store.state &&
-    store.state.memInfo &&
-    store.state.memInfo.user &&
-    store.state.memInfo.user.domain;
-
-  // if (domain === '500015') {
-  //     obj['url'] = S_PORN_DOMAIN + url;
-  // }
-
-  // if (smallPig) {
-  //     // obj['withCredentials'] = true;
-  //     const domain = store &&
-  //         store.state &&
-  //         store.state.memInfo &&
-  //         store.state.memInfo.user &&
-  //         store.state.memInfo.user.domain;
-  // }
 
   let api = window.PermissionRequest;
   if (!api) {

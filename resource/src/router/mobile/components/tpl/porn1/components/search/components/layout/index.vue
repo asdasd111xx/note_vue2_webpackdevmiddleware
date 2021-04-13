@@ -79,7 +79,7 @@ export default {
 
     switch (this.source) {
       case "smallPig":
-        setCookie("s_id", "");
+        setCookie("s_id", "13");
         params.isSmallPigSearch = "smallPigSearch";
         this.currentLayout = {
           ...params,
@@ -98,7 +98,7 @@ export default {
         break;
 
       case "les":
-        setCookie("s_id", "");
+        setCookie("s_id", "8");
         this.currentLayout = {
           ...params,
           searchInfo: "lesSearchInfo",
