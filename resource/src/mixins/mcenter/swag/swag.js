@@ -235,6 +235,9 @@ export default {
 
         if (this.isMaintainSwag) {
           if (this.swagConfig.enable === 0) {
+            if (origin === "home") {
+              return;
+            }
             this.actionSetGlobalMessage({
               msg: `SWAG 维护中`,
               style: "maintain"
