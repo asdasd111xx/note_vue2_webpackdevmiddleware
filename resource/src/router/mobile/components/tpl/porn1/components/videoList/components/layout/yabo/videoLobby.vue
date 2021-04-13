@@ -205,7 +205,7 @@ export default {
         break;
 
       case "les":
-        setCookie("s_id", "");
+        setCookie("s_id", "8");
         this.setHeaderTitle("女女视频");
         break;
 
