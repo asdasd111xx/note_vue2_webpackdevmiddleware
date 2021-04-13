@@ -1932,17 +1932,13 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       );
 
       if (domainListV2 && domainListV2.length > 0) {
-        setCookie("s_enable", 1);
-
         let tmp =
           domainListV2[Math.floor(Math.random() * domainListV2.length)].value;
+
         if (tmp && tmp.length > 0) {
+          setCookie("s_enable", 1);
           commit(types.SET_PORNDOMAIN, tmp);
           getV2Token(tmp);
-          return;
-        } else {
-          commit(types.SET_PORNDOMAIN, domainListV2[0].value);
-          getV2Token(domainListV2[0].value);
           return;
         }
       }
