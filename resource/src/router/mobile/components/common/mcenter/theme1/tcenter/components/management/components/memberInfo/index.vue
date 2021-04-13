@@ -185,7 +185,7 @@
                 }
               ]"
             >
-              {{ friendsStatistics.valid_bet }}
+              {{ commaFormat(friendsStatistics.valid_bet) }}
             </div>
           </div>
           <div :class="$style['info-wrap']">
@@ -200,7 +200,7 @@
                 }
               ]"
             >
-              {{ friendsStatistics.payoff }}
+              {{ commaFormat(friendsStatistics.payoff) }}
             </div>
           </div>
           <div :class="$style['info-wrap']">
@@ -215,7 +215,7 @@
                 }
               ]"
             >
-              {{ friendsStatistics.deposit }}
+              {{ commaFormat(friendsStatistics.deposit) }}
             </div>
           </div>
           <div :class="$style['info-wrap']">
@@ -230,7 +230,7 @@
                 }
               ]"
             >
-              {{ friendsStatistics.withdraw }}
+              {{ commaFormat(friendsStatistics.withdraw) }}
             </div>
           </div>
         </div>
@@ -299,6 +299,9 @@ export default {
     this.setHeaderTitle(this.$text("S_SUB_STATISTICS", "下级统计"));
   },
   methods: {
+    commaFormat(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
     onCheck() {
       if (this.themeTPL === "ey1") {
         this.$router.replace({
