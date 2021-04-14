@@ -175,9 +175,9 @@ export default {
           smallTitle: "Main Customer Support",
           content: "亿元萌妹专业服务 联系更便利",
           buttonShow: false,
-          isShow: true
+          isShow: false
         }
-      ]
+      ].filter(data => data.isShow)
     };
   },
   created() {
