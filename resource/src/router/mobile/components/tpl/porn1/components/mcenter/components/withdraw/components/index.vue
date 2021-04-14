@@ -175,12 +175,7 @@
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
             v-if="
-              forceStatus === 1 &&
-                userWithdrawCount === 0 &&
-                isFirstWithdraw &&
-                withdrawUserData.wallet.length +
-                  withdrawUserData.crypto.length >
-                  0
+              forceStatus === 1 && userWithdrawCount === 0 && isFirstWithdraw
             "
             :class="$style['withdraw-status-tip']"
             >银行卡提现一次，开通数字货币提现功能</span
