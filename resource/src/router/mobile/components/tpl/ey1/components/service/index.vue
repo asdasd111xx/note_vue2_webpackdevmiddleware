@@ -175,9 +175,9 @@ export default {
           smallTitle: "Main Customer Support",
           content: "亿元萌妹专业服务 联系更便利",
           buttonShow: false,
-          isShow: true
+          isShow: false
         }
-      ]
+      ].filter(data => data.isShow)
     };
   },
   created() {
@@ -228,7 +228,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleBack() {
       const redirect = this.$route.query.redirect;
       switch (redirect) {
@@ -263,6 +263,7 @@ export default {
               console.log(url);
 
               setTimeout(() => {
+                this.actionSetGlobalMessage({ msg: "未安装QQ，请安装后重试" });
                 newWindow.close();
               }, 3000);
             })
