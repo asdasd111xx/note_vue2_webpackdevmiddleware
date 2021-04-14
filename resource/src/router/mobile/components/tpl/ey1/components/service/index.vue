@@ -228,7 +228,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleBack() {
       const redirect = this.$route.query.redirect;
       switch (redirect) {
@@ -263,6 +263,7 @@ export default {
               console.log(url);
 
               setTimeout(() => {
+                this.actionSetGlobalMessage({ msg: "未安装QQ，请安装后重试" });
                 newWindow.close();
               }, 3000);
             })
