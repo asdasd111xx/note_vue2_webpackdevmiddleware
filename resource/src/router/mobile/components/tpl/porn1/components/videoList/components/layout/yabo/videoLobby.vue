@@ -55,6 +55,7 @@
         <div
           :key="`all-tag-${index}`"
           @click="onChangeVideoType(tag.id, tag.title)"
+          :class="tag.title.length > 4 ? $style['small'] : ''"
         >
           {{ tag.title }}
         </div>
@@ -498,10 +499,9 @@ export default {
 .icon-arrow {
   float: right;
   width: 30px;
-  height: 100%;
-  position: absolute;
-  right: 20px;
-  top: 0;
+  position: fixed;
+  right: 3%;
+  top: 57px;
   transition: all 0.1s;
   z-index: 2;
   display: flex;
@@ -546,6 +546,13 @@ export default {
     color: #d5bea4;
     font-size: 14px;
     text-align: center;
+
+    &.small {
+      font-size: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   &.gay > div {

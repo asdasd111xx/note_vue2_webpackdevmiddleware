@@ -111,7 +111,11 @@ export default {
         return;
       }
 
-      this.videoList = [...response.result.data];
+      if (response.result && response.result.data) {
+        this.videoList = [...response.result.data];
+      } else {
+        this.videoList = [];
+      }
 
       setTimeout(() => {
         this.videoList.forEach(item => {

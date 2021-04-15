@@ -27,7 +27,10 @@
 
     <!-- 針對smallPig , gay , les -->
     <template v-else>
-      <div :class="[$style['info-wrap'], { [$style['custom']]: isCustom }]">
+      <div
+        v-show="!toggleDialog"
+        :class="[$style['info-wrap'], { [$style['custom']]: isCustom }]"
+      >
         <div
           :class="[
             $style['title'],
