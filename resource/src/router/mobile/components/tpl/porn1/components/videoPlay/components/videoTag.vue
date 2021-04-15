@@ -34,7 +34,6 @@ export default {
   },
   computed: {
     tags() {
-      console.log(this.tag);
       return split(this.tag, ",");
     }
   }
