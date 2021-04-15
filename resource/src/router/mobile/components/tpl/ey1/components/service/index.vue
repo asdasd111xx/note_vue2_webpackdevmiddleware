@@ -35,7 +35,7 @@
       </div>
 
       <div
-        :class="[$style[`info-card-${item.classTitle}`]]"
+        :class="[$style[item.classTitle]]"
         v-for="(item, index) in serviceData"
         :key="`service-${index}`"
         @click="clickService(item.classTitle)"
@@ -160,7 +160,16 @@ export default {
       hasPrev: true,
       serviceData: [
         {
-          classTitle: "service",
+          classTitle: "customer_service2",
+          titleImg: "service03",
+          title: "在线客服2.0",
+          smallTitle: "Main Customer Support",
+          content: "7*24小时专线服务 贴心至上",
+          buttonShow: false,
+          isShow: true
+        },
+        {
+          classTitle: "customer_service",
           titleImg: "service01",
           title: "在线客服",
           smallTitle: "Main Customer Support",
@@ -169,13 +178,13 @@ export default {
           isShow: true
         },
         {
-          classTitle: "qq",
-          titleImg: "service021",
-          title: "企鹅客服：3118452330",
-          smallTitle: "Main Customer Support",
+          classTitle: "customer_service_potato",
+          titleImg: "service04",
+          title: "土豆客服：ey777",
+          smallTitle: "POTATO CHAT",
           content: "亿元萌妹专业服务 联系更便利",
           buttonShow: false,
-          isShow: false
+          isShow: true
         }
       ].filter(data => data.isShow)
     };
@@ -240,19 +249,20 @@ export default {
     clickService(title, type = "") {
       switch (title) {
         default:
-        case "service":
+        case "customer_service":
           mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
           break;
-        // 企鹅客服
-        case "qq":
+
+        // 客服2.0 土豆客服
+        case "customer_service_potato":
+        case "customer_service2":
           let newWindow = "";
           newWindow = window.open();
           this.isLoading = true;
-          let target = "customer_service_qq";
 
           goLangApiRequest({
             method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target}&needToken=false`
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`
           })
             .then(res => {
               setTimeout(() => {
@@ -261,11 +271,6 @@ export default {
               const url = res.data.uri + "&cors=embed";
               newWindow.location = url;
               console.log(url);
-
-              setTimeout(() => {
-                this.actionSetGlobalMessage({ msg: "未安装QQ，请安装后重试" });
-                newWindow.close();
-              }, 3000);
             })
             .catch(error => {
               setTimeout(() => {
@@ -430,7 +435,16 @@ div.container {
   }
 }
 
-.info-card-service {
+.customer_service2 {
+  @include info-card(
+    #ffddcb,
+    #ffbf64,
+    "/static/image/common/service/bg_service03.png",
+    #ffffff
+  );
+}
+
+.customer_service {
   @include info-card(
     #f6d2bd,
     #e5997a,
@@ -439,11 +453,11 @@ div.container {
   );
 }
 
-.info-card-qq {
+.customer_service_potato {
   @include info-card(
-    #f9c4c7,
-    #e56b6e,
-    "/static/image/common/service/bg_service021.png",
+    #baefee,
+    #80affd,
+    "/static/image/common/service/bg_service04.png",
     #ffffff
   );
 }
