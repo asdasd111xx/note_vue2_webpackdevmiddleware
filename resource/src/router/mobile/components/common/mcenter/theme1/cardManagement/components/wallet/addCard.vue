@@ -776,6 +776,9 @@ export default {
         case "wallet":
         case "withdraw":
         case "balanceTrans":
+          // this.$router.push(`/mobile/mcenter/${redirect}`);
+
+          this.$router.back();
           this.$router.push(`/mobile/mcenter/${redirect}`);
           return;
 
