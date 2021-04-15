@@ -405,12 +405,8 @@ export default {
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
-                this.$router.push("/mobile/mcenter/balanceTrans");
-                break;
-
               case "ey1":
-                this.checkWithdrawData("balanceTrans");
-
+                this.$router.push("/mobile/mcenter/balanceTrans");
                 break;
 
               // axios({
