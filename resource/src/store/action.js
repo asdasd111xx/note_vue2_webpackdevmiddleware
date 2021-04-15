@@ -713,6 +713,71 @@ export const actionSetUserdata = (
     setCookie("uuidAccount", uuidAccount);
   }
 
+  if (!document.querySelector('script[data-name="esabgnixob"]')) {
+    let script = document.createElement("script");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("data-name", "esabgnixob");
+    script.onload = e => {
+      //訪客註冊
+      let configInfo = {};
+      if (state.webDomain) {
+        configInfo =
+          siteConfigTest[`site_${state.webDomain.domain}`] ||
+          siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+          siteConfigTest[`site_${state.webInfo.alias}`] ||
+          siteConfigOfficial.preset;
+      }
+      goLangApiRequest({
+        method: "put",
+        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
+        params: {
+          account: uuidAccount
+        }
+      })
+        .then(res => {
+          if (res.status === "000") {
+            let guestCid = res.data.cid;
+            let guestUserid = res.data.userid;
+            setCookie("guestCid", guestCid);
+            setCookie("guestUserid", guestUserid);
+          } else {
+            //訪客登入
+            goLangApiRequest({
+              method: "post",
+              url:
+                configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestlogin",
+              params: {
+                account: uuidAccount
+              }
+            })
+              .then(res => {
+                if (res.status === "000") {
+                  let guestCid = res.data.cid;
+                  let guestUserid = res.data.userid;
+
+                  setCookie("guestCid", guestCid);
+                  setCookie("guestUserid", guestUserid);
+                } else {
+                }
+              })
+              .catch(error => {});
+          }
+        })
+        .catch(error => {});
+    };
+
+    if (window.location.host.includes("localhost")) {
+      script.setAttribute(
+        "src",
+        "https://yb01.66boxing.com/mobile/esabgnixob.js"
+      );
+    } else {
+      script.setAttribute("src", "esabgnixob.js");
+    }
+
+    document.head.appendChild(script);
+  }
+
   return member.data({
     timeout: 10000,
     success: response => {
@@ -725,56 +790,6 @@ export const actionSetUserdata = (
       commit(types.SETGAMEDATA, temp.vendors);
       if (temp.user.id === 0 && temp.user.username === "unknown") {
         commit(types.ISLOGIN, false);
-
-        //訪客註冊
-        let configInfo = {};
-        if (state.webDomain) {
-          configInfo =
-            siteConfigTest[`site_${state.webDomain.domain}`] ||
-            siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-            siteConfigTest[`site_${state.webInfo.alias}`] ||
-            siteConfigOfficial.preset;
-        }
-        goLangApiRequest({
-          method: "put",
-          url:
-            configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
-          params: {
-            account: uuidAccount
-          }
-        })
-          .then(res => {
-            if (res.status === "000") {
-              let guestCid = res.data.cid;
-              let guestUserid = res.data.userid;
-              setCookie("guestCid", guestCid);
-              setCookie("guestUserid", guestUserid);
-            } else {
-              //訪客登入
-              goLangApiRequest({
-                method: "post",
-                url:
-                  configInfo.YABO_GOLANG_API_DOMAIN +
-                  "/cxbb/Account/guestlogin",
-                params: {
-                  account: uuidAccount
-                }
-              })
-                .then(res => {
-                  if (res.status === "000") {
-                    let guestCid = res.data.cid;
-                    let guestUserid = res.data.userid;
-
-                    setCookie("guestCid", guestCid);
-                    setCookie("guestUserid", guestUserid);
-                  } else {
-                  }
-                })
-                .catch(error => {});
-            }
-          })
-          .catch(error => {});
-
         return;
       }
       commit(types.ISLOGIN, true);

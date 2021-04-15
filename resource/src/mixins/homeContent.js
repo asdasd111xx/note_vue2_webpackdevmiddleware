@@ -494,15 +494,7 @@ export default {
           return;
 
         case "balanceTrans":
-          if (
-            this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
-            this.siteConfig.MOBILE_WEB_TPL === "sg1"
-          ) {
-            this.$router.push(`/mobile/mcenter/balanceTrans`);
-            return;
-          }
-
-          this.checkWithdrawData(path);
+          this.$router.push(`/mobile/mcenter/balanceTrans`);
           return;
 
         // axios({

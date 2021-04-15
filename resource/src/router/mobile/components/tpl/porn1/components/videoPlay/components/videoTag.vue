@@ -1,6 +1,6 @@
 <template>
   <div :class="[$style['video-tag-wrap'], { [$style['padding']]: padding }]">
-    <span v-if="isDialog">标签：</span>
+    <div style="min-width:48px;margin: 0 10px 0 0;" v-if="isDialog">标签：</div>
     <div
       v-for="(tTag, index) in tags"
       :key="`tag-${index}`"
@@ -34,6 +34,7 @@ export default {
   },
   computed: {
     tags() {
+      console.log(this.tag);
       return split(this.tag, ",");
     }
   }
@@ -44,33 +45,31 @@ export default {
 @import "~@/css/variable.scss";
 
 .video-tag-wrap {
+  align-items: center;
   color: $main_text_color2;
-  text-align: center;
   display: flex;
-
   overflow-x: auto;
+  width: 100%;
 
   &.padding {
     padding: 12px 14px 10px 14px;
   }
+
   > .tag {
-    min-width: 62px;
-    height: 18px;
+    min-width: 60px;
     background: #eeeeee;
     border-radius: 9px;
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 18px;
     font-weight: 400;
-    margin-right: 10px;
+    margin: 0 10px;
 
     &.custom {
       background: #474747;
     }
 
     &.custom-dialog {
-      min-width: 0;
-      padding: 0 5px;
       background: #eee;
       color: #333;
     }

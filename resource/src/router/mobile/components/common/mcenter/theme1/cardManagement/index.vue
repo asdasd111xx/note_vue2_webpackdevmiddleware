@@ -225,9 +225,11 @@ export default {
 
       // 歷史錢包
       if (!this.isCommon) {
-        return (
-          this.userLevelObj.bank_single || this.userLevelObj.virtual_bank_single
-        );
+        // return (
+        //   this.userLevelObj.bank_single ||
+        //   this.userLevelObj.virtual_bank_single
+        // );
+        return this.userLevelObj.virtual_bank_single;
       }
     },
     showDetailButton() {
@@ -252,15 +254,14 @@ export default {
       const { isCommon, userLevelObj, currentPage } = this;
       const { showDetail } = this.statusList;
 
-      const bankHistory =
-        ["bankCardInfo"].includes(currentPage) && !userLevelObj.bank_single;
+      // const bankHistory =
+      //   ["bankCardInfo"].includes(currentPage) && !userLevelObj.bank_single;
 
       const walletHistory =
         ["walletCardInfo"].includes(currentPage) &&
         !userLevelObj.virtual_bank_single;
 
-      const showButton =
-        isCommon && !showDetail && (bankHistory || walletHistory);
+      const showButton = isCommon && !showDetail && walletHistory;
 
       return showButton;
     }
@@ -282,7 +283,7 @@ export default {
         return;
       }
 
-      // 銀行卡/電子錢包，其中有一方關閉
+      // 銀行卡/電子錢包，其中有一方關閉(在常用錢包頁面)
       if (this.isCommon && this.isOneTab) {
         if (this.userLevelObj.bank) {
           this.setPageStatus(0, "bankCardInfo", false);
@@ -295,12 +296,12 @@ export default {
         }
       }
 
-      // 銀行卡/電子錢包，其中有一方開啟多組開關
+      // 銀行卡/電子錢包，其中有一方開啟多組開關(在歷史錢包頁面)
       if (!this.isCommon && this.isOneTab) {
-        if (!this.userLevelObj.bank_single) {
-          this.setPageStatus(0, "bankCardInfo", false);
-          return;
-        }
+        // if (!this.userLevelObj.bank_single) {
+        //   this.setPageStatus(0, "bankCardInfo", false);
+        //   return;
+        // }
 
         if (!this.userLevelObj.virtual_bank_single) {
           this.setPageStatus(1, "walletCardInfo", false);
@@ -309,7 +310,9 @@ export default {
       }
 
       // 預設頁面(預設為銀行卡頁面)
-      this.setPageStatus(0, "bankCardInfo", true);
+      // 常用：銀行卡 ＆ 歷史：電子錢包（因無歷史銀行卡）
+      if (this.isCommon) this.setPageStatus(0, "bankCardInfo", true);
+      if (!this.isCommon) this.setPageStatus(1, "walletCardInfo", false);
     });
   },
   methods: {

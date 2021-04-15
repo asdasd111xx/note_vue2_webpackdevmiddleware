@@ -639,38 +639,49 @@ export default {
         : this.curSelectedBank.value;
 
       // 取得銀行群組
-      return ajax({
+      return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_CHANNEL,
-        errorAlert: false,
         params: {
           payment_method_id: this.curPayInfo.payment_method_id,
           bank_id: this.isSelectBankPaymentMethod ? "" : nowBankId,
           username: this.username
-        },
-        fail: res => {
-          if (res && res.data && res.data.msg && res.data.code) {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-            });
-          }
         }
-      }).then(response => {
-        if (response && response.result === "ok") {
-          this.passRoad = response.ret.map((info, index) => ({
-            ...info,
-            mainTitle: this.$text("S_PASS_TEXT", {
-              replace: [{ target: "%s", value: index + 1 }]
-            })
-          }));
-          this.curPassRoad = { ...this.passRoad[0] };
-        }
+      })
+        .then(response => {
+          const { result, ret } = response.data;
 
-        this.isShow = false;
-        this.actionSetIsLoading(false);
-        this.PassRoadOrAi();
-      });
+          if (result === "ok") {
+            this.passRoad = ret.map((info, index) => ({
+              ...info,
+              mainTitle: this.$text("S_PASS_TEXT", {
+                replace: [{ target: "%s", value: index + 1 }]
+              })
+            }));
+            this.curPassRoad = { ...this.passRoad[0] };
+          }
+
+          this.isShow = false;
+          this.actionSetIsLoading(false);
+          this.PassRoadOrAi();
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+
+          this.isShow = false;
+          this.actionSetIsLoading(false);
+
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+
+          if (code === "TM0200111") {
+            this.$emit("update:headerSetting", this.initHeaderSetting);
+            this.resetStatus();
+            this.getPayGroup();
+          }
+        });
     },
     /**
      * 切換支付群組
@@ -1061,16 +1072,35 @@ export default {
           });
 
           // 提交申請單時，如存款金額低於交易費，後台需阻擋且重新撈取新的單筆限額
-          if (code === 1500720069) {
-            this.getPayPass().then(() => {
-              this.verification("money", this.moneyValue);
-              this.checkOrderData();
-              this.getSingleLimit(
-                this.depositInterval.minMoney,
-                this.depositInterval.maxMoney,
-                "placeholder"
-              );
-            });
+          // if (code === 1500720069) {
+          //   this.getPayPass().then(() => {
+          //     this.verification("money", this.moneyValue);
+          //     this.checkOrderData();
+          //     this.getSingleLimit(
+          //       this.depositInterval.minMoney,
+          //       this.depositInterval.maxMoney,
+          //       "placeholder"
+          //     );
+          //   });
+          // }
+
+          const errorsList = [
+            1500110061,
+            1500110091,
+            1500170088,
+            1500170098,
+            1500500097,
+            1500720088,
+            1500720069,
+            "TM020063",
+            1500170054,
+            1500500064
+          ];
+
+          if (errorsList.includes(code)) {
+            this.$emit("update:headerSetting", this.initHeaderSetting);
+            this.resetStatus();
+            this.getPayGroup();
           }
         });
     },
