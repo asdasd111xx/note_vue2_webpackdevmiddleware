@@ -358,13 +358,10 @@ export default {
 
       switch (redirect) {
         case "deposit":
-          this.$router.push(`/mobile/mcenter/deposit`);
-          return;
         case "wallet":
-          this.$router.push(`/mobile/mcenter/wallet`);
-          return;
         case "withdraw":
         case "balanceTrans":
+          this.$router.back();
           this.$router.push(`/mobile/mcenter/${redirect}`);
           return;
         case "liveStream":

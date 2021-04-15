@@ -205,38 +205,21 @@
               </template>
 
               <template v-else-if="field.key === 'withdraw_password'">
-                <!-- 有問題待修正 -->
-                <!-- <div :class="$style['withdraw-password-wrap']">
-                <input
-                  v-for="(item, index) in allValue['withdraw_password'].value"
-                  v-model="allValue['withdraw_password'].value[index]"
-                  :key="`widthdrawPwd-${index}`"
-                  @input="verification('withdraw_password', index)"
-                  @blur="verification('withdraw_password', index)"
-                  :data-key="`withdraw_password${index}`"
-                  :class="$style['withdraw-pwd-input']"
-                  :maxlength="1"
-                  :minlength="1"
-                  :placeholder="formData['new_withdraw_password'].placeholder"
-                  type="tel"
-                />
-              </div> -->
-
-                <!-- <div>
-                <v-select
-                  v-for="(num, index) in 4"
-                  :key="index"
-                  v-model="selectData[field.key][index].selected"
-                  :class="
-                    num === 4
-                      ? $style['join-input-withdraw-last']
-                      : $style['join-input-withdraw']
-                  "
-                  :options="selectData[field.key][index].options"
-                  :searchable="false"
-                  @input="changWithdrawPassword(field.key, num)"
-                />
-              </div> -->
+                <div :class="$style['withdraw-password-wrap']">
+                  <input
+                    v-for="(item, index) in allValue['withdraw_password'].value"
+                    v-model="allValue['withdraw_password'].value[index]"
+                    :key="`widthdrawPwd-${index}`"
+                    @input="verification('withdraw_password', index)"
+                    @blur="verification('withdraw_password', index)"
+                    :data-key="`withdraw_password_${index}`"
+                    :class="$style['withdraw-pwd-input']"
+                    :maxlength="1"
+                    :minlength="1"
+                    :placeholder="allValue['withdraw_password'].placeholder"
+                    type="tel"
+                  />
+                </div>
               </template>
 
               <input
@@ -367,9 +350,10 @@ export default {
         facebook: "",
         skype: "",
         zalo: "",
-        // withdraw_password: {
-        //   value: ["", "", "", ""]
-        // },
+        withdraw_password: {
+          value: ["", "", "", ""],
+          placeholder: "--"
+        },
         captcha_text: ""
       },
       allTip: {
@@ -721,7 +705,7 @@ export default {
       // 驗證輸入值
       this.verification(key);
     },
-    verification(key) {
+    verification(key, index) {
       const data = this.joinMemInfo[key];
 
       // if (data.isRequired && this.allValue[key] === "") {
@@ -742,7 +726,6 @@ export default {
         case "username":
         case "phone":
         case "qq_num":
-        case "withdraw_password":
         case "confirm_password":
         case "name":
           this.actionVerificationFormData({
@@ -751,6 +734,9 @@ export default {
           }).then(val => {
             this.allValue[key] = val;
           });
+          break;
+
+        case "withdraw_password":
           break;
       }
 
@@ -787,31 +773,40 @@ export default {
       }
 
       if (key == "withdraw_password") {
-        let target = this.allTip.withdraw_password.value[key];
-        let errorMsg = "";
-        let correct_value = target.value[index]
-          .replace(" ", "")
-          .trim()
-          .replace(/[^\d+]$/g, "");
-
-        if (target.value[index] === correct_value && correct_value !== "") {
-          if (index < 3) {
-            document
-              .querySelector(`input[data-key="${key}_${index + 1}"]`)
-              .focus();
-          }
-        }
-
-        target.value[index] = correct_value;
-
-        if (target.value[index].length > 1) {
-          target.value[index] = target.value[index].substring(0, 1);
-        }
-
-        for (let i = 0; i < 4; i++) {
-          if (!this.allTip.withdraw_password.value[i]) {
-            this.checkFormData = false;
+        if (index === "all") {
+          if (this.allValue.withdraw_password.value.join("").length < 4) {
+            this.allTip["withdraw_password"] = "请输入提现密码";
             return;
+          }
+        } else {
+          let target = this.allValue.withdraw_password;
+          let errorMsg = "";
+          let correct_value = target.value[index]
+            .replace(" ", "")
+            .trim()
+            .replace(/[^\d+]$/g, "");
+
+          if (target.value[index] === correct_value && correct_value !== "") {
+            if (index < 3) {
+              document
+                .querySelector(
+                  `input[data-key="withdraw_password_${index + 1}"]`
+                )
+                .focus();
+            }
+          }
+
+          target.value[index] = correct_value;
+
+          if (target.value[index].length > 1) {
+            target.value[index] = target.value[index].substring(0, 1);
+          }
+
+          for (let i = 0; i < 4; i++) {
+            if (!this.allValue.withdraw_password.value[i]) {
+              this.checkFormData = false;
+              return;
+            }
           }
         }
       }
@@ -878,7 +873,11 @@ export default {
     joinSubmit(captchaInfo) {
       this.isLoading = true;
       Object.keys(this.allValue).forEach(item => {
-        this.verification(item);
+        if (item === "withdraw_password") {
+          this.verification("withdraw_password", "all");
+        } else {
+          this.verification(item);
+        }
       });
 
       // 滑動
@@ -920,6 +919,7 @@ export default {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
         confirmPassword: this.allValue.confirm_password,
+        withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || "",
         speedy: true
       };

@@ -132,7 +132,7 @@ export default {
 
     const self = this;
     const listner = function() {
-      const paths = ["card", "casino", "home"];
+      const paths = ["card", "casino", "home", "hotlobby"];
       localStorage.removeItem("is-open-game");
       if (
         !document.hidden &&
