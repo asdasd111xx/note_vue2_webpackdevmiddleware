@@ -631,7 +631,8 @@ export default {
           const { data, status, errorCode, msg } = response;
 
           if (errorCode !== "00" || status !== "000") {
-            this.actionSetGlobalMessage({ msg });
+            // this.actionSetGlobalMessage({ msg });
+            this.errorMsg = msg;
             return;
           }
 
@@ -641,9 +642,10 @@ export default {
           });
         })
         .catch(error => {
-          const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
           this.isReceive = false;
+          const { msg } = error.response.data;
+          // this.actionSetGlobalMessage({ msg });
+          this.errorMsg = msg;
         });
     },
     submitByToken() {
@@ -670,7 +672,9 @@ export default {
           this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
-            this.actionSetGlobalMessage({ msg });
+            // this.actionSetGlobalMessage({ msg });
+            this.errorMsg = msg;
+
             return;
           }
 
@@ -680,9 +684,10 @@ export default {
           });
         })
         .catch(error => {
-          const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
           this.isReceive = false;
+          const { msg } = error.response.data;
+          // this.actionSetGlobalMessage({ msg });
+          this.errorMsg = msg;
           return;
         });
     },
