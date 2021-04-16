@@ -728,19 +728,19 @@ export default {
               )["offer_limit"]
             }
           : {
-              bank_id: defaultCard.bank_id,
-              id: defaultCard.id,
+              bank_id: defaultCard?.bank_id,
+              id: defaultCard?.id,
               name:
-                defaultCard.withdrawType === "account_id"
+                defaultCard?.withdrawType === "account_id"
                   ? ""
-                  : defaultCard.alias.substring(
+                  : defaultCard?.alias.substring(
                       0,
-                      defaultCard.alias.indexOf("-")
+                      defaultCard?.alias.indexOf("-")
                     ),
-              withdrawType: defaultCard.withdrawType,
-              swift_code: defaultCard.swift_code,
-              offer_percent: defaultCard.offer_percent,
-              offer_limit: defaultCard.offer_limit
+              withdrawType: defaultCard?.withdrawType,
+              swift_code: defaultCard?.swift_code,
+              offer_percent: defaultCard?.offer_percent,
+              offer_limit: defaultCard?.offer_limit
             };
 
         this.updateAmount(this.selectedCard.swift_code);
