@@ -268,7 +268,7 @@ export default {
               setTimeout(() => {
                 this.isLoading = false;
               }, 1500);
-              const url = res.data.uri + "&cors=embed";
+              const url = res.data.uri;
               newWindow.location = url;
               console.log(url);
             })
