@@ -202,9 +202,9 @@ export default {
             this.lockStatus = false;
             this.errorMsg = msg;
 
-            if (this.addBankCardStep === "one") {
-              this.msg = msg;
-            }
+            // if (this.addBankCardStep === "one") {
+            //   this.msg = msg;
+            // }
             return;
           }
 
@@ -222,9 +222,9 @@ export default {
           this.lockStatus = false;
           this.errorMsg = msg;
 
-          if (this.addBankCardStep === "one") {
-            this.msg = msg;
-          }
+          // if (this.addBankCardStep === "one") {
+          //   this.msg = msg;
+          // }
         });
 
       // ajax({

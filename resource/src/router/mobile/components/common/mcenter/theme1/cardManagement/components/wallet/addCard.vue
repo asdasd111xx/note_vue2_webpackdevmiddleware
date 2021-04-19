@@ -1,10 +1,10 @@
 <template>
   <div :class="$style['add-bankcard']">
-    <div :class="$style['card-info']">
-      <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
-        {{ errorMsg }}
-      </p>
+    <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+      {{ errorMsg }}
+    </p>
 
+    <div :class="$style['card-info']">
       <!-- Select Wallet Type -->
       <!-- Yabo -->
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
