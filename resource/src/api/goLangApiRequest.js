@@ -27,6 +27,7 @@ export default ({
   let _headers = {
     ...headers,
     cid: getCookie("cid") || "",
+    kind: "pwa",
     "x-domain": store.state.webDomain.domain
   };
 

@@ -242,5 +242,9 @@ export default {
       import(
         /* webpackChunkName: 'tcenterLobbySg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterLobby"
       )
+    // historyCardSg1: () =>
+    //   import(
+    //     /* webpackChunkName: 'historyCardSg1' */ "../../tpl/sg1/components/mcenter/components/historyCard"
+    //   )
   }
 };

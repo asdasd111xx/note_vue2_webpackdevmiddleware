@@ -113,6 +113,8 @@ export default {
       params: { siteId: this.siteId }
     }).then(response => {
       if (response.status !== 200) {
+        this.hotList = [];
+        this.recommendList = [];
         return;
       }
 

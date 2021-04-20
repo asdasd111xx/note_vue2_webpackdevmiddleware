@@ -38,6 +38,7 @@ export default {
       urls: [],
       list: [
         {
+          apiParams: "huobi",
           alias: "Huobi Global",
           name: "火币",
           iconSrc: this.$getCdnPath(
@@ -63,15 +64,12 @@ export default {
     };
   },
   created() {
-    this.getUrl({ urlName: "huobi" }).then(url => {
-      if (!url) return;
-      this.urls[0] = url;
+    this.list.forEach((item, index) => {
+      this.getUrl({ urlName: item.apiParams }).then(url => {
+        if (!url) return;
+        this.urls[index] = url;
+      });
     });
-
-    // this.getUrl({ urlName: "58coin" }).then(url => {
-    //   if (!url) return;
-    //   this.urls[1] = url;
-    // });
   },
   computed: {
     ...mapGetters({
@@ -82,8 +80,10 @@ export default {
     getUrl({ urlName }) {
       return goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&needToken=false`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
         params: {
+          lang: "zh-cn",
+          needToken: false,
           urlName
         }
       }).then(res => {

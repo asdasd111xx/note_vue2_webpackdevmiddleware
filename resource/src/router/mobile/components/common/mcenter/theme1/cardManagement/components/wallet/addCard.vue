@@ -1,10 +1,10 @@
 <template>
   <div :class="$style['add-bankcard']">
-    <div :class="$style['card-info']">
-      <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
-        {{ errorMsg }}
-      </p>
+    <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+      {{ errorMsg }}
+    </p>
 
+    <div :class="$style['card-info']">
       <!-- Select Wallet Type -->
       <!-- Yabo -->
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -631,7 +631,8 @@ export default {
           const { data, status, errorCode, msg } = response;
 
           if (errorCode !== "00" || status !== "000") {
-            this.actionSetGlobalMessage({ msg });
+            // this.actionSetGlobalMessage({ msg });
+            this.errorMsg = msg;
             return;
           }
 
@@ -641,9 +642,10 @@ export default {
           });
         })
         .catch(error => {
-          const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
           this.isReceive = false;
+          const { msg } = error.response.data;
+          // this.actionSetGlobalMessage({ msg });
+          this.errorMsg = msg;
         });
     },
     submitByToken() {
@@ -670,7 +672,9 @@ export default {
           this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
-            this.actionSetGlobalMessage({ msg });
+            // this.actionSetGlobalMessage({ msg });
+            this.errorMsg = msg;
+
             return;
           }
 
@@ -680,9 +684,10 @@ export default {
           });
         })
         .catch(error => {
-          const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
           this.isReceive = false;
+          const { msg } = error.response.data;
+          // this.actionSetGlobalMessage({ msg });
+          this.errorMsg = msg;
           return;
         });
     },
@@ -753,40 +758,35 @@ export default {
         return;
       }
 
-      let split = redirect.split("-");
+      let split = redirect?.split("-");
       if (split.length === 2) {
-        this.$router.push(`/mobile/${split[0]}/${split[1]}`);
+        this.$router.replace(`/mobile/${split[0]}/${split[1]}`);
         return;
       }
 
       // 有分類的遊戲大廳 card casino
       if (split.length === 3) {
-        this.$router.push(`/mobile/${split[0]}/${split[1]}?label=${split[2]}`);
+        this.$router.replace(
+          `/mobile/${split[0]}/${split[1]}?label=${split[2]}`
+        );
         return;
       }
 
       switch (redirect) {
-        // case "deposit":
-        //   this.$router.push(`/mobile/mcenter/deposit`);
-        //   return;
-        // case "wallet":
-        //   this.$router.push(`/mobile/mcenter/wallet`);
-        //   return;
         case "deposit":
         case "wallet":
         case "withdraw":
         case "balanceTrans":
-          this.$router.push(`/mobile/mcenter/${redirect}`);
+          this.$router.replace(`/mobile/mcenter/${redirect}`);
           return;
 
         case "liveStream":
         case "home":
-          this.$router.push(`/mobile/${redirect}`);
+          this.$router.replace(`/mobile/${redirect}`);
           return;
 
         default:
-          this.setPageStatus(1, "walletCardInfo", true);
-          return;
+          break;
       }
     },
     verifyNumber(e) {

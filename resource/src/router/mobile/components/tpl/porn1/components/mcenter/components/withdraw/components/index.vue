@@ -694,88 +694,12 @@ export default {
   },
   watch: {
     allWithdrawAccount(value) {
-      // 預設選擇第一張卡(allow = true) 或是從電話驗證成功後直接送出
-      if (
-        !this.selectedCard.id &&
-        this.allWithdrawAccount &&
-        this.allWithdrawAccount.length > 0
-      ) {
-        const defaultCard = this.allWithdrawAccount.find(item => {
-          return item.allow;
-        });
-
-        // 卡片資料
-        this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
-          ? {
-              bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "bank_id"
-              ],
-              id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
-              name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
-                "name"
-              ],
-              withdrawType: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["withdrawType"],
-              swift_code: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["swift_code"],
-              offer_percent: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["offer_percent"],
-              offer_limit: JSON.parse(
-                localStorage.getItem("tmp_w_selectedCard")
-              )["offer_limit"]
-            }
-          : {
-              bank_id: defaultCard.bank_id,
-              id: defaultCard.id,
-              name:
-                defaultCard.withdrawType === "account_id"
-                  ? ""
-                  : defaultCard.alias.substring(
-                      0,
-                      defaultCard.alias.indexOf("-")
-                    ),
-              withdrawType: defaultCard.withdrawType,
-              swift_code: defaultCard.swift_code,
-              offer_percent: defaultCard.offer_percent,
-              offer_limit: defaultCard.offer_limit
-            };
-
-        this.updateAmount(this.selectedCard.swift_code);
-
-        // 金額部份
-        this.withdrawValue =
-          localStorage.getItem("tmp_w_amount") || this.withdrawValue;
-        this.actualMoney =
-          JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
-          this.actualMoney;
-
-        // 提現密碼
-        this.withdrawPwd =
-          localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
-
-        // CGPay Currency
-        this.withdrawCurrency =
-          JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
-          this.withdrawCurrency;
-
-        setTimeout(() => {
-          this.removeCurrentValue();
-
-          if (
-            localStorage.getItem("tmp_w_1") &&
-            localStorage.getItem("tmp_w_rule") !== "1"
-          ) {
-            this.handleSubmit();
-          }
-          localStorage.removeItem("tmp_w_rule");
-        });
-
-        // this.actionSetIsLoading(false);
-        this.isLoading = false;
+      if (!this.selectedCard.id) {
+        this.getDefaultCardData();
       }
+
+      // this.actionSetIsLoading(false);
+      this.isLoading = false;
     },
     "selectedCard.bank_id"(value) {
       // When the option = CGPay
@@ -1032,6 +956,7 @@ export default {
 
         // 增加判空，否則報 map 錯誤
         if (
+          this.withdrawData &&
           this.withdrawData.user_virtual_bank &&
           this.withdrawData.user_virtual_bank.ret &&
           this.withdrawData.user_virtual_bank.ret.length > 0
@@ -1726,22 +1651,6 @@ export default {
         " **** **** " +
         value.substr(-4);
 
-      // switch (withdrawType) {
-      //   // 银行卡：12个* + 最后4码
-      //   case "account_id":
-      //     result =
-      //       value.substring(0, value.indexOf("-") + 1) +
-      //       "************" +
-      //       value.substr(-4);
-      //     break;
-      //   // 数字货币：前4码 + 中间8个*  + 最后4码
-      //   default:
-      //     result =
-      //       value.substring(0, value.indexOf("-") + 5) +
-      //       "********" +
-      //       value.substr(-4);
-      //     break;
-      // }
       return result;
     },
     getBounsAccount() {
@@ -1854,6 +1763,82 @@ export default {
           this.$router.push("/mobile/mcenter");
         }
       };
+    },
+    getDefaultCardData() {
+      // 預設選擇第一張卡(allow = true) 或是從電話驗證成功後直接送出
+      const defaultCard = this.allWithdrawAccount?.find(item => {
+        return item.allow;
+      });
+
+      // 卡片資料
+      this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
+        ? {
+            bank_id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "bank_id"
+            ],
+            id: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))["id"],
+            name: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "name"
+            ],
+            withdrawType: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["withdrawType"],
+            swift_code: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "swift_code"
+            ],
+            offer_percent: JSON.parse(
+              localStorage.getItem("tmp_w_selectedCard")
+            )["offer_percent"],
+            offer_limit: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "offer_limit"
+            ]
+          }
+        : {
+            bank_id: defaultCard?.bank_id,
+            id: defaultCard?.id,
+            name:
+              defaultCard?.withdrawType === "account_id"
+                ? ""
+                : defaultCard?.alias.substring(
+                    0,
+                    defaultCard?.alias.indexOf("-")
+                  ),
+            withdrawType: defaultCard?.withdrawType,
+            swift_code: defaultCard?.swift_code,
+            offer_percent: defaultCard?.offer_percent,
+            offer_limit: defaultCard?.offer_limit
+          };
+
+      // 更新 Withdraw Info
+      this.updateAmount(this.selectedCard.swift_code);
+
+      // 金額部份
+      this.withdrawValue =
+        localStorage.getItem("tmp_w_amount") || this.withdrawValue;
+      this.actualMoney =
+        JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
+        this.actualMoney;
+
+      // 提現密碼
+      this.withdrawPwd =
+        localStorage.getItem("tmp_w_withdrawPwd") || this.withdrawPwd;
+
+      // CGPay Currency
+      this.withdrawCurrency =
+        JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
+        this.withdrawCurrency;
+
+      setTimeout(() => {
+        this.removeCurrentValue();
+
+        if (
+          localStorage.getItem("tmp_w_1") &&
+          localStorage.getItem("tmp_w_rule") !== "1"
+        ) {
+          this.handleSubmit();
+        }
+        localStorage.removeItem("tmp_w_rule");
+      });
     }
   },
   destroyed() {

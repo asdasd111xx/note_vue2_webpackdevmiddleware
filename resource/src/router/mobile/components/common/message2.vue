@@ -55,6 +55,9 @@ export default {
           case "login":
             this.msg = "请先登入";
             break;
+          case "withdrawcheck":
+            this.msg = "请先设定提现资料";
+            break;
 
           default:
             this.msg = type;
@@ -113,6 +116,17 @@ export default {
           return;
         }
 
+        switch (msgObj.type) {
+          case "withdrawcheck":
+            this.$router.push(
+              `/mobile/withdrawAccount?redirect=${redirect ? redirect : "home"}`
+            );
+            return;
+
+          default:
+            break;
+        }
+
         switch (code) {
           // 充值
           case "C50101": // 轉帳需首充 暫時
@@ -164,10 +178,13 @@ export default {
             }
             break;
 
-          // 重新登入
-          case "M00001":
           // 停權
           case "C600001":
+            this.$router.back();
+            break;
+
+          // 重新登入
+          case "M00001":
           case "C50029":
           case "C50062":
           case "TM020058":

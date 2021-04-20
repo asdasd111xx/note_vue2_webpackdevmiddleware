@@ -123,19 +123,22 @@ export default {
             window.sportEvent = type => {
               if (type === "GO_IM_SPORT") {
                 if (!this.loginStatus) {
-                  this.actionSetGlobalMessage({
-                    code: "M00001",
-                    // origin: "home"
-                    cb: () => {
-                      if (this.themeTPL === "ey1") {
-                        this.$router.push("/mobile/login");
-                      } else {
-                        this.$router.push("/mobile/joinmember");
-                      }
-                    }
-                  });
+                  if (this.themeTPL === "ey1") {
+                    this.$router.push("/mobile/login");
+                  } else {
+                    this.$router.push("/mobile/joinmember");
+                  }
                   return;
                 } else {
+                  // 0421 進入遊戲前檢查withdrawcheck
+                  if (!this.withdrawCheck) {
+                    this.actionSetGlobalMessage({
+                      type: "withdrawcheck",
+                      origin: "home"
+                    });
+                    return;
+                  }
+
                   const openGameSuccessFunc = res => {
                     this.isShowLoading = false;
                   };
@@ -339,7 +342,8 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      webInfo: "getWebInfo"
+      webInfo: "getWebInfo",
+      withdrawCheck: "getWithdrawCheck"
     }),
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();

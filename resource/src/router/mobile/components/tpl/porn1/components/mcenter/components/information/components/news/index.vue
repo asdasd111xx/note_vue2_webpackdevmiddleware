@@ -23,9 +23,9 @@
         </div>
         <div :class="$style.wrap">
           <div :class="$style.date">
-            {{ currentNews.time | shortDateFormat }}
+            {{ currentNews.title | shortDateFormat }}
           </div>
-          <div :class="$style.time">{{ currentNews.time | dateFormat }}</div>
+          <div :class="$style.time">{{ currentNews.title | dateFormat }}</div>
         </div>
       </div>
       <div
@@ -50,7 +50,9 @@
           />
         </div>
         <div :class="$style.wrap">
-          <div :class="$style.date">{{ news.time | shortDateFormat }}</div>
+          <div :class="$style.date">
+            {{ news.title | shortDateFormat }}
+          </div>
           <div :class="$style.content" v-html="news.content" />
         </div>
       </div>
@@ -63,6 +65,7 @@ import Vue from "vue";
 import { mapGetters } from "vuex";
 import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/message/message";
+import store from "@/store";
 export default {
   mixins: [mixin],
   computed: {
@@ -81,7 +84,9 @@ export default {
       return this.newsData.find(news => news.id === this.$route.query.pid);
     }
   },
-  methods: {}
+  mounted() {
+    store.dispatch("actionSetNews");
+  }
 };
 </script>
 

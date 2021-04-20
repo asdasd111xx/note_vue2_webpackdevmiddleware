@@ -299,6 +299,15 @@ export default target => {
       return;
     }
 
+    // 0421 進入遊戲前檢查withdrawcheck
+    if (!store.state.isWithdrawChecked) {
+      store.dispatch("actionSetGlobalMessage", {
+        type: "withdrawcheck",
+        origin: "home"
+      });
+      return;
+    }
+
     const openGameSuccessFunc = res => {};
 
     const openGameFailFunc = res => {

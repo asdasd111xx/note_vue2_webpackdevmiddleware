@@ -49,7 +49,8 @@ export default {
       isBackEnd: "getIsBackEnd",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      BBOSDomain: "getBBOSDomain"
+      BBOSDomain: "getBBOSDomain",
+      withdrawCheck: "getWithdrawCheck"
     }),
     $style() {
       const style =
@@ -101,6 +102,15 @@ export default {
       }
 
       this.isShowLoading = true;
+      // 0421 進入遊戲前檢查withdrawcheck
+      if (!this.withdrawCheck) {
+        this.actionSetGlobalMessage({
+          type: "withdrawcheck",
+          origin: "home"
+        });
+        return;
+      }
+
       const openGameSuccessFunc = res => {
         this.isShowLoading = false;
         window.GAME_RELOAD = true;

@@ -3,11 +3,12 @@
 </template>
 
 <script>
-import bankCard from "@/router/mobile/components/tpl/porn1/components/mcenter/components/bankCard/index";
-
 export default {
   components: {
-    bankCard
+    bankCard: () =>
+      import(
+        /* webpackChunkName: 'bankCard' */ "@/router/mobile/components/common/mcenter/theme1/cardManagement"
+      )
   }
 };
 </script>

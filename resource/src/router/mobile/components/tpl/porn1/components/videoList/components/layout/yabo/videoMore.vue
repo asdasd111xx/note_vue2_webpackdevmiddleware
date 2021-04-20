@@ -198,7 +198,12 @@ export default {
           return;
         }
 
-        this.videoList = [...response.result.data];
+        if (response.result.data && response.result.data.length > 0) {
+          this.videoList = [...response.result.data];
+        } else {
+          this.videoList = [];
+        }
+
         this.current += 1;
 
         this.total = response.result.last_page;

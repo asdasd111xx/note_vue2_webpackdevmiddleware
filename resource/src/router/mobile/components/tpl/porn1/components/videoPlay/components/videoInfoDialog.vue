@@ -69,7 +69,7 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .video-dialog-wrap {
-  position: fixed;
+  z-index: 2;
   background: #fefefe;
   width: 100%;
   min-height: 300px;

@@ -126,8 +126,8 @@ export default {
       this.getSearchList(1).then(response => {
         this.isLoading = false;
         this.isReceive = false;
-
         if (response.status !== 200 || !response.result.data) {
+          this.searchList = [];
           return;
         }
 

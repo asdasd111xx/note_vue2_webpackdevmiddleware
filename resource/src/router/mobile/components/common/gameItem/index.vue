@@ -133,7 +133,8 @@ export default {
       loginStatus: "getLoginStatus",
       curLang: "getCurLang",
       siteConfig: "getSiteConfig",
-      BBOSDomain: "getBBOSDomain"
+      BBOSDomain: "getBBOSDomain",
+      withdrawCheck: "getWithdrawCheck"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -408,6 +409,15 @@ export default {
         return;
       }
       this.isShowLoading = true;
+
+      // 0421 進入遊戲前檢查withdrawcheck
+      if (!this.withdrawCheck) {
+        this.actionSetGlobalMessage({
+          type: "withdrawcheck",
+          origin: "home"
+        });
+        return;
+      }
 
       const openGameSuccessFunc = res => {
         this.isShowLoading = false;

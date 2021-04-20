@@ -161,11 +161,11 @@ export default {
     window.sportEvent = type => {
       if (type === "GO_IM_SPORT") {
         if (!this.loginStatus) {
-          this.actionSetGlobalMessage({
-            msg: "login",
-            code: "M00001",
-            origin: "liveStream"
-          });
+          if (this.themeTPL === "ey1") {
+            this.$router.push("/mobile/login");
+          } else {
+            this.$router.push("/mobile/joinmember");
+          }
           return;
         } else {
           const openGameSuccessFunc = res => {

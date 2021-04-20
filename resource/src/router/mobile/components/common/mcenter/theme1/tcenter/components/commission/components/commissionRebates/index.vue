@@ -40,7 +40,7 @@
             </span>
             <div :class="$style['content-right']">
               <template v-if="caculateList.sub_valid_bet">
-                {{ caculateList.sub_valid_bet | roundTwoPoints | commaFormat }}
+                {{ commaFormat(caculateList.sub_valid_bet) }}
               </template>
 
               <template v-else>
@@ -59,7 +59,11 @@
                 { [$style['is-negative']]: caculateList.sub_profit < 0 }
               ]"
             >
-              {{ caculateList.sub_profit ? caculateList.sub_profit : "--" }}
+              {{
+                caculateList.sub_profit
+                  ? commaFormat(caculateList.sub_profit)
+                  : "--"
+              }}
             </div>
           </div>
 
@@ -68,7 +72,9 @@
               返利
             </span>
             <div :class="$style['content-right']">
-              {{ caculateList.amount ? caculateList.amount : "--" }}
+              {{
+                caculateList.amount ? commaFormat(caculateList.amount) : "--"
+              }}
             </div>
           </div>
 
@@ -216,12 +222,6 @@ export default {
     }
   },
   filters: {
-    roundTwoPoints(value) {
-      return Number(value).toFixed(2);
-    },
-    commaFormat(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
     dateFormat(date) {
       return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     }
@@ -233,6 +233,9 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetSystemTime"]),
+    commaFormat(value) {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({
         success: response => {

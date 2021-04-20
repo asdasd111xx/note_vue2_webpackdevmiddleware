@@ -580,5 +580,8 @@ export default {
   // 是否需顯示紅包
   [types.SET_REDENVELOPE](state, data) {
     state.showRedEnvelope = data;
+  },
+  [types.SET_USER_WITHDRAWCHECK](state, data) {
+    state.isWithdrawChecked = data;
   }
 };

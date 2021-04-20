@@ -1,18 +1,24 @@
 <template>
   <div :class="$style['my-card']">
     <!-- 卡片管理列表 -->
-    <template v-if="!showDetail">
+    <template v-if="!statusList.showDetail">
       <div v-if="isRevice && wallet_card.length > 0">
         <div
           :class="[$style['card-count'], 'clearfix']"
           :style="isShowTab ? {} : { top: '43px' }"
         >
           <span :class="$style['title']">
-            {{
-              ["porn1", "sg1"].includes(themeTPL)
-                ? $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
-                : $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
-            }}
+            <template v-if="!isCommon">
+              {{ $text("S_HISTORY_WALLET", "历史钱包") }}
+            </template>
+
+            <template v-else>
+              {{
+                ["porn1", "sg1"].includes(themeTPL)
+                  ? $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
+                  : $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
+              }}
+            </template>
           </span>
 
           <span :class="$style['count']">
@@ -22,7 +28,6 @@
           </span>
         </div>
 
-        <!-- 需調整版型與銀行一致 -->
         <div
           :class="$style['card-list']"
           :style="isShowTab ? {} : { 'margin-top': '41px' }"
@@ -43,7 +48,12 @@
       <!-- 無資料時 -->
       <div
         v-if="!isRevice || wallet_card.length === 0"
-        :class="$style['no-data']"
+        :class="[
+          $style['no-data'],
+          {
+            [$style['history']]: !isCommon
+          }
+        ]"
       >
         <div :class="$style['no-bankcard']">
           <img
@@ -53,7 +63,7 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template v-if="isShowAddCardButton">
+      <template v-if="isCommon && isShowAddCardButton">
         <div :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"
@@ -94,7 +104,7 @@
     </template>
 
     <!-- 卡片詳細資料 -->
-    <template v-if="showDetail && wallet_cardDetail">
+    <template v-if="statusList.showDetail && wallet_cardDetail">
       <div v-if="wallet_cardDetail.auditing" :class="$style['audit-block']">
         <div>删除审核中</div>
         <span> 审核通过后，系统会自动刪除钱包 </span>
@@ -107,14 +117,10 @@
         :type="'wallet'"
       />
 
-      <div v-if="editStatus" :class="$style['edit-bankcard']">
+      <div v-if="statusList.editDetail" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
-          <template
-            v-if="
-              ['ey1'].includes(themeTPL) && !userLevelObj.virtual_bank_single
-            "
-          >
+          <template v-if="['ey1'].includes(themeTPL)">
             <div
               v-if="userLevelObj.virtual_bank_single && hasSameTypeCard"
               :class="$style['edit-option-item']"
@@ -123,8 +129,12 @@
               停用
             </div>
 
-            <div v-else :class="$style['edit-option-item']" @click="moveCard">
-              移至历史帐号
+            <div
+              v-if="!userLevelObj.virtual_bank_single"
+              :class="$style['edit-option-item']"
+              @click="moveCard"
+            >
+              {{ isCommon ? "移至历史帐号" : "移至我的电子钱包" }}
             </div>
           </template>
 
@@ -143,7 +153,9 @@
 
           <div
             :class="[$style['edit-option-item'], $style['cancel']]"
-            @click="$emit('update:editStatus', false)"
+            @click="
+              $emit('update:statusList', { key: 'editDetail', value: false })
+            "
           >
             取消
           </div>
@@ -200,16 +212,8 @@ export default {
       type: Function,
       default: () => {}
     },
-    showDetail: {
-      type: Boolean,
-      required: true
-    },
-    editStatus: {
-      type: Boolean,
-      required: true
-    },
-    isAudit: {
-      type: Boolean,
+    statusList: {
+      type: Object,
       required: true
     },
     userLevelObj: {
@@ -220,48 +224,6 @@ export default {
   created() {
     this.getNowOpenWallet();
     this.getUserWalletList();
-  },
-  computed: {
-    isBindNowOpenAllWallets() {
-      // 根據目前已綁定的 ID 與目前有開放的所有銀行 ID 做比對
-      let nowBindWalletCount = 0;
-      let idArr = [
-        ...new Set(
-          this.wallet_card.map(item => {
-            return item.virtual_bank_id;
-          })
-        )
-      ];
-
-      if (idArr) {
-        this.nowOpenWallet.forEach(item => {
-          if (idArr.includes(item.id)) {
-            nowBindWalletCount += 1;
-          }
-        });
-
-        return nowBindWalletCount >= this.nowOpenWallet.length ? true : false;
-      }
-
-      return false;
-    },
-    isShowAddCardButton() {
-      switch (this.themeTPL) {
-        case "porn1":
-        case "sg1":
-          return !this.isBindNowOpenAllWallets;
-          break;
-
-        case "ey1":
-          return (
-            (!this.userLevelObj.virtual_bank_single &&
-              this.wallet_card.length < 15) ||
-            (this.userLevelObj.virtual_bank_single &&
-              this.wallet_card.length < this.nowOpenWallet.length)
-          );
-          break;
-      }
-    }
   }
 };
 </script>

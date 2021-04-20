@@ -1,7 +1,12 @@
 @import "~@/css/variable.scss";
 
+.add-bankcard {
+  background: #fff;
+}
+
 .username-wrap {
-  padding: 50px 0 0 14px;
+  height: 75px;
+  padding: 10px 14px 0 14px;
   background: #fff;
 }
 
@@ -254,6 +259,7 @@
   margin-bottom: 0;
   font-size: 14px;
   color: #db6372;
+  padding: 0 14px;
 
   &.is-hide {
     opacity: 0;

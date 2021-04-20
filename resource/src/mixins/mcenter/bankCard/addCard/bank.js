@@ -32,7 +32,8 @@ export default {
       msg: "",
       smsTimer: null,
       thirdyCaptchaObj: null,
-      isShowCaptcha: false
+      isShowCaptcha: false,
+      isClickedCaptcha: false
     };
   },
   computed: {
@@ -102,6 +103,10 @@ export default {
         // this.errorMsg = "手机格式不符合要求";
         this.isVerifyPhone = false;
       }
+    },
+    // 預防從提現資料進到綁定銀行卡，會有無法立即更新 name 的問題
+    "memInfo.user.name"() {
+      delete this.formData["accountName"];
     }
   },
   created() {
@@ -202,9 +207,9 @@ export default {
             this.lockStatus = false;
             this.errorMsg = msg;
 
-            if (this.addBankCardStep === "one") {
-              this.msg = msg;
-            }
+            // if (this.addBankCardStep === "one") {
+            //   this.msg = msg;
+            // }
             return;
           }
 
@@ -222,9 +227,9 @@ export default {
           this.lockStatus = false;
           this.errorMsg = msg;
 
-          if (this.addBankCardStep === "one") {
-            this.msg = msg;
-          }
+          // if (this.addBankCardStep === "one") {
+          //   this.msg = msg;
+          // }
         });
 
       // ajax({
@@ -353,6 +358,14 @@ export default {
       };
     },
     showCaptchaPopup() {
+      if (this.isClickedCaptcha || this.smsTimer) {
+        return;
+      }
+      this.isClickedCaptcha = true;
+      setTimeout(() => {
+        this.isClickedCaptcha = false;
+      }, 2000);
+
       // 按下驗證碼再更新一次驗證碼類型
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫

@@ -179,7 +179,8 @@ export default {
       isShowCaptcha: false,
       edit: false,
       phoneShow: false,
-      buttonShow: true
+      buttonShow: true,
+      isClickedCaptcha: false
     };
   },
   computed: {
@@ -423,6 +424,13 @@ export default {
       }, 1500);
     },
     showCaptchaPopup() {
+      if (this.isClickedCaptcha || this.isSendSMS) return;
+
+      this.isClickedCaptcha = true;
+      setTimeout(() => {
+        this.isClickedCaptcha = false;
+      }, 2000);
+
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
@@ -652,10 +660,19 @@ export default {
     },
     isActive() {
       if (this.buttonShow) {
-        return this.newValue && this.isVerifyPhone && !this.timer;
+        return (
+          this.newValue &&
+          this.isVerifyPhone &&
+          !this.timer &&
+          !this.isClickedCaptcha
+        );
       }
       return (
-        this.newValue && this.oldValue && this.isVerifyPhone && !this.timer
+        this.newValue &&
+        this.oldValue &&
+        this.isVerifyPhone &&
+        !this.timer &&
+        !this.isClickedCaptcha
       );
     }
   }

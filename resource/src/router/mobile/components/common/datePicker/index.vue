@@ -114,19 +114,18 @@ export default {
       const months = [];
 
       if (this.currentYear === this.maxLimitYear) {
+        // 針對跨年 12月 與 1月 判斷
         if (this.minLimitMonth > this.maxLimitMonth) {
           let i = this.maxLimitMonth;
           this.currentMonth = i;
           months.push(i);
         } else {
           for (let i = this.minLimitMonth; i <= this.maxLimitMonth; i += 1) {
-            this.currentMonth = i;
             months.push(i);
           }
         }
       } else {
         for (let i = 12; this.minLimitMonth <= i; i -= 1) {
-          this.currentMonth = i;
           months.unshift(i);
         }
       }

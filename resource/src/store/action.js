@@ -32,7 +32,6 @@ import member from "@/api/member";
 import openGame from "@/lib/open_game";
 import router from "../router";
 import version from "@/config/version.json";
-import yaboRequest from "@/api/yaboRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { v4 as uuidv4 } from "uuid";
 
@@ -714,6 +713,76 @@ export const actionSetUserdata = (
     setCookie("uuidAccount", uuidAccount);
   }
 
+  if (!document.querySelector('script[data-name="esabgnixob"]')) {
+    let script = document.createElement("script");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("data-name", "esabgnixob");
+    script.onload = e => {
+      //訪客註冊
+      let configInfo = {};
+      if (state.webDomain) {
+        configInfo =
+          siteConfigTest[`site_${state.webDomain.domain}`] ||
+          siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+          siteConfigTest[`site_${state.webInfo.alias}`] ||
+          siteConfigOfficial.preset;
+      }
+
+      if (state.webDomain.site === "ey1" && hasLogin) {
+        dispatch("actionSetUserWithdrawCheck");
+      }
+
+      goLangApiRequest({
+        method: "put",
+        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
+        params: {
+          account: uuidAccount
+        }
+      })
+        .then(res => {
+          if (res.status === "000") {
+            let guestCid = res.data.cid;
+            let guestUserid = res.data.userid;
+            setCookie("guestCid", guestCid);
+            setCookie("guestUserid", guestUserid);
+          } else {
+            //訪客登入
+            goLangApiRequest({
+              method: "post",
+              url:
+                configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestlogin",
+              params: {
+                account: uuidAccount
+              }
+            })
+              .then(res => {
+                if (res.status === "000") {
+                  let guestCid = res.data.cid;
+                  let guestUserid = res.data.userid;
+
+                  setCookie("guestCid", guestCid);
+                  setCookie("guestUserid", guestUserid);
+                } else {
+                }
+              })
+              .catch(error => {});
+          }
+        })
+        .catch(error => {});
+    };
+
+    if (window.location.host.includes("localhost")) {
+      script.setAttribute(
+        "src",
+        "https://yb01.66boxing.com/mobile/esabgnixob.js"
+      );
+    } else {
+      script.setAttribute("src", "esabgnixob.js");
+    }
+
+    document.head.appendChild(script);
+  }
+
   return member.data({
     timeout: 10000,
     success: response => {
@@ -726,56 +795,6 @@ export const actionSetUserdata = (
       commit(types.SETGAMEDATA, temp.vendors);
       if (temp.user.id === 0 && temp.user.username === "unknown") {
         commit(types.ISLOGIN, false);
-
-        //訪客註冊
-        let configInfo = {};
-        if (state.webDomain) {
-          configInfo =
-            siteConfigTest[`site_${state.webDomain.domain}`] ||
-            siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-            siteConfigTest[`site_${state.webInfo.alias}`] ||
-            siteConfigOfficial.preset;
-        }
-        goLangApiRequest({
-          method: "put",
-          url:
-            configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
-          params: {
-            account: uuidAccount
-          }
-        })
-          .then(res => {
-            if (res.status === "000") {
-              let guestCid = res.data.cid;
-              let guestUserid = res.data.userid;
-              setCookie("guestCid", guestCid);
-              setCookie("guestUserid", guestUserid);
-            } else {
-              //訪客登入
-              goLangApiRequest({
-                method: "post",
-                url:
-                  configInfo.YABO_GOLANG_API_DOMAIN +
-                  "/cxbb/Account/guestlogin",
-                params: {
-                  account: uuidAccount
-                }
-              })
-                .then(res => {
-                  if (res.status === "000") {
-                    let guestCid = res.data.cid;
-                    let guestUserid = res.data.userid;
-
-                    setCookie("guestCid", guestCid);
-                    setCookie("guestUserid", guestUserid);
-                  } else {
-                  }
-                })
-                .catch(error => {});
-            }
-          })
-          .catch(error => {});
-
         return;
       }
       commit(types.ISLOGIN, true);
@@ -1892,16 +1911,65 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       siteConfigOfficial.preset;
   }
 
+  let spaceId = 1;
+  if (configInfo.MOBILE_WEB_TPL === "porn1") {
+    spaceId = 1;
+  } else if (configInfo.MOBILE_WEB_TPL === "sg1") {
+    spaceId = 14;
+  }
+
+  const getV2Token = uri => {
+    let bodyFormData = new FormData();
+    bodyFormData.append("spaceId", spaceId);
+    bodyFormData.append(
+      "secretKey",
+      "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
+    );
+
+    axios
+      .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
+      .then(function(res) {
+        if (res.data && res.data.result && res.data.status === 100) {
+          Vue.cookie.set("s_jwt", res.data.result);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
   return goLangApiRequest({
     method: "get",
-    url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/System/domain"
+    url: `${
+      configInfo.YABO_GOLANG_API_DOMAIN
+    }/cxbb/System/domain?t=${Date.now()}`
   }).then(res => {
     if (res && res.data) {
       commit(types.SET_SYSTEMDOMAIN, res.data);
+
+      let domainListV2 = res.data.filter(
+        i => i.name === "XXX-DOMAIN-URL-V2" && i.type === "du"
+      );
+
+      if (domainListV2 && domainListV2.length > 0) {
+        let tmp =
+          domainListV2[Math.floor(Math.random() * domainListV2.length)].value;
+
+        if (tmp && tmp.length > 0) {
+          setCookie("s_enable", 1);
+          commit(types.SET_PORNDOMAIN, tmp);
+          getV2Token(tmp);
+          return;
+        }
+      }
+
+      console.log("not found v2");
+      setCookie("s_enable", "");
       let domainList = res.data.filter(
         i => i.name === "XXX-DOMAIN-URL" && i.type === "du"
       );
 
+      // 使用隨機一組domain
       let result =
         domainList[Math.floor(Math.random() * domainList.length)].value;
       if (domainList && domainList.length > 0) {
@@ -2114,6 +2182,46 @@ export const actionGetServiceMaintain = ({ state, dispatch }) => {
     .catch(error => {
       const { msg, code } = error.response.data;
       dispatch("actionSetGlobalMessage", {
+        msg,
+        code
+      });
+    });
+};
+
+export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
+  return axios({
+    method: "get",
+    url: "/api/v2/c/withdraw/check"
+  })
+    .then(res => {
+      const { ret, result, msg, code } = res.data;
+      console.log(res.data);
+
+      if (!res || result !== "ok") {
+        this.actionSetGlobalMessage({
+          msg,
+          code
+        });
+        return;
+      }
+      let isCheckedFalse = false;
+
+      Object.keys(ret).forEach(item => {
+        console.log(item, ret[item]);
+        if (!ret[item] && item !== "bank") {
+          isCheckedFalse = true;
+          commit(types.SET_USER_WITHDRAWCHECK, false);
+          return;
+        }
+      });
+
+      if (!isCheckedFalse) {
+        commit(types.SET_USER_WITHDRAWCHECK, true);
+      }
+    })
+    .catch(error => {
+      const { msg, code } = error.response.data;
+      this.actionSetGlobalMessage({
         msg,
         code
       });

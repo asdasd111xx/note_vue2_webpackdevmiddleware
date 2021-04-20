@@ -447,11 +447,12 @@ export default {
   hasBank: false,
   videoBounsPageStatus: false,
   systemDomain: {},
-  pornDoamin: "https://jizzapp.app",
+  pornDoamin: "",
   promotionLink: "",
   webDomain: {},
   BBosDomain: {},
   swagConfig: {},
   swagBalance: {},
-  showRedEnvelope: false
+  showRedEnvelope: false,
+  isWithdrawChecked: true // true 需要檢查 checkout Account
 };

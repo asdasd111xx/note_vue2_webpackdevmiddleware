@@ -171,7 +171,7 @@ export default {
             {
               number: "❹",
               title: "生日礼金",
-              content: `将会在生日的隔月5日前，系统自动派发。每年仅可领取一次。(${
+              content: `将会在生日的隔月5号前，系统自动派发。每年仅可领取一次。(${
                 this.themeTPL === "porn1"
                   ? "生日彩金12倍流水即可提现"
                   : this.themeTPL === "sg1"
@@ -182,7 +182,7 @@ export default {
             {
               number: "❺",
               title: "每月红包",
-              content: `会员在上个月有过至少3次的成功充值，即可在每月5号前获得上个月相应等级的每月红包彩金。(${
+              content: `会员在上个月有过至少3次的成功充值，即可在每月15号前获得上个月相应等级的每月红包彩金。(${
                 this.themeTPL === "porn1"
                   ? "每月红包12倍流水即可提现"
                   : this.themeTPL === "sg1"

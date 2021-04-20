@@ -34,22 +34,29 @@
         </div>
       </div>
 
-      <div :class="$style['info-card']" @click="clickService()">
+      <div
+        :class="[$style[item.classTitle]]"
+        v-for="(item, index) in serviceData"
+        :key="`service-${index}`"
+        @click="clickService(item.classTitle)"
+      >
         <div>
           <div>
             <img
               :src="
-                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+                $getCdnPath(
+                  `/static/image/common/service/ic_${item.titleImg}.png`
+                )
               "
             />
             &nbsp;
-            <span>在线客服</span>
+            <span>{{ item.title }}</span>
           </div>
-          <div>Main Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
+          <div>{{ item.smallTitle }}</div>
+          <div>{{ item.content }}</div>
         </div>
 
-        <div :class="$style['btn-next']">
+        <div v-if="item.buttonShow" :class="$style['btn-next']">
           <img
             :src="
               $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
@@ -150,7 +157,36 @@ export default {
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      hasPrev: true
+      hasPrev: true,
+      serviceData: [
+        {
+          classTitle: "customer_service2",
+          titleImg: "service03",
+          title: "在线客服2.0",
+          smallTitle: "Main Customer Support",
+          content: "7*24小时专线服务 贴心至上",
+          buttonShow: false,
+          isShow: true
+        },
+        {
+          classTitle: "customer_service",
+          titleImg: "service01",
+          title: "在线客服",
+          smallTitle: "Main Customer Support",
+          content: "7*24小时专线服务 贴心至上",
+          buttonShow: true,
+          isShow: true
+        },
+        {
+          classTitle: "customer_service_potato",
+          titleImg: "service04",
+          title: "土豆客服：ey777",
+          smallTitle: "POTATO CHAT",
+          content: "亿元萌妹专业服务 联系更便利",
+          buttonShow: false,
+          isShow: true
+        }
+      ].filter(data => data.isShow)
     };
   },
   created() {
@@ -201,7 +237,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleBack() {
       const redirect = this.$route.query.redirect;
       switch (redirect) {
@@ -210,8 +246,44 @@ export default {
           break;
       }
     },
-    clickService(type = "") {
-      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+    clickService(title, type = "") {
+      switch (title) {
+        default:
+        case "customer_service":
+          mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+          break;
+
+        // 客服2.0 土豆客服
+        case "customer_service_potato":
+        case "customer_service2":
+          let newWindow = "";
+          newWindow = window.open();
+          this.isLoading = true;
+
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`
+          })
+            .then(res => {
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 1500);
+              const url = res.data.uri;
+              newWindow.location = url;
+              console.log(url);
+            })
+            .catch(error => {
+              setTimeout(() => {
+                this.isLoading = false;
+              }, 1500);
+              newWindow.close();
+
+              if (error && error.data && error.data.msg) {
+                this.actionSetGlobalMessage({ msg: error.data.msg });
+              }
+            });
+          return;
+      }
     },
     clickPopTip() {
       this.isShowPop = true;
@@ -322,9 +394,9 @@ div.container {
   }
 }
 
-.info-card {
+@mixin info-card($color1, $color2, $backgroundImg, $smallTitleColor) {
   color: white;
-  background: linear-gradient(to left, #f6d2bd, #e5997a);
+  background: linear-gradient(to left, $color1, $color2);
   box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.15);
   margin: 15px;
   height: 100px;
@@ -335,7 +407,7 @@ div.container {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/common/service/bg_service01.png");
+    background-image: url($backgroundImg);
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -353,7 +425,7 @@ div.container {
     }
 
     > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
+      color: $smallTitleColor;
     }
 
     > div > img {
@@ -361,6 +433,33 @@ div.container {
       height: 24px;
     }
   }
+}
+
+.customer_service2 {
+  @include info-card(
+    #ffddcb,
+    #ffbf64,
+    "/static/image/common/service/bg_service03.png",
+    #ffffff
+  );
+}
+
+.customer_service {
+  @include info-card(
+    #f6d2bd,
+    #e5997a,
+    "/static/image/common/service/bg_service01.png",
+    hsla(0, 0%, 100%, 0.5)
+  );
+}
+
+.customer_service_potato {
+  @include info-card(
+    #baefee,
+    #80affd,
+    "/static/image/common/service/bg_service04.png",
+    #ffffff
+  );
 }
 
 .btn-next {

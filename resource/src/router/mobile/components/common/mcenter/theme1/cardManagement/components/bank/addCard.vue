@@ -1,5 +1,9 @@
 <template>
   <div :class="$style['add-bankcard']">
+    <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+      {{ errorMsg }}
+    </p>
+
     <template v-if="addBankCardStep === 'one'">
       <div :class="$style['username-wrap']">
         <p :class="$style['input-title']">持卡人姓名</p>
@@ -131,10 +135,6 @@
       </template>
 
       <template v-if="addBankCardStep === 'two'">
-        <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
-          {{ errorMsg }}
-        </p>
-
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">手机号码</p>
           <div :class="$style['input-wrap']">
@@ -333,7 +333,11 @@ export default {
 
       // 綁定成功後添加成功後回到遊戲 影片
       this.msg = "";
-      let redirect = query.redirect;
+      let redirect = query.redirect || "";
+
+      clearInterval(this.smsTimer);
+      this.smsTimer = null;
+
       if (!redirect) {
         this.setPageStatus(0, "bankCardInfo", true);
         this.NextStepStatus = false;
@@ -341,41 +345,33 @@ export default {
         return;
       }
 
-      clearInterval(this.smsTimer);
-      this.smsTimer = null;
-
-      let split = redirect.split("-");
+      let split = redirect?.split("-");
       if (split.length === 2) {
-        this.$router.push(`/mobile/${split[0]}/${split[1]}`);
+        this.$router.replace(`/mobile/${split[0]}/${split[1]}`);
         return;
       }
 
       // 有分類的遊戲大廳 card casino
       if (split.length === 3) {
-        this.$router.push(`/mobile/${split[0]}/${split[1]}?label=${split[2]}`);
+        this.$router.replace(
+          `/mobile/${split[0]}/${split[1]}?label=${split[2]}`
+        );
         return;
       }
 
       switch (redirect) {
         case "deposit":
-          this.$router.push(`/mobile/mcenter/deposit`);
-          return;
         case "wallet":
-          this.$router.push(`/mobile/mcenter/wallet`);
-          return;
         case "withdraw":
         case "balanceTrans":
-          this.$router.push(`/mobile/mcenter/${redirect}`);
+          this.$router.replace(`/mobile/mcenter/${redirect}`);
           return;
         case "liveStream":
         case "home":
-          this.$router.push(`/mobile/${redirect}`);
+          this.$router.replace(`/mobile/${redirect}`);
           return;
         default:
-          this.setPageStatus(0, "bankCardInfo", true);
-          this.NextStepStatus = false;
-          this.$emit("update:addBankCardStep", "one");
-          return;
+          break;
       }
     }
   }
