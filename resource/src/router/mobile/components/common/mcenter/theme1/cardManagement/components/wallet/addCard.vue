@@ -760,15 +760,15 @@ export default {
 
       let split = redirect?.split("-");
       if (split.length === 2) {
-        this.$router.back();
-        this.$router.push(`/mobile/${split[0]}/${split[1]}`);
+        this.$router.replace(`/mobile/${split[0]}/${split[1]}`);
         return;
       }
 
       // 有分類的遊戲大廳 card casino
       if (split.length === 3) {
-        this.$router.back();
-        this.$router.push(`/mobile/${split[0]}/${split[1]}?label=${split[2]}`);
+        this.$router.replace(
+          `/mobile/${split[0]}/${split[1]}?label=${split[2]}`
+        );
         return;
       }
 
@@ -777,14 +777,12 @@ export default {
         case "wallet":
         case "withdraw":
         case "balanceTrans":
-          this.$router.back();
-          this.$router.push(`/mobile/mcenter/${redirect}`);
+          this.$router.replace(`/mobile/mcenter/${redirect}`);
           return;
 
         case "liveStream":
         case "home":
-          this.$router.back();
-          this.$router.push(`/mobile/${redirect}`);
+          this.$router.replace(`/mobile/${redirect}`);
           return;
 
         default:
