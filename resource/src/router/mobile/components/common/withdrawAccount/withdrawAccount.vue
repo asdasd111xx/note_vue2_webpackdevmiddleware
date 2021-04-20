@@ -343,7 +343,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionSetUserWithdrawCheck"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -680,6 +681,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: "设定成功",
               cb: () => {
+                this.actionSetUserWithdrawCheck();
                 this.onClose();
               }
             });

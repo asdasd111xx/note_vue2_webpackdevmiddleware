@@ -453,5 +453,6 @@ export default {
   BBosDomain: {},
   swagConfig: {},
   swagBalance: {},
-  showRedEnvelope: false
+  showRedEnvelope: false,
+  isWithdrawChecked: true // true 需要檢查 checkout Account
 };

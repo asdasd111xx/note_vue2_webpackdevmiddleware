@@ -88,7 +88,8 @@ export default {
       hasBank: "getHasBank",
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
-      noticeData: "getNoticeData"
+      noticeData: "getNoticeData",
+      withdrawCheck: "getWithdrawCheck"
     }),
     isAdult() {
       if (localStorage.getItem("content_rating")) {
@@ -935,6 +936,15 @@ export default {
               }
           }
           this.isLoading = true;
+
+          // 0421 進入遊戲前檢查withdrawcheck
+          if (!this.withdrawCheck) {
+            this.actionSetGlobalMessage({
+              type: "withdrawcheck",
+              origin: "home"
+            });
+            return;
+          }
 
           const openGameSuccessFunc = res => {
             this.isLoading = false;

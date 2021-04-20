@@ -727,6 +727,11 @@ export const actionSetUserdata = (
           siteConfigTest[`site_${state.webInfo.alias}`] ||
           siteConfigOfficial.preset;
       }
+
+      if (state.webDomain.site === "ey1" && hasLogin) {
+        dispatch("actionSetUserWithdrawCheck");
+      }
+
       goLangApiRequest({
         method: "put",
         url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
@@ -2177,6 +2182,40 @@ export const actionGetServiceMaintain = ({ state, dispatch }) => {
     .catch(error => {
       const { msg, code } = error.response.data;
       dispatch("actionSetGlobalMessage", {
+        msg,
+        code
+      });
+    });
+};
+
+export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
+  return axios({
+    method: "get",
+    url: "/api/v2/c/withdraw/check"
+  })
+    .then(res => {
+      const { ret, result, msg, code } = res.data;
+      console.log(res.data);
+
+      if (!res || result !== "ok") {
+        this.actionSetGlobalMessage({
+          msg,
+          code
+        });
+        return;
+      }
+
+      Object.keys(ret).forEach(item => {
+        console.log(item, ret[item]);
+        if (!ret[item]) {
+          commit(types.SET_USER_WITHDRAWCHECK, false);
+          return;
+        }
+      });
+    })
+    .catch(error => {
+      const { msg, code } = error.response.data;
+      this.actionSetGlobalMessage({
         msg,
         code
       });
