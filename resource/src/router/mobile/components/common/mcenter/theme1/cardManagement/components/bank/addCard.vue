@@ -333,7 +333,7 @@ export default {
 
       // 綁定成功後添加成功後回到遊戲 影片
       this.msg = "";
-      let redirect = query.redirect;
+      let redirect = query.redirect || "";
 
       clearInterval(this.smsTimer);
       this.smsTimer = null;
