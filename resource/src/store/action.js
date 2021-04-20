@@ -2204,14 +2204,20 @@ export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
         });
         return;
       }
+      let isCheckedFalse = false;
 
       Object.keys(ret).forEach(item => {
         console.log(item, ret[item]);
-        if (!ret[item]) {
+        if (!ret[item] && item !== "bank") {
+          isCheckedFalse = true;
           commit(types.SET_USER_WITHDRAWCHECK, false);
           return;
         }
       });
+
+      if (!isCheckedFalse) {
+        commit(types.SET_USER_WITHDRAWCHECK, true);
+      }
     })
     .catch(error => {
       const { msg, code } = error.response.data;
