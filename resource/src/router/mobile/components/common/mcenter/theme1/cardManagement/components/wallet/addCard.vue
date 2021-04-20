@@ -753,11 +753,6 @@ export default {
 
       let redirect = _redirect || query?.redirect;
 
-      if (!redirect) {
-        this.setPageStatus(1, "walletCardInfo", true);
-        return;
-      }
-
       let split = redirect.split("-");
       if (split.length === 2) {
         this.$router.back();
@@ -773,18 +768,10 @@ export default {
       }
 
       switch (redirect) {
-        // case "deposit":
-        //   this.$router.push(`/mobile/mcenter/deposit`);
-        //   return;
-        // case "wallet":
-        //   this.$router.push(`/mobile/mcenter/wallet`);
-        //   return;
         case "deposit":
         case "wallet":
         case "withdraw":
         case "balanceTrans":
-          // this.$router.push(`/mobile/mcenter/${redirect}`);
-
           this.$router.back();
           this.$router.push(`/mobile/mcenter/${redirect}`);
           return;

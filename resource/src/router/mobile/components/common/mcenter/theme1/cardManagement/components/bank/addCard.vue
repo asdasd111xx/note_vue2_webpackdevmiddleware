@@ -334,12 +334,6 @@ export default {
       // 綁定成功後添加成功後回到遊戲 影片
       this.msg = "";
       let redirect = query.redirect;
-      if (!redirect) {
-        this.setPageStatus(0, "bankCardInfo", true);
-        this.NextStepStatus = false;
-        this.$emit("update:addBankCardStep", "one");
-        return;
-      }
 
       clearInterval(this.smsTimer);
       this.smsTimer = null;
