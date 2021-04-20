@@ -338,7 +338,14 @@ export default {
       clearInterval(this.smsTimer);
       this.smsTimer = null;
 
-      let split = redirect.split("-");
+      if (!redirect) {
+        this.setPageStatus(0, "bankCardInfo", true);
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "one");
+        return;
+      }
+
+      let split = redirect?.split("-");
       if (split.length === 2) {
         this.$router.back();
         this.$router.push(`/mobile/${split[0]}/${split[1]}`);
@@ -366,10 +373,7 @@ export default {
           this.$router.push(`/mobile/${redirect}`);
           return;
         default:
-          this.setPageStatus(0, "bankCardInfo", true);
-          this.NextStepStatus = false;
-          this.$emit("update:addBankCardStep", "one");
-          return;
+          break;
       }
     }
   }
