@@ -400,7 +400,7 @@
             if (memInfo.blacklist.includes(3)) {
               this.$emit('update:isShowBlockTips', true);
             } else {
-              sendBalanceTran();
+              handleSubmit();
             }
           }
         "
@@ -809,6 +809,65 @@ export default {
           this.actionSetGlobalMessage({ msg: res.data.msg || "系统错误" });
         }
       });
+    },
+    handleSubmit() {
+      if (this.themeTPL === "ey1") {
+        // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
+        this.withdrawCheck().then(res => {
+          if (res === "ok") {
+            this.sendBalanceTran();
+          }
+        });
+      } else {
+        this.sendBalanceTran();
+      }
+    },
+    withdrawCheck() {
+      return axios({
+        method: "get",
+        url: "/api/v2/c/withdraw/check"
+      })
+        .then(res => {
+          if (res.data.result === "ok") {
+            let check = true;
+
+            Object.keys(res.data.ret).forEach(i => {
+              if (i !== "bank" && !res.data.ret[i]) {
+                this.actionSetGlobalMessage({
+                  msg: "请先设定提现资料",
+                  cb: () => {
+                    {
+                      this.$router.push(
+                        "/mobile/withdrawAccount?redirect=balanceTrans"
+                      );
+                    }
+                  }
+                });
+                check = false;
+                return;
+              }
+            });
+
+            if (check) {
+              return "ok";
+            }
+          } else {
+            this.actionSetGlobalMessage({
+              msg: res.data.msg,
+              code: res.data.code
+            });
+            return;
+          }
+        })
+        .catch(res => {
+          if (res.response.data) {
+            this.actionSetGlobalMessage({
+              msg: res.response.data.msg,
+              code: res.response.data.code
+            });
+          }
+          return;
+        });
     },
     sendBalanceTran() {
       // 阻擋連續點擊

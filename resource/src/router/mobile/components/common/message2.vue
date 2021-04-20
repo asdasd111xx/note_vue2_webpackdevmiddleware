@@ -55,6 +55,9 @@ export default {
           case "login":
             this.msg = "请先登入";
             break;
+          case "withdrawcheck":
+            this.msg = "请先设定提现资料";
+            break;
 
           default:
             this.msg = type;
@@ -111,6 +114,17 @@ export default {
         if (callback) {
           callback();
           return;
+        }
+
+        switch (msgObj.type) {
+          case "withdrawcheck":
+            this.$router.push(
+              `/mobile/withdrawAccount?redirect=${redirect ? redirect : "home"}`
+            );
+            return;
+
+          default:
+            break;
         }
 
         switch (code) {

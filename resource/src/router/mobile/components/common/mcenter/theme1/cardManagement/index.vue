@@ -233,7 +233,7 @@ export default {
       }
     },
     showDetailButton() {
-      const { memInfo, themeTPL, currentPage } = this;
+      const { memInfo, themeTPL, currentPage, userLevelObj } = this;
       const { showDetail, isAudit, hasSameTypeWallet } = this.statusList;
 
       const showButton =
@@ -245,8 +245,13 @@ export default {
 
         case "walletCardInfo":
           // 億元因還有「停用」與「移至歷史錢包」的選項，故不在此先判斷 delete_bank_card
+          // 0419-億元 唯一不會出現的情況，單組開關 + 只有一張時
           return ["ey1"].includes(themeTPL)
-            ? showDetail && !isAudit && hasSameTypeWallet
+            ? showDetail &&
+                !isAudit &&
+                (memInfo.config.delete_bank_card ||
+                  !userLevelObj.virtual_bank_single ||
+                  hasSameTypeWallet)
             : showButton;
       }
     },

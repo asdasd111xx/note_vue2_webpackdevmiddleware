@@ -149,7 +149,7 @@ export default {
         return info.virtual_bank_id === item.virtual_bank_id;
       }).length;
 
-      if (count > 1) {
+      if (count > 1 && this.userLevelObj.virtual_bank_single) {
         this.hasSameTypeCard = true;
         this.$emit("update:statusList", {
           key: "hasSameTypeWallet",

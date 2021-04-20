@@ -130,6 +130,15 @@ export default {
                   }
                   return;
                 } else {
+                  // 0421 進入遊戲前檢查withdrawcheck
+                  if (!this.withdrawCheck) {
+                    this.actionSetGlobalMessage({
+                      type: "withdrawcheck",
+                      origin: "home"
+                    });
+                    return;
+                  }
+
                   const openGameSuccessFunc = res => {
                     this.isShowLoading = false;
                   };
@@ -333,7 +342,8 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      webInfo: "getWebInfo"
+      webInfo: "getWebInfo",
+      withdrawCheck: "getWithdrawCheck"
     }),
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();

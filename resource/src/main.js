@@ -110,8 +110,9 @@ if (cid) {
 //     ];
 //   }, 1500);
 // };
-
-console.log("build loadscript:", window.SCRIPT_CDN_HOST);
+if (process.env.NODE_ENV === "development") {
+  console.log("build loadscript:", window.SCRIPT_CDN_HOST);
+}
 const script_cdn_host = window.SCRIPT_CDN_HOST ? window.SCRIPT_CDN_HOST : "/";
 Vue.use(LoadScript);
 Vue.use(Vuex);

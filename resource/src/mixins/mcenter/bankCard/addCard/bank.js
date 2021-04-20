@@ -102,6 +102,10 @@ export default {
         // this.errorMsg = "手机格式不符合要求";
         this.isVerifyPhone = false;
       }
+    },
+    // 預防從提現資料進到綁定銀行卡，會有無法立即更新 name 的問題
+    "memInfo.user.name"() {
+      delete this.formData["accountName"];
     }
   },
   created() {
@@ -202,9 +206,9 @@ export default {
             this.lockStatus = false;
             this.errorMsg = msg;
 
-            if (this.addBankCardStep === "one") {
-              this.msg = msg;
-            }
+            // if (this.addBankCardStep === "one") {
+            //   this.msg = msg;
+            // }
             return;
           }
 
@@ -222,9 +226,9 @@ export default {
           this.lockStatus = false;
           this.errorMsg = msg;
 
-          if (this.addBankCardStep === "one") {
-            this.msg = msg;
-          }
+          // if (this.addBankCardStep === "one") {
+          //   this.msg = msg;
+          // }
         });
 
       // ajax({

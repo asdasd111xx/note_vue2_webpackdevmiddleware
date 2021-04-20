@@ -208,5 +208,6 @@ export default {
   getBBOSDomain: state => state.BBosDomain,
   getSwagConfig: state => state.swagConfig,
   getSwagBalance: state => state.swagBalance,
-  getShowRedEnvelope: state => state.showRedEnvelope
+  getShowRedEnvelope: state => state.showRedEnvelope,
+  getWithdrawCheck: state => state.isWithdrawChecked
 };

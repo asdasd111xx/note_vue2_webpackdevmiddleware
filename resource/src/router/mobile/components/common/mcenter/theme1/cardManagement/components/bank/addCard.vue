@@ -1,5 +1,9 @@
 <template>
   <div :class="$style['add-bankcard']">
+    <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+      {{ errorMsg }}
+    </p>
+
     <template v-if="addBankCardStep === 'one'">
       <div :class="$style['username-wrap']">
         <p :class="$style['input-title']">持卡人姓名</p>
@@ -131,10 +135,6 @@
       </template>
 
       <template v-if="addBankCardStep === 'two'">
-        <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
-          {{ errorMsg }}
-        </p>
-
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">手机号码</p>
           <div :class="$style['input-wrap']">
@@ -334,12 +334,6 @@ export default {
       // 綁定成功後添加成功後回到遊戲 影片
       this.msg = "";
       let redirect = query.redirect;
-      if (!redirect) {
-        this.setPageStatus(0, "bankCardInfo", true);
-        this.NextStepStatus = false;
-        this.$emit("update:addBankCardStep", "one");
-        return;
-      }
 
       clearInterval(this.smsTimer);
       this.smsTimer = null;

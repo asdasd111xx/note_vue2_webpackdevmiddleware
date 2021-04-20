@@ -199,7 +199,7 @@ export default {
       isSendKeyring: false,
       isSendForm: false,
       countdownSec: 0,
-      checkBankSwitch: false,
+      checkBankSwitch: false, // 此參數是從廳主端直接綁定卡片，Bank 則會有影響
       timer: null,
       thirdyCaptchaObj: null,
       isShowCaptcha: false,
@@ -235,7 +235,12 @@ export default {
           msg: "",
           placeholder: "请输入手机验证码"
         }
-      }
+      },
+
+      // 投注/轉帳前需設定提現資料
+      withdraw_info_before_bet: false,
+      // 投注/轉帳前需綁定銀行卡其他條件，0:主功能關閉，1:至少需一張銀行卡，2:銀行卡/電子錢包擇一
+      ub_before_bet_mode: 0
     };
   },
   created() {
@@ -251,8 +256,11 @@ export default {
             this.isVerifyPhone = data.ret[i];
           }
 
-          // 鴨博無提現密碼
-          if (this.themeTPL === "porn1" && i == "withdraw_password") {
+          // 鴨博/絲瓜 無提現密碼
+          if (
+            ["porn1", "sg1"].includes(this.themeTPL) &&
+            i == "withdraw_password"
+          ) {
             this.formData["withdraw_password"].show = false;
             return;
           }
@@ -260,19 +268,36 @@ export default {
           this.formData[i].show = !data.ret[i];
         }
       });
+
+      // 當資料皆已填寫完(防呆)
+      // 04/19 當接收到 Error Code 導去 msg，因未綁定電子錢包的 Error Code 統一導到帳戶資料頁面，因此有可能還是會進入此判斷
       if (
         !this.formData.name.show &&
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show
       ) {
-        // 鴨博無電子錢包
-        if (!this.checkBankSwitch && this.themeTPL !== "porn1") {
-          this.$router.replace(
-            `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
-          );
-        } else {
-          this.$router.back();
-        }
+        // // For 億元
+        // if (!this.checkBankSwitch && this.themeTPL === "ey1") {
+        //   this.$router.replace(
+        //     `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
+        //   );
+        // } else {
+        //   // For 鴨博/絲瓜
+        //   this.$router.back();
+        // }
+
+        this.getDomainConfig().then(() => {
+          // For 億元
+          if (!this.checkBankSwitch && this.themeTPL === "ey1") {
+            this.$router.replace(
+              `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=${
+                this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
+              }`
+            );
+          } else {
+            this.$router.back();
+          }
+        });
       }
       this.isLoading = false;
     });
@@ -318,13 +343,35 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionSetUserWithdrawCheck"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
     },
     showCaptcha() {
       this.isShowCaptcha = !this.isShowCaptcha;
+    },
+    getDomainConfig() {
+      return axios({
+        method: "get",
+        url: "/api/v2/c/domain-config"
+      })
+        .then(res => {
+          if (res && res.data && res.data.ret) {
+            this.withdraw_info_before_bet =
+              res.data.ret.withdraw_info_before_bet;
+
+            this.ub_before_bet_mode = res.data.ret.ub_before_bet_mode;
+          }
+        })
+        .catch(res => {
+          this.actionSetGlobalMessage({
+            msg: res.response.data.msg,
+            code: res.response.data.code,
+            origin: "home"
+          });
+        });
     },
     onClose(isBack) {
       if (this.isSlider) {
@@ -341,38 +388,62 @@ export default {
         }
 
         const _redirect = this.redirect;
-        axios({
-          method: "get",
-          url: "/api/v2/c/domain-config"
-        })
-          .then(res => {
-            let withdraw_info_before_bet = false;
-            if (res && res.data && res.data.ret) {
-              withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
-            }
 
-            if (!withdraw_info_before_bet) {
-              if (!this.checkBankSwitch) {
-                this.$router.push(
-                  `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
-                );
-                return;
-              } else {
-                this.$router.back();
-                return;
-              }
+        this.getDomainConfig().then(() => {
+          // 鴨/絲 只有開啟需設定提現資料才會進到帳戶資料頁面
+          // 沒有開啟 投注/轉帳前需設定提現資料
+          if (!this.withdraw_info_before_bet) {
+            if (!this.checkBankSwitch) {
+              this.$router.replace(
+                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=${
+                  this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
+                }`
+              );
+              return;
+            } else {
+              this.$router.back();
+              return;
             }
+          }
 
-            this.$router.back();
-            return;
-          })
-          .catch(res => {
-            this.actionSetGlobalMessage({
-              msg: res.response.data.msg,
-              code: res.response.data.code,
-              origin: "home"
-            });
-          });
+          this.$router.back();
+          return;
+        });
+
+        // axios({
+        //   method: "get",
+        //   url: "/api/v2/c/domain-config"
+        // })
+        //   .then(res => {
+        //     let withdraw_info_before_bet = false;
+
+        //     if (res && res.data && res.data.ret) {
+        //       withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+        //     }
+
+        //     // 沒有開啟 投注/轉帳前需設定提現資料
+        //     if (!withdraw_info_before_bet) {
+        //       if (!this.checkBankSwitch) {
+        //         this.$router.push(
+        //           `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
+        //         );
+        //         return;
+        //       } else {
+        //         this.$router.back();
+        //         return;
+        //       }
+        //     }
+
+        //     this.$router.back();
+        //     return;
+        //   })
+        //   .catch(res => {
+        //     this.actionSetGlobalMessage({
+        //       msg: res.response.data.msg,
+        //       code: res.response.data.code,
+        //       origin: "home"
+        //     });
+        //   });
 
         // 提現資料上一頁應回到原本位置 避免迴圈
         // this.$router.back();
@@ -610,6 +681,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: "设定成功",
               cb: () => {
+                this.actionSetUserWithdrawCheck();
                 this.onClose();
               }
             });
