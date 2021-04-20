@@ -393,7 +393,7 @@ export default {
           // 鴨/絲 只有開啟需設定提現資料才會進到帳戶資料頁面
           // 沒有開啟 投注/轉帳前需設定提現資料
           if (!this.withdraw_info_before_bet) {
-            if (!this.checkBankSwitch) {
+            if (!this.checkBankSwitch || this.ub_before_bet_mode === 1) {
               this.$router.replace(
                 `/mobile/mcenter/bankCard?redirect=${_redirect}&type=${
                   this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
