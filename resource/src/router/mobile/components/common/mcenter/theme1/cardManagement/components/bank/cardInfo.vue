@@ -81,11 +81,11 @@
       <div v-if="statusList.editDetail" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
-          <template v-if="['ey1'].includes(this.themeTPL)">
+          <!-- <template v-if="['ey1'].includes(this.themeTPL)">
             <div :class="$style['edit-option-item']" @click="moveCard">
               {{ isCommon ? "移至历史帐号" : "移至我的卡片" }}
             </div>
-          </template>
+          </template> -->
 
           <div
             v-if="memInfo.config.delete_bank_card"
