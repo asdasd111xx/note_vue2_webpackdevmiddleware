@@ -753,7 +753,12 @@ export default {
 
       let redirect = _redirect || query?.redirect;
 
-      let split = redirect.split("-");
+      if (!redirect) {
+        this.setPageStatus(1, "walletCardInfo", true);
+        return;
+      }
+
+      let split = redirect?.split("-");
       if (split.length === 2) {
         this.$router.back();
         this.$router.push(`/mobile/${split[0]}/${split[1]}`);
@@ -783,8 +788,7 @@ export default {
           return;
 
         default:
-          this.setPageStatus(1, "walletCardInfo", true);
-          return;
+          break;
       }
     },
     verifyNumber(e) {
