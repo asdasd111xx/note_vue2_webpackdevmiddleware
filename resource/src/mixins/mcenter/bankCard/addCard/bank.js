@@ -32,7 +32,8 @@ export default {
       msg: "",
       smsTimer: null,
       thirdyCaptchaObj: null,
-      isShowCaptcha: false
+      isShowCaptcha: false,
+      isClickedCaptcha: false
     };
   },
   computed: {
@@ -357,6 +358,14 @@ export default {
       };
     },
     showCaptchaPopup() {
+      if (this.isClickedCaptcha || this.smsTimer) {
+        return;
+      }
+      this.isClickedCaptcha = true;
+      setTimeout(() => {
+        this.isClickedCaptcha = false;
+      }, 2000);
+
       // 按下驗證碼再更新一次驗證碼類型
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫
