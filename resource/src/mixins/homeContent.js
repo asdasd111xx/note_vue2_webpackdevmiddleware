@@ -937,8 +937,8 @@ export default {
           }
           this.isLoading = true;
 
-          // 0421 進入遊戲前檢查withdrawcheck
-          if (!this.withdrawCheck) {
+          // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
+          if (!this.withdrawCheck && !game.isMaintain) {
             this.actionSetGlobalMessage({
               type: "withdrawcheck",
               origin: "home"
@@ -1053,6 +1053,10 @@ export default {
               // console.log("取維護狀態");
               // console.log(res.data);
               this.maintainList = res.data.ret;
+              localStorage.setItem(
+                "vendorMaintainList",
+                JSON.stringify(this.maintainList)
+              );
             }
           })
           .catch(res => {

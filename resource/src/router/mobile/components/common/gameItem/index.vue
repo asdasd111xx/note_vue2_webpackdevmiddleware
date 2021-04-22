@@ -140,6 +140,24 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     /**
+     * 當前平台維護狀態
+     * @method isVendorMaintain
+     * @returns {boolean} 是否該平台維護
+     */
+    isVendorMaintain() {
+      let isMaintain = false;
+      let list = JSON.parse(localStorage.getItem("vendorMaintainList"));
+
+      isMaintain = list.some(item => {
+        return (
+          item.vendor === this.vendorName.toUpperCase() ||
+          item.vendor === this.vendorName.toLowerCase()
+        );
+      });
+
+      return isMaintain;
+    },
+    /**
      * 平台名稱顯示特例
      * @method vendorName
      * @returns {string} 平台名稱
@@ -411,7 +429,7 @@ export default {
       this.isShowLoading = true;
 
       // 0421 進入遊戲前檢查withdrawcheck
-      if (!this.withdrawCheck) {
+      if (!this.withdrawCheck && !this.isVendorMaintain) {
         this.actionSetGlobalMessage({
           type: "withdrawcheck",
           origin: "home"
