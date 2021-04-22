@@ -87,17 +87,17 @@ export default {
   mounted() {
     this.getCustomerServiceUrl().then(() => {
       // 有登入即帶資料到 italking 上做自動登入
-      if (this.loginStatus) {
-        const tokenExpiresTime = 60 * 60 * 24 * 60; // 60天秒數
-        const memberData = {
-          name: this.memInfo.user.name || "",
-          mobile: this.memInfo.user.phone || "",
-          account: this.memInfo.user.username,
-          exp: Date.now() + tokenExpiresTime
-        };
-        const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
-        this.url = `${this.url}&jwtToken=${rsaData}`;
-      }
+      // if (this.loginStatus) {
+      //   const tokenExpiresTime = 60 * 60 * 24 * 60; // 60天秒數
+      //   const memberData = {
+      //     name: this.memInfo.user.name || "",
+      //     mobile: this.memInfo.user.phone || "",
+      //     account: this.memInfo.user.username,
+      //     exp: Date.now() + tokenExpiresTime
+      //   };
+      //   const rsaData = jwt.encode(memberData, "T9AuSgQfh2");
+      //   this.url = `${this.url}&jwtToken=${rsaData}`;
+      // }
     });
   },
   computed: {
