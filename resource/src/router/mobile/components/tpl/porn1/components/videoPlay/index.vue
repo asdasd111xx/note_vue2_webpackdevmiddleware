@@ -68,7 +68,7 @@ export default {
           return 1;
 
         case "smallPig":
-          setCookie("s_id", "13");
+          setCookie("s_id", "113");
           return 2;
 
         case "gay":

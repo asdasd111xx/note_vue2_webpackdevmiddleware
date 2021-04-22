@@ -175,7 +175,7 @@ export default {
     }
   },
   created() {
-    setCookie("s_id", "13");
+    setCookie("s_id", "113");
     this.setHeaderTitle("小猪视频");
     this.setHasSearchBtn(false);
     this.initData();
