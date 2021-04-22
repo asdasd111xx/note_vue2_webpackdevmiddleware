@@ -79,7 +79,7 @@ export default {
 
     switch (this.source) {
       case "smallPig":
-        setCookie("s_id", "13");
+        setCookie("s_id", "113");
         params.isSmallPigSearch = "smallPigSearch";
         this.currentLayout = {
           ...params,

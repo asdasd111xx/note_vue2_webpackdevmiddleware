@@ -76,7 +76,7 @@ export default {
         break;
 
       case "smallPig":
-        setCookie("s_id", "");
+        setCookie("s_id", "113");
         this.currentLayout = {
           siteId: 2,
           videoLobby: "smallPigVideoLobby",
