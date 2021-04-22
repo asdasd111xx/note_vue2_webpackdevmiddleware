@@ -282,9 +282,22 @@ export default {
     }
 
     this.actionSetUserdata(true);
+
+    // 以下處理頁面設定
     this.actionSetUserLevels().then(() => {
+      let type = this.$route.query.type;
+      let tempType = localStorage.getItem("bankCardType");
+
       // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
-      if (this.hasRedirect) {
+      if (this.hasRedirect || tempType) {
+        if ((type && type === "bankCard") || tempType === "bankCard") {
+          this.setPageStatus(0, "addBankCard", false);
+          localStorage.removeItem("bankCardType");
+        }
+
+        if ((type && type === "wallet") || tempType === "wallet") {
+          this.setPageStatus(1, "addWalletCard", false);
+        }
         return;
       }
 

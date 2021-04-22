@@ -211,7 +211,7 @@
     <p :class="$style['service-remind']">
       如需帮助，请<span
         :class="$style['service-btn']"
-        @click="$router.push('/mobile/service?redirect=bankCard')"
+        @click="handleClickService"
         >联系客服</span
       >
     </p>
@@ -314,6 +314,10 @@ export default {
   },
   methods: {
     ...mapActions(["actionVerificationFormData"]),
+    handleClickService() {
+      localStorage.setItem("bankCardType", "bankCard");
+      this.$router.push("/mobile/service?redirect=bankCard");
+    },
     verification(key) {
       if (key === "phone") {
         this.actionVerificationFormData({

@@ -23,7 +23,7 @@ export default {
       // 預設提現銀行卡添加 & 電子錢包添加
       const { query } = this.$route;
       let redirect = query.redirect;
-      let type = query.type;
+
       if (redirect && redirect.split("-")[0]) {
         switch (redirect.split("-")[0]) {
           case "casino":
@@ -38,17 +38,10 @@ export default {
           case "wallet":
           case "hotLobby":
           case "recharge":
-            if (type && type === "bankCard") {
-              this.setPageStatus(0, "addBankCard", false);
-            }
-
-            if (type && type === "wallet") {
-              this.setPageStatus(1, "addWalletCard", false);
-            }
-
             return true;
         }
       }
+
       return false;
     },
     statusList: {

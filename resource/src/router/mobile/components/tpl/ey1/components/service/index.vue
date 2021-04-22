@@ -239,7 +239,9 @@ export default {
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     handleBack() {
-      const redirect = this.$route.query.redirect;
+      const { query } = this.$route;
+      let redirect = query.redirect;
+
       switch (redirect) {
         default:
           this.$router.back();

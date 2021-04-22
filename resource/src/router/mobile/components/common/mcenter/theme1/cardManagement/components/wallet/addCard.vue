@@ -217,7 +217,7 @@
     >
       如需帮助，请<span
         :class="$style['service-btn']"
-        @click="$router.push('/mobile/service')"
+        @click="handleClickService"
         >联系客服</span
       >
     </p>
@@ -499,6 +499,10 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    handleClickService() {
+      localStorage.setItem("bankCardType", "wallet");
+      this.$router.push("/mobile/service?redirect=bankCard");
+    },
     verification(key, index) {
       let target = this.formData[key];
       let lock = false;
