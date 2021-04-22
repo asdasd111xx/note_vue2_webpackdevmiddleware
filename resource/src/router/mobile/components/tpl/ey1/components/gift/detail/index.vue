@@ -139,12 +139,14 @@ export default {
     getCustomerServiceUrl() {
       return goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=customer_service&needToken=false`
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          lang: "zh-cn",
+          urlName: "live_chat",
+          needToken: "false"
+        }
       }).then(res => {
-        this.url =
-          res && res.data
-            ? res.data.uri
-            : "https://ey.italking.asia:5569/guest.php?gid=eyag";
+        this.url = res && res.data ? res.data.uri : "";
       });
     }
   }
