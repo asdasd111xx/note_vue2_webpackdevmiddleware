@@ -1,6 +1,7 @@
 import { API_TRADE_RELAY } from "@/config/api";
 import Vue from "vue";
-import ajax from "@/lib/ajax";
+import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   props: {
@@ -307,6 +308,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     /**
      * 提交存款修改資料
      * @method confirmDeposit
@@ -324,35 +326,45 @@ export default {
           branch: this.speedField.bankBranch,
           sn: this.speedField.serialNumber
         };
-        return ajax({
+        return axios({
           method: "put",
           url: API_TRADE_RELAY,
-          errorAlert: false,
-          params: {
+          data: {
             api_uri: `/api/trade/v2/c/entry/${this.orderData.id}/submit`,
             ...paramData
           }
-        }).then(response => {
-          if (response.result === "ok") {
-            // 流量分析事件 - 成功
+        })
+          .then(response => {
+            if (response.data.result === "ok") {
+              // 流量分析事件 - 成功
+              window.dataLayer.push({
+                event: "ga_click",
+                eventCategory: "deposit",
+                eventAction: "submit",
+                eventLabel: "success"
+              });
+              return { status: "ok" };
+            }
+
+            // 流量分析事件 - 失敗
             window.dataLayer.push({
               event: "ga_click",
               eventCategory: "deposit",
               eventAction: "submit",
-              eventLabel: "success"
+              eventLabel: "failure"
             });
-            return { status: "ok" };
-          }
+            return { status: "error" };
+          })
+          .catch(error => {
+            const { msg, code } = error.response.data;
 
-          // 流量分析事件 - 失敗
-          window.dataLayer.push({
-            event: "ga_click",
-            eventCategory: "deposit",
-            eventAction: "submit",
-            eventLabel: "failure"
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+
+            return { status: "error" };
           });
-          return { status: "error" };
-        });
       }
 
       return Promise.resolve({ status: "ok" });
