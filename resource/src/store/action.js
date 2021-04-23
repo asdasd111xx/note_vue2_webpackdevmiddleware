@@ -1916,6 +1916,8 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     spaceId = 1;
   } else if (configInfo.MOBILE_WEB_TPL === "sg1") {
     spaceId = 14;
+  } else {
+    return;
   }
 
   const getV2Token = uri => {
