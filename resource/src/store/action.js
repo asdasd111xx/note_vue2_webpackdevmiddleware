@@ -1007,7 +1007,7 @@ export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
 export const actionSetPost = ({ commit }, postType = 1) =>
   member.post({
     params: {
-      page: postType // page參數: 1(預設)：首頁+首頁＆優惠頁，2：優惠頁+首頁＆優惠頁
+      page: postType //0 首頁與優惠頁, 1首頁, 2優惠頁
     },
     success: response => {
       commit(types.SETPOST, response);
