@@ -29,7 +29,8 @@ export default {
     return {
       slider: [],
       updateKey: 0,
-      opts: {}
+      opts: {},
+      isClicked: false
     };
   },
   components: {
@@ -74,41 +75,27 @@ export default {
     initSlider() {
       this.actionGetMobileInfo();
       const defaultImage = this.generateDefaultImg();
-      let info = this.mobileInfo;
-
+      const info = this.mobileInfo;
+      const mobile_slide =
+        info && info.case_data && info.case_data.MOBILE_SLIDE;
       // 若無資料則使用預設圖片
-      if (
-        !info ||
-        !info.mSlider ||
-        !info.mSlider.data ||
-        info.mSlider.data.length === 0
-      ) {
+      if (!mobile_slide || mobile_slide.length === 0) {
         this.slider = [defaultImage];
         return;
       }
 
       let list = [];
 
-      info.mSlider.data.map(item => {
+      mobile_slide.data.map(item => {
         if (!Object.keys(this.lang)) {
           return;
         }
 
-        // 舊版輪播無限制設定
-        if (!item.condition) {
-          list.push(defaultImage);
-          return;
-        }
-
-        if (item.condition) {
-          const isShow = this.show(this.getDefaultCondition(item.condition));
-          if (isShow) {
-            list.push({
-              ...item,
-              image: `${this.cdnDomain}${item.image[this.curLang]}`
-            });
-          }
-        }
+        // const isShow = this.show(this.getDefaultCondition(item.condition));
+        list.push({
+          ...item,
+          image: `${this.cdnDomain}${item.image0[this.curLang]}`
+        });
       });
 
       // 若限制條件都不符合使用預設圖片
@@ -124,9 +111,18 @@ export default {
         pagination: { el: ".swiper-pagination", clickable: true },
         on: {
           click(element) {
-            let info = list[element.target.dataset.key];
+            if (this.isClicked) {
+              return;
+            }
+
+            this.isClicked = true;
+            setTimeout(() => {
+              this.isClicked = false;
+            }, 1500);
+
+            let target = list[element.target.dataset.key];
             mobileLinkOpen({
-              ...info,
+              ...target,
               site: this.themeTPL
             });
           }
