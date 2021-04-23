@@ -10,6 +10,7 @@ import {
   API_MCENTER_USER_CONFIG,
   API_QRCODE
 } from "@/config/api";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 import EST from "@/lib/EST";
 import Vue from "vue";
@@ -31,9 +32,8 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
-import version from "@/config/version.json";
-import { getCookie, setCookie } from "@/lib/cookie";
 import { v4 as uuidv4 } from "uuid";
+import version from "@/config/version.json";
 
 let memstatus = true;
 let agentstatus = true;
@@ -1916,6 +1916,8 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     spaceId = 1;
   } else if (configInfo.MOBILE_WEB_TPL === "sg1") {
     spaceId = 14;
+  } else {
+    return;
   }
 
   const getV2Token = uri => {
@@ -2195,7 +2197,6 @@ export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
   })
     .then(res => {
       const { ret, result, msg, code } = res.data;
-      console.log(res.data);
 
       if (!res || result !== "ok") {
         this.actionSetGlobalMessage({
@@ -2207,7 +2208,6 @@ export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
       let isCheckedFalse = false;
 
       Object.keys(ret).forEach(item => {
-        console.log(item, ret[item]);
         if (!ret[item] && item !== "bank") {
           isCheckedFalse = true;
           commit(types.SET_USER_WITHDRAWCHECK, false);
