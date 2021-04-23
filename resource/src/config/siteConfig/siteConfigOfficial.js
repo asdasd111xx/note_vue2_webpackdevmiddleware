@@ -10,7 +10,6 @@ export const preset = {
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
 
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
@@ -52,7 +51,6 @@ export const site_69 = {
   SITE_NAME: "鸭博娱乐",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
 };
@@ -67,7 +65,6 @@ export const site_100003 = {
   SITE_NAME: "鸭博娱乐",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2/cxbb",
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
@@ -84,7 +81,6 @@ export const site_41 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.chessrunroll.com/api",
   YABO_GOLANG_API_DOMAIN: "https://cxbb.chessrunroll.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://cxbb.chessrunroll.com/api-v2/cxbb",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://cxbb.chesspink.com/wsn/promosocket?"
 };
 
@@ -107,7 +103,6 @@ export const site_74 = {
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.mangochess.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://cxbb.mangochess.com/api-v2/cxbb",
   YABO_GOLANG_API_DOMAIN: "https://cxbb.mangochess.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://cxbb.chesspink.com/wsn/promosocket?"
 };
