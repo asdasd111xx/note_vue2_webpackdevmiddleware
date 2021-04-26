@@ -110,6 +110,55 @@
             right: 12px;
         }
 
+        .customer_service2__-Etey {
+            color: #fff;
+            background: linear-gradient(270deg, #ffddcb, #ffbf64);
+            box-shadow: 0 20px 40px 0 rgb(0 0 0 / 15%);
+            margin: 15px;
+            height: 100px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .customer_service2__-Etey>div:first-child {
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            background-image: url('/static/image/common/service/bg_service03.png');
+            background-size: auto 100%;
+            background-position: top 0 right 0;
+            /* height: 100%; */
+            background-repeat: no-repeat;
+        }
+
+        .customer_service2__-Etey>div:first-child>div:first-child {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .customer_service2__-Etey>div:first-child>div {
+            height: 25px;
+            line-height: 25px;
+        }
+
+        .customer_service2__-Etey>div:first-child>div:first-child {
+            font-size: 20px;
+        }
+
+        .customer_service2__-Etey>div:first-child>div:nth-child(2) {
+            color: #fff;
+        }
+
+        img {
+            border-style: none;
+        }
+
+        .customer_service2__-Etey>div:first-child>div>img {
+            width: 24px;
+            height: 24px;
+        }
+
         .info-card__2BiSJ {
             color: white;
             background: linear-gradient(to left, #f6d2bd, #e5997a);
@@ -127,7 +176,7 @@
             background-image: url("/static/image/common/service/bg_service01.png");
             background-size: auto 100%;
             background-position: top 0 right 0;
-            height: 100%;
+            /* height: 100%; */
             background-repeat: no-repeat;
         }
 
@@ -147,6 +196,42 @@
         }
 
         .info-card__2BiSJ>div:first-child>div>img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .customer_service_potato__2529A {
+            color: white;
+            background: linear-gradient(270deg, #baefee, #80affd);
+            box-shadow: 0px 20px 40px 0px rgb(0 0 0 / 15%);
+            margin: 15px;
+            height: 100px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .customer_service_potato__2529A>div:first-child {
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            background-image: url("/static/image/common/service/bg_service04.png");
+            background-size: contain;
+            background-position: top 0 right 0;
+            /* height: 100%; */
+            background-repeat: no-repeat;
+        }
+
+        .customer_service_potato__2529A>div:first-child>div:first-child {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .customer_service_potato__2529A>div:first-child>div:nth-child(2) {
+            color: #ffffff;
+        }
+
+        .customer_service_potato__2529A>div:first-child>div>img {
             width: 24px;
             height: 24px;
         }
@@ -238,17 +323,37 @@
                             <span id="username"></span>
                         </span> <span>欢迎来到客服中心</span></div>
                 </div>
+                <div class="customer_service2__-Etey">
+                    <div onclick="service('customer_service2')">
+                        <div><img src="/static/image/common/service/ic_service03.png?v=19150869.1">
+                            &nbsp;
+                            <span>在线客服2.0</span>
+                        </div>
+                        <div>Main Customer Support</div>
+                        <div>7*24小时专线服务 贴心至上</div>
+                    </div>
+                </div>
                 <div class="info-card__2BiSJ">
                     <div onclick="service()">
                         <div><img src="/static/image/common/service/ic_service01.png?v=99124533.1">
                             &nbsp;
-                            <span>在线客服1</span>
+                            <span>在线客服</span>
                         </div>
                         <div>Main Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
                     <div class="btn-next__3cUsV"><img
                             src="/static/image/common/service/ic_service_arrow.png?v=99124533.1">
+                    </div>
+                </div>
+                <div class="customer_service_potato__2529A">
+                    <div onclick="service('customer_service_potato')">
+                        <div><img src="/static/image/common/service/ic_service04.png?v=18911983.1">
+                            &nbsp;
+                            <span>土豆客服：ey777</span>
+                        </div>
+                        <div>POTATO CHAT</div>
+                        <div>亿元萌妹专业服务 联系更便利</div>
                     </div>
                 </div>
             </div>
@@ -271,7 +376,7 @@
             newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;
         }
 
-        function getComm(domain) {
+        function getComm(domain) {  //在線客服
             fetch(`/tpl/${domain}/comm.json`).then(function (response) {
                 return response.json();
             }).then(function (data) {
@@ -285,17 +390,64 @@
             });
         }
 
+        function getComm2(domain, configInfo, title) { //在線客服2.0, 土豆客服
+
+            const uri = `${configInfo}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`;
+            const request = fetch(uri, {
+                method: 'GET',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    kind: "pwa",
+                    "x-domain": domain,
+                }),
+            })
+            request.then(res => {
+                console.log(res);
+                return res.json();
+            })
+                .then(function (res) {
+                    if (res && res.data) {
+                        openService(res.data.uri)
+                    } else {
+                        openService()
+                    }
+                }).catch(function (e) {
+                    openService()
+                });
+        }
+
         fetch('/conf/domain').then(function (response) {
             console.log(response);
             return response.json();
         }).then(function (data) {
             if (data.domain) {
-                getComm(data.domain)
+                if (target) {
+                    getComm2(data.domain, siteConfig(data.domain), target)
+                } else {
+                    getComm(data.domain)
+                }
             }
         }).catch(function (e) {
             openService()
         });
     }
+
+    function siteConfig(domain) {
+        switch (domain) {
+            case '500023': //qa
+                return "https://cxbb.bbin-asia.com/api-v2";
+            case '41': //prod
+                return "https://cxbb.chessrunroll.com/api-v2";
+            case '74': //demo
+                return "https://cxbb.mangochess.com/api-v2";
+            case '100004': //beta
+                return "https://eybe2.77num.com/api-v2";
+            case 'preset': //preset
+                return "https://yaboapi.canarycherrytart.com/api-v2";
+        }
+    }
+
+
 </script>
 
 </html>
