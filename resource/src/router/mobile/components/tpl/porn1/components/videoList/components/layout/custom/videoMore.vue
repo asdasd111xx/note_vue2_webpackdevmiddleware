@@ -99,7 +99,7 @@ export default {
     options() {
       return {
         slidesPerView: "auto",
-        slideToClickedSlide: true,
+        slideToClickedSlide: false,
         centeredSlides: true,
         centeredSlidesBounds: true,
         spaceBetween: 15,
