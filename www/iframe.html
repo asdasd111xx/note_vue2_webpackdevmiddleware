@@ -38,5 +38,11 @@
 </body>
 
 <script>
+    var ifConnected = window.navigator.onLine;
+    if (ifConnected) {
+        alert('Connection available');
+    } else {
+        alert('Connection not available');
+    }
     document.getElementById('main-iframe').src = `/mobile/launch?platform=G&t=${Date.now()}`;
 </script>
