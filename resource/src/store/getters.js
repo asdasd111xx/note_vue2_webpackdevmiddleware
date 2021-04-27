@@ -209,5 +209,5 @@ export default {
   getSwagConfig: state => state.swagConfig,
   getSwagBalance: state => state.swagBalance,
   getShowRedEnvelope: state => state.showRedEnvelope,
-  getWithdrawCheck: state => state.isWithdrawChecked
+  getWithdrawCheckStatus: state => state.withdrawCheckStatus
 };

@@ -454,5 +454,10 @@ export default {
   swagConfig: {},
   swagBalance: {},
   showRedEnvelope: false,
-  isWithdrawChecked: true // true 需要檢查 checkout Account
+
+  // 檢查 withdraw account
+  withdrawCheckStatus: {
+    bank: true,
+    account: true
+  }
 };

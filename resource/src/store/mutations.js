@@ -581,7 +581,10 @@ export default {
   [types.SET_REDENVELOPE](state, data) {
     state.showRedEnvelope = data;
   },
-  [types.SET_USER_WITHDRAWCHECK](state, data) {
-    state.isWithdrawChecked = data;
+  [types.SET_USER_WITHDRAWCHECKSTATUS](state, data) {
+    state.withdrawCheckStatus = {
+      ...state.withdrawCheckStatus,
+      ...data
+    };
   }
 };

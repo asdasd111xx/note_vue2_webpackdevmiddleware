@@ -2207,7 +2207,7 @@ export const actionGetServiceMaintain = ({ state, dispatch }) => {
     });
 };
 
-export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
+export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
   return axios({
     method: "get",
     url: "/api/v2/c/withdraw/check"
@@ -2216,29 +2216,52 @@ export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
       const { ret, result, msg, code } = res.data;
 
       if (!res || result !== "ok") {
-        this.actionSetGlobalMessage({
+        dispatch("actionSetGlobalMessage", {
           msg,
           code
         });
         return;
       }
-      let isCheckedFalse = false;
 
+      // 綁定銀行卡或錢包，目前不會再次呼叫 actionSetUserWithdrawCheck
+      // 只有在帳戶資料的頁面觸發此方法
+
+      let isAccountPassed = true;
+      let isBankPassed = ret.bank;
+
+      // Bank 綁定狀態
+      if (isBankPassed) {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          bank: true
+        });
+      } else {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          bank: false
+        });
+      }
+
+      // Loop 帳戶欄位
       Object.keys(ret).forEach(item => {
+        console.log(item, ret[item]);
+        // 有帳戶欄位未填過
         if (!ret[item] && item !== "bank") {
-          isCheckedFalse = true;
-          commit(types.SET_USER_WITHDRAWCHECK, false);
-          return;
+          isAccountPassed = false;
         }
       });
 
-      if (!isCheckedFalse) {
-        commit(types.SET_USER_WITHDRAWCHECK, true);
+      if (isAccountPassed) {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          account: true
+        });
+      } else {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          account: false
+        });
       }
     })
     .catch(error => {
       const { msg, code } = error.response.data;
-      this.actionSetGlobalMessage({
+      dispatch("actionSetGlobalMessage", {
         msg,
         code
       });

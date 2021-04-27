@@ -276,16 +276,6 @@ export default {
         !this.formData.phone.show &&
         !this.formData.withdraw_password.show
       ) {
-        // // For 億元
-        // if (!this.checkBankSwitch && this.themeTPL === "ey1") {
-        //   this.$router.replace(
-        //     `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=wallet`
-        //   );
-        // } else {
-        //   // For 鴨博/絲瓜
-        //   this.$router.back();
-        // }
-
         this.getDomainConfig().then(() => {
           // For 億元
           if (!this.checkBankSwitch && this.themeTPL === "ey1") {
@@ -390,8 +380,9 @@ export default {
         const _redirect = this.redirect;
 
         this.getDomainConfig().then(() => {
-          // 鴨/絲 只有開啟需設定提現資料才會進到帳戶資料頁面
-          // 沒有開啟 投注/轉帳前需設定提現資料
+          // 鴨/絲 只有 投注/轉帳前需設定提現資料 = true 才會進到帳戶資料頁面
+
+          // 當沒有開啟 投注/轉帳前需設定提現資料
           if (!this.withdraw_info_before_bet) {
             if (!this.checkBankSwitch || this.ub_before_bet_mode === 1) {
               this.$router.replace(
@@ -409,41 +400,6 @@ export default {
           this.$router.back();
           return;
         });
-
-        // axios({
-        //   method: "get",
-        //   url: "/api/v2/c/domain-config"
-        // })
-        //   .then(res => {
-        //     let withdraw_info_before_bet = false;
-
-        //     if (res && res.data && res.data.ret) {
-        //       withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
-        //     }
-
-        //     // 沒有開啟 投注/轉帳前需設定提現資料
-        //     if (!withdraw_info_before_bet) {
-        //       if (!this.checkBankSwitch) {
-        //         this.$router.push(
-        //           `/mobile/mcenter/bankCard?redirect=${_redirect}&type=wallet`
-        //         );
-        //         return;
-        //       } else {
-        //         this.$router.back();
-        //         return;
-        //       }
-        //     }
-
-        //     this.$router.back();
-        //     return;
-        //   })
-        //   .catch(res => {
-        //     this.actionSetGlobalMessage({
-        //       msg: res.response.data.msg,
-        //       code: res.response.data.code,
-        //       origin: "home"
-        //     });
-        //   });
 
         // 提現資料上一頁應回到原本位置 避免迴圈
         // this.$router.back();

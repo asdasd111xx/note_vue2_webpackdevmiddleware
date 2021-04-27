@@ -7,6 +7,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
 import swag from "@/mixins/mcenter/swag/swag";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   mixins: [swag],
@@ -89,7 +90,7 @@ export default {
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
       noticeData: "getNoticeData",
-      withdrawCheck: "getWithdrawCheck"
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     isAdult() {
       if (localStorage.getItem("content_rating")) {
@@ -498,98 +499,24 @@ export default {
           this.$router.push(`/mobile/mcenter/balanceTrans`);
           return;
 
-        // axios({
-        //   method: "get",
-        //   url: "/api/v2/c/domain-config"
-        // })
-        //   .then(res => {
-        //     let withdraw_info_before_bet = false;
-        //     if (res && res.data && res.data.ret) {
-        //       withdraw_info_before_bet =
-        //         res.data.ret.withdraw_info_before_bet;
-        //     }
-
-        //     if (withdraw_info_before_bet) {
-        //       this.checkWithdrawData(path);
-        //       return;
-        //     }
-
-        //     this.$router.push("/mobile/mcenter/balanceTrans");
-        //   })
-        //   .catch(res => {
-        //     this.actionSetGlobalMessage({
-        //       msg: res.data.msg,
-        //       code: res.data.code,
-        //       origin: "home"
-        //     });
-        //   });
-        // return;
+        // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_withdrawCheckMethod(path)
 
         case "withdraw":
           if (
-            this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
-            this.siteConfig.MOBILE_WEB_TPL === "sg1"
+            this.siteConfig.MOBILE_WEB_TPL === "ey1" &&
+            !this.withdrawCheckStatus.account
           ) {
-            this.$router.push(`/mobile/mcenter/withdraw`);
+            lib_withdrawCheckMethod("withdraw");
             return;
           }
-          this.checkWithdrawData(path);
+
+          this.$router.push(`/mobile/mcenter/withdraw`);
           return;
 
         default:
           this.$router.push(`/mobile/mcenter/${path}`);
           return;
       }
-    },
-    checkWithdrawData(target) {
-      if (this.isCheckWithdraw) {
-        return;
-      }
-      this.isCheckWithdraw = true;
-
-      axios({
-        method: "get",
-        url: "/api/v2/c/withdraw/check"
-      })
-        .then(res => {
-          this.isCheckWithdraw = false;
-          if (res.data.result === "ok") {
-            let check = true;
-
-            Object.keys(res.data.ret).forEach(i => {
-              if (i !== "bank" && !res.data.ret[i]) {
-                this.actionSetGlobalMessage({
-                  msg:
-                    target === "withdraw"
-                      ? "请先完成提现信息"
-                      : "请先设定提现资料",
-                  cb: () => {
-                    {
-                      this.$router.push("/mobile/withdrawAccount");
-                    }
-                  }
-                });
-                check = false;
-                return;
-              }
-            });
-
-            if (check) {
-              this.$router.push(`/mobile/mcenter/${target}`);
-            }
-          } else {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.msg.code
-            });
-          }
-        })
-        .catch(res => {
-          if (res.response.data) {
-            this.actionSetGlobalMessage({ msg: res.response.data.msg });
-          }
-          this.isCheckWithdraw = false;
-        });
     },
     // 開啟遊戲
     onOpenGame(game) {
@@ -938,11 +865,8 @@ export default {
           this.isLoading = true;
 
           // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
-          if (!this.withdrawCheck && !game.isMaintain) {
-            this.actionSetGlobalMessage({
-              type: "withdrawcheck",
-              origin: "home"
-            });
+          if (!game.isMaintain && !this.withdrawCheckStatus.account) {
+            lib_withdrawCheckMethod("home");
             return;
           }
 

@@ -435,6 +435,7 @@ import message from "@/router/mobile/components/common/message";
 import yaboRequest from "@/api/yaboRequest";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   components: {
@@ -494,7 +495,8 @@ export default {
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
       siteConfig: "getSiteConfig",
-      showRedEnvelope: "getShowRedEnvelope"
+      showRedEnvelope: "getShowRedEnvelope",
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
       const style =
@@ -811,63 +813,11 @@ export default {
       });
     },
     handleSubmit() {
-      if (this.themeTPL === "ey1") {
-        // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
-        this.withdrawCheck().then(res => {
-          if (res === "ok") {
-            this.sendBalanceTran();
-          }
-        });
+      if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
+        lib_withdrawCheckMethod("balanceTrans");
       } else {
         this.sendBalanceTran();
       }
-    },
-    withdrawCheck() {
-      return axios({
-        method: "get",
-        url: "/api/v2/c/withdraw/check"
-      })
-        .then(res => {
-          if (res.data.result === "ok") {
-            let check = true;
-
-            Object.keys(res.data.ret).forEach(i => {
-              if (i !== "bank" && !res.data.ret[i]) {
-                this.actionSetGlobalMessage({
-                  msg: "请先设定提现资料",
-                  cb: () => {
-                    {
-                      this.$router.push(
-                        "/mobile/withdrawAccount?redirect=balanceTrans"
-                      );
-                    }
-                  }
-                });
-                check = false;
-                return;
-              }
-            });
-
-            if (check) {
-              return "ok";
-            }
-          } else {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-            });
-            return;
-          }
-        })
-        .catch(res => {
-          if (res.response.data) {
-            this.actionSetGlobalMessage({
-              msg: res.response.data.msg,
-              code: res.response.data.code
-            });
-          }
-          return;
-        });
     },
     sendBalanceTran() {
       // 阻擋連續點擊

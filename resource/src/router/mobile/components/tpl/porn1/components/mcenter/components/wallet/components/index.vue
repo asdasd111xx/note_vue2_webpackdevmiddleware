@@ -289,6 +289,7 @@ import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   components: {
@@ -322,7 +323,8 @@ export default {
       hasBank: "getHasBank",
       rechargeConfig: "getRechargeConfig",
       swagConfig: "getSwagConfig",
-      swagBalance: "getSwagBalance"
+      swagBalance: "getSwagBalance",
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
       const style =
@@ -409,32 +411,7 @@ export default {
                 this.$router.push("/mobile/mcenter/balanceTrans");
                 break;
 
-              // axios({
-              //   method: "get",
-              //   url: "/api/v2/c/domain-config"
-              // })
-              //   .then(res => {
-              //     let withdraw_info_before_bet = false;
-              //     if (res && res.data && res.data.ret) {
-              //       withdraw_info_before_bet =
-              //         res.data.ret.withdraw_info_before_bet;
-              //     }
-
-              //     if (withdraw_info_before_bet) {
-              //       this.checkWithdrawData("balanceTrans");
-              //       return;
-              //     }
-
-              //     this.$router.push("/mobile/mcenter/balanceTrans");
-              //   })
-              //   .catch(res => {
-              //     this.actionSetGlobalMessage({
-              //       msg: res.data.msg,
-              //       code: res.data.code,
-              //       origin: "wallet"
-              //     });
-              //   });
-              // break;
+              // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_withdrawCheckMethod(path)
             }
           }
         },
@@ -444,15 +421,12 @@ export default {
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
-            switch (this.themeTPL) {
-              case "porn1":
-              case "sg1":
-                this.$router.push("/mobile/mcenter/withdraw");
-                break;
-
-              case "ey1":
-                this.checkWithdrawData("withdraw");
-                break;
+            if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
+              lib_withdrawCheckMethod("withdraw");
+              return;
+            } else {
+              this.$router.push("/mobile/mcenter/withdraw");
+              return;
             }
           }
         },
@@ -473,16 +447,12 @@ export default {
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
-            // this.$router.push("/mobile/mcenter/bankCard");
-            switch (this.themeTPL) {
-              case "porn1":
-              case "sg1":
-                this.$router.push("/mobile/mcenter/bankCard");
-                break;
-
-              case "ey1":
-                this.checkWithdrawData("bankCard");
-                break;
+            if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
+              lib_withdrawCheckMethod("wallet");
+              return;
+            } else {
+              this.$router.push("/mobile/mcenter/bankCard");
+              return;
             }
           }
         }
@@ -533,63 +503,6 @@ export default {
       "actionGetMemInfoV3",
       "actionSetUserBalance"
     ]),
-    checkWithdrawData(target) {
-      if (this.isCheckWithdraw) {
-        return;
-      }
-      this.isCheckWithdraw = true;
-      // 提現資料補齊跳轉檢查
-      axios({
-        method: "get",
-        url: "/api/v2/c/withdraw/check"
-      })
-        .then(res => {
-          this.isCheckWithdraw = false;
-
-          if (res.data.result === "ok") {
-            let check = true;
-
-            Object.keys(res.data.ret).forEach(i => {
-              if (i !== "bank" && !res.data.ret[i]) {
-                this.actionSetGlobalMessage({
-                  msg:
-                    target === "withdraw"
-                      ? "请先完成提现信息"
-                      : "请先设定提现资料",
-                  cb: () => {
-                    {
-                      this.$router.push(
-                        "/mobile/withdrawAccount?redirect=wallet"
-                      );
-                    }
-                  }
-                });
-                check = false;
-                return;
-              }
-            });
-
-            if (check) {
-              this.$router.push(`/mobile/mcenter/${target}`);
-            }
-          } else {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-            });
-          }
-        })
-        .catch(res => {
-          this.isCheckWithdraw = false;
-
-          if (res.response.data) {
-            this.actionSetGlobalMessage({
-              msg: res.response.data.msg,
-              code: res.response.data.code
-            });
-          }
-        });
-    },
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡
