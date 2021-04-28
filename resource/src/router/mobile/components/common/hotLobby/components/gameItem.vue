@@ -13,6 +13,7 @@ import openGame from "@/lib/open_game";
 import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   props: {
@@ -50,7 +51,7 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       BBOSDomain: "getBBOSDomain",
-      withdrawCheck: "getWithdrawCheck"
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
       const style =
@@ -102,14 +103,11 @@ export default {
       }
 
       this.isShowLoading = true;
-      // 0421 進入遊戲前檢查withdrawcheck
-      if (!this.withdrawCheck) {
-        this.actionSetGlobalMessage({
-          type: "withdrawcheck",
-          origin: "home"
-        });
-        return;
-      }
+      // 0421 進入遊戲前檢查withdrawcheck (億元無熱門大廳，先不執行檢查，日後若加需再考慮是否維護)
+      // if (!this.withdrawCheckStatus.account) {
+      //   lib_withdrawCheckMethod("home");
+      //   return;
+      // }
 
       const openGameSuccessFunc = res => {
         this.isShowLoading = false;

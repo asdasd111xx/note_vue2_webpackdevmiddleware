@@ -70,6 +70,7 @@ import openGame from "@/lib/open_game";
 import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   components: {
@@ -134,7 +135,7 @@ export default {
       curLang: "getCurLang",
       siteConfig: "getSiteConfig",
       BBOSDomain: "getBBOSDomain",
-      withdrawCheck: "getWithdrawCheck"
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -429,11 +430,8 @@ export default {
       this.isShowLoading = true;
 
       // 0421 進入遊戲前檢查withdrawcheck
-      if (!this.withdrawCheck && !this.isVendorMaintain) {
-        this.actionSetGlobalMessage({
-          type: "withdrawcheck",
-          origin: "home"
-        });
+      if (!this.withdrawCheckStatus.account && !this.isVendorMaintain) {
+        lib_withdrawCheckMethod("home");
         return;
       }
 

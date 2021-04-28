@@ -76,6 +76,7 @@ import axios from "axios";
 import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   data() {
@@ -131,11 +132,8 @@ export default {
                   return;
                 } else {
                   // 0421 進入遊戲前檢查withdrawcheck
-                  if (!this.withdrawCheck) {
-                    this.actionSetGlobalMessage({
-                      type: "withdrawcheck",
-                      origin: "home"
-                    });
+                  if (!this.withdrawCheckStatus.account) {
+                    lib_withdrawCheckMethod("home");
                     return;
                   }
 
@@ -343,7 +341,7 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       webInfo: "getWebInfo",
-      withdrawCheck: "getWithdrawCheck"
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();

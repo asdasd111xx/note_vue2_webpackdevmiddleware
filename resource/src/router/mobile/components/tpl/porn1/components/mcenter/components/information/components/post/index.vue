@@ -66,11 +66,13 @@
 
 <script>
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { API_GET_POST } from "@/config/api";
 import ajax from "@/lib/ajax";
 import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/message/message";
+import axios from "axios";
+
 export default {
   mixins: [mixin],
   data() {
@@ -95,31 +97,41 @@ export default {
       return this.postData.find(post => post.id === this.$route.query.pid);
     }
   },
-  methods: {},
+  methods: { ...mapActions(["actionSetGlobalMessage"]) },
   created() {
-    ajax({
+    axios({
       method: "get",
-      url: API_GET_POST,
-      success: ({ result, ret }) => {
-        if (result !== "ok") {
-          return;
-        }
-
-        const categoryList = {
-          0: "",
-          1: "最新",
-          2: "重要",
-          3: "活动",
-          4: "维护"
-        };
-
-        this.postData = ret.map(item => ({
-          ...item,
-          categoryText: categoryList[item.category]
-        }));
-        this.hasReceive = true;
+      url: "/api/v1/c/player/announcement",
+      params: {
+        page: 0 //0 首頁與優惠頁, 1首頁, 2優惠頁
       }
-    });
+    })
+      .then(res => {
+        if (res && res.data && res.data.result === "ok") {
+          if (!res.data.ret || !res.data.ret.length > 0) {
+            this.postData = [];
+            return;
+          }
+
+          const categoryList = {
+            0: "",
+            1: "最新",
+            2: "重要",
+            3: "活动",
+            4: "维护"
+          };
+
+          this.postData = res.data.ret.map(item => ({
+            ...item,
+            categoryText: categoryList[item.category]
+          }));
+          this.hasReceive = true;
+        }
+      })
+      .catch(error => {
+        this.postData = [];
+        this.actionSetGlobalMessage({ msg: error.data.msg });
+      });
   }
 };
 </script>

@@ -10,6 +10,7 @@ import {
   API_MCENTER_USER_CONFIG,
   API_QRCODE
 } from "@/config/api";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 import EST from "@/lib/EST";
 import Vue from "vue";
@@ -31,9 +32,8 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
-import version from "@/config/version.json";
-import { getCookie, setCookie } from "@/lib/cookie";
 import { v4 as uuidv4 } from "uuid";
+import version from "@/config/version.json";
 
 let memstatus = true;
 let agentstatus = true;
@@ -57,46 +57,49 @@ export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
   // 模式：一般/預覽
   const mode = state.preview ? "view" : "comm";
   const status = Vue.cookie.get("newsite") ? "New" : "";
+  let configInfo = {};
 
-  return common.backstageSetting({
-    url: `/tpl/${domain}/${mode}${status}.json`,
-    params: {
-      v: timestamp
-    },
-    success: response => {
-      // 超過預覽時間，強制導回一般模式
-      if (
-        response.view_time &&
-        Vue.moment() - Vue.moment(response.view_time) > 600000
-      ) {
-        alert("错误讯息 : 此预览已超过10分钟有效期!");
-        window.location.href = "/";
-        return;
-      }
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
 
-      commit(types.SETWEBINFO, response);
-      if (Vue.cookie.get("page") === "joinAgent" && state.loginStatus) {
-        if (response.pageData[response.page[0].pid].page_type !== "custom") {
+  return goLangApiRequest({
+    method: "get",
+    url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Common/List?t=${Date.now()}`
+  })
+    .then(res => {
+      const { errorCode, status, data } = res;
+
+      if (status === "000" && errorCode === "00") {
+        console.log(data);
+        commit(types.SETWEBINFO, data);
+
+        if (Vue.cookie.get("page") === "joinAgent" && state.loginStatus) {
+          if (response.pageData[response.page[0].pid].page_type !== "custom") {
+            dispatch("actionChangePage", {
+              page: response.pageData[response.page[0].pid].page_type,
+              type: "custom"
+            });
+            return;
+          }
           dispatch("actionChangePage", {
-            page: response.pageData[response.page[0].pid].page_type,
+            page: response.pageData[response.page[0].pid].pid,
             type: "custom"
           });
-          return;
         }
-        dispatch("actionChangePage", {
-          page: response.pageData[response.page[0].pid].pid,
-          type: "custom"
-        });
       }
-    },
-    fail: () => {
+    })
+    .catch(error => {
       // 無預覽檔案，強制導回一般模式
       if (state.preview) {
         alert("错误讯息 : 无版面编辑资料，请先进入编辑页后再进行预览！");
         window.location.href = "/";
       }
-    }
-  });
+    });
 };
 
 // 設定為預覽模式
@@ -1004,7 +1007,7 @@ export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
 export const actionSetPost = ({ commit }, postType = 1) =>
   member.post({
     params: {
-      page: postType // page參數: 1(預設)：首頁+首頁＆優惠頁，2：優惠頁+首頁＆優惠頁
+      page: postType //0 首頁與優惠頁, 1首頁, 2優惠頁
     },
     success: response => {
       commit(types.SETPOST, response);
@@ -1273,7 +1276,16 @@ export const actionContactUs = (_, postData) =>
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     手機資料
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
+export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
   // const status = Vue.cookie.get("newsite") ? "New" : "";
   const status = "";
   let manifest = document.createElement("link");
@@ -1285,17 +1297,22 @@ export const actionGetMobileInfo = ({ commit, state }, datatpl) => {
     document.querySelector("head").append(manifest);
   }
 
-  return ajax({
-    url: `/tpl/${state.webDomain.domain}/mobile${status}.json`,
+  return goLangApiRequest({
     method: "get",
-    success: response => {
-      const { result, data } = response;
-
+    url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Common/Jackfruit/List"
+  })
+    .then(res => {
+      const { result, data } = res.data;
       if (result === "ok") {
         commit(types.SETMOBILEINFO, data);
       }
-    }
-  });
+    })
+    .catch(error => {
+      dispatch("actionSetGlobalMessage", {
+        msg: error.response?.data?.msg,
+        code: error.response?.data?.code
+      });
+    });
 };
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -1916,6 +1933,8 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     spaceId = 1;
   } else if (configInfo.MOBILE_WEB_TPL === "sg1") {
     spaceId = 14;
+  } else {
+    return;
   }
 
   const getV2Token = uri => {
@@ -2188,40 +2207,61 @@ export const actionGetServiceMaintain = ({ state, dispatch }) => {
     });
 };
 
-export const actionSetUserWithdrawCheck = ({ commit, dispatch }) => {
+export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
   return axios({
     method: "get",
     url: "/api/v2/c/withdraw/check"
   })
     .then(res => {
       const { ret, result, msg, code } = res.data;
-      console.log(res.data);
 
       if (!res || result !== "ok") {
-        this.actionSetGlobalMessage({
+        dispatch("actionSetGlobalMessage", {
           msg,
           code
         });
         return;
       }
-      let isCheckedFalse = false;
 
+      // 綁定銀行卡或錢包，目前不會再次呼叫 actionSetUserWithdrawCheck
+      // 只有在帳戶資料的頁面觸發此方法
+
+      let isAccountPassed = true;
+      let isBankPassed = ret.bank;
+
+      // Bank 綁定狀態
+      if (isBankPassed) {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          bank: true
+        });
+      } else {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          bank: false
+        });
+      }
+
+      // Loop 帳戶欄位
       Object.keys(ret).forEach(item => {
         console.log(item, ret[item]);
+        // 有帳戶欄位未填過
         if (!ret[item] && item !== "bank") {
-          isCheckedFalse = true;
-          commit(types.SET_USER_WITHDRAWCHECK, false);
-          return;
+          isAccountPassed = false;
         }
       });
 
-      if (!isCheckedFalse) {
-        commit(types.SET_USER_WITHDRAWCHECK, true);
+      if (isAccountPassed) {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          account: true
+        });
+      } else {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          account: false
+        });
       }
     })
     .catch(error => {
       const { msg, code } = error.response.data;
-      this.actionSetGlobalMessage({
+      dispatch("actionSetGlobalMessage", {
         msg,
         code
       });

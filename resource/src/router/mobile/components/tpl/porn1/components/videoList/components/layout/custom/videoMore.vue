@@ -99,7 +99,7 @@ export default {
     options() {
       return {
         slidesPerView: "auto",
-        slideToClickedSlide: true,
+        slideToClickedSlide: false,
         centeredSlides: true,
         centeredSlidesBounds: true,
         spaceBetween: 15,
@@ -186,7 +186,11 @@ export default {
           return;
         }
 
-        this.videoList = [...response.result.data];
+        if (response.result.data && response.result.data.length > 0) {
+          this.videoList = [...response.result.data];
+        } else {
+          this.videoList = [];
+        }
         this.current += 1;
 
         this.total = response.result.last_page;
