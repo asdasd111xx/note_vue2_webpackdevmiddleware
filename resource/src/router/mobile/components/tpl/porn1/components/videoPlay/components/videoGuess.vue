@@ -57,6 +57,12 @@ export default {
   components: {
     videoTag
   },
+  props: {
+    tags: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
       source: this.$route.query.source,
@@ -102,7 +108,8 @@ export default {
     const obj = {
       url: `/video/guess`,
       params: {
-        siteId: this.siteId
+        siteId: this.siteId,
+        tags: this.tags
       }
     };
     // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }

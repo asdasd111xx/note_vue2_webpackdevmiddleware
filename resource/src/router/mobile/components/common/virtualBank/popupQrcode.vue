@@ -49,7 +49,11 @@
               ● 没有购宝钱包帐号?
               <span
                 :class="$style['url']"
-                @click="openLink('https://www.gamewallet.asia/')"
+                @click="
+                  openLink(
+                    'https://www.fafa0858.com/version.php?fn=gp_a&latest'
+                  )
+                "
                 >立即申请</span
               >
             </div>
