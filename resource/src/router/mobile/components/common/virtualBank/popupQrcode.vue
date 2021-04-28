@@ -36,7 +36,9 @@
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
             <div>
               ● 没有CGPay帐号?
-              <span :class="$style['url']" @click="goToCGPBinding()"
+              <span
+                :class="$style['url']"
+                @click="handleClickLink(virtualBankId)"
                 >立即申请</span
               >
             </div>
@@ -49,11 +51,7 @@
               ● 没有购宝钱包帐号?
               <span
                 :class="$style['url']"
-                @click="
-                  openLink(
-                    'https://www.fafa0858.com/version.php?fn=gp_a&latest'
-                  )
-                "
+                @click="handleClickLink(virtualBankId)"
                 >立即申请</span
               >
             </div>
@@ -130,7 +128,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "getCustomerServiceUrl"]),
     closePopup() {
       this.$emit("close");
     },
@@ -184,9 +182,6 @@ export default {
           this.actionSetGlobalMessage({ msg: error.response.data.msg });
           this.closePopup();
         });
-    },
-    openLink(url) {
-      window.open(url);
     },
     downloadImage(target) {
       //   <a :href="qrcodeLink" :download="qrcodeLink" target="_blank">
@@ -250,12 +245,42 @@ export default {
         }
       }
     },
-    goToCGPBinding() {
-      if (["porn1", "sg1"].includes(this.themeTPL)) {
-        this.openLink("https://cgpayintroduction.azurewebsites.net/index.aspx");
-      }
-      if (["ey1"].includes(this.themeTPL)) {
-        this.openLink("http://oinbox.io");
+    handleClickLink(id) {
+      switch (id) {
+        case 21:
+          if (["porn1", "sg1"].includes(this.themeTPL)) {
+            // "https://cgpayintroduction.azurewebsites.net/index.aspx"
+
+            this.getCustomerServiceUrl({
+              urlName: "cgp_introduce",
+              needToken: false
+            }).then(res => {
+              window.open(res.uri);
+            });
+          }
+          if (["ey1"].includes(this.themeTPL)) {
+            // http://oinbox.io
+
+            this.getCustomerServiceUrl({
+              urlName: "cgp_apply",
+              needToken: false
+            }).then(res => {
+              window.open(res.uri);
+            });
+          }
+          break;
+
+        case 37:
+          this.getCustomerServiceUrl({
+            urlName: "game_wallet",
+            needToken: false
+          }).then(res => {
+            window.open(res.uri);
+          });
+          break;
+
+        default:
+          break;
       }
     }
   },

@@ -175,10 +175,6 @@
             >
               {{ item.text }}
 
-              <a v-if="item.hasLink" :href="item.dataObj.src" target="_blank">
-                {{ item.dataObj.text }}
-              </a>
-
               <span v-if="item.hasCallback" @click="item.dataObj.cb">
                 {{ item.dataObj.text }}
               </span>
@@ -498,7 +494,11 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "getCustomerServiceUrl"
+    ]),
     handleClickService() {
       localStorage.setItem("bankCardType", "wallet");
       this.$router.push("/mobile/service?redirect=bankCard");
@@ -839,9 +839,16 @@ export default {
           {
             key: "CGPay",
             text: `没有${this.selectTarget.walletName}帐号？`,
-            hasLink: true,
+            hasCallback: true,
             dataObj: {
-              src: "https://cgpayintroduction.azurewebsites.net/index.aspx",
+              cb: () => {
+                this.getCustomerServiceUrl({
+                  urlName: "cgp_introduce",
+                  needToken: false
+                }).then(res => {
+                  window.open(res.uri);
+                });
+              },
               text: "立即申请"
             }
           }
@@ -868,14 +875,21 @@ export default {
         //     }
         //   }
         // };
-        //  this.walletTipInfo = [
+        // this.walletTipInfo = [
         //   _data,
         //   {
         //     key: "goBao",
         //     text: `没有${this.selectTarget.walletName}？`,
-        //     hasLink: true,
+        //     hasCallback: true,
         //     dataObj: {
-        //       src: "https://www.gamewallet.asia/",
+        //       cb: () => {
+        //         this.getCustomerServiceUrl({
+        //           urlName: "game_wallet",
+        //           needToken: false
+        //         }).then(res => {
+        //           window.open(res.uri);
+        //         });
+        //       },
         //       text: "立即申请"
         //     }
         //   }
@@ -891,9 +905,16 @@ export default {
           {
             key: "goBao",
             text: `没有${this.selectTarget.walletName}帐号？`,
-            hasLink: true,
+            hasCallback: true,
             dataObj: {
-              src: "https://www.fafa0858.com/version.php?fn=gp_a&latest",
+              cb: () => {
+                this.getCustomerServiceUrl({
+                  urlName: "game_wallet",
+                  needToken: false
+                }).then(res => {
+                  window.open(res.uri);
+                });
+              },
               text: "立即申请"
             }
           }

@@ -2207,6 +2207,48 @@ export const actionGetServiceMaintain = ({ state, dispatch }) => {
     });
 };
 
+// 取得外部網址連結　C02.272
+export const getCustomerServiceUrl = ({ state }, params) => {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigOfficial.preset;
+  }
+
+  return goLangApiRequest({
+    method: "get",
+    url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+    params: {
+      lang: "zh-cn",
+      ...params
+    }
+  })
+    .then(res => {
+      const { status, data, msg, errorCode } = res;
+
+      if (status !== "000" && errorCode !== "00") {
+        dispatch("actionSetGlobalMessage", {
+          msg,
+          code
+        });
+        return Promise.reject("error");
+      }
+
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg, code } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg,
+        code
+      });
+    });
+};
+
 export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
   return axios({
     method: "get",
