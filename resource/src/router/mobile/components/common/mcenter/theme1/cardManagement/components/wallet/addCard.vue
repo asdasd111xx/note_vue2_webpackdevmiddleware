@@ -889,7 +889,7 @@ export default {
             text: `没有${this.selectTarget.walletName}帐号？`,
             hasLink: true,
             dataObj: {
-              src: "https://www.gamewallet.asia/",
+              src: "https://www.fafa0858.com/version.php?fn=gp_a&latest",
               text: "立即申请"
             }
           }
