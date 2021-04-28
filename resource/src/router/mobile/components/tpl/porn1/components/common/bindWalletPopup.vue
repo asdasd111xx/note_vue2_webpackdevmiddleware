@@ -1,4 +1,5 @@
 <template>
+  <!-- 目前只有億元-存款綁 USDT 會使用到-->
   <div>
     <template v-if="!showPopStatus.isShow">
       <div :class="$style['popup']">
@@ -39,7 +40,7 @@
             </div>
 
             <!-- CGPay -->
-            <template v-if="walletType === 'CGPay'">
+            <!-- <template v-if="walletType === 'CGPay'">
               <div :class="$style['info-item']">
                 <div :class="$style['input-title']">
                   {{ formData["CGPPwd"].title }}
@@ -64,14 +65,14 @@
 
                 <p>●<span @click="tipMethod(1)"> CGP是什么?</span></p>
 
-                <!-- <p>●<span @click="tipMethod(2)"> 如何透过CGP存款?</span></p> -->
+                <p>●<span @click="tipMethod(2)"> 如何透过CGP存款?</span></p>
 
                 <p>
                   ● 沒有CGP帐号?
                   <span @click="tipMethod(3)">立即申请</span>
                 </p>
               </div>
-            </template>
+            </template> -->
 
             <!-- USDT -->
             <template v-if="walletType === 'USDT'">
@@ -85,7 +86,7 @@
                     :class="$style['item']"
                     @click="item.onClick"
                   >
-                    <img :src="item.iconSrc" :alt="item.alias" />
+                    <img :src="$getCdnPath(item.iconSrc)" :alt="item.alias" />
                     <span>{{ item.name }}</span>
                   </div>
                 </div>
@@ -100,10 +101,10 @@
               >
             </template>
 
-            <template v-if="walletType === 'CGPay'">
+            <!-- <template v-if="walletType === 'CGPay'">
               <span @click="closePopup">取消</span>
               <span :class="$style['submit']" @click="submitByToken">送出</span>
-            </template>
+            </template> -->
           </div>
         </div>
       </div>
@@ -124,7 +125,6 @@
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
-import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -153,30 +153,6 @@ export default {
           placeholder: "必填"
         }
       },
-      urls: [],
-      usdtTipsList: [
-        {
-          name: "火币",
-          iconSrc: this.$getCdnPath(
-            `/static/image/common/mcenter/deposit/ic_huobi.png`
-          ),
-          onClick: () => {
-            // window.open("https://www.huobi.pr/");
-            window.open(this.urls[0]);
-          }
-        }
-        // {
-        //   name: "58COIN",
-        //   iconSrc: this.$getCdnPath(
-        //     `/static/image/common/mcenter/deposit/ic_58coin.png`
-        //   ),
-        //   onClick: () => {
-        //     // window.open("https://www.binancezh.pro/");
-
-        //     window.open(this.urls[1]);
-        //   }
-        // }
-      ],
 
       // 彈窗顯示狀態統整
       showPopStatus: {
@@ -214,24 +190,48 @@ export default {
       default:
         break;
     }
-
-    this.getUrl({ urlName: "huobi" }).then(url => {
-      if (!url) return;
-      this.urls[0] = url;
-    });
-
-    // this.getUrl({ urlName: "58coin" }).then(url => {
-    //   if (!url) return;
-    //   this.urls[1] = url;
-    // });
   },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    })
+    }),
+    usdtTipsList() {
+      let tips = [
+        {
+          name: "火币",
+          iconSrc: `/static/image/common/mcenter/deposit/ic_huobi.png`,
+          onClick: () => {
+            this.getCustomerServiceUrl({
+              urlName: "huobi",
+              needToken: false
+            }).then(res => {
+              window.open(res.uri);
+            });
+          }
+        }
+        // {
+        //   name: "58COIN",
+        //   iconSrc: `/static/image/common/mcenter/deposit/ic_58coin.png`,
+        //   onClick: () => {
+        //     this.getCustomerServiceUrl({
+        //       urlName: "58coin",
+        //       needToken: false
+        //     }).then(res => {
+        //       window.open(res.uri);
+        //     });
+        //   }
+        // }
+      ];
+
+      return tips;
+    }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionVerificationFormData",
+      "getCustomerServiceUrl"
+    ]),
     tipMethod(index) {
       switch (index) {
         case 0:
@@ -379,26 +379,6 @@ export default {
       // if (this.selectTarget.bank_id === 21 && !this.formData["CGPPwd"].value) {
       //   lock = true;
       // }
-    },
-    getUrl({ urlName }) {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&needToken=false`,
-        params: {
-          urlName
-        }
-      }).then(res => {
-        const { data, status, errorCode } = res;
-        if (status !== "000" || errorCode !== "00") {
-          return Promise.resolve(false);
-        }
-
-        const url = data.uri
-          ? data.uri
-          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
-
-        return Promise.resolve(url);
-      });
     }
   }
 };
