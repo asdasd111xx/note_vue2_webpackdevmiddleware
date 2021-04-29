@@ -9,11 +9,14 @@ import store from "@/store";
 
 export default target => {
   console.log(target);
+
   console.warn(store.state.webInfo);
+  console.warn(store.state.mobileInfo);
+
   const curLang = store.state.curLang || "zh-cn";
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
-  const linkItem = target?.linkItem?.[curLang] || target?.linkItem;
+  const linkItem = target?.linkItem?.[curLang];
 
   if (process.env.NODE_ENV === "development") {
     console.log(
@@ -128,6 +131,22 @@ export default target => {
       return;
     }
 
+    // 在線客服
+    if (/^service*/g.test(linkTo)) {
+      let url = store.state.mobileInfo.service.url;
+      window.open(url);
+
+      // 在線客服流量分析事件
+      window.dataLayer.push({
+        dep: 2,
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
+      });
+      return;
+    }
+
     return;
   }
 
@@ -148,19 +167,19 @@ export default target => {
         router.push("/mobile/home");
         return;
 
-      case "service":
-        let url = store.state.webInfo.on_service_url;
-        window.open(url);
+      // case "service":
+      //   let url = store.state.mobileInfo.service.url;
+      //   window.open(url);
 
-        // 在線客服流量分析事件
-        window.dataLayer.push({
-          dep: 2,
-          event: "ga_click",
-          eventCategory: "online_service",
-          eventAction: "online_service_contact",
-          eventLabel: "online_service_contact"
-        });
-        return;
+      //   // 在線客服流量分析事件
+      //   window.dataLayer.push({
+      //     dep: 2,
+      //     event: "ga_click",
+      //     eventCategory: "online_service",
+      //     eventAction: "online_service_contact",
+      //     eventLabel: "online_service_contact"
+      //   });
+      //   return;
 
       // 需登入
       case "deposit":

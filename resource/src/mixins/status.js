@@ -33,8 +33,9 @@ export default {
       let on_service_url =
         store &&
         store.state &&
-        store.state.webInfo &&
-        store.state.webInfo.on_service_url;
+        store.state.mobileInfo &&
+        store.state.mobileInfo.service &&
+        store.state.mobileInfo.service.url;
       localStorage.setItem("service-url", on_service_url || "");
 
       if (this.domain.site === "ey1") {
