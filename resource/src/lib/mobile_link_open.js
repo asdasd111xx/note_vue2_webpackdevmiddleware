@@ -291,13 +291,13 @@ export default target => {
     }
 
     // 0421 進入遊戲前檢查withdrawcheck
-    if (!store.state.isWithdrawChecked) {
-      store.dispatch("actionSetGlobalMessage", {
-        type: "withdrawcheck",
-        origin: "home"
-      });
-      return;
-    }
+    // if (!store.state.isWithdrawChecked) {
+    //   store.dispatch("actionSetGlobalMessage", {
+    //     type: "withdrawcheck",
+    //     origin: "home"
+    //   });
+    //   return;
+    // }
 
     const openGameSuccessFunc = res => {};
 
