@@ -8,10 +8,12 @@ import router from "@/router";
 import store from "@/store";
 
 export default target => {
+  console.log(target);
+  console.warn(store.state.webInfo);
   const curLang = store.state.curLang || "zh-cn";
-  const linkType = target.linkType[curLang];
-  const linkTo = target.linkTo[curLang];
-  const linkItem = target.linkItem[curLang];
+  const linkType = target?.linkType?.[curLang] || target?.linkType;
+  const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
+  const linkItem = target?.linkItem?.[curLang] || target?.linkItem;
 
   if (process.env.NODE_ENV === "development") {
     console.log(
@@ -26,6 +28,7 @@ export default target => {
 
   // 空白連結
   if (!linkType || linkType === "nolink") {
+    console.log("直接 return 不顯示");
     return;
   }
 
