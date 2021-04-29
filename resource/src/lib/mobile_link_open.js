@@ -31,7 +31,6 @@ export default target => {
 
   // 空白連結
   if (!linkType || linkType === "nolink") {
-    console.log("直接 return 不顯示");
     return;
   }
 
@@ -167,19 +166,21 @@ export default target => {
         router.push("/mobile/home");
         return;
 
-      // case "service":
-      //   let url = store.state.mobileInfo.service.url;
-      //   window.open(url);
+      case "service":
+        // 是否統一同安卓導至客服的頁面 ?
 
-      //   // 在線客服流量分析事件
-      //   window.dataLayer.push({
-      //     dep: 2,
-      //     event: "ga_click",
-      //     eventCategory: "online_service",
-      //     eventAction: "online_service_contact",
-      //     eventLabel: "online_service_contact"
-      //   });
-      //   return;
+        let url = store.state.mobileInfo.service.url;
+        window.open(url);
+
+        // 在線客服流量分析事件
+        window.dataLayer.push({
+          dep: 2,
+          event: "ga_click",
+          eventCategory: "online_service",
+          eventAction: "online_service_contact",
+          eventLabel: "online_service_contact"
+        });
+        return;
 
       // 需登入
       case "deposit":
@@ -224,17 +225,18 @@ export default target => {
   }
 
   const gameList = [
+    "sport",
     "live",
     "casino",
     "card",
     "lottery",
     "mahjong",
-    "lg_ey_casino",
+    // "lg_ey_casino",
     "lg_yb_casino",
-    "lg_sg_casino",
-    "lg_yb_card",
-    "lg_ey_card",
-    "lg_sg_card"
+    // "lg_sg_casino",
+    "lg_yb_card"
+    // "lg_ey_card",
+    // "lg_sg_card"
   ];
 
   // 遊戲連結
@@ -242,11 +244,11 @@ export default target => {
     // 熱門
     switch (linkTo) {
       case "lg_yb_card":
-      case "lg_ey_card":
-      case "lg_sg_card":
+      // case "lg_ey_card":
+      // case "lg_sg_card":
       case "lg_yb_casino":
-      case "lg_ey_casino":
-      case "lg_sg_casino":
+        // case "lg_ey_casino":
+        // case "lg_sg_casino":
         router.push(`/mobile/hotLobby/${linkTo}`);
         return;
       default:
@@ -257,6 +259,10 @@ export default target => {
     let code = linkItem || "";
     let vendor = linkTo;
     switch (linkType) {
+      case "sport":
+        kind = 1;
+        break;
+
       case "live":
         kind = 2;
         break;
@@ -282,6 +288,7 @@ export default target => {
     }
 
     const gameData = store.state.gameData;
+
     let activedGame = Object.keys(gameData).some(obj => {
       if (gameData[obj].vendor === linkTo && gameData[obj].kind === kind) {
         linkTitle = gameData[obj].alias;
