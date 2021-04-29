@@ -119,6 +119,7 @@ import ajax from "@/lib/ajax";
 import { API_FEEDBACK_REPLIED_LIST } from "@/config/api";
 import EST from "@/lib/EST";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   filters: {
@@ -217,8 +218,11 @@ export default {
       });
     },
     getCurrentMassage(content) {
+      console.log(content);
       this.currentFeedback =
         this.repliedList.find(item => item.id === content.id) || content;
+
+      this.setReplyReadAt(content.id);
       this.$router.push(`/mobile/mcenter/feedback/feedbackList/${content.id}`);
     },
     getRepliedList() {
@@ -258,6 +262,36 @@ export default {
           `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
         );
       }
+    },
+    setReplyReadAt(id) {
+      return goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Feedback/${id}/ReplyReadAt`,
+        params: {
+          lang: "zh-cn",
+          feedbackID: id
+        }
+      })
+        .then(res => {
+          const { status, data, msg, errorCode } = res;
+
+          if (status !== "000" && errorCode !== "00") {
+            dispatch("actionSetGlobalMessage", {
+              msg,
+              code
+            });
+            return;
+          }
+
+          return;
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          dispatch("actionSetGlobalMessage", {
+            msg,
+            code
+          });
+        });
     }
   }
 };
