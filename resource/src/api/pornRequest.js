@@ -4,11 +4,15 @@ import querystring from "querystring";
 import store from "@/store";
 
 // 鸭博娱乐色站 api domain
+let localDomain = localStorage.getItem("p-domain")
+  ? `${localStorage.getItem("p-domain")}/api/v1`
+  : "";
 const PORN_DOMAIN =
-  store && store.state && store.state.pornDoamin
-    ? `${store.state.pornDoamin}/api/v1`
+  localDomain || (store && store.state && store.state.pornDomain)
+    ? `${store.state.pornDomain}/api/v1`
     : "https://xxxfuck.app/api/v1";
 
+console.log(localDomain);
 // 色站Lucas機器 測試站 api domain
 const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
 const enableNewApi = !!getCookie("s_enable");

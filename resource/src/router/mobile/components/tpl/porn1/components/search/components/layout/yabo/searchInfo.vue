@@ -126,7 +126,7 @@ export default {
         this.isLoading = false;
         this.isReceive = false;
 
-        if (response.status !== 200) {
+        if (response.status !== 200 || !response.result.data) {
           this.searchList = [];
           return;
         }

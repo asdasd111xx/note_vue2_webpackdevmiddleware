@@ -134,6 +134,7 @@ export default {
   methods: {
     onClick(id) {
       let source = this.$route.query.source;
+      let self = this;
       this.$emit("leave", () => {
         window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
       });

@@ -16,6 +16,12 @@
         <div :class="$style['line']" />
       </div>
 
+      <div :class="[$style['tag-item'], $style[source]]">
+        <span>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+      </div>
+
       <div
         :class="[
           $style['icon-arrow'],

@@ -511,8 +511,10 @@ export default {
       window.YABO_SOCKET_VIDEO_CONNECT = null;
       clearTimeout(this.reconnectTimer);
       this.reconnectTimer = null;
-      this.player.dispose();
-      this.player = null;
+      if (this.player && this.player.dispose) {
+        this.player.dispose();
+        this.player = null;
+      }
       if (cb) {
         cb();
       }

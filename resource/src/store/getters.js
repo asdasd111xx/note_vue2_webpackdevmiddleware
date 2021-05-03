@@ -203,7 +203,7 @@ export default {
   getMemInfoV3: state => state.memInfoV3,
   getRechargeBonusConfig: state => state.rechargeBonusConfig, //取得廳首次額度轉讓優惠設定
   getSystemDomain: state => state.systemDomain,
-  getPornDomain: state => state.pornDoamin,
+  getPornDomain: state => state.pornDomain,
   getPromotionLink: state => state.promotionLink,
   getBBOSDomain: state => state.BBosDomain,
   getSwagConfig: state => state.swagConfig,

@@ -447,7 +447,7 @@ export default {
   hasBank: false,
   videoBounsPageStatus: false,
   systemDomain: {},
-  pornDoamin: "",
+  pornDomain: "",
   promotionLink: "",
   webDomain: {},
   BBosDomain: {},
