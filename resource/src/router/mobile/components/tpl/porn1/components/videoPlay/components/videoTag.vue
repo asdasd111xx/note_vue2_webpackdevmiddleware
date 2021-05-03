@@ -1,6 +1,6 @@
 <template>
   <div :class="[$style['video-tag-wrap'], { [$style['padding']]: padding }]">
-    <div style="min-width:48px;margin: 0 10px 0 0;" v-if="isDialog">标签：</div>
+    <div style="min-width:48px;" v-if="isDialog">标签：</div>
     <div
       v-for="(tTag, index) in tags"
       :key="`tag-${index}`"
@@ -9,6 +9,7 @@
         { [$style['custom']]: $route.query.source === 'smallPig' },
         { [$style['custom-dialog']]: isDialog }
       ]"
+      :style="index == 0 ? { margin: '0 0 0 -5px' } : {}"
     >
       {{ tTag }}
     </div>
@@ -63,6 +64,9 @@ export default {
     line-height: 18px;
     font-weight: 400;
     margin: 0 10px;
+
+    &:first-of-type {
+    }
 
     &.custom {
       background: #474747;
