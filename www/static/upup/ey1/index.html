@@ -334,7 +334,7 @@
                     </div>
                 </div>
                 <div class="info-card__2BiSJ">
-                    <div onclick="service()">
+                    <div onclick="service('customer_service')">
                         <div><img src="/static/image/common/service/ic_service01.png?v=99124533.1">
                             &nbsp;
                             <span>在线客服</span>
@@ -391,8 +391,12 @@
         }
 
         function getComm2(domain, configInfo, title) { //在線客服2.0, 土豆客服
+            let uri = `${configInfo}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`;
 
-            const uri = `${configInfo}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`;
+            if (title === 'customer_service') {
+                uri = `${configInfo}/xbb/Common/List?lang=zh-cn&t=${Date.now()}`;
+            }
+
             const request = fetch(uri, {
                 method: 'GET',
                 headers: new Headers({
@@ -407,8 +411,13 @@
             })
                 .then(function (res) {
                     if (res && res.data) {
-                        console.log(res.data.uri)
-                        openService(res.data.uri)
+                        if (title === 'customer_service') {
+                            openService(res.data.on_service_url)
+                            return;
+                        } else {
+                            openService(res.data.uri);
+                            return;
+                        }
                     } else {
                         openService()
                     }
@@ -421,11 +430,7 @@
             return response.json();
         }).then(function (data) {
             if (data.domain) {
-                if (target) {
-                    getComm2(data.domain, siteConfig(data.domain), target)
-                } else {
-                    getComm(data.domain)
-                }
+                getComm2(data.domain, siteConfig(data.domain), target)
             }
         }).catch(function (e) {
             openService()
