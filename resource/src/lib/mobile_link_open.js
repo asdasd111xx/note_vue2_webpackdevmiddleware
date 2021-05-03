@@ -171,7 +171,11 @@ export default target => {
       case "withdraw":
       case "bankRebate":
         if (!store.state.loginStatus) {
-          router.push(`/mobile/login`);
+          if (store.state.webDomain.site === "ey1") {
+            router.push("/mobile/login");
+          } else {
+            router.push("/mobile/joinmember");
+          }
           return;
         }
 
