@@ -6,6 +6,7 @@ import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default target => {
   console.log(target);
@@ -194,22 +195,25 @@ export default target => {
         router.push(`/mobile/mcenter/${linkTo}`);
         return;
 
-      case "cgPay":
-        if (!store.state.loginStatus) {
-          if (store.state.webDomain.site === "ey1") {
-            router.push("/mobile/login");
-          } else {
-            router.push("/mobile/joinmember");
-          }
-          return;
-        }
+      // case "cgPay":
+      //   if (!store.state.loginStatus) {
+      //     if (store.state.webDomain.site === "ey1") {
+      //       router.push("/mobile/login");
+      //     } else {
+      //       router.push("/mobile/joinmember");
+      //     }
+      //     return;
+      //   }
 
-        router.push(
-          "/mobile/mcenter/bankcard?redirect=home&type=wallet&wallet=CGPay"
-        );
-        return;
+      //   router.push(
+      //     "/mobile/mcenter/bankcard?redirect=home&type=wallet&wallet=CGPay"
+      //   );
+      //   return;
 
       case "mobileBet":
+        return;
+
+      default:
         return;
     }
   }
@@ -320,13 +324,10 @@ export default target => {
     }
 
     // 0421 進入遊戲前檢查withdrawcheck
-    // if (!store.state.isWithdrawChecked) {
-    //   store.dispatch("actionSetGlobalMessage", {
-    //     type: "withdrawcheck",
-    //     origin: "home"
-    //   });
-    //   return;
-    // }
+    if (!store.state.withdrawCheckStatus.account) {
+      lib_withdrawCheckMethod("home");
+      return;
+    }
 
     const openGameSuccessFunc = res => {};
 
