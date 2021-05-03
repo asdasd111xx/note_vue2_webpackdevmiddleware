@@ -47,8 +47,13 @@ export default target => {
   let newWindow;
 
   // 外部連結
+  if (linkType === "external") {
+    newWindow = window.open(`${linkTo}`, "_blank");
+    return;
+  }
+
   // 優小祕
-  if ((linkType === "external" || linkType === "mi") && linkTo) {
+  if (linkType === "mi" && linkTo) {
     // 未知用途
     // window.open(
     //   `/popcontrol/promo/${JSON.stringify({ linkItem })}`,
