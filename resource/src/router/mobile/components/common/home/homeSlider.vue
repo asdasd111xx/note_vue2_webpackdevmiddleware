@@ -109,7 +109,9 @@ export default {
         this.opts = {
           loop: hasLoop,
           autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
-          pagination: { el: ".swiper-pagination", clickable: true },
+          pagination: hasLoop
+            ? { el: ".swiper-pagination", clickable: true }
+            : {},
           on: {
             click(element) {
               if (this.isClicked) {
