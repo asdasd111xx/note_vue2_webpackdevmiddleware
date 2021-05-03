@@ -8,17 +8,13 @@ import router from "@/router";
 import store from "@/store";
 
 export default target => {
-  console.log(target);
-
-  console.warn(store.state.webInfo);
-  console.warn(store.state.mobileInfo);
-
   const curLang = store.state.curLang || "zh-cn";
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
 
   if (process.env.NODE_ENV === "development") {
+    console.log(target);
     console.log(
       "linkType:",
       linkType,
@@ -167,34 +163,13 @@ export default target => {
         return;
 
       case "service":
-        // 是否統一同安卓導至客服的頁面 ?
-
-        let url = store.state.mobileInfo.service.url;
-        window.open(url);
-
-        // 在線客服流量分析事件
-        window.dataLayer.push({
-          dep: 2,
-          event: "ga_click",
-          eventCategory: "online_service",
-          eventAction: "online_service_contact",
-          eventLabel: "online_service_contact"
-        });
+        router.push("/mobile/service?prev=false");
         return;
 
       // 需登入
       case "deposit":
       case "withdraw":
       case "bankRebate":
-        if (!store.state.loginStatus) {
-          router.push(`/mobile/login`);
-          return;
-        }
-
-        router.push(`/mobile/mcenter/${linkTo}`);
-        return;
-
-      case "cgPay":
         if (!store.state.loginStatus) {
           if (store.state.webDomain.site === "ey1") {
             router.push("/mobile/login");
@@ -204,12 +179,12 @@ export default target => {
           return;
         }
 
-        router.push(
-          "/mobile/mcenter/bankcard?redirect=home&type=wallet&wallet=CGPay"
-        );
+        router.push(`/mobile/mcenter/${linkTo}`);
         return;
 
+      case "cgPay":
       case "mobileBet":
+      default:
         return;
     }
   }
@@ -247,10 +222,10 @@ export default target => {
       // case "lg_ey_card":
       // case "lg_sg_card":
       case "lg_yb_casino":
-        // case "lg_ey_casino":
-        // case "lg_sg_casino":
-        router.push(`/mobile/hotLobby/${linkTo}`);
-        return;
+      // case "lg_ey_casino":
+      // case "lg_sg_casino":
+      // router.push(`/mobile/hotLobby/${linkTo}`);
+      // return;
       default:
         break;
     }
@@ -287,14 +262,19 @@ export default target => {
         break;
     }
 
-    const gameData = store.state.gameData;
-
-    let activedGame = Object.keys(gameData).some(obj => {
-      if (gameData[obj].vendor === linkTo && gameData[obj].kind === kind) {
-        linkTitle = gameData[obj].alias;
+    const gameData = store.state.gameData["_allGame"];
+    let activedGame = gameData.some(i => {
+      if (i.vendor === linkTo && i.kind === kind) {
+        linkTitle = i.alias;
         return true;
       }
     });
+    // let activedGame = Object.keys(gameData).some(obj => {
+    //   if (gameData[obj].vendor === linkTo && gameData[obj].kind === kind) {
+    //     linkTitle = gameData[obj].alias;
+    //     return true;
+    //   }
+    // });
 
     if (!activedGame) {
       console.log("游戏未开放");
@@ -315,18 +295,21 @@ export default target => {
         //   router.push(`/mobile/mahjong/${vendor}`);
         //   break;
         default:
+          return;
       }
       return;
     }
 
+    // 未開放其他大廳
+    if ([6].includes(kind) && !linkItem) {
+      return;
+    }
+
     // 0421 進入遊戲前檢查withdrawcheck
-    // if (!store.state.isWithdrawChecked) {
-    //   store.dispatch("actionSetGlobalMessage", {
-    //     type: "withdrawcheck",
-    //     origin: "home"
-    //   });
-    //   return;
-    // }
+    if (!store.state.withdrawCheckStatus.account) {
+      lib_withdrawCheckMethod("home");
+      return;
+    }
 
     const openGameSuccessFunc = res => {};
 
