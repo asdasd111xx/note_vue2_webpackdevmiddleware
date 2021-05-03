@@ -140,6 +140,8 @@ export default {
         temp[index].category = "";
       }
     });
+
+    temp["_allGame"] = gameData;
     state.gameData = temp;
   },
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

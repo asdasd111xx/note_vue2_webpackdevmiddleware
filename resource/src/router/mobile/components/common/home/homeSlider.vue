@@ -73,62 +73,64 @@ export default {
       };
     },
     initSlider() {
-      this.actionGetMobileInfo();
-      const defaultImage = this.generateDefaultImg();
-      const info = this.mobileInfo;
-      const mobile_slide =
-        info && info.case_data && info.case_data.MOBILE_SLIDE;
-      // 若無資料則使用預設圖片
-      if (!mobile_slide || mobile_slide.length === 0) {
-        this.slider = [defaultImage];
-        return;
-      }
+      this.actionGetMobileInfo().then(() => {
+        const defaultImage = this.generateDefaultImg();
+        const info = this.mobileInfo;
+        const mobile_slide =
+          info && info.case_data && info.case_data.MOBILE_SLIDE;
 
-      let list = [];
-
-      mobile_slide.data.map(item => {
-        if (!Object.keys(this.lang)) {
+        // 若無資料則使用預設圖片
+        if (!mobile_slide || mobile_slide.length === 0) {
+          this.slider = [defaultImage];
           return;
         }
 
-        // const isShow = this.show(this.getDefaultCondition(item.condition));
-        list.push({
-          ...item,
-          image: `${this.cdnDomain}${item.image0[this.curLang]}`
-        });
-      });
+        let list = [];
 
-      // 若限制條件都不符合使用預設圖片
-      if (list.length === 0) {
-        list.push(defaultImage);
-      }
-
-      this.slider = list;
-      let hasLoop = list && list.length > 1;
-      this.opts = {
-        loop: hasLoop,
-        autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
-        pagination: { el: ".swiper-pagination", clickable: true },
-        on: {
-          click(element) {
-            if (this.isClicked) {
-              return;
-            }
-
-            this.isClicked = true;
-            setTimeout(() => {
-              this.isClicked = false;
-            }, 1500);
-
-            let target = list[element.target.dataset.key];
-            mobileLinkOpen({
-              ...target,
-              site: this.themeTPL
-            });
+        mobile_slide.data.map(item => {
+          if (!Object.keys(this.lang)) {
+            return;
           }
+
+          // const isShow = this.show(this.getDefaultCondition(item.condition));
+          list.push({
+            ...item,
+            image: `${this.cdnDomain}${item.image0[this.curLang]}`
+          });
+        });
+
+        // 若限制條件都不符合使用預設圖片
+        if (list.length === 0) {
+          list.push(defaultImage);
         }
-      };
-      this.updateKey = 1;
+
+        this.slider = list;
+        let hasLoop = list && list.length > 1;
+        this.opts = {
+          loop: hasLoop,
+          autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
+          pagination: { el: ".swiper-pagination", clickable: true },
+          on: {
+            click(element) {
+              if (this.isClicked) {
+                return;
+              }
+
+              this.isClicked = true;
+              setTimeout(() => {
+                this.isClicked = false;
+              }, 1500);
+
+              let target = list[element.target.dataset.key];
+              mobileLinkOpen({
+                ...target,
+                site: this.themeTPL
+              });
+            }
+          }
+        };
+        this.updateKey = 1;
+      });
     },
     /**
      * 生成預設圖片物件
