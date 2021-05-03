@@ -433,12 +433,15 @@
     }
 
     function siteConfig(domain) {
-        console.log('domain=' + domain)
         switch (domain) {
             case '500023': //qa
                 return "https://cxbb.bbin-asia.com/api-v2";
             case '41': //prod
                 return "https://cxbb.chessrunroll.com/api-v2";
+            case '74': //demo
+                return "https://cxbb.mangochess.com/api-v2";
+            case '100004': //beta
+                return "https://eybe2.77num.com/api-v2";
         }
     }
 
