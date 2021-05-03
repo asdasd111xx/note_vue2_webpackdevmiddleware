@@ -302,7 +302,7 @@
             </span> <span>欢迎来到客服中心</span></div>
         </div>
         <div class="info-card__2KBXR">
-          <div onclick="service(2)">
+          <div onclick="service('customer_service')">
             <div><img src="/static/image/common/service/ic_service01.png">
               &nbsp;
               <span>在线客服1</span>
@@ -313,7 +313,7 @@
           <div class="btn-next__2iqtz"><img src="/static/image/common/service/ic_service_arrow.png"></div>
         </div>
         <div class="info-card2__LtBuI">
-          <div onclick="service()">
+          <div onclick="service('customer_service')">
             <div><img src="/static/image/common/service/ic_service02.png">
               &nbsp;
               <span>在线客服2</span>
@@ -354,17 +354,58 @@
         openService()
       });
     }
+    function getComm2(domain, configInfo, title) { //在線客服2.0
+
+      const uri = `${configInfo}/xbb/Common/List?lang=zh-cn&t=${Date.now()}`;
+      const request = fetch(uri, {
+        method: 'GET',
+        headers: new Headers({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          kind: "pwa",
+          "x-domain": domain,
+        }),
+      })
+      request.then(res => {
+        return res.json();
+      })
+        .then(function (res) {
+          if (res && res.data) {
+            console.log(res.data.on_service_url)
+            openService(res.data.on_service_url)
+          } else {
+            openService()
+          }
+        }).catch(function (e) {
+          openService()
+        });
+    }
 
     fetch('/conf/domain').then(function (response) {
-      console.log(response);
       return response.json();
     }).then(function (data) {
       if (data.domain) {
-        getComm(data.domain)
+        getComm2(data.domain, siteConfig(data.domain), target)
       }
     }).catch(function (e) {
       openService()
     });
+  }
+
+  function siteConfig(domain) {
+    switch (domain) {
+      case '500015': // qa
+        return "https://yaboapi.bbin-asia.com/api-v2";
+
+      case '100003': // beta
+        return "https://ybbe2.qghco.com/api-v2";
+
+      case '69':  // demo
+        return "https://yaboapi.canarycherrytart.com/api-v2";
+
+      case '67': // prod
+        return "https://yaboapi.canarycherrytart.com/api-v2";
+    }
   }
 </script>
 

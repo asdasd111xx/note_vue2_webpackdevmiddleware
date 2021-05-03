@@ -289,10 +289,11 @@
                         </span> <span>欢迎来到客服中心</span></div>
                 </div>
                 <div class="info-card__9zCud">
-                    <div onclick="service()">
+                    <div onclick="service('customer_service')">
                         <div><img src="/static/image/common/service/ic_service01.png?v=09900594.1">
                             &nbsp;
-                            <span>在线客服1</span></div>
+                            <span>在线客服1</span>
+                        </div>
                         <div>Main Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
@@ -300,10 +301,11 @@
                             src="/static/image/sg1/common/ic_arrow_next_white.png?v=09900594.1"></div>
                 </div>
                 <div class="info-card2__2DzP7">
-                    <div onclick="service()">
+                    <div onclick="service('customer_service')">
                         <div><img src="/static/image/common/service/ic_service02.png?v=09900594.1">
                             &nbsp;
-                            <span>在线客服2</span></div>
+                            <span>在线客服2</span>
+                        </div>
                         <div>Reserve Customer Support</div>
                         <div>7*24小时专线服务 贴心至上</div>
                     </div>
@@ -342,8 +344,34 @@
                 });
             }
 
+            function getComm2(domain, configInfo, title) { //在線客服2.0
+
+                const uri = `${configInfo}/xbb/Common/List?lang=zh-cn&t=${Date.now()}`;
+                const request = fetch(uri, {
+                    method: 'GET',
+                    headers: new Headers({
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        kind: "pwa",
+                        "x-domain": domain,
+                    }),
+                })
+                request.then(res => {
+                    return res.json();
+                })
+                    .then(function (res) {
+                        if (res && res.data) {
+                            console.log(res.data.on_service_url)
+                            openService(res.data.on_service_url)
+                        } else {
+                            openService()
+                        }
+                    }).catch(function (e) {
+                        openService()
+                    });
+            }
+
             fetch('/conf/domain').then(function (response) {
-                console.log(response);
                 return response.json();
             }).then(function (data) {
                 if (data.domain) {
@@ -352,6 +380,22 @@
             }).catch(function (e) {
                 openService()
             });
+        }
+
+        function siteConfig(domain) {
+            switch (domain) {
+                case '500035': // qa
+                    return "https://yaboapi.bbin-asia.com/api-v2";
+
+                case '100004': // beta
+                    return "https://ybbe2.qghco.com/api-v2";
+
+                case '81':  // demo
+                    return "https://yaboapi.canarycherrytart.com/api-v2";
+
+                case '80': // prod
+                    return "https://yaboapi.canarycherrytart.com/api-v2";
+            }
         }
     </script>
 
