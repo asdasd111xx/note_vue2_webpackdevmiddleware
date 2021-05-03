@@ -6,6 +6,7 @@ import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default target => {
   const curLang = store.state.curLang || "zh-cn";
