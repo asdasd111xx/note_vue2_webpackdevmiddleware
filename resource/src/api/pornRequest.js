@@ -1,13 +1,13 @@
 import axios from "axios";
+import { getCookie } from "@/lib/cookie";
 import querystring from "querystring";
 import store from "@/store";
-import { getCookie } from "@/lib/cookie";
 
 // 鸭博娱乐色站 api domain
 const PORN_DOMAIN =
   store && store.state && store.state.pornDoamin
     ? `${store.state.pornDoamin}/api/v1`
-    : "https://venzheng.com/api/v1";
+    : "https://xxxfuck.app/api/v1";
 
 // 色站Lucas機器 測試站 api domain
 const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
