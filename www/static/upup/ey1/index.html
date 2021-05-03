@@ -396,17 +396,18 @@
             const request = fetch(uri, {
                 method: 'GET',
                 headers: new Headers({
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     kind: "pwa",
                     "x-domain": domain,
                 }),
             })
             request.then(res => {
-                console.log(res);
                 return res.json();
             })
                 .then(function (res) {
                     if (res && res.data) {
+                        console.log(res.data.uri)
                         openService(res.data.uri)
                     } else {
                         openService()
@@ -417,7 +418,6 @@
         }
 
         fetch('/conf/domain').then(function (response) {
-            console.log(response);
             return response.json();
         }).then(function (data) {
             if (data.domain) {
@@ -433,17 +433,12 @@
     }
 
     function siteConfig(domain) {
+        console.log('domain=' + domain)
         switch (domain) {
             case '500023': //qa
                 return "https://cxbb.bbin-asia.com/api-v2";
             case '41': //prod
                 return "https://cxbb.chessrunroll.com/api-v2";
-            case '74': //demo
-                return "https://cxbb.mangochess.com/api-v2";
-            case '100004': //beta
-                return "https://eybe2.77num.com/api-v2";
-            case 'preset': //preset
-                return "https://yaboapi.canarycherrytart.com/api-v2";
         }
     }
 
