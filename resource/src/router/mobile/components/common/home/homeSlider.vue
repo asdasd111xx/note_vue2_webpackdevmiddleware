@@ -44,7 +44,7 @@ export default {
   mounted() {
     const defaultImage = this.generateDefaultImg();
     this.slider = [defaultImage];
-    this.initSlider();
+    // this.initSlider();
   },
   computed: {
     ...mapGetters({
@@ -58,6 +58,11 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    }
+  },
+  watch: {
+    mobileInfo() {
+      this.initSlider();
     }
   },
   methods: {
@@ -78,6 +83,7 @@ export default {
       const info = this.mobileInfo;
       const mobile_slide =
         info && info.case_data && info.case_data.MOBILE_SLIDE;
+      const defaultImage = this.generateDefaultImg();
 
       // 若無資料則使用預設圖片
       if (!mobile_slide || mobile_slide.length === 0) {
