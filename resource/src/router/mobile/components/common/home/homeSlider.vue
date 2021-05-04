@@ -44,7 +44,7 @@ export default {
   mounted() {
     const defaultImage = this.generateDefaultImg();
     this.slider = [defaultImage];
-    // this.initSlider();
+    this.initSlider();
   },
   computed: {
     ...mapGetters({
@@ -61,7 +61,7 @@ export default {
     }
   },
   watch: {
-    mobileInfo() {
+    mobileInfo(val) {
       this.initSlider();
     }
   },
@@ -88,6 +88,9 @@ export default {
       // 若無資料則使用預設圖片
       if (!mobile_slide || mobile_slide.length === 0) {
         this.slider = [defaultImage];
+        setTimeout(() => {
+          this.initSlider();
+        }, 2000);
         return;
       }
 

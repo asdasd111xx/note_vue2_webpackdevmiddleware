@@ -66,9 +66,14 @@ export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
       siteConfigOfficial.preset;
   }
 
+  // 維護domain需另外傳遞
+  let _domain = domain || state.webDomain;
   return goLangApiRequest({
     method: "get",
-    url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Common/List?t=${Date.now()}`
+    url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Common/List?t=${Date.now()}`,
+    headers: {
+      "x-domain": _domain
+    }
   })
     .then(res => {
       const { errorCode, status, data } = res;
