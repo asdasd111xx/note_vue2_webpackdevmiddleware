@@ -59,24 +59,27 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     siteId() {
       switch (this.source) {
         case "yabo":
-          setCookie("s_id", "9");
+          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+
           return 1;
 
         case "smallPig":
-          setCookie("s_id", "113");
+          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
+
           return 2;
 
         case "gay":
-          setCookie("s_id", "7");
+          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
           return 3;
 
         case "les":
-          setCookie("s_id", "8");
+          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
           return 4;
 
         default:
