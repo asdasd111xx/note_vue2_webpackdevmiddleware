@@ -29,6 +29,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { setCookie } from "@/lib/cookie";
+import join from "lodash/join";
+import split from "lodash/split";
 
 export default {
   components: {
@@ -129,6 +131,15 @@ export default {
                 this.$router.back();
               },
               onSearchClick: keyWord => {
+                const historyList = localStorage.getItem("history-search")
+                  ? split(localStorage.getItem("history-search"), ",")
+                  : [];
+                const historyKeyWord = historyList.includes(keyWord)
+                  ? [...historyList]
+                  : [...historyList, keyWord];
+
+                localStorage.setItem("history-search", join(historyKeyWord));
+
                 this.setKeyWord(keyWord);
               }
             }

@@ -683,9 +683,10 @@ export default {
     margin: auto;
   }
 
-  &.yabo > div {
-    background-color: #fff;
-    color: #3d3d3d;
-  }
+  // &.yabo > div {
+  //   opacity: 0.8;
+  //   background: #000000;
+  //   color: #ffffff;
+  // }
 }
 </style>

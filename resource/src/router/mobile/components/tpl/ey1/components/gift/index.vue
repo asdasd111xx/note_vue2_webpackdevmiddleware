@@ -245,7 +245,13 @@ export default {
     }
   },
   watch: {
-    openLink() {}
+    "$route.query.q"(value) {
+      if (!value) {
+        this.$router.push("/mobile/gift");
+        this.currentMenu = this.giftMenuList;
+        this.isMounted = true;
+      }
+    }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
