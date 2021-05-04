@@ -974,6 +974,8 @@ export default {
         })
           .then(res => {
             if (res.data.result == "ok") {
+              localStorage.removeItem("vendorMaintainList");
+
               // console.log("取維護狀態");
               // console.log(res.data);
               this.maintainList = res.data.ret;

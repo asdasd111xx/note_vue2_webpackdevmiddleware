@@ -311,8 +311,23 @@ export default target => {
       return;
     }
 
+    // 當前平台維護狀態
+    const isVendorMaintain = () => {
+      let isMaintain = false;
+      let list = JSON.parse(localStorage.getItem("vendorMaintainList"));
+
+      isMaintain = list.some(item => {
+        return (
+          item.vendor === linkTo.toUpperCase() ||
+          item.vendor === linkTo.toLowerCase()
+        );
+      });
+
+      return isMaintain;
+    };
+
     // 0421 進入遊戲前檢查withdrawcheck
-    if (!store.state.withdrawCheckStatus.account) {
+    if (!store.state.withdrawCheckStatus.account && !isVendorMaintain()) {
       lib_withdrawCheckMethod("home");
       return;
     }

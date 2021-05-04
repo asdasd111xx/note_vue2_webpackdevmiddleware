@@ -84,7 +84,7 @@
                     : currentLevelData.monthly_gift
                 }}
               </div>
-              <div>每月红包(月初自动派发)</div>
+              <div>每月红包</div>
             </template>
 
             <template v-if="['ey1'].includes(themeTPL)">

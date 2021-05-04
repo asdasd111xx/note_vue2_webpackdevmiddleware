@@ -559,7 +559,8 @@ export default {
     state.systemDomain = data;
   },
   [types.SET_PORNDOMAIN](state, data) {
-    state.pornDoamin = data;
+    localStorage.setItem("p-domain", data);
+    state.pornDomain = data;
   },
   [types.SET_PROMOTION_LINK](state, data) {
     state.promotionLink = data;
