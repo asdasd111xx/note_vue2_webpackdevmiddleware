@@ -165,7 +165,7 @@ export default target => {
         return;
       // ?
       case "home":
-        router.push("/mobile/home");
+        // router.push("/mobile/home");
         return;
 
       case "service":
