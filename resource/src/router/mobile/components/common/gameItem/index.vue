@@ -151,8 +151,8 @@ export default {
 
       isMaintain = list.some(item => {
         return (
-          item.vendor === this.vendorName.toUpperCase() ||
-          item.vendor === this.vendorName.toLowerCase()
+          item.vendor === this.gameInfo.vendor.toUpperCase() ||
+          item.vendor === this.gameInfo.vendor.toLowerCase()
         );
       });
 
