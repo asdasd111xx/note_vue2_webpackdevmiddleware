@@ -74,6 +74,7 @@ import axios from "axios";
 import html2canvas from "html2canvas";
 import { mapGetters, mapActions } from "vuex";
 import { saveAs } from "file-saver";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
 
 export default {
   props: {
@@ -251,86 +252,38 @@ export default {
           if (["porn1", "sg1"].includes(this.themeTPL)) {
             // "https://cgpayintroduction.azurewebsites.net/index.aspx"
 
-            // 呼叫 API 前另需視窗
-            let newWindow = "";
-            newWindow = window.open();
-
-            const newWindowHref = uri => {
-              try {
-                newWindow.location = uri;
-              } catch (e) {
-                console.log(e);
-                console.log(newWindow);
-                console.log(uri);
-              }
-            };
-
-            this.getCustomerServiceUrl({
-              urlName: "cgp_introduce",
-              needToken: false
-            }).then(res => {
-              if (res.uri) {
-                newWindowHref(res.uri);
-              } else {
-                newWindow.close();
-              }
-            });
+            lib_newWindowOpen(
+              this.getCustomerServiceUrl({
+                urlName: "cgp_introduce",
+                needToken: false
+              }).then(res => {
+                return res.uri;
+              })
+            );
           }
           if (["ey1"].includes(this.themeTPL)) {
             // http://oinbox.io
 
-            // 呼叫 API 前另需視窗
-            let newWindow = "";
-            newWindow = window.open();
-
-            const newWindowHref = uri => {
-              try {
-                newWindow.location = uri;
-              } catch (e) {
-                console.log(e);
-                console.log(newWindow);
-                console.log(uri);
-              }
-            };
-
-            this.getCustomerServiceUrl({
-              urlName: "cgp_apply",
-              needToken: false
-            }).then(res => {
-              if (res.uri) {
-                newWindowHref(res.uri);
-              } else {
-                newWindow.close();
-              }
-            });
+            lib_newWindowOpen(
+              this.getCustomerServiceUrl({
+                urlName: "cgp_apply",
+                needToken: false
+              }).then(res => {
+                return res.uri;
+              })
+            );
           }
           break;
 
         case 37:
-          // 呼叫 API 前另需視窗
-          let newWindow = "";
-          newWindow = window.open();
-
-          const newWindowHref = uri => {
-            try {
-              newWindow.location = uri;
-            } catch (e) {
-              console.log(e);
-              console.log(newWindow);
-              console.log(uri);
-            }
-          };
-
-          this.getCustomerServiceUrl({
-            urlName: "game_wallet",
-            needToken: false
-          }).then(res => {
-            if (res.uri) {
-              newWindowHref(res.uri);
-            } else {
-              newWindow.close();
-            }
-          });
+          lib_newWindowOpen(
+            this.getCustomerServiceUrl({
+              urlName: "game_wallet",
+              needToken: false
+            }).then(res => {
+              return res.uri;
+            })
+          );
           break;
 
         default:
