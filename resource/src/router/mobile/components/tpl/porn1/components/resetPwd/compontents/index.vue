@@ -264,6 +264,10 @@ export default {
         (id === "newPwd" &&
           this.pwdResetInfo["confNewPwd"].value != "" &&
           this.pwdResetInfo["confNewPwd"].value !==
+            this.pwdResetInfo["newPwd"].value) ||
+        (id === "pwd" &&
+          this.pwdResetInfo["confNewPwd"].value != "" &&
+          this.pwdResetInfo["confNewPwd"].value !==
             this.pwdResetInfo["newPwd"].value)
       ) {
         this.errMsg = "确认密码预设要跟密码一致";
