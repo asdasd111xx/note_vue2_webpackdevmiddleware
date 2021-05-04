@@ -1001,7 +1001,7 @@ export default {
           vipId: this.userViplevelId
         }
       }).then(response => {
-        console.log(`needFilterGameData is ${response}`);
+        // console.log(`needFilterGameData is ${response}`);
         localStorage.setItem(
           "needFilterGameData",
           JSON.stringify(response.data)
