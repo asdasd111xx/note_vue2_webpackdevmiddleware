@@ -589,7 +589,9 @@ export default {
     this.checkTimer = null;
     clearTimeout(this.reconnectTimer);
     this.reconnectTimer = null;
-    this.player.dispose();
+    if (this.player && this.player.dispose) {
+      this.player.dispose();
+    }
     this.player = null;
     this.actionSetVideoBounsPageStatus(false);
   }
