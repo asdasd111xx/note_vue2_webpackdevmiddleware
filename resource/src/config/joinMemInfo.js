@@ -6,7 +6,7 @@ const getNameFormat = () => {
   // 真實姓名
   const { wonderCasino, knightCasino } = exceptionList;
   if (
-    wonderCasino.concat(knightCasino).includes(store.state.mobileInfo.alias)
+    wonderCasino.concat(knightCasino).includes(store.state.webDomain.domain)
   ) {
     return {
       regex: /^[a-zA-Z\- ]*$/,

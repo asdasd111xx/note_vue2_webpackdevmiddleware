@@ -37,7 +37,7 @@ export default page =>
       const { wonderCasino, knightCasino } = exceptionList;
       return wonderCasino
         .concat(knightCasino)
-        .includes(store.state.mobileInfo.alias);
+        .includes(store.state.webDomain.domain);
     };
     if (
       ((page === "accountBankCard" || page === "withdraw") &&

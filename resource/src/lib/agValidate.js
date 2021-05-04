@@ -31,7 +31,7 @@ const validate = page =>
       const { wonderCasino, knightCasino } = exceptionList;
       return wonderCasino
         .concat(knightCasino)
-        .includes(store.state.mobileInfo.alias);
+        .includes(store.state.webDomain.domain);
     };
     if (!(isException() || store.state.agentInfo.user.has_withdraw_password)) {
       resolve({ status: false, message: "noPassword" });

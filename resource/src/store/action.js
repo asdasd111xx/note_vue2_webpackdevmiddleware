@@ -585,14 +585,10 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
     dispatch("actionSetWebInfo", state.webDomain.domain);
-    await dispatch("actionGetMobileInfo");
+    dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
 
-    if (state.mobileInfo && state.mobileInfo.language) {
-      await getLang(state.mobileInfo.language, "zh-cn");
-    } else {
-      await getLang("zh-cn");
-    }
+    await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
 
     // 設定網站設定檔資訊 (start)
     let configInfo;
@@ -1056,11 +1052,11 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
         let configInfo;
         if (state.webInfo.is_production) {
           configInfo =
-            siteConfigOfficial[`site_${state.mobileInfo.alias}`] ||
+            siteConfigOfficial[`site_${state.webDomain.domain}`] ||
             siteConfigOfficial.preset;
         } else {
           configInfo =
-            siteConfigTest[`site_${state.mobileInfo.alias}`] ||
+            siteConfigTest[`site_${state.webDomain.domain}`] ||
             siteConfigTest.preset;
         }
 
@@ -1777,7 +1773,7 @@ export const actionVerificationFormData = (
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -1878,7 +1874,7 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -1915,7 +1911,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -2060,7 +2056,6 @@ export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
