@@ -242,6 +242,17 @@ export default target => {
     let kind = "";
     let code = linkItem || "";
     let vendor = linkTo;
+
+    let notVipGame = JSON.parse(
+      localStorage.getItem("needFilterGameData")
+    ).find(filterData => {
+      return filterData.gameCode === code;
+    });
+    console.log(notVipGame);
+    if (linkTo === "lg_yb_card" && notVipGame) {
+      store.dispatch("actionSetGlobalMessage", { msg: "VIP等级不足" });
+      return;
+    }
     switch (linkType) {
       case "sport":
         kind = 1;
