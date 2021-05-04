@@ -38,7 +38,15 @@ export const site_67 = {
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
   ACTIVES_BOUNS_WEBSOCKETV2:
-    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };
 
 /**
@@ -52,7 +60,15 @@ export const site_69 = {
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
-    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };
 
 /**
@@ -68,7 +84,15 @@ export const site_100003 = {
   // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?"
+  ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };
 
 /**
@@ -133,7 +157,15 @@ export const site_80 = {
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜直播",
   ACTIVES_BOUNS_WEBSOCKETV2:
-    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };
 
 /**
@@ -148,7 +180,15 @@ export const site_81 = {
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2/cxbb",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
-    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };
 
 /**
@@ -164,5 +204,13 @@ export const site_100009 = {
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?"
+  ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };

@@ -125,6 +125,7 @@
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
 
 export default {
   components: {
@@ -201,30 +202,14 @@ export default {
           name: "火币",
           iconSrc: `/static/image/common/mcenter/deposit/ic_huobi.png`,
           onClick: () => {
-            // 呼叫 API 前另需視窗
-            let newWindow = "";
-            newWindow = window.open();
-
-            const newWindowHref = uri => {
-              try {
-                newWindow.location = uri;
-              } catch (e) {
-                console.log(e);
-                console.log(newWindow);
-                console.log(uri);
-              }
-            };
-
-            this.getCustomerServiceUrl({
-              urlName: "huobi",
-              needToken: false
-            }).then(res => {
-              if (res.uri) {
-                newWindowHref(res.uri);
-              } else {
-                newWindow.close();
-              }
-            });
+            lib_newWindowOpen(
+              this.getCustomerServiceUrl({
+                urlName: "huobi",
+                needToken: false
+              }).then(res => {
+                return res.uri;
+              })
+            );
           }
         }
         // {

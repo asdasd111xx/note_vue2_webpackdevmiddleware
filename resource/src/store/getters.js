@@ -23,9 +23,9 @@ export default {
   getSpecialCase: state => state.webInfo.special_case,
   getFloatPic: state => state.webInfo.special_case,
   getOnlineService: state => ({
-    width: state.webInfo.on_service_w,
-    height: state.webInfo.on_service_h,
-    url: state.webInfo.on_service_url
+    width: state.mobileInfo.service.width,
+    height: state.mobileInfo.service.height,
+    url: state.mobileInfo.service.url
   }),
   getBackground: state => ({
     bg_align: state.webInfo.bg_align,

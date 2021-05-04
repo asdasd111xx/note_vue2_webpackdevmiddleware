@@ -23,7 +23,15 @@ export const site_500015 = {
   ...preset,
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
-  SITE_NAME: "鸭博娱乐"
+  SITE_NAME: "鸭博娱乐",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "113",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };
 
 /**
@@ -48,5 +56,13 @@ export const site_500035 = {
   ...preset,
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜直播"
+  SITE_NAME: "丝瓜直播",
+  PORN_CONFIG: {
+    ID: {
+      YB: "9",
+      SP: "113",
+      GAY: "7",
+      LES: "8"
+    }
+  }
 };

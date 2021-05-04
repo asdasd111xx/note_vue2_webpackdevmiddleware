@@ -280,6 +280,7 @@ import i18n from "@/config/i18n";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import popupTip from "../popupTip";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
 
 export default {
   components: {
@@ -842,30 +843,14 @@ export default {
             hasCallback: true,
             dataObj: {
               cb: () => {
-                // 呼叫 API 前另需視窗
-                let newWindow = "";
-                newWindow = window.open();
-
-                const newWindowHref = uri => {
-                  try {
-                    newWindow.location = uri;
-                  } catch (e) {
-                    console.log(e);
-                    console.log(newWindow);
-                    console.log(uri);
-                  }
-                };
-
-                this.getCustomerServiceUrl({
-                  urlName: "cgp_introduce",
-                  needToken: false
-                }).then(res => {
-                  if (res.uri) {
-                    newWindowHref(res.uri);
-                  } else {
-                    newWindow.close();
-                  }
-                });
+                lib_newWindowOpen(
+                  this.getCustomerServiceUrl({
+                    urlName: "cgp_introduce",
+                    needToken: false
+                  }).then(res => {
+                    return res.uri;
+                  })
+                );
               },
               text: "立即申请"
             }
@@ -926,30 +911,14 @@ export default {
             hasCallback: true,
             dataObj: {
               cb: () => {
-                // 呼叫 API 前另需視窗
-                let newWindow = "";
-                newWindow = window.open();
-
-                const newWindowHref = uri => {
-                  try {
-                    newWindow.location = uri;
-                  } catch (e) {
-                    console.log(e);
-                    console.log(newWindow);
-                    console.log(uri);
-                  }
-                };
-
-                this.getCustomerServiceUrl({
-                  urlName: "game_wallet",
-                  needToken: false
-                }).then(res => {
-                  if (res.uri) {
-                    newWindowHref(res.uri);
-                  } else {
-                    newWindow.close();
-                  }
-                });
+                lib_newWindowOpen(
+                  this.getCustomerServiceUrl({
+                    urlName: "game_wallet",
+                    needToken: false
+                  }).then(res => {
+                    return res.uri;
+                  })
+                );
               },
               text: "立即申请"
             }

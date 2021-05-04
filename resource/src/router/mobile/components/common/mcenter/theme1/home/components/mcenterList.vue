@@ -16,69 +16,129 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import ajax from '@/lib/ajax';
-import mcenterPageAuthControl from '@/lib/mcenterPageAuthControl';
-import exceptionList from '@/config/exceptionList';
+import { mapGetters, mapActions } from "vuex";
+import ajax from "@/lib/ajax";
+import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
+import exceptionList from "@/config/exceptionList";
 
 export default {
   props: {
     filter: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   computed: {
     ...mapGetters({
-      webInfo: 'getWebInfo',
-      memInfo: 'getMemInfo'
+      webInfo: "getWebInfo",
+      memInfo: "getMemInfo",
+      mobileInfo: "getMobileInfo"
     }),
     list() {
       return [
-        { name: 'S_ACCOUNT_DATA', path: '/mobile/mcenter/accountData', pageName: 'accountData' }, // 帳戶資料
-        { name: 'VIP', path: '/mobile/mcenter/accountVip', pageName: 'accountVip' }, // VIP
-        { name: 'S_ACCOUNT_DEPOSITE', path: '', pageName: 'deposit' }, // 存款
-        { name: 'S_ACCOUNT_WITHDRAW', path: '/mobile/mcenter/withdraw', pageName: 'withdraw' }, // 取款
-        { name: 'S_TRAN_BALANCE', path: '/mobile/mcenter/balanceTrans', pageName: 'bankBalanceTran' }, // 額度轉換
-        { name: 'S_BIND_BANK', path: '/mobile/mcenter/bankCard', pageName: 'accountBankCard' }, // 綁定銀行卡
-        { name: 'S_FUNDS_DETAILS', path: '/mobile/mcenter/moneyDetail', pageName: 'bankMoneyDetail' }, // 資金明細
-        { name: 'S_BETHISTORYBTN', path: '/mobile/mcenter/betRecord', pageName: 'betRecord' }, // 投注記錄
-        { name: 'S_MYREBATE', path: '/mobile/mcenter/bankRebate', pageName: 'bankRebate' }, // 我的返水
-        { name: 'S_BONUS_ACCOUNT', path: '/mobile/mcenter/bonusAccount', pageName: 'bonusAccount' }, // 紅利帳戶
-        { name: 'S_MSG_CENTER', path: '/mobile/mcenter/information/post', pageName: 'information' }, // 信息中心
-        { name: 'S_DEVICE_MANAGEMENT', path: '/mobile/mcenter/bindingDevice', pageName: 'bindingDevice' }, // 裝置管理
-        { name: 'S_TEAM_CENTER', path: '/mobile/mcenter/tcenter', pageName: 'tcenter' }, // 團隊中心
-        { name: 'S_AGENT', path: '', pageName: 'jpAgent' } // 特例 日本站 代理中心
+        {
+          name: "S_ACCOUNT_DATA",
+          path: "/mobile/mcenter/accountData",
+          pageName: "accountData"
+        }, // 帳戶資料
+        {
+          name: "VIP",
+          path: "/mobile/mcenter/accountVip",
+          pageName: "accountVip"
+        }, // VIP
+        { name: "S_ACCOUNT_DEPOSITE", path: "", pageName: "deposit" }, // 存款
+        {
+          name: "S_ACCOUNT_WITHDRAW",
+          path: "/mobile/mcenter/withdraw",
+          pageName: "withdraw"
+        }, // 取款
+        {
+          name: "S_TRAN_BALANCE",
+          path: "/mobile/mcenter/balanceTrans",
+          pageName: "bankBalanceTran"
+        }, // 額度轉換
+        {
+          name: "S_BIND_BANK",
+          path: "/mobile/mcenter/bankCard",
+          pageName: "accountBankCard"
+        }, // 綁定銀行卡
+        {
+          name: "S_FUNDS_DETAILS",
+          path: "/mobile/mcenter/moneyDetail",
+          pageName: "bankMoneyDetail"
+        }, // 資金明細
+        {
+          name: "S_BETHISTORYBTN",
+          path: "/mobile/mcenter/betRecord",
+          pageName: "betRecord"
+        }, // 投注記錄
+        {
+          name: "S_MYREBATE",
+          path: "/mobile/mcenter/bankRebate",
+          pageName: "bankRebate"
+        }, // 我的返水
+        {
+          name: "S_BONUS_ACCOUNT",
+          path: "/mobile/mcenter/bonusAccount",
+          pageName: "bonusAccount"
+        }, // 紅利帳戶
+        {
+          name: "S_MSG_CENTER",
+          path: "/mobile/mcenter/information/post",
+          pageName: "information"
+        }, // 信息中心
+        {
+          name: "S_DEVICE_MANAGEMENT",
+          path: "/mobile/mcenter/bindingDevice",
+          pageName: "bindingDevice"
+        }, // 裝置管理
+        {
+          name: "S_TEAM_CENTER",
+          path: "/mobile/mcenter/tcenter",
+          pageName: "tcenter"
+        }, // 團隊中心
+        { name: "S_AGENT", path: "", pageName: "jpAgent" } // 特例 日本站 代理中心
       ]
-        .filter((item) => {
+        .filter(item => {
           // 日本站特例移除紅利帳戶
-          if (item.pageName === 'bonusAccount' || item.pageName === 'bindingDevice') {
+          if (
+            item.pageName === "bonusAccount" ||
+            item.pageName === "bindingDevice"
+          ) {
             return !this.isException;
           }
 
           // 日本站特例加入代理中心
-          if (item.pageName === 'jpAgent') {
+          if (item.pageName === "jpAgent") {
             return this.isException;
           }
 
           // 無限層廳才顯示團隊中心
-          if (item.pageName === 'tcenter') {
+          if (item.pageName === "tcenter") {
             return this.memInfo.config.infinity;
           }
 
           // 判斷是否開啟vip
-          if (item.pageName === 'accountVip') {
+          if (item.pageName === "accountVip") {
             return this.memInfo.user.display_vip;
           }
 
           return true;
         })
-        .filter((item) => {
+        .filter(item => {
           switch (true) {
-            case this.filter === 'money':
-              return ['deposit', 'withdraw', 'bankBalanceTran'].includes(item.pageName);
-            case this.filter === 'transaction':
-              return ['bankMoneyDetail', 'betRecord', 'bonusAccount', 'bankRebate', 'tcenter'].includes(item.pageName);
+            case this.filter === "money":
+              return ["deposit", "withdraw", "bankBalanceTran"].includes(
+                item.pageName
+              );
+            case this.filter === "transaction":
+              return [
+                "bankMoneyDetail",
+                "betRecord",
+                "bonusAccount",
+                "bankRebate",
+                "tcenter"
+              ].includes(item.pageName);
             default:
               return true;
           }
@@ -87,25 +147,28 @@ export default {
     // 日本站特例判斷
     isException() {
       const { wonderCasino, knightCasino } = exceptionList;
-      return wonderCasino.concat(knightCasino).includes(this.webInfo.alias);
+      return wonderCasino.concat(knightCasino).includes(this.mobileInfo.alias);
     }
   },
   methods: {
-    ...mapActions(['actionEnterMCenterThirdPartyLink']),
+    ...mapActions(["actionEnterMCenterThirdPartyLink"]),
     onListClick(item) {
-      if (item.pageName === 'jpAgent') {
+      if (item.pageName === "jpAgent") {
         this.onJpAgent();
         return;
       }
-      if (item.pageName === 'deposit') {
+      if (item.pageName === "deposit") {
         this.$depositLink(true);
         return;
       }
 
-      if (item.pageName === 'bankRebate') {
-        this.actionEnterMCenterThirdPartyLink({ type: 'member', page: item.pageName }).then((pageName) => {
+      if (item.pageName === "bankRebate") {
+        this.actionEnterMCenterThirdPartyLink({
+          type: "member",
+          page: item.pageName
+        }).then(pageName => {
           if (pageName) {
-            mcenterPageAuthControl(pageName).then((response) => {
+            mcenterPageAuthControl(pageName).then(response => {
               if (response && response.status) {
                 this.$router.push(item.path);
               }
@@ -115,7 +178,7 @@ export default {
         return;
       }
 
-      mcenterPageAuthControl(item.pageName).then((response) => {
+      mcenterPageAuthControl(item.pageName).then(response => {
         if (response && response.status) {
           this.$router.push(item.path);
         }
@@ -123,19 +186,21 @@ export default {
     },
     onJpAgent() {
       let url;
-      const win = window.open('');
-      if (this.webInfo.alias === '110' || this.webInfo.alias === '123') {
-        url = '/api/v1/c/link/customize?id=239eebc812b5772e585583d6025a7e2e6f322bb3&type=reward';
+      const win = window.open("");
+      if (this.mobileInfo.alias === "110" || this.mobileInfo.alias === "123") {
+        url =
+          "/api/v1/c/link/customize?id=239eebc812b5772e585583d6025a7e2e6f322bb3&type=reward";
       } else {
-        url = '/api/v1/c/link/customize?id=67873859460a046124c6563448ed09c7f92ab34e&type=reward';
+        url =
+          "/api/v1/c/link/customize?id=67873859460a046124c6563448ed09c7f92ab34e&type=reward";
       }
 
       ajax({
-        method: 'get',
+        method: "get",
         url,
         errorAlert: false,
-        success: (response) => {
-          if (response.result === 'ok' && response.ret.uri) {
+        success: response => {
+          if (response.result === "ok" && response.ret.uri) {
             win.location = response.ret.uri;
             return;
           }

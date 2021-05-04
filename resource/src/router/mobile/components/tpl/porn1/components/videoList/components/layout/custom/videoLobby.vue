@@ -175,7 +175,8 @@ export default {
     }
   },
   created() {
-    setCookie("s_id", "113");
+    setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
+
     this.setHeaderTitle("小猪视频");
     this.setHasSearchBtn(false);
     this.initData();

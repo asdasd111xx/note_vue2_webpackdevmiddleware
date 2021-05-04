@@ -61,10 +61,15 @@ export default {
       currentLayout: {}
     };
   },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
+  },
   created() {
     switch (this.source) {
       case "yabo":
-        setCookie("s_id", "9");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
         this.currentLayout = {
           siteId: 1,
           videoLobby: "yaboVideoLobby",
@@ -76,7 +81,7 @@ export default {
         break;
 
       case "smallPig":
-        setCookie("s_id", "113");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
         this.currentLayout = {
           siteId: 2,
           videoLobby: "smallPigVideoLobby",
@@ -88,7 +93,7 @@ export default {
         break;
 
       case "gay":
-        setCookie("s_id", "7");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
         this.currentLayout = {
           siteId: 3,
           videoLobby: "gayVideoLobby",
@@ -100,7 +105,7 @@ export default {
         break;
 
       case "les":
-        setCookie("s_id", "7");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
         this.currentLayout = {
           siteId: 4,
           videoLobby: "lesVideoLobby",

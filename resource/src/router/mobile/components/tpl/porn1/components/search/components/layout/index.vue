@@ -57,6 +57,11 @@ export default {
       currentLayout: {}
     };
   },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
+  },
   created() {
     const params = {
       prev: true,
@@ -81,7 +86,7 @@ export default {
 
     switch (this.source) {
       case "smallPig":
-        setCookie("s_id", "113");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
         params.isSmallPigSearch = "smallPigSearch";
         this.currentLayout = {
           ...params,
@@ -91,7 +96,7 @@ export default {
         break;
 
       case "gay":
-        setCookie("s_id", "7");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
         this.currentLayout = {
           ...params,
           searchInfo: "gaySearchInfo",
@@ -100,7 +105,7 @@ export default {
         break;
 
       case "les":
-        setCookie("s_id", "8");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
         this.currentLayout = {
           ...params,
           searchInfo: "lesSearchInfo",
@@ -109,7 +114,7 @@ export default {
         break;
 
       case "yabo":
-        setCookie("s_id", "9");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
         this.currentLayout = {
           searchHome: "yaboSearchHome",
           searchInfo: "yaboSearchInfo",

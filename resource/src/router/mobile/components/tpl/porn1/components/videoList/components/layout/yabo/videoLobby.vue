@@ -202,17 +202,18 @@ export default {
   created() {
     switch (this.source) {
       case "yabo":
-        setCookie("s_id", "9");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+
         this.setHeaderTitle(this.$text("鸭脖视频", "鸭脖视频"));
         break;
 
       case "gay":
-        setCookie("s_id", "7");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
         this.setHeaderTitle("男男视频");
         break;
 
       case "les":
-        setCookie("s_id", "8");
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
         this.setHeaderTitle("女女视频");
         break;
 

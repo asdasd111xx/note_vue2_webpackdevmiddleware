@@ -42,6 +42,8 @@ export default {
     this.getSliderTimer = null;
   },
   mounted() {
+    const defaultImage = this.generateDefaultImg();
+    this.slider = [defaultImage];
     this.initSlider();
   },
   computed: {
@@ -73,68 +75,63 @@ export default {
       };
     },
     initSlider() {
-      const defaultImage = this.generateDefaultImg();
-      this.slider = [defaultImage];
+      const info = this.mobileInfo;
+      const mobile_slide =
+        info && info.case_data && info.case_data.MOBILE_SLIDE;
 
-      this.actionGetMobileInfo().then(() => {
-        const info = this.mobileInfo;
-        const mobile_slide =
-          info && info.case_data && info.case_data.MOBILE_SLIDE;
+      // 若無資料則使用預設圖片
+      if (!mobile_slide || mobile_slide.length === 0) {
+        this.slider = [defaultImage];
+        return;
+      }
 
-        // 若無資料則使用預設圖片
-        if (!mobile_slide || mobile_slide.length === 0) {
-          this.slider = [defaultImage];
+      let list = [];
+
+      mobile_slide.data.map(item => {
+        if (!Object.keys(this.lang)) {
           return;
         }
 
-        let list = [];
-
-        mobile_slide.data.map(item => {
-          if (!Object.keys(this.lang)) {
-            return;
-          }
-
-          // const isShow = this.show(this.getDefaultCondition(item.condition));
-          list.push({
-            ...item,
-            image: `${this.cdnDomain}${item.image0[this.curLang]}`
-          });
+        // const isShow = this.show(this.getDefaultCondition(item.condition));
+        list.push({
+          ...item,
+          image: `${this.cdnDomain}${item.image0[this.curLang]}`
         });
-
-        // 若限制條件都不符合使用預設圖片
-        if (list.length === 0) {
-          list.push(defaultImage);
-        }
-
-        this.slider = list;
-        let hasLoop = list && list.length > 1;
-        this.opts = {
-          loop: hasLoop,
-          autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
-          pagination: hasLoop
-            ? { el: ".swiper-pagination", clickable: true }
-            : {},
-          on: {
-            click(element) {
-              if (this.isClicked) {
-                return;
-              }
-
-              this.isClicked = true;
-              setTimeout(() => {
-                this.isClicked = false;
-              }, 1500);
-
-              let target = list[element.target.dataset.key];
-              mobileLinkOpen({
-                ...target,
-                site: this.themeTPL
-              });
-            }
-          }
-        };
-        this.updateKey = 1;
       });
+
+      // 若限制條件都不符合使用預設圖片
+      if (list.length === 0) {
+        list.push(defaultImage);
+      }
+
+      this.slider = list;
+      let hasLoop = list && list.length > 1;
+      this.opts = {
+        loop: hasLoop,
+        autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
+        pagination: hasLoop
+          ? { el: ".swiper-pagination", clickable: true }
+          : {},
+        on: {
+          click(element) {
+            if (this.isClicked) {
+              return;
+            }
+
+            this.isClicked = true;
+            setTimeout(() => {
+              this.isClicked = false;
+            }, 1500);
+
+            let target = list[element.target.dataset.key];
+            mobileLinkOpen({
+              ...target,
+              site: this.themeTPL
+            });
+          }
+        }
+      };
+      this.updateKey = 1;
     },
     /**
      * 生成預設圖片物件
