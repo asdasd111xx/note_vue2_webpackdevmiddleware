@@ -586,8 +586,8 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
-    await dispatch("actionSetWebInfo", state.webDomain.domain);
-    await dispatch("actionGetMobileInfo");
+    dispatch("actionSetWebInfo", state.webDomain.domain);
+    dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
 
     // const defaultLang =
