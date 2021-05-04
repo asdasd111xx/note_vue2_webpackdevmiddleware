@@ -78,11 +78,12 @@ export default {
           }
           // 測試模式
           if (to.params.mode && to.params.mode === "test") {
-            store
-              .dispatch("actionSetWebInfo", response.ret.user.domain)
-              .then(() => {
-                next();
-              });
+            next();
+            // store
+            //   .dispatch("actionSetWebInfo", response.ret.user.domain)
+            //   .then(() => {
+            //     next();
+            //   });
           } else {
             next({ path: "/" });
           }
