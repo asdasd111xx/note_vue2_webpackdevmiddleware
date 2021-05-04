@@ -590,7 +590,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
     dispatch("actionSetWebInfo", state.webDomain.domain);
-    dispatch("actionGetMobileInfo");
+    await dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
 
     await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
