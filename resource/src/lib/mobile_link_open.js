@@ -228,10 +228,13 @@ export default target => {
       // case "lg_ey_card":
       // case "lg_sg_card":
       case "lg_yb_casino":
-      // case "lg_ey_casino":
-      // case "lg_sg_casino":
-      // router.push(`/mobile/hotLobby/${linkTo}`);
-      // return;
+        // case "lg_ey_casino":
+        // case "lg_sg_casino":
+        if (!linkItem) {
+          router.push(`/mobile/hotLobby/${linkTo}`);
+          return;
+        }
+
       default:
         break;
     }

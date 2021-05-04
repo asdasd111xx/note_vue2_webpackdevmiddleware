@@ -138,7 +138,8 @@ export default {
       let source = this.$route.query.source;
       let self = this;
       this.$emit("leave", () => {
-        window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
+        this.$router.push(`/mobile/videoPlay/${id}?source=${source}`);
+        // window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
       });
     }
   }
