@@ -73,17 +73,15 @@ export default {
       };
     },
     initSlider() {
-      const defaultImage = this.generateDefaultImg();
-      this.setSlider([defaultImage]);
       this.actionGetMobileInfo().then(() => {
+        const defaultImage = this.generateDefaultImg();
         const info = this.mobileInfo;
-
         const mobile_slide =
           info && info.case_data && info.case_data.MOBILE_SLIDE;
 
         // 若無資料則使用預設圖片
         if (!mobile_slide || mobile_slide.length === 0) {
-          this.setSlider([defaultImage]);
+          this.slider = [defaultImage];
           return;
         }
 
@@ -106,38 +104,35 @@ export default {
           list.push(defaultImage);
         }
 
-        this.setSlider(list);
-      });
-    },
-    setSlider(list) {
-      this.slider = list;
-      let hasLoop = list && list.length > 1;
-      this.opts = {
-        loop: hasLoop,
-        autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
-        pagination: hasLoop
-          ? { el: ".swiper-pagination", clickable: true }
-          : {},
-        on: {
-          click(element) {
-            if (this.isClicked) {
-              return;
+        this.slider = list;
+        let hasLoop = list && list.length > 1;
+        this.opts = {
+          loop: hasLoop,
+          autoplay: hasLoop ? { delay: 5000, disableOnInteraction: false } : {},
+          pagination: hasLoop
+            ? { el: ".swiper-pagination", clickable: true }
+            : {},
+          on: {
+            click(element) {
+              if (this.isClicked) {
+                return;
+              }
+
+              this.isClicked = true;
+              setTimeout(() => {
+                this.isClicked = false;
+              }, 1500);
+
+              let target = list[element.target.dataset.key];
+              mobileLinkOpen({
+                ...target,
+                site: this.themeTPL
+              });
             }
-
-            this.isClicked = true;
-            setTimeout(() => {
-              this.isClicked = false;
-            }, 1500);
-
-            let target = list[element.target.dataset.key];
-            mobileLinkOpen({
-              ...target,
-              site: this.themeTPL
-            });
           }
-        }
-      };
-      this.updateKey = 1;
+        };
+        this.updateKey = 1;
+      });
     },
     /**
      * 生成預設圖片物件
