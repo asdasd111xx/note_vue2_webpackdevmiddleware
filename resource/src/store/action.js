@@ -587,7 +587,12 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
-    await getLang(state.mobileInfo.language, "zh-cn");
+
+    if (state.mobileInfo && state.mobileInfo.language) {
+      await getLang(state.mobileInfo.language, "zh-cn");
+    } else {
+      await getLang("zh-cn");
+    }
 
     // 設定網站設定檔資訊 (start)
     let configInfo;

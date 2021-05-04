@@ -15,6 +15,7 @@
         id="videoPlayer"
       />
       <div
+        id="scroll-info-wrap"
         :class="$style['info-wrap']"
         :style="{ height: `calc(100vh - ${videoHeight}px)` }"
       >
@@ -66,12 +67,10 @@ export default {
       switch (this.source) {
         case "yabo":
           setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
-
           return 1;
 
         case "smallPig":
           setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
-
           return 2;
 
         case "gay":
@@ -92,6 +91,9 @@ export default {
       this.$nextTick(() => {
         this.videoHeight = this.$refs["player"].$el.offsetHeight + 65;
       });
+    },
+    "$route.params.id"(val) {
+      this.getVideoInfo();
     }
   },
   methods: {
@@ -99,19 +101,24 @@ export default {
       if (this.$refs["player"]) {
         this.$refs["player"].handleLeavePage(cb);
       }
+
+      document.getElementById("scroll-info-wrap").scrollTop = 0;
+    },
+    getVideoInfo() {
+      pornRequest({
+        method: "post",
+        url: `/video/videoinfo`,
+        data: { videoId: this.$route.params.id, siteId: this.siteId }
+      }).then(res => {
+        if (res.status !== 200) {
+          return;
+        }
+        this.info = { ...res.result };
+      });
     }
   },
   mounted() {
-    pornRequest({
-      method: "post",
-      url: `/video/videoinfo`,
-      data: { videoId: this.$route.params.id, siteId: this.siteId }
-    }).then(res => {
-      if (res.status !== 200) {
-        return;
-      }
-      this.info = { ...res.result };
-    });
+    this.getVideoInfo();
   },
   created() {
     if (localStorage.getItem("content_rating")) {
