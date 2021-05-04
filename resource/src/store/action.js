@@ -209,9 +209,9 @@ export const actionChangePage = (
 
     if (page === "service") {
       window.open(
-        state.webInfo.on_service_url,
+        state.mobileInfo.service.url,
         "",
-        `width=${state.webInfo.on_service_w}, height=${state.webInfo.on_service_h}`
+        `width=${state.mobileInfo.service.width}, height=${state.mobileInfo.service.height}`
       );
       // 在線客服流量分析事件
       window.dataLayer.push({
@@ -475,9 +475,9 @@ export const actionChangePage = (
 
   if (page === "service") {
     window.open(
-      state.webInfo.on_service_url,
+      state.mobileInfo.service.url,
       "",
-      `width=${state.webInfo.on_service_w}, height=${state.webInfo.on_service_h}`
+      `width=${state.mobileInfo.service.url.width}, height=${state.mobileInfo.service.url.height}`
     );
     // 在線客服流量分析事件
     window.dataLayer.push({
@@ -585,15 +585,9 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
     dispatch("actionSetWebInfo", state.webDomain.domain);
-    dispatch("actionGetMobileInfo");
+    await dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
-
-    // const defaultLang =
-    //   ["47", "70", "71"].includes(state.memInfo.user.domain) &&
-    //   state.webInfo.is_production
-    //     ? "vi"
-    //     : "zh-cn";
-    await getLang(state.webInfo.language, "zh-cn");
+    await getLang(state.mobileInfo.language, "zh-cn");
 
     // 設定網站設定檔資訊 (start)
     let configInfo;
@@ -616,16 +610,16 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
     if (state.loginStatus) {
       const params = {
-        logo: state.webInfo.logo
-          ? `${state.webInfo.cdn_domain}${state.webInfo.logo}`
-          : "",
-        mlogo: state.webInfo.m_logo
-          ? `${state.webInfo.cdn_domain}${state.webInfo.m_logo}`
-          : "",
-        title: encodeURI(state.memInfo.config.domain_name[state.curLang]),
-        favicon: state.webInfo.fav_icon
-          ? `${state.webInfo.cdn_domain}${state.webInfo.fav_icon}`
-          : ""
+        // logo: state.mobileInfo.og_img
+        //   ? `${state.mobileInfo.cdn_domain}${state.webInfo.og_img}`
+        //   : "",
+        // mlogo: state.mobileInfo.og_img
+        //   ? `${state.mobileInfo.cdn_domain}${state.webInfo.og_img}`
+        //   : "",
+        // title: encodeURI(state.memInfo.config.domain_name[state.curLang]),
+        // favicon: state.mobileInfo.fav_icon
+        //   ? `${state.mobileInfo.cdn_domain}${state.webInfo.fav_icon}`
+        //   : ""
       };
 
       // dispatch('actionSetVip');
@@ -1057,11 +1051,11 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
         let configInfo;
         if (state.webInfo.is_production) {
           configInfo =
-            siteConfigOfficial[`site_${state.webInfo.alias}`] ||
+            siteConfigOfficial[`site_${state.mobileInfo.alias}`] ||
             siteConfigOfficial.preset;
         } else {
           configInfo =
-            siteConfigTest[`site_${state.webInfo.alias}`] ||
+            siteConfigTest[`site_${state.mobileInfo.alias}`] ||
             siteConfigTest.preset;
         }
 
@@ -1297,9 +1291,8 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
   })
     .then(res => {
       const { result, data } = res.data;
-      // commit(types.SETWEBINFO, data);
       if (result === "ok") {
-        commit(types.SETMOBILEINFO, data);
+        commit(types.SETMOBILEINFO, { ...data, alias: state.webDomain });
       }
     })
     .catch(error => {
@@ -1779,7 +1772,7 @@ export const actionVerificationFormData = (
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -1880,7 +1873,7 @@ export const actionSetBBOSDomain = ({ commit, state }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -1917,7 +1910,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -2062,7 +2055,7 @@ export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
+      siteConfigTest[`site_${state.mobileInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 

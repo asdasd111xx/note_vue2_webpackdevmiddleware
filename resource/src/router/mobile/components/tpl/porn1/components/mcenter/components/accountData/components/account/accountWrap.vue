@@ -171,7 +171,8 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       webInfo: "getWebInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      mobileInfo: "getMobileInfo"
     }),
     // 過濾特例的資料
     filteredDataList() {
@@ -193,7 +194,7 @@ export default {
     // 特例判斷
     isException() {
       const { wonderCasino, knightCasino } = exceptionList;
-      return wonderCasino.concat(knightCasino).includes(this.webInfo.alias);
+      return wonderCasino.concat(knightCasino).includes(this.mobileInfo.alias);
     }
   },
   watch: {
@@ -256,20 +257,29 @@ export default {
                 confirmSt = "already";
               }
             }
-            
-            const isBtnShow=false
-            if(this.mcenterUserField.config[key].editable){ //修改開
-              this.isBtnShow=true;
-            }else{ 
-              if(!this.mcenterUserField.config[key].code && !this.memInfo[key][key]){ //修改關 驗證關 沒資料 
-                this.isBtnShow=true;
-              }else if(!this.mcenterUserField.user[key] && this.mcenterUserField.config[key].code){ //修改關 沒驗證過信箱或電話 驗證開
-                this.isBtnShow=true;
-              }else{
-                this.isBtnShow=false;
+
+            const isBtnShow = false;
+            if (this.mcenterUserField.config[key].editable) {
+              //修改開
+              this.isBtnShow = true;
+            } else {
+              if (
+                !this.mcenterUserField.config[key].code &&
+                !this.memInfo[key][key]
+              ) {
+                //修改關 驗證關 沒資料
+                this.isBtnShow = true;
+              } else if (
+                !this.mcenterUserField.user[key] &&
+                this.mcenterUserField.config[key].code
+              ) {
+                //修改關 沒驗證過信箱或電話 驗證開
+                this.isBtnShow = true;
+              } else {
+                this.isBtnShow = false;
               }
             }
-            
+
             itemNow = {
               ...itemNow,
               status: confirmSt,
@@ -281,7 +291,7 @@ export default {
               //   (key === 'email' && this.mcenterUserField.config.email.code)
               // ,
               //!keyValue || !userConfig.user[key], // 未驗證 或者 未填 可修改
-              btnShow:this.isBtnShow,
+              btnShow: this.isBtnShow,
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };

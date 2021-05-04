@@ -234,7 +234,7 @@ export default {
       let text = data.ret[i].alias;
       if (data.ret[i].vendor === "--") {
         key = "default";
-        text = ["67", "69", "500011"].includes(state.webInfo.alias)
+        text = ["67", "69", "500011"].includes(state.mobileInfo.alias)
           ? i18n.t("S_MCENTER_WALLET")
           : i18n.t("S_MAIN_BALANCE");
       }
