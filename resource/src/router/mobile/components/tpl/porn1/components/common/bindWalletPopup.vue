@@ -201,11 +201,29 @@ export default {
           name: "火币",
           iconSrc: `/static/image/common/mcenter/deposit/ic_huobi.png`,
           onClick: () => {
+            // 呼叫 API 前另需視窗
+            let newWindow = "";
+            newWindow = window.open();
+
+            const newWindowHref = uri => {
+              try {
+                newWindow.location = uri;
+              } catch (e) {
+                console.log(e);
+                console.log(newWindow);
+                console.log(uri);
+              }
+            };
+
             this.getCustomerServiceUrl({
               urlName: "huobi",
               needToken: false
             }).then(res => {
-              window.open(res.uri);
+              if (res.uri) {
+                newWindowHref(res.uri);
+              } else {
+                newWindow.close();
+              }
             });
           }
         }

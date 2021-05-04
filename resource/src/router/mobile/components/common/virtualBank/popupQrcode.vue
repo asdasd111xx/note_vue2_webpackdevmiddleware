@@ -251,31 +251,85 @@ export default {
           if (["porn1", "sg1"].includes(this.themeTPL)) {
             // "https://cgpayintroduction.azurewebsites.net/index.aspx"
 
+            // 呼叫 API 前另需視窗
+            let newWindow = "";
+            newWindow = window.open();
+
+            const newWindowHref = uri => {
+              try {
+                newWindow.location = uri;
+              } catch (e) {
+                console.log(e);
+                console.log(newWindow);
+                console.log(uri);
+              }
+            };
+
             this.getCustomerServiceUrl({
               urlName: "cgp_introduce",
               needToken: false
             }).then(res => {
-              window.open(res.uri);
+              if (res.uri) {
+                newWindowHref(res.uri);
+              } else {
+                newWindow.close();
+              }
             });
           }
           if (["ey1"].includes(this.themeTPL)) {
             // http://oinbox.io
 
+            // 呼叫 API 前另需視窗
+            let newWindow = "";
+            newWindow = window.open();
+
+            const newWindowHref = uri => {
+              try {
+                newWindow.location = uri;
+              } catch (e) {
+                console.log(e);
+                console.log(newWindow);
+                console.log(uri);
+              }
+            };
+
             this.getCustomerServiceUrl({
               urlName: "cgp_apply",
               needToken: false
             }).then(res => {
-              window.open(res.uri);
+              if (res.uri) {
+                newWindowHref(res.uri);
+              } else {
+                newWindow.close();
+              }
             });
           }
           break;
 
         case 37:
+          // 呼叫 API 前另需視窗
+          let newWindow = "";
+          newWindow = window.open();
+
+          const newWindowHref = uri => {
+            try {
+              newWindow.location = uri;
+            } catch (e) {
+              console.log(e);
+              console.log(newWindow);
+              console.log(uri);
+            }
+          };
+
           this.getCustomerServiceUrl({
             urlName: "game_wallet",
             needToken: false
           }).then(res => {
-            window.open(res.uri);
+            if (res.uri) {
+              newWindowHref(res.uri);
+            } else {
+              newWindow.close();
+            }
           });
           break;
 
