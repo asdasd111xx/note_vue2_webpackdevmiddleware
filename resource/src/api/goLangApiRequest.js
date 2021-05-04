@@ -6,7 +6,7 @@ export default ({
   method = "get",
   params = {},
   urlParams = null,
-  timeout = 30000,
+  timeout = 10000,
   headers = {},
   url = ""
 }) => {

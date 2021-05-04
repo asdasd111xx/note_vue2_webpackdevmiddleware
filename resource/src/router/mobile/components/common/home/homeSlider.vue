@@ -73,8 +73,10 @@ export default {
       };
     },
     initSlider() {
+      const defaultImage = this.generateDefaultImg();
+      this.slider = [defaultImage];
+
       this.actionGetMobileInfo().then(() => {
-        const defaultImage = this.generateDefaultImg();
         const info = this.mobileInfo;
         const mobile_slide =
           info && info.case_data && info.case_data.MOBILE_SLIDE;
