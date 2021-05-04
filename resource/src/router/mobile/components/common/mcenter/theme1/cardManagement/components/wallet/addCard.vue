@@ -842,11 +842,29 @@ export default {
             hasCallback: true,
             dataObj: {
               cb: () => {
+                // 呼叫 API 前另需視窗
+                let newWindow = "";
+                newWindow = window.open();
+
+                const newWindowHref = uri => {
+                  try {
+                    newWindow.location = uri;
+                  } catch (e) {
+                    console.log(e);
+                    console.log(newWindow);
+                    console.log(uri);
+                  }
+                };
+
                 this.getCustomerServiceUrl({
                   urlName: "cgp_introduce",
                   needToken: false
                 }).then(res => {
-                  window.open(res.uri);
+                  if (res.uri) {
+                    newWindowHref(res.uri);
+                  } else {
+                    newWindow.close();
+                  }
                 });
               },
               text: "立即申请"
@@ -908,11 +926,29 @@ export default {
             hasCallback: true,
             dataObj: {
               cb: () => {
+                // 呼叫 API 前另需視窗
+                let newWindow = "";
+                newWindow = window.open();
+
+                const newWindowHref = uri => {
+                  try {
+                    newWindow.location = uri;
+                  } catch (e) {
+                    console.log(e);
+                    console.log(newWindow);
+                    console.log(uri);
+                  }
+                };
+
                 this.getCustomerServiceUrl({
                   urlName: "game_wallet",
                   needToken: false
                 }).then(res => {
-                  window.open(res.uri);
+                  if (res.uri) {
+                    newWindowHref(res.uri);
+                  } else {
+                    newWindow.close();
+                  }
                 });
               },
               text: "立即申请"

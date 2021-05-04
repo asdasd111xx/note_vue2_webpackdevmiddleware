@@ -341,22 +341,23 @@
       newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;
     }
 
-    function getComm(domain) {
-      fetch(`/tpl/${domain}/comm.json`).then(function (response) {
-        return response.json();
-      }).then(function (data) {
-        if (data && data.on_service_url) {
-          openService(data.on_service_url)
-        } else {
-          openService()
-        }
-      }).catch(function () {
-        openService()
-      });
-    }
-    function getComm2(domain, configInfo, title) { //在線客服2.0
+    // function getComm(domain) {
+    //   fetch(`/tpl/${domain}/comm.json`).then(function (response) {
+    //     return response.json();
+    //   }).then(function (data) {
+    //     if (data && data.on_service_url) {
+    //       openService(data.on_service_url)
+    //     } else {
+    //       openService()
+    //     }
+    //   }).catch(function () {
+    //     openService()
+    //   });
+    // }
 
-      const uri = `${configInfo}/xbb/Common/List?lang=zh-cn&t=${Date.now()}`;
+    function getNewComm(domain, configInfo, title) { //在線客服2.0
+
+      const uri = `${configInfo}/xbb/Common/Jackfruit/List?lang=zh-cn&t=${Date.now()}`;
       const request = fetch(uri, {
         method: 'GET',
         headers: new Headers({
@@ -371,8 +372,7 @@
       })
         .then(function (res) {
           if (res && res.data) {
-            console.log(res.data.on_service_url)
-            openService(res.data.on_service_url)
+            openService(res.data.data.service.url)
           } else {
             openService()
           }
@@ -385,7 +385,7 @@
       return response.json();
     }).then(function (data) {
       if (data.domain) {
-        getComm2(data.domain, siteConfig(data.domain), target)
+        getNewComm(data.domain, siteConfig(data.domain), target)
       }
     }).catch(function (e) {
       openService()
@@ -403,6 +403,7 @@
       case '69':  // demo
         return "https://yaboapi.canarycherrytart.com/api-v2";
 
+      default:
       case '67': // prod
         return "https://yaboapi.canarycherrytart.com/api-v2";
     }

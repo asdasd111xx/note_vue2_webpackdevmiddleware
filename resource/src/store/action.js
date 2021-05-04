@@ -63,7 +63,6 @@ export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -75,7 +74,6 @@ export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
       const { errorCode, status, data } = res;
 
       if (status === "000" && errorCode === "00") {
-        console.log(data);
         commit(types.SETWEBINFO, data);
 
         if (Vue.cookie.get("page") === "joinAgent" && state.loginStatus) {
@@ -604,7 +602,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       configInfo =
         siteConfigTest[`site_${state.webDomain.domain}`] ||
         siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-        siteConfigTest[`site_${state.webInfo.alias}`] ||
         siteConfigOfficial.preset;
     }
 
@@ -727,7 +724,6 @@ export const actionSetUserdata = (
         configInfo =
           siteConfigTest[`site_${state.webDomain.domain}`] ||
           siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-          siteConfigTest[`site_${state.webInfo.alias}`] ||
           siteConfigOfficial.preset;
       }
 
@@ -965,7 +961,6 @@ export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -1283,7 +1278,6 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
   // const status = Vue.cookie.get("newsite") ? "New" : "";
@@ -1303,6 +1297,7 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
   })
     .then(res => {
       const { result, data } = res.data;
+      // commit(types.SETWEBINFO, data);
       if (result === "ok") {
         commit(types.SETMOBILEINFO, data);
       }
@@ -1403,7 +1398,6 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -1464,7 +1458,6 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
   // return yaboRequest({
@@ -2101,7 +2094,6 @@ export const actionSetSwagBalance = ({ commit, state }, data) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -2133,7 +2125,6 @@ export const actionGetWithdrawAccount = ({ state, dispatch }) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -2176,7 +2167,6 @@ export const actionGetServiceMaintain = ({ state, dispatch }) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
@@ -2215,7 +2205,6 @@ export const getCustomerServiceUrl = ({ state }, params) => {
     configInfo =
       siteConfigTest[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webInfo.alias}`] ||
       siteConfigOfficial.preset;
   }
 
