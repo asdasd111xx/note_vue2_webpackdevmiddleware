@@ -27,6 +27,7 @@ export default {
       maintainList: [],
       selectedIndex: 0,
       currentLevel: 0,
+      userViplevelId: 0,
       showPromotion: false,
       isLoading: false,
       isCheckWithdraw: false,
@@ -230,8 +231,10 @@ export default {
         if (result !== "ok") {
           return;
         }
-
         this.currentLevel = ret.find(item => item.complex).now_level_seq;
+
+        this.userViplevelId = ret.find(item => item.complex).now_level_id;
+        this.getFilterList();
       }
     });
   },
@@ -989,6 +992,21 @@ export default {
             // console.log("取維護狀態XXXX");
           });
       }
+    },
+    getFilterList() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Vip/Filter`,
+        params: {
+          vipId: this.userViplevelId
+        }
+      }).then(response => {
+        // console.log(`needFilterGameData is ${response}`);
+        localStorage.setItem(
+          "needFilterGameData",
+          JSON.stringify(response.data)
+        );
+      });
     }
   }
 };
