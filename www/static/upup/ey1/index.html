@@ -376,25 +376,26 @@
             newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;
         }
 
-        function getComm(domain) {  //在線客服
-            fetch(`/tpl/${domain}/comm.json`).then(function (response) {
-                return response.json();
-            }).then(function (data) {
-                if (data && data.on_service_url) {
-                    openService(data.on_service_url)
-                } else {
-                    openService()
-                }
-            }).catch(function () {
-                openService()
-            });
-        }
+        // function getComm(domain) {  //在線客服
+        //     fetch(`/tpl/${domain}/comm.json`).then(function (response) {
+        //         return response.json();
+        //     }).then(function (data) {
+        //         if (data && data.on_service_url) {
+        //             openService(data.on_service_url)
+        //         } else {
+        //             openService()
+        //         }
+        //     }).catch(function () {
+        //         openService()
+        //     });
+        // }
 
-        function getComm2(domain, configInfo, title) { //在線客服2.0, 土豆客服
+        function getNewComm(domain, configInfo, title) { //在線客服2.0, 土豆客服
             let uri = `${configInfo}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`;
 
+
             if (title === 'customer_service') {
-                uri = `${configInfo}/xbb/Common/List?lang=zh-cn&t=${Date.now()}`;
+                uri = `${configInfo}/xbb/Common/Jackfruit/List?lang=zh-cn&t=${Date.now()}`;
             }
 
             const request = fetch(uri, {
@@ -412,7 +413,7 @@
                 .then(function (res) {
                     if (res && res.data) {
                         if (title === 'customer_service') {
-                            openService(res.data.on_service_url)
+                            openService(res.data.data.service.url)
                             return;
                         } else {
                             openService(res.data.uri);
@@ -430,7 +431,7 @@
             return response.json();
         }).then(function (data) {
             if (data.domain) {
-                getComm2(data.domain, siteConfig(data.domain), target)
+                getNewComm(data.domain, siteConfig(data.domain), target)
             }
         }).catch(function (e) {
             openService()
@@ -441,10 +442,14 @@
         switch (domain) {
             case '500023': //qa
                 return "https://cxbb.bbin-asia.com/api-v2";
+
+            default:
             case '41': //prod
                 return "https://cxbb.chessrunroll.com/api-v2";
+
             case '74': //demo
                 return "https://cxbb.mangochess.com/api-v2";
+
             case '100004': //beta
                 return "https://eybe2.77num.com/api-v2";
         }
