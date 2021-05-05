@@ -18,6 +18,16 @@
         :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
+        v-else-if="source === 'smallPig'"
+        :src="
+          $getCdnPath(
+            `/static/image/common/btn_${
+              headerConfig.hasClose ? 'close_grey' : 'back_grey'
+            }.png`
+          )
+        "
+      />
+      <img
         v-else
         :src="
           $getCdnPath(
