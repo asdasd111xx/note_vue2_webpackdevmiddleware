@@ -1176,7 +1176,7 @@ export default {
         this.paySelectData["changeBank"] &&
         this.paySelectData["changeBank"].allData
       ) {
-        this.checkSuccess = true;
+        // this.checkSuccess = true;
         this.paySelectType = "changeBank";
         this.changeSelectValue(
           this.paySelectData["changeBank"].allData[0].value
