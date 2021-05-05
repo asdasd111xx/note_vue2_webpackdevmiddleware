@@ -41,6 +41,7 @@ export const site_67 = {
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
+      SPACE: "1",
       YB: "9",
       SP: "13",
       GAY: "7",
@@ -63,6 +64,7 @@ export const site_69 = {
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
+      SPACE: "1",
       YB: "9",
       SP: "13",
       GAY: "7",
@@ -87,6 +89,7 @@ export const site_100003 = {
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
+      SPACE: "1",
       YB: "9",
       SP: "13",
       GAY: "7",
@@ -160,6 +163,7 @@ export const site_80 = {
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
+      SPACE: "12",
       YB: "9",
       SP: "13",
       GAY: "7",
@@ -183,6 +187,7 @@ export const site_81 = {
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
+      SPACE: "12",
       YB: "9",
       SP: "13",
       GAY: "7",
@@ -207,6 +212,7 @@ export const site_100009 = {
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
+      SPACE: "12",
       YB: "9",
       SP: "13",
       GAY: "7",
