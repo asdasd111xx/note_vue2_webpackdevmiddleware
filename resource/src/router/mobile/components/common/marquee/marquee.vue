@@ -208,7 +208,7 @@ export default {
   }
 
   &.sg1 {
-    color: #be9e7f;
+    color: #b7b7b7;
   }
 
   &.notHome {
