@@ -110,6 +110,7 @@ export default {
         if (res && res.data && res.data.result === "ok") {
           if (!res.data.ret || !res.data.ret.length > 0) {
             this.postData = [];
+            this.hasReceive = true;
             return;
           }
 
