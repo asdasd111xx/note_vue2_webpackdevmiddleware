@@ -106,38 +106,45 @@ export default {
     }
   },
   created() {
-    const obj = {
-      url: `/video/guess`,
-      params: {
-        siteId: this.siteId,
-        tags: this.tags
-      }
-    };
-    // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
-    pornRequest(obj).then(response => {
-      if (response.status !== 200) {
-        return;
-      }
-
-      if (response.result && response.result.data) {
-        this.videoList = [...response.result.data];
-      } else {
-        this.videoList = [];
-      }
-
-      setTimeout(() => {
-        this.videoList.forEach(item => {
-          getEncryptImage(item);
-        });
-      }, 300);
-    });
+    this.getGuessVideo();
   },
   methods: {
+    getGuessVideo() {
+      const obj = {
+        url: `/video/guess`,
+        params: {
+          siteId: this.siteId,
+          tags: this.tags
+        }
+      };
+      // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
+      pornRequest(obj).then(response => {
+        if (response.status !== 200) {
+          return;
+        }
+
+        if (response.result && response.result.data) {
+          this.videoList = [...response.result.data];
+        } else {
+          this.videoList = [];
+        }
+
+        setTimeout(() => {
+          this.videoList.forEach(item => {
+            getEncryptImage(item);
+          });
+        }, 300);
+      });
+    },
     onClick(id) {
+      if (String(id) === String(this.$route.params.id)) {
+        return;
+      }
       let source = this.$route.query.source;
       this.$emit("leave", () => {
        console.log(id);
         this.$router.push(`/mobile/videoPlay/${id}?source=${source}`);
+        this.getGuessVideo();
         // window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
       });
     }
