@@ -100,6 +100,8 @@ export default {
     handleLeavePage(cb) {
       if (this.$refs["player"]) {
         this.$refs["player"].handleLeavePage(cb);
+      } else {
+        cb();
       }
 
       document.getElementById("scroll-info-wrap").scrollTop = 0;

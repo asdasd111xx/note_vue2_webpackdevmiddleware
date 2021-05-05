@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     this.timer = setInterval(() => {
-      if (this.sec === 0) {
+      if (this.sec === 0 && !this.$route.query.test) {
         clearInterval(this.timer);
         this.timer = null;
         this.$router.push("/mobile");
@@ -67,7 +67,7 @@ export default {
 
   > img {
     width: 100%;
-    height: 100%;
+    // height: 100%;
   }
 }
 
