@@ -40,10 +40,7 @@
     <balance-tran v-if="isShowTrans" class="clearfix">
       <template scope="{ balanceTran , balanceBack}">
         <div>
-          <div
-            :class="[$style['balance-wrap'], 'clearfix']"
-            @click="balanceBack()"
-          >
+          <div :class="[$style['balance-wrap'], 'clearfix']">
             <div :class="$style['balance-total-item']">
               <img
                 :src="
@@ -63,6 +60,7 @@
                 $style['recycle-btn'],
                 balanceTran.balanceBackLock ? $style.disable : ''
               ]"
+              @click="balanceBack()"
             >
               {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
             </div>

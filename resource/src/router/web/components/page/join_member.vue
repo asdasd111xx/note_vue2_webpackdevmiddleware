@@ -508,7 +508,7 @@ export default {
     const confirmPassword = {
       key: "confirm_password",
       content: {
-        note1: "请再次输入设置密碼",
+        note1: "请再次输入设置密码",
         note2: ""
       }
     };

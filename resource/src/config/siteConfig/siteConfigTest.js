@@ -26,6 +26,7 @@ export const site_500015 = {
   SITE_NAME: "鸭博娱乐",
   PORN_CONFIG: {
     ID: {
+      SPACE: "1",
       YB: "9",
       SP: "113",
       GAY: "7",
@@ -59,6 +60,7 @@ export const site_500035 = {
   SITE_NAME: "丝瓜直播",
   PORN_CONFIG: {
     ID: {
+      SPACE: "112",
       YB: "9",
       SP: "113",
       GAY: "7",

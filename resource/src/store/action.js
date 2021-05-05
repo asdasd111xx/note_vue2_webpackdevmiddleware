@@ -1920,18 +1920,13 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       siteConfigOfficial.preset;
   }
 
-  let spaceId = 1;
-  if (configInfo.MOBILE_WEB_TPL === "porn1") {
-    spaceId = 1;
-  } else if (configInfo.MOBILE_WEB_TPL === "sg1") {
-    spaceId = 14;
-  } else {
+  if (!["porn1", "sg1"].includes(configInfo.MOBILE_WEB_TPL)) {
     return;
   }
 
   const getV2Token = uri => {
     let bodyFormData = new FormData();
-    bodyFormData.append("spaceId", spaceId);
+    bodyFormData.append("spaceId", configInfo.PORN_CONFIG.ID.SPACE);
     bodyFormData.append(
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"

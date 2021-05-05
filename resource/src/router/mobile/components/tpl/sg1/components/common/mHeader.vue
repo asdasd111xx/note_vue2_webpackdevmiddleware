@@ -18,6 +18,16 @@
         :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
+        v-else-if="source === 'smallPig'"
+        :src="
+          $getCdnPath(
+            `/static/image/common/btn_${
+              headerConfig.hasClose ? 'close_grey' : 'back_grey'
+            }.png`
+          )
+        "
+      />
+      <img
         v-else
         :src="
           $getCdnPath(
@@ -515,6 +525,12 @@ export default {
   width: calc(100% - 10% - 24px);
   margin: 6px 0 0 24px;
 
+  &.smallPig,
+  &.gay,
+  &.les {
+    border-radius: 18px;
+  }
+
   > input {
     width: 100%;
     height: 35px;
@@ -526,6 +542,34 @@ export default {
     color: $main_text_color2;
     font-size: 14px;
     outline: none;
+
+    &.smallPig,
+    &.gay,
+    &.les {
+      border-radius: 18px;
+    }
+
+    &.smallPig {
+      background-color: #333;
+    }
+
+    &.gay {
+      color: #fff;
+      background-color: #3a79a1;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    &.les {
+      color: #fff;
+      background-color: #b73939;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
 
     &::placeholder {
       color: $main_text_color2;
@@ -564,6 +608,25 @@ export default {
   color: white;
   margin: 0 auto;
   text-align: center;
+
+  &.smallPig,
+  &.gay,
+  &.les {
+    width: 85px;
+    border-radius: 0 18px 18px 0;
+  }
+
+  &.smallPig {
+    background: #1e1e1e;
+  }
+
+  &.gay {
+    background: #3e81ac;
+  }
+
+  &.les {
+    background: #c54242;
+  }
 
   > img {
     width: 21px;
