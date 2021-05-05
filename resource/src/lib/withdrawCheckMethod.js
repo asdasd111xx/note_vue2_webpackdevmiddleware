@@ -24,7 +24,7 @@ export const lib_withdrawCheckMethod = (redirect = "home") => {
     !store.state.withdrawCheckStatus.bank
   ) {
     store.dispatch("actionSetGlobalMessage", {
-      msg: "请先设定提现信息",
+      msg: "请先完成提现信息",
       cb
     });
     return;
