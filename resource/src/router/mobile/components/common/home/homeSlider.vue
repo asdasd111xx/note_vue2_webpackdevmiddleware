@@ -61,7 +61,7 @@ export default {
     }
   },
   watch: {
-    mobileInfo(val) {
+    mobileInfo() {
       this.initSlider();
     }
   },
@@ -85,7 +85,6 @@ export default {
         info && info.case_data && info.case_data.MOBILE_SLIDE;
       const defaultImage = this.generateDefaultImg();
 
-      console.log(mobile_slide.data);
       // 若無資料則使用預設圖片
       if (!mobile_slide || mobile_slide.data.length === 0) {
         this.slider = [defaultImage];

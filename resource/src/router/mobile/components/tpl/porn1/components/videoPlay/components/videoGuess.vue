@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import videoTag from "./videoTag";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
@@ -136,8 +135,8 @@ export default {
   methods: {
     onClick(id) {
       let source = this.$route.query.source;
-      let self = this;
       this.$emit("leave", () => {
+       console.log(id);
         this.$router.push(`/mobile/videoPlay/${id}?source=${source}`);
         // window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
       });

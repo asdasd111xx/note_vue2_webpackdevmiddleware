@@ -112,12 +112,12 @@
         </div>
         <div :class="$style.wrap">
           <div class="clearfix">
-            <div :class="$style.title" v-html="message.title" />
+            <div :class="$style.title" v-html="setTitleContent(message.title)" />
             <div :class="$style['msg-time']">
               {{ message.sent_at | shortDateFormat }}
             </div>
           </div>
-          <div :class="$style.content" v-html="message.content" />
+          <div :class="$style.content" v-html="setTitleContent(message.content)" />
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@
           />
         </div>
         <div :class="$style.wrap">
-          <div :class="$style.title" v-html="currentMessage.title" />
+          <div :class="$style.title" v-html="setTitleContent(currentMessage.title)" />
           <div :class="$style.time">
             {{ currentMessage.sent_at | dateFormat }}
           </div>

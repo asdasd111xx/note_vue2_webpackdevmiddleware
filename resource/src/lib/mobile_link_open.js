@@ -2,11 +2,11 @@ import * as moment from "moment-timezone";
 
 import axios from "axios";
 import i18n from "@/config/i18n";
+import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default target => {
   const curLang = store.state.curLang || "zh-cn";
@@ -47,14 +47,14 @@ export default target => {
 
   let newWindow;
 
-  // 外部連結
-  if (linkType === "external") {
-    newWindow = window.open(`${linkTo}`, "_blank");
-    return;
-  }
+  // 外部連結 視為優小秘
+  // if (linkType === "external") {
+  //   newWindow = window.open(`${linkTo}`, "_blank");
+  //   return;
+  // }
 
   // 優小祕
-  if (linkType === "mi" && linkTo) {
+  if ((linkType === "mi" || linkType === "external") && linkTo) {
     // 未知用途
     // window.open(
     //   `/popcontrol/promo/${JSON.stringify({ linkItem })}`,
