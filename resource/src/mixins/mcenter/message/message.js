@@ -32,6 +32,13 @@ export default {
   },
   mounted() {},
   methods: {
+    setTitleContent(content){
+      if (!content) {
+        return;
+      }
+      let urlRegex = /\<p\>|\<\/p\>|\n|\<\/br\>/g;
+      return content.replace(urlRegex, "");
+    },
     setContent(content) {
       if (!content) {
         return;

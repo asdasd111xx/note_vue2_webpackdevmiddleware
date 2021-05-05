@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['container']">
-    <img :src="`/static/image/${themeTPL}/common/loading.png`" />
+    <img :src="$getCdnPath(`/static/image/${themeTPL}/common/loading.png`)" />
     <div :class="$style['timer']" @click="click">
       <span>{{ sec }}</span>
       <span>|</span>
