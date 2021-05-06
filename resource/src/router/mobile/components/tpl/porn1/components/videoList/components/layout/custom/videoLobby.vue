@@ -417,7 +417,6 @@ export default {
   position: relative;
   padding: 0 20px;
   margin: auto;
-  //   height: calc(100vh - 105px);
 
   .video-cell {
     position: relative;
