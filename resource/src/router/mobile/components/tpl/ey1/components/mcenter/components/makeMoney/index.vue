@@ -107,6 +107,9 @@ export default {
       return;
     }
   },
+  mounted() {
+    document.getElementById("mobile-wrap").scrollTo(0, 0);
+  },
   methods: {
     ...mapActions([
       "actionSetGlobalMessage",

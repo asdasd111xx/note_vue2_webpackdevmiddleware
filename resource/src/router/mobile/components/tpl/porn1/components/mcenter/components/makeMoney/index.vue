@@ -164,6 +164,9 @@ export default {
       }
     }
   },
+  mounted() {
+    document.getElementById("mobile-wrap").scrollTo(0, 0);
+  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
