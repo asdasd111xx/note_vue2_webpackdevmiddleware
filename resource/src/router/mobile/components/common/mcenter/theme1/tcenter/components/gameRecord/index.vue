@@ -48,7 +48,9 @@
             <div :class="$style.title">{{ $text("S_PLEASE_SELECT_TYPE") }}</div>
 
             <select :class="$style.select" @change="setParamsData($event)">
-              <option v-for="info in allvendor" :key="`list-${info.value}`">{{ info.alias }}</option>
+              <option v-for="info in allvendor" :key="`list-${info.value}`">{{
+                info.alias
+              }}</option>
             </select>
           </div>
 
@@ -101,7 +103,9 @@
                   }
                 }
               "
-            >{{ $text("S_INQUIRE") }}</div>
+            >
+              {{ $text("S_INQUIRE") }}
+            </div>
           </div>
         </div>
 
@@ -115,22 +119,37 @@
             :hasSearch="hasSearch"
             @onInquire="onSearchBet"
           />
-          <infinite-loading v-if="showInfinite" ref="infiniteLoading" @infinite="infiniteHandler">
+          <infinite-loading
+            v-if="showInfinite"
+            ref="infiniteLoading"
+            @infinite="infiniteHandler"
+          >
             <span slot="no-more" />
             <span slot="no-results" />
           </infinite-loading>
         </template>
 
         <template v-if="currentPage === 'bet' && inq2nd.list.length">
-          <table-2nd :list="control2ndData" :total="inq2nd.total" :counts="inq2nd.counts" />
+          <table-2nd
+            :list="control2ndData"
+            :total="inq2nd.total"
+            :counts="inq2nd.counts"
+          />
 
-          <infinite-loading v-if="showInfinite" ref="infiniteLoading" @infinite="infiniteHandler">
+          <infinite-loading
+            v-if="showInfinite"
+            ref="infiniteLoading"
+            @infinite="infiniteHandler"
+          >
             <span slot="no-more" />
             <span slot="no-results" />
           </infinite-loading>
         </template>
 
-        <div v-if="currentPage === 'main' && mainNoData && !hasSearch" :class="$style['no-data']">
+        <div
+          v-if="currentPage === 'main' && mainNoData && !hasSearch"
+          :class="$style['no-data']"
+        >
           <img src="/static/image/_new/mcenter/ic_nodata.png" />
           <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
@@ -222,7 +241,7 @@ export default {
         this.checkDate = false;
         this.inqStart = this.endDate;
       } else if (this.inqEnd > this.endDate) {
-        this.checkDate = false;
+        this.checkDate = true;
         this.inqEnd = this.endDate;
       } else {
         this.checkDate = true;
