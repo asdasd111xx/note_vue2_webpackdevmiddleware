@@ -175,6 +175,8 @@ export default {
         this.videoType.id === 0 ? [...this.videoRecommand] : [];
       const videoList = this.videoSort.reduce(
         (init, sort) => {
+          console.log(init, sort);
+
           const data = find(this.videoList, video => video.id === sort.id);
 
           if (!data) {
@@ -196,6 +198,7 @@ export default {
         });
       }, 300);
 
+      console.log(videoList);
       return videoList;
     }
   },
@@ -203,7 +206,6 @@ export default {
     switch (this.source) {
       case "yabo":
         setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
-
         this.setHeaderTitle(this.$text("鸭脖视频", "鸭脖视频"));
         break;
 
@@ -578,7 +580,6 @@ export default {
   padding: 0 17px;
   background: $main_background_white1;
   padding-top: 43px;
-  height: calc(100vh - 105px);
 }
 
 .video-cell {
