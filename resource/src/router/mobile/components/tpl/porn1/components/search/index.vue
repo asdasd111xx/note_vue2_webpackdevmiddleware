@@ -1,10 +1,6 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div
-      slot="content"
-      :class="[$style['content-wrap']]"
-      :style="{ height: divHeight + 'px' }"
-    >
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
+    <div slot="content" :class="[$style['content-wrap']]">
       <platform-layout :headerConfig.sync="headerConfig" :source="source" />
     </div>
   </mobile-container>
@@ -13,7 +9,7 @@
 <script>
 import { mapGetters } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import platformLayout from "./components/layout/"
+import platformLayout from "./components/layout/";
 
 export default {
   components: {
@@ -44,12 +40,15 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem('content_rating')) {
-      if (localStorage.getItem('content_rating') !== "1") {
-        this.$router.push('/mobile');
+    if (localStorage.getItem("content_rating")) {
+      if (localStorage.getItem("content_rating") !== "1") {
+        this.$router.push("/mobile");
       }
-    } else if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    } else if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
     }
 
     if (!this.$route.query.source) {
@@ -60,9 +59,7 @@ export default {
       });
     }
   },
-  mounted() {
-    this.divHeight = document.body.offsetHeight - 103;
-  },
+  mounted() {}
 };
 </script>
 

@@ -90,11 +90,11 @@ export default {
       this.$router.push(path);
     },
     isActive(key) {
-      if (key === "discover") {
-        return (
-          [key, "artist", "videoPlay", "tag"].indexOf(this.$route.name) >= 0
-        );
-      }
+      // if (key === "discover") {
+      //   return (
+      //     [key, "artist", "videoPlay", "tag"].indexOf(this.$route.name) >= 0
+      //   );
+      // }
       return key === this.$route.name;
     }
   }
