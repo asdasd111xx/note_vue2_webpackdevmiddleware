@@ -41,7 +41,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   let newWindow = "";
   let isWebview = getCookie("platform") === "H";
   let gameTitle = "";
-  let option = `width=1024, height=768, scrollbars=yes, resizable=yes,location=no, menubar=no, toolbar=no`;
+  let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
   // 是否調整內嵌
   let embedGame = getEmbedGameVendor(vendor);
 
@@ -50,13 +50,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   }
 
   if (!embedGame && !isWebview) {
-    if (vendor != "cq9") {
-      newWindow = window.open("", gameTitle, option);
-    }
+    newWindow = window.open("", "_blank", option, false);
     setTimeout(() => {
-      if (vendor != "cq9") {
-        newWindow.location = "/game/loading/true";
-      }
+      newWindow.location = "/game/loading/true";
     }, 200);
   }
 
@@ -130,12 +126,7 @@ export default (params, success = () => {}, fail = () => {}) => {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
             } else {
-              if (vendor === "cq9") {
-                // newWindow.location.replace(ret.url + query);
-                window.open(ret.url + query, gameTitle, option);
-              } else {
-                newWindow.location.replace(link);
-              }
+              newWindow.location.replace(link);
             }
           }
 

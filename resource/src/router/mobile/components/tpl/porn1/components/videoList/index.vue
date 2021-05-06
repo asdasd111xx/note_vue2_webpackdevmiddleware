@@ -2,6 +2,7 @@
   <mobile-container
     :header-config="headerConfig"
     :style="{ background: bgColor }"
+    :hasFooter="false"
   >
     <div slot="content" :class="$style['content-wrap']">
       <platform-layout
@@ -45,7 +46,7 @@ export default {
          gay => 男男視頻
          les => 女女視頻
       */
-      let source = this.$route.query.source || 'yabo';
+      let source = this.$route.query.source || "yabo";
       return source;
     },
     bgColor() {
@@ -67,12 +68,15 @@ export default {
   },
   created() {
     // 由此層(最外層)直接判斷有無登入
-    if (localStorage.getItem('content_rating')) {
-      if (localStorage.getItem('content_rating') !== "1") {
-        this.$router.push('/mobile');
+    if (localStorage.getItem("content_rating")) {
+      if (localStorage.getItem("content_rating") !== "1") {
+        this.$router.push("/mobile");
       }
-    } else if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    } else if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
     }
   },
   methods: {

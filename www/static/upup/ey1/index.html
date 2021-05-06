@@ -370,7 +370,8 @@
 
     function service(target) {
         let newWindow = '';
-        newWindow = window.open();
+        let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
+        newWindow = window.open("", "_blank", option, false);
         function openService(url) {
             let defaultUrl = 'https://ey.italking.asia/guest.php?gid=EY';
             newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;

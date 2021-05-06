@@ -34,7 +34,6 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
-import querystring from "querystring";
 import videoPlayer from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoPlayer";
 import videoInfo from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoInfo";
 import videoGuess from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoGuess";

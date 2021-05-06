@@ -5,6 +5,7 @@
   "display": "standalone",
   "background_color": "#fff",
   "description": "鸭脖娱乐",
+  "scope": "/",
   "icons": [
     {
       "src": "../pwa/porn1/48.png",

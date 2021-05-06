@@ -71,6 +71,7 @@ export default {
       isShowPromotion: true
     };
   },
+
   created() {
     const query = this.$route.query;
 
@@ -161,6 +162,9 @@ export default {
         return;
       }
     }
+  },
+  mounted() {
+    document.getElementById("mobile-wrap").scrollTo(0, 0);
   },
   computed: {
     ...mapGetters({
