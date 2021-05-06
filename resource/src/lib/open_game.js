@@ -50,7 +50,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   }
 
   if (!embedGame && !isWebview) {
-    newWindow = window.open("", "_blank", option, false);
+    newWindow = window.open("", "_blank", option, true);
     setTimeout(() => {
       newWindow.location = "/game/loading/true";
     }, 200);
