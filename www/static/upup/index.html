@@ -335,7 +335,8 @@
 
   function service(target) {
     let newWindow = '';
-    newWindow = window.open();
+    let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
+    newWindow = window.open("", "_blank", option, false);
     function openService(url) {
       let defaultUrl = 'https://abn.yaboxxxcs.net/chat/text/chat_1A09E4.html?skill=8ae482827375169c017375f1528b2446';
       newWindow.location.href = url || localStorage.getItem('service-url') || defaultUrl;

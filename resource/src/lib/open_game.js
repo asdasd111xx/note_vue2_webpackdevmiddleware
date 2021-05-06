@@ -41,7 +41,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   let newWindow = "";
   let isWebview = getCookie("platform") === "H";
   let gameTitle = "";
-  let option = `width=1024, height=768, scrollbars=yes, resizable=yes,location=no, menubar=no, toolbar=no`;
+  let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
   // 是否調整內嵌
   let embedGame = getEmbedGameVendor(vendor);
 
@@ -50,7 +50,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   }
 
   if (!embedGame && !isWebview) {
-    newWindow = window.open("", gameTitle, option);
+    newWindow = window.open("", "_blank", option, false);
     setTimeout(() => {
       if (vendor != "cq9") {
         newWindow.location = "/game/loading/true";
