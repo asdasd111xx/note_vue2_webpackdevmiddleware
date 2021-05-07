@@ -321,7 +321,6 @@ export default {
 
 .video-lobby-container {
   padding: 50px 0 20px;
-  height: calc(100vh - 100px);
   overflow: scroll;
 }
 
