@@ -163,7 +163,10 @@ export default {
           return;
         }
 
-        this.videoTabs = [{ id: 0, title: "全部" }, ...response.result];
+        let _videoTabs = response.result.sort(
+          (a, b) => parseFloat(a.seat) - parseFloat(b.seat)
+        );
+        this.videoTabs = [{ id: 0, title: "全部" }, ..._videoTabs];
       });
     },
     setSortId(value) {

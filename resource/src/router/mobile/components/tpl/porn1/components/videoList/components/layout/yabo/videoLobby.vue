@@ -294,7 +294,10 @@ export default {
         if (response.status !== 200) {
           return;
         }
-        this.videoTag = [{ id: 0, title: "全部" }, ...response.result];
+        let _sort = response.result.sort(
+          (a, b) => parseFloat(a.seat) - parseFloat(b.seat)
+        );
+        this.videoTag = [{ id: 0, title: "全部" }, ..._sort];
       });
     },
     // 切換當前影片分類
