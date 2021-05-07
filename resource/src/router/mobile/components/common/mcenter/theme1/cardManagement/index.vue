@@ -292,12 +292,13 @@ export default {
       if (this.hasRedirect || tempType) {
         if ((type && type === "bankCard") || tempType === "bankCard") {
           this.setPageStatus(0, "addBankCard", false);
-          localStorage.removeItem("bankCardType");
         }
 
         if ((type && type === "wallet") || tempType === "wallet") {
           this.setPageStatus(1, "addWalletCard", false);
         }
+
+        localStorage.removeItem("bankCardType");
         return;
       }
 

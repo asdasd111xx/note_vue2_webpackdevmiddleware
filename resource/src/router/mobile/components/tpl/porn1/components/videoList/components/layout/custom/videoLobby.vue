@@ -149,20 +149,21 @@ export default {
     allVideoList() {
       const videoRecommand =
         this.videoType.id === 0 ? [...this.videoRecommand] : [];
-      const videoList = this.videoSort.reduce(
-        (init, sort) => {
-          const data = find(this.videoList, video => video.id === sort.id);
+      // const videoList = this.videoSort.reduce(
+      //   (init, sort) => {
+      //     const data = find(this.videoList, video => video.id === sort.id);
 
-          if (!data) {
-            return init;
-          }
+      //     if (!data) {
+      //       return init;
+      //     }
 
-          return [...init, { ...data }];
-        },
-        [...videoRecommand]
-      );
+      //     return [...init, { ...data }];
+      //   },
+      //   [...videoRecommand]
+      // );
+      const _videoList = [...videoRecommand, ...this.videoList];
       setTimeout(() => {
-        videoList.forEach(item => {
+        _videoList.forEach(item => {
           if (item && item.list) {
             item.list.forEach(i => {
               getEncryptImage(i);
@@ -171,7 +172,7 @@ export default {
         });
       }, 300);
 
-      return videoList;
+      return _videoList;
     }
   },
   created() {
