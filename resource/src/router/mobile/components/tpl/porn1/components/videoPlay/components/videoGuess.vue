@@ -77,19 +77,19 @@ export default {
     },
     img() {
       return this.$getCdnPath(
-        `/static/image/${this.themeTPL}/default/bg_video03_d.png`
+        `/static/image/${this.themeTPL}/default/${
+          this.source === "yabo" ? "bg_video03_d" : "bg_video03_1_d@3x"
+        }.png`
       );
     },
     siteId() {
       switch (this.source) {
         case "yabo":
           setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
-
           return 1;
 
         case "smallPig":
           setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
-
           return 2;
 
         case "gay":
@@ -142,7 +142,6 @@ export default {
       }
       let source = this.$route.query.source;
       this.$emit("leave", () => {
-       console.log(id);
         this.$router.push(`/mobile/videoPlay/${id}?source=${source}`);
         this.getGuessVideo();
         // window.location.href = `/mobile/videoPlay/${id}?source=${source}`;
