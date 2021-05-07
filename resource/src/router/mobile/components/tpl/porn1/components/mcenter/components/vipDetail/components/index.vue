@@ -164,7 +164,7 @@ export default {
                 this.themeTPL === "porn1"
                   ? "晋级礼金12倍流水即可提现"
                   : this.themeTPL === "sg1"
-                  ? "晋级礼金12倍流水即可提现，限用于【丝瓜直播彩】平台"
+                  ? "不限任何游戏，12倍流水即可提现"
                   : null
               })`
             },
@@ -175,7 +175,7 @@ export default {
                 this.themeTPL === "porn1"
                   ? "生日彩金12倍流水即可提现"
                   : this.themeTPL === "sg1"
-                  ? "生日彩金12倍流水即可提现，限用于【丝瓜直播彩】平台"
+                  ? "不限任何游戏，12倍流水即可提现"
                   : null
               })`
             },
@@ -186,7 +186,7 @@ export default {
                 this.themeTPL === "porn1"
                   ? "每月红包12倍流水即可提现"
                   : this.themeTPL === "sg1"
-                  ? "每月红包12倍流水即可提现，限用于【丝瓜直播彩】平台"
+                  ? "不限任何游戏，12倍流水即可提现"
                   : null
               })`
             },
