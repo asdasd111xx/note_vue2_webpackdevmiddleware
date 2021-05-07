@@ -149,6 +149,7 @@ export default {
     allVideoList() {
       const videoRecommand =
         this.videoType.id === 0 ? [...this.videoRecommand] : [];
+
       // const videoList = this.videoSort.reduce(
       //   (init, sort) => {
       //     const data = find(this.videoList, video => video.id === sort.id);
