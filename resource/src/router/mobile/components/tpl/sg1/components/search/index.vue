@@ -1,10 +1,6 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div
-      slot="content"
-      :class="[$style['content-wrap']]"
-      :style="{ height: divHeight + 'px' }"
-    >
+  <mobile-container :header-config="headerConfig" :has-footer="false">
+    <div slot="content" :class="[$style['content-wrap']]">
       <platform-layout :headerConfig.sync="headerConfig" :source="source" />
     </div>
   </mobile-container>

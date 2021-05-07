@@ -2,6 +2,7 @@
   <mobile-container
     :header-config="headerConfig"
     :style="{ background: bgColor }"
+    :has-footer="false"
   >
     <div slot="content" :class="$style['content-wrap']">
       <platform-layout
