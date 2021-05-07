@@ -67,5 +67,6 @@ export default {
 .content-wrap {
   background: #f8f8f7;
   overflow-y: auto;
+  height: calc(100vh - 43px);
 }
 </style>
