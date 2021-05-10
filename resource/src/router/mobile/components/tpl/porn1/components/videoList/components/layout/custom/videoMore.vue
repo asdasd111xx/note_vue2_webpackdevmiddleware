@@ -14,8 +14,8 @@
 
     <div
       :ref="'video-list-wrap'"
+      id="video-list-wrap"
       :class="[$style['video-list-wrap'], 'clearfix']"
-      :style="{ height: divHeight + 'px' }"
     >
       <div
         v-for="info in videoList"
@@ -294,6 +294,8 @@ export default {
   padding-top: 43px;
   width: 97%;
   margin: 5px auto 0;
+  overflow-y: scroll;
+  height: calc(100vh - 60px);
 }
 
 .video-cell {

@@ -68,7 +68,7 @@
       </template>
     </div>
 
-    <div :class="[$style['video-list-wrap'], 'clearfix']" id="video-list-wrap">
+    <div :ref="'video-list-wrap'" :class="[$style['video-list-wrap'], 'clearfix']" id="video-list-wrap">
       <div
         :id="`${i}`"
         v-for="(videoData, i) in allVideoList"
@@ -318,6 +318,7 @@ export default {
             title: this.videoType.title
           }
         });
+      this.$refs["video-list-wrap"].scrollTop = 0;
       }
     },
 
@@ -581,6 +582,7 @@ export default {
   padding: 0 17px;
   background: $main_background_white1;
   padding-top: 43px;
+  height: calc(100vh - 50px);
 }
 
 .video-cell {

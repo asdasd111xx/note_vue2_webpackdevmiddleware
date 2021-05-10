@@ -567,6 +567,9 @@ export default {
             default:
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
+                if (this.$route.query.vendor === "sigua_ly") {
+                  this.$router.push("/mobile");
+                }
               };
 
               const openGameFailFunc = res => {
