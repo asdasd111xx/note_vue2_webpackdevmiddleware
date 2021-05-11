@@ -120,6 +120,7 @@ export default {
       );
       script.type = "text/javascript";
       script.src = src;
+      script.async = true;
 
       if (!("onload" in script)) {
         script.onreadystatechange = function() {
