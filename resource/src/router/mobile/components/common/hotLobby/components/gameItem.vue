@@ -13,7 +13,6 @@ import openGame from "@/lib/open_game";
 import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
 
 export default {
   props: {
@@ -159,7 +158,11 @@ export default {
         }
       };
 
-      openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
+      openGame(
+        { vendor, kind, code, gameName: this.gameData.name },
+        openGameSuccessFunc,
+        openGameFailFunc
+      );
       return;
     }
   }
