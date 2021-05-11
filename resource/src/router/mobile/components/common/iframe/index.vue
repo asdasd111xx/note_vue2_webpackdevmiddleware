@@ -102,237 +102,18 @@ export default {
     // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
   },
   mounted() {
-    let container = document.getElementById("mobile-container");
-    if (container && container.style) {
-      container.style = "min-height:unset";
-    }
-
-    const params = this.$route.params;
-    const query = this.$route.query;
-    const vendor = query.vendor || params.page || "";
-    if (!params.page) {
-      this.src = localStorage.getItem("iframe-third-url");
-      return;
-    }
-
-    switch (params.page.toUpperCase()) {
-      case "THIRDPARTY":
-      case "SWAG":
-        if (localStorage.getItem("iframe-third-url")) {
-          const vendor = query.vendor;
-          if (vendor === "SL") {
-            window.sportEvent = type => {
-              if (type === "GO_IM_SPORT") {
-                if (!this.loginStatus) {
-                  if (this.themeTPL === "ey1") {
-                    this.$router.push("/mobile/login");
-                  } else {
-                    this.$router.push("/mobile/joinmember");
-                  }
-                  return;
-                } else {
-                  // 0421 進入遊戲前檢查withdrawcheck
-                  if (!this.withdrawCheckStatus.account) {
-                    lib_withdrawCheckMethod("home");
-                    return;
-                  }
-
-                  const openGameSuccessFunc = res => {
-                    this.isShowLoading = false;
-                  };
-
-                  const openGameFailFunc = res => {
-                    this.isShowLoading = false;
-
-                    if (res && res.data) {
-                      let data = res.data;
-                      this.actionSetGlobalMessage({
-                        msg: data.msg,
-                        code: data.code
-                      });
-                    }
-                  };
-                  openGame(
-                    { vendor: "boe", kind: 1 },
-                    openGameSuccessFunc,
-                    openGameFailFunc
-                  );
-                }
-              }
-            };
-          }
-          this.src = localStorage.getItem("iframe-third-url");
-          return;
-        }
-
-        let userId = "guest";
-        if (
-          this.memInfo &&
-          this.memInfo.user &&
-          this.memInfo.user.id &&
-          this.memInfo.user.id !== 0
-        ) {
-          userId = this.memInfo.user.id;
-        }
-
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}`
-        }).then(res => {
-          if (res && res.status !== "000") {
-            // 維護非即時更新狀態
-            if (res.msg && res.code !== "77700029") {
-              this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
-            }
-
-            if (res.code === "77700029") {
-              this.$router.back();
-              return;
-            }
-          } else {
-            this.src = res.data;
-          }
-        });
-        // SWAG
-        // this.src = 'https://feature-yabo.app.swag.live/';
-        break;
-      case "THIRD":
-        let type = this.$route.params.type;
-
-        switch (type) {
-          case "fengniao":
-            if (query.alias) {
-              goLangApiRequest({
-                method: "get",
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-                params: {
-                  urlName: query.alias,
-                  lang: "zh-cn",
-                  needToken: "true",
-                  externalCode: "fengniao"
-                }
-              }).then(res => {
-                this.isLoading = false;
-
-                if (res && res.data && res.data.uri) {
-                  this.src = res.data.uri + "&cors=embed";
-                  return;
-                }
-
-                if (res && res.msg) {
-                  this.actionSetGlobalMessage({ msg: res.msg });
-                  return;
-                }
-              });
-              return;
-            }
-
-          default:
-            axios({
-              method: "get",
-              url: "/api/v1/c/link/customize",
-              params: {
-                code: "fengniao",
-                client_uri: localStorage.getItem("iframe-third-url") || ""
-              }
-            })
-              .then(res => {
-                this.isLoading = false;
-                if (res && res.data && res.data.ret && res.data.ret.uri) {
-                  this.src = res.data.ret.uri;
-                }
-              })
-              .catch(error => {
-                this.isLoading = false;
-                if (error && error.data && error.data.msg) {
-                  this.actionSetGlobalMessage({ msg: error.data.msg });
-                }
-              });
-            return;
-        }
-        break;
-      case "GAME":
-        if (localStorage.getItem("iframe-third-url")) {
-          this.src = localStorage.getItem("iframe-third-url");
-          return;
-        }
-
-        const openGameSuccessFunc = res => {
-          this.isShowLoading = false;
-        };
-
-        const openGameFailFunc = res => {
-          this.isShowLoading = false;
-
-          if (res && res.data) {
-            let data = res.data;
-            this.actionSetGlobalMessage({
-              msg: data.msg,
-              code: data.code,
-              origin: "home"
-            });
-          }
-        };
-
-        openGame(
-          {
-            kind: this.$route.query.kind || "",
-            vendor: this.$route.query.vendor || "",
-            code: this.$route.query.code || "",
-            gameType: this.$route.query.gameType || "",
-            gameName:
-              this.$route.query.gameName ||
-              localStorage.getItem("iframe-third-url-title") ||
-              ""
-          },
-          openGameSuccessFunc,
-          openGameFailFunc
-        );
-
-        break;
-      case "PROMOTION":
-        // 優小秘
-        let url = localStorage.getItem("iframe-third-url") || "";
-        if (url) {
-          if (!url.includes("v=m")) {
-            url = `${url}&v=m`;
-          }
-          this.src = url;
-          return;
-        }
-
-        if (query.alias) {
-          goLangApiRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-            params: {
-              urlName: query.alias,
-              lang: "zh-cn",
-              needToken: "true",
-              externalCode: "promotion"
-            }
-          }).then(res => {
-            this.isLoading = false;
-            if (res && res.data && res.data.uri) {
-              url = res.data.uri;
-              // 由API提供
-              // if (!url.includes("v=m")) {
-              //   url = `${url}&v=m`;
-              // }
-              this.src = url;
-            }
-
-            if (res && res.msg) {
-              this.actionSetGlobalMessage({ msg: res.msg });
-              return;
-            }
-          });
-        }
-        break;
-
-      default:
-        this.src = localStorage.getItem("iframe-third-url");
-        break;
+    this.initIframe();
+  },
+  watch: {
+    "$route.params.page"() {
+      this.isLoading = true;
+      this.src = "";
+      this.initIframe();
+    },
+    "$route.query"() {
+      this.isLoading = true;
+      this.src = "";
+      this.initIframe();
     }
   },
   computed: {
@@ -361,7 +142,6 @@ export default {
           return "/mobile";
         default:
           return "/mobile";
-          return;
       }
     },
     iframeHeight() {
@@ -422,12 +202,239 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
-    reload() {
-      if (this.isLoading) {
+    initIframe() {
+      let container = document.getElementById("mobile-container");
+      if (container && container.style) {
+        container.style = "min-height:unset";
+      }
+
+      const params = this.$route.params;
+      const query = this.$route.query;
+      const vendor = query.vendor || params.page || "";
+      if (!params.page) {
+        this.src = localStorage.getItem("iframe-third-url");
         return;
       }
-      // reload 當前網址
-      document.getElementById("iframe").contentWindow.location.reload();
+
+      switch (params.page.toUpperCase()) {
+        case "THIRDPARTY":
+        case "SWAG":
+          if (localStorage.getItem("iframe-third-url")) {
+            const vendor = query.vendor;
+            if (vendor === "SL") {
+              window.sportEvent = type => {
+                if (type === "GO_IM_SPORT") {
+                  if (!this.loginStatus) {
+                    if (this.themeTPL === "ey1") {
+                      this.$router.push("/mobile/login");
+                    } else {
+                      this.$router.push("/mobile/joinmember");
+                    }
+                    return;
+                  } else {
+                    // 0421 進入遊戲前檢查withdrawcheck
+                    if (!this.withdrawCheckStatus.account) {
+                      lib_withdrawCheckMethod("home");
+                      return;
+                    }
+
+                    const openGameSuccessFunc = res => {
+                      this.isShowLoading = false;
+                    };
+
+                    const openGameFailFunc = res => {
+                      this.isShowLoading = false;
+
+                      if (res && res.data) {
+                        let data = res.data;
+                        this.actionSetGlobalMessage({
+                          msg: data.msg,
+                          code: data.code
+                        });
+                      }
+                    };
+                    openGame(
+                      { vendor: "boe", kind: 1 },
+                      openGameSuccessFunc,
+                      openGameFailFunc
+                    );
+                  }
+                }
+              };
+            }
+            this.src = localStorage.getItem("iframe-third-url");
+            return;
+          }
+
+          let userId = "guest";
+          if (
+            this.memInfo &&
+            this.memInfo.user &&
+            this.memInfo.user.id &&
+            this.memInfo.user.id !== 0
+          ) {
+            userId = this.memInfo.user.id;
+          }
+
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}`
+          }).then(res => {
+            if (res && res.status !== "000") {
+              // 維護非即時更新狀態
+              if (res.msg && res.code !== "77700029") {
+                this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+              }
+
+              if (res.code === "77700029") {
+                this.$router.back();
+                return;
+              }
+            } else {
+              this.src = res.data;
+            }
+          });
+          // SWAG
+          // this.src = 'https://feature-yabo.app.swag.live/';
+          break;
+        case "THIRD":
+          let type = this.$route.params.type;
+
+          switch (type) {
+            case "fengniao":
+              if (query.alias) {
+                goLangApiRequest({
+                  method: "get",
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+                  params: {
+                    urlName: query.alias,
+                    lang: "zh-cn",
+                    needToken: "true",
+                    externalCode: "fengniao"
+                  }
+                }).then(res => {
+                  this.isLoading = false;
+
+                  if (res && res.data && res.data.uri) {
+                    this.src = res.data.uri + "&cors=embed";
+                    return;
+                  }
+
+                  if (res && res.msg) {
+                    this.actionSetGlobalMessage({ msg: res.msg });
+                    return;
+                  }
+                });
+                return;
+              }
+
+            default:
+              axios({
+                method: "get",
+                url: "/api/v1/c/link/customize",
+                params: {
+                  code: "fengniao",
+                  client_uri: localStorage.getItem("iframe-third-url") || ""
+                }
+              })
+                .then(res => {
+                  this.isLoading = false;
+                  if (res && res.data && res.data.ret && res.data.ret.uri) {
+                    this.src = res.data.ret.uri;
+                  }
+                })
+                .catch(error => {
+                  this.isLoading = false;
+                  if (error && error.data && error.data.msg) {
+                    this.actionSetGlobalMessage({ msg: error.data.msg });
+                  }
+                });
+              return;
+          }
+          break;
+        case "GAME":
+          if (localStorage.getItem("iframe-third-url")) {
+            this.src = localStorage.getItem("iframe-third-url");
+            return;
+          }
+
+          const openGameSuccessFunc = res => {
+            this.isShowLoading = false;
+          };
+
+          const openGameFailFunc = res => {
+            this.isShowLoading = false;
+
+            if (res && res.data) {
+              let data = res.data;
+              this.actionSetGlobalMessage({
+                msg: data.msg,
+                code: data.code,
+                origin: "home"
+              });
+            }
+          };
+
+          openGame(
+            {
+              kind: this.$route.query.kind || "",
+              vendor: this.$route.query.vendor || "",
+              code: this.$route.query.code || "",
+              gameType: this.$route.query.gameType || "",
+              gameName:
+                this.$route.query.gameName ||
+                localStorage.getItem("iframe-third-url-title") ||
+                ""
+            },
+            openGameSuccessFunc,
+            openGameFailFunc
+          );
+
+          break;
+        case "PROMOTION":
+          // 優小秘
+          let url = localStorage.getItem("iframe-third-url") || "";
+          if (url) {
+            if (!url.includes("v=m")) {
+              url = `${url}&v=m`;
+            }
+            this.src = url;
+            return;
+          }
+
+          if (query.alias) {
+            goLangApiRequest({
+              method: "get",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+              params: {
+                urlName: query.alias,
+                lang: "zh-cn",
+                needToken: "true",
+                externalCode: "promotion"
+              }
+            }).then(res => {
+              this.isLoading = false;
+              if (res && res.data && res.data.uri) {
+                url = res.data.uri;
+                // 由API提供
+                // if (!url.includes("v=m")) {
+                //   url = `${url}&v=m`;
+                // }
+                this.src = url;
+              }
+
+              if (res && res.msg) {
+                this.actionSetGlobalMessage({ msg: res.msg });
+                return;
+              }
+            });
+          }
+          break;
+
+        default:
+          this.src = localStorage.getItem("iframe-third-url");
+          break;
+      }
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
@@ -562,9 +569,37 @@ export default {
           const vendor = target[1] || "";
           const kind = target[2] || "";
           const code = target[3] || "";
-
+          let gameName = "";
           switch (vendor) {
             default:
+              goLangApiRequest({
+                method: "post",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
+                params: {
+                  lang: "zh-cn",
+                  kind: kind,
+                  vendor: vendor,
+                  code: code,
+                  firstResult: 0,
+                  maxResults: 20
+                }
+              }).then(res => {
+                if (res && res.data && res.data.ret && res.data.ret[0]) {
+                  gameName = res.data.ret[0].name;
+                }
+
+                openGame(
+                  {
+                    kind: kind,
+                    vendor: vendor,
+                    code: code,
+                    gameName: gameName
+                  },
+                  openGameSuccessFunc,
+                  openGameFailFunc
+                );
+              });
+
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
                 if (this.$route.query.vendor === "sigua_ly") {
@@ -585,11 +620,6 @@ export default {
                 }
               };
 
-              openGame(
-                { kind: kind, vendor: vendor, code: code },
-                openGameSuccessFunc,
-                openGameFailFunc
-              );
               break;
           }
 

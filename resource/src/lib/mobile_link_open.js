@@ -212,12 +212,8 @@ export default target => {
     "card",
     "lottery",
     "mahjong",
-    // "lg_ey_casino",
     "lg_yb_casino",
-    // "lg_sg_casino",
     "lg_yb_card"
-    // "lg_ey_card",
-    // "lg_sg_card"
   ];
 
   // 遊戲連結
