@@ -485,7 +485,11 @@ export default {
           }
         }
       };
-      openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
+      openGame(
+        { vendor, kind, code, gameName: this.gameInfo.name },
+        openGameSuccessFunc,
+        openGameFailFunc
+      );
       return;
     },
     /**
