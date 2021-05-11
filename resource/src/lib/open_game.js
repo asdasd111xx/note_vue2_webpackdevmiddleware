@@ -2,7 +2,7 @@ import game from "@/api/game";
 import { getCookie } from "@/lib/cookie";
 import { getEmbedGameVendor } from "./game_option";
 import isMobileFuc from "@/lib/is_mobile";
-import router from '@/router';
+import router from "@/router";
 // eslint-disable-next-line import/no-cycle
 import store from "@/store";
 /**
@@ -10,7 +10,7 @@ import store from "@/store";
  * @param {object} params - 覆蓋預設設定資料
  */
 // openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
-export default (params, success = () => {}, fail = () => {}) => {
+export default (params, test, success = () => {}, fail = () => {}) => {
   localStorage.setItem("is-open-game", true);
   setTimeout(() => {
     localStorage.removeItem("is-open-game");
@@ -39,7 +39,7 @@ export default (params, success = () => {}, fail = () => {}) => {
     temp.mobile = "1";
   }
 
-  let newWindow = "";
+  test.testNewWindows = "";
   let isWebview = getCookie("platform") === "H";
   let gameTitle = "";
   let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
@@ -51,9 +51,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   }
 
   if (!embedGame && !isWebview) {
-    newWindow = window.open("", "_blank", option, true);
+    test.testNewWindows = window.open("", "_blank", option, true);
     setTimeout(() => {
-      newWindow.location = "/game/loading/true";
+      test.testNewWindows.location = "/game/loading/true";
     }, 200);
   }
 
@@ -127,20 +127,22 @@ export default (params, success = () => {}, fail = () => {}) => {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
             } else {
-              newWindow.location.replace(link);
+              test.testNewWindows.location.replace(link);
             }
           }
 
           success();
 
           if (embedGame) {
-            router.push(`/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`);
+            router.push(
+              `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`
+            );
             return;
           }
         }, 200);
       },
       fail: res => {
-        newWindow ? newWindow.close() : "";
+        test.testNewWindows ? test.testNewWindows.close() : "";
         console.log("launch 失敗");
         console.log(res);
         fail(res);
