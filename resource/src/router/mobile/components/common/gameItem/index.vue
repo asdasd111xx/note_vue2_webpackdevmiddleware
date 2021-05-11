@@ -357,8 +357,11 @@ export default {
     testNewWindows() {
       this.testInterval = setInterval(() => {
         console.log(
-          `this.testNewWindows.colsed is ${this.testNewWindows.colsed}`
+          `this.testNewWindows.colsed is ${this.testNewWindows.closed}`
         );
+        if (this.testNewWindows.closed) {
+          clearInterval(this.testInterval);
+        }
       }, 1000);
     }
   },
