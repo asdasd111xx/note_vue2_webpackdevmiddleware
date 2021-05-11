@@ -81,6 +81,8 @@ export default {
   },
   data() {
     return {
+      testNewWindows: "",
+      testInterval: null,
       isShowLoading: false,
       RedEnvelopeTouchType: true,
       isFavorite: false // 客端顯示是否最愛
@@ -351,6 +353,15 @@ export default {
       return this.$i18n.t(name);
     }
   },
+  watch: {
+    testNewWindows() {
+      this.testInterval = setInterval(() => {
+        console.log(
+          `this.testNewWindows.colsed is ${this.testNewWindows.colsed}`
+        );
+      }, 1000);
+    }
+  },
   methods: {
     ...mapActions([
       "actionSetFavoriteGame",
@@ -485,7 +496,12 @@ export default {
           }
         }
       };
-      openGame({ vendor, kind, code }, openGameSuccessFunc, openGameFailFunc);
+      openGame(
+        { vendor, kind, code },
+        this,
+        openGameSuccessFunc,
+        openGameFailFunc
+      );
       return;
     },
     /**
