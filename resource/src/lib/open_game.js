@@ -2,6 +2,7 @@ import game from "@/api/game";
 import { getCookie } from "@/lib/cookie";
 import { getEmbedGameVendor } from "./game_option";
 import isMobileFuc from "@/lib/is_mobile";
+import router from '@/router';
 // eslint-disable-next-line import/no-cycle
 import store from "@/store";
 /**
@@ -120,7 +121,7 @@ export default (params, success = () => {}, fail = () => {}) => {
         setTimeout(() => {
           let isWebview = getCookie("platform") === "H";
           if (isWebview) {
-            window.location.replace(link);
+            router.replace(link);
           } else {
             if (embedGame) {
               localStorage.setItem("iframe-third-url", link);
@@ -133,7 +134,7 @@ export default (params, success = () => {}, fail = () => {}) => {
           success();
 
           if (embedGame) {
-            window.location.href = `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`;
+            router.push(`/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`);
             return;
           }
         }, 200);
