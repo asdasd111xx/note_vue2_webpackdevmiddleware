@@ -10,7 +10,7 @@ import store from "@/store";
  * @param {object} params - 覆蓋預設設定資料
  */
 // openGame({ kind: game.kind, vendor: game.vendor, code: game.code, gameType: game.type });
-export default (params, test, success = () => {}, fail = () => {}) => {
+export default (params, success = () => {}, fail = () => {}) => {
   localStorage.setItem("is-open-game", true);
   setTimeout(() => {
     localStorage.removeItem("is-open-game");
@@ -39,7 +39,7 @@ export default (params, test, success = () => {}, fail = () => {}) => {
     temp.mobile = "1";
   }
 
-  test.testNewWindows = "";
+  let newWindow = "";
   let isWebview = getCookie("platform") === "H";
   let gameTitle = "";
   let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
@@ -51,9 +51,9 @@ export default (params, test, success = () => {}, fail = () => {}) => {
   }
 
   if (!embedGame && !isWebview) {
-    test.testNewWindows = window.open("", "_blank", option, true);
+    newWindow = window.open("", "_blank", option, true);
     setTimeout(() => {
-      test.testNewWindows.location = "/game/loading/true";
+      newWindow.location = "/game/loading/true";
     }, 200);
   }
 
@@ -127,7 +127,7 @@ export default (params, test, success = () => {}, fail = () => {}) => {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
             } else {
-              test.testNewWindows.location.replace(link);
+              newWindow.location.replace(link);
             }
           }
 
@@ -142,7 +142,7 @@ export default (params, test, success = () => {}, fail = () => {}) => {
         }, 200);
       },
       fail: res => {
-        test.testNewWindows ? test.testNewWindows.close() : "";
+        newWindow ? newWindow.close() : "";
         console.log("launch 失敗");
         console.log(res);
         fail(res);
