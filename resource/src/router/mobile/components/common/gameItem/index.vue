@@ -497,7 +497,7 @@ export default {
         }
       };
       openGame(
-        { vendor, kind, code },
+        { vendor, kind, code, gameName: this.gameInfo.name },
         this,
         openGameSuccessFunc,
         openGameFailFunc

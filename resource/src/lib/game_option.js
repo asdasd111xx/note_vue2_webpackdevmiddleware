@@ -29,7 +29,6 @@ export const getEmbedGameVendor = vendor => {
 
   if (memInfo.vendors) {
     let gameData = memInfo.vendors.find(item => item.vendor === vendor);
-    console.log(gameData);
     return gameData;
   } else {
     return {};
