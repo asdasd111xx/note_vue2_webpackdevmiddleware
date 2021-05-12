@@ -189,6 +189,14 @@ export default {
       return {
         ...baseConfig,
         onClick: () => {
+          if (
+            this.$route.params.page.toUpperCase() === "GAME" &&
+            ["3", "4"].includes(this.$route.query.kind)
+          ) {
+            localStorage.setItem("_iframe-back-route", "2");
+            this.$router.replace(`${this.originUrl}`);
+            return;
+          }
           this.$router.replace(this.originUrl);
           return;
         }

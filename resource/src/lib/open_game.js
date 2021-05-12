@@ -51,7 +51,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   }
 
   if (!embedGame && !isWebview) {
-    newWindow = window.open("", "_blank", option, true);
+    newWindow = window.open("", "_blank", option);
     setTimeout(() => {
       newWindow.location = "/game/loading/true";
     }, 200);
@@ -126,6 +126,17 @@ export default (params, success = () => {}, fail = () => {}) => {
             if (embedGame) {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
+              if (
+                !!window.location.pathname.indexOf("casino") ||
+                !!window.location.pathname.indexOf("card")
+              ) {
+                localStorage.setItem(
+                  "iframe-third-origin",
+                  `${window.location.pathname.replace("/mobile/", "")}${
+                    window.location.search
+                  }`
+                );
+              }
             } else {
               newWindow.location.replace(link);
             }

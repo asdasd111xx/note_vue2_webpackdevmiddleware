@@ -118,6 +118,10 @@ export default {
       }
     },
     noticeData() {
+      if (this.$route.name === "mcenter-makeMoney" && this.$route.query.cid) {
+        return;
+      }
+
       if (this.noticeData && this.noticeData.length > 0) {
         let _noticeData = this.noticeData.slice();
         let temp = _noticeData[this.noticeData.length - 1];
