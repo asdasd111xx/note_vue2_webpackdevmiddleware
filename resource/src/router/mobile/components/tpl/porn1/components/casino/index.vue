@@ -42,6 +42,13 @@ export default {
         title: target ? target.alias : "",
         hasSearchBtn: true,
         onClick: () => {
+          if (localStorage.getItem("_iframe-back-route")) {
+            const target =
+              Number(localStorage.getItem("_iframe-back-route")) || 2;
+            localStorage.removeItem("_iframe-back-route");
+            this.$router.go(-target);
+            return;
+          }
           this.$router.back();
         }
       };
