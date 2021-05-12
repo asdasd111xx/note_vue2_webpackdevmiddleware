@@ -188,6 +188,8 @@ export default {
 
 .search-info-wrap {
   position: relative;
+  height: calc(100vh - 43px); // scroll 高度無限加載問題
+  overflow-y: scroll;
 }
 
 .list-wrap {
