@@ -173,11 +173,11 @@
         </template>
       </div>
 
+      <!-- 鴨博 & 絲瓜 -->
       <div
         v-if="['porn1', 'sg1'].includes(themeTPL)"
         :class="[$style['card-wrap']]"
       >
-        <!-- 鴨博 & 絲瓜 -->
         <card-total :data="allTotalList" />
 
         <card-item
@@ -198,20 +198,18 @@
       <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
     </div>
 
-    <!-- <template v-if="themeTPL === 'ey1'">
-      <infinite-loading
-        v-if="showInfinite"
-        ref="infiniteLoading"
-        @infinite="infiniteHandler"
-      >
-        <span slot="no-more" />
-        <span slot="no-results" />
-      </infinite-loading>
-    </template> -->
+    <infinite-loading
+      v-if="showInfinite"
+      ref="infiniteLoading"
+      @infinite="infiniteHandler"
+    >
+      <span slot="no-more" />
+      <span slot="no-results" />
+    </infinite-loading>
 
-    <template v-if="themeTPL !== 'ey1'">
-      <page-loading :is-show="!isReceive" />
-    </template>
+    <!-- <template v-if="themeTPL !== 'ey1'">
+      <page-loading :is-show="isReceive" />
+    </template> -->
   </div>
 </template>
 
@@ -344,8 +342,8 @@ export default {
     }
   },
   created() {
-    this.getFirstFriends().then(response => {
-      if (response.status !== "ok") return;
+    this.updateFirstFriends().then(status => {
+      if (status === "error") return;
 
       this.initSavedFriendList();
     });
@@ -353,6 +351,8 @@ export default {
   watch: {
     "firstFriends.depth"(value) {
       if (value >= 2) {
+        this.isEnterNextLayers = true;
+
         this.setHeaderTitle(this.depthMapping[value]);
 
         this.setTabState(false);
@@ -362,10 +362,10 @@ export default {
           // 選擇的 index 為目前所選的上一個，因需等 API 成功後再執行 remove 的動作，因此減掉2
           const previousIndex = this.currentSavedFreindList.length - 2;
 
-          this.getFirstFriends({
+          this.updateFirstFriends({
             friend_id: this.currentSavedFreindList[previousIndex].id
-          }).then(response => {
-            if (response.status !== "ok") return;
+          }).then(status => {
+            if (status === "error") return;
 
             this.removeLastIndexTargets();
           });
@@ -398,10 +398,10 @@ export default {
      * 點擊下一層級使用
      */
     enterNextLayer(friend) {
-      this.getFirstFriends({
+      this.updateFirstFriends({
         friend_id: friend.id
-      }).then(response => {
-        if (response.status !== "ok") return;
+      }).then(status => {
+        if (status === "error") return;
 
         this.isEnterNextLayers = true;
         this.addToSavedFreindList(friend.alias, friend.id);
@@ -411,10 +411,10 @@ export default {
      * 點擊 Breakcrumb 的特定好友
      */
     clickTargetFriend({ id, index }) {
-      this.getFirstFriends({
+      this.updateFirstFriends({
         friend_id: id
-      }).then(response => {
-        if (response.status !== "ok") return;
+      }).then(status => {
+        if (status === "error") return;
 
         const removeCount = this.currentSavedFreindList.length - 1 - index;
         this.removeLastIndexTargets(removeCount);
