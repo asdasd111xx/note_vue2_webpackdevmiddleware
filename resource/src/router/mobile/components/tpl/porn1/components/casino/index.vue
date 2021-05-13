@@ -44,9 +44,9 @@ export default {
         onClick: () => {
           if (localStorage.getItem("_iframe-back-route")) {
             const target =
-              Number(localStorage.getItem("_iframe-back-route")) || 2;
+              Number(localStorage.getItem("_iframe-back-route")) || 3;
             localStorage.removeItem("_iframe-back-route");
-            this.$router.go(-target);
+            this.$router.push("/mobile");
             return;
           }
           this.$router.back();

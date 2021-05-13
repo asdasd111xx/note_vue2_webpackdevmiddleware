@@ -127,15 +127,14 @@ export default (params, success = () => {}, fail = () => {}) => {
               localStorage.setItem("iframe-third-url", link);
               localStorage.setItem("iframe-third-url-title", gameTitle);
               if (
-                !!window.location.pathname.indexOf("casino") ||
-                !!window.location.pathname.indexOf("card")
+                window.location.pathname.includes("casino") ||
+                window.location.pathname.includes("card")
               ) {
-                localStorage.setItem(
-                  "iframe-third-origin",
-                  `${window.location.pathname.replace("/mobile/", "")}${
-                    window.location.search
-                  }`
-                );
+                const origin = `${window.location.pathname.replace(
+                  "/mobile/",
+                  ""
+                )}${window.location.search}`;
+                localStorage.setItem("iframe-third-origin", origin);
               }
             } else {
               newWindow.location.replace(link);
