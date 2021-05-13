@@ -34,6 +34,13 @@ export default {
         title: this.lobbyName, // 大廳名稱由子元件同步回傳上來
         hasSearchBtn: true,
         onClick: () => {
+          if (localStorage.getItem("_iframe-back-route")) {
+            const target =
+              Number(localStorage.getItem("_iframe-back-route")) || 3;
+            localStorage.removeItem("_iframe-back-route");
+            this.$router.push("/mobile");
+            return;
+          }
           this.$router.back();
         }
       };

@@ -99,6 +99,7 @@ export default {
     }
   },
   created() {
+    localStorage.removeItem("_iframe-back-route");
     // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
   },
   mounted() {
@@ -175,7 +176,6 @@ export default {
         title:
           query.title || localStorage.getItem("iframe-third-url-title") || ""
       };
-
       // SWAG 固定
       switch (origin) {
         case "SWAG":
@@ -189,14 +189,18 @@ export default {
       return {
         ...baseConfig,
         onClick: () => {
+          const iframeThirdOrigin = localStorage.getItem("iframe-third-origin");
           if (
             this.$route.params.page.toUpperCase() === "GAME" &&
-            ["3", "4"].includes(this.$route.query.kind)
+            iframeThirdOrigin &&
+            (iframeThirdOrigin.includes("casino") ||
+              iframeThirdOrigin.includes("card"))
           ) {
             localStorage.setItem("_iframe-back-route", "2");
             this.$router.replace(`${this.originUrl}`);
             return;
           }
+
           this.$router.replace(this.originUrl);
           return;
         }
@@ -359,7 +363,6 @@ export default {
                 });
               return;
           }
-          break;
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
@@ -644,14 +647,6 @@ export default {
       });
       try {
         window.addEventListener("message", this.onListener);
-        // const self = this;
-        // this.$refs.iframe.contentWindow.onbeforeunload = (e) => {
-        //   console.log(e)
-        //   //   // 取消預設關閉 取代成回上一頁
-        //   //   e.preventDefault();
-        //   //   e.stopPropagation();
-        //   //   self.$router.back();
-        // }
       } catch (e) {
         console.log("onbeforeunload Catch:", e);
       }
