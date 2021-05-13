@@ -2236,7 +2236,7 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
   let ub_before_bet_mode = 0;
 
   const getDomainConfigV2 = () => {
-    axios({
+    return axios({
       method: "get",
       url: "/api/v2/c/domain-config"
     })
@@ -2249,83 +2249,86 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
           ub_before_bet_mode = res.data.ret.ub_before_bet_mode;
         }
       })
-      .catch(res => {
-        this.actionSetGlobalMessage({
-          msg: res.response.data.msg,
-          code: res.response.data.code,
-          origin: "home"
-        });
-      });
-  };
+      .catch(error => {
+        const msg = error?.response?.data?.msg;
+        const code = error?.response?.data?.code;
 
-  getDomainConfigV2();
-
-  return axios({
-    method: "get",
-    url: "/api/v2/c/withdraw/check"
-  })
-    .then(res => {
-      const { ret, result, msg, code } = res.data;
-
-      if (!res || result !== "ok") {
         dispatch("actionSetGlobalMessage", {
           msg,
           code
         });
-        return;
-      }
-
-      // 當開關都沒開，預設皆為 true
-      if (!withdraw_info_before_bet && ub_before_bet_mode === 0) {
-        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
-          account: true,
-          bank: true
-        });
-
-        return;
-      }
-
-      // 綁定銀行卡或錢包，目前不會再次呼叫 actionSetUserWithdrawCheck
-      // 只有在帳戶資料的頁面觸發此方法
-
-      let isAccountPassed = true;
-      let isBankPassed = ret.bank;
-
-      // Bank 綁定狀態
-      if (isBankPassed) {
-        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
-          bank: true
-        });
-      } else {
-        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
-          bank: false
-        });
-      }
-
-      // Loop 帳戶欄位
-      Object.keys(ret).forEach(item => {
-        console.log(item, ret[item]);
-        // 有帳戶欄位未填過
-        if (!ret[item] && item !== "bank") {
-          isAccountPassed = false;
-        }
       });
+  };
 
-      if (isAccountPassed) {
-        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
-          account: true
-        });
-      } else {
-        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
-          account: false
-        });
-      }
+  return getDomainConfigV2().then(() => {
+    axios({
+      method: "get",
+      url: "/api/v2/c/withdraw/check"
     })
-    .catch(error => {
-      const { msg, code } = error.response.data;
-      dispatch("actionSetGlobalMessage", {
-        msg,
-        code
+      .then(res => {
+        const { ret, result, msg, code } = res.data;
+
+        if (!res || result !== "ok") {
+          dispatch("actionSetGlobalMessage", {
+            msg,
+            code
+          });
+          return;
+        }
+
+        // 當開關都沒開，帳戶資料預設為 true
+        if (!withdraw_info_before_bet && ub_before_bet_mode === 0) {
+          commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+            account: true
+            // bank: true
+          });
+
+          return;
+        }
+
+        // 綁定銀行卡或錢包，目前不會再次呼叫 actionSetUserWithdrawCheck
+        // 只有在帳戶資料的頁面觸發此方法
+
+        let isAccountPassed = true;
+        let isBankPassed = ret.bank;
+
+        // Bank 綁定狀態
+        if (isBankPassed) {
+          commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+            bank: true
+          });
+        } else {
+          commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+            bank: false
+          });
+        }
+
+        // Loop 帳戶欄位
+        Object.keys(ret).forEach(item => {
+          console.log(item, ret[item]);
+          // 有帳戶欄位未填過
+          if (!ret[item] && item !== "bank") {
+            isAccountPassed = false;
+          }
+        });
+
+        if (isAccountPassed) {
+          commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+            account: true
+          });
+        } else {
+          commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+            account: false
+          });
+        }
+      })
+      .catch(error => {
+        const msg = error?.response?.data?.msg;
+        const code = error?.response?.data?.code;
+        dispatch("actionSetGlobalMessage", {
+          msg,
+          code
+        });
       });
-    });
+  });
 };

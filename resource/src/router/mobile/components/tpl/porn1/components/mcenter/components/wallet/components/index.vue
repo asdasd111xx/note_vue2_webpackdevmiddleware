@@ -287,7 +287,7 @@ import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
+import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 
 export default {
   components: {
@@ -409,7 +409,7 @@ export default {
                 this.$router.push("/mobile/mcenter/balanceTrans");
                 break;
 
-              // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_withdrawCheckMethod(path)
+              // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useGlobalWithdrawCheck(path)
             }
           }
         },
@@ -419,11 +419,13 @@ export default {
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
-            if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
-              lib_withdrawCheckMethod("withdraw");
+            const routerPush = "/mobile/mcenter/withdraw";
+
+            if (this.themeTPL === "ey1") {
+              lib_useLocalWithdrawCheck("withdraw", routerPush);
               return;
             } else {
-              this.$router.push("/mobile/mcenter/withdraw");
+              this.$router.push(routerPush);
               return;
             }
           }
@@ -445,11 +447,13 @@ export default {
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
-            if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
-              lib_withdrawCheckMethod("wallet");
+            const routerPush = "/mobile/mcenter/bankCard";
+
+            if (this.themeTPL === "ey1") {
+              lib_useLocalWithdrawCheck("wallet", routerPush);
               return;
             } else {
-              this.$router.push("/mobile/mcenter/bankCard");
+              this.$router.push(routerPush);
               return;
             }
           }

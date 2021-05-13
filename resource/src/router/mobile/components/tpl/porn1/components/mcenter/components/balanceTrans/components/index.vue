@@ -435,7 +435,7 @@ import message from "@/router/mobile/components/common/message";
 import yaboRequest from "@/api/yaboRequest";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
+import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 
 export default {
   components: {
@@ -814,7 +814,7 @@ export default {
     },
     handleSubmit() {
       if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
-        lib_withdrawCheckMethod("balanceTrans");
+        lib_useGlobalWithdrawCheck("balanceTrans");
       } else {
         this.sendBalanceTran();
       }

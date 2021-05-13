@@ -76,7 +76,7 @@ import axios from "axios";
 import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
+import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 
 export default {
   data() {
@@ -246,7 +246,7 @@ export default {
                   } else {
                     // 0421 進入遊戲前檢查withdrawcheck
                     if (!this.withdrawCheckStatus.account) {
-                      lib_withdrawCheckMethod("home");
+                      lib_useGlobalWithdrawCheck("home");
                       return;
                     }
 
