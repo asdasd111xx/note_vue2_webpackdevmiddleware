@@ -62,6 +62,7 @@
             <span>{{ item.number }}</span>
             <span>{{ item.title }}</span>
             <div>{{ item.content }}</div>
+            <div v-if="item.note">{{ item.note }}</div>
           </div>
         </div>
       </div>
@@ -182,13 +183,14 @@ export default {
             {
               number: "❺",
               title: "每月红包",
-              content: `会员在上个月有过至少3次的成功充值，即可在每月15号前获得上个月相应等级的每月红包彩金。(${
+              content: `会员在上个月有过至少3次成功充值且累计充值 ≧ 当月VIP相应等级的红包金额，即可于每月15号前获得月红包！(${
                 this.themeTPL === "porn1"
-                  ? "每月红包12倍流水即可提现"
+                  ? "12倍流水即可提现"
                   : this.themeTPL === "sg1"
                   ? "每月红包12倍流水即可提现，限用于【丝瓜直播彩】平台"
                   : null
-              })`
+              })`,
+              note: `※成功充值判断条件:【第三方入款、公司入款、数字货币（含电子钱包）】渠道所进行的充值。`
             },
             {
               number: "❻",
