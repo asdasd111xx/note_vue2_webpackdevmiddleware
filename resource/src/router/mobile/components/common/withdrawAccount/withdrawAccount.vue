@@ -278,7 +278,11 @@ export default {
       ) {
         this.getDomainConfig().then(() => {
           // For 億元
-          if (!this.checkBankSwitch && this.themeTPL === "ey1") {
+          if (
+            !this.checkBankSwitch &&
+            this.ub_before_bet_mode !== 0 &&
+            this.themeTPL === "ey1"
+          ) {
             this.$router.replace(
               `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=${
                 this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
@@ -349,9 +353,11 @@ export default {
       })
         .then(res => {
           if (res && res.data && res.data.ret) {
+            // 投注/轉帳前需設定提現資料
             this.withdraw_info_before_bet =
               res.data.ret.withdraw_info_before_bet;
 
+            // 投注/轉帳前需綁定銀行卡其他條件
             this.ub_before_bet_mode = res.data.ret.ub_before_bet_mode;
           }
         })
@@ -380,11 +386,9 @@ export default {
         const _redirect = this.redirect;
 
         this.getDomainConfig().then(() => {
-          // 鴨/絲 只有 投注/轉帳前需設定提現資料 = true 才會進到帳戶資料頁面
-
-          // 當沒有開啟 投注/轉帳前需設定提現資料
+          // 億元：如果沒有開啟「投注/轉帳前需設定提現資料」
           if (!this.withdraw_info_before_bet) {
-            if (!this.checkBankSwitch || this.ub_before_bet_mode === 1) {
+            if (!this.checkBankSwitch || this.ub_before_bet_mode !== 0) {
               this.$router.replace(
                 `/mobile/mcenter/bankCard?redirect=${_redirect}&type=${
                   this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
@@ -397,6 +401,8 @@ export default {
             }
           }
 
+          // 億元：如果有開
+          // 鴨/絲：只有投注/轉帳前需設定提現資料為 true 才會進到帳戶資料頁面
           this.$router.back();
           return;
         });

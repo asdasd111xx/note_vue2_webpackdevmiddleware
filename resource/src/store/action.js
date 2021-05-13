@@ -2232,6 +2232,34 @@ export const getCustomerServiceUrl = ({ state }, params) => {
 };
 
 export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
+  let withdraw_info_before_bet = false;
+  let ub_before_bet_mode = 0;
+
+  const getDomainConfigV2 = () => {
+    axios({
+      method: "get",
+      url: "/api/v2/c/domain-config"
+    })
+      .then(res => {
+        if (res && res.data && res.data.ret) {
+          // 投注/轉帳前需設定提現資料
+          withdraw_info_before_bet = res.data.ret.withdraw_info_before_bet;
+
+          // 投注/轉帳前需綁定銀行卡其他條件
+          ub_before_bet_mode = res.data.ret.ub_before_bet_mode;
+        }
+      })
+      .catch(res => {
+        this.actionSetGlobalMessage({
+          msg: res.response.data.msg,
+          code: res.response.data.code,
+          origin: "home"
+        });
+      });
+  };
+
+  getDomainConfigV2();
+
   return axios({
     method: "get",
     url: "/api/v2/c/withdraw/check"
@@ -2244,6 +2272,16 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
           msg,
           code
         });
+        return;
+      }
+
+      // 當開關都沒開，預設皆為 true
+      if (!withdraw_info_before_bet && ub_before_bet_mode === 0) {
+        commit(types.SET_USER_WITHDRAWCHECKSTATUS, {
+          account: true,
+          bank: true
+        });
+
         return;
       }
 
