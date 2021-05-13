@@ -70,7 +70,7 @@ import openGame from "@/lib/open_game";
 import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
+import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 
 export default {
   components: {
@@ -431,7 +431,7 @@ export default {
 
       // 0421 進入遊戲前檢查withdrawcheck
       if (!this.withdrawCheckStatus.account && !this.isVendorMaintain) {
-        lib_withdrawCheckMethod("home");
+        lib_useGlobalWithdrawCheck("home");
         return;
       }
 

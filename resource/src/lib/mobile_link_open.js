@@ -2,7 +2,7 @@ import * as moment from "moment-timezone";
 
 import axios from "axios";
 import i18n from "@/config/i18n";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
+import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
@@ -338,7 +338,7 @@ export default target => {
 
     // 0421 進入遊戲前檢查withdrawcheck
     if (!store.state.withdrawCheckStatus.account && !isVendorMaintain()) {
-      lib_withdrawCheckMethod("home");
+      lib_useGlobalWithdrawCheck("home");
       return;
     }
 

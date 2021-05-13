@@ -7,7 +7,10 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
 import swag from "@/mixins/mcenter/swag/swag";
-import { lib_withdrawCheckMethod } from "@/lib/withdrawCheckMethod";
+import {
+  lib_useGlobalWithdrawCheck,
+  lib_useLocalWithdrawCheck
+} from "@/lib/withdrawCheckMethod";
 
 export default {
   mixins: [swag],
@@ -502,18 +505,17 @@ export default {
           this.$router.push(`/mobile/mcenter/balanceTrans`);
           return;
 
-        // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_withdrawCheckMethod(path)
+        // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useLocalWithdrawCheck(path , routerPush)
 
         case "withdraw":
-          if (
-            this.siteConfig.MOBILE_WEB_TPL === "ey1" &&
-            !this.withdrawCheckStatus.account
-          ) {
-            lib_withdrawCheckMethod("withdraw");
+          const routerPush = "/mobile/mcenter/withdraw";
+
+          if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+            lib_useLocalWithdrawCheck("withdraw", routerPush);
             return;
           }
 
-          this.$router.push(`/mobile/mcenter/withdraw`);
+          this.$router.push(routerPush);
           return;
 
         default:
@@ -869,7 +871,7 @@ export default {
 
           // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
           if (!game.isMaintain && !this.withdrawCheckStatus.account) {
-            lib_withdrawCheckMethod("home");
+            lib_useGlobalWithdrawCheck("home");
             return;
           }
 

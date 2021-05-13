@@ -104,7 +104,7 @@ export default {
       this.isShowLoading = true;
       // 0421 進入遊戲前檢查withdrawcheck (億元無熱門大廳，先不執行檢查，日後若加需再考慮是否維護)
       // if (!this.withdrawCheckStatus.account) {
-      //   lib_withdrawCheckMethod("home");
+      //   lib_useGlobalWithdrawCheck("home");
       //   return;
       // }
 

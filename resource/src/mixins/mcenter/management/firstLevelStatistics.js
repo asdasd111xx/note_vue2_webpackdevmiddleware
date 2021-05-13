@@ -112,8 +112,10 @@ export default {
         })
         .catch(error => {
           this.isReceive = true;
-          const { msg } = error?.response?.data;
-          if (msg) this.actionSetGlobalMessage({ msg });
+          const msg = error?.response?.data?.msg;
+          const code = error?.response?.data?.code;
+
+          if (msg) this.actionSetGlobalMessage({ msg, code });
 
           return Promise.resolve({ status: "error" });
         });
