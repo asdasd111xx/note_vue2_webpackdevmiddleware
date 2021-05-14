@@ -269,7 +269,7 @@ export default {
         }
       });
 
-      // 當資料皆已填寫完(防呆)
+      // 當資料皆已填寫完(防呆且行動網頁版會考慮到)
       // 04/19 當接收到 Error Code 導去 msg，因未綁定電子錢包的 Error Code 統一導到帳戶資料頁面，因此有可能還是會進入此判斷
       if (
         !this.formData.name.show &&
