@@ -64,6 +64,9 @@ export default {
     line-height: 18px;
     font-weight: 400;
     margin: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:first-of-type {
     }
