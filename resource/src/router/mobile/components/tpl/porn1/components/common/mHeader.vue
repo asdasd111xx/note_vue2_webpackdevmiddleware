@@ -310,6 +310,25 @@ export default {
       }).then(res => {
         if (res.status === "000") {
           this.guestAmount = res.data.totalAmount;
+          this.getRedJackpot();
+        }
+      });
+    },
+
+    getRedJackpot() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+          if (res.data.enable) {
+            this.guestAmount = Number(
+              parseInt(this.guestAmount) + parseInt(res.data.personal_max_bonus)
+            ).toFixed(2);
+          }
         }
       });
     }

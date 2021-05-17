@@ -115,7 +115,11 @@ export default {
       this.$emit("update:detailInfo", info);
       localStorage.setItem("money-detail-id", info.id);
 
-      if (this.pageType !== "ingroup_transfer" && this.pageType !== "swag") {
+      if (
+        this.pageType !== "ingroup_transfer" &&
+        this.pageType !== "swag" &&
+        this.pageType !== "internal_memo"
+      ) {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
     }

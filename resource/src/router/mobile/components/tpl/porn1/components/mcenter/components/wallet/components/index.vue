@@ -68,7 +68,23 @@
 
           <div :class="[$style['balance-item-wrap'], 'clearfix']">
             <div
-              :class="$style['balance-item']"
+              v-if="redJackpotData.enable"
+              :class="[$style['balance-item'], $style['item-fix']]"
+              @click="$router.push('/mobile/mcenter/redJackpot')"
+            >
+              <span :class="$style['balance-item-vendor']">
+                <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+                  {{ "红包彩金" }}
+                </template>
+              </span>
+
+              <span :class="$style['balance-item-money']">
+                {{ redJackpotData.remain_bonus }}
+              </span>
+            </div>
+
+            <div
+              :class="[$style['balance-item'], $style['item-fix']]"
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
@@ -309,7 +325,8 @@ export default {
       isCheckWithdraw: false,
       bonus: {},
       swagDiamondBalance: "0",
-      birdBalance: "--"
+      birdBalance: "--",
+      redJackpotData: null
     };
   },
   computed: {
@@ -489,6 +506,8 @@ export default {
     localStorage.removeItem("money-detail-params-service");
     localStorage.removeItem("money-detail-params-category");
     localStorage.removeItem("money-detail-params-date");
+
+    this.getRedJackpot();
   },
   mounted() {
     this.getRecordList();
@@ -642,6 +661,25 @@ export default {
         }
       }).then(res => {
         this.birdBalance = res.data ? res.data.credits2 : "--";
+      });
+    },
+    getRedJackpot() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+        headers: {
+          cid: getCookie("cid")
+        },
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.errorCode === "00" && res.status === "000") {
+          this.redJackpotData = res.data;
+        } else {
+          this.redJackpotData = null;
+        }
       });
     }
   }

@@ -1,6 +1,12 @@
 <template>
   <div :class="$style['money-detail-wrap']">
-    <template v-if="pageType !== 'ingroup_transfer' && pageType !== 'swag'">
+    <template
+      v-if="
+        pageType !== 'ingroup_transfer' &&
+          pageType !== 'swag' &&
+          pageType !== 'internal_memo'
+      "
+    >
       <div
         v-if="$route.params.page !== 'detail' || !detailInfo"
         :class="[$style['top-link'], 'clearfix']"
@@ -121,7 +127,8 @@
         $route.params.page === 'detail' &&
           detailInfo &&
           pageType !== 'ingroup_transfer' &&
-          pageType !== 'swag'
+          pageType !== 'swag' &&
+          pageType !== 'internal_memo'
       "
       :current-category="currentCategory"
       :opcode-list="opcodeList"
@@ -138,7 +145,10 @@
     <!-- 捲動加載 -->
     <infinite-loading
       v-if="
-        showInfinite && pageType !== 'ingroup_transfer' && pageType !== 'swag'
+        showInfinite &&
+          pageType !== 'ingroup_transfer' &&
+          pageType !== 'swag' &&
+          pageType !== 'internal_memo'
       "
       ref="infiniteLoading"
       @infinite="infiniteHandler"
@@ -186,7 +196,11 @@ export default {
   },
   watch: {
     detailInfo(val) {
-      if (this.pageType === "ingroup_transfer" || this.pageType === "swag") {
+      if (
+        this.pageType === "ingroup_transfer" ||
+        this.pageType === "swag" ||
+        this.pageType === "internal_memo"
+      ) {
         this.$emit("showDetail", val);
       }
     }
@@ -242,7 +256,8 @@ export default {
         { key: "manual", text: "人工" },
         { key: "wage", text: "返利" },
         { key: "ingroup_transfer", text: "转让" },
-        { key: "outer", text: "SWAG" }
+        { key: "outer", text: "SWAG" },
+        { key: "internal_memo", text: "红包" }
       ];
     },
     dateOptions() {
@@ -268,7 +283,10 @@ export default {
     // 額度轉讓 porn1/sg1
     if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
       this.categoryOpt = this.categoryOptions.filter(
-        i => i.key !== "ingroup_transfer" && i.key !== "outer"
+        i =>
+          i.key !== "ingroup_transfer" &&
+          i.key !== "outer" &&
+          i.key !== "internal_memo"
       );
     } else {
       this.categoryOpt = this.categoryOptions;
@@ -291,6 +309,11 @@ export default {
     // 共用SWAG紀錄
     if (this.pageType === "swag") {
       this.setDefaultSWAG();
+    }
+
+    // 共用红包紀錄
+    if (this.pageType === "internal_memo") {
+      this.setDefaultRedJackpot();
     }
   },
   mounted() {
@@ -332,6 +355,11 @@ export default {
           "5017",
           "5016"
         ];
+      }
+
+      if (this.type.find(i => i === "internal_memo")) {
+        params["category"] = null;
+        params["opcode"] = ["5028"];
       }
 
       if (this.type.find(i => i === "outer") && this.pageType === "swag") {
@@ -405,6 +433,12 @@ export default {
       this.endTime = new Date(Vue.moment(this.estToday));
       this.setCategory({ key: "outer", text: "SWAG" });
     },
+    setDefaultRedJackpot() {
+      this.type = ["internal_memo"];
+      this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
+      this.endTime = new Date(Vue.moment(this.estToday));
+      this.setCategory({ key: "internal_memo", text: "红包" });
+    },
     setCategory(value) {
       this.currentCategory = value;
       this.type = value.key === "bonus" ? ["activity", "rebate"] : [value.key];
@@ -419,7 +453,8 @@ export default {
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.pageType === "ingroup_transfer" ||
-        this.pageType === "swag"
+        this.pageType === "swag" ||
+        this.pageType === "internal_memo"
       ) {
         this.getData();
       }
