@@ -277,6 +277,9 @@
       >
         已有会员帐号
       </div>
+      <div :class="$style['version']">
+        {{ version }}
+      </div>
       <slot name="bottom-content" />
     </div>
     <page-loading :is-show="isLoading" />
@@ -325,6 +328,7 @@ export default {
   },
   data() {
     return {
+      version: "",
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
@@ -491,6 +495,7 @@ export default {
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
+    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
     const username = {
       key: "username",
       content: {

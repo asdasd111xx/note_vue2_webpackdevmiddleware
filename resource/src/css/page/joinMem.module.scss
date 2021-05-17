@@ -448,3 +448,11 @@
 .withdraw-pwd-input:not(:first-of-type) {
   margin-left: 7.5px;
 }
+
+.version {
+  color: #414655;
+  position: absolute;
+  right: 14px;
+  bottom: 5px;
+  font-size: 12px;
+}
