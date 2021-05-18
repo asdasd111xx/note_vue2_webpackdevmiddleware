@@ -162,9 +162,9 @@
         :class="[$style['real-vip-wrap'], 'clearfix']"
       >
         <div :class="$style['real-vip-block']">
-          <div :class="$style['real-vip-title']">
+          <!-- <div :class="$style['real-vip-title']">
             {{ $text("S_VALID_BET", "有效投注") }}：{{ realTimeValidBetTotal }}
-          </div>
+          </div> -->
 
           <div :class="$style['real-vip-title']">
             {{ $text("S_RECEIVE_REBATE", "可领返水") }}：{{
