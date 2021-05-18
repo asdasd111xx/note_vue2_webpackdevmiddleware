@@ -56,17 +56,16 @@ export default {
   }
 
   > .tag {
-    min-width: 60px;
     background: #eeeeee;
     border-radius: 9px;
     text-align: center;
+    padding: 0 10px;
     font-size: 12px;
     line-height: 18px;
     font-weight: 400;
     margin: 0 10px;
-
-    &:first-of-type {
-    }
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &.custom {
       background: #474747;

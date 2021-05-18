@@ -118,6 +118,13 @@ export default {
         return;
       }
 
+      if (!this.keyWord) {
+        this.isLoading = false;
+        this.searchList = [];
+        this.hasInfinite = false;
+        return;
+      }
+
       this.isLoading = true;
       this.isReceive = true;
       this.hasInfinite = false;

@@ -162,9 +162,9 @@
         :class="[$style['real-vip-wrap'], 'clearfix']"
       >
         <div :class="$style['real-vip-block']">
-          <div :class="$style['real-vip-title']">
+          <!-- <div :class="$style['real-vip-title']">
             {{ $text("S_VALID_BET", "有效投注") }}：{{ realTimeValidBetTotal }}
-          </div>
+          </div> -->
 
           <div :class="$style['real-vip-title']">
             {{ $text("S_RECEIVE_REBATE", "可领返水") }}：{{
@@ -281,7 +281,7 @@
                 {{ $text("S_MINIMUM_PREMIUM_AMOUNT", "最低返水金额") }}
               </span>
               <div :class="$style['content-right']">
-                {{ caculateList.min_rebate }}
+                {{ addTwoPoint(caculateList.min_rebate) }}
               </div>
             </div>
 
@@ -457,6 +457,11 @@ export default {
     },
     closeReceivePopup() {
       this.isShowReceivePopup = false;
+    },
+    addTwoPoint(val) {
+      // toFixed => 取到小數點第二位
+
+      return Number(val).toFixed(2);
     }
   }
 };

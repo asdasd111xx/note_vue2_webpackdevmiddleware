@@ -35,9 +35,9 @@ export default {
         list: []
       },
       firstResult: 0,
-      maxResults: 2000,
-      pageNow: 1,
-      pageAll: 1,
+      maxResults: 20,
+      pageNow: 0,
+      pageAll: 0,
       showinfo: [-5]
     };
   },
@@ -66,61 +66,6 @@ export default {
         .format(format);
     },
     /**
-     * 取的一級好友資料
-     * @method getFirstFriends
-     * @param {Object} params - 排序
-     */
-    getFirstFriends(params) {
-      this.isReceive = false;
-
-      // this.firstFriends = {
-      //   depth: 1,
-      //   total: 0,
-      //   list: []
-      // };
-
-      return axios({
-        method: "get",
-        url: "/api/v1/c/player/friends",
-        params: {
-          ...params,
-          first_result: this.firstResult,
-          max_results: this.maxResults
-        }
-      })
-        .then(res => {
-          this.isReceive = true;
-          const { ret, result, msg, pagination, depth } = res.data;
-
-          if (result !== "ok" || ret.length === 0) {
-            return Promise.resolve({ status: "error" });
-          }
-
-          this.firstFriends = {
-            depth,
-            total: pagination.total,
-            list: ret
-          };
-
-          if (pagination.total === "0") {
-            return Promise.resolve({ status: "error" });
-          }
-
-          this.pageAll = Math.ceil(+pagination.total / this.maxResults);
-
-          return Promise.resolve({ status: "ok" });
-        })
-        .catch(error => {
-          this.isReceive = true;
-          const msg = error?.response?.data?.msg;
-          const code = error?.response?.data?.code;
-
-          if (msg) this.actionSetGlobalMessage({ msg, code });
-
-          return Promise.resolve({ status: "error" });
-        });
-    },
-    /**
      * 會員是否在線
      * @method isOnline
      * @param {Date} lastLogin - 最後登入時間
@@ -138,35 +83,118 @@ export default {
 
       return lastLogin > lastOnline;
     },
+    initLoadingStatus() {
+      this.firstFriends = {
+        depth: 1,
+        total: 0,
+        list: []
+      };
+      this.pageNow = 0;
+      this.pageAll = 0;
+    },
+    /**
+     * 取得一級好友資料
+     * @method getFirstFriends
+     * @param {Object} params
+     */
+    getFirstFriends(params, isInitLoadingStatus) {
+      return axios({
+        method: "get",
+        url: "/api/v1/c/player/friends",
+        params: {
+          first_result: this.firstResult,
+          max_results: this.maxResults,
+          ...params
+        }
+      })
+        .then(res => {
+          const { ret, result, msg, pagination, depth } = res.data;
+
+          if (result !== "ok" || ret.length === 0) {
+            this.actionSetGlobalMessage({ msg });
+            return Promise.resolve("error");
+          }
+
+          this.showInfinite = true;
+
+          if (isInitLoadingStatus) {
+            this.initLoadingStatus();
+          }
+
+          this.firstFriends = {
+            depth,
+            total: pagination.total,
+            list: [...this.firstFriends.list, ...ret]
+          };
+
+          this.pageAll = Math.ceil(+pagination.total / this.maxResults);
+          this.pageNow += 1;
+          this.firstResult += this.maxResults;
+
+          if (this.pageNow + 1 > this.pageAll) {
+            this.showInfinite = false;
+
+            return Promise.resolve("completed");
+          }
+
+          return Promise.resolve("loaded");
+        })
+        .catch(error => {
+          const msg = error?.response?.data?.msg;
+          const code = error?.response?.data?.code;
+          if (msg) {
+            this.actionSetGlobalMessage({ msg, code });
+          }
+
+          return Promise.resolve("error");
+        });
+    },
+    /**
+     * 更新好友資料(當查詢好友時觸發此方法)
+     * @method updateFirstFriends
+     * @param {Object} params
+     */
+    updateFirstFriends(params) {
+      // 不觸發加載
+      this.showInfinite = false;
+
+      if (this.firstResult !== 0) {
+        this.firstResult = 0;
+
+        params = {
+          ...params,
+          first_result: this.firstResult
+        };
+      }
+
+      return this.getFirstFriends(params, true).then(status => {
+        return Promise.resolve(status);
+      });
+    },
     /**
      * 捲動加載
      * @param {object} $state - 套件提供的方法
      * @see { @link https://peachscript.github.io/vue-infinite-loading/#!/ }
      */
     infiniteHandler($state) {
-      // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
       if (this.isReceive) {
         return;
       }
 
       this.isReceive = true;
 
-      this.getFirstFriends().then(({ result }) => {
+      this.getFirstFriends().then(status => {
         this.isReceive = false;
 
-        if (result !== "ok") {
-          return;
-        }
-
-        if (this.pageNow + 1 > this.pageAll) {
+        if (status === "completed") {
           $state.complete();
           return;
         }
 
-        this.pageNow += 1;
-        this.firstResult += this.maxResults;
-
-        $state.loaded();
+        if (status === "loaded") {
+          $state.loaded();
+          return;
+        }
       });
     },
     pushing(value) {

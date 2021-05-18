@@ -69,12 +69,13 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .video-dialog-wrap {
-  z-index: 2;
+  position: fixed;
   background: #fefefe;
   width: 100%;
   min-height: 300px;
   padding: 5px 17px;
   z-index: 10;
+  overflow-y: scroll;
 }
 
 .title-block {
