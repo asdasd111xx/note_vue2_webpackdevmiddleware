@@ -146,6 +146,12 @@ export default {
             this.actionSetGlobalMessage({ msg, code });
           }
 
+          // 好友层数超过可查询上限
+          if (code === "C20207") {
+            // reload => 重新呼叫 API 使用
+            return Promise.resolve("reload");
+          }
+
           return Promise.resolve("error");
         });
     },

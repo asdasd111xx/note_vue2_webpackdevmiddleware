@@ -403,8 +403,19 @@ export default {
       }).then(status => {
         if (status === "error") return;
 
-        this.isEnterNextLayers = true;
         this.addToSavedFreindList(friend.alias, friend.id);
+
+        // 同步安卓流程用
+        if (status === "reload") {
+          const previousIndex = this.currentSavedFreindList.length - 2;
+          this.updateFirstFriends({
+            friend_id: this.currentSavedFreindList[previousIndex].id
+          }).then(status => {
+            if (status === "error") return;
+
+            this.removeLastIndexTargets();
+          });
+        }
       });
     },
     /*
