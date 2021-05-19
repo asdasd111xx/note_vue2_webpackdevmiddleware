@@ -252,6 +252,10 @@ export default {
       import(
         /* webpackChunkName: 'bonusPorn1' */ "../../tpl/porn1/components/mcenter/components/bonus"
       ),
+    redJackpotPorn1: () =>
+      import(
+        /* webpackChunkName: 'redJackpotPorn1' */ "../../tpl/porn1/components/mcenter/components/redJackpot"
+      ),
     rewardRulesPorn1: () =>
       import(
         /* webpackChunkName: 'rewardRulesPorn1' */ "../../tpl/porn1/components/mcenter/components/rewardRules"
