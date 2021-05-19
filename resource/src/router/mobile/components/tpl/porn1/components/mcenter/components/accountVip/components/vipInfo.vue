@@ -93,12 +93,12 @@
             </template>
           </div>
 
-          <div
+          <!-- <div  ＊＊＊＊＊＊＊0526上＊＊＊＊＊＊＊
             v-if="['porn1', 'sg1'].includes(themeTPL)"
             :class="$style['special-cell']"
           >
             (15号、25号前共派发两次)
-          </div>
+          </div> -->
         </div>
 
         <div v-if="['porn1', 'sg1'].includes(themeTPL)" :class="$style['cell']">
