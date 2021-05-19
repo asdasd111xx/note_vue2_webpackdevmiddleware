@@ -397,6 +397,8 @@ export default {
   composes: video-list-wrap;
   width: 99%;
   position: relative;
+  height: auto;
+  padding-top: 0;
 
   .image-wrap {
     height: 200px;
