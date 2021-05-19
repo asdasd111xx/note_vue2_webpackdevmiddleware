@@ -178,9 +178,9 @@ export default {
       import(
         /* webpackChunkName: 'bonusSg1' */ "../../tpl/sg1/components/mcenter/components/bonus"
       ),
-    redJackpotPorn1: () =>
+    redJackpotSg1: () =>
       import(
-        /* webpackChunkName: 'redJackpotPorn1' */ "../../tpl/porn1/components/mcenter/components/redJackpot"
+        /* webpackChunkName: 'redJackpotSg1' */ "../../tpl/sg1/components/mcenter/components/redJackpot"
       ),
     balanceTransSg1: () =>
       import(

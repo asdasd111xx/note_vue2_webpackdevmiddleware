@@ -12,7 +12,7 @@
 
 <script>
 import mobileContainer from "../../../common/mobileContainer";
-import redJackpot from "./components/index";
+import redJackpot from "../../../../../porn1/components/mcenter/components/redJackpot/components/index";
 
 export default {
   components: {
