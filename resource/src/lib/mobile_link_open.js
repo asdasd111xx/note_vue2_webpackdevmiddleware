@@ -1,6 +1,7 @@
 import * as moment from "moment-timezone";
 
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import i18n from "@/config/i18n";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import links from "@/config/links";
@@ -342,6 +343,35 @@ export default target => {
       return;
     }
 
+    let gameName = '';
+    goLangApiRequest({
+      method: "post",
+      url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
+      params: {
+        lang: "zh-cn",
+        kind: kind,
+        vendor: vendor,
+        code: code,
+        firstResult: 0,
+        maxResults: 20
+      }
+    }).then(res => {
+      if (res && res.data && res.data.ret && res.data.ret[0]) {
+        gameName = res.data.ret[0].name;
+      }
+
+      openGame(
+        {
+          kind: kind,
+          vendor: vendor,
+          code: code,
+          gameName: gameName
+        },
+        openGameSuccessFunc,
+        openGameFailFunc
+      );
+    });
+
     const openGameSuccessFunc = res => {};
 
     const openGameFailFunc = res => {
@@ -354,16 +384,5 @@ export default target => {
         });
       }
     };
-
-    openGame(
-      {
-        kind: kind || "",
-        vendor: vendor || "",
-        code: code || "",
-        gameName: linkTitle || ""
-      },
-      openGameSuccessFunc,
-      openGameFailFunc
-    );
   }
 };
