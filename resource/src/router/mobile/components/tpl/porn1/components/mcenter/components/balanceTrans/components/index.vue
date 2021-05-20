@@ -12,15 +12,26 @@
         ]"
         @click="$router.push('/mobile/mcenter/redJackpot')"
       >
-        <span :class="$style['balance-item-vendor']">
+        <span
+          :class="[
+            $style['balance-item-vendor'],
+            $style['balance-refjackpot-text']
+          ]"
+        >
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ "红包彩金" }}
           </template>
         </span>
 
-        <span :class="$style['balance-item-money']">
+        <span
+          :class="[
+            $style['balance-item-money'],
+            $style['balance-refjackpot-text']
+          ]"
+        >
           {{ redJackpotData.remain_bonus }}
         </span>
+        <span :class="[$style['balance-refjackpot-image']]" />
       </div>
       <div
         v-if="bonus"

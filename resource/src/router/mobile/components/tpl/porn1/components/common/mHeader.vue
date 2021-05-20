@@ -88,7 +88,7 @@
         @click="setMenuState('balance')"
       >
         <span>
-          {{ getLoginMoney }}
+          {{ loginMoney }}
         </span>
         <div>
           <img
@@ -213,7 +213,8 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
-      guestAmount: 0
+      guestAmount: 0,
+      loginMoney: ""
     };
   },
   computed: {
@@ -239,17 +240,24 @@ export default {
     },
     path() {
       return this.$route.path.split("/").filter(path => path);
-    },
-    getLoginMoney() {
-      if (this.membalance && this.membalance.total) {
-        return `${this.membalance.total} 元 `;
-      }
-      return ``;
     }
+    // getLoginMoney() {
+    //   if (this.membalance && this.membalance.total) {
+    //     return `${this.membalance.total} 元 `;
+    //   }
+    //   return ``;
+    // }
   },
   created() {
     if (!this.loginStatus) {
       this.getGuestBalance();
+    } else {
+      if (this.membalance && this.membalance.total) {
+        this.getRedJackpot();
+        this.loginMoney = `${this.membalance.total} 元 `;
+      } else {
+        this.loginMoney = "";
+      }
     }
   },
   methods: {
@@ -325,9 +333,16 @@ export default {
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
           if (res.data.enable) {
-            this.guestAmount = Number(
-              parseInt(this.guestAmount) + parseInt(res.data.personal_max_bonus)
-            ).toFixed(2);
+            if (this.loginStatus) {
+              this.loginMoney = `${Number(
+                parseFloat(this.loginMoney) + parseInt(res.data.remain_bonus)
+              ).toFixed(2)} 元 `;
+            } else {
+              this.guestAmount = Number(
+                parseFloat(this.guestAmount) +
+                  parseInt(res.data.personal_max_bonus)
+              ).toFixed(2);
+            }
           }
         }
       });

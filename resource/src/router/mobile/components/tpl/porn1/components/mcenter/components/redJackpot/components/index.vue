@@ -198,7 +198,7 @@ export default {
     },
     closeRedEnvelope() {
       this.redEnvelopeType = false;
-      window.location.reload(true);
+      this.getRedJackpot();
     }
   }
 };
