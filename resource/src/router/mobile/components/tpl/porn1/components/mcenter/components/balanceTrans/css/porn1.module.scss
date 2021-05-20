@@ -246,6 +246,19 @@
   color: $main_text_color2;
 }
 
+.balance-refjackpot-text {
+  color: #BE9E7F;
+}
+
+.balance-refjackpot-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background: url("/static/image/common/ic_event.png") center center / 100% 100%;
+}
+
 .balance-manual-wrap {
   background: #ffffff;
 }

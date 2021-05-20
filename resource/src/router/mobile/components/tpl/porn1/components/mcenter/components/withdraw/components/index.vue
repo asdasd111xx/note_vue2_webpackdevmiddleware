@@ -39,15 +39,26 @@
             ]"
             @click="$router.push('/mobile/mcenter/redJackpot')"
           >
-            <span :class="$style['balance-item-vendor']">
+            <span
+              :class="[
+                $style['balance-item-vendor'],
+                $style['balance-refjackpot-text']
+              ]"
+            >
               <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 {{ "红包彩金" }}
               </template>
             </span>
 
-            <span :class="$style['balance-item-money']">
+            <span
+              :class="[
+                $style['balance-item-money'],
+                $style['balance-refjackpot-text']
+              ]"
+            >
               {{ redJackpotData.remain_bonus }}
             </span>
+            <span :class="[$style['balance-refjackpot-image']]" />
           </div>
           <!-- 紅利彩金 -->
           <div
@@ -1866,29 +1877,29 @@ export default {
         }
         localStorage.removeItem("tmp_w_rule");
       });
+    },
+    getRedJackpot() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+        headers: {
+          cid: getCookie("cid")
+        },
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.errorCode === "00" && res.status === "000") {
+          this.redJackpotData = res.data;
+        } else {
+          this.redJackpotData = null;
+        }
+      });
     }
   },
   destroyed() {
     this.resetTimerStatus();
-  },
-  getRedJackpot() {
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
-      headers: {
-        cid: getCookie("cid")
-      },
-      params: {
-        lang: "zh-cn"
-      }
-    }).then(res => {
-      console.log(res);
-      if (res.errorCode === "00" && res.status === "000") {
-        this.redJackpotData = res.data;
-      } else {
-        this.redJackpotData = null;
-      }
-    });
   }
 };
 </script>

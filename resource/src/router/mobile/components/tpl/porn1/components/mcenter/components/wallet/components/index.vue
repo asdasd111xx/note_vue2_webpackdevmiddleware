@@ -4,7 +4,7 @@
       <div>总金额(元)</div>
 
       <div :class="$style['money-block']">
-        <span :class="$style['money']">{{ memInfo.balance.total }}</span>
+        <span :class="$style['money']">{{ loginMoney }}</span>
         <div :class="$style['goDeposit']" @click="handleDeposit">去充值</div>
       </div>
 
@@ -72,15 +72,26 @@
               :class="[$style['balance-item'], $style['item-fix']]"
               @click="$router.push('/mobile/mcenter/redJackpot')"
             >
-              <span :class="$style['balance-item-vendor']">
+              <span
+                :class="[
+                  $style['balance-item-vendor'],
+                  $style['balance-refjackpot-text']
+                ]"
+              >
                 <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                   {{ "红包彩金" }}
                 </template>
               </span>
 
-              <span :class="$style['balance-item-money']">
+              <span
+                :class="[
+                  $style['balance-item-money'],
+                  $style['balance-refjackpot-text']
+                ]"
+              >
                 {{ redJackpotData.remain_bonus }}
               </span>
+              <span :class="[$style['balance-refjackpot-image']]" />
             </div>
 
             <div
@@ -326,7 +337,8 @@ export default {
       bonus: {},
       swagDiamondBalance: "0",
       birdBalance: "--",
-      redJackpotData: null
+      redJackpotData: null,
+      loginMoney: ""
     };
   },
   computed: {
@@ -485,6 +497,11 @@ export default {
 
     if (["porn1", "sg1"].includes(this.themeTPL)) {
       this.initSWAGConfig();
+      if (this.membalance && this.membalance.total) {
+        this.loginMoney = `${this.membalance.total} 元 `;
+      } else {
+        this.loginMoney = "";
+      }
     }
     if (["ey1"].includes(this.themeTPL)) {
       this.birdMoney();
@@ -674,9 +691,15 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
           this.redJackpotData = res.data;
+          if (res.data.enable) {
+            if (this.loginStatus) {
+              this.loginMoney = `${Number(
+                parseFloat(this.loginMoney) + parseInt(res.data.remain_bonus)
+              ).toFixed(2)} 元 `;
+            }
+          }
         } else {
           this.redJackpotData = null;
         }
