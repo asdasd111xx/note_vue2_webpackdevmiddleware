@@ -1,0 +1,167 @@
+.option {
+  position: fixed;
+  height: 43px;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  padding-top: 10px;
+  padding-right: 5px;
+
+  .option0 {
+    margin-right: 5px;
+    padding: 3px 0px;
+    line-height: 17px;
+    height: 24px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    width: 75px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #F9DDBD, #BD9D7D);
+  }
+
+  .option1 {
+    color: #FB7126;
+    margin-top: 3px;
+    margin-right: 10px;
+  }
+
+  .option2 {
+    display: flex;
+    margin-top: 4px;
+
+    .title {
+      color: #5E626D;
+      margin-right: 5px;
+    }
+
+    .time {
+      color: #FB7126;
+    }
+  }
+}
+
+.content-wrap {
+  background: #f8f8f7;
+  min-height: calc(100vh - 43px);
+  position: relative;
+  padding-top: 50px;
+}
+
+.redJackpot {
+  overflow: auto;
+  display: flex;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.top {
+  overflow: auto;
+  display: flex;
+  top: 0;
+  width: 100%;
+}
+
+.menu-wrap {
+  width: 33%;
+  top: 43px;
+  background: #fff;
+  padding: 8px 17px;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+
+  .money-text {
+    color: #BF8646
+  }
+}
+
+.tip {
+  display: flex;
+  padding: 15px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.record {
+  margin-top: -50px;
+}
+
+.all-view {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.envelope-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 0px 0px;
+}
+
+.envelope-top {
+  height: 178px;
+  width: 300px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/static/image/common/RedEnvelope/envelope_bg_open_top.png");
+}
+
+.envelope-middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  background-repeat: repeat-y;
+  background-size: contain;
+  background-image: url("/static/image/common/RedEnvelope/envelope_bg_y.png");
+  margin: -2px 0;
+}
+
+.envelope-button {
+  height: 40px;
+  width: 170px;
+  margin: 20px 0px;
+  text-align: center;
+  line-height: 40px;
+  color: #8a1808;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/static/image/common/RedEnvelope/btn_envelope.png");
+}
+
+.envelope-message {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  color: #fbf0bb;
+  text-align: center;
+  width: 300px;
+  word-break: break-all;
+  padding: 10px 44px;
+}
+
+.envelope-ground {
+  height: 21px;
+  width: 300px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/static/image/common/RedEnvelope/envelope_bg_bottom.png");
+}

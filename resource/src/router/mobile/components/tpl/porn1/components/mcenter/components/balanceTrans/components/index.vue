@@ -2,12 +2,34 @@
   <div :class="['clearfix']">
     <div :class="[$style['balance-item-wrap'], 'clearfix']">
       <div
+        v-if="redJackpotData.enable"
+        :class="[
+          $style['balance-item'],
+          {
+            [$style['is-last-item']]: !isShowMore
+          },
+          $style['item-fix']
+        ]"
+        @click="$router.push('/mobile/mcenter/redJackpot')"
+      >
+        <span :class="$style['balance-item-vendor']">
+          <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+            {{ "红包彩金" }}
+          </template>
+        </span>
+
+        <span :class="$style['balance-item-money']">
+          {{ redJackpotData.remain_bonus }}
+        </span>
+      </div>
+      <div
         v-if="bonus"
         :class="[
           $style['balance-item'],
           {
             [$style['is-last-item']]: !isShowMore
-          }
+          },
+          $style['item-fix']
         ]"
         @click="$router.push('/mobile/mcenter/bonus')"
       >
@@ -478,7 +500,8 @@ export default {
       isInitTranList: false,
       needShowRedEnvelope: false,
       RedEnvelopeTouchType: true,
-      redEnvelopeData: {}
+      redEnvelopeData: {},
+      redJackpotData: { enable: false }
     };
   },
   watch: {
@@ -578,6 +601,7 @@ export default {
     });
     // this.getRecentlyOpened()
     this.initTranList(true);
+    this.getRedJackpot();
   },
   mounted() {
     //   保留輸入資料
@@ -942,6 +966,25 @@ export default {
       this.initTranList(true);
       this.actionSetGlobalMessage({
         msg: "红包派发中，到帐后即可畅玩游戏"
+      });
+    },
+    getRedJackpot() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+        headers: {
+          cid: getCookie("cid")
+        },
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.errorCode === "00" && res.status === "000") {
+          this.redJackpotData = res.data;
+        } else {
+          this.redJackpotData = null;
+        }
       });
     }
   }

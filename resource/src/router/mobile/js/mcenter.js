@@ -20,6 +20,13 @@ export default {
       component
     },
     {
+      // 红包彩金
+      path: "redJackpot",
+      name: "mcenter-redJackpot",
+      component
+    },
+
+    {
       // 帳戶資料
       path: "accountData/:id?",
       name: "mcenter-accountData",

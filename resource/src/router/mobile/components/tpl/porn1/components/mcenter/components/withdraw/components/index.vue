@@ -27,13 +27,36 @@
       <!-- 個別餘額 -->
       <template scope="{ balanceTran }">
         <div :class="['clearfix']">
+          <!-- 紅包彩金 -->
+          <div
+            v-if="redJackpotData.enable"
+            :class="[
+              $style['balance-item'],
+              {
+                [$style['is-last-item']]: !isShowMore
+              },
+              $style['item-fix']
+            ]"
+            @click="$router.push('/mobile/mcenter/redJackpot')"
+          >
+            <span :class="$style['balance-item-vendor']">
+              <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+                {{ "红包彩金" }}
+              </template>
+            </span>
+
+            <span :class="$style['balance-item-money']">
+              {{ redJackpotData.remain_bonus }}
+            </span>
+          </div>
           <!-- 紅利彩金 -->
           <div
             :class="[
               $style['balance-item'],
               {
                 [$style['is-last-item']]: !isShowMore
-              }
+              },
+              $style['item-fix']
             ]"
             @click="$router.push('/mobile/mcenter/bonus')"
           >
@@ -597,6 +620,7 @@
 
 <script>
 import Vue from "vue";
+import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import ajax from "@/lib/ajax";
@@ -612,6 +636,7 @@ import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/w
 import withdrawMoreMethod from "./withdrawMoreMethod";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 import {
   API_TRADE_RELAY,
@@ -689,7 +714,8 @@ export default {
         content: "",
         btnText: "",
         cb: () => {}
-      }
+      },
+      redJackpotData: { enable: false }
     };
   },
   watch: {
@@ -755,6 +781,7 @@ export default {
           this.isDoneMarquee = true;
         }
       });
+    this.getRedJackpot();
   },
   mounted() {
     // 按下一鍵歸戶後，需再更新 withdraw/info 這支 API
@@ -1843,6 +1870,25 @@ export default {
   },
   destroyed() {
     this.resetTimerStatus();
+  },
+  getRedJackpot() {
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+      headers: {
+        cid: getCookie("cid")
+      },
+      params: {
+        lang: "zh-cn"
+      }
+    }).then(res => {
+      console.log(res);
+      if (res.errorCode === "00" && res.status === "000") {
+        this.redJackpotData = res.data;
+      } else {
+        this.redJackpotData = null;
+      }
+    });
   }
 };
 </script>

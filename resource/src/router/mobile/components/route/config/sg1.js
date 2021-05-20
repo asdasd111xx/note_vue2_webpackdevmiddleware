@@ -178,6 +178,10 @@ export default {
       import(
         /* webpackChunkName: 'bonusSg1' */ "../../tpl/sg1/components/mcenter/components/bonus"
       ),
+    redJackpotSg1: () =>
+      import(
+        /* webpackChunkName: 'redJackpotSg1' */ "../../tpl/sg1/components/mcenter/components/redJackpot"
+      ),
     balanceTransSg1: () =>
       import(
         /* webpackChunkName: 'balanceTransSg1' */ "../../tpl/sg1/components/mcenter/components/balanceTrans"
