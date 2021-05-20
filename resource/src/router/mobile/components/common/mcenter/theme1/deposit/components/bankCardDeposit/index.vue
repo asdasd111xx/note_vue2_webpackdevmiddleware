@@ -1376,7 +1376,7 @@ export default {
         },
         {
           objKey: "depositTime",
-          title: "充值时间(北京)",
+          title: "充值时间(当地)",
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
           showCondition: this.curPayInfo.field.find(
@@ -1897,10 +1897,8 @@ export default {
     handleServiceMain(target) {
       // 現在當地時間的"時區"
       const now_timezone = Vue.moment(new Date()).utcOffset() / 60;
-
       // 取得結束日期的"時區"
       const target_timezone = Vue.moment(target.end_at).utcOffset() / 60;
-
       let timezone = null;
       let formatDate = null;
 

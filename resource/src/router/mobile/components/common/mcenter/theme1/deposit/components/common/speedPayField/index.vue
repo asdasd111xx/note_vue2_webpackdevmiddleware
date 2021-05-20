@@ -169,7 +169,7 @@ export default {
 
         {
           objKey: "depositTime",
-          title: "充值时间(北京)",
+          title: "充值时间(当地)",
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
           // showCondition: this.showByRequiredFields
