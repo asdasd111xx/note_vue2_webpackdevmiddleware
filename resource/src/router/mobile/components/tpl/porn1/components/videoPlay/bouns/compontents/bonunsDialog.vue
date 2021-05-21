@@ -218,7 +218,8 @@ export default {
       missionDesc: "", //任務標題
       missionActionType: 0, //任務動作 去充值 去綁定 去推廣
       isFinishMissio: false, //是否完成今年任務,
-      tagId: 0
+      tagId: 0,
+      unlocked: false
     };
   },
   computed: {
@@ -311,10 +312,10 @@ export default {
       }
     },
     unlockTag() {
-      if (this.unlockTag) {
+      if (this.unlocked) {
         return;
       }
-      this.unlockTag = true;
+      this.unlocked = true;
       let cid = getCookie("cid");
       yaboRequest({
         method: "put",
@@ -328,7 +329,7 @@ export default {
       })
         .then(res => {
           setTimeout(() => {
-            this.unlockTag = false;
+            this.unlocked = false;
             this.$router.push(`/mobile/mcenter/makeMoney`);
           }, 200);
         })
