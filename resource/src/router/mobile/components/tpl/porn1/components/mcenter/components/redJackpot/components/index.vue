@@ -132,7 +132,6 @@ export default {
     }
   },
   created() {
-    console.log(123);
     this.isLoading = true;
     this.getRedJackpot();
     this.getTime();
@@ -168,9 +167,19 @@ export default {
     getTime() {
       var nowTime = Vue.moment(new Date())
         .utcOffset(-4)
-        .format("HH:mm");
+        .format("HH:mm:ss");
+      // console.log(nowTime);
+      let sec = nowTime.split(":")[2];
       let min = 60 - nowTime.split(":")[1];
       let hour = 24 - nowTime.split(":")[0] - 1;
+      if (sec > 0) {
+        if (min === 0) {
+          min = 59;
+          hour -= 1;
+        } else {
+          min -= 1;
+        }
+      }
       if (min === 60) {
         min = 0;
         hour += 1;
@@ -178,6 +187,10 @@ export default {
       min = min <= 9 ? "0" + min : min;
       hour = hour <= 9 ? "0" + hour : hour;
       this.outPutYime = `${hour}:${min}`;
+      // console.log(this.outPutYime);
+      if (hour < 0 || (hour === 0 && min === 0)) {
+        window.location.reload(true);
+      }
     },
     getRedJackpotMoney() {
       goLangApiRequest({
@@ -199,6 +212,12 @@ export default {
     closeRedEnvelope() {
       this.redEnvelopeType = false;
       this.getRedJackpot();
+    }
+  },
+  beforeDestroy() {
+    if (this.timer != null) {
+      clearInterval(this.timer);
+      this.timer = null;
     }
   }
 };
