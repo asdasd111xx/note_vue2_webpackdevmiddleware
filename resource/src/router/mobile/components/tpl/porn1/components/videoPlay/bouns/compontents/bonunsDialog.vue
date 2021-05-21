@@ -311,6 +311,10 @@ export default {
       }
     },
     unlockTag() {
+      if (this.unlockTag) {
+        return;
+      }
+      this.unlockTag = true;
       let cid = getCookie("cid");
       yaboRequest({
         method: "put",
@@ -324,7 +328,8 @@ export default {
       })
         .then(res => {
           setTimeout(() => {
-            this.$router.push(`/mobile/mcenter/makeMoney?&refresh=1`);
+            this.unlockTag = false;
+            this.$router.push(`/mobile/mcenter/makeMoney`);
           }, 200);
         })
         .catch(e => {
