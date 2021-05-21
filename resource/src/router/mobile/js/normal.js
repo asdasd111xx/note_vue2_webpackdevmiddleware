@@ -27,6 +27,12 @@ export default [
     name: "agLogin",
     component
   },
+  // 強檔活動大廳
+  {
+    path: "activity/:vendor?",
+    name: "activity",
+    component
+  },
   // 熱門大廳
   {
     path: "hotLobby/:vendor?",

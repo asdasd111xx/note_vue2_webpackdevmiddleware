@@ -343,7 +343,7 @@ export default target => {
       return;
     }
 
-    let gameName = '';
+    let gameName = "";
     goLangApiRequest({
       method: "post",
       url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,

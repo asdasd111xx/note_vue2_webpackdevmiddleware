@@ -75,6 +75,10 @@ export default {
     searchSg1: () =>
       import(
         /* webpackChunkName: 'searchSg1' */ "../../tpl/sg1/components/search"
+      ),
+    activitySg1: () =>
+      import(
+        /* webpackChunkName: 'activitySg1' */ "../../tpl/sg1/components/activity"
       )
   },
   mcenter: {
