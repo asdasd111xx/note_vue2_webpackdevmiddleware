@@ -1101,7 +1101,8 @@ export default {
         if (res.errorCode === "00" && res.status === "000") {
           if (res.data.enable) {
             this.guestAmount = Number(
-              parseInt(this.guestAmount) + parseInt(res.data.personal_max_bonus)
+              parseFloat(this.guestAmount) +
+                parseFloat(res.data.personal_max_bonus)
             ).toFixed(2);
           }
         }
