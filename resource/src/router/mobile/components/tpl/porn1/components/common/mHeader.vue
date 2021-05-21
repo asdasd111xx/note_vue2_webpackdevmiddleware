@@ -88,7 +88,7 @@
         @click="setMenuState('balance')"
       >
         <span>
-          {{ loginMoney }}
+          {{ getLoginMoney }}
         </span>
         <div>
           <img
@@ -214,7 +214,7 @@ export default {
       msg: "",
       source: this.$route.query.source,
       guestAmount: 0,
-      loginMoney: ""
+      remainBonus: 0
     };
   },
   computed: {
@@ -240,24 +240,19 @@ export default {
     },
     path() {
       return this.$route.path.split("/").filter(path => path);
+    },
+    getLoginMoney() {
+      if (this.membalance && this.membalance.total) {
+        return `${Number(
+          parseFloat(this.remainBonus) + parseFloat(this.membalance.total)
+        ).toFixed(2)} 元 `;
+      }
+      return ``;
     }
-    // getLoginMoney() {
-    //   if (this.membalance && this.membalance.total) {
-    //     return `${this.membalance.total} 元 `;
-    //   }
-    //   return ``;
-    // }
   },
   created() {
     if (!this.loginStatus) {
       this.getGuestBalance();
-    } else {
-      if (this.membalance && this.membalance.total) {
-        this.getRedJackpot();
-        this.loginMoney = `${this.membalance.total} 元 `;
-      } else {
-        this.loginMoney = "";
-      }
     }
   },
   methods: {
@@ -334,9 +329,7 @@ export default {
         if (res.errorCode === "00" && res.status === "000") {
           if (res.data.enable) {
             if (this.loginStatus) {
-              this.loginMoney = `${Number(
-                parseFloat(this.loginMoney) + parseInt(res.data.remain_bonus)
-              ).toFixed(2)} 元 `;
+              this.remainBonus = res.data.remain_bonus;
             } else {
               this.guestAmount = Number(
                 parseFloat(this.guestAmount) +

@@ -15,7 +15,7 @@
         </div>
         <ul v-else :class="$style['feedback-list']">
           <li
-            v-for="message in feedbackList"
+            v-for="message in feedbackAddReply"
             :key="message.id"
             :class="[$style['feedback-item'], 'clearfix']"
             @click="getCurrentMassage(message)"
@@ -39,6 +39,7 @@
                   {{ message.created_at | getTime }}
                 </p>
               </div>
+
               <p
                 :class="$style['question']"
                 v-html="getShortConetent(message.content)"
@@ -140,6 +141,7 @@ export default {
   },
   data() {
     return {
+      feedbackAddReply: [],
       feedbackList: [],
       currentFeedback: null,
       unReadCount: 0,
@@ -170,7 +172,7 @@ export default {
   created() {
     const params = [
       this.getFeedbackRecord(),
-      this.getRepliedList(),
+      //this.getRepliedList(),
       this.getAvatarSrc(),
       this.getTypeList()
     ];
@@ -214,6 +216,7 @@ export default {
       mcenter.feedbackRecord({
         success: response => {
           this.feedbackList = response.ret;
+          this.getRepliedList();
         }
       });
     },
@@ -235,7 +238,23 @@ export default {
           return;
         }
         this.repliedList = response.ret;
+        this.getFeedbackAddReply();
       });
+    },
+    getFeedbackAddReply() {
+      //反饋列表客服有回覆則顯示回覆的內容
+
+      this.feedbackAddReply = this.feedbackList;
+      for (let i in this.feedbackAddReply) {
+        for (let j in this.repliedList) {
+          if (this.feedbackAddReply[i].id == this.repliedList[j].id) {
+            this.feedbackAddReply[i].content = this.repliedList[
+              j
+            ].reply_content;
+          }
+        }
+      }
+      return this.feedbackAddReply;
     },
     getAvatarSrc() {
       if (!this.loginStatus) return;

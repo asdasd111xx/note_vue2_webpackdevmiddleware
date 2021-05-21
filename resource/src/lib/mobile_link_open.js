@@ -48,14 +48,14 @@ export default target => {
 
   let newWindow;
 
-  // 外部連結 視為優小秘
-  // if (linkType === "external") {
-  //   newWindow = window.open(`${linkTo}`, "_blank");
-  //   return;
-  // }
+  // 外部連結 不 視為優小秘 20210521
+  if (linkType === "external") {
+    newWindow = window.open(`${linkTo}`, "_blank");
+    return;
+  }
 
   // 優小祕
-  if ((linkType === "mi" || linkType === "external") && linkTo) {
+  if (linkType === "mi" && linkTo) {
     // 未知用途
     // window.open(
     //   `/popcontrol/promo/${JSON.stringify({ linkItem })}`,
@@ -343,7 +343,7 @@ export default target => {
       return;
     }
 
-    let gameName = '';
+    let gameName = "";
     goLangApiRequest({
       method: "post",
       url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,

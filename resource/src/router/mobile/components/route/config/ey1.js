@@ -59,6 +59,10 @@ export default {
     giftDetailEy1: () =>
       import(
         /* webpackChunkName: 'giftDetailEy1' */ "../../tpl/ey1/components/gift/detail"
+      ),
+    activityEy1: () =>
+      import(
+        /* webpackChunkName: 'activityEy1' */ "../../tpl/ey1/components/activity"
       )
   },
   mcenter: {

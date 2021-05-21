@@ -16,6 +16,10 @@ export default {
       import(
         /* webpackChunkName: 'hotLobbyPorn1' */ "../../tpl/porn1/components/hotLobby"
       ),
+    activityPorn1: () =>
+      import(
+        /* webpackChunkName: 'activityPorn1' */ "../../tpl/porn1/components/activity"
+      ),
     casinoPorn1: () =>
       import(
         /* webpackChunkName: 'casinoPorn1' */ "../../tpl/porn1/components/casino"
