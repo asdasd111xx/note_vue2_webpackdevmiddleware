@@ -3,6 +3,7 @@
     <money-detail :pageType="'swag'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
+      :detail-type="{ text: '转让' }"
       :detail-info="detailInfo"
       @close="showDetail(null)"
     />

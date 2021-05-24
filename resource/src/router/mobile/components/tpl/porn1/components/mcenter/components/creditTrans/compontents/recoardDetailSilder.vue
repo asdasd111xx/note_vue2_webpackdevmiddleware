@@ -12,7 +12,7 @@
     <detailInfo
       v-if="opcodeList"
       :detail-info="detailInfo"
-      :current-category="{ text: '转让' }"
+      :current-category="detailType"
       :opcode-list="opcodeList"
     />
     <page-loading :is-show="!opcodeList" />
@@ -27,6 +27,10 @@ import common from "@/api/common";
 export default {
   props: {
     detailInfo: {
+      type: Object,
+      default: null
+    },
+    detailType: {
       type: Object,
       default: null
     }
