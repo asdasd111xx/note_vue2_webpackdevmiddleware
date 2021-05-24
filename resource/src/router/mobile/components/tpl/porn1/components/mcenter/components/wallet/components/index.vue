@@ -498,7 +498,7 @@ export default {
     if (["porn1", "sg1"].includes(this.themeTPL)) {
       this.initSWAGConfig();
       if (this.membalance && this.membalance.total) {
-        this.loginMoney = `${this.membalance.total} 元 `;
+        this.loginMoney = `${this.membalance.total}`;
       } else {
         this.loginMoney = "";
       }
@@ -697,7 +697,7 @@ export default {
             if (this.loginStatus) {
               this.loginMoney = `${Number(
                 parseFloat(this.loginMoney) + parseInt(res.data.remain_bonus)
-              ).toFixed(2)} 元 `;
+              ).toFixed(2)}`;
             }
           }
         } else {
