@@ -901,7 +901,7 @@
               v-if="curPayInfo.payment_method_name === '代客充值'"
               :class="$style['feature-tip-title']"
             >
-              实际到帐： ¥{{ realSaveMoney }}
+              <!-- 实际到帐： ¥{{ realSaveMoney }} -->
             </span>
 
             <!-- 109/11/10 實際到帳常註顯示 -->
