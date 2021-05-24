@@ -1,4 +1,8 @@
 import { getCookie, setCookie } from "@/lib/cookie";
+import {
+  lib_useGlobalWithdrawCheck,
+  lib_useLocalWithdrawCheck
+} from "@/lib/withdrawCheckMethod";
 import { mapActions, mapGetters } from "vuex";
 
 import Vue from "vue";
@@ -7,10 +11,6 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
 import swag from "@/mixins/mcenter/swag/swag";
-import {
-  lib_useGlobalWithdrawCheck,
-  lib_useLocalWithdrawCheck
-} from "@/lib/withdrawCheckMethod";
 
 export default {
   mixins: [swag],
@@ -255,13 +255,20 @@ export default {
       "actionSetShowRedEnvelope"
     ]),
     getImg(info) {
+      const longSizeImag = [1, 5];
+
+      let imageType = info.imageType;
+      if (longSizeImag.includes(imageType)) {
+        imageType = 1;
+      }
+
       return {
         src: info.image,
         error: this.$getCdnPath(
-          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${info.imageType}.png`
+          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${imageType}.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${info.imageType}.png`
+          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${imageType}.png`
         )
       };
     },
@@ -529,6 +536,11 @@ export default {
         return;
       }
       switch (game.type) {
+        case "strong_activity":
+          console.log(game);
+          this.$router.push(`/mobile/activity/all/?kind=${game.kind}`);
+          return;
+
         case "thirdparty":
           let userId = "guest";
           if (

@@ -1,5 +1,10 @@
 @import "~@/css/variable.scss";
-// Hot Lobby
+
+.activity-wrap {
+  height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+
 .game-item-wrap {
   margin: 10px 0px;
   display: grid;
@@ -14,6 +19,7 @@
   color: #a6a9b2;
   font-size: 16px;
   text-align: center;
+  height: calc(100vh - 43px);
 }
 
 .empty-icon {
@@ -33,12 +39,22 @@
 .game-image {
   width: 100%;
   height: 140px;
-  padding-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   img {
     width: 100%;
     height: 100%;
     border-radius: 8px;
+  }
+
+  &.status {
+    bottom: 0;
+    height: 33%;
+    position: absolute;
+    right: 0;
+    width: 33%;
   }
 }
 
@@ -52,52 +68,6 @@
   line-height: 24px;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
-}
-
-// Search
-.search-wrap {
-  width: 100%;
-  min-height: 100vh;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  z-index: 99;
-  background: #f8f8f7;
-  overflow-y: scroll;
-}
-
-.search-header {
-  padding: 10px;
-  background: #fff;
-  display: flex;
-  align-items: center;
-}
-
-.search-input-img {
-  position: absolute;
-  height: 33px;
-  width: 30px;
-  background: url("/static/image/common/ic_search_gold.png");
-  background-size: 20px 20px;
-  background-position: 50%;
-  background-repeat: no-repeat;
-}
-
-.search-input {
-  width: 88%;
-  height: 33px;
-  padding-left: 42px;
-  background: #eee;
-  border: none;
-  border-radius: 5px;
-  appearance: none;
-}
-
-.search-cancel {
-  width: 12%;
-  font-weight: 700;
-  color: #5e626d;
-  text-align: center;
 }
 
 .label-block {
