@@ -10,6 +10,7 @@
     <money-detail :pageType="'ingroup_transfer'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
+      :detail-type="{ text: '转让' }"
       :detail-info="detailInfo"
       @close="showDetail(null)"
     />

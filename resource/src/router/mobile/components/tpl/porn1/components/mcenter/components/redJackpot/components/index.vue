@@ -43,6 +43,7 @@
         <recoard-detail-slider
           v-if="detailInfo"
           :detail-info="detailInfo"
+          :detail-type="{ text: '红利' }"
           @close="showDetail(null)"
         />
       </div>
@@ -205,7 +206,9 @@ export default {
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
           this.redEnvelopeType = true;
-          this.redEnvelopeText = `恭喜您获得红包彩金</br>${res.data.prizeAmount} 元`;
+          this.redEnvelopeText = `恭喜您获得红包彩金</br>${parseFloat(
+            res.data.prizeAmount
+          ).toFixed(2)} 元`;
         }
       });
     },
