@@ -2,6 +2,10 @@
   <div :class="$style['game-item']" @click="onEnter">
     <div :name="eventData.name" :class="$style['game-image']">
       <img v-lazy="getImg" />
+      <img
+        :src="eventData.status_image"
+        :class="[$style['game-image'], $style['status']]"
+      />
     </div>
     <!-- <div :class="$style['game-text']">{{ eventData.name }}</div> -->
   </div>
@@ -11,7 +15,7 @@
 import { mapGetters, mapActions } from "vuex";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { getCookie, setCookie } from "@/lib/cookie";
+import { getCookie } from "@/lib/cookie";
 
 export default {
   props: {
@@ -36,11 +40,10 @@ export default {
       return style;
     },
     getImg() {
-      // let resultUrl = `${this.BBOSDomain}/elibom/gameIcon/${this.lobbyInfo.alias}/Game_${this.eventData.code}.png`;
-
+      let img = this.eventData.image;
+      console.log(img);
       return {
-        // src: `${resultUrl}?v=${Date.now().toString()}`,
-        src: ``,
+        src: `${img}`,
         error: this.$getCdnPath("/static/image/game_loading_s.gif"),
         loading: this.$getCdnPath("/static/image/game_loading_s.gif")
       };
@@ -53,7 +56,6 @@ export default {
         return;
       }
 
-      console.log(this.eventData);
       const { kind, vendor } = this.eventData;
       switch (kind) {
         case 3:

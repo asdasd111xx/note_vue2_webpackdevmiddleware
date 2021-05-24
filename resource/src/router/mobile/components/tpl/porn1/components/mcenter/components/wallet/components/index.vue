@@ -157,7 +157,11 @@
           <div :class="$style['icon-cell']">
             <div :class="$style['balance']" @click="handleSWAGBalance">
               <template v-if="isMaintainSwag">
-                <span :class="$style['maintain-tip-text']">维护中</span>
+                <span
+                  :class="$style['maintain-tip-text']"
+                  @click="dialogMessage('SWAG 维护中')"
+                  >维护中</span
+                >
                 <img
                   v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
                   :class="$style['maintain-tip-img']"
@@ -541,6 +545,9 @@ export default {
       "actionGetMemInfoV3",
       "actionSetUserBalance"
     ]),
+    dialogMessage(msg) {
+      return this.actionSetGlobalMessage({ msg: msg });
+    },
     handleDeposit() {
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡
@@ -641,7 +648,7 @@ export default {
           return;
         } else {
           newWindow.close();
-          this.actionSetGlobalMessage({ msg: res.msg });
+          this.dialogMessage(res.msg);
           return;
         }
       });

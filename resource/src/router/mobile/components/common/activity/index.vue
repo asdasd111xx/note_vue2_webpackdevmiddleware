@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['hot-lobby']">
+  <div :class="$style['activity-wrap']">
     <div :class="$style['label-wrap-bg']">
       <div :class="$style['label-block']">
         <div
@@ -9,11 +9,11 @@
         >
           <div
             :class="
-              currentTab.name === info.name.toString()
+              currentTab.key.toString() === info.key.toString()
                 ? $style['is-current']
                 : ''
             "
-            @click="changeActivityLabel(info.name)"
+            @click="changeActivityLabel(info)"
           >
             {{ info.name }}
           </div>
@@ -32,28 +32,21 @@
     <template v-if="eventList && eventList.length <= 0">
       <div :class="$style['empty-wrap']">
         <div :class="$style['empty-icon']" />
-        <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
+        <!-- <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div> -->
       </div>
     </template>
 
-    <!-- <template v-if="isShowSearch">
-      <game-search :update-search-status="updateSearchStatus" />
-    </template> -->
     <page-loading :is-show="isLoading" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import activityItem from "./components/activityItem";
-// import gameSearch from "./components/gameSearch";
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   components: {
-    // gameSearch,
-    Swiper,
-    SwiperSlide,
     activityItem,
     pageLoading: () =>
       import(
@@ -61,10 +54,6 @@ export default {
       )
   },
   props: {
-    isShowSearch: {
-      type: Boolean,
-      default: false
-    },
     lobbyName: {
       type: String,
       default: ""
@@ -75,21 +64,26 @@ export default {
       isReceive: false,
       isLoading: true,
       eventList: [],
+      originEventList: [],
       eventTagList: [
         {
-          name: "全部"
+          name: "全部",
+          key: 0
         },
         {
-          name: "活动中"
+          name: "预告",
+          key: 2
         },
         {
-          name: "活动预告"
+          name: "活动中",
+          key: 3
         },
         {
-          name: "结果查询"
+          name: "结果查询",
+          key: 4
         }
       ],
-      currentTab: ""
+      currentTab: {}
     };
   },
   watch: {},
@@ -116,11 +110,14 @@ export default {
   created() {
     // 强档活动
     this.$emit("update:lobbyName", "强档活动");
-    this.currentTab = this.$route.query.tab
-      ? { name: this.$route.query.tab }
-      : {
-          name: "全部"
-        };
+
+    this.currentTab = this.eventTagList[0];
+    if (this.$route.query.tab) {
+      let target = this.eventTagList.find(
+        i => i.name === this.$route.query.tab
+      );
+      this.currentTab = target || this.eventTagList[0];
+    }
   },
   mounted() {
     if (!this.loginStatus) {
@@ -131,25 +128,36 @@ export default {
     // this.getGameList();
   },
   methods: {
-    updateSearchStatus() {
-      this.$emit("update:isShowSearch");
-    },
+    ...mapActions(["actionSetGlobalMessage"]),
     changeActivityLabel(target) {
+      if (target.key === this.currentTab.key) {
+        return;
+      }
+
       this.eventTagList.find(i => {
-        if (i.name === target) {
-          this.$router.push({ query: { tab: target } });
-          this.currentTab = i;
+        if (i.key === target.key) {
+          this.$router.replace({ query: { tab: target.name } });
+          this.currentTab = target;
+
+          if (target.key === 0) {
+            this.eventList = this.originEventList;
+            return;
+          }
+
+          this.eventList = this.originEventList.filter(
+            i => i.status === target.key
+          );
         }
       });
     },
-    getActivityList(searchText = "") {
+    getActivityList() {
       if (this.isReceive) return;
       this.isReceive = true;
 
       const vendor = this.$route.params.vendor || "all";
-
+      const kind = this.$route.query.kind || "";
       let params = {
-        kind: "", // 分類代碼 1體育, 2視訊, 3電子, 4彩票, 5棋牌, 6麻將
+        kind: kind, // 分類代碼 1體育, 2視訊, 3電子, 4彩票, 5棋牌, 6麻將
         // game: false, // 遊戲
         // enable: true, // 啟用
         // firstResult: 0,
@@ -168,9 +176,16 @@ export default {
       })
         .then(res => {
           this.isReceive = false;
-          console.log(res);
           if (res && res.status === "000") {
-            this.eventList = res.data.ret.events;
+            // 1.尚未開始 2.活動預告 3.活動中 4.結果查詢 5.已結束
+            // 1,5 不顯示
+            if (res.data.ret.events && res.data.ret.events.length > 0) {
+              let list = res.data.ret.events;
+              this.originEventList = list;
+              this.eventList = list.filter(
+                i => +i.status !== 1 && +i.status !== 5
+              );
+            }
           }
 
           if (res && res.status !== "000") {
@@ -184,7 +199,9 @@ export default {
         })
         .catch(error => {
           this.isReceive = false;
-          this.actionSetGlobalMessage(error.response.data.msg);
+          if (error && error.data.msg) {
+            this.actionSetGlobalMessage(error.data.msg);
+          }
         });
     }
   }
