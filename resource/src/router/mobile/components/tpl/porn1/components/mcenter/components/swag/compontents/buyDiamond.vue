@@ -25,7 +25,11 @@
         <div>{{ "SWAG钱包" }}</div>
         <div :class="$style['money']" @click="handleSWAGBalance">
           <template v-if="isMaintainSwag">
-            <span :class="$style['maintain-tip-text']">维护中</span>
+            <span
+              :class="$style['maintain-tip-text']"
+              @click="dialogMessage('SWAG 维护中')"
+              >维护中</span
+            >
             <img
               v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
               :class="$style['maintain-tip-img']"
@@ -195,7 +199,11 @@ export default {
     this.initSWAGConfig();
     this.watchNoticeDate = true;
   },
-  methods: {}
+  methods: {
+    dialogMessage(msg) {
+      return this.actionSetGlobalMessage({ msg: msg });
+    }
+  }
 };
 </script>
 
