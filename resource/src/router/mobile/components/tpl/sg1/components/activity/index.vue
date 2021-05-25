@@ -1,13 +1,7 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :update-search-status="updateSearchStatus"
-  >
+  <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" class="content-wrap">
-      <activity
-        :lobby-name.sync="lobbyName"
-        :is-show-search.sync="isShowSearch"
-      />
+      <activity :lobby-name.sync="lobbyName" />
     </div>
   </mobile-container>
 </template>
@@ -32,7 +26,6 @@ export default {
       return {
         prev: true,
         title: this.lobbyName, // 大廳名稱由子元件同步回傳上來
-        hasSearchBtn: true,
         onClick: () => {
           if (localStorage.getItem("_iframe-back-route")) {
             const target =
@@ -52,19 +45,6 @@ export default {
       set(value) {
         this.lobbyTitle = value;
       }
-    },
-    isShowSearch: {
-      get() {
-        return this.searchStatus;
-      },
-      set() {
-        this.searchStatus = !this.searchStatus;
-      }
-    }
-  },
-  methods: {
-    updateSearchStatus() {
-      this.searchStatus = !this.searchStatus;
     }
   }
 };
