@@ -13,6 +13,7 @@
         <div :class="$style['title']">领取倒计时</div>
         <div :class="$style['time']">{{ outPutYime }}</div>
       </div>
+      <div v-if="optionType === 3" :class="$style['option1']">任务完成</div>
     </div>
     <div :class="$style['redJackpot']">
       <div :class="$style['top']">
