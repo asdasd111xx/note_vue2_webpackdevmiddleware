@@ -107,7 +107,8 @@ export default {
       timer: null,
       eventKind: "",
       redEnvelopeType: false,
-      redEnvelopeText: "恭喜您获得红包彩金</br>9,999,999,999,999 元"
+      redEnvelopeText: "恭喜您获得红包彩金</br>9,999,999,999,999 元",
+      buttonType: true
     };
   },
   computed: {
@@ -195,6 +196,10 @@ export default {
       }
     },
     getRedJackpotMoney() {
+      if (!this.buttonType) {
+        return;
+      }
+      this.buttonType = false;
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetEventDraw/${this.eventKind}`,
@@ -210,6 +215,7 @@ export default {
           this.redEnvelopeText = `恭喜您获得红包彩金</br>${parseFloat(
             res.data.prizeAmount
           ).toFixed(2)} 元`;
+          this.buttonType = true;
         }
       });
     },
