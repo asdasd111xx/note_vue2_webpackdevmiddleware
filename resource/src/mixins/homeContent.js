@@ -537,8 +537,9 @@ export default {
       }
       switch (game.type) {
         case "strong_activity":
-          console.log(game);
-          this.$router.push(`/mobile/activity/all/?kind=${game.kind}`);
+          // 預設帶全部
+          // this.$router.push(`/mobile/activity/all/?kind=${game.kind}`);
+          this.$router.push(`/mobile/activity/all/`);
           return;
 
         case "thirdparty":

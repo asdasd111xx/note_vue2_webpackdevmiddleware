@@ -35,7 +35,11 @@
         <!-- <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div> -->
       </div>
     </template>
-
+    <envelope
+      v-if="needShowRedEnvelope"
+      @closeEvelope="closeEvelope"
+      :redEnvelopeData="redEnvelopeData"
+    />
     <page-loading :is-show="isLoading" />
   </div>
 </template>
@@ -48,6 +52,10 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     activityItem,
+    envelope: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
+      ),
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
@@ -83,14 +91,22 @@ export default {
           key: 4
         }
       ],
-      currentTab: {}
+      currentTab: {},
+      needShowRedEnvelope: false,
+      redEnvelopeData: {}
     };
   },
-  watch: {},
+  watch: {
+    showRedEnvelope() {
+      this.needShowRedEnvelope = true;
+      this.redEnvelopeData = this.showRedEnvelope;
+    }
+  },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     options() {
       return {
@@ -129,6 +145,12 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    closeEvelope() {
+      this.needShowRedEnvelope = false;
+      this.actionSetGlobalMessage({
+        msg: "红包派发中，到帐后即可畅玩游戏"
+      });
+    },
     changeActivityLabel(target) {
       if (target.key === this.currentTab.key) {
         return;
