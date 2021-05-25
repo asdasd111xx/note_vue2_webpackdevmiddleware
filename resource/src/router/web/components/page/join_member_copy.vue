@@ -198,6 +198,28 @@
               @keydown.13="joinSubmit()"
             />
             <input
+              v-else-if="field.key === 'telegram'"
+              v-model="allValue[field.key]"
+              :class="[$style['join-input'], field.key]"
+              :name="field.key"
+              :placeholder="field.content.note1"
+              type="text"
+              maxlength="16"
+              @input="verification(field.key)"
+              @keydown.13="joinSubmit()"
+            />
+            <input
+              v-else-if="field.key === 'kakaotalk'"
+              v-model="allValue[field.key]"
+              :class="[$style['join-input'], field.key]"
+              :name="field.key"
+              :placeholder="field.content.note1"
+              type="text"
+              maxlength="16"
+              @input="verification(field.key)"
+              @keydown.13="joinSubmit()"
+            />
+            <input
               v-else
               :ref="field.key"
               v-model="allValue[field.key]"
@@ -296,24 +318,24 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import capitalize from 'lodash/capitalize';
-import split from 'lodash/split';
-import datepicker from 'vuejs-datepicker';
-import vSelect from 'vue-select';
-import ajax from '@/lib/ajax';
-import appEvent from '@/lib/appEvent';
-import member from '@/api/member';
-import common from '@/api/common';
-import datepickerLang from '@/lib/datepicker_lang';
-import joinMemInfo from '@/config/joinMemInfo';
+import Vue from "vue";
+import { mapGetters, mapActions } from "vuex";
+import capitalize from "lodash/capitalize";
+import split from "lodash/split";
+import datepicker from "vuejs-datepicker";
+import vSelect from "vue-select";
+import ajax from "@/lib/ajax";
+import appEvent from "@/lib/appEvent";
+import member from "@/api/member";
+import common from "@/api/common";
+import datepickerLang from "@/lib/datepicker_lang";
+import joinMemInfo from "@/config/joinMemInfo";
 // import joinAgreement from '@/router/mobile/components/tpl/brilliant/components/common/joinAgreement';
-import slideVerification from '@/components/slideVerification';
-import accountText from '../tpl/8/brilliant/components/openAccountText';
+import slideVerification from "@/components/slideVerification";
+import accountText from "../tpl/8/brilliant/components/openAccountText";
 
-import { getCookie, setCookie } from '@/lib/cookie';
-import bbosRequest from '@/lib/bbosRequest';
+import { getCookie, setCookie } from "@/lib/cookie";
+import bbosRequest from "@/lib/bbosRequest";
 
 export default {
   components: {
@@ -321,7 +343,7 @@ export default {
     vSelect,
     // joinAgreement,
     accountText,
-    popVerify: () => import('../common/popVerify'),
+    popVerify: () => import("../common/popVerify"),
     slideVerification
   },
   props: {
@@ -336,71 +358,87 @@ export default {
   },
   data() {
     return {
-      errMsg: '',
+      errMsg: "",
       joinMemInfo,
       dateLang: datepickerLang(this.$i18n.locale),
-      ageLimit: new Date(Vue.moment(new Date()).add(-18, 'year')),
-      captchaImg: '',
+      ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
+      captchaImg: "",
       agreement: false,
-      aid: '',
+      aid: "",
       allValue: {
-        username: '',
-        password: '',
-        confirm_password: '',
-        introducer: this.$cookie.get('a') || '',
-        name: '',
-        email: '',
-        phone: '',
-        alias: '',
-        birthday: '',
+        username: "",
+        password: "",
+        confirm_password: "",
+        introducer: this.$cookie.get("a") || "",
+        name: "",
+        email: "",
+        phone: "",
+        alias: "",
+        birthday: "",
         gender: 0,
-        qq_num: '',
-        weixin: '',
-        line: '',
-        facebook: '',
-        skype: '',
-        zalo: '',
-        withdraw_password: '',
-        captcha_text: ''
+        qq_num: "",
+        weixin: "",
+        line: "",
+        facebook: "",
+        skype: "",
+        telegram: "",
+        kakaotalk: "",
+        zalo: "",
+        withdraw_password: "",
+        captcha_text: ""
       },
       allTip: {
-        username: '',
-        password: '',
-        confirm_password: '',
-        introducer: '',
-        name: '',
-        email: '',
-        phone: '',
-        alias: '',
-        birthday: '',
-        gender: '',
-        qq_num: '',
-        weixin: '',
-        line: '',
-        facebook: '',
-        skype: '',
-        zalo: '',
-        withdraw_password: '',
-        captcha_text: ''
+        username: "",
+        password: "",
+        confirm_password: "",
+        introducer: "",
+        name: "",
+        email: "",
+        phone: "",
+        alias: "",
+        birthday: "",
+        gender: "",
+        qq_num: "",
+        weixin: "",
+        line: "",
+        facebook: "",
+        skype: "",
+        telegram: "",
+        kakaotalk: "",
+        zalo: "",
+        withdraw_password: "",
+        captcha_text: ""
       },
       selectData: {
         phone: {
           options: [],
-          selected: { label: '', value: '' }
+          selected: { label: "", value: "" }
         },
         gender: {
           options: [
-            { label: this.$i18n.t('S_SELECTED'), value: '0' },
-            { label: this.$i18n.t('S_MALE'), value: '1' },
-            { label: this.$i18n.t('S_FEMALE'), value: '2' }
+            { label: this.$i18n.t("S_SELECTED"), value: "0" },
+            { label: this.$i18n.t("S_MALE"), value: "1" },
+            { label: this.$i18n.t("S_FEMALE"), value: "2" }
           ],
-          selected: { label: this.$i18n.t('S_SELECTED'), value: '' }
+          selected: { label: this.$i18n.t("S_SELECTED"), value: "" }
         },
         withdraw_password: [
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } },
-          { options: [{ label: '-', value: '' }], selected: { label: '-', value: '' } }
+          {
+            options: [{ label: "-", value: "" }],
+            selected: { label: "-", value: "" }
+          },
+          {
+            options: [{ label: "-", value: "" }],
+            selected: { label: "-", value: "" }
+          },
+          {
+            options: [{ label: "-", value: "" }],
+            selected: { label: "-", value: "" }
+          },
+          {
+            options: [{ label: "-", value: "" }],
+            selected: { label: "-", value: "" }
+          }
         ]
       },
       checkFail: false,
@@ -413,26 +451,28 @@ export default {
         email: false,
         phone: false
       },
-      currentVerify: '',
+      currentVerify: "",
       oldValue: {
-        email: '',
-        phone: ''
+        email: "",
+        phone: ""
       },
-      countryCode: '',
-      verifyTips: '',
+      countryCode: "",
+      verifyTips: "",
       lock: false
     };
   },
   computed: {
     ...mapGetters({
-      isWebview: 'getIsWebview',
-      webInfo: 'getWebInfo',
-      memInfo: 'getMemInfo',
-      loginStatus: 'getLoginStatus',
-      siteConfig: 'getSiteConfig'
+      isWebview: "getIsWebview",
+      webInfo: "getWebInfo",
+      memInfo: "getMemInfo",
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     fieldsData() {
-      return this.registerData.filter((field) => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show);
+      return this.registerData.filter(
+        field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
+      );
     },
     $style() {
       if (this.theme) {
@@ -447,30 +487,38 @@ export default {
     },
     isSlideAble() {
       return this.registerData
-        .filter((field) => this.joinMemInfo[field.key].show)
-        .every((field) => {
+        .filter(field => this.joinMemInfo[field.key].show)
+        .every(field => {
           if (this.allTip[field.key]) {
             return false;
           }
 
           if (this.joinMemInfo[field.key].isRequired) {
-            if (field.key === 'confirm_password' && this.allValue.password !== this.allValue.confirm_password) {
+            if (
+              field.key === "confirm_password" &&
+              this.allValue.password !== this.allValue.confirm_password
+            ) {
               return false;
             }
 
-            if (this.joinMemInfo[field.key].type !== 'select' && field.key !== 'birthday') {
-              return this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') !== '';
+            if (
+              this.joinMemInfo[field.key].type !== "select" &&
+              field.key !== "birthday"
+            ) {
+              return (
+                this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, "") !== ""
+              );
             }
 
-            if (field.key === 'gender') {
+            if (field.key === "gender") {
               return +this.allValue[field.key] !== 0;
             }
 
-            if (field.key === 'withdraw_password') {
+            if (field.key === "withdraw_password") {
               return this.allValue.withdraw_password.length === 4;
             }
 
-            if (field.key === 'phone') {
+            if (field.key === "phone") {
               return this.joinMemInfo[field.key].hasVerify && this.countryCode;
             }
 
@@ -483,7 +531,7 @@ export default {
   },
   created() {
     if (this.loginStatus) {
-      const redirectType = this.webInfo.redirect_type || 'custom';
+      const redirectType = this.webInfo.redirect_type || "custom";
       const redirectTo = this.webInfo.redirect_to || this.webInfo.page[0].pid;
       this.actionChangePage({ page: redirectTo, type: redirectType });
       return;
@@ -492,123 +540,142 @@ export default {
     let joinConfig = [];
     let joinReminder = {};
     const username = {
-      key: 'username',
+      key: "username",
       content: {
-        note1: this.$text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字'),
-        note2: ''
+        note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
+        note2: ""
       }
     };
     const password = {
-      key: 'password',
+      key: "password",
       content: {
-        note1: this.$text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母或数字'),
-        note2: ''
+        note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母或数字"),
+        note2: ""
       }
     };
     const confirmPassword = {
-      key: 'confirm_password',
+      key: "confirm_password",
       content: {
-        note1: '请再次输入设置密码',
-        note2: ''
+        note1: "请再次输入设置密码",
+        note2: ""
       }
     };
     const captchaText = {
-      key: 'captcha_text',
+      key: "captcha_text",
       content: {
-        note1: '',
-        note2: ''
+        note1: "",
+        note2: ""
       }
     };
 
-    member.joinConfig({
-      success: ({ result, ret }) => {
-        if (result !== 'ok') {
-          return;
-        }
-
-        Object.keys(this.joinMemInfo).forEach((key) => {
-          // 因為研五API沒有上開關，所以先不判斷開關一律顯示色情影片
-          if (key === 'captcha_text' && this.memInfo.config.register_captcha_type !== 1) {
-            this.joinMemInfo[key].show = false;
+    member
+      .joinConfig({
+        success: ({ result, ret }) => {
+          if (result !== "ok") {
             return;
           }
 
-          if (!ret[key]) {
-            return;
-          }
+          Object.keys(this.joinMemInfo).forEach(key => {
+            // 因為研五API沒有上開關，所以先不判斷開關一律顯示色情影片
+            if (
+              key === "captcha_text" &&
+              this.memInfo.config.register_captcha_type !== 1
+            ) {
+              this.joinMemInfo[key].show = false;
+              return;
+            }
 
-          if (key === 'introducer' && this.$cookie.get('a')) {
+            if (!ret[key]) {
+              return;
+            }
+
+            if (key === "introducer" && this.$cookie.get("a")) {
+              this.joinMemInfo[key] = {
+                ...this.joinMemInfo[key],
+                isRequired: true,
+                show: false,
+                hasVerify: ret[key].code_register
+              };
+              return;
+            }
+
+            if (key === "phone") {
+              this.selectData.phone.options = [
+                ...this.selectData.phone.options,
+                ...ret[key].country_codes.map(label => ({
+                  label,
+                  value: label
+                }))
+              ];
+
+              [this.selectData.phone.selected] = this.selectData.phone.options;
+            }
+
             this.joinMemInfo[key] = {
               ...this.joinMemInfo[key],
-              isRequired: true,
-              show: false,
+              isRequired: ret[key].required,
+              show: !ret[key].none,
               hasVerify: ret[key].code_register
             };
-            return;
-          }
-
-          if (key === 'phone') {
-            this.selectData.phone.options = [
-              ...this.selectData.phone.options,
-              ...ret[key].country_codes.map((label) => ({ label, value: label }))
+            joinConfig = [
+              ...joinConfig,
+              { key, content: { note1: "", note2: "" } }
             ];
-
-            [this.selectData.phone.selected] = this.selectData.phone.options;
-          }
-
-          this.joinMemInfo[key] = {
-            ...this.joinMemInfo[key],
-            isRequired: ret[key].required,
-            show: !ret[key].none,
-            hasVerify: ret[key].code_register
-          };
-          joinConfig = [...joinConfig, { key, content: { note1: '', note2: '' } }];
-        });
-      }
-    }).then(() => {
-      const preview = this.$route.name === 'preview' ? 'View' : '';
-      const status = this.$cookie.get('newsite') ? 'New' : '';
-
-      ajax({
-        method: 'get',
-        url: `/tpl/${this.memInfo.user.domain}/playerRegister${preview}${status}.json`,
-        params: {
-          v: Date.parse(new Date())
-        },
-        success: (response) => {
-          response.data.forEach((item) => {
-            Object.keys(item).forEach((key) => {
-              const content = JSON.parse(item[key][this.$i18n.locale]);
-
-              joinReminder = {
-                ...joinReminder,
-                [key]: {
-                  note1: content.note1 || '',
-                  note2: content.note2 || ''
-                }
-              };
-
-              if (key === 'gender' && joinReminder[key].note1) {
-                this.selectData.gender.options[0].label = joinReminder[key].note1;
-                this.selectData.gender.selected.label = joinReminder[key].note1;
-              }
-            });
-          });
-
-          joinConfig.map((item) => {
-            const info = item;
-            info.content = {
-              ...item.content,
-              ...joinReminder[item.key]
-            };
-
-            return info;
           });
         }
-      }).then(() => {
-        this.registerData = [username, password, confirmPassword, ...joinConfig, captchaText];
+      })
+      .then(() => {
+        const preview = this.$route.name === "preview" ? "View" : "";
+        const status = this.$cookie.get("newsite") ? "New" : "";
+
+        ajax({
+          method: "get",
+          url: `/tpl/${this.memInfo.user.domain}/playerRegister${preview}${status}.json`,
+          params: {
+            v: Date.parse(new Date())
+          },
+          success: response => {
+            response.data.forEach(item => {
+              Object.keys(item).forEach(key => {
+                const content = JSON.parse(item[key][this.$i18n.locale]);
+
+                joinReminder = {
+                  ...joinReminder,
+                  [key]: {
+                    note1: content.note1 || "",
+                    note2: content.note2 || ""
+                  }
+                };
+
+                if (key === "gender" && joinReminder[key].note1) {
+                  this.selectData.gender.options[0].label =
+                    joinReminder[key].note1;
+                  this.selectData.gender.selected.label =
+                    joinReminder[key].note1;
+                }
+              });
+            });
+
+            joinConfig.map(item => {
+              const info = item;
+              info.content = {
+                ...item.content,
+                ...joinReminder[item.key]
+              };
+
+              return info;
+            });
+          }
+        }).then(() => {
+          this.registerData = [
+            username,
+            password,
+            confirmPassword,
+            ...joinConfig,
+            captchaText
+          ];
+        });
       });
-    });
 
     // 補取款密碼options
     for (let index = 0; index < 10; index += 1) {
@@ -619,25 +686,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionChangePage'
-    ]),
+    ...mapActions(["actionChangePage"]),
     getCaptcha() {
       bbosRequest({
-        method: 'post',
-        url: this.siteConfig.BBOS_DOMIAN + '/Captcha',
+        method: "post",
+        url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
         reqHeaders: {
-          'Vendor': this.memInfo.user.domain
+          Vendor: this.memInfo.user.domain
         },
         params: {
-          "lang": "zh-cn",
-          "format": "png",
-        },
-      }).then((res) => {
+          lang: "zh-cn",
+          format: "png"
+        }
+      }).then(res => {
         if (res.data && res.data.data) {
           this.captchaImg = res.data.data;
           this.aid = res.data.cookie.aid;
-          setCookie('aid', res.data.cookie.aid);
+          setCookie("aid", res.data.cookie.aid);
         }
       });
     },
@@ -650,7 +715,7 @@ export default {
       this.isVerifying = true;
     },
     clearVerifyTips() {
-      this.verifyTips = '';
+      this.verifyTips = "";
     },
     sendVerify(getCount, status) {
       if (status || this.lock) {
@@ -661,22 +726,34 @@ export default {
       const { allValue } = this;
       const { currentVerify } = this;
       const params = {
-        [currentVerify]: currentVerify === 'phone' ? `${this.countryCode.replace('+', '')}-${allValue[currentVerify]}` : allValue[currentVerify]
+        [currentVerify]:
+          currentVerify === "phone"
+            ? `${this.countryCode.replace("+", "")}-${allValue[currentVerify]}`
+            : allValue[currentVerify]
       };
 
       ajax({
-        method: 'post',
+        method: "post",
         url: `/api/v1/c/player/register/${currentVerify}`,
         errorAlert: false,
         params,
         success: ({ result }) => {
-          if (result !== 'ok') {
+          if (result !== "ok") {
             return;
           }
 
-          const msg = this.currentVerify === 'email' ? this.$text('S_FIND_TRASH', '，若没收到信件请尝试至垃圾箱寻找') : '';
-          this.oldValue = { ...this.oldValue, [currentVerify]: allValue[currentVerify] };
-          this.verifyTips = `${this.$text('S_SEND_CHECK_CODE_VALID_TIME', { text: '验证码已发送，有效时间为%s分钟', replace: [{ target: '%s', value: '<span>5</span>' }] })}${msg}`;
+          const msg =
+            this.currentVerify === "email"
+              ? this.$text("S_FIND_TRASH", "，若没收到信件请尝试至垃圾箱寻找")
+              : "";
+          this.oldValue = {
+            ...this.oldValue,
+            [currentVerify]: allValue[currentVerify]
+          };
+          this.verifyTips = `${this.$text("S_SEND_CHECK_CODE_VALID_TIME", {
+            text: "验证码已发送，有效时间为%s分钟",
+            replace: [{ target: "%s", value: "<span>5</span>" }]
+          })}${msg}`;
           getCount();
           this.lock = false;
         },
@@ -685,7 +762,10 @@ export default {
           // Email => 116004
           // Phone => 320006
           if ([116004, 320006].includes(data.code)) {
-            this.verifyTips = this.$text('S_SEND_CHECK_CODE_VALID_LIMIT', { text: '发送次数已达上限，请于%s小时后再试！', replace: [{ target: '%s', value: '<span>24</span>' }] });
+            this.verifyTips = this.$text("S_SEND_CHECK_CODE_VALID_LIMIT", {
+              text: "发送次数已达上限，请于%s小时后再试！",
+              replace: [{ target: "%s", value: "<span>24</span>" }]
+            });
             return;
           }
 
@@ -697,29 +777,32 @@ export default {
       const { allValue } = this;
       const { currentVerify } = this;
       const params = {
-        [currentVerify]: currentVerify === 'phone' ? `${this.countryCode.replace('+', '')}-${allValue[currentVerify]}` : allValue[currentVerify],
+        [currentVerify]:
+          currentVerify === "phone"
+            ? `${this.countryCode.replace("+", "")}-${allValue[currentVerify]}`
+            : allValue[currentVerify],
         keyring
       };
 
       ajax({
-        method: 'put',
+        method: "put",
         url: `/api/v1/c/player/register/${currentVerify}/verify`,
         params,
         success: ({ result }) => {
-          if (result !== 'ok') {
+          if (result !== "ok") {
             return;
           }
 
           this.isVerified = { ...this.isVerified, [currentVerify]: true };
-          this.allTip = { ...this.allTip, [currentVerify]: '' };
+          this.allTip = { ...this.allTip, [currentVerify]: "" };
           this.onVerifyClose();
         }
       });
     },
     onVerifyClose() {
       this.isVerifying = false;
-      this.currentVerify = '';
-      this.verifyTips = '';
+      this.currentVerify = "";
+      this.verifyTips = "";
     },
     onFocus() {
       //   if (this.allValue.username === '') {
@@ -730,20 +813,35 @@ export default {
       //     this.allTip.password = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
       //   }
 
-      if (this.allValue.password !== '' && this.allValue.password !== this.allValue.confirm_password) {
-        this.allTip.confirm_password = '确认密码预设要与密码一致';
+      if (
+        this.allValue.password !== "" &&
+        this.allValue.password !== this.allValue.confirm_password
+      ) {
+        this.allTip.confirm_password = "确认密码预设要与密码一致";
       }
 
-      if (this.allValue.password !== '' && !this.joinMemInfo.password.regExp.test(this.allValue.password)) {
-        this.allTip.password = this.$text('S_PASSWORD_ERROR', '请输入6-12位字母或数字');
+      if (
+        this.allValue.password !== "" &&
+        !this.joinMemInfo.password.regExp.test(this.allValue.password)
+      ) {
+        this.allTip.password = this.$text(
+          "S_PASSWORD_ERROR",
+          "请输入6-12位字母或数字"
+        );
       }
 
-      if (this.allValue.username !== '' && this.allValue.password === this.allValue.username) {
-        this.allTip.password = this.$text('S_USERNAME_CONFIRM_ERROR', '密码不能与帐号相同');
+      if (
+        this.allValue.username !== "" &&
+        this.allValue.password === this.allValue.username
+      ) {
+        this.allTip.password = this.$text(
+          "S_USERNAME_CONFIRM_ERROR",
+          "密码不能与帐号相同"
+        );
       }
     },
     changSelect(key) {
-      if (key === 'phone') {
+      if (key === "phone") {
         if (!this.selectData[key].selected) {
           this.selectData[key].selected = {
             label: this.countryCode,
@@ -756,19 +854,26 @@ export default {
         return;
       }
 
-      if (this.selectData[key].selected && !this.selectData[key].selected.value) {
-        this.allValue[key] = '0';
+      if (
+        this.selectData[key].selected &&
+        !this.selectData[key].selected.value
+      ) {
+        this.allValue[key] = "0";
         return;
       }
 
-      this.allValue[key] = this.selectData[key].selected ? this.selectData[key].selected.value : '0';
+      this.allValue[key] = this.selectData[key].selected
+        ? this.selectData[key].selected.value
+        : "0";
       this.verification(key);
     },
     changWithdrawPassword(key, num) {
-      this.allValue[key] = '';
-      Object.keys(this.selectData.withdraw_password).forEach((index) => {
+      this.allValue[key] = "";
+      Object.keys(this.selectData.withdraw_password).forEach(index => {
         if (this.selectData.withdraw_password[index].selected) {
-          this.allValue[key] += this.selectData.withdraw_password[index].selected.value;
+          this.allValue[key] += this.selectData.withdraw_password[
+            index
+          ].selected.value;
         }
       });
 
@@ -785,33 +890,37 @@ export default {
     verification(key) {
       const data = this.joinMemInfo[key];
 
-      if (key === 'name' && this.allValue[key].length > 30) {
+      if (key === "name" && this.allValue[key].length > 30) {
         this.allValue[key] = this.allValue[key].substring(0, 30);
         return;
       }
 
       //  非必填欄位，空值不做驗證
-      if (!data.isRequired && this.allValue[key] === '') {
-        this.allTip[key] = '';
+      if (!data.isRequired && this.allValue[key] === "") {
+        this.allTip[key] = "";
         return;
       }
 
-      if (key === 'withdraw_password' && this.allValue.withdraw_password.length < 4 && data.isRequired) {
-        this.allTip[key] = this.$t('S_JM_MSG_COMPLETE');
+      if (
+        key === "withdraw_password" &&
+        this.allValue.withdraw_password.length < 4 &&
+        data.isRequired
+      ) {
+        this.allTip[key] = this.$t("S_JM_MSG_COMPLETE");
         return;
       }
 
-      if ((key === 'birthday' && !this.allValue.birthday && data.isRequired)) {
-        this.allTip[key] = this.$t('S_JM_FIELD_REQUIRE');
+      if (key === "birthday" && !this.allValue.birthday && data.isRequired) {
+        this.allTip[key] = this.$t("S_JM_FIELD_REQUIRE");
         return;
       }
 
-      if ((key === 'gender' && this.allValue.gender === '0' && data.isRequired)) {
-        this.allTip[key] = this.$t('S_JM_FIELD_REQUIRE');
+      if (key === "gender" && this.allValue.gender === "0" && data.isRequired) {
+        this.allTip[key] = this.$t("S_JM_FIELD_REQUIRE");
         return;
       }
 
-      if (data.isRequired && this.allValue[key] === '') {
+      if (data.isRequired && this.allValue[key] === "") {
         // this.allTip[key] = this.$t('S_JM_FIELD_REQUIRE');
         return;
       }
@@ -819,25 +928,30 @@ export default {
       const re = data.regExp;
       const msg = data.errorMsg;
 
-      if (key === 'password') {
-        this.allTip.password = re && re.test(this.allValue.password) ? '' : msg;
+      if (key === "password") {
+        this.allTip.password = re && re.test(this.allValue.password) ? "" : msg;
         return;
       }
 
-      if (key === 'confirm_password') {
+      if (key === "confirm_password") {
         // if (this.allValue.confirm_password === '') {
         //   this.allTip.confirm_password = this.$text('S_JM_FIELD_REQUIRE', '该栏位不得为空');
         //   return;
         // }
 
-        const password = split(this.allValue.password, '');
-        const confirmPassword = split(this.allValue.confirm_password, '');
-        const isSame = confirmPassword.every((value, index) => password[index] === value);
+        const password = split(this.allValue.password, "");
+        const confirmPassword = split(this.allValue.confirm_password, "");
+        const isSame = confirmPassword.every(
+          (value, index) => password[index] === value
+        );
 
-        console.log('confirmPassword', password, confirmPassword, isSame)
+        console.log("confirmPassword", password, confirmPassword, isSame);
 
-        if (isSame || this.allValue.confirm_password === this.allValue.password) {
-          this.allTip.confirm_password = '';
+        if (
+          isSame ||
+          this.allValue.confirm_password === this.allValue.password
+        ) {
+          this.allTip.confirm_password = "";
           return;
         }
 
@@ -845,27 +959,36 @@ export default {
         return;
       }
 
-      if ((re && !re.test(this.allValue[key]))
-        || (data.minimum && this.allValue[key].length < data.minimum)
-        || (data.maximum && this.allValue[key].length > data.maximum)
+      if (
+        (re && !re.test(this.allValue[key])) ||
+        (data.minimum && this.allValue[key].length < data.minimum) ||
+        (data.maximum && this.allValue[key].length > data.maximum)
       ) {
         this.allTip[key] = msg;
-        if (data.isRequired && this.allValue[key] === '') {
-          this.allTip[key] = this.$t('S_JM_FIELD_REQUIRE');
+        if (data.isRequired && this.allValue[key] === "") {
+          this.allTip[key] = this.$t("S_JM_FIELD_REQUIRE");
         }
         return;
       }
 
-      this.allTip[key] = '';
+      this.allTip[key] = "";
     },
     joinSubmit(captchaInfo) {
-      if (!this.allValue.username || !this.allValue.password || !this.allValue.confirm_password) return;
+      if (
+        !this.allValue.username ||
+        !this.allValue.password ||
+        !this.allValue.confirm_password
+      )
+        return;
       const data = this.registerData;
 
       this.checkFail = false;
 
       if (this.allValue.username === this.allValue.password) {
-        this.errMSg = (this.$text('S_USERNAME_CONFIRM_ERROR', '密码不能与帐号相同'));
+        this.errMSg = this.$text(
+          "S_USERNAME_CONFIRM_ERROR",
+          "密码不能与帐号相同"
+        );
         return;
       }
 
@@ -874,7 +997,7 @@ export default {
           captchaInfo.slideFuc.reset();
         }
 
-        alert(this.$text('S_PLZ_CHECK_AGREEMENT', '请勾选同意条款！'));
+        alert(this.$text("S_PLZ_CHECK_AGREEMENT", "请勾选同意条款！"));
         return;
       }
 
@@ -882,21 +1005,27 @@ export default {
         this.allValue.birthday = Vue.moment(this.allValue.birthday).format();
       }
 
-      data.forEach((field) => {
+      data.forEach(field => {
         if (this.joinMemInfo[field.key].show) {
           // 提示訊息不為空
           // 或 取款密碼只填1~3碼
           // 或 欄位為必填（且input為空、input取代空白為空、姓名未選擇、取款密碼輸入不完整）
-          if (this.allTip[field.key]
-            || (this.allValue.withdraw_password.length < 0 && this.allValue.withdraw_password.length < 4)
-            || (this.joinMemInfo[field.key].isRequired
-              && (!this.allValue[field.key]
-                || ((this.joinMemInfo[field.key].type !== 'select' && field.key !== 'birthday') && this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, '') === '')
-                || (field.key === 'gender' && +this.allValue[field.key] === 0)
-                || (field.key === 'withdraw_password' && this.allValue.withdraw_password.length < 4)
-                || (field.key === 'phone' && this.joinMemInfo[field.key].hasVerify && !this.countryCode)
-              )
-            )
+          if (
+            this.allTip[field.key] ||
+            (this.allValue.withdraw_password.length < 0 &&
+              this.allValue.withdraw_password.length < 4) ||
+            (this.joinMemInfo[field.key].isRequired &&
+              (!this.allValue[field.key] ||
+                (this.joinMemInfo[field.key].type !== "select" &&
+                  field.key !== "birthday" &&
+                  this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, "") ===
+                    "") ||
+                (field.key === "gender" && +this.allValue[field.key] === 0) ||
+                (field.key === "withdraw_password" &&
+                  this.allValue.withdraw_password.length < 4) ||
+                (field.key === "phone" &&
+                  this.joinMemInfo[field.key].hasVerify &&
+                  !this.countryCode)))
           ) {
             this.checkFail = true;
           }
@@ -908,7 +1037,7 @@ export default {
           captchaInfo.slideFuc.reset();
         }
 
-        this.errMsg = (this.$t('S_JM_MSG_COMPLETE'));
+        this.errMsg = this.$t("S_JM_MSG_COMPLETE");
         return;
       }
 
@@ -919,28 +1048,30 @@ export default {
       // 暫時調整欄位
       let params = {
         ...this.allValue,
-        'captchaText': this.allValue.captcha_text,
-        'confirmPassword': this.allValue.confirm_password,
-        'withdrawPassword': this.allValue.withdraw_Password,
-        "aid": this.aid || getCookie('aid') || '',
-        "speedy": true,
-        phone: this.countryCode && this.allValue.phone ? `${this.countryCode.replace('+', '')}-${this.allValue.phone}` : ''
-      }
-      delete params['captcha_text'];
-      delete params['withdraw_Password'];
+        captchaText: this.allValue.captcha_text,
+        confirmPassword: this.allValue.confirm_password,
+        withdrawPassword: this.allValue.withdraw_Password,
+        aid: this.aid || getCookie("aid") || "",
+        speedy: true,
+        phone:
+          this.countryCode && this.allValue.phone
+            ? `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+            : ""
+      };
+      delete params["captcha_text"];
+      delete params["withdraw_Password"];
 
       bbosRequest({
-        method: 'post',
-        url: this.siteConfig.BBOS_DOMIAN + '/Player/Add',
+        method: "post",
+        url: this.siteConfig.BBOS_DOMIAN + "/Player/Add",
         reqHeaders: {
-          'Vendor': this.memInfo.user.domain
+          Vendor: this.memInfo.user.domain
         },
         params: {
-          ...params,
-        },
-      }).then((res) => {
+          ...params
+        }
+      }).then(res => {
         if (res.data && res.data.cookie) {
-
           try {
             let cookie = res.data.cookie;
             for (let [key, value] of Object.entries(cookie)) {
@@ -948,22 +1079,22 @@ export default {
             }
           } catch (e) {
             //若不支持至少保留cid cookie
-            setCookie('cid', res.data.cookie.cid);
+            setCookie("cid", res.data.cookie.cid);
           }
 
           // GA流量統計
           window.dataLayer.push({
             dep: 2,
-            event: 'ga_click',
-            eventCategory: 'sign_up',
-            eventAction: 'sign_up',
-            eventLabel: 'sign_up',
+            event: "ga_click",
+            eventCategory: "sign_up",
+            eventAction: "sign_up",
+            eventLabel: "sign_up",
             ga_hall_id: 3820325,
             ga_domain_id: this.memInfo.user.domain
           });
 
           if (this.isWebview) {
-            appEvent.jsToAppMessage('PLAYER_REGIST_SUCCESS');
+            appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
             return;
           }
 
@@ -975,7 +1106,7 @@ export default {
           captchaInfo.slideFuc.reset();
         }
 
-        this.allValue.captcha_text = '';
+        this.allValue.captcha_text = "";
         if (res.status !== "000") {
           // to do 錯誤訊息?
           this.errMsg = res.msg;
@@ -991,7 +1122,7 @@ export default {
       }
     },
     openAgreement(state) {
-      if (this.$route.path.split('/')[1] === 'mobile') {
+      if (this.$route.path.split("/")[1] === "mobile") {
         this.joinAgree = true;
         window.scrollTo(0, 0);
         if (state) {
@@ -1000,7 +1131,7 @@ export default {
         return;
       }
 
-      if (['129', '30', '32', '177'].includes(this.webInfo.alias)) {
+      if (["129", "30", "32", "177"].includes(this.webInfo.alias)) {
         this.accountTextStatus = true;
         window.scrollTo(0, 0);
       }
@@ -1013,5 +1144,8 @@ export default {
 };
 </script>
 
-<style lang="scss" src="@/css/page/joinMem.module.scss" module="$styleDefault"></style>
-
+<style
+  lang="scss"
+  src="@/css/page/joinMem.module.scss"
+  module="$styleDefault"
+></style>

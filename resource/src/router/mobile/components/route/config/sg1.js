@@ -166,6 +166,14 @@ export default {
       import(
         /* webpackChunkName: 'accountDataSkypeSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
       ),
+    accountDataTelegramSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataTelegramSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editTelegram"
+      ),
+    accountDataKakaotalkSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataKakaotalkSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
+      ),
     accountDataReceiptAddressSg1: () =>
       import(
         /* webpackChunkName: 'accountDataReceiptAddressSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editReceiptAddress"

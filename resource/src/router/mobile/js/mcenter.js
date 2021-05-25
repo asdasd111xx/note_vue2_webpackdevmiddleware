@@ -83,6 +83,16 @@ export default {
           component
         },
         {
+          path: "telegram",
+          name: "mcenter-accountData-telegram",
+          component
+        },
+        {
+          path: "kakaotalk",
+          name: "mcenter-accountData-kakaotalk",
+          component
+        },
+        {
           path: "receiptAddress",
           name: "mcenter-accountData-receiptAddress",
           component

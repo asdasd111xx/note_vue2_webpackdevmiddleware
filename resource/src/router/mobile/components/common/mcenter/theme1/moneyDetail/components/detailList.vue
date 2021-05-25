@@ -48,7 +48,7 @@
 
   <div v-else :class="$style['no-data-wrap']">
     <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)" />
-    <div :class="$style.tips">暂时没有新的{{ currentCategory.text }}记录</div>
+    <div :class="$style.tips">{{ noDataText }}</div>
     <div
       v-if="currentCategory.key === 'deposit'"
       :class="$style['btn-deposit']"
@@ -63,6 +63,11 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      noDataText: "暂时没有新的记录"
+    };
+  },
   filters: {
     timeFormat(date) {
       return Vue.moment(date)
@@ -108,6 +113,13 @@ export default {
     },
     pageType: {
       default: ""
+    }
+  },
+  created() {
+    if (this.currentCategory.key === "internal_memo") {
+      this.noDataText = `暂时没有新的签到彩金`;
+    } else {
+      this.noDataText = `暂时没有新的${currentCategory.text}记录`;
     }
   },
   methods: {

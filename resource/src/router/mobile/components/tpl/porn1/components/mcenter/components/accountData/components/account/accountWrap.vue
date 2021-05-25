@@ -130,6 +130,24 @@ export default {
               isShow: false,
               popTitle: ""
             },
+            telegram: {
+              key: "telegram",
+              text: "S_TELEGRAM",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: false,
+              popTitle: ""
+            },
+            kakaotalk: {
+              key: "kakaotalk",
+              text: "S_KAKAOTALK",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: false,
+              popTitle: ""
+            },
             zalo: {
               key: "zalo",
               text: "S_ZALO",

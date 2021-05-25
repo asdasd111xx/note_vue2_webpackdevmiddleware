@@ -437,7 +437,7 @@ export default {
       this.type = ["internal_memo"];
       this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: "internal_memo", text: "红包" });
+      this.setCategory({ key: "internal_memo", text: "红利" });
     },
     setCategory(value) {
       this.currentCategory = value;
