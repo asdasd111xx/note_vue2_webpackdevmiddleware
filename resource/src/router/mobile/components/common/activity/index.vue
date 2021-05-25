@@ -9,7 +9,7 @@
         >
           <div
             :class="
-              currentTab.key.toString() === info.key.toString()
+              currentLabel.key.toString() === info.key.toString()
                 ? $style['is-current']
                 : ''
             "
@@ -91,7 +91,7 @@ export default {
           key: 4
         }
       ],
-      currentTab: {},
+      currentLabel: {},
       needShowRedEnvelope: false,
       redEnvelopeData: {}
     };
@@ -127,12 +127,12 @@ export default {
     // 强档活动
     this.$emit("update:lobbyName", "强档活动");
 
-    this.currentTab = this.eventTagList[0];
-    if (this.$route.query.tab) {
+    this.currentLabel = this.eventTagList[0];
+    if (this.$route.query.label) {
       let target = this.eventTagList.find(
-        i => i.name === this.$route.query.tab
+        i => i.name === this.$route.query.label
       );
-      this.currentTab = target || this.eventTagList[0];
+      this.currentLabel = target || this.eventTagList[0];
     }
   },
   mounted() {
@@ -152,14 +152,14 @@ export default {
       });
     },
     changeActivityLabel(target) {
-      if (target.key === this.currentTab.key) {
+      if (target.key === this.currentLabel.key) {
         return;
       }
 
       this.eventTagList.find(i => {
         if (i.key === target.key) {
-          this.$router.replace({ query: { tab: target.name } });
-          this.currentTab = target;
+          this.$router.replace({ query: { label: target.name } });
+          this.currentLabel = target;
 
           if (target.key === 0) {
             this.eventList = this.originEventList;
