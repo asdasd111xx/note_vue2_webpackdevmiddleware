@@ -185,6 +185,9 @@ export default {
       this.siteConfig.MOBILE_WEB_TPL === "sg1"
     ) {
       this.initSWAGConfig(true);
+      if (this.loginStatus) {
+        this.getTaskCheck();
+      }
     }
   },
   mounted() {
@@ -1021,6 +1024,21 @@ export default {
           "needFilterGameData",
           JSON.stringify(response.data)
         );
+      });
+    },
+    getTaskCheck() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Task/GetTaskCheck`,
+        headers: {
+          cid: getCookie("cid")
+        },
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+        }
       });
     }
   }
