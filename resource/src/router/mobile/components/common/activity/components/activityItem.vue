@@ -41,7 +41,6 @@ export default {
     },
     getImg() {
       let img = this.eventData.image;
-      console.log(img);
       return {
         src: `${img}`,
         error: this.$getCdnPath("/static/image/game_loading_s.gif"),
@@ -59,11 +58,11 @@ export default {
       const { kind, vendor } = this.eventData;
       switch (kind) {
         case 3:
-          this.$router.push(`/mobile/casino/${vendor}`);
+          this.$router.push(`/mobile/casino/${vendor}?label=activity`);
           return;
 
         case 4:
-          this.$router.push(`/mobile/card/${vendor}`);
+          this.$router.push(`/mobile/card/${vendor}?label=activity`);
           return;
       }
 
