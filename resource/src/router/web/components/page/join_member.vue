@@ -353,6 +353,8 @@ export default {
         line: "",
         facebook: "",
         skype: "",
+        telegram: "",
+        kakaotalk: "",
         zalo: "",
         withdraw_password: {
           value: ["", "", "", ""],
@@ -372,6 +374,8 @@ export default {
         birthday: "",
         gender: "",
         qq_num: "",
+        telegram: "",
+        kakaotalk: "",
         weixin: "",
         line: "",
         facebook: "",
@@ -731,6 +735,8 @@ export default {
         case "username":
         case "phone":
         case "qq_num":
+        case "telegram":
+        case "kakaotalk":
         case "confirm_password":
         case "name":
           this.actionVerificationFormData({

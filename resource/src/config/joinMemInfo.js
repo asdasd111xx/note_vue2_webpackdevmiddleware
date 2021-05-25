@@ -199,6 +199,26 @@ export default {
     regExp: "",
     errorMsg: ""
   },
+  telegram: {
+    key: "telegram",
+    text: "S_TELEGRAM",
+    type: "text",
+    isRequired: false,
+    hasVerify: false,
+    show: true,
+    regExp: /^[a-z0-9_、]{5,32}$/,
+    errorMsg: i18n.t("TELEGRAM_REGULAR_TEXT")
+  },
+  kakaotalk: {
+    key: "kakaotalk",
+    text: "S_KAKAOTALK",
+    type: "text",
+    isRequired: false,
+    hasVerify: false,
+    show: true,
+    regExp: /^[A-Za-z0-9_.@]{4,100}$/,
+    errorMsg: i18n.t("KAKAOTALK_REGULAR_TEXT")
+  },
   zalo: {
     key: "zalo",
     text: "S_ZALO",

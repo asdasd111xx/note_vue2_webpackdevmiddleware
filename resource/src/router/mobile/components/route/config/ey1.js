@@ -197,6 +197,14 @@ export default {
       import(
         /* webpackChunkName: 'accountDataSkypeEy1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
       ),
+    accountDataTelegramEy1: () =>
+      import(
+        /* webpackChunkName: 'accountDataTelegramEy1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editTelegram"
+      ),
+    accountDataKakaotalkEy1: () =>
+      import(
+        /* webpackChunkName: 'accountDataKakaotalkEy1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
+      ),
     accountDataReceiptAddressEy1: () =>
       import(
         /* webpackChunkName: 'accountDataReceiptAddressEy1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editReceiptAddress"

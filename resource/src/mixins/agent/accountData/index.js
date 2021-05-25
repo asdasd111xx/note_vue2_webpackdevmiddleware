@@ -182,6 +182,28 @@ export default {
           isShow: false,
           popTitle: ""
         },
+        telegram: {
+          key: "telegram",
+          text: "S_TELEGRAM",
+          status: "",
+          value: "",
+          btnText: "",
+          btnShow: true,
+          type: "edit",
+          isShow: false,
+          popTitle: ""
+        },
+        kakaotalk: {
+          key: "kakaotalk",
+          text: "S_KAKAOTALK",
+          status: "",
+          value: "",
+          btnText: "",
+          btnShow: true,
+          type: "edit",
+          isShow: false,
+          popTitle: ""
+        },
         zalo: {
           key: "zalo",
           text: "S_ZALO",

@@ -244,6 +244,14 @@ export default {
       import(
         /* webpackChunkName: 'accountDataSkypePorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
       ),
+    accountDataTelegramPorn1: () =>
+      import(
+        /* webpackChunkName: 'accountDataTelegramPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editTelegram"
+      ),
+    accountDataKakaotalkPorn1: () =>
+      import(
+        /* webpackChunkName: 'accountDataKakaotalkPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
+      ),
     walletPorn1: () =>
       import(
         /* webpackChunkName: 'walletPorn1' */ "../../tpl/porn1/components/mcenter/components/wallet"

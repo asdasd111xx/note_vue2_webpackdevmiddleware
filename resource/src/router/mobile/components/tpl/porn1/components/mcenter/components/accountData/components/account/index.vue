@@ -213,6 +213,10 @@ export default {
       ),
     editSkype: () =>
       import(/* webpackChunkName: 'editSkype' */ "./form/editSkype"),
+    editTelegram: () =>
+      import(/* webpackChunkName: 'editTelegram' */ "./form/editTelegram"),
+    editKakaotalk: () =>
+      import(/* webpackChunkName: 'editKakaotalk' */ "./form/editKakaotalk"),
     DatePicker
   },
   data() {
@@ -288,7 +292,9 @@ export default {
           "weixin",
           "line",
           "withdrawPwd",
-          "skype"
+          "skype",
+          "telegram",
+          "kakaotalk"
         ].includes(field.key)
       ) {
         this.$router.push({
