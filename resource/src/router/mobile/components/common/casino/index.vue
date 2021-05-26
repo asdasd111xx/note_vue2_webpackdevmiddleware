@@ -24,17 +24,26 @@
           </div>
           <template>
             <template v-for="(gameInfo, index) in gameData">
-              <game-item
-                v-if="gameInfo.is_mobile || isFavorite"
-                :key="`game-${gameInfo.vendor}-${index}`"
-                :game-info="gameInfo"
-                :show-vendor="gameShowVendor"
-                :show-jackpot="gameShowJackpot"
-                :show-favor="gameShowFavor"
-                :show-button="gameShowButton"
-                :redirect-card="redirectBankCard"
-                :jackpotData="jackpotData"
-              />
+              <template v-if="gameInfo.is_mobile || isFavorite">
+                <game-item
+                  :key="`game-${gameInfo.vendor}-${index}`"
+                  :game-info="gameInfo"
+                  :show-vendor="gameShowVendor"
+                  :show-jackpot="gameShowJackpot"
+                  :show-favor="gameShowFavor"
+                  :show-button="gameShowButton"
+                  :redirect-card="redirectBankCard"
+                  :jackpotData="jackpotData"
+                />
+              </template>
+              <template v-else-if="gameInfo.display">
+                <!-- 活動入口 -->
+                <activity-item
+                  :key="`game-${gameInfo.vendor}-${index}`"
+                  :event-data="gameInfo"
+                  :display-type="'game'"
+                />
+              </template>
             </template>
             <!-- 捲動加載 -->
             <infinite-loading
@@ -49,7 +58,12 @@
         </div>
       </template>
     </template>
-    <template v-if="gameData === favoriteData && gameData.length === 0">
+    <template
+      v-if="
+        (gameData === favoriteData && gameData.length === 0) ||
+          (gameData.length === 0 && isInit)
+      "
+    >
       <div :class="$style['empty-wrap']">
         <div :class="$style['empty-icon']" />
         <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
@@ -84,6 +98,7 @@ import gameLabel from "../gameLabel";
 import gameSearch from "../gameSearch";
 import InfiniteLoading from "vue-infinite-loading";
 import jackpot from "./jackpot";
+import activityItem from "../activity/components/activityItem";
 
 /**
  * 共用元件 - 手機網頁版電子遊戲頁共用框 (邏輯共用)
@@ -103,6 +118,7 @@ export default {
     gameItem,
     InfiniteLoading,
     jackpot,
+    activityItem,
     envelope: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
@@ -150,6 +166,7 @@ export default {
     return {
       favTab: false,
       isReceive: false,
+      isInit: false,
       showInfinite: false,
       isFavorite: false,
       tabItem: "",
@@ -177,7 +194,6 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       favoriteGame: "getFavoriteGame",
-      showRedEnvelope: "getShowRedEnvelope",
       showRedEnvelope: "getShowRedEnvelope",
       siteConfig: "getSiteConfig"
     }),
@@ -331,6 +347,17 @@ export default {
               // 1,5 不顯示
               if (res.data.ret.events && res.data.ret.events.length > 0) {
                 let result = res.data;
+                const activityEvents = result.ret.events.filter(i => i.display);
+
+                //  入口圖排序【活動中->活動預告->結果查詢】
+                if (activityEvents) {
+                  result.ret.events = activityEvents.sort((i, j) => {
+                    if (i.kind === 3) {
+                      return 1;
+                    }
+                    return i.kind - j.kind > 0 ? 1 : -1;
+                  });
+                }
                 this.activityData = result;
                 return;
               }
@@ -368,6 +395,7 @@ export default {
      * @param {string} value - 設定的分類
      */
     changeGameLabel(value) {
+      this.isInit = false;
       this.paramsData = {
         ...this.paramsData,
         label: value,
@@ -463,6 +491,7 @@ export default {
           }, 3000);
         });
       }).then(response => {
+        this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
         const isAllLabel = this.$route.query.label === "all";
         const activityGames =
@@ -471,20 +500,27 @@ export default {
           this.activityData.ret.games
             ? this.activityData.ret.games
             : [];
-        if (isActivityLabel) {
-          this.gameData = activityGames;
-        } else if (isAllLabel) {
-          let list = [];
 
-          if (this.paramsData.firstResult === 0) {
-            list.push(...activityGames);
-          }
-          list.push(...response.ret);
-          this.gameData.push(...list);
-        } else {
-          this.gameData.push(...response.ret);
+        const activityEvents =
+          this.activityData.ret &&
+          this.activityData.ret &&
+          this.activityData.ret.events
+            ? this.activityData.ret.events
+            : [];
+
+        let list = [];
+        if (this.paramsData.firstResult === 0) {
+          list.push(...activityEvents);
         }
 
+        // 只有活動中的遊戲需要顯示
+        if (isActivityLabel) {
+          list.push(...activityGames);
+        } else {
+          list.push(...response.ret);
+        }
+
+        this.gameData.push(...list);
         this.paramsData.firstResult = isAllLabel
           ? +response.ret.length
           : +this.gameData.length;
@@ -524,17 +560,6 @@ export default {
 
 .game-item-wrap {
   margin-top: 40px;
-  // &.multiTotal {
-  //   margin-top: 151px;
-  // }
-
-  // &.single {
-  //   margin-top: 75px;
-  // }
-
-  // &.multiBonus {
-  //   margin-top: 151px;
-  // }
 }
 
 .empty-wrap {
@@ -542,6 +567,7 @@ export default {
   color: #a6a9b2;
   font-size: 16px;
   text-align: center;
+  height: calc(100vh - 80px);
 }
 
 .empty-icon {

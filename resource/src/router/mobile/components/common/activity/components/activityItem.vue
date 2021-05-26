@@ -1,8 +1,29 @@
 <template>
-  <div :class="$style['game-item']" @click="onEnter">
-    <div :name="eventData.name" :class="$style['game-image']">
+  <div
+    :class="[
+      $style['game-item'],
+      { [$style['in-game-lobby']]: displayType === 'game' },
+      'clearfix'
+    ]"
+    @click="onEnter"
+  >
+    <div
+      :name="eventData.name"
+      :class="[
+        $style['game-image'],
+        { [$style['in-game-lobby']]: displayType === 'game' },
+        'clearfix'
+      ]"
+    >
       <img v-lazy="getImg" />
+
       <img
+        v-if="displayType === 'game'"
+        :src="eventData.status_inner_image"
+        :class="[$style['game-image'], $style['status']]"
+      />
+      <img
+        v-else
         :src="eventData.status_image"
         :class="[$style['game-image'], $style['status']]"
       />
@@ -22,10 +43,16 @@ export default {
     eventData: {
       type: Object,
       default: {}
+    },
+    displayType: {
+      type: String,
+      default: ""
     }
   },
   data() {
-    return {};
+    return {
+      isLoading: false
+    };
   },
   computed: {
     ...mapGetters({
@@ -51,6 +78,44 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     onEnter() {
+      if (localStorage.getItem("is-open-game")) {
+        return;
+      }
+
+      if (this.displayType === "game") {
+        // 外開連結 todo
+        let newWindow;
+        newWindow = window.open();
+
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
+          params: {
+            lang: "zh-cn",
+            url: this.eventData.url,
+            vendor: this.eventData.vendor,
+            kind: this.eventData.kind
+            // eventId: this.eventData.eventId
+          }
+        })
+          .then(res => {
+            if (res.status === "000") {
+              newWindow.location.href = res.data.ret;
+            } else {
+              newWindow.close();
+              this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+            }
+          })
+          .catch(error => {
+            newWindow.close();
+            if (error && error.data && error.data.msg) {
+              this.actionSetGlobalMessage({ msg: error.data.msg });
+            }
+          });
+
+        return;
+      }
+
       if (this.isShowLoading) {
         return;
       }

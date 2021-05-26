@@ -10,12 +10,12 @@
       ])
     "
   >
-    <div
+    <!-- <div
       v-if="gameInfo.code && gameInfo.status < 4"
       :class="getClass(['game-active'])"
     >
       <img :src="$getCdnPath(getActivityImg)" />
-    </div>
+    </div> -->
     <!-- vendor 標示 -->
     <div v-if="showVendor" :class="getClass(['game-vendor'])">
       {{ vendorName }}

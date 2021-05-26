@@ -34,6 +34,19 @@
 .game-item {
   position: relative;
   margin: 0 16px;
+
+  &.in-game-lobby {
+    position: relative;
+    display: inline-block;
+    width: calc(100% / 3 - 10px);
+    height: 112px;
+    margin: 0 5px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #eee;
+    background-size: 100%;
+    background: #fff;
+  }
 }
 
 .game-image {
@@ -51,10 +64,27 @@
 
   &.status {
     bottom: 0;
-    height: 33%;
+    height: 40%;
     position: absolute;
     right: 0;
-    width: 33%;
+    width: 40%;
+  }
+
+  &.in-game-lobby {
+    width: 95%;
+    max-width: 112px;
+    height: 95%;
+    overflow: hidden;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+
+    .status {
+      left: 0;
+      top: 0;
+      bottom: unset;
+      right: unset;
+    }
   }
 }
 
