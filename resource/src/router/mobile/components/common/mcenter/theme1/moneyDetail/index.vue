@@ -19,16 +19,13 @@
           />
         </div>
         <div
-          :class="[
-            $style['link-wrap'],
-            { [$style['has-date']]: currentDate.key === 'custom' }
-          ]"
+          :class="[$style['link-wrap'], { [$style['has-date']]: isCustomTime }]"
           @click="changeCondition('date')"
         >
-          <div v-if="currentDate.key === 'custom'">
+          <div v-if="isCustomTime">
             {{ startTime | dateFormat }}<br />{{ endTime | dateFormat }}
           </div>
-          <div v-else>{{ currentDate.text }}</div>
+          <div v-else>{{ bufferCurrentDate.text }}</div>
           <span :class="{ [$style['arrow-top']]: showCondition === 'date' }" />
         </div>
       </div>
@@ -235,7 +232,9 @@ export default {
       pageAll: 1, // 總頁數
       isLoading: true,
       categoryOpt: [],
-      screenWidthSize: null
+      screenWidthSize: null,
+      isCustomTime: false,
+      bufferCurrentDate: { key: "today", text: this.$text("S_TODDAY", "今日") }
     };
   },
   computed: {
@@ -479,12 +478,14 @@ export default {
           this.endTime = new Date(Vue.moment(this.estToday));
           break;
       }
-
+      this.isCustomTime = false;
       this.showDatePicker = value.key === "custom";
 
       this.currentDate = value;
       if (value.key === "custom") {
         return;
+      } else {
+        this.bufferCurrentDate = value;
       }
 
       this.detailList = null;
@@ -529,6 +530,7 @@ export default {
       this.firstResult = 0;
       this.pageNow = 1;
       this.pageAll = 1;
+      this.isCustomTime = true;
 
       this.changeCondition("");
       this.changeDatePicker("");
