@@ -226,10 +226,7 @@ export default {
               });
               break;
             case "M00002":
-              this.actionSetGlobalMessage({
-                msg: "请重新登入",
-                code: res.code
-              });
+              window.location.reload();
               break;
             case "E02486":
               this.actionSetGlobalMessage({
@@ -239,6 +236,8 @@ export default {
                   this.$router.back();
                 }
               });
+              break;
+            default:
               break;
           }
         }

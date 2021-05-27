@@ -62,12 +62,25 @@
     border-radius: 8px;
   }
 
-  &.status {
+  & .bg {
+    z-index: 1;
+  }
+
+  & .status {
     bottom: 0;
     height: 40%;
     position: absolute;
     right: 0;
     width: 40%;
+    z-index: 3;
+  }
+
+  & .item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 6%;
+    z-index: 2;
   }
 
   &.in-game-lobby {
@@ -79,11 +92,17 @@
     margin: 0 auto;
     position: relative;
 
+    .item {
+      padding: 5%;
+    }
+
     .status {
       left: 0;
       top: 0;
-      bottom: unset;
-      right: unset;
+      height: 40%;
+      position: absolute;
+      width: 40%;
+      z-index: 3;
     }
   }
 }
