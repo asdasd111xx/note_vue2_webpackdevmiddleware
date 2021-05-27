@@ -253,6 +253,8 @@ export default {
   created() {
     if (!this.loginStatus) {
       this.getGuestBalance();
+    } else {
+      this.getRedJackpot();
     }
   },
   methods: {
@@ -450,14 +452,14 @@ export default {
     font-size: 14px;
     margin: 0;
     padding: 0;
-    padding-right: 5px;
+    padding-right: 2px;
   }
   .visitor-money {
-    font-size: 14px;
+    font-size: 12px;
     color: #fb7126;
     margin: 0;
     padding: 0;
-    padding-right: 5px;
+    padding-right: 2px;
   }
   .visitor-border {
     border-right: 1px solid #9ca4be;

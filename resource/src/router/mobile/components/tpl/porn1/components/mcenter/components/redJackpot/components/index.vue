@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { getCookie } from "@/lib/cookie";
 import Vue from "vue";
 import InfiniteLoading from "vue-infinite-loading";
@@ -140,6 +140,7 @@ export default {
     this.getTime();
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     showDetail(info) {
       this.detailInfo = info;
     },
@@ -212,16 +213,46 @@ export default {
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
           this.redEnvelopeType = true;
-          this.redEnvelopeText = `恭喜您获得红包彩金</br>${parseFloat(
+          this.redEnvelopeText = `恭喜您获得红包彩金</br>${this.getNoRoundText(
             res.data.prizeAmount
-          ).toFixed(2)} 元`;
+          )} 元`;
           this.buttonType = true;
+        } else {
+          switch (res.code) {
+            case "M00001":
+              this.actionSetGlobalMessage({
+                msg: "请重新登入",
+                code: res.code
+              });
+              break;
+            case "M00002":
+              this.actionSetGlobalMessage({
+                msg: "请重新登入",
+                code: res.code
+              });
+              break;
+            case "E02486":
+              this.actionSetGlobalMessage({
+                msg: "活动未开放",
+                code: res.code,
+                cb: () => {
+                  this.$router.back();
+                }
+              });
+              break;
+          }
         }
       });
     },
     closeRedEnvelope() {
       this.redEnvelopeType = false;
       this.getRedJackpot();
+    },
+    getNoRoundText(value) {
+      //千分位＋小數點後兩位
+      return `${Number(value)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     }
   },
   beforeDestroy() {
