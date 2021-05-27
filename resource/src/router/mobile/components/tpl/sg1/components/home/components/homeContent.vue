@@ -98,7 +98,8 @@
             :class="[
               $style.game,
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
-              { [$style['is-third']]: [4].includes(game.imageType) }
+              { [$style['is-third']]: [4].includes(game.imageType) },
+              { [$style['is-activity']]: [5].includes(game.imageType) }
             ]"
             @click.stop="onOpenGame(game)"
           >
@@ -414,6 +415,10 @@ export default {
     margin: 0 1%;
   }
 
+  &.is-activity {
+    width: 100%;
+  }
+
   > div.maintain-mask {
     width: 100%;
     height: 100%;
@@ -465,7 +470,7 @@ export default {
 
             &.swag {
               line-height: 11px;
-              font-size: 8px !important;
+              font-size: 9px !important;
             }
           }
         }
