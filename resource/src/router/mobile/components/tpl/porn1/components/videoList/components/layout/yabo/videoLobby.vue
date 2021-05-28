@@ -1,26 +1,22 @@
 <template>
   <div :class="$style['video-lobby-container']">
     <div :class="[$style['tag-wrap'], $style[source]]">
-      <div
-        v-for="info in videoTag"
-        :key="`tag-${info.id}`"
-        :class="[
-          $style['tag-item'],
-          $style[source],
-          { [$style.active]: info.id === +videoType.id }
-        ]"
-      >
-        <span @click="onChangeVideoType(info.id, info.title)">
-          {{ info.title }}
-        </span>
-        <div :class="$style['line']" />
-      </div>
-
-      <div :class="[$style['tag-item'], $style[source]]">
-        <span>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </span>
-      </div>
+      <swiper ref="swiper" :options="options">
+        <swiper-slide
+          v-for="info in videoTag"
+          :key="info.id"
+          :class="[
+            $style['tag-item'],
+            $style[source],
+            { [$style.active]: info.id === +videoType.id }
+          ]"
+        >
+          <span @click="onChangeVideoType(info.id, info.title)">
+            {{ info.title }}
+          </span>
+          <div :class="$style['line']" />
+        </swiper-slide>
+      </swiper>
 
       <div
         :class="[
@@ -118,9 +114,13 @@ import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
 import { setCookie } from "@/lib/cookie";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
-  components: {},
+  components: {
+    Swiper,
+    SwiperSlide
+  },
   props: {
     setHeaderTitle: {
       type: Function,
@@ -233,6 +233,17 @@ export default {
     }
 
     this.initData();
+  },
+  mounted() {
+    const swiper = this.$refs.swiper.$swiper;
+    this.getVideoSort().then(() => {
+      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+
+      let initIndex = this.videoTag.findIndex(item => {
+        return item.id === parseInt(this.videoType.id);
+      });
+      swiper.slideTo(initIndex, 500, false);
+    });
   },
   beforeDestroy() {
     clearTimeout(this.resetTimer);
@@ -439,8 +450,8 @@ export default {
   position: fixed;
   top: 43px;
   z-index: 2;
-  display: -ms-flexbox;
-  display: flex;
+  // display: -ms-flexbox;
+  //display: flex;
   transition-property: transform;
   overflow-x: auto;
 
@@ -464,14 +475,16 @@ export default {
 }
 
 .tag-item {
+  // width: auto;
+  // line-height: 42px;
+  // margin: 0px 15px;
+  // flex-shrink: 0;
+  // height: 100%;
+  // text-align: center;
+  // position: relative;
+  // transition-property: transform;
   width: auto;
   line-height: 42px;
-  margin: 0px 15px;
-  flex-shrink: 0;
-  height: 100%;
-  text-align: center;
-  position: relative;
-  transition-property: transform;
 
   &.yabo {
     color: #bcbdc1;

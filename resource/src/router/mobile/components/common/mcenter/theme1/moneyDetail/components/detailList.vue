@@ -47,7 +47,9 @@
   </div>
 
   <div v-else :class="$style['no-data-wrap']">
-    <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)" />
+    <img
+      :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/${emptyImage}.png`)"
+    />
     <div :class="$style.tips">{{ noDataText }}</div>
     <div
       v-if="currentCategory.key === 'deposit'"
@@ -65,7 +67,8 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      noDataText: "暂时没有新的记录"
+      noDataText: "暂时没有新的记录",
+      emptyImage: "no_data"
     };
   },
   filters: {
@@ -115,11 +118,25 @@ export default {
       default: ""
     }
   },
+  watch: {
+    currentCategory() {
+      if (this.currentCategory.key === "internal_memo") {
+        // this.emptyImage = "img_default_no_data";
+        this.noDataText = `暂时没有新的签到彩金`;
+      } else {
+        this.emptyImage = "no_data";
+        this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
+      }
+    }
+  },
   created() {
-    if (this.currentCategory.key === "internal_memo") {
+    //紅包彩金頁面無資料底圖為特例
+    if (
+      this.currentCategory.key === "internal_memo" &&
+      window.location.pathname.indexOf("redJackpot") != -1
+    ) {
+      this.emptyImage = "img_default_no_data";
       this.noDataText = `暂时没有新的签到彩金`;
-    } else {
-      this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
     }
   },
   methods: {
