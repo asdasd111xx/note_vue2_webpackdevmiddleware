@@ -107,7 +107,11 @@
           >访客彩金</span
         >
         <span
-          :class="$style['visitor-money']"
+          :class="[
+            $style['visitor-money'],
+            $style['just-money'],
+            { [$style['more']]: guestAmount.length > 11 }
+          ]"
           @click="$router.push('/mobile/joinmember')"
           >{{ `${guestAmount}元` }}</span
         >
@@ -339,6 +343,7 @@ export default {
                 parseFloat(this.guestAmount) +
                   parseInt(res.data.personal_max_bonus)
               ).toFixed(2);
+              this.guestAmount = "123456789.00";
             }
           }
         }
@@ -464,6 +469,15 @@ export default {
     margin: 0;
     padding: 0;
     padding-right: 2px;
+
+    &.just-money {
+      max-width: 85px;
+      word-break: break-word;
+      text-align: right;
+    }
+    &.more {
+      line-height: 12px;
+    }
   }
 }
 
