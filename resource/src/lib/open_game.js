@@ -97,6 +97,11 @@ export default (params, success = () => {}, fail = () => {}) => {
         if (vendor && vendor.toUpperCase() === "ISB") {
           query += "&allowFullScreen=false";
         }
+
+        //cq9=>請在url後面添加&leaveUrl=close 就可以正常關閉，若是要回到上一頁的行為，則是串成 &leaveUrl=back
+        if (vendor === "cq9") {
+          query += "&leaveUrl=close";
+        }
         // //XBB棋牌須額外修改platform=AIO 移除上滑全屏遮罩
         // if (vendor === "lg_card" || vendor === "lg_yb_card") {
         //   localStorage.setItem(
