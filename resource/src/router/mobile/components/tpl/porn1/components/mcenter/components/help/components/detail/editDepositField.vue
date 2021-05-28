@@ -151,20 +151,22 @@ export default {
       });
     },
     localTime() {
-      //api回傳時間 轉成 utc時間
-      var utcDate = Vue.moment(this.depositData.submit_at)
-        .add(4, "hours")
-        .format("YYYY-MM-DD HH:mm:ss");
+      if (this.depositData.submit_at) {
+        //api回傳時間 轉成 utc時間
+        var utcDate = Vue.moment(this.depositData.submit_at)
+          .add(4, "hours")
+          .format("YYYY-MM-DD HH:mm:ss");
 
-      // 現在當地時間的"時區"
-      const now_timezone = Vue.moment(new Date()).utcOffset() / 60;
+        // 現在當地時間的"時區"
+        const now_timezone = Vue.moment(new Date()).utcOffset() / 60;
 
-      //再轉成當地時間
-      this.depositData.submit_at = Vue.moment(utcDate)
-        .add(now_timezone, "hours")
-        .format("YYYY-MM-DD HH:mm:ss");
+        //再轉成當地時間
+        this.depositData.submit_at = Vue.moment(utcDate)
+          .add(now_timezone, "hours")
+          .format("YYYY-MM-DD HH:mm:ss");
 
-      return this.depositData.submit_at;
+        return this.depositData.submit_at;
+      }
     }
   },
   created() {
