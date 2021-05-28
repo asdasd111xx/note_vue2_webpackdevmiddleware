@@ -105,10 +105,13 @@ export default {
     const swiper = this.$refs.swiper.$swiper;
 
     this.getVideoTab().then(() => {
+      console.log("this.sortId" + typeof this.sortId);
       // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
       let initIndex = this.videoTabs.findIndex(item => {
+        console.log("item.id" + typeof item.id);
         return item.id === this.sortId;
       });
+      console.log("initIndex" + initIndex);
 
       swiper.slideTo(initIndex, 500, false);
     });
@@ -136,7 +139,7 @@ export default {
     options() {
       return {
         slidesPerView: "auto",
-        slideToClickedSlide: false,
+        slideToClickedSlide: true,
         centeredSlides: true,
         centeredSlidesBounds: true,
         spaceBetween: 25,
