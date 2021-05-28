@@ -119,7 +119,7 @@ export default {
     if (this.currentCategory.key === "internal_memo") {
       this.noDataText = `暂时没有新的签到彩金`;
     } else {
-      this.noDataText = `暂时没有新的${currentCategory.text}记录`;
+      this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
     }
   },
   methods: {

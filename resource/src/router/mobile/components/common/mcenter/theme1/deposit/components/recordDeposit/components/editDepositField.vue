@@ -62,8 +62,10 @@
                   { [$style['no-data']]: !depositData.submit_at }
                 ]"
               >
-                {{ depositData.submit_at || depositData.deposit_at }}
-                <!-- $text("S_NOT_ENTER_SHORT", "尚未提交") -->
+                {{
+                  depositData.submit_at ||
+                    $text("S_NOT_ENTER_SHORT", "尚未提交")
+                }}
               </div>
             </div>
           </div>
