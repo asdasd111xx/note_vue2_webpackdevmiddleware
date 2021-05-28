@@ -15,18 +15,20 @@
         'clearfix'
       ]"
     >
-      <img v-lazy="getImg" />
+      <img
+        v-if="eventData.bg_image"
+        :src="eventData.bg_image"
+        :class="[$style['bg']]"
+      />
+
+      <img v-lazy="getImg" :class="[$style['item']]" />
 
       <img
         v-if="displayType === 'game'"
         :src="eventData.status_inner_image"
-        :class="[$style['game-image'], $style['status']]"
+        :class="[$style['status']]"
       />
-      <img
-        v-else
-        :src="eventData.status_image"
-        :class="[$style['game-image'], $style['status']]"
-      />
+      <img v-else :src="eventData.status_image" :class="[$style['status']]" />
     </div>
     <!-- <div :class="$style['game-text']">{{ eventData.name }}</div> -->
   </div>
