@@ -11,7 +11,9 @@
             { [$style.active]: info.id === +sortId }
           ]"
         >
-          <span @click="setSortId(info.id)">{{ info.title }}</span>
+          <span @click="setSortId(info.id)" :disabled="isDisable">{{
+            info.title
+          }}</span>
           <div :class="$style['line']" />
         </swiper-slide>
       </swiper>
@@ -95,26 +97,15 @@ export default {
       sortId: +this.$route.query.sortId,
       tagId: +this.$route.query.tagId,
       isSingle: false,
-      source: this.$route.query.source
+      source: this.$route.query.source,
+      isDisable: false
     };
   },
   created() {
     this.setHeaderTitle(this.$text("S_FULL_HD_MOVIE", "全部高清影片"));
   },
   mounted() {
-    const swiper = this.$refs.swiper.$swiper;
-
-    this.getVideoTab().then(() => {
-      console.log("this.sortId" + typeof this.sortId);
-      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
-      let initIndex = this.videoTabs.findIndex(item => {
-        console.log("item.id" + typeof item.id);
-        return item.id === this.sortId;
-      });
-      console.log("initIndex" + initIndex);
-
-      swiper.slideTo(initIndex, 500, false);
-    });
+    this.changeTab(500);
 
     this.setVideoList();
 
@@ -129,6 +120,10 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    clearTimeout(this.changeTabTimer);
+    this.changeTabTimer = null;
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -139,7 +134,7 @@ export default {
     options() {
       return {
         slidesPerView: "auto",
-        slideToClickedSlide: true,
+        slideToClickedSlide: false,
         centeredSlides: true,
         centeredSlidesBounds: true,
         spaceBetween: 25,
@@ -200,6 +195,23 @@ export default {
         }
       });
       this.$refs["video-list-wrap"].scrollTop = 0;
+      this.isDisable = true;
+      this.changeTabTimer = setTimeout(() => {
+        this.isDisable = false;
+        this.changeTab(250);
+      }, 250);
+    },
+    changeTab(time) {
+      const swiper = this.$refs.swiper.$swiper;
+
+      this.getVideoTab().then(() => {
+        // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+        let initIndex = this.videoTabs.findIndex(item => {
+          return item.id === this.sortId;
+        });
+
+        swiper.slideTo(initIndex, time, false);
+      });
     },
     getVideoList(page) {
       return pornRequest({

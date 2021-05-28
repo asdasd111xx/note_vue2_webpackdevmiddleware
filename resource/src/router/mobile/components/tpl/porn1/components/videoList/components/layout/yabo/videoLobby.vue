@@ -11,7 +11,10 @@
             { [$style.active]: info.id === +videoType.id }
           ]"
         >
-          <span @click="onChangeVideoType(info.id, info.title)">
+          <span
+            @click.stop="onChangeVideoType(info.id, info.title)"
+            :disabled="isDisable"
+          >
             {{ info.title }}
           </span>
           <div :class="$style['line']" />
@@ -144,7 +147,8 @@ export default {
       videoRecommand: [],
       videoList: [],
       videoType: { id: 0, title: "" },
-      resetTimer: null
+      resetTimer: null,
+      isDisable: false
     };
   },
   computed: {
@@ -157,7 +161,7 @@ export default {
     options() {
       return {
         slidesPerView: "auto",
-        slideToClickedSlide: true,
+        slideToClickedSlide: false,
         centeredSlides: true,
         centeredSlidesBounds: true,
         spaceBetween: 25,
@@ -191,7 +195,7 @@ export default {
       // );
 
       const _videoList = [...videoRecommand, ...this.videoList];
-      setTimeout(() => {
+      this.videoListTimer = setTimeout(() => {
         _videoList.forEach(item => {
           if (item && item.list) {
             item.list.forEach(i => {
@@ -235,20 +239,17 @@ export default {
     this.initData();
   },
   mounted() {
-    const swiper = this.$refs.swiper.$swiper;
-    this.getVideoSort().then(() => {
-      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
-
-      let initIndex = this.videoTag.findIndex(item => {
-        return item.id === parseInt(this.videoType.id);
-      });
-      swiper.slideTo(initIndex, 500, false);
-    });
+    this.changeTab(500);
   },
   beforeDestroy() {
     clearTimeout(this.resetTimer);
     this.resetTimer = null;
+    clearTimeout(this.changeTabTimer);
+    this.changeTabTimer = null;
+    clearTimeout(this.videoListTimer);
+    this.videoListTimer = null;
   },
+
   methods: {
     initData() {
       this.getVideoTag();
@@ -336,8 +337,22 @@ export default {
         });
         this.$refs["video-list-wrap"].scrollTop = 0;
       }
+      this.isDisable = true;
+      this.changeTabTimer = setTimeout(() => {
+        this.isDisable = false;
+        this.changeTab(250);
+      }, 250);
     },
-
+    changeTab(time) {
+      const swiper = this.$refs.swiper.$swiper;
+      this.getVideoSort().then(() => {
+        // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+        let initIndex = this.videoTag.findIndex(item => {
+          return item.id === parseInt(this.videoType.id);
+        });
+        swiper.slideTo(initIndex, time, false);
+      });
+    },
     // 開啟影片分類選單
     onShowAllTag(value) {
       this.isShowAllTag = value;
