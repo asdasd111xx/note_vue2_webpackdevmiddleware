@@ -797,11 +797,12 @@ export default {
 }
 
 .close-fullscreen {
-  position: absolute;
-  top: 43px;
+  z-index: 999;
+  position: fixed;
+  top: 0;
   margin: 0 auto;
   transform: rotate(90deg);
-  height: 18px;
+  height: 19px;
   margin: 0 auto;
   left: calc(50% - 9px);
   background: rgba(0, 0, 0, 0.4);
@@ -812,7 +813,7 @@ export default {
   justify-content: center;
 
   > img {
-    height: 14px;
+    height: 15px;
   }
 }
 

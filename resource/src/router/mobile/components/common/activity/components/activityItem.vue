@@ -83,10 +83,17 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
+      let newWindow;
+      if (!this.eventData.is_secure || this.eventData.is_secure === "false") {
+        let url = this.eventData.url;
+        if (url.indexOf("://") === -1) {
+          url = `https://${url}`;
+        }
+        newWindow = window.open(url);
+        return;
+      }
 
       if (this.displayType === "game") {
-        // 外開連結 todo
-        let newWindow;
         newWindow = window.open();
 
         goLangApiRequest({
