@@ -140,7 +140,9 @@ export default {
         spaceBetween: 25,
         slidesOffsetBefore: 20,
         slidesOffsetAfter: 20,
-        freeMode: true
+        freeMode: true,
+        observer: true,
+        observeParents: true
       };
     },
     defaultImg() {
