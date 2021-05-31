@@ -30,10 +30,12 @@
 }
 
 @media (orientation: landscape) {
-
   .game-item {
-    max-width: 180px;
     margin: 0 auto;
+  }
+
+  .game-image img {
+    height: auto;
   }
 }
 
