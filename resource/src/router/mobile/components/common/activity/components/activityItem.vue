@@ -125,19 +125,19 @@ export default {
         return;
       }
 
-      if (this.isShowLoading) {
-        return;
-      }
-
       const { kind, vendor } = this.eventData;
       switch (kind) {
         case 3:
-          this.$router.push(`/mobile/casino/${vendor}?label=activity`);
+          this.$router.push(`/mobile/casino/${vendor}?label=hot`);
           return;
 
         case 4:
-          this.$router.push(`/mobile/card/${vendor}?label=activity`);
+          this.$router.push(`/mobile/card/${vendor}?label=hot`);
           return;
+      }
+
+      if (this.isShowLoading) {
+        return;
       }
 
       this.isShowLoading = true;
