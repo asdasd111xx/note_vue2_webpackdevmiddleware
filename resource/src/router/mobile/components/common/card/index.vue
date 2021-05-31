@@ -330,8 +330,12 @@ export default {
               // 1,5 不顯示
               if (res.data.ret.events && res.data.ret.events.length > 0) {
                 let result = res.data;
-                const activityEvents = result.ret.events.filter(i => i.display);
-
+                let activityEvents = result.ret.events
+                  .filter(i => i.display)
+                  .filter(
+                    i => +i.status === 3 || +i.status === 4 || +i.status === 5
+                  );
+                  
                 //  入口圖排序【活動中->活動預告->結果查詢】
                 if (activityEvents) {
                   result.ret.events = activityEvents.sort((i, j) => {
