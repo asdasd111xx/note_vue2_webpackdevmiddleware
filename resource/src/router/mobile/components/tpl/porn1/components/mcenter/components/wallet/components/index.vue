@@ -150,7 +150,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+    <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">SWAG钱包</div>
         <div :class="$style['icon-block']">
@@ -190,7 +190,7 @@
           </div>
         </div>
       </div>
-    </template>
+    </template> -->
 
     <template v-if="['ey1'].includes(themeTPL)">
       <div :class="$style['swag-wrap']">
@@ -339,7 +339,7 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      swagDiamondBalance: "0",
+      //swagDiamondBalance: "0",
       birdBalance: "--",
       redJackpotData: null,
       loginMoney: ""
@@ -353,8 +353,8 @@ export default {
       siteConfig: "getSiteConfig",
       hasBank: "getHasBank",
       rechargeConfig: "getRechargeConfig",
-      swagConfig: "getSwagConfig",
-      swagBalance: "getSwagBalance",
+      // swagConfig: "getSwagConfig",
+      // swagBalance: "getSwagBalance",
       withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
@@ -500,7 +500,7 @@ export default {
     }
 
     if (["porn1", "sg1"].includes(this.themeTPL)) {
-      this.initSWAGConfig();
+      // this.initSWAGConfig();
       if (this.membalance && this.membalance.total) {
         this.loginMoney = `${this.membalance.total}`;
       } else {
@@ -534,9 +534,9 @@ export default {
     this.getRecordList();
   },
   watch: {
-    swagBalance(val) {
-      this.swagDiamondBalance = val.balance;
-    }
+    // swagBalance(val) {
+    //   this.swagDiamondBalance = val.balance;
+    // }
   },
   methods: {
     ...mapActions([

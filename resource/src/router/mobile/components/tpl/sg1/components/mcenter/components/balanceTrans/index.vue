@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <balanceBack :has-link="true" />
-      <swagBlock />
+      <!-- <swagBlock /> -->
       <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
       <blockListTips
         v-if="isShowBlockTips"
@@ -18,7 +18,7 @@ import { mapGetters, mapActions } from "vuex";
 import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import balanceTrans from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/index";
 import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
-import swagBlock from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/swagBlock";
+// import swagBlock from "@/router/mobile/components/tpl/porn1/components/mcenter/components/balanceTrans/components/swagBlock";
 import mobileContainer from "../../../common/mobileContainer";
 
 export default {
@@ -26,8 +26,8 @@ export default {
     mobileContainer,
     blockListTips,
     balanceTrans,
-    balanceBack,
-    swagBlock
+    balanceBack
+    // swagBlock
   },
   data() {
     return {
