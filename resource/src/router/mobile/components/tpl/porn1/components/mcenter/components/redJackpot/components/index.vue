@@ -111,10 +111,17 @@ export default {
       buttonType: true
     };
   },
+  watch: {
+    noticeData() {
+      //收到推播後重取任務狀態
+      this.getRedJackpot();
+    }
+  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      noticeData: "getNoticeData"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -162,7 +169,7 @@ export default {
           this.optionType = res.data.receive_option;
           this.eventKind = res.data.event_kind;
           // this.optionType = 0;
-          this.timer = setInterval(this.getTime, 60000);
+          this.timer = setInterval(this.getTime, 1000);
         } else {
           this.redJackpotData = null;
         }

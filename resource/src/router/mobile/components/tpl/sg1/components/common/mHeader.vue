@@ -343,7 +343,6 @@ export default {
                 parseFloat(this.guestAmount) +
                   parseInt(res.data.personal_max_bonus)
               ).toFixed(2);
-              this.guestAmount = "123456789.00";
             }
           }
         }

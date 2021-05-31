@@ -108,7 +108,7 @@
                 </template>
               </span>
 
-              <span :class="$style['balance-item-money']">
+              <span :class="[$style['balance-item-money'], $style['more']]">
                 {{ bonus.balance }}
               </span>
             </div>
