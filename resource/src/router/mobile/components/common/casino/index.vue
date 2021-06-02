@@ -270,10 +270,10 @@ export default {
           label: "all",
           name: this.$t("S_ALL")
         },
-        {
-          label: "activity",
-          name: this.$t("S_IN_PROGRESS_ACTIVITY")
-        },
+        // {
+        //   label: "activity",
+        //   name: this.$t("S_IN_PROGRESS_ACTIVITY")
+        // },
         {
           label: "new",
           name: this.$t("S_NEW_GAMES")
@@ -362,7 +362,7 @@ export default {
                     return i.kind - j.kind > 0 ? 1 : -1;
                   });
                 }
-                this.activityData = result;
+                // this.activityData = result;
                 return;
               }
             }
