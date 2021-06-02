@@ -508,6 +508,7 @@ export default {
       }
     }
     if (["ey1"].includes(this.themeTPL)) {
+      this.loginMoney = `${this.membalance.total}`;
       this.birdMoney();
     }
 
@@ -536,6 +537,11 @@ export default {
   watch: {
     swagBalance(val) {
       this.swagDiamondBalance = val.balance;
+    },
+    membalance() {
+      if (["ey1"].includes(this.themeTPL)) {
+        this.loginMoney = `${this.membalance.total}`;
+      }
     }
   },
   methods: {
