@@ -249,10 +249,10 @@ export default {
           label: "all",
           name: this.$t("S_ALL")
         },
-        {
-          label: "activity",
-          name: this.$t("S_IN_PROGRESS_ACTIVITY")
-        },
+        // {
+        //   label: "activity",
+        //   name: this.$t("S_IN_PROGRESS_ACTIVITY")
+        // },
         {
           label: "new",
           name: this.$t("S_NEW_GAMES")
@@ -335,7 +335,7 @@ export default {
                   .filter(
                     i => +i.status === 3 || +i.status === 4 || +i.status === 5
                   );
-                  
+
                 //  入口圖排序【活動中->活動預告->結果查詢】
                 if (activityEvents) {
                   result.ret.events = activityEvents.sort((i, j) => {
@@ -345,7 +345,7 @@ export default {
                     return i.kind - j.kind > 0 ? 1 : -1;
                   });
                 }
-                this.activityData = result;
+                // this.activityData = result;
                 return;
               }
             }
