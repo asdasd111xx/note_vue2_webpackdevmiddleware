@@ -85,57 +85,63 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
-      let newWindow;
-      if (!this.eventData.is_secure || this.eventData.is_secure === "false") {
-        let url = this.eventData.url;
-        if (url.indexOf("://") === -1) {
-          url = `https://${url}`;
+
+      // 電子棋牌大廳
+      if (this.displayType !== "game") {
+        const { kind, vendor } = this.eventData;
+        switch (kind) {
+          case 3:
+            this.$router.push(`/mobile/casino/${vendor}?label=hot`);
+            return;
+
+          case 4:
+            this.$router.push(`/mobile/card/${vendor}?label=hot`);
+            return;
         }
-        newWindow = window.open(url);
-        return;
       }
 
-      if (this.displayType === "game") {
-        newWindow = window.open();
-
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
-          params: {
-            lang: "zh-cn",
-            url: this.eventData.url,
-            vendor: this.eventData.vendor,
-            kind: this.eventData.kind
-            // eventId: this.eventData.eventId
+      let newWindow;
+      if (this.eventData.url) {
+        if (!this.eventData.is_secure || this.eventData.is_secure === "false") {
+          let url = this.eventData.url;
+          if (url.indexOf("://") === -1) {
+            url = `https://${url}`;
           }
-        })
-          .then(res => {
-            if (res.status === "000") {
-              newWindow.location.href = res.data.ret;
-            } else {
-              newWindow.close();
-              this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+          newWindow = window.open(url);
+          return;
+        }
+
+        if (this.displayType === "game") {
+          newWindow = window.open();
+
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
+            params: {
+              lang: "zh-cn",
+              url: this.eventData.url,
+              vendor: this.eventData.vendor,
+              kind: this.eventData.kind
+              // eventId: this.eventData.eventId
             }
           })
-          .catch(error => {
-            newWindow.close();
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          });
+            .then(res => {
+              if (res.status === "000") {
+                newWindow.location.href = res.data.ret;
+              } else {
+                newWindow.close();
+                this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+              }
+            })
+            .catch(error => {
+              newWindow.close();
+              if (error && error.data && error.data.msg) {
+                this.actionSetGlobalMessage({ msg: error.data.msg });
+              }
+            });
 
-        return;
-      }
-
-      const { kind, vendor } = this.eventData;
-      switch (kind) {
-        case 3:
-          this.$router.push(`/mobile/casino/${vendor}?label=hot`);
           return;
-
-        case 4:
-          this.$router.push(`/mobile/card/${vendor}?label=hot`);
-          return;
+        }
       }
 
       if (this.isShowLoading) {

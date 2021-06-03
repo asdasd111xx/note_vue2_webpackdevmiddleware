@@ -1,7 +1,7 @@
 @import "~@/css/variable.scss";
 
 .activity-wrap {
-  height: calc(100vh - 90px);
+  min-height: calc(100vh - 43px);
   overflow-y: auto;
 }
 
@@ -50,11 +50,11 @@
 }
 
 .game-image {
-  width: 100%;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // width: 100%;
+  // height: 140px;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
 
   img {
     width: 100%;
@@ -67,16 +67,16 @@
 
   & .status {
     bottom: 0%;
-    height: 40%;
+    height: unset;
     position: absolute;
     right: 5%;
-    width: 40%;
+    width: 55px;
     z-index: 2;
   }
 
   & .item {
     position: absolute;
-    top: 19.5%;
+    bottom: 6px;
     left: calc(50% - 55px);
     width: 110px;
     z-index: 2;
@@ -85,31 +85,22 @@
   }
 
   &.in-game-lobby {
-    width: 95%;
-    max-width: 112px;
-    height: 95%;
-    overflow: hidden;
     display: block;
-    margin: 0 auto;
     position: relative;
 
     .item {
-      padding: 8%;
       z-index: 2;
+      bottom: 0;
       position: relative;
-      top:unset;
-      left: unset;
       width: 100%;
-      height: 100%;
       margin: 0 auto;
     }
 
     .status {
-      left: 5%;
-      top: 5%;
-      height: 40%;
-      position: absolute;
-      width: 40%;
+      left: 0;
+      top: 0;
+      right: unset;
+      bottom: unset;
     }
   }
 }
@@ -122,8 +113,8 @@
   color: #9ca3bf;
   z-index: 2;
   position: absolute;
-  left: 26px;
-  line-height: 25px;
+  left: 15%;
+  line-height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -192,16 +183,12 @@
     & .item {
       top: 19.5%;
       left: calc(50% - 40%);
-      width: 80%;
-      height: 80%;
+      width: unset;
+      max-height: 80%;
     }
   }
 
-  .game-image img {
-    // height: auto !important;
-  }
-
-  .game-text{
+  .game-text {
     left: 48px;
     line-height: 55px;
     font-size: 18px;
