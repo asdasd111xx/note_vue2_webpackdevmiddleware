@@ -67,7 +67,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      noDataText: "暂时没有新的记录",
+      noDataText: "暂时没有新的充值记录",
       emptyImage: "no_data"
     };
   },

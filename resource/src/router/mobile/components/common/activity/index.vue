@@ -32,7 +32,7 @@
     <template v-if="eventList && eventList.length <= 0">
       <div :class="$style['empty-wrap']">
         <div :class="$style['empty-icon']" />
-        <!-- <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div> -->
+        <div>{{ $text("S_NO_ACTIVITY", "暂无活动") }}</div>
       </div>
     </template>
     <envelope

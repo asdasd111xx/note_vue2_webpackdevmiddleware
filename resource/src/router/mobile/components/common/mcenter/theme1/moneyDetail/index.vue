@@ -255,8 +255,7 @@ export default {
         { key: "manual", text: "人工" },
         { key: "wage", text: "返利" },
         { key: "ingroup_transfer", text: "转让" },
-        { key: "outer", text: "SWAG" },
-        { key: "internal_memo", text: "红包" }
+        { key: "outer", text: "SWAG" }
       ];
     },
     dateOptions() {

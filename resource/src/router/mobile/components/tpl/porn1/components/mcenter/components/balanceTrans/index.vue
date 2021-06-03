@@ -4,9 +4,9 @@
       <balanceBack :has-link="true" />
 
       <!-- 僅限鴨博有 Swag -->
-      <template v-if="themeTPL === 'porn1'">
+      <!-- <template v-if="themeTPL === 'porn1'">
         <swagBlock />
-      </template>
+      </template> -->
 
       <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
       <blockListTips
@@ -23,7 +23,7 @@ import { mapGetters, mapActions } from "vuex";
 import balanceBack from "../../../mcenter/components/common/balanceBack";
 import balanceTrans from "./components/index";
 import blockListTips from "../../../common/blockListTips";
-import swagBlock from "./components/swagBlock";
+// import swagBlock from "./components/swagBlock";
 import mobileContainer from "../../../common/mobileContainer";
 
 export default {
@@ -31,8 +31,8 @@ export default {
     mobileContainer,
     blockListTips,
     balanceTrans,
-    balanceBack,
-    swagBlock
+    balanceBack
+    // swagBlock
   },
   data() {
     return {
