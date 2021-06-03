@@ -8,7 +8,7 @@
     @click="onEnter"
   >
     <div v-if="displayType !== 'game'" :class="$style['game-text']">
-      {{ eventData.name }}
+      {{ eventData.alias }}
     </div>
     <div
       :name="eventData.name"
