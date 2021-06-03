@@ -7,6 +7,9 @@
     ]"
     @click="onEnter"
   >
+    <div v-if="displayType !== 'game'" :class="$style['game-text']">
+      {{ eventData.name }}
+    </div>
     <div
       :name="eventData.name"
       :class="[
@@ -16,7 +19,7 @@
       ]"
     >
       <img
-        v-if="eventData.bg_image"
+        v-if="eventData.bg_image && displayType !== 'game'"
         :src="eventData.bg_image"
         :class="[$style['bg']]"
       />
@@ -30,7 +33,6 @@
       />
       <img v-else :src="eventData.status_image" :class="[$style['status']]" />
     </div>
-    <!-- <div :class="$style['game-text']">{{ eventData.name }}</div> -->
   </div>
 </template>
 
