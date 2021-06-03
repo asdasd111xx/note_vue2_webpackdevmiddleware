@@ -1,9 +1,5 @@
 import store from "@/store";
 
-// ("EVO视讯");
-// ("500万彩票");
-// ("丝瓜直播");
-// ("PT");
 const embedGameVendorList = [
   "evo",
   "allwin",
