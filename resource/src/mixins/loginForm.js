@@ -203,7 +203,7 @@ export default {
       const platform = getCookie("platform");
       let params = {
         username: this.username,
-        password: this.password.toLowerCase(),
+        password: this.password,
         captcha: this.captcha,
         host: window.location.host,
         ...validate
