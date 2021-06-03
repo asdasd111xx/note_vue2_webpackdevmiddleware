@@ -86,9 +86,10 @@ export default {
         return;
       }
 
+      const { kind, vendor } = this.eventData;
+
       // 電子棋牌大廳
       if (this.displayType !== "game") {
-        const { kind, vendor } = this.eventData;
         switch (kind) {
           case 3:
             this.$router.push(`/mobile/casino/${vendor}?label=hot`);
@@ -120,8 +121,8 @@ export default {
             params: {
               lang: "zh-cn",
               url: this.eventData.url,
-              vendor: this.eventData.vendor,
-              kind: this.eventData.kind
+              vendor: vendor,
+              kind: kind
               // eventId: this.eventData.eventId
             }
           })
@@ -144,20 +145,18 @@ export default {
         }
       }
 
-      if (this.isShowLoading) {
+      if (this.isLoading) {
         return;
       }
 
-      this.isShowLoading = true;
+      this.isLoading = true;
 
       const openGameSuccessFunc = res => {
-        this.isShowLoading = false;
-        window.GAME_RELOAD = true;
+        this.isLoading = false;
       };
 
       const openGameFailFunc = res => {
-        this.isShowLoading = false;
-        window.GAME_RELOAD = undefined;
+        this.isLoading = false;
 
         if (res && res.data) {
           let data = res.data;
@@ -170,7 +169,6 @@ export default {
                   cid: getCookie("cid")
                 }
               }).then(res => {
-                console.log(res);
                 if (res.status === "000") {
                   if (res.data.status != -1) {
                     this.actionSetShowRedEnvelope(res.data);
