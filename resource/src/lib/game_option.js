@@ -33,10 +33,10 @@ const embedGamesList = [
     vendor: "hb",
     kind: 3
   },
-  // {
-  //   vendor: "bbin",
-  //   kind: 3
-  // }
+  {
+    vendor: "bbin",
+    kind: 3
+  }
 ];
 
 const checkVersion = function() {
