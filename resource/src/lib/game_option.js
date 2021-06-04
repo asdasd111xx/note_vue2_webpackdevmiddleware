@@ -1,14 +1,42 @@
 import store from "@/store";
 
-const embedGameVendorList = [
-  "evo",
-  "allwin",
-  "sigua_ly",
-  "lg_yb_card",
-  "lg_yb_casino",
-  "jdb",
-  "lg_live",
-  "hb"
+const embedGamesList = [
+  {
+    vendor: "evo",
+    kind: ""
+  },
+  {
+    vendor: "allwin",
+    kind: 4
+  },
+  {
+    vendor: "sigua_ly",
+    kind: 4
+  },
+  {
+    vendor: "lg_yb_card",
+    kind: 5
+  },
+  {
+    vendor: "lg_yb_casino",
+    kind: 3
+  },
+  {
+    vendor: "jdb",
+    kind: 3
+  },
+  {
+    vendor: "lg_live",
+    kind: 2
+  },
+  {
+    vendor: "hb",
+    kind: 3
+  },
+  {
+    vendor: "bbin",
+    kind: 3
+  }
 ];
 
 const checkVersion = function() {
@@ -23,23 +51,25 @@ const checkVersion = function() {
   return 0;
 };
 
-export const getEmbedGameVendor = (vendor, kind = "") => {
+export const getEmbedGameVendor = (vendor, kind = 0) => {
+console.log(vendor, kind);
   if (!vendor) {
     return null;
   }
 
   const { memInfo } = store.state;
-  let is = embedGameVendorList.includes(vendor);
-  let isKind = true;
+  let is = false
 
   if (kind) {
-    isKind = embedGameKindList.includes(kind);
+    is = embedGamesList.find(i => i.vendor === vendor && +i.kind === +kind);
+  }else{
+    is = embedGamesList.find(i => i.vendor === vendor);
   }
 
   let version = checkVersion();
   console.log("IOS VERSION:", version);
 
-  if (!is && !kind) {
+  if (!is) {
     return null;
   }
 

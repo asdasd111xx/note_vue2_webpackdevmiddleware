@@ -46,7 +46,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   let gameTitle = "";
   let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
   // 是否調整內嵌
-  let embedGame = getEmbedGameVendor(vendor);
+  let embedGame = getEmbedGameVendor(vendor, kind);
 
   if (embedGame) {
     gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
@@ -176,10 +176,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
             success();
 
-            if (
-              embedGame &&
-              !localStorage.getItem('reload-game')
-            ) {
+            if (embedGame && !localStorage.getItem("reload-game")) {
               router.push(
                 `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`
               );
