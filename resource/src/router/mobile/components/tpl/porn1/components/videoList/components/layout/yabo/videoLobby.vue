@@ -67,11 +67,7 @@
       </template>
     </div>
 
-    <div
-      :ref="'video-list-wrap'"
-      :class="[$style['video-list-wrap'], 'clearfix']"
-      id="video-list-wrap"
-    >
+    <div :ref="'video-list-wrap'" :class="[$style['video-list-wrap'], 'clearfix']" id="video-list-wrap">
       <div
         :id="`${i}`"
         v-for="(videoData, i) in allVideoList"
@@ -260,9 +256,8 @@ export default {
       this.getVideoList();
     },
     handleVideo(video) {
-      const videoWrap = this.$refs["video-list-wrap"].scrollTop;
       window.location.replace(
-        `${window.location.pathname}${window.location.search}#${videoWrap}`
+        `${window.location.pathname}${window.location.search}#${this.$route.query.id}`
       );
       this.openVideo("videoPlay", {
         params: { id: video.id },
@@ -337,7 +332,7 @@ export default {
             title: this.videoType.title
           }
         });
-        this.$refs["video-list-wrap"].scrollTop = 0;
+      this.$refs["video-list-wrap"].scrollTop = 0;
       }
       this.isDisable = true;
       this.changeTabTimer = setTimeout(() => {
@@ -421,23 +416,16 @@ export default {
         this.$nextTick(() => {
           this.videoType.id = this.$route.query.id;
           this.videoType.title = this.$route.query.title;
-
-          if (window.location.hash) {
-            //hash=>儲存上一頁video-list-wrap的位置
-            const hash = Number(window.location.hash.replace("#", "")) || 0;
-            const wrap = document.getElementById("video-list-wrap");
-            if (wrap) {
-              this.$refs["video-list-wrap"].scrollTop = hash;
-            }
-
-            //const wrap = document.getElementById("video-list-wrap");
-            // const cell = document.getElementsByClassName(
-            //   this.$style["video-cell"]
-            // );
-            // if (wrap && cell && cell[0]) {
-            //   wrap.scrollTop = cell[0].offsetHeight * hash;
-            // }
-          }
+          // if (window.location.hash) {
+          //   const hash = Number(window.location.hash.replace("#", "")) || 0;
+          //   const wrap = document.getElementById("video-list-wrap");
+          //   const cell = document.getElementsByClassName(
+          //     this.$style["video-cell"]
+          //   );
+          //   if (wrap && cell && cell[0]) {
+          //     wrap.scrollTop = cell[0].offsetHeight * hash;
+          //   }
+          // }
         });
       });
     },

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import game from "@/api/game";
 import { getCookie } from "@/lib/cookie";
 import { getEmbedGameVendor } from "./game_option";
@@ -176,7 +176,10 @@ export default (params, success = () => {}, fail = () => {}) => {
 
             success();
 
-            if (embedGame) {
+            if (
+              embedGame &&
+              !localStorage.getItem('reload-game')
+            ) {
               router.push(
                 `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`
               );

@@ -7,7 +7,8 @@ const embedGameVendorList = [
   "lg_yb_card",
   "lg_yb_casino",
   "jdb",
-  "lg_live"
+  "lg_live",
+  "hb"
 ];
 
 const checkVersion = function() {
