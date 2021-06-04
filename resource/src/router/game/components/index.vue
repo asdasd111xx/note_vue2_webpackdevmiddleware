@@ -86,34 +86,34 @@ export default {
       console.log("open-game-link 遺失");
       localStorage.setItem("reload-game", "1");
 
-      const openGameSuccessFunc = res => {
-        localStorage.removeItem("reload-game");
-        this.isLoading = false;
-        let openGameLink = localStorage.getItem("open-game-link");
-        localStorage.removeItem("open-game-link");
-        this.isLoading = false;
-        location.replace(openGameLink);
-      };
+      // const openGameSuccessFunc = res => {
+      //   localStorage.removeItem("reload-game");
+      //   this.isLoading = false;
+      //   let openGameLink = localStorage.getItem("open-game-link");
+      //   localStorage.removeItem("open-game-link");
+      //   this.isLoading = false;
+      //   location.replace(openGameLink);
+      // };
 
-      const openGameFailFunc = res => {
-        localStorage.removeItem("reload-game");
-        this.isLoading = false;
-      };
+      // const openGameFailFunc = res => {
+      //   localStorage.removeItem("reload-game");
+      //   this.isLoading = false;
+      // };
 
-      openGame(
-        {
-          kind: kind || "",
-          vendor: vendor || "",
-          code: code || "",
-          gameType: "in-game",
-          gameName:
-            this.$route.query.gameName ||
-            localStorage.getItem("iframe-third-url-title") ||
-            ""
-        },
-        openGameSuccessFunc,
-        openGameFailFunc
-      );
+      // openGame(
+      //   {
+      //     kind: kind || "",
+      //     vendor: vendor || "",
+      //     code: code || "",
+      //     gameType: "in-game",
+      //     gameName:
+      //       this.$route.query.gameName ||
+      //       localStorage.getItem("iframe-third-url-title") ||
+      //       ""
+      //   },
+      //   openGameSuccessFunc,
+      //   openGameFailFunc
+      // );
 
       // 舊版開啟方式
       // game.gameLink(
