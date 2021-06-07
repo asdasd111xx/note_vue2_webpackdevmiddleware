@@ -32,15 +32,15 @@ const embedGamesList = [
   {
     vendor: "lg_card",
     kind: 5
-  }
+  },
   // {
   //   vendor: "hb",
   //   kind: 3
   // },
-  // {
-  //   vendor: "bbin",
-  //   kind: 3
-  // }
+  {
+    vendor: "bbin",
+    kind: 3
+  }
 ];
 
 const checkVersion = function() {
