@@ -85,8 +85,8 @@ export default {
       return;
     } else {
       console.log("open-game-link 遺失");
-      localStorage.setItem("reload-game", "1");
 
+      // localStorage.setItem("reload-game", "1");
       // const openGameSuccessFunc = res => {
       //   localStorage.removeItem("reload-game");
       //   this.isLoading = false;

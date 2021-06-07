@@ -29,14 +29,18 @@ const embedGamesList = [
     vendor: "lg_live",
     kind: 2
   },
+  {
+    vendor: "lg_card",
+    kind: 5
+  }
   // {
   //   vendor: "hb",
   //   kind: 3
   // },
-  {
-    vendor: "bbin",
-    kind: 3
-  }
+  // {
+  //   vendor: "bbin",
+  //   kind: 3
+  // }
 ];
 
 const checkVersion = function() {
@@ -52,17 +56,17 @@ const checkVersion = function() {
 };
 
 export const getEmbedGameVendor = (vendor, kind = 0) => {
-console.log(vendor, kind);
+  console.log(vendor, kind);
   if (!vendor) {
     return null;
   }
 
   const { memInfo } = store.state;
-  let is = false
+  let is = false;
 
   if (kind) {
     is = embedGamesList.find(i => i.vendor === vendor && +i.kind === +kind);
-  }else{
+  } else {
     is = embedGamesList.find(i => i.vendor === vendor);
   }
 
