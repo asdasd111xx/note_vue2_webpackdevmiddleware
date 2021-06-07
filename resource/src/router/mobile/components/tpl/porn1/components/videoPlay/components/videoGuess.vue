@@ -157,6 +157,8 @@ export default {
 .video-guess-wrap {
   padding: 10px 15px 34px;
   overflow-x: hidden;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .like {

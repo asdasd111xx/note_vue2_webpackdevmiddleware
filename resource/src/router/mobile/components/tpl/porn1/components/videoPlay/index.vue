@@ -25,7 +25,11 @@
           :tag="info.tag"
           :padding="true"
         />
-        <video-guess :tags="info.tag" @leave="handleLeavePage" />
+        <video-guess
+          :style="{ height: `calc(100vh - ${videoHeight}px)` }"
+          :tags="info.tag"
+          @leave="handleLeavePage"
+        />
       </div>
     </div>
   </mobile-container>
