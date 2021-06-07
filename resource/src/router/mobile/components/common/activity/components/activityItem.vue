@@ -41,6 +41,7 @@ import { mapGetters, mapActions } from "vuex";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
+import axios from "axios";
 
 export default {
   props: {
@@ -114,8 +115,9 @@ export default {
 
         if (this.displayType === "game") {
           // 直接使用客端網址+url
-          newWindow = window.open();
-          newWindow.location.href = `${window.location.origin}${this.eventData.url}`;
+          // url: `${window.location.origin}${this.eventData.url}`;
+          let cid = getCookie("cid");
+          newWindow = window.open(`${this.eventData.url}&cid=${cid}`, "_blank");
           return;
           //   goLangApiRequest({
           //     method: "get",
