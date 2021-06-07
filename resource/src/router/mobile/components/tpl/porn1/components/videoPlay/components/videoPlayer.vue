@@ -301,7 +301,7 @@ export default {
         let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
         // 彩金開關
-        this.isActiveBouns = !!data.HasActivity;
+        // this.isActiveBouns = !!data.HasActivity;
         if (!data.HasActivity) {
           return;
         }
