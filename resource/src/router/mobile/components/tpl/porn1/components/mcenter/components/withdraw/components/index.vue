@@ -1356,15 +1356,34 @@ export default {
       }
     },
     withdrawCheck() {
+      //CGPay出款前檢查設定
+      const params = {
+        wallet_id: this.selectedCard.id,
+        method_id:
+          this.selectedCard.bank_id === 2009
+            ? this.withdrawCurrency.method_id
+            : ""
+      };
+
       return axios({
         method: "get",
-        url: "/api/v2/c/withdraw/check"
+        url: "/api/v2/c/withdraw/check",
+        params
       })
         .then(res => {
           this.isCheckWithdraw = false;
 
           if (res.data.result === "ok") {
             let check = true;
+
+            //CGPay取款戶名核實機制
+            if (!res.data.ret.name) {
+              this.actionSetGlobalMessage({
+                msg: "钱包注册姓名与真实姓名不符"
+              });
+              check = false;
+              return;
+            }
 
             Object.keys(res.data.ret).forEach(i => {
               if (i !== "bank" && !res.data.ret[i]) {
@@ -1623,7 +1642,6 @@ export default {
             });
             return;
           }
-
           this.cryptoMoney = ret.crypto_amount;
           this.isClickCoversionBtn = true;
           this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
