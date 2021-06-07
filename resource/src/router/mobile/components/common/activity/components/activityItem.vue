@@ -113,35 +113,37 @@ export default {
         }
 
         if (this.displayType === "game") {
+          // 直接使用客端網址+url
           newWindow = window.open();
-
-          goLangApiRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
-            params: {
-              lang: "zh-cn",
-              url: this.eventData.url,
-              vendor: vendor,
-              kind: kind
-              // eventId: this.eventData.eventId
-            }
-          })
-            .then(res => {
-              if (res.status === "000") {
-                newWindow.location.href = res.data.ret;
-              } else {
-                newWindow.close();
-                this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
-              }
-            })
-            .catch(error => {
-              newWindow.close();
-              if (error && error.data && error.data.msg) {
-                this.actionSetGlobalMessage({ msg: error.data.msg });
-              }
-            });
-
+          newWindow.location.href = `${window.location.origin}${this.eventData.url}`;
           return;
+          //   goLangApiRequest({
+          //     method: "get",
+          //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
+          //     params: {
+          //       lang: "zh-cn",
+          //       url: this.eventData.url,
+          //       vendor: vendor,
+          //       kind: kind
+          //       // eventId: this.eventData.eventId
+          //     }
+          //   })
+          //     .then(res => {
+          //       if (res.status === "000") {
+          //         newWindow.location.href = res.data.ret;
+          //       } else {
+          //         newWindow.close();
+          //         this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+          //       }
+          //     })
+          //     .catch(error => {
+          //       newWindow.close();
+          //       if (error && error.data && error.data.msg) {
+          //         this.actionSetGlobalMessage({ msg: error.data.msg });
+          //       }
+          //     });
+
+          //   return;
         }
       }
 
