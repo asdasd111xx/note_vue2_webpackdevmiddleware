@@ -300,7 +300,9 @@ export default {
       if (e && e.data) {
         let data = JSON.parse(e.data);
         this.socketId = data.SocketId;
+
         // 彩金開關
+        // 預設連線中
         // this.isActiveBouns = !!data.HasActivity;
         if (!data.HasActivity) {
           return;
