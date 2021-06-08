@@ -127,8 +127,8 @@ export default {
       const { allValue, allText } = this;
       const reg = {
         username: /^[a-z1-9][a-z0-9]{3,19}$/,
-        password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        confirm_password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/
+        password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
+        confirm_password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/
       };
       if (
         key === "username" ||
