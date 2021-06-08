@@ -439,7 +439,7 @@ export default {
               case "porn1":
               case "sg1":
               case "ey1":
-                this.$router.push("/mobile/mcenter/balanceTrans");
+                this.$router.push("/mobile/mcenter/balanceTrans?title=wallet");
                 break;
 
               // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useGlobalWithdrawCheck(path)

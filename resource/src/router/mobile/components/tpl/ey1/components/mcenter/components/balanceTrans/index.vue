@@ -2,7 +2,10 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['content-wrap']">
       <balanceBack :has-link="false" :back-router="backRouter" />
-      <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
+      <balanceTrans
+        :is-show-block-tips.sync="isShowBlockTips"
+        :is-show-more-out.sync="isShowMoreOut"
+      />
       <blockListTips
         v-if="isShowBlockTips"
         type="transfer"
@@ -29,8 +32,15 @@ export default {
   data() {
     return {
       isShowBlockTips: false,
-      backRouter: "mcenter/balanceTrans"
+      isShowMoreOut: true,
+      backRouter: "mcenter/balanceTrans",
+      title: this.$route.query.title ? `title=${this.$route.query.title}` : ""
     };
+  },
+  created() {
+    if (this.$route.query.more !== undefined && this.$route.query.more !== "") {
+      this.isShowMoreOut = JSON.parse(this.$route.query.more.toLowerCase());
+    }
   },
   computed: {
     ...mapGetters({
@@ -42,10 +52,21 @@ export default {
         title: this.$text("S_transfer", "转帐"),
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (
+            this.$route.query.more != undefined &&
+            this.$route.query.more !== ""
+          ) {
+            if (this.$route.query.title === "wallet") {
+              this.$router.push("/mobile/mcenter/wallet");
+            } else {
+              this.$router.push("/mobile");
+            }
+          } else {
+            this.$router.back();
+          }
         },
         hasHelp: {
-          url: "/mobile/mcenter/helpCenter"
+          url: `/mobile/mcenter/helpCenter?more=${this.isShowMoreOut}&${this.title}`
         }
       };
     }
