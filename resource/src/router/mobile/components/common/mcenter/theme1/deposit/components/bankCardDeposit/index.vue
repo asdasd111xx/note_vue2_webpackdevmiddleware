@@ -134,9 +134,10 @@
                   >
                     {{
                       `${
+                        themeTPL === 'porn1' ?
                         Number(rechargeConfig.recharger_offer_percent) !== 0
                           ? `返利${rechargeConfig.recharger_offer_percent}%+`
-                          : "额度转让"
+                          : "额度转让" : ""
                       }`
                     }}
                     代理分红
