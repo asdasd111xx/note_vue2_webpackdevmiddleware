@@ -59,7 +59,7 @@ export default {
     isRequired: true,
     hasVerify: false,
     show: true,
-    regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+    regExp: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
     errorMsg: i18n.t("S_PASSWORD_ERROR")
   },
   confirm_password: {
