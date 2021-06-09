@@ -200,19 +200,21 @@ export default {
       this.isReceive = true;
       setTimeout(() => {
         this.onResize();
-        // let defaultType =
-        //   this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
-        // if (localStorage.getItem("home-menu-type")) {
-        //   defaultType = localStorage.getItem("home-menu-type");
-        // }
-
-        // let defaultIndex = this.typeList.findIndex(type => {
-        //   return type.icon.toLowerCase() === defaultType.toLowerCase();
-        // });
-
-        // defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
         //0616 預設選項為list 第一個
-        const selectIndex = this.typeList.length / 3;
+        let defaultType = "";
+        let selectIndex = 0;
+        if (localStorage.getItem("home-menu-type")) {
+          defaultType = localStorage.getItem("home-menu-type");
+          let defaultIndex = this.typeList.findIndex(type => {
+            return type.icon.toLowerCase() === defaultType.toLowerCase();
+          });
+
+          defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+
+          selectIndex = this.typeList.length / 3 + defaultIndex;
+        } else {
+          selectIndex = this.typeList.length / 3;
+        }
         this.onChangeSelectIndex(selectIndex);
         this.isShow = true;
       }, 300);
