@@ -103,7 +103,8 @@ export default {
           info: "为您提供全天候服务",
           needLogin: false
         }
-      ]
+      ],
+      title: this.$route.query.title ? `title=${this.$route.query.title}` : ""
     };
   },
   computed: {
@@ -114,7 +115,13 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (this.$route.query.more) {
+            this.$router.replace(
+              `/mobile/mcenter/balanceTrans?more=${this.$route.query.more}&${this.title}`
+            );
+          } else {
+            this.$router.back();
+          }
         },
         title: this.$text("S_HELP_CENTER", "帮助中心")
       };
