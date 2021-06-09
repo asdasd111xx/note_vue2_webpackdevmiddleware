@@ -478,6 +478,13 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/home/redEnvelope"
       )
   },
+  props: {
+    isShowMoreOut: {
+      type: Boolean,
+      required: true,
+      default: true
+    }
+  },
   data() {
     return {
       updateBalance: null,
@@ -581,6 +588,7 @@ export default {
     }
   },
   created() {
+    this.isShowMore = this.isShowMoreOut;
     this.actionSetUserdata(true).then(() => {
       this.isAutotransfer = this.memInfo.auto_transfer.enable;
 
@@ -760,6 +768,7 @@ export default {
     },
     toggleShowMore() {
       this.isShowMore = !this.isShowMore;
+      this.$emit("update:isShowMoreOut", this.isShowMore);
     },
     closeSelect() {
       this.isShowTransOutSelect = false;

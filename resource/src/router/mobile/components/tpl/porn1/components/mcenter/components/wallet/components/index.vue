@@ -233,7 +233,7 @@
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
-          <div>邀请人首存即可获得</div>
+          <div v-if="['porn1'].includes(themeTPL)">邀请人首存即可获得</div>
         </div>
       </template>
 
@@ -439,7 +439,7 @@ export default {
               case "porn1":
               case "sg1":
               case "ey1":
-                this.$router.push("/mobile/mcenter/balanceTrans");
+                this.$router.push("/mobile/mcenter/balanceTrans?title=wallet");
                 break;
 
               // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useGlobalWithdrawCheck(path)
