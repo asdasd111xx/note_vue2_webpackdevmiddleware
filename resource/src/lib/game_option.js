@@ -32,6 +32,10 @@ const embedGamesList = [
   {
     vendor: "lg_card",
     kind: 5
+  },
+  {
+    vendor: "bc",
+    kind: 2
   }
   // {
   //   vendor: "hb",
