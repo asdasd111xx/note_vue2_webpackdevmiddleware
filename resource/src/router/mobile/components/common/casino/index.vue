@@ -182,11 +182,28 @@ export default {
       },
       searchText: "",
       isLabelReceive: false,
-      labelData: [],
+      labelData: [
+        {
+          label: "all",
+          name: this.$t("S_ALL")
+        },
+        {
+          label: "activity",
+          name: this.$t("S_IN_PROGRESS_ACTIVITY")
+        },
+        {
+          label: "new",
+          name: this.$t("S_NEW_GAMES")
+        },
+        {
+          label: "hot",
+          name: this.$t("S_HOT")
+        }
+      ],
       isGameDataReceive: false,
       gameData: [],
       activityData: [],
-
+      hasActivity: false,
       jackpotData: null
     };
   },
@@ -250,7 +267,7 @@ export default {
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
-    this.getGameLabelList();
+    this.getActivityList();
   },
   methods: {
     ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
@@ -271,32 +288,16 @@ export default {
      * 取得遊戲平台分類
      */
     getGameLabelList() {
-      // 電子分類預設資料
-      const defaultData = [
-        {
-          label: "all",
-          name: this.$t("S_ALL")
-        },
-        {
-          label: "activity",
-          name: this.$t("S_IN_PROGRESS_ACTIVITY")
-        },
-        {
-          label: "new",
-          name: this.$t("S_NEW_GAMES")
-        },
-        {
-          label: "hot",
-          name: this.$t("S_HOT")
-        }
-      ];
+      if (!this.hasActivity) {
+        this.labelData = this.labelData.filter(i => i.label !== "activity");
+      }
 
       // 抓取遊戲導覽清單
       ajax({
         method: "get",
         url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
         success: response => {
-          this.labelData = defaultData.concat(response.ret);
+          this.labelData = this.labelData.concat(response.ret);
         }
       }).then(response => {
         if (this.loginStatus) {
@@ -306,7 +307,7 @@ export default {
         this.isLabelReceive = true;
 
         if (
-          !defaultData
+          !this.labelData
             .concat(response.ret)
             .some(item => item.label === this.paramsData.label)
         ) {
@@ -329,7 +330,6 @@ export default {
         this.paramsData.label = "favorite";
       }
 
-      this.getActivityList();
       this.updateGameData();
     },
     getActivityList() {
@@ -361,6 +361,7 @@ export default {
 
               //  入口圖排序【活動中->活動預告->結果查詢】
               if (activityEvents) {
+                this.hasActivity = true;
                 result.ret.events = activityEvents.sort((i, j) => {
                   if (i.kind === 3) {
                     return 1;
@@ -369,7 +370,6 @@ export default {
                 });
               }
               this.activityData = result;
-              return;
             }
           }
 
@@ -380,6 +380,7 @@ export default {
             });
           }
 
+          this.getGameLabelList();
           this.updateGameData();
         })
         .catch(error => {
@@ -406,6 +407,10 @@ export default {
      * @param {string} value - 設定的分類
      */
     changeGameLabel(value) {
+      if (+value === +this.paramsData.label) {
+        return;
+      }
+
       this.isInit = false;
       this.paramsData = {
         ...this.paramsData,
