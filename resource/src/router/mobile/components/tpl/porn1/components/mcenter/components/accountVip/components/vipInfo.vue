@@ -79,9 +79,15 @@
             <template v-if="['porn1', 'sg1'].includes(themeTPL)">
               <div>
                 {{
-                  currentLevelData.monthly_gift == ""
-                    ? "--"
-                    : currentLevelData.monthly_gift
+                  `${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : currentLevelData.monthly_gift
+                  }/${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : currentLevelData.monthly_gift
+                  }`
                 }}
               </div>
               <div>每月红包</div>
