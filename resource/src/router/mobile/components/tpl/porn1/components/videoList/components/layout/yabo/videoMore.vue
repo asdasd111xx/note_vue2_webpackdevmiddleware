@@ -173,6 +173,14 @@ export default {
     setSortId(value) {
       this.sortId = value;
       this.current = 0;
+
+      this.$router.replace({
+        query: {
+          source: this.$route.query.source,
+          tagId: this.tagId,
+          sortId: value
+        }
+      });
       this.$refs["video-list-wrap"].scrollTop = 0;
       this.isDisable = true;
       this.changeTabTimer = setTimeout(() => {
