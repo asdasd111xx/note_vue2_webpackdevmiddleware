@@ -8,12 +8,8 @@
           :class="$style['nav-item']"
         >
           <div
-            :class="
-              currentLabel.key.toString() === info.key.toString()
-                ? $style['is-current']
-                : ''
-            "
-            @click="changeActivityLabel(info)"
+            :class="+currentLabel === +info.key ? $style['is-current'] : ''"
+            @click="changeActivityLabel(info.key)"
           >
             {{ info.name }}
           </div>
@@ -79,19 +75,19 @@ export default {
           key: 0
         },
         {
-          name: "预告",
-          key: 2
-        },
-        {
           name: "活动中",
           key: 3
+        },
+        {
+          name: "活动预告",
+          key: 2
         },
         {
           name: "结果查询",
           key: 4
         }
       ],
-      currentLabel: {},
+      currentLabel: 0,
       needShowRedEnvelope: false,
       redEnvelopeData: {}
     };
@@ -126,22 +122,12 @@ export default {
   created() {
     // 强档活动
     this.$emit("update:lobbyName", "强档活动");
-
-    this.currentLabel = this.eventTagList[0];
-    if (this.$route.query.label) {
-      let target = this.eventTagList.find(
-        i => i.name === this.$route.query.label
-      );
-      this.currentLabel = target || this.eventTagList[0];
-    }
   },
   mounted() {
     if (!this.loginStatus) {
       this.$router.push("/mobile/login");
     }
     this.getActivityList();
-    // this.getUserViplevel();
-    // this.getGameList();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
@@ -152,22 +138,25 @@ export default {
       });
     },
     changeActivityLabel(target) {
-      if (target.key === this.currentLabel.key) {
+      if (+target === +this.currentLabel) {
         return;
       }
 
       this.eventTagList.find(i => {
-        if (i.key === target.key) {
-          this.$router.replace({ query: { label: target.name } });
+        if (+i.key === +target) {
           this.currentLabel = target;
 
-          if (target.key === 0) {
+          if (+this.$route.query.label !== +target) {
+            this.$router.replace({ query: { label: target } });
+          }
+
+          if (+target === 0) {
             this.eventList = this.originEventList;
             return;
           }
 
           this.eventList = this.originEventList.filter(
-            i => i.status === target.key
+            i => +i.status === +target
           );
         }
       });
@@ -217,6 +206,7 @@ export default {
             });
           }
 
+          this.changeActivityLabel(this.$route.query.label);
           this.isLoading = false;
         })
         .catch(error => {
