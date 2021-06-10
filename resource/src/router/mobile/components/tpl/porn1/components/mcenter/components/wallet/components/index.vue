@@ -502,7 +502,7 @@ export default {
     if (["porn1", "sg1"].includes(this.themeTPL)) {
       // this.initSWAGConfig();
       if (this.membalance && this.membalance.total) {
-        this.loginMoney = `${this.membalance.total}`;
+        // this.loginMoney = `${this.membalance.total}`;
       } else {
         this.loginMoney = "";
       }
@@ -709,12 +709,24 @@ export default {
           if (res.data.enable) {
             if (this.loginStatus) {
               this.loginMoney = `${Number(
-                parseFloat(this.loginMoney) + parseInt(res.data.remain_bonus)
+                parseFloat(this.membalance.total) +
+                  parseInt(res.data.remain_bonus)
               ).toFixed(2)}`;
+            }
+          } else {
+            if (this.membalance && this.membalance.total) {
+              this.loginMoney = `${this.membalance.total}`;
+            } else {
+              this.loginMoney = "";
             }
           }
         } else {
           this.redJackpotData = null;
+          if (this.membalance && this.membalance.total) {
+            this.loginMoney = `${this.membalance.total}`;
+          } else {
+            this.loginMoney = "";
+          }
         }
       });
     }
