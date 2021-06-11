@@ -363,7 +363,7 @@ export default {
         this[key] = val;
       });
 
-      const re = /^[a-z0-9._\-!@#$&*+=|]{6,12}$/;
+      const re = /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/;
       const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位字母或数字");
 
       let errMsg = "";

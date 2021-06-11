@@ -139,8 +139,14 @@ export default {
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
             allValue[key] = val;
+            allText[key].error = false;
             if (reg[key] && !reg[key].test(allValue[key])) {
               allText[key].error = true;
+              return;
+            } else if (key === "confirm_password") {
+              allText[key].error =
+                allValue.password !== allValue.confirm_password;
+              this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
               return;
             }
           }
@@ -148,13 +154,15 @@ export default {
       }
       if (["password", "confirm_password"].includes(key)) {
         if (allValue.confirm_password) {
-          allText.password.error = false;
+          // allText.password.error = false;
           allText.confirm_password.error =
             allValue.password !== allValue.confirm_password;
+
+          this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
           return;
         }
 
-        allText.password.error = false;
+        // allText.password.error = false;
         return;
       }
 
@@ -252,6 +260,7 @@ export default {
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/ByUpper`,
           params: {
             ...this.allValue,
+            aid: getCookie("aid") || "",
             confirmPassword: this.allValue["confirm_password"],
             captchaText: this.allValue["captcha_text"],
             code: this.agentCode,

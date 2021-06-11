@@ -256,33 +256,42 @@ export default {
           value: value
         }).then(val => {
           this.pwdResetInfo[id].value = val;
+          if (
+            (id === "confNewPwd" &&
+              this.pwdResetInfo["confNewPwd"].value !==
+                this.pwdResetInfo["newPwd"].value) ||
+            (id === "newPwd" &&
+              this.pwdResetInfo["confNewPwd"].value != "" &&
+              this.pwdResetInfo["confNewPwd"].value !==
+                this.pwdResetInfo["newPwd"].value) ||
+            (id === "pwd" &&
+              this.pwdResetInfo["confNewPwd"].value != "" &&
+              this.pwdResetInfo["confNewPwd"].value !==
+                this.pwdResetInfo["newPwd"].value)
+          ) {
+            this.errMsg = "确认密码预设要跟密码一致";
+          } else {
+            this.errMsg = "";
+          }
+
+          const data = this.pwdResetInfo[id];
+          const re = new RegExp(data.regExp);
+          const msg = this.$t(data.errorMsg);
+
+          if (!re.test(value)) {
+            this.errMsg = msg;
+          }
         });
-      }
-      this.pwdResetInfo[id].value = value.trim();
-      if (
-        (id === "confNewPwd" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value) ||
-        (id === "newPwd" &&
-          this.pwdResetInfo["confNewPwd"].value != "" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value) ||
-        (id === "pwd" &&
-          this.pwdResetInfo["confNewPwd"].value != "" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value)
-      ) {
-        this.errMsg = "确认密码预设要跟密码一致";
       } else {
-        this.errMsg = "";
-      }
+        this.pwdResetInfo[id].value = value.trim();
 
-      const data = this.pwdResetInfo[id];
-      const re = new RegExp(data.regExp);
-      const msg = this.$t(data.errorMsg);
+        const data = this.pwdResetInfo[id];
+        const re = new RegExp(data.regExp);
+        const msg = this.$t(data.errorMsg);
 
-      if (!re.test(value)) {
-        this.errMsg = msg;
+        if (!re.test(value)) {
+          this.errMsg = msg;
+        }
       }
     },
     pwdModifySubmit() {
@@ -335,12 +344,11 @@ export default {
     },
     pwdResetSubmit() {
       if (!this.submitActive) return;
-
       const pwdInfo = {
         username: this.pwdResetInfo.userName.value,
         email: this.pwdResetInfo.email.value,
-        new_password: this.pwdResetInfo.newPwd.value.toLowerCase(),
-        confirm_password: this.pwdResetInfo.confNewPwd.value.toLowerCase(),
+        new_password: this.pwdResetInfo.newPwd.value,
+        confirm_password: this.pwdResetInfo.confNewPwd.value,
         keyring: this.$route.query.kr
       };
       if (this.$route.query.type === "agent") {
