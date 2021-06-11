@@ -626,17 +626,17 @@ steps:
   image: plugins/gcr
   settings:
     build_args:
-    - website=test
+    - website=qa
     - product=yabo
     json_key:
       from_secret: GOOGLE_CREDENTIALS
     repo: gcr.io/rd7-project/yaboxxx-web
     tags:
     - latest
-    - test-${DRONE_COMMIT}
+    - qa-${DRONE_COMMIT}
     - ${DRONE_TAG}
 
-- name: deploy2GKE-test
+- name: deploy2GKE-qa
   image: nytimes/drone-gke
   settings:
     cluster: yaboxxx-test
@@ -644,7 +644,7 @@ steps:
     template: configs/yabo/.istio-kube.yml
     vars:
       deployName: yabo-frontend-proxy-qa
-      env: test
+      env: qa
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""

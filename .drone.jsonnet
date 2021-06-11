@@ -237,7 +237,7 @@ env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="")={
 
     #istio-yabo
     Build("QA","yaboxxx-test","asia-east1-b"
-    ,"test","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
+    ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
     ,"yaboxxx-web","10.27.1.142","yabo","istio",
     "beta","yaboxxx-prod","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
     ,"10.17.0.128"),
