@@ -224,11 +224,11 @@ env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="")={
     ,"10.17.0.181"),
 
     # yabo
-    Build("QA","yaboxxx-test","asia-east1-b"
-    ,"test","frontend-proxy","frontend-proxy","frontend-proxy-nginx-config"
-    ,"yaboxxx-web","10.27.1.142","yabo","origin",
-    "beta","yaboxxx-prod","yabo-beta-frontend-proxy","yabo-frontend-proxy","yabo-beta-frontend-proxy-nginx-config"
-    ,"10.17.0.128"),
+    // Build("QA","yaboxxx-test","asia-east1-b"
+    // ,"test","frontend-proxy","frontend-proxy","frontend-proxy-nginx-config"
+    // ,"yaboxxx-web","10.27.1.142","yabo","origin",
+    // "beta","yaboxxx-prod","yabo-beta-frontend-proxy","yabo-frontend-proxy","yabo-beta-frontend-proxy-nginx-config"
+    // ,"10.17.0.128"),
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","yabo-demo-frontend-proxy","yabo-frontend-proxy","yabo-demo-frontend-proxy-nginx-config"
     ,"yaboxxx-web","10.17.0.181","yabo","origin",
