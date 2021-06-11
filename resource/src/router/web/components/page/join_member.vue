@@ -761,7 +761,7 @@ export default {
       const msg = data.errorMsg;
 
       if (key === "password") {
-        console.log("password");
+        // console.log("password");
         if (re && !re.test(this.allValue.password)) {
           this.allTip.password = msg;
           return;

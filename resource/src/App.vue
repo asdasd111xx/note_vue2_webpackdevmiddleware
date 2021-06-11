@@ -139,9 +139,10 @@ export default {
         paths.includes(self.$route.name) &&
         window.GAME_RELOAD
       ) {
-        console.log("[visibilitychange]:false Reload");
+        console.log(paths);
+        console.log("[visibilitychange]:Reload");
         window.GAME_RELOAD = undefined;
-        window.location.reload(true);
+        window.location.reload();
       }
     };
     document.addEventListener("visibilitychange", listner);
