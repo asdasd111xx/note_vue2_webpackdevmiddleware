@@ -248,6 +248,8 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     verification(id, value) {
+      console.log(`verification id is ${id}`);
+      console.log(`verification value is ${value}`);
       if (id !== "email") {
         this.actionVerificationFormData({
           target: "password",
