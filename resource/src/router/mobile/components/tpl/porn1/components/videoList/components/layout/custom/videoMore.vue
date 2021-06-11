@@ -5,9 +5,15 @@
         <swiper-slide
           v-for="info in videoTabs"
           :key="info.id"
-          :class="[$style['item'], { [$style.active]: info.id === +sortId }]"
+          :class="[
+            $style['item'],
+            $style[source],
+            { [$style.active]: info.id === +sortId }
+          ]"
         >
-          <div @click="setSortId(info.id)">{{ info.title }}</div>
+          <div @click="setSortId(info.id)" :disabled="isDisable">
+            {{ info.title }}
+          </div>
         </swiper-slide>
       </swiper>
     </div>
@@ -86,7 +92,9 @@ export default {
       total: 0,
       videoTabs: [],
       sortId: +this.$route.query.sortId,
-      tagId: +this.$route.query.tagId
+      tagId: +this.$route.query.tagId,
+      source: this.$route.query.source,
+      isDisable: false
     };
   },
   computed: {
@@ -104,7 +112,10 @@ export default {
         centeredSlidesBounds: true,
         spaceBetween: 15,
         slidesOffsetBefore: 20,
-        freeMode: true
+        slidesOffsetAfter: 20,
+        freeMode: true,
+        observer: true,
+        observeParents: true
       };
     },
     defaultImg() {
@@ -156,7 +167,31 @@ export default {
     setSortId(value) {
       this.sortId = value;
       this.current = 0;
+      this.$router.replace({
+        query: {
+          source: this.$route.query.source,
+          tagId: this.tagId,
+          sortId: value
+        }
+      });
       this.$refs["video-list-wrap"].scrollTop = 0;
+      this.isDisable = true;
+      this.changeTabTimer = setTimeout(() => {
+        this.isDisable = false;
+        this.changeTab(250);
+      }, 250);
+    },
+    changeTab(time) {
+      const swiper = this.$refs.swiper.$swiper;
+
+      this.getVideoTab().then(() => {
+        // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+        let initIndex = this.videoTabs.findIndex(item => {
+          return item.id === this.sortId;
+        });
+
+        swiper.slideTo(initIndex, time, false);
+      });
     },
     getVideoList(page) {
       return pornRequest({

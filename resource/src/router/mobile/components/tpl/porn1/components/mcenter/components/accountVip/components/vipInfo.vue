@@ -79,9 +79,15 @@
             <template v-if="['porn1', 'sg1'].includes(themeTPL)">
               <div>
                 {{
-                  currentLevelData.monthly_gift == ""
-                    ? "--"
-                    : currentLevelData.monthly_gift
+                  `${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : currentLevelData.monthly_gift
+                  }/${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : currentLevelData.monthly_gift
+                  }`
                 }}
               </div>
               <div>每月红包</div>
@@ -93,12 +99,12 @@
             </template>
           </div>
 
-          <!-- <div    ＊＊＊＊＊＊＊0630上＊＊＊＊＊＊＊
+          <div
             v-if="['porn1', 'sg1'].includes(themeTPL)"
             :class="$style['special-cell']"
           >
             (第1、3个周四，共派发两次)
-          </div> -->
+          </div>
         </div>
 
         <div v-if="['porn1', 'sg1'].includes(themeTPL)" :class="$style['cell']">
