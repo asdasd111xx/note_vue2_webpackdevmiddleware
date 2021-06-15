@@ -63,7 +63,7 @@
                     password = $event.target.value
                       .replace(' ', '')
                       .trim()
-                      .replace(/[\W]/g, '')
+                      .replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, '')
                   "
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"

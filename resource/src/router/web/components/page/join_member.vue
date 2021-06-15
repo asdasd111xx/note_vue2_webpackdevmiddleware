@@ -744,6 +744,37 @@ export default {
             value: this.allValue[key]
           }).then(val => {
             this.allValue[key] = val;
+            const re = data.regExp;
+            const msg = data.errorMsg;
+            if (key === "password") {
+              // console.log("password");
+              if (re && !re.test(this.allValue.password)) {
+                this.allTip.password = msg;
+                return;
+              }else{
+                this.allTip.password = ""
+              }
+
+              if (this.allValue.confirm_password === this.allValue.password) {
+                this.allTip.confirm_password = "";
+              }
+            }
+
+            if (key === "confirm_password") {
+              if (this.allValue.confirm_password === "") {
+                this.allTip.confirm_password = this.joinMemInfo[
+                  "password"
+                ].errorMsg;
+                return;
+              } else if (
+                this.allValue.confirm_password !== this.allValue.password
+              ) {
+                this.allTip.confirm_password = msg;
+                return;
+              } else {
+                this.allTip.confirm_password = "";
+              }
+            }
           });
           break;
 
