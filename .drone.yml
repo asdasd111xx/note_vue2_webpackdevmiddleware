@@ -685,77 +685,6 @@ trigger:
 
 ---
 kind: pipeline
-name: yaboPipeline(originProd)
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=yabo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
-
-- name: deploy2GKE-demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.kube.yml
-    vars:
-      deployName: yabo-demo-frontend-proxy
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-demo-frontend-proxy-nginx-config
-      k8sNginxSSL: yabo-frontend-proxy
-      nfs: 10.17.0.181
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
-
-- name: deploy2GKE-prod
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.kube.yml
-    vars:
-      deployName: yabo-prod-frontend-proxy
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-prod-frontend-proxy-nginx-config
-      k8sNginxSSL: yabo-frontend-proxy
-      nfs: 10.17.0.181
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
-
-trigger:
-  event:
-  - tag
-  ref:
-  - refs/tags/yaboProd-*
-
----
-kind: pipeline
 name: yaboPipeline(istioQA)
 
 platform:
@@ -918,7 +847,7 @@ steps:
     project: rd7-project
     template: configs/yabo/.istio-kube.yml
     vars:
-      deployName: yabo-prod-frontend-proxy
+      deployName: yabo-frontend-proxy-prod
       env: prod
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod

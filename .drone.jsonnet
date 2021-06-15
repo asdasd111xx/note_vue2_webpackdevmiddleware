@@ -239,11 +239,11 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
     // ,"yaboxxx-web","10.27.1.142","yabo","origin",
     // "beta","yaboxxx-prod","yabo-beta-frontend-proxy","yabo-frontend-proxy","yabo-beta-frontend-proxy-nginx-config"
     // ,"10.17.0.128"),
-    Build("Prod","yaboxxx-prod","asia-east1-b"
-    ,"demo","yabo-demo-frontend-proxy","yabo-frontend-proxy","yabo-demo-frontend-proxy-nginx-config"
-    ,"yaboxxx-web","10.17.0.181","yabo","origin",
-    "prod","yaboxxx-prod","yabo-prod-frontend-proxy","yabo-frontend-proxy","yabo-prod-frontend-proxy-nginx-config"
-    ,"10.17.0.181"),
+    // Build("Prod","yaboxxx-prod","asia-east1-b"
+    // ,"demo","yabo-demo-frontend-proxy","yabo-frontend-proxy","yabo-demo-frontend-proxy-nginx-config"
+    // ,"yaboxxx-web","10.17.0.181","yabo","origin",
+    // "prod","yaboxxx-prod","yabo-prod-frontend-proxy","yabo-frontend-proxy","yabo-prod-frontend-proxy-nginx-config"
+    // ,"10.17.0.181"),
 
     #istio-yabo
     Build("QA","yaboxxx-test","asia-east1-b"
@@ -260,7 +260,7 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
     ,"yaboxxx-web","10.17.0.181","yabo","istio",
-    "prod","yaboxxx-prod","yabo-prod-frontend-proxy","","yabo-frontend-proxy-nginx-config-prod"
+    "prod","yaboxxx-prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
     ,"10.17.0.181"),
 
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
