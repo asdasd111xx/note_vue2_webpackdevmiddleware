@@ -278,7 +278,7 @@ export default {
           const re = new RegExp(data.regExp);
           const msg = this.$t(data.errorMsg);
 
-          if (!re.test(value)) {
+          if (!re.test(val)) {
             this.errMsg = msg;
           }
         });
