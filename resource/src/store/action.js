@@ -1785,7 +1785,6 @@ export const actionVerificationFormData = (
   let site = configInfo.MOBILE_WEB_TPL;
   let regex = "";
   let val = data.value.replace(" ", "").trim();
-
   switch (data.target) {
     case "username":
       val = val
@@ -1816,7 +1815,9 @@ export const actionVerificationFormData = (
 
     case "password":
     case "confirm_password":
-      val = val.replace(/[\W]/g, "").substring(0, 50);
+      val = val
+        .replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, "")
+        .substring(0, 50);
       // .toLowerCase();
       break;
 
