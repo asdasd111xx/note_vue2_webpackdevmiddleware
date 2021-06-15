@@ -1,6 +1,6 @@
 #container
 #!container/auto-reload-nginx.sh
-resource
+# resource
 cloudbuild.yaml
 .dockerignore
 .gitignore

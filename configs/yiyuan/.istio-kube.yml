@@ -1,0 +1,80 @@
+# Nginx.conf 需更改configmap
+# nginxssl.crt ,nginxssl.key 需更改secret
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: istio-yiyuan
+  labels:
+    app: yiyuan-frontend-proxy-{{.env}}
+    base: yiyuan-frontend
+  name: {{.deployName}}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: yiyuan-frontend-proxy-{{.env}}
+      base: yiyuan-frontend
+  template:
+    metadata:
+      labels:
+        app: yiyuan-frontend-proxy-{{.env}}
+        base: yiyuan-frontend
+    spec:
+      containers:
+      - image: {{.imageName}}
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: cxbb-frontend-proxy
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 80
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 25m
+            memory: 50Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-config
+        - mountPath: /usr/share/nginx/html/cdn
+          name: nfs-backend-upload
+        - mountPath: /usr/share/nginx/html/tpl
+          name: nfs-backend
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: {{.k8sNginxConfigMap}}
+        name: nginx-config
+      - name: nfs-backend
+        nfs:
+          path: /exports/backend
+          server: {{.nfs}}
+      - name: nfs-backend-upload
+        nfs:
+          path: /exports/backend-upload
+          server: {{.nfs}}
+
