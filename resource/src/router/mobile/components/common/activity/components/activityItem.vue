@@ -7,6 +7,9 @@
     ]"
     @click="onEnter"
   >
+    <div v-if="displayType !== 'game'" :class="$style['game-text']">
+      {{ eventData.alias }}
+    </div>
     <div
       :name="eventData.name"
       :class="[
@@ -16,7 +19,7 @@
       ]"
     >
       <img
-        v-if="eventData.bg_image"
+        v-if="eventData.bg_image && displayType !== 'game'"
         :src="eventData.bg_image"
         :class="[$style['bg']]"
       />
@@ -30,7 +33,6 @@
       />
       <img v-else :src="eventData.status_image" :class="[$style['status']]" />
     </div>
-    <!-- <div :class="$style['game-text']">{{ eventData.name }}</div> -->
   </div>
 </template>
 
@@ -39,6 +41,7 @@ import { mapGetters, mapActions } from "vuex";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
+import axios from "axios";
 
 export default {
   props: {
@@ -83,73 +86,81 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
-      let newWindow;
-      if (!this.eventData.is_secure || this.eventData.is_secure === "false") {
-        let url = this.eventData.url;
-        if (url.indexOf("://") === -1) {
-          url = `https://${url}`;
-        }
-        newWindow = window.open(url);
-        return;
-      }
-
-      if (this.displayType === "game") {
-        newWindow = window.open();
-
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
-          params: {
-            lang: "zh-cn",
-            url: this.eventData.url,
-            vendor: this.eventData.vendor,
-            kind: this.eventData.kind
-            // eventId: this.eventData.eventId
-          }
-        })
-          .then(res => {
-            if (res.status === "000") {
-              newWindow.location.href = res.data.ret;
-            } else {
-              newWindow.close();
-              this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
-            }
-          })
-          .catch(error => {
-            newWindow.close();
-            if (error && error.data && error.data.msg) {
-              this.actionSetGlobalMessage({ msg: error.data.msg });
-            }
-          });
-
-        return;
-      }
 
       const { kind, vendor } = this.eventData;
-      switch (kind) {
-        case 3:
-          this.$router.push(`/mobile/casino/${vendor}?label=hot`);
-          return;
 
-        case 4:
-          this.$router.push(`/mobile/card/${vendor}?label=hot`);
-          return;
+      // 電子棋牌大廳
+      if (this.displayType !== "game") {
+        switch (kind) {
+          case 3:
+            this.$router.push(`/mobile/casino/${vendor}?label=hot`);
+            return;
+
+          case 4:
+            this.$router.push(`/mobile/card/${vendor}?label=hot`);
+            return;
+        }
       }
 
-      if (this.isShowLoading) {
+      let newWindow;
+      if (this.eventData.url) {
+        if (!this.eventData.is_secure || this.eventData.is_secure === "false") {
+          let url = this.eventData.url;
+          if (url.indexOf("://") === -1) {
+            url = `https://${url}`;
+          }
+          newWindow = window.open(url);
+          return;
+        }
+
+        if (this.displayType === "game") {
+          // 直接使用客端網址+url
+          // url: `${window.location.origin}${this.eventData.url}`;
+          let cid = getCookie("cid");
+          newWindow = window.open(`${this.eventData.url}&cid=${cid}`, "_blank");
+          return;
+          //   goLangApiRequest({
+          //     method: "get",
+          //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Casino/Event?lang=zh-ch`,
+          //     params: {
+          //       lang: "zh-cn",
+          //       url: this.eventData.url,
+          //       vendor: vendor,
+          //       kind: kind
+          //       // eventId: this.eventData.eventId
+          //     }
+          //   })
+          //     .then(res => {
+          //       if (res.status === "000") {
+          //         newWindow.location.href = res.data.ret;
+          //       } else {
+          //         newWindow.close();
+          //         this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+          //       }
+          //     })
+          //     .catch(error => {
+          //       newWindow.close();
+          //       if (error && error.data && error.data.msg) {
+          //         this.actionSetGlobalMessage({ msg: error.data.msg });
+          //       }
+          //     });
+
+          //   return;
+        }
+      }
+
+      if (this.isLoading) {
         return;
       }
 
-      this.isShowLoading = true;
+      this.isLoading = true;
 
       const openGameSuccessFunc = res => {
-        this.isShowLoading = false;
-        window.GAME_RELOAD = true;
+        this.isLoading = false;
       };
 
       const openGameFailFunc = res => {
-        this.isShowLoading = false;
-        window.GAME_RELOAD = undefined;
+        this.isLoading = false;
 
         if (res && res.data) {
           let data = res.data;
@@ -162,7 +173,6 @@ export default {
                   cid: getCookie("cid")
                 }
               }).then(res => {
-                console.log(res);
                 if (res.status === "000") {
                   if (res.data.status != -1) {
                     this.actionSetShowRedEnvelope(res.data);

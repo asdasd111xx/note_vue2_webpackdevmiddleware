@@ -138,7 +138,7 @@ export default {
           text: "S_ORIGIN_PASSWORD",
           type: "password",
           value: "",
-          regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
           errorMsg: "S_PASSWORD_ERROR",
           placeholder: "请输入原密码",
           maxlength: 12,
@@ -151,7 +151,7 @@ export default {
           text: "S_NEW_PWD",
           type: "password",
           value: "",
-          regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
           errorMsg: "S_PASSWORD_ERROR",
           placeholder: "请设置新密码(6-12位字母或数字)",
           maxlength: 12,
@@ -164,7 +164,7 @@ export default {
           text: "S_CHK_PWD",
           type: "password",
           value: "",
-          regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
           errorMsg: "S_PASSWORD_ERROR",
           placeholder: "请再次输入密码",
           maxlength: 12,
@@ -248,39 +248,50 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     verification(id, value) {
+      console.log(`verification id is ${id}`);
+      console.log(`verification value is ${value}`);
       if (id !== "email") {
         this.actionVerificationFormData({
           target: "password",
           value: value
         }).then(val => {
           this.pwdResetInfo[id].value = val;
+          if (
+            (id === "confNewPwd" &&
+              this.pwdResetInfo["confNewPwd"].value !==
+                this.pwdResetInfo["newPwd"].value) ||
+            (id === "newPwd" &&
+              this.pwdResetInfo["confNewPwd"].value != "" &&
+              this.pwdResetInfo["confNewPwd"].value !==
+                this.pwdResetInfo["newPwd"].value) ||
+            (id === "pwd" &&
+              this.pwdResetInfo["confNewPwd"].value != "" &&
+              this.pwdResetInfo["confNewPwd"].value !==
+                this.pwdResetInfo["newPwd"].value)
+          ) {
+            this.errMsg = "确认密码预设要跟密码一致";
+          } else {
+            this.errMsg = "";
+          }
+
+          const data = this.pwdResetInfo[id];
+          const re = new RegExp(data.regExp);
+          const msg = this.$t(data.errorMsg);
+
+          if (!re.test(val)) {
+            this.errMsg = msg;
+          }
         });
-      }
-      this.pwdResetInfo[id].value = value.trim();
-      if (
-        (id === "confNewPwd" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value) ||
-        (id === "newPwd" &&
-          this.pwdResetInfo["confNewPwd"].value != "" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value) ||
-        (id === "pwd" &&
-          this.pwdResetInfo["confNewPwd"].value != "" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value)
-      ) {
-        this.errMsg = "确认密码预设要跟密码一致";
       } else {
-        this.errMsg = "";
-      }
+        this.pwdResetInfo[id].value = value.trim();
 
-      const data = this.pwdResetInfo[id];
-      const re = new RegExp(data.regExp);
-      const msg = this.$t(data.errorMsg);
+        const data = this.pwdResetInfo[id];
+        const re = new RegExp(data.regExp);
+        const msg = this.$t(data.errorMsg);
 
-      if (!re.test(value)) {
-        this.errMsg = msg;
+        if (!re.test(value)) {
+          this.errMsg = msg;
+        }
       }
     },
     pwdModifySubmit() {
@@ -333,12 +344,11 @@ export default {
     },
     pwdResetSubmit() {
       if (!this.submitActive) return;
-
       const pwdInfo = {
         username: this.pwdResetInfo.userName.value,
         email: this.pwdResetInfo.email.value,
-        new_password: this.pwdResetInfo.newPwd.value.toLowerCase(),
-        confirm_password: this.pwdResetInfo.confNewPwd.value.toLowerCase(),
+        new_password: this.pwdResetInfo.newPwd.value,
+        confirm_password: this.pwdResetInfo.confNewPwd.value,
         keyring: this.$route.query.kr
       };
       if (this.$route.query.type === "agent") {

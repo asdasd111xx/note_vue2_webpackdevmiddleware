@@ -52,58 +52,67 @@ export default {
           img: "deposit",
           key: "deposit",
           info: "充值极速到帐",
-          needLogin: true
+          needLogin: true,
+          isShow: true
         },
         {
           name: "购买钻石",
           img: "diamond",
           key: "diamond",
           info: "秒充值直接看",
-          needLogin: false
+          needLogin: false,
+          isShow: false
         },
         {
           name: "提现教程",
           img: "withdraw",
           key: "withdraw",
           info: "极速提现仅需30秒",
-          needLogin: false
+          needLogin: false,
+          isShow: true
         },
         {
           name: this.$text("S_GAME_INTR", "游戏介绍"),
           img: "gameintro",
           key: "gameintro",
           info: "主流体育彩票玩法",
-          needLogin: false
+          needLogin: false,
+          isShow: true
         },
         {
           name: this.$text("S_TECH_SUP", "技术支持"),
           img: "support",
           key: "support",
           info: "提供全面技术支持",
-          needLogin: false
+          needLogin: false,
+          isShow: true
         },
         {
           name: this.$text("S_CONTACT_US", "联系我们"),
           img: "contact",
           key: "contact",
           info: "为您提供全天候服务",
-          needLogin: false
+          needLogin: false,
+          isShow: true
         },
         {
           name: "用户须知",
           img: "support",
           key: "tips",
           info: "确保您的权益",
-          needLogin: false
+          needLogin: false,
+          isShow: true
         },
         {
           name: "隐私政策",
           img: "support",
           key: "privacy",
           info: "保障您的隐私",
-          needLogin: false
+          needLogin: false,
+          isShow: true
         }
-      ]
+      ].filter(item => item.isShow),
+      title: this.$route.query.title ? `title=${this.$route.query.title}` : ""
     };
   },
   computed: {
@@ -114,7 +123,13 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (this.$route.query.more) {
+            this.$router.replace(
+              `/mobile/mcenter/balanceTrans?more=${this.$route.query.more}&${this.title}`
+            );
+          } else {
+            this.$router.back();
+          }
         },
         title: this.$text("S_HELP_CENTER", "帮助中心")
       };

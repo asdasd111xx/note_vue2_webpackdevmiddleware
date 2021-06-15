@@ -166,7 +166,25 @@ export default {
       },
       searchText: "",
       isLabelReceive: false,
-      labelData: [],
+      labelData: [
+        {
+          label: "all",
+          name: this.$t("S_ALL")
+        },
+        {
+          label: "activity",
+          name: this.$t("S_IN_PROGRESS_ACTIVITY")
+        },
+        {
+          label: "new",
+          name: this.$t("S_NEW_GAMES")
+        },
+        {
+          label: "hot",
+          name: this.$t("S_HOT")
+        }
+      ],
+      hasActivity: false,
       isGameDataReceive: false,
       gameData: [],
       activityData: []
@@ -232,7 +250,7 @@ export default {
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
-    this.getGameLabelList();
+    this.getActivityList();
   },
   methods: {
     ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
@@ -243,32 +261,16 @@ export default {
      * 取得遊戲平台分類
      */
     getGameLabelList() {
-      // 電子分類預設資料
-      const defaultData = [
-        {
-          label: "all",
-          name: this.$t("S_ALL")
-        },
-        // {
-        //   label: "activity",
-        //   name: this.$t("S_IN_PROGRESS_ACTIVITY")
-        // },
-        {
-          label: "new",
-          name: this.$t("S_NEW_GAMES")
-        },
-        {
-          label: "hot",
-          name: this.$t("S_HOT")
-        }
-      ];
+      if (!this.hasActivity) {
+        this.labelData = this.labelData.filter(i => i.label !== "activity");
+      }
 
       // 抓取遊戲導覽清單
       ajax({
         method: "get",
         url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
         success: response => {
-          this.labelData = defaultData.concat(response.ret);
+          this.labelData = this.labelData.concat(response.ret);
         }
       }).then(response => {
         if (this.loginStatus) {
@@ -282,7 +284,7 @@ export default {
           return;
         }
         if (
-          !defaultData
+          !this.labelData
             .concat(response.ret)
             .some(item => item.label === this.paramsData.label)
         ) {
@@ -305,64 +307,64 @@ export default {
         this.paramsData.label = "favorite";
       }
 
-      this.getActivityList();
       this.updateGameData(this.$route.query.label);
     },
     getActivityList() {
-      if (["activity", "all", ""].includes(this.$route.query.label)) {
-        goLangApiRequest({
-          method: "post",
-          url:
-            this.siteConfig.YABO_GOLANG_API_DOMAIN +
-            `/xbb/Vendor/${this.vendor}/Event`,
-          params: {
-            lang: "zh-cn",
-            kind: 3,
-            games: true,
-            enable: true,
-            firstResult: this.paramsData.firstResult,
-            maxResults: this.paramsData.maxResults
-          }
-        })
-          .then(res => {
-            if (res && res.status === "000") {
-              // 1.尚未開始 2.活動預告 3.活動中 4.結果查詢 5.已結束
-              // 1,5 不顯示
-              if (res.data.ret.events && res.data.ret.events.length > 0) {
-                let result = res.data;
-                let activityEvents = result.ret.events
-                  .filter(i => i.display)
-                  .filter(
-                    i => +i.status === 3 || +i.status === 4 || +i.status === 5
-                  );
+      goLangApiRequest({
+        method: "post",
+        url:
+          this.siteConfig.YABO_GOLANG_API_DOMAIN +
+          `/xbb/Vendor/${this.vendor}/Event`,
+        params: {
+          lang: "zh-cn",
+          kind: 3,
+          games: true,
+          enable: true,
+          firstResult: this.paramsData.firstResult,
+          maxResults: this.paramsData.maxResults
+        }
+      })
+        .then(res => {
+          if (res && res.status === "000") {
+            // 1.尚未開始 2.活動預告 3.活動中 4.結果查詢 5.已結束
+            // 1,5 不顯示
+            if (res.data.ret.events && res.data.ret.events.length > 0) {
+              let result = res.data;
+              let activityEvents = result.ret.events
+                .filter(i => i.display)
+                .filter(
+                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
+                );
 
-                //  入口圖排序【活動中->活動預告->結果查詢】
-                if (activityEvents) {
-                  result.ret.events = activityEvents.sort((i, j) => {
-                    if (i.kind === 3) {
-                      return 1;
-                    }
-                    return i.kind - j.kind > 0 ? 1 : -1;
-                  });
-                }
-                // this.activityData = result;
-                return;
+              //  入口圖排序【活動中->活動預告->結果查詢】
+              if (activityEvents) {
+                this.hasActivity = true;
+                result.ret.events = activityEvents.sort((i, j) => {
+                  if (i.kind === 3) {
+                    return 1;
+                  }
+                  return i.kind - j.kind > 0 ? 1 : -1;
+                });
               }
+              this.activityData = result;
             }
+          }
 
-            if (res && res.status !== "000") {
-              this.actionSetGlobalMessage({
-                msg: res.msg,
-                code: res.code
-              });
-            }
-          })
-          .catch(error => {
-            if (error && error.data.msg) {
-              this.actionSetGlobalMessage(error.data.msg);
-            }
-          });
-      }
+          if (res && res.status !== "000") {
+            this.actionSetGlobalMessage({
+              msg: res.msg,
+              code: res.code
+            });
+          }
+
+          this.getGameLabelList();
+          this.updateGameData();
+        })
+        .catch(error => {
+          if (error && error.data.msg) {
+            this.actionSetGlobalMessage(error.data.msg);
+          }
+        });
     },
     /**
      * 設定搜尋文字
@@ -383,6 +385,9 @@ export default {
      * @param {string} value - 設定的分類
      */
     changeGameLabel(value) {
+      if (+value === +this.paramsData.label) {
+        return;
+      }
       this.isInit = false;
       this.paramsData = {
         ...this.paramsData,

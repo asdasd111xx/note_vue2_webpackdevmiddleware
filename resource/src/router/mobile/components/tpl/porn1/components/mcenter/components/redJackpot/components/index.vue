@@ -99,8 +99,7 @@ export default {
       showInfinite: false,
       redJackpotData: {},
       total: {},
-      tips:
-        "．登录即可领取红包彩金，每日最多可领取一次</br>．每次彩金领取后需完成任务，隔天可继续领取",
+      tips: "",
       detailInfo: null,
       optionType: null,
       outPutYime: "",

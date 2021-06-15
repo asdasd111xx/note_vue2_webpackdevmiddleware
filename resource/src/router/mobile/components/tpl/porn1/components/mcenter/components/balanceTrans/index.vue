@@ -4,11 +4,14 @@
       <balanceBack :has-link="true" />
 
       <!-- 僅限鴨博有 Swag -->
-      <template v-if="themeTPL === 'porn1'">
+      <!-- <template v-if="themeTPL === 'porn1'">
         <swagBlock />
-      </template>
+      </template> -->
 
-      <balanceTrans :is-show-block-tips.sync="isShowBlockTips" />
+      <balanceTrans
+        :is-show-block-tips.sync="isShowBlockTips"
+        :is-show-more-out.sync="isShowMoreOut"
+      />
       <blockListTips
         v-if="isShowBlockTips"
         type="transfer"
@@ -23,7 +26,7 @@ import { mapGetters, mapActions } from "vuex";
 import balanceBack from "../../../mcenter/components/common/balanceBack";
 import balanceTrans from "./components/index";
 import blockListTips from "../../../common/blockListTips";
-import swagBlock from "./components/swagBlock";
+// import swagBlock from "./components/swagBlock";
 import mobileContainer from "../../../common/mobileContainer";
 
 export default {
@@ -31,13 +34,20 @@ export default {
     mobileContainer,
     blockListTips,
     balanceTrans,
-    balanceBack,
-    swagBlock
+    balanceBack
+    // swagBlock
   },
   data() {
     return {
-      isShowBlockTips: false
+      isShowBlockTips: false,
+      isShowMoreOut: true,
+      title: this.$route.query.title ? `title=${this.$route.query.title}` : ""
     };
+  },
+  created() {
+    if (this.$route.query.more !== undefined && this.$route.query.more !== "") {
+      this.isShowMoreOut = JSON.parse(this.$route.query.more.toLowerCase());
+    }
   },
   computed: {
     ...mapGetters({
@@ -52,10 +62,21 @@ export default {
         title: this.$text("S_transfer", "转帐"),
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (
+            this.$route.query.more != undefined &&
+            this.$route.query.more !== ""
+          ) {
+            if (this.$route.query.title === "wallet") {
+              this.$router.push("/mobile/mcenter/wallet");
+            } else {
+              this.$router.push("/mobile");
+            }
+          } else {
+            this.$router.back();
+          }
         },
         hasHelp: {
-          url: "/mobile/mcenter/helpCenter"
+          url: `/mobile/mcenter/helpCenter?more=${this.isShowMoreOut}&${this.title}`
         }
       };
     }

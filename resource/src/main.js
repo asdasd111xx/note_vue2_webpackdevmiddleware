@@ -15,6 +15,7 @@ import "@/config/iconList";
 import App from "./App";
 // Icon 組件全域使用, 只載入有使用的 Icon 資料
 import Icon from "vue-awesome/components/Icon";
+import LoadScript from "vue-plugin-load-script";
 import Loading from "vue-loading-overlay";
 import Meta from "vue-meta";
 // vee-validate - 表單驗證
@@ -41,7 +42,7 @@ import router from "./router";
 import store from "./store";
 import text from "./lib/text";
 import vStyle from "./lib/vStyle";
-import LoadScript from "vue-plugin-load-script";
+
 if (window && window.parent) {
   window.parent.postMessage(
     { event: "SELF_INTO", data: { msg: "iframe loaded." } },
@@ -65,7 +66,7 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("enable-swag");
 
   if (reload) {
-    window.location.reload(true);
+    window.location.reload();
   }
 };
 

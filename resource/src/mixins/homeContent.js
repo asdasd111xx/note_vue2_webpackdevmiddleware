@@ -200,19 +200,21 @@ export default {
       this.isReceive = true;
       setTimeout(() => {
         this.onResize();
-        let defaultType =
-          this.siteConfig.MOBILE_WEB_TPL === "porn1" ? "welfare" : "all";
+        //0616 預設選項為list 第一個
+        let defaultType = "";
+        let selectIndex = 0;
         if (localStorage.getItem("home-menu-type")) {
           defaultType = localStorage.getItem("home-menu-type");
+          let defaultIndex = this.typeList.findIndex(type => {
+            return type.icon.toLowerCase() === defaultType.toLowerCase();
+          });
+
+          defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+
+          selectIndex = this.typeList.length / 3 + defaultIndex;
+        } else {
+          selectIndex = this.typeList.length / 3;
         }
-
-        let defaultIndex = this.typeList.findIndex(type => {
-          return type.icon.toLowerCase() === defaultType.toLowerCase();
-        });
-
-        defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
-
-        const selectIndex = this.typeList.length / 3 + defaultIndex;
         this.onChangeSelectIndex(selectIndex);
         this.isShow = true;
       }, 300);
@@ -542,6 +544,7 @@ export default {
         case "strong_activity":
           // 預設帶全部
           // this.$router.push(`/mobile/activity/all/?kind=${game.kind}`);
+          localStorage.setItem("iframe-third-url-title", game.name);
           this.$router.push(`/mobile/activity/all/`);
           return;
 

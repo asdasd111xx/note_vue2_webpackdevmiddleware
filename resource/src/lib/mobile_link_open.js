@@ -343,34 +343,16 @@ export default target => {
       return;
     }
 
-    let gameName = "";
-    goLangApiRequest({
-      method: "post",
-      url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
-      params: {
-        lang: "zh-cn",
+    openGame(
+      {
         kind: kind,
         vendor: vendor,
         code: code,
-        firstResult: 0,
-        maxResults: 20
-      }
-    }).then(res => {
-      if (res && res.data && res.data.ret && res.data.ret[0]) {
-        gameName = res.data.ret[0].name;
-      }
-
-      openGame(
-        {
-          kind: kind,
-          vendor: vendor,
-          code: code,
-          gameName: gameName
-        },
-        openGameSuccessFunc,
-        openGameFailFunc
-      );
-    });
+        getGames: true
+      },
+      openGameSuccessFunc,
+      openGameFailFunc
+    );
 
     const openGameSuccessFunc = res => {};
 

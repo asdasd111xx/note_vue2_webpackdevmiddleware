@@ -35,10 +35,8 @@
         <div>联盟伙伴</div>
         <div :class="$style['content']">
           <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_swag.png`)"
-            />
-            <div>SWAG色播</div>
+            <img :src="$getCdnPath(`/static/image/_new/about/logo_jdb.png`)" />
+            <div>JDB集团</div>
           </div>
           <div :class="$style['cell']">
             <img
@@ -92,37 +90,38 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
     return {
-      version: ''
-    }
+      version: ""
+    };
   },
   components: {
-    mobileContainer,
+    mobileContainer
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
-      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: `关于${this.siteConfig.SITE_NAME}`,
+        onClick: () => {
+          this.$router.back();
+        },
+        title: `关于${this.siteConfig.SITE_NAME}`
       };
-    },
+    }
   },
   created() {
-    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
+    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
 

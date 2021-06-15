@@ -3,6 +3,11 @@
 .invite-wrap {
   .content {
     color: #414655;
+
+    div:last-of-type {
+      font-size: 15px;
+      padding-top: 10px;
+    }
   }
 }
 

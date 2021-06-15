@@ -14,38 +14,37 @@
           </button>
         </div>
         <ul v-else :class="$style['feedback-list']">
-          <li
-            v-for="message in feedbackAddReply"
-            :key="message.id"
-            :class="[$style['feedback-item'], 'clearfix']"
-            @click="getCurrentMassage(message)"
-          >
-            <div :class="$style['feedback-icon']">
-              <template v-if="typeList && typeList.length > 0">
-                <img
-                  :src="
-                    `/static/image/${theme}/mcenter/feedback/question_${
-                      typeList.find(i => i.id === String(message.type_id))
-                        .imageId
-                    }.png`
-                  "
-                />
-              </template>
-            </div>
-            <div :class="$style['feedback-content']">
-              <div class="clearfix">
-                <h3 :class="$style['title']">{{ message.title }}</h3>
-                <p :class="$style['time']">
-                  {{ message.created_at | getTime }}
-                </p>
+          <template v-for="message in feedbackAddReply">
+            <li
+              v-if="message.imageId"
+              :class="[$style['feedback-item'], 'clearfix']"
+              :key="message.id"
+              @click="getCurrentMassage(message)"
+            >
+              <div :class="$style['feedback-icon']">
+                <template v-if="typeList && typeList.length > 0">
+                  <img
+                    :src="
+                      `/static/image/${theme}/mcenter/feedback/question_${message.imageId}.png`
+                    "
+                  />
+                </template>
               </div>
+              <div :class="$style['feedback-content']">
+                <div class="clearfix">
+                  <h3 :class="$style['title']">{{ message.title }}</h3>
+                  <p :class="$style['time']">
+                    {{ message.created_at | getTime }}
+                  </p>
+                </div>
 
-              <p
-                :class="$style['question']"
-                v-html="getShortConetent(message.content)"
-              ></p>
-            </div>
-          </li>
+                <p
+                  :class="$style['question']"
+                  v-html="getShortConetent(message.content)"
+                ></p>
+              </div>
+            </li>
+          </template>
         </ul>
       </template>
     </template>
@@ -254,7 +253,15 @@ export default {
           }
         }
       }
-      return this.feedbackAddReply;
+
+      //反饋列表客服圖片
+      for (let i in this.typeList) {
+        for (let j in this.feedbackAddReply) {
+          if (this.feedbackAddReply[j].type_id == this.typeList[i].id) {
+            this.feedbackAddReply[j].imageId = this.typeList[i].imageId;
+          }
+        }
+      }
     },
     getAvatarSrc() {
       if (!this.loginStatus) return;

@@ -35,33 +35,35 @@ export default {
       tipContent1: "",
       tipContent1_desc: "",
       tipContent2: "",
-      tipContent2_desc: "",
-    }
+      tipContent2_desc: ""
+    };
   },
   computed: {
     ...mapGetters({
-      rechargeConfig: 'getRechargeConfig',
+      siteConfig: "getSiteConfig",
+      rechargeConfig: "getRechargeConfig"
     }),
+
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
-    ...mapActions([
-      'actionSetRechargeConfig'
-    ]),
+    ...mapActions(["actionSetRechargeConfig"])
   },
-  created() {
-
-  },
+  created() {},
   mounted() {
     this.actionSetRechargeConfig().then(() => {
       const config = this.rechargeConfig;
 
-      this.tipContent1 = `完成提现流水要求，`;
-      if (Number(config.recharger_offer_percent) === 0) {
-        this.tipContent1 += `额度转让无返利`;
-      } else {
-        this.tipContent1 += `额度转让即赠返利${config.recharger_offer_percent}%`;
+      this.tipContent1 = `完成提现流水要求`;
+      if (this.themeTPL === "porn1") {
+        if (Number(config.recharger_offer_percent) === 0) {
+          this.tipContent1 += `，额度转让无返利`;
+        } else {
+          this.tipContent1 += `，额度转让即赠返利${config.recharger_offer_percent}%`;
+        }
       }
-
       this.tipContent1_desc = `单笔转让最低${config.recharge_limit_audited_min}元、`;
       if (config.recharge_limit_audited_max_enable) {
         this.tipContent1_desc += `最高${config.recharge_limit_audited_max}元`;
@@ -69,18 +71,21 @@ export default {
         this.tipContent1_desc += `转让无上限`;
       }
 
-      this.tipContent2 = `未完成提现流水要求，额度转让无返利`;
+      this.tipContent2 =
+        this.themeTPL === "porn1"
+          ? `未完成提现流水要求，额度转让无返利`
+          : `未完成提现流水要求`;
       this.tipContent2_desc = `单笔转让最低${config.recharge_limit_unaudited_min}元、`;
       if (config.recharge_limit_unaudited_max_enable) {
         this.tipContent2_desc += `最高${config.recharge_limit_unaudited_max}元`;
       } else {
         this.tipContent2_desc += `转让无上限`;
       }
-    })
-  },
+    });
+  }
 };
 </script>
-<style lang="scss"  module>
+<style lang="scss" module>
 @import "../css/porn1.module.scss";
 
 .tips {

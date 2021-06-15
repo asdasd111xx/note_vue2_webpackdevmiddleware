@@ -127,8 +127,8 @@ export default {
       const { allValue, allText } = this;
       const reg = {
         username: /^[a-z1-9][a-z0-9]{3,19}$/,
-        password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
-        confirm_password: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/
+        password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
+        confirm_password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/
       };
       if (
         key === "username" ||
@@ -139,24 +139,40 @@ export default {
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
             allValue[key] = val;
+            allText[key].error = false;
             if (reg[key] && !reg[key].test(allValue[key])) {
               allText[key].error = true;
+              if (key === "confirm_password") {
+                allText[key].error =
+                  allValue.password !== allValue.confirm_password;
+                this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
+              }
+              return;
+            } else if (["password", "confirm_password"].includes(key)) {
+              allText["confirm_password"].error =
+                allValue.password !== allValue.confirm_password;
+              if (allValue.password !== allValue.confirm_password) {
+                this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
+              }
+
               return;
             }
           }
         );
       }
-      if (["password", "confirm_password"].includes(key)) {
-        if (allValue.confirm_password) {
-          allText.password.error = false;
-          allText.confirm_password.error =
-            allValue.password !== allValue.confirm_password;
-          return;
-        }
+      // if (["password", "confirm_password"].includes(key)) {
+      //   if (allValue.confirm_password) {
+      //     // allText.password.error = false;
+      //     allText.confirm_password.error =
+      //       allValue.password !== allValue.confirm_password;
 
-        allText.password.error = false;
-        return;
-      }
+      //     this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
+      //     return;
+      //   }
+
+      //   // allText.password.error = false;
+      //   return;
+      // }
 
       if (key === "captcha_text") {
         this.captchaError = false;
@@ -252,6 +268,7 @@ export default {
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/ByUpper`,
           params: {
             ...this.allValue,
+            aid: getCookie("aid") || "",
             confirmPassword: this.allValue["confirm_password"],
             captchaText: this.allValue["captcha_text"],
             code: this.agentCode,

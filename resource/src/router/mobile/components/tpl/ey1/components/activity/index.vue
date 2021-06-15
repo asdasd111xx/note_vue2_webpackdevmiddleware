@@ -23,9 +23,10 @@ export default {
   },
   computed: {
     headerConfig() {
+      let title = localStorage.getItem("iframe-third-url-title");
       return {
         prev: true,
-        title: this.lobbyName, // 大廳名稱由子元件同步回傳上來
+        title: title || this.lobbyName, // 大廳名稱由子元件同步回傳上來
         onClick: () => {
           if (localStorage.getItem("_iframe-back-route")) {
             const target =

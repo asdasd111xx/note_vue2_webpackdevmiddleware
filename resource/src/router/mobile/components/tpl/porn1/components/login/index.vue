@@ -63,6 +63,7 @@
                     password = $event.target.value
                       .replace(' ', '')
                       .trim()
+                      .replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, '')
                       .replace(/[\W]/g, '')
                   "
                   @keydown.13="keyDownSubmit()"

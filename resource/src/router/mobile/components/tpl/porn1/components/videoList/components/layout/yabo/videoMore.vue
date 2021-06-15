@@ -34,7 +34,13 @@
           isSingle ? $style['single'] : $style['multiple'],
           $style['video-cell']
         ]"
-        @click="handleVideo(info)"
+        @click="
+          $router.push({
+            name: 'videoPlay',
+            params: { id: info.id },
+            query: { source: $route.query.source }
+          })
+        "
       >
         <div :class="$style['image-wrap']">
           <img :src="defaultImg" :img-id="info.id" />
@@ -108,17 +114,6 @@ export default {
     this.changeTab(500);
 
     this.setVideoList();
-
-    this.$nextTick(() => {
-      if (window.location.hash) {
-        const hash = Number(window.location.hash.replace("#", "")) || 0;
-
-        const wrap = document.getElementById("video-list-wrap");
-        if (wrap) {
-          this.$refs["video-list-wrap"].scrollTop = hash;
-        }
-      }
-    });
   },
   beforeDestroy() {
     clearTimeout(this.changeTabTimer);
@@ -155,17 +150,6 @@ export default {
     }
   },
   methods: {
-    handleVideo(info) {
-      const videoWrap = this.$refs["video-list-wrap"].scrollTop;
-      window.location.replace(
-        `${window.location.pathname}${window.location.search}#${videoWrap}`
-      );
-      this.$router.push({
-        name: "videoPlay",
-        params: { id: info.id },
-        query: { source: this.$route.query.source }
-      });
-    },
     getVideoTab() {
       return pornRequest({
         method: "get",
@@ -189,11 +173,12 @@ export default {
     setSortId(value) {
       this.sortId = value;
       this.current = 0;
+
       this.$router.replace({
         query: {
           source: this.$route.query.source,
           tagId: this.tagId,
-          sortId: this.sortId
+          sortId: value
         }
       });
       this.$refs["video-list-wrap"].scrollTop = 0;
@@ -295,14 +280,6 @@ export default {
           this.videoList.forEach(item => {
             getEncryptImage(item);
           });
-          if (window.location.hash) {
-            //hash=>儲存上一頁video-list-wrap的位置
-            this.hash = Number(window.location.hash.replace("#", "")) || 0;
-            const wrap = document.getElementById("video-list-wrap");
-            if (wrap) {
-              this.$refs["video-list-wrap"].scrollTop = this.hash;
-            }
-          }
         }, 100);
       });
     }

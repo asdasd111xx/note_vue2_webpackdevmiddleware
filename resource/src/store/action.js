@@ -1816,10 +1816,9 @@ export const actionVerificationFormData = (
 
     case "password":
     case "confirm_password":
-      val = val
-        .replace(/[\W]/g, "")
-        .substring(0, 50)
-        .toLowerCase();
+      // val = val.replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, "");
+      val = val.replace(/[\W]/g, "").substring(0, 50);
+      // .toLowerCase();
       break;
 
     case "name":
@@ -1958,13 +1957,17 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       );
 
       if (domainListV2 && domainListV2.length > 0) {
-        let tmp =
-          domainListV2[Math.floor(Math.random() * domainListV2.length)].value;
+        let tmp = domainListV2[Math.floor(Math.random() * domainListV2.length)];
 
-        if (tmp && tmp.length > 0) {
+        let value = "";
+        if (tmp) {
+          value = tmp.value;
+        }
+
+        if (value && value.length > 0) {
           setCookie("s_enable", 1);
-          commit(types.SET_PORNDOMAIN, tmp);
-          getV2Token(tmp);
+          commit(types.SET_PORNDOMAIN, value);
+          getV2Token(value);
           return;
         }
       }

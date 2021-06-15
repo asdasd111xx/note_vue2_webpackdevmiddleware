@@ -150,7 +150,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+    <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">SWAG钱包</div>
         <div :class="$style['icon-block']">
@@ -190,7 +190,7 @@
           </div>
         </div>
       </div>
-    </template>
+    </template> -->
 
     <template v-if="['ey1'].includes(themeTPL)">
       <div :class="$style['swag-wrap']">
@@ -233,7 +233,7 @@
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
-          <div>邀请人首存即可获得</div>
+          <div v-if="['porn1'].includes(themeTPL)">邀请人首存即可获得</div>
         </div>
       </template>
 
@@ -339,7 +339,7 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      swagDiamondBalance: "0",
+      //swagDiamondBalance: "0",
       birdBalance: "--",
       redJackpotData: null,
       loginMoney: ""
@@ -353,8 +353,8 @@ export default {
       siteConfig: "getSiteConfig",
       hasBank: "getHasBank",
       rechargeConfig: "getRechargeConfig",
-      swagConfig: "getSwagConfig",
-      swagBalance: "getSwagBalance",
+      // swagConfig: "getSwagConfig",
+      // swagBalance: "getSwagBalance",
       withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
@@ -439,7 +439,7 @@ export default {
               case "porn1":
               case "sg1":
               case "ey1":
-                this.$router.push("/mobile/mcenter/balanceTrans");
+                this.$router.push("/mobile/mcenter/balanceTrans?title=wallet");
                 break;
 
               // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useGlobalWithdrawCheck(path)
@@ -500,9 +500,9 @@ export default {
     }
 
     if (["porn1", "sg1"].includes(this.themeTPL)) {
-      this.initSWAGConfig();
+      // this.initSWAGConfig();
       if (this.membalance && this.membalance.total) {
-        this.loginMoney = `${this.membalance.total}`;
+        // this.loginMoney = `${this.membalance.total}`;
       } else {
         this.loginMoney = "";
       }
@@ -535,9 +535,9 @@ export default {
     this.getRecordList();
   },
   watch: {
-    swagBalance(val) {
-      this.swagDiamondBalance = val.balance;
-    },
+    // swagBalance(val) {
+    //   this.swagDiamondBalance = val.balance;
+    // },
     membalance() {
       if (["ey1"].includes(this.themeTPL)) {
         this.loginMoney = `${this.membalance.total}`;
@@ -709,12 +709,24 @@ export default {
           if (res.data.enable) {
             if (this.loginStatus) {
               this.loginMoney = `${Number(
-                parseFloat(this.loginMoney) + parseInt(res.data.remain_bonus)
+                parseFloat(this.membalance.total) +
+                  parseInt(res.data.remain_bonus)
               ).toFixed(2)}`;
+            }
+          } else {
+            if (this.membalance && this.membalance.total) {
+              this.loginMoney = `${this.membalance.total}`;
+            } else {
+              this.loginMoney = "";
             }
           }
         } else {
           this.redJackpotData = null;
+          if (this.membalance && this.membalance.total) {
+            this.loginMoney = `${this.membalance.total}`;
+          } else {
+            this.loginMoney = "";
+          }
         }
       });
     }

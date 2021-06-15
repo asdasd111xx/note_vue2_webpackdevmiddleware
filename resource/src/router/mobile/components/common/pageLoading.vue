@@ -44,11 +44,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 500;
+  z-index: 999;
   text-align: center;
   background: rgba(0, 0, 0, 0.2);
 }
 
-.loading-item {
-}
 </style>
