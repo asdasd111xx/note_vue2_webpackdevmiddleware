@@ -143,6 +143,8 @@ export default {
             if (reg[key] && !reg[key].test(allValue[key])) {
               allText[key].error = true;
               if (key === "confirm_password") {
+                allText[key].error =
+                  allValue.password !== allValue.confirm_password;
                 this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
               }
               return;
