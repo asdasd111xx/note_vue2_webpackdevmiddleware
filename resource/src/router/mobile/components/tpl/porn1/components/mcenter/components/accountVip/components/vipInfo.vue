@@ -82,11 +82,9 @@
                   `${
                     currentLevelData.monthly_gift == ""
                       ? "--"
-                      : currentLevelData.monthly_gift
-                  }/${
-                    currentLevelData.monthly_gift == ""
-                      ? "--"
-                      : currentLevelData.monthly_gift
+                      : currentLevelData.monthly_gift +
+                        "/" +
+                        currentLevelData.monthly_gift
                   }`
                 }}
               </div>
