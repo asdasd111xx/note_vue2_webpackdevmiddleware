@@ -81,6 +81,7 @@ export default {
       localStorage.removeItem("open-game-link");
       this.isLoading = false;
       location.replace(openGameLink);
+
       return;
     } else {
       console.log("open-game-link 遺失");
