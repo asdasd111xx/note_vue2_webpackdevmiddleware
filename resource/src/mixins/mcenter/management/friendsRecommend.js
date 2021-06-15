@@ -148,8 +148,8 @@ export default {
                 this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
               }
               return;
-            } else if (key === "confirm_password") {
-              allText[key].error =
+            } else if (["password", "confirm_password"].includes(key)) {
+              allText["confirm_password"].error =
                 allValue.password !== allValue.confirm_password;
               if (allValue.password !== allValue.confirm_password) {
                 this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
