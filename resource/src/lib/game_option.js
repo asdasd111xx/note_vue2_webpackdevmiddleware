@@ -47,6 +47,19 @@ const embedGamesList = [
   // }
 ];
 
+// ("EVO视讯");
+// ("500万彩票");
+// ("丝瓜直播");
+// ("PT");
+const embedGameVendorList = [
+  "evo",
+  "allwin",
+  "sigua_ly",
+  "lg_yb_card",
+  "lg_yb_casino",
+  "jdb",
+  "bc"
+];
 const checkVersion = function() {
   var agent = window.navigator.userAgent,
     start = agent.indexOf("OS");
