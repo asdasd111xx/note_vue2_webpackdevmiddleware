@@ -201,6 +201,53 @@ trigger:
 
 ---
 kind: pipeline
+name: yiyuanPipeline(istioBeta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: push2GCR-Beta
+  image: plugins/gcr
+  settings:
+    build_args:
+    - website=beta
+    - product=yiyuan
+    json_key:
+      from_secret: GOOGLE_CREDENTIALS
+    repo: gcr.io/rd7-project/yaboxxx-web
+    tags:
+    - latest
+    - beta-${DRONE_COMMIT}
+    - ${DRONE_TAG}
+
+- name: deploy2GKE-Beta
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/yiyuan/.istio-kube.yml
+    vars:
+      deployName: yiyuan-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: nginx-ssl-qa
+      nfs: 10.17.0.128
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+  - tag
+  ref:
+  - refs/tags/yiyuanBeta-*
+
+---
+kind: pipeline
 name: yiyuanPipeline(istioProd)
 
 platform:
@@ -337,6 +384,53 @@ trigger:
 
 ---
 kind: pipeline
+name: siguaPipeline(originBeta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: push2GCR-Beta
+  image: plugins/gcr
+  settings:
+    build_args:
+    - website=beta
+    - product=sigua
+    json_key:
+      from_secret: GOOGLE_CREDENTIALS
+    repo: gcr.io/rd7-project/yaboxxx-web
+    tags:
+    - latest
+    - beta-${DRONE_COMMIT}
+    - ${DRONE_TAG}
+
+- name: deploy2GKE-Beta
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/sigua/.kube.yml
+    vars:
+      deployName: sgsp-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: sgsp-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: ""
+      nfs: 10.17.0.128
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+  - tag
+  ref:
+  - refs/tags/siguaBeta-*
+
+---
+kind: pipeline
 name: siguaPipeline(originProd)
 
 platform:
@@ -470,6 +564,53 @@ trigger:
   - tag
   ref:
   - refs/tags/siguaQA-*
+
+---
+kind: pipeline
+name: siguaPipeline(istioBeta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: push2GCR-Beta
+  image: plugins/gcr
+  settings:
+    build_args:
+    - website=beta
+    - product=sigua
+    json_key:
+      from_secret: GOOGLE_CREDENTIALS
+    repo: gcr.io/rd7-project/yaboxxx-web
+    tags:
+    - latest
+    - beta-${DRONE_COMMIT}
+    - ${DRONE_TAG}
+
+- name: deploy2GKE-Beta
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/sigua/.istio-kube.yml
+    vars:
+      deployName: sigua-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: sgsp-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: ""
+      nfs: 10.17.0.128
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+  - tag
+  ref:
+  - refs/tags/siguaBeta-*
 
 ---
 kind: pipeline
@@ -677,6 +818,53 @@ trigger:
   - tag
   ref:
   - refs/tags/yaboQA-*
+
+---
+kind: pipeline
+name: yaboPipeline(istioBeta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: push2GCR-Beta
+  image: plugins/gcr
+  settings:
+    build_args:
+    - website=beta
+    - product=yabo
+    json_key:
+      from_secret: GOOGLE_CREDENTIALS
+    repo: gcr.io/rd7-project/yaboxxx-web
+    tags:
+    - latest
+    - beta-${DRONE_COMMIT}
+    - ${DRONE_TAG}
+
+- name: deploy2GKE-Beta
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/yabo/.istio-kube.yml
+    vars:
+      deployName: yabo-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: ""
+      nfs: 10.17.0.128
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+  - tag
+  ref:
+  - refs/tags/yaboBeta-*
 
 ---
 kind: pipeline
