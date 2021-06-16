@@ -345,8 +345,8 @@ export default {
           kind: 3,
           games: true,
           enable: true,
-          firstResult: this.paramsData.firstResult,
-          maxResults: this.paramsData.maxResults
+          firstResult: 0,
+          maxResults: 100
         }
       })
         .then(res => {
@@ -527,7 +527,7 @@ export default {
             : [];
 
         // 活動中頁籤只顯示活動中
-        if (isActivityLabel) {
+        if (isActivityLabel && activityEvents) {
           activityEvents = activityEvents.filter(i => i.status === 3);
         }
 
@@ -540,14 +540,11 @@ export default {
         if (isActivityLabel) {
           list.push(...activityGames);
         } else {
+          this.paramsData.firstResult += +response.ret.length;
           list.push(...response.ret);
         }
 
         this.gameData.push(...list);
-        this.paramsData.firstResult = isAllLabel
-          ? +response.ret.length
-          : +this.gameData.length;
-
         this.isReceive = false;
         this.isGameDataReceive = true;
 
