@@ -1377,7 +1377,7 @@ export default {
             let check = true;
 
             //CGPay取款戶名核實機制
-            if (!res.data.ret.name) {
+            if (!res.data.ret.wallet) {
               this.actionSetGlobalMessage({
                 msg: "钱包注册姓名与真实姓名不符"
               });
