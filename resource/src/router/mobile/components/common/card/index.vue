@@ -315,11 +315,11 @@ export default {
           `/xbb/Vendor/${this.vendor}/Event`,
         params: {
           lang: "zh-cn",
-          kind: 3,
+          kind: 5,
           games: true,
           enable: true,
-          firstResult: this.paramsData.firstResult,
-          maxResults: this.paramsData.maxResults
+          firstResult: 0,
+          maxResults: 100
         }
       })
         .then(res => {
@@ -492,12 +492,17 @@ export default {
             ? this.activityData.ret.games
             : [];
 
-        const activityEvents =
+        let activityEvents =
           this.activityData.ret &&
           this.activityData.ret &&
           this.activityData.ret.events
             ? this.activityData.ret.events
             : [];
+
+        // 活動中頁籤只顯示活動中
+        if (isActivityLabel && activityEvents) {
+          activityEvents = activityEvents.filter(i => i.status === 3);
+        }
 
         let list = [];
         if (this.paramsData.firstResult === 0) {
@@ -508,14 +513,11 @@ export default {
         if (isActivityLabel) {
           list.push(...activityGames);
         } else {
+          this.paramsData.firstResult += +response.ret.length;
           list.push(...response.ret);
         }
 
         this.gameData.push(...list);
-        this.paramsData.firstResult = isAllLabel
-          ? +response.ret.length
-          : +this.gameData.length;
-
         this.isReceive = false;
         this.isGameDataReceive = true;
 
