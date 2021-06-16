@@ -265,49 +265,47 @@ export default {
         this.labelData = this.labelData.filter(i => i.label !== "activity");
       }
 
-      // 抓取遊戲導覽清單
-      ajax({
-        method: "get",
-        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
-        success: response => {
-          this.labelData = this.labelData.concat(response.ret);
-        }
-      }).then(response => {
-        if (this.loginStatus) {
-          let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
-          this.labelData = this.labelData.concat(favData);
-        }
-        // this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
-        this.isLabelReceive = true;
-        if (this.$route.query.label) {
-          this.paramsData.label = this.$route.query.label;
-          return;
-        }
-        if (
-          !this.labelData
-            .concat(response.ret)
-            .some(item => item.label === this.paramsData.label)
-        ) {
-          this.paramsData.label = "";
-        }
+      if (!this.isLabelReceive) {
+        // 抓取遊戲導覽清單
+        ajax({
+          method: "get",
+          url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
+          success: response => {
+            this.labelData = this.labelData.concat(response.ret);
+          }
+        }).then(response => {
+          if (this.loginStatus) {
+            let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
+            this.labelData = this.labelData.concat(favData);
+          }
+          this.isLabelReceive = true;
+        });
 
-        if (this.$route.query.label) {
-          this.paramsData.label = this.$route.query.label;
-          return;
+        if (this.$route.query.label == "favorite") {
+          this.isFavorite = "favorite";
+          this.paramsData.label = "favorite";
         }
-
-        if (this.$route.params.type) {
-          this.paramsData.label = this.$route.params.type;
-          return;
-        }
-      });
-
-      if (this.$route.query.label == "favorite") {
-        this.isFavorite = "favorite";
-        this.paramsData.label = "favorite";
       }
 
-      this.updateGameData(this.$route.query.label);
+      // if (
+      //   !this.labelData
+      //     .concat(response.ret)
+      //     .some(item => item.label === this.paramsData.label)
+      // ) {
+      //   this.paramsData.label = "";
+      // }
+
+      if (this.$route.query.label) {
+        this.paramsData.label = this.$route.query.label;
+        return;
+      }
+
+      if (this.$route.params.type) {
+        this.paramsData.label = this.$route.params.type;
+        return;
+      }
+
+      this.updateGameData();
     },
     getActivityList() {
       goLangApiRequest({
