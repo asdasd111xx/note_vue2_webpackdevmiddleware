@@ -348,7 +348,8 @@ export default {
       "actionSetUserdata",
       "actionSetWithdrawCheck",
       "actionVerificationFormData",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
+      "actionGetToManyRequestMsg"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -522,12 +523,13 @@ export default {
               }
               this.tipMsg = error.response.data.msg;
             } else {
+              if (error.response && error.response.status === 429) {
+                this.actionGetToManyRequestMsg(error.response).then(res => {
+                  this.tipMsg = res;
+                });
+                return;
+              }
               this.tipMsg = error.response.data;
-            }
-
-            if (error.response && error.response.status === 429) {
-              this.tipMsg = "操作太频繁，请稍候再试";
-              return;
             }
           });
       } else {
@@ -573,12 +575,13 @@ export default {
             if (error.response.data && error.response.data.msg) {
               this.tipMsg = error.response.data.msg;
             } else {
+              if (error.response && error.response.status === 429) {
+                this.actionGetToManyRequestMsg(error.response).then(res => {
+                  this.tipMsg = res;
+                });
+                return;
+              }
               this.tipMsg = error.response.data;
-            }
-
-            if (error.response && error.response.status === 429) {
-              this.tipMsg = "操作太频繁，请稍候再试";
-              return;
             }
           });
       }
