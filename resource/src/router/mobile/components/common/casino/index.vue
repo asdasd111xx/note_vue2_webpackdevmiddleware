@@ -125,6 +125,10 @@ export default {
       )
   },
   props: {
+    kind: {
+      type: Number,
+      default: 3
+    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "jackpot", "list"]
@@ -263,6 +267,7 @@ export default {
     }
   },
   created() {
+    this.paramsData.kind = this.kind;
     localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
