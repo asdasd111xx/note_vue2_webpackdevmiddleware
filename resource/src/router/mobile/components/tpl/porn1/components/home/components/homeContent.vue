@@ -103,6 +103,7 @@
             :key="`game-${i}-${game.image}`"
             :data-img-type="game.imageType"
             :data-type="game.type"
+            :data-code="game.code"
             :class="[
               $style.game,
               { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
