@@ -46,7 +46,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   let gameTitle = "";
   let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
   // 是否調整內嵌
-  let embedGame = getEmbedGameVendor(vendor, kind);
+  let embedGame = getEmbedGameVendor(vendor, kind, code);
 
   if (embedGame) {
     gameTitle = gameName || embedGame.alias || vendor.toUpperCase();

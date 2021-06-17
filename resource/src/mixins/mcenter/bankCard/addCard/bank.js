@@ -160,7 +160,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionVerificationFormData",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
+      "actionGetToManyRequestMsg"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -420,7 +421,9 @@ export default {
               })
               .catch(error => {
                 if (error.response && error.response.status === 429) {
-                  this.errorMsg = "操作太频繁，请稍候再试";
+                  this.actionGetToManyRequestMsg(error.response).then(res => {
+                    this.errorMsg = res;
+                  });
                   return;
                 }
 
@@ -440,7 +443,9 @@ export default {
         })
         .catch(error => {
           if (error.response && error.response.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.errorMsg = res;
+            });
             return;
           }
 

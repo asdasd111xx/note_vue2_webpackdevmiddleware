@@ -191,7 +191,8 @@ export default {
       "actionVerificationFormData",
       "actionGetMemInfoV3",
       "actionGetRechargeStatus",
-      "actionSetRechargeBonusConfig"
+      "actionSetRechargeBonusConfig",
+      "actionGetToManyRequestMsg"
     ]),
     // setPromotionTips() {
     //     let result = ''
@@ -412,7 +413,9 @@ export default {
         })
         .catch(error => {
           if (error.response && error.response.status === 429) {
-            this.errorMessage.phone = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.errorMessage.phone = res;
+            });
             return;
           }
 
