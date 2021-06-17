@@ -312,7 +312,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionGetToManyRequestMsg"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -493,10 +494,17 @@ export default {
           this.isSendKeyring = false;
 
           if (error.response && error.response.status === 429) {
-            this.errorMsg = "今日发送次数已达上限";
-            this.countdownSec = 0;
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.errMsg = res;
+            });
             return;
           }
+
+          // if (error.response && error.response.status === 429) {
+          //   this.errorMsg = "今日发送次数已达上限";
+          //   this.countdownSec = 0;
+          //   return;
+          // }
 
           if (
             error.response &&
@@ -528,10 +536,10 @@ export default {
           this.msg.keyring = "";
 
           if (res && res.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候再试";
-            return;
+            this.actionGetToManyRequestMsg(res).then(result => {
+              this.errorMsg = result;
+            });
           }
-
           if (res && res.data && res.data.msg) {
             this.errMsg = `${res.data.msg}`;
           }
@@ -570,8 +578,9 @@ export default {
         },
         fail: res => {
           if (res && res.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候再试";
-            return;
+            this.actionGetToManyRequestMsg(res).then(result => {
+              this.errorMsg = result;
+            });
           }
 
           if (res && res.data && res.data.msg) {

@@ -338,7 +338,8 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage",
       "actionVerificationFormData",
-      "actionSetUserWithdrawCheck"
+      "actionSetUserWithdrawCheck",
+      "actionGetToManyRequestMsg"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -602,7 +603,9 @@ export default {
           this.isSendKeyring = false;
 
           if (error.response && error.response.status === 429) {
-            this.tipMsg = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.tipMsg = res;
+            });
             return;
           }
         });
