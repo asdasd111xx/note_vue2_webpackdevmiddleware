@@ -549,9 +549,7 @@ export default {
         let noLoginVideoSwitch = this.yaboConfig.find(
           i => i.name === "NoLoginVideoSwitch"
         ).value;
-        // this.isUnloginMode = !this.loginStatus && noLoginVideoSwitch == "true";
-
-        this.isUnloginMode = false;
+        this.isUnloginMode = !this.loginStatus && noLoginVideoSwitch == "true";
         this.$refs.bonunsProcess.processType = "process";
         // this.$nextTick(() => {
         //   if (!this.loginStatus && !this.isUnloginMode) {
