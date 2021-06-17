@@ -25,10 +25,10 @@ const embedGamesList = [
     vendor: "jdb",
     kind: 3
   },
-  // {
-  //   vendor: "lg_live",
-  //   kind: 2
-  // },
+  {
+    vendor: "lg_live",
+    kind: 2
+  },
   {
     vendor: "lg_card",
     kind: 5
@@ -36,6 +36,10 @@ const embedGamesList = [
   {
     vendor: "bc",
     kind: 2
+  },
+  {
+    vendor: "bbp",
+    kind: 3
   }
   // {
   //   vendor: "hb",
