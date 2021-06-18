@@ -100,15 +100,16 @@ export default {
 
       let list = [];
 
+      console.log(this.lang, this.curLang);
       mobile_slide.data.map(item => {
-        if (!Object.keys(this.lang)) {
-          return;
-        }
+        // if (!Object.keys(this.lang)) {
+        //   return;
+        // }
 
         // const isShow = this.show(this.getDefaultCondition(item.condition));
         list.push({
           ...item,
-          image: `${this.cdnDomain}${item.image0[this.curLang]}`
+          image: `${this.cdnDomain}${item.image0["zh-cn"]}`
         });
       });
 
