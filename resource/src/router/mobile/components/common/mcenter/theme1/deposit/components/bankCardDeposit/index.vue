@@ -134,10 +134,11 @@
                   >
                     {{
                       `${
-                        themeTPL === 'porn1' ?
-                        Number(rechargeConfig.recharger_offer_percent) !== 0
-                          ? `返利${rechargeConfig.recharger_offer_percent}%+`
-                          : "额度转让" : ""
+                        themeTPL === "porn1"
+                          ? Number(rechargeConfig.recharger_offer_percent) !== 0
+                            ? `返利${rechargeConfig.recharger_offer_percent}%+`
+                            : "额度转让"
+                          : ""
                       }`
                     }}
                     代理分红
@@ -625,7 +626,6 @@
             >
               <span :class="$style['bank-card-title']">验证方式</span>
               <div :class="$style['bank-feature-wrap']">
-                <!-- 支付密碼 -->
                 <div
                   :class="[
                     $style['pay-auth-method'],
@@ -1142,9 +1142,10 @@ export default {
       confirmPopupObj: {
         title: "",
         content: "",
-        btnText: "",
         cb: () => {}
-      }
+      },
+
+      marqueeList: []
     };
   },
   watch: {
@@ -1218,6 +1219,9 @@ export default {
           this.walletData["CGPay"].method = 0;
           break;
       }
+    },
+    announcementList(val) {
+      this.marqueeList = val;
     }
   },
   computed: {
@@ -1499,9 +1503,6 @@ export default {
         default:
           break;
       }
-    },
-    marqueeList() {
-      return this.announcementList;
     },
     marqueeTitle() {
       let arr = this.marqueeList.map(item => {

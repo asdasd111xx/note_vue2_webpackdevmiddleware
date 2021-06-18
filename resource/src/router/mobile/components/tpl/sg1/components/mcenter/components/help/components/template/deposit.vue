@@ -51,7 +51,7 @@
     </div>
 
     <div
-      v-if="category_currentIndex == 5 || category_currentIndex > 6"
+      v-if="category_currentIndex == 3 || category_currentIndex > 4"
       :class="[$style['content-wrap'], 'clearfix']"
     >
       <div :class="[$style['tab-wrap']]">
@@ -157,69 +157,57 @@ export default {
 
       categorys: [
         {
+          name: "代客充值",
+          icon: "bank7",
+          list: [
+            { key: 0, img: "tutorial_deposit_valet_01" },
+            { key: 1, img: "tutorial_deposit_valet_02" },
+            { key: 2, img: "tutorial_deposit_valet_03" },
+            { key: 3, img: "tutorial_deposit_valet_04" },
+          ],
+        },
+        {
           name: "网银支付",
           icon: "bank1",
           list: [
-            { key: 0, img: "bank1_step1" },
-            { key: 1, img: "bank1_step2" },
-          ],
-        },
-        {
-          name: "工商银行",
-          icon: "bank2",
-          list: [
-            { key: 0, img: "bank2_step1" },
-            { key: 1, img: "bank2_step2" },
-          ],
-        },
-        {
-          name: "建设银行",
-          icon: "bank3",
-          list: [
-            { key: 0, img: "bank3_step1" },
-            { key: 1, img: "bank3_step2" },
-          ],
-        },
-        {
-          name: "招商银行",
-          icon: "bank4",
-          list: [
-            { key: 0, img: "bank4_step1" },
-            { key: 1, img: "bank4_step2" },
+            { key: 0, img: "tutorial_deposit_onlinebank_01" },
+            { key: 1, img: "tutorial_deposit_onlinebank_02" },
+            { key: 2, img: "tutorial_deposit_onlinebank_03" },
+            { key: 3, img: "tutorial_deposit_onlinebank_04" },
           ],
         },
         {
           name: "微信",
           icon: "bank5",
           list: [
-            { key: 0, img: "bank5_step1" },
-            { key: 1, img: "bank5_step2" },
-            { key: 2, img: "bank5_step3" },
-            { key: 3, img: "bank5_step4" },
-            { key: 4, img: "bank5_step5" },
-            { key: 5, img: "bank5_step6" },
+            { key: 0, img: "tutorial_deposit_wechat_01" },
+            { key: 1, img: "tutorial_deposit_wechat_02" },
+            { key: 2, img: "tutorial_deposit_wechat_03" },
           ],
         },
         {
           name: "支付宝",
           icon: "bank6",
           list: [
-            { key: 0, img: "bank6_step0_1" },
-            { key: 1, img: "bank6_step0_2" },
-            { key: 2, img: "bank6_step0_3" },
+            { key: 0, img: "tutorial_deposit_alipay_transfercard_01" },
+            { key: 1, img: "tutorial_deposit_alipay_transfercard_02" },
+            { key: 2, img: "tutorial_deposit_alipay_transfercard_03" },
+            { key: 3, img: "tutorial_deposit_alipay_transfercard_04" },
           ],
           list2: [
-            { key: 0, img: "bank6_step1_1" },
-            { key: 1, img: "bank6_step1_2" },
+            { key: 0, img: "tutorial_deposit_alipay_qrcode_01" },
+            { key: 1, img: "tutorial_deposit_alipay_qrcode_02" },
+            { key: 2, img: "tutorial_deposit_alipay_qrcode_03" },
           ],
         },
         {
-          name: "代客充值",
-          icon: "bank7",
+          name: "银联快捷",
+          icon: "bank11",
           list: [
-            { key: 0, img: "bank7_step1" },
-            { key: 1, img: "bank7_step2" },
-            { key: 2, img: "bank7_step3" },
+            { key: 0, img: "tutorial_deposit_unionpay_01" },
+            { key: 1, img: "tutorial_deposit_unionpay_02" },
+            { key: 2, img: "tutorial_deposit_unionpay_03" },
+            { key: 3, img: "tutorial_deposit_unionpay_04" },
           ],
         },
         {
@@ -280,6 +268,7 @@ export default {
       this.currentTab = 0;
       this.category_currentIndex = index;
       this.category_isShowPop = false;
+      console.log(`this.category_currentIndex is  ${this.category_currentIndex}`)
     },
     toTop() {
       if ($("#mobile-wrap").scrollTop() < 30) {
@@ -320,7 +309,7 @@ export default {
     },
     tabItem() {
       switch (this.category_currentIndex) {
-        case 5:
+        case 3:
           return [
             {
               key: "transfer-card",
@@ -331,7 +320,7 @@ export default {
               text: this.$text("SCAN_CODE", "截屏扫码"),
             },
           ];
-        case 7:
+        case 5:
           return [
             {
               key: "transfer-card",
@@ -346,7 +335,7 @@ export default {
               text: "扫码支付",
             },
           ];
-        case 8:
+        case 6:
           return [
             {
               key: "transfer-card",
@@ -357,7 +346,7 @@ export default {
               text: "扫码支付",
             },
           ];
-        case 9:
+        case 7:
           return [
             {
               key: "transfer-card",

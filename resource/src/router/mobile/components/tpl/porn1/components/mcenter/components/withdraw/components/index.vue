@@ -726,10 +726,14 @@ export default {
         btnText: "",
         cb: () => {}
       },
-      redJackpotData: { enable: false }
+      redJackpotData: { enable: false },
+      marqueeList: []
     };
   },
   watch: {
+    announcementList(val) {
+      this.marqueeList = val;
+    },
     allWithdrawAccount(value) {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
@@ -1036,9 +1040,7 @@ export default {
         this.selectedCard.offer_percent > 0
       );
     },
-    marqueeList() {
-      return this.announcementList;
-    },
+
     marqueeTitle() {
       let arr = this.marqueeList.map(item => {
         return {
