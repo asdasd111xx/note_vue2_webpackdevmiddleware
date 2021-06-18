@@ -111,7 +111,6 @@ export default {
           ...item,
           image: `${cdn}${item.image0["zh-cn"]}`
         });
-        Ｆ;
       });
 
       // 若限制條件都不符合使用預設圖片
