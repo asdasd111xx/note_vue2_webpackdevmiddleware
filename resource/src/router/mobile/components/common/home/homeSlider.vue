@@ -107,9 +107,10 @@ export default {
         // }
 
         // const isShow = this.show(this.getDefaultCondition(item.condition));
+        let cdn = this.cdnDomain ? this.cdnDomain : "/cdn";
         list.push({
           ...item,
-          image: `${this.cdnDomain}${item.image0["zh-cn"]}`
+          image: `${cdn}${item.image0["zh-cn"]}`
         });
       });
 
