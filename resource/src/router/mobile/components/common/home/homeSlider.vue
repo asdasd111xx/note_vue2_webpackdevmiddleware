@@ -86,7 +86,11 @@ export default {
       const defaultImage = this.generateDefaultImg();
 
       // 若無資料則使用預設圖片
-      if (!mobile_slide || mobile_slide.data.length === 0) {
+      if (
+        !mobile_slide ||
+        !mobile_slide.data ||
+        mobile_slide.data.length === 0
+      ) {
         this.slider = [defaultImage];
         setTimeout(() => {
           this.initSlider();
