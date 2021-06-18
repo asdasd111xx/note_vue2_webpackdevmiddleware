@@ -86,7 +86,11 @@ export default {
       const defaultImage = this.generateDefaultImg();
 
       // 若無資料則使用預設圖片
-      if (!mobile_slide || mobile_slide.data.length === 0) {
+      if (
+        !mobile_slide ||
+        !mobile_slide.data ||
+        mobile_slide.data.length === 0
+      ) {
         this.slider = [defaultImage];
         setTimeout(() => {
           this.initSlider();
@@ -97,14 +101,14 @@ export default {
       let list = [];
 
       mobile_slide.data.map(item => {
-        if (!Object.keys(this.lang)) {
-          return;
-        }
+        // if (!Object.keys(this.lang)) {
+        //   return;
+        // }
 
         // const isShow = this.show(this.getDefaultCondition(item.condition));
         list.push({
           ...item,
-          image: `${this.cdnDomain}${item.image0[this.curLang]}`
+          image: `${this.cdnDomain}${item.image0["zh-cn"]}`
         });
       });
 
