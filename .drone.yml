@@ -60,6 +60,26 @@ steps:
   depends_on:
   - push2GCR-QA
 
+- name: origindeploy2GKE-yiyuanqa
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-test
+    project: rd7-project
+    template: configs/yiyuan/.kube.yml
+    vars:
+      deployName: cxbb-frontend-proxy-qa
+      env: qa
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: cxbb-frontend-proxy-nginx-config-qa
+      k8sNginxSSL: nginx-ssl-qa
+      nfs: 10.27.1.142
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+  depends_on:
+  - push2GCR-QA
+
 - name: istiodeploy2GKE-yiyuanqa
   image: nytimes/drone-gke
   settings:

@@ -233,6 +233,11 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 
         # yiyuan
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
+            ,"qa","cxbb-frontend-proxy-qa","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-qa"
+            ,"yaboxxx-web","10.27.1.142","yiyuan","origin"),
+
+        # istio-yiyuan
+        onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
             ,"yaboxxx-web","10.27.1.142","yiyuan","istio"),
         onlyGKE("QA","yaboxxx-prod","asia-east1-b"
