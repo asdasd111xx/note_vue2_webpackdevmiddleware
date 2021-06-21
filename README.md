@@ -83,6 +83,10 @@
   - git tag -a "allQA-v1.3.57" -m "allQA-v1.3.57"
   - git push origin master --tags
 
+- 佈署到 Prod & Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 allProd- 】（大小寫需一致）
+  - git tag -a "allProd-v1.3.57" -m "allProd-v1.3.57"
+  - git push origin master --tags
+
 ## yabo 佈署方式
 
 ### 已測試列表
