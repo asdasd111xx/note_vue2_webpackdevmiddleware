@@ -134,10 +134,11 @@
                   >
                     {{
                       `${
-                        themeTPL === 'porn1' ?
-                        Number(rechargeConfig.recharger_offer_percent) !== 0
-                          ? `返利${rechargeConfig.recharger_offer_percent}%+`
-                          : "额度转让" : ""
+                        themeTPL === "porn1"
+                          ? Number(rechargeConfig.recharger_offer_percent) !== 0
+                            ? `返利${rechargeConfig.recharger_offer_percent}%+`
+                            : "额度转让"
+                          : ""
                       }`
                     }}
                     代理分红
@@ -562,6 +563,7 @@
                       }
                     "
                     @input="verification('money', $event.target.value)"
+                    @keyup="moneyUSDT($event)"
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>
@@ -579,28 +581,24 @@
               </div>
 
               <!-- USDT 匯率試算 -->
-              <div
-                v-if="isSelectBindWallet(25, 402)"
-                :class="$style['crypto-block']"
-              >
-                <span>转入数量</span>
-                <div
-                  :class="[
-                    $style['content'],
-                    {
-                      [$style['onClick']]: isClickCoversionBtn
-                    }
-                  ]"
-                >
-                  <span :class="$style['money']">
-                    {{ cryptoMoney }}
-                  </span>
+              <template v-if="isSelectBindWallet(25, 402)">
+                <div :class="$style['crypto-block']">
+                  <span>转入数量</span>
+                  <div :class="[$style['content']]">
+                    <span
+                      :class="[
+                        $style['no-money'],
+                        { [$style['money']]: cryptoMoney > 0 }
+                      ]"
+                    >
+                      {{ cryptoMoney }}
+                    </span>
 
-                  <span>
-                    {{ curPayInfo.payment_method_name }}
-                  </span>
+                    <span>
+                      {{ curPayInfo.payment_method_name }}
+                    </span>
 
-                  <div
+                    <!-- <div
                     :class="[
                       $style['conversion-btn'],
                       {
@@ -612,9 +610,16 @@
                     {{
                       countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算`
                     }}
+                  </div> -->
                   </div>
                 </div>
-              </div>
+                <!-- 參考匯率 -->
+                <div :class="$style['exchange-rate']">
+                  參考匯率 1 USDT ≈ {{ rate }} CNY (
+                  <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+                  后更新 )
+                </div>
+              </template>
             </div>
 
             <!-- 驗證方式 -->
@@ -625,7 +630,7 @@
             >
               <span :class="$style['bank-card-title']">验证方式</span>
               <div :class="$style['bank-feature-wrap']">
-                <!-- 支付密碼 -->
+                <!-- 支付密碼 -->
                 <div
                   :class="[
                     $style['pay-auth-method'],
@@ -1680,6 +1685,18 @@ export default {
       }
 
       this.closePopup();
+
+      //USDT充值前檢查匯率異動
+      if (this.isSelectBindWallet(25, 402)) {
+        let oldrate = this.rate;
+        this.convertCryptoMoney();
+        if (this.rate !== oldrate) {
+          this.actionSetGlobalMessage({
+            msg: "汇率已异动，请重新申请"
+          });
+          return;
+        }
+      }
 
       this.submitList().then(response => {
         // 重置阻擋狀態
