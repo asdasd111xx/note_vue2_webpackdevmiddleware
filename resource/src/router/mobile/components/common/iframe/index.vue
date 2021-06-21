@@ -553,6 +553,10 @@ export default {
       }
     },
     linkToGame(data) {
+      if (this.isLoading) {
+        return;
+      }
+
       this.isLoading = true;
 
       if (!data) {
@@ -580,7 +584,7 @@ export default {
           const vendor = target[1] || "";
           const kind = target[2] || "";
           const code = target[3] || "";
-          let gameName = "";
+
           switch (vendor) {
             default:
               openGame(
