@@ -32,30 +32,24 @@
 
 // Game Item
 .game-item {
+  cursor: pointer;
   position: relative;
   margin: 0 10px;
+  max-width: calc(50vw - 12px);
+  width: 167px;
+  height: 144px;
 
   &.in-game-lobby {
     position: relative;
     display: inline-block;
-    width: calc(100% / 3 - 10px);
-    height: 112px;
     margin: 0 5px;
+    width: calc(100% / 3 - 10px);
+    height: 120px;
     text-align: center;
-    cursor: pointer;
-    // border: 1px solid #eee;
-    // background-size: 100%;
-    // background: #fff;
   }
 }
 
 .game-image {
-  // width: 100%;
-  // height: 140px;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-
   img {
     width: 100%;
     height: 100%;
@@ -63,15 +57,18 @@
 
   & .bg {
     z-index: 1;
+    width: 167px;
+    height: 144px;
   }
 
   & .status {
     bottom: 0%;
     height: unset;
     position: absolute;
-    right: 5%;
+    right: 0%;
     width: 55px;
-    z-index: 2;
+    height: 63px;
+    z-index: 5;
   }
 
   & .item {
@@ -79,7 +76,7 @@
     bottom: 6px;
     left: calc(50% - 55px);
     width: 110px;
-    z-index: 2;
+    z-index: 5;
     height: 110px;
     margin: 0 auto;
   }
@@ -89,18 +86,22 @@
     position: relative;
 
     .item {
-      z-index: 2;
+      position: absolute;
       bottom: 0;
-      position: relative;
-      width: 100%;
+      top: 0;
+      width: 108px;
+      height: 108px;
       margin: 0 auto;
+      left: calc(50% - 54px);
     }
 
     .status {
-      left: 0;
       top: 0;
+      height: 40px;
       right: unset;
       bottom: unset;
+      width: 40px;
+      left: calc(50% - 55px);
     }
   }
 }
@@ -128,7 +129,7 @@
   position: fixed;
   width: 100%;
   max-width: $mobile_max_width;
-  z-index: 5;
+  z-index: 6;
   background: white;
   top: 43px;
 }
@@ -172,25 +173,16 @@
   }
 }
 
-@media (orientation: landscape) {
-  .game-item {
-    margin: 0 auto;
-  }
-
+@media only screen and (max-width: 374px) {
   .game-image {
-    height: auto !important;
+    &.in-game-lobby {
+      .item {
+        width: calc(100vw / 3 - 10px);
+        left: 0px;
+      }
 
-    & .item {
-      top: 19.5%;
-      left: calc(50% - 40%);
-      width: unset;
-      max-height: 80%;
+      .status {
+      }
     }
-  }
-
-  .game-text {
-    left: 48px;
-    line-height: 55px;
-    font-size: 18px;
   }
 }
