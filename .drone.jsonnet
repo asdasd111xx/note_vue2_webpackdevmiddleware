@@ -179,7 +179,8 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
 local onlyGKE(name="QA",cluster="xbb-common",zone="asia-east1-a"
 ,env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.142",product="yabo",origin="istio")={
-            name: origin + "deploy2GKE-"+ product + env,
+
+            name: product + "GKE-"+ env +"(" + origin +")",
             image: "nytimes/drone-gke",
             depends_on: ["push2GCR-"+name],
             environment:{
@@ -223,6 +224,9 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
                 // build_args: ["website="+env,"product="+product],
             },
         },
+    ]+
+    if name=="QA" then 
+    [
         # yabo
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
@@ -260,6 +264,39 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
             ,"yaboxxx-web","10.17.0.128","sigua","origin"),
 
 
+    ]else [
+        # yabo
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.0.181","yabo","istio"),
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
+            ,"yaboxxx-web","10.17.0.181","yabo","istio"),
+   
+        # istio-yiyuan
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.0.181","yiyuan","istio"),
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"prod","yiyuan-frontend-proxy-prod","","yiyuan-frontend-proxy-nginx-config-prod"
+            ,"yaboxxx-web","10.17.0.181","yiyuan","istio"),
+
+        # istio-sigua
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.0.181","sigua","istio"),
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
+            ,"yaboxxx-web","10.17.0.181","sigua","istio"),
+
+        # sigua
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.0.181","sigua","origin"),
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
+            ,"yaboxxx-web","10.17.0.181","sigua","origin"),
+    
     ],
     trigger:
         conditionTrigger(name,shortProduct)
@@ -272,6 +309,7 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 [
     # All
     buildall("QA","yaboxxx-web","all"),
+    buildall("Prod","yaboxxx-web","all"),
     # yiyuan
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","cxbb-frontend-proxy-qa","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-qa"
