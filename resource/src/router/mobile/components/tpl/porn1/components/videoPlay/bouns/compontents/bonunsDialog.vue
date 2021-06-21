@@ -49,7 +49,8 @@
           type == 'tips' ||
             type.includes('poor') ||
             type.includes('wait') ||
-            type.includes('full-open')
+            type.includes('full-open') ||
+            type.includes('disable')
         "
       >
         <div :class="$style['bouns-func']">
@@ -57,8 +58,11 @@
           <!-- <div v-if="isUnloginMode" @click="handleClose">
             继续观影
           </div> -->
+          <div v-if="type.includes('disable')" @click="$router.push('/mobile')">
+            {{ $text("S_FIRST_LOOK", "先去逛逛") }}
+          </div>
           <div
-            v-if="
+            v-else-if="
               (missionDesc && type.includes('wait')) ||
                 earnCellNum === hadEarnNum
             "
@@ -72,15 +76,15 @@
           </div>
 
           <!-- 右邊第一個按鈕 -->
-          <!-- <div
-            v-if="isUnloginMode && !loginStatus"
+          <div
+            v-if="type.includes('disable')"
             @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
-          </div> -->
+          </div>
           <div
-            v-if="type.includes('poor')"
+            v-else-if="type.includes('poor')"
             @click="$router.push('/mobile/mcenter/deposit')"
             :class="$style['active-btn']"
           >
@@ -100,13 +104,6 @@
           >
             去推广
           </div>
-          <!-- <div
-            v-else-if="!loginStatus"
-            @click="$router.push('/mobile/login')"
-            :class="$style['active-btn']"
-          >
-            {{ $text("S_JOIN_MEMBER", "加入会员") }}
-          </div> -->
           <div v-else @click="handleAcionType" :class="$style['active-btn']">
             {{ getActionName(missionActionType) }}
           </div>
