@@ -4,6 +4,7 @@
       <img v-lazy="getImg" />
     </div>
     <div :class="$style['game-text']">{{ gameData.name }}</div>
+    <page-loading :is-show="isShowLoading" />
   </div>
 </template>
 
@@ -15,6 +16,12 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
+  components: {
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      )
+  },
   props: {
     gameData: {
       type: Object,
@@ -41,7 +48,8 @@ export default {
   },
   data() {
     return {
-      needShowRedEnvelope: true
+      needShowRedEnvelope: true,
+      isShowLoading: false
     };
   },
   computed: {
