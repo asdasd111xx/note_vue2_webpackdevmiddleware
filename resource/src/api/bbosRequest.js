@@ -81,9 +81,17 @@ export default ({
     .catch(error => {
       console.log("[BBOS request error]");
       console.log(error.response);
-      fail(error.response);
-      // if (error && error.response && error.response.status === 429) {
+
+      // 共用 429 處理
+      // if (error.response && error.response.status === 429) {
+      //   store
+      //     .dispatch("actionGetToManyRequestMsg", error.response)
+      //     .then(res => {
+      //       console.log(res);
+      //     });
       // }
+
+      fail(error.response);
       return error;
     });
 };

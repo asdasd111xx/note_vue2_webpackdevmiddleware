@@ -539,7 +539,9 @@ export default {
             this.actionGetToManyRequestMsg(res).then(result => {
               this.errorMsg = result;
             });
+            return;
           }
+
           if (res && res.data && res.data.msg) {
             this.errMsg = `${res.data.msg}`;
           }
@@ -581,6 +583,7 @@ export default {
             this.actionGetToManyRequestMsg(res).then(result => {
               this.errorMsg = result;
             });
+            return;
           }
 
           if (res && res.data && res.data.msg) {

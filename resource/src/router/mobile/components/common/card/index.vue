@@ -578,6 +578,7 @@ export default {
   background: #ededed;
   width: 100%;
   z-index: 5;
+  margin-bottom: 5px;
 }
 
 @media (orientation: landscape) {
