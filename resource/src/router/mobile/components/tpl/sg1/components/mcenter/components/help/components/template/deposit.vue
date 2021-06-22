@@ -313,7 +313,7 @@ export default {
           return [
             {
               key: "transfer-card",
-              text: this.$text("TRANSFER_CARD", "支付宝转卡"),
+              text: "支付宝快捷",
             },
             {
               key: "scan-code",
@@ -372,7 +372,7 @@ export default {
     },
     tabSlider() {
       switch (this.category_currentIndex) {
-        case 7:
+        case 5:
           return `calc(16.5% + 33% * ${this.currentTab})`;
         default:
           return `calc(25% + 50% * ${this.currentTab})`;
