@@ -68,7 +68,7 @@
     right: 0%;
     width: 55px;
     height: 63px;
-    z-index: 5;
+    z-index: 6;
   }
 
   & .item {
@@ -129,7 +129,7 @@
   position: fixed;
   width: 100%;
   max-width: $mobile_max_width;
-  z-index: 6;
+  z-index: 10;
   background: white;
   top: 43px;
 }
