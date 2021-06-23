@@ -583,9 +583,8 @@ export default {
           i => i.name === "NoLoginVideoSwitch"
         ).value;
 
-        console.log("no-login-video", noLoginVideoSwitch);
         if (noLoginVideoSwitch === "false" && !this.loginStatus) {
-          // this.disableVideo = true;
+          this.disableVideo = true;
           return;
         }
 
