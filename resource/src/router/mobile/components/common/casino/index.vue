@@ -550,7 +550,7 @@ export default {
 
         $state.loaded();
 
-        if (!isAllLabel && (!activityGames || activityGames.length === 0)) {
+        if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();
           return;
         }
