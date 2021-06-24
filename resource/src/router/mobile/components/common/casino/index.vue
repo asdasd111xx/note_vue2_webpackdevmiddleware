@@ -363,7 +363,7 @@ export default {
               let activityEvents = result.ret.events
                 .filter(i => i.display)
                 .filter(
-                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
+                  i => +i.status === 2 || +i.status === 3 || +i.status === 4
                 );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
@@ -516,7 +516,6 @@ export default {
       }).then(response => {
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
-        const isAllLabel = this.$route.query.label === "all";
         const activityGames =
           this.activityData.ret &&
           this.activityData.ret &&

@@ -102,12 +102,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import member from '@/api/member';
-import agent from '@/api/agent';
-import mcenter from '@/api/mcenter';
-import agcenter from '@/api/agcenter';
-import ajax from '@/lib/ajax';
+import { mapGetters, mapActions } from "vuex";
+import member from "@/api/member";
+import agent from "@/api/agent";
+import mcenter from "@/api/mcenter";
+import agcenter from "@/api/agcenter";
+import ajax from "@/lib/ajax";
 
 export default {
   props: {
@@ -122,62 +122,65 @@ export default {
   },
   data() {
     return {
-      apiSelect: this.select.position === 'member' ? mcenter : agcenter,
-      infoSelect: '',
-      bindOld: '',
-      bindNew: '',
-      bindType: 'message',
-      code: '',
+      apiSelect: this.select.position === "member" ? mcenter : agcenter,
+      infoSelect: "",
+      bindOld: "",
+      bindNew: "",
+      bindType: "message",
+      code: "",
       btnLock: false,
       timer: 0,
-      Interval: '',
+      Interval: "",
       options: [],
-      oldCountryCode: '',
-      newCountryCode: '',
+      oldCountryCode: "",
+      newCountryCode: "",
       apiLock: false
     };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo',
-      agentInfo: 'getAgentInfo'
+      memInfo: "getMemInfo",
+      agentInfo: "getAgentInfo"
     }),
     selectNewText() {
       // 判斷身份以及手機信箱是否已驗證
-      if (this.infoSelect && this.select.status === 'already') {
-        if (this.select.key === 'email') {
-          return this.$t('S_NEW_EMAIL');
+      if (this.infoSelect && this.select.status === "already") {
+        if (this.select.key === "email") {
+          return this.$t("S_NEW_EMAIL");
         }
 
-        return this.$t('S_NEW_PHONE');
+        return this.$t("S_NEW_PHONE");
       }
 
       return this.$t(this.select.text);
     },
     checkCodeText() {
-      // 目前驗證碼時間為 5 分鐘
-      return this.$t('S_SEND_CHECK_CODE_VALID_TIME').replace('%s', '五');
+      return this.$t("S_SEND_CHECK_CODE_VALID_TIME_5");
     }
   },
   created() {
     const { key } = this.select;
 
     // 判斷該取信箱還是手機的api
-    const type = key === 'email' ? 'accountMailSec' : 'accountPhoneSec';
+    const type = key === "email" ? "accountMailSec" : "accountPhoneSec";
 
     // 判斷身份是會員或代理 取對應資料
-    this.infoSelect = this.select.position === 'member' ? this.memInfo[key][key] : this.agentInfo[key][key];
+    this.infoSelect =
+      this.select.position === "member"
+        ? this.memInfo[key][key]
+        : this.agentInfo[key][key];
 
     // 判斷該取會員還是代理的api
-    const configSelect = this.select.position === 'member' ? member.joinConfig : agent.joinConfig;
+    const configSelect =
+      this.select.position === "member" ? member.joinConfig : agent.joinConfig;
 
     // 取 會員或代理(apiSelect) 的 信箱或手機(type) 驗證倒數秒數
     configSelect({
-      success: (response) => {
+      success: response => {
         this.select.verification = response.ret[key].code;
         if (response.ret[key].code) {
           this.apiSelect[type]({
-            success: (data) => {
+            success: data => {
               if (data.ret > 0) {
                 this.timer = data.ret;
                 this.lock();
@@ -188,13 +191,13 @@ export default {
       }
     });
 
-    const position = this.select.position === 'member' ? 'player' : 'agent';
+    const position = this.select.position === "member" ? "player" : "agent";
 
     ajax({
-      method: 'get',
+      method: "get",
       url: `/api/v1/c/${position}/country_codes`,
       success: ({ result, ret }) => {
-        if (result !== 'ok') {
+        if (result !== "ok") {
           return;
         }
 
@@ -208,15 +211,11 @@ export default {
     clearInterval(this.Interval);
   },
   methods: {
-    ...mapActions([
-      'actionSetPop',
-      'actionSetUserdata',
-      'actionSetAgentdata'
-    ]),
+    ...mapActions(["actionSetPop", "actionSetUserdata", "actionSetAgentdata"]),
     lock() {
       this.btnLock = true;
       if (this.timer === 0) {
-        this.timer = this.select.key === 'email' ? 30 : 60;
+        this.timer = this.select.key === "email" ? 30 : 60;
       }
       this.Interval = setInterval(() => {
         if (this.timer === 0) {
@@ -230,29 +229,30 @@ export default {
     },
     // 不驗證直接設定信箱/手機
     setUserData(key) {
-      const type = this.select.key === 'email' ? 'accountMailEdit' : 'accountPhoneEdit';
+      const type =
+        this.select.key === "email" ? "accountMailEdit" : "accountPhoneEdit";
       let sendInfo;
 
-      if (key === 'email') {
+      if (key === "email") {
         sendInfo = {
           email: this.bindNew
         };
       } else {
         sendInfo = {
-          phone: `${this.newCountryCode.replace('+', '')}-${this.bindNew}`
+          phone: `${this.newCountryCode.replace("+", "")}-${this.bindNew}`
         };
       }
 
       this.apiSelect[type]({
         params: sendInfo,
         success: () => {
-          if (this.select.position === 'member') {
+          if (this.select.position === "member") {
             this.actionSetUserdata(true);
           } else {
             this.actionSetAgentdata(true);
           }
 
-          alert(this.$t('S_EDIT_SUCCESS'));
+          alert(this.$t("S_EDIT_SUCCESS"));
           this.actionSetPop();
         }
       });
@@ -263,32 +263,37 @@ export default {
         return;
       }
       this.apiLock = true;
-      const type = this.select.key === 'email' ? 'accountMailSend' : 'accountPhoneSend';
+      const type =
+        this.select.key === "email" ? "accountMailSend" : "accountPhoneSend";
       let sendInfo;
 
-      if (key === 'email') {
+      if (key === "email") {
         sendInfo = {
-          old_email: '',
+          old_email: "",
           email: this.bindNew
         };
         if (this.infoSelect) {
-          sendInfo.old_email = (this.select.status === 'ok') ? this.bindNew : this.bindOld;
+          sendInfo.old_email =
+            this.select.status === "ok" ? this.bindNew : this.bindOld;
         }
       } else {
         sendInfo = {
-          old_phone: '',
-          phone: `${this.newCountryCode.replace('+', '')}-${this.bindNew}`,
+          old_phone: "",
+          phone: `${this.newCountryCode.replace("+", "")}-${this.bindNew}`,
           kind: this.bindType
         };
         if (this.infoSelect) {
-          sendInfo.old_phone = (this.select.status === 'ok') ? `${this.newCountryCode.replace('+', '')}-${this.bindNew}` : `${this.oldCountryCode.replace('+', '')}-${this.bindOld}`;
+          sendInfo.old_phone =
+            this.select.status === "ok"
+              ? `${this.newCountryCode.replace("+", "")}-${this.bindNew}`
+              : `${this.oldCountryCode.replace("+", "")}-${this.bindOld}`;
         }
       }
 
       this.apiSelect[type]({
         params: sendInfo,
         success: () => {
-          if (this.select.position === 'member') {
+          if (this.select.position === "member") {
             this.actionSetUserdata(true);
           } else {
             this.actionSetAgentdata(true);
@@ -304,18 +309,19 @@ export default {
     // 驗證信箱 / 手機
     bindCheck(key) {
       // 判斷該取信箱還是手機的api
-      const type = this.select.key === 'email' ? 'accountMailCheck' : 'accountPhoneCheck';
+      const type =
+        this.select.key === "email" ? "accountMailCheck" : "accountPhoneCheck";
 
       let checkInfo;
 
-      if (key === 'email') {
+      if (key === "email") {
         checkInfo = {
           email: this.bindNew,
           keyring: this.code
         };
       } else {
         checkInfo = {
-          phone: `${this.newCountryCode.replace('+', '')}-${this.bindNew}`,
+          phone: `${this.newCountryCode.replace("+", "")}-${this.bindNew}`,
           keyring: this.code
         };
       }
@@ -323,9 +329,9 @@ export default {
       this.apiSelect[type]({
         params: checkInfo,
         success: () => {
-          alert(this.$t('S_CR_SUCCESS'));
+          alert(this.$t("S_CR_SUCCESS"));
           this.actionSetPop();
-          if (this.select.position === 'member') {
+          if (this.select.position === "member") {
             this.actionSetUserdata(true);
           } else {
             this.actionSetAgentdata(true);

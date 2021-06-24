@@ -399,7 +399,7 @@ export default {
         .then(res => {
           this.lockStatus = false;
           this.actionSetGlobalMessage({
-            msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+            msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
           });
           if (res && res.data && res.data.result === "ok") {
             axios({

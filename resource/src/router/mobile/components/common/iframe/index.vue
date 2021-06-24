@@ -540,7 +540,16 @@ export default {
             return;
 
           case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
-            this.$router.push("/mobile/mcenter/deposit?prev=back");
+            if (this.loginStatus) {
+              this.$router.push("/mobile/mcenter/deposit?prev=back");
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.push("/mobile/login");
+              } else {
+                this.$router.push("/mobile/joinmember");
+              }
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_HOME":
