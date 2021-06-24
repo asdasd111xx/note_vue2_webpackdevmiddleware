@@ -185,14 +185,13 @@ export default {
     this.actionSetRechargeConfig();
   },
   watch: {
-    thirdyCaptchaObj(val) {
-      this.getKeyring(val);
-    }
+    thirdyCaptchaObj(val) {}
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetUserdata"]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+      this.getKeyring(obj);
     },
     showCaptcha() {
       this.isShowCaptcha = !this.isShowCaptcha;
