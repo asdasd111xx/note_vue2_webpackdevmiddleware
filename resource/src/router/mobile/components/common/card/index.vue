@@ -114,6 +114,10 @@ export default {
       )
   },
   props: {
+    kind: {
+      type: Number,
+      default: 5
+    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "list"]
@@ -151,7 +155,7 @@ export default {
     return {
       isReceive: false,
       isInit: false,
-      showInfinite: true,
+      showInfinite: false,
       isFavorite: false,
       needShowRedEnvelope: false,
       redEnvelopeData: {},

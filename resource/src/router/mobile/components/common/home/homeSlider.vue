@@ -100,7 +100,6 @@ export default {
 
       let list = [];
 
-      console.log(this.lang, this.curLang);
       mobile_slide.data.map(item => {
         // if (!Object.keys(this.lang)) {
         //   return;
