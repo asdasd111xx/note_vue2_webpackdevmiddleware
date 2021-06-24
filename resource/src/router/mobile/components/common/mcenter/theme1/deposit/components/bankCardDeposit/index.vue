@@ -374,6 +374,32 @@
               </div>
             </div>
 
+            <div
+              v-if="isSelectBindWallet(25, 402)"
+              :class="[$style['feature-wrap'],
+              $style['select-card-wrap'],
+              'clearfix']">
+              <span :class="$style['select-bank-title']">
+                您的位址
+              </span>
+              
+              <div :class="$style['select-bank-item']">
+              {{ curSelectedBank.label }}
+              </div>
+            </div>
+            <div
+              v-if="isSelectBindWallet(25, 402)"
+              :class="[$style['feature-wrap'],
+              $style['select-card-wrap'],
+              'clearfix']">
+              钱包位址
+              <input
+                    v-model="moneyValue"
+                    :class="$style['input-cgpay-address']"
+                    type="text"
+                  />
+            </div>
+
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div

@@ -200,7 +200,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -896,6 +896,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -999,7 +1000,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 }
@@ -1043,4 +1044,37 @@
   height: 34px;
   line-height: 34px;
   text-align: left;
+}
+
+.input-cgpay-address {
+  box-sizing: border-box;
+  width: 70%;
+  height: 20px;
+  line-height: 20px;
+  padding-left: 40px;
+  text-align: left;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+
+  // Chrome/Opera/Safari
+  &::-webkit-input-placeholder {
+    color: #BEBCBC;
+  }
+
+  // Firefox 19+
+  &::-moz-placeholder {
+    color: #BEBCBC;
+  }
+
+  // IE 10+
+  &:-ms-input-placeholder {
+    color: #BEBCBC;
+  }
+
+  // Firefox 18-
+  &:-moz-placeholder {
+    color: #BEBCBC;
+  }
 }

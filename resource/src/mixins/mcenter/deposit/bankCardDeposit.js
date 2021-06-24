@@ -2,7 +2,8 @@ import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_THIRD,
-  API_TRADE_RELAY
+  API_TRADE_RELAY,
+  API_MCENTER_DEPOSIT_OUTER_WALLET
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -659,6 +660,13 @@ export default {
                 })
               }));
               this.curPassRoad = { ...this.passRoad[0] };
+
+              if (
+                this.curPayInfo.payment_method_id === 25 ||
+                this.curPayInfo.payment_method_id === 402
+              ) {
+                this.getVendorCryptoOuterUserAddressList();
+              }
             }
           }
 
@@ -1323,6 +1331,19 @@ export default {
             code
           });
         });
+    },
+    // 取得使用者站外錢包入款錢包地址
+    getVendorCryptoOuterUserAddressList() {
+      console.log("getVendorCryptoOuterUserAddressList");
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_OUTER_WALLET,
+        params: {}
+      })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {});
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
