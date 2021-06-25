@@ -157,8 +157,7 @@ export default {
         params: {
           tagId: !this.tagId ? "" : this.tagId,
           siteId: this.siteId
-        },
-        timeout: 30000
+        }
       }).then(response => {
         if (response.status !== 200) {
           return;
