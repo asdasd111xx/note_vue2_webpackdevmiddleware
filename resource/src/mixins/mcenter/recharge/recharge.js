@@ -404,11 +404,15 @@ export default {
           } else {
             setTimeout(() => {
               this.isSendKeyring = false;
-            }, 1500);
+            }, 1000);
             this.errorMessage.phone = `${res.data.msg}`;
           }
         })
         .catch(error => {
+          setTimeout(() => {
+            this.isSendKeyring = false;
+          }, 1000);
+
           if (error.response && error.response.status === 429) {
             this.actionGetToManyRequestMsg(error.response).then(res => {
               this.errorMessage.phone = res;
@@ -423,10 +427,6 @@ export default {
           } else {
             this.errorMessage.phone = `${error.response.data}`;
           }
-
-          setTimeout(() => {
-            this.isSendKeyring = false;
-          }, 1500);
         });
     },
     sendRecharge() {
@@ -464,14 +464,14 @@ export default {
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           })
           .catch(error => {
             this.setErrorCode(error.response.data);
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           });
       });
     },

@@ -137,13 +137,20 @@ export default {
             if (this.lang[temp.content]) {
               switch (temp.content) {
                 case "C_WS_RECYCLE_FAIL":
+                  let content = "";
+                  if (temp.vendorName["zh-cn"]) {
+                    content = `${temp.vendorName["zh-cn"]}${
+                      this.lang[temp.content]
+                    }`;
+                  } else {
+                    content = this.lang[temp.content];
+                  }
+
                   this.noticeQueue.push({
                     ...temp,
                     timestamp: Date.now(),
                     showType: "showToast",
-                    showContent: `${temp.vendorName["zh-cn"]}${
-                      this.lang[temp.content]
-                    }`
+                    showContent: content
                   });
                   return;
                 case "C_WS_RECYCLE_ALL_FAIL":
