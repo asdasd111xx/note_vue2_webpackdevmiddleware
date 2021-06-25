@@ -37,8 +37,8 @@
           加入娱乐会员<br />
           享有观影送钱
         </template> -->
-        <template v-if="type.includes('disable')">
-          <span style="margin-top: 12%;display: block;">
+        <template v-else-if="type.includes('disable')">
+          <span style="margin-top: 12%;display: block;font-size: 20px;">
             {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
           </span>
         </template>

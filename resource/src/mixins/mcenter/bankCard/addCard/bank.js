@@ -398,10 +398,10 @@ export default {
       })
         .then(res => {
           this.lockStatus = false;
-          this.actionSetGlobalMessage({
-            msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-          });
           if (res && res.data && res.data.result === "ok") {
+            this.actionSetGlobalMessage({
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+            });
             axios({
               method: "get",
               url: "/api/v1/c/player/phone/ttl"
