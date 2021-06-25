@@ -91,12 +91,13 @@ export default {
 
       // 電子棋牌大廳
       if (this.displayType !== "game") {
+        console.log(kind);
         switch (kind) {
           case 3:
             this.$router.push(`/mobile/casino/${vendor}?label=hot`);
             return;
 
-          case 4:
+          case 5:
             this.$router.push(`/mobile/card/${vendor}?label=hot`);
             return;
         }
