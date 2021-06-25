@@ -530,7 +530,16 @@ export default {
             }
             return;
           case "EVENT_THIRDPARTY_LOGIN":
-            this.$router.replace("/mobile/joinmember?prev=home");
+            if (this.loginStatus) {
+              return;
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
@@ -544,9 +553,9 @@ export default {
               this.$router.push("/mobile/mcenter/deposit?prev=back");
             } else {
               if (this.themeTPL === "ey1") {
-                this.$router.push("/mobile/login");
+                this.$router.replace("/mobile/login");
               } else {
-                this.$router.push("/mobile/joinmember");
+                this.$router.replace("/mobile/joinmember?prev=home");
               }
             }
 
