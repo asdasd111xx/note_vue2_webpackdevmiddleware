@@ -27,24 +27,30 @@ export default ({
   fail = () => {}
 }) => {
   const host = PORN_DOMAIN;
-  let _data = data;
-  let _params = params;
+  const args = {
+    jwt: getCookie("s_jwt") || "",
+    videoSpaceId: getCookie("s_id") || ""
+  };
+
+  let _data = {
+      ...args,
+      ...data
+    },
+    _params = {
+      ...args,
+      ...params
+    };
 
   if (enableNewApi) {
     if (method && method.toLocaleUpperCase() === "post") {
-      _data["jwt"] = getCookie("s_jwt") || "";
-      _data["videoSpaceId"] = getCookie("s_id") || "";
-      _data["tagId"] = _data.tag;
-
-      delete _data["siteId"];
-      delete _data["tag"];
+      // _data["tagId"] = _data.tag;
+      // delete _data["siteId"];
+      // delete _data["tag"];
+    } else {
+      // _params["tag"] = params.tagId;
+      // delete _params["siteId"];
+      // delete _params["tagId"];
     }
-    _params["jwt"] = getCookie("s_jwt") || "";
-    _params["videoSpaceId"] = getCookie("s_id") || "";
-    _params["tagId"] = _data.tag;
-
-    delete _params["siteId"];
-    delete _params["tag"];
   }
 
   const obj = {
@@ -55,7 +61,7 @@ export default ({
       ...reqHeaders
     },
     params: {
-      ...params
+      ..._params
     },
     data: querystring.stringify(_data)
   };
