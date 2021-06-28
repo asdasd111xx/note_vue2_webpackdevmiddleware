@@ -155,7 +155,8 @@ export default {
         method: "get",
         url: `/video/sort`,
         params: {
-          tagId: !this.tagId ? "" : this.tagId,
+          tag: this.$route.query.tag,
+          tagId: this.tagId || "",
           siteId: this.siteId
         }
       }).then(response => {
