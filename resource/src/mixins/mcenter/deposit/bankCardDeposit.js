@@ -9,9 +9,8 @@ import { mapActions, mapGetters } from "vuex";
 import BigNumber from "bignumber.js/bignumber";
 import ajax from "@/lib/ajax";
 import axios from "axios";
-import goLangApiRequest from "@/api/goLangApiRequest";
-
 import { getCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -649,16 +648,18 @@ export default {
         }
       })
         .then(response => {
-          const { result, ret } = response.data;
+          if (response && response.data) {
+            const { result, ret } = response.data;
 
-          if (result === "ok") {
-            this.passRoad = ret.map((info, index) => ({
-              ...info,
-              mainTitle: this.$text("S_PASS_TEXT", {
-                replace: [{ target: "%s", value: index + 1 }]
-              })
-            }));
-            this.curPassRoad = { ...this.passRoad[0] };
+            if (result === "ok") {
+              this.passRoad = ret.map((info, index) => ({
+                ...info,
+                mainTitle: this.$text("S_PASS_TEXT", {
+                  replace: [{ target: "%s", value: index + 1 }]
+                })
+              }));
+              this.curPassRoad = { ...this.passRoad[0] };
+            }
           }
 
           this.isShow = false;

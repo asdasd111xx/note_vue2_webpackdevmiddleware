@@ -79,6 +79,10 @@ export default {
     activitySg1: () =>
       import(
         /* webpackChunkName: 'activitySg1' */ "../../tpl/sg1/components/activity"
+      ),
+    mahjongSg1: () =>
+      import(
+        /* webpackChunkName: 'mahjongSg1' */ "../../tpl/sg1/components/mahjong"
       )
   },
   mcenter: {

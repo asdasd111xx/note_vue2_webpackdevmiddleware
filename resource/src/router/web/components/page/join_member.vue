@@ -642,7 +642,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionGetToManyRequestMsg"
     ]),
     keyDownSubmit() {
       if (this.memInfo.config.register_captcha_type === 2) {
@@ -751,8 +752,8 @@ export default {
               if (re && !re.test(this.allValue.password)) {
                 this.allTip.password = msg;
                 return;
-              }else{
-                this.allTip.password = ""
+              } else {
+                this.allTip.password = "";
               }
 
               if (this.allValue.confirm_password === this.allValue.password) {
@@ -990,7 +991,9 @@ export default {
               this.isLoading = false;
             }, 1000);
             if (error && error.status === 429) {
-              this.errMsg = "操作太频繁，请稍候再试";
+              this.actionGetToManyRequestMsg(error).then(res => {
+                this.errMsg = res;
+              });
               return;
             }
           }
@@ -1015,7 +1018,9 @@ export default {
               this.isLoading = false;
             }, 1000);
             if (error && error.status === 429) {
-              this.errMsg = "操作太频繁，请稍候再试";
+              this.actionGetToManyRequestMsg(error).then(res => {
+                this.errMsg = res;
+              });
               return;
             }
           }
@@ -1076,9 +1081,12 @@ export default {
         }
         this.allValue.captcha_text = "";
         if (res.response && res.response.status === 429) {
-          this.errMsg = "操作太频繁，请稍候再试";
+          this.actionGetToManyRequestMsg(res.response).then(res => {
+            this.errMsg = res;
+          });
           return;
         }
+
         if (res.status !== "000") {
           this.getCaptcha();
           if (res.errors && Object.keys(res.errors)) {

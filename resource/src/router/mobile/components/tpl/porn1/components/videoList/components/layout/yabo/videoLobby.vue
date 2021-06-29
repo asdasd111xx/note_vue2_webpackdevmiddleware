@@ -67,7 +67,11 @@
       </template>
     </div>
 
-    <div :ref="'video-list-wrap'" :class="[$style['video-list-wrap'], 'clearfix']" id="video-list-wrap">
+    <div
+      :ref="'video-list-wrap'"
+      :class="[$style['video-list-wrap'], 'clearfix']"
+      id="video-list-wrap"
+    >
       <div
         :id="`${i}`"
         v-for="(videoData, i) in allVideoList"
@@ -251,7 +255,7 @@ export default {
   methods: {
     initData() {
       this.getVideoTag();
-      this.getVideoSort();
+      // this.getVideoSort();
       this.getVideoRecommand();
       this.getVideoList();
     },
@@ -263,6 +267,7 @@ export default {
         params: { id: video.id },
         // query: { source: this.$route.query.source }
         query: {
+          tag: video.name,
           source: this.$route.query.source,
           tagId: +this.videoType.id || 0,
           sortId: +video.id || 0
@@ -275,6 +280,7 @@ export default {
       );
       this.openVideo("videoList", {
         query: {
+          tag: videoData.name,
           source: this.$route.query.source,
           tagId: +this.videoType.id || 0,
           sortId: +videoData.id || 0
@@ -327,12 +333,13 @@ export default {
         this.videoType.title = title;
         this.$router.replace({
           query: {
+            tag: this.videoType.title,
             source: this.$route.query.source,
             id: this.videoType.id,
             title: this.videoType.title
           }
         });
-      this.$refs["video-list-wrap"].scrollTop = 0;
+        this.$refs["video-list-wrap"].scrollTop = 0;
       }
       this.isDisable = true;
       this.changeTabTimer = setTimeout(() => {
@@ -342,13 +349,11 @@ export default {
     },
     changeTab(time) {
       const swiper = this.$refs.swiper.$swiper;
-      this.getVideoSort().then(() => {
-        // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
-        let initIndex = this.videoTag.findIndex(item => {
-          return item.id === parseInt(this.videoType.id);
-        });
-        swiper.slideTo(initIndex, time, false);
+      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+      let initIndex = this.videoTag.findIndex(item => {
+        return item.id === parseInt(this.videoType.id);
       });
+      swiper.slideTo(initIndex, time, false);
     },
     // 開啟影片分類選單
     onShowAllTag(value) {

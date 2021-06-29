@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       player: null,
-      isPlaying: false,
+      firstPlay: false,
       //   彩金開關
       isActiveBouns: true, //預設打開由message決定是否啟動
       dialogType: "tips", // 提示 & 賺得彩金
@@ -72,7 +72,8 @@ export default {
       keepPlay: false, // wait 任務未達成繼續觀看不發送play
       isUnloginMode: false,
       breakwaitCallback: () => {},
-      isInit: false
+      isInit: false,
+      disableVideo: false //未登入不得觀看
     };
   },
   computed: {
@@ -154,8 +155,22 @@ export default {
       //活動開關
       if (this.isActiveBouns) {
         this.player.on("playing", () => {
-          if (this.player.seeking() || !this.isInit) return;
-          this.isPlaying = true;
+          this.firstPlay = true;
+          // 不得訪客觀影
+          if (this.disableVideo) {
+            this.handleDisableVideoMode();
+            return;
+          }
+
+          if (
+            this.player.seeking() ||
+            !this.isInit ||
+            this.dialogType === "tips-wait"
+          ) {
+            return;
+          }
+
+          // 任務彈窗關閉後繼續播放
           if (window.YABO_SOCKET && !this.keepPlay) {
             this.onSend("PLAY");
           }
@@ -172,6 +187,13 @@ export default {
         if (this.isUnloginMode) {
           this.unloginModeAction("play");
         }
+      } else {
+        this.player.on("playing", () => {
+          if (this.disableVideo) {
+            this.handleDisableVideoMode();
+            return;
+          }
+        });
       }
 
       // 快轉
@@ -180,8 +202,12 @@ export default {
       this.player.on("seeked", () => {});
 
       this.player.on("pause", () => {
+        if (this.disableVideo) {
+          this.handleDisableVideoMode();
+          return;
+        }
+
         if (this.player.seeking()) return;
-        this.isPlaying = false;
         if (window.YABO_SOCKET && !this.keepPlay) {
           this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
@@ -195,17 +221,29 @@ export default {
 
       this.player.on("ended", () => {
         this.$refs.bonunsProcess.playCueTime("stop");
-        this.isPlaying = false;
         if (window.YABO_SOCKET) this.onSend("STOP");
       });
 
       this.player.on("play", () => {
         this.handleClickVideo();
       });
+
+      // setTimeout(() => {
+      //   this.onSend("PLAY");
+      //   this.onSend("STOP");
+      // }, 300);
     },
-    //   點擊進圖條任務彈窗
+    // 點擊進圖條任務彈窗
     handleClickProcess() {
-      if (this.isUnloginMode) {
+      if (
+        window.YABO_SOCKET.readyState !== 1 ||
+        !this.isInit ||
+        !this.firstPlay
+      ) {
+        return;
+      }
+
+      if (this.isUnloginMode && !this.mission) {
         this.$refs.bonunsDialog.isShow = true;
         this.dialogType = "tips";
         this.playerPause();
@@ -228,8 +266,15 @@ export default {
         this.playerPause();
       }
     },
+    handleDisableVideoMode(s) {
+      if (this.disableVideo) {
+        this.playerPause();
+        this.dialogType = "disable";
+        this.$refs.bonunsDialog.isShow = true;
+      }
+    },
     handleClickVideo() {
-      if (!this.isActiveBouns) return;
+      if (!this.isActiveBouns || this.disableVideo) return;
       // 餘額夠可播放
       // if (!this.loginStatus && !this.isUnloginMode) {
       //   this.dialogType = "tips";
@@ -467,7 +512,11 @@ export default {
       // 1	OPEN
       // 2	CLOSING
       // 3	CLOSED
-      if (!window.YABO_SOCKET || window.YABO_SOCKET.readyState !== 1) {
+      if (
+        !window.YABO_SOCKET ||
+        window.YABO_SOCKET.readyState !== 1 ||
+        this.disableVideo
+      ) {
         return;
       }
       // 檢查連線狀態
@@ -546,13 +595,23 @@ export default {
     this.actionSetVideoBounsPageStatus(true);
     this.actionSetYaboConfig().then(() => {
       if (this.yaboConfig) {
+        setTimeout(() => {
+          this.isInit = true;
+        }, 400);
+
         let noLoginVideoSwitch = this.yaboConfig.find(
           i => i.name === "NoLoginVideoSwitch"
         ).value;
-        // this.isUnloginMode = !this.loginStatus && noLoginVideoSwitch == "true";
 
-        this.isUnloginMode = false;
+        if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+          this.disableVideo = true;
+          return;
+        }
+
+        // 訪客模式/一般模式
+        this.isUnloginMode = noLoginVideoSwitch === "false";
         this.$refs.bonunsProcess.processType = "process";
+
         // this.$nextTick(() => {
         //   if (!this.loginStatus && !this.isUnloginMode) {
         //     this.$refs.bonunsDialog.isShow = true;
@@ -560,10 +619,6 @@ export default {
         //   }
         // });
       }
-
-      setTimeout(() => {
-        this.isInit = true;
-      }, 400);
     });
 
     const self = this;

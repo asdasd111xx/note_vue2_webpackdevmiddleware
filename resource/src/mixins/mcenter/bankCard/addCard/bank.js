@@ -160,7 +160,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionVerificationFormData",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
+      "actionGetToManyRequestMsg"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -397,10 +398,10 @@ export default {
       })
         .then(res => {
           this.lockStatus = false;
-          this.actionSetGlobalMessage({
-            msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
-          });
           if (res && res.data && res.data.result === "ok") {
+            this.actionSetGlobalMessage({
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+            });
             axios({
               method: "get",
               url: "/api/v1/c/player/phone/ttl"
@@ -420,7 +421,9 @@ export default {
               })
               .catch(error => {
                 if (error.response && error.response.status === 429) {
-                  this.errorMsg = "操作太频繁，请稍候再试";
+                  this.actionGetToManyRequestMsg(error.response).then(res => {
+                    this.errorMsg = res;
+                  });
                   return;
                 }
 
@@ -440,7 +443,9 @@ export default {
         })
         .catch(error => {
           if (error.response && error.response.status === 429) {
-            this.errorMsg = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.errorMsg = res;
+            });
             return;
           }
 

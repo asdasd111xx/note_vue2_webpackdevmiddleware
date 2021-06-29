@@ -338,7 +338,8 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage",
       "actionVerificationFormData",
-      "actionSetUserWithdrawCheck"
+      "actionSetUserWithdrawCheck",
+      "actionGetToManyRequestMsg"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -573,7 +574,7 @@ export default {
 
           if (res && res.data && res.data.result === "ok") {
             this.actionSetGlobalMessage({
-              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
             });
             this.getPhoneTTL().then(() => {
               this.countdownSec = this.ttl;
@@ -602,7 +603,9 @@ export default {
           this.isSendKeyring = false;
 
           if (error.response && error.response.status === 429) {
-            this.tipMsg = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.tipMsg = res;
+            });
             return;
           }
         });

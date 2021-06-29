@@ -191,7 +191,8 @@ export default {
       "actionVerificationFormData",
       "actionGetMemInfoV3",
       "actionGetRechargeStatus",
-      "actionSetRechargeBonusConfig"
+      "actionSetRechargeBonusConfig",
+      "actionGetToManyRequestMsg"
     ]),
     // setPromotionTips() {
     //     let result = ''
@@ -397,22 +398,25 @@ export default {
                 this.ttl -= 1;
               }, 1000);
               this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
-                  "%s",
-                  "5"
-                )
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
               });
             });
           } else {
             setTimeout(() => {
               this.isSendKeyring = false;
-            }, 1500);
+            }, 1000);
             this.errorMessage.phone = `${res.data.msg}`;
           }
         })
         .catch(error => {
+          setTimeout(() => {
+            this.isSendKeyring = false;
+          }, 1000);
+
           if (error.response && error.response.status === 429) {
-            this.errorMessage.phone = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.errorMessage.phone = res;
+            });
             return;
           }
 
@@ -423,10 +427,6 @@ export default {
           } else {
             this.errorMessage.phone = `${error.response.data}`;
           }
-
-          setTimeout(() => {
-            this.isSendKeyring = false;
-          }, 1500);
         });
     },
     sendRecharge() {
@@ -464,14 +464,14 @@ export default {
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           })
           .catch(error => {
             this.setErrorCode(error.response.data);
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           });
       });
     },

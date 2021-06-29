@@ -530,7 +530,16 @@ export default {
             }
             return;
           case "EVENT_THIRDPARTY_LOGIN":
-            this.$router.replace("/mobile/joinmember?prev=home");
+            if (this.loginStatus) {
+              return;
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
@@ -540,7 +549,16 @@ export default {
             return;
 
           case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
-            this.$router.push("/mobile/mcenter/deposit?prev=back");
+            if (this.loginStatus) {
+              this.$router.push("/mobile/mcenter/deposit?prev=back");
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_HOME":
@@ -553,6 +571,10 @@ export default {
       }
     },
     linkToGame(data) {
+      if (this.isLoading) {
+        return;
+      }
+
       this.isLoading = true;
 
       if (!data) {
@@ -580,7 +602,7 @@ export default {
           const vendor = target[1] || "";
           const kind = target[2] || "";
           const code = target[3] || "";
-          let gameName = "";
+
           switch (vendor) {
             default:
               openGame(
@@ -682,7 +704,7 @@ export default {
   max-width: $mobile_max_width;
   position: absolute;
   top: 0;
-  z-index: 3;
+  z-index: 10;
   width: 100%;
   height: 43px;
   padding: 0 17px;

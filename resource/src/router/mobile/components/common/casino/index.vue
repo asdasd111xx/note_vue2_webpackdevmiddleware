@@ -41,7 +41,7 @@
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :event-data="gameInfo"
-                  :display-type="'game'"
+                  :display-type="'game-lobby'"
                 />
               </template>
             </template>
@@ -125,6 +125,10 @@ export default {
       )
   },
   props: {
+    kind: {
+      type: Number,
+      default: 3
+    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "jackpot", "list"]
@@ -263,6 +267,7 @@ export default {
     }
   },
   created() {
+    this.paramsData.kind = this.kind;
     localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
@@ -358,7 +363,7 @@ export default {
               let activityEvents = result.ret.events
                 .filter(i => i.display)
                 .filter(
-                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
+                  i => +i.status === 2 || +i.status === 3 || +i.status === 4
                 );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
@@ -511,7 +516,6 @@ export default {
       }).then(response => {
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
-        const isAllLabel = this.$route.query.label === "all";
         const activityGames =
           this.activityData.ret &&
           this.activityData.ret &&
@@ -579,7 +583,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .game-item-wrap {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .empty-wrap {
@@ -605,6 +609,7 @@ export default {
   background: #ededed;
   width: 100%;
   z-index: 5;
+  margin-bottom: 5px;
 }
 
 @media (orientation: landscape) {
