@@ -927,25 +927,25 @@ export default {
         return;
       }
 
-      if (
-        ["porn1", "sg1"].includes(this.themeTPL) &&
-        this.selectTarget.swiftCode === "BBUSDTCN1"
-      ) {
-        this.walletTipInfo = [
-          {
-            key: "USDT",
-            text: `还没有数字货币帐号？`,
-            hasCallback: true,
-            dataObj: {
-              text: "点我查看交易所",
-              cb: () => {
-                this.setPopupStatus(true, "tip");
-              }
-            }
-          }
-        ];
-        return;
-      }
+      // if (
+      //   ["porn1", "sg1"].includes(this.themeTPL) &&
+      //   this.selectTarget.swiftCode === "BBUSDTCN1"
+      // ) {
+      //   this.walletTipInfo = [
+      //     {
+      //       key: "USDT",
+      //       text: `还没有数字货币帐号？`,
+      //       hasCallback: true,
+      //       dataObj: {
+      //         text: "点我查看交易所",
+      //         cb: () => {
+      //           this.setPopupStatus(true, "tip");
+      //         }
+      //       }
+      //     }
+      //   ];
+      //   return;
+      // }
     },
     handleSmbmit() {
       if (this.selectTarget.oneClickBindingMode) {
