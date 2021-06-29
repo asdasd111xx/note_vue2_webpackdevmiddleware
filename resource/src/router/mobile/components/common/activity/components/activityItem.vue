@@ -7,7 +7,7 @@
     ]"
     @click="onEnter"
   >
-    <div v-if="displayType !== 'game'" :class="$style['game-text']">
+    <div v-if="displayType !== 'game-lobby'" :class="$style['game-text']">
       {{ eventData.alias }}
     </div>
     <div
