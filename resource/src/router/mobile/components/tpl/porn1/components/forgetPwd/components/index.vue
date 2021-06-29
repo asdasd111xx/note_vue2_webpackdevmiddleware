@@ -485,7 +485,7 @@ export default {
               this.errMsg = `${res.data.msg}`;
             } else {
               this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+                msg: "已发送手机验证码"
               });
             }
           } else {
