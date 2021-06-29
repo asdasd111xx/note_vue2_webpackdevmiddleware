@@ -125,7 +125,6 @@ export default {
       source: this.$route.query.source,
       msg: "",
       videoTag: [],
-      videoSort: [],
       videoRecommand: [],
       videoList: [],
       videoType: { id: 0, title: "" },
@@ -187,7 +186,6 @@ export default {
   methods: {
     initData() {
       this.getVideoTag();
-      this.getVideoSort();
       this.getVideoRecommand();
       this.getVideoList();
     },
@@ -223,22 +221,6 @@ export default {
         }
 
         this.videoTag = response.result;
-      });
-    },
-    // 取得影片排序
-    getVideoSort() {
-      return pornRequest({
-        method: "get",
-        url: "/video/sort",
-        params: {
-          siteId: this.siteId
-        }
-      }).then(response => {
-        if (response.status !== 200) {
-          return;
-        }
-
-        this.videoSort = [...response.result];
       });
     },
     // 取得熱門推薦影片

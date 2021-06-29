@@ -255,7 +255,7 @@ export default {
   methods: {
     initData() {
       this.getVideoTag();
-      this.getVideoSort();
+      // this.getVideoSort();
       this.getVideoRecommand();
       this.getVideoList();
     },
@@ -349,13 +349,11 @@ export default {
     },
     changeTab(time) {
       const swiper = this.$refs.swiper.$swiper;
-      this.getVideoSort().then(() => {
-        // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
-        let initIndex = this.videoTag.findIndex(item => {
-          return item.id === parseInt(this.videoType.id);
-        });
-        swiper.slideTo(initIndex, time, false);
+      // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
+      let initIndex = this.videoTag.findIndex(item => {
+        return item.id === parseInt(this.videoType.id);
       });
+      swiper.slideTo(initIndex, time, false);
     },
     // 開啟影片分類選單
     onShowAllTag(value) {
