@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       player: null,
-      isPlaying: false,
+      firstPlay: false,
       //   彩金開關
       isActiveBouns: true, //預設打開由message決定是否啟動
       dialogType: "tips", // 提示 & 賺得彩金
@@ -155,13 +155,22 @@ export default {
       //活動開關
       if (this.isActiveBouns) {
         this.player.on("playing", () => {
+          this.firstPlay = true;
+          // 不得訪客觀影
           if (this.disableVideo) {
             this.handleDisableVideoMode();
             return;
           }
 
-          if (this.player.seeking() || !this.isInit) return;
-          this.isPlaying = true;
+          if (
+            this.player.seeking() ||
+            !this.isInit ||
+            this.dialogType === "tips-wait"
+          ) {
+            return;
+          }
+
+          // 任務彈窗關閉後繼續播放
           if (window.YABO_SOCKET && !this.keepPlay) {
             this.onSend("PLAY");
           }
@@ -199,7 +208,6 @@ export default {
         }
 
         if (this.player.seeking()) return;
-        this.isPlaying = false;
         if (window.YABO_SOCKET && !this.keepPlay) {
           this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
@@ -213,17 +221,29 @@ export default {
 
       this.player.on("ended", () => {
         this.$refs.bonunsProcess.playCueTime("stop");
-        this.isPlaying = false;
         if (window.YABO_SOCKET) this.onSend("STOP");
       });
 
       this.player.on("play", () => {
         this.handleClickVideo();
       });
+
+      // setTimeout(() => {
+      //   this.onSend("PLAY");
+      //   this.onSend("STOP");
+      // }, 300);
     },
-    //   點擊進圖條任務彈窗
+    // 點擊進圖條任務彈窗
     handleClickProcess() {
-      if (this.isUnloginMode) {
+      if (
+        window.YABO_SOCKET.readyState !== 1 ||
+        !this.isInit ||
+        !this.firstPlay
+      ) {
+        return;
+      }
+
+      if (this.isUnloginMode && !this.mission) {
         this.$refs.bonunsDialog.isShow = true;
         this.dialogType = "tips";
         this.playerPause();
