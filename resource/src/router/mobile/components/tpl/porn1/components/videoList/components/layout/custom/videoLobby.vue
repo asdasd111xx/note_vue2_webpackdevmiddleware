@@ -22,6 +22,7 @@
           @click.stop="
             openVideo('videoList', {
               query: {
+                tag: info.title,
                 source: $route.query.source,
                 tagId: +info.id,
                 sortId: 0
@@ -200,11 +201,9 @@ export default {
       });
     },
     handleMore(tag, videoData) {
-      window.location.replace(
-        `${window.location.pathname}${window.location.search}#${tag}`
-      );
       this.openVideo("videoList", {
         query: {
+          tag: videoData.name,
           source: this.$route.query.source,
           tagId: +this.videoType.id || 0,
           sortId: +videoData.id || 0
