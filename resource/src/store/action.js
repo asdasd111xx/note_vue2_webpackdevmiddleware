@@ -589,7 +589,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
-    dispatch("actionSetWebInfo", state.webDomain.domain);
+    await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
 
