@@ -338,6 +338,12 @@ export default {
       path: "tcenterLobby",
       name: "mcenter-tcenterLobby",
       component
+    },
+    {
+      // 返利管理
+      path: "tcenterManageRebate/:title?/:item?",
+      name: "mcenter-tcenterManageRebate",
+      component
     }
   ]
 };

@@ -1,0 +1,165 @@
+@import "@/css/variable.scss";
+$fixed_spacing_height: 43px;
+$tabColor: #000;
+$tabColorActive: #00347d;
+$buttonBackgroundColor: #00347d;
+$buttonTextColor: #fff;
+
+@media (orientation: landscape) {
+  .top-link {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+.top-link {
+  position: fixed;
+  display: flex;
+  height: 35px;
+  line-height: 35px;
+  background-color: #fff;
+  width: 100%;
+  max-width: $mobile_max_width;
+  top: 86px;
+}
+
+.link {
+  padding-left: 20px;
+  color: $main_text_color2;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.active {
+    color: #be9e7f;
+  }
+}
+
+//card-item
+.black,
+.info-item {
+  background: #fff;
+  margin-bottom: 10px;
+  font-size: 12px;
+  border-radius: 7px;
+  color: #414655;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 17px;
+  border-bottom: 1px solid #eee;
+}
+
+.friend-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.item-content {
+  padding: 10px 17px;
+}
+
+.item-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.item-detail-title {
+  color: #a6a9b2;
+}
+
+.red {
+  color: #db6372;
+}
+
+.blue {
+  color: #6aaaf5;
+}
+
+//customDate
+.form-search {
+  position: relative;
+  bottom: 9px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+
+  .title {
+    font-size: 12px;
+    padding-left: 5px;
+    left: 12px;
+    color: #bebcbc;
+  }
+}
+
+.field-game-wrap {
+  padding: 4px 8px;
+
+  select {
+    padding-left: 5px;
+    background: transparent;
+    border: none;
+    appearance: none;
+    outline: none;
+    width: 100%;
+  }
+}
+
+.field-date-wrap {
+  padding: 4px 0 4px 8px;
+  float: left;
+  width: 50%;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 5px;
+
+  &.start-date,
+  &.end-date {
+    position: relative;
+    cursor: pointer;
+  }
+
+  &.start-date {
+    border-right: 1px solid #eaeaea;
+  }
+
+  .date {
+    outline: none;
+    width: 100%;
+  }
+
+  input {
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    background: transparent;
+    appearance: none;
+    opacity: 0;
+  }
+
+  span {
+    position: absolute;
+    padding-left: 7px;
+    bottom: 5px;
+    left: 5px;
+  }
+}
+
+.field-search-wrap {
+  padding: 8px 0;
+  clear: left;
+
+  .btn-search {
+    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    margin: 0 auto;
+    width: 85%;
+    line-height: 45px;
+    border-radius: 3px;
+    text-align: center;
+    color: $buttonTextColor;
+
+    &.disable {
+      opacity: 0.5;
+    }
+  }
+}

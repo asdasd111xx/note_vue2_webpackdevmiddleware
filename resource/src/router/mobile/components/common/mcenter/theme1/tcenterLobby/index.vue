@@ -89,8 +89,13 @@
               `/static/image/${themeTPL}/mcenter/tcenter/btn_rebata.png`
             )
           "
-          @click="$router.push('/mobile/mcenter/tcenter/commission/record')"
+          @click="
+            $router.push({
+              path: `tcenterManageRebate/${'record'}`
+            })
+          "
         />
+        <!-- $router.push('/mobile/mcenter/tcenter/commission/record') -->
       </div>
       <div
         :class="[

@@ -1,0 +1,68 @@
+<template>
+  <!-- 卡片內容 -->
+  <div>
+    <div
+      v-for="(info, index) in cardItemList"
+      :key="index"
+      :class="$style['info-item']"
+    >
+      <div :class="$style['item-header']">
+        <div :class="$style['friend-name']">
+          {{ info[0].user }}
+        </div>
+        <div :class="$style['friend-money']">
+          {{ `${info[0].gift[0].name}: ${info[0].gift[1].money}` }}
+        </div>
+      </div>
+
+      <div :class="$style['item-content']">
+        <div v-for="(childItem, index) in info[0].list" :key="index">
+          <div v-if="childItem.item" :class="$style['item-detail']">
+            <div :class="$style['item-detail-title']">
+              {{ childItem.name }}
+            </div>
+            <div v-if="childItem.color" :class="$style[`${childItem.color}`]">
+              {{ childItem.item }}
+            </div>
+            <div v-else>
+              {{ childItem.item }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  props: {
+    cardItemList: {
+      type: Array,
+      required: true
+    }
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      return this[`$style_${this.themeTPL}`] || this.$style_porn1;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    tabCurrent() {
+      let tab = this.childItem.findIndex(item =>
+        this.$route.path.includes(item.key)
+      );
+      return tab === -1 ? 0 : tab;
+    }
+  }
+};
+</script>
+
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

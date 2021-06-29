@@ -1,0 +1,13 @@
+@import "./porn1.module.scss";
+
+.tab-item {
+    color: #A6A9B2;
+
+    &.is-current {
+        color: #222222;
+
+        &::after {
+            background: #E42A30;
+        }
+    }
+}
