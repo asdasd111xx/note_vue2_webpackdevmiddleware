@@ -11,11 +11,7 @@
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
-    <div
-      v-if="isActiveBouns"
-      id="video-play-block"
-      :class="$style['video-block']"
-    >
+    <div id="video-play-block" :class="$style['video-block']">
       <bonuns-dialog
         ref="bonunsDialog"
         :type="dialogType"
@@ -165,7 +161,8 @@ export default {
           if (
             this.player.seeking() ||
             !this.isInit ||
-            this.dialogType === "tips-wait"
+            this.dialogType === "tips-wait" ||
+            !this.isActiveBouns
           ) {
             return;
           }
@@ -348,7 +345,7 @@ export default {
 
         // 彩金開關
         // 預設連線中
-        // this.isActiveBouns = !!data.HasActivity;
+        this.isActiveBouns = !!data.HasActivity;
         if (!data.HasActivity) {
           return;
         }
