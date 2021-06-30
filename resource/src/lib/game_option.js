@@ -61,7 +61,8 @@ const embedGamesList = [
 // gameName: "捕鱼达人"
 // code: "30598"
 // gameName: "捕鱼达人2"
-const embedCodeList = ["38001", "30598", "30599"];
+// const embedCodeList = ["38001", "30598", "30599"];
+const embedCodeList = [];
 const checkVersion = function() {
   var agent = window.navigator.userAgent,
     start = agent.indexOf("OS");

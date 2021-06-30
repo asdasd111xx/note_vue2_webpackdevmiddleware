@@ -281,7 +281,8 @@ export default {
         data &&
         ((data.jpGrand && data.jpGrand.length > 0) ||
           (data.jpMinor && data.jpMinor.length > 0) ||
-          (data.jpUserList && data.jpUserList.length > 0))
+          (data.jpUserList && data.jpUserList.length > 0) ||
+          data.jpMajor)
       ) {
         this.jackpotData = data;
       }
