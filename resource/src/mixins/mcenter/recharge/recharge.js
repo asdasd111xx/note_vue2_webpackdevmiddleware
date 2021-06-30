@@ -384,6 +384,7 @@ export default {
       })
         .then(res => {
           if (res && res.data && res.data.result === "ok") {
+            this.errorMessage.phone = "";
             this.getPhoneTTL().then(() => {
               this.timer = setInterval(() => {
                 if (this.ttl === 0) {
