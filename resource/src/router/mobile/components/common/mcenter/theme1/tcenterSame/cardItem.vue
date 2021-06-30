@@ -11,7 +11,7 @@
           {{ info[0].user }}
         </div>
         <div :class="$style['friend-money']">
-          {{ `${info[0].gift[0].name}: ${info[0].gift[1].money}` }}
+          {{ `${info[0].gift}` }}
         </div>
       </div>
 

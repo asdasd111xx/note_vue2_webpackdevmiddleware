@@ -7,13 +7,9 @@ import ajax from "@/lib/ajax";
 export default {
   data() {
     return {
-      summary: null
+      summary: null,
+      profitSwitch: false //第三方開關
     };
-  },
-  filters: {
-    dateFormat(date) {
-      return format(new Date(date), "MM/dd");
-    }
   },
   computed: {
     ...mapGetters({
@@ -187,8 +183,20 @@ export default {
           }
 
           this.summary = ret;
+
+          if (this.summary) {
+            this.profitSwitch = Object.keys(this.summary).some(key => {
+              return key === "expected";
+            });
+          }
         }
       });
+    },
+    dateFormat(date) {
+      return format(new Date(date), "MM/dd");
+    },
+    dateYearFormat(date) {
+      return format(new Date(date), "yyyy/MM/dd");
     }
   }
 };

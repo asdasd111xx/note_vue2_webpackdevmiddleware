@@ -26,7 +26,9 @@
 <script>
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapGetters, mapActions } from "vuex";
+import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 export default {
+  mixins: [commissionOverview],
   components: {
     Swiper,
     SwiperSlide,
@@ -36,9 +38,10 @@ export default {
       ),
     real: () =>
       import(/* webpackChunkName: 'realRebate' */ "./components/realRebate"),
+
     profit: () =>
       import(
-        /* webpackChunkName: 'profitRebate' */ "./components/profitRebate"
+        /* webpackChunkName: 'commissionOverview' */ "../tcenter/components/commission/components/commissionOverview/index"
       ),
     recommendGift: () =>
       import(
@@ -67,6 +70,9 @@ export default {
     });
     this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
     this.currentLayout = { vendor: this.$route.params.title };
+  },
+  mounted() {
+    console.log("this.summary" + JSON.stringify(this.summary));
   },
   computed: {
     ...mapGetters({
@@ -100,7 +106,7 @@ export default {
           key: "profit",
           item: "profit",
           text: this.$text("S_LOSS_REBATE", "盈虧返利"),
-          show: true
+          show: this.profitSwitch
         },
         {
           key: "recommendGift",

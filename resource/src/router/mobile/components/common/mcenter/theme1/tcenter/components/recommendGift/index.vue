@@ -416,7 +416,7 @@ export default {
         return [
           {
             user: info.username,
-            gift: [{ name: "礼金" }, { money: info.total_invite_gift }],
+            gift: `礼金 : ${info.total_invite_gift}`,
             list: [
               { name: "注册时间", item: info.user_created_at },
               { name: "首存金额", item: info.amount },
