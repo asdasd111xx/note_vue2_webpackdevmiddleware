@@ -180,10 +180,6 @@ export default {
 
         // 快轉
         this.player.on("seeking", () => {});
-
-        if (this.isUnloginMode) {
-          this.unloginModeAction("play");
-        }
       } else {
         this.player.on("playing", () => {
           if (this.disableVideo) {
