@@ -152,7 +152,8 @@ export default {
         url: `/video/sort`,
         smallPig: true,
         params: {
-          tagId: !this.tagId ? "" : this.tagId,
+          tag: this.$route.query.tag,
+          tagId: this.tagId || "",
           siteId: this.siteId
         },
         timeout: 30000
@@ -165,10 +166,15 @@ export default {
       });
     },
     setSortId(value) {
+      if (this.sortId === value) {
+        return;
+      }
+
       this.sortId = value;
       this.current = 0;
       this.$router.replace({
         query: {
+          tag: this.$route.query.tag,
           source: this.$route.query.source,
           tagId: this.tagId,
           sortId: value

@@ -59,6 +59,10 @@ export default {
       cryptoMoney: "--",
       isClickCoversionBtn: false,
 
+      //USDT參考匯率
+      rate: "--",
+      updateTime: false,
+
       // 倒數器
       timer: null,
       countdownSec: 0,
@@ -741,6 +745,7 @@ export default {
       this.resetStatus();
       this.resetTimerStatus();
       this.curPayInfo = info;
+      this.chooseUSDT();
 
       if (info.payment_method_id === 20) {
         this.checkSuccess = true;
@@ -1292,32 +1297,45 @@ export default {
           const { result, ret } = response.data;
           if (!response || result !== "ok") return;
 
-          this.cryptoMoney = ret.crypto_amount;
+          this.rate = ret.rate;
+
+          if (this.moneyValue != "") {
+            this.cryptoMoney = ret.crypto_amount;
+          } else {
+            this.cryptoMoney = "--";
+          }
+
           this.isClickCoversionBtn = true;
-          this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+
+          //當切換成USDT和歸零的時候才重call秒數
+          if (this.updateTime) {
+            this.updateTime = false;
+            this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+          }
 
           // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
           if (this.countdownSec && !this.timer) {
             this.timer = setInterval(() => {
               if (this.countdownSec === 0) {
-                if (this.submitStatus !== "stepTwo") {
-                  // 需重新判斷
-                  // 將「confirmOneBtn」彈窗打開
-                  this.setPopupStatus(true, "funcTips");
+                // if (this.submitStatus !== "stepTwo") {
+                //   // 需重新判斷
+                //   // 將「confirmOneBtn」彈窗打開
+                //   this.setPopupStatus(true, "funcTips");
 
-                  this.confirmPopupObj = {
-                    title: ["porn1", "sg1"].includes(this.themeTPL)
-                      ? "汇率已失效"
-                      : "汇率已失效，请再次确认汇率",
-                    btnText: "刷新汇率",
-                    cb: () => {
-                      this.closePopup();
-                      this.convertCryptoMoney();
-                    }
-                  };
-                }
+                //   this.confirmPopupObj = {
+                //     title: ["porn1", "sg1"].includes(this.themeTPL)
+                //       ? "汇率已失效"
+                //       : "汇率已失效，请再次确认汇率",
+                //     btnText: "刷新汇率",
+                //     cb: () => {
+                //       this.closePopup();
+                //       this.convertCryptoMoney();
+                //     }
+                //   };
+                // }
 
                 this.resetTimerStatus();
+                this.cryptoMoney = "--";
                 return;
               }
               this.countdownSec -= 1;
@@ -1363,6 +1381,34 @@ export default {
       this.timer = null;
       this.countdownSec = 0;
       this.isClickCoversionBtn = false;
+    },
+    timeUSDT() {
+      if (this.countdownSec > 0) {
+        return this.formatCountdownSec();
+      } else if (this.countdownSec === 0) {
+        this.updateTime = true;
+        this.resetTimerStatus();
+        this.convertCryptoMoney();
+        return "--";
+      }
+    },
+    chooseUSDT() {
+      //選擇 CGPAY-USDT ,USDT
+      if (
+        this.curPayInfo.payment_method_id === 25 ||
+        this.curPayInfo.payment_method_id === 402
+      ) {
+        this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
+      }
+      return;
+    },
+    moneyUSDT(e) {
+      //防止輸入連續call api
+      clearTimeout(this.timerUSDT);
+      this.timerUSDT = setTimeout(() => {
+        //USDT、CGP-USDT
+        this.convertCryptoMoney();
+      }, 1000);
     }
   }
 };

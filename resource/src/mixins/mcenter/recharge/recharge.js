@@ -384,6 +384,7 @@ export default {
       })
         .then(res => {
           if (res && res.data && res.data.result === "ok") {
+            this.errorMessage.phone = "";
             this.getPhoneTTL().then(() => {
               this.timer = setInterval(() => {
                 if (this.ttl === 0) {
@@ -398,20 +399,21 @@ export default {
                 this.ttl -= 1;
               }, 1000);
               this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
-                  "%s",
-                  "5"
-                )
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
               });
             });
           } else {
             setTimeout(() => {
               this.isSendKeyring = false;
-            }, 1500);
+            }, 1000);
             this.errorMessage.phone = `${res.data.msg}`;
           }
         })
         .catch(error => {
+          setTimeout(() => {
+            this.isSendKeyring = false;
+          }, 1000);
+
           if (error.response && error.response.status === 429) {
             this.actionGetToManyRequestMsg(error.response).then(res => {
               this.errorMessage.phone = res;
@@ -426,10 +428,6 @@ export default {
           } else {
             this.errorMessage.phone = `${error.response.data}`;
           }
-
-          setTimeout(() => {
-            this.isSendKeyring = false;
-          }, 1500);
         });
     },
     sendRecharge() {
@@ -467,14 +465,14 @@ export default {
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           })
           .catch(error => {
             this.setErrorCode(error.response.data);
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           });
       });
     },

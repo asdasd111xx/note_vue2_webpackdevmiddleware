@@ -37,6 +37,11 @@
           加入娱乐会员<br />
           享有观影送钱
         </template> -->
+        <template v-else-if="type.includes('disable')">
+          <span style="margin-top: 12%;display: block;font-size: 20px;">
+            {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
+          </span>
+        </template>
         <template v-else>
           <span style="margin-top: 10%;display: block;">
             {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
@@ -78,7 +83,7 @@
           <!-- 右邊第一個按鈕 -->
           <div
             v-if="type.includes('disable')"
-            @click="$router.push('/mobile/login')"
+            @click="$router.push('/mobile/joinmember')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}

@@ -574,7 +574,7 @@ export default {
 
           if (res && res.data && res.data.result === "ok") {
             this.actionSetGlobalMessage({
-              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
             });
             this.getPhoneTTL().then(() => {
               this.countdownSec = this.ttl;

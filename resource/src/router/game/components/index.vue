@@ -129,17 +129,6 @@ export default {
 
       //       this.isLoading = false;
 
-      //       // 80桌參數
-      //       let query = "";
-      //       if (
-      //         vendor === "lg_live" &&
-      //         String(kind) === "2" &&
-      //         this.$route.query &&
-      //         this.$route.query.q === "R"
-      //       ) {
-      //         query = "&customize=yabo&tableType=3310";
-      //       }
-
       //       if (!this.isMobile && vendor === "sp") {
       //         this.isLoading = false;
 

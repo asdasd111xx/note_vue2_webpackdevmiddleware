@@ -121,7 +121,7 @@ export default {
             value: `${this.orderData.orderInfo.crypto_num} ${this.orderData.method_name}`,
             isFontBold: true,
             isHighlightValue: true,
-            copyShow: false
+            copyShow: true
           }
         ];
       }

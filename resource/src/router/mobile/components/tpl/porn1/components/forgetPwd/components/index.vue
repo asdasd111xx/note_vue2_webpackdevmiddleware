@@ -484,7 +484,9 @@ export default {
             if (res.data.code) {
               this.errMsg = `${res.data.msg}`;
             } else {
-              this.errMsg = "已发送手机认证码";
+              this.actionSetGlobalMessage({
+                msg: "已发送手机验证码"
+              });
             }
           } else {
             this.errMsg = res.data.msg;

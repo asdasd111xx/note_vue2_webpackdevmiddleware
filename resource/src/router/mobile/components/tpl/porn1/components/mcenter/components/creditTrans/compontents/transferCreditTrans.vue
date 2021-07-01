@@ -185,17 +185,20 @@ export default {
     this.actionSetRechargeConfig();
   },
   watch: {
-    thirdyCaptchaObj(val) {
-      this.getKeyring(val);
-    }
+    thirdyCaptchaObj(val) {}
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetUserdata"]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+      this.getKeyring(obj);
     },
     showCaptcha() {
-      this.isShowCaptcha = !this.isShowCaptcha;
+      if (this.memInfo.config.default_captcha_type !== 0) {
+        this.isShowCaptcha = !this.isShowCaptcha;
+      } else {
+        this.setCaptcha();
+      }
     },
     toggleSerial() {
       this.showSerial = !this.showSerial;

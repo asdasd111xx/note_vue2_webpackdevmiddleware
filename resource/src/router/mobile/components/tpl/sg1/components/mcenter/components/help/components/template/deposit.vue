@@ -34,7 +34,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/porn1/mcenter/help/deposit/icon_${categorys[category_currentIndex].icon}.png`
+                  `/static/image/sg1/mcenter/help/deposit/icon_${categorys[category_currentIndex].icon}.png`
                 )
               "
             />
@@ -89,7 +89,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/porn1/mcenter/help/deposit/step/${item.img}.png`
+              `/static/image/sg1/mcenter/help/deposit/step/${item.img}.png`
             )
           "
         />
@@ -114,7 +114,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/porn1/mcenter/help/deposit/icon_${item.icon}.png`
+                  `/static/image/sg1/mcenter/help/deposit/icon_${item.icon}.png`
                 )
               "
             />
