@@ -49,14 +49,22 @@
       </div>
 
       <div :class="[$style['detail-wrap'], 'clearfix']" v-if="data">
-        <div v-for="item in detailList">
+        <div v-for="item in detailList" :key="item.title">
           <span>{{ item.title }} </span>
           <span>{{ item.value }} </span>
         </div>
       </div>
 
-      <div v-for="list in auditList" :class="$style['detail-wrap']">
-        <div v-for="item in list" :class="$style['audit-cell']">
+      <div
+        v-for="(list, key) in auditList"
+        :key="`wrap-${key}`"
+        :class="$style['detail-wrap']"
+      >
+        <div
+          v-for="item in list"
+          :key="item.title"
+          :class="$style['audit-cell']"
+        >
           <span>
             <span>{{ item.title }} </span>
             <span>{{ item.rateValue }} </span>
@@ -77,7 +85,7 @@
 
       <div :class="$style.tips">
         如需帮助，请
-        <span @click="$router.push('/mobile/service')">联系客服</span>
+        <span @click="linkToService">联系客服</span>
       </div>
     </div>
   </div>
@@ -181,6 +189,10 @@ export default {
     }
   },
   methods: {
+    linkToService() {
+      this.$router.push("/mobile/service?redirect=withdraw");
+      localStorage.setItem("serial-detail-data", JSON.stringify(this.data));
+    },
     onClose() {
       this.$nextTick(() => {
         setTimeout(() => {

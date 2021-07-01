@@ -97,7 +97,7 @@ export default {
           }
         })
         .catch(e => {
-          const data = e.response.data;
+          const data = e.response && e.response.data;
           if (data && data.msg && data.code) {
             this.actionSetGlobalMessage({ msg: data.msg, code: data.code });
           }
