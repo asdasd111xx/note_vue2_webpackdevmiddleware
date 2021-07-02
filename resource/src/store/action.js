@@ -1814,10 +1814,17 @@ export const actionVerificationFormData = (
 
       break;
 
+    case "login-password":
+      val = val.replace(/[^A-Za-z0-9._\-!@#$&+=|*]/g, "").substring(0, 12);
+      break;
+
     case "password":
     case "confirm_password":
       // val = val.replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, "");
-      val = val.replace(/[\W]/g, "").substring(0, 50);
+      val = val
+        .replace(/[\W]/g, "")
+        .replace(/\_/g, "")
+        .substring(0, 12);
       // .toLowerCase();
       break;
 
