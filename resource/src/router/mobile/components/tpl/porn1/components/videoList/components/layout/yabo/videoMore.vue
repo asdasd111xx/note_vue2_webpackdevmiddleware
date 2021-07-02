@@ -104,7 +104,8 @@ export default {
       tagId: +this.$route.query.tagId,
       isSingle: false,
       source: this.$route.query.source,
-      isDisable: false
+      isDisable: false,
+      queryTitle: this.$route.query.tag
     };
   },
   created() {
@@ -112,7 +113,6 @@ export default {
   },
   mounted() {
     this.changeTab(500);
-
     this.setVideoList();
   },
   beforeDestroy() {
@@ -150,6 +150,30 @@ export default {
     }
   },
   methods: {
+    getNewTab() {
+      return pornRequest({
+        method: "post",
+        url: `/video/videolist`,
+        data: {
+          tag: this.queryTitle === "全部" ? "" : this.queryTitle,
+          siteId: this.siteId,
+          page: 1
+        }
+      }).then(response => {
+        if (response.result && response.result.length > 0) {
+          let videoArray = [];
+          for (let i = 0; i < Object.keys(response.result).length; i++) {
+            videoArray.push({
+              id: response.result[i].id,
+              title: response.result[i].name
+            });
+          }
+          this.videoTabs = [{ id: 0, title: "全部" }, ...videoArray];
+        } else {
+          this.videoTabs = [];
+        }
+      });
+    },
     getVideoTab() {
       return pornRequest({
         method: "get",
@@ -196,7 +220,7 @@ export default {
     changeTab(time) {
       const swiper = this.$refs.swiper.$swiper;
 
-      this.getVideoTab().then(() => {
+      this.getNewTab().then(() => {
         // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
         let initIndex = this.videoTabs.findIndex(item => {
           return item.id === this.sortId;

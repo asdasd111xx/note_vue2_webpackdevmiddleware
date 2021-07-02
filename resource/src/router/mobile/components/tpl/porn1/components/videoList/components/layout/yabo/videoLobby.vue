@@ -280,7 +280,7 @@ export default {
       );
       this.openVideo("videoList", {
         query: {
-          tag: videoData.name,
+          tag: this.videoType.title,
           source: this.$route.query.source,
           tagId: +this.videoType.id || 0,
           sortId: +videoData.id || 0
