@@ -503,14 +503,14 @@ export default {
     const username = {
       key: "username",
       content: {
-        note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
+        note1: this.$text("S_ACCOUNT_PLACEHOLDER"),
         note2: ""
       }
     };
     const password = {
       key: "password",
       content: {
-        note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母或数字"),
+        note1: this.$text("S_PASSWORD_PLACEHOLDER"),
         note2: ""
       }
     };
@@ -717,15 +717,6 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
-
-      // if (data.isRequired && this.allValue[key] === "") {
-      //   this.allTip[key] = "请输入6-12位字母或数字?";
-      //   return;
-      // }
-
-      //if (!this.allValue[key]) {
-      //  return;
-      //}
 
       if (!data.show) {
         return;

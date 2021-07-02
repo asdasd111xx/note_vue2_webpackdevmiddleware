@@ -25,13 +25,7 @@
                   maxlength="20"
                   tabindex="1"
                   @keydown.13="keyDownSubmit()"
-                  @input="
-                    username = $event.target.value
-                      .toLowerCase()
-                      .replace(' ', '')
-                      .trim()
-                      .replace(/[\W]/g, '')
-                  "
+                  @input="verification('username', $event.target.value)"
                 />
                 <div class="input-icon">
                   <img
@@ -59,13 +53,7 @@
                   type="password"
                   maxlength="12"
                   tabindex="2"
-                  @input="
-                    password = $event.target.value
-                      .replace(' ', '')
-                      .trim()
-                      .replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, '')
-                      .replace(/[\W]/g, '')
-                  "
+                  @input="verification('login-password', $event.target.value)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />

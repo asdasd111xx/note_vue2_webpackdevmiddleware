@@ -128,7 +128,7 @@
                   id="pwd"
                   v-model="password"
                   :class="$style['form-input']"
-                  placeholder="请输入6-12位字母或数字"
+                  :placeholder="$text('S_PASSWORD_ERROR')"
                   type="password"
                   maxlength="12"
                   @blur="verification('password', $event.target.value)"
@@ -365,7 +365,7 @@ export default {
       });
 
       const re = /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/;
-      const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位字母或数字");
+      const msg = this.$text("S_PASSWORD_ERROR");
 
       let errMsg = "";
 
@@ -389,6 +389,15 @@ export default {
       this.msg[key] = errMsg;
     },
     sendEmail(type) {
+      if (this.isSendEmail) {
+        return;
+      }
+
+      this.isSendEmail = true;
+      setTimeout(() => {
+        this.isSendEmail = false;
+      }, 1200);
+
       const url = "/mobile/resetpwd";
       const data = {
         params: {

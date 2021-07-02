@@ -31,7 +31,7 @@
               v-model="pwdResetInfo[item].value"
               @input="verification(item, $event.target.value)"
               type="text"
-              :placeholder="pwdResetInfo[item].placeholder"
+              :placeholder="$text(pwdResetInfo[item].placeholder)"
               :maxlength="pwdResetInfo[item].maxlength"
               :minlength="pwdResetInfo[item].minlength"
             />
@@ -40,7 +40,7 @@
               :id="item"
               v-model="pwdResetInfo[item].value"
               type="password"
-              :placeholder="pwdResetInfo[item].placeholder"
+              :placeholder="$text(pwdResetInfo[item].placeholder)"
               maxlength="12"
               @input="verification(item, $event.target.value)"
             />
@@ -50,7 +50,7 @@
               v-model="pwdResetInfo[item].value"
               @input="verification(item, $event.target.value)"
               type="text"
-              :placeholder="pwdResetInfo[item].placeholder"
+              :placeholder="$text(pwdResetInfo[item].placeholder)"
               :maxlength="pwdResetInfo[item].maxlength"
               :minlength="pwdResetInfo[item].minlength"
             />
@@ -116,7 +116,7 @@ export default {
           value: "",
           regExp: /^[a-z][a-z0-9]{3,19}$/,
           errorMsg: "S_USERNAME_ERROR",
-          placeholder: "请输入用户名",
+          placeholder: "S_PLEASE_ENTER_USER_NAME",
           eyeShow: false,
           display: false
         },
@@ -127,7 +127,7 @@ export default {
           value: "",
           regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
           errorMsg: "S_JM_EMAIL_FORMAT_UNAVAILABLE",
-          placeholder: "请输入电子邮箱",
+          placeholder: "S_PLS_ENTER_MAIL",
           maxlength: 100,
           minlength: 12,
           eyeShow: false,
@@ -138,11 +138,9 @@ export default {
           text: "S_ORIGIN_PASSWORD",
           type: "password",
           value: "",
-          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
+          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/,
           errorMsg: "S_PASSWORD_ERROR",
-          placeholder: "请输入原密码",
-          maxlength: 12,
-          minlength: 6,
+          placeholder: "S_PLEASE_ENTER_ORIGIN_PASSWORD",
           eyeShow: false,
           display: false
         },
@@ -151,11 +149,9 @@ export default {
           text: "S_NEW_PWD",
           type: "password",
           value: "",
-          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
+          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/,
           errorMsg: "S_PASSWORD_ERROR",
-          placeholder: "请设置新密码(6-12位字母或数字)",
-          maxlength: 12,
-          minlength: 6,
+          placeholder: "S_NEW_PASSWORD_PLACEHOLDER",
           eyeShow: false,
           display: false
         },
@@ -164,11 +160,9 @@ export default {
           text: "S_CHK_PWD",
           type: "password",
           value: "",
-          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
+          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/,
           errorMsg: "S_PASSWORD_ERROR",
-          placeholder: "请再次输入密码",
-          maxlength: 12,
-          minlength: 6,
+          placeholder: "S_PLEASE_ENTER_PASSWORD_AGAIN",
           eyeShow: false,
           display: false
         }
@@ -248,8 +242,6 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     verification(id, value) {
-      console.log(`verification id is ${id}`);
-      console.log(`verification value is ${value}`);
       if (id !== "email") {
         this.actionVerificationFormData({
           target: "password",
@@ -277,7 +269,7 @@ export default {
           const data = this.pwdResetInfo[id];
           const re = new RegExp(data.regExp);
           const msg = this.$t(data.errorMsg);
-
+          console.log(msg);
           if (!re.test(val)) {
             this.errMsg = msg;
           }
