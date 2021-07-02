@@ -115,8 +115,8 @@ export default {
       width: "500px",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: this.$t("S_CONFIRM"),
-      cancelButtonText: this.$t("S_CANCEL"),
+      // confirmButtonText: this.$t("S_CONFIRM"),
+      // cancelButtonText: this.$t("S_CANCEL"),
       allowOutsideClick: false,
       allowEscapeKey: false
     });
