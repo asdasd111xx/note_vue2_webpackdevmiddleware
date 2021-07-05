@@ -52,6 +52,14 @@ const embedGamesList = [
   {
     vendor: "bbp",
     kind: 3
+  },
+  {
+    vendor: "mg",
+    kind: 3
+  },
+  {
+    vendor: "mg_sport",
+    kind: 1
   }
 ];
 
