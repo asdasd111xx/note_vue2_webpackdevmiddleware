@@ -1,12 +1,12 @@
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
 import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
 import ajax from "@/lib/ajax";
 import axios from "axios";
-import isMobile from "@/lib/is_mobile";
 import bbosRequest from "@/api/bbosRequest";
-import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import isMobile from "@/lib/is_mobile";
 
 export default {
   provide() {
@@ -26,7 +26,7 @@ export default {
         },
         // 密碼
         password: {
-          placeholder: "S_PASSWORD_ERROR_AGENT",
+          placeholder: "S_PASSWORD_ERROR",
           error: "S_PASSWORD_ERROR_AGENT"
         },
         // 確認密碼
@@ -130,12 +130,7 @@ export default {
         password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
         confirm_password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/
       };
-      if (
-        key === "username" ||
-        key === "password" ||
-        key === "confirm_password" ||
-        key === "name"
-      ) {
+      if (["username", "password", "confirm_password", "name"].includes(key)) {
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
             allValue[key] = val;
@@ -145,7 +140,7 @@ export default {
               if (key === "confirm_password") {
                 allText[key].error =
                   allValue.password !== allValue.confirm_password;
-                this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
+                this.texts.confirm_password.error = "S_PASSWORD_ERROR";
               }
               return;
             } else if (["password", "confirm_password"].includes(key)) {
@@ -184,10 +179,10 @@ export default {
             this.texts.username.error = "S_USERNAME_ERROR";
             break;
           case "password":
-            this.texts.password.error = "S_PASSWORD_ERROR_AGENT";
+            this.texts.password.error = "S_PASSWORD_ERROR";
             break;
           case "confirm_password":
-            this.texts.confirm_password.error = "S_PASSWORD_ERROR_AGENT";
+            this.texts.confirm_password.error = "S_PASSWORD_ERROR";
             break;
           case "name":
             this.texts.name.error = "S_NO_SYMBOL_DIGIT_CHEN";
@@ -195,7 +190,6 @@ export default {
           default:
             break;
         }
-
         allText[key].error = false;
       }
     },
