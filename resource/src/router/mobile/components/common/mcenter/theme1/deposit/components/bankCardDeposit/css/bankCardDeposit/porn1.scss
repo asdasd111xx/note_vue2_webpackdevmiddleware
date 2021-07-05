@@ -337,6 +337,7 @@
     color: #be9e7f;
     margin: 0 5px 0 5px;
   }
+
   .content {
     display: flex;
     align-items: center;
@@ -1081,4 +1082,9 @@
   &:-moz-placeholder {
     color: #BEBCBC;
   }
+}
+
+.outer-crypto-selected {
+  width: 75%;
+  margin-left: 25px;
 }

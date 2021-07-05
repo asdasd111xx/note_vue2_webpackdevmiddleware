@@ -44,6 +44,11 @@ export default {
       webviewOpenUrl: "",
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
+      defaultOuterCrypto: "",
+      outerCryptoOption: [],
+      isOuterCrypto: false,
+      showOuterCryptoAddress: false,
+      outerCryptoAddress: "",
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
@@ -76,6 +81,9 @@ export default {
       setTimeout(() => {
         document.location.href = this.webviewOpenUrl;
       }, 200);
+    },
+    defaultOuterCrypto() {
+      this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     }
   },
   computed: {
@@ -664,11 +672,12 @@ export default {
                 })
               }));
               this.curPassRoad = { ...this.passRoad[0] };
-
+              this.isOuterCrypto = false;
               if (
                 this.curPayInfo.payment_method_id === 25 ||
                 this.curPayInfo.payment_method_id === 402
               ) {
+                this.isOuterCrypto = true;
                 this.getVendorCryptoOuterUserAddressList();
               }
             }
@@ -920,6 +929,13 @@ export default {
         paramsData = {
           ...paramsData,
           wallet_token: +this.walletData["CGPay"].password
+        };
+      }
+
+      if (this.showOuterCryptoAddress) {
+        paramsData = {
+          ...paramsData,
+          user_address: this.outerCryptoAddress
         };
       }
 
@@ -1359,7 +1375,18 @@ export default {
         params: {}
       })
         .then(response => {
-          console.log(response);
+          if (response && response.data && response.data.result === "ok") {
+            console.log(response);
+            response.data.ret.forEach(outerAddress => {
+              if (outerAddress.is_default) {
+                this.defaultOuterCrypto = outerAddress.address;
+              }
+              this.outerCryptoOption.push(outerAddress.address);
+            });
+            this.outerCryptoOption.push("其他位址");
+          }
+
+          // this.outerCryptoOption = ["1", "2", "3"];
         })
         .catch(error => {});
     },
