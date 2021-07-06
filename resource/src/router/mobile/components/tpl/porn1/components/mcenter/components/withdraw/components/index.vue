@@ -480,7 +480,7 @@
 
       <!-- 參考匯率 -->
       <div v-if="isSelectedUSDT" :class="$style['exchange-rate']">
-        參考匯率 1 USDT ≈ {{ rate }} CNY (
+        参考汇率 1 USDT ≈ {{ rate }} CNY (
         <span :class="[$style['time']]">{{ timeUSDT() }}</span>
         后更新 )
       </div>
@@ -1806,11 +1806,13 @@ export default {
       );
 
       switch (true) {
-        case !+this.withdrawValue:
-          return "--";
-          break;
+        // case !+this.withdrawValue:
+        //   return "0";
+        //   break;
 
-        case this.selectedCard.offer_percent === "0" || bonusOffer <= 0:
+        case this.selectedCard.offer_percent === "0" ||
+          bonusOffer <= 0 ||
+          !+this.withdrawValue:
           return 0;
           break;
 
