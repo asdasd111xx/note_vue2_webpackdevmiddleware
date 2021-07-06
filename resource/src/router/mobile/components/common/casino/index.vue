@@ -1,7 +1,8 @@
 <template>
   <div :class="`casino-wrap ${gameTheme}`">
     <template v-for="slotKey in slotSort">
-      <template v-if="slotKey === 'label'">
+      <!-- kind = 6 麻將特例移除分類 -->
+      <template v-if="slotKey === 'label' && kind !== 6">
         <game-label
           :key="`slot-${slotKey}`"
           :is-label-receive="isLabelReceive"
@@ -14,7 +15,11 @@
       <template v-if="slotKey === 'list'">
         <div
           :key="`slot-${slotKey}`"
-          :class="[[$style['game-item-wrap']], 'clearfix']"
+          :class="[
+            [$style['game-item-wrap']],
+            { [$style['game-item-mahjong']]: kind === 6 },
+            'clearfix'
+          ]"
         >
           <div
             :class="$style['jackpot-wrap']"
@@ -587,6 +592,9 @@ export default {
   margin-top: 45px;
 }
 
+.game-item-mahjong {
+  margin-top: 30px;
+}
 .empty-wrap {
   padding-top: 90px;
   color: #a6a9b2;
