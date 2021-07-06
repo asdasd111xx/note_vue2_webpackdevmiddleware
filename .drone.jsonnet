@@ -255,13 +255,13 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
         onlyGKE("QA","yaboxxx-prod","asia-east1-b"
             ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
             ,"yaboxxx-web","10.17.0.128","sigua","istio"),
-        # sigua
-        onlyGKE("QA","yaboxxx-test","asia-east1-b"
-            ,"qa","sgsp-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","sigua","origin"),
-        onlyGKE("QA","yaboxxx-prod","asia-east1-b"
-            ,"beta","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-            ,"yaboxxx-web","10.17.0.128","sigua","origin"),
+        // # sigua
+        // onlyGKE("QA","yaboxxx-test","asia-east1-b"
+        //     ,"qa","sgsp-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
+        //     ,"yaboxxx-web","10.27.1.142","sigua","origin"),
+        // onlyGKE("QA","yaboxxx-prod","asia-east1-b"
+        //     ,"beta","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
+        //     ,"yaboxxx-web","10.17.0.128","sigua","origin"),
 
 
     ]else [
@@ -289,13 +289,13 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
             ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
             ,"yaboxxx-web","10.17.0.181","sigua","istio"),
 
-        # sigua
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
-            ,"yaboxxx-web","10.17.0.181","sigua","origin"),
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
-            ,"yaboxxx-web","10.17.0.181","sigua","origin"),
+        // # sigua
+        // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+        //     ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
+        //     ,"yaboxxx-web","10.17.0.181","sigua","origin"),
+        // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+        //     ,"prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
+        //     ,"yaboxxx-web","10.17.0.181","sigua","origin"),
     
     ],
     trigger:
@@ -341,22 +341,22 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"10.17.0.181","ey"),
 
 
-    # sigua
-    Build("QA","yaboxxx-test","asia-east1-b"
-    ,"qa","sgsp-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","sigua","origin",
-    "beta","yaboxxx-prod","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-    ,"10.17.0.128","sg"),
+    // # sigua
+    // Build("QA","yaboxxx-test","asia-east1-b"
+    // ,"qa","sgsp-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
+    // ,"yaboxxx-web","10.27.1.142","sigua","origin",
+    // "beta","yaboxxx-prod","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
+    // ,"10.17.0.128","sg"),
 
-    Pipeline("Beta","yaboxxx-prod","asia-east1-b"
-    ,"beta","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-    ,"yaboxxx-web","10.17.0.128","sigua","origin","sg"),
+    // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
+    // ,"beta","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
+    // ,"yaboxxx-web","10.17.0.128","sigua","origin","sg"),
 
-    Build("Prod","yaboxxx-prod","asia-east1-b"
-    ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sigua","origin",
-    "prod","yaboxxx-prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
-    ,"10.17.0.181","sg"),
+    // Build("Prod","yaboxxx-prod","asia-east1-b"
+    // ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
+    // ,"yaboxxx-web","10.17.0.181","sigua","origin",
+    // "prod","yaboxxx-prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
+    // ,"10.17.0.181","sg"),
 
     # istio-sigua
     Build("QA","yaboxxx-test","asia-east1-b"
