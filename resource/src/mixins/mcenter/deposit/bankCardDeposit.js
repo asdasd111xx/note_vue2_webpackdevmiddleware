@@ -779,6 +779,7 @@ export default {
      * @param {String} money - 金額
      */
     changeMoney(money, canCustomMoney) {
+      this.cryptoMoney = "--";
       this.isSelectedCustomMoney = !!canCustomMoney;
       this.isDisableDepositInput = !canCustomMoney;
       this.moneyValue = money;
