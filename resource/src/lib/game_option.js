@@ -54,7 +54,7 @@ const embedGamesList = [
     kind: 3
   },
   {
-    vendor: "mg",
+    vendor: "mg2",
     kind: 3
   },
   {
