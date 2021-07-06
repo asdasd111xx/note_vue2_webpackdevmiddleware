@@ -92,7 +92,7 @@
             <div
               v-if="info.copyShow"
               :class="$style['icon-wrap']"
-              @click="handleCopy(info.value)"
+              @click="handleCopy(info)"
             >
               <img :src="$getCdnPath(`/static/image/common/ic_copy.png`)" />
             </div>
@@ -283,9 +283,15 @@ export default {
     }
   },
   methods: {
-    handleCopy(val) {
+    handleCopy(info) {
+      let copy = info.value;
+
+      //需转入数量欄位 僅複製數字部分
+      if (info.objKey == "receiveWalletNumber") {
+        copy = info.cryptoNum;
+      }
       this.msg = "已复制到剪贴板";
-      this.copyInfo(val);
+      this.copyInfo(copy);
     },
     /**
      * 回填寫存款資料頁

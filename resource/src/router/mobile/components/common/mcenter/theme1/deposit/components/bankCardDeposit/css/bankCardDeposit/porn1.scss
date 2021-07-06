@@ -344,13 +344,17 @@
   }
 
   .no-money {
-    max-width: 100px;
     word-break: break-all;
-    margin: 0 5px 0 5px;
+    margin-left: 10px;
+    color: #a6a9b2;
 
     &.money {
-      color: #be9e7f;
+      color: #414655;
     }
+  }
+
+  .rate {
+    margin-left: 10px;
   }
 
   .conversion-btn {
