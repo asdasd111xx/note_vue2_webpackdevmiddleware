@@ -162,6 +162,7 @@ import { ModelSelect } from "vue-search-select";
 import mcenter from "@/api/mcenter";
 import ajax from "@/lib/ajax";
 import { getCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import yaboRequest from "@/api/yaboRequest";
 
 export default {
@@ -188,7 +189,8 @@ export default {
         out: "",
         in: ""
       },
-      showIntegerBackConfirm: false
+      showIntegerBackConfirm: false,
+      redJackpotData: { enable: false }
     };
   },
   computed: {
@@ -255,7 +257,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      let nums = 3;
+      let nums = this.redJackpotData.enable ? 2: 3;
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)
@@ -319,6 +321,7 @@ export default {
     });
 
     this.isAutotransfer = this.memInfo.auto_transfer.enable;
+    this.getRedJackpot();
   },
   destroyed() {
     clearInterval(this.timer);
@@ -539,6 +542,25 @@ export default {
       //     this.tranOut = this.getDefaultTran.out;
       //     this.tranIn = this.getDefaultTran.in;
       //   }
+    },
+    getRedJackpot() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+        headers: {
+          cid: getCookie("cid")
+        },
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.errorCode === "00" && res.status === "000") {
+          this.redJackpotData = res.data;
+        } else {
+          this.redJackpotData = null;
+        }
+      });
     }
   }
 };
