@@ -245,13 +245,25 @@
         </form>
 
         <!-- 3拼圖驗證/4手繪/5行為驗證 -->
-        <thirdy-verification
+        <template
           v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
-          ref="thirdyCaptchaObj"
-          @set-captcha="setCaptcha"
-          :class="$style['thirdy-block']"
-          :page-type="'register'"
-        />
+        >
+          <thirdy-verification
+            ref="thirdyCaptchaObj"
+            @set-captcha="setCaptcha"
+            :class="$style['thirdy-block']"
+            :page-type="'register'"
+          />
+
+          <div
+            :class="
+              allTip['captcha_text']
+                ? $style['join-tip-show']
+                : $style['join-tip']
+            "
+            v-html="allTip['captcha_text']"
+          />
+        </template>
       </div>
 
       <slide-verification
@@ -270,6 +282,7 @@
           {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
+
       <div
         v-if="themeTPL != 'ey1'"
         :class="$style['has-visitor']"
@@ -296,11 +309,9 @@ import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
 import joinMemInfo from "@/config/joinMemInfo";
-import mcenter from "@/api/mcenter";
 import member from "@/api/member";
 import thirdyVerification from "@/components/thirdyVerification";
 import slideVerification from "@/components/slideVerification";
-import split from "lodash/split";
 import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -922,8 +933,9 @@ export default {
 
       // 拼圖
       if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
+        console.log(this.thirdyCaptchaObj);
         if (!this.thirdyCaptchaObj) {
-          this.allTip["confirm_password"] = "请先点击按钮进行验证";
+          this.allTip["captcha_text"] = "请先点击按钮进行验证";
           this.isLoading = false;
           return;
         } else {
