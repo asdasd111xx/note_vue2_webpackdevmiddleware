@@ -6,12 +6,9 @@
   </mobile-container>
 </template>
 <script>
-
-import axios from 'axios';
-import { mapGetters } from 'vuex';
-import member from '@/api/member';
-import mobileContainer from '../common/mobileContainer';
-import forgetPwd from './components/index';
+import { mapGetters } from "vuex";
+import mobileContainer from "../common/mobileContainer";
+import forgetPwd from "./components/index";
 
 export default {
   components: {
@@ -24,18 +21,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-
-    }),
+    ...mapGetters({}),
     headerConfig() {
       return {
         prev: true,
-        title: this.currentMethod === 'phone-step-2' ? '重设密码' : '找回密码',
-        onClick: () => { this.$router.back(); },
+        title: "重设密码",
+        onClick: () => {
+          this.$router.back();
+        },
         noBottomBorder: true
       };
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" module>
@@ -44,4 +41,3 @@ export default {
   background: #fefefe;
 }
 </style>
-

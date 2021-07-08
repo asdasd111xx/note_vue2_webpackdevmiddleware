@@ -25,50 +25,61 @@
             <div :class="$style['title']">
               {{ $text(pwdResetInfo[item].text) }}
             </div>
-            <input
-              v-if="pwdResetInfo[item].key === 'userName'"
-              :id="item"
-              v-model="pwdResetInfo[item].value"
-              @input="verification(item, $event.target.value)"
-              type="text"
-              :placeholder="$text(pwdResetInfo[item].placeholder)"
-              :maxlength="pwdResetInfo[item].maxlength"
-              :minlength="pwdResetInfo[item].minlength"
-            />
-            <input
-              v-else-if="pwdResetInfo[item].type === 'password'"
-              :id="item"
-              v-model="pwdResetInfo[item].value"
-              type="password"
-              :placeholder="$text(pwdResetInfo[item].placeholder)"
-              maxlength="12"
-              @input="verification(item, $event.target.value)"
-            />
-            <input
-              v-else
-              :id="item"
-              v-model="pwdResetInfo[item].value"
-              @input="verification(item, $event.target.value)"
-              type="text"
-              :placeholder="$text(pwdResetInfo[item].placeholder)"
-              :maxlength="pwdResetInfo[item].maxlength"
-              :minlength="pwdResetInfo[item].minlength"
-            />
-            <div
-              v-if="pwdResetInfo[item].type === 'password'"
-              :class="$style['eye']"
-            >
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/common/login/btn_eye_${
-                      isShowPwd ? 'n' : 'd'
-                    }.png`
-                  )
-                "
-                @click="toggleEye(item)"
+            <template v-if="pwdResetInfo[item].key === 'username'">
+              <input
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                @input="verification(item, $event.target.value)"
+                type="text"
+                :placeholder="$text(pwdResetInfo[item].placeholder)"
+                :maxlength="pwdResetInfo[item].maxlength"
+                :minlength="pwdResetInfo[item].minlength"
               />
-            </div>
+              <div :class="$style['field-tip']" v-html="allTip['username']" />
+            </template>
+
+            <template v-else-if="pwdResetInfo[item].key === 'password'">
+              <input
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                type="password"
+                :placeholder="$text(pwdResetInfo[item].placeholder)"
+                maxlength="12"
+                @input="verification(item, $event.target.value)"
+              />
+              <div :class="$style['field-tip']" v-html="allTip['password']" />
+            </template>
+
+            <template v-else>
+              <input
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                @input="verification(item, $event.target.value)"
+                type="text"
+                :placeholder="$text(pwdResetInfo[item].placeholder)"
+                :maxlength="pwdResetInfo[item].maxlength"
+                :minlength="pwdResetInfo[item].minlength"
+              />
+              <div
+                v-if="pwdResetInfo[item].type === 'password'"
+                :class="$style['eye']"
+              >
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye(item)"
+                />
+              </div>
+              <div
+                :class="$style['field-tip']"
+                v-html="allTip[pwdResetInfo[item].key]"
+              />
+            </template>
           </div>
         </div>
         <div v-if="isResetPW" :class="$style.prompt">
@@ -96,6 +107,7 @@ import mcenter from "@/api/mcenter";
 import agcenter from "@/api/agcenter";
 import member from "@/api/member";
 import agent from "@/api/agent";
+import joinMemInfo from "@/config/joinMemInfo";
 
 export default {
   components: {
@@ -108,14 +120,19 @@ export default {
     return {
       errMsg: "",
       msg: "",
+      allTip: {
+        username: "",
+        email: "",
+        pwd: "",
+        newPwd: "",
+        confNewPwd: ""
+      },
       pwdResetInfo: {
-        userName: {
-          key: "userName",
+        username: {
+          key: "username",
           text: "S_USER_NAME",
           type: "text",
           value: "",
-          regExp: /^[a-z][a-z0-9]{3,19}$/,
-          errorMsg: "S_USERNAME_ERROR",
           placeholder: "S_PLEASE_ENTER_USER_NAME",
           eyeShow: false,
           display: false
@@ -125,21 +142,17 @@ export default {
           text: "S_E_MAIL",
           type: "text",
           value: "",
-          regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
-          errorMsg: "S_JM_EMAIL_FORMAT_UNAVAILABLE",
           placeholder: "S_PLS_ENTER_MAIL",
           maxlength: 100,
           minlength: 12,
           eyeShow: false,
           display: false
         },
-        pwd: {
-          key: "pwd",
+        password: {
+          key: "password",
           text: "S_ORIGIN_PASSWORD",
           type: "password",
           value: "",
-          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/,
-          errorMsg: "S_PASSWORD_ERROR",
           placeholder: "S_PLEASE_ENTER_ORIGIN_PASSWORD",
           eyeShow: false,
           display: false
@@ -149,8 +162,6 @@ export default {
           text: "S_NEW_PWD",
           type: "password",
           value: "",
-          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/,
-          errorMsg: "S_PASSWORD_ERROR",
           placeholder: "S_NEW_PASSWORD_PLACEHOLDER",
           eyeShow: false,
           display: false
@@ -160,8 +171,6 @@ export default {
           text: "S_CHK_PWD",
           type: "password",
           value: "",
-          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/,
-          errorMsg: "S_PASSWORD_ERROR",
           placeholder: "S_PLEASE_ENTER_PASSWORD_AGAIN",
           eyeShow: false,
           display: false
@@ -216,7 +225,7 @@ export default {
       this.verification(key, this.pwdResetInfo[key].value);
       let newPwd = document.getElementById("newPwd"),
         confNewPwd = document.getElementById("confNewPwd"),
-        pwd = document.getElementById("pwd");
+        password = document.getElementById("password");
 
       if (this.isShowPwd) {
         if (newPwd) {
@@ -225,8 +234,8 @@ export default {
         if (confNewPwd) {
           confNewPwd.type = "password";
         }
-        if (pwd) {
-          pwd.type = "password";
+        if (password) {
+          password.type = "password";
         }
       } else {
         if (newPwd) {
@@ -235,55 +244,52 @@ export default {
         if (confNewPwd) {
           confNewPwd.type = "text";
         }
-        if (pwd) {
-          pwd.type = "text";
+        if (password) {
+          password.type = "text";
         }
       }
       this.isShowPwd = !this.isShowPwd;
     },
-    verification(id, value) {
-      if (id !== "email") {
-        this.actionVerificationFormData({
-          target: "password",
-          value: value
-        }).then(val => {
-          this.pwdResetInfo[id].value = val;
-          if (
-            (id === "confNewPwd" &&
-              this.pwdResetInfo["confNewPwd"].value !==
-                this.pwdResetInfo["newPwd"].value) ||
-            (id === "newPwd" &&
-              this.pwdResetInfo["confNewPwd"].value != "" &&
-              this.pwdResetInfo["confNewPwd"].value !==
-                this.pwdResetInfo["newPwd"].value) ||
-            (id === "pwd" &&
-              this.pwdResetInfo["confNewPwd"].value != "" &&
-              this.pwdResetInfo["confNewPwd"].value !==
-                this.pwdResetInfo["newPwd"].value)
-          ) {
-            this.errMsg = "确认密码预设要跟密码一致";
-          } else {
-            this.errMsg = "";
-          }
+    verification(key, value) {
+      let target = key;
 
-          const data = this.pwdResetInfo[id];
-          const re = new RegExp(data.regExp);
-          const msg = this.$t(data.errorMsg);
-          console.log(msg);
-          if (!re.test(val)) {
-            this.errMsg = msg;
-          }
-        });
+      if (["confNewPwd", "newPwd", "password"].includes(key)) {
+        target = "password";
+      }
+
+      this.actionVerificationFormData({
+        target: target,
+        value: value
+      }).then(val => {
+        this.pwdResetInfo[key].value = val;
+      });
+
+      if (
+        (key === "confNewPwd" &&
+          this.pwdResetInfo["confNewPwd"].value !==
+            this.pwdResetInfo["newPwd"].value) ||
+        (key === "newPwd" &&
+          this.pwdResetInfo["confNewPwd"].value != "" &&
+          this.pwdResetInfo["confNewPwd"].value !==
+            this.pwdResetInfo["newPwd"].value) ||
+        (key === "pwd" &&
+          this.pwdResetInfo["confNewPwd"].value != "" &&
+          this.pwdResetInfo["confNewPwd"].value !==
+            this.pwdResetInfo["newPwd"].value)
+      ) {
+        this.errMsg = "确认密码预设要跟密码一致";
       } else {
-        this.pwdResetInfo[id].value = value.trim();
+        this.errMsg = "";
+      }
 
-        const data = this.pwdResetInfo[id];
-        const re = new RegExp(data.regExp);
-        const msg = this.$t(data.errorMsg);
+      const val = this.pwdResetInfo[key].value;
+      const regex = new RegExp(joinMemInfo[target].regExp);
+      const msg = joinMemInfo[target].errorMsg;
 
-        if (!re.test(value)) {
-          this.errMsg = msg;
-        }
+      if (!regex.test(val)) {
+        this.errMsg = msg;
+      } else {
+        this.errMsg = "";
       }
     },
     pwdModifySubmit() {
@@ -337,7 +343,7 @@ export default {
     pwdResetSubmit() {
       if (!this.submitActive) return;
       const pwdInfo = {
-        username: this.pwdResetInfo.userName.value,
+        username: this.pwdResetInfo.username.value,
         email: this.pwdResetInfo.email.value,
         new_password: this.pwdResetInfo.newPwd.value,
         confirm_password: this.pwdResetInfo.confNewPwd.value,
@@ -379,7 +385,7 @@ export default {
     filterField() {
       let displayColumn = ["newPwd", "confNewPwd"];
       if (this.isResetPW) {
-        displayColumn = ["userName", "email", ...displayColumn];
+        displayColumn = ["username", "email", ...displayColumn];
       } else {
         displayColumn = ["pwd", ...displayColumn];
       }
@@ -524,5 +530,14 @@ input {
   padding-top: 15px;
   color: #a6a9b2;
   font-size: 12px;
+}
+
+// 尚未實作個欄位錯誤訊息
+.field-tip {
+  display: none;
+  width: 100%;
+  padding: 5px 25px 5px 0;
+  text-align: right;
+  color: #c24141;
 }
 </style>

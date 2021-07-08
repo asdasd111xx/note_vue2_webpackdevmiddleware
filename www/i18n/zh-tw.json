@@ -23,7 +23,7 @@
   "POP_NOTE_LIST_3": "设定【提现密码】",
   "S_MEMBER_LOGIN": "会员登入",
   "S_ACCOUNT_PLACEHOLDER": "请输入4-20位字母或数字",
-  "S_PASSWORD_PLACEHOLDER": "请输入6-12位(须含英文1大写、1小写、1数字)",
+  "S_PASSWORD_PLACEHOLDER": "请输入6-12位字母或数字",
   "S_PLEASE_ENTER_ORIGIN_PASSWORD": "请输入原密码",
   "S_PLEASE_ENTER_PASSWORD_AGAIN": "请再次输入密码",
   "S_NEW_PASSWORD_PLACEHOLDER": "请设置新密码(6-12位须含英文大小写及数字)",
