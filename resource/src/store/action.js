@@ -1790,6 +1790,7 @@ export const actionVerificationFormData = (
     case "username":
       val = val
         .replace(/[\W]/g, "")
+        .replace(/\_/g, "")
         .substring(0, 20)
         .toLowerCase();
       break;

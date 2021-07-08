@@ -59,7 +59,7 @@ export default {
     isRequired: true,
     hasVerify: false,
     show: true,
-    regExp: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
     errorMsg: i18n.t("S_PASSWORD_ERROR")
   },
   confirm_password: {
@@ -70,8 +70,9 @@ export default {
     isRequired: true,
     hasVerify: false,
     show: true,
-    regExp: "",
-    errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
+    errorMsg: i18n.t("S_PASSWORD_ERROR")
+    // errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
   },
   introducer: {
     key: "introducer",

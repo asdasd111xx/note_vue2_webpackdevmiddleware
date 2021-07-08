@@ -125,10 +125,10 @@
                   {{ $t("S_NEW_PWD") }}
                 </div>
                 <input
-                  id="pwd"
+                  id="password"
                   v-model="password"
                   :class="$style['form-input']"
-                  :placeholder="$text('S_PASSWORD_ERROR')"
+                  :placeholder="$text('S_PASSWORD_PLACEHOLDER')"
                   type="password"
                   maxlength="12"
                   @blur="verification('password', $event.target.value)"
@@ -143,7 +143,7 @@
                         }.png`
                       )
                     "
-                    @click="toggleEye('pwd')"
+                    @click="toggleEye('password')"
                   />
                 </div>
               </div>
@@ -157,7 +157,7 @@
                   {{ $t("S_ENABLE_CHK_PWD") }}
                 </div>
                 <input
-                  id="confPwd"
+                  id="confirm_password"
                   v-model="confirm_password"
                   :class="$style['form-input']"
                   placeholder="请再次输入密码"
@@ -175,7 +175,7 @@
                         }.png`
                       )
                     "
-                    @click="toggleEye('confPwd')"
+                    @click="toggleEye('confirm_password')"
                   />
                 </div>
               </div>
@@ -226,9 +226,9 @@
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 import member from "@/api/member";
-import joinMemInfo from "@/config/joinMemInfo";
 import mobileContainer from "../../common/mobileContainer";
 import popupVerification from "@/components/popupVerification";
+import joinMemInfo from "@/config/joinMemInfo";
 
 export default {
   components: {
@@ -260,15 +260,7 @@ export default {
       isShowCaptcha: false
     };
   },
-  currentMethod() {
-    this.msg = {
-      username: "",
-      email: "",
-      keyring: "",
-      password: "",
-      confirm_password: ""
-    };
-  },
+
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -278,16 +270,6 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
-    headerConfig() {
-      return {
-        prev: true,
-        title: this.currentMethod === "phone-step-2" ? "重设密码" : "找回密码",
-        onClick: () => {
-          this.$router.back();
-        },
-        noBottomBorder: true
-      };
     },
     checkSubmit() {
       if (this.currentMethod === "phone-step-1") {
@@ -303,6 +285,15 @@ export default {
   watch: {
     thirdyCaptchaObj() {
       this.getKeyring();
+    },
+    currentMethod() {
+      this.msg = {
+        username: "",
+        email: "",
+        keyring: "",
+        password: "",
+        confirm_password: ""
+      };
     }
   },
   mounted() {
@@ -326,35 +317,28 @@ export default {
       }
     },
     toggleEye(key) {
-      let pwd = document.getElementById("pwd"),
-        confPwd = document.getElementById("confPwd");
+      let password = document.getElementById("password"),
+        confirm_password = document.getElementById("confirm_password");
 
       if (this.isShowPwd) {
-        if (pwd) {
-          pwd.type = "password";
+        if (password) {
+          password.type = "password";
         }
-        if (confPwd) {
-          confPwd.type = "password";
+        if (confirm_password) {
+          confirm_password.type = "password";
         }
       } else {
-        if (pwd) {
-          pwd.type = "text";
+        if (password) {
+          password.type = "text";
         }
-        if (confPwd) {
-          confPwd.type = "text";
+        if (confirm_password) {
+          confirm_password.type = "text";
         }
       }
       this.isShowPwd = !this.isShowPwd;
     },
     changeMethod(status) {
       if (status) return;
-      // this.errMsg = "";
-      // this.username = "";
-      // this.email = "";
-      // this.phone = "";
-      // this.keyring = "";
-      // this.password = "";
-      // this.confirm_password = "";
     },
     verification(key, value) {
       this.actionVerificationFormData({
@@ -364,25 +348,23 @@ export default {
         this[key] = val;
       });
 
-      const re = /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/;
-      const msg = this.$text("S_PASSWORD_ERROR");
-
       let errMsg = "";
-
-      if (this.password !== this.confirm_password) {
-        errMsg = "确认密码预设要跟密码一致";
-        this.msg.confirm_password = errMsg;
-        return;
-      } else {
-        this.msg.confirm_password = "";
-        this.msg.password = "";
-      }
 
       if (!value) {
         errMsg = "该栏位不得为空";
       }
 
-      if (!re.test(value)) {
+      if (
+        key === "confirm_password" &&
+        this.password !== this.confirm_password
+      ) {
+        errMsg = "确认密码预设要跟密码一致";
+        this.msg[key] = errMsg;
+      }
+
+      const regex = new RegExp(joinMemInfo[key].regExp);
+      const msg = joinMemInfo[key].errorMsg;
+      if (!regex.test(value)) {
         errMsg = msg;
       }
 
@@ -398,7 +380,7 @@ export default {
         this.isSendEmail = false;
       }, 1200);
 
-      const url = "/mobile/resetpwd";
+      const url = "/mobile/resetpassword";
       const data = {
         params: {
           username: this.username,
@@ -408,7 +390,7 @@ export default {
         success: res => {
           if (res.result === "ok") {
             this.actionSetGlobalMessage({
-              msg: this.$text("FORGET_PWD_SEND", "重设密码信件已发送")
+              msg: this.$text("FORGET_password_SEND", "重设密码信件已发送")
             });
           }
         },
@@ -421,12 +403,12 @@ export default {
 
       // 忘記密碼 - 代理會員
       if (type === "agent") {
-        agent.pwdForget(data);
+        agent.passwordForget(data);
         return;
       }
 
       // 忘記密碼 - 會員
-      member.pwdForget(data);
+      member.passwordForget(data);
     },
     send(type) {
       if (this.currentMethod === "phone-step-1") {
@@ -440,7 +422,7 @@ export default {
         return;
       }
       if (this.currentMethod === "phone-step-2") {
-        this.resetPwd(type);
+        this.resetpassword(type);
         return;
       }
     },
@@ -462,12 +444,12 @@ export default {
       this.isSendKeyring = true;
       // 忘記密碼發送簡訊 - 代理會員
       //   if (type === 'agent') {
-      //     agent.pwdForgetMobile(data);
+      //     agent.passwordForgetMobile(data);
       //     return;
       //   }
 
       // 忘記密碼發送簡訊 - 會員
-      // member.pwdForgetMobile(data);
+      // member.passwordForgetMobile(data);
 
       axios({
         method: "post",
@@ -538,9 +520,9 @@ export default {
         success: response => {
           if (response.result === "ok") {
             //   驗證成功重設密碼
+            this.errMsg = "";
             this.resetKeyring = response.ret.keyring;
             this.currentMethod = "phone-step-2";
-            this.errMsg = "";
           }
         },
         fail: res => {
@@ -561,14 +543,14 @@ export default {
 
       // 忘記密碼驗證簡訊 - 代理會員
       if (type === "agent") {
-        agent.pwdMobileVerify(data);
+        agent.passwordMobileVerify(data);
         return;
       }
 
       // 忘記密碼驗證簡訊 - 會員
-      member.pwdMobileVerify(data);
+      member.passwordMobileVerify(data);
     },
-    resetPwd(type) {
+    resetpassword(type) {
       if (this.msg.password || this.msg.confirm_password) {
         alert(this.$text("S_CHECK_FAIL", "验证失败"));
         return;
