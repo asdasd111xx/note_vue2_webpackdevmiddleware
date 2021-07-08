@@ -47,6 +47,18 @@
                 maxlength="12"
                 @input="verification(item, $event.target.value)"
               />
+              <div :class="$style['eye']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye(item)"
+                />
+              </div>
               <div :class="$style['field-tip']" v-html="allTip['password']" />
             </template>
 
@@ -124,8 +136,8 @@ export default {
         username: "",
         email: "",
         pwd: "",
-        newPwd: "",
-        confNewPwd: ""
+        new_password: "",
+        confirm_password: ""
       },
       pwdResetInfo: {
         username: {
@@ -157,8 +169,8 @@ export default {
           eyeShow: false,
           display: false
         },
-        newPwd: {
-          key: "newPwd",
+        new_password: {
+          key: "new_password",
           text: "S_NEW_PWD",
           type: "password",
           value: "",
@@ -166,8 +178,8 @@ export default {
           eyeShow: false,
           display: false
         },
-        confNewPwd: {
-          key: "confNewPwd",
+        confirm_password: {
+          key: "confirm_password",
           text: "S_CHK_PWD",
           type: "password",
           value: "",
@@ -223,26 +235,26 @@ export default {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
       this.verification(key, this.pwdResetInfo[key].value);
-      let newPwd = document.getElementById("newPwd"),
-        confNewPwd = document.getElementById("confNewPwd"),
+      let new_password = document.getElementById("new_password"),
+        confirm_password = document.getElementById("confirm_password"),
         password = document.getElementById("password");
 
       if (this.isShowPwd) {
-        if (newPwd) {
-          newPwd.type = "password";
+        if (new_password) {
+          new_password.type = "password";
         }
-        if (confNewPwd) {
-          confNewPwd.type = "password";
+        if (confirm_password) {
+          confirm_password.type = "password";
         }
         if (password) {
           password.type = "password";
         }
       } else {
-        if (newPwd) {
-          newPwd.type = "text";
+        if (new_password) {
+          new_password.type = "text";
         }
-        if (confNewPwd) {
-          confNewPwd.type = "text";
+        if (confirm_password) {
+          confirm_password.type = "text";
         }
         if (password) {
           password.type = "text";
@@ -252,9 +264,9 @@ export default {
     },
     verification(key, value) {
       let target = key;
-
-      if (["confNewPwd", "newPwd", "password"].includes(key)) {
-        target = "password";
+      let errMsg = "";
+      if (["password"].includes(key)) {
+        target = "login_password";
       }
 
       this.actionVerificationFormData({
@@ -265,32 +277,23 @@ export default {
       });
 
       if (
-        (key === "confNewPwd" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value) ||
-        (key === "newPwd" &&
-          this.pwdResetInfo["confNewPwd"].value != "" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value) ||
-        (key === "pwd" &&
-          this.pwdResetInfo["confNewPwd"].value != "" &&
-          this.pwdResetInfo["confNewPwd"].value !==
-            this.pwdResetInfo["newPwd"].value)
+        this.pwdResetInfo["confirm_password"].value !==
+        this.pwdResetInfo["new_password"].value
       ) {
-        this.errMsg = "确认密码预设要跟密码一致";
-      } else {
-        this.errMsg = "";
+        errMsg = "确认密码预设要跟密码一致";
       }
 
       const val = this.pwdResetInfo[key].value;
       const regex = new RegExp(joinMemInfo[target].regExp);
       const msg = joinMemInfo[target].errorMsg;
 
-      if (!regex.test(val)) {
-        this.errMsg = msg;
-      } else {
-        this.errMsg = "";
+      if (target === "login_password" && val.length < 6) {
+        errMsg = "請輸入6-12位字母及數字";
+      } else if (!regex.test(val)) {
+        errMsg = msg;
       }
+
+      this.errMsg = errMsg;
     },
     pwdModifySubmit() {
       if (!this.submitActive || this.isLoading) return;
@@ -300,9 +303,9 @@ export default {
       }, 2000);
 
       const pwdInfo = {
-        old_password: this.pwdResetInfo.pwd.value,
-        new_password: this.pwdResetInfo.newPwd.value,
-        confirm_password: this.pwdResetInfo.confNewPwd.value
+        old_password: this.pwdResetInfo.password.value,
+        new_password: this.pwdResetInfo.new_password.value,
+        confirm_password: this.pwdResetInfo.confirm_password.value
       };
       if (this.$route.query.type === "agent") {
         agcenter.accountPassword({
@@ -345,8 +348,8 @@ export default {
       const pwdInfo = {
         username: this.pwdResetInfo.username.value,
         email: this.pwdResetInfo.email.value,
-        new_password: this.pwdResetInfo.newPwd.value,
-        confirm_password: this.pwdResetInfo.confNewPwd.value,
+        new_password: this.pwdResetInfo.new_password.value,
+        confirm_password: this.pwdResetInfo.confirm_password.value,
         keyring: this.$route.query.kr
       };
       if (this.$route.query.type === "agent") {
@@ -383,11 +386,11 @@ export default {
     },
     ...mapActions(["actionChangePage", "actionSetUserdata"]),
     filterField() {
-      let displayColumn = ["newPwd", "confNewPwd"];
+      let displayColumn = ["new_password", "confirm_password"];
       if (this.isResetPW) {
         displayColumn = ["username", "email", ...displayColumn];
       } else {
-        displayColumn = ["pwd", ...displayColumn];
+        displayColumn = ["password", ...displayColumn];
       }
       Object.keys(this.pwdResetInfo).forEach(key => {
         this.pwdResetInfo[key].display = displayColumn.includes(key);

@@ -53,7 +53,7 @@
                   type="password"
                   maxlength="12"
                   tabindex="2"
-                  @input="verification('login-password', $event.target.value)"
+                  @input="verification('login_password', $event.target.value)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />

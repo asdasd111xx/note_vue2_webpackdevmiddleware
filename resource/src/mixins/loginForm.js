@@ -67,7 +67,7 @@ export default {
         target: key,
         value: value
       }).then(val => {
-        if (key === "login-password") {
+        if (key === "login_password") {
           this.password = val;
           return;
         }
