@@ -144,7 +144,6 @@
                   :placeholder="field.content.note1"
                   type="text"
                   maxlength="20"
-                  @blur="verification(field.key)"
                   @keydown.13="keyDownSubmit()"
                   @input="verification(field.key)"
                 />
@@ -747,36 +746,33 @@ export default {
             value: this.allValue[key]
           }).then(val => {
             this.allValue[key] = val;
-            const re = data.regExp;
+            const regex = new RegExp(data.regExp);
             const msg = data.errorMsg;
+
+            let errMsg = "";
+
             if (key === "password") {
-              // console.log("password");
-              if (re && !re.test(this.allValue.password)) {
-                this.allTip.password = msg;
-                return;
-              } else {
-                this.allTip.password = "";
+              if (this.allValue.confirm_password !== this.allValue.password) {
+                errMsg = "确认密码预设要跟密码一致";
               }
 
-              if (this.allValue.confirm_password === this.allValue.password) {
-                this.allTip.confirm_password = "";
+              if (!val.match(regex)) {
+                errMsg = msg;
               }
+
+              this.allTip.password = errMsg;
             }
 
             if (key === "confirm_password") {
-              if (this.allValue.confirm_password === "") {
-                this.allTip.confirm_password = this.joinMemInfo[
-                  "password"
-                ].errorMsg;
-                return;
-              } else if (
-                this.allValue.confirm_password !== this.allValue.password
-              ) {
-                this.allTip.confirm_password = msg;
-                return;
-              } else {
-                this.allTip.confirm_password = "";
+              if (this.allValue.confirm_password !== this.allValue.password) {
+                errMsg = "确认密码预设要跟密码一致";
               }
+
+              if (!val.match(regex)) {
+                errMsg = msg;
+              }
+
+              this.allTip.confirm_password = errMsg;
             }
           });
           break;
@@ -791,33 +787,6 @@ export default {
         return;
       }
 
-      const re = data.regExp;
-      const msg = data.errorMsg;
-
-      if (key === "password") {
-        // console.log("password");
-        if (re && !re.test(this.allValue.password)) {
-          this.allTip.password = msg;
-          return;
-        }
-
-        if (this.allValue.confirm_password === this.allValue.password) {
-          this.allTip.confirm_password = "";
-        }
-      }
-
-      if (key === "confirm_password") {
-        if (this.allValue.confirm_password === "") {
-          this.allTip.confirm_password = this.joinMemInfo["password"].errorMsg;
-          return;
-        } else if (this.allValue.confirm_password !== this.allValue.password) {
-          this.allTip.confirm_password = msg;
-          return;
-        } else {
-          this.allTip.confirm_password = "";
-        }
-      }
-
       if (key == "withdraw_password") {
         if (index === "all") {
           if (this.allValue.withdraw_password.value.join("").length < 4) {
@@ -826,7 +795,6 @@ export default {
           }
         } else {
           let target = this.allValue.withdraw_password;
-          let errorMsg = "";
           let correct_value = target.value[index]
             .replace(" ", "")
             .trim()
@@ -855,15 +823,6 @@ export default {
             }
           }
         }
-      }
-
-      if (
-        (re && !re.test(this.allValue[key])) ||
-        (data.minimum && this.allValue[key].length < data.minimum) ||
-        (data.maximum && this.allValue[key].length > data.maximum)
-      ) {
-        this.allTip[key] = msg;
-        return;
       }
 
       if (key === "password" || key === "username") {
