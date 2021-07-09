@@ -26,40 +26,36 @@ export default {
           title: "S_NAME",
           type: "text",
           maxLength: "20",
-          placeholder: "S_NAME",
-          error: "S_USERNAME_ERROR",
-          message: "S_USERNAME_ERROR"
+          placeholder: this.$text("S_NAME"),
+          error: ""
         },
         // 密碼
         password: {
           title: "SS_LOGIN_PW",
           type: "password",
           maxLength: "12",
-          placeholder: "S_PASSWORD_PLACEHOLDER_AGENT",
-          error: "S_PASSWORD_ERROR",
-          message: ""
+          placeholder: this.$text("S_PASSWORD_PLACEHOLDER_AGENT"),
+          error: ""
         },
         // 確認密碼
         confirm_password: {
           title: "S_PWD_CONFIRM",
           type: "password",
           maxLength: "12",
-          placeholder: "S_PWD_CONFIRM",
-          error: "S_PASSWORD_ERROR",
-          message: ""
+          placeholder: this.$text("S_PWD_CONFIRM"),
+          error: ""
         },
         // 會員姓名
         name: {
           title: "S_MEMBER_NAME",
           type: "text",
           maxLength: "",
-          placeholder: "S_MEMBER_NAME",
-          error: "S_NO_SYMBOL_DIGIT_CHEN",
-          message: "S_REGISTER_TIPS"
+          placeholder: this.$text("S_MEMBER_NAME"),
+          error: ""
         }
       },
       captchaError: false,
-      captchaErrorMsg: "请输入验证码",
+      captchaErrorMsg: "",
       allValue: {
         username: "",
         password: "",
@@ -81,7 +77,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionVerificationFormData",
+      "actionSetGlobalMessage"
+    ]),
 
     /**
      * 取得 Class
@@ -121,7 +121,7 @@ export default {
               this.allValue.confirm_password !== this.allValue.password
             ) {
               // errMsg = "确认密码预设要跟密码一致";
-              errMsg = "S_PASSWD_CONFIRM_ERROR";
+              errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
             }
 
             if (reg[key] && !allValue[key].match(reg[key])) {
@@ -129,15 +129,16 @@ export default {
             }
 
             allText[key].error = errMsg;
-
-            console.log(errMsg, allText[key].error);
           }
         );
       }
 
-      if (key === "captcha_text") {
-        this.captchaError = false;
-        this.captchaErrorMsg = "请输入验证码";
+      if (
+        ["captcha_text"].includes(key) &&
+        this.memInfo.config.friend_captcha_type !== 0 &&
+        allValue["captcha_text"] === ""
+      ) {
+        this.captchaErrorMsg = this.$text("S_ENABLE_KEYRING", "请输入验证码");
         allValue["captcha_text"] = value.replace(/[\W\_]/g, "");
       }
     },
@@ -145,7 +146,10 @@ export default {
     checkInput() {
       this.$validator.validateAll("form-page").then(response => {
         if (!response) {
-          // this.msg = this.$text("S_JM_MSG_COMPLETE");
+          // this.actionSetGlobalMessage({
+          //   msg: this.$text("S_JM_MSG_COMPLETE")
+          // });
+
           Object.keys(this.allValue).forEach(key => {
             if (this.allValue[key]) {
               return;
@@ -223,8 +227,9 @@ export default {
         let result = this.themeTPL === "ey1" ? newResult.data : newResult;
 
         if (result.result === "ok" || result.status === "000") {
-          this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
-
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_CREATE_SECCESS", "新增成功")
+          });
           this.isShow = false;
           this.allValue = {
             username: "",
@@ -260,12 +265,14 @@ export default {
 
             if (result.errors.captcha_text) {
               this.captchaErrorMsg = result.errors.captcha_text;
-              this.captchaError = true;
             }
             return;
           }
 
-          this.msg = result.msg;
+          this.actionSetGlobalMessage({
+            msg: result.msg
+          });
+
           return;
         }
       });
