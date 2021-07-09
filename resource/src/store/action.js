@@ -1873,6 +1873,12 @@ export const actionVerificationFormData = (
       regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
       val = val.replace(regex, "").substring(0, 20);
       break;
+
+    case "search_video":
+      regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF[0-9a-zA-Z]/g;
+      val = val.replace(regex, "");
+      break;
+
     // case "USDT-address":
     //   val = val.substring(0, 42);
     //   break;
