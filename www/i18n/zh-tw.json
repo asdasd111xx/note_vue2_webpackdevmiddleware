@@ -379,6 +379,7 @@
   "S_COMPUTING_VALID_BET": "结算有效投注",
   "S_COMPUTING_PREMIUM_AMOUNT": "结算返水金额",
   "S_CLOSE": "关闭",
+  "S_BACK": "返回派发",
   "S_SWITCH_SUCCESS": "切换成功",
   "S_SWITCH_AUTO_TRANSFER": "切换成功，各游戏平台整数余额已回收至主帐户",
   "S_FINALLY_OPENED_PLATFORM": "*号标注为最后开启平台",

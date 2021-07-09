@@ -24,6 +24,12 @@ export default {
         // Title 由各接口設定
         prev: true,
         onClick: () => {
+          if (
+            this.$route.params.item == "receive" ||
+            this.$route.params.item == "detail"
+          ) {
+            return this.$router.replace("/mobile/mcenter/tcenterLobby");
+          }
           this.$router.back();
         }
       }

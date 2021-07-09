@@ -1,8 +1,7 @@
 @import "@/css/variable.scss";
 $fixed_spacing_height: 43px;
 $tabColor: #000;
-$tabColorActive: #00347d;
-$buttonBackgroundColor: #00347d;
+
 $buttonTextColor: #fff;
 
 @media (orientation: landscape) {
@@ -34,6 +33,24 @@ $buttonTextColor: #fff;
   }
 }
 
+//cardAllTotal
+.third-wrap {
+  width: 100%;
+  padding-bottom: 10px;
+  color: $main_text_color3;
+  border-bottom: 2px solid #eee;
+
+  .card-item {
+    display: inline-block;
+    width: 160px;
+    line-height: 20px;
+    font-size: 12px;
+  }
+  .card-item:last-child {
+    display: block;
+  }
+}
+
 //card-item
 .black,
 .info-item {
@@ -47,13 +64,33 @@ $buttonTextColor: #fff;
 .item-header {
   display: flex;
   justify-content: space-between;
-  padding: 5px 17px;
+  padding: 5px 3px 5px 17px;
   border-bottom: 1px solid #eee;
+  height: 30px;
 }
 
 .friend-name {
   font-size: 14px;
   font-weight: bold;
+}
+
+.friend-money {
+  display: flex;
+  padding: 0 5px;
+
+  span {
+    padding: 1px 0;
+  }
+
+  .arrow-next {
+    width: 13px;
+    height: 13px;
+    margin: auto;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 .item-content {
@@ -63,7 +100,6 @@ $buttonTextColor: #fff;
 .item-detail {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
 }
 
 .item-detail-title {
@@ -161,6 +197,136 @@ $buttonTextColor: #fff;
 
     &.disable {
       opacity: 0.5;
+    }
+  }
+}
+
+//rebateRate
+.serial-header {
+  z-index: 3;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  background: #fefffe;
+  text-align: center;
+  position: relative;
+
+  .title {
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 43px;
+  }
+
+  &.ey1 {
+    background: linear-gradient(#fe2a2a, #b60303);
+
+    .title {
+      color: white;
+    }
+  }
+
+  &.porn1 {
+    background: #fefffe;
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 10px;
+
+  > img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.serial-number-wrap {
+  background-color: #f8f8f8;
+  // overflow-y: auto;
+}
+
+.serial-number-block {
+  margin: 2px 0;
+}
+
+.serial-number-title {
+  color: #414655;
+  font-size: 14px;
+  margin-top: 6px;
+  padding: 8px 12px;
+  background-color: #dddddd;
+  font-weight: bold;
+
+  &::before {
+    content: "";
+    position: relative;
+    display: inline-block;
+    width: 3px;
+    height: 15px;
+    top: 2.5px;
+    margin-right: 3px;
+    background: linear-gradient(#bd9d7d, #f9ddbd);
+  }
+}
+
+.serial-number-cell {
+  height: 40px;
+  padding: 2.5px 19px 2.5px 24px;
+  margin-bottom: 1.5px;
+  position: relative;
+  background: #fefffe;
+  display: flex;
+  font-size: 12px;
+  line-height: 35px;
+  justify-content: space-between;
+  color: #414655;
+
+  .rate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &:nth-child(even) {
+    background-color: #ffffff;
+  }
+
+  &:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+
+  &.active {
+    color: #a6a9b2;
+  }
+}
+
+@media screen and (min-width: $phone) {
+  .serial-header {
+    .title {
+      font-size: 18px;
+    }
+
+    .serial-time {
+      font-size: 13px;
+    }
+
+    .serial-number-block {
+      > .serial-number-title {
+        font-size: 13px;
+      }
+    }
+
+    .serial-number-cell {
+      .rate,
+      .title {
+        font-size: 11px;
+      }
     }
   }
 }

@@ -8,7 +8,7 @@
             `/static/image/${themeTPL}/mcenter/tcenter/icon_home_n.png`
           )
         "
-        @click="$router.back()"
+        @click="$router.replace('/mobile/mcenter')"
       />
       <div :class="$style['title-label']">我的推广</div>
       <div
@@ -89,13 +89,8 @@
               `/static/image/${themeTPL}/mcenter/tcenter/btn_rebata.png`
             )
           "
-          @click="
-            $router.push({
-              path: `tcenterManageRebate/${'record'}`
-            })
-          "
+          @click="$router.push('/mobile/mcenter/tcenterManageRebate/record')"
         />
-        <!-- $router.push('/mobile/mcenter/tcenter/commission/record') -->
       </div>
       <div
         :class="[

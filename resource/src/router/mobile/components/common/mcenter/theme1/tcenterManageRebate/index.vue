@@ -1,7 +1,7 @@
 <template>
   <div :class="$style['wrap']">
     <!-- 最上層功能列 -->
-    <div v-if="tabState && isInit" :class="[$style['tab-wrap'], 'clearfix']">
+    <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -19,11 +19,13 @@
       :is="currentLayout.vendor"
       :set-header-title="setHeaderTitle"
       :set-tab-state="setTabState"
+      :tab-state="tabState"
     />
   </div>
 </template>
 
 <script>
+import bbosRequest from "@/api/bbosRequest";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapGetters, mapActions } from "vuex";
 import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
@@ -37,7 +39,9 @@ export default {
         /* webpackChunkName: 'recordRebate' */ "./components/recordRebate"
       ),
     real: () =>
-      import(/* webpackChunkName: 'realRebate' */ "./components/realRebate"),
+      import(
+        /* webpackChunkName: 'realRebate' */ "../tcenter/components/commission/components/commissionRebates/index"
+      ),
 
     profit: () =>
       import(
@@ -51,29 +55,29 @@ export default {
   props: {
     setHeaderTitle: {
       type: Function,
-      required: true
+      default: () => {}
     }
   },
   data() {
     return {
       tabState: true,
-      isInit: false,
+      isShowRebate: true,
       currentLayout: {}
     };
   },
   created() {
     this.actionSetUserdata().then(() => {
-      this.isInit = true;
       if (!this.memInfo.user.show_promotion) {
         this.$router.push("/mobile/mcenter");
       }
     });
-    this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
     this.currentLayout = { vendor: this.$route.params.title };
   },
   mounted() {
-    console.log("this.summary" + JSON.stringify(this.summary));
+    this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
+    this.getRebateSwitch();
   },
+
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -84,9 +88,6 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    setTabState(state) {
-      this.tabState = state;
     },
     tabItem() {
       return [
@@ -100,7 +101,7 @@ export default {
           key: "real",
           item: "receive",
           text: this.$text("S_COMMISSION_REBATE", "實時返利"),
-          show: true
+          show: this.isShowRebate
         },
         {
           key: "profit",
@@ -146,6 +147,28 @@ export default {
         params: {
           title: `${this.tabItem[tabKey].key}`,
           item: `${this.tabItem[tabKey].item}`
+        }
+      });
+    },
+    setTabState(state) {
+      this.tabState = state;
+    },
+    getRebateSwitch() {
+      this.isReceive = false;
+      bbosRequest({
+        method: "get",
+        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
+        reqHeaders: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: { lang: "zh-cn" }
+      }).then(response => {
+        this.isReceive = true;
+
+        if (response.status === "000") {
+          //判斷實時返利開關
+          this.isShowRebate = response.data.ret.show_real_time;
+          return;
         }
       });
     }

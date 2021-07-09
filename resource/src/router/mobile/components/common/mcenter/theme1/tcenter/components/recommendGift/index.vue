@@ -373,9 +373,13 @@ export default {
     },
     allTotalList() {
       let strArr = [
-        { item: `总首存金额： ${this.mainTotal.amount}` },
-        { item: `总礼金： ${this.mainTotal.total_invite_gift}` },
-        { item: `笔数： ${this.pagination.total}` }
+        { item: `总首存金额： ${this.amountFormat(this.mainTotal.amount)}` },
+        {
+          item: `总礼金： ${this.amountFormat(
+            this.mainTotal.total_invite_gift
+          )}`
+        },
+        { item: `笔数： ${this.amountFormat(this.pagination.total)}` }
       ];
       return strArr;
     },
@@ -413,23 +417,21 @@ export default {
     },
     cardItemList() {
       let data = this.mainListData?.map(info => {
-        return [
-          {
-            user: info.username,
-            gift: `礼金 : ${info.total_invite_gift}`,
-            list: [
-              { name: "注册时间", item: info.user_created_at },
-              { name: "首存金额", item: info.amount },
-              { name: "推荐礼金", item: info.deposit_gift },
-              { name: "推荐人奖励", item: info.invite_gift },
-              {
-                name: "状态",
-                item: this.getStatus(info),
-                color: this.getStatus(info, "y")
-              }
-            ]
-          }
-        ];
+        return {
+          title: info.username,
+          childTitle: `礼金 : ${this.amountFormat(info.total_invite_gift)}`,
+          list: [
+            { name: "注册时间", item: this.filterDate(info.user_created_at) },
+            { name: "首存金额", item: this.amountFormat(info.amount) },
+            { name: "推荐礼金", item: this.amountFormat(info.deposit_gift) },
+            { name: "推荐人奖励", item: this.amountFormat(info.invite_gift) },
+            {
+              name: "状态",
+              item: this.getStatus(info),
+              color: this.getStatus(info, "y")
+            }
+          ]
+        };
       });
       return data;
     }
@@ -639,6 +641,14 @@ export default {
 
         $state.loaded();
       });
+    },
+    filterDate(date) {
+      return Vue.moment(date).format("YYYY-MM-DD HH:mm:ss");
+    },
+    amountFormat(amount) {
+      return `${Number(amount)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     }
   },
   filters: {

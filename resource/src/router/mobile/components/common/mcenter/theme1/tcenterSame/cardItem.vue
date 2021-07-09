@@ -1,6 +1,6 @@
 <template>
   <!-- 卡片內容 -->
-  <div>
+  <div v-if="cardItemList !== undefined && cardItemList.length > 0">
     <div
       v-for="(info, index) in cardItemList"
       :key="index"
@@ -8,16 +8,30 @@
     >
       <div :class="$style['item-header']">
         <div :class="$style['friend-name']">
-          {{ info[0].user }}
+          {{ info.title }}
         </div>
-        <div :class="$style['friend-money']">
-          {{ `${info[0].gift}` }}
+
+        <div
+          v-if="info.img"
+          :class="$style['friend-money']"
+          @click="clickCard(info.paramsValue, info.isClick)"
+        >
+          <span>{{ info.childTitle }}</span>
+          <div :class="$style['arrow-next']">
+            <img
+              :src="$getCdnPath('/static/image/common/arrow_next.png')"
+              alt="arrow-next"
+            />
+          </div>
         </div>
       </div>
 
       <div :class="$style['item-content']">
-        <div v-for="(childItem, index) in info[0].list" :key="index">
-          <div v-if="childItem.item" :class="$style['item-detail']">
+        <div v-for="(childItem, index) in info.list" :key="index">
+          <div
+            v-if="childItem.item != undefined"
+            :class="$style['item-detail']"
+          >
             <div :class="$style['item-detail-title']">
               {{ childItem.name }}
             </div>
@@ -40,7 +54,7 @@ export default {
   props: {
     cardItemList: {
       type: Array,
-      required: true
+      default: undefined
     }
   },
   computed: {
@@ -58,6 +72,12 @@ export default {
         this.$route.path.includes(item.key)
       );
       return tab === -1 ? 0 : tab;
+    }
+  },
+  methods: {
+    clickCard(value, isClick = false) {
+      if (!isClick) return;
+      this.$emit("click-card", value);
     }
   }
 };

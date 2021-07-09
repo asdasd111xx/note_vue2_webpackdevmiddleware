@@ -341,7 +341,7 @@ export default {
     },
     {
       // 返利管理
-      path: "tcenterManageRebate/:title?/:item?",
+      path: "tcenterManageRebate/:title/:item?",
       name: "mcenter-tcenterManageRebate",
       component
     }
