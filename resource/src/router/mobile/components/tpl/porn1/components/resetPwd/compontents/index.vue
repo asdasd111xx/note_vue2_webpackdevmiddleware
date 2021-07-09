@@ -234,7 +234,6 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
-      this.verification(key, this.pwdResetInfo[key].value);
       let new_password = document.getElementById("new_password"),
         confirm_password = document.getElementById("confirm_password"),
         password = document.getElementById("password");
