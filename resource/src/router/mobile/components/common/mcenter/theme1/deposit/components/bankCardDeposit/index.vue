@@ -1691,18 +1691,6 @@ export default {
 
       this.closePopup();
 
-      //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 402)) {
-        let oldrate = this.rate;
-        this.convertCryptoMoney();
-        if (this.rate !== oldrate) {
-          this.actionSetGlobalMessage({
-            msg: "汇率已异动，请重新申请"
-          });
-          return;
-        }
-      }
-
       this.submitList().then(response => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
