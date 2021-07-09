@@ -11,7 +11,7 @@ import appEvent from "@/lib/appEvent";
 import { getCookie, setCookie } from "@/lib/cookie";
 import yaboRequest from "@/api/yaboRequest";
 import CryptoJS from "crypto-js";
-
+import JSEncrypt from "jsencrypt";
 export default {
   data() {
     return {
