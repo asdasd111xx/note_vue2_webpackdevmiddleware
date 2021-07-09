@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" :class="$style['content-wrap']">
-      <forget-pwd :current-method.sync="currentMethod" />
+      <forget-pwd />
     </div>
   </mobile-container>
 </template>
@@ -16,11 +16,6 @@ export default {
   components: {
     mobileContainer,
     forgetPwd
-  },
-  data() {
-    return {
-      currentMethod: "phone-step-1"
-    };
   },
   computed: {
     ...mapGetters({}),

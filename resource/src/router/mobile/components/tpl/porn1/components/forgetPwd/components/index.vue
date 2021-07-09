@@ -68,6 +68,7 @@
                     .replace(' ', '')
                     .trim()
                     .replace(/[\W]/g, '')
+                    .replace(/\_/g, '')
                 "
               />
             </div>
@@ -128,7 +129,7 @@
                   id="password"
                   v-model="password"
                   :class="$style['form-input']"
-                  :placeholder="$text('S_PASSWORD_PLACEHOLDER')"
+                  :placeholder="$text('S_NEW_PASSWORD_PLACEHOLDER')"
                   type="password"
                   maxlength="12"
                   @blur="verification('password', $event.target.value)"
@@ -275,10 +276,13 @@ export default {
       if (this.currentMethod === "phone-step-1") {
         return this.username && this.keyring;
       }
+
       return (
         this.password === this.confirm_password &&
         this.password &&
-        this.confirm_password
+        this.confirm_password &&
+        this.errMsg === "" &&
+        !Object.keys(this.msg).some(key => this.msg[key] !== "")
       );
     }
   },
@@ -341,6 +345,8 @@ export default {
       if (status) return;
     },
     verification(key, value) {
+      this.errMsg = "";
+
       this.actionVerificationFormData({
         target: key,
         value: value
@@ -354,10 +360,7 @@ export default {
         errMsg = "该栏位不得为空";
       }
 
-      if (
-        key === "confirm_password" &&
-        this.password !== this.confirm_password
-      ) {
+      if (this.password !== this.confirm_password) {
         errMsg = "确认密码预设要跟密码一致";
         this.msg[key] = errMsg;
       }
@@ -385,7 +388,8 @@ export default {
         params: {
           username: this.username,
           email: this.email,
-          callback: url
+          callback: url,
+          errorAlert: false
         },
         success: res => {
           if (res.result === "ok") {
@@ -552,7 +556,6 @@ export default {
     },
     resetpassword(type) {
       if (this.msg.password || this.msg.confirm_password) {
-        alert(this.$text("S_CHECK_FAIL", "验证失败"));
         return;
       }
 
@@ -561,7 +564,8 @@ export default {
           username: this.username,
           new_password: this.password,
           confirm_password: this.confirm_password,
-          keyring: this.resetKeyring
+          keyring: this.resetKeyring,
+          errorAlert: false
         },
         success: response => {
           this.errMsg = "";
