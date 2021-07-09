@@ -1096,6 +1096,13 @@ export default {
           if (_isPWA) {
             newWindow.close();
           }
+          if (code === 1501020021) {
+            (async () => {
+              await this.getPayPass();
+              this.verificationMoney(this.moneyValue);
+            })();
+            msg = "汇率已异动，请重新申请";
+          }
 
           this.actionSetGlobalMessage({
             msg,

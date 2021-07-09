@@ -8,13 +8,10 @@
 import { mapGetters, mapActions } from "vuex";
 import analytics from "@/lib/analytics";
 import appEvent from "@/lib/appEvent";
-import openGame from "@/lib/open_game";
 import { getCookie, setCookie } from "@/lib/cookie";
-import io from "socket.io-client";
 import yaboRequest from "@/api/yaboRequest";
 import CryptoJS from "crypto-js";
-import JsEncrypt from "jsencrypt";
-
+import JSEncrypt from "jsencrypt";
 export default {
   data() {
     return {
@@ -95,6 +92,14 @@ export default {
         }
 
         this.connectYaboWS();
+
+        let link =
+          document.querySelector("link[rel*='icon']") ||
+          document.createElement("link");
+        link.type = "image/x-icon";
+        link.rel = "shortcut icon";
+        link.href = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/favicon.ico`;
+        document.getElementsByTagName("head")[0].appendChild(link);
       }
     }
   },

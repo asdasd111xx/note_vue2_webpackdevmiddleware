@@ -8,6 +8,8 @@
         v-model="keyWord"
         :placeholder="$text('S_PLEASE_INPUT_AV', '请输入片名, 女优或番号')"
         type="text"
+        @input="verification('search_video', $event.target.value)"
+        @blur="verification('search_video', $event.target.value)"
         @keydown.enter="onClick({ title: keyWord })"
       />
       <div :class="$style['icon-search']" @click="onClick({ title: keyWord })">
@@ -80,10 +82,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import split from "lodash/split";
 import join from "lodash/join";
 import pornRequest from "@/api/pornRequest";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   props: {
@@ -123,6 +125,16 @@ export default {
     });
   },
   methods: {
+    ...mapActions(["actionVerificationFormData"]),
+    verification(key, value) {
+      console.log(value);
+      this.actionVerificationFormData({
+        target: key,
+        value: value
+      }).then(val => {
+        this.keyWord = val;
+      });
+    },
     onClick({ title }) {
       const historyKeyWord = this.historyList.includes(title)
         ? [...this.historyList]

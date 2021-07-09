@@ -1806,13 +1806,11 @@ export default {
       );
 
       switch (true) {
-        // case !+this.withdrawValue:
-        //   return "0";
-        //   break;
+        case !this.withdrawValue:
+          return "--";
+          break;
 
-        case this.selectedCard.offer_percent === "0" ||
-          bonusOffer <= 0 ||
-          !+this.withdrawValue:
+        case this.selectedCard.offer_percent === "0" || bonusOffer <= 0:
           return 0;
           break;
 
