@@ -2,7 +2,7 @@
   <div>
     <!-- 返利管理 -->
     <div v-if="path" :class="[$style['profit']]">
-      <div v-for="(info, index) in profitList[0]" :key="index">
+      <div v-for="(info, index) in profitList" :key="index">
         <div :class="[$style['profit-wrap']]">
           <div :class="[$style['bottom-title']]">
             <span :class="[$style['top-title']]">
@@ -354,94 +354,92 @@ export default {
         return item.key == "expected";
       });
       let data = findExpected?.map(info => {
-        return [
-          {
-            overview: `${this.currentMonth}月收益概况`,
-            date: `${this.dateYearFormat(info.start_at)}~
+        return {
+          overview: `${this.currentMonth}月收益概况`,
+          date: `${this.dateYearFormat(info.start_at)}~
                 ${this.dateYearFormat(info.end_at)}`,
-            day: this.remainderDays,
-            list: [
-              {
-                name: this.$text("S_EXPECTED_REBATE", "预估返利"),
-                item: this.amountFormat(info.amount),
-                key: "estimate",
-                color: info.amount < 0,
-                show: true
-              },
-              {
-                name: this.$text("S_REBATE_TOP_LEVEL", "最高盈亏级别"),
-                item: `${info.rate}%`,
-                key: "level",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
-                item: this.amountFormat(info.valid_user),
-                key: "member",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_VALID_BET", "有效投注"),
-                item: this.amountFormat(info.valid_bet),
-                key: "bet",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_TOTAL_REBATE", "总损益"),
-                item: info.profit,
-                color: info.profit,
-                key: "level",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_SENT_RAKEBACK", "已派返水"),
-                item: this.amountFormat(info.dispatched_rebate),
-                key: "sent",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_SENT_PROMOTIONS", "已派優惠"),
-                item: this.amountFormat(info.dispatched_offer),
-                key: "discount",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_MEM_DEPOSIT_2", "會員存款"),
-                item: this.amountFormat(info.deposit),
-                key: "deposit",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
-                item: this.amountFormat(info.withdraw),
-                key: "withdraw",
-                color: info.withdraw < 0,
-                show: true
-              },
-              {
-                name: this.$text("S_PLATFORM_COST", "平台费"),
-                item: this.amountFormat(info.vendor_fee),
-                key: "fee",
-                color: false,
-                show: true
-              },
-              {
-                name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
-                item: this.$text("S_HAVE", "有"),
-                key: "previous",
-                color: false,
-                show: info.shift_amount
-              }
-            ].filter(i => i.show)
-          }
-        ];
+          day: this.remainderDays,
+          list: [
+            {
+              name: this.$text("S_EXPECTED_REBATE", "预估返利"),
+              item: this.amountFormat(info.amount),
+              key: "estimate",
+              color: info.amount < 0,
+              show: true
+            },
+            {
+              name: this.$text("S_REBATE_TOP_LEVEL", "最高盈亏级别"),
+              item: `${info.rate}%`,
+              key: "level",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
+              item: this.amountFormat(info.valid_user),
+              key: "member",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_VALID_BET", "有效投注"),
+              item: this.amountFormat(info.valid_bet),
+              key: "bet",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_TOTAL_REBATE", "总损益"),
+              item: info.profit,
+              color: info.profit,
+              key: "level",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_SENT_RAKEBACK", "已派返水"),
+              item: this.amountFormat(info.dispatched_rebate),
+              key: "sent",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_SENT_PROMOTIONS", "已派優惠"),
+              item: this.amountFormat(info.dispatched_offer),
+              key: "discount",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_MEM_DEPOSIT_2", "會員存款"),
+              item: this.amountFormat(info.deposit),
+              key: "deposit",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
+              item: this.amountFormat(info.withdraw),
+              key: "withdraw",
+              color: info.withdraw < 0,
+              show: true
+            },
+            {
+              name: this.$text("S_PLATFORM_COST", "平台费"),
+              item: this.amountFormat(info.vendor_fee),
+              key: "fee",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
+              item: this.$text("S_HAVE", "有"),
+              key: "previous",
+              color: false,
+              show: info.shift_amount
+            }
+          ].filter(i => i.show)
+        };
       });
       return data;
     }

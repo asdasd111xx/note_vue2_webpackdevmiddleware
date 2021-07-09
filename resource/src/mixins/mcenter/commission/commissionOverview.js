@@ -8,7 +8,8 @@ export default {
   data() {
     return {
       summary: null,
-      profitSwitch: false //第三方開關
+      profitSwitch: false, //第三方開關,
+      todayAmout: "" //推廣大廳 今日已领返利
     };
   },
   computed: {
@@ -189,6 +190,7 @@ export default {
               return key === "expected";
             });
           }
+          this.todayAmout = this.summary["today"].amount;
         }
       });
     },

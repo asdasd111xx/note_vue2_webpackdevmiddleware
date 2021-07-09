@@ -230,8 +230,7 @@ export default {
           // 傳遞給子元件點擊專用
           paramsValue: { depth: info.depth },
           isClick: true,
-          //img: 為了計算完無實返金額||(下級好友有投注)可以顯示箭頭的條件 this.status || info.valid_bet > 0,
-          img: this.memberId,
+          img: this.status,
           list: [
             {
               name: "有效投注",

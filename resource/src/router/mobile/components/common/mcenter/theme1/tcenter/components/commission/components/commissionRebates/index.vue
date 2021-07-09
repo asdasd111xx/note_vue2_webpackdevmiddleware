@@ -327,7 +327,8 @@ export default {
     }
   },
   created() {
-    if (this.path && this.pathItem != "receive") {
+    //為了防止下一層的頁面重刷會call不到前一頁傳進來的參數 導回實時返利領取
+    if (this.path && this.pathItem != "receive" && this.pathItem != "detail") {
       this.$router.replace({
         params: {
           title: this.title,
@@ -407,6 +408,25 @@ export default {
         this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = response.data.dispatched_amount;
+
+          let total = response.data.total ?? "";
+          let entries = response.data.entries ?? "";
+
+          //傳進detail判斷是否顯示查看箭頭
+          //狀態=>可領/已達上限/已領取/計算中/計算完無實返金額(下級好友有投注)
+          if (
+            entries.self_time > 0 ||
+            (entries.state === 3 && entries.self_times === 0) ||
+            (!total.accounting && !entries) ||
+            total.accounting ||
+            (!total.accounting &&
+              entries.amount === 0 &&
+              entries.sub_valid_bet > 0)
+          ) {
+            this.status = true;
+          } else {
+            this.status = false;
+          }
         }
       });
     },

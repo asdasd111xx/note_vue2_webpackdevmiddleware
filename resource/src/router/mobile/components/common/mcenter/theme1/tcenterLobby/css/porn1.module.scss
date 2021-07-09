@@ -11,7 +11,7 @@
   align-items: center;
   color: white;
   height: 43px;
-  background-image: url('/static/image/porn1/mcenter/tcenter/promote_topbg.png');
+  background-image: url("/static/image/porn1/mcenter/tcenter/promote_topbg.png");
   background-size: 100% 43px;
   max-height: 43px;
 }
@@ -36,13 +36,13 @@
   border: 0 solid;
   border-radius: 20px;
   padding: 5px;
-  background-color: #9CA3BF;
+  background-color: #9ca3bf;
   right: 15px;
 }
 
 .main {
   margin-top: 43px;
-  background-image: url('/static/image/porn1/mcenter/tcenter/promote_bg.png');
+  background-image: url("/static/image/porn1/mcenter/tcenter/promote_bg.png");
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -52,30 +52,42 @@
   display: flex;
   flex-direction: column;
   font-weight: 700;
+  padding-top: 19px;
 
   .list-data {
     display: flex;
     justify-content: space-between;
     margin-left: 40px;
     margin-right: 40px;
-    border-bottom: #5E626D dashed 1px;
-    padding-top: 15px;
+    border-bottom: #ffffff solid 1px;
+    padding-top: 7px;
+    padding-bottom: 6px;
 
     .list-name {
-      color: #5E626D;
+      color: #5e626d;
+    }
+
+    .list-button {
+      color: white;
+      border-radius: 21px;
+      padding: 2px 9px;
+      background-color: #636f93;
+      font-size: 12px;
+      font-weight: normal;
+      position: relative;
+      bottom: 1px;
     }
 
     .list-value {
       color: #414655;
     }
   }
-
 }
 
 .regist-data {
   display: flex;
-  background-color: #FFFFFF;
-  border: #FFFFFF solid;
+  background-color: #ffffff;
+  border: #ffffff solid;
   border-radius: 10px;
   margin: 20px;
   flex-wrap: wrap;
@@ -89,7 +101,7 @@
     padding: 10px;
 
     .regist-title {
-      color: #AAAAAA;
+      color: #aaaaaa;
     }
 
     .regist-value {
@@ -108,8 +120,8 @@
 
 .special {
   display: flex;
-  background-color: #FFFFFF;
-  border: #FFFFFF solid;
+  background-color: #ffffff;
+  border: #ffffff solid;
   border-radius: 10px;
   margin: 20px;
   padding-top: 10px;
@@ -152,7 +164,7 @@
 
     .special-data {
       align-items: center;
-      border-left: #D2D2D2 solid 1px;
+      border-left: #d2d2d2 solid 1px;
       display: inline-block;
       flex-direction: column;
       font-size: 12px;
@@ -167,7 +179,7 @@
       }
 
       &.first {
-        border-left: #FFFFFF solid 1px;
+        border-left: #ffffff solid 1px;
       }
 
       .img-icon {
@@ -178,7 +190,6 @@
         }
       }
     }
-
   }
 
   &.less {

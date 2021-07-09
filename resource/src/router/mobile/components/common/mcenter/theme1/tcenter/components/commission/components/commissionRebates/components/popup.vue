@@ -108,7 +108,7 @@ import mcenter from "@/api/mcenter";
 export default {
   props: {
     amount: {
-      type: Number,
+      type: Number | String,
       require: true
     },
     isShowPopup: {

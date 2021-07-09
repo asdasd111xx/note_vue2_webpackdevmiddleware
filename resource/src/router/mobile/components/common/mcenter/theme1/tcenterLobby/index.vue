@@ -22,27 +22,26 @@
       <!-- <div :class="[$style['top-bg']]"></div> -->
       <div v-if="friendsStatistics" :class="$style['top-data']">
         <div
-          v-if="isShowRebate"
           :class="$style['list-data']"
-          @click="$router.push('/mobile/mcenter/tcenter/commission/rebate')"
+          v-for="(item, index) in titleContent"
+          :key="index"
         >
-          <div :class="$style['list-name']">实时返利</div>
-          <div :class="$style['list-value']">领取 ></div>
-        </div>
-        <div :class="$style['list-data']">
-          <div :class="$style['list-name']">今日有效投注</div>
-          <div :class="$style['list-value']">
-            {{ isShowRebate ? subValidBet : friendsStatistics.valid_bet }}
-          </div>
-        </div>
-        <div :class="$style['list-data']">
           <div :class="$style['list-name']">
-            {{ isShowRebate ? "今日有效会员" : "今日活跃会员" }}
+            {{ item.title }}
+            <span
+              v-if="item.button"
+              :class="$style['list-button']"
+              @click="
+                $router.replace({
+                  path: `${item.path}`
+                })
+              "
+              >{{ item.button }}</span
+            >
           </div>
+
           <div :class="$style['list-value']">
-            {{
-              isShowRebate ? subUserCount : friendsStatistics.today_has_login
-            }}
+            {{ item.item }}
           </div>
         </div>
       </div>
@@ -151,16 +150,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 import friendsStatistics from "@/mixins/mcenter/management/friendsStatistics";
 import bbosRequest from "@/api/bbosRequest";
 export default {
   components: {},
-  mixins: [friendsStatistics],
+  mixins: [friendsStatistics, commissionOverview],
   data() {
     return {
-      subValidBet: 0,
-      subUserCount: 0,
       isShowRebate: true,
+      titleContent: [],
       specialList: [
         {
           showType: true,
@@ -246,16 +245,63 @@ export default {
 
         if (response.status === "000") {
           this.isShowRebate = response.data.ret.show_real_time;
+          let total = response.data.total ?? "";
+          let entries = response.data.entries ?? "";
+
+          //沒開實返標題內容
+          this.titleContent = [
+            {
+              title: "今日已领返利",
+              item: this.todayAmout ?? "0.00"
+            },
+            {
+              title: "今日有效投注",
+              item: friendsStatistics.valid_bet ?? "0.00"
+            },
+            {
+              title: "今日活跃会员",
+              item: friendsStatistics.today_has_bet ?? "0.00"
+            }
+          ];
+
+          //開實返標題內容
           if (this.isShowRebate) {
-            this.subValidBet = response.data.total.valid_bet.sub_valid_bet
-              ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)
+            let available =
+              total.accounting ||
+              (entries?.state === 3 && entries?.self_times === 0)
+                ? "--"
+                : entries
+                ? this.getNoRoundText(entries[0]?.amount)
+                : "0.00";
+
+            let subValidBet = total.valid_bet.sub_valid_bet
+              ? this.getNoRoundText(total.valid_bet.sub_valid_bet)
               : "--";
 
-            this.subUserCount = response.data.total.valid_bet.sub_user_count
-              ? this.formatToPrice(response.data.total.valid_bet.sub_user_count)
+            let subUserCount = total.valid_bet.sub_user_count
+              ? this.formatToPrice(total.valid_bet.sub_user_count)
               : "--";
+
+            this.titleContent = [
+              {
+                title: "最新可领实返",
+                button: total.accounting
+                  ? "计算中"
+                  : entries?.self_times > 0
+                  ? "领取"
+                  : "查看",
+                item: available,
+                path: "tcenterManageRebate/real/receive"
+              },
+              {
+                title: "今日有效投注",
+                button: total.accounting ? "计算中" : "详情",
+                item: subValidBet,
+                path: "tcenterManageRebate/real/detail"
+              },
+              { title: "今日有效会员", item: subUserCount }
+            ];
           }
-
           return;
         }
       });
