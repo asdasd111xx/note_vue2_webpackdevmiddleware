@@ -605,17 +605,6 @@ export default {
 
           switch (vendor) {
             default:
-              openGame(
-                {
-                  kind: kind,
-                  vendor: vendor,
-                  code: code,
-                  getGames: true
-                },
-                openGameSuccessFunc,
-                openGameFailFunc
-              );
-
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
                 if (this.$route.query.vendor === "sigua_ly") {
@@ -635,6 +624,17 @@ export default {
                   });
                 }
               };
+
+              openGame(
+                {
+                  kind: kind,
+                  vendor: vendor,
+                  code: code,
+                  getGames: true
+                },
+                openGameSuccessFunc,
+                openGameFailFunc
+              );
 
               break;
           }
