@@ -810,7 +810,7 @@ export default {
   margin: 0 auto;
   left: calc(50% - 15px);
   background: rgba(0, 0, 0, 0.4);
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 0 5px 5px;
   opacity: 1;
   display: flex;
   align-items: center;
