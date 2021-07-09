@@ -50,7 +50,7 @@
         <div v-for="key in allInput" :key="key" :class="$style['input-group']">
           <!-- 欄位名稱 -->
           <div :class="$style['input-title']">
-            {{ $text(allText[key].placeholder) }}
+            {{ $text(allText[key].title) }}
           </div>
           <!-- 輸入框 -->
           <div
@@ -60,9 +60,6 @@
               { [$style.error]: allText[key].error }
             ]"
           >
-            <template v-if="!allValue[key]">
-              {{ $text(texts[key].placeholder) }}
-            </template>
             <input
               v-if="key !== 'password' && key !== 'confirm_password'"
               v-validate="'required'"
@@ -73,9 +70,11 @@
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
+              :placeholder="$text(allText[key].placeholder)"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
               data-vv-scope="form-page"
+              @blur="onInput($event.target.value, key)"
               @input="onInput($event.target.value, key)"
               @keydown.13="onSubmit"
             />
@@ -89,11 +88,13 @@
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
+              :placeholder="$text(allText[key].placeholder)"
               :data-key="key"
               :maxlength="allText[key].maxLength"
               v-model="allValue[key]"
               type="password"
               data-vv-scope="form-page"
+              @blur="onInput($event.target.value, key)"
               @input="onInput($event.target.value, key)"
               @keydown.13="onSubmit"
             />
@@ -107,11 +108,8 @@
             />
           </div>
           <!-- 錯誤訊息 -->
-          <div
-            v-if="allText[key].error && texts[key].error"
-            :class="$style['error-message']"
-          >
-            {{ $text(texts[key].error) }}
+          <div v-if="allText[key].error" :class="$style['error-message']">
+            {{ $text(allText[key].error) }}
           </div>
         </div>
         <!-- 驗證碼 -->
@@ -185,8 +183,6 @@ import promoteFunction from "@/mixins/mcenter/management/promoteFunction";
 import message from "@/router/mobile/components/common/message";
 import { mapGetters, mapActions } from "vuex";
 import popupVerification from "@/components/popupVerification";
-import * as apis from "@/config/api";
-import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: {

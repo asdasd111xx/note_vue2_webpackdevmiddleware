@@ -543,12 +543,12 @@ export default {
 
       // 忘記密碼驗證簡訊 - 代理會員
       if (type === "agent") {
-        agent.passwordMobileVerify(data);
+        agent.pwdMobileVerify(data);
         return;
       }
 
       // 忘記密碼驗證簡訊 - 會員
-      member.passwordMobileVerify(data);
+      member.pwdMobileVerify(data);
     },
     resetpassword(type) {
       if (this.msg.password || this.msg.confirm_password) {

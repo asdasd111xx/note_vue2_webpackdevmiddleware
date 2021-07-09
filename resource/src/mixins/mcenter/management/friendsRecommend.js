@@ -7,6 +7,7 @@ import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import isMobile from "@/lib/is_mobile";
+import joinMemInfo from "@/config/joinMemInfo";
 
 export default {
   provide() {
@@ -19,63 +20,42 @@ export default {
       isShow: false,
       isShowEyes: false,
       allInput: ["username", "password", "confirm_password", "name"],
-      texts: {
-        username: {
-          placeholder: "S_USERNAME_ERROR",
-          error: "S_USERNAME_ERROR"
-        },
-        // 密碼
-        password: {
-          placeholder: "S_PASSWORD_ERROR",
-          error: "S_PASSWORD_ERROR_AGENT"
-        },
-        // 確認密碼
-        confirm_password: {
-          placeholder: "S_PWD_CONFIRM",
-          error: "S_JM_PASSWD_CONFIRM_ERROR"
-        },
-        // 會員姓名
-        name: {
-          placeholder: "S_REGISTER_TIPS",
-          error: "S_NO_SYMBOL_DIGIT_CHEN"
-        }
-      },
       allText: {
         // 會員帳號
         username: {
+          title: "S_NAME",
           type: "text",
           maxLength: "20",
           placeholder: "S_NAME",
-          tips: "S_USERNAME_ERROR",
-          message: "",
-          error: false
+          error: "S_USERNAME_ERROR",
+          message: "S_USERNAME_ERROR"
         },
         // 密碼
         password: {
+          title: "SS_LOGIN_PW",
           type: "password",
           maxLength: "12",
-          placeholder: "SS_LOGIN_PW",
-          tips: "S_PASSWORD_ERROR",
-          message: "",
-          error: false
+          placeholder: "S_PASSWORD_PLACEHOLDER_AGENT",
+          error: "S_PASSWORD_ERROR",
+          message: ""
         },
         // 確認密碼
         confirm_password: {
+          title: "S_PWD_CONFIRM",
           type: "password",
           maxLength: "12",
           placeholder: "S_PWD_CONFIRM",
-          tips: "S_JM_PASSWD_CONFIRM_ERROR",
-          message: "",
-          error: false
+          error: "S_PASSWORD_ERROR",
+          message: ""
         },
         // 會員姓名
         name: {
+          title: "S_MEMBER_NAME",
           type: "text",
           maxLength: "",
           placeholder: "S_MEMBER_NAME",
-          tips: "S_NO_SYMBOL_DIGIT_CHEN",
-          message: "S_REGISTER_TIPS",
-          error: false
+          error: "S_NO_SYMBOL_DIGIT_CHEN",
+          message: "S_REGISTER_TIPS"
         }
       },
       captchaError: false,
@@ -126,71 +106,39 @@ export default {
       if (!this.isShow) return;
       const { allValue, allText } = this;
       const reg = {
-        username: /^[a-z1-9][a-z0-9]{3,19}$/,
-        password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
-        confirm_password: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/
+        username: new RegExp(joinMemInfo["username"].regExp),
+        password: new RegExp(joinMemInfo["password"].regExp),
+        confirm_password: new RegExp(joinMemInfo["password"].regExp)
       };
       if (["username", "password", "confirm_password", "name"].includes(key)) {
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
             allValue[key] = val;
-            allText[key].error = false;
-            if (reg[key] && !reg[key].test(allValue[key])) {
-              allText[key].error = true;
-              if (key === "confirm_password") {
-                allText[key].error =
-                  allValue.password !== allValue.confirm_password;
-                this.texts.confirm_password.error = "S_PASSWORD_ERROR";
-              }
-              return;
-            } else if (["password", "confirm_password"].includes(key)) {
-              allText["confirm_password"].error =
-                allValue.password !== allValue.confirm_password;
-              if (allValue.password !== allValue.confirm_password) {
-                this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
-              }
+            let errMsg = "";
 
-              return;
+            if (
+              ["password", "confirm_password"].includes(key) &&
+              this.allValue.confirm_password !== this.allValue.password
+            ) {
+              // errMsg = "确认密码预设要跟密码一致";
+              errMsg = "S_PASSWD_CONFIRM_ERROR";
             }
+
+            if (reg[key] && !allValue[key].match(reg[key])) {
+              errMsg = joinMemInfo[key].errorMsg;
+            }
+
+            allText[key].error = errMsg;
+
+            console.log(errMsg, allText[key].error);
           }
         );
       }
-      // if (["password", "confirm_password"].includes(key)) {
-      //   if (allValue.confirm_password) {
-      //     // allText.password.error = false;
-      //     allText.confirm_password.error =
-      //       allValue.password !== allValue.confirm_password;
-
-      //     this.texts.confirm_password.error = "S_JM_PASSWD_CONFIRM_ERROR";
-      //     return;
-      //   }
-
-      //   // allText.password.error = false;
-      //   return;
-      // }
 
       if (key === "captcha_text") {
         this.captchaError = false;
         this.captchaErrorMsg = "请输入验证码";
         allValue["captcha_text"] = value.replace(/[\W\_]/g, "");
-      } else {
-        switch (key) {
-          case "username":
-            this.texts.username.error = "S_USERNAME_ERROR";
-            break;
-          case "password":
-            this.texts.password.error = "S_PASSWORD_ERROR";
-            break;
-          case "confirm_password":
-            this.texts.confirm_password.error = "S_PASSWORD_ERROR";
-            break;
-          case "name":
-            this.texts.name.error = "S_NO_SYMBOL_DIGIT_CHEN";
-            break;
-          default:
-            break;
-        }
-        allText[key].error = false;
       }
     },
 
@@ -278,7 +226,6 @@ export default {
           this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
 
           this.isShow = false;
-          // if (isMobile()) {
           this.allValue = {
             username: "",
             password: "",
@@ -286,9 +233,6 @@ export default {
             name: "",
             captcha_text: ""
           };
-
-          //   return;
-          // }
 
           this.$emit("close");
         } else {
@@ -298,24 +242,20 @@ export default {
             }
 
             if (result.errors.username) {
-              this.texts.username.error = result.errors.username;
-              this.allText.username.error = true;
+              this.allText.username.error = result.errors.username;
             }
 
             if (result.errors.password) {
-              this.texts.password.error = result.errors.password;
-              this.allText.password.error = true;
+              this.allText.password.error = result.errors.password;
             }
 
             if (result.errors.confirm_password) {
-              this.texts.confirm_password.error =
+              this.allText.confirm_password.error =
                 result.errors.confirm_password;
-              this.allText.confirm_password.error = true;
             }
 
             if (result.errors.name) {
-              this.texts.name.error = result.errors.name;
-              this.allText.name.error = true;
+              this.allText.name.error = result.errors.name;
             }
 
             if (result.errors.captcha_text) {
@@ -329,95 +269,6 @@ export default {
           return;
         }
       });
-      // this.$validator.validateAll("form-page").then(response => {
-      //   if (!response) {
-      //     this.msg = this.$text("S_JM_MSG_COMPLETE");
-      //     Object.keys(this.allValue).forEach(key => {
-      //       if (this.allValue[key]) {
-      //         return;
-      //       }
-      //       if (key === "captcha_text") {
-      //         this.captchaError = true;
-      //       } else {
-      //         this.allText[key].error = true;
-      //       }
-      //     });
-      //     return;
-      //   }
-
-      //   if (
-      //     this.allInput.some(key => this.allText[key].error) ||
-      //     this.captchaError
-      //   ) {
-      //     return;
-      //   }
-      //   if (this.allValue.password !== this.allValue.confirm_password) {
-      //     return;
-      //   }
-
-      //   axios({
-      //     method: "post",
-      //     url: API_FIRST_LEVEL_REGISTER,
-      //     errorAlert: false,
-      //     data: {
-      //       ...this.allValue,
-      //       captcha_text: this.allValue["captcha_text"],
-      //       code: this.agentCode,
-      //       created_by: 2
-      //     }
-      //   }).then(result => {
-      //     if (result.data.result === "ok") {
-      //       this.msg = this.$text("S_CREATE_SECCESS", "新增成功");
-
-      //       this.isShow = false;
-      //       // if (isMobile()) {
-      //       this.allValue = {
-      //         username: "",
-      //         password: "",
-      //         confirm_password: "",
-      //         name: "",
-      //         captcha_text: ""
-      //       };
-
-      //       //   return;
-      //       // }
-
-      //       this.$emit("close");
-      //     } else {
-      //       if (result.data.errors) {
-      //         if (result.data.errors.username) {
-      //           this.texts.username.error = result.data.errors.username;
-      //           this.allText.username.error = true;
-      //         }
-
-      //         if (result.data.errors.password) {
-      //           this.texts.password.error = result.data.errors.password;
-      //           this.allText.password.error = true;
-      //         }
-
-      //         if (result.data.errors.confirm_password) {
-      //           this.texts.confirm_password.error =
-      //             result.data.errors.confirm_password;
-      //           this.allText.confirm_password.error = true;
-      //         }
-
-      //         if (result.data.errors.name) {
-      //           this.texts.name.error = result.data.errors.name;
-      //           this.allText.name.error = true;
-      //         }
-
-      //         if (result.data.errors.captcha_text) {
-      //           this.captchaErrorMsg = result.data.errors.captcha_text;
-      //           this.captchaError = true;
-      //         }
-      //         return;
-      //       }
-
-      //       this.msg = result.data.msg;
-      //       return;
-      //     }
-      //   });
-      // });
     },
 
     getCaptcha() {

@@ -56,6 +56,7 @@
   "S_JM_FIELD_REQUIRE": "该栏位不得为空",
   "S_USERNAME_ERROR": "请输入4-20位英文小写、数字，首字不得为数字0",
   "S_PASSWORD_ERROR": "请输入6-12位(须含英文1大写、1小写、1数字)",
+  "S_PASSWORD_PLACEHOLDER_AGENT": "6-12位须含英文大小写及1个数字",
   "S_PASSWORD_ERROR_AGENT": "请输入6-12位英文小写、数字",
   "S_JM_PASSWD_CONFIRM_ERROR": "确认密码错误，请重新输入",
   "S_PASSWD_CONFIRM_ERROR": "确认密码预设要跟密码一致",
