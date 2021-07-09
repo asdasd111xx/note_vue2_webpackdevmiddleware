@@ -125,7 +125,9 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let _noticeData = this.noticeData.slice();
         let temp = _noticeData[this.noticeData.length - 1];
-        this.noticeData.pop();
+        if (temp.event != "vendor_maintain_notice") {
+          this.noticeData.pop();
+        }
 
         if (temp.extend && temp.extend === "verification_code") {
           return;

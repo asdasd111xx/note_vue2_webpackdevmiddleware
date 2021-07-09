@@ -1358,6 +1358,7 @@ export const actionSetSiteConfig = ({ commit }, data) => {
 
 // 推播中心資料
 export const actionNoticeData = ({ commit }, data) => {
+  console.log(`6   ${data}`);
   commit(types.SETNOTICEDATA, data);
 };
 
