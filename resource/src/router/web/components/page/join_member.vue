@@ -759,9 +759,7 @@ export default {
               }
 
               this.allTip.password = errMsg;
-            }
-
-            if (key === "confirm_password") {
+            } else if (key === "confirm_password") {
               if (this.allValue.confirm_password !== this.allValue.password) {
                 errMsg = "确认密码预设要跟密码一致";
               }
@@ -771,6 +769,11 @@ export default {
               }
 
               this.allTip.confirm_password = errMsg;
+            } else {
+              if (!val.match(regex)) {
+                errMsg = msg;
+              }
+              this.allTip[key] = errMsg;
             }
           });
           break;

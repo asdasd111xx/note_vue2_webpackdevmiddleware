@@ -407,12 +407,12 @@ export default {
 
       // 忘記密碼 - 代理會員
       if (type === "agent") {
-        agent.passwordForget(data);
+        agent.pwdForget(data);
         return;
       }
 
       // 忘記密碼 - 會員
-      member.passwordForget(data);
+      member.pwdForget(data);
     },
     send(type) {
       if (this.currentMethod === "phone-step-1") {
