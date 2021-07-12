@@ -1077,7 +1077,6 @@ export default {
               await this.getPayPass();
               this.verificationMoney(this.moneyValue);
             })();
-            msg = "汇率已异动，请重新申请";
           }
 
           this.actionSetGlobalMessage({
