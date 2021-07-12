@@ -122,7 +122,7 @@
               $style['captcha-unit'],
               $style['captcha-unit-captcha'],
               $style['clearfix'],
-              { [$style.error]: captchaError }
+              { [$style.error]: captchaErrorMsg }
             ]"
           >
             <input
