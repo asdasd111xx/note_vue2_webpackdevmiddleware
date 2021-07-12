@@ -236,9 +236,9 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
             ,"yaboxxx-web","10.17.0.128","yabo","istio"),
 
         # yiyuan
-        onlyGKE("QA","yaboxxx-test","asia-east1-b"
-            ,"qa","cxbb-frontend-proxy-qa","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","yiyuan","origin"),
+        // onlyGKE("QA","yaboxxx-test","asia-east1-b"
+        //     ,"qa","cxbb-frontend-proxy-qa","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-qa"
+        //     ,"yaboxxx-web","10.27.1.142","yiyuan","origin"),
 
         # istio-yiyuan
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
