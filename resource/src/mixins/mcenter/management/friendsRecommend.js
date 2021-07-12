@@ -117,10 +117,9 @@ export default {
             let errMsg = "";
 
             if (
-              ["password", "confirm_password"].includes(key) &&
+              ["confirm_password"].includes(key) &&
               this.allValue.confirm_password !== this.allValue.password
             ) {
-              // errMsg = "确认密码预设要跟密码一致";
               errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
             }
 

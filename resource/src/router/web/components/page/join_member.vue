@@ -750,9 +750,9 @@ export default {
             let errMsg = "";
 
             if (key === "password") {
-              if (this.allValue.confirm_password !== this.allValue.password) {
-                errMsg = "确认密码预设要跟密码一致";
-              }
+              // if (this.allValue.confirm_password !== this.allValue.password) {
+              //   errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              // }
 
               if (!val.match(regex)) {
                 errMsg = msg;
@@ -761,7 +761,7 @@ export default {
               this.allTip.password = errMsg;
             } else if (key === "confirm_password") {
               if (this.allValue.confirm_password !== this.allValue.password) {
-                errMsg = "确认密码预设要跟密码一致";
+                errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
               }
 
               if (!val.match(regex)) {

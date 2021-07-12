@@ -357,8 +357,11 @@ export default {
         errMsg = "该栏位不得为空";
       }
 
-      if (this.password !== this.confirm_password) {
-        errMsg = "确认密码预设要跟密码一致";
+      if (
+        ["confirm_password"].includes(key) &&
+        this.password !== this.confirm_password
+      ) {
+        errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
         this.msg[key] = errMsg;
       }
 
