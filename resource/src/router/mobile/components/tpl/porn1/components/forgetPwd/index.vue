@@ -1,16 +1,21 @@
 <template>
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" :class="$style['content-wrap']">
-      <forget-pwd />
+      <forget-pwd @setTitle="t => (title = t)" />
     </div>
   </mobile-container>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import forgetPwd from "./components/index";
+import forgetPwd from "@/router/mobile/components/tpl/porn1/components/forgetPwd/components/index";
 
 export default {
+  data() {
+    return {
+      title: "找回密码" //重设密码
+    };
+  },
   components: {
     mobileContainer,
     forgetPwd
@@ -20,11 +25,10 @@ export default {
     headerConfig() {
       return {
         prev: true,
-        title: "重设密码",
+        title: this.title,
         onClick: () => {
           this.$router.back();
-        },
-        noBottomBorder: true
+        }
       };
     }
   }

@@ -300,9 +300,6 @@ export default {
       };
     }
   },
-  mounted() {
-    this.$emit("update:currentMethod", this.currentMethod);
-  },
   methods: {
     ...mapActions([
       "actionSetUserdata",
@@ -527,6 +524,7 @@ export default {
             this.errMsg = "";
             this.resetKeyring = response.ret.keyring;
             this.currentMethod = "phone-step-2";
+            this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
           }
         },
         fail: res => {
