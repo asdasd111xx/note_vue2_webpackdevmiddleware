@@ -208,13 +208,13 @@
   bottom: 7px;
   width: 30px;
   height: 30px;
-  background-image: url("/static/image/_new/mcenter/tcenter/btn_eye.png");
+  background-image: url("/static/image/common/login/btn_eye_d.png");
   background-position: 50% 50%;
   background-size: 30px 30px;
   background-repeat: no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/mcenter/tcenter/btn_eye_active.png");
+    background-image: url("/static/image/common/login/btn_eye_n.png");
   }
 }
 

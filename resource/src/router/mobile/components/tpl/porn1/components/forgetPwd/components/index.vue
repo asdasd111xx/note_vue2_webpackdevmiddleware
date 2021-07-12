@@ -383,7 +383,7 @@ export default {
         this.isSendEmail = false;
       }, 1200);
 
-      const url = "/mobile/resetpassword";
+      const url = "/mobile/resetPwd";
       const data = {
         params: {
           username: this.username,

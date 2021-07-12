@@ -151,32 +151,24 @@ export default {
           // });
 
           Object.keys(this.allValue).forEach(key => {
-            if (this.allValue[key]) {
-              return;
-            }
-            if (key === "captcha_text") {
-              this.captchaError = true;
-            } else {
-              this.allText[key].error = true;
+            console.log(key, this.allValue[key]);
+            if (!this.allValue[key]) {
+              if (key === "captcha_text") {
+                this.captchaError = joinMemInfo[key].errorMsg;
+              } else {
+                this.allText[key].error = joinMemInfo[key].errorMsg;
+              }
             }
           });
           return;
         }
+
         // 無認證直接呼叫
         if (this.memInfo.config.friend_captcha_type === 0) {
           this.handleSend();
           return;
         } else {
           if (this.allInput.some(key => this.allText[key].error)) {
-            return;
-          }
-
-          if (
-            this.memInfo.config.friend_captcha_type === 1 &&
-            this.captchaError
-          ) {
-          }
-          if (this.allValue.password !== this.allValue.confirm_password) {
             return;
           }
 
