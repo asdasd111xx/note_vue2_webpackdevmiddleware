@@ -899,7 +899,7 @@ export default {
           this.isLoading = false;
           return;
         } else {
-          this.allTip["confirm_password"] = "";
+          this.allTip["captcha_text"] = "";
         }
 
         this.allValue.captcha_text = this.thirdyCaptchaObj;
@@ -1097,6 +1097,7 @@ export default {
 
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+      this.allTip["captcha_text"] = "";
     },
 
     getRedJackpot() {
