@@ -891,7 +891,8 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 export const actionSetUserBalance = ({ commit, dispatch }) => {
   return axios({
     method: "get",
-    url: "/api/v1/c/vendor/all/balance"
+    url: "/api/v1/c/vendor/all/balance",
+    timeout: 30000
   })
     .then(res => {
       if (res && res.data && res.data.result === "ok") {
