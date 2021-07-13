@@ -201,7 +201,6 @@ export default {
             method: 'put',
             url: apiUrl.API_MCENTER_BALANCE_BACK,
             errorAlert: false,
-            timeout: '30000',
             ...args
         });
     },
