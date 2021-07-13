@@ -112,7 +112,7 @@
             $style[themeTPL],
             { [$style['active']]: submitActive }
           ]"
-          @click="isResetPW ? pwdResetSubmit() : pwdModifySubmit()"
+          @click="checkField"
         >
           {{ $text("S_SUBMIT", "提交") }}
         </div>
@@ -139,6 +139,7 @@ export default {
   },
   data() {
     return {
+      checked: false,
       errMsg: "",
       msg: "",
       allTip: {
@@ -281,7 +282,7 @@ export default {
         target = "login_password";
       }
 
-      this.actionVerificationFormData({
+      return this.actionVerificationFormData({
         target: target,
         value: value
       }).then(val => {
@@ -311,6 +312,20 @@ export default {
 
         this.errMsg = errMsg;
       });
+    },
+    checkField() {
+      this.checked = true;
+
+      Object.keys(this.pwdResetInfo).forEach(key => {
+        if (this.pwdResetInfo[key].display) {
+          let value = this.pwdResetInfo[key].value;
+          this.verification(key, value);
+        }
+      });
+
+      if (!this.errMsg) {
+        this.isResetPW ? this.pwdResetSubmit() : this.pwdModifySubmit();
+      }
     },
     pwdModifySubmit() {
       if (!this.submitActive || this.isLoading) return;
