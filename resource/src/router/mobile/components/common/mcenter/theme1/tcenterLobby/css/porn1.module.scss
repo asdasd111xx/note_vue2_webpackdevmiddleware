@@ -145,6 +145,82 @@
   }
 }
 
+.today-pay-content {
+  border-top: #F6F6F6 dashed 1px;
+  width: 100%;
+  margin-bottom: 5px;
+
+  .today-title {
+    margin-top: 5px;
+    display: flex;
+
+    .topday-content {
+      width: 49%;
+      display: flex;
+      margin: 0 15px;
+
+      .title-point {
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        margin: 5px 5px 0 0;
+
+        &.deposit {
+          background-color: #BE9E7F
+        }
+
+        &.withdraw {
+          background-color: #636F93
+        }
+      }
+
+      .title-text {
+        color: #A6A9B2;
+      }
+
+      &.left {
+        flex-direction: row-reverse;
+      }
+
+    }
+  }
+
+  .today-bar {
+    margin: 10px 15px;
+
+    .background-bar {
+      z-index: 0;
+      height: 14px;
+      width: 100%;
+      border-radius: 7px;
+      background-color: #636F93;
+
+      .person-bar {
+        z-index: 1;
+        height: 14px;
+        width: 100px;
+        border-radius: 7px;
+        background-color: #BE9E7F
+      }
+    }
+  }
+
+  .today-count {
+
+    display: flex;
+    margin: 0 15px;
+    justify-content: space-between;
+
+    .count-text {
+      color: #414655;
+    }
+
+    &.left {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
 .special {
   display: flex;
   background-color: #FFFFFF;

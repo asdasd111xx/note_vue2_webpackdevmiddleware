@@ -109,6 +109,34 @@
             {{ getNoRoundText(friendsStatistics.payoff) }}
           </div>
         </div>
+        <div :class="$style['today-pay-content']">
+          <div :class="$style['today-title']">
+            <div :class="$style['topday-content']">
+              <div :class="[$style['title-point'], $style['deposit']]"></div>
+              <div :class="$style['title-text']">今日充值金额</div>
+            </div>
+            <div :class="[$style['topday-content'], $style['left']]">
+              <div :class="$style['title-text']">今日提现金额</div>
+              <div :class="[$style['title-point'], $style['withdraw']]"></div>
+            </div>
+          </div>
+          <div :class="$style['today-bar']">
+            <div :class="$style['background-bar']">
+              <div
+                :class="$style['person-bar']"
+                :style="{ width: `${moneyPerson}%` }"
+              />
+            </div>
+          </div>
+          <div :class="$style['today-count']">
+            <div :class="$style['count-text']">
+              {{ getNoRoundText(friendsStatistics.deposit) }}
+            </div>
+            <div :class="$style['count-text']">
+              {{ getNoRoundText(friendsStatistics.withdraw) }}
+            </div>
+          </div>
+        </div>
       </div>
       <div :class="[$style['special']]">
         <div :class="[$style['special-content']]">
