@@ -150,7 +150,6 @@ export default {
           // });
 
           Object.keys(this.allValue).forEach(key => {
-            console.log(key, this.allValue[key]);
             if (!this.allValue[key]) {
               if (key === "captcha_text") {
                 this.captchaError = joinMemInfo[key].errorMsg;
