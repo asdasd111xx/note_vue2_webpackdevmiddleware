@@ -749,32 +749,32 @@ export default {
 
             let errMsg = "";
 
+            // 1. 密碼只判斷是否符合格式不判斷空
+            // 2. 確認密碼只判斷是否相同
             if (key === "password") {
-              // if (this.allValue.confirm_password !== this.allValue.password) {
-              //   errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-              // }
+              if (!val) {
+                this.errMsg = errMsg;
+                return;
+              }
 
               if (!val.match(regex)) {
                 errMsg = msg;
               }
-
-              this.allTip.password = errMsg;
             } else if (key === "confirm_password") {
+              if (!val) {
+                this.errMsg = errMsg;
+                return;
+              }
               if (this.allValue.confirm_password !== this.allValue.password) {
                 errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
               }
-
-              if (!val.match(regex)) {
-                errMsg = msg;
-              }
-
-              this.allTip.confirm_password = errMsg;
             } else {
               if (!val.match(regex)) {
                 errMsg = msg;
               }
-              this.allTip[key] = errMsg;
             }
+
+            this.allTip[key] = errMsg;
           });
           break;
 
@@ -899,7 +899,7 @@ export default {
           this.isLoading = false;
           return;
         } else {
-          this.allTip["confirm_password"] = "";
+          this.allTip["captcha_text"] = "";
         }
 
         this.allValue.captcha_text = this.thirdyCaptchaObj;
@@ -1097,6 +1097,7 @@ export default {
 
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+      this.allTip["captcha_text"] = "";
     },
 
     getRedJackpot() {

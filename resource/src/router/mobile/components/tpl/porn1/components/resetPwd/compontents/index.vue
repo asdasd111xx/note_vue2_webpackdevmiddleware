@@ -273,6 +273,10 @@ export default {
     verification(key, value) {
       let target = key;
       let errMsg = "";
+
+      const regex = new RegExp(joinMemInfo[target].regExp);
+      const msg = joinMemInfo[target].errorMsg;
+
       if (["password"].includes(key)) {
         target = "login_password";
       }
@@ -282,27 +286,31 @@ export default {
         value: value
       }).then(val => {
         this.pwdResetInfo[key].value = val;
+
+        if (!val) {
+          this.errMsg = errMsg;
+          return;
+        }
+
+        if (key === "confirm_password") {
+          if (
+            this.pwdResetInfo["confirm_password"].value !==
+            this.pwdResetInfo["new_password"].value
+          ) {
+            this.errMsg = errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+          }
+        } else if (key === "password") {
+          if (val.length < 6) {
+            errMsg = "请输入6-12位字母及数字";
+          }
+        } else {
+          if (!regex.test(val)) {
+            errMsg = msg;
+          }
+        }
+
+        this.errMsg = errMsg;
       });
-
-      if (
-        key === "confirm_password" &&
-        this.pwdResetInfo["confirm_password"].value !==
-          this.pwdResetInfo["new_password"].value
-      ) {
-        errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-      }
-
-      const val = this.pwdResetInfo[key].value;
-      const regex = new RegExp(joinMemInfo[target].regExp);
-      const msg = joinMemInfo[target].errorMsg;
-
-      if (target === "login_password" && val.length < 6) {
-        errMsg = "請輸入6-12位字母及數字";
-      } else if (!regex.test(val)) {
-        errMsg = msg;
-      }
-
-      this.errMsg = errMsg;
     },
     pwdModifySubmit() {
       if (!this.submitActive || this.isLoading) return;
