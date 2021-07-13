@@ -38,7 +38,13 @@
               <div :class="$style['field-tip']" v-html="allTip['username']" />
             </template>
 
-            <template v-else-if="pwdResetInfo[item].key === 'password'">
+            <template
+              v-else-if="
+                ['new_password', 'password', 'confirm_password'].includes(
+                  pwdResetInfo[item].key
+                )
+              "
+            >
               <input
                 :id="item"
                 v-model="pwdResetInfo[item].value"
@@ -59,7 +65,10 @@
                   @click="toggleEye(item)"
                 />
               </div>
-              <div :class="$style['field-tip']" v-html="allTip['password']" />
+              <div
+                :class="$style['field-tip']"
+                v-html="allTip[pwdResetInfo[item].key]"
+              />
             </template>
 
             <template v-else>
