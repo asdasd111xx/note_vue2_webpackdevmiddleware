@@ -32,12 +32,14 @@
 
 .title-commission {
   position: absolute;
-  color: white;
-  border: 0 solid;
-  border-radius: 20px;
-  padding: 5px;
-  background-color: #9CA3BF;
-  right: 15px;
+  color: #BF8646;
+  border: 1px solid #BF8646;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  border-right: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  right: 0px;
 }
 
 .main {
@@ -60,9 +62,21 @@
     margin-right: 40px;
     border-bottom: #5E626D dashed 1px;
     padding-top: 15px;
+    padding-bottom: 5px;
 
     .list-name {
       color: #5E626D;
+      display: flex;
+
+      .list-btn {
+        margin-left: 5px;
+        font-size: 12px;
+        color: #FFFFFF;
+        border: 0 solid;
+        border-radius: 20px;
+        padding: 0 7px;
+        background-color: #636F93;
+      }
     }
 
     .list-value {
@@ -81,19 +95,44 @@
   flex-wrap: wrap;
   box-shadow: 0pt 0pt 10px 0pt rgba(0, 0, 0, 0.75);
 
+  .all-regist-title {
+    margin-left: 1px;
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+
+    .regist-title-bar {
+      width: 3px;
+      height: 18px;
+      background: linear-gradient(to top, #dccab8, #d2b496);
+      border-radius: 1px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    .regist-title-text {
+      font-size: 16px;
+    }
+  }
+
   .regist-content {
-    width: 50%;
+    margin-left: 5px;
+    width: 45%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
 
     .regist-title {
-      color: #AAAAAA;
+      color: #A6A9B2;
     }
 
     .regist-value {
-      color: #000000;
+      color: #414655;
+    }
+
+    .game-lose {
+      color: #DB6372;
     }
   }
 }
