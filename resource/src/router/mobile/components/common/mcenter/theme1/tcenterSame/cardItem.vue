@@ -14,7 +14,7 @@
         <div
           v-if="info.img"
           :class="$style['friend-money']"
-          @click="clickCard(info.paramsValue, info.isClick)"
+          @click.stop="clickCard(info.paramsValue, info.isClick)"
         >
           <span>{{ info.childTitle }}</span>
           <div :class="$style['arrow-next']">

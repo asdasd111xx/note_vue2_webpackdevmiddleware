@@ -1,6 +1,22 @@
 <template>
   <div>
-    <div v-if="page !== 'detail' && isReceive" :class="$style['top-link']">
+    <template v-if="path && rebatePathItem !== 'detail'">
+      <!-- 返利管理 日期 -->
+      <tcenter-label :child-item="allTotalData" :change-tab="getTimeRecord" />
+      <commission-list
+        v-if="!hasSearch"
+        :path="path"
+        :time-title="timeTitle"
+        :set-tab-state="setTabState"
+        :set-header-title="setHeaderTitle"
+        :search-info="searchInfo"
+        :current-info.sync="commissionInfo"
+      />
+    </template>
+    <div
+      v-if="page !== 'detail' && isReceive && !path"
+      :class="$style['top-link']"
+    >
       <span
         :class="[$style.link, { [$style.active]: page === 'record' }]"
         @click="onClick('record')"
@@ -19,7 +35,10 @@
       >
     </div>
 
-    <div v-if="page === 'record' && hasSearch" class="search-wrap">
+    <div
+      v-if="(page === 'record' && hasSearch) || (path && hasSearch)"
+      class="search-wrap"
+    >
       <div :class="$style['search-form']">
         <div :class="[$style['form-row'], 'clearfix']">
           <div :class="$style['form-date-start']">
@@ -65,7 +84,6 @@
     </div>
 
     <commission-overview v-if="page === 'summary'" />
-
     <commission-list
       v-if="!hasSearch"
       v-show="page === 'record'"
@@ -76,8 +94,9 @@
     />
 
     <commission-detail
-      v-if="page === 'detail'"
-      :currentInfo="getCommissionInfo"
+      v-if="page === 'detail' || rebatePathItem === 'detail'"
+      :current-info="getCommissionInfo"
+      :set-header-title="setHeaderTitle"
     />
 
     <commission-rebates v-if="page === 'rebate'" />
@@ -91,9 +110,11 @@ import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import commission from "@/mixins/mcenter/commission";
 import EST from "@/lib/EST";
+import tcenterLabel from "../../../tcenterSame/tcenterLabel";
 
 export default {
   components: {
+    tcenterLabel,
     commissionOverview: () =>
       import(
         /* webpackChunkName: 'commissionOverview' */ "./components/commissionOverview/index"
@@ -132,7 +153,14 @@ export default {
       fromDate: Vue.moment(now)
         .add(-29, "days")
         .format("YYYY-MM-DD"),
-      endDate: Vue.moment(now).format("YYYY-MM-DD")
+      endDate: Vue.moment(now).format("YYYY-MM-DD"),
+      pathDay: this.$route.params.item ?? "", //返利管理日期,
+      path: this.$route.params.title ?? "", //是否從返利管理來,
+
+      title: "record",
+      estToday: EST(new Date(), "", true),
+      timeTitle: "",
+      tabState: true
     };
   },
   computed: {
@@ -182,6 +210,42 @@ export default {
     },
     page() {
       return this.$route.params.page;
+    },
+    rebatePathItem: {
+      get() {
+        return this.$route.params.item;
+      },
+      set(value) {
+        return (this.pathDay = value);
+      }
+    },
+    allTotalData() {
+      return [
+        {
+          text: this.$text("S_TODDAY", "今日"),
+          name: "today",
+          value: 0,
+          show: true
+        },
+        {
+          text: this.$text("S_YESTERDAY", "昨日"),
+          name: "yesterday",
+          value: 1,
+          show: true
+        },
+        {
+          text: this.$text("S_THIRTY_DAY", "近30日"),
+          name: "month",
+          value: 29,
+          show: true
+        },
+        {
+          text: this.$text("S_SEARCH_DAY", "搜寻"),
+          name: "custom",
+          value: 29,
+          show: true
+        }
+      ].filter(item => item.show);
     }
   },
   watch: {
@@ -196,9 +260,23 @@ export default {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
       }
+    },
+    "$route.params.item"() {
+      if (this.$route.params.item === "detail") {
+        return;
+      } else {
+        this.setTabState(true);
+        this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
+      }
     }
   },
   created() {
+    if (this.path) {
+      this.getTimeRecord(this.allTotalData[0]);
+      this.hasSearch = false;
+    } else {
+      this.hasSearch = true;
+    }
     this.getRebateSwitch();
 
     // 因 detail 的資料可能為第三方 or 各級好友(從上一個傳下來的data)，統一重整回summary
@@ -206,13 +284,15 @@ export default {
       this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
     }
 
+    if (this.rebatePathItem === "detail") {
+      this.$router.replace("/mobile/mcenter/tcenterManageRebate/record/today");
+    }
+
     // // 重整的時候，根據當下render page
     // if (this.page) {
     //   this.$router.replace(`/mobile/mcenter/tcenter/commission/${this.page}`);
     //   return;
     // }
-
-    this.hasSearch = true;
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
@@ -231,6 +311,8 @@ export default {
     onInquire() {
       this.onSearch();
       this.hasSearch = false;
+      //返利管理多要顯示日期
+      this.manageRebateDate();
     },
     getRebateSwitch() {
       this.isReceive = false;
@@ -278,6 +360,53 @@ export default {
       } else {
         return "";
       }
+    },
+    getTimeRecord(data) {
+      this.start = Vue.moment(this.estToday)
+        .add(-data.value, "days")
+        .format("YYYY-MM-DD");
+      this.end = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+      if (data.name === "yesterday") {
+        this.end = Vue.moment(this.estToday)
+          .add(-data.value, "days")
+          .format("YYYY-MM-DD");
+      }
+
+      if (this.path && this.rebatePathItem != data.name) {
+        this.$router.replace({
+          params: {
+            title: "record",
+            item: `${data.name}`
+          }
+        });
+        this.rebateTitle = data.name;
+      }
+
+      if (data.name === "custom") {
+        this.hasSearch = true;
+
+        return;
+      }
+
+      this.onInquire();
+
+      return;
+    },
+    manageRebateDate() {
+      if (this.path) {
+        switch (this.rebateTitle) {
+          case "today":
+          case "yesterday":
+            this.timeTitle = this.start;
+            break;
+          case "month":
+          case "custom":
+            this.timeTitle = `${this.start} ~ ${this.end}`;
+            break;
+        }
+      }
+      return;
     }
   }
 };

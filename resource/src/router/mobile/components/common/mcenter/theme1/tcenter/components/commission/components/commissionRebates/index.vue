@@ -376,6 +376,24 @@ export default {
             this.immediateData = response.data.ret.entries;
           }
 
+          let total = response.data.total ?? "";
+          let entries = response.data.ret.entries[0] ?? "";
+          // 傳進detail判斷是否顯示查看箭頭
+          // 狀態=>可領/已達上限/已領取/計算中
+          if (
+            entries.self_times > 0 ||
+            (entries.state === 3 && entries.self_times === 0) ||
+            (!total.valid_bet.accounting && !entries) ||
+            total.valid_bet.accounting
+          ) {
+            this.status = true;
+          } else if (!total.accounting && entries.amount === 0) {
+            //計算完無實返金額
+            this.status = false;
+          } else {
+            this.status = false;
+          }
+
           // 測試資料
           // this.immediateData = [
           //     {
@@ -408,25 +426,6 @@ export default {
         this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = response.data.dispatched_amount;
-
-          let total = response.data.total ?? "";
-          let entries = response.data.entries ?? "";
-
-          //傳進detail判斷是否顯示查看箭頭
-          //狀態=>可領/已達上限/已領取/計算中/計算完無實返金額(下級好友有投注)
-          if (
-            entries.self_time > 0 ||
-            (entries.state === 3 && entries.self_times === 0) ||
-            (!total.accounting && !entries) ||
-            total.accounting ||
-            (!total.accounting &&
-              entries.amount === 0 &&
-              entries.sub_valid_bet > 0)
-          ) {
-            this.status = true;
-          } else {
-            this.status = false;
-          }
         }
       });
     },

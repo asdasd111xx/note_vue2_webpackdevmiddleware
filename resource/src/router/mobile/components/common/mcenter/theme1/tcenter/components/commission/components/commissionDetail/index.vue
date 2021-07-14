@@ -1,6 +1,14 @@
 <template>
-  <div :class="$style['commission-detail-wrap']">
-    <div v-if="!currentInfo.oauth2" :class="$style['tab-wrap']">
+  <div
+    :class="[
+      $style['commission-detail-wrap'],
+      $style['commission-detail-wrap-' + path]
+    ]"
+  >
+    <div
+      v-if="!currentInfo.oauth2 && $route.query.next === undefined"
+      :class="$style['tab-wrap']"
+    >
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -20,7 +28,15 @@
     </div>
 
     <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
-    <record v-if="currentTemplate === 'record'" :currentInfo="currentInfo" />
+    <record
+      v-if="currentTemplate === 'record' && !path"
+      :currentInfo="currentInfo"
+    />
+    <rebate-record
+      v-if="currentTemplate === 'record' && path"
+      :currentInfo="currentInfo"
+      :set-header-title="setHeaderTitle"
+    />
   </div>
 </template>
 
@@ -28,24 +44,32 @@
 import { mapGetters } from "vuex";
 import assign from "./assign";
 import record from "./record";
-
+import rebateRecord from "./rebateRecord";
+import Vue, { nextTick } from "vue";
 export default {
   components: {
     assign,
-    record
+    record,
+    rebateRecord
   },
   props: {
     currentInfo: {
       type: Object,
+      required: true
+    },
+    setHeaderTitle: {
+      type: Function,
       required: true
     }
   },
   data() {
     return {
       currentTab: 0,
-      currentTemplate: "assign"
+      currentTemplate: "assign",
+      path: this.$route.params.title ?? ""
     };
   },
+
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -60,11 +84,11 @@ export default {
       return [
         {
           key: "assign",
-          text: this.$text("S_ASSIGIN_DETAIL", "派发详情")
+          text: this.path ? "派发" : this.$text("S_ASSIGIN_DETAIL", "派发详情")
         },
         {
           key: "record",
-          text: this.$text("S_RECORD_DETAIL", "统计详情")
+          text: this.path ? "详情" : this.$text("S_RECORD_DETAIL", "统计详情")
         }
       ];
     }
@@ -75,6 +99,7 @@ export default {
       this.currentTemplate = "record";
       return;
     }
+    this.setHeaderTitle(this.rebateDateFormat(this.currentInfo.period));
   },
   methods: {
     setCurrentTab(index) {
@@ -88,6 +113,13 @@ export default {
           this.currentTemplate = "record";
           break;
       }
+    },
+    rebateDateFormat(date) {
+      return Vue.moment(date).format("YYYY-MM-DD");
+    },
+    setTitle(val) {
+      this.showTitle = val;
+      return;
     }
   }
 };

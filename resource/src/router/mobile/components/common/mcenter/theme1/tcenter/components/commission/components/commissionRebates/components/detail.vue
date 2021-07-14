@@ -183,6 +183,10 @@ export default {
         if (item == "detail") {
           this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
           this.setTabState(true);
+        } else if (item == "friend") {
+          this.setHeaderTitle(
+            this.$text(this.levelTrans[this.$route.query.layer])
+          );
         }
         this.routeItem = item;
       },
@@ -230,7 +234,7 @@ export default {
           // 傳遞給子元件點擊專用
           paramsValue: { depth: info.depth },
           isClick: true,
-          img: this.status,
+          img: this.status || info.valid_bet > 0,
           list: [
             {
               name: "有效投注",
@@ -513,6 +517,9 @@ export default {
           params: {
             title: this.title,
             item: next
+          },
+          query: {
+            layer: friend.depth
           }
         });
       }, 300);

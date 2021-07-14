@@ -36,7 +36,7 @@ export default {
     SwiperSlide,
     record: () =>
       import(
-        /* webpackChunkName: 'recordRebate' */ "./components/recordRebate"
+        /* webpackChunkName: 'recordRebate' */ "../tcenter/components/commission/"
       ),
     real: () =>
       import(

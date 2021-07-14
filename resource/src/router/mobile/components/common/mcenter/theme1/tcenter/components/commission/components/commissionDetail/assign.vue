@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['assign-list-wrap']">
-    <div :class="$style['total-block']">
+    <div :class="[$style['total-block'], $style['total-block-' + path]]">
       <span>笔数：{{ detailList.length }}</span>
       <span>返利总计：{{ String(allTotal.amount) | amountFormat }}</span>
     </div>
@@ -11,16 +11,31 @@
         v-for="(info, index) in controlData"
         :key="'item-' + index"
       >
-        <div :class="$style['card-title']">
-          <span :class="$style['card-name']">{{
-            $text("S_COMMISSION_01", "返利")
-          }}</span>
-          <span :class="[$style['card-getNumber']]">{{
-            info.amount | amountFormat
-          }}</span>
+        <div :class="[$style['card-title']]">
+          <template v-if="path">
+            <span
+              :class="[
+                $style['card-name'],
+                $style[`state-${commissionState[info.state].key}`],
+                $style[`state-${commissionState[info.state].key}-${path}`]
+              ]"
+              >{{ commissionState[info.state].text }}</span
+            >
+            <span :class="[$style['card-getNumber']]"
+              >返利：{{ info.amount | amountFormat }}</span
+            >
+          </template>
+          <template v-else>
+            <span :class="$style['card-name']">{{
+              $text("S_COMMISSION_01", "返利")
+            }}</span>
+            <span :class="[$style['card-getNumber']]">{{
+              info.amount | amountFormat
+            }}</span>
+          </template>
         </div>
 
-        <div>
+        <div :class="[$style['total-gap-' + path]]">
           <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
           <div :class="$style['period']">
             <span>{{ EST(info.start_at) }} </span>
@@ -28,12 +43,12 @@
           </div>
         </div>
 
-        <div>
+        <div :class="[$style['total-gap-' + path]]">
           <span>{{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}</span>
           <span>{{ info.sub_user_count }}</span>
         </div>
 
-        <div>
+        <div v-if="!path">
           <span>{{ $text("S_STATUS", "状态") }}</span>
           <span :class="$style[`state-${commissionState[info.state].key}`]">{{
             commissionState[info.state].text
@@ -88,7 +103,8 @@ export default {
       showInfinite: true,
       isLoading: false,
       maxResults: 10,
-      showPage: 0
+      showPage: 0,
+      path: this.$route.params.title ?? ""
     };
   },
   filters: {
@@ -218,6 +234,15 @@ export default {
   line-height: 40px;
   border-bottom: 1px solid #eee;
 
+  &.total-block-record > span:first-child {
+    display: flex;
+    justify-content: flex-end;
+    order: 2;
+  }
+  &.total-block-record > span:nth-child(2) {
+    display: flex;
+  }
+
   span {
     flex: 1;
 
@@ -245,6 +270,14 @@ export default {
     font-size: 14px;
     // padding-top: 9px;
     padding: 9px 9px 0 12px;
+
+    &.total-gap-record {
+      align-items: flex-start;
+
+      > span:first-child {
+        color: #a6a9b2;
+      }
+    }
 
     &:last-of-type {
       padding: 9px 9px 9px 12px;
@@ -276,6 +309,14 @@ export default {
 
   .state-unqualified {
     color: $main_error_color1;
+
+    &.state-unqualified-record {
+      color: #db6372;
+    }
+  }
+
+  .state-assigned-record {
+    color: #6aaaf5;
   }
 }
 </style>

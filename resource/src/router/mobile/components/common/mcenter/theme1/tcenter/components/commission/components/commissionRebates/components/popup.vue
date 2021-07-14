@@ -84,7 +84,7 @@
             <div :class="$style['path-close']" @click="close">
               {{ $t("S_CLOSE") }}
             </div>
-            <div :class="$style['path-back']" @click="handleClick">
+            <div :class="$style['path-back']" @click="handleRebateClick">
               {{ $t("S_BACK") }}
             </div>
           </div>
@@ -147,6 +147,13 @@ export default {
     },
     handleClick() {
       this.$router.push("/mobile/mcenter/tcenter/commission/record");
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    },
+    handleRebateClick() {
+      this.$router.push("/mobile/mcenter/tcenterManageRebate/real/receive");
 
       setTimeout(() => {
         window.location.reload();

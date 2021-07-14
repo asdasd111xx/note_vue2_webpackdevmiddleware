@@ -246,7 +246,7 @@ export default {
         if (response.status === "000") {
           this.isShowRebate = response.data.ret.show_real_time;
           let total = response.data.total ?? "";
-          let entries = response.data.entries ?? "";
+          let entries = response.data.ret.entries ?? "";
 
           //沒開實返標題內容
           this.titleContent = [
@@ -267,10 +267,10 @@ export default {
           //開實返標題內容
           if (this.isShowRebate) {
             let available =
-              total.accounting ||
+              total.valid_bet.accounting ||
               (entries?.state === 3 && entries?.self_times === 0)
                 ? "--"
-                : entries
+                : entries[0]
                 ? this.getNoRoundText(entries[0]?.amount)
                 : "0.00";
 
@@ -285,9 +285,9 @@ export default {
             this.titleContent = [
               {
                 title: "最新可领实返",
-                button: total.accounting
+                button: total.valid_bet.accounting
                   ? "计算中"
-                  : entries?.self_times > 0
+                  : entries[0]?.self_times > 0
                   ? "领取"
                   : "查看",
                 item: available,
@@ -295,7 +295,7 @@ export default {
               },
               {
                 title: "今日有效投注",
-                button: total.accounting ? "计算中" : "详情",
+                button: total.valid_bet.accounting ? "计算中" : "详情",
                 item: subValidBet,
                 path: "tcenterManageRebate/real/detail"
               },
