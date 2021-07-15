@@ -52,30 +52,17 @@
   display: flex;
   flex-direction: column;
   font-weight: 700;
-  padding-top: 19px;
 
   .list-data {
     display: flex;
     justify-content: space-between;
     margin-left: 40px;
     margin-right: 40px;
-    border-bottom: #ffffff solid 1px;
-    padding-top: 7px;
-    padding-bottom: 6px;
+    border-bottom: #5e626d dashed 1px;
+    padding-top: 15px;
 
     .list-name {
       color: #5e626d;
-    }
-
-    .list-button {
-      color: white;
-      border-radius: 21px;
-      padding: 2px 9px;
-      background-color: #636f93;
-      font-size: 12px;
-      font-weight: normal;
-      position: relative;
-      bottom: 1px;
     }
 
     .list-value {
