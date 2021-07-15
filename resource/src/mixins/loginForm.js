@@ -63,6 +63,7 @@ export default {
       "actionVerificationFormData"
     ]),
     verification(key, value) {
+      this.errMsg = "";
       this.actionVerificationFormData({
         target: key,
         value: value
