@@ -165,7 +165,15 @@ export default {
               title: response.result[i].name
             });
           }
-          this.videoTabs = [{ id: 0, title: "全部" }, ...videoArray];
+          if (this.$route.query.tag === "全部") {
+            this.videoTabs = [
+              { id: 0, title: "全部" },
+              { id: 1, title: "热门推荐" },
+              ...response.result
+            ];
+          } else {
+            this.videoTabs = [{ id: 0, title: "全部" }, ...response.result];
+          }
         } else {
           this.videoTabs = [];
         }
@@ -231,7 +239,7 @@ export default {
         smallPig: true,
         data: {
           tagId: this.tagId,
-          sortId: this.sortId,
+          sortId: this.sortId === 1 ? 0 : this.sortId,
           page: page,
           siteId: this.siteId
         }
