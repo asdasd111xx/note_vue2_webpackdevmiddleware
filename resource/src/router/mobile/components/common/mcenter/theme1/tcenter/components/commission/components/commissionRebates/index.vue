@@ -265,21 +265,21 @@ export default {
             this.immediateData = response.data.ret.entries;
           }
 
-          // 測試資料
-          this.immediateData = [
-            {
-              period: "20200421",
-              start_at: "2020-04-21T12:00:00+0800",
-              end_at: "2020-04-21T07:15:18+0800",
-              sub_valid_bet: "14875039.6179",
-              sub_profit: "0.00",
-              state: 1,
-              self_times: 10,
-              self_min_limit: "10",
-              type: 1,
-              amount: "200.00"
-            }
-          ];
+          // // 測試資料
+          // this.immediateData = [
+          //   {
+          //     period: "20200421",
+          //     start_at: "2020-04-21T12:00:00+0800",
+          //     end_at: "2020-04-21T07:15:18+0800",
+          //     sub_valid_bet: "14875039.6179",
+          //     sub_profit: "0.00",
+          //     state: 1,
+          //     self_times: 10,
+          //     self_min_limit: "10",
+          //     type: 1,
+          //     amount: "200.00"
+          //   }
+          // ];
           return;
         }
       });

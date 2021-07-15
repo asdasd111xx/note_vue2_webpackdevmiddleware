@@ -308,14 +308,14 @@ export default {
         },
         {
           showType: true,
-          name: "下级好友",
-          image: "ic_friend",
+          name: "团队报表",
+          image: "ic_groupreport",
           path: "/mobile/mcenter/tcenter/management/friends"
         },
         {
           showType: true,
-          name: "游戏记录",
-          image: "ic_gamerecord",
+          name: "下级统计",
+          image: "ic_lowerlevel",
           path: "/mobile/mcenter/tcenter/gameRecord/main"
         },
         {
