@@ -624,11 +624,10 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      {{ cryptoMoney }}
-                    </span>
-
-                    <span>
-                      {{ curPayInfo.payment_method_name }}
+                      <span>
+                        {{ cryptoMoney }}
+                        {{ curPayInfo.payment_method_name }}
+                      </span>
                     </span>
 
                     <!-- <div
@@ -639,7 +638,7 @@
                       }
                     ]"
                     @click="convertCryptoMoney"
-                  >
+                    >
                     {{
                       countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算`
                     }}
@@ -648,9 +647,14 @@
                 </div>
                 <!-- 參考匯率 -->
                 <div :class="$style['exchange-rate']">
-                  參考匯率 1 USDT ≈ {{ rate }} CNY (
-                  <span :class="[$style['time']]">{{ timeUSDT() }}</span>
-                  后更新 )
+                  <span>参考汇率 </span>
+                  <div :class="[$style['content']]">
+                    <span :class="[$style['rate']]"
+                      >1 USDT ≈ {{ rate }} CNY (
+                      <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+                      后更新 )</span
+                    >
+                  </div>
                 </div>
               </template>
             </div>

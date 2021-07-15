@@ -796,6 +796,7 @@ export default {
      * @param {String} money - 金額
      */
     changeMoney(money, canCustomMoney) {
+      this.cryptoMoney = "--";
       this.isSelectedCustomMoney = !!canCustomMoney;
       this.isDisableDepositInput = !canCustomMoney;
       this.moneyValue = money;
@@ -1094,6 +1095,12 @@ export default {
 
           if (_isPWA) {
             newWindow.close();
+          }
+          if (code === 1501020021) {
+            (async () => {
+              await this.getPayPass();
+              this.verificationMoney(this.moneyValue);
+            })();
           }
 
           this.actionSetGlobalMessage({

@@ -51,27 +51,50 @@ export default {
           .replace("%s", "20")
       : i18n.t("S_USERNAME_ERROR").replace("%s", "<br/>")
   },
+  login_password: {
+    key: "login_password",
+    text: "S_PASSWORD",
+    type: "password",
+    placeholder: "请输入6-12位字母及数字",
+    isRequired: true,
+    hasVerify: false,
+    show: true,
+    regExp: "",
+    errorMsg: i18n.t("S_PASSWORD_ERROR")
+  },
   password: {
     key: "password",
     text: "S_PASSWORD",
     type: "password",
-    placeholder: "请输入6-12位字母或数字",
+    placeholder: "请输入6-12位字母及数字",
     isRequired: true,
     hasVerify: false,
     show: true,
-    regExp: /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/,
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
     errorMsg: i18n.t("S_PASSWORD_ERROR")
   },
   confirm_password: {
     key: "confirm_password",
     text: "S_PWD_CONFIRM",
     type: "password",
-    placeholder: "请输入6-12位字母或数字",
+    placeholder: "请输入6-12位字母及数字",
     isRequired: true,
     hasVerify: false,
     show: true,
-    regExp: "",
-    errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
+    errorMsg: i18n.t("S_PASSWORD_ERROR")
+    // errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
+  },
+  new_password: {
+    key: "new_password",
+    text: "S_PASSWORD",
+    type: "password",
+    placeholder: "请输入6-12位字母及数字",
+    isRequired: true,
+    hasVerify: false,
+    show: true,
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
+    errorMsg: i18n.t("S_PASSWORD_ERROR")
   },
   introducer: {
     key: "introducer",

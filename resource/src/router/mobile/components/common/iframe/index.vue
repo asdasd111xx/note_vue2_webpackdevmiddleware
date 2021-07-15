@@ -605,17 +605,6 @@ export default {
 
           switch (vendor) {
             default:
-              openGame(
-                {
-                  kind: kind,
-                  vendor: vendor,
-                  code: code,
-                  getGames: true
-                },
-                openGameSuccessFunc,
-                openGameFailFunc
-              );
-
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
                 if (this.$route.query.vendor === "sigua_ly") {
@@ -635,6 +624,17 @@ export default {
                   });
                 }
               };
+
+              openGame(
+                {
+                  kind: kind,
+                  vendor: vendor,
+                  code: code,
+                  getGames: true
+                },
+                openGameSuccessFunc,
+                openGameFailFunc
+              );
 
               break;
           }
@@ -806,19 +806,19 @@ export default {
   position: fixed;
   top: 0;
   margin: 0 auto;
-  transform: rotate(90deg);
   height: 19px;
   margin: 0 auto;
-  left: calc(50% - 9px);
+  left: calc(50% - 15px);
   background: rgba(0, 0, 0, 0.4);
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 0 5px 5px;
   opacity: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  width: 30px;
   > img {
     height: 15px;
+    transform: rotate(90deg);
   }
 }
 

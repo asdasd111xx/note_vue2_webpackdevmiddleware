@@ -302,9 +302,6 @@ export default {
                     this.actionSetUserdata(true);
                     this.locker();
                     this.isSendSMS = false;
-                    this.tipMsg = `${this.$text(
-                      "S_SEND_CHECK_CODE_VALID_TIME_5"
-                    )}`;
                   },
                   fail: res => {
                     this.isSendSMS = false;

@@ -68,6 +68,7 @@
                     .replace(' ', '')
                     .trim()
                     .replace(/[\W]/g, '')
+                    .replace(/\_/g, '')
                 "
               />
             </div>
@@ -125,10 +126,10 @@
                   {{ $t("S_NEW_PWD") }}
                 </div>
                 <input
-                  id="pwd"
+                  id="password"
                   v-model="password"
                   :class="$style['form-input']"
-                  placeholder="请输入6-12位字母或数字"
+                  :placeholder="$text('S_NEW_PASSWORD_PLACEHOLDER')"
                   type="password"
                   maxlength="12"
                   @blur="verification('password', $event.target.value)"
@@ -143,7 +144,7 @@
                         }.png`
                       )
                     "
-                    @click="toggleEye('pwd')"
+                    @click="toggleEye('password')"
                   />
                 </div>
               </div>
@@ -157,7 +158,7 @@
                   {{ $t("S_ENABLE_CHK_PWD") }}
                 </div>
                 <input
-                  id="confPwd"
+                  id="confirm_password"
                   v-model="confirm_password"
                   :class="$style['form-input']"
                   placeholder="请再次输入密码"
@@ -175,7 +176,7 @@
                         }.png`
                       )
                     "
-                    @click="toggleEye('confPwd')"
+                    @click="toggleEye('confirm_password')"
                   />
                 </div>
               </div>
@@ -226,9 +227,9 @@
 import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 import member from "@/api/member";
-import joinMemInfo from "@/config/joinMemInfo";
 import mobileContainer from "../../common/mobileContainer";
 import popupVerification from "@/components/popupVerification";
+import joinMemInfo from "@/config/joinMemInfo";
 
 export default {
   components: {
@@ -260,15 +261,7 @@ export default {
       isShowCaptcha: false
     };
   },
-  currentMethod() {
-    this.msg = {
-      username: "",
-      email: "",
-      keyring: "",
-      password: "",
-      confirm_password: ""
-    };
-  },
+
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -279,34 +272,33 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
-    headerConfig() {
-      return {
-        prev: true,
-        title: this.currentMethod === "phone-step-2" ? "重设密码" : "找回密码",
-        onClick: () => {
-          this.$router.back();
-        },
-        noBottomBorder: true
-      };
-    },
     checkSubmit() {
       if (this.currentMethod === "phone-step-1") {
         return this.username && this.keyring;
       }
+
       return (
         this.password === this.confirm_password &&
         this.password &&
-        this.confirm_password
+        this.confirm_password &&
+        this.errMsg === "" &&
+        !Object.keys(this.msg).some(key => this.msg[key] !== "")
       );
     }
   },
   watch: {
     thirdyCaptchaObj() {
       this.getKeyring();
+    },
+    currentMethod() {
+      this.msg = {
+        username: "",
+        email: "",
+        keyring: "",
+        password: "",
+        confirm_password: ""
+      };
     }
-  },
-  mounted() {
-    this.$emit("update:currentMethod", this.currentMethod);
   },
   methods: {
     ...mapActions([
@@ -326,80 +318,87 @@ export default {
       }
     },
     toggleEye(key) {
-      let pwd = document.getElementById("pwd"),
-        confPwd = document.getElementById("confPwd");
+      let password = document.getElementById("password"),
+        confirm_password = document.getElementById("confirm_password");
 
       if (this.isShowPwd) {
-        if (pwd) {
-          pwd.type = "password";
+        if (password) {
+          password.type = "password";
         }
-        if (confPwd) {
-          confPwd.type = "password";
+        if (confirm_password) {
+          confirm_password.type = "password";
         }
       } else {
-        if (pwd) {
-          pwd.type = "text";
+        if (password) {
+          password.type = "text";
         }
-        if (confPwd) {
-          confPwd.type = "text";
+        if (confirm_password) {
+          confirm_password.type = "text";
         }
       }
       this.isShowPwd = !this.isShowPwd;
     },
     changeMethod(status) {
       if (status) return;
-      // this.errMsg = "";
-      // this.username = "";
-      // this.email = "";
-      // this.phone = "";
-      // this.keyring = "";
-      // this.password = "";
-      // this.confirm_password = "";
     },
     verification(key, value) {
+      let errMsg = "";
       this.actionVerificationFormData({
         target: key,
         value: value
       }).then(val => {
         this[key] = val;
+        const regex = new RegExp(joinMemInfo[key].regExp);
+        const msg = joinMemInfo[key].errorMsg;
+
+        if (["confirm_password"].includes(key)) {
+          if (!val) {
+            this.errMsg = errMsg;
+            return;
+          }
+
+          if (this.password !== this.confirm_password) {
+            errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+          }
+        } else if (["password"].includes(key)) {
+          if (!val) {
+            this.errMsg = errMsg;
+            return;
+          }
+
+          if (!val.match(regex)) {
+            errMsg = msg;
+          }
+        } else {
+          if (!regex.test(value)) {
+            errMsg = msg;
+          }
+        }
+        this.msg[key] = errMsg;
       });
-
-      const re = /^[a-zA-Z0-9._\-!@#$&*+=|]{6,12}$/;
-      const msg = this.$text("S_PASSWORD_ERROR", "请输入6-12位字母或数字");
-
-      let errMsg = "";
-
-      if (this.password !== this.confirm_password) {
-        errMsg = "确认密码预设要跟密码一致";
-        this.msg.confirm_password = errMsg;
-        return;
-      } else {
-        this.msg.confirm_password = "";
-        this.msg.password = "";
-      }
-
-      if (!value) {
-        errMsg = "该栏位不得为空";
-      }
-
-      if (!re.test(value)) {
-        errMsg = msg;
-      }
-
-      this.msg[key] = errMsg;
     },
     sendEmail(type) {
-      const url = "/mobile/resetpwd";
+      if (this.isSendEmail) {
+        return;
+      }
+
+      this.isSendEmail = true;
+      setTimeout(() => {
+        this.isSendEmail = false;
+      }, 1200);
+
+      const url = "/mobile/resetPwd";
       const data = {
         params: {
           username: this.username,
           email: this.email,
-          callback: url
+          callback: url,
+          errorAlert: false
         },
         success: res => {
           if (res.result === "ok") {
             this.actionSetGlobalMessage({
-              msg: this.$text("FORGET_PWD_SEND", "重设密码信件已发送")
+              msg: this.$text("FORGET_password_SEND", "重设密码信件已发送")
             });
           }
         },
@@ -431,7 +430,7 @@ export default {
         return;
       }
       if (this.currentMethod === "phone-step-2") {
-        this.resetPwd(type);
+        this.resetpassword(type);
         return;
       }
     },
@@ -453,12 +452,12 @@ export default {
       this.isSendKeyring = true;
       // 忘記密碼發送簡訊 - 代理會員
       //   if (type === 'agent') {
-      //     agent.pwdForgetMobile(data);
+      //     agent.passwordForgetMobile(data);
       //     return;
       //   }
 
       // 忘記密碼發送簡訊 - 會員
-      // member.pwdForgetMobile(data);
+      // member.passwordForgetMobile(data);
 
       axios({
         method: "post",
@@ -529,9 +528,10 @@ export default {
         success: response => {
           if (response.result === "ok") {
             //   驗證成功重設密碼
+            this.errMsg = "";
             this.resetKeyring = response.ret.keyring;
             this.currentMethod = "phone-step-2";
-            this.errMsg = "";
+            this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
           }
         },
         fail: res => {
@@ -559,9 +559,8 @@ export default {
       // 忘記密碼驗證簡訊 - 會員
       member.pwdMobileVerify(data);
     },
-    resetPwd(type) {
+    resetpassword(type) {
       if (this.msg.password || this.msg.confirm_password) {
-        alert(this.$text("S_CHECK_FAIL", "验证失败"));
         return;
       }
 
@@ -570,7 +569,8 @@ export default {
           username: this.username,
           new_password: this.password,
           confirm_password: this.confirm_password,
-          keyring: this.resetKeyring
+          keyring: this.resetKeyring,
+          errorAlert: false
         },
         success: response => {
           this.errMsg = "";

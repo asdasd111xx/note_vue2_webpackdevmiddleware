@@ -25,50 +25,82 @@
             <div :class="$style['title']">
               {{ $text(pwdResetInfo[item].text) }}
             </div>
-            <input
-              v-if="pwdResetInfo[item].key === 'userName'"
-              :id="item"
-              v-model="pwdResetInfo[item].value"
-              @input="verification(item, $event.target.value)"
-              type="text"
-              :placeholder="pwdResetInfo[item].placeholder"
-              :maxlength="pwdResetInfo[item].maxlength"
-              :minlength="pwdResetInfo[item].minlength"
-            />
-            <input
-              v-else-if="pwdResetInfo[item].type === 'password'"
-              :id="item"
-              v-model="pwdResetInfo[item].value"
-              type="password"
-              :placeholder="pwdResetInfo[item].placeholder"
-              maxlength="12"
-              @input="verification(item, $event.target.value)"
-            />
-            <input
-              v-else
-              :id="item"
-              v-model="pwdResetInfo[item].value"
-              @input="verification(item, $event.target.value)"
-              type="text"
-              :placeholder="pwdResetInfo[item].placeholder"
-              :maxlength="pwdResetInfo[item].maxlength"
-              :minlength="pwdResetInfo[item].minlength"
-            />
-            <div
-              v-if="pwdResetInfo[item].type === 'password'"
-              :class="$style['eye']"
-            >
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/common/login/btn_eye_${
-                      isShowPwd ? 'n' : 'd'
-                    }.png`
-                  )
-                "
-                @click="toggleEye(item)"
+            <template v-if="pwdResetInfo[item].key === 'username'">
+              <input
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                @input="verification(item, $event.target.value)"
+                type="text"
+                :placeholder="$text(pwdResetInfo[item].placeholder)"
+                :maxlength="pwdResetInfo[item].maxlength"
+                :minlength="pwdResetInfo[item].minlength"
               />
-            </div>
+              <div :class="$style['field-tip']" v-html="allTip['username']" />
+            </template>
+
+            <template
+              v-else-if="
+                ['new_password', 'password', 'confirm_password'].includes(
+                  pwdResetInfo[item].key
+                )
+              "
+            >
+              <input
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                type="password"
+                :placeholder="$text(pwdResetInfo[item].placeholder)"
+                maxlength="12"
+                @input="verification(item, $event.target.value)"
+              />
+              <div :class="$style['eye']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye(item)"
+                />
+              </div>
+              <div
+                :class="$style['field-tip']"
+                v-html="allTip[pwdResetInfo[item].key]"
+              />
+            </template>
+
+            <template v-else>
+              <input
+                :id="item"
+                v-model="pwdResetInfo[item].value"
+                @input="verification(item, $event.target.value)"
+                type="text"
+                :placeholder="$text(pwdResetInfo[item].placeholder)"
+                :maxlength="pwdResetInfo[item].maxlength"
+                :minlength="pwdResetInfo[item].minlength"
+              />
+              <div
+                v-if="pwdResetInfo[item].type === 'password'"
+                :class="$style['eye']"
+              >
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/login/btn_eye_${
+                        isShowPwd ? 'n' : 'd'
+                      }.png`
+                    )
+                  "
+                  @click="toggleEye(item)"
+                />
+              </div>
+              <div
+                :class="$style['field-tip']"
+                v-html="allTip[pwdResetInfo[item].key]"
+              />
+            </template>
           </div>
         </div>
         <div v-if="isResetPW" :class="$style.prompt">
@@ -80,7 +112,7 @@
             $style[themeTPL],
             { [$style['active']]: submitActive }
           ]"
-          @click="isResetPW ? pwdResetSubmit() : pwdModifySubmit()"
+          @click="checkField"
         >
           {{ $text("S_SUBMIT", "提交") }}
         </div>
@@ -96,6 +128,7 @@ import mcenter from "@/api/mcenter";
 import agcenter from "@/api/agcenter";
 import member from "@/api/member";
 import agent from "@/api/agent";
+import joinMemInfo from "@/config/joinMemInfo";
 
 export default {
   components: {
@@ -106,17 +139,23 @@ export default {
   },
   data() {
     return {
+      checked: false,
       errMsg: "",
       msg: "",
+      allTip: {
+        username: "",
+        email: "",
+        pwd: "",
+        new_password: "",
+        confirm_password: ""
+      },
       pwdResetInfo: {
-        userName: {
-          key: "userName",
+        username: {
+          key: "username",
           text: "S_USER_NAME",
           type: "text",
           value: "",
-          regExp: /^[a-z][a-z0-9]{3,19}$/,
-          errorMsg: "S_USERNAME_ERROR",
-          placeholder: "请输入用户名",
+          placeholder: "S_PLEASE_ENTER_USER_NAME",
           eyeShow: false,
           display: false
         },
@@ -125,50 +164,36 @@ export default {
           text: "S_E_MAIL",
           type: "text",
           value: "",
-          regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
-          errorMsg: "S_JM_EMAIL_FORMAT_UNAVAILABLE",
-          placeholder: "请输入电子邮箱",
+          placeholder: "S_PLS_ENTER_MAIL",
           maxlength: 100,
           minlength: 12,
           eyeShow: false,
           display: false
         },
-        pwd: {
-          key: "pwd",
+        password: {
+          key: "password",
           text: "S_ORIGIN_PASSWORD",
           type: "password",
           value: "",
-          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
-          errorMsg: "S_PASSWORD_ERROR",
-          placeholder: "请输入原密码",
-          maxlength: 12,
-          minlength: 6,
+          placeholder: "S_PLEASE_ENTER_ORIGIN_PASSWORD",
           eyeShow: false,
           display: false
         },
-        newPwd: {
-          key: "newPwd",
+        new_password: {
+          key: "new_password",
           text: "S_NEW_PWD",
           type: "password",
           value: "",
-          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
-          errorMsg: "S_PASSWORD_ERROR",
-          placeholder: "请设置新密码(6-12位字母或数字)",
-          maxlength: 12,
-          minlength: 6,
+          placeholder: "S_NEW_PASSWORD_PLACEHOLDER",
           eyeShow: false,
           display: false
         },
-        confNewPwd: {
-          key: "confNewPwd",
+        confirm_password: {
+          key: "confirm_password",
           text: "S_CHK_PWD",
           type: "password",
           value: "",
-          regExp: /^[A-Za-z0-9._\-!@#$&*+=|]{6,12}$/,
-          errorMsg: "S_PASSWORD_ERROR",
-          placeholder: "请再次输入密码",
-          maxlength: 12,
-          minlength: 6,
+          placeholder: "S_PLEASE_ENTER_PASSWORD_AGAIN",
           eyeShow: false,
           display: false
         }
@@ -219,79 +244,87 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionVerificationFormData"]),
     toggleEye(key) {
-      this.verification(key, this.pwdResetInfo[key].value);
-      let newPwd = document.getElementById("newPwd"),
-        confNewPwd = document.getElementById("confNewPwd"),
-        pwd = document.getElementById("pwd");
+      let new_password = document.getElementById("new_password"),
+        confirm_password = document.getElementById("confirm_password"),
+        password = document.getElementById("password");
 
       if (this.isShowPwd) {
-        if (newPwd) {
-          newPwd.type = "password";
+        if (new_password) {
+          new_password.type = "password";
         }
-        if (confNewPwd) {
-          confNewPwd.type = "password";
+        if (confirm_password) {
+          confirm_password.type = "password";
         }
-        if (pwd) {
-          pwd.type = "password";
+        if (password) {
+          password.type = "password";
         }
       } else {
-        if (newPwd) {
-          newPwd.type = "text";
+        if (new_password) {
+          new_password.type = "text";
         }
-        if (confNewPwd) {
-          confNewPwd.type = "text";
+        if (confirm_password) {
+          confirm_password.type = "text";
         }
-        if (pwd) {
-          pwd.type = "text";
+        if (password) {
+          password.type = "text";
         }
       }
       this.isShowPwd = !this.isShowPwd;
     },
-    verification(id, value) {
-      console.log(`verification id is ${id}`);
-      console.log(`verification value is ${value}`);
-      if (id !== "email") {
-        this.actionVerificationFormData({
-          target: "password",
-          value: value
-        }).then(val => {
-          this.pwdResetInfo[id].value = val;
-          if (
-            (id === "confNewPwd" &&
-              this.pwdResetInfo["confNewPwd"].value !==
-                this.pwdResetInfo["newPwd"].value) ||
-            (id === "newPwd" &&
-              this.pwdResetInfo["confNewPwd"].value != "" &&
-              this.pwdResetInfo["confNewPwd"].value !==
-                this.pwdResetInfo["newPwd"].value) ||
-            (id === "pwd" &&
-              this.pwdResetInfo["confNewPwd"].value != "" &&
-              this.pwdResetInfo["confNewPwd"].value !==
-                this.pwdResetInfo["newPwd"].value)
-          ) {
-            this.errMsg = "确认密码预设要跟密码一致";
-          } else {
-            this.errMsg = "";
-          }
+    verification(key, value) {
+      let target = key;
+      let errMsg = "";
 
-          const data = this.pwdResetInfo[id];
-          const re = new RegExp(data.regExp);
-          const msg = this.$t(data.errorMsg);
+      const regex = new RegExp(joinMemInfo[target].regExp);
+      const msg = joinMemInfo[target].errorMsg;
 
-          if (!re.test(val)) {
-            this.errMsg = msg;
-          }
-        });
-      } else {
-        this.pwdResetInfo[id].value = value.trim();
+      if (["password"].includes(key)) {
+        target = "login_password";
+      }
 
-        const data = this.pwdResetInfo[id];
-        const re = new RegExp(data.regExp);
-        const msg = this.$t(data.errorMsg);
+      return this.actionVerificationFormData({
+        target: target,
+        value: value
+      }).then(val => {
+        this.pwdResetInfo[key].value = val;
 
-        if (!re.test(value)) {
-          this.errMsg = msg;
+        if (!val) {
+          this.errMsg = errMsg;
+          return;
         }
+
+        if (key === "confirm_password") {
+          if (
+            this.pwdResetInfo["confirm_password"].value !==
+            this.pwdResetInfo["new_password"].value
+          ) {
+            this.errMsg = errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+          }
+        } else if (key === "password") {
+          if (val.length < 6) {
+            errMsg = "请输入6-12位字母及数字";
+          }
+        } else {
+          if (!regex.test(val)) {
+            errMsg = msg;
+          }
+        }
+
+        this.errMsg = errMsg;
+      });
+    },
+    checkField() {
+      this.checked = true;
+
+      Object.keys(this.pwdResetInfo).forEach(key => {
+        if (this.pwdResetInfo[key].display) {
+          let value = this.pwdResetInfo[key].value;
+          this.verification(key, value);
+        }
+      });
+
+      if (!this.errMsg) {
+        this.isResetPW ? this.pwdResetSubmit() : this.pwdModifySubmit();
       }
     },
     pwdModifySubmit() {
@@ -302,9 +335,9 @@ export default {
       }, 2000);
 
       const pwdInfo = {
-        old_password: this.pwdResetInfo.pwd.value,
-        new_password: this.pwdResetInfo.newPwd.value,
-        confirm_password: this.pwdResetInfo.confNewPwd.value
+        old_password: this.pwdResetInfo.password.value,
+        new_password: this.pwdResetInfo.new_password.value,
+        confirm_password: this.pwdResetInfo.confirm_password.value
       };
       if (this.$route.query.type === "agent") {
         agcenter.accountPassword({
@@ -345,10 +378,10 @@ export default {
     pwdResetSubmit() {
       if (!this.submitActive) return;
       const pwdInfo = {
-        username: this.pwdResetInfo.userName.value,
+        username: this.pwdResetInfo.username.value,
         email: this.pwdResetInfo.email.value,
-        new_password: this.pwdResetInfo.newPwd.value,
-        confirm_password: this.pwdResetInfo.confNewPwd.value,
+        new_password: this.pwdResetInfo.new_password.value,
+        confirm_password: this.pwdResetInfo.confirm_password.value,
         keyring: this.$route.query.kr
       };
       if (this.$route.query.type === "agent") {
@@ -385,11 +418,11 @@ export default {
     },
     ...mapActions(["actionChangePage", "actionSetUserdata"]),
     filterField() {
-      let displayColumn = ["newPwd", "confNewPwd"];
+      let displayColumn = ["new_password", "confirm_password"];
       if (this.isResetPW) {
-        displayColumn = ["userName", "email", ...displayColumn];
+        displayColumn = ["username", "email", ...displayColumn];
       } else {
-        displayColumn = ["pwd", ...displayColumn];
+        displayColumn = ["password", ...displayColumn];
       }
       Object.keys(this.pwdResetInfo).forEach(key => {
         this.pwdResetInfo[key].display = displayColumn.includes(key);
@@ -532,5 +565,14 @@ input {
   padding-top: 15px;
   color: #a6a9b2;
   font-size: 12px;
+}
+
+// 尚未實作個欄位錯誤訊息
+.field-tip {
+  display: none;
+  width: 100%;
+  padding: 5px 25px 5px 0;
+  text-align: right;
+  color: #c24141;
 }
 </style>

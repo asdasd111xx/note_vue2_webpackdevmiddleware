@@ -9,6 +9,9 @@
       playsinline="1"
       :webkit-playsinline="playsinline"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
+      disablePictureInPicture
+      controls
+      controlsList="nodownload"
     ></video>
     <!-- 彩金活動 -->
     <div id="video-play-block" :class="$style['video-block']">
@@ -657,6 +660,10 @@ export default {
   .video-js * {
     outline: none !important;
     box-shadow: none !important;
+  }
+
+  .vjs-picture-in-picture-control {
+    display: none !important;
   }
 }
 

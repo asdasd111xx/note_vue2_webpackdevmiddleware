@@ -480,7 +480,7 @@
 
       <!-- 參考匯率 -->
       <div v-if="isSelectedUSDT" :class="$style['exchange-rate']">
-        參考匯率 1 USDT ≈ {{ rate }} CNY (
+        参考汇率 1 USDT ≈ {{ rate }} CNY (
         <span :class="[$style['time']]">{{ timeUSDT() }}</span>
         后更新 )
       </div>
@@ -552,6 +552,7 @@
     <!-- 流水檢查 -->
     <serial-number
       v-if="isSerial"
+      ref="serialNumber"
       :handle-close="toggleSerial"
       :swift-code="selectedCard.swift_code"
     />
@@ -799,6 +800,25 @@ export default {
     this.chooseUSDT();
   },
   mounted() {
+    let isBackFromService = localStorage.getItem("service-back") === "true";
+    let defaultSerialData = localStorage.getItem("serial-detail-data");
+
+    if (isBackFromService) {
+      if (defaultSerialData && JSON.parse(defaultSerialData)) {
+        localStorage.removeItem("service-back");
+        localStorage.removeItem("serial-detail-data");
+
+        this.toggleSerial();
+        this.$nextTick(() => {
+          if (this.$refs.serialNumber) {
+            this.$refs.serialNumber.handleClickSerial(
+              JSON.parse(defaultSerialData)
+            );
+          }
+        });
+      }
+    }
+
     // 按下一鍵歸戶後，需再更新 withdraw/info 這支 API
     // 避免「可提現餘額是否超過中心錢包餘額」重複出現(到時重構再更改)
     document.querySelector("#one-recycle-btn").addEventListener("click", () => {
@@ -1786,7 +1806,7 @@ export default {
       );
 
       switch (true) {
-        case !+this.withdrawValue:
+        case !this.withdrawValue:
           return "--";
           break;
 

@@ -891,7 +891,8 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 export const actionSetUserBalance = ({ commit, dispatch }) => {
   return axios({
     method: "get",
-    url: "/api/v1/c/vendor/all/balance"
+    url: "/api/v1/c/vendor/all/balance",
+    timeout: 30000
   })
     .then(res => {
       if (res && res.data && res.data.result === "ok") {
@@ -1358,6 +1359,7 @@ export const actionSetSiteConfig = ({ commit }, data) => {
 
 // 推播中心資料
 export const actionNoticeData = ({ commit }, data) => {
+  console.log(`6   ${data}`);
   commit(types.SETNOTICEDATA, data);
 };
 
@@ -1790,6 +1792,7 @@ export const actionVerificationFormData = (
     case "username":
       val = val
         .replace(/[\W]/g, "")
+        .replace(/\_/g, "")
         .substring(0, 20)
         .toLowerCase();
       break;
@@ -1814,10 +1817,18 @@ export const actionVerificationFormData = (
 
       break;
 
+    case "login_password":
+      val = val.replace(/[^A-Za-z0-9._\-!@#$&+=|*]/g, "").substring(0, 12);
+      break;
+
     case "password":
+    case "new_password":
     case "confirm_password":
       // val = val.replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, "");
-      val = val.replace(/[\W]/g, "").substring(0, 50);
+      val = val
+        .replace(/[\W]/g, "")
+        .replace(/\_/g, "")
+        .substring(0, 12);
       // .toLowerCase();
       break;
 
@@ -1863,6 +1874,12 @@ export const actionVerificationFormData = (
       regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
       val = val.replace(regex, "").substring(0, 20);
       break;
+
+    case "search_video":
+      regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF[0-9a-zA-Z]/g;
+      val = val.replace(regex, "");
+      break;
+
     // case "USDT-address":
     //   val = val.substring(0, 42);
     //   break;

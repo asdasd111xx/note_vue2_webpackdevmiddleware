@@ -1,40 +1,37 @@
 <template>
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" :class="$style['content-wrap']">
-      <forget-pwd :current-method.sync="currentMethod" />
+      <forget-pwd @setTitle="t => (title = t)" />
     </div>
   </mobile-container>
 </template>
 <script>
-
-import axios from 'axios';
-import { mapGetters } from 'vuex';
-import member from '@/api/member';
-import mobileContainer from '../common/mobileContainer';
+import { mapGetters } from "vuex";
+import mobileContainer from "../common/mobileContainer";
 import forgetPwd from "@/router/mobile/components/tpl/porn1/components/forgetPwd/components/index";
 
 export default {
+  data() {
+    return {
+      title: "找回密码" //重设密码
+    };
+  },
   components: {
     mobileContainer,
     forgetPwd
   },
-  data() {
-    return {
-      currentMethod: "phone-step-1"
-    };
-  },
   computed: {
-    ...mapGetters({
-
-    }),
+    ...mapGetters({}),
     headerConfig() {
       return {
         prev: true,
-        title: this.currentMethod === 'phone-step-2' ? '重设密码' : '找回密码',
-        onClick: () => { this.$router.back(); },
+        title: this.title,
+        onClick: () => {
+          this.$router.back();
+        }
       };
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" module>
@@ -43,4 +40,3 @@ export default {
   background: #fefefe;
 }
 </style>
-

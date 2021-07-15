@@ -27,12 +27,12 @@
   height: 220px;
   margin: auto;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
 
-  >div {
+  > div {
     height: 20px;
     line-height: 20px;
     margin-top: 20px;
@@ -78,6 +78,9 @@
     .title {
       max-width: calc(100% - 70px);
       float: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .msg-time {
@@ -108,7 +111,6 @@
     background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
     background-size: 18px 18px;
   }
-
 }
 
 .content-title {
@@ -137,12 +139,12 @@
   width: 32px;
   height: 32px;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
 
-  >span {
+  > span {
     position: absolute;
     top: 0;
     right: 0;
@@ -305,7 +307,7 @@
   margin: 0 auto;
   color: #9ca29f;
 
-  >svg {
+  > svg {
     display: block;
   }
 }
@@ -366,7 +368,7 @@
 .tips-button {
   border-top: 1px solid #f7f7f7;
 
-  >div {
+  > div {
     float: left;
     width: 50%;
     height: 50px;
@@ -389,7 +391,7 @@
   position: fixed;
   top: 0;
   height: 43px;
-  z-index: 3;
+  z-index: 20;
   display: flex;
   background-color: #fefffe;
   // background: linear-gradient(#fe2a2a, #b60303);
@@ -414,7 +416,7 @@
   height: 20px;
   margin: auto;
 
-  >img {
+  > img {
     display: block;
     width: 20px;
     height: 20px;
@@ -431,7 +433,7 @@
   color: #414655;
   font-size: 16px;
 
-  >img {
+  > img {
     display: block;
     width: 20px;
   }

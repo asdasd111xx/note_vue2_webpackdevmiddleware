@@ -562,7 +562,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      let nums = 3;
+      let nums = this.redJackpotData.enable ? 2: 3;
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)
