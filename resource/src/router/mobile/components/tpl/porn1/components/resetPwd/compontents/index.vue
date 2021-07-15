@@ -7,8 +7,8 @@
   >
     <!-- 錯誤訊息 -->
     <div :class="$style['err-msg']">
-      <div v-show="errMsg">
-        {{ errMsg }}
+      <div v-show="errorMsg">
+        {{ errorMsg }}
       </div>
     </div>
     <div :class="$style['reset-content']">
@@ -140,7 +140,7 @@ export default {
   data() {
     return {
       checked: false,
-      errMsg: "",
+      errorMsg: "",
       msg: "",
       allTip: {
         username: "",
@@ -234,7 +234,7 @@ export default {
           !this.pwdResetInfo[key].display ||
           (this.pwdResetInfo[key].display &&
             this.pwdResetInfo[key].value &&
-            !this.errMsg)
+            !this.errorMsg)
       );
     },
     hasFooter() {
@@ -273,57 +273,99 @@ export default {
     },
     verification(key, value) {
       let target = key;
-      let errMsg = "";
-
       const regex = new RegExp(joinMemInfo[target].regExp);
-      const msg = joinMemInfo[target].errorMsg;
+      const errorMsg = joinMemInfo[target].errorMsg;
 
       if (["password"].includes(key)) {
         target = "login_password";
       }
 
+      this.errorMsg = "";
       return this.actionVerificationFormData({
         target: target,
         value: value
       }).then(val => {
         this.pwdResetInfo[key].value = val;
+        switch (target) {
+          // case password 原密碼
+          case "login_password":
+            if (val.length < 6) {
+              this.errorMsg = "请输入6-12位字母及数字";
+            }
+            break;
 
-        if (!val) {
-          this.errMsg = errMsg;
-          return;
+          case "new_password":
+            if (!val) {
+              this.errorMsg = "";
+              return;
+            }
+
+            if (
+              this.pwdResetInfo["new_password"].value &&
+              this.pwdResetInfo["confirm_password"].value &&
+              this.pwdResetInfo["new_password"].value !==
+                this.pwdResetInfo["confirm_password"].value
+            ) {
+              this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+            }
+
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
+            }
+            break;
+
+          case "confirm_password":
+            if (!val) {
+              this.errorMsg = "";
+              return;
+            }
+
+            if (
+              this.pwdResetInfo["new_password"].value &&
+              this.pwdResetInfo["confirm_password"].value &&
+              this.pwdResetInfo["new_password"].value !==
+                this.pwdResetInfo["confirm_password"].value
+            ) {
+              this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+            }
+            break;
+
+          default:
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
+            }
+            break;
         }
-
-        if (key === "confirm_password") {
-          if (
-            this.pwdResetInfo["confirm_password"].value !==
-            this.pwdResetInfo["new_password"].value
-          ) {
-            this.errMsg = errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-          }
-        } else if (key === "password") {
-          if (val.length < 6) {
-            errMsg = "请输入6-12位字母及数字";
-          }
-        } else {
-          if (!regex.test(val)) {
-            errMsg = msg;
-          }
-        }
-
-        this.errMsg = errMsg;
       });
     },
     checkField() {
       this.checked = true;
 
-      Object.keys(this.pwdResetInfo).forEach(key => {
-        if (this.pwdResetInfo[key].display) {
-          let value = this.pwdResetInfo[key].value;
-          this.verification(key, value);
-        }
-      });
+      // Object.keys(this.pwdResetInfo).forEach(key => {
+      //   if (this.pwdResetInfo[key].display) {
+      //     let value = this.pwdResetInfo[key].value;
+      //     this.verification(key, value);
+      //   }
+      // });
 
-      if (!this.errMsg) {
+      if (
+        this.pwdResetInfo["new_password"].value &&
+        this.pwdResetInfo["confirm_password"].value &&
+        this.pwdResetInfo["new_password"].value !==
+          this.pwdResetInfo["confirm_password"].value
+      ) {
+        this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+        return;
+      }
+
+      const regex = new RegExp(joinMemInfo["password"].regExp);
+
+      if (!this.pwdResetInfo["new_password"].value.match(regex)) {
+        this.errorMsg = joinMemInfo["new_password"].errorMsg;
+        return;
+      }
+
+      if (!this.errorMsg) {
         this.isResetPW ? this.pwdResetSubmit() : this.pwdModifySubmit();
       }
     },
@@ -332,7 +374,7 @@ export default {
       this.isLoading = true;
       setTimeout(() => {
         this.isLoading = false;
-      }, 2000);
+      }, 1200);
 
       const pwdInfo = {
         old_password: this.pwdResetInfo.password.value,
@@ -346,10 +388,10 @@ export default {
             this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
             setTimeout(() => {
               this.$router.push("/mobile/mcenter/setting");
-            }, 2000);
+            }, 1200);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       } else {
@@ -370,7 +412,7 @@ export default {
             });
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       }
@@ -391,10 +433,10 @@ export default {
             this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
             setTimeout(() => {
               this.$router.push("/mobile/mcenter/setting");
-            }, 2000);
+            }, 1200);
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       } else {
@@ -407,11 +449,11 @@ export default {
             } else {
               setTimeout(() => {
                 this.$router.push("/mobile/mcenter/setting");
-              }, 2000);
+              }, 1200);
             }
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       }

@@ -739,6 +739,7 @@ export default {
         case "kakaotalk":
         case "confirm_password":
         case "name":
+          this.allTip[key] = "";
           this.actionVerificationFormData({
             target: key,
             value: this.allValue[key]
@@ -747,34 +748,57 @@ export default {
             const regex = new RegExp(data.regExp);
             const msg = data.errorMsg;
 
-            let errMsg = "";
-
             // 1. 密碼只判斷是否符合格式不判斷空
             // 2. 確認密碼只判斷是否相同
-            if (key === "password") {
-              if (!val) {
-                this.errMsg = errMsg;
-                return;
-              }
+            switch (key) {
+              case "password":
+                if (!val) {
+                  this.allTip[key] = "";
+                  return;
+                }
 
-              if (!val.match(regex)) {
-                errMsg = msg;
-              }
-            } else if (key === "confirm_password") {
-              if (!val) {
-                this.errMsg = errMsg;
-                return;
-              }
-              if (this.allValue.confirm_password !== this.allValue.password) {
-                errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-              }
-            } else {
-              if (!val.match(regex)) {
-                errMsg = msg;
-              }
+                this.allTip["confirm_password"] = "";
+                if (
+                  this.allValue["confirm_password"] &&
+                  this.allValue["password"] &&
+                  this.allValue["password"] !==
+                    this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"] = this.$text(
+                    "S_PASSWD_CONFIRM_ERROR"
+                  );
+                }
+
+                if (!val.match(regex)) {
+                  this.allTip[key] = msg;
+                }
+                break;
+
+              case "confirm_password":
+                if (!val) {
+                  this.allTip[key] = "";
+                  return;
+                }
+
+                this.allTip["confirm_password"] = "";
+                if (
+                  this.allValue["confirm_password"] &&
+                  this.allValue["password"] &&
+                  this.allValue["password"] !==
+                    this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"] = this.$text(
+                    "S_PASSWD_CONFIRM_ERROR"
+                  );
+                }
+                break;
+
+              default:
+                if (!val.match(regex)) {
+                  this.allTip[key] = msg;
+                }
+                break;
             }
-
-            this.allTip[key] = errMsg;
           });
           break;
 
@@ -893,7 +917,6 @@ export default {
 
       // 拼圖
       if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
-        console.log(this.thirdyCaptchaObj);
         if (!this.thirdyCaptchaObj) {
           this.allTip["captcha_text"] = "请先点击按钮进行验证";
           this.isLoading = false;
