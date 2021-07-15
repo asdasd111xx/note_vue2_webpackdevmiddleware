@@ -1,6 +1,9 @@
 <template>
   <div :class="$style['record-wrap']">
-    <div v-if="currentInfo.oauth2" :class="[$style['profit_wrap']]">
+    <div
+      v-if="currentInfo.oauth2 && page == 1"
+      :class="[$style['profit_wrap']]"
+    >
       <div :class="[$style['profit_container']]">
         <div
           v-for="(content, key) in threeAmount"
@@ -154,6 +157,11 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo"
     }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
     friendLayerList() {
       //page1 好友層
       let data = this.summaryList?.map(info => {
@@ -177,7 +185,7 @@ export default {
             },
             {
               name: "有效会员",
-              item: this.amountFormat(info.user_count),
+              item: info.user_count,
               show: true
             }
           ].filter(item => item.show)
@@ -198,7 +206,7 @@ export default {
           item: `总损益 ${this.amountFormat(this.pageTotal?.profit ?? "0.00")}`
         },
         {
-          item: `笔数 ${this.amountFormat(this.pagination?.total ?? "0.00")}`
+          item: `笔数 ${this.pagination?.total ?? "0"}`
         }
       ];
       return strArr;
@@ -353,7 +361,7 @@ export default {
             layer: friend.depth
           }
         });
-      }, 200);
+      }, 300);
     },
     rebateDateFormat(date) {
       return Vue.moment(date).format("YYYY-MM-DD");
@@ -362,254 +370,6 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-@import "@/css/variable.scss";
-
-.card-wrap {
-  padding: 0 13px;
-  .date-total {
-    width: 100%;
-    padding-bottom: 10px;
-    color: $main_text_color3;
-    border-bottom: 2px solid #eee;
-    padding-top: 10px;
-    margin-bottom: 10px;
-  }
-}
-
-//page2、3
-.friend-wrap {
-  position: relative;
-  top: 10px;
-}
-.card-item-wrap {
-  position: relative;
-  top: 10px;
-}
-
-.no-data {
-  padding-top: 40px;
-  text-align: center;
-
-  img {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    margin-bottom: 14px;
-  }
-
-  div {
-    font-size: 14px;
-    color: #a6a9b2;
-  }
-}
-
-.rebate-rate {
-  height: 25px;
-  display: flex;
-  justify-content: flex-end;
-  color: #6aaaf5;
-  padding: 9px 2px;
-  text-decoration: underline;
-}
-
-.main-table {
-  width: 100%;
-  border-spacing: 0;
-  border-collapse: collapse;
-
-  thead {
-    th {
-      background-color: #eee;
-      color: #676767;
-      font-weight: normal;
-      font-size: 12px;
-      height: 32px;
-      line-height: 32px;
-    }
-
-    .index {
-      width: 15%;
-    }
-
-    .first-level {
-      width: 23%;
-      cursor: pointer;
-    }
-
-    .valid-bet {
-      width: 31%;
-    }
-
-    // commission 目前先隱藏，到時如果顯示，還需要再調Width
-    .commission,
-    .profit {
-      width: 31%;
-    }
-  }
-
-  tbody {
-    tr {
-      background: #fff;
-
-      &:nth-child(even) {
-        background: #f6f6f6;
-      }
-    }
-
-    td {
-      color: #2d2d2d;
-      font-size: 12px;
-      text-align: center;
-      height: 39px;
-      line-height: 39px;
-
-      > div {
-        display: block;
-        width: 70%;
-        margin: 0 auto;
-        text-align: right;
-      }
-
-      &:nth-child(3),
-      &:nth-child(4) {
-        color: #676767;
-      }
-    }
-  }
-}
-
-.detail-wrap {
-  width: 100%;
-  margin-top: 13px;
-
-  // 共用
-  .detail {
-    display: flex;
-    justify-content: space-between;
-    line-height: 40px;
-
-    .text {
-      flex: 1;
-    }
-  }
-
-  .rebate-wrap,
-  .date,
-  .list-wrap {
-    padding: 0 15px;
-    background: #fff;
-  }
-
-  // 細部調整
-  .rebate-wrap {
-    .detail {
-      line-height: 23px;
-
-      &:first-of-type {
-        padding-top: 10px;
-      }
-
-      &:last-of-type {
-        padding-bottom: 10px;
-      }
-    }
-    .text {
-      color: #6aaaf5;
-    }
-  }
-
-  .date {
-    background: none;
-    color: $main_text_color3;
-    font-weight: 700;
-    font-size: 16px;
-    padding: 0 15px;
-    height: 32px;
-    line-height: 32px;
-  }
-
-  .list-wrap {
-    min-height: 300px;
-
-    .text {
-      color: $main_text_color2;
-    }
-  }
-
-  .tips {
-    padding: 40px 0;
-    color: $main_text_color2;
-    font-size: 12px;
-    text-align: center;
-
-    .service-btn {
-      margin-left: 5px;
-      color: #6aaaf5;
-    }
-  }
-}
-
-.tips {
-  padding: 40px 0;
-  color: $main_text_color2;
-  font-size: 12px;
-  text-align: center;
-
-  .service-btn {
-    margin-left: 5px;
-    color: #6aaaf5;
-  }
-}
-
-//threeAmout
-.profit_wrap {
-  margin-top: 10px;
-  padding: 0 13px;
-}
-.profit_container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-.profit_child {
-  width: 47%;
-  height: 70px;
-  margin: 5px;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 7px;
-
-  .profit_child_name {
-    text-align: left;
-    color: #a6a9b2;
-  }
-  .profit_child_item {
-    text-align: right;
-    margin-top: 15px;
-
-    &.deficit {
-      color: #f00;
-    }
-  }
-}
-
-.profit_child_name::before {
-  content: "";
-  position: relative;
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 3px;
-  background: #be9e7f;
-  bottom: 1px;
-}
-
-.profit_child_item {
-  color: #222222;
-  font-size: 18px;
-}
-</style>
+<style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>

@@ -26,3 +26,10 @@
     }
   }
 }
+
+//rebateRate
+.serial-number-title {
+  &::before {
+    background: linear-gradient(#fe593c, #e61938);
+  }
+}

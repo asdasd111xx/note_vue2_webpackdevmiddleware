@@ -2,10 +2,7 @@
   <div :class="sliderClass">
     <div :class="[$style['serial-header'], [$style[themeTPL]]]">
       <div :class="$style['btn-prev']">
-        <img
-          :src="$getCdnPath(`/static/image/common/btn_close_black.png`)"
-          @click="onClose()"
-        />
+        <img :src="$getCdnPath(closeImage)" @click="onClose()" />
       </div>
       <span :class="$style['title']"> {{ "返利比例" }}</span>
     </div>
@@ -20,7 +17,7 @@
       <div
         :class="[
           $style['serial-number-cell'],
-          { [$style.active]: item.rate < 0 }
+          { [$style.active]: item.rate == 0 }
         ]"
         v-for="(item, index2) in name.item"
         :key="index2"
@@ -68,6 +65,19 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    closeImage() {
+      let color = "";
+      switch (this.themeTPL) {
+        case "sg1":
+        case "porn1":
+          color = "black";
+          break;
+        case "ey1":
+          color = "white";
+          break;
+      }
+      return `/static/image/common/btn_close_${color}.png`;
     }
   },
   watch: {},

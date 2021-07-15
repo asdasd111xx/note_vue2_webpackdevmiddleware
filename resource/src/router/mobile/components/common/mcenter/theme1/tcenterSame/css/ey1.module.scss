@@ -42,3 +42,17 @@
     color: #fff;
   }
 }
+
+//rebateRate
+.serial-number-title {
+  &::before {
+    background: #e42a30;
+  }
+}
+
+//customDate
+.field-search-wrap {
+  .btn-search {
+    background: #e42a30;
+  }
+}

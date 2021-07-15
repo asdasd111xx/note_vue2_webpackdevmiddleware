@@ -289,6 +289,10 @@ $buttonTextColor: #fff;
   justify-content: space-between;
   color: #414655;
 
+  &.active {
+    color: #a6a9b2;
+  }
+
   .rate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -300,10 +304,6 @@ $buttonTextColor: #fff;
 
   &:nth-child(odd) {
     background-color: #f2f2f2;
-  }
-
-  &.active {
-    color: #a6a9b2;
   }
 }
 

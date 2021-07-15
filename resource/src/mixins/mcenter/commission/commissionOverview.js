@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       summary: null,
-      profitSwitch: false, //第三方開關,
+      profitSwitch: true, //第三方開關,
       todayAmout: "" //推廣大廳 今日已领返利
     };
   },
@@ -91,6 +91,7 @@ export default {
         amount: this.summary[key].amount || "--"
       }));
     },
+
     /**
      * 收益慨況內容
      */
@@ -165,6 +166,7 @@ export default {
       });
     }
   },
+
   created() {
     this.actionSetSystemTime();
     this.getSummary();
@@ -185,11 +187,8 @@ export default {
 
           this.summary = ret;
 
-          if (this.summary) {
-            this.profitSwitch = Object.keys(this.summary).some(key => {
-              return key === "expected";
-            });
-          }
+          this.profitSwitch = this.rewardOnlyLocal ? false : true;
+
           this.todayAmout = this.summary["today"].amount;
         }
       });

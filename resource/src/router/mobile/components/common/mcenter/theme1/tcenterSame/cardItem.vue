@@ -12,12 +12,11 @@
         </div>
 
         <div
-          v-if="info.img"
           :class="$style['friend-money']"
           @click.stop="clickCard(info.paramsValue, info.isClick)"
         >
           <span>{{ info.childTitle }}</span>
-          <div :class="$style['arrow-next']">
+          <div :class="$style['arrow-next']" v-if="info.img">
             <img
               :src="$getCdnPath('/static/image/common/arrow_next.png')"
               alt="arrow-next"

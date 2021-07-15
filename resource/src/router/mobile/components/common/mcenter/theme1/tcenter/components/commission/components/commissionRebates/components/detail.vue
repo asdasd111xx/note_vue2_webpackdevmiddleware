@@ -31,7 +31,8 @@
               <div
                 :class="$style['process-bar-current-line']"
                 :style="{
-                  width: `${(item.valid / item.next) * 100}%`
+                  width: `${(parseInt(item.valid) / parseInt(item.next)) *
+                    100}%`
                 }"
               ></div>
             </div>
@@ -248,7 +249,7 @@ export default {
             },
             {
               name: "有效会员",
-              item: this.amountFormat(info.user_count),
+              item: info.user_count,
               show: true
             },
             {
@@ -543,3 +544,5 @@ export default {
 </script>
 
 <style lang="scss" src="./css/porn1.detail.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/ey1.detail.scss" module="$style_ey1"></style>
+<style lang="scss" src="./css/sg1.detail.scss" module="$style_sg1"></style>
