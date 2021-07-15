@@ -342,36 +342,40 @@ export default {
       if (status) return;
     },
     verification(key, value) {
-      this.errMsg = "";
-
+      let errMsg = "";
       this.actionVerificationFormData({
         target: key,
         value: value
       }).then(val => {
         this[key] = val;
-      });
+        const regex = new RegExp(joinMemInfo[key].regExp);
+        const msg = joinMemInfo[key].errorMsg;
 
-      let errMsg = "";
+        if (["confirm_password"].includes(key)) {
+          if (!val) {
+            this.errMsg = errMsg;
+            return;
+          }
 
-      if (!value) {
-        errMsg = "该栏位不得为空";
-      }
+          if (this.password !== this.confirm_password) {
+            errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+          }
+        } else if (["password"].includes(key)) {
+          if (!val) {
+            this.errMsg = errMsg;
+            return;
+          }
 
-      if (
-        ["confirm_password"].includes(key) &&
-        this.password !== this.confirm_password
-      ) {
-        errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+          if (!val.match(regex)) {
+            errMsg = msg;
+          }
+        } else {
+          if (!regex.test(value)) {
+            errMsg = msg;
+          }
+        }
         this.msg[key] = errMsg;
-      }
-
-      const regex = new RegExp(joinMemInfo[key].regExp);
-      const msg = joinMemInfo[key].errorMsg;
-      if (!regex.test(value)) {
-        errMsg = msg;
-      }
-
-      this.msg[key] = errMsg;
+      });
     },
     sendEmail(type) {
       if (this.isSendEmail) {

@@ -116,15 +116,28 @@ export default {
             allValue[key] = val;
             let errMsg = "";
 
-            if (
-              ["confirm_password"].includes(key) &&
-              this.allValue.confirm_password !== this.allValue.password
-            ) {
-              errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-            }
+            if (["confirm_password"].includes(key)) {
+              if (!val) {
+                allText[key].error = errMsg;
+                return;
+              }
 
-            if (reg[key] && !allValue[key].match(reg[key])) {
-              errMsg = joinMemInfo[key].errorMsg;
+              if (this.allValue.confirm_password !== this.allValue.password) {
+                errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              }
+            } else if (["password"].includes(key)) {
+              if (!val) {
+                allText[key].error = errMsg;
+                return;
+              }
+
+              if (reg[key] && !allValue[key].match(reg[key])) {
+                errMsg = joinMemInfo[key].errorMsg;
+              }
+            } else {
+              if (reg[key] && !allValue[key].match(reg[key])) {
+                errMsg = joinMemInfo[key].errorMsg;
+              }
             }
 
             allText[key].error = errMsg;
@@ -181,9 +194,18 @@ export default {
      */
     onSubmit() {
       // 廳主未開放註冊
-      if (!this.memInfo.config.infinity_register || !this.isShow) {
+      if (
+        !this.memInfo.config.infinity_register ||
+        !this.isShow ||
+        this.isSend
+      ) {
         return;
       }
+
+      this.isSend = true;
+      setTimeout(() => {
+        this.isSend = false;
+      }, 1200);
 
       let registFc;
 
