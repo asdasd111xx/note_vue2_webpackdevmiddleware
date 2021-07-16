@@ -233,7 +233,6 @@
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
-          <div v-if="['porn1'].includes(themeTPL)">邀请人首存即可获得</div>
         </div>
       </template>
 
