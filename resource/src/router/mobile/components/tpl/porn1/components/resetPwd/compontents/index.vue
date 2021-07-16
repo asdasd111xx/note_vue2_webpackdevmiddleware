@@ -339,6 +339,8 @@ export default {
       });
     },
     checkField() {
+      if (!this.submitActive) return;
+
       this.checked = true;
 
       // Object.keys(this.pwdResetInfo).forEach(key => {
