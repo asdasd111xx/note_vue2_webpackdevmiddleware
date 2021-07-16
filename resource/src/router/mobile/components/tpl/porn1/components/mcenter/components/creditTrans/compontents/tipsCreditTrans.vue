@@ -16,6 +16,7 @@
       <div>&nbsp;&nbsp;&nbsp;&nbsp;{{ tipContent1_desc }}</div>
       <div>●&nbsp;{{ tipContent2 }}</div>
       <div>&nbsp;&nbsp;&nbsp;&nbsp;{{ tipContent2_desc }}</div>
+      <div>●&nbsp;未完成流水要求的优惠金额不可转让</div>
       <div
         :class="$style['link']"
         @click="$router.push('/mobile/mcenter/help/withdraw?key=6')"

@@ -518,7 +518,7 @@ export default {
 
           let msg_desc = msg ? msg + "，" : "";
 
-          if (!msg_desc || msg == "馀额不足") {
+          if (!msg_desc || msg == "可转金额不足") {
             this.errorMessage.amount = msg;
             return;
           }
