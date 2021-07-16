@@ -2,7 +2,10 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" class="content-wrap">
       <div :class="$style['manage-rebate']">
-        <tcenter-manage-team :set-header-title="setHeaderTitle" />
+        <tcenter-manage-team
+          :set-header-title="setHeaderTitle"
+          :set-back-func="setBackFunc"
+        />
       </div>
     </div>
   </mobile-container>
@@ -41,7 +44,6 @@ export default {
           //     return this.$router.replace("/mobile/mcenter/tcenterLobby");
           //   }
           // }
-
           this.$router.back();
         }
       }
@@ -50,6 +52,9 @@ export default {
   methods: {
     setHeaderTitle(value) {
       this.$set(this.headerConfig, "title", value);
+    },
+    setBackFunc(cb) {
+      this.$set(this.headerConfig, "onClick", cb);
     }
   },
   computed: {

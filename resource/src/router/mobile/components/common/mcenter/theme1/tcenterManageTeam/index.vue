@@ -20,6 +20,7 @@
       :set-header-title="setHeaderTitle"
       :set-tab-state="setTabState"
       :tab-state="tabState"
+      :set-back-func="setBackFunc"
     />
   </div>
 </template>
@@ -35,9 +36,9 @@ export default {
       import(
         /* webpackChunkName: 'recordRebate' */ "../tcenter/components/commission/"
       ),
-    real: () =>
+    firstFriends: () =>
       import(
-        /* webpackChunkName: 'realRebate' */ "../tcenter/components/commission/components/commissionRebates/index"
+        /* webpackChunkName: 'firstFriends' */ "../tcenter/components/management/components/firstFriends/index"
       ),
 
     nextLevelCount: () =>
@@ -47,6 +48,10 @@ export default {
   },
   props: {
     setHeaderTitle: {
+      type: Function,
+      default: () => {}
+    },
+    setBackFunc: {
       type: Function,
       default: () => {}
     }
@@ -91,8 +96,8 @@ export default {
           show: true
         },
         {
-          key: "real",
-          item: "receive",
+          key: "firstFriends",
+          item: "firstFriends",
           text: "团队报表",
           show: true
         },
@@ -119,8 +124,8 @@ export default {
         case "record":
           this.currentLayout = { vendor: "record" };
           break;
-        case "real":
-          this.currentLayout = { vendor: "real" };
+        case "firstFriends":
+          this.currentLayout = { vendor: "firstFriends" };
           break;
         case "nextLevelCount":
           this.currentLayout = { vendor: "nextLevelCount" };

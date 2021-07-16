@@ -254,7 +254,8 @@ export default {
   data() {
     return {
       isEnterNextLayers: false,
-      currentSavedFreindList: []
+      currentSavedFreindList: [],
+      path: this.$route.params.title
     };
   },
   computed: {
@@ -350,6 +351,7 @@ export default {
   },
   watch: {
     "firstFriends.depth"(value) {
+      console.log(value);
       if (value >= 2) {
         this.isEnterNextLayers = true;
 
@@ -384,10 +386,20 @@ export default {
 
         // 返回鍵事件(同最外層預設一致)
         this.setBackFunc(() => {
-          if (this.$route.params.date) {
-            this.$router.replace("/mobile/mcenter/tcenter/management/member");
+          if (this.path) {
+            if (this.$route.params.date) {
+              this.$router.replace(
+                "/mobile/mcenter/tcenterManageTeam/firstFriends/firstFriends"
+              );
+            } else {
+              this.$router.back();
+            }
           } else {
-            this.$router.back();
+            if (this.$route.params.date) {
+              this.$router.replace("/mobile/mcenter/tcenter/management/member");
+            } else {
+              this.$router.back();
+            }
           }
         });
       }

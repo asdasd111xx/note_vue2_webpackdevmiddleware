@@ -198,23 +198,22 @@ export default {
     },
     getStatus(info, color) {
       //狀態
-      let status = info.filter(item => {
-        if (item) {
-          return Object.keys(item);
-        }
-      });
+      let status = Object.keys(info.filter(item => item === true));
 
-      if (status === 0) {
+      if (status == "0") {
         return color ? "blue" : "启用";
       }
-      if (status === 1) {
+      if (status == "1") {
         return color ? "red" : "冻结";
       }
-      if (status === 2) {
+      if (status == "2") {
         return color ? "red" : "锁定";
       }
+      if (status == "3") {
+        return color ? "red" : "停权";
+      }
 
-      return color ? "red" : "停权";
+      return color ? "blue" : "启用";
     },
     createdBy(value) {
       switch (value) {
