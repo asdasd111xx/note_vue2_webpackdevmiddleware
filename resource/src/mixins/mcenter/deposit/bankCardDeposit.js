@@ -834,6 +834,7 @@ export default {
       this.isErrorMoney = false;
       this.nameCheckFail = false;
       this.checkSuccess = false;
+      this.showOuterCryptoAddress = false;
 
       this.walletData["CGPay"].password = "";
       this.cryptoMoney = "--";
@@ -1379,11 +1380,14 @@ export default {
       return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_OUTER_WALLET,
-        params: {}
+        params: {
+          payment_method_id: this.curPayInfo.payment_method_id
+        }
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
             console.log(response);
+            this.outerCryptoOption = [];
             response.data.ret.forEach(outerAddress => {
               if (outerAddress.is_default) {
                 this.defaultOuterCrypto = outerAddress.address;

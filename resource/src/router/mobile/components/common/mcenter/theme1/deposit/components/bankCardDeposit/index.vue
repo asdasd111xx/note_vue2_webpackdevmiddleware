@@ -248,7 +248,7 @@
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
-              v-if="passRoad.length > 0 && !isSelectBindWallet(402)"
+              v-if="passRoad.length > 0 && !isSelectBindWallet(402)&& !isSelectBindWallet(404)"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">支付通道</span>
@@ -1939,7 +1939,8 @@ export default {
         this.curPayInfo.payment_method_id === 16 ||
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 22 ||
-        this.curPayInfo.payment_method_id === 402
+        this.curPayInfo.payment_method_id === 402||
+        this.curPayInfo.payment_method_id === 404
       );
     },
     handleServiceMain(target) {
