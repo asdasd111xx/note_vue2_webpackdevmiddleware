@@ -23,7 +23,6 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://eyd.688lg.com/';
 // const domain = 'https://ey01.66poo.com/';
 // Prod
-// const domain = 'https://ey02.66poo.com/';
 // const domain = 'https://ey6999.com/';
 // const domain = 'https://ey0099.com/';
 // const domain = 'https://ey8866.com/';
