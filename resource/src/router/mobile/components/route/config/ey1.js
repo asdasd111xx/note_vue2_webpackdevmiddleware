@@ -228,6 +228,10 @@ export default {
     historyCardEy1: () =>
       import(
         /* webpackChunkName: 'historyCardEy1' */ "../../tpl/ey1/components/mcenter/components/historyCard"
+      ),
+    tcenterLobbyEy1: () =>
+      import(
+        /* webpackChunkName: 'tcenterLobbyEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterLobby"
       )
   }
 };

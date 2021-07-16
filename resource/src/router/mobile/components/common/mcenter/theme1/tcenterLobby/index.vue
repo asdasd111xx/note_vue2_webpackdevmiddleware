@@ -383,18 +383,19 @@ export default {
       this.isReceive = false;
 
       // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/SelfDispatchInfo`,
         params: { lang: "zh-cn" }
       }).then(response => {
         this.isReceive = true;
 
         if (response.status === "000") {
+          let dataArray = [];
+
+          dataArray = response.data.ret.entries;
           this.isShowRebate = response.data.ret.show_real_time;
+
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet
               ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)
@@ -403,14 +404,7 @@ export default {
             this.subUserCount = response.data.total.valid_bet.sub_user_count
               ? this.formatToPrice(response.data.total.valid_bet.sub_user_count)
               : "--";
-            let dataArray = [];
-            if (this.themeTPL === "ey1") {
-              // this.dispatch_hour = response.data.auto_dispatch_hour;
-              dataArray = response.data.entries;
-            } else {
-              // this.dispatch_hour = response.data.ret.auto_dispatch_hour;
-              dataArray = response.data.ret.entries;
-            }
+
             this.immediateData = dataArray.length > 0 ? dataArray[0] : null;
             if (this.immediateData && this.immediateData.state === 1) {
               // 可領
@@ -511,3 +505,4 @@ export default {
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
+<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
