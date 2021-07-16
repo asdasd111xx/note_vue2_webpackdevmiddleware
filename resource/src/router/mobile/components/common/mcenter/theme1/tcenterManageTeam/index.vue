@@ -25,12 +25,9 @@
 </template>
 
 <script>
-import bbosRequest from "@/api/bbosRequest";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapGetters, mapActions } from "vuex";
-import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 export default {
-  mixins: [commissionOverview],
   components: {
     Swiper,
     SwiperSlide,
@@ -43,13 +40,9 @@ export default {
         /* webpackChunkName: 'realRebate' */ "../tcenter/components/commission/components/commissionRebates/index"
       ),
 
-    profit: () =>
+    nextLevelCount: () =>
       import(
-        /* webpackChunkName: 'commissionOverview' */ "../tcenter/components/commission/components/commissionOverview/index"
-      ),
-    recommendGift: () =>
-      import(
-        /* webpackChunkName: 'mcenter_pron1_recommendGift' */ "../tcenter/components/recommendGift"
+        /* webpackChunkName: 'commissionOverview' */ "../tcenter/components/management/components/nextLevelCount/index"
       )
   },
   props: {
@@ -75,8 +68,7 @@ export default {
     this.currentLayout = { vendor: this.$route.params.title };
   },
   mounted() {
-    this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
-    this.getRebateSwitch();
+    this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
   },
 
   computed: {
@@ -95,26 +87,20 @@ export default {
         {
           key: "record",
           item: "today",
-          text: this.$text("S_COMMISSION_RECORD", "返利紀錄"),
+          text: "团队概况",
           show: true
         },
         {
           key: "real",
           item: "receive",
-          text: this.$text("S_COMMISSION_REBATE", "實時返利"),
-          show: this.isShowRebate
+          text: "团队报表",
+          show: true
         },
         {
-          key: "profit",
-          item: "profit",
-          text: this.$text("S_LOSS_REBATE", "盈虧返利"),
-          show: this.profitSwitch
-        },
-        {
-          key: "recommendGift",
-          item: "today",
-          text: this.$text("S_RECOMMEND_GIFT", "推荐礼金"),
-          show: this.memInfo.config.festival
+          key: "nextLevelCount",
+          item: "nextLevelCount",
+          text: "下级统计",
+          show: true
         }
       ].filter(item => item.show);
     },
@@ -136,42 +122,22 @@ export default {
         case "real":
           this.currentLayout = { vendor: "real" };
           break;
-        case "profit":
-          this.currentLayout = { vendor: "profit" };
-          break;
-        case "recommendGift":
-          this.currentLayout = { vendor: "recommendGift" };
+        case "nextLevelCount":
+          this.currentLayout = { vendor: "nextLevelCount" };
           break;
       }
 
-      this.$router.replace({
-        params: {
-          title: `${this.tabItem[tabKey].key}`,
-          item: `${this.tabItem[tabKey].item}`
-        }
-      });
+      if (this.path != this.tabItem[tabKey].key) {
+        this.$router.replace({
+          params: {
+            title: `${this.tabItem[tabKey].key}`,
+            item: `${this.tabItem[tabKey].item}`
+          }
+        });
+      }
     },
     setTabState(state) {
       this.tabState = state;
-    },
-    getRebateSwitch() {
-      this.isReceive = false;
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: { lang: "zh-cn" }
-      }).then(response => {
-        this.isReceive = true;
-
-        if (response.status === "000") {
-          //判斷實時返利開關
-          this.isShowRebate = response.data.ret.show_real_time;
-          return;
-        }
-      });
     }
   }
 };

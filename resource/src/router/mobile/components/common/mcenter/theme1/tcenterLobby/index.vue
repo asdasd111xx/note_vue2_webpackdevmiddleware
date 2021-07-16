@@ -80,7 +80,7 @@
               `/static/image/${themeTPL}/mcenter/tcenter/btn_team.png`
             )
           "
-          @click="$router.push('/mobile/mcenter/tcenter/management/member')"
+          @click="$router.push('/mobile/mcenter/tcenterManageTeam/record')"
         />
         <img
           :class="$style['img-icon']"

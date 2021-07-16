@@ -283,6 +283,10 @@ export default {
     tcenterManageRebatePorn1: () =>
       import(
         /* webpackChunkName: 'tcenterManageRebatePorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageRebate"
+      ),
+    tcenterManageTeamPorn1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageTeamPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageTeam"
       )
     // historyCardSg1: () =>
     //   import(

@@ -344,6 +344,12 @@ export default {
       path: "tcenterManageRebate/:title/:item?",
       name: "mcenter-tcenterManageRebate",
       component
+    },
+    {
+      // 團隊管理
+      path: "tcenterManageTeam/:title/:item?",
+      name: "mcenter-tcenterManageTeam",
+      component
     }
   ]
 };
