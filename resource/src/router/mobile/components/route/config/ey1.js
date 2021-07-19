@@ -232,6 +232,10 @@ export default {
     tcenterLobbyEy1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbyEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterLobby"
+      ),
+    tcenterNewRecommendEy1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewRecommendEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/components/newRecommend"
       )
   }
 };

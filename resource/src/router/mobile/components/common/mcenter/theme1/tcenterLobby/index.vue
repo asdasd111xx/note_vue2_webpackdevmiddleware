@@ -304,7 +304,7 @@ export default {
           showType: true,
           name: "推广信息",
           image: "ic_information",
-          path: "/mobile/mcenter/tcenter/management/promote"
+          path: "/mobile/mcenter/newRecommend?makeFriend=true"
         },
         {
           showType: true,

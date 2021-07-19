@@ -261,6 +261,10 @@ export default {
     tcenterLobbySg1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbySg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterLobby"
+      ),
+    tcenterNewRecommendSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewRecommendSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newRecommend"
       )
     // historyCardSg1: () =>
     //   import(

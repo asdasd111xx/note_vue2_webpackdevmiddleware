@@ -338,6 +338,12 @@ export default {
       path: "tcenterLobby",
       name: "mcenter-tcenterLobby",
       component
+    },
+    {
+      // 新推廣信息＋新增一級好友
+      path: "newRecommend",
+      name: "mcenter-tcenterNewRecommend",
+      component
     }
   ]
 };

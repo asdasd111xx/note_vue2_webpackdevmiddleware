@@ -26,7 +26,7 @@ export default {
           title: "S_NAME",
           type: "text",
           maxLength: "20",
-          placeholder: this.$text("S_NAME"),
+          placeholder: "请输入4-20位英文小写、数字，首字不得为数字0",
           error: ""
         },
         // 密碼
@@ -34,7 +34,7 @@ export default {
           title: "SS_LOGIN_PW",
           type: "password",
           maxLength: "12",
-          placeholder: this.$text("S_PASSWORD_PLACEHOLDER_AGENT"),
+          placeholder: "6-12位须含英文大小写及数字",
           error: ""
         },
         // 確認密碼
@@ -50,7 +50,7 @@ export default {
           title: "S_MEMBER_NAME",
           type: "text",
           maxLength: "",
-          placeholder: this.$text("S_MEMBER_NAME"),
+          placeholder: "若遇到无法注册的姓名，请与线上客服咨询！",
           error: ""
         }
       },
@@ -64,7 +64,7 @@ export default {
         //驗證碼
         captcha_text: ""
       },
-      msg: ""
+      errorMsg: ""
     };
   },
   computed: {
@@ -163,7 +163,7 @@ export default {
           // });
 
           Object.keys(this.allValue).forEach(key => {
-            console.log(key, this.allValue[key]);
+            // console.log(key, this.allValue[key]);
             if (!this.allValue[key]) {
               if (key === "captcha_text") {
                 this.captchaError = joinMemInfo[key].errorMsg;
