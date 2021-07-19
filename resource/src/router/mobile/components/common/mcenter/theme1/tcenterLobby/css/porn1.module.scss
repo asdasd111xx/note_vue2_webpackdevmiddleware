@@ -200,7 +200,11 @@
         height: 14px;
         width: 100px;
         border-radius: 7px;
-        background-color: #BE9E7F
+        background-color: #BE9E7F;
+
+        &.isZero {
+          background-color: #CECECE;
+        }
       }
     }
   }

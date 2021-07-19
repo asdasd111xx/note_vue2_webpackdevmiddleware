@@ -123,7 +123,7 @@
           <div :class="$style['today-bar']">
             <div :class="$style['background-bar']">
               <div
-                :class="$style['person-bar']"
+                :class="[$style['person-bar'], { [$style['isZero']]: isZero }]"
                 :style="{ width: `${moneyPerson}%` }"
               />
             </div>

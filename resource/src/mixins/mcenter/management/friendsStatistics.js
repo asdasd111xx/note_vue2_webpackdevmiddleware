@@ -6,7 +6,8 @@ export default {
   data() {
     return {
       friendsStatistics: null,
-      moneyPerson: 0
+      moneyPerson: 0,
+      isZero: false
     };
   },
   created() {
@@ -31,8 +32,10 @@ export default {
             this.friendsStatistics.deposit === "0.00" &&
             this.friendsStatistics.withdraw === "0.00"
           ) {
-            this.moneyPerson = 50;
+            this.isZero = true;
+            this.moneyPerson = 100;
           } else {
+            this.isZero = false;
             this.moneyPerson =
               Number(this.friendsStatistics.deposit) /
                 Number(this.friendsStatistics.deposit) +
