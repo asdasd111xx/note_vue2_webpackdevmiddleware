@@ -1655,6 +1655,7 @@ export default {
 
         // usdt
         case 402:
+        case 404:
           this.$router.push(
             "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
           );

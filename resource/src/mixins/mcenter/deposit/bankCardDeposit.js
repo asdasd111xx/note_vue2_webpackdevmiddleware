@@ -936,11 +936,18 @@ export default {
         };
       }
 
-      if (this.showOuterCryptoAddress) {
-        paramsData = {
-          ...paramsData,
-          user_address: this.outerCryptoAddress
-        };
+      if (this.curPassRoad.is_outer_crypto) {
+        if (this.showOuterCryptoAddress) {
+          paramsData = {
+            ...paramsData,
+            user_address: this.outerCryptoAddress
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            user_address: this.defaultOuterCrypto
+          };
+        }
       }
 
       let _isPWA =
@@ -1390,6 +1397,7 @@ export default {
           if (response && response.data && response.data.result === "ok") {
             console.log(response);
             this.outerCryptoOption = [];
+            this.defaultOuterCrypto = "";
             response.data.ret.forEach(outerAddress => {
               if (outerAddress.is_default) {
                 this.defaultOuterCrypto = outerAddress.address;
