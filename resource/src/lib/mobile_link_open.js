@@ -206,6 +206,72 @@ export default target => {
     return;
   }
 
+  if (linkType === "event") {
+    switch (linkTo) {
+      case "event":
+        router.push("mobile/activity/all/");
+        return;
+
+      default:
+        console.log(linkTo);
+        const eventID = linkTo;
+        goLangApiRequest({
+          method: "post",
+          url:
+            store.state.siteConfig.YABO_GOLANG_API_DOMAIN +
+            `/xbb/Vendor/all/Event`,
+          params: {
+            lang: "zh-cn"
+          }
+        })
+          .then(res => {
+            if (res && res.status === "000") {
+              // 1.尚未開始 2.活動預告 3.活動中 4.結果查詢 5.已結束
+              // 1,5 不顯示
+              if (res.data.ret.events && res.data.ret.events.length > 0) {
+                let result = res.data;
+                let activityEvents = result.ret.events
+                  .filter(i => i.display)
+                  .filter(
+                    i => +i.status === 2 || +i.status === 3 || +i.status === 4
+                  );
+
+                const target = activityEvents.find(i => i.id === eventID);
+
+                let newWindow;
+                if (!target.is_secure || target.is_secure === "false") {
+                  let url = target.url;
+                  if (url.indexOf("://") === -1) {
+                    url = `https://${url}`;
+                  }
+                  newWindow = window.open(url);
+                  return;
+                } else {
+                  newWindow = window.open(`${target.url}`, "_blank");
+                }
+              }
+            }
+
+            if (res && res.status !== "000") {
+              store.dispatch("actionSetGlobalMessage", {
+                msg: res.msg,
+                code: res.code
+              });
+            }
+          })
+          .catch(error => {
+            if (error && error.data && error.data.msg) {
+              store.dispatch("actionSetGlobalMessage", {
+                msg: error.data.msg,
+                code: error.data.code
+              });
+            }
+          });
+
+        return;
+    }
+  }
+
   const gameList = [
     "sport",
     "live",
