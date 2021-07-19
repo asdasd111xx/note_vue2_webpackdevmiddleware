@@ -335,7 +335,7 @@
                 </div>
               </template>
 
-              <template v-if="isSelectBindWallet(22, 402)">
+              <template v-if="isSelectBindWallet(22, 402, 404)">
                 <span :class="$style['bank-card-title']"> 充值金额 </span>
 
                 <div :class="$style['no-bind-wallet']">
@@ -375,7 +375,7 @@
             </div>
 
             <div
-              v-if="isSelectBindWallet(25, 402) && this.curPassRoad.is_outer_crypto &&
+              v-if="isSelectBindWallet(25, 402,404) && this.curPassRoad.is_outer_crypto &&
                   this.curPassRoad.is_bind_wallet"
               :class="[$style['feature-wrap'],
               $style['select-card-wrap'],
@@ -469,7 +469,7 @@
                     () => {
                       changeMoney(item);
                       if (
-                        isSelectBindWallet(25, 402) &&
+                        isSelectBindWallet(25, 402,404) &&
                         isClickCoversionBtn &&
                         moneyValue > 0
                       ) {
@@ -505,7 +505,7 @@
                       () => {
                         changeMoney('', true);
                         if (
-                          isSelectBindWallet(25, 402) &&
+                          isSelectBindWallet(25, 402,404) &&
                           isClickCoversionBtn &&
                           moneyValue > 0
                         ) {
@@ -587,7 +587,7 @@
                       $event => {
                         verification('money', $event.target.value);
                         if (
-                          isSelectBindWallet(25, 402) &&
+                          isSelectBindWallet(25, 402,404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -614,7 +614,7 @@
               </div>
 
               <!-- USDT 匯率試算 -->
-              <template v-if="isSelectBindWallet(25, 402)">
+              <template v-if="isSelectBindWallet(25, 402,404)">
                 <div :class="$style['crypto-block']">
                   <span>转入数量</span>
                   <div :class="[$style['content']]">
@@ -1003,7 +1003,7 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(25, 402,404) && !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
@@ -1628,7 +1628,7 @@ export default {
       // 億元 USDT 的部份仍以彈窗顯示
       if (
         ["ey1"].includes(this.themeTPL) &&
-        this.curPayInfo.payment_method_id === 402
+        (this.curPayInfo.payment_method_id === 402 || this.curPayInfo.payment_method_id === 404)
       ) {
         this.bindWalletType = "USDT";
         this.setPopupStatus(true, "bindWallet");
@@ -1726,7 +1726,7 @@ export default {
       this.closePopup();
 
       //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 402)) {
+      if (this.isSelectBindWallet(25, 402,404)) {
         let oldrate = this.rate;
         this.convertCryptoMoney();
         if (this.rate !== oldrate) {

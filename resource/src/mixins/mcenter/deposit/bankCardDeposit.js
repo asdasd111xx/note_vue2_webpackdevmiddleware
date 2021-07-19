@@ -675,10 +675,11 @@ export default {
               this.isOuterCrypto = false;
               if (
                 this.curPayInfo.payment_method_id === 25 ||
-                this.curPayInfo.payment_method_id === 402
+                this.curPayInfo.payment_method_id === 402 ||
+                this.curPayInfo.payment_method_id === 404
               ) {
                 this.isOuterCrypto = true;
-                this.getVendorCryptoOuterUserAddressList();
+                // this.getVendorCryptoOuterUserAddressList();
               }
             }
           }
@@ -776,6 +777,7 @@ export default {
       }
 
       this.checkDepositInput();
+      this.getVendorCryptoOuterUserAddressList();
     },
     /**
      * 切換通道
@@ -1434,7 +1436,8 @@ export default {
       //選擇 CGPAY-USDT ,USDT
       if (
         this.curPayInfo.payment_method_id === 25 ||
-        this.curPayInfo.payment_method_id === 402
+        this.curPayInfo.payment_method_id === 402 ||
+        this.curPayInfo.payment_method_id === 404
       ) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
       }
