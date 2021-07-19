@@ -62,17 +62,11 @@
                 :placeholder="$t('S_PLEASE_ENTER_USER_NAME')"
                 type="text"
                 maxlength="20"
-                @input="
-                  username = $event.target.value
-                    .toLowerCase()
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '')
-                    .replace(/\_/g, '')
-                "
+                @blur="verification('username', $event.target.value)"
+                @input="verification('username', $event.target.value)"
               />
             </div>
-            <div v-if="allTip.username !== ''" :class="$style.errorMsg">
+            <div v-if="allTip.username !== ''" :class="$style.errorTips">
               {{ allTip.username }}
             </div>
           </div>
@@ -95,18 +89,16 @@
             <!-- eslint-enable vue/no-v-html -->
           </div>
           <div v-if="currentMethod === 'phone-step-1'" class="clearfix">
-            <div :class="$style['form-title']">获取验证码</div>
+            <div :class="$style['form-title']" @click="step2shortcut">
+              获取验证码
+            </div>
             <input
               v-model="keyring"
               :placeholder="$t('S_ENABLE_KEYRING')"
               :class="[$style['form-input'], $style['keyring-input']]"
-              type="text"
-              @input="
-                keyring = $event.target.value
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
+              type="tel"
+              @blur="verification('keyring', $event.target.value)"
+              @input="verification('keyring', $event.target.value)"
             />
             <div
               :class="[
@@ -277,7 +269,7 @@ export default {
     },
     checkSubmit() {
       if (this.currentMethod === "phone-step-1") {
-        return this.username && this.keyring;
+        return this.username && this.keyring && this.errorMsg === "";
       }
 
       return (
@@ -345,7 +337,19 @@ export default {
       if (status) return;
     },
     verification(key, value) {
+      this.errorMsg = "";
       this.allTip[key] = "";
+
+      if (key === "keyring") {
+        this.actionVerificationFormData({
+          target: "code",
+          value: value
+        }).then(val => {
+          this[key] = val;
+        });
+        return;
+      }
+
       this.actionVerificationFormData({
         target: key,
         value: value
@@ -633,6 +637,17 @@ export default {
       this.$emit("update:currentMethod", method);
       this.currentMethod = method;
       this.errorMsg = "";
+    },
+    // 測試第二步驟
+    step2shortcut() {
+      if (
+        this.checkSubmit &&
+        ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
+      ) {
+        this.errorMsg = "";
+        this.currentMethod = "phone-step-2";
+        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      }
     }
   }
 };
