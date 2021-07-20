@@ -414,7 +414,11 @@ export default {
               : "--";
 
             this.immediateData = dataArray.length > 0 ? dataArray[0] : null;
-            if (this.immediateData && this.immediateData.state === 1) {
+
+            if (response.data.total.valid_bet.accounting) {
+              this.getRebateText = "计算中";
+              this.rebateCount = "--";
+            } else if (this.immediateData && this.immediateData.state === 1) {
               // 可領
               this.getRebateText = "领取";
               this.rebateCount = this.getNoRoundText(
