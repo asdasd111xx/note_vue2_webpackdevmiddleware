@@ -144,7 +144,6 @@
                   :placeholder="field.content.note1"
                   type="text"
                   maxlength="20"
-                  @blur="verification(field.key)"
                   @keydown.13="keyDownSubmit()"
                   @input="verification(field.key)"
                 />
@@ -245,13 +244,25 @@
         </form>
 
         <!-- 3拼圖驗證/4手繪/5行為驗證 -->
-        <thirdy-verification
+        <template
           v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
-          ref="thirdyCaptchaObj"
-          @set-captcha="setCaptcha"
-          :class="$style['thirdy-block']"
-          :page-type="'register'"
-        />
+        >
+          <thirdy-verification
+            ref="thirdyCaptchaObj"
+            @set-captcha="setCaptcha"
+            :class="$style['thirdy-block']"
+            :page-type="'register'"
+          />
+
+          <div
+            :class="
+              allTip['captcha_text']
+                ? $style['join-tip-show']
+                : $style['join-tip']
+            "
+            v-html="allTip['captcha_text']"
+          />
+        </template>
       </div>
 
       <slide-verification
@@ -270,6 +281,7 @@
           {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
+
       <div
         v-if="themeTPL != 'ey1'"
         :class="$style['has-visitor']"
@@ -296,11 +308,9 @@ import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
 import joinMemInfo from "@/config/joinMemInfo";
-import mcenter from "@/api/mcenter";
 import member from "@/api/member";
 import thirdyVerification from "@/components/thirdyVerification";
 import slideVerification from "@/components/slideVerification";
-import split from "lodash/split";
 import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -503,14 +513,14 @@ export default {
     const username = {
       key: "username",
       content: {
-        note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
+        note1: this.$text("S_ACCOUNT_PLACEHOLDER"),
         note2: ""
       }
     };
     const password = {
       key: "password",
       content: {
-        note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母或数字"),
+        note1: this.$text("S_PASSWORD_PLACEHOLDER"),
         note2: ""
       }
     };
@@ -652,8 +662,6 @@ export default {
       this.joinSubmit();
     },
     toggleEye() {
-      this.verification("password");
-      this.verification("confirm_password");
       if (this.isShowPwd) {
         document.getElementById("pwd").type = "password";
         document.getElementById("confirm_password").type = "password";
@@ -718,15 +726,6 @@ export default {
     verification(key, index) {
       const data = this.joinMemInfo[key];
 
-      // if (data.isRequired && this.allValue[key] === "") {
-      //   this.allTip[key] = "请输入6-12位字母或数字?";
-      //   return;
-      // }
-
-      //if (!this.allValue[key]) {
-      //  return;
-      //}
-
       if (!data.show) {
         return;
       }
@@ -745,37 +744,37 @@ export default {
             value: this.allValue[key]
           }).then(val => {
             this.allValue[key] = val;
-            const re = data.regExp;
+            const regex = new RegExp(data.regExp);
             const msg = data.errorMsg;
+
+            let errMsg = "";
+
+            // 1. 密碼只判斷是否符合格式不判斷空
+            // 2. 確認密碼只判斷是否相同
             if (key === "password") {
-              // console.log("password");
-              if (re && !re.test(this.allValue.password)) {
-                this.allTip.password = msg;
+              if (!val) {
+                this.errMsg = errMsg;
                 return;
-              } else {
-                this.allTip.password = "";
               }
 
-              if (this.allValue.confirm_password === this.allValue.password) {
-                this.allTip.confirm_password = "";
+              if (!val.match(regex)) {
+                errMsg = msg;
+              }
+            } else if (key === "confirm_password") {
+              if (!val) {
+                this.errMsg = errMsg;
+                return;
+              }
+              if (this.allValue.confirm_password !== this.allValue.password) {
+                errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              }
+            } else {
+              if (!val.match(regex)) {
+                errMsg = msg;
               }
             }
 
-            if (key === "confirm_password") {
-              if (this.allValue.confirm_password === "") {
-                this.allTip.confirm_password = this.joinMemInfo[
-                  "password"
-                ].errorMsg;
-                return;
-              } else if (
-                this.allValue.confirm_password !== this.allValue.password
-              ) {
-                this.allTip.confirm_password = msg;
-                return;
-              } else {
-                this.allTip.confirm_password = "";
-              }
-            }
+            this.allTip[key] = errMsg;
           });
           break;
 
@@ -789,33 +788,6 @@ export default {
         return;
       }
 
-      const re = data.regExp;
-      const msg = data.errorMsg;
-
-      if (key === "password") {
-        // console.log("password");
-        if (re && !re.test(this.allValue.password)) {
-          this.allTip.password = msg;
-          return;
-        }
-
-        if (this.allValue.confirm_password === this.allValue.password) {
-          this.allTip.confirm_password = "";
-        }
-      }
-
-      if (key === "confirm_password") {
-        if (this.allValue.confirm_password === "") {
-          this.allTip.confirm_password = this.joinMemInfo["password"].errorMsg;
-          return;
-        } else if (this.allValue.confirm_password !== this.allValue.password) {
-          this.allTip.confirm_password = msg;
-          return;
-        } else {
-          this.allTip.confirm_password = "";
-        }
-      }
-
       if (key == "withdraw_password") {
         if (index === "all") {
           if (this.allValue.withdraw_password.value.join("").length < 4) {
@@ -824,7 +796,6 @@ export default {
           }
         } else {
           let target = this.allValue.withdraw_password;
-          let errorMsg = "";
           let correct_value = target.value[index]
             .replace(" ", "")
             .trim()
@@ -853,15 +824,6 @@ export default {
             }
           }
         }
-      }
-
-      if (
-        (re && !re.test(this.allValue[key])) ||
-        (data.minimum && this.allValue[key].length < data.minimum) ||
-        (data.maximum && this.allValue[key].length > data.maximum)
-      ) {
-        this.allTip[key] = msg;
-        return;
       }
 
       if (key === "password" || key === "username") {
@@ -931,12 +893,13 @@ export default {
 
       // 拼圖
       if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
+        console.log(this.thirdyCaptchaObj);
         if (!this.thirdyCaptchaObj) {
-          this.allTip["confirm_password"] = "请先点击按钮进行验证";
+          this.allTip["captcha_text"] = "请先点击按钮进行验证";
           this.isLoading = false;
           return;
         } else {
-          this.allTip["confirm_password"] = "";
+          this.allTip["captcha_text"] = "";
         }
 
         this.allValue.captcha_text = this.thirdyCaptchaObj;
@@ -1134,6 +1097,7 @@ export default {
 
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+      this.allTip["captcha_text"] = "";
     },
 
     getRedJackpot() {

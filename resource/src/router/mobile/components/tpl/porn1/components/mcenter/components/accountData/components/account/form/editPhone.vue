@@ -35,7 +35,7 @@
             <div :class="$style['clear-input']" v-if="oldValue">
               <img
                 :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                @click="(oldValue = ''), (buttonShow = false)"
+                @click="oldValue = ''"
               />
             </div>
           </div>
@@ -166,6 +166,7 @@ export default {
       ttl: 60,
       isSendSMS: false,
       isVerifyPhone: false,
+      isVerifyOldPhone: false,
       hasVerified: false, // 手機號碼是否已經驗證
       info: {
         key: "phone",
@@ -179,7 +180,6 @@ export default {
       isShowCaptcha: false,
       edit: false,
       phoneShow: false,
-      buttonShow: true,
       isClickedCaptcha: false
     };
   },
@@ -377,9 +377,19 @@ export default {
 
             if (value === "") {
               this.isVerifyPhone = false;
+              return;
             }
           }
         );
+
+        // 舊手機號碼
+        if (target === "oldValue") {
+          if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
+            this.isVerifyOldPhone = true;
+          } else {
+            this.isVerifyOldPhone = false;
+          }
+        }
 
         // 億元 不客端判斷手機號碼位數
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
@@ -394,15 +404,17 @@ export default {
           // if (!this.hasVerified) {
           //   this.isVerifyPhone = true;
           // }
+
           // 廳主端設置手機 修改開關
           if (this.info.verification) {
             this.isVerifyPhone = true;
           }
         } else {
-          // this.tipMsg = '手机格式不符合要求';
-          if (!this.hasVerified) {
-            this.isVerifyPhone = false;
-          }
+          this.isVerifyPhone = false;
+
+          // if (!this.hasVerified) {
+          //   this.isVerifyPhone = false;
+          // }
         }
       }
 
@@ -418,7 +430,7 @@ export default {
       if (this.timer) return;
       this.countdownSec = this.ttl;
       this.actionSetGlobalMessage({
-        msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace("%s", "5")
+        msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
       });
       this.timer = setInterval(() => {
         if (this.countdownSec <= 1) {
@@ -436,7 +448,7 @@ export default {
       this.isClickedCaptcha = true;
       setTimeout(() => {
         this.isClickedCaptcha = false;
-      }, 2000);
+      }, 1200);
 
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫
@@ -668,21 +680,18 @@ export default {
       }
     },
     isActive() {
-      if (this.buttonShow) {
-        return (
-          this.newValue &&
-          this.isVerifyPhone &&
-          !this.timer &&
-          !this.isClickedCaptcha
-        );
-      }
-      return (
-        this.newValue &&
-        this.oldValue &&
-        this.isVerifyPhone &&
-        !this.timer &&
+      let checkArray = [
+        this.newValue,
+        this.isVerifyPhone,
+        !this.timer,
         !this.isClickedCaptcha
-      );
+      ];
+
+      if (this.oldPhone.isShow) {
+        checkArray.push(this.oldValue, this.isVerifyOldPhone);
+      }
+
+      return !checkArray.some(i => !i);
     }
   }
 };

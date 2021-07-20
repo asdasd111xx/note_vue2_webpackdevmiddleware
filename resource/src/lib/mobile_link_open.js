@@ -343,17 +343,6 @@ export default target => {
       return;
     }
 
-    openGame(
-      {
-        kind: kind,
-        vendor: vendor,
-        code: code,
-        getGames: true
-      },
-      openGameSuccessFunc,
-      openGameFailFunc
-    );
-
     const openGameSuccessFunc = res => {};
 
     const openGameFailFunc = res => {
@@ -366,5 +355,16 @@ export default target => {
         });
       }
     };
+
+    openGame(
+      {
+        kind: kind,
+        vendor: vendor,
+        code: code,
+        getGames: true
+      },
+      openGameSuccessFunc,
+      openGameFailFunc
+    );
   }
 };

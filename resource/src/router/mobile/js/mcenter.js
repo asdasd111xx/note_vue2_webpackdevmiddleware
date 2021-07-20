@@ -350,6 +350,12 @@ export default {
       path: "tcenterManageTeam/:title/:item?",
       name: "mcenter-tcenterManageTeam",
       component
+    },
+    {
+      // 新推廣信息＋新增一級好友
+      path: "newRecommend",
+      name: "mcenter-tcenterNewRecommend",
+      component
     }
   ]
 };

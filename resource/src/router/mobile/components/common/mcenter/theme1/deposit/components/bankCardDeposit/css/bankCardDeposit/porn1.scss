@@ -324,29 +324,37 @@
   color: #db6372;
 }
 
+.exchange-rate,
 .crypto-block {
   float: left;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 52px;
   color: $main_text_color2;
 
+  .time {
+    color: #be9e7f;
+    margin: 0 5px 0 5px;
+  }
   .content {
     display: flex;
     align-items: center;
     margin-right: 10px;
+  }
 
-    &.onClick {
-      color: $main_text_color3;
+  .no-money {
+    word-break: break-all;
+    margin-left: 10px;
+    color: #a6a9b2;
+
+    &.money {
+      color: #414655;
     }
   }
 
-  .money {
-    max-width: 100px;
-    word-break: break-all;
-    margin-right: 5px;
+  .rate {
+    margin-left: 10px;
   }
 
   .conversion-btn {

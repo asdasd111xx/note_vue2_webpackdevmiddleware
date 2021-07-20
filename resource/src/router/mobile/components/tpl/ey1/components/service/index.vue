@@ -241,8 +241,9 @@ export default {
     handleBack() {
       const { query } = this.$route;
       let redirect = query.redirect;
-
       switch (redirect) {
+        case "withdraw":
+          localStorage.setItem("service-back", true);
         default:
           this.$router.back();
           break;

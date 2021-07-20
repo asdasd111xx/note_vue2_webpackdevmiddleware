@@ -422,12 +422,13 @@
           @blur="
             $event => {
               verification('withdrawValue', $event.target.value);
-              if (isSelectedUSDT && isClickCoversionBtn && withdrawValue) {
+              if (isSelectedUSDT && withdrawValue) {
                 convertCryptoMoney();
               }
             }
           "
           :placeholder="valuePlaceholder"
+          @keyup="moneyUSDT($event)"
         />
         <span :class="[$style['withdraw-max']]">
           <span @click="handleMaxWithdraw">
@@ -475,19 +476,13 @@
           >{{ selectedCard.name }}到帐</span
         >
         <span :class="$style['money-currency']">{{ cryptoMoney }}</span>
+      </div>
 
-        <div
-          :class="[
-            $style['conversion-btn'],
-            {
-              [$style['disable']]:
-                isClickCoversionBtn || !withdrawValue || +actualMoney <= 0
-            }
-          ]"
-          @click="convertCryptoMoney"
-        >
-          {{ countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算` }}
-        </div>
+      <!-- 參考匯率 -->
+      <div v-if="isSelectedUSDT" :class="$style['exchange-rate']">
+        参考汇率 1 USDT ≈ {{ rate }} CNY (
+        <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+        后更新 )
       </div>
 
       <!-- 錯誤訊息 -->
@@ -557,6 +552,7 @@
     <!-- 流水檢查 -->
     <serial-number
       v-if="isSerial"
+      ref="serialNumber"
       :handle-close="toggleSerial"
       :swift-code="selectedCard.swift_code"
     />
@@ -619,7 +615,7 @@
         />
       </template>
 
-      <!-- 刷新匯率 || 維護彈窗 -->
+      <!-- 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
       </template>
@@ -715,7 +711,11 @@ export default {
       cryptoMoney: "--",
       timer: null,
       countdownSec: 0,
-      isClickCoversionBtn: false,
+      //匯率比率
+      rate: "--",
+
+      //更新倒數時間開關
+      updateTime: false,
 
       //紅利帳戶
       bonus: {},
@@ -797,8 +797,28 @@ export default {
         }
       });
     this.getRedJackpot();
+    this.chooseUSDT();
   },
   mounted() {
+    let isBackFromService = localStorage.getItem("service-back") === "true";
+    let defaultSerialData = localStorage.getItem("serial-detail-data");
+
+    if (isBackFromService) {
+      if (defaultSerialData && JSON.parse(defaultSerialData)) {
+        localStorage.removeItem("service-back");
+        localStorage.removeItem("serial-detail-data");
+
+        this.toggleSerial();
+        this.$nextTick(() => {
+          if (this.$refs.serialNumber) {
+            this.$refs.serialNumber.handleClickSerial(
+              JSON.parse(defaultSerialData)
+            );
+          }
+        });
+      }
+    }
+
     // 按下一鍵歸戶後，需再更新 withdraw/info 這支 API
     // 避免「可提現餘額是否超過中心錢包餘額」重複出現(到時重構再更改)
     document.querySelector("#one-recycle-btn").addEventListener("click", () => {
@@ -866,11 +886,6 @@ export default {
 
       // 億元：當提現密碼尚未輸入值
       if (["ey1"].includes(this.themeTPL) && !this.withdrawPwd) {
-        return true;
-      }
-
-      // 在有出現加密貨幣選項中，尚未點擊過試算按鈕
-      if (this.isSelectedUSDT && !this.isClickCoversionBtn) {
         return true;
       }
 
@@ -1083,6 +1098,38 @@ export default {
         `;
       this.actionSetGlobalMessage({ msg: text });
     },
+    timeUSDT() {
+      if (this.countdownSec > 0) {
+        return this.formatCountdownSec();
+      } else if (this.countdownSec === 0) {
+        this.updateTime = true;
+        this.resetTimerStatus();
+        this.convertCryptoMoney();
+        return "--";
+      }
+    },
+    chooseUSDT() {
+      //選擇 CGPAY-USDT ,USDT
+      if (
+        this.withdrawCurrency.method_id === 28 ||
+        this.selectedCard.bank_id === 3002
+      ) {
+        this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
+      }
+      return;
+    },
+    moneyUSDT(e) {
+      if (this.actualMoney) {
+        this.verification("withdrawValue", this.withdrawValue);
+      }
+
+      //防止輸入連續call api
+      clearTimeout(this.timerUSDT);
+      this.timerUSDT = setTimeout(() => {
+        //USDT、CGP-USDT到帳
+        this.convertCryptoMoney();
+      }, 1000);
+    },
     validateMoney(target) {
       if (!target || Number(target) === 0) {
         return this.$text("S_UNLIMITED", "无限制");
@@ -1189,17 +1236,10 @@ export default {
           );
           break;
       }
-
+      this.chooseUSDT();
       // if (this.withdrawValue) {
       //   this.verification("withdrawValue", this.withdrawValue);
       // }
-
-      // 已按下匯率試算的按鈕且做切換時
-      if (this.isClickCoversionBtn) {
-        this.resetTimerStatus();
-        this.cryptoMoney = "--";
-        this.closePopup(); // 為了不顯示「匯率刷新」的彈窗
-      }
     },
     // 最高提現
     handleMaxWithdraw() {
@@ -1220,7 +1260,7 @@ export default {
       this.withdrawValue = Math.floor(Number(result));
       this.verification("withdrawValue", Math.floor(Number(result)));
 
-      if (this.isSelectedUSDT && this.isClickCoversionBtn) {
+      if (this.isSelectedUSDT) {
         this.convertCryptoMoney();
       }
     },
@@ -1282,6 +1322,18 @@ export default {
 
         if (islock()) {
           return;
+        }
+
+        //USDT提現前檢查匯率異動
+        if (this.isSelectedUSDT) {
+          let oldrate = this.rate;
+          this.convertCryptoMoney();
+          if (this.rate !== oldrate) {
+            this.actionSetGlobalMessage({
+              msg: "汇率已异动，请重新申请"
+            });
+            return;
+          }
         }
 
         // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
@@ -1644,28 +1696,37 @@ export default {
             });
             return;
           }
-          this.cryptoMoney = ret.crypto_amount;
-          this.isClickCoversionBtn = true;
-          this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+          this.rate = ret.rate;
+
+          if (this.withdrawValue != "") {
+            this.cryptoMoney = ret.crypto_amount;
+          } else {
+            this.cryptoMoney = "--";
+          }
+
+          //當切換成USDT和歸零的時候才重call秒數
+          if (this.updateTime) {
+            this.updateTime = false;
+            this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+          }
 
           // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
           if (this.countdownSec && !this.timer) {
             this.timer = setInterval(() => {
               if (this.countdownSec === 0) {
                 // 將「confirmOneBtn」彈窗打開
-                this.setPopupStatus(true, "funcTips");
+                //this.setPopupStatus(true, "funcTips");
 
-                this.confirmPopupObj = {
-                  title: ["porn1", "sg1"].includes(this.themeTPL)
-                    ? "汇率已失效"
-                    : "汇率已失效，请再次确认汇率",
-                  btnText: "刷新汇率",
-                  cb: () => {
-                    this.convertCryptoMoney();
-                    this.closePopup();
-                  }
-                };
-
+                // this.confirmPopupObj = {
+                //   title: ["porn1", "sg1"].includes(this.themeTPL)
+                //     ? "汇率已失效"
+                //     : "汇率已失效，请再次确认汇率",
+                //   btnText: "刷新汇率",
+                //   cb: () => {
+                //     this.convertCryptoMoney();
+                //     this.closePopup();
+                //   }
+                // };
                 this.resetTimerStatus();
                 this.cryptoMoney = "--";
                 return;
@@ -1686,7 +1747,6 @@ export default {
       clearInterval(this.timer);
       this.timer = null;
       this.countdownSec = 0;
-      this.isClickCoversionBtn = false;
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
@@ -1723,9 +1783,10 @@ export default {
       this.withdrawCurrency.method_id = item.method_id;
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
+      this.chooseUSDT();
 
       // 選項停留在 USDT 時，不執行重新刷新匯率動作
-      if (this.isSelectedUSDT && this.isClickCoversionBtn) {
+      if (this.isSelectedUSDT) {
         return;
       }
 
@@ -1745,7 +1806,7 @@ export default {
       );
 
       switch (true) {
-        case !+this.withdrawValue:
+        case !this.withdrawValue:
           return "--";
           break;
 

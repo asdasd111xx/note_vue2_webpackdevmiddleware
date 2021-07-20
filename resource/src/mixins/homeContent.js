@@ -57,10 +57,12 @@ export default {
     },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
-        // this.data = this.noticeData.pop();
         let temp = this.noticeData[this.noticeData.length - 1];
         if (temp.event === "vendor_maintain_notice") {
-          this.getMaintainList();
+          setTimeout(() => {
+            this.getMaintainList();
+          }, 7000);
+
           clearInterval(this.timer);
           this.timer = setInterval(() => {
             this.getMaintainList();

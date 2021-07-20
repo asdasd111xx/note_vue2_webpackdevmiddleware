@@ -1,7 +1,8 @@
 <template>
   <div :class="`casino-wrap ${gameTheme}`">
     <template v-for="slotKey in slotSort">
-      <template v-if="slotKey === 'label'">
+      <!-- kind = 6 麻將特例移除分類 -->
+      <template v-if="slotKey === 'label' && kind !== 6">
         <game-label
           :key="`slot-${slotKey}`"
           :is-label-receive="isLabelReceive"
@@ -14,7 +15,11 @@
       <template v-if="slotKey === 'list'">
         <div
           :key="`slot-${slotKey}`"
-          :class="[[$style['game-item-wrap']], 'clearfix']"
+          :class="[
+            [$style['game-item-wrap']],
+            { [$style['game-item-mahjong']]: kind === 6 },
+            'clearfix'
+          ]"
         >
           <div
             :class="$style['jackpot-wrap']"
@@ -41,7 +46,7 @@
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :event-data="gameInfo"
-                  :display-type="'game'"
+                  :display-type="'game-lobby'"
                 />
               </template>
             </template>
@@ -281,7 +286,8 @@ export default {
         data &&
         ((data.jpGrand && data.jpGrand.length > 0) ||
           (data.jpMinor && data.jpMinor.length > 0) ||
-          (data.jpUserList && data.jpUserList.length > 0))
+          (data.jpUserList && data.jpUserList.length > 0) ||
+          data.jpMajor)
       ) {
         this.jackpotData = data;
       }
@@ -363,7 +369,7 @@ export default {
               let activityEvents = result.ret.events
                 .filter(i => i.display)
                 .filter(
-                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
+                  i => +i.status === 2 || +i.status === 3 || +i.status === 4
                 );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
@@ -516,7 +522,6 @@ export default {
       }).then(response => {
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
-        const isAllLabel = this.$route.query.label === "all";
         const activityGames =
           this.activityData.ret &&
           this.activityData.ret &&
@@ -555,7 +560,7 @@ export default {
 
         $state.loaded();
 
-        if (!isAllLabel && (!activityGames || activityGames.length === 0)) {
+        if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();
           return;
         }
@@ -584,9 +589,12 @@ export default {
 @import "~@/css/variable.scss";
 
 .game-item-wrap {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
+.game-item-mahjong {
+  margin-top: 30px;
+}
 .empty-wrap {
   padding-top: 90px;
   color: #a6a9b2;

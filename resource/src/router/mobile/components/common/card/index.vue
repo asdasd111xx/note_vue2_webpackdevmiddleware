@@ -4,7 +4,6 @@
       <template v-if="slotKey === 'label'">
         <game-label
           :key="`slot-${slotKey}`"
-          :theme="labelTheme"
           :is-label-receive="isLabelReceive"
           :label="paramsData.label.toString()"
           :label-data="labelData"
@@ -35,7 +34,7 @@
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :event-data="gameInfo"
-                  :display-type="'game'"
+                  :display-type="'game-lobby'"
                 />
               </template>
             </template>
@@ -115,6 +114,10 @@ export default {
       )
   },
   props: {
+    kind: {
+      type: Number,
+      default: 5
+    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "list"]
@@ -152,16 +155,16 @@ export default {
     return {
       isReceive: false,
       isInit: false,
-      showInfinite: true,
+      showInfinite: false,
       isFavorite: false,
       needShowRedEnvelope: false,
       redEnvelopeData: {},
       paramsData: {
         kind: 5,
-        label: "hot", // 棋牌遊戲分類預設“棋牌遊戲”
+        label: "hot",
         enable: true,
-        first_result: 0,
-        max_results: 36,
+        firstResult: 0,
+        maxResults: 36,
         name: ""
       },
       searchText: "",
@@ -184,10 +187,10 @@ export default {
           name: this.$t("S_HOT")
         }
       ],
-      hasActivity: false,
       isGameDataReceive: false,
       gameData: [],
-      activityData: []
+      activityData: [],
+      hasActivity: false
     };
   },
   computed: {
@@ -331,7 +334,7 @@ export default {
               let activityEvents = result.ret.events
                 .filter(i => i.display)
                 .filter(
-                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
+                  i => +i.status === 2 || +i.status === 3 || +i.status === 4
                 );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
@@ -359,7 +362,7 @@ export default {
           this.updateGameData();
         })
         .catch(error => {
-          if (error && error.data.msg) {
+          if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage(error.data.msg);
           }
         });
@@ -376,7 +379,6 @@ export default {
         return;
       }
       this.updateGameData();
-      this.getGameLabelList();
     },
     /**
      * 設定遊戲分類
@@ -386,6 +388,7 @@ export default {
       if (+value === +this.paramsData.label) {
         return;
       }
+
       this.isInit = false;
       this.paramsData = {
         ...this.paramsData,
@@ -484,7 +487,6 @@ export default {
       }).then(response => {
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
-        const isAllLabel = this.$route.query.label === "all";
         const activityGames =
           this.activityData.ret &&
           this.activityData.ret &&
@@ -523,7 +525,7 @@ export default {
 
         $state.loaded();
 
-        if (!isAllLabel && (!activityGames || activityGames.length === 0)) {
+        if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();
           return;
         }
@@ -552,7 +554,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .game-item-wrap {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .empty-wrap {

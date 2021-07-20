@@ -57,7 +57,24 @@ export default {
     this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
   },
   methods: {
-    ...mapActions(["actionIsLogin", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionIsLogin",
+      "actionSetGlobalMessage",
+      "actionVerificationFormData"
+    ]),
+    verification(key, value) {
+      this.actionVerificationFormData({
+        target: key,
+        value: value
+      }).then(val => {
+        if (key === "login_password") {
+          this.password = val;
+          return;
+        }
+
+        this[key] = val;
+      });
+    },
     linktoJoin() {
       this.$nextTick(() => {
         this.$router.push("/mobile/joinmember?login=1");

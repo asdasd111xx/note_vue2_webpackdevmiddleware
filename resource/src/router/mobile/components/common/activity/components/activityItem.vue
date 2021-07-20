@@ -2,24 +2,24 @@
   <div
     :class="[
       $style['game-item'],
-      { [$style['in-game-lobby']]: displayType === 'game' },
+      { [$style['in-game-lobby']]: displayType === 'game-lobby' },
       'clearfix'
     ]"
     @click="onEnter"
   >
-    <div v-if="displayType !== 'game'" :class="$style['game-text']">
+    <div v-if="displayType !== 'game-lobby'" :class="$style['game-text']">
       {{ eventData.alias }}
     </div>
     <div
       :name="eventData.name"
       :class="[
         $style['game-image'],
-        { [$style['in-game-lobby']]: displayType === 'game' },
+        { [$style['in-game-lobby']]: displayType === 'game-lobby' },
         'clearfix'
       ]"
     >
       <img
-        v-if="eventData.bg_image && displayType !== 'game'"
+        v-if="eventData.bg_image && displayType !== 'game-lobby'"
         :src="eventData.bg_image"
         :class="[$style['bg']]"
       />
@@ -27,7 +27,7 @@
       <img v-lazy="getImg" :class="[$style['item']]" />
 
       <img
-        v-if="displayType === 'game'"
+        v-if="displayType === 'game-lobby'"
         :src="eventData.status_inner_image"
         :class="[$style['status']]"
       />
@@ -88,20 +88,83 @@ export default {
       }
 
       const { kind, vendor } = this.eventData;
-
+      // 活動大廳
       // 電子棋牌大廳
-      if (this.displayType !== "game") {
+      console.log(this.displayType);
+      if (this.displayType !== "game-lobby") {
         switch (kind) {
           case 3:
             this.$router.push(`/mobile/casino/${vendor}?label=hot`);
             return;
 
-          case 4:
+          case 5:
             this.$router.push(`/mobile/card/${vendor}?label=hot`);
             return;
         }
+
+        if (this.isLoading) {
+          return;
+        }
+
+        this.isLoading = true;
+
+        const openGameSuccessFunc = res => {
+          this.isLoading = false;
+        };
+
+        const openGameFailFunc = res => {
+          this.isLoading = false;
+
+          if (res && res.data) {
+            let data = res.data;
+            if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
+              if (data.code === "C50101" || data.code === "C50100") {
+                goLangApiRequest({
+                  method: "get",
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+                  params: {
+                    cid: getCookie("cid")
+                  }
+                }).then(res => {
+                  if (res.status === "000") {
+                    if (res.data.status != -1) {
+                      this.actionSetShowRedEnvelope(res.data);
+                    } else {
+                      this.actionSetGlobalMessage({
+                        msg: data.msg,
+                        code: data.code,
+                        origin: `activity-${this.$route.params.vendor}`
+                      });
+                    }
+                  }
+                });
+              } else {
+                this.actionSetGlobalMessage({
+                  msg: data.msg,
+                  code: data.code,
+                  origin: `activity-${this.$route.params.vendor}`
+                });
+              }
+            }
+          } else {
+            this.actionSetGlobalMessage({
+              msg: data.msg,
+              code: data.code,
+              origin: `activity-${this.$route.params.vendor}`
+            });
+          }
+        };
+
+        openGame(
+          { vendor, kind, code: "", gameName: "" },
+          openGameSuccessFunc,
+          openGameFailFunc
+        );
+
+        return;
       }
 
+      // 遊戲大廳內活動連結
       let newWindow;
       if (this.eventData.url) {
         if (!this.eventData.is_secure || this.eventData.is_secure === "false") {
@@ -113,7 +176,7 @@ export default {
           return;
         }
 
-        if (this.displayType === "game") {
+        if (this.displayType === "game-lobby") {
           // 直接使用客端網址+url
           // url: `${window.location.origin}${this.eventData.url}`;
           let cid = getCookie("cid");
@@ -148,65 +211,6 @@ export default {
           //   return;
         }
       }
-
-      if (this.isLoading) {
-        return;
-      }
-
-      this.isLoading = true;
-
-      const openGameSuccessFunc = res => {
-        this.isLoading = false;
-      };
-
-      const openGameFailFunc = res => {
-        this.isLoading = false;
-
-        if (res && res.data) {
-          let data = res.data;
-          if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
-            if (data.code === "C50101" || data.code === "C50100") {
-              goLangApiRequest({
-                method: "get",
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
-                params: {
-                  cid: getCookie("cid")
-                }
-              }).then(res => {
-                if (res.status === "000") {
-                  if (res.data.status != -1) {
-                    this.actionSetShowRedEnvelope(res.data);
-                  } else {
-                    this.actionSetGlobalMessage({
-                      msg: data.msg,
-                      code: data.code,
-                      origin: `activity-${this.$route.params.vendor}`
-                    });
-                  }
-                }
-              });
-            } else {
-              this.actionSetGlobalMessage({
-                msg: data.msg,
-                code: data.code,
-                origin: `activity-${this.$route.params.vendor}`
-              });
-            }
-          }
-        } else {
-          this.actionSetGlobalMessage({
-            msg: data.msg,
-            code: data.code,
-            origin: `activity-${this.$route.params.vendor}`
-          });
-        }
-      };
-
-      openGame(
-        { vendor, kind, code: "", gameName: "" },
-        openGameSuccessFunc,
-        openGameFailFunc
-      );
     }
   }
 };

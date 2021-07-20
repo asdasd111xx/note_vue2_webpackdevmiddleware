@@ -265,6 +265,10 @@ export default {
     tcenterManageRebateSg1: () =>
       import(
         /* webpackChunkName: 'tcenterManageRebateSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageRebate"
+      ),
+    tcenterNewRecommendSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewRecommendSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newRecommend"
       )
     // historyCardSg1: () =>
     //   import(
