@@ -289,9 +289,9 @@ export default {
         switch (target) {
           // case password 原密碼
           case "login_password":
-            if (val.length < 6) {
-              this.errorMsg = "请输入6-12位字母及数字";
-            }
+            // if (val.length < 6) {
+            //   this.errorMsg = "请输入6-12位字母及数字";
+            // }
             break;
 
           case "new_password":

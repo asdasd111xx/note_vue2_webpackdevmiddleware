@@ -456,16 +456,12 @@ export default {
       return this.$styleDefault;
     },
     isSlideAble() {
-      if (this.memInfo.config.register_captcha_type === 3) {
-        return true;
-      }
-
       return this.registerData
         .filter(field => this.joinMemInfo[field.key].show)
         .every(field => {
-          if (this.allTip[field.key]) {
-            return false;
-          }
+          // if (this.allTip[field.key]) {
+          //   return false;
+          // }
 
           if (this.joinMemInfo[field.key].isRequired) {
             if (
@@ -896,6 +892,24 @@ export default {
         : "0";
       this.verification(key);
     },
+    checkField() {
+      if (this.allValue["password"] !== this.allValue["confirm_password"]) {
+        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
+      }
+
+      const regex = new RegExp(joinMemInfo["password"].regExp);
+
+      if (!this.allValue["password"].match(regex)) {
+        this.allTip["password"] = joinMemInfo["password"].errorMsg;
+      }
+
+      let hasError = Object.values(this.allTip).find(i => i !== "");
+      if (hasError) {
+        this.isLoading = false;
+        return false;
+      }
+      return true;
+    },
     joinSubmit(captchaInfo) {
       this.isLoading = true;
       Object.keys(this.allValue).forEach(item => {
@@ -906,13 +920,19 @@ export default {
         }
       });
 
+      if (this.memInfo.config.register_captcha_type === 0) {
+        if (!this.checkField()) {
+          return;
+        }
+      }
+
       // 滑動
-      if (this.memInfo.config.register_captcha_type === 2) {
+      else if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
       }
 
       // 拼圖
-      if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
+      else if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
         if (!this.thirdyCaptchaObj) {
           this.allTip["captcha_text"] = "请先点击按钮进行验证";
           this.isLoading = false;
@@ -926,7 +946,7 @@ export default {
       }
 
       // 圖形
-      if (this.memInfo.config.register_captcha_type === 1) {
+      else if (this.memInfo.config.register_captcha_type === 1) {
         if (!this.allValue.captcha_text) {
           this.allTip["captcha_text"] = "请输入验证码";
           this.isLoading = false;
@@ -936,11 +956,6 @@ export default {
         }
       }
 
-      let allInputDone = Object.values(this.allTip).find(data => data != "");
-      if (allInputDone) {
-        this.isLoading = false;
-        return;
-      }
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -1079,6 +1094,13 @@ export default {
                 if (document.getElementById("captcha")) {
                   document.getElementById("captcha").focus();
                 }
+              }
+
+              if (
+                this.memInfo.config.register_captcha_type === 0 &&
+                item === "captcha_text"
+              ) {
+                this.allTip["confirm_password"] = res.errors[item];
               }
             });
             return;
