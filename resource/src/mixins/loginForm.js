@@ -34,7 +34,14 @@ export default {
       isBackEnd: "getIsBackEnd",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
-    })
+    }),
+    isSlideAble() {
+      if (!this.username || !this.password) {
+        return false;
+      }
+
+      return true;
+    }
   },
   watch: {
     rememberPwd(val) {
