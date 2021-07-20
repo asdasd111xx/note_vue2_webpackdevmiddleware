@@ -295,16 +295,14 @@ export default {
             break;
 
           case "new_password":
-            if (!val) {
-              this.errorMsg = "";
-              return;
-            }
+            // if (!val) {
+            //   this.errorMsg = "";
+            //   return;
+            // }
 
             if (
-              this.pwdResetInfo["new_password"].value &&
-              this.pwdResetInfo["confirm_password"].value &&
               this.pwdResetInfo["new_password"].value !==
-                this.pwdResetInfo["confirm_password"].value
+              this.pwdResetInfo["confirm_password"].value
             ) {
               this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
             }
@@ -315,16 +313,14 @@ export default {
             break;
 
           case "confirm_password":
-            if (!val) {
-              this.errorMsg = "";
-              return;
-            }
+            // if (!val) {
+            //   this.errorMsg = "";
+            //   return;
+            // }
 
             if (
-              this.pwdResetInfo["new_password"].value &&
-              this.pwdResetInfo["confirm_password"].value &&
               this.pwdResetInfo["new_password"].value !==
-                this.pwdResetInfo["confirm_password"].value
+              this.pwdResetInfo["confirm_password"].value
             ) {
               this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
             }

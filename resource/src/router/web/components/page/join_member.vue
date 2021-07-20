@@ -752,17 +752,15 @@ export default {
             // 2. 確認密碼只判斷是否相同
             switch (key) {
               case "password":
-                if (!val) {
-                  this.allTip[key] = "";
-                  return;
-                }
+                // if (!val) {
+                //   this.allTip[key] = "";
+                //   return;
+                // }
 
                 this.allTip["confirm_password"] = "";
                 if (
-                  this.allValue["confirm_password"] &&
-                  this.allValue["password"] &&
                   this.allValue["password"] !==
-                    this.allValue["confirm_password"]
+                  this.allValue["confirm_password"]
                 ) {
                   this.allTip["confirm_password"] = this.$text(
                     "S_PASSWD_CONFIRM_ERROR"
@@ -775,17 +773,15 @@ export default {
                 break;
 
               case "confirm_password":
-                if (!val) {
-                  this.allTip[key] = "";
-                  return;
-                }
+                // if (!val) {
+                //   this.allTip[key] = "";
+                //   return;
+                // }
 
                 this.allTip["confirm_password"] = "";
                 if (
-                  this.allValue["confirm_password"] &&
-                  this.allValue["password"] &&
                   this.allValue["password"] !==
-                    this.allValue["confirm_password"]
+                  this.allValue["confirm_password"]
                 ) {
                   this.allTip["confirm_password"] = this.$text(
                     "S_PASSWD_CONFIRM_ERROR"
