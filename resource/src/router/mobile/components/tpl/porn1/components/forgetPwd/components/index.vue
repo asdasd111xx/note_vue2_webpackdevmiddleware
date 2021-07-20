@@ -360,17 +360,13 @@ export default {
 
         switch (key) {
           case "password":
-            if (!val) {
-              this.allTip[key] = "";
-              return;
-            }
+            // if (!val) {
+            //   this.allTip[key] = "";
+            //   return;
+            // }
 
             this.allTip["confirm_password"] = "";
-            if (
-              this.confirm_password &&
-              this.password &&
-              this.confirm_password !== this.password
-            ) {
+            if (this.confirm_password !== this.password) {
               this.allTip["confirm_password"] = this.$text(
                 "S_PASSWD_CONFIRM_ERROR"
               );
@@ -382,17 +378,13 @@ export default {
             break;
 
           case "confirm_password":
-            if (!val) {
-              this.allTip[key] = "";
-              return;
-            }
+            // if (!val) {
+            //   this.allTip[key] = "";
+            //   return;
+            // }
 
             this.allTip["confirm_password"] = "";
-            if (
-              this.confirm_password &&
-              this.password &&
-              this.confirm_password !== this.password
-            ) {
+            if (this.confirm_password !== this.password) {
               this.allTip["confirm_password"] = this.$text(
                 "S_PASSWD_CONFIRM_ERROR"
               );

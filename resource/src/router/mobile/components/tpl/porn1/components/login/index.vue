@@ -269,13 +269,6 @@ export default {
       }
 
       return false;
-    },
-    isSlideAble() {
-      if (!this.username || !this.password || this.errMsg) {
-        return false;
-      }
-
-      return true;
     }
   },
   created() {
