@@ -675,10 +675,11 @@ export default {
               this.isOuterCrypto = false;
               if (
                 this.curPayInfo.payment_method_id === 25 ||
-                this.curPayInfo.payment_method_id === 402
+                this.curPayInfo.payment_method_id === 402 ||
+                this.curPayInfo.payment_method_id === 404
               ) {
                 this.isOuterCrypto = true;
-                this.getVendorCryptoOuterUserAddressList();
+                // this.getVendorCryptoOuterUserAddressList();
               }
             }
           }
@@ -776,6 +777,7 @@ export default {
       }
 
       this.checkDepositInput();
+      this.getVendorCryptoOuterUserAddressList();
     },
     /**
      * 切換通道
@@ -934,11 +936,18 @@ export default {
         };
       }
 
-      if (this.showOuterCryptoAddress) {
-        paramsData = {
-          ...paramsData,
-          user_address: this.outerCryptoAddress
-        };
+      if (this.curPassRoad.is_outer_crypto) {
+        if (this.showOuterCryptoAddress) {
+          paramsData = {
+            ...paramsData,
+            user_address: this.outerCryptoAddress
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            user_address: this.defaultOuterCrypto
+          };
+        }
       }
 
       let _isPWA =
@@ -1388,6 +1397,7 @@ export default {
           if (response && response.data && response.data.result === "ok") {
             console.log(response);
             this.outerCryptoOption = [];
+            this.defaultOuterCrypto = "";
             response.data.ret.forEach(outerAddress => {
               if (outerAddress.is_default) {
                 this.defaultOuterCrypto = outerAddress.address;
@@ -1434,7 +1444,8 @@ export default {
       //選擇 CGPAY-USDT ,USDT
       if (
         this.curPayInfo.payment_method_id === 25 ||
-        this.curPayInfo.payment_method_id === 402
+        this.curPayInfo.payment_method_id === 402 ||
+        this.curPayInfo.payment_method_id === 404
       ) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
       }
