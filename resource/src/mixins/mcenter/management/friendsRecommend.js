@@ -151,7 +151,7 @@ export default {
                 break;
 
               default:
-                if (!allValue[key].match(regex[key])) {
+                if (!allValue[key].match(regex)) {
                   allTip[key].error = errorMsg;
                 }
                 break;
@@ -182,6 +182,17 @@ export default {
               if (key === "captcha_text") {
                 this.captchaError = joinMemInfo[key].errorMsg;
               } else {
+                if (
+                  key === "confirm_password" &&
+                  this.allValue["password"] !==
+                    this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"].error = this.$text(
+                    "S_PASSWD_CONFIRM_ERROR"
+                  );
+                  return;
+                }
+
                 this.allTip[key].error = joinMemInfo[key].errorMsg;
               }
             }
