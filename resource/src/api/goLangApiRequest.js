@@ -12,7 +12,7 @@ export default ({
 }) => {
   // YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
   // YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
-
+  // console.log(store.state.BBosDomain);
   const yaboParams = {
     // "lang": "zh-cn"
   };

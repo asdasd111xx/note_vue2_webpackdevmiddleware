@@ -90,7 +90,6 @@ export default {
       const { kind, vendor } = this.eventData;
       // 活動大廳
       // 電子棋牌大廳
-      console.log(this.displayType);
       if (this.displayType !== "game-lobby") {
         switch (kind) {
           case 3:

@@ -271,7 +271,7 @@ export default {
       return false;
     },
     isSlideAble() {
-      if (!this.username || !this.password) {
+      if (!this.username || !this.password || this.errMsg) {
         return false;
       }
 
