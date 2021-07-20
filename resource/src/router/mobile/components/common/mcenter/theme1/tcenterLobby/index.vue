@@ -28,7 +28,9 @@
             <div
               v-if="isShowRebate"
               :class="$style['list-btn']"
-              @click="$router.push('/mobile/mcenter/tcenter/commission/rebate')"
+              @click="
+                $router.push('/mobile/mcenter/tcenterManageRebate/real/receive')
+              "
             >
               {{ getRebateText }}
             </div>
@@ -43,7 +45,9 @@
             <div
               v-if="isShowRebate"
               :class="$style['list-btn']"
-              @click="$router.push('/mobile/mcenter/tcenter/commission/rebate')"
+              @click="
+                $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+              "
             >
               详情
             </div>
@@ -145,7 +149,9 @@
             :style="
               transPointType ? { width: `${100 / 3}%` } : { width: `48%` }
             "
-            @click="$router.push(data.path)"
+            @click="
+              $router.push('/mobile/mcenter/tcenterManageTeam/firstFriends')
+            "
           >
             <div :class="[$style['special-data-img']]">
               <img
@@ -164,7 +170,9 @@
             :style="
               transPointType ? { width: `${100 / 3}%` } : { width: `48%` }
             "
-            @click="$router.push(data.path)"
+            @click="
+              $router.push('/mobile/mcenter/tcenterManageRebate/real/receive')
+            "
           >
             <div :class="[$style['special-data-img']]">
               <img
