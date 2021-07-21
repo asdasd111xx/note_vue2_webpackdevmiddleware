@@ -322,7 +322,7 @@ export default {
               this.pwdResetInfo["new_password"].value !==
               this.pwdResetInfo["confirm_password"].value
             ) {
-              this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              this.errorMsg = this.$text("S_NEW_PASSWD_CONFIRM_ERROR");
             }
             break;
 
@@ -428,10 +428,12 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              this.$router.push("/mobile/mcenter/setting");
-            }, 1200);
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.push("/mobile/mcenter/setting");
+              }
+            });
           },
           fail: res => {
             this.errorMsg = `${res.data.msg}`;
@@ -441,14 +443,16 @@ export default {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            if (this.isResetPW) {
-              window.close();
-            } else {
-              setTimeout(() => {
-                this.$router.push("/mobile/mcenter/setting");
-              }, 1200);
-            }
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                if (this.isResetPW) {
+                  window.close();
+                } else {
+                 this.$router.push("/mobile/mcenter/setting");
+                }
+              }
+            });
           },
           fail: res => {
             this.errorMsg = `${res.data.msg}`;
