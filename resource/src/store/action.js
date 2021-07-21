@@ -1426,38 +1426,42 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
     });
   });
 
-  // 原bbos
-  bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
-    reqHeaders: {
-      Vendor: state.memInfo.user.domain,
-      ...reqHeaders
-    },
-    params: {
-      lang: "zh-cn"
-    }
-  }).then(res => {
-    console.log(res.data.url);
-  });
-
   let agentCode = new Promise(resolve => {
-    goLangApiRequest({
+    bbosRequest({
       method: "get",
-      url:
-        configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
+      url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
+      reqHeaders: {
+        Vendor: state.memInfo.user.domain,
+        ...reqHeaders
+      },
       params: {
-        // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
-        clientType: 6
+        lang: "zh-cn"
       }
     }).then(res => {
-      if (res && res.data) {
+      if( res && res.data &&  res.data.url){
         commit(types.SET_PROMOTION_LINK, res.data.url);
         return resolve(res.data.code);
-      } else {
+      }else{
         return resolve("");
       }
     });
+
+    // goLangApiRequest({
+    //   method: "get",
+    //   url:
+    //     configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
+    //   params: {
+    //     // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+    //     clientType: 6
+    //   }
+    // }).then(res => {
+    //   if (res && res.data) {
+    //     commit(types.SET_PROMOTION_LINK, res.data.url);
+    //     return resolve(res.data.code);
+    //   } else {
+    //     return resolve("");
+    //   }
+    // });
   });
 
   Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
