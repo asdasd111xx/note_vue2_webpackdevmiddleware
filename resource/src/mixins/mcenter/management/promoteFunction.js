@@ -57,6 +57,7 @@ export default {
         case "LINK":
           //   value = this.agentLink.domain;
           value = this.promotionLink;
+          console.log(this.promotionLink);
           type = key;
           this.actionSetGlobalMessage({ msg: "连结已复制" });
           break;

@@ -1408,41 +1408,55 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   }
 
   let domain = new Promise(resolve => {
-    bbosRequest({
+    goLangApiRequest({
       method: "get",
-      url: configInfo.BBOS_DOMIAN + "/Domain/Hostnames",
-      reqHeaders: {
-        Vendor: state.memInfo.user.domain,
-        ...reqHeaders
-      },
+      url:
+        configInfo.YABO_GOLANG_API_DOMAIN +
+        "/xbb/Domain/Hostnames/V2?lang=zh-cn",
       params: {
-        lang: "zh-cn"
+        // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+        clientType: 6
       }
     }).then(res => {
-      if (res.errorCode !== "00" || res.status !== "000") {
-        return;
+      if (res && res.data) {
+        return resolve(res.data[0]);
+      } else {
+        return resolve("");
       }
-      return resolve(res.data[0]);
     });
   });
 
+  // 原bbos
+  bbosRequest({
+    method: "get",
+    url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
+    reqHeaders: {
+      Vendor: state.memInfo.user.domain,
+      ...reqHeaders
+    },
+    params: {
+      lang: "zh-cn"
+    }
+  }).then(res => {
+    console.log(res.data.url);
+  });
+
   let agentCode = new Promise(resolve => {
-    bbosRequest({
+    goLangApiRequest({
       method: "get",
-      url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
-      reqHeaders: {
-        Vendor: state.memInfo.user.domain,
-        ...reqHeaders
-      },
+      url:
+        configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
       params: {
-        lang: "zh-cn"
+        // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+        clientType: 6
       }
     }).then(res => {
-      if (res.errorCode !== "00" || res.status !== "000") {
-        return;
+      if (res && res.data) {
+        commit(types.SET_PROMOTION_LINK, res.data.url);
+        return resolve(res.data.code);
+      } else {
+        return resolve("");
       }
-      commit(types.SET_PROMOTION_LINK, res.data.url);
-      return resolve(res.data.code);
     });
   });
 
