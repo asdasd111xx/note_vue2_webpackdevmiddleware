@@ -597,9 +597,20 @@ export default {
         success: response => {
           this.errorMsg = "";
           if (response.result === "ok") {
-            this.$router.push(
+              this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                if (this.memInfo.user.password_reset) {
+                  this.actionSetUserdata(true).then(() => {
+                     this.$router.push(
               `/mobile/${type === "agent" ? "aglogin" : "login"}`
             );
+                  });
+                  return;
+                }
+                this.$router.push("/mobile/mcenter/setting");
+              }
+            });
           }
         },
         fail: res => {
