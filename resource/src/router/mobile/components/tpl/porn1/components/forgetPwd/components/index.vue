@@ -103,7 +103,7 @@
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer }
+                { [$style['active']]: username && !timer && !allTip.username }
               ]"
               @click="showCaptchaPopup"
             >
