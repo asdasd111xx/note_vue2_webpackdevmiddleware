@@ -2,7 +2,10 @@
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" class="content-wrap">
       <div :class="$style['manage-rebate']">
-        <tcenter-manage-rebate :set-header-title="setHeaderTitle" />
+        <tcenter-manage-rebate
+          :set-header-title="setHeaderTitle"
+          :set-back-func="setBackFunc"
+        />
       </div>
     </div>
   </mobile-container>
@@ -24,23 +27,23 @@ export default {
         // Title 由各接口設定
         prev: true,
         onClick: () => {
-          if (this.$route.params.title === "real") {
-            if (
-              this.$route.params.item == "receive" ||
-              this.$route.params.item == "detail"
-            ) {
-              return this.$router.replace("/mobile/mcenter/tcenterLobby");
-            }
-          }
-          if (this.$route.params.title === "record") {
-            if (
-              this.$route.params.item == "yesterday" ||
-              this.$route.params.item == "today" ||
-              this.$route.params.item == "month"
-            ) {
-              return this.$router.replace("/mobile/mcenter/tcenterLobby");
-            }
-          }
+          // if (this.$route.params.title === "real") {
+          //   if (
+          //     this.$route.params.item == "receive" ||
+          //     this.$route.params.item == "detail"
+          //   ) {
+          //     return this.$router.replace("/mobile/mcenter/tcenterLobby");
+          //   }
+          // }
+          // if (this.$route.params.title === "record") {
+          //   if (
+          //     this.$route.params.item == "yesterday" ||
+          //     this.$route.params.item == "today" ||
+          //     this.$route.params.item == "month"
+          //   ) {
+          //     return this.$router.replace("/mobile/mcenter/tcenterLobby");
+          //   }
+          // }
 
           this.$router.back();
         }
@@ -50,6 +53,9 @@ export default {
   methods: {
     setHeaderTitle(value) {
       this.$set(this.headerConfig, "title", value);
+    },
+    setBackFunc(cb) {
+      this.$set(this.headerConfig, "onClick", cb);
     }
   },
   computed: {

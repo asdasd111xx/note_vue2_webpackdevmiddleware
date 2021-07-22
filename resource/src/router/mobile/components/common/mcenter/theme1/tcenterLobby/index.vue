@@ -218,7 +218,9 @@
               `/static/image/${themeTPL}/mcenter/tcenter/btn_team.png`
             )
           "
-          @click="$router.push('/mobile/mcenter/tcenterManageTeam/record')"
+          @click="
+            $router.push('/mobile/mcenter/tcenterManageTeam/firstFriends')
+          "
         />
         <img
           :class="$style['img-icon']"

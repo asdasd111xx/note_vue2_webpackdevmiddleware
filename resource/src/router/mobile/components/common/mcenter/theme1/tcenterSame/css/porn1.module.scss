@@ -70,9 +70,23 @@ $buttonTextColor: #fff;
   height: 30px;
 }
 
-.friend-name {
-  font-size: 14px;
-  font-weight: bold;
+.title-wrap {
+  display: flex;
+
+  .open-button {
+    width: 13px;
+    height: 13px;
+    margin: auto;
+    margin-right: 5px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .friend-name {
+    font-size: 14px;
+    font-weight: bold;
+  }
 }
 
 .friend-money {
@@ -105,6 +119,10 @@ $buttonTextColor: #fff;
 
 .item-detail-title {
   color: #a6a9b2;
+}
+
+.item-detail-add {
+  display: flex;
 }
 
 .red {

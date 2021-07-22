@@ -45,3 +45,20 @@ img {
 .next-layer-item {
   margin-top: 6px;
 }
+
+.no-data {
+  padding-top: 100px;
+  text-align: center;
+
+  img {
+    display: inline-block;
+    width: 174px;
+    height: 174px;
+    margin-bottom: 14px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #a6a9b2;
+  }
+}
