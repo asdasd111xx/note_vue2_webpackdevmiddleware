@@ -106,26 +106,18 @@ export default {
       loop: false,
       preload: "auto",
       bigPlayButton: true,
+      html5: {
+        hls: {
+          // withCredentials: true,
+          cacheEncryptionKeys: true
+        }
+      },
       controlBar: {
         pictureInPictureToggle: false
-      }
+      },
+      crossOrigin: "anonymous"
     };
 
-    // hls sarfari 小豬視頻必須
-    if (this.source === "smallPig") {
-      obj["html5"] = {
-        hls: {
-          overrideNative: true,
-          withCredentials: true
-        },
-        nativeAudioTracks: false,
-        nativeVideoTracks: false
-      };
-    } else {
-      if (this.$route.query && this.$route.query.testmode) {
-        obj["crossOrigin"] = "anonymous";
-      }
-    }
     this.player = videojs(this.$refs["video-player"], obj);
 
     // 彩金疊加在播放器上
