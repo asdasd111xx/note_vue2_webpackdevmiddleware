@@ -266,9 +266,15 @@ export default {
       import(
         /* webpackChunkName: 'tcenterManageRebateSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageRebate"
       ),
+<<<<<<< Updated upstream
     tcenterNewRecommendSg1: () =>
       import(
         /* webpackChunkName: 'tcenterNewRecommendSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newRecommend"
+=======
+    tcenterManageTeamSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageTeamSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageTeam"
+>>>>>>> Stashed changes
       )
     // historyCardSg1: () =>
     //   import(

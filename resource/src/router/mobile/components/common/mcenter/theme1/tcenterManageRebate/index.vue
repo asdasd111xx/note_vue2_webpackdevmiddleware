@@ -56,6 +56,10 @@ export default {
     setHeaderTitle: {
       type: Function,
       default: () => {}
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {

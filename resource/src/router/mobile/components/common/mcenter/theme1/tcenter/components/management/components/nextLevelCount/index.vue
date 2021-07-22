@@ -36,6 +36,18 @@
         </div>
       </div>
     </template>
+    <template v-if="totalDepthList.length == 0">
+      <div :class="$style['no-data']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
+            )
+          "
+        />
+        <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -72,6 +84,7 @@ export default {
     };
   },
   created() {
+    this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
     this.setTabState(true);
     this.getTimeRecord(this.currentDate);
     if (this.path != "today-register") {
@@ -198,8 +211,7 @@ export default {
     },
     getStatus(info, color) {
       //狀態
-      let status = Object.keys(info.filter(item => item === true));
-
+      let status = info.indexOf(true);
       if (status == "0") {
         return color ? "blue" : "启用";
       }

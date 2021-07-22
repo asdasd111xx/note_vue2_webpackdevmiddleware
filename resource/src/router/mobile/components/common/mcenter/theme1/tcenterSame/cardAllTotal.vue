@@ -3,7 +3,7 @@
     <span
       v-for="(item, index) in data"
       :key="index"
-      :class="$style['card-item']"
+      :class="[$style['card-item']]"
       >{{ item.item }}</span
     >
   </div>

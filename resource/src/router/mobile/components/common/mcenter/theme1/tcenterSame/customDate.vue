@@ -36,7 +36,7 @@
         <span>{{ dateFormat(inqEnd) }}</span>
       </div>
 
-      <div :class="$style['field-game-wrap']">
+      <div v-if="chooseStatus" :class="$style['field-game-wrap']">
         <div :class="$style.title">
           {{ $text("S_PLEASE_SELECT_STATUS", "请选择状态") }}
         </div>
@@ -46,6 +46,13 @@
             info.name
           }}</option>
         </select>
+      </div>
+      <div v-else :class="$style['field-game-wrap']">
+        <div :class="$style.title">
+          {{ "好友帐号" }}
+        </div>
+
+        <input v-model="name" />
       </div>
     </div>
     <div :class="$style['field-search-wrap']">
@@ -78,6 +85,11 @@ export default {
     options: {
       type: Array,
       require: true
+    },
+    //true 推薦禮金
+    chooseStatus: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -94,7 +106,8 @@ export default {
       inqEnd: Vue.moment(now).format("YYYY-MM-DD"),
       checkDate: true,
       allvendor: [{ alias: "全部", vendor: "", kind: 0 }],
-      searchDate: {}
+      searchDate: {},
+      name: ""
     };
   },
   computed: {
@@ -142,7 +155,7 @@ export default {
       this.inqKind = target.key;
       this.inqVendor = target.status;
       selectType = {
-        name: target.name,
+        name: target.name ?? "",
         key: this.inqKind,
         status: this.inqVendor
       };
@@ -185,6 +198,13 @@ export default {
     },
     sendTime() {
       this.searchDate = { inqStart: this.inqStart, inqEnd: this.inqEnd };
+      if (this.name != "") {
+        this.searchDate = {
+          inqStart: this.inqStart,
+          inqEnd: this.inqEnd,
+          friend_name: this.name
+        };
+      }
       this.$emit("search-date", this.searchDate);
     }
   }
