@@ -2374,7 +2374,7 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 
 // 取得429發送太頻繁字串
 export const actionGetToManyRequestMsg = ({ state }, response) => {
-  if (response && response.status === 429) {
+  if (response && Number(response.status) === 429) {
     if (response.data && response.data.message) {
       console.log(response.data.message);
       return i18n.t(

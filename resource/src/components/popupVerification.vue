@@ -59,11 +59,9 @@
 <script>
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import bbosRequest from "@/api/bbosRequest";
 import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/mixins/thirdyVerification";
-
-import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   mixins: [thirdyVerification],
@@ -141,16 +139,24 @@ export default {
       }
 
       this.isGetCaptchaImg = true;
-      axios({
+      setTimeout(() => {
+        this.isGetCaptchaImg = false;
+      }, 800);
+
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/captcha"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`,
+        params: {
+          lang: "zh-cn"
+        }
       }).then(res => {
-        setTimeout(() => {
-          this.isGetCaptchaImg = false;
-        }, 800);
-        if (res.data && res.data) {
-          this.captchaImg = res.data.ret;
-          //   setCookie('aid', res.data.cookie.aid);
+        if (res.data && res.status === "000") {
+          setTimeout(() => {
+            this.isGetCaptchaImg = false;
+          }, 800);
+
+          setCookie("aid", res.data.cookie.aid);
+          this.captchaImg = res.data.data;
         }
       });
     },

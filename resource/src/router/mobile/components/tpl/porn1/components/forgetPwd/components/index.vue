@@ -221,12 +221,13 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 import member from "@/api/member";
 import mobileContainer from "../../common/mobileContainer";
 import popupVerification from "@/components/popupVerification";
 import joinMemInfo from "@/config/joinMemInfo";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -482,44 +483,40 @@ export default {
 
       // 忘記密碼發送簡訊 - 會員
       // member.passwordForgetMobile(data);
-
-      axios({
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/forget/password/sms",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password/Sms`,
+        params: {
           username: this.username,
-          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : ""
+          captchaText: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : "",
+          aid: getCookie("aid"),
+          lang: "zh-cn"
         }
-      })
-        .then(res => {
-          if (res.data.result === "ok") {
-            this.errorMsg = "";
-            this.countdownSec = 60;
-            this.timer = setInterval(() => {
-              if (this.countdownSec === 0) {
-                clearInterval(this.timer);
-                this.timer = null;
-                return;
-              }
-              this.countdownSec -= 1;
-            }, 1000);
-
-            if (res.data.code) {
-              this.errorMsg = `${res.data.msg}`;
-            } else {
-              this.actionSetGlobalMessage({
-                msg: "已发送手机验证码"
-              });
+      }).then(res => {
+        if (res.status === "000") {
+          this.errorMsg = "";
+          this.countdownSec = 60;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer);
+              this.timer = null;
+              return;
             }
+            this.countdownSec -= 1;
+          }, 1000);
+
+          if (res.code && res.msg) {
+            this.errorMsg = `${res.msg}`;
           } else {
-            this.errorMsg = res.data.msg;
+            this.actionSetGlobalMessage({
+              msg: "已发送手机验证码"
+            });
           }
-        })
-        .catch(error => {
+        } else {
           this.isSendKeyring = false;
 
-          if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestallTip(error.response).then(res => {
+          if (res && Number(res.status) === 429) {
+            this.actionGetToManyRequestMsg(res).then(res => {
               this.errorMsg = res;
             });
             return;
@@ -531,14 +528,11 @@ export default {
           //   return;
           // }
 
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errorMsg = `${error.response.data.msg}`;
+          if (res && res.msg) {
+            this.errorMsg = `${res.msg}`;
           }
-        });
+        }
+      });
 
       this.showCaptcha(false);
     },
@@ -645,9 +639,9 @@ export default {
     },
     // 測試第二步驟
     step2shortcut() {
-          this.errorMsg = "";
-        this.currentMethod = "phone-step-2";
-        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      this.errorMsg = "";
+      this.currentMethod = "phone-step-2";
+      this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
       if (
         this.checkSubmit &&
         ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
