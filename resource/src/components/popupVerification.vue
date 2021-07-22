@@ -139,6 +139,9 @@ export default {
       }
 
       this.isGetCaptchaImg = true;
+      setTimeout(() => {
+        this.isGetCaptchaImg = false;
+      }, 800);
 
       goLangApiRequest({
         method: "post",
@@ -152,10 +155,8 @@ export default {
             this.isGetCaptchaImg = false;
           }, 800);
 
-          if (res.data) {
-            setCookie("aid", res.data.cookie.aid);
-            this.captchaImg = res.data.data;
-          }
+          setCookie("aid", res.data.cookie.aid);
+          this.captchaImg = res.data.data;
         }
       });
     },
