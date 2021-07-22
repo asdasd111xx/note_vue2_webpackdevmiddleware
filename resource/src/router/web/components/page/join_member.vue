@@ -956,6 +956,10 @@ export default {
         }
       }
 
+      if (!this.checkField()) {
+        return;
+      }
+
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,

@@ -383,10 +383,12 @@ export default {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              this.$router.push("/mobile/mcenter/setting");
-            }, 1200);
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.back();
+              }
+            });
           },
           fail: res => {
             this.errorMsg = `${res.data.msg}`;
@@ -405,7 +407,7 @@ export default {
                   });
                   return;
                 }
-                this.$router.push("/mobile/mcenter/setting");
+                this.$router.back();
               }
             });
           },
@@ -416,7 +418,7 @@ export default {
       }
     },
     pwdResetSubmit() {
-      if (!this.submitActive) return;
+      if (!this.submitActive || this.isLoading) return;
       const pwdInfo = {
         username: this.pwdResetInfo.username.value,
         email: this.pwdResetInfo.email.value,
@@ -431,7 +433,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
-                this.$router.push("/mobile/mcenter/setting");
+                this.$router.push("/mobile/");
               }
             });
           },
@@ -449,7 +451,7 @@ export default {
                 if (this.isResetPW) {
                   window.close();
                 } else {
-                 this.$router.push("/mobile/mcenter/setting");
+                  this.$router.back();
                 }
               }
             });
