@@ -229,7 +229,6 @@ export default {
       import(
         /* webpackChunkName: 'historyCardEy1' */ "../../tpl/ey1/components/mcenter/components/historyCard"
       ),
-<<<<<<< Updated upstream
     tcenterLobbyEy1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbyEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterLobby"
@@ -237,15 +236,6 @@ export default {
     tcenterNewRecommendEy1: () =>
       import(
         /* webpackChunkName: 'tcenterNewRecommendEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/components/newRecommend"
-=======
-    tcenterManageRebateEy1: () =>
-      import(
-        /* webpackChunkName: 'tcenterManageRebateEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterManageRebate"
-      ),
-    tcenterManageTeamEy1: () =>
-      import(
-        /* webpackChunkName: 'tcenterManageTeamEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterManageTeam"
->>>>>>> Stashed changes
       )
   }
 };
