@@ -103,7 +103,9 @@
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer && !allTip.username }
+                {
+                  [$style['active']]: username && !timer && username.length >= 4
+                }
               ]"
               @click="showCaptchaPopup"
             >
@@ -597,14 +599,14 @@ export default {
         success: response => {
           this.errorMsg = "";
           if (response.result === "ok") {
-              this.actionSetGlobalMessage({
+            this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                     this.$router.push(
-              `/mobile/${type === "agent" ? "aglogin" : "login"}`
-            );
+                    this.$router.push(
+                      `/mobile/${type === "agent" ? "aglogin" : "login"}`
+                    );
                   });
                   return;
                 }
@@ -643,6 +645,9 @@ export default {
     },
     // 測試第二步驟
     step2shortcut() {
+          this.errorMsg = "";
+        this.currentMethod = "phone-step-2";
+        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
       if (
         this.checkSubmit &&
         ["500015", "500023", "500035"].includes(this.memInfo.user.domain)

@@ -934,7 +934,7 @@ export default {
       // 拼圖
       else if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
         if (!this.thirdyCaptchaObj) {
-          this.allTip["captcha_text"] = "请先点击按钮进行验证";
+          this.allTip["captcha_text"] = this.$text("S_PLS_CLICK_CAPTCHA_FIRST");
           this.isLoading = false;
           return;
         } else {
@@ -948,7 +948,7 @@ export default {
       // 圖形
       else if (this.memInfo.config.register_captcha_type === 1) {
         if (!this.allValue.captcha_text) {
-          this.allTip["captcha_text"] = "请输入验证码";
+          this.allTip["captcha_text"] = this.$text("S_ENABLE_KEYRING");
           this.isLoading = false;
           return;
         } else {

@@ -280,7 +280,6 @@ export default {
         target = "login_password";
       }
 
-      this.errorMsg = "";
       return this.actionVerificationFormData({
         target: target,
         value: value
@@ -295,16 +294,12 @@ export default {
             break;
 
           case "new_password":
-            // if (!val) {
-            //   this.errorMsg = "";
-            //   return;
-            // }
-
+            this.errorMsg = "";
             if (
               this.pwdResetInfo["new_password"].value !==
               this.pwdResetInfo["confirm_password"].value
             ) {
-              this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              this.errorMsg = this.$text("S_NEW_PASSWD_CONFIRM_ERROR");
             }
 
             if (!val.match(regex)) {
@@ -313,11 +308,7 @@ export default {
             break;
 
           case "confirm_password":
-            // if (!val) {
-            //   this.errorMsg = "";
-            //   return;
-            // }
-
+            this.errorMsg = "";
             if (
               this.pwdResetInfo["new_password"].value !==
               this.pwdResetInfo["confirm_password"].value
@@ -327,6 +318,7 @@ export default {
             break;
 
           default:
+            this.errorMsg = "";
             if (!val.match(regex)) {
               this.errorMsg = errorMsg;
             }
@@ -403,7 +395,7 @@ export default {
               cb: () => {
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                    this.$router.push("/mobile");
+                    this.$router.push("/mobile/login");
                   });
                   return;
                 }
@@ -433,7 +425,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
-                this.$router.push("/mobile/");
+                this.$router.push("/mobile/login");
               }
             });
           },

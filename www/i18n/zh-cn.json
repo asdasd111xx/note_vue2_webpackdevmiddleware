@@ -903,6 +903,7 @@
   "S_ENABLE_ACCOUNT": "请输入帐号",
   "S_ENABLE_EMAIL": "请输入邮箱地址",
   "S_ENABLE_KEYRING": "请输入验证码",
+  "S_PLS_CLICK_CAPTCHA_FIRST": "请先点击按钮进行验证",
   "S_NEXT_STEP": "下一步",
   "S_LOGIN_TITLE": "登录",
   "S_SAVE_PASSWORD": "记住密码",
