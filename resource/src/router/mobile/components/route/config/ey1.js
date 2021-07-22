@@ -236,6 +236,10 @@ export default {
     tcenterNewRecommendEy1: () =>
       import(
         /* webpackChunkName: 'tcenterNewRecommendEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/components/newRecommend"
+      ),
+    tcenterNewCommissionEy1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewCommissionEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/components/newCommission"
       )
   }
 };

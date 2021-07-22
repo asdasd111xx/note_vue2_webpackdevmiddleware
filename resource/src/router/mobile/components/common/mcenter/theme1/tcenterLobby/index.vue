@@ -150,7 +150,9 @@
               transPointType ? { width: `${100 / 3}%` } : { width: `48%` }
             "
             @click="
-              $router.push('/mobile/mcenter/tcenterManageTeam/firstFriends')
+              $router.push(
+                '/mobile/mcenter/tcenterManageTeam/newCommission/today'
+              )
             "
           >
             <div :class="[$style['special-data-img']]">
@@ -456,8 +458,6 @@ export default {
      * @method getLevelList
      */
     getLevelList() {
-      this.levelList = [];
-
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/Player/Friends/TransReport`,
@@ -480,6 +480,7 @@ export default {
             withdraw: 0
           };
 
+          this.levelList = [];
           this.levelList = data.map(info => {
             this.allTotal.total += +info.total;
             this.allTotal.register += +info.register;

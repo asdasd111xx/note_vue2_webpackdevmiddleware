@@ -291,6 +291,10 @@ export default {
     tcenterNewRecommendPorn1: () =>
       import(
         /* webpackChunkName: 'tcenterNewRecommendPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newRecommend"
+      ),
+    tcenterNewCommissionPorn1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewCommissionPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newCommission"
       )
     // historyCardSg1: () =>
     //   import(

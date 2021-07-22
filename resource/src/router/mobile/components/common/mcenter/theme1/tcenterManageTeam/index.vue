@@ -32,9 +32,9 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
-    record: () =>
+    newCommission: () =>
       import(
-        /* webpackChunkName: 'recordRebate' */ "../tcenter/components/commission/"
+        /* webpackChunkName: 'recordRebate' */ "../tcenter/components/newCommission/index"
       ),
     firstFriends: () =>
       import(
@@ -90,7 +90,7 @@ export default {
     tabItem() {
       return [
         {
-          key: "record",
+          key: "newCommission",
           item: "today",
           text: "团队概况",
           show: true
@@ -122,7 +122,7 @@ export default {
       switch (this.tabItem[tabKey].key) {
         default:
         case "record":
-          this.currentLayout = { vendor: "record" };
+          this.currentLayout = { vendor: "newCommission" };
           break;
         case "firstFriends":
           this.currentLayout = { vendor: "firstFriends" };

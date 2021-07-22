@@ -356,6 +356,12 @@ export default {
       path: "newRecommend",
       name: "mcenter-tcenterNewRecommend",
       component
+    },
+    {
+      // 新推廣信息＋新增一級好友
+      path: "newCommission",
+      name: "mcenter-tcenterNewCommission",
+      component
     }
   ]
 };

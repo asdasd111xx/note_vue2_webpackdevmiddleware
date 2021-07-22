@@ -28,7 +28,7 @@
       <div v-for="key in allInput" :key="key" :class="$style['input-group']">
         <!-- 欄位名稱 -->
         <div :class="$style['input-title']">
-          {{ $text(allText[key].title) }}
+          {{ $text(allTip[key].title) }}
         </div>
         <!-- 輸入框 -->
         <div
@@ -36,7 +36,7 @@
             $style[key],
             $style.placeholder,
             {
-              [$style.error]: allText[key].error
+              [$style.error]: allTip[key].error
             }
           ]"
         >
@@ -49,8 +49,8 @@
                 [$style['show-placeholder']]: !allValue[key]
               }
             ]"
-            :placeholder="allText[key].placeholder"
-            :maxlength="allText[key].maxLength"
+            :placeholder="allTip[key].placeholder"
+            :maxlength="allTip[key].maxLength"
             v-model="allValue[key]"
             data-vv-scope="form-page"
             @blur="onInput($event.target.value, key)"
@@ -66,9 +66,9 @@
                 [$style['show-placeholder']]: !allValue[key]
               }
             ]"
-            :placeholder="allText[key].placeholder"
+            :placeholder="allTip[key].placeholder"
             :data-key="key"
-            :maxlength="allText[key].maxLength"
+            :maxlength="allTip[key].maxLength"
             v-model="allValue[key]"
             type="password"
             data-vv-scope="form-page"
@@ -86,8 +86,8 @@
           />
         </div>
         <!-- 錯誤訊息 -->
-        <div v-if="allText[key].error" :class="$style['error-message']">
-          {{ allText[key].error }}
+        <div v-if="allTip[key].error" :class="$style['error-message']">
+          {{ allTip[key].error }}
         </div>
       </div>
       <!-- 驗證碼 -->
