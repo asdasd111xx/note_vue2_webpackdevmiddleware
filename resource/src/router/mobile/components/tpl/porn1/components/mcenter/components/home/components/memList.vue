@@ -243,7 +243,9 @@ export default {
           platform: 1
         }
       }).then(res => {
-        this.superAppUrl = res.data.url;
+        if (res.data && res.data.url) {
+          this.superAppUrl = res.data.url;
+        }
       });
     });
   },
