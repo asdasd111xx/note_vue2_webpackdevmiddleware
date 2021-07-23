@@ -124,9 +124,9 @@ export default {
     this.$emit("update:lobbyName", "强档活动");
   },
   mounted() {
-    if (!this.loginStatus) {
-      this.$router.push("/mobile/login");
-    }
+    // if (!this.loginStatus) {
+    //   this.$router.push("/mobile/login");
+    // }
     this.getActivityList();
   },
   methods: {

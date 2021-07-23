@@ -83,6 +83,15 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     onEnter() {
+      if (!this.loginStatus) {
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          this.$router.push("/mobile/login");
+        } else {
+          this.$router.push("/mobile/joinmember");
+        }
+        return;
+      }
+
       if (localStorage.getItem("is-open-game")) {
         return;
       }
