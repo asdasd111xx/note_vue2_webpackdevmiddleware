@@ -440,8 +440,45 @@ export default {
         return;
       }
 
-      // 忘記密碼 - 會員
-      member.pwdForget(data);
+      // 忘記密碼 - 會員 C02.16
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password`,
+        params: {
+          username: this.username,
+          email: this.email,
+          domain: window.location.host,
+          // 開發端測試用
+          // domain: 'yb01.66boxing.com',
+          callback: "/mobile/resetPwd",
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.actionSetGlobalMessage({
+            msg: this.$text("FORGET_password_SEND", "重设密码信件已发送")
+          });
+        } else {
+          this.isSendKeyring = false;
+
+          if (res && Number(res.status) === 429) {
+            this.actionGetToManyRequestMsg(res).then(res => {
+              this.errorMsg = res;
+            });
+            return;
+          }
+
+          // 「请填写正确的用户名」(A-9340)
+          if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
+            this.errorMsg = "请填写正确的用户名";
+            return;
+          }
+
+          if (res && res.msg) {
+            this.errorMsg = `${res.msg}`;
+          }
+        }
+      });
     },
     send(type) {
       if (this.currentMethod === "phone-step-1") {
@@ -460,6 +497,11 @@ export default {
       }
     },
     showCaptchaPopup() {
+      this.timer = true;
+      setTimeout(() => {
+        this.timer = null;
+      }, 1200);
+
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
@@ -481,8 +523,6 @@ export default {
       //     return;
       //   }
 
-      // 忘記密碼發送簡訊 - 會員
-      // member.passwordForgetMobile(data);
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password/Sms`,
@@ -519,6 +559,12 @@ export default {
             this.actionGetToManyRequestMsg(res).then(res => {
               this.errorMsg = res;
             });
+            return;
+          }
+
+          // 「请填写正确的用户名」(A-9340)
+          if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
+            this.errorMsg = "请填写正确的用户名";
             return;
           }
 
@@ -639,9 +685,6 @@ export default {
     },
     // 測試第二步驟
     step2shortcut() {
-      this.errorMsg = "";
-      this.currentMethod = "phone-step-2";
-      this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
       if (
         this.checkSubmit &&
         ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
