@@ -429,16 +429,17 @@ export default {
     },
     walletList() {
       // 在有指定選擇特定錢包的狀況下
-      if (this.$route.query.wallet) {
-        let wallet = this.$route.query.wallet;
-        let mapping = {
-          CGPay: 21,
-          goBao: 37,
-          usdt: 39 // USDT(ERC20)
-        };
+      if (this.$route.query.swift) {
+        console.log(1234);
+        // let wallet = this.$route.query.wallet;
+        // let mapping = {
+        //   CGPay: 21,
+        //   goBao: 37,
+        //   usdt: 39 // USDT(ERC20)
+        // };
 
         this.filterWalletList = this.walletList.filter(item => {
-          return item.id === mapping[wallet];
+          return item.swift_code === this.$route.query.swift;
         });
 
         // 如果使用者未綁定特定卡片，則導到 特定卡片 指定選項
