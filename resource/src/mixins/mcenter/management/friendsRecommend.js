@@ -52,7 +52,6 @@ export default {
           error: ""
         }
       },
-      captchaError: false,
       captchaErrorMsg: "",
       allValue: {
         username: "",
@@ -117,11 +116,6 @@ export default {
             // 2. 確認密碼只判斷是否相同
             switch (key) {
               case "password":
-                // if (!val) {
-                //   allTip[key].error = "";
-                //   return;
-                // }
-
                 this.allTip["confirm_password"].error = "";
                 if (
                   allValue["password"] !== this.allValue["confirm_password"]
@@ -137,11 +131,6 @@ export default {
                 break;
 
               case "confirm_password":
-                // if (!val) {
-                //   allTip[key].error = "";
-                //   return;
-                // }
-
                 allTip["confirm_password"].error = "";
                 if (allValue["password"] !== allValue["confirm_password"]) {
                   allTip["confirm_password"].error = this.$text(
@@ -173,27 +162,23 @@ export default {
     checkInput() {
       this.$validator.validateAll("form-page").then(response => {
         if (!response) {
-          // this.actionSetGlobalMessage({
-          //   msg: this.$text("S_JM_MSG_COMPLETE")
-          // });
-
           Object.keys(this.allValue).forEach(key => {
             if (!this.allValue[key]) {
-              if (key === "captcha_text") {
-                this.captchaError = joinMemInfo[key].errorMsg;
-              } else {
+              if (key === "confirm_password") {
                 if (
-                  key === "confirm_password" &&
                   this.allValue["password"] !==
-                    this.allValue["confirm_password"]
+                  this.allValue["confirm_password"]
                 ) {
                   this.allTip["confirm_password"].error = this.$text(
                     "S_PASSWD_CONFIRM_ERROR"
                   );
-                  return;
                 }
-
-                this.allTip[key].error = joinMemInfo[key].errorMsg;
+              } else {
+                if (key === "captcha_text") {
+                  this.captchaErrorMsg = joinMemInfo[key].errorMsg;
+                } else {
+                  this.allTip[key].error = joinMemInfo[key].errorMsg;
+                }
               }
             }
           });
