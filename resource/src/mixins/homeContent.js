@@ -544,18 +544,7 @@ export default {
       }
       switch (game.type) {
         case "strong_activity":
-          if (!this.loginStatus) {
-            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-              this.$router.push("/mobile/login");
-            } else {
-              this.$router.push("/mobile/joinmember");
-            }
-            return;
-          } else {
-            localStorage.setItem("iframe-third-url-title", game.name);
-            this.$router.push(`/mobile/activity/all/`);
-          }
-
+          this.$router.push(`/mobile/activity/all/`);
           return;
 
         case "thirdparty":
