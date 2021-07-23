@@ -289,8 +289,10 @@
     width: 20px;
     position: absolute;
     right: 0;
-    top: calc(50% - 10px);
+    display: flex;
+    align-items: center;
     margin: 0px 5px;
+    justify-content: center;
 
     > img {
       width: 20px;

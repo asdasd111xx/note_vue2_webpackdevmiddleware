@@ -375,6 +375,7 @@ export default {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
+            this.isLoading = true;
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
@@ -390,6 +391,7 @@ export default {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
+            this.isLoading = true;
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
@@ -422,6 +424,7 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
+            this.isLoading = true;
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
@@ -437,6 +440,7 @@ export default {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
+            this.isLoading = true;
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {

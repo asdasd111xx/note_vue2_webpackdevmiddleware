@@ -88,7 +88,6 @@
                   :placeholder="field.content.note1"
                   type="password"
                   maxlength="12"
-                  @blur="verification(field.key)"
                   @input="verification(field.key)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
@@ -117,7 +116,6 @@
                   type="password"
                   maxlength="12"
                   @input="verification(field.key)"
-                  @blur="verification(field.key)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />
