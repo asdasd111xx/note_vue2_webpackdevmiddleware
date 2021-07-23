@@ -1625,21 +1625,21 @@ export default {
         this.setPopupStatus(true, "bindWallet");
         return;
       }
-
+      console.log(123)
       switch (this.curPayInfo.payment_method_id) {
         // CGPay
         case 16:
         // CGPay-USDT
         case 25:
           this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay"
+            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=${this.curPayInfo.swift_code}`
           );
           break;
 
         // 購寶
         case 22:
           this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao"
+            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.curPayInfo.swift_code}`
           );
 
           break;
@@ -1648,7 +1648,7 @@ export default {
         case 402:
         case 404:
           this.$router.push(
-            "/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt"
+            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.curPayInfo.swift_code}`
           );
 
           break;
