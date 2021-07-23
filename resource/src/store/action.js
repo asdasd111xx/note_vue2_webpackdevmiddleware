@@ -888,35 +888,37 @@ export const actionIsLogin = ({ commit }, isLogin) => {
   commit(types.ISLOGIN, isLogin);
 };
 // 會員端-設定會員餘額
-export const actionSetUserBalance = ({ commit, dispatch }) => {
-  return axios({
+export const actionSetUserBalance = ({ commit, dispatch, state }) => {
+  return goLangApiRequest({
     method: "get",
-    url: "/api/v1/c/vendor/all/balance",
-    timeout: 30000
+    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Vendor/All/Balance",
+    params: {
+      lang: "zh-cn"
+    }
   })
     .then(res => {
-      if (res && res.data && res.data.result === "ok") {
+      if (res && res.status === "000" && res.data) {
         commit(types.SETUSERBALANCE, res.data);
+      } else {
+        const data = res && res.data;
+        if (data && data.code === "M00001") {
+          dispatch("actionSetGlobalMessage", {
+            msg: data.msg,
+            cb: () => {
+              member.logout().then(() => {
+                window.location.href = "/mobile/login?logout=true";
+              });
+            }
+          });
+        } else {
+          dispatch("actionSetGlobalMessage", {
+            msg: data.msg,
+            code: data.code
+          });
+        }
       }
     })
-    .catch(error => {
-      const data = error && error.response && error.response.data;
-      if (data && data.code === "M00001") {
-        dispatch("actionSetGlobalMessage", {
-          msg: data.msg,
-          cb: () => {
-            member.logout().then(() => {
-              window.location.href = "/mobile/login?logout=true";
-            });
-          }
-        });
-      } else {
-        dispatch("actionSetGlobalMessage", {
-          msg: data.msg,
-          code: data.code
-        });
-      }
-    });
+    .catch(error => {});
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
