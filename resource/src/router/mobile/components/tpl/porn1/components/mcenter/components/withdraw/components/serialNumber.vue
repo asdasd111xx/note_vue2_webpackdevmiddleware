@@ -58,7 +58,7 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              serialNumberData.total.deduction > 0
+              serialNumberData.total.administrative_amount > 0
                 ? `-${getDeductionNumber(
                     serialNumberData.total.administrative_amount
                   )}`
@@ -72,7 +72,7 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              serialNumberData.total.deduction > 0
+              serialNumberData.total.offer_deduction > 0
                 ? `-${getDeductionNumber(
                     serialNumberData.total.offer_deduction
                   )}`
