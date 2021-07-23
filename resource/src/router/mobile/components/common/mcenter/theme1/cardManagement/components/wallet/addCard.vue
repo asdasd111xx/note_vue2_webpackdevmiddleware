@@ -628,7 +628,7 @@ export default {
         params: {
           lang: "zh-cn",
           address: this.formData["walletAddress"].value,
-          virtualBankId: this.selectTarget.walletId
+          virtualBankId: String(this.selectTarget.walletId)
         }
       })
         .then(response => {
