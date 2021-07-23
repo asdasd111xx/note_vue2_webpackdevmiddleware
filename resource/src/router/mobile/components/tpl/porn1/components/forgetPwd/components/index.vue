@@ -52,7 +52,7 @@
             v-if="currentMethod !== 'phone-step-2'"
             :class="$style['form-control']"
           >
-            <div class="clearfix">
+            <div :class="[$style['input-wrap'], 'clearfix']">
               <div :class="$style['form-title']">
                 {{ $t("S_USER_NAME") }}
               </div>
@@ -104,7 +104,7 @@
               :class="[
                 $style['send-keyring'],
                 {
-                  [$style['active']]: username && !timer && username.length >= 4
+                  [$style['active']]: username && !timer && !allTip.username
                 }
               ]"
               @click="showCaptchaPopup"
@@ -115,7 +115,7 @@
           <!-- 重設密碼 -->
           <template v-if="currentMethod === 'phone-step-2'">
             <div :class="$style['form-control']">
-              <div class="clearfix">
+              <div :class="[$style['input-wrap'], 'clearfix']">
                 <div :class="$style['form-title']">
                   {{ $t("S_NEW_PWD") }}
                 </div>
@@ -147,7 +147,7 @@
               </div>
             </div>
             <div :class="$style['form-control']">
-              <div class="clearfix">
+              <div :class="['clearfix']">
                 <div :class="$style['form-title']">
                   {{ $t("S_ENABLE_CHK_PWD") }}
                 </div>
@@ -202,7 +202,7 @@
         :class="[
           $style['forget-submit'],
           {
-            [$style['active']]: checkSubmit
+            [$style['active']]: checkSubmit && !allTip.username
           }
         ]"
         @click="send($route.params.type)"
