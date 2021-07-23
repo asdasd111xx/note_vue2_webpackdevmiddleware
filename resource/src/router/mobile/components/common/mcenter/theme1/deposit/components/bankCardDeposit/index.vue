@@ -406,9 +406,12 @@
                     v-model="outerCryptoAddress"
                     :class="$style['input-cgpay-address']"
                     type="text"
+                    :placeholder="'请输入钱包位址'"
                   />
-            </div>
+              <div :class="$style['wallet-address-text']">为即时到帐，请务必输入正确的钱包位址</div>
 
+            </div>
+            
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div
