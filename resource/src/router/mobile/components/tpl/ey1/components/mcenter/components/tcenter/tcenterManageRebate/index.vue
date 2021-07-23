@@ -27,24 +27,6 @@ export default {
         // Title 由各接口設定
         prev: true,
         onClick: () => {
-          // if (this.$route.params.title === "real") {
-          //   if (
-          //     this.$route.params.item == "receive" ||
-          //     this.$route.params.item == "detail"
-          //   ) {
-          //     return this.$router.replace("/mobile/mcenter/tcenterLobby");
-          //   }
-          // }
-          // if (this.$route.params.title === "record") {
-          //   if (
-          //     this.$route.params.item == "yesterday" ||
-          //     this.$route.params.item == "today" ||
-          //     this.$route.params.item == "month"
-          //   ) {
-          //     return this.$router.replace("/mobile/mcenter/tcenterLobby");
-          //   }
-          // }
-
           this.$router.back();
         }
       }

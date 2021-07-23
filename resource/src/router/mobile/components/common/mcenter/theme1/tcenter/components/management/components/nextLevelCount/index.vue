@@ -139,8 +139,12 @@ export default {
         return {
           title: info.username,
           list: [
-            { name: "上级好友", item: info.upper_name },
-            { name: "主帐户余额", item: this.amountFormat(info.cash.balance) },
+            { name: "上级好友", item: info.upper_name, show: true },
+            {
+              name: "主帐户余额",
+              item: this.amountFormat(info.cash.balance),
+              show: true
+            },
             {
               name: "状态",
               item: this.getStatus([
@@ -152,15 +156,25 @@ export default {
               color: this.getStatus(
                 [info.enable, info.locked, info.tied, info.bankrupt],
                 "y"
-              )
+              ),
+              show: true
             },
             {
               name: "最后离线时间",
-              item: this.filterDate(info.last_online)
+              item: info.last_online ? this.filterDate(info.last_online) : "",
+              show: info.last_online ? true : false
             },
-            { name: "注册时间", item: this.filterDate(info.created_at) },
-            { name: "注册方式", item: this.createdBy(info.created_by) }
-          ]
+            {
+              name: "注册时间",
+              item: this.filterDate(info.created_at),
+              show: true
+            },
+            {
+              name: "注册方式",
+              item: this.createdBy(info.created_by),
+              show: true
+            }
+          ].filter(item => item.show)
         };
       });
       return data;

@@ -8,7 +8,7 @@
             `/static/image/${themeTPL}/mcenter/tcenter/icon_home_n.png`
           )
         "
-        @click="$router.replace('/mobile/mcenter')"
+        @click="$router.back()"
       />
       <div :class="$style['title-label']">我的推广</div>
       <div
@@ -173,7 +173,7 @@
               transPointType ? { width: `${100 / 3}%` } : { width: `48%` }
             "
             @click="
-              $router.push('/mobile/mcenter/tcenterManageRebate/real/receive')
+              $router.push('/mobile/mcenter/tcenterManageRebate/record/today')
             "
           >
             <div :class="[$style['special-data-img']]">
@@ -322,19 +322,20 @@ export default {
           showType: true,
           name: "团队报表",
           image: "ic_groupreport",
-          path: "/mobile/mcenter/tcenter/management/friends"
+          path: "/mobile/mcenter/tcenterManageTeam/firstFriends/today"
         },
         {
           showType: true,
           name: "下级统计",
           image: "ic_lowerlevel",
-          path: "/mobile/mcenter/tcenter/gameRecord/main"
+          path:
+            "/mobile/mcenter/tcenterManageTeam/nextLevelCount/today-register"
         },
         {
           showType: true,
           name: "推荐礼金",
           image: "ic_giftmoney",
-          path: "/mobile/mcenter/tcenter/recommendGift"
+          path: "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
         }
       ]
     };

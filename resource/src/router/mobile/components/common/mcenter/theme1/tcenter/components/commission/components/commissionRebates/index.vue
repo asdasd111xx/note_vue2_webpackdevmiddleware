@@ -271,6 +271,10 @@ export default {
     tabState: {
       type: Boolean,
       default: true
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
@@ -342,6 +346,21 @@ export default {
     this.bankRebateMaintains();
     this.actionSetSystemTime();
   },
+  watch: {
+    "$route.params.item"() {
+      this.setBackFunc(() => {
+        if (this.$route.params.title === "real") {
+          if (
+            this.$route.params.item == "receive" ||
+            this.$route.params.item == "detail"
+          ) {
+            return this.$router.replace("/mobile/mcenter/tcenterLobby");
+          }
+        }
+        this.$router.back();
+      });
+    }
+  },
   methods: {
     ...mapActions(["actionSetSystemTime"]),
     commaFormat(value) {
@@ -368,7 +387,7 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          if (this.themeTPL === "ey1") {
+          if (this.themeTPL === "ey1" && !this.path) {
             this.dispatch_hour = response.data.auto_dispatch_hour;
             this.immediateData = response.data.entries;
           } else {

@@ -233,6 +233,14 @@ export default {
       import(
         /* webpackChunkName: 'tcenterLobbyEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterLobby"
       ),
+    tcenterManageRebateEy1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageRebateEy1' */ "../../tpl/Ey1/components/mcenter/components/tcenter/tcenterManageRebate"
+      ),
+    tcenterManageTeamEy1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageTeamEy1' */ "../../tpl/Ey1/components/mcenter/components/tcenter/tcenterManageTeam"
+      ),
     tcenterNewRecommendEy1: () =>
       import(
         /* webpackChunkName: 'tcenterNewRecommendEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/components/newRecommend"

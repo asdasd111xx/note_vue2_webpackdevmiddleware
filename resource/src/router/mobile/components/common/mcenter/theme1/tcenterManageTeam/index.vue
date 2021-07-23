@@ -97,13 +97,13 @@ export default {
         },
         {
           key: "firstFriends",
-          item: "firstFriends",
+          item: "today",
           text: "团队报表",
           show: true
         },
         {
           key: "nextLevelCount",
-          item: "nextLevelCount",
+          item: "today-register",
           text: "下级统计",
           show: true
         }

@@ -20,6 +20,7 @@
       :set-header-title="setHeaderTitle"
       :set-tab-state="setTabState"
       :tab-state="tabState"
+      :set-back-func="setBackFunc"
     />
   </div>
 </template>

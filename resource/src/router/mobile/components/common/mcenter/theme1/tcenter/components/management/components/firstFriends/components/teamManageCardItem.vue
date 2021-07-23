@@ -206,7 +206,6 @@ export default {
     },
     goGameRecord(value, isClick = false) {
       if (!isClick) return;
-      console.log("value" + JSON.stringify(value));
       this.$emit("go-game-record", value);
     }
   }

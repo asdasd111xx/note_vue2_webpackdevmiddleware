@@ -266,6 +266,10 @@ export default {
       import(
         /* webpackChunkName: 'tcenterManageRebateSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageRebate"
       ),
+    tcenterManageTeamSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageTeamSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageTeam"
+      ),
     tcenterNewRecommendSg1: () =>
       import(
         /* webpackChunkName: 'tcenterNewRecommendSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newRecommend"
