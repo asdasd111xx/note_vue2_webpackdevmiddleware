@@ -384,7 +384,9 @@
                 您的位址
               </span>
               <select v-model="defaultOuterCrypto" :class="$style['outer-crypto-selected']">
-                <option v-for="option in outerCryptoOption" v-bind:value="option">
+                <option v-for="(option, idx) in outerCryptoOption"
+                :key="idx" 
+                v-bind:value="option">
                   {{ option }}
                 </option>
           </select>
