@@ -196,20 +196,10 @@ export default target => {
     }
   }
 
-  // 遊戲需登入
-  if (!store.state.loginStatus) {
-    if (store.state.webDomain.site === "ey1") {
-      router.push("/mobile/login");
-    } else {
-      router.push("/mobile/joinmember");
-    }
-    return;
-  }
-
   if (linkType === "event") {
     switch (linkTo) {
       case "event":
-        router.push("mobile/activity/all/");
+        router.push("/mobile/activity/all/");
         return;
 
       default:
@@ -217,9 +207,9 @@ export default target => {
 
         if (!store.state.loginStatus) {
           if (store.state.siteConfig.MOBILE_WEB_TPL === "ey1") {
-            $router.push("/mobile/login");
+            router.push("/mobile/login");
           } else {
-            this.$router.push("/mobile/joinmember");
+            router.push("/mobile/joinmember");
           }
           return;
         }
@@ -282,6 +272,16 @@ export default target => {
 
         return;
     }
+  }
+
+  // 遊戲需登入
+  if (!store.state.loginStatus) {
+    if (store.state.webDomain.site === "ey1") {
+      router.push("/mobile/login");
+    } else {
+      router.push("/mobile/joinmember");
+    }
+    return;
   }
 
   const gameList = [
