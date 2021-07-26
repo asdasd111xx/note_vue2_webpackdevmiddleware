@@ -891,6 +891,8 @@ export default {
       this.verification(key);
     },
     checkField() {
+      this.allTip["captcha_text"] = "";
+
       if (this.allValue["password"] !== this.allValue["confirm_password"]) {
         this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
       }
@@ -901,7 +903,14 @@ export default {
         this.allTip["password"] = joinMemInfo["password"].errorMsg;
       }
 
-      let hasError = Object.values(this.allTip).find(i => i !== "");
+      let hasError = false;
+
+      Object.keys(this.allTip).forEach(key => {
+        if (this.allTip[key] !== "") {
+          hasError = true;
+        }
+      });
+
       if (hasError) {
         this.isLoading = false;
         return false;
@@ -910,18 +919,15 @@ export default {
     },
     joinSubmit(captchaInfo) {
       this.isLoading = true;
-      Object.keys(this.allValue).forEach(item => {
-        if (item === "withdraw_password") {
-          this.verification("withdraw_password", "all");
-        } else {
-          this.verification(item);
-        }
-      });
+      // Object.keys(this.allValue).forEach(item => {
+      //   if (item === "withdraw_password") {
+      //     this.verification("withdraw_password", "all");
+      //   } else {
+      //     this.verification(item);
+      //   }
+      // });
 
       if (this.memInfo.config.register_captcha_type === 0) {
-        if (!this.checkField()) {
-          return;
-        }
       }
 
       // 滑動
@@ -940,7 +946,6 @@ export default {
         }
 
         this.allValue.captcha_text = this.thirdyCaptchaObj;
-        this.thirdyCaptchaObj = null;
       }
 
       // 圖形
