@@ -299,7 +299,9 @@ export default {
               this.pwdResetInfo["new_password"].value !==
               this.pwdResetInfo["confirm_password"].value
             ) {
-              this.errorMsg = this.$text("S_NEW_PASSWD_CONFIRM_ERROR");
+              this.errorMsg = this.isResetPW
+                ? this.$text("S_NEW_PASSWD_CONFIRM_ERROR")
+                : this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
             }
 
             if (!val.match(regex)) {
@@ -313,7 +315,9 @@ export default {
               this.pwdResetInfo["new_password"].value !==
               this.pwdResetInfo["confirm_password"].value
             ) {
-              this.errorMsg = this.$text("S_NEW_PASSWD_CONFIRM_ERROR");
+              this.errorMsg = this.isResetPW
+                ? this.$text("S_NEW_PASSWD_CONFIRM_ERROR")
+                : this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
             }
             break;
 
@@ -344,7 +348,9 @@ export default {
         this.pwdResetInfo["new_password"].value !==
           this.pwdResetInfo["confirm_password"].value
       ) {
-        this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+        this.errorMsg = this.isResetPW
+          ? this.$text("S_NEW_PASSWD_CONFIRM_ERROR")
+          : this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
         return;
       }
 
