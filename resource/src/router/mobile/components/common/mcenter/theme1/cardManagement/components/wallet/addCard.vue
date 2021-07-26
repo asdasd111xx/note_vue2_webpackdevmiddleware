@@ -430,7 +430,6 @@ export default {
     walletList() {
       // 在有指定選擇特定錢包的狀況下
       if (this.$route.query.swift) {
-        console.log(1234);
         // let wallet = this.$route.query.wallet;
         // let mapping = {
         //   CGPay: 21,

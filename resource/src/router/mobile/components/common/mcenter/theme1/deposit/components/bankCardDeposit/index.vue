@@ -1103,7 +1103,8 @@
 
       <!-- 綁定電子錢包 -->
       <template v-if="showPopStatus.type === 'bindWallet'">
-        <bind-wallet-popup :walletType="bindWalletType" @close="closePopup" />
+        <bind-wallet-popup :walletType="bindWalletType" 
+        :eyBindWalletData="eyBindWalletData" @close="closePopup" />
       </template>
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
@@ -1169,6 +1170,7 @@ export default {
       isBlockChecked: false,
 
       bindWalletType: "CGPay",
+      eyBindWalletData:{},
 
       // 彈窗參數(待之後整理)
       showRealStatus: false,
@@ -1636,6 +1638,7 @@ export default {
         (this.curPayInfo.payment_method_id === 402 || this.curPayInfo.payment_method_id === 404)
       ) {
         this.bindWalletType = "USDT";
+        this.eyBindWalletData = this.curPayInfo;
         this.setPopupStatus(true, "bindWallet");
         return;
       }
