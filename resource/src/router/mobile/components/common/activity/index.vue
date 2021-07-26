@@ -8,7 +8,10 @@
           :class="$style['nav-item']"
         >
           <div
-            :class="+currentLabel === +info.key ? $style['is-current'] : ''"
+            :class="[
+              +currentLabel === +info.key ? $style['is-current'] : '',
+              $style[siteConfig.MOBILE_WEB_TPL]
+            ]"
             @click="changeActivityLabel(info.key)"
           >
             {{ info.name }}
@@ -121,7 +124,10 @@ export default {
   },
   created() {
     // 强档活动
-    this.$emit("update:lobbyName", "强档活动");
+    let title = localStorage.getItem("iframe-third-url-title") || "强档活动";
+    console.log(title);
+
+    this.$emit("update:lobbyName", title);
   },
   mounted() {
     // if (!this.loginStatus) {

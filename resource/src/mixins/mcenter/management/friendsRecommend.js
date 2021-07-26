@@ -121,7 +121,7 @@ export default {
                   allValue["password"] !== this.allValue["confirm_password"]
                 ) {
                   allTip["confirm_password"].error = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
+                    "S_JM_PASSWD_CONFIRM_ERROR"
                   );
                 }
 
@@ -134,7 +134,7 @@ export default {
                 allTip["confirm_password"].error = "";
                 if (allValue["password"] !== allValue["confirm_password"]) {
                   allTip["confirm_password"].error = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
+                    "S_JM_PASSWD_CONFIRM_ERROR"
                   );
                 }
                 break;
@@ -170,7 +170,7 @@ export default {
                   this.allValue["confirm_password"]
                 ) {
                   this.allTip["confirm_password"].error = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
+                    "S_JM_PASSWD_CONFIRM_ERROR"
                   );
                 }
               } else {

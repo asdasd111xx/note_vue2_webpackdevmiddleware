@@ -545,6 +545,7 @@ export default {
       console.log(123);
       switch (game.type) {
         case "strong_activity":
+          localStorage.setItem("iframe-third-url-title", game.name);
           this.$router.push(`/mobile/activity/all/`);
           return;
 
