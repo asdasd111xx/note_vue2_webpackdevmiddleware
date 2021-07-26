@@ -658,9 +658,6 @@ export default {
         }
       });
       return;
-
-      // localStorage.setItem("iframe-third-url-title", target.name);
-      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     },
     onClickMaintain(value) {
       this.msg = `美东时间：
