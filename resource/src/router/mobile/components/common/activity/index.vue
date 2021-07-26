@@ -8,7 +8,10 @@
           :class="$style['nav-item']"
         >
           <div
-            :class="+currentLabel === +info.key ? $style['is-current'] : ''"
+            :class="[
+              +currentLabel === +info.key ? $style['is-current'] : '',
+              $style[siteConfig.MOBILE_WEB_TPL]
+            ]"
             @click="changeActivityLabel(info.key)"
           >
             {{ info.name }}
