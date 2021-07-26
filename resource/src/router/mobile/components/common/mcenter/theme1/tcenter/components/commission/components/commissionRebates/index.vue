@@ -10,11 +10,11 @@
       <detail
         :set-tab-state="setTabState"
         :set-header-title="setHeaderTitle"
-        v-if="pathItem === 'detail'"
+        v-if="$route.params.item === 'detail'"
         :status="status"
       />
     </div>
-    <div v-if="pathItem != 'detail'">
+    <div v-if="$route.params.item != 'detail'">
       <div
         v-if="immediateData.length > 0"
         :class="[$style['content-wrap'], { [$style.pathwrap]: path }]"
@@ -332,7 +332,7 @@ export default {
   },
   created() {
     //為了防止下一層的頁面重刷會call不到前一頁傳進來的參數 導回實時返利領取
-    if (this.path && this.pathItem != "receive" && this.pathItem != "detail") {
+    if (this.path && this.pathItem != "receive") {
       this.$router.replace({
         params: {
           title: this.title,
@@ -346,21 +346,7 @@ export default {
     this.bankRebateMaintains();
     this.actionSetSystemTime();
   },
-  watch: {
-    "$route.params.item"() {
-      this.setBackFunc(() => {
-        if (this.$route.params.title === "real") {
-          if (
-            this.$route.params.item == "receive" ||
-            this.$route.params.item == "detail"
-          ) {
-            return this.$router.replace("/mobile/mcenter/tcenterLobby");
-          }
-        }
-        this.$router.back();
-      });
-    }
-  },
+
   methods: {
     ...mapActions(["actionSetSystemTime"]),
     commaFormat(value) {
@@ -455,6 +441,9 @@ export default {
           params: {
             title: this.title,
             item: `${tabKey.name}`
+          },
+          query: {
+            total: "total"
           }
         });
       }

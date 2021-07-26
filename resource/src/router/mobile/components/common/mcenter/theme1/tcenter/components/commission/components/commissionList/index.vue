@@ -30,7 +30,7 @@
               ]"
               >{{ info.amount | amountFormat }}
 
-              <div v-if="path" :class="$style['arrow-next']">
+              <div v-if="path && info.amount > 0" :class="$style['arrow-next']">
                 <img
                   :src="$getCdnPath('/static/image/common/arrow_next.png')"
                   alt="arrow-next"
@@ -66,8 +66,18 @@
     </template>
 
     <template v-else>
-      <div :class="$style['no-data']" v-if="mainNoData">
+      <div v-if="mainNoData && !path" :class="$style['no-data']">
         <img src="/static/image/_new/mcenter/ic_nodata.png" />
+        <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+      </div>
+      <div v-else-if="mainNoData && path" :class="$style['no-data-path']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
+            )
+          "
+        />
         <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
       </div>
     </template>
@@ -115,6 +125,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;

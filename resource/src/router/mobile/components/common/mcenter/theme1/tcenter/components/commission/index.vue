@@ -167,24 +167,24 @@ export default {
       tabState: true
     };
   },
-  watch: {
-    "$route.params.item"(val) {
-      console.log("aaa" + val);
-      this.setBackFunc(() => {
-        if (this.$route.params.title === "record") {
-          if (
-            this.$route.params.item == "yesterday" ||
-            this.$route.params.item == "today" ||
-            this.$route.params.item == "month" ||
-            this.$route.params.item == "custom"
-          ) {
-            return this.$router.replace("/mobile/mcenter/tcenterLobby");
-          }
-        }
-        this.$router.back();
-      });
-    }
-  },
+  // watch: {
+  //   "$route.params.item"(val) {
+  //     console.log("aaa" + val);
+  //     this.setBackFunc(() => {
+  //       if (this.$route.params.title === "record") {
+  //         if (
+  //           this.$route.params.item == "yesterday" ||
+  //           this.$route.params.item == "today" ||
+  //           this.$route.params.item == "month" ||
+  //           this.$route.params.item == "custom"
+  //         ) {
+  //           return this.$router.replace("/mobile/mcenter/tcenterLobby");
+  //         }
+  //       }
+  //       this.$router.back();
+  //     });
+  //   }
+  // },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",

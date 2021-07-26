@@ -282,6 +282,12 @@
     font-size: 14px;
     text-align: center;
   }
+
+  &.newpath {
+    position: relative;
+    top: 24px;
+    height: 316px;
+  }
 }
 
 .date-tip {

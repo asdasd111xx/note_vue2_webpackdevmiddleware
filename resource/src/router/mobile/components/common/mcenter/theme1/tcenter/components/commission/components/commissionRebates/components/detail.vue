@@ -1,9 +1,11 @@
 <template>
   <!-- 實時返利詳情 -->
   <div :class="$style['detail-wrap']">
-    <!-- page1 -->
     <template v-if="routeItem === 'detail'">
-      <div>
+      <!-- page1 -->
+      <div
+        v-if="$route.query.total && !$route.query.depth && !$route.query.userId"
+      >
         <div :class="$style['date-total']">
           <span>{{ `统计至：${filterDate(resultDetail.at)}` }}</span>
         </div>
@@ -31,8 +33,11 @@
               <div
                 :class="$style['process-bar-current-line']"
                 :style="{
-                  width: `${(parseInt(item.valid) / parseInt(item.next)) *
-                    100}%`
+                  width: `${
+                    parseInt(item.valid) < parseInt(item.next)
+                      ? (parseInt(item.valid) / parseInt(item.next)) * 100
+                      : 0
+                  }%`
                 }"
               ></div>
             </div>
@@ -50,54 +55,55 @@
           />
         </div>
       </div>
-    </template>
-    <!-- page2 -->
-    <template v-if="routeItem === 'friend'">
-      <div :class="$style['friend-wrap']">
-        <div>
-          <card-total :data="friendBet" />
-        </div>
+      <!-- page2 -->
+      <template v-if="$route.query.depth && !$route.query.userId">
+        <div :class="$style['friend-wrap']">
+          <div>
+            <card-total :data="friendBet" />
+          </div>
 
-        <div
-          v-if="friendNameList !== undefined && friendNameList.length > 0"
-          :class="$style['card-item-wrap']"
-        >
-          <card-item
-            :card-item-list="friendNameList"
-            @click-card="enterNextLayer"
-          />
-        </div>
-        <div v-else :class="$style['no-data']">
-          <img src="/static/image/_new/mcenter/ic_nodata.png" />
-          <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
-        </div>
-      </div>
-    </template>
-
-    <!-- page3 -->
-    <template v-if="routeItem === 'friendGame'">
-      <div :class="$style['friend-wrap']">
-        <div>
-          <card-total :data="friendGameBet" />
-          <span :class="$style['rebate-rate']" @click="toggleSerial"
-            >返利比例</span
+          <div
+            v-if="friendNameList !== undefined && friendNameList.length > 0"
+            :class="$style['card-item-wrap']"
           >
+            <card-item
+              :card-item-list="friendNameList"
+              @click-card="enterNextLayer"
+            />
+          </div>
+          <div v-else :class="$style['no-data']">
+            <img src="/static/image/_new/mcenter/ic_nodata.png" />
+            <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+          </div>
         </div>
-        <div
-          v-if="
-            friendGameCategory !== undefined && friendGameCategory.length > 0
-          "
-          :class="$style['card-item-wrap']"
-        >
-          <card-item :card-item-list="friendGameCategory" />
+      </template>
+
+      <!-- page3 -->
+
+      <template v-if="$route.query.userId">
+        <div :class="$style['friend-wrap']">
+          <div>
+            <card-total :data="friendGameBet" />
+            <span :class="$style['rebate-rate']" @click="toggleSerial"
+              >返利比例</span
+            >
+          </div>
+          <div
+            v-if="
+              friendGameCategory !== undefined && friendGameCategory.length > 0
+            "
+            :class="$style['card-item-wrap']"
+          >
+            <card-item :card-item-list="friendGameCategory" />
+          </div>
         </div>
-      </div>
+      </template>
+      <rebate-rate
+        v-if="isSerial"
+        :handle-close="toggleSerial"
+        :game-rate-result="gameRateResult"
+      />
     </template>
-    <rebate-rate
-      v-if="isSerial"
-      :handle-close="toggleSerial"
-      :game-rate-result="gameRateResult"
-    />
   </div>
 </template>
 
@@ -175,21 +181,27 @@ export default {
       return;
     }
   },
-  mounted() {
-    this.getAllDetailList();
-  },
+  mounted() {},
   watch: {
-    "$route.params.item": {
+    "$route.query": {
       handler: function(item) {
-        if (item == "detail") {
+        if (item.total) {
+          //page1
           this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
           this.setTabState(true);
-        } else if (item == "friend") {
-          this.setHeaderTitle(
-            this.$text(this.levelTrans[this.$route.query.layer])
-          );
+          this.getAllDetailList();
+        } else if (item.depth && !item.user) {
+          //page2
+          this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
+          this.setTabState(false);
+          this.getFriendsList(this.depth);
+        } else if (item.user) {
+          //page3
+          this.setHeaderTitle(item.user);
+          this.setTabState(false);
+          this.getUserGameList();
+          this.getFriendGameRateList();
         }
-        this.routeItem = item;
       },
       deep: true,
       immediate: true
@@ -398,11 +410,12 @@ export default {
       //取得特定期數好友有效投注額及佣金列表
       goLangApiRequest({
         method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this.memberId}/Friends`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
+          .$route.query.memberId || this.memberId}/Friends`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
-          depth: depth
+          depth: this.$route.query.depth || depth
         }
       })
         .then(res => {
@@ -416,15 +429,16 @@ export default {
           }
         });
     },
-    getUserGameList(userid) {
+    getUserGameList() {
       //取得使用者有效投注平台統計
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this.memberId}/Vendor/Validbet/Report`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
+          .$route.query.memberId || this.memberId}/Vendor/Validbet/Report`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
-          userId: userid
+          userId: this.$route.query.userId
         }
       }).then(res => {
         if (res && res.status === "000") {
@@ -441,7 +455,7 @@ export default {
         params: {
           lang: "zh-cn",
           cid: this.cid,
-          depth: this.depth
+          depth: this.$route.query.depth || this.depth
         }
       }).then(res => {
         if (res && res.status === "000") {
@@ -488,39 +502,56 @@ export default {
       });
     },
     enterNextLayer(friend) {
-      //進到下一頁的標題(title) 路徑(next)
+      //進到下一頁
       let title = "";
-      let next = "";
-      switch (this.$route.params.item) {
-        default:
-        case "detail":
-          title = this.$text(this.levelTrans[friend.depth]);
-          next = "friend";
-          if (this.memberId) {
-            this.depth = friend.depth;
-            this.getFriendsList(this.depth);
-          }
-          break;
-        case "friend":
-          title = friend.user;
-          next = "friendGame";
-          this.getUserGameList(friend.userid);
-          this.getFriendGameRateList();
-          break;
+      let queryParams = {};
+
+      //第三層
+      if (this.$route.query.depth) {
+        title = friend.user;
+        queryParams = {
+          memberId: this.memberId,
+          depth: this.depth,
+          userId: friend.userid,
+          user: friend.user
+        };
+        //this.getUserGameList(friend.userid);
+        //this.getFriendGameRateList();
+      } else if (!this.$route.query.depth) {
+        //第二層
+        this.depth = friend.depth;
+        queryParams = { memberId: this.memberId, depth: friend.depth };
+        //this.getFriendsList(this.depth);
       }
+
+      // switch (this.$route.params.item) {
+      //   default:
+      //   case "detail":
+      //     title = this.$text(this.levelTrans[friend.depth]);
+      //     next = "friend";
+      //     if (this.memberId) {
+      //       this.depth = friend.depth;
+      //       this.getFriendsList(this.depth);
+      //     }
+      //     break;
+      //   case "friend":
+      //     title = friend.user;
+      //     next = "friendGame";
+      //     this.getUserGameList(friend.userid);
+      //     this.getFriendGameRateList();
+      //     break;
+      // }
 
       clearInterval(this.timer);
       this.timer = null;
       this.timer = setTimeout(() => {
         this.setHeaderTitle(title);
-        this.setTabState(false);
         this.$router.push({
           params: {
-            title: this.title,
-            item: next
+            title: this.title
           },
           query: {
-            layer: friend.depth
+            ...queryParams
           }
         });
       }, 300);
