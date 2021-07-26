@@ -447,7 +447,7 @@ export default {
         params: {
           username: this.username,
           email: this.email,
-          domain: window.location.host,
+          domain: window.location.host.replace("/"),
           // 開發端測試用
           // domain: 'yb01.66boxing.com',
           callback: "/mobile/resetPwd",
@@ -679,9 +679,9 @@ export default {
     },
     // 測試第二步驟
     step2shortcut() {
-          this.errorMsg = "";
-        this.currentMethod = "phone-step-2";
-        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      this.errorMsg = "";
+      this.currentMethod = "phone-step-2";
+      this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
       if (
         this.checkSubmit &&
         ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
