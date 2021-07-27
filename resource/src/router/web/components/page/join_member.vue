@@ -891,16 +891,17 @@ export default {
       this.verification(key);
     },
     checkField() {
-      this.allTip["captcha_text"] = "";
-
       if (this.allValue["password"] !== this.allValue["confirm_password"]) {
         this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
       }
 
-      const regex = new RegExp(joinMemInfo["password"].regExp);
 
-      if (!this.allValue["password"].match(regex)) {
+      if (!this.allValue["password"].match(new RegExp(joinMemInfo["password"].regExp))) {
         this.allTip["password"] = joinMemInfo["password"].errorMsg;
+      }
+
+       if (!this.allValue["username"].match(new RegExp(joinMemInfo["username"].regExp))) {
+        this.allTip["username"] = joinMemInfo["username"].errorMsg;
       }
 
       let hasError = false;
@@ -940,7 +941,6 @@ export default {
         if (!this.thirdyCaptchaObj) {
           this.allTip["captcha_text"] = this.$text("S_PLS_CLICK_CAPTCHA_FIRST");
           this.isLoading = false;
-          return;
         } else {
           this.allTip["captcha_text"] = "";
         }
@@ -953,7 +953,6 @@ export default {
         if (!this.allValue.captcha_text) {
           this.allTip["captcha_text"] = this.$text("S_ENABLE_KEYRING");
           this.isLoading = false;
-          return;
         } else {
           this.allTip["captcha_text"] = "";
         }
