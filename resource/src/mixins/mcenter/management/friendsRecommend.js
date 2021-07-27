@@ -101,47 +101,52 @@ export default {
      */
     onInput(value, key) {
       if (!this.isShow) return;
-      const { allValue, allTip } = this;
       const regex = new RegExp(joinMemInfo[key].regExp);
       const errorMsg = joinMemInfo[key].errorMsg;
 
-      allTip[key].error = "";
-
+      this.allTip[key].error = "";
       if (["username", "password", "confirm_password", "name"].includes(key)) {
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
-            allValue[key] = val;
+            this.allValue[key] = val;
 
             // 1. 密碼只判斷是否符合格式不判斷空
             // 2. 確認密碼只判斷是否相同
             switch (key) {
               case "password":
+                this.allTip["password"].error = "";
                 this.allTip["confirm_password"].error = "";
                 if (
-                  allValue["password"] !== this.allValue["confirm_password"]
+                  this.allValue["password"] &&
+                  this.allValue["password"] !==
+                    this.allValue["confirm_password"]
                 ) {
-                  allTip["confirm_password"].error = this.$text(
+                  this.allTip["confirm_password"].error = this.$text(
                     "S_JM_PASSWD_CONFIRM_ERROR"
                   );
                 }
 
-                if (!val.match(regex)) {
-                  allTip[key].error = errorMsg;
+                if (this.allValue["password"] && !val.match(regex)) {
+                  this.allTip[key].error = errorMsg;
                 }
+
                 break;
 
               case "confirm_password":
-                allTip["confirm_password"].error = "";
-                if (allValue["password"] !== allValue["confirm_password"]) {
-                  allTip["confirm_password"].error = this.$text(
+                this.allTip["confirm_password"].error = "";
+                if (
+                  this.allValue["password"] !==
+                  this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"].error = this.$text(
                     "S_JM_PASSWD_CONFIRM_ERROR"
                   );
                 }
                 break;
 
               default:
-                if (!allValue[key].match(regex)) {
-                  allTip[key].error = errorMsg;
+                if (!this.allValue[key].match(regex)) {
+                  this.allTip[key].error = errorMsg;
                 }
                 break;
             }
@@ -151,7 +156,7 @@ export default {
 
       if (
         ["captcha_text"].includes(key) &&
-        this.memInfo.config.friend_captcha_type !== 0 &&
+        this.memInfo.config.friend_captcha_type === 1 &&
         allValue["captcha_text"] === ""
       ) {
         this.captchaErrorMsg = this.$text("S_ENABLE_KEYRING", "请输入验证码");
