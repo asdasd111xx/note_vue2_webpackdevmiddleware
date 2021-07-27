@@ -633,6 +633,8 @@ export default {
 
         if (!this.path) {
           this.setHeaderTitle(this.depthMapping[value]);
+        } else {
+          this.setHeaderTitle("团队报表");
         }
 
         this.setTabState(false);

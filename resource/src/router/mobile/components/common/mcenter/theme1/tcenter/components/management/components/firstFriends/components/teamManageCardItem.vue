@@ -332,7 +332,8 @@ export default {
     font-weight: normal;
     display: flex;
     justify-content: space-between;
-    padding-bottom: 5px;
+    padding-bottom: 4px;
+    padding-top: 6px;
 
     .card-all-open {
       display: flex;

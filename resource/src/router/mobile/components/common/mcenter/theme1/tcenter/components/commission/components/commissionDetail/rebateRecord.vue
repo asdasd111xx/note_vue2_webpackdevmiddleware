@@ -46,13 +46,6 @@
             :card-item-list="friendLayerList"
             @click-card="enterNextLayer"
           />
-          <div :class="$style.tips">
-            如需帮助，请<span
-              :class="$style['service-btn']"
-              @click="$router.push('/mobile/service')"
-              >联系客服</span
-            >
-          </div>
         </div>
       </template>
 
