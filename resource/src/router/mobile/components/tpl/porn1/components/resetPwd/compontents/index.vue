@@ -140,7 +140,6 @@ export default {
   },
   data() {
     return {
-      checked: false,
       errorMsg: "",
       msg: "",
       allTip: {
@@ -290,7 +289,7 @@ export default {
           // case password 原密碼
           case "login_password":
             this.errorMsg = "";
-            if (val.length < 6) {
+            if (this.pwdResetInfo["password"].value.length < 6) {
               this.errorMsg = "请输入6-12位字母及数字";
             }
             break;
@@ -337,8 +336,6 @@ export default {
     },
     checkField(submit) {
       if (!this.submitActive) return;
-
-      this.checked = true;
 
       // Object.keys(this.pwdResetInfo).forEach(key => {
       //   if (this.pwdResetInfo[key].display) {

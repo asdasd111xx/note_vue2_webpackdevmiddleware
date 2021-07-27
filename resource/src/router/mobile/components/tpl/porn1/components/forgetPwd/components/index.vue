@@ -371,7 +371,7 @@ export default {
             this.allTip["confirm_password"] = "";
             if (this.confirm_password !== this.password) {
               this.allTip["confirm_password"] = this.$text(
-                "S_NEW_PASSWD_CONFIRM_ERROR"
+                "S_NEW_PASSWD_NEW_CONFIRM_ERROR"
               );
             }
 
@@ -389,7 +389,7 @@ export default {
             this.allTip["confirm_password"] = "";
             if (this.confirm_password !== this.password) {
               this.allTip["confirm_password"] = this.$text(
-                "S_NEW_PASSWD_CONFIRM_ERROR"
+                "S_NEW_PASSWD_NEW_CONFIRM_ERROR"
               );
             }
             break;
