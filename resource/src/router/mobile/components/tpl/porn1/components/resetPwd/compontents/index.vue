@@ -17,6 +17,7 @@
           v-for="item in filterField()"
           :key="item"
           :class="$style['field-wrap']"
+          :style="!pwdResetInfo[item].display ? { border: 'none' } : {}"
         >
           <div
             v-if="pwdResetInfo[item].display"
@@ -112,7 +113,7 @@
             $style[themeTPL],
             { [$style['active']]: submitActive }
           ]"
-          @click="checkField"
+          @click="checkField(true)"
         >
           {{ $text("S_SUBMIT", "提交") }}
         </div>
@@ -139,7 +140,6 @@ export default {
   },
   data() {
     return {
-      checked: false,
       errorMsg: "",
       msg: "",
       allTip: {
@@ -288,9 +288,10 @@ export default {
         switch (target) {
           // case password 原密碼
           case "login_password":
-            // if (val.length < 6) {
-            //   this.errorMsg = "请输入6-12位字母及数字";
-            // }
+            this.errorMsg = "";
+            if (this.pwdResetInfo["password"].value.length < 6) {
+              this.errorMsg = "请输入6-12位字母及数字";
+            }
             break;
 
           case "new_password":
@@ -309,11 +310,16 @@ export default {
 
           case "confirm_password":
             this.errorMsg = "";
+
             if (
               this.pwdResetInfo["new_password"].value !==
               this.pwdResetInfo["confirm_password"].value
             ) {
               this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
+            }
+
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
             }
             break;
 
@@ -324,12 +330,12 @@ export default {
             }
             break;
         }
+
+        this.checkField();
       });
     },
-    checkField() {
+    checkField(submit) {
       if (!this.submitActive) return;
-
-      this.checked = true;
 
       // Object.keys(this.pwdResetInfo).forEach(key => {
       //   if (this.pwdResetInfo[key].display) {
@@ -350,15 +356,26 @@ export default {
 
       const regex = new RegExp(joinMemInfo["password"].regExp);
 
+      if (this.pwdResetInfo["password"].value.length < 6) {
+        this.errorMsg = "请输入6-12位字母及数字";
+        return;
+      }
+
       if (!this.pwdResetInfo["new_password"].value.match(regex)) {
         this.errorMsg = joinMemInfo["new_password"].errorMsg;
         return;
       }
 
-      if (!this.errorMsg) {
+      if (!this.pwdResetInfo["confirm_password"].value.match(regex)) {
+        this.errorMsg = joinMemInfo["confirm_password"].errorMsg;
+        return;
+      }
+
+      if (submit && !this.errorMsg) {
         this.isResetPW ? this.pwdResetSubmit() : this.pwdModifySubmit();
       }
     },
+    // 修改密碼
     pwdModifySubmit() {
       if (!this.submitActive || this.isLoading) return;
       this.isLoading = true;
@@ -395,9 +412,10 @@ export default {
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
+                // 強制修改密碼
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                    this.$router.push("/mobile/login");
+                    this.$router.replace("/mobile");
                   });
                   return;
                 }
@@ -411,6 +429,7 @@ export default {
         });
       }
     },
+    // 重設密碼
     pwdResetSubmit() {
       if (!this.submitActive || this.isLoading) return;
       const pwdInfo = {
