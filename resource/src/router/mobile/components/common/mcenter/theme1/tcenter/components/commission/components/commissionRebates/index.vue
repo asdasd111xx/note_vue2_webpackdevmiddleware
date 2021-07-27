@@ -331,7 +331,7 @@ export default {
     }
   },
   created() {
-    //為了防止下一層的頁面重刷會call不到前一頁傳進來的參數 導回實時返利領取
+    //刷新導回實時返利領取
     if (this.path && this.pathItem != "receive") {
       this.$router.replace({
         params: {

@@ -6,7 +6,7 @@
     ]"
   >
     <div
-      v-if="!currentInfo.oauth2 && $route.query.next === undefined"
+      v-if="!currentInfo.oauth2 && !$route.query.depth && !$route.query.user"
       :class="$style['tab-wrap']"
     >
       <div
@@ -99,18 +99,67 @@ export default {
       this.currentTemplate = "record";
       return;
     }
+
     this.setHeaderTitle(this.rebateDateFormat(this.currentInfo.period));
+  },
+  watch: {
+    "$route.query": {
+      handler: function(item) {
+        if (item.assign) {
+          this.currentTemplate = "assign";
+          this.currentTab = 0;
+        } else if (item.record || item.inner) {
+          this.currentTemplate = "record";
+          this.currentTab = 1;
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   },
   methods: {
     setCurrentTab(index) {
-      this.currentTab = index;
       switch (index) {
         case 0:
-          this.currentTemplate = "assign";
+          this.$router.push({
+            params: {
+              title: "record",
+              item: "detail"
+            },
+            query: {
+              assign: "assign",
+              period: this.$route.query.period,
+              start_at: this.$route.query.start_at,
+              end_at: this.$route.query.end_at,
+              oauth2_detail: this.$route.query.oauth2_detail,
+              type: this.$route.query.type,
+              amount: this.$route.query.amount,
+              current_entry_id: this.$route.query.current_entry_id,
+              show_detail: this.$route.query.show_detail,
+              oauth2: this.$route.query.oauth2
+            }
+          });
           break;
 
         case 1:
-          this.currentTemplate = "record";
+          this.$router.push({
+            params: {
+              title: "record",
+              item: "detail"
+            },
+            query: {
+              record: "record",
+              period: this.$route.query.period,
+              start_at: this.$route.query.start_at,
+              end_at: this.$route.query.end_at,
+              oauth2_detail: this.$route.query.oauth2_detail,
+              type: this.$route.query.type,
+              amount: this.$route.query.amount,
+              current_entry_id: this.$route.query.current_entry_id,
+              show_detail: this.$route.query.show_detail,
+              oauth2: this.$route.query.oauth2
+            }
+          });
           break;
       }
     },

@@ -107,6 +107,7 @@ export default {
       path: this.$route.params.title ?? ""
     };
   },
+  mounted() {},
   filters: {
     amountFormat(amount) {
       return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -165,7 +166,11 @@ export default {
       axios({
         method: "get",
         url: API_COMMISSIOM_DETAIL_LIST,
-        params
+        params: {
+          period: this.$route.query.period || params.period,
+          start_at: this.$route.query.start_at || params.start_at,
+          end_at: this.$route.query.end_at || params.end_at
+        }
       })
         .then(response => {
           this.showInfinite = true;

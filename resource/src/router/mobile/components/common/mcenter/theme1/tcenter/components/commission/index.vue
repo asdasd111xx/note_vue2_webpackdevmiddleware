@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="path && rebatePathItem !== 'detail'">
+    <template v-if="path && $route.params.item !== 'detail'">
       <!-- 返利管理 日期 -->
       <tcenter-label :child-item="allTotalData" :change-tab="getTimeRecord" />
       <commission-list
@@ -94,7 +94,7 @@
     />
 
     <commission-detail
-      v-if="page === 'detail' || rebatePathItem === 'detail'"
+      v-if="page === 'detail' || $route.params.item === 'detail'"
       :current-info="getCommissionInfo"
       :set-header-title="setHeaderTitle"
     />
@@ -158,7 +158,6 @@ export default {
         .add(-29, "days")
         .format("YYYY-MM-DD"),
       endDate: Vue.moment(now).format("YYYY-MM-DD"),
-      pathDay: this.$route.params.item ?? "", //返利管理日期,
       path: this.$route.params.title ?? "", //是否從返利管理來,
 
       title: "record",
@@ -167,24 +166,6 @@ export default {
       tabState: true
     };
   },
-  // watch: {
-  //   "$route.params.item"(val) {
-  //     console.log("aaa" + val);
-  //     this.setBackFunc(() => {
-  //       if (this.$route.params.title === "record") {
-  //         if (
-  //           this.$route.params.item == "yesterday" ||
-  //           this.$route.params.item == "today" ||
-  //           this.$route.params.item == "month" ||
-  //           this.$route.params.item == "custom"
-  //         ) {
-  //           return this.$router.replace("/mobile/mcenter/tcenterLobby");
-  //         }
-  //       }
-  //       this.$router.back();
-  //     });
-  //   }
-  // },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -233,38 +214,34 @@ export default {
     page() {
       return this.$route.params.page;
     },
-    rebatePathItem: {
-      get() {
-        return this.$route.params.item;
-      },
-      set(value) {
-        return (this.pathDay = value);
-      }
-    },
     allTotalData() {
       return [
         {
           text: this.$text("S_TODDAY", "今日"),
           name: "today",
           value: 0,
+          index: 0,
           show: true
         },
         {
           text: this.$text("S_YESTERDAY", "昨日"),
           name: "yesterday",
           value: 1,
+          index: 1,
           show: true
         },
         {
           text: this.$text("S_THIRTY_DAY", "近30日"),
           name: "month",
           value: 29,
+          index: 2,
           show: true
         },
         {
           text: this.$text("S_SEARCH_DAY", "搜寻"),
           name: "custom",
           value: 29,
+          index: 3,
           show: true
         }
       ].filter(item => item.show);
@@ -275,20 +252,32 @@ export default {
       this.endTime =
         this.startTime > this.endTime ? this.startTime : this.endTime;
     },
+    "$route.query.dateId": {
+      handler: function(item) {
+        if (item) {
+          this.getTimeRecord(this.allTotalData[item]);
+        }
+      },
+      deep: true,
+      immediate: true
+    },
+    "$route.params.item": {
+      handler: function(item) {
+        if (item == "detail") {
+          this.setTabState(false);
+          this.hasSearch = false;
+        } else {
+          this.setTabState(true);
+          this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
+        }
+      },
+      deep: true,
+      immediate: true
+    },
     "$route.params.page"() {
-      if (this.$route.params.page === "detail") {
-        return;
-      } else {
+      if (this.$route.params.page !== "detail") {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
-      }
-    },
-    "$route.params.item"() {
-      if (this.$route.params.item === "detail") {
-        return;
-      } else {
-        this.setTabState(true);
-        this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
       }
     }
   },
@@ -306,8 +295,14 @@ export default {
       this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
     }
 
-    if (this.rebatePathItem === "detail") {
-      this.$router.replace("/mobile/mcenter/tcenterManageRebate/record/today");
+    if (this.$route.params.item === "detail") {
+      this.$router.replace({
+        params: {
+          title: "record",
+          item: "today"
+        },
+        query: { dateId: 0 }
+      });
     }
 
     // // 重整的時候，根據當下render page
@@ -395,12 +390,13 @@ export default {
           .format("YYYY-MM-DD");
       }
 
-      if (this.path && this.rebatePathItem != data.name) {
+      if (this.path && this.$route.params.item != data.name) {
         this.$router.replace({
           params: {
             title: "record",
             item: `${data.name}`
-          }
+          },
+          query: { dateId: data.index }
         });
         this.rebateTitle = data.name;
       }

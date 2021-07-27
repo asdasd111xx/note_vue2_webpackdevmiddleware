@@ -147,6 +147,10 @@ export default {
             params: {
               title: "record",
               item: "detail"
+            },
+            query: {
+              assign: "assign",
+              ...this.info
             }
           });
         } else {

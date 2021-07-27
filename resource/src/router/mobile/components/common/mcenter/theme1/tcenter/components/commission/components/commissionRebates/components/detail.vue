@@ -34,9 +34,9 @@
                 :class="$style['process-bar-current-line']"
                 :style="{
                   width: `${
-                    parseInt(item.valid) < parseInt(item.next)
+                    item.valid < item.next
                       ? (parseInt(item.valid) / parseInt(item.next)) * 100
-                      : 0
+                      : '0'
                   }%`
                 }"
               ></div>
@@ -399,7 +399,7 @@ export default {
           this.resultDetail = res.data.ret ?? [];
 
           //entryId
-          this.memberId = this.resultDetail.id;
+          this.memberId = this.resultDetail.id ?? "";
 
           //多層級好友
           this.resultFriend = res.data.layer_detail ?? [];
@@ -451,7 +451,8 @@ export default {
       //取得返利明細特定階層各平台分潤比率
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this.memberId}/Layer/Condition`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
+          .$route.query.memberId || this.memberId}/Layer/Condition`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
@@ -506,41 +507,23 @@ export default {
       let title = "";
       let queryParams = {};
 
-      //第三層
+      //go page3
       if (this.$route.query.depth) {
         title = friend.user;
         queryParams = {
-          memberId: this.memberId,
+          memberId: this.$route.query.memberId || this.memberId,
           depth: this.depth,
           userId: friend.userid,
           user: friend.user
         };
-        //this.getUserGameList(friend.userid);
-        //this.getFriendGameRateList();
       } else if (!this.$route.query.depth) {
-        //第二層
+        //go page2
         this.depth = friend.depth;
-        queryParams = { memberId: this.memberId, depth: friend.depth };
-        //this.getFriendsList(this.depth);
+        queryParams = {
+          memberId: this.$route.query.memberId || this.memberId,
+          depth: friend.depth
+        };
       }
-
-      // switch (this.$route.params.item) {
-      //   default:
-      //   case "detail":
-      //     title = this.$text(this.levelTrans[friend.depth]);
-      //     next = "friend";
-      //     if (this.memberId) {
-      //       this.depth = friend.depth;
-      //       this.getFriendsList(this.depth);
-      //     }
-      //     break;
-      //   case "friend":
-      //     title = friend.user;
-      //     next = "friendGame";
-      //     this.getUserGameList(friend.userid);
-      //     this.getFriendGameRateList();
-      //     break;
-      // }
 
       clearInterval(this.timer);
       this.timer = null;

@@ -1,7 +1,12 @@
 <template>
   <div :class="$style['record-wrap']">
     <div
-      v-if="currentInfo.oauth2 && page == 1"
+      v-if="
+        currentInfo.oauth2 &&
+          $route.query.record &&
+          !$route.query.depth &&
+          !$route.query.userId
+      "
       :class="[$style['profit_wrap']]"
     >
       <div :class="[$style['profit_container']]">
@@ -24,9 +29,14 @@
         </div>
       </div>
     </div>
-    <template v-if="pathItem === 'detail'">
+    <template v-if="$route.params.item === 'detail'">
       <template v-if="friendLayerList.length > 0">
-        <div v-if="page === 1" :class="$style['card-wrap']">
+        <div
+          v-if="
+            $route.query.record && !$route.query.depth && !$route.query.userId
+          "
+          :class="$style['card-wrap']"
+        >
           <div v-if="!currentInfo.oauth2" :class="$style['date-total']">
             <span>{{
               `统计至：${titleDateFormat(currentInfo.period)} ${filterDate}`
@@ -47,7 +57,7 @@
       </template>
 
       <div
-        v-if="page === 2 && !currentInfo.oauth2"
+        v-if="$route.query.depth && !$route.query.userId && !currentInfo.oauth2"
         :class="$style['card-wrap']"
       >
         <div :class="$style['friend-wrap']">
@@ -71,7 +81,7 @@
       </div>
 
       <div
-        v-if="page === 3 && !currentInfo.oauth2"
+        v-if="$route.query.userId && !currentInfo.oauth2"
         :class="$style['card-wrap']"
       >
         <div :class="$style['friend-wrap']">
@@ -126,31 +136,50 @@ export default {
     currentInfo: {
       type: Object,
       required: true
+    },
+    setTabState: {
+      type: Function,
+      default: () => {}
     }
   },
 
   data() {
     return {
-      pathItem: this.$route.params.item ?? "",
       title: this.$route.params.title ?? "",
-      childItem: this.$route.query.next ?? "",
+
       page: 1,
       isSerial: false
     };
   },
   watch: {
-    "$route.query.next"(val) {
-      if (val === undefined) {
-        this.page = 1;
-        this.setHeaderTitle(this.rebateDateFormat(this.currentInfo.period));
-      } else if (val === "friends") {
-        this.page = 2;
-        this.setHeaderTitle(
-          this.$text(this.levelTrans[this.$route.query.layer])
-        );
-      } else if (val === "friendGame") {
-        this.page = 3;
-      }
+    "$route.query": {
+      handler: function(item) {
+        if (item.record) {
+          //page1
+          this.setHeaderTitle(this.rebateDateFormat(this.$route.query.period));
+          this.setTabState(true);
+
+          if (this.currentInfo.oauth2) {
+            // 第三方返利只取第三方返利資料
+            this.getDetail();
+            return;
+          }
+          this.getSummary();
+        } else if (item.depth && !item.user) {
+          //page2
+          this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
+          this.setTabState(false);
+          this.getRebateFriends();
+        } else if (item.user) {
+          //page3
+          this.setHeaderTitle(item.user);
+          this.setTabState(false);
+          this.getUserGameList();
+          this.getFriendGameRateList();
+        }
+      },
+      deep: true,
+      immediate: true
     }
   },
   computed: {
@@ -325,26 +354,26 @@ export default {
       this.isSerial = !this.isSerial;
     },
     enterNextLayer(friend) {
-      //進到下一頁的標題(title) 路徑(next)
+      //進到下一頁
       let title = "";
-      let next = "";
+      let queryParams = {};
 
-      switch (this.$route.query.next) {
-        default:
-          title = this.$text(this.levelTrans[friend.depth]);
-          next = "friends";
-          this.page = 2;
-          this.depth = friend.depth;
-          this.getRebateFriends(this.depth);
-
-          break;
-        case "friends":
-          this.page = 3;
-          title = friend.user;
-          next = "friendGame";
-          this.getUserGameList(friend.userid);
-          this.getFriendGameRateList();
-          break;
+      //第三層
+      if (this.$route.query.depth) {
+        title = friend.user;
+        queryParams = {
+          memberId: this.memberId,
+          depth: this.$route.query.depth || this.depth,
+          userId: friend.userid,
+          user: friend.user
+        };
+      } else if (!this.$route.query.depth) {
+        //第二層
+        this.depth = friend.depth;
+        queryParams = {
+          memberId: this.memberId,
+          depth: friend.depth
+        };
       }
 
       clearInterval(this.timer);
@@ -353,12 +382,20 @@ export default {
         this.setHeaderTitle(title);
         this.$router.push({
           params: {
-            title: this.title,
-            item: this.pathItem
+            title: this.title
           },
           query: {
-            next: next,
-            layer: friend.depth
+            ...queryParams,
+            inner: "inner",
+            period: this.$route.query.period,
+            start_at: this.$route.query.start_at,
+            end_at: this.$route.query.end_at,
+            oauth2_detail: this.$route.query.oauth2_detail,
+            type: this.$route.query.type,
+            amount: this.$route.query.amount,
+            current_entry_id: this.$route.query.current_entry_id,
+            show_detail: this.$route.query.show_detail,
+            oauth2: this.$route.query.oauth2
           }
         });
       }, 300);
