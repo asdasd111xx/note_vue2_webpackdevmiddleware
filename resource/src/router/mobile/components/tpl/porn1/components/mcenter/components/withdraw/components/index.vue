@@ -1669,7 +1669,6 @@ export default {
         type: 2,
         amount: this.actualMoneyPlusOffer()
       };
-      console.log(123);
       if (
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28
