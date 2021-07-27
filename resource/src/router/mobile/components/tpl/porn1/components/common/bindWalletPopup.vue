@@ -135,6 +135,10 @@ export default {
     walletType: {
       type: String,
       default: ""
+    },
+    eyBindWalletData: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -184,7 +188,7 @@ export default {
         break;
 
       case "USDT":
-        this.title = "绑定 USDT(ERC20)";
+        this.title = `绑定 ${this.eyBindWalletData.payment_method_name}`;
         this.formData["walletAddress"].title = "钱包位址";
         break;
 
@@ -269,7 +273,8 @@ export default {
         url: "/api/v1/c/player/user_virtual_bank",
         data: {
           address: this.formData["walletAddress"].value,
-          virtual_bank_id: 39 // 目前只有 USDT , 先寫死為 39
+          virtual_bank_id:
+            this.eyBindWalletData.swift_code === "BBUSDTCN1" ? "39" : "46" // 目前只有 USDT , ERC20 = 39 ,TRC20 = 46
         }
       })
         .then(response => {

@@ -1404,6 +1404,11 @@ export default {
               }
               this.outerCryptoOption.push(outerAddress.address);
             });
+            this.defaultOuterCrypto =
+              this.defaultOuterCrypto === ""
+                ? this.outerCryptoOption[0]
+                : this.defaultOuterCrypto;
+
             this.outerCryptoOption.push("其他位址");
           }
 

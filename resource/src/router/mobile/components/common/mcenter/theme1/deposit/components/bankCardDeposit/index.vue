@@ -375,7 +375,9 @@
                 您的位址
               </span>
               <select v-model="defaultOuterCrypto" :class="$style['outer-crypto-selected']">
-                <option v-for="option in outerCryptoOption" v-bind:value="option">
+                <option v-for="(option, idx) in outerCryptoOption"
+                :key="idx" 
+                v-bind:value="option">
                   {{ option }}
                 </option>
           </select>
@@ -395,9 +397,12 @@
                     v-model="outerCryptoAddress"
                     :class="$style['input-cgpay-address']"
                     type="text"
+                    :placeholder="'请输入钱包位址'"
                   />
-            </div>
+              <div :class="$style['wallet-address-text']">为即时到帐，请务必输入正确的钱包位址</div>
 
+            </div>
+            
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div
@@ -1089,7 +1094,8 @@
 
       <!-- 綁定電子錢包 -->
       <template v-if="showPopStatus.type === 'bindWallet'">
-        <bind-wallet-popup :walletType="bindWalletType" @close="closePopup" />
+        <bind-wallet-popup :walletType="bindWalletType" 
+        :eyBindWalletData="eyBindWalletData" @close="closePopup" />
       </template>
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
@@ -1155,6 +1161,7 @@ export default {
       isBlockChecked: false,
 
       bindWalletType: "CGPay",
+      eyBindWalletData:{},
 
       // 彈窗參數(待之後整理)
       showRealStatus: false,
@@ -1622,6 +1629,7 @@ export default {
         (this.curPayInfo.payment_method_id === 402 || this.curPayInfo.payment_method_id === 404)
       ) {
         this.bindWalletType = "USDT";
+        this.eyBindWalletData = this.curPayInfo;
         this.setPopupStatus(true, "bindWallet");
         return;
       }

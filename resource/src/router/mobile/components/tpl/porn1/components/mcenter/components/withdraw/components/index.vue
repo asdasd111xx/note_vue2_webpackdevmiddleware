@@ -1669,7 +1669,6 @@ export default {
         type: 2,
         amount: this.actualMoneyPlusOffer()
       };
-
       if (
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28
@@ -1677,6 +1676,19 @@ export default {
         _params = {
           ..._params,
           method_id: this.withdrawCurrency.method_id
+        };
+      }
+
+      if (
+        this.selectedCard.swift_code === "BBUSDTCN1" ||
+        this.selectedCard.swift_code === "BBUSDTCN3"
+      ) {
+        let methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
+        let methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
+
+        _params = {
+          ..._params,
+          method_id: methonId
         };
       }
 

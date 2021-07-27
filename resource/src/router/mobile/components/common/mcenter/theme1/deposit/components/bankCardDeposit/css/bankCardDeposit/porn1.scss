@@ -1090,6 +1090,15 @@
 }
 
 .outer-crypto-selected {
-  width: 75%;
-  margin-left: 25px;
+  width: 80%;
+  padding-left: 40px;
+  background-color: white;
+}
+
+.wallet-address-text {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 5px;
+  font-size: 12px;
+  color: #db6372;
 }

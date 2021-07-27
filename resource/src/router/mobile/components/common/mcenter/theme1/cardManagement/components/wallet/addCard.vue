@@ -430,7 +430,6 @@ export default {
     walletList() {
       // 在有指定選擇特定錢包的狀況下
       if (this.$route.query.swift) {
-        console.log(1234);
         // let wallet = this.$route.query.wallet;
         // let mapping = {
         //   CGPay: 21,
@@ -628,7 +627,7 @@ export default {
         params: {
           lang: "zh-cn",
           address: this.formData["walletAddress"].value,
-          virtualBankId: this.selectTarget.walletId
+          virtualBankId: String(this.selectTarget.walletId)
         }
       })
         .then(response => {
