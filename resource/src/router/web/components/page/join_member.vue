@@ -263,10 +263,11 @@
         </template>
       </div>
 
+        <!-- :is-enable="isSlideAble" -->
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
         :class="$style['join-btn-wrap']"
-        :is-enable="isSlideAble"
+        :style="isSlideAble ? {} : { 'pointer-events': 'none' }"
         :success-fuc="joinSubmit"
         page-status="register"
       />
@@ -457,11 +458,11 @@ export default {
       return this.registerData
         .filter(field => this.joinMemInfo[field.key].show)
         .every(field => {
-          // if (this.allTip[field.key]) {
-          //   return false;
-          // }
-
           if (this.joinMemInfo[field.key].isRequired) {
+            if (this.allTip[field.key]) {
+              return false;
+            }
+
             if (
               field.key === "confirm_password" &&
               this.allValue.password !== this.allValue.confirm_password
@@ -895,12 +896,19 @@ export default {
         this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
       }
 
-
-      if (!this.allValue["password"].match(new RegExp(joinMemInfo["password"].regExp))) {
+      if (
+        !this.allValue["password"].match(
+          new RegExp(joinMemInfo["password"].regExp)
+        )
+      ) {
         this.allTip["password"] = joinMemInfo["password"].errorMsg;
       }
 
-       if (!this.allValue["username"].match(new RegExp(joinMemInfo["username"].regExp))) {
+      if (
+        !this.allValue["username"].match(
+          new RegExp(joinMemInfo["username"].regExp)
+        )
+      ) {
         this.allTip["username"] = joinMemInfo["username"].errorMsg;
       }
 

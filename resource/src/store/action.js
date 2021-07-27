@@ -1455,7 +1455,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
         configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
       params: {
         // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
-        clientType: 6
+        clientType: 3
       }
     }).then(res => {
       if (res && res.data) {
