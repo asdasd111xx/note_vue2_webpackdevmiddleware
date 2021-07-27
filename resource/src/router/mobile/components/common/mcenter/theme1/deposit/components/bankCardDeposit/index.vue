@@ -554,7 +554,15 @@
                       }
                     "
                     @input="verification('money', $event.target.value)"
-                    @keyup="moneyUSDT($event)"
+                    @keyup="$event => {
+                        if (
+                          isSelectBindWallet(25, 402,404) &&
+                          isClickCoversionBtn &&
+                          moneyValue
+                        ) {
+                          moneyUSDT($event)
+                        }
+                      }"
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>
