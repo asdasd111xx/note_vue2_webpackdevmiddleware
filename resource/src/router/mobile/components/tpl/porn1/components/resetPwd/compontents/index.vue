@@ -356,7 +356,10 @@ export default {
 
       const regex = new RegExp(joinMemInfo["password"].regExp);
 
-      if (this.pwdResetInfo["password"].value.length < 6) {
+      if (
+        this.pwdResetInfo["password"].display &&
+        this.pwdResetInfo["password"].value.length < 6
+      ) {
         this.errorMsg = "请输入6-12位字母及数字";
         return;
       }
