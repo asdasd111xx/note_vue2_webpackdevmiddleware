@@ -117,16 +117,15 @@ export default {
                 this.allTip["password"].error = "";
                 this.allTip["confirm_password"].error = "";
                 if (
-                  this.allValue["password"] &&
                   this.allValue["password"] !==
-                    this.allValue["confirm_password"]
+                  this.allValue["confirm_password"]
                 ) {
                   this.allTip["confirm_password"].error = this.$text(
                     "S_JM_PASSWD_CONFIRM_ERROR"
                   );
                 }
 
-                if (this.allValue["password"] && !val.match(regex)) {
+                if (!val.match(regex)) {
                   this.allTip[key].error = errorMsg;
                 }
 
