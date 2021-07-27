@@ -745,6 +745,7 @@ export default {
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
+      this.lockStatus = true;
 
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
       if ([21].includes(this.selectTarget.walletId)) {
