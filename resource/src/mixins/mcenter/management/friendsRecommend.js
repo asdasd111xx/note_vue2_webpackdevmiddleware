@@ -2,11 +2,9 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
 import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
-import ajax from "@/lib/ajax";
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import isMobile from "@/lib/is_mobile";
 import joinMemInfo from "@/config/joinMemInfo";
 
 export default {
@@ -20,18 +18,18 @@ export default {
       isShow: false,
       isShowEyes: false,
       allInput: ["username", "password", "confirm_password", "name"],
-      allText: {
+      allTip: {
         // 會員帳號
         username: {
-          title: "S_NAME",
+          title: this.$text("S_NAME"),
           type: "text",
           maxLength: "20",
-          placeholder: this.$text("S_NAME"),
+          placeholder: this.$text("S_USERNAME_ERROR"),
           error: ""
         },
         // 密碼
         password: {
-          title: "SS_LOGIN_PW",
+          title: this.$text("SS_LOGIN_PW"),
           type: "password",
           maxLength: "12",
           placeholder: this.$text("S_PASSWORD_PLACEHOLDER_AGENT"),
@@ -39,7 +37,7 @@ export default {
         },
         // 確認密碼
         confirm_password: {
-          title: "S_PWD_CONFIRM",
+          title: this.$text("S_PWD_CONFIRM"),
           type: "password",
           maxLength: "12",
           placeholder: this.$text("S_PWD_CONFIRM"),
@@ -47,14 +45,13 @@ export default {
         },
         // 會員姓名
         name: {
-          title: "S_MEMBER_NAME",
+          title: this.$text("S_MEMBER_NAME"),
           type: "text",
           maxLength: "",
-          placeholder: this.$text("S_MEMBER_NAME"),
+          placeholder: this.$text("S_REGISTER_TIPS"),
           error: ""
         }
       },
-      captchaError: false,
       captchaErrorMsg: "",
       allValue: {
         username: "",
@@ -91,9 +88,9 @@ export default {
      */
     mainClass(key) {
       return {
-        [this.$style.tips]: this.allText[key].tips,
-        [this.$style.message]: this.allText[key].message,
-        [this.$style.error]: this.allText[key].error
+        [this.$style.tips]: this.allTip[key].tips,
+        [this.$style.message]: this.allTip[key].message,
+        [this.$style.error]: this.allTip[key].error
       };
     },
     /**
@@ -104,37 +101,61 @@ export default {
      */
     onInput(value, key) {
       if (!this.isShow) return;
-      const { allValue, allText } = this;
-      const reg = {
-        username: new RegExp(joinMemInfo["username"].regExp),
-        password: new RegExp(joinMemInfo["password"].regExp),
-        confirm_password: new RegExp(joinMemInfo["password"].regExp)
-      };
+      const regex = new RegExp(joinMemInfo[key].regExp);
+      const errorMsg = joinMemInfo[key].errorMsg;
+
+      this.allTip[key].error = "";
       if (["username", "password", "confirm_password", "name"].includes(key)) {
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
-            allValue[key] = val;
-            let errMsg = "";
+            this.allValue[key] = val;
 
-            if (
-              ["confirm_password"].includes(key) &&
-              this.allValue.confirm_password !== this.allValue.password
-            ) {
-              errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+            // 1. 密碼只判斷是否符合格式不判斷空
+            // 2. 確認密碼只判斷是否相同
+            switch (key) {
+              case "password":
+                this.allTip["password"].error = "";
+                this.allTip["confirm_password"].error = "";
+                if (
+                  this.allValue["password"] !==
+                  this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"].error = this.$text(
+                    "S_JM_PASSWD_CONFIRM_ERROR"
+                  );
+                }
+
+                if (!val.match(regex)) {
+                  this.allTip[key].error = errorMsg;
+                }
+
+                break;
+
+              case "confirm_password":
+                this.allTip["confirm_password"].error = "";
+                if (
+                  this.allValue["password"] !==
+                  this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"].error = this.$text(
+                    "S_JM_PASSWD_CONFIRM_ERROR"
+                  );
+                }
+                break;
+
+              default:
+                if (!this.allValue[key].match(regex)) {
+                  this.allTip[key].error = errorMsg;
+                }
+                break;
             }
-
-            if (reg[key] && !allValue[key].match(reg[key])) {
-              errMsg = joinMemInfo[key].errorMsg;
-            }
-
-            allText[key].error = errMsg;
           }
         );
       }
 
       if (
         ["captcha_text"].includes(key) &&
-        this.memInfo.config.friend_captcha_type !== 0 &&
+        this.memInfo.config.friend_captcha_type === 1 &&
         allValue["captcha_text"] === ""
       ) {
         this.captchaErrorMsg = this.$text("S_ENABLE_KEYRING", "请输入验证码");
@@ -145,16 +166,23 @@ export default {
     checkInput() {
       this.$validator.validateAll("form-page").then(response => {
         if (!response) {
-          // this.actionSetGlobalMessage({
-          //   msg: this.$text("S_JM_MSG_COMPLETE")
-          // });
-
           Object.keys(this.allValue).forEach(key => {
             if (!this.allValue[key]) {
-              if (key === "captcha_text") {
-                this.captchaError = joinMemInfo[key].errorMsg;
+              if (key === "confirm_password") {
+                if (
+                  this.allValue["password"] !==
+                  this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"].error = this.$text(
+                    "S_JM_PASSWD_CONFIRM_ERROR"
+                  );
+                }
               } else {
-                this.allText[key].error = joinMemInfo[key].errorMsg;
+                if (key === "captcha_text") {
+                  this.captchaErrorMsg = joinMemInfo[key].errorMsg;
+                } else {
+                  this.allTip[key].error = joinMemInfo[key].errorMsg;
+                }
               }
             }
           });
@@ -166,7 +194,7 @@ export default {
           this.handleSend();
           return;
         } else {
-          if (this.allInput.some(key => this.allText[key].error)) {
+          if (this.allInput.some(key => this.allTip[key].error)) {
             return;
           }
 
@@ -180,9 +208,18 @@ export default {
      */
     onSubmit() {
       // 廳主未開放註冊
-      if (!this.memInfo.config.infinity_register || !this.isShow) {
+      if (
+        !this.memInfo.config.infinity_register ||
+        !this.isShow ||
+        this.isSend
+      ) {
         return;
       }
+
+      this.isSend = true;
+      setTimeout(() => {
+        this.isSend = false;
+      }, 1200);
 
       let registFc;
 
@@ -237,20 +274,20 @@ export default {
             }
 
             if (result.errors.username) {
-              this.allText.username.error = result.errors.username;
+              this.allTip.username.error = result.errors.username;
             }
 
             if (result.errors.password) {
-              this.allText.password.error = result.errors.password;
+              this.allTip.password.error = result.errors.password;
             }
 
             if (result.errors.confirm_password) {
-              this.allText.confirm_password.error =
+              this.allTip.confirm_password.error =
                 result.errors.confirm_password;
             }
 
             if (result.errors.name) {
-              this.allText.name.error = result.errors.name;
+              this.allTip.name.error = result.errors.name;
             }
 
             if (result.errors.captcha_text) {

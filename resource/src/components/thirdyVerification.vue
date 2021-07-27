@@ -60,7 +60,6 @@ export default {
   align-items: center;
   height: 40px;
   background: #fefefe;
-  margin-bottom: 11px;
   border: 1px solid rgba(128, 128, 128, 0.26);
   border-radius: 3px;
 

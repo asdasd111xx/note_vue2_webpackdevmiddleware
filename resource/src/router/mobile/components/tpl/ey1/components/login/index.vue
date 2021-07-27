@@ -144,7 +144,7 @@
                 <!-- 滑動驗證 -->
                 <slide-verification
                   v-if="memInfo.config.login_captcha_type === 2"
-                  ref="slider"
+                  ref="slide-verification"
                   :is-enable="isSlideAble"
                   :success-fuc="slideLogin"
                   page-status="login"
@@ -269,13 +269,6 @@ export default {
       }
 
       return false;
-    },
-    isSlideAble() {
-      if (!this.username || !this.password) {
-        return false;
-      }
-
-      return true;
     }
   },
   created() {

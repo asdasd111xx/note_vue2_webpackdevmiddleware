@@ -42,8 +42,8 @@
 
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
-          <div v-show="errMsg">
-            {{ errMsg }}
+          <div v-show="errorMsg">
+            {{ errorMsg }}
           </div>
         </div>
 
@@ -52,7 +52,7 @@
             v-if="currentMethod !== 'phone-step-2'"
             :class="$style['form-control']"
           >
-            <div class="clearfix">
+            <div :class="[$style['input-wrap'], 'clearfix']">
               <div :class="$style['form-title']">
                 {{ $t("S_USER_NAME") }}
               </div>
@@ -62,18 +62,12 @@
                 :placeholder="$t('S_PLEASE_ENTER_USER_NAME')"
                 type="text"
                 maxlength="20"
-                @input="
-                  username = $event.target.value
-                    .toLowerCase()
-                    .replace(' ', '')
-                    .trim()
-                    .replace(/[\W]/g, '')
-                    .replace(/\_/g, '')
-                "
+                @blur="verification('username', $event.target.value)"
+                @input="verification('username', $event.target.value)"
               />
             </div>
-            <div v-if="msg.username !== ''" :class="$style.errorTips">
-              {{ msg.username }}
+            <div v-if="allTip.username !== ''" :class="$style.errorTips">
+              {{ allTip.username }}
             </div>
           </div>
           <div>
@@ -88,30 +82,30 @@
             </div>
             <!-- eslint-disable vue/no-v-html -->
             <div
-              v-if="msg.email !== ''"
+              v-if="allTip.email !== ''"
               :class="$style.errorTips"
-              v-html="msg.email"
+              v-html="allTip.email"
             />
             <!-- eslint-enable vue/no-v-html -->
           </div>
           <div v-if="currentMethod === 'phone-step-1'" class="clearfix">
-            <div :class="$style['form-title']">获取验证码</div>
+            <div :class="$style['form-title']" @click="step2shortcut">
+              获取验证码
+            </div>
             <input
               v-model="keyring"
               :placeholder="$t('S_ENABLE_KEYRING')"
               :class="[$style['form-input'], $style['keyring-input']]"
-              type="text"
-              @input="
-                keyring = $event.target.value
-                  .replace(' ', '')
-                  .trim()
-                  .replace(/[\W]/g, '')
-              "
+              type="tel"
+              @blur="verification('keyring', $event.target.value)"
+              @input="verification('keyring', $event.target.value)"
             />
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer }
+                {
+                  [$style['active']]: username && !timer && !allTip.username
+                }
               ]"
               @click="showCaptchaPopup"
             >
@@ -121,7 +115,7 @@
           <!-- 重設密碼 -->
           <template v-if="currentMethod === 'phone-step-2'">
             <div :class="$style['form-control']">
-              <div class="clearfix">
+              <div :class="[$style['input-wrap'], 'clearfix']">
                 <div :class="$style['form-title']">
                   {{ $t("S_NEW_PWD") }}
                 </div>
@@ -148,12 +142,12 @@
                   />
                 </div>
               </div>
-              <div v-if="msg.password !== ''" :class="$style.errorTips">
-                {{ msg.password }}
+              <div v-if="allTip.password !== ''" :class="$style.errorTips">
+                {{ allTip.password }}
               </div>
             </div>
             <div :class="$style['form-control']">
-              <div class="clearfix">
+              <div :class="['clearfix']">
                 <div :class="$style['form-title']">
                   {{ $t("S_ENABLE_CHK_PWD") }}
                 </div>
@@ -180,8 +174,11 @@
                   />
                 </div>
               </div>
-              <div v-if="msg.confirm_password !== ''" :class="$style.errorTips">
-                {{ msg.confirm_password }}
+              <div
+                v-if="allTip.confirm_password !== ''"
+                :class="$style.errorTips"
+              >
+                {{ allTip.confirm_password }}
               </div>
             </div>
           </template>
@@ -205,7 +202,7 @@
         :class="[
           $style['forget-submit'],
           {
-            [$style['active']]: checkSubmit
+            [$style['active']]: checkSubmit && !allTip.username
           }
         ]"
         @click="send($route.params.type)"
@@ -224,12 +221,13 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 import member from "@/api/member";
 import mobileContainer from "../../common/mobileContainer";
 import popupVerification from "@/components/popupVerification";
 import joinMemInfo from "@/config/joinMemInfo";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -240,11 +238,11 @@ export default {
     return {
       currentMethod: "phone-step-1",
       resetKeyring: "",
-      errMsg: "",
       countdownSec: 0,
       timer: null,
       isShowPwd: false,
-      msg: {
+      errorMsg: "",
+      allTip: {
         username: "",
         email: "",
         keyring: "",
@@ -274,15 +272,15 @@ export default {
     },
     checkSubmit() {
       if (this.currentMethod === "phone-step-1") {
-        return this.username && this.keyring;
+        return this.username && this.keyring && this.errorMsg === "";
       }
 
       return (
         this.password === this.confirm_password &&
         this.password &&
         this.confirm_password &&
-        this.errMsg === "" &&
-        !Object.keys(this.msg).some(key => this.msg[key] !== "")
+        this.errorMsg === "" &&
+        !Object.keys(this.allTip).some(key => this.allTip[key] !== "")
       );
     }
   },
@@ -291,7 +289,7 @@ export default {
       this.getKeyring();
     },
     currentMethod() {
-      this.msg = {
+      this.allTip = {
         username: "",
         email: "",
         keyring: "",
@@ -342,36 +340,67 @@ export default {
       if (status) return;
     },
     verification(key, value) {
-      this.errMsg = "";
+      this.errorMsg = "";
+      this.allTip[key] = "";
+
+      if (key === "keyring") {
+        this.actionVerificationFormData({
+          target: "code",
+          value: value
+        }).then(val => {
+          this[key] = val;
+        });
+        return;
+      }
 
       this.actionVerificationFormData({
         target: key,
         value: value
       }).then(val => {
         this[key] = val;
+        const regex = new RegExp(joinMemInfo[key].regExp);
+        const errorMsg = joinMemInfo[key].errorMsg;
+
+        switch (key) {
+          case "password":
+            // if (!val) {
+            //   this.allTip[key] = "";
+            //   return;
+            // }
+
+            this.allTip["confirm_password"] = "";
+            if (this.confirm_password !== this.password) {
+              this.allTip["confirm_password"] = this.$text(
+                "S_NEW_PASSWD_NEW_CONFIRM_ERROR"
+              );
+            }
+
+            if (!val.match(regex)) {
+              this.allTip[key] = errorMsg;
+            }
+            break;
+
+          case "confirm_password":
+            // if (!val) {
+            //   this.allTip[key] = "";
+            //   return;
+            // }
+
+            this.allTip["confirm_password"] = "";
+            if (this.confirm_password !== this.password) {
+              this.allTip["confirm_password"] = this.$text(
+                "S_NEW_PASSWD_NEW_CONFIRM_ERROR"
+              );
+            }
+            break;
+
+          default:
+            if (!val.match(regex)) {
+              this.allTip[key] = errorMsg;
+            }
+            break;
+        }
       });
-
-      let errMsg = "";
-
-      if (!value) {
-        errMsg = "该栏位不得为空";
-      }
-
-      if (
-        ["confirm_password"].includes(key) &&
-        this.password !== this.confirm_password
-      ) {
-        errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-        this.msg[key] = errMsg;
-      }
-
-      const regex = new RegExp(joinMemInfo[key].regExp);
-      const msg = joinMemInfo[key].errorMsg;
-      if (!regex.test(value)) {
-        errMsg = msg;
-      }
-
-      this.msg[key] = errMsg;
     },
     sendEmail(type) {
       if (this.isSendEmail) {
@@ -400,7 +429,7 @@ export default {
         },
         fail: res => {
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         }
       };
@@ -411,8 +440,45 @@ export default {
         return;
       }
 
-      // 忘記密碼 - 會員
-      member.pwdForget(data);
+      // 忘記密碼 - 會員 C02.16
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password`,
+        params: {
+          username: this.username,
+          email: this.email,
+          domain: window.location.host.replace("/"),
+          // 開發端測試用
+          // domain: 'yb01.66boxing.com',
+          callback: "/mobile/resetPwd",
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.actionSetGlobalMessage({
+            msg: this.$text("FORGET_password_SEND", "重设密码信件已发送")
+          });
+        } else {
+          this.isSendKeyring = false;
+
+          if (res && Number(res.status) === 429) {
+            this.actionGetToManyRequestMsg(res).then(res => {
+              this.errorMsg = res;
+            });
+            return;
+          }
+
+          // 「请填写正确的用户名」(A-9340)
+          if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
+            this.errorMsg = "请填写正确的用户名";
+            return;
+          }
+
+          if (res && res.msg) {
+            this.errorMsg = `${res.msg}`;
+          }
+        }
+      });
     },
     send(type) {
       if (this.currentMethod === "phone-step-1") {
@@ -431,6 +497,11 @@ export default {
       }
     },
     showCaptchaPopup() {
+      this.timer = true;
+      setTimeout(() => {
+        this.timer = null;
+      }, 1200);
+
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
@@ -452,48 +523,48 @@ export default {
       //     return;
       //   }
 
-      // 忘記密碼發送簡訊 - 會員
-      // member.passwordForgetMobile(data);
-
-      axios({
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/forget/password/sms",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password/Sms`,
+        params: {
           username: this.username,
-          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : ""
+          captchaText: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : "",
+          aid: getCookie("aid"),
+          lang: "zh-cn"
         }
-      })
-        .then(res => {
-          if (res.data.result === "ok") {
-            this.errMsg = "";
-            this.countdownSec = 60;
-            this.timer = setInterval(() => {
-              if (this.countdownSec === 0) {
-                clearInterval(this.timer);
-                this.timer = null;
-                return;
-              }
-              this.countdownSec -= 1;
-            }, 1000);
-
-            if (res.data.code) {
-              this.errMsg = `${res.data.msg}`;
-            } else {
-              this.actionSetGlobalMessage({
-                msg: "已发送手机验证码"
-              });
+      }).then(res => {
+        if (res.status === "000") {
+          this.errorMsg = "";
+          this.countdownSec = 60;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer);
+              this.timer = null;
+              return;
             }
+            this.countdownSec -= 1;
+          }, 1000);
+
+          if (res.code && res.msg) {
+            this.errorMsg = `${res.msg}`;
           } else {
-            this.errMsg = res.data.msg;
+            this.actionSetGlobalMessage({
+              msg: "已发送手机验证码"
+            });
           }
-        })
-        .catch(error => {
+        } else {
           this.isSendKeyring = false;
 
-          if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestMsg(error.response).then(res => {
-              this.errMsg = res;
+          if (res && Number(res.status) === 429) {
+            this.actionGetToManyRequestMsg(res).then(res => {
+              this.errorMsg = res;
             });
+            return;
+          }
+
+          // 「请填写正确的用户名」(A-9340)
+          if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
+            this.errorMsg = "请填写正确的用户名";
             return;
           }
 
@@ -503,14 +574,11 @@ export default {
           //   return;
           // }
 
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errMsg = `${error.response.data.msg}`;
+          if (res && res.msg) {
+            this.errorMsg = `${res.msg}`;
           }
-        });
+        }
+      });
 
       this.showCaptcha(false);
     },
@@ -524,14 +592,14 @@ export default {
         success: response => {
           if (response.result === "ok") {
             //   驗證成功重設密碼
-            this.errMsg = "";
+            this.errorMsg = "";
             this.resetKeyring = response.ret.keyring;
             this.currentMethod = "phone-step-2";
             this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
           }
         },
         fail: res => {
-          this.msg.keyring = "";
+          this.allTip.keyring = "";
 
           if (res && res.status === 429) {
             this.actionGetToManyRequestMsg(res).then(result => {
@@ -541,7 +609,7 @@ export default {
           }
 
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         }
       };
@@ -556,7 +624,7 @@ export default {
       member.pwdMobileVerify(data);
     },
     resetpassword(type) {
-      if (this.msg.password || this.msg.confirm_password) {
+      if (this.allTip.password || this.allTip.confirm_password) {
         return;
       }
 
@@ -569,11 +637,16 @@ export default {
           errorAlert: false
         },
         success: response => {
-          this.errMsg = "";
+          this.errorMsg = "";
           if (response.result === "ok") {
-            this.$router.push(
-              `/mobile/${type === "agent" ? "aglogin" : "login"}`
-            );
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.push(
+                  `/mobile/${type === "agent" ? "aglogin" : "login"}`
+                );
+              }
+            });
           }
         },
         fail: res => {
@@ -585,7 +658,7 @@ export default {
           }
 
           if (res && res.data && res.data.msg) {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         }
       };
@@ -602,6 +675,21 @@ export default {
     changeCurrentMethod(method) {
       this.$emit("update:currentMethod", method);
       this.currentMethod = method;
+      this.errorMsg = "";
+    },
+    // 測試第二步驟
+    step2shortcut() {
+      this.errorMsg = "";
+      this.currentMethod = "phone-step-2";
+      this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      if (
+        this.checkSubmit &&
+        ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
+      ) {
+        this.errorMsg = "";
+        this.currentMethod = "phone-step-2";
+        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      }
     }
   }
 };

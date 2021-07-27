@@ -157,18 +157,45 @@
     line-height: 30px;
     padding: 0;
     outline: none;
-    border: 1px solid #d5bea4;
     font-size: 12px;
-    color: #bf8646;
     background: none;
-    border-radius: 3px;
 
-    &:active,
-    &.is-current {
-      background: #bd9d7d;
-      background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
-      color: #fff;
+    &.porn1 {
+      color: #bf8646;
+      border: 1px solid #d5bea4;
+      border-radius: 3px;
+
+      &:active,
+      &.is-current {
+        background: #bd9d7d;
+        background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+        background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+        color: #fff;
+      }
+    }
+
+    &.ey1 {
+      border: 1px solid #cccccc;
+      color: #cccccc;
+      border-radius: 5px;
+
+      &:active,
+      &.is-current {
+        background: #e42a30;
+        color: #fff;
+      }
+    }
+
+    &.sg1 {
+      border: 1px solid #cccccc;
+      color: #cccccc;
+      border-radius: 5px;
+
+      &:active,
+      &.is-current {
+        background: linear-gradient(#fe593c, #e61938);
+        color: #fff;
+      }
     }
   }
 }

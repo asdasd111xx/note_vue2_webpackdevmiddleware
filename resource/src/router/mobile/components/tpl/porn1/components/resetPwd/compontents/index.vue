@@ -7,8 +7,8 @@
   >
     <!-- 錯誤訊息 -->
     <div :class="$style['err-msg']">
-      <div v-show="errMsg">
-        {{ errMsg }}
+      <div v-show="errorMsg">
+        {{ errorMsg }}
       </div>
     </div>
     <div :class="$style['reset-content']">
@@ -17,6 +17,7 @@
           v-for="item in filterField()"
           :key="item"
           :class="$style['field-wrap']"
+          :style="!pwdResetInfo[item].display ? { border: 'none' } : {}"
         >
           <div
             v-if="pwdResetInfo[item].display"
@@ -112,7 +113,7 @@
             $style[themeTPL],
             { [$style['active']]: submitActive }
           ]"
-          @click="isResetPW ? pwdResetSubmit() : pwdModifySubmit()"
+          @click="checkField(true)"
         >
           {{ $text("S_SUBMIT", "提交") }}
         </div>
@@ -139,7 +140,7 @@ export default {
   },
   data() {
     return {
-      errMsg: "",
+      errorMsg: "",
       msg: "",
       allTip: {
         username: "",
@@ -233,7 +234,7 @@ export default {
           !this.pwdResetInfo[key].display ||
           (this.pwdResetInfo[key].display &&
             this.pwdResetInfo[key].value &&
-            !this.errMsg)
+            !this.errorMsg)
       );
     },
     hasFooter() {
@@ -272,44 +273,118 @@ export default {
     },
     verification(key, value) {
       let target = key;
-      let errMsg = "";
+      const regex = new RegExp(joinMemInfo[target].regExp);
+      const errorMsg = joinMemInfo[target].errorMsg;
+
       if (["password"].includes(key)) {
         target = "login_password";
       }
 
-      this.actionVerificationFormData({
+      return this.actionVerificationFormData({
         target: target,
         value: value
       }).then(val => {
         this.pwdResetInfo[key].value = val;
+        switch (target) {
+          // case password 原密碼
+          case "login_password":
+            this.errorMsg = "";
+            if (this.pwdResetInfo["password"].value.length < 6) {
+              this.errorMsg = "请输入6-12位字母及数字";
+            }
+            break;
+
+          case "new_password":
+            this.errorMsg = "";
+            if (
+              this.pwdResetInfo["new_password"].value !==
+              this.pwdResetInfo["confirm_password"].value
+            ) {
+              this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
+            }
+
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
+            }
+            break;
+
+          case "confirm_password":
+            this.errorMsg = "";
+
+            if (
+              this.pwdResetInfo["new_password"].value !==
+              this.pwdResetInfo["confirm_password"].value
+            ) {
+              this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
+            }
+
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
+            }
+            break;
+
+          default:
+            this.errorMsg = "";
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
+            }
+            break;
+        }
+
+        this.checkField();
       });
+    },
+    checkField(submit) {
+      if (!this.submitActive) return;
+
+      // Object.keys(this.pwdResetInfo).forEach(key => {
+      //   if (this.pwdResetInfo[key].display) {
+      //     let value = this.pwdResetInfo[key].value;
+      //     this.verification(key, value);
+      //   }
+      // });
 
       if (
-        key === "confirm_password" &&
-        this.pwdResetInfo["confirm_password"].value !==
-          this.pwdResetInfo["new_password"].value
+        this.pwdResetInfo["new_password"].value &&
+        this.pwdResetInfo["confirm_password"].value &&
+        this.pwdResetInfo["new_password"].value !==
+          this.pwdResetInfo["confirm_password"].value
       ) {
-        errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+        this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
+        return;
       }
 
-      const val = this.pwdResetInfo[key].value;
-      const regex = new RegExp(joinMemInfo[target].regExp);
-      const msg = joinMemInfo[target].errorMsg;
+      const regex = new RegExp(joinMemInfo["password"].regExp);
 
-      if (target === "login_password" && val.length < 6) {
-        errMsg = "請輸入6-12位字母及數字";
-      } else if (!regex.test(val)) {
-        errMsg = msg;
+      if (
+        this.pwdResetInfo["password"].display &&
+        this.pwdResetInfo["password"].value.length < 6
+      ) {
+        this.errorMsg = "请输入6-12位字母及数字";
+        return;
       }
 
-      this.errMsg = errMsg;
+      if (!this.pwdResetInfo["new_password"].value.match(regex)) {
+        this.errorMsg = joinMemInfo["new_password"].errorMsg;
+        return;
+      }
+
+      if (!this.pwdResetInfo["confirm_password"].value.match(regex)) {
+        this.errorMsg = joinMemInfo["confirm_password"].errorMsg;
+        return;
+      }
+
+      if (submit && !this.errorMsg) {
+        this.isResetPW ? this.pwdResetSubmit() : this.pwdModifySubmit();
+      }
     },
+    // 修改密碼
     pwdModifySubmit() {
       if (!this.submitActive || this.isLoading) return;
       this.isLoading = true;
       setTimeout(() => {
         this.isLoading = false;
-      }, 2000);
+      }, 1200);
 
       const pwdInfo = {
         old_password: this.pwdResetInfo.password.value,
@@ -320,40 +395,46 @@ export default {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              this.$router.push("/mobile/mcenter/setting");
-            }, 2000);
+            this.isLoading = true;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.back();
+              }
+            });
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       } else {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
+            this.isLoading = true;
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
+                // 強制修改密碼
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                    this.$router.push("/mobile");
+                    this.$router.replace("/mobile");
                   });
                   return;
                 }
-                this.$router.push("/mobile/mcenter/setting");
+                this.$router.back();
               }
             });
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       }
     },
+    // 重設密碼
     pwdResetSubmit() {
-      if (!this.submitActive) return;
+      if (!this.submitActive || this.isLoading) return;
       const pwdInfo = {
         username: this.pwdResetInfo.username.value,
         email: this.pwdResetInfo.email.value,
@@ -365,30 +446,36 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              this.$router.push("/mobile/mcenter/setting");
-            }, 2000);
+            this.isLoading = true;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.push("/mobile/login");
+              }
+            });
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       } else {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            if (this.isResetPW) {
-              window.close();
-            } else {
-              setTimeout(() => {
-                this.$router.push("/mobile/mcenter/setting");
-              }, 2000);
-            }
+            this.isLoading = true;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                if (this.isResetPW) {
+                  window.close();
+                } else {
+                  this.$router.back();
+                }
+              }
+            });
           },
           fail: res => {
-            this.errMsg = `${res.data.msg}`;
+            this.errorMsg = `${res.data.msg}`;
           }
         });
       }
