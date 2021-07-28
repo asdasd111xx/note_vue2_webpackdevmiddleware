@@ -169,10 +169,10 @@ export default {
             this.videoTabs = [
               { id: 0, title: "全部" },
               { id: 1, title: "热门推荐" },
-              ...response.result
+              ...videoArray
             ];
           } else {
-            this.videoTabs = [{ id: 0, title: "全部" }, ...response.result];
+            this.videoTabs = [{ id: 0, title: "全部" }, ...videoArray];
           }
         } else {
           this.videoTabs = [];
