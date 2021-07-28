@@ -141,7 +141,7 @@ export default {
         this.setTabState(false);
         this.$emit("update:currentInfo", info);
 
-        if (this.$route.params.title) {
+        if (this.$route.params.title && !info.oauth2) {
           this.setHeaderTitle(this.rebateDateFormat(info.end_at));
           this.$router.push({
             params: {
@@ -150,6 +150,19 @@ export default {
             },
             query: {
               assign: "assign",
+              ...this.info
+            }
+          });
+        } else if (this.$route.params.title && info.oauth2) {
+          this.setHeaderTitle(this.rebateDateFormat(info.end_at));
+          this.$router.push({
+            params: {
+              title: "record",
+              item: "detail"
+            },
+            query: {
+              record: "record",
+              oauth2: "oauth2",
               ...this.info
             }
           });

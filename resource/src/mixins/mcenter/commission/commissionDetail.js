@@ -27,7 +27,7 @@ export default {
         4: "S_FOURTH_LEVEL_FRIEND",
         5: "S_FIFTH_LEVEL_FRIEND"
       },
-      detailList: null, // 第三方返利資料
+      detailList: [], // 第三方返利資料
       summaryList: [], // 本站返利各級好友資料
       summaryTotal: null, // 本站返利所有好友統計
       friendsList: [], // 本站返利一級好友資料
@@ -147,17 +147,17 @@ export default {
      * 取得第三方返利資料
      */
     getDetail() {
-      ajax({
+      return goLangApiRequest({
         method: "get",
-        url: `${API_COMMISSION_FIRST_LEVEL_LIST}/${this.current_entry_id ||
-          this.currentInfo.current_entry_id}/oauth2/detail`,
-        errorAlert: false,
-        success: ({ result, ret }) => {
-          if (result !== "ok") {
-            return;
-          }
-
-          this.detailList = ret;
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
+          .current_entry_id || this.currentInfo.current_entry_id}/Amount`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.detailList = res.data ?? [];
         }
       });
     },
