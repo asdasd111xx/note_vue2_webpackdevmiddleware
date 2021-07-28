@@ -679,14 +679,14 @@ export default {
     },
     // 測試第二步驟
     step2shortcut() {
-      if (
-        this.checkSubmit &&
-        ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
-      ) {
-        this.errorMsg = "";
-        this.currentMethod = "phone-step-2";
-        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
-      }
+      // if (
+      //   this.checkSubmit &&
+      //   ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
+      // ) {
+      //   this.errorMsg = "";
+      //   this.currentMethod = "phone-step-2";
+      //   this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      // }
     }
   }
 };
