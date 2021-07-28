@@ -343,6 +343,13 @@ export default {
       walletTipInfo: []
     };
   },
+  mounted() {
+    let isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
+    if (isBackFromService) {
+      this.setBank(isBackFromService);
+      localStorage.removeItem("selectTarget");
+    }
+  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -741,6 +748,7 @@ export default {
         });
     },
     setBank(bank) {
+      localStorage.setItem("selectTarget", JSON.stringify(bank));
       this.closePopup();
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
