@@ -421,7 +421,7 @@ export default {
 }
 
 .content {
-  min-height: 240px;
+  min-height: 140px;
   padding: 0 20px;
   color: $main_text_color3;
 
