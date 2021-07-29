@@ -1,5 +1,8 @@
 <template>
-  <mobile-container :has-footer="!hasPrev" :class="$style['container']">
+  <mobile-container
+    :has-footer="!hasPrev || !fromlanding"
+    :class="$style['container']"
+  >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
@@ -8,6 +11,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
+          v-if="!fromlanding"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -59,14 +63,16 @@
           <div>Main Customer Support</div>
           <div>7*24小时专线服务 贴心至上</div>
         </div>
+
         <div :class="$style['btn-next']">
           <img
             :src="
-              $getCdnPath(`/static/image/sg1/common/ic_arrow_next_white.png`)
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
             "
           />
         </div>
       </div>
+
       <div :class="$style['info-card2']" @click="clickService">
         <div>
           <div>
@@ -92,9 +98,10 @@
       </div>
 
       <div
+        v-if="isIos"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev ? { bottom: '15px' } : {}"
+        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
@@ -179,13 +186,12 @@ export default {
   },
   data() {
     return {
-      imgID: 0,
-      imgIndex: 0,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/common/default/avatar_nologin.png`
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`,
+      fromlanding: false
     };
   },
   created() {
@@ -193,25 +199,19 @@ export default {
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
     }
+
+    if (this.$route.query.fromlanding !== undefined) {
+      this.fromlanding = this.$route.query.fromlanding === "true";
+    }
   },
   mounted() {
-    this.actionSetUserdata(true).then(() => {
-      this.getAvatarSrc();
-    });
+    if (this.loginStatus && !this.fromlanding) {
+      this.actionSetUserdata(true).then(() => {
+        this.getAvatarSrc();
+      });
+    }
 
     this.divHeight = document.body.offsetHeight - 60;
-
-    // yaboRequest({
-    //   method: "get",
-    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
-    //   headers: {
-    //     'x-domain': this.memInfo.user.domain
-    //   }
-    // }).then(res => {
-    //   if (res && res.data) {
-    //     this.linkArray = res.data;
-    //   }
-    // });
 
     goLangApiRequest({
       method: "get",
@@ -228,8 +228,11 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    isIos() {
+      return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    },
     name() {
-      if (this.loginStatus) {
+      if (this.loginStatus && !this.fromlanding) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -260,7 +263,7 @@ export default {
       this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
-      if (!this.loginStatus) return;
+      if (!this.loginStatus || this.fromlanding) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
@@ -291,7 +294,8 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-.container {
+
+div.container {
   position: relative;
   height: 100vh;
 }
@@ -350,12 +354,12 @@ export default {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #be9e7f;
+  color: #6aaaf5;
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: linear-gradient(#fe593c, #e61938);
+    background: #6aaaf5;
     border-radius: 36px;
     padding: 3px 12px;
   }
