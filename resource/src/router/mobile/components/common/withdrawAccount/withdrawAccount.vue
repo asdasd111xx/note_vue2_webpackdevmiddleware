@@ -389,11 +389,11 @@ export default {
         this.getDomainConfig().then(() => {
           // 億元：如果沒有開啟「投注/轉帳前需設定提現資料」
           if (!this.withdraw_info_before_bet) {
+            // 改強制跳銀行卡
+            // http://fb.vir888.com/default.asp?494542#4261984
             if (!this.checkBankSwitch || this.ub_before_bet_mode !== 0) {
               this.$router.replace(
-                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=${
-                  this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
-                }`
+                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=bankCard`
               );
               return;
             } else {
