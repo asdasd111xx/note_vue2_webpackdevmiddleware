@@ -131,6 +131,7 @@
 import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import editWithdrawField from "./editWithdrawField";
 import member from "@/api/member";
 
@@ -219,14 +220,17 @@ export default {
       let cid = getCookie("cid");
       if (!cid) return;
 
-      axios({
-        method: "get",
-        url: "/api/payment/v1/c/withdraw/list",
-        errorAlert: false,
-        params: params
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/Withdraw/List`,
+        params: {
+          lang: "zh-cn",
+          ...params
+        },
+        errorAlert: false
       })
         .then(res => {
-          if (res && res.data && res.data.result === "ok") {
+          if (res && res.status === "000") {
             this.data = res.data.ret;
             this.total = res.data.pagination.total;
             this.filterStatus();
