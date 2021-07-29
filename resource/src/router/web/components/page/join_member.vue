@@ -88,7 +88,6 @@
                   :placeholder="field.content.note1"
                   type="password"
                   maxlength="12"
-                  @blur="verification(field.key)"
                   @input="verification(field.key)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
@@ -117,7 +116,6 @@
                   type="password"
                   maxlength="12"
                   @input="verification(field.key)"
-                  @blur="verification(field.key)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />
@@ -265,10 +263,11 @@
         </template>
       </div>
 
+        <!-- :is-enable="isSlideAble" -->
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
         :class="$style['join-btn-wrap']"
-        :is-enable="isSlideAble"
+        :style="isSlideAble ? {} : { 'pointer-events': 'none' }"
         :success-fuc="joinSubmit"
         page-status="register"
       />
@@ -456,18 +455,14 @@ export default {
       return this.$styleDefault;
     },
     isSlideAble() {
-      if (this.memInfo.config.register_captcha_type === 3) {
-        return true;
-      }
-
       return this.registerData
         .filter(field => this.joinMemInfo[field.key].show)
         .every(field => {
-          if (this.allTip[field.key]) {
-            return false;
-          }
-
           if (this.joinMemInfo[field.key].isRequired) {
+            if (this.allTip[field.key]) {
+              return false;
+            }
+
             if (
               field.key === "confirm_password" &&
               this.allValue.password !== this.allValue.confirm_password
@@ -739,6 +734,7 @@ export default {
         case "kakaotalk":
         case "confirm_password":
         case "name":
+          this.allTip[key] = "";
           this.actionVerificationFormData({
             target: key,
             value: this.allValue[key]
@@ -747,34 +743,53 @@ export default {
             const regex = new RegExp(data.regExp);
             const msg = data.errorMsg;
 
-            let errMsg = "";
-
             // 1. 密碼只判斷是否符合格式不判斷空
             // 2. 確認密碼只判斷是否相同
-            if (key === "password") {
-              if (!val) {
-                this.errMsg = errMsg;
-                return;
-              }
+            switch (key) {
+              case "password":
+                // if (!val) {
+                //   this.allTip[key] = "";
+                //   return;
+                // }
 
-              if (!val.match(regex)) {
-                errMsg = msg;
-              }
-            } else if (key === "confirm_password") {
-              if (!val) {
-                this.errMsg = errMsg;
-                return;
-              }
-              if (this.allValue.confirm_password !== this.allValue.password) {
-                errMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
-              }
-            } else {
-              if (!val.match(regex)) {
-                errMsg = msg;
-              }
+                this.allTip["confirm_password"] = "";
+                if (
+                  this.allValue["password"] !==
+                  this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"] = this.$text(
+                    "S_PASSWD_CONFIRM_ERROR"
+                  );
+                }
+
+                if (!val.match(regex)) {
+                  this.allTip[key] = msg;
+                }
+                break;
+
+              case "confirm_password":
+                // if (!val) {
+                //   this.allTip[key] = "";
+                //   return;
+                // }
+
+                this.allTip["confirm_password"] = "";
+                if (
+                  this.allValue["password"] !==
+                  this.allValue["confirm_password"]
+                ) {
+                  this.allTip["confirm_password"] = this.$text(
+                    "S_PASSWD_CONFIRM_ERROR"
+                  );
+                }
+                break;
+
+              default:
+                if (!val.match(regex)) {
+                  this.allTip[key] = msg;
+                }
+                break;
             }
-
-            this.allTip[key] = errMsg;
           });
           break;
 
@@ -876,52 +891,85 @@ export default {
         : "0";
       this.verification(key);
     },
-    joinSubmit(captchaInfo) {
-      this.isLoading = true;
-      Object.keys(this.allValue).forEach(item => {
-        if (item === "withdraw_password") {
-          this.verification("withdraw_password", "all");
-        } else {
-          this.verification(item);
+    checkField() {
+      if (this.allValue["password"] !== this.allValue["confirm_password"]) {
+        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
+      }
+
+      if (
+        !this.allValue["password"].match(
+          new RegExp(joinMemInfo["password"].regExp)
+        )
+      ) {
+        this.allTip["password"] = joinMemInfo["password"].errorMsg;
+      }
+
+      if (
+        !this.allValue["username"].match(
+          new RegExp(joinMemInfo["username"].regExp)
+        )
+      ) {
+        this.allTip["username"] = joinMemInfo["username"].errorMsg;
+      }
+
+      let hasError = false;
+
+      Object.keys(this.allTip).forEach(key => {
+        if (this.allTip[key] !== "") {
+          hasError = true;
         }
       });
 
+      if (hasError) {
+        this.isLoading = false;
+        return false;
+      }
+      return true;
+    },
+    joinSubmit(captchaInfo) {
+      this.isLoading = true;
+      // Object.keys(this.allValue).forEach(item => {
+      //   if (item === "withdraw_password") {
+      //     this.verification("withdraw_password", "all");
+      //   } else {
+      //     this.verification(item);
+      //   }
+      // });
+
+      if (this.memInfo.config.register_captcha_type === 0) {
+      }
+
       // 滑動
-      if (this.memInfo.config.register_captcha_type === 2) {
+      else if (this.memInfo.config.register_captcha_type === 2) {
         this.allValue.captcha_text = captchaInfo.data;
       }
 
       // 拼圖
-      if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
-        console.log(this.thirdyCaptchaObj);
+      else if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
         if (!this.thirdyCaptchaObj) {
-          this.allTip["captcha_text"] = "请先点击按钮进行验证";
+          this.allTip["captcha_text"] = this.$text("S_PLS_CLICK_CAPTCHA_FIRST");
           this.isLoading = false;
-          return;
         } else {
           this.allTip["captcha_text"] = "";
         }
 
         this.allValue.captcha_text = this.thirdyCaptchaObj;
-        this.thirdyCaptchaObj = null;
       }
 
       // 圖形
-      if (this.memInfo.config.register_captcha_type === 1) {
+      else if (this.memInfo.config.register_captcha_type === 1) {
         if (!this.allValue.captcha_text) {
-          this.allTip["captcha_text"] = "请输入验证码";
+          this.allTip["captcha_text"] = this.$text("S_ENABLE_KEYRING");
           this.isLoading = false;
-          return;
         } else {
           this.allTip["captcha_text"] = "";
         }
       }
 
-      let allInputDone = Object.values(this.allTip).find(data => data != "");
-      if (allInputDone) {
-        this.isLoading = false;
+      if (!this.checkField()) {
         return;
       }
+
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -1060,6 +1108,13 @@ export default {
                 if (document.getElementById("captcha")) {
                   document.getElementById("captcha").focus();
                 }
+              }
+
+              if (
+                this.memInfo.config.register_captcha_type === 0 &&
+                item === "captcha_text"
+              ) {
+                this.allTip["confirm_password"] = res.errors[item];
               }
             });
             return;

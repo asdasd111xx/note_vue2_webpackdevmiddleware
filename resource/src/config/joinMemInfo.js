@@ -271,6 +271,6 @@ export default {
     hasVerify: false,
     show: true,
     regExp: "",
-    errorMsg: ""
+    errorMsg: i18n.t("S_ENABLE_KEYRING")
   }
 };

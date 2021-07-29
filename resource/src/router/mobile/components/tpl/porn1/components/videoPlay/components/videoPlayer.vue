@@ -6,12 +6,9 @@
     <video
       id="video-play"
       ref="video-player"
-      playsinline="1"
+      playsinline="playsinline"
       :webkit-playsinline="playsinline"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
-      disablePictureInPicture
-      controls
-      controlsList="nodownload"
     ></video>
     <!-- 彩金活動 -->
     <div id="video-play-block" :class="$style['video-block']">
@@ -99,34 +96,28 @@ export default {
     let obj = {
       sources: [
         {
-          src: this.videoInfo.url.replace("http://", "https://"),
+          src: this.videoInfo.url,
           type: "application/x-mpegURL"
         }
       ],
-      // sources: [{ src: 'https://pv-oa-1259142350.file.myqcloud.com/dev/video/FCC/FC2-PPV-777661-3/FC2-PPV-777661-3.m3u8', type: 'application/x-mpegURL' , withCredentials: true}],
       autoplay: false,
       controls: true,
       controlBar: true,
       loop: false,
       preload: "auto",
-      bigPlayButton: true
+      bigPlayButton: true,
+      html5: {
+        hls: {
+          // withCredentials: true,
+          cacheEncryptionKeys: true
+        }
+      },
+      controlBar: {
+        pictureInPictureToggle: false
+      },
+      crossOrigin: "anonymous"
     };
 
-    // hls sarfari 小豬視頻必須
-    if (this.source === "smallPig") {
-      obj["html5"] = {
-        hls: {
-          overrideNative: true,
-          withCredentials: true
-        },
-        nativeAudioTracks: false,
-        nativeVideoTracks: false
-      };
-    } else {
-      if (this.$route.query && this.$route.query.testmode) {
-        obj["crossOrigin"] = "anonymous";
-      }
-    }
     this.player = videojs(this.$refs["video-player"], obj);
 
     // 彩金疊加在播放器上

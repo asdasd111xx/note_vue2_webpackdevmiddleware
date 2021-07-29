@@ -141,16 +141,16 @@ export default {
           isPart: false,
           show: this.isShowPromotion
         },
-        {
-          initName: "打码王",
-          name: "S_LEADERBOARD",
-          path: "",
-          pageName: "leaderboard",
-          image: "leaderboard",
-          info: "",
-          isPart: false,
-          show: true
-        },
+        // {
+        //   initName: "打码王",
+        //   name: "S_LEADERBOARD",
+        //   path: "",
+        //   pageName: "leaderboard",
+        //   image: "leaderboard",
+        //   info: "",
+        //   isPart: false,
+        //   show: true
+        // },
         {
           initName: "分享APP",
           name: "S_SHARE_APP",
@@ -243,7 +243,9 @@ export default {
           platform: 1
         }
       }).then(res => {
-        this.superAppUrl = res.data.url;
+        if (res.data && res.data.url) {
+          this.superAppUrl = res.data.url;
+        }
       });
     });
   },

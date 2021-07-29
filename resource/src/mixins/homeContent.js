@@ -542,11 +542,8 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
-      console.log(123);
       switch (game.type) {
         case "strong_activity":
-          // 預設帶全部
-          // this.$router.push(`/mobile/activity/all/?kind=${game.kind}`);
           localStorage.setItem("iframe-third-url-title", game.name);
           this.$router.push(`/mobile/activity/all/`);
           return;

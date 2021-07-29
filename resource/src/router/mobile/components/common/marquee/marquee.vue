@@ -1,5 +1,8 @@
 <template>
-  <div class="news-wrap">
+  <div
+    class="news-wrap"
+    :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
+  >
     <div class="news-icon">
       <img
         :src="$getCdnPath(`/static/image/${themeTPL}/common/icon_news.png`)"
@@ -187,6 +190,13 @@ export default {
     width: 15px;
     height: 12px;
   }
+}
+
+.fixed-wrap {
+  position: fixed;
+  top: 43px;
+  z-index: 2;
+  background: white;
 }
 
 .news-content {

@@ -125,22 +125,13 @@
                   :class="[$style['pay-mode-item']]"
                   @click="handleCreditTrans"
                 >
-                  <div :class="[$style['pay-main-title'], $style['custom']]">
+                  <div :class="[$style['pay-sub-title'], $style['custom']]">
                     代收代付
                   </div>
                   <div
                     :class="[$style['pay-sub-title'], $style['custom']]"
                     style="color: black"
                   >
-                    {{
-                      `${
-                        themeTPL === "porn1"
-                          ? Number(rechargeConfig.recharger_offer_percent) !== 0
-                            ? `返利${rechargeConfig.recharger_offer_percent}%+`
-                            : "额度转让"
-                          : ""
-                      }`
-                    }}
                     代理分红
                   </div>
                 </div>
@@ -601,7 +592,15 @@
                       }
                     "
                     @input="verification('money', $event.target.value)"
-                    @keyup="moneyUSDT($event)"
+                    @keyup="$event => {
+                        if (
+                          isSelectBindWallet(25, 402,404) &&
+                          isClickCoversionBtn &&
+                          moneyValue
+                        ) {
+                          moneyUSDT($event)
+                        }
+                      }"
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>

@@ -83,6 +83,15 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     onEnter() {
+      if (!this.loginStatus) {
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          this.$router.push("/mobile/login");
+        } else {
+          this.$router.push("/mobile/joinmember");
+        }
+        return;
+      }
+
       if (localStorage.getItem("is-open-game")) {
         return;
       }
@@ -90,7 +99,6 @@ export default {
       const { kind, vendor } = this.eventData;
       // 活動大廳
       // 電子棋牌大廳
-      console.log(this.displayType);
       if (this.displayType !== "game-lobby") {
         switch (kind) {
           case 3:

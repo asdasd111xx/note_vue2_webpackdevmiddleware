@@ -50,14 +50,14 @@
         <div v-for="key in allInput" :key="key" :class="$style['input-group']">
           <!-- 欄位名稱 -->
           <div :class="$style['input-title']">
-            {{ $text(allText[key].title) }}
+            {{ allTip[key].title }}
           </div>
           <!-- 輸入框 -->
           <div
             :class="[
               $style[key],
               $style.placeholder,
-              { [$style.error]: allText[key].error }
+              { [$style.error]: allTip[key].error }
             ]"
           >
             <input
@@ -66,12 +66,12 @@
               :class="[
                 {
                   [$style.active]: allValue[key],
-                  [$style.error]: allText[key].error,
+                  [$style.error]: allTip[key].error,
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
-              :placeholder="allText[key].placeholder"
-              :maxlength="allText[key].maxLength"
+              :placeholder="allTip[key].placeholder"
+              :maxlength="allTip[key].maxLength"
               v-model="allValue[key]"
               data-vv-scope="form-page"
               @blur="onInput($event.target.value, key)"
@@ -84,13 +84,13 @@
               :class="[
                 {
                   [$style.active]: allValue[key],
-                  [$style.error]: allText[key].error,
+                  [$style.error]: allTip[key].error,
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
-              :placeholder="allText[key].placeholder"
+              :placeholder="allTip[key].placeholder"
               :data-key="key"
-              :maxlength="allText[key].maxLength"
+              :maxlength="allTip[key].maxLength"
               v-model="allValue[key]"
               type="password"
               data-vv-scope="form-page"
@@ -108,8 +108,8 @@
             />
           </div>
           <!-- 錯誤訊息 -->
-          <div v-if="allText[key].error" :class="$style['error-message']">
-            {{ allText[key].error }}
+          <div v-if="allTip[key].error" :class="$style['error-message']">
+            {{ allTip[key].error }}
           </div>
         </div>
         <!-- 驗證碼 -->
@@ -147,7 +147,10 @@
           </div>
         </div>
         <!-- 錯誤訊息 -->
-        <div v-if="captchaErrorMsg" :class="$style['captcha-error']">
+        <div
+          v-if="memInfo.config.friend_captcha_type === 1 && captchaErrorMsg"
+          :class="$style['captcha-error']"
+        >
           {{ captchaErrorMsg }}
         </div>
         <popup-verification

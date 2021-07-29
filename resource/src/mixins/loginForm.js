@@ -5,6 +5,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import ajax from "@/lib/ajax";
 import bbosRequest from "@/api/bbosRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
@@ -15,7 +16,6 @@ export default {
   },
   data() {
     return {
-      aid: "", // repcatcha
       captcha: "",
       captchaImg: "",
       checkItem: "",
@@ -34,7 +34,14 @@ export default {
       isBackEnd: "getIsBackEnd",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
-    })
+    }),
+    isSlideAble() {
+      if (!this.username || !this.password) {
+        return false;
+      }
+
+      return true;
+    }
   },
   watch: {
     rememberPwd(val) {
@@ -63,6 +70,7 @@ export default {
       "actionVerificationFormData"
     ]),
     verification(key, value) {
+      this.errMsg = "";
       this.actionVerificationFormData({
         target: key,
         value: value
@@ -156,21 +164,16 @@ export default {
         this.isGetCaptcha = false;
       }, 800);
 
-      bbosRequest({
+      goLangApiRequest({
         method: "post",
-        url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`,
         params: {
-          lang: "zh-cn",
-          format: "png"
+          lang: "zh-cn"
         }
       }).then(res => {
-        if (res.data && res.data.data) {
-          this.captchaImg = res.data.data;
-          this.aid = res.data.cookie.aid;
+        if (res.data && res.status === "000") {
           setCookie("aid", res.data.cookie.aid);
+          this.captchaImg = res.data.data;
         }
       });
     },
@@ -227,7 +230,7 @@ export default {
       };
 
       if (this.memInfo.config.login_captcha_type === 1) {
-        params["aid"] = this.aid || getCookie("aid") || "";
+        params["aid"] = getCookie("aid") || "";
       }
 
       return bbosRequest({
@@ -288,7 +291,7 @@ export default {
           this.getCaptcha();
           this.checkItem = "";
           if (this.memInfo.config.login_captcha_type === 2) {
-            this.$refs.slider.ncReload();
+            this.$refs["slide-verification"].ncReload();
           }
           if (res.msg) {
             this.errMsg = res.msg;

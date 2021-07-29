@@ -72,7 +72,9 @@
           <span
             >{{
               item.deduction
-                ? item.deduction + ":" + `-${item.value}`
+                ? item.deduction +
+                  ":" +
+                  `${Number(item.value) > 0 ? "-" + item.value : item.value}`
                 : item.rateValue === "-"
                 ? "-"
                 : item.value
