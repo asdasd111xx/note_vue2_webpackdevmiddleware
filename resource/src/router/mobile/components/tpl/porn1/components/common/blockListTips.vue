@@ -7,7 +7,11 @@
         <div>{{ parseType }}功能无法使用，请联系在线客服</div>
       </div>
       <div
-        :class="[$style['close'], { [$style['sg']]: themeTPL === 'sg1' }]"
+        :class="[
+          $style['close'],
+          { [$style['sg']]: themeTPL === 'sg1' },
+          { [$style['ey']]: themeTPL === 'ey1' }
+        ]"
         @click="closeTips"
       >
         确认
@@ -110,6 +114,10 @@ export default {
 
   &.sg {
     color: #bf8646;
+  }
+
+  &.ey {
+    color: #e42a30;
   }
 }
 </style>
