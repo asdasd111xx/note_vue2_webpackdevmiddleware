@@ -47,7 +47,6 @@ export default {
     };
   },
   created() {
-    console.log(this.pageType, this.captchaType);
     this.initCaptcha();
   }
 };

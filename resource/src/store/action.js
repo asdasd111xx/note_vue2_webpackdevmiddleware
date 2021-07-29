@@ -2346,7 +2346,6 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 
         // Loop 帳戶欄位
         Object.keys(ret).forEach(item => {
-          console.log(item, ret[item]);
           // 有帳戶欄位未填過
           if (!ret[item] && item !== "bank") {
             isAccountPassed = false;
