@@ -60,7 +60,12 @@
                   </template>
                 </span>
                 <span :class="$style['money']">
-                  -{{ getDeductionNumber(serialNumberData.total.deduction) }}
+                  {{
+                    getDeductionNumber(serialNumberData.total.deduction) > 0
+                      ? "-" +
+                        getDeductionNumber(serialNumberData.total.deduction)
+                      : getDeductionNumber(serialNumberData.total.deduction)
+                  }}
                 </span>
               </div>
 
@@ -76,8 +81,16 @@
               <div :class="[$style['check-cell'], $style['check-total']]">
                 <span :class="$style['sub-title']"> 扣除总计 </span>
                 <span :class="$style['money']">
-                  -{{
-                    getDeductionNumber(serialNumberData.total.total_deduction)
+                  {{
+                    getDeductionNumber(serialNumberData.total.total_deduction) >
+                    0
+                      ? "-" +
+                        getDeductionNumber(
+                          serialNumberData.total.total_deduction
+                        )
+                      : getDeductionNumber(
+                          serialNumberData.total.total_deduction
+                        )
                   }}
                 </span>
               </div>
