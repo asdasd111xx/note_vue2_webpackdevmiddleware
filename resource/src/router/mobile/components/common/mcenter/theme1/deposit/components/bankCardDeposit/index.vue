@@ -1698,6 +1698,7 @@ export default {
       }
 
       // 使用者存款封鎖狀態
+      //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
       switch (this.entryBlockStatusData.status) {
         case 0:
           this.submitInfo();
@@ -1729,6 +1730,18 @@ export default {
       if (this.entryBlockStatusData.block) {
         this.closePopup();
         return;
+      }
+
+      if(this.entryBlockStatusData.status === 5){
+        this.actionSetGlobalMessage({
+            msg: this.entryBlockStatusData.custom_point
+          });
+
+          setTimeout(() => {
+            window.open(this.entryBlockStatusData.external_url);
+            return;
+          }, 700);
+          return;
       }
 
       this.closePopup();
