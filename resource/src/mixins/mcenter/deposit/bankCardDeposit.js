@@ -2,7 +2,8 @@ import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_THIRD,
-  API_TRADE_RELAY
+  API_TRADE_RELAY,
+  API_MCENTER_DEPOSIT_OUTER_WALLET
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -43,6 +44,11 @@ export default {
       webviewOpenUrl: "",
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
+      defaultOuterCrypto: "",
+      outerCryptoOption: [],
+      isOuterCrypto: false,
+      showOuterCryptoAddress: false,
+      outerCryptoAddress: "",
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
@@ -75,6 +81,9 @@ export default {
       setTimeout(() => {
         document.location.href = this.webviewOpenUrl;
       }, 200);
+    },
+    defaultOuterCrypto() {
+      this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     }
   },
   computed: {
@@ -663,6 +672,15 @@ export default {
                 })
               }));
               this.curPassRoad = { ...this.passRoad[0] };
+              this.isOuterCrypto = false;
+              if (
+                this.curPayInfo.payment_method_id === 25 ||
+                this.curPayInfo.payment_method_id === 402 ||
+                this.curPayInfo.payment_method_id === 404
+              ) {
+                this.isOuterCrypto = true;
+                // this.getVendorCryptoOuterUserAddressList();
+              }
             }
           }
 
@@ -759,6 +777,7 @@ export default {
       }
 
       this.checkDepositInput();
+      this.getVendorCryptoOuterUserAddressList();
     },
     /**
      * 切換通道
@@ -817,6 +836,7 @@ export default {
       this.isErrorMoney = false;
       this.nameCheckFail = false;
       this.checkSuccess = false;
+      this.showOuterCryptoAddress = false;
 
       this.walletData["CGPay"].password = "";
       this.cryptoMoney = "--";
@@ -914,6 +934,20 @@ export default {
           ...paramsData,
           wallet_token: +this.walletData["CGPay"].password
         };
+      }
+
+      if (this.curPassRoad.is_outer_crypto) {
+        if (this.showOuterCryptoAddress) {
+          paramsData = {
+            ...paramsData,
+            user_address: this.outerCryptoAddress
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            user_address: this.defaultOuterCrypto
+          };
+        }
       }
 
       let _isPWA =
@@ -1349,6 +1383,39 @@ export default {
           });
         });
     },
+    // 取得使用者站外錢包入款錢包地址
+    getVendorCryptoOuterUserAddressList() {
+      console.log("getVendorCryptoOuterUserAddressList");
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_OUTER_WALLET,
+        params: {
+          payment_method_id: this.curPayInfo.payment_method_id
+        }
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            console.log(response);
+            this.outerCryptoOption = [];
+            this.defaultOuterCrypto = "";
+            response.data.ret.forEach(outerAddress => {
+              if (outerAddress.is_default) {
+                this.defaultOuterCrypto = outerAddress.address;
+              }
+              this.outerCryptoOption.push(outerAddress.address);
+            });
+            this.defaultOuterCrypto =
+              this.defaultOuterCrypto === ""
+                ? this.outerCryptoOption[0]
+                : this.defaultOuterCrypto;
+
+            this.outerCryptoOption.push("其他位址");
+          }
+
+          // this.outerCryptoOption = ["1", "2", "3"];
+        })
+        .catch(error => {});
+    },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
       let sec = this.countdownSec - minutes * 60;
@@ -1382,7 +1449,8 @@ export default {
       //選擇 CGPAY-USDT ,USDT
       if (
         this.curPayInfo.payment_method_id === 25 ||
-        this.curPayInfo.payment_method_id === 402
+        this.curPayInfo.payment_method_id === 402 ||
+        this.curPayInfo.payment_method_id === 404
       ) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
       }

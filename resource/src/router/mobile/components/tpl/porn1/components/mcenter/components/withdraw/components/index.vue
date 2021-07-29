@@ -1531,6 +1531,19 @@ export default {
       if (params) {
         _params = { ..._params, ...params };
       }
+      let methinIdx = null
+      let methonId = null
+      if (
+        this.selectedCard.swift_code === "BBUSDTCN1" ||
+        this.selectedCard.swift_code === "BBUSDTCN3"
+      ) {
+        methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
+        methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
+      }else if(this.selectedCard.bank_id === 2009){
+        methonId = this.withdrawCurrency.method_id;
+      }else{
+        methonId = ""
+      }
 
       if (this.memInfo.config.withdraw === "迅付") {
         _params = {
@@ -1538,10 +1551,7 @@ export default {
           [`ext[api_uri]`]: "/api/trade/v2/c/withdraw/entry",
           [`ext[method][${this.selectedCard.withdrawType}]`]: this.selectedCard
             .id,
-          [`ext[method][method_id]`]:
-            this.selectedCard.bank_id === 2009
-              ? this.withdrawCurrency.method_id
-              : "",
+          [`ext[method][method_id]`]: methonId,
           password: this.withdrawPwd ? this.withdrawPwd : "",
           swift_code: this.selectedCard.swift_code
         };
@@ -1669,7 +1679,6 @@ export default {
         type: 2,
         amount: this.actualMoneyPlusOffer()
       };
-
       if (
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28
@@ -1677,6 +1686,19 @@ export default {
         _params = {
           ..._params,
           method_id: this.withdrawCurrency.method_id
+        };
+      }
+
+      if (
+        this.selectedCard.swift_code === "BBUSDTCN1" ||
+        this.selectedCard.swift_code === "BBUSDTCN3"
+      ) {
+        let methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
+        let methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
+
+        _params = {
+          ..._params,
+          method_id: methonId
         };
       }
 
