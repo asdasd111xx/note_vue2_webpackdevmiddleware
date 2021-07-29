@@ -60,7 +60,16 @@ const embedGamesList = [
   {
     vendor: "mg_sport",
     kind: 1
-  }
+  },
+  {
+    vendor: "ky",
+    kind: 5
+  },
+  {
+    vendor: "rich88",
+    kind: 3
+  },
+  
 ];
 
 // code: "38001"

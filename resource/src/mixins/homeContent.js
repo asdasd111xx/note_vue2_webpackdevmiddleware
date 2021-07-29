@@ -542,7 +542,6 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
-      console.log(123);
       switch (game.type) {
         case "strong_activity":
           localStorage.setItem("iframe-third-url-title", game.name);

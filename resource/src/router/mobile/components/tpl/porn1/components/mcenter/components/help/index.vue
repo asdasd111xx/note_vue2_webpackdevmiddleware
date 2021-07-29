@@ -187,7 +187,7 @@ export default {
     }
 
     .list-info {
-      color: #cbced8;
+      color: #5e626d;
       font-size: 12px;
       position: absolute;
       right: 38px;

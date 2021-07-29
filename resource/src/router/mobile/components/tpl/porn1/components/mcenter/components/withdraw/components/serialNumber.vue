@@ -138,7 +138,7 @@
             <div>
               <div>
                 <span :class="$style['sub-title']">
-                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}
+                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}:
                 </span>
                 <span :class="$style['money']">
                   {{
@@ -150,7 +150,7 @@
               </div>
               <div>
                 <span :class="$style['sub-title']">
-                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}:
                 </span>
                 <span :class="$style['money']">
                   {{
