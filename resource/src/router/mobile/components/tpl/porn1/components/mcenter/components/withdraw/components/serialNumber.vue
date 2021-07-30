@@ -58,7 +58,7 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              serialNumberData.total.deduction > 0
+              serialNumberData.total.administrative_amount > 0
                 ? `-${getDeductionNumber(
                     serialNumberData.total.administrative_amount
                   )}`
@@ -72,7 +72,7 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              serialNumberData.total.deduction > 0
+              serialNumberData.total.offer_deduction > 0
                 ? `-${getDeductionNumber(
                     serialNumberData.total.offer_deduction
                   )}`
@@ -138,7 +138,7 @@
             <div>
               <div>
                 <span :class="$style['sub-title']">
-                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}
+                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}:
                 </span>
                 <span :class="$style['money']">
                   {{
@@ -150,7 +150,7 @@
               </div>
               <div>
                 <span :class="$style['sub-title']">
-                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}:
                 </span>
                 <span :class="$style['money']">
                   {{

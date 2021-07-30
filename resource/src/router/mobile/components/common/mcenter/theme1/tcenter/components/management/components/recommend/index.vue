@@ -147,7 +147,10 @@
           </div>
         </div>
         <!-- 錯誤訊息 -->
-        <div v-if="captchaErrorMsg" :class="$style['captcha-error']">
+        <div
+          v-if="memInfo.config.friend_captcha_type === 1 && captchaErrorMsg"
+          :class="$style['captcha-error']"
+        >
           {{ captchaErrorMsg }}
         </div>
         <popup-verification

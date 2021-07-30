@@ -80,7 +80,13 @@ export default (params, success = () => {}, fail = () => {}) => {
     });
   };
 
-  if (getGames) {
+  // 丝瓜直播固定標題
+  if (vendor === "sigua_ly") {
+    gameTitle = "丝瓜直播";
+  }
+
+  // 是否強制取得遊戲標題
+  else if (getGames) {
     reqs.push(getGameName());
   }
 
@@ -179,7 +185,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
             if (embedGame && !localStorage.getItem("reload-game")) {
               router.push(
-                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`
+                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
               );
               return;
             }

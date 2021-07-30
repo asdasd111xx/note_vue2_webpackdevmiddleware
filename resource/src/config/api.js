@@ -341,6 +341,9 @@ export const API_MCENTER_DEPOSIT_INPAY =
 // 會員中心 - 存款支付通道
 export const API_MCENTER_DEPOSIT_CHANNEL =
   "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/vendor_user_level/channel";
+// 會員中心 - 站外錢包入款錢包地址
+export const API_MCENTER_DEPOSIT_OUTER_WALLET =
+  "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/vendor/crypto/outer/user_address/list";
 // 會員中心 - 存款取得8日內紀錄
 export const API_MCENTER_DEPOSIT_RECORD =
   "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/list";

@@ -239,7 +239,7 @@
       <template v-if="['ey1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>日薪月薪不如推荐加薪</div>
-          <div>分享入金稳拿奖金</div>
+          <div :class="$style['sub']">分享入金稳拿奖金</div>
         </div>
       </template>
 
@@ -658,9 +658,6 @@ export default {
         }
       });
       return;
-
-      // localStorage.setItem("iframe-third-url-title", target.name);
-      // this.$router.push(`/mobile/iframe/third/fengniao?alias=${target.alias}`);
     },
     onClickMaintain(value) {
       this.msg = `美东时间：

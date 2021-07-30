@@ -17,6 +17,7 @@
           v-for="item in filterField()"
           :key="item"
           :class="$style['field-wrap']"
+          :style="!pwdResetInfo[item].display ? { border: 'none' } : {}"
         >
           <div
             v-if="pwdResetInfo[item].display"
@@ -112,7 +113,7 @@
             $style[themeTPL],
             { [$style['active']]: submitActive }
           ]"
-          @click="checkField"
+          @click="checkField(true)"
         >
           {{ $text("S_SUBMIT", "提交") }}
         </div>
@@ -139,7 +140,6 @@ export default {
   },
   data() {
     return {
-      checked: false,
       errorMsg: "",
       msg: "",
       allTip: {
@@ -280,7 +280,6 @@ export default {
         target = "login_password";
       }
 
-      this.errorMsg = "";
       return this.actionVerificationFormData({
         target: target,
         value: value
@@ -289,24 +288,19 @@ export default {
         switch (target) {
           // case password 原密碼
           case "login_password":
-            if (val.length < 6) {
+            this.errorMsg = "";
+            if (this.pwdResetInfo["password"].value.length < 6) {
               this.errorMsg = "请输入6-12位字母及数字";
             }
             break;
 
           case "new_password":
-            if (!val) {
-              this.errorMsg = "";
-              return;
-            }
-
+            this.errorMsg = "";
             if (
-              this.pwdResetInfo["new_password"].value &&
-              this.pwdResetInfo["confirm_password"].value &&
               this.pwdResetInfo["new_password"].value !==
-                this.pwdResetInfo["confirm_password"].value
+              this.pwdResetInfo["confirm_password"].value
             ) {
-              this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
             }
 
             if (!val.match(regex)) {
@@ -315,33 +309,33 @@ export default {
             break;
 
           case "confirm_password":
-            if (!val) {
-              this.errorMsg = "";
-              return;
-            }
+            this.errorMsg = "";
 
             if (
-              this.pwdResetInfo["new_password"].value &&
-              this.pwdResetInfo["confirm_password"].value &&
               this.pwdResetInfo["new_password"].value !==
-                this.pwdResetInfo["confirm_password"].value
+              this.pwdResetInfo["confirm_password"].value
             ) {
-              this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+              this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
+            }
+
+            if (!val.match(regex)) {
+              this.errorMsg = errorMsg;
             }
             break;
 
           default:
+            this.errorMsg = "";
             if (!val.match(regex)) {
               this.errorMsg = errorMsg;
             }
             break;
         }
+
+        this.checkField();
       });
     },
-    checkField() {
+    checkField(submit) {
       if (!this.submitActive) return;
-
-      this.checked = true;
 
       // Object.keys(this.pwdResetInfo).forEach(key => {
       //   if (this.pwdResetInfo[key].display) {
@@ -356,21 +350,35 @@ export default {
         this.pwdResetInfo["new_password"].value !==
           this.pwdResetInfo["confirm_password"].value
       ) {
-        this.errorMsg = this.$text("S_PASSWD_CONFIRM_ERROR");
+        this.errorMsg = this.$text("S_NEW_PASSWD_NEW_CONFIRM_ERROR");
         return;
       }
 
       const regex = new RegExp(joinMemInfo["password"].regExp);
+
+      if (
+        this.pwdResetInfo["password"].display &&
+        this.pwdResetInfo["password"].value.length < 6
+      ) {
+        this.errorMsg = "请输入6-12位字母及数字";
+        return;
+      }
 
       if (!this.pwdResetInfo["new_password"].value.match(regex)) {
         this.errorMsg = joinMemInfo["new_password"].errorMsg;
         return;
       }
 
-      if (!this.errorMsg) {
+      if (!this.pwdResetInfo["confirm_password"].value.match(regex)) {
+        this.errorMsg = joinMemInfo["confirm_password"].errorMsg;
+        return;
+      }
+
+      if (submit && !this.errorMsg) {
         this.isResetPW ? this.pwdResetSubmit() : this.pwdModifySubmit();
       }
     },
+    // 修改密碼
     pwdModifySubmit() {
       if (!this.submitActive || this.isLoading) return;
       this.isLoading = true;
@@ -387,10 +395,13 @@ export default {
         agcenter.accountPassword({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              this.$router.push("/mobile/mcenter/setting");
-            }, 1200);
+            this.isLoading = true;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.back();
+              }
+            });
           },
           fail: res => {
             this.errorMsg = `${res.data.msg}`;
@@ -400,16 +411,18 @@ export default {
         mcenter.accountPassword({
           params: pwdInfo,
           success: () => {
+            this.isLoading = true;
             this.actionSetGlobalMessage({
               msg: this.$t("S_EDIT_SUCCESS"),
               cb: () => {
+                // 強制修改密碼
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                    this.$router.push("/mobile");
+                    this.$router.replace("/mobile");
                   });
                   return;
                 }
-                this.$router.push("/mobile/mcenter/setting");
+                this.$router.back();
               }
             });
           },
@@ -419,8 +432,9 @@ export default {
         });
       }
     },
+    // 重設密碼
     pwdResetSubmit() {
-      if (!this.submitActive) return;
+      if (!this.submitActive || this.isLoading) return;
       const pwdInfo = {
         username: this.pwdResetInfo.username.value,
         email: this.pwdResetInfo.email.value,
@@ -432,10 +446,13 @@ export default {
         agent.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            setTimeout(() => {
-              this.$router.push("/mobile/mcenter/setting");
-            }, 1200);
+            this.isLoading = true;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.push("/mobile/login");
+              }
+            });
           },
           fail: res => {
             this.errorMsg = `${res.data.msg}`;
@@ -445,14 +462,17 @@ export default {
         member.pwdReset({
           params: pwdInfo,
           success: () => {
-            this.actionSetGlobalMessage({ msg: this.$t("S_EDIT_SUCCESS") });
-            if (this.isResetPW) {
-              window.close();
-            } else {
-              setTimeout(() => {
-                this.$router.push("/mobile/mcenter/setting");
-              }, 1200);
-            }
+            this.isLoading = true;
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                if (this.isResetPW) {
+                  window.close();
+                } else {
+                  this.$router.back();
+                }
+              }
+            });
           },
           fail: res => {
             this.errorMsg = `${res.data.msg}`;

@@ -36,6 +36,7 @@
       <div
         :class="[
           $style['close'],
+          [$style[siteConfig.MOBILE_WEB_TPL]],
           {
             [$style['is-captcha-image']]: captchaType === 1
           }
@@ -44,7 +45,11 @@
       >
         关闭
       </div>
-      <div v-if="captchaType === 1" :class="$style['submit']" @click="submit">
+      <div
+        v-if="captchaType === 1"
+        :class="[$style['submit'], $style[siteConfig.MOBILE_WEB_TPL]]"
+        @click="submit"
+      >
         确认送出
       </div>
     </div>
@@ -54,11 +59,9 @@
 <script>
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import bbosRequest from "@/api/bbosRequest";
 import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/mixins/thirdyVerification";
-
-import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   mixins: [thirdyVerification],
@@ -136,16 +139,24 @@ export default {
       }
 
       this.isGetCaptchaImg = true;
-      axios({
+      setTimeout(() => {
+        this.isGetCaptchaImg = false;
+      }, 800);
+
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/captcha"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`,
+        params: {
+          lang: "zh-cn"
+        }
       }).then(res => {
-        setTimeout(() => {
-          this.isGetCaptchaImg = false;
-        }, 800);
-        if (res.data && res.data) {
-          this.captchaImg = res.data.ret;
-          //   setCookie('aid', res.data.cookie.aid);
+        if (res.data && res.status === "000") {
+          setTimeout(() => {
+            this.isGetCaptchaImg = false;
+          }, 800);
+
+          setCookie("aid", res.data.cookie.aid);
+          this.captchaImg = res.data.data;
         }
       });
     },
@@ -215,6 +226,10 @@ export default {
   color: #d1b79c;
   border-top: 1px solid #f8f8f7;
 
+  &.ey1 {
+    color: #e42a30;
+  }
+
   &.is-captcha-image {
     color: #414655;
     display: inline-block;
@@ -233,6 +248,15 @@ export default {
   width: 48%;
   border-top: 1px solid #f8f8f7;
   border-left: 1px solid #f8f8f7;
+
+  &.porn1,
+  .sg1 {
+    color: #d1b79c;
+  }
+
+  &.ey1 {
+    color: #e42a30;
+  }
 }
 
 .captchaText-wrap {

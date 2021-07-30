@@ -175,6 +175,7 @@ export default {
           ...this.slideText.errorNetwork
         )}</a>`
       });
+      this.nc.reload();
     },
     ncReload() {
       this.nc.reload();

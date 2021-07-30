@@ -294,23 +294,28 @@
   border-radius: 34px;
 
   .content {
-    width: 60%;
     color: #be9e7f;
     font-size: 16px;
-    margin-left: 10px;
+    margin-left: 8%;
     font-weight: 700;
     height: 100%;
-    text-align: center;
-    height: 100%;
+    width: 60%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    flex-direction: column;
+
+    .sub {
+      font-size: 12px;
+      text-align: left;
+      color: #be9e7f;
+      font-weight: 400;
+    }
   }
 
   .image {
     position: absolute;
     top: 0;
-    right: 28px;
+    right: 20px;
     width: 100px;
     height: 68px;
 

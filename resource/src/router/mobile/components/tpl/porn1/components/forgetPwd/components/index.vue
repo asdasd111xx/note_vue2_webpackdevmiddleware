@@ -52,7 +52,7 @@
             v-if="currentMethod !== 'phone-step-2'"
             :class="$style['form-control']"
           >
-            <div class="clearfix">
+            <div :class="[$style['input-wrap'], 'clearfix']">
               <div :class="$style['form-title']">
                 {{ $t("S_USER_NAME") }}
               </div>
@@ -103,7 +103,9 @@
             <div
               :class="[
                 $style['send-keyring'],
-                { [$style['active']]: username && !timer }
+                {
+                  [$style['active']]: username && !timer && !allTip.username
+                }
               ]"
               @click="showCaptchaPopup"
             >
@@ -113,7 +115,7 @@
           <!-- 重設密碼 -->
           <template v-if="currentMethod === 'phone-step-2'">
             <div :class="$style['form-control']">
-              <div class="clearfix">
+              <div :class="[$style['input-wrap'], 'clearfix']">
                 <div :class="$style['form-title']">
                   {{ $t("S_NEW_PWD") }}
                 </div>
@@ -145,7 +147,7 @@
               </div>
             </div>
             <div :class="$style['form-control']">
-              <div class="clearfix">
+              <div :class="['clearfix']">
                 <div :class="$style['form-title']">
                   {{ $t("S_ENABLE_CHK_PWD") }}
                 </div>
@@ -200,7 +202,7 @@
         :class="[
           $style['forget-submit'],
           {
-            [$style['active']]: checkSubmit
+            [$style['active']]: checkSubmit && !allTip.username
           }
         ]"
         @click="send($route.params.type)"
@@ -219,12 +221,13 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 import member from "@/api/member";
 import mobileContainer from "../../common/mobileContainer";
 import popupVerification from "@/components/popupVerification";
 import joinMemInfo from "@/config/joinMemInfo";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -360,19 +363,15 @@ export default {
 
         switch (key) {
           case "password":
-            if (!val) {
-              this.allTip[key] = "";
-              return;
-            }
+            // if (!val) {
+            //   this.allTip[key] = "";
+            //   return;
+            // }
 
             this.allTip["confirm_password"] = "";
-            if (
-              this.confirm_password &&
-              this.password &&
-              this.confirm_password !== this.password
-            ) {
+            if (this.confirm_password !== this.password) {
               this.allTip["confirm_password"] = this.$text(
-                "S_PASSWD_CONFIRM_ERROR"
+                "S_NEW_PASSWD_NEW_CONFIRM_ERROR"
               );
             }
 
@@ -382,19 +381,15 @@ export default {
             break;
 
           case "confirm_password":
-            if (!val) {
-              this.allTip[key] = "";
-              return;
-            }
+            // if (!val) {
+            //   this.allTip[key] = "";
+            //   return;
+            // }
 
             this.allTip["confirm_password"] = "";
-            if (
-              this.confirm_password &&
-              this.password &&
-              this.confirm_password !== this.password
-            ) {
+            if (this.confirm_password !== this.password) {
               this.allTip["confirm_password"] = this.$text(
-                "S_PASSWD_CONFIRM_ERROR"
+                "S_NEW_PASSWD_NEW_CONFIRM_ERROR"
               );
             }
             break;
@@ -445,8 +440,45 @@ export default {
         return;
       }
 
-      // 忘記密碼 - 會員
-      member.pwdForget(data);
+      // 忘記密碼 - 會員 C02.16
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password`,
+        params: {
+          username: this.username,
+          email: this.email,
+          domain: window.location.host.replace("/"),
+          // 開發端測試用
+          // domain: 'yb01.66boxing.com',
+          callback: "/mobile/resetPwd",
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.actionSetGlobalMessage({
+            msg: this.$text("FORGET_password_SEND", "重设密码信件已发送")
+          });
+        } else {
+          this.isSendKeyring = false;
+
+          if (res && Number(res.status) === 429) {
+            this.actionGetToManyRequestMsg(res).then(res => {
+              this.errorMsg = res;
+            });
+            return;
+          }
+
+          // 「请填写正确的用户名」(A-9340)
+          if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
+            this.errorMsg = "请填写正确的用户名";
+            return;
+          }
+
+          if (res && res.msg) {
+            this.errorMsg = `${res.msg}`;
+          }
+        }
+      });
     },
     send(type) {
       if (this.currentMethod === "phone-step-1") {
@@ -465,6 +497,11 @@ export default {
       }
     },
     showCaptchaPopup() {
+      this.timer = true;
+      setTimeout(() => {
+        this.timer = null;
+      }, 1200);
+
       this.actionSetUserdata(true).then(() => {
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
@@ -486,48 +523,48 @@ export default {
       //     return;
       //   }
 
-      // 忘記密碼發送簡訊 - 會員
-      // member.passwordForgetMobile(data);
-
-      axios({
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/forget/password/sms",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Forget/Password/Sms`,
+        params: {
           username: this.username,
-          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : ""
+          captchaText: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : "",
+          aid: getCookie("aid"),
+          lang: "zh-cn"
         }
-      })
-        .then(res => {
-          if (res.data.result === "ok") {
-            this.errorMsg = "";
-            this.countdownSec = 60;
-            this.timer = setInterval(() => {
-              if (this.countdownSec === 0) {
-                clearInterval(this.timer);
-                this.timer = null;
-                return;
-              }
-              this.countdownSec -= 1;
-            }, 1000);
-
-            if (res.data.code) {
-              this.errorMsg = `${res.data.msg}`;
-            } else {
-              this.actionSetGlobalMessage({
-                msg: "已发送手机验证码"
-              });
+      }).then(res => {
+        if (res.status === "000") {
+          this.errorMsg = "";
+          this.countdownSec = 60;
+          this.timer = setInterval(() => {
+            if (this.countdownSec === 0) {
+              clearInterval(this.timer);
+              this.timer = null;
+              return;
             }
+            this.countdownSec -= 1;
+          }, 1000);
+
+          if (res.code && res.msg) {
+            this.errorMsg = `${res.msg}`;
           } else {
-            this.errorMsg = res.data.msg;
+            this.actionSetGlobalMessage({
+              msg: "已发送手机验证码"
+            });
           }
-        })
-        .catch(error => {
+        } else {
           this.isSendKeyring = false;
 
-          if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestallTip(error.response).then(res => {
+          if (res && Number(res.status) === 429) {
+            this.actionGetToManyRequestMsg(res).then(res => {
               this.errorMsg = res;
             });
+            return;
+          }
+
+          // 「请填写正确的用户名」(A-9340)
+          if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
+            this.errorMsg = "请填写正确的用户名";
             return;
           }
 
@@ -537,14 +574,11 @@ export default {
           //   return;
           // }
 
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.msg
-          ) {
-            this.errorMsg = `${error.response.data.msg}`;
+          if (res && res.msg) {
+            this.errorMsg = `${res.msg}`;
           }
-        });
+        }
+      });
 
       this.showCaptcha(false);
     },
@@ -605,9 +639,14 @@ export default {
         success: response => {
           this.errorMsg = "";
           if (response.result === "ok") {
-            this.$router.push(
-              `/mobile/${type === "agent" ? "aglogin" : "login"}`
-            );
+            this.actionSetGlobalMessage({
+              msg: this.$t("S_EDIT_SUCCESS"),
+              cb: () => {
+                this.$router.push(
+                  `/mobile/${type === "agent" ? "aglogin" : "login"}`
+                );
+              }
+            });
           }
         },
         fail: res => {
@@ -640,14 +679,14 @@ export default {
     },
     // 測試第二步驟
     step2shortcut() {
-      if (
-        this.checkSubmit &&
-        ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
-      ) {
-        this.errorMsg = "";
-        this.currentMethod = "phone-step-2";
-        this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
-      }
+      // if (
+      //   this.checkSubmit &&
+      //   ["500015", "500023", "500035"].includes(this.memInfo.user.domain)
+      // ) {
+      //   this.errorMsg = "";
+      //   this.currentMethod = "phone-step-2";
+      //   this.$emit("setTitle", this.$text("S_PASSWORD_RESET"));
+      // }
     }
   }
 };

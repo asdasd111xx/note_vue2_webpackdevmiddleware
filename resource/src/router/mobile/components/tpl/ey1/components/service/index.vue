@@ -1,13 +1,16 @@
 <template>
-  <mobile-container :class="$style.container" :has-footer="!hasPrev">
+  <mobile-container
+    :class="$style.container"
+    :has-footer="!hasPrev && !fromlanding"
+  >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
           <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
-
         <div :class="$style.title">我的客服</div>
         <div
+          v-if="!fromlanding"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -66,9 +69,10 @@
       </div>
 
       <div
+        v-if="isIos"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev ? { bottom: '15px' } : {}"
+        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img :src="$getCdnPath(`/static/image/ey1/service/appicon.png`)" />
@@ -158,6 +162,7 @@ export default {
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
       hasPrev: true,
+      fromlanding: false,
       serviceData: [
         {
           classTitle: "customer_service2",
@@ -194,23 +199,17 @@ export default {
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
     }
+
+    if (this.$route.query.fromlanding !== undefined) {
+      this.fromlanding = this.$route.query.fromlanding === "true";
+    }
   },
   mounted() {
-    this.actionSetUserdata(true).then(() => {
-      this.getAvatarSrc();
-    });
-
-    // yaboRequest({
-    //   method: "get",
-    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
-    //   headers: {
-    //     'x-domain': this.memInfo.user.domain
-    //   }
-    // }).then(res => {
-    //   if (res && res.data) {
-    //     this.linkArray = res.data;
-    //   }
-    // });
+    if (this.loginStatus && !this.fromlanding) {
+      this.actionSetUserdata(true).then(() => {
+        this.getAvatarSrc();
+      });
+    }
 
     goLangApiRequest({
       method: "get",
@@ -227,8 +226,11 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    isIos() {
+      return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    },
     name() {
-      if (this.loginStatus) {
+      if (this.loginStatus && !this.fromlanding) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -292,7 +294,7 @@ export default {
       this.isShowPop = true;
     },
     getAvatarSrc() {
-      if (!this.loginStatus) return;
+      if (!this.loginStatus || this.fromlanding) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {

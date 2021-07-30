@@ -104,7 +104,6 @@ export default {
     }
   },
   mounted() {
-    console.log(["withdraw", "deposit"].includes(this.origin));
     this.currentLeft = this.$refs.container.offsetWidth;
 
     this.totalWidth =

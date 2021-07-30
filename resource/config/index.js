@@ -34,6 +34,9 @@ const domain = "https://yb01.66boxing.com/";
 
 // 丝瓜
 // const domain = "https://sgtt.66boxing.com/";
+// const domain = "https://sgqa1-io.yaslbox.com/";
+// const domain = "https://sgqa1.yaslbox.com/";
+
 // Demo
 // const domain = 'https://sgt.66relish.com/';
 // Prod

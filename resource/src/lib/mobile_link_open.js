@@ -196,25 +196,26 @@ export default target => {
     }
   }
 
-  // 遊戲需登入
-  if (!store.state.loginStatus) {
-    if (store.state.webDomain.site === "ey1") {
-      router.push("/mobile/login");
-    } else {
-      router.push("/mobile/joinmember");
-    }
-    return;
-  }
-
   if (linkType === "event") {
     switch (linkTo) {
       case "event":
-        router.push("mobile/activity/all/");
+        router.push("/mobile/activity/all/");
         return;
 
       default:
         console.log(linkTo);
+
+        if (!store.state.loginStatus) {
+          if (store.state.siteConfig.MOBILE_WEB_TPL === "ey1") {
+            router.push("/mobile/login");
+          } else {
+            router.push("/mobile/joinmember");
+          }
+          return;
+        }
+
         const eventID = linkTo;
+        let newWindow = window.open();
         goLangApiRequest({
           method: "post",
           url:
@@ -238,21 +239,21 @@ export default target => {
 
                 const target = activityEvents.find(i => i.id === eventID);
 
-                let newWindow;
                 if (!target.is_secure || target.is_secure === "false") {
                   let url = target.url;
                   if (url.indexOf("://") === -1) {
                     url = `https://${url}`;
                   }
-                  newWindow = window.open(url);
+                  newWindow.location.href = url;
                   return;
                 } else {
-                  newWindow = window.open(`${target.url}`, "_blank");
+                  newWindow.location.href = target.url;
                 }
               }
             }
 
             if (res && res.status !== "000") {
+              newWindow.close();
               store.dispatch("actionSetGlobalMessage", {
                 msg: res.msg,
                 code: res.code
@@ -260,6 +261,7 @@ export default target => {
             }
           })
           .catch(error => {
+            newWindow.close();
             if (error && error.data && error.data.msg) {
               store.dispatch("actionSetGlobalMessage", {
                 msg: error.data.msg,
@@ -270,6 +272,16 @@ export default target => {
 
         return;
     }
+  }
+
+  // 遊戲需登入
+  if (!store.state.loginStatus) {
+    if (store.state.webDomain.site === "ey1") {
+      router.push("/mobile/login");
+    } else {
+      router.push("/mobile/joinmember");
+    }
+    return;
   }
 
   const gameList = [
