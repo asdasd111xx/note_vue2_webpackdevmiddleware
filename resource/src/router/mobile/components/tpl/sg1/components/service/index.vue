@@ -1,6 +1,6 @@
 <template>
   <mobile-container
-    :has-footer="!hasPrev || !fromlanding"
+    :has-footer="!hasPrev && !fromlanding"
     :class="$style['container']"
   >
     <div slot="content" :class="$style['content-wrap']">
