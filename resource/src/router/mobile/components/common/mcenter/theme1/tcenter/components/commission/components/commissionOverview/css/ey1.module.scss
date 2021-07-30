@@ -1,5 +1,9 @@
 @import "./porn1.module.scss";
 
 .date {
-    color: #222222;
+  color: #222222;
+}
+
+.profit_child_name::before {
+  background: #e42a30;
 }

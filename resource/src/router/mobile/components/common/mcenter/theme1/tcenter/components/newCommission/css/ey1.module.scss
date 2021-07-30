@@ -1,0 +1,14 @@
+@import "./porn1.module.scss";
+
+.link {
+    color: #A6A9B2;
+
+    &.active {
+        color: #222222;
+    }
+}
+
+.submit {
+    background: #E42A30;
+    color: #fff;
+}

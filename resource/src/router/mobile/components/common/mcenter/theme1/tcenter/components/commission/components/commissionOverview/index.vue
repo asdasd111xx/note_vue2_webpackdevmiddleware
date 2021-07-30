@@ -1,240 +1,293 @@
 <template>
   <div>
-    <div :class="[$style['date-wrap'], 'clearfix']">
-      <div :class="$style.date">
-        {{ $text(`S_${currentMonth}_MONTH`) }}/{{ currentYear }}
-      </div>
-      <div :class="$style.remainder">
-        {{
-          $text("S_DAYSLEFT", {
-            replace: [{ target: "%s", value: remainderDays }]
-          })
-        }}
+    <!-- 返利管理 -->
+    <div v-if="path" :class="[$style['profit']]">
+      <div v-for="(info, index) in profitList" :key="index">
+        <div :class="[$style['profit-wrap']]">
+          <div :class="[$style['bottom-title']]">
+            <span :class="[$style['top-title']]">
+              {{ info.overview }}
+            </span>
+            <span :class="[$style['profit_day']]"
+              >本月剩余<span>{{ info.day }}</span
+              >天</span
+            >
+          </div>
+          <div :class="[$style['profit_container']]">
+            <div
+              v-for="(content, key) in info.list"
+              :key="key"
+              :class="[$style['profit_child']]"
+            >
+              <div :class="[$style['profit_child_name']]">
+                {{ content.name }}
+              </div>
+              <div
+                :class="[
+                  $style['profit_child_item'],
+                  { [$style.deficit]: content.color }
+                ]"
+              >
+                {{ content.item }}
+              </div>
+            </div>
+          </div>
+          <div :class="$style.tips">
+            ※
+            {{
+              $text("S_EVERY_DAY_UPDATE", {
+                replace: [{ target: "%s", value: "6:00" }]
+              })
+            }}
+          </div>
+        </div>
       </div>
     </div>
-    <div v-if="summary" :class="$style['summary-wrap']">
-      <div
-        v-for="(info, index) in summaryTitle"
-        :key="`title-${info.key}`"
-        :class="$style.wrap"
-      >
-        <div
-          :class="[
-            $style['title-wrap'],
-            'clearfix',
-            {
-              [$style['expend']]: isSummaryShow[info.key]
-            }
-          ]"
-          @click="onClick(info)"
-        >
-          <div :class="$style['btn-arrow']">
-            <icon
-              v-if="isSummaryShow[info.key]"
-              name="chevron-up"
-              width="10"
-              height="10"
-            />
-            <icon v-else name="chevron-down" width="10" height="10" />
-          </div>
-          <div :class="$style.title">{{ info.text }}</div>
-          <div :class="$style.amount">{{ info.amount | amountFormat }}</div>
+    <!-- 我的推廣 -->
+    <div v-if="!path">
+      <div :class="[$style['date-wrap'], 'clearfix']">
+        <div :class="$style.date">
+          {{ $text(`S_${currentMonth}_MONTH`) }}/{{ currentYear }}
         </div>
-
-        <!-- 預估返利(第三方) -->
-        <template v-if="info.key === 'expected'">
-          <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="[$style.text, $style.main]">
-                {{ $text("S_EXPECTED_LOSS_REBATE", "盈亏返利预估") }}
-              </div>
-              <div
-                :class="[
-                  $style.amount,
-                  $style.main,
-                  { [$style.deficit]: +summaryContent[index].amount < 0 }
-                ]"
-              >
-                {{ summaryContent[index].amount | amountFormat }}
-              </div>
-            </div>
-
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="[$style.text, $style.main]">
-                {{ $text("S_REBATE_LEVEL", "返利级别") }}
-              </div>
-              <div :class="[$style.amount, $style.main]">
-                {{ summaryContent[index].rate }} %
-              </div>
-            </div>
-
-            <div :class="$style['summary-date']">
-              {{ summaryContent[index].start_at | dateFormat }}~{{
-                summaryContent[index].end_at | dateFormat
-              }}
-            </div>
-
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].valid_user | amountFormat }}
-                {{ $text("S_PERSON", "人") }}
-              </div>
-            </div>
-
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_VALID_BET", "有效投注") }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].valid_bet | amountFormat }}
-              </div>
-            </div>
-
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_GAME_LOSS", "游戏盈亏") }}
-              </div>
-              <div
-                :class="[
-                  $style.amount,
-                  { [$style.deficit]: +summaryContent[index].profit < 0 }
-                ]"
-              >
-                {{ summaryContent[index].profit | amountFormat }}
-              </div>
-            </div>
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_SENT_RAKEBACK", "已派返水") }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].dispatched_rebate | amountFormat }}
-              </div>
-            </div>
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].dispatched_offer | amountFormat }}
-              </div>
-            </div>
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_MEM_DEPOSIT", "会员入款") }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].deposit | amountFormat }}
-              </div>
-            </div>
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_MEM_WITHDRAW", "会员出款") }}
-              </div>
-              <div
-                :class="[
-                  $style.amount,
-                  { [$style.deficit]: +summaryContent[index].withdraw < 0 }
-                ]"
-              >
-                {{ summaryContent[index].withdraw | amountFormat }}
-              </div>
-            </div>
-            <div :class="[$style.detail, 'clearfix']">
-              <div :class="$style.text">
-                {{ $text("S_PLATFORM_COST", "平台费") }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].vendor_fee | amountFormat }}
-              </div>
-            </div>
-            <div
-              v-if="summaryContent[index].shift_amount"
-              :class="[$style.detail, 'clearfix']"
-            >
-              <div :class="$style.text">
-                {{ $text("S_SHIFT_AMOUNT", "上期結轉") }}
-              </div>
-              <div :class="$style.amount">{{ $text("S_HAVE", "有") }}</div>
-            </div>
-            <div :class="$style.tips">
-              ※
-              {{
-                $text("S_EVERY_DAY_UPDATE", {
-                  replace: [{ target: "%s", value: "6:00" }]
-                })
-              }}
-            </div>
-          </div>
-        </template>
-
-        <template
-          v-else-if="
-            summaryContent[index].amount + summaryContent[index].oauthAmount <=
-              0
-          "
+        <div :class="$style.remainder">
+          {{
+            $text("S_DAYSLEFT", {
+              replace: [{ target: "%s", value: remainderDays }]
+            })
+          }}
+        </div>
+      </div>
+      <div v-if="summary" :class="$style['summary-wrap']">
+        <div
+          v-for="(info, index) in summaryTitle"
+          :key="`title-${info.key}`"
+          :class="$style.wrap"
         >
-          <div v-show="isSummaryShow[info.key]" :class="$style['detail-wrap']">
-            <div :class="$style['no-data']">
-              {{ $text("S_NO_DATA_YET", "暂无资料") }}
+          <div
+            :class="[
+              $style['title-wrap'],
+              'clearfix',
+              {
+                [$style['expend']]: isSummaryShow[info.key]
+              }
+            ]"
+            @click="onClick(info)"
+          >
+            <div :class="$style['btn-arrow']">
+              <icon
+                v-if="isSummaryShow[info.key]"
+                name="chevron-up"
+                width="10"
+                height="10"
+              />
+              <icon v-else name="chevron-down" width="10" height="10" />
             </div>
+            <div :class="$style.title">{{ info.text }}</div>
+            <div :class="$style.amount">{{ amountFormat(info.amount) }}</div>
           </div>
-        </template>
 
-        <template v-else>
-          <div v-show="isSummaryShow[info.key]">
+          <!-- 預估返利(第三方) -->
+          <template v-if="info.key === 'expected'">
             <div
-              v-if="summaryContent[index].amount"
-              :class="[
-                $style['detail-wrap'],
-                {
-                  [$style['main']]: info.key === 'monthly'
-                },
-                'clearfix'
-              ]"
+              v-show="isSummaryShow[info.key]"
+              :class="$style['detail-wrap']"
             >
-              <div :class="$style.text">
-                <!-- 唯獨本月已領需要額外+區間 -->
-                <template v-if="info.key === 'monthly'">
-                  投注返利({{ monthRange }})
-                </template>
-
-                <template v-else>
-                  {{
-                    summaryContent[index].text === ""
-                      ? "投注返利"
-                      : summaryContent[index].text
-                  }}
-                </template>
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="[$style.text, $style.main]">
+                  {{ $text("S_EXPECTED_LOSS_REBATE", "盈亏返利预估") }}
+                </div>
+                <div
+                  :class="[
+                    $style.amount,
+                    $style.main,
+                    { [$style.deficit]: +summaryContent[index].amount < 0 }
+                  ]"
+                >
+                  {{ amountFormat(summaryContent[index].amount) }}
+                </div>
               </div>
 
-              <div :class="$style.amount">
-                {{ summaryContent[index].amount | amountFormat }}
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="[$style.text, $style.main]">
+                  {{ $text("S_REBATE_LEVEL", "返利级别") }}
+                </div>
+                <div :class="[$style.amount, $style.main]">
+                  {{ summaryContent[index].rate }} %
+                </div>
+              </div>
+
+              <div :class="$style['summary-date']">
+                {{ dateFormat(summaryContent[index].start_at) }}~{{
+                  dateFormat(summaryContent[index].end_at)
+                }}
+              </div>
+
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_ACH_VALID_MEMBERS", "有效会员") }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].valid_user) }}
+                  {{ $text("S_PERSON", "人") }}
+                </div>
+              </div>
+
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_VALID_BET", "有效投注") }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].valid_bet) }}
+                </div>
+              </div>
+
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_GAME_LOSS", "游戏盈亏") }}
+                </div>
+                <div
+                  :class="[
+                    $style.amount,
+                    { [$style.deficit]: +summaryContent[index].profit < 0 }
+                  ]"
+                >
+                  {{ amountFormat(summaryContent[index].profit) }}
+                </div>
+              </div>
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_SENT_RAKEBACK", "已派返水") }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].dispatched_rebate) }}
+                </div>
+              </div>
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_SENT_PROMOTIONS", "已派优惠") }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].dispatched_offer) }}
+                </div>
+              </div>
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_MEM_DEPOSIT", "会员入款") }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].deposit) }}
+                </div>
+              </div>
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_MEM_WITHDRAW", "会员出款") }}
+                </div>
+                <div
+                  :class="[
+                    $style.amount,
+                    { [$style.deficit]: +summaryContent[index].withdraw < 0 }
+                  ]"
+                >
+                  {{ amountFormat(summaryContent[index].withdraw) }}
+                </div>
+              </div>
+              <div :class="[$style.detail, 'clearfix']">
+                <div :class="$style.text">
+                  {{ $text("S_PLATFORM_COST", "平台费") }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].vendor_fee) }}
+                </div>
+              </div>
+              <div
+                v-if="summaryContent[index].shift_amount"
+                :class="[$style.detail, 'clearfix']"
+              >
+                <div :class="$style.text">
+                  {{ $text("S_SHIFT_AMOUNT", "上期結轉") }}
+                </div>
+                <div :class="$style.amount">{{ $text("S_HAVE", "有") }}</div>
+              </div>
+              <div :class="$style.tips">
+                ※
+                {{
+                  $text("S_EVERY_DAY_UPDATE", {
+                    replace: [{ target: "%s", value: "6:00" }]
+                  })
+                }}
               </div>
             </div>
+          </template>
 
+          <template
+            v-else-if="
+              summaryContent[index].amount +
+                summaryContent[index].oauthAmount <=
+                0
+            "
+          >
             <div
-              v-if="summaryContent[index].oauthAmount"
-              :class="[
-                $style['detail-wrap'],
-                {
-                  [$style['main']]: info.key === 'monthly'
-                },
-                'clearfix'
-              ]"
+              v-show="isSummaryShow[info.key]"
+              :class="$style['detail-wrap']"
             >
-              <div :class="$style.text">
-                {{ summaryContent[index].oauthText }}
-              </div>
-              <div :class="$style.amount">
-                {{ summaryContent[index].oauthAmount | amountFormat }}
+              <div :class="$style['no-data']">
+                {{ $text("S_NO_DATA_YET", "暂无资料") }}
               </div>
             </div>
-          </div>
-        </template>
+          </template>
+
+          <template v-else>
+            <div v-show="isSummaryShow[info.key]">
+              <div
+                v-if="summaryContent[index].amount"
+                :class="[
+                  $style['detail-wrap'],
+                  {
+                    [$style['main']]: info.key === 'monthly'
+                  },
+                  'clearfix'
+                ]"
+              >
+                <div :class="$style.text">
+                  <!-- 唯獨本月已領需要額外+區間 -->
+                  <template v-if="info.key === 'monthly'">
+                    投注返利({{ monthRange }})
+                  </template>
+
+                  <template v-else>
+                    {{
+                      summaryContent[index].text === ""
+                        ? "投注返利"
+                        : summaryContent[index].text
+                    }}
+                  </template>
+                </div>
+
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].amount) }}
+                </div>
+              </div>
+
+              <div
+                v-if="summaryContent[index].oauthAmount"
+                :class="[
+                  $style['detail-wrap'],
+                  {
+                    [$style['main']]: info.key === 'monthly'
+                  },
+                  'clearfix'
+                ]"
+              >
+                <div :class="$style.text">
+                  {{ summaryContent[index].oauthText }}
+                </div>
+                <div :class="$style.amount">
+                  {{ amountFormat(summaryContent[index].oauthAmount) }}
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -254,13 +307,9 @@ export default {
         yesterday: false,
         monthly: false,
         expected: false
-      }
+      },
+      path: this.$route.params.title ?? "" //是否從返利管理來,
     };
-  },
-  filters: {
-    amountFormat(amount) {
-      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
   },
   computed: {
     ...mapGetters({
@@ -299,11 +348,108 @@ export default {
       let lastDate = month + "/" + getLastDay(year, month);
 
       return firstDate + "-" + lastDate;
+    },
+    profitList() {
+      let findExpected = this.summaryContent.filter(function(item) {
+        return item.key == "expected";
+      });
+      let data = findExpected?.map(info => {
+        return {
+          overview: `${this.currentMonth}月收益概况`,
+          date: `${this.dateYearFormat(info.start_at)}~
+                ${this.dateYearFormat(info.end_at)}`,
+          day: this.remainderDays,
+          list: [
+            {
+              name: this.$text("S_EXPECTED_REBATE", "预估返利"),
+              item: this.amountFormat(info.amount),
+              key: "estimate",
+              color: info.amount < 0,
+              show: true
+            },
+            {
+              name: this.$text("S_REBATE_TOP_LEVEL", "最高盈亏级别"),
+              item: `${info.rate}%`,
+              key: "level",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
+              item: this.amountFormat(info.valid_user),
+              key: "member",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_VALID_BET", "有效投注"),
+              item: this.amountFormat(info.valid_bet),
+              key: "bet",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_TOTAL_REBATE", "总损益"),
+              item: info.profit,
+              color: info.profit,
+              key: "level",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_SENT_RAKEBACK", "已派返水"),
+              item: this.amountFormat(info.dispatched_rebate),
+              key: "sent",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_SENT_PROMOTIONS", "已派優惠"),
+              item: this.amountFormat(info.dispatched_offer),
+              key: "discount",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_MEM_DEPOSIT_2", "會員存款"),
+              item: this.amountFormat(info.deposit),
+              key: "deposit",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
+              item: this.amountFormat(info.withdraw),
+              key: "withdraw",
+              color: info.withdraw < 0,
+              show: true
+            },
+            {
+              name: this.$text("S_PLATFORM_COST", "平台费"),
+              item: this.amountFormat(info.vendor_fee),
+              key: "fee",
+              color: false,
+              show: true
+            },
+            {
+              name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
+              item: this.$text("S_HAVE", "有"),
+              key: "previous",
+              color: false,
+              show: info.shift_amount
+            }
+          ].filter(i => i.show)
+        };
+      });
+      return data;
     }
   },
   methods: {
     onClick({ key }) {
       this.isSummaryShow[key] = !this.isSummaryShow[key];
+    },
+    amountFormat(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
 };
