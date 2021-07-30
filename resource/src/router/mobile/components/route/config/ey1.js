@@ -235,11 +235,11 @@ export default {
       ),
     tcenterManageRebateEy1: () =>
       import(
-        /* webpackChunkName: 'tcenterManageRebateEy1' */ "../../tpl/Ey1/components/mcenter/components/tcenter/tcenterManageRebate"
+        /* webpackChunkName: 'tcenterManageRebateEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterManageRebate"
       ),
     tcenterManageTeamEy1: () =>
       import(
-        /* webpackChunkName: 'tcenterManageTeamEy1' */ "../../tpl/Ey1/components/mcenter/components/tcenter/tcenterManageTeam"
+        /* webpackChunkName: 'tcenterManageTeamEy1' */ "../../tpl/ey1/components/mcenter/components/tcenter/tcenterManageTeam"
       ),
     tcenterNewRecommendEy1: () =>
       import(
