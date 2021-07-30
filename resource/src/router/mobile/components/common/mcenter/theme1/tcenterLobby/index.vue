@@ -14,7 +14,7 @@
       <div
         v-if="!rewardOnlyLocal"
         :class="$style['title-commission']"
-        @click="$router.push('/mobile/mcenter/tcenter/commission/summary')"
+        @click="$router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')"
       >
         盈亏返利
       </div>
