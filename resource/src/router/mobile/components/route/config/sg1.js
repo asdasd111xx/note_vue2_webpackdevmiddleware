@@ -261,6 +261,22 @@ export default {
     tcenterLobbySg1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbySg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterLobby"
+      ),
+    tcenterManageRebateSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageRebateSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageRebate"
+      ),
+    tcenterManageTeamSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageTeamSg1' */ "../../tpl/Sg1/components/mcenter/components/tcenter/tcenterManageTeam"
+      ),
+    tcenterNewRecommendSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewRecommendSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newRecommend"
+      ),
+    tcenterNewCommissionSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewCommissionSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newCommission"
       )
     // historyCardSg1: () =>
     //   import(

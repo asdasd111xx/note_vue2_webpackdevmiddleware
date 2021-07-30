@@ -1,5 +1,93 @@
 @import "@/css/variable.scss";
 
+//profit
+.profit {
+  padding: 0 10px;
+}
+.profit-wrap {
+  position: relative;
+  bottom: 33px;
+
+  .bottom-title {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+
+    .top-title {
+      font-size: 17px;
+      font-weight: bold;
+    }
+  }
+}
+
+.profit_date {
+  color: #979797;
+}
+
+.profit_day {
+  color: #414655;
+  font-size: 12px;
+
+  > span {
+    color: #2693fc;
+  }
+}
+
+.profit_container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.deficit {
+  color: #f00;
+}
+
+.profit_child {
+  color: #a6a9b2;
+  background: #fefffe;
+  border-radius: 3px;
+  padding: 9px 10px;
+  margin: 5.5px;
+}
+
+.profit_child:first-child {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.profit_child:not(:first-child) {
+  flex: 1 1 40%;
+  height: 70px;
+
+  .profit_child_name {
+    text-align: left;
+  }
+  .profit_child_item {
+    text-align: right;
+    margin-top: 15px;
+  }
+}
+
+.profit_child_name::before {
+  content: "";
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 3px;
+  background: #be9e7f;
+  bottom: 1px;
+}
+
+.profit_child_item {
+  color: #222222;
+  font-size: 18px;
+}
+//old tcenter
 .date-wrap {
   padding: 0 23px;
   background-color: #e9dacc;
@@ -113,13 +201,12 @@
       background: #ccc;
     }
   }
-
-  .tips {
-    margin: 14px 0 11px;
-    color: #222;
-    font-size: 12px;
-    text-align: center;
-  }
+}
+.tips {
+  margin: 14px 0 11px;
+  color: #222;
+  font-size: 12px;
+  text-align: center;
 }
 
 .no-data {
