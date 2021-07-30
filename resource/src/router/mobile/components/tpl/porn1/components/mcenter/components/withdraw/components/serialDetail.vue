@@ -43,7 +43,11 @@
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ `-${getDeductionNumber(data.deduction)}` }}
+            {{
+              getDeductionNumber(data.deduction) > 0
+                ? "-" + getDeductionNumber(data.deduction)
+                : getDeductionNumber(data.deduction)
+            }}
           </div>
         </div>
       </div>
