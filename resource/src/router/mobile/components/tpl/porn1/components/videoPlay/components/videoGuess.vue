@@ -190,14 +190,13 @@ export default {
 }
 
 .image-wrap {
-  position: relative;
   overflow: hidden;
   width: 40%;
 
   > img {
     width: 100%;
     height: 100%;
-    margin: auto;
+    object-fit: cover;
   }
 }
 
