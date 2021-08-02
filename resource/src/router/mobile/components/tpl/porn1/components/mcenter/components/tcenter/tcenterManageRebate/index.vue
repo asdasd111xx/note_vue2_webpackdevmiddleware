@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import "~@/css/variable.scss";
 .manage-rebate-wrap {
   margin-top: 87px;
