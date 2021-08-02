@@ -166,7 +166,6 @@ export default {
   margin-bottom: 15px;
   color: $main_discover_color1;
   font-weight: 500;
-  position: relative;
 
   &.custom {
     color: #333;
