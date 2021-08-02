@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" class="content-wrap">
-      <div :class="$style['manage-rebate-wrap']">
+      <div class="manage-rebate-wrap">
         <tcenter-manage-rebate :set-header-title="setHeaderTitle" />
       </div>
     </div>
@@ -53,7 +53,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style scoped>
 @import "~@/css/variable.scss";
 .manage-rebate-wrap {
   margin-top: 87px;
