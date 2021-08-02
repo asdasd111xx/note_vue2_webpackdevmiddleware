@@ -24,7 +24,7 @@ export default {
     },
     changeTab: {
       type: Function,
-      required: true
+      default: () => {}
     }
   },
   created() {},

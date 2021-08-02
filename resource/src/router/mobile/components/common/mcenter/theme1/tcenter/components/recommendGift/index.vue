@@ -272,6 +272,14 @@ export default {
     setHeaderTitle: {
       type: Function,
       required: true
+    },
+    setTabState: {
+      type: Function,
+      default: () => {}
+    },
+    tabState: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

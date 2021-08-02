@@ -73,6 +73,14 @@ export default {
     setHeaderTitle: {
       type: Function,
       required: true
+    },
+    tabState: {
+      type: Boolean,
+      default: true
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {

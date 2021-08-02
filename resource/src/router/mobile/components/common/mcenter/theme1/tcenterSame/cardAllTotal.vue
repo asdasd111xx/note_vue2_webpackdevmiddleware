@@ -17,6 +17,10 @@ export default {
     data: {
       type: Array,
       require: true
+    },
+    changeTab: {
+      type: Function,
+      default: () => {}
     }
   },
   computed: {
