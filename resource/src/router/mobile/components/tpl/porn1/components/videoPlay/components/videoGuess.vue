@@ -190,7 +190,6 @@ export default {
 }
 
 .image-wrap {
-  position: relative;
   overflow: hidden;
   width: 40%;
 
