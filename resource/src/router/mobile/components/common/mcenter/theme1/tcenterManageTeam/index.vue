@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['wrap']">
+  <div class="manage-team">
     <!-- 最上層功能列 -->
     <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
       <div
@@ -151,3 +151,8 @@ export default {
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
+<style lang="scss" scoped>
+.manage-team {
+  margin-top: 87px;
+}
+</style>
