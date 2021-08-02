@@ -23,8 +23,8 @@ export default {
     };
   },
   created() {
-    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD 00:00:00");
+    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD 23:59:59");
   },
   mounted() {},
   computed: {
@@ -71,8 +71,8 @@ export default {
       }
 
       let params = {
-        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD"),
-        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59")
       };
 
       return goLangApiRequest({
