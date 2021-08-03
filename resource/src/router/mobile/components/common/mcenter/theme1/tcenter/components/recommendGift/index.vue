@@ -383,13 +383,15 @@ export default {
     },
     allTotalList() {
       let strArr = [
-        { item: `总首存金额： ${this.amountFormat(this.mainTotal.amount)}` },
         {
-          item: `总礼金： ${this.amountFormat(
-            this.mainTotal.total_invite_gift
-          )}`
+          name: "总首存金额：",
+          item: this.amountFormat(this.mainTotal.amount)
         },
-        { item: `笔数： ${this.amountFormat(this.pagination.total)}` }
+        {
+          name: "总礼金：",
+          item: this.amountFormat(this.mainTotal.total_invite_gift)
+        },
+        { name: "笔数：", item: this.amountFormat(this.pagination.total) }
       ];
       return strArr;
     },

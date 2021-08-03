@@ -28,7 +28,7 @@
       </div>
       <div v-if="$route.query.layer" :class="$style['next-layer-wrap']">
         <div :class="$style['next-layer-title']">
-          <card-total :data="[{ item: `笔数：${pagination.total}` }]" />
+          <card-total :data="[{ name: '笔数：', item: pagination.total }]" />
         </div>
         <span>{{ $text(levelTrans[depth]) }}</span>
         <div :class="$style['next-layer-item']">

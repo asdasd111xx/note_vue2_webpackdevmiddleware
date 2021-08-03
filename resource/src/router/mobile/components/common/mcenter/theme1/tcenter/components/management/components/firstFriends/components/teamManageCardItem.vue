@@ -91,7 +91,9 @@
                   {{ item }}
                 </span>
               </div>
-              <div v-else>{{ childItem.item }}</div>
+              <div v-else :class="[$style[`${childItem.color}`]]">
+                {{ childItem.item }}
+              </div>
               <div
                 :class="$style['arrow-next']"
                 v-if="childItem.button"

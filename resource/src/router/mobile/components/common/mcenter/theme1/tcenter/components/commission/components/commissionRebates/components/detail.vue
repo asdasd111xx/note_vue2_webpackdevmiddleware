@@ -278,19 +278,22 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
+          name: "总有效投注",
+          item: this.amountFormat(
             this.friendMemberList?.total?.valid_bet ?? "0.00"
-          )}`
+          )
         },
         {
-          item: `总损益 ${this.amountFormat(
+          name: "总损益",
+          item: this.amountFormat(
             this.friendMemberList?.total?.profit ?? "0.00"
-          )}`
+          )
         },
         {
-          item: `笔数 ${this.amountFormat(
+          name: "笔数",
+          item: this.amountFormat(
             this.friendMemberList?.pagination?.total ?? "0.00"
-          )}`
+          )
         }
       ];
       return strArr;

@@ -221,16 +221,14 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
-            this.pageTotal?.valid_bet ?? "0.00"
-          )}`
+          name: "总有效投注",
+          item: this.amountFormat(this.pageTotal?.valid_bet ?? "0.00")
         },
         {
-          item: `总损益 ${this.amountFormat(this.pageTotal?.profit ?? "0.00")}`
+          name: "总损益",
+          item: this.amountFormat(this.pageTotal?.profit ?? "0.00")
         },
-        {
-          item: `笔数 ${this.pagination?.total ?? "0"}`
-        }
+        { name: "笔数", item: this.pagination?.total ?? "0" }
       ];
       return strArr;
     },
@@ -264,19 +262,20 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
+          name: "总有效投注",
+          item: this.amountFormat(
             this.friendGameList?.total?.valid_bet ?? "0.00"
-          )}`
+          )
         },
         {
-          item: `总损益 ${this.amountFormat(
-            this.friendGameList?.total?.profit ?? "0.00"
-          )}`
+          name: "总损益",
+          item: this.amountFormat(this.friendGameList?.total?.profit ?? "0.00")
         },
         {
-          item: `笔数 ${this.amountFormat(
+          name: "笔数",
+          item: this.amountFormat(
             this.friendGameList?.pagination?.total ?? "0.00"
-          )}`
+          )
         }
       ];
       return strArr;

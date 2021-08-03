@@ -461,26 +461,23 @@ export default {
       //團隊管理上方資料
       let strArr = [
         {
-          item: `总有效投注： ${this.commaFormat(
-            this.firstFriends.alltotal.valid_bet
-          )}`
+          name: "总有效投注：",
+          item: this.commaFormat(this.firstFriends.alltotal.valid_bet)
         },
         {
-          item: `总损益： ${this.commaFormat(
-            this.firstFriends.alltotal.payoff
-          )}`
+          name: "总损益：",
+          item: this.commaFormat(this.firstFriends.alltotal.payoff),
+          color: this.chooseColor(this.firstFriends.alltotal.payoff)
         },
         {
-          item: `充值总额： ${this.commaFormat(
-            this.firstFriends.alltotal.deposit
-          )}`
+          name: "充值总额：",
+          item: this.commaFormat(this.firstFriends.alltotal.deposit)
         },
         {
-          item: `提现总额： ${this.commaFormat(
-            this.firstFriends.alltotal.withdraw
-          )}`
+          name: "提现总额：",
+          item: this.commaFormat(this.firstFriends.alltotal.withdraw)
         },
-        { item: `笔数：${this.firstFriends.total}` }
+        { name: "笔数：", item: this.firstFriends.total }
       ];
       return strArr;
     },
@@ -513,7 +510,8 @@ export default {
             {
               name: "总损益",
               item: this.commaFormat(info.payoff),
-              upShow: true
+              upShow: true,
+              color: this.chooseColor(info.payoff)
             },
             {
               name: "充值总额",
@@ -889,6 +887,13 @@ export default {
         this.searchResult = true;
         this.card = true;
       });
+    },
+    chooseColor(val) {
+      if (this.themeTPL == "ey1") {
+        return val > 0 ? "red" : "black";
+      } else {
+        return val < 0 ? "red" : "black";
+      }
     }
   }
 };
