@@ -75,7 +75,15 @@ export default {
   mounted() {
     this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
   },
-
+  watch: {
+    "$route.params.title": {
+      handler: function(item) {
+        this.path = item;
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",

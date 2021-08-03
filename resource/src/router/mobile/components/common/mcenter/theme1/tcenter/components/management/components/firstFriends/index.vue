@@ -867,30 +867,28 @@ export default {
       this.endTime = value.inqEnd;
       this.searchResult = false;
 
-      if (value.friend_name) {
-        this.friend_name = value.friend_name;
+      this.friend_name = value.friend_name;
 
-        this.updateFirstFriends({
-          friend_name: this.friend_name
-        }).then(status => {
-          if (status === "error") {
-            this.isShowDatePicker = true;
-            this.searchResult = false;
-            return;
-          }
+      this.updateFirstFriends({
+        friend_name: this.friend_name
+      }).then(status => {
+        if (status === "error" || status === "reload") {
+          this.isShowDatePicker = true;
+          this.searchResult = false;
+          return;
+        }
 
-          //為了顯示上方許多好友 把api回傳許多好友帳號存進去
-          for (let i = 1; i < this.firstFriends.depth; i++) {
-            this.addToSavedFreindList(
-              this.firstFriends.friend_chain[i].username,
-              ""
-            );
-          }
+        //為了顯示上方許多好友 把api回傳許多好友帳號存進去
+        for (let i = 1; i < this.firstFriends.depth; i++) {
+          this.addToSavedFreindList(
+            this.firstFriends.friend_chain[i].username,
+            ""
+          );
+        }
 
-          this.searchResult = true;
-          this.card = true;
-        });
-      }
+        this.searchResult = true;
+        this.card = true;
+      });
     }
   }
 };

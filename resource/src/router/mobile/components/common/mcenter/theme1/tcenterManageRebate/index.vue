@@ -83,7 +83,15 @@ export default {
     this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
     this.getRebateSwitch();
   },
-
+  watch: {
+    "$route.params.title": {
+      handler: function(item) {
+        this.path = item;
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -149,12 +157,14 @@ export default {
           break;
       }
 
-      this.$router.replace({
-        params: {
-          title: `${this.tabItem[tabKey].key}`,
-          item: `${this.tabItem[tabKey].item}`
-        }
-      });
+      if (this.path != this.tabItem[tabKey].key) {
+        this.$router.replace({
+          params: {
+            title: `${this.tabItem[tabKey].key}`,
+            item: `${this.tabItem[tabKey].item}`
+          }
+        });
+      }
     },
     setTabState(state) {
       this.tabState = state;
