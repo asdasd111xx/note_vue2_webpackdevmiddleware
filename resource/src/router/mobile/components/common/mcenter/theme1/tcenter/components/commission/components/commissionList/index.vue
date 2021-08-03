@@ -162,7 +162,7 @@ export default {
             },
             query: {
               record: "record",
-              oauth2: "oauth2",
+              third: "third",
               ...this.info
             }
           });

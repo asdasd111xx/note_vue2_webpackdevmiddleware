@@ -2,7 +2,7 @@
   <div :class="$style['record-wrap']">
     <div
       v-if="
-        $route.query.oauth2 &&
+        $route.query.third &&
           $route.query.record &&
           !$route.query.depth &&
           !$route.query.userId
@@ -37,7 +37,7 @@
           "
           :class="$style['card-wrap']"
         >
-          <div v-if="!$route.query.oauth2" :class="$style['date-total']">
+          <div v-if="!$route.query.third" :class="$style['date-total']">
             <span>{{
               `统计至：${titleDateFormat(currentInfo.period)} ${filterDate}`
             }}</span>
@@ -50,9 +50,7 @@
       </template>
 
       <div
-        v-if="
-          $route.query.depth && !$route.query.userId && !$route.query.oauth2
-        "
+        v-if="$route.query.depth && !$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
         <div :class="$style['friend-wrap']">
@@ -76,7 +74,7 @@
       </div>
 
       <div
-        v-if="$route.query.userId && !$route.query.oauth2"
+        v-if="$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
         <div :class="$style['friend-wrap']">
@@ -155,7 +153,7 @@ export default {
           this.setHeaderTitle(this.rebateDateFormat(this.$route.query.period));
           this.setTabState(true);
 
-          if (this.$route.query.oauth2) {
+          if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
             return;
@@ -394,10 +392,12 @@ export default {
         },
         {
           name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
-          item: this.$text("S_HAVE", "有"),
+          item: info.shift_amount
+            ? this.$text("S_HAVE", "有")
+            : this.$text("S_NONE", "無"),
           key: "previous",
           color: false,
-          show: this.detailList.shift_amount
+          show: true
         }
       ].filter(i => i.show);
     }

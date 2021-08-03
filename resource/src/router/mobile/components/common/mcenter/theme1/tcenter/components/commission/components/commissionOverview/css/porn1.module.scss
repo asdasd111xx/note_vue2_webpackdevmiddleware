@@ -7,16 +7,20 @@
 .profit-wrap {
   position: relative;
   bottom: 33px;
+  padding: 6px 0px;
+
+  .title-wrap {
+    padding: 0 10px;
+  }
 
   .bottom-title {
     display: flex;
     justify-content: space-between;
-    padding: 6px 10px;
-
-    .top-title {
-      font-size: 17px;
-      font-weight: bold;
-    }
+    margin-top: 6px;
+  }
+  .top-title {
+    font-size: 17px;
+    font-weight: bold;
   }
 }
 

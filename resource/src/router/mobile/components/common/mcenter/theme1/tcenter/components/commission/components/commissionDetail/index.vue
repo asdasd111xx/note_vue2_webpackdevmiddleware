@@ -6,7 +6,7 @@
     ]"
   >
     <div
-      v-if="!$route.query.oauth2 && !$route.query.depth && !$route.query.user"
+      v-if="!$route.query.third && !$route.query.depth && !$route.query.user"
       :class="$style['tab-wrap']"
     >
       <div

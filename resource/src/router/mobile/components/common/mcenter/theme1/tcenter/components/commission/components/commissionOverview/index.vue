@@ -4,15 +4,19 @@
     <div v-if="path" :class="[$style['profit']]">
       <div v-for="(info, index) in profitList" :key="index">
         <div :class="[$style['profit-wrap']]">
-          <div :class="[$style['bottom-title']]">
+          <div :class="[$style['title-wrap']]">
             <span :class="[$style['top-title']]">
               {{ info.overview }}
             </span>
-            <span :class="[$style['profit_day']]"
-              >本月剩余<span>{{ info.day }}</span
-              >天</span
-            >
+            <div :class="[$style['bottom-title']]">
+              <span :class="[$style['profit_date']]"> {{ info.date }}</span>
+
+              <span :class="[$style['profit_day']]"
+                >剩余天数{{ info.day }}天</span
+              >
+            </div>
           </div>
+
           <div :class="[$style['profit_container']]">
             <div
               v-for="(content, key) in info.list"
@@ -311,6 +315,20 @@ export default {
       path: this.$route.params.title ?? "" //是否從返利管理來,
     };
   },
+  props: {
+    setHeaderTitle: {
+      type: Function,
+      required: true
+    },
+    setTabState: {
+      type: Function,
+      default: () => {}
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
+    }
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -355,7 +373,7 @@ export default {
       });
       let data = findExpected?.map(info => {
         return {
-          overview: `${this.currentMonth}月收益概况`,
+          overview: `盈亏返利预估概况`,
           date: `${this.dateYearFormat(info.start_at)}~
                 ${this.dateYearFormat(info.end_at)}`,
           day: this.remainderDays,
@@ -368,7 +386,7 @@ export default {
               show: true
             },
             {
-              name: this.$text("S_REBATE_TOP_LEVEL", "最高盈亏级别"),
+              name: this.$text("S_REBATE_LEVEL", "返利级别"),
               item: `${info.rate}%`,
               key: "level",
               color: false,
@@ -433,10 +451,12 @@ export default {
             },
             {
               name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
-              item: this.$text("S_HAVE", "有"),
+              item: info.shift_amount
+                ? this.$text("S_HAVE", "有")
+                : this.$text("S_NONE", "無"),
               key: "previous",
               color: false,
-              show: info.shift_amount
+              show: true
             }
           ].filter(i => i.show)
         };
