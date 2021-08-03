@@ -889,11 +889,7 @@ export default {
       });
     },
     chooseColor(val) {
-      if (this.themeTPL == "ey1") {
-        return val > 0 ? "red" : "black";
-      } else {
-        return val < 0 ? "red" : "black";
-      }
+      return val < 0 ? "red" : "black";
     }
   }
 };

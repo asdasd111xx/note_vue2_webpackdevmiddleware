@@ -34,7 +34,7 @@
                 :class="$style['process-bar-current-line']"
                 :style="{
                   width: `${
-                    item.valid < item.next
+                    parseInt(item.valid) < parseInt(item.next)
                       ? (parseInt(item.valid) / parseInt(item.next)) * 100
                       : '0'
                   }%`
@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import EST from "@/lib/EST";
 import Vue, { nextTick } from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { getCookie } from "@/lib/cookie";
@@ -222,19 +223,17 @@ export default {
       return [
         {
           name: "有效投注金额",
-          valid: this.amountFormat(this.resultDetail.valid_bet) ?? "0.00",
+          valid: this.amountFormat(this.resultDetail.valid_bet) || "0.00",
           lack:
-            this.amountFormat(this.resultDetail.lack_sub_valid_bet) ?? "0.00",
+            this.amountFormat(this.resultDetail.lack_sub_valid_bet) || "0.00",
           next:
-            this.amountFormat(this.resultDetail.next_sub_valid_bet) ?? "0.00"
+            this.amountFormat(this.resultDetail.next_sub_valid_bet) || "0.00"
         },
         {
           name: "有效会员人数",
-          valid: this.amountFormat(this.resultDetail.user_count) ?? "0.00",
-          lack:
-            this.amountFormat(this.resultDetail.lack_sub_user_count) ?? "0.00",
-          next:
-            this.amountFormat(this.resultDetail.next_sub_user_count) ?? "0.00"
+          valid: this.resultDetail.user_count || "0",
+          lack: this.resultDetail.lack_sub_user_count || "0",
+          next: this.resultDetail.next_sub_user_count || "0"
         }
       ];
     },
@@ -263,11 +262,6 @@ export default {
               name: "有效会员",
               item: info.user_count,
               show: true
-            },
-            {
-              name: "上期结转",
-              item: info.amount > 0 ? "有" : "",
-              show: info.amount > 0
             }
           ].filter(item => item.show)
         };
@@ -553,7 +547,7 @@ export default {
     },
     filterDate(date) {
       //取當前時間的整點為主來顯示
-      return Vue.moment(date).format("YYYY-MM-DD HH:00:00");
+      return Vue.moment(EST(date)).format("YYYY-MM-DD HH:00:00");
     }
   },
   beforeDestroy() {}

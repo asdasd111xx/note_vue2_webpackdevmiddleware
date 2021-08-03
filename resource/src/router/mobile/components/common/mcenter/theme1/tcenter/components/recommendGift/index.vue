@@ -391,7 +391,7 @@ export default {
           name: "总礼金：",
           item: this.amountFormat(this.mainTotal.total_invite_gift)
         },
-        { name: "笔数：", item: this.amountFormat(this.pagination.total) }
+        { name: "笔数：", item: this.pagination.total }
       ];
       return strArr;
     },
@@ -431,6 +431,7 @@ export default {
       let data = this.mainListData?.map(info => {
         return {
           title: info.username,
+          fontCss: "title-font-style",
           childTitle: `礼金 : ${this.amountFormat(info.total_invite_gift)}`,
           list: [
             { name: "注册时间", item: this.filterDate(info.user_created_at) },
@@ -655,11 +656,11 @@ export default {
       });
     },
     filterDate(date) {
-      return Vue.moment(date).format("YYYY-MM-DD HH:mm:ss");
+      return Vue.moment(EST(date)).format("YYYY-MM-DD HH:mm:ss");
     },
     amountFormat(amount) {
       return `${Number(amount)
-        .toString()
+        .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     }
   },

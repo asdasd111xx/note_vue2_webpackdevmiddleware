@@ -7,7 +7,7 @@
       <div v-if="!searchResult" :class="[$style['card-date']]">
         {{ time }}
         <div :class="[$style['card-all-open']]">
-          全展开
+          {{ openCloseWord }}
           <div :class="[$style['open-button']]" @click.stop="clickAdd('all')">
             <img
               :src="$getCdnPath(`/static/image/common/${bigImage}.png`)"
@@ -138,7 +138,8 @@ export default {
       showOpen: false,
       newCardItemList: [],
       bigImage: "btn_details_expand",
-      showAllButton: false
+      showAllButton: false,
+      openCloseWord: "全展开"
     };
   },
   created() {
@@ -187,8 +188,10 @@ export default {
 
       if (val === "all") {
         if (this.showAllButton) {
+          this.openCloseWord = "全收合";
           this.bigImage = "btn_details_collapse";
         } else {
+          this.openCloseWord = "全展开";
           this.bigImage = "btn_details_expand";
         }
         return this.newCardItemList.map(

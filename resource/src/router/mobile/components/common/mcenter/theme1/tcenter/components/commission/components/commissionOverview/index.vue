@@ -374,7 +374,7 @@ export default {
       let data = findExpected?.map(info => {
         return {
           overview: `盈亏返利预估概况`,
-          date: `${this.dateYearFormat(info.start_at)}~
+          date: `${this.dateYearFormat(info.start_at)} ~
                 ${this.dateYearFormat(info.end_at)}`,
           day: this.remainderDays,
           list: [

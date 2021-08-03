@@ -7,7 +7,7 @@
       :class="$style['info-item']"
     >
       <div :class="$style['item-header']">
-        <div :class="$style['friend-name']">
+        <div :class="[$style['friend-name'], [$style[`${info.fontCss}`]]]">
           {{ info.title }}
         </div>
 
