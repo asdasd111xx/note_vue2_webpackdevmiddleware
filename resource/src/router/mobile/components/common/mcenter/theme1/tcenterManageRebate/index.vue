@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['wrap']">
+  <div class="manage-rebate">
     <!-- 最上層功能列 -->
     <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
       <div
@@ -83,7 +83,15 @@ export default {
     this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
     this.getRebateSwitch();
   },
-
+  watch: {
+    "$route.params.title": {
+      handler: function(item) {
+        this.path = item;
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -149,12 +157,14 @@ export default {
           break;
       }
 
-      this.$router.replace({
-        params: {
-          title: `${this.tabItem[tabKey].key}`,
-          item: `${this.tabItem[tabKey].item}`
-        }
-      });
+      if (this.path != this.tabItem[tabKey].key) {
+        this.$router.replace({
+          params: {
+            title: `${this.tabItem[tabKey].key}`,
+            item: `${this.tabItem[tabKey].item}`
+          }
+        });
+      }
     },
     setTabState(state) {
       this.tabState = state;
@@ -185,3 +195,8 @@ export default {
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
+<style lang="scss" scoped>
+.manage-rebate {
+  margin-top: 87px;
+}
+</style>

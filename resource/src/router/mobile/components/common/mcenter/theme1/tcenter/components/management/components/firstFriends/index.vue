@@ -461,26 +461,23 @@ export default {
       //團隊管理上方資料
       let strArr = [
         {
-          item: `总有效投注： ${this.commaFormat(
-            this.firstFriends.alltotal.valid_bet
-          )}`
+          name: "总有效投注：",
+          item: this.commaFormat(this.firstFriends.alltotal.valid_bet)
         },
         {
-          item: `总损益： ${this.commaFormat(
-            this.firstFriends.alltotal.payoff
-          )}`
+          name: "总损益：",
+          item: this.commaFormat(this.firstFriends.alltotal.payoff),
+          color: this.chooseColor(this.firstFriends.alltotal.payoff)
         },
         {
-          item: `充值总额： ${this.commaFormat(
-            this.firstFriends.alltotal.deposit
-          )}`
+          name: "充值总额：",
+          item: this.commaFormat(this.firstFriends.alltotal.deposit)
         },
         {
-          item: `提现总额： ${this.commaFormat(
-            this.firstFriends.alltotal.withdraw
-          )}`
+          name: "提现总额：",
+          item: this.commaFormat(this.firstFriends.alltotal.withdraw)
         },
-        { item: `笔数：${this.firstFriends.total}` }
+        { name: "笔数：", item: this.firstFriends.total }
       ];
       return strArr;
     },
@@ -513,7 +510,8 @@ export default {
             {
               name: "总损益",
               item: this.commaFormat(info.payoff),
-              upShow: true
+              upShow: true,
+              color: this.chooseColor(info.payoff)
             },
             {
               name: "充值总额",
@@ -867,30 +865,31 @@ export default {
       this.endTime = value.inqEnd;
       this.searchResult = false;
 
-      if (value.friend_name) {
-        this.friend_name = value.friend_name;
+      this.friend_name = value.friend_name;
 
-        this.updateFirstFriends({
-          friend_name: this.friend_name
-        }).then(status => {
-          if (status === "error") {
-            this.isShowDatePicker = true;
-            this.searchResult = false;
-            return;
-          }
+      this.updateFirstFriends({
+        friend_name: this.friend_name
+      }).then(status => {
+        if (status === "error" || status === "reload") {
+          this.isShowDatePicker = true;
+          this.searchResult = false;
+          return;
+        }
 
-          //為了顯示上方許多好友 把api回傳許多好友帳號存進去
-          for (let i = 1; i < this.firstFriends.depth; i++) {
-            this.addToSavedFreindList(
-              this.firstFriends.friend_chain[i].username,
-              ""
-            );
-          }
+        //為了顯示上方許多好友 把api回傳許多好友帳號存進去
+        for (let i = 1; i < this.firstFriends.depth; i++) {
+          this.addToSavedFreindList(
+            this.firstFriends.friend_chain[i].username,
+            ""
+          );
+        }
 
-          this.searchResult = true;
-          this.card = true;
-        });
-      }
+        this.searchResult = true;
+        this.card = true;
+      });
+    },
+    chooseColor(val) {
+      return val < 0 ? "red" : "black";
     }
   }
 };

@@ -28,7 +28,7 @@
       </div>
       <div v-if="$route.query.layer" :class="$style['next-layer-wrap']">
         <div :class="$style['next-layer-title']">
-          <card-total :data="[{ item: `笔数：${pagination.total}` }]" />
+          <card-total :data="[{ name: '笔数：', item: pagination.total }]" />
         </div>
         <span>{{ $text(levelTrans[depth]) }}</span>
         <div :class="$style['next-layer-item']">
@@ -73,6 +73,14 @@ export default {
     setHeaderTitle: {
       type: Function,
       required: true
+    },
+    tabState: {
+      type: Boolean,
+      default: true
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
@@ -192,24 +200,29 @@ export default {
     },
     getTimeRecord(data) {
       //切換上方子功能列
-      this.currentDate = data;
+
+      if (data == "") {
+        this.currentDate = this.allTotalData[0];
+      } else {
+        this.currentDate = data;
+      }
 
       this.startTime = Vue.moment(this.estToday)
         .add(-data.value, "days")
-        .format("YYYY-MM-DD");
+        .format("YYYY-MM-DD 00:00:00");
 
       this.endTime = Vue.moment(this.estToday)
         .add(-data.value, "days")
-        .format("YYYY-MM-DD");
+        .format("YYYY-MM-DD 23:59:59");
 
       if (data.name === "month-register") {
         this.startTime = Vue.moment(this.estToday)
           .add(-data.value, "days")
-          .format("YYYY-MM-01");
+          .format("YYYY-MM-01 00:00:00");
       }
 
       if (data.name === "no-login") {
-        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD 23:59:59");
       }
 
       if (this.path && this.pathDay != data.name) {

@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      isShow: false,
+      isSend: false,
       isShowEyes: false,
       allInput: ["username", "password", "confirm_password", "name"],
       allTip: {
@@ -100,7 +100,6 @@ export default {
      * @param {String} key - 欄位名稱
      */
     onInput(value, key) {
-      if (!this.isShow) return;
       const regex = new RegExp(joinMemInfo[key].regExp);
       const errorMsg = joinMemInfo[key].errorMsg;
 
@@ -209,11 +208,7 @@ export default {
      */
     onSubmit() {
       // 廳主未開放註冊
-      if (
-        !this.memInfo.config.infinity_register ||
-        !this.isShow ||
-        this.isSend
-      ) {
+      if (!this.memInfo.config.infinity_register || this.isSend) {
         return;
       }
 
@@ -258,7 +253,6 @@ export default {
           this.actionSetGlobalMessage({
             msg: this.$text("S_CREATE_SECCESS", "新增成功")
           });
-          this.isShow = false;
           this.allValue = {
             username: "",
             password: "",

@@ -20,8 +20,9 @@
         >
           <div :class="[$style['card-title'], $style['card-title-' + path]]">
             <span :class="[$style['card-name'], $style['card-name-' + path]]">{{
-              path ? rebateDateFormat(info.period) : info.period
+              info.type != 0 ? rebateDateFormat(info.period) : info.period
             }}</span>
+
             <span
               :class="[
                 $style['card-getNumber'],
@@ -30,7 +31,10 @@
               ]"
               >{{ info.amount | amountFormat }}
 
-              <div v-if="path && info.amount > 0" :class="$style['arrow-next']">
+              <div
+                v-if="(path && info.amount > 0) || (path && info.type == 0)"
+                :class="$style['arrow-next']"
+              >
                 <img
                   :src="$getCdnPath('/static/image/common/arrow_next.png')"
                   alt="arrow-next"
@@ -136,13 +140,28 @@ export default {
   },
   methods: {
     onClick(info) {
-      if (info.show_detail) {
-        this.info = info;
+      this.info = info;
+      this.setTabState(false);
+      this.$emit("update:currentInfo", this.info);
+      if (this.$route.params.title && this.info.type === 0) {
+        this.setHeaderTitle(this.info.period);
+        this.$router.push({
+          params: {
+            title: "record",
+            item: "detail"
+          },
+          query: {
+            record: "record",
+            third: "third",
+            ...this.info
+          }
+        });
+      } else if (this.info.show_detail) {
         this.setTabState(false);
-        this.$emit("update:currentInfo", info);
+        this.$emit("update:currentInfo", this.info);
 
-        if (this.$route.params.title && !info.oauth2) {
-          this.setHeaderTitle(this.rebateDateFormat(info.end_at));
+        if (this.$route.params.title && !this.info.oauth2) {
+          this.setHeaderTitle(this.rebateDateFormat(this.info.end_at));
           this.$router.push({
             params: {
               title: "record",
@@ -153,21 +172,8 @@ export default {
               ...this.info
             }
           });
-        } else if (this.$route.params.title && info.oauth2) {
-          this.setHeaderTitle(this.rebateDateFormat(info.end_at));
-          this.$router.push({
-            params: {
-              title: "record",
-              item: "detail"
-            },
-            query: {
-              record: "record",
-              oauth2: "oauth2",
-              ...this.info
-            }
-          });
         } else {
-          this.setHeaderTitle(info.period);
+          this.setHeaderTitle(this.info.period);
           this.$router.push({
             path: "/mobile/mcenter/tcenter/commission/detail"
           });

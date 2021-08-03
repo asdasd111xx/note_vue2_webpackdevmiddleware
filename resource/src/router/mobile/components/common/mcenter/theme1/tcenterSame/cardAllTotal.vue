@@ -4,8 +4,9 @@
       v-for="(item, index) in data"
       :key="index"
       :class="[$style['card-item']]"
-      >{{ item.item }}</span
-    >
+      >{{ item.name }}
+      <span :class="[$style[`${item.color}`]]">{{ item.item }}</span>
+    </span>
   </div>
 </template>
 
@@ -17,6 +18,10 @@ export default {
     data: {
       type: Array,
       require: true
+    },
+    changeTab: {
+      type: Function,
+      default: () => {}
     }
   },
   computed: {
@@ -45,5 +50,13 @@ export default {
   .card-item:last-child {
     display: block;
   }
+}
+
+.red {
+  color: #db6372;
+}
+
+.black {
+  color: #414655;
 }
 </style>

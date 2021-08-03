@@ -1547,6 +1547,7 @@ export default {
           return `您有提单未完成支付，请尝试其它充值通道。若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
 
         case 3:
+        case 5:
           return `为了保证您的使用安全，规避IP监控，我方将为您暂停${this.entryBlockStatusData.block_times}小时的充值服务功能，如需继续存款，请联繫我方客服。祝您游戏愉快!`;
 
         default:
@@ -1691,11 +1692,11 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
-      // 代客充值
-      if (this.curPayInfo.payment_method_id === 20) {
-        this.submitInfo();
-        return;
-      }
+      // // 代客充值
+      // if (this.curPayInfo.payment_method_id === 20) {
+      //   this.submitInfo();
+      //   return;
+      // }
 
       // 使用者存款封鎖狀態
       //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
@@ -1726,12 +1727,7 @@ export default {
      * @method submitInfo
      */
     submitInfo() {
-      // block -> 是否封鎖
-      if (this.entryBlockStatusData.block) {
-        this.closePopup();
-        return;
-      }
-
+      // status = 5-> 封鎖阻擋與跳轉網址
       if(this.entryBlockStatusData.status === 5){
         this.actionSetGlobalMessage({
             msg: this.entryBlockStatusData.custom_point
@@ -1741,8 +1737,15 @@ export default {
             window.open(this.entryBlockStatusData.external_url);
             return;
           }, 700);
+          this.closePopup();
           return;
       }
+      // block -> 是否封鎖
+      if (this.entryBlockStatusData.block) {
+        this.closePopup();
+        return;
+      }
+
 
       this.closePopup();
 

@@ -28,7 +28,7 @@
       <div v-for="key in allInput" :key="key" :class="$style['input-group']">
         <!-- 欄位名稱 -->
         <div :class="$style['input-title']">
-          {{ $text(allTip[key].title) }}
+          {{ allTip[key].title }}
         </div>
         <!-- 輸入框 -->
         <div

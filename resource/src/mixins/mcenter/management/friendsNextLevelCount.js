@@ -1,6 +1,6 @@
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
-
+import EST from "@/lib/EST";
 import Vue from "vue";
 export default {
   data() {
@@ -8,7 +8,7 @@ export default {
       startTime: "",
       endTime: "",
       friendsStatistics: null,
-      estToday: new Date(),
+      estToday: EST(new Date()),
       totalDepth: [], //幾級好友統計人數
       pagination: [], //總筆數
       friendList: [], //詳細好友資料,
@@ -23,8 +23,8 @@ export default {
     };
   },
   created() {
-    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD 00:00:00");
+    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD 23:59:59");
   },
   mounted() {},
   computed: {
@@ -71,8 +71,8 @@ export default {
       }
 
       let params = {
-        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD"),
-        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59")
       };
 
       return goLangApiRequest({

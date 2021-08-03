@@ -272,6 +272,14 @@ export default {
     setHeaderTitle: {
       type: Function,
       required: true
+    },
+    setTabState: {
+      type: Function,
+      default: () => {}
+    },
+    tabState: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -375,13 +383,15 @@ export default {
     },
     allTotalList() {
       let strArr = [
-        { item: `总首存金额： ${this.amountFormat(this.mainTotal.amount)}` },
         {
-          item: `总礼金： ${this.amountFormat(
-            this.mainTotal.total_invite_gift
-          )}`
+          name: "总首存金额：",
+          item: this.amountFormat(this.mainTotal.amount)
         },
-        { item: `笔数： ${this.amountFormat(this.pagination.total)}` }
+        {
+          name: "总礼金：",
+          item: this.amountFormat(this.mainTotal.total_invite_gift)
+        },
+        { name: "笔数：", item: this.pagination.total }
       ];
       return strArr;
     },
@@ -421,6 +431,7 @@ export default {
       let data = this.mainListData?.map(info => {
         return {
           title: info.username,
+          fontCss: "title-font-style",
           childTitle: `礼金 : ${this.amountFormat(info.total_invite_gift)}`,
           list: [
             { name: "注册时间", item: this.filterDate(info.user_created_at) },
@@ -645,11 +656,11 @@ export default {
       });
     },
     filterDate(date) {
-      return Vue.moment(date).format("YYYY-MM-DD HH:mm:ss");
+      return Vue.moment(EST(date)).format("YYYY-MM-DD HH:mm:ss");
     },
     amountFormat(amount) {
       return `${Number(amount)
-        .toString()
+        .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     }
   },

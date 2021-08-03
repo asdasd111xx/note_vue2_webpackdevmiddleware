@@ -2,7 +2,7 @@
   <div :class="$style['record-wrap']">
     <div
       v-if="
-        $route.query.oauth2 &&
+        $route.query.third &&
           $route.query.record &&
           !$route.query.depth &&
           !$route.query.userId
@@ -37,7 +37,7 @@
           "
           :class="$style['card-wrap']"
         >
-          <div v-if="!$route.query.oauth2" :class="$style['date-total']">
+          <div v-if="!$route.query.third" :class="$style['date-total']">
             <span>{{
               `统计至：${titleDateFormat(currentInfo.period)} ${filterDate}`
             }}</span>
@@ -50,9 +50,7 @@
       </template>
 
       <div
-        v-if="
-          $route.query.depth && !$route.query.userId && !$route.query.oauth2
-        "
+        v-if="$route.query.depth && !$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
         <div :class="$style['friend-wrap']">
@@ -76,7 +74,7 @@
       </div>
 
       <div
-        v-if="$route.query.userId && !$route.query.oauth2"
+        v-if="$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
         <div :class="$style['friend-wrap']">
@@ -155,9 +153,10 @@ export default {
           this.setHeaderTitle(this.rebateDateFormat(this.$route.query.period));
           this.setTabState(true);
 
-          if (this.$route.query.oauth2) {
+          if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
+            this.setHeaderTitle(this.$route.query.period);
             return;
           }
           this.getSummary();
@@ -223,16 +222,14 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
-            this.pageTotal?.valid_bet ?? "0.00"
-          )}`
+          name: "总有效投注",
+          item: this.amountFormat(this.pageTotal?.valid_bet ?? "0.00")
         },
         {
-          item: `总损益 ${this.amountFormat(this.pageTotal?.profit ?? "0.00")}`
+          name: "总损益",
+          item: this.amountFormat(this.pageTotal?.profit ?? "0.00")
         },
-        {
-          item: `笔数 ${this.pagination?.total ?? "0"}`
-        }
+        { name: "笔数", item: this.pagination?.total ?? "0" }
       ];
       return strArr;
     },
@@ -266,19 +263,20 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
+          name: "总有效投注",
+          item: this.amountFormat(
             this.friendGameList?.total?.valid_bet ?? "0.00"
-          )}`
+          )
         },
         {
-          item: `总损益 ${this.amountFormat(
-            this.friendGameList?.total?.profit ?? "0.00"
-          )}`
+          name: "总损益",
+          item: this.amountFormat(this.friendGameList?.total?.profit ?? "0.00")
         },
         {
-          item: `笔数 ${this.amountFormat(
+          name: "笔数",
+          item: this.amountFormat(
             this.friendGameList?.pagination?.total ?? "0.00"
-          )}`
+          )
         }
       ];
       return strArr;
@@ -329,7 +327,7 @@ export default {
           show: true
         },
         {
-          name: this.$text("S_REBATE_TOP_LEVEL", "最高盈亏级别"),
+          name: this.$text("S_REBATE_LEVEL", "返利级别"),
           item: `${this.detailList.rate || 0}%`,
           key: "level",
           color: false,
@@ -343,14 +341,14 @@ export default {
           show: true
         },
         {
-          name: "有效投注",
+          name: this.$text("S_VALID_BET", "有效投注"),
           item: this.amountFormat(this.detailList.valid_bet) ?? "",
           key: "bet",
           color: false,
           show: true
         },
         {
-          name: "总损益",
+          name: this.$text("S_TOTAL_REBATE", "总损益"),
           item: this.amountFormat(this.detailList.profit) ?? "",
           color: this.detailList.profit,
           key: "level",
@@ -394,10 +392,12 @@ export default {
         },
         {
           name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
-          item: this.$text("S_HAVE", "有"),
+          item: this.detailList.shift_amount
+            ? this.$text("S_HAVE", "有")
+            : this.$text("S_NONE", "無"),
           key: "previous",
           color: false,
-          show: this.detailList.shift_amount
+          show: true
         }
       ].filter(i => i.show);
     }
