@@ -99,8 +99,6 @@ export default {
       this.currentTemplate = "record";
       return;
     }
-
-    this.setHeaderTitle(this.rebateDateFormat(this.currentInfo.period));
   },
   watch: {
     "$route.query": {

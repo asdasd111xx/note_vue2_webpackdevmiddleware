@@ -387,7 +387,7 @@ export default {
             },
             {
               name: this.$text("S_REBATE_LEVEL", "返利级别"),
-              item: `${info.rate}%`,
+              item: `${info.rate || 0}%`,
               key: "level",
               color: false,
               show: true

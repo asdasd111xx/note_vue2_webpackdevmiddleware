@@ -156,6 +156,7 @@ export default {
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
+            this.setHeaderTitle(this.$route.query.period);
             return;
           }
           this.getSummary();
@@ -326,7 +327,7 @@ export default {
           show: true
         },
         {
-          name: this.$text("S_REBATE_TOP_LEVEL", "最高盈亏级别"),
+          name: this.$text("S_REBATE_LEVEL", "返利级别"),
           item: `${this.detailList.rate || 0}%`,
           key: "level",
           color: false,
@@ -340,14 +341,14 @@ export default {
           show: true
         },
         {
-          name: "有效投注",
+          name: this.$text("S_VALID_BET", "有效投注"),
           item: this.amountFormat(this.detailList.valid_bet) ?? "",
           key: "bet",
           color: false,
           show: true
         },
         {
-          name: "总损益",
+          name: this.$text("S_TOTAL_REBATE", "总损益"),
           item: this.amountFormat(this.detailList.profit) ?? "",
           color: this.detailList.profit,
           key: "level",
@@ -391,7 +392,7 @@ export default {
         },
         {
           name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
-          item: info.shift_amount
+          item: this.detailList.shift_amount
             ? this.$text("S_HAVE", "有")
             : this.$text("S_NONE", "無"),
           key: "previous",
