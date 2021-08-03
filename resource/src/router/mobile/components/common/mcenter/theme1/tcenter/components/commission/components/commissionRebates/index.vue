@@ -374,7 +374,7 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          if (this.themeTPL === "ey1" && !this.path) {
+          if (this.themeTPL === "ey1") {
             this.dispatch_hour = response.data.auto_dispatch_hour;
             this.immediateData = response.data.entries;
           } else {
