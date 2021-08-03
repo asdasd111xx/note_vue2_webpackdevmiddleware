@@ -338,30 +338,6 @@ export default {
       path: "tcenterLobby",
       name: "mcenter-tcenterLobby",
       component
-    },
-    {
-      // 返利管理
-      path: "tcenterManageRebate/:title/:item?",
-      name: "mcenter-tcenterManageRebate",
-      component
-    },
-    {
-      // 團隊管理
-      path: "tcenterManageTeam/:title/:item?",
-      name: "mcenter-tcenterManageTeam",
-      component
-    },
-    {
-      // 新推廣信息＋新增一級好友
-      path: "newRecommend",
-      name: "mcenter-tcenterNewRecommend",
-      component
-    },
-    {
-      // 新推廣信息＋新增一級好友
-      path: "newCommission",
-      name: "mcenter-tcenterNewCommission",
-      component
     }
   ]
 };

@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      isSend: false,
+      isShow: false,
       isShowEyes: false,
       allInput: ["username", "password", "confirm_password", "name"],
       allTip: {
@@ -24,7 +24,7 @@ export default {
           title: this.$text("S_NAME"),
           type: "text",
           maxLength: "20",
-          placeholder: "请输入4-20位英文小写、数字，首字不得为数字0",
+          placeholder: this.$text("S_USERNAME_ERROR"),
           error: ""
         },
         // 密碼
@@ -32,7 +32,7 @@ export default {
           title: this.$text("SS_LOGIN_PW"),
           type: "password",
           maxLength: "12",
-          placeholder: "6-12位须含英文大小写及数字",
+          placeholder: this.$text("S_PASSWORD_PLACEHOLDER_AGENT"),
           error: ""
         },
         // 確認密碼
@@ -61,7 +61,7 @@ export default {
         //驗證碼
         captcha_text: ""
       },
-      errorMsg: ""
+      msg: ""
     };
   },
   computed: {
@@ -100,6 +100,7 @@ export default {
      * @param {String} key - 欄位名稱
      */
     onInput(value, key) {
+      if (!this.isShow) return;
       const regex = new RegExp(joinMemInfo[key].regExp);
       const errorMsg = joinMemInfo[key].errorMsg;
 
@@ -166,7 +167,6 @@ export default {
       this.$validator.validateAll("form-page").then(response => {
         if (!response) {
           Object.keys(this.allValue).forEach(key => {
-            // console.log(key, this.allValue[key]);
             if (!this.allValue[key]) {
               if (key === "confirm_password") {
                 if (
@@ -208,7 +208,11 @@ export default {
      */
     onSubmit() {
       // 廳主未開放註冊
-      if (!this.memInfo.config.infinity_register || this.isSend) {
+      if (
+        !this.memInfo.config.infinity_register ||
+        !this.isShow ||
+        this.isSend
+      ) {
         return;
       }
 
@@ -253,6 +257,7 @@ export default {
           this.actionSetGlobalMessage({
             msg: this.$text("S_CREATE_SECCESS", "新增成功")
           });
+          this.isShow = false;
           this.allValue = {
             username: "",
             password: "",

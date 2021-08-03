@@ -279,22 +279,6 @@ export default {
     tcenterLobbyPorn1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbyPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"
-      ),
-    tcenterManageRebatePorn1: () =>
-      import(
-        /* webpackChunkName: 'tcenterManageRebatePorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageRebate"
-      ),
-    tcenterManageTeamPorn1: () =>
-      import(
-        /* webpackChunkName: 'tcenterManageTeamPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageTeam"
-      ),
-    tcenterNewRecommendPorn1: () =>
-      import(
-        /* webpackChunkName: 'tcenterNewRecommendPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newRecommend"
-      ),
-    tcenterNewCommissionPorn1: () =>
-      import(
-        /* webpackChunkName: 'tcenterNewCommissionPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newCommission"
       )
     // historyCardSg1: () =>
     //   import(
