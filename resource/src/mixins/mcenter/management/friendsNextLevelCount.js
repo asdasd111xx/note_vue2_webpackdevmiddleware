@@ -1,6 +1,6 @@
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
-
+import EST from "@/lib/EST";
 import Vue from "vue";
 export default {
   data() {
@@ -8,7 +8,7 @@ export default {
       startTime: "",
       endTime: "",
       friendsStatistics: null,
-      estToday: new Date(),
+      estToday: EST(new Date()),
       totalDepth: [], //幾級好友統計人數
       pagination: [], //總筆數
       friendList: [], //詳細好友資料,
