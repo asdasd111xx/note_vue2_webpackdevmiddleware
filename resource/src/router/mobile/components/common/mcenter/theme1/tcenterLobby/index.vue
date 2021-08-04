@@ -14,7 +14,9 @@
       <div
         v-if="!rewardOnlyLocal"
         :class="$style['title-commission']"
-        @click="$router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')"
+        @click="
+          $router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')
+        "
       >
         盈亏返利
       </div>
@@ -46,7 +48,9 @@
               v-if="isShowRebate"
               :class="$style['list-btn']"
               @click="
-                $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+                $router.push(
+                  '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+                )
               "
             >
               详情
@@ -278,6 +282,7 @@
         </div>
       </div>
       <img
+        v-if="themeTPL != 'ey1'"
         :class="$style['promote-content']"
         :src="
           $getCdnPath(
@@ -407,7 +412,7 @@ export default {
           let dataArray = [];
 
           dataArray = response.data.ret.entries;
-          this.isShowRebate = response.data.ret.show_real_time;
+          this.isShowRebate = response.data.ret.show_real_time ?? true;
 
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet
@@ -426,9 +431,7 @@ export default {
             } else if (this.immediateData && this.immediateData.state === 1) {
               // 可領
               this.getRebateText = "领取";
-              this.rebateCount = this.getNoRoundText(
-                this.immediateData.self_min_limit
-              );
+              this.rebateCount = this.getNoRoundText(this.immediateData.amount);
             } else {
               // 已达上限
               this.getRebateText = "查看";

@@ -75,7 +75,7 @@
               充值时间
             </div>
             <div :class="[$style['data-value']]">
-              {{ detail.first_deposit_at }}
+              {{ EST(detail.first_deposit_at) }}
             </div>
           </div>
           <div
@@ -122,6 +122,7 @@ import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import EST from "@/lib/EST";
 export default {
   data() {
     return {
@@ -312,10 +313,9 @@ export default {
                 response.data.total_per_depth[index + 1];
             });
           } else {
-            this.totalCount =
-              response.data.total_per_depth[level + 1].total_count;
+            this.totalCount = response.data.total_per_depth[level].total_count;
             this.totalAmount =
-              response.data.total_per_depth[level + 1].total_amount;
+              response.data.total_per_depth[level].total_amount;
             let dataKey = "";
             switch (url) {
               case "First/Deposit":
@@ -359,7 +359,9 @@ export default {
           }
         }
       });
-    }
+    },
+    //轉美東
+    EST
   }
 };
 </script>

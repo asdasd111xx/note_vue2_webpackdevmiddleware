@@ -129,7 +129,7 @@ export default {
       });
     },
     rebateDateFormat(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(date).format("YYYYMMDD");
     },
     /**
      * 捲動加載

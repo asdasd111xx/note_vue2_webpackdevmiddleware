@@ -195,9 +195,6 @@ export default {
     },
     dateFormat(date) {
       return format(new Date(date), "MM/dd");
-    },
-    dateYearFormat(date) {
-      return format(new Date(date), "yyyy/MM/dd");
     }
   }
 };

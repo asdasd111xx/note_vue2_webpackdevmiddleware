@@ -12,3 +12,19 @@
   background: linear-gradient(to left, #fe593c, #e61938);
   color: #fff;
 }
+
+.all-data {
+
+  .data-content-wrap {
+
+    .data-content {
+
+      .title {
+
+        &::before {
+          background-color: #E61938;
+        }
+      }
+    }
+  }
+}

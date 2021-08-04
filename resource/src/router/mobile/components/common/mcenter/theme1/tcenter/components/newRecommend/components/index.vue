@@ -124,7 +124,10 @@
         </div>
       </div>
       <!-- 錯誤訊息 -->
-      <div v-if="captchaErrorMsg" :class="$style['captcha-error']">
+      <div
+        v-if="memInfo.config.friend_captcha_type === 1 && captchaErrorMsg"
+        :class="$style['captcha-error']"
+      >
         {{ captchaErrorMsg }}
       </div>
       <popup-verification
@@ -136,6 +139,10 @@
       <button @click="checkInput">
         {{ $text("S_ADD") }}
       </button>
+      <div :class="$style.tips">
+        如需帮助，请
+        <span @click="$router.push('/mobile/service')">联系客服</span>
+      </div>
     </div>
 
     <!-- 連結複製提示與 QR Code -->
@@ -203,7 +210,7 @@ export default {
   },
   created() {
     this.getCaptcha();
-    console.log(this.$route.query);
+    // console.log(this.$route.query);
     this.makeFriendPage = this.$route.query.makeFriend === "true";
   },
   methods: {

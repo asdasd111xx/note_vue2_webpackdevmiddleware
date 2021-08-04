@@ -27,7 +27,8 @@ export default {
   computed: {
     headerConfig() {
       return {
-        title: "推广信息",
+        title:
+          this.$route.query.makeFriend === "true" ? "推广信息" : "新增一级好友",
         prev: true,
         onClick: () => {
           this.$router.back();

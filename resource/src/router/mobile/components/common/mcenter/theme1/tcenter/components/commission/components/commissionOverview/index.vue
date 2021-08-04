@@ -301,6 +301,7 @@
 import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 import { mapGetters } from "vuex";
 import EST from "@/lib/EST";
+import Vue from "vue";
 
 export default {
   mixins: [commissionOverview],
@@ -374,8 +375,9 @@ export default {
       let data = findExpected?.map(info => {
         return {
           overview: `盈亏返利预估概况`,
-          date: `${EST(info.start_at, "YYYY/MM/DD")} ~
-                ${EST(info.end_at, "YYYY/MM/DD")}`,
+          date: `${this.dateYearFormat(info.start_at)} ~ ${this.dateYearFormat(
+            info.end_at
+          )}`,
           day: this.remainderDays,
           list: [
             {
@@ -470,6 +472,9 @@ export default {
     },
     amountFormat(amount) {
       return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    dateYearFormat(date) {
+      return Vue.moment(new Date(date)).format("YYYY-MM-DD");
     }
   }
 };
