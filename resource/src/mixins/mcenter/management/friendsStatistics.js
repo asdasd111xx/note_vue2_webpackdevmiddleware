@@ -37,10 +37,15 @@ export default {
           } else {
             this.isZero = false;
             this.moneyPerson =
-              Number(this.friendsStatistics.deposit) /
+              (Number(this.friendsStatistics.deposit) /
                 Number(this.friendsStatistics.deposit) +
-              Number(this.friendsStatistics.withdraw);
+                Number(this.friendsStatistics.withdraw)) *
+              100;
           }
+
+          // this.isZero = false;
+          // this.moneyPerson =
+          //   (Number("2200.00") / Number("2200.00") + Number("0.00")) * 100;
         }
       });
     }
