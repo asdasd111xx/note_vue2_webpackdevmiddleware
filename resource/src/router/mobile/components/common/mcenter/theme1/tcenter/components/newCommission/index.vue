@@ -67,7 +67,9 @@
         <div
           :class="[$style['data-content']]"
           @click="
-            $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+            $router.push(
+              '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+            )
           "
         >
           <div :class="[$style['title']]">
@@ -82,7 +84,9 @@
         <div
           :class="[$style['data-content']]"
           @click="
-            $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+            $router.push(
+              '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+            )
           "
         >
           <div :class="[$style['title']]">
@@ -158,7 +162,14 @@
           <div :class="[$style['title']]">
             总损益
           </div>
-          <div :class="[$style['content']]">{{ friendPayoff }}</div>
+          <div
+            :class="[
+              $style['content'],
+              { [$style['lose']]: Number(friendPayoff) < 0 }
+            ]"
+          >
+            {{ friendPayoff }}
+          </div>
         </div>
       </div>
     </div>

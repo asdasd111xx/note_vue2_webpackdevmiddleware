@@ -334,13 +334,15 @@ export default {
   created() {
     //刷新導回實時返利領取
     if (this.path && this.pathItem != "receive") {
-      this.$router.replace({
-        params: {
-          title: this.title,
-          item: "receive"
-        }
-      });
-      this.pathItem = "receive";
+      if (!this.$route.query.toDetail || this.$route.query.toDetail != "Y") {
+        this.$router.replace({
+          params: {
+            title: this.title,
+            item: "receive"
+          }
+        });
+        this.pathItem = "receive";
+      }
     }
 
     this.getImmediateData();

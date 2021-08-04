@@ -192,6 +192,10 @@ $submitTextColor: #fff;
       .content {
         text-align: right;
         color: #414655;
+
+        &.lose {
+          color: #DB6372;
+        }
       }
 
 
