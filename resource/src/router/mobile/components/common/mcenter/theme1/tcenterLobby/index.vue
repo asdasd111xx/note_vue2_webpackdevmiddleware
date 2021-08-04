@@ -48,7 +48,9 @@
               v-if="isShowRebate"
               :class="$style['list-btn']"
               @click="
-                $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+                $router.push(
+                  '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+                )
               "
             >
               详情
@@ -280,6 +282,7 @@
         </div>
       </div>
       <img
+        v-if="themeTPL != 'ey1'"
         :class="$style['promote-content']"
         :src="
           $getCdnPath(
@@ -428,9 +431,7 @@ export default {
             } else if (this.immediateData && this.immediateData.state === 1) {
               // 可領
               this.getRebateText = "领取";
-              this.rebateCount = this.getNoRoundText(
-                this.immediateData.self_min_limit
-              );
+              this.rebateCount = this.getNoRoundText(this.immediateData.amount);
             } else {
               // 已达上限
               this.getRebateText = "查看";
