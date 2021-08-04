@@ -227,8 +227,10 @@ export default {
           next:
             this.amountFormat(this.resultDetail.next_sub_valid_bet) || "0.00",
           width:
-            this.resultDetail.valid_bet <=
-            parseInt(this.resultDetail.next_sub_valid_bet)
+            this.resultDetail.valid_bet == 0
+              ? "0"
+              : this.resultDetail.valid_bet <=
+                parseInt(this.resultDetail.next_sub_valid_bet)
               ? (parseInt(this.resultDetail.valid_bet) /
                   parseInt(this.resultDetail.next_sub_valid_bet)) *
                 100
@@ -240,8 +242,10 @@ export default {
           lack: this.resultDetail.lack_sub_user_count || "0",
           next: this.resultDetail.next_sub_user_count || "0",
           width:
-            this.resultDetail.user_count <=
-            parseInt(this.resultDetail.next_sub_user_count)
+            this.resultDetail.user_count == 0
+              ? "0"
+              : this.resultDetail.user_count <=
+                parseInt(this.resultDetail.next_sub_user_count)
               ? (parseInt(this.resultDetail.user_count) /
                   parseInt(this.resultDetail.next_sub_user_count)) *
                 100
