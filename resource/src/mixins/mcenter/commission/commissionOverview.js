@@ -1,8 +1,9 @@
 import { format, getMonth, getYear, parseISO } from "date-fns";
 import { mapActions, mapGetters } from "vuex";
-
+import Vue from "vue";
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";
+import EST from "@/lib/EST";
 
 export default {
   data() {
@@ -197,7 +198,7 @@ export default {
       return format(new Date(date), "MM/dd");
     },
     dateYearFormat(date) {
-      return format(new Date(date), "yyyy/MM/dd");
+      return Vue.moment(date).format("YYYY/MM/DD");
     }
   }
 };

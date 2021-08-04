@@ -34,7 +34,7 @@
                 :class="$style['process-bar-current-line']"
                 :style="{
                   width: `${
-                    parseInt(item.valid) < parseInt(item.next)
+                    parseInt(item.valid) <= parseInt(item.next)
                       ? (parseInt(item.valid) / parseInt(item.next)) * 100
                       : '0'
                   }%`
@@ -72,7 +72,9 @@
             />
           </div>
           <div v-else :class="$style['no-data']">
-            <img src="/static/image/_new/mcenter/ic_nodata.png" />
+            <div :class="$style['no-data-image']">
+              <img src="/static/image/_new/mcenter/ic_nodata.png" />
+            </div>
             <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
           </div>
         </div>
