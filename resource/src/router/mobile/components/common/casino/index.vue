@@ -376,7 +376,7 @@ export default {
               if (activityEvents) {
                 this.hasActivity = true;
                 result.ret.events = activityEvents.sort((i, j) => {
-                  if (i.kind === 3) {
+                  if (i.status === 3) {
                     return 1;
                   }
                   return i.kind - j.kind > 0 ? 1 : -1;

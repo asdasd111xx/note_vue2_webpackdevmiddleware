@@ -65,9 +65,43 @@
           </div>
         </div>
       </div>
+
+      <!-- 上方自選列表 -->
+      <div :class="$style['type-wrap-container']">
+        <div
+          v-for="(type, index) in newTypeList"
+          :key="`type-${index}`"
+          :class="[
+            $style['type-item'],
+            { [$style.active]: currentType.id === type.id }
+          ]"
+          @click="onChangeSelectType(type)"
+          :style="{ width: `${typeItemWidth}%` }"
+        >
+          <div
+            :class="[
+              $style['type-title'],
+              { [$style.active]: currentType.id === type.id }
+            ]"
+          >
+            {{ type.title }}
+          </div>
+        </div>
+
+        <div
+          :class="[$style['type-slide-bar']]"
+          :style="{
+            left: `${currentType.id * this.typeItemWidth}%`
+          }"
+        >
+          <div :class="[$style['type-slide-bar-title']]">
+            {{ currentType.title }}
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- 左側分類 -->
-    <div
+
+    <!-- <div
       v-show="isShow"
       ref="type-wrap"
       :class="$style['type-wrap']"
@@ -102,10 +136,8 @@
           {{ type.name }}
         </div>
       </div>
-    </div>
-    <!-- 右側內容 -->
-    <div v-show="isShow" :class="$style['all-game-wrap']">
-      <!-- 下方影片與遊戲 -->
+    </div> -->
+    <!-- <div v-show="isShow" :class="$style['all-game-wrap']">
       <div
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
@@ -118,7 +150,6 @@
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
       >
-        <!-- 遊戲 -->
         <template>
           <div
             v-for="(game, i) in currentGame.vendors"
@@ -153,7 +184,7 @@
         </template>
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
       </div>
-    </div>
+    </div> -->
     <page-loading :isShow="isLoading" />
   </div>
 </template>
@@ -174,18 +205,44 @@ export default {
     Swiper,
     SwiperSlide
   },
+  computed: {
+    typeBarPosition() {
+      console.log(this.currentType.id * this.typeItemWidth);
+      return this.currentType.id * this.typeItemWidth;
+    },
+    typeItemWidth() {
+      return 100 / this.newTypeList.length;
+    }
+  },
   data() {
     return {
-      userViplevel: ""
+      userViplevel: "",
+      currentType: { id: 0 },
+      newTypeList: [
+        { id: 0, title: "我的自选" },
+        { id: 1, title: "视讯" },
+        { id: 2, title: "彩票" },
+        { id: 3, title: "体育" },
+        { id: 4, title: "棋牌" },
+        { id: 5, title: "电子" }
+      ]
     };
   },
   ...mapGetters({
     loginStatus: "getLoginStatus"
   }),
+  methods: {
+    onChangeSelectType(item) {
+      this.currentType = item;
+    }
+  },
   mounted() {
     if (this.loginStatus) {
       this.getUserViplevel();
     }
+
+    // 預設第一個選單
+    this.currentType = this.newTypeList[0];
   }
 };
 </script>
@@ -194,63 +251,58 @@ export default {
 .home-wrap {
   overflow: hidden;
   position: relative;
-  padding: 0 18px 0 13px;
+  padding: 0 5px;
   margin-top: 1px;
   background: white;
   z-index: 4;
+
+  border-radius: 17.5px;
+  border: 1px solid gray;
+  box-shadow: 2px 2px 2px 2px gray;
 }
 
-.type-wrap {
-  overflow-y: auto;
-  position: absolute;
-  top: 72px;
-  bottom: 0;
-  left: 13px;
-  z-index: 1;
-  width: 63px;
-  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-}
-
-.type-swiper {
+.type-wrap-container {
   position: relative;
-  width: 63px;
-  height: 63px;
-  background-image: url("/static/image/ey1/platform/icon/btn_menu_n.png");
-  background-position: 0 0;
-  background-size: 63px 63px;
-  background-repeat: no-repeat;
+  height: 35px;
+  line-height: 35px;
+}
 
-  > img {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-  }
-
-  &.active {
-    background-image: url("/static/image/ey1/platform/icon/btn_menu_h.png");
-  }
+.type-item {
+  display: inline-block;
+  width: calc(100% / 6);
 }
 
 .type-title {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  left: 0;
-  color: #ff7171;
+  color: #e42a30;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-size: 12px;
+  font-weight: 700;
   text-align: center;
-  font-family: MicrosoftJhengHeiBold;
-  font-weight: 500;
+  transition: color 0.31s;
 
   &.active {
-    color: #fff;
+    color: #ffffff;
   }
+}
+
+.type-slide-bar {
+  transition: all 0.31s;
+  display: inline-block;
+  height: 35px;
+  position: absolute;
+  width: calc(100% / 6);
+  left: 0;
+}
+
+.type-slide-bar-title {
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  transition: color 0.31s;
+  background-color: #e42a30;
+  color: #ffffff;
+  border-radius: 17.5px;
 }
 
 .all-game-wrap {
@@ -258,7 +310,7 @@ export default {
 }
 
 .top-wrap {
-  height: 72px;
+  // height: 72px;
 }
 
 .tag {
@@ -284,65 +336,35 @@ export default {
   }
 }
 
-@media only screen and (max-width: 374px) {
-  .mcenter-login-status-wrap {
-    max-width: 33%;
-  }
-}
-
 .mcenter-login-status-wrap {
-  position: relative;
-  padding-left: 5px;
-  float: left;
-  height: 100%;
-  width: 140px;
-
   > .not-login-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    line-height: 33px;
+    height: 33px;
+    padding: 0 17px;
+
     > div {
-      height: 50%;
-      line-height: 25px;
-    }
+      width: 50%;
 
-    font-size: 17px;
-    font-weight: 700;
-    text-align: left;
-    color: #fe9154;
+      &:first-child {
+        text-align: left;
+        font-size: 17px;
+        font-weight: 700;
+        color: #fe9154;
+      }
 
-    > div:last-of-type {
-      height: 50%;
-      line-height: 20px;
-      font-size: 13px;
-      font-weight: 400;
-      text-align: left;
-      color: #4e5159;
+      &:last-child {
+        text-align: right;
+        font-size: 13px;
+        font-weight: 400;
+        color: #4e5159;
+      }
     }
   }
 
   .is-login-wrap {
-    position: relative;
-
-    > div:first-of-type {
-      font-size: 12px;
-      font-weight: 400;
-      text-align: left;
-      color: #4e5159;
-      position: relative;
-      word-break: break-all;
-      display: inline-block;
-      margin-right: 4px;
-    }
-
-    > div:last-of-type {
-      font-size: 16px;
-      font-family: Segoe UI, Segoe UI-Bold;
-      font-weight: 700;
-      text-align: left;
-      color: #4e5159;
-
-      &.normal {
-        margin-top: 5px;
-      }
-    }
   }
 }
 
@@ -365,32 +387,34 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
-  height: 72px;
-  transition: all 0.5s;
 }
 
 .mcenter-func {
-  position: absolute;
-  right: 14px;
+  width: 100%;
+  display: inline-block;
+  margin: 10px 0;
 }
 
 .mcenter-cell {
-  float: left;
-  margin: 0 5px;
+  width: 25%;
+  display: inline-flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 
   > img {
-    display: block;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto 1px;
+    width: 27px;
+    height: 27px;
+    display: inline-block;
   }
 
   > div {
-    height: 16px;
-    line-height: 16px;
+    font-size: 14px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+    font-weight: 400;
+    text-align: left;
     color: #ff8400;
-    font-size: 12px;
-    text-align: center;
+    display: inline-block;
   }
 }
 
