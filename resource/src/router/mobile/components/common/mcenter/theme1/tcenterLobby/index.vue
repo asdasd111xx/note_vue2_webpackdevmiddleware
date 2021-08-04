@@ -14,7 +14,9 @@
       <div
         v-if="!rewardOnlyLocal"
         :class="$style['title-commission']"
-        @click="$router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')"
+        @click="
+          $router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')
+        "
       >
         盈亏返利
       </div>
@@ -407,7 +409,7 @@ export default {
           let dataArray = [];
 
           dataArray = response.data.ret.entries;
-          this.isShowRebate = response.data.ret.show_real_time;
+          this.isShowRebate = response.data.ret.show_real_time ?? true;
 
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet

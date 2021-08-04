@@ -437,7 +437,6 @@ export default {
             { name: "注册时间", item: this.filterDate(info.user_created_at) },
             { name: "首存金额", item: this.amountFormat(info.amount) },
             { name: "推荐礼金", item: this.amountFormat(info.deposit_gift) },
-            { name: "推荐人奖励", item: this.amountFormat(info.invite_gift) },
             {
               name: "状态",
               item: this.getStatus(info),

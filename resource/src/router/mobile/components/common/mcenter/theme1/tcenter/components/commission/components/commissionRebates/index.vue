@@ -383,13 +383,13 @@ export default {
           }
 
           let total = response.data.total ?? "";
-          let entries = response.data.ret.entries[0] ?? "";
+          let entries = response.data.ret?.entries[0] ?? "";
           // 傳進detail判斷是否顯示查看箭頭
           // 狀態=>可領/已達上限/已領取/計算中
           if (
             entries.self_times > 0 ||
             (entries.state === 3 && entries.self_times === 0) ||
-            (!total.valid_bet.accounting && !entries) ||
+            (!total.valid_bet?.accounting && !entries) ||
             total.valid_bet.accounting
           ) {
             this.status = true;
@@ -438,6 +438,9 @@ export default {
     changeTab(tabKey) {
       if (this.$route.params.item != tabKey.name) {
         this.pathItem = tabKey.name;
+
+        if (this.pathItem === "receive") this.getImmediateData();
+
         this.$router.replace({
           params: {
             title: this.title,
