@@ -328,7 +328,7 @@ export default {
       return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
     },
     dateFormatNoTime(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(date).format("YYYYMMDD");
     }
   },
   created() {

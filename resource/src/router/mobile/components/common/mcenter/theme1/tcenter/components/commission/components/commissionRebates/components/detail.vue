@@ -7,7 +7,7 @@
         v-if="$route.query.total && !$route.query.depth && !$route.query.userId"
       >
         <div :class="$style['date-total']">
-          <span>{{ `统计至：${filterDate(resultDetail.at)}` }}</span>
+          <span>统计至：{{ filterDate(resultDetail.at) }}</span>
         </div>
         <div v-for="(item, index) in detailList" :key="`key-${index}`">
           <div :class="$style['process-bar-wrap']">
@@ -33,11 +33,7 @@
               <div
                 :class="$style['process-bar-current-line']"
                 :style="{
-                  width: `${
-                    parseInt(item.valid) <= parseInt(item.next)
-                      ? (parseInt(item.valid) / parseInt(item.next)) * 100
-                      : '0'
-                  }%`
+                  width: `${item.width}%`
                 }"
               ></div>
             </div>
@@ -229,13 +225,27 @@ export default {
           lack:
             this.amountFormat(this.resultDetail.lack_sub_valid_bet) || "0.00",
           next:
-            this.amountFormat(this.resultDetail.next_sub_valid_bet) || "0.00"
+            this.amountFormat(this.resultDetail.next_sub_valid_bet) || "0.00",
+          width:
+            this.resultDetail.valid_bet <=
+            parseInt(this.resultDetail.next_sub_valid_bet)
+              ? (parseInt(this.resultDetail.valid_bet) /
+                  parseInt(this.resultDetail.next_sub_valid_bet)) *
+                100
+              : "100"
         },
         {
           name: "有效会员人数",
           valid: this.resultDetail.user_count || "0",
           lack: this.resultDetail.lack_sub_user_count || "0",
-          next: this.resultDetail.next_sub_user_count || "0"
+          next: this.resultDetail.next_sub_user_count || "0",
+          width:
+            this.resultDetail.user_count <=
+            parseInt(this.resultDetail.next_sub_user_count)
+              ? (parseInt(this.resultDetail.user_count) /
+                  parseInt(this.resultDetail.next_sub_user_count)) *
+                100
+              : "100"
         }
       ];
     },
@@ -549,7 +559,7 @@ export default {
     },
     filterDate(date) {
       //取當前時間的整點為主來顯示
-      return Vue.moment(EST(date)).format("YYYY-MM-DD HH:00:00");
+      return EST(Vue.moment(new Date(date), "YYYY-MM-DD HH:00:00"));
     }
   },
   beforeDestroy() {}

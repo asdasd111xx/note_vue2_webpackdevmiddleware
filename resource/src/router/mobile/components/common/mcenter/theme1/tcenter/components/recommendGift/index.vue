@@ -222,9 +222,14 @@
       </template>
       <div v-else :class="[$style['no-data-wrap'], { [$style.newpath]: path }]">
         <template v-if="!isShowDatePicker">
-          <img
-            :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
-          />
+          <div :class="$style['no-data-image']">
+            <img
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)
+              "
+            />
+          </div>
+
           <div :class="$style.tips">
             {{ path ? "暂无资料" : "还没有任何记录" }}
           </div>
@@ -280,6 +285,10 @@ export default {
     tabState: {
       type: Boolean,
       default: false
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
