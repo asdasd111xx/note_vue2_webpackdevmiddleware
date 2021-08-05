@@ -439,9 +439,11 @@ export default {
             },
             {
               name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
-              item: this.amountFormat(info.withdraw),
+              item: this.amountFormat(
+                info.withdraw > 0 ? info.withdraw : info.withdraw * -1
+              ),
               key: "withdraw",
-              color: info.withdraw < 0,
+              color: false,
               show: true
             },
             {

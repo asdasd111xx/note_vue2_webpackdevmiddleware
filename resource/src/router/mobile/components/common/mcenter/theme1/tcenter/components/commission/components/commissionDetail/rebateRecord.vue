@@ -150,13 +150,16 @@ export default {
       handler: function(item) {
         if (item.record) {
           //page1
-          this.setHeaderTitle(this.rebateDateFormat(this.$route.query.period));
+          this.setHeaderTitle(
+            this.$route.query.type != 0
+              ? this.rebateDateFormat(this.$route.query.period)
+              : this.$route.query.period
+          );
           this.setTabState(true);
 
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
-            this.setHeaderTitle(this.$route.query.period);
             return;
           }
           this.getSummary();
@@ -459,7 +462,7 @@ export default {
       }, 300);
     },
     rebateDateFormat(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(date).format("YYYYMMDD");
     }
   }
 };

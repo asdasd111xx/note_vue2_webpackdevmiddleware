@@ -81,12 +81,12 @@ export default {
   },
   mounted() {
     this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
-    this.getRebateSwitch();
   },
   watch: {
     "$route.params.title": {
       handler: function(item) {
         this.path = item;
+        this.getRebateSwitch();
       },
       deep: true,
       immediate: true

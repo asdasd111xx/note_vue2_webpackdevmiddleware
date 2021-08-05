@@ -282,27 +282,17 @@ export default {
     }
   },
   created() {
-    if (this.path) {
+    if (!this.$route.query.assign && this.path) {
       this.getTimeRecord(this.allTotalData[0]);
-      this.hasSearch = false;
     } else {
       this.hasSearch = true;
     }
+    this.hasSearch = false;
     this.getRebateSwitch();
 
     // 因 detail 的資料可能為第三方 or 各級好友(從上一個傳下來的data)，統一重整回summary
     if (this.page === "detail") {
       this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
-    }
-
-    if (this.$route.params.item === "detail") {
-      this.$router.replace({
-        params: {
-          title: "record",
-          item: "today"
-        },
-        query: { dateId: 0 }
-      });
     }
 
     // // 重整的時候，根據當下render page
@@ -327,9 +317,9 @@ export default {
     },
     onInquire() {
       this.onSearch();
+      this.manageRebateDate();
       this.hasSearch = false;
       //返利管理多要顯示日期
-      this.manageRebateDate();
     },
     getRebateSwitch() {
       this.isReceive = false;

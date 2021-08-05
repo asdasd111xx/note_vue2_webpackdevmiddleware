@@ -3,13 +3,13 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";
-
+import EST from "@/lib/EST";
 export default {
   data() {
     return {
       summary: null,
       profitSwitch: true, //第三方開關,
-      todayAmout: "" //推廣大廳 今日已领返利
+      todayAmout: "" //推廣大廳 今日已领返利,
     };
   },
   computed: {
@@ -49,6 +49,11 @@ export default {
         this.currentMonth,
         0
       ).getDate();
+
+      if (this.$route.params.title) {
+        const pathEndDay = new Date(this.summaryContent[2].end_at).getDate();
+        return pathEndDay - today + 1 > 0 ? pathEndDay - today + 1 : 0;
+      }
 
       return lastDay - today + 1;
     },

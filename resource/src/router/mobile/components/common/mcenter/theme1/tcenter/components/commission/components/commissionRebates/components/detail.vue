@@ -474,6 +474,7 @@ export default {
       }).then(res => {
         if (res && res.status === "000") {
           //返利比例
+          this.gameRateResult = [];
           this.friendGameRateList = res.data ?? [];
           const name = {
             1: "体育",

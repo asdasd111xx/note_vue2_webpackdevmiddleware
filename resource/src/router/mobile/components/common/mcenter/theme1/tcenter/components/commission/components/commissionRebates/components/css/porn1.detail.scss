@@ -13,6 +13,7 @@
 
 .process-bar-wrap {
   margin: 10px 0;
+  z-index: 0;
 
   > span {
     font-size: 14px;
@@ -63,7 +64,7 @@
       border-radius: 3px;
       top: 0;
       background-color: #be9e7f;
-      z-index: 1;
+      z-index: 0;
     }
   }
 

@@ -701,6 +701,7 @@ export default {
       }
     }
   },
+
   methods: {
     /*
      * 點擊下一層級使用
@@ -809,20 +810,7 @@ export default {
         });
         this.pathDay = data.name;
       }
-
-      if (this.path) {
-        switch (this.pathDay) {
-          case "today":
-          case "yesterday":
-            this.timeTitle = this.startTime;
-            break;
-          case "month":
-
-          case "custom":
-            this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
-            break;
-        }
-      }
+      this.setTimeTitle();
       this.searchResult = false;
       this.setTabState(true);
       this.setSubTabState(true);
@@ -866,6 +854,7 @@ export default {
       this.searchResult = false;
 
       this.friend_name = value.friend_name;
+      this.setTimeTitle();
 
       this.updateFirstFriends({
         friend_name: this.friend_name
@@ -890,6 +879,21 @@ export default {
     },
     chooseColor(val) {
       return val < 0 ? "red" : "black";
+    },
+    setTimeTitle() {
+      if (this.path) {
+        switch (this.pathDay) {
+          case "today":
+          case "yesterday":
+            this.timeTitle = this.startTime;
+            break;
+          case "month":
+
+          case "custom":
+            this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
+            break;
+        }
+      }
     }
   }
 };

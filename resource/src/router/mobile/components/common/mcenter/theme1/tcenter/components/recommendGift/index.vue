@@ -443,15 +443,33 @@ export default {
           fontCss: "title-font-style",
           childTitle: `礼金 : ${this.amountFormat(info.total_invite_gift)}`,
           list: [
-            { name: "注册时间", item: this.filterDate(info.user_created_at) },
-            { name: "首存金额", item: this.amountFormat(info.amount) },
-            { name: "推荐礼金", item: this.amountFormat(info.deposit_gift) },
+            {
+              name: "注册时间",
+              item: this.filterDate(info.user_created_at),
+              isShow: true
+            },
+            {
+              name: "首存金额",
+              item: this.amountFormat(info.amount),
+              isShow: true
+            },
+            {
+              name: "推荐礼金",
+              item: this.amountFormat(info.deposit_gift),
+              isShow: info.deposit_gift > 0
+            },
+            {
+              name: "推荐人奖励",
+              item: this.amountFormat(info.invite_gift),
+              isShow: info.invite_gift > 0
+            },
             {
               name: "状态",
               item: this.getStatus(info),
-              color: this.getStatus(info, "y")
+              color: this.getStatus(info, "y"),
+              isShow: true
             }
-          ]
+          ].filter(item => item.isShow)
         };
       });
       return data;
@@ -483,7 +501,7 @@ export default {
   methods: {
     getStatus(info, color) {
       if (!info.allow) {
-        return "资格不符";
+        return color ? "red" : "资格不符";
       }
 
       if (info.revoked) {
@@ -503,7 +521,7 @@ export default {
       this.updateGame();
     },
     getTimeRecord(data) {
-      this.currentSelectTime = data.text;
+      this.selectType.status = 1;
 
       this.startTime = Vue.moment(this.estToday)
         .add(-data.value, "days")
@@ -554,9 +572,7 @@ export default {
         first_result: this.maxResults * this.showPage
       };
 
-      if (this.selectType.status > 0) {
-        params.status = this.selectType.status;
-      }
+      params.status = this.selectType.status;
 
       this.startTime = Vue.moment(this.startTime).format("YYYY-MM-DD");
       this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
