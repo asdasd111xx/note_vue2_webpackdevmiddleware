@@ -456,10 +456,17 @@ export default {
     },
     getTimeRecord(data) {
       //搜尋頁日期範圍由前一頁決定
-      // console.log(data.value);
       if (data.name === "custom") {
         this.hasSearch = true;
-
+        if (this.path && this.rebatePathItem != data.name) {
+          this.$router.replace({
+            params: {
+              title: "newCommission",
+              item: `${data.name}`
+            }
+          });
+          this.rebateTitle = data.name;
+        }
         return;
       }
 
