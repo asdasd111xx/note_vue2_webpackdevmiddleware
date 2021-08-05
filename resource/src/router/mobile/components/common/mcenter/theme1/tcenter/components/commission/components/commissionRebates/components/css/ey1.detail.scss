@@ -1,0 +1,13 @@
+@import "./porn1.detail.scss";
+.process-bar-wrap {
+  .process-bar-top {
+    .current-num {
+      color: #e42a30;
+    }
+  }
+  .process-bar-line {
+    .process-bar-current-line {
+      background-color: #e42a30;
+    }
+  }
+}
