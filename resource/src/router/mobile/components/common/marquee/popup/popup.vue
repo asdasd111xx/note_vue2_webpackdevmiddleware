@@ -29,6 +29,11 @@
         <div v-if="isShowTick" :class="[$style['no-remind'], 'clearfix']">
           <span
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
+            :style="{
+              'background-image': $getCdnPath(
+                '/static/image/common/icon_noremember.png'
+              )
+            }"
             @click="isTick = !isTick"
           />
           <span :class="$style['checkbox-text']">不再提示</span>
