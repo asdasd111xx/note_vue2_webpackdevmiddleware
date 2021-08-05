@@ -94,7 +94,14 @@
             left: `${currentType.id * this.typeItemWidth}%`
           }"
         >
-          <div :class="[$style['type-slide-bar-title']]">
+          <div
+            :class="[$style['type-slide-bar-title']]"
+            :style="{
+              'background-image': `url(
+                ${$getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)}
+              )`
+            }"
+          >
             {{ currentType.title }}
           </div>
         </div>
@@ -251,11 +258,12 @@ export default {
 .home-wrap {
   overflow: hidden;
   position: relative;
-  padding: 0 5px;
+  padding: 0;
   margin-top: 1px;
   background: white;
   z-index: 4;
 
+  // 陰影缺美術
   border-radius: 17.5px;
   border: 1px solid gray;
   box-shadow: 2px 2px 2px 2px gray;
@@ -300,9 +308,12 @@ export default {
   font-weight: 700;
   text-align: center;
   transition: color 0.31s;
-  background-color: #e42a30;
+  // background-color: #e42a30;
   color: #ffffff;
-  border-radius: 17.5px;
+  // border-radius: 17.5px;
+
+  background-position: center;
+  background-size: contain;
 }
 
 .all-game-wrap {
@@ -396,11 +407,11 @@ export default {
 }
 
 .mcenter-cell {
-  width: 25%;
-  display: inline-flex;
-  text-align: center;
-  justify-content: center;
   align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  width: 25%;
 
   > img {
     width: 27px;
@@ -409,12 +420,13 @@ export default {
   }
 
   > div {
-    font-size: 14px;
-    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
-    font-weight: 400;
-    text-align: left;
     color: #ff8400;
     display: inline-block;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 3px;
+    text-align: left;
   }
 }
 
