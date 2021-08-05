@@ -51,16 +51,12 @@
 </template>
 
 <script>
-import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
-import common from "@/api/common";
-import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";
-import Vue from "vue";
 import yaboRequest from "@/api/yaboRequest";
 
 export default {
