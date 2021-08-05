@@ -45,11 +45,8 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
-import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import { API_MCENTER_DESPOSIT_AMOUNT } from "@/config/api";
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import share from "./share";
 
