@@ -19,6 +19,7 @@
         :depth="firstFriends.depth"
         :list="currentSavedFreindList"
         @send-name="clickTargetFriend"
+        :search-result="searchResult"
       />
 
       <custom-date
@@ -377,7 +378,8 @@ export default {
       searchResult: false, //自訂時間是否搜尋到結果
       saveCustomDate: {}, //儲存自訂的資料
       card: true,
-      totalDepth: ""
+      totalDepth: "",
+      friend_name: ""
     };
   },
   created() {
@@ -581,8 +583,9 @@ export default {
     searchResult(value) {
       if (value) {
         this.setHeaderTitle(this.timeTitle);
-        this.setTabState(false);
-        if (this.pathDay === "custom") {
+
+        if (this.friend_name) {
+          this.setTabState(false);
           this.setBackFunc(() => {
             if (this.firstFriends.depth !== 1) {
               this.firstFriends.depth = 1;
@@ -639,7 +642,7 @@ export default {
         this.setSubTabState(false);
 
         this.setBackFunc(() => {
-          if (this.pathDay === "custom") {
+          if (this.pathDay === "custom" && this.searchResult) {
             this.gameRecordPage = false;
             this.isEnterNextLayers = false;
             this.card = false;
@@ -663,7 +666,7 @@ export default {
         });
 
         return;
-      } else {
+      } else if (!this.friend_name) {
         // 若返回到1級的頁面 or 停留在1級的情況
         this.isEnterNextLayers = false;
         this.searchResult = false;
@@ -676,6 +679,7 @@ export default {
         }
 
         // 上方選項列顯示狀態
+
         this.setTabState(true);
         this.setSubTabState(true);
 
@@ -865,15 +869,18 @@ export default {
           return;
         }
 
-        //為了顯示上方許多好友 把api回傳許多好友帳號存進去
-        for (let i = 1; i < this.firstFriends.depth; i++) {
-          this.addToSavedFreindList(
-            this.firstFriends.friend_chain[i].username,
-            ""
-          );
+        if (this.friend_name) {
+          this.searchResult = true;
+
+          //為了顯示上方許多好友 把api回傳許多好友帳號存進去
+          for (let i = 1; i < this.firstFriends.depth; i++) {
+            this.addToSavedFreindList(
+              this.firstFriends.friend_chain[i].username,
+              ""
+            );
+          }
         }
 
-        this.searchResult = true;
         this.card = true;
       });
     },
