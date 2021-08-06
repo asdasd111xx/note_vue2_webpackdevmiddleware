@@ -82,8 +82,12 @@ export default {
   },
   props: {
     currentInfo: {
-      type: Object | null,
+      type: Object,
       required: true
+    },
+    setTabState: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {

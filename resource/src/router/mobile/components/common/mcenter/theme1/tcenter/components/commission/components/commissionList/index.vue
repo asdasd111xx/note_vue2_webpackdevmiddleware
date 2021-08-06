@@ -149,8 +149,12 @@ export default {
       this.info = info;
       this.setTabState(false);
       this.$emit("update:currentInfo", this.info);
+      this.setHeaderTitle(
+        this.info.type != 0
+          ? this.rebateDateFormat(this.info.period)
+          : this.info.period
+      );
       if (this.$route.params.title && this.info.type === 0) {
-        this.setHeaderTitle(this.info.period);
         this.$router.push({
           params: {
             title: "record",
@@ -167,7 +171,6 @@ export default {
         this.$emit("update:currentInfo", this.info);
 
         if (this.$route.params.title && !this.info.oauth2) {
-          this.setHeaderTitle(this.rebateDateFormat(this.info.end_at));
           this.$router.push({
             params: {
               title: "record",
@@ -179,7 +182,6 @@ export default {
             }
           });
         } else {
-          this.setHeaderTitle(this.info.period);
           this.$router.push({
             path: "/mobile/mcenter/tcenter/commission/detail"
           });

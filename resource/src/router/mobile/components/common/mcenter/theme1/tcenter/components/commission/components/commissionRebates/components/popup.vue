@@ -118,6 +118,10 @@ export default {
     path: {
       type: String,
       default: ""
+    },
+    currentInfo: {
+      type: Object,
+      required: true
     }
   },
   data() {

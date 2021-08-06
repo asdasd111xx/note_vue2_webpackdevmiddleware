@@ -48,14 +48,7 @@
           </div>
 
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
-            <div
-              v-if="
-                path &&
-                  caculateList.state !== 3 &&
-                  caculateList.self_times !== 0
-              "
-              :class="$style['detail-content']"
-            >
+            <div v-if="path" :class="$style['detail-content']">
               <span :class="$style['content-left']">
                 结算区间
               </span>
@@ -233,6 +226,7 @@
           :is-show-popup.sync="isShowPopup"
           :amount="amountResult"
           :path="path"
+          :current-info="currentInfo"
         />
       </template>
     </div>
@@ -291,7 +285,8 @@ export default {
       title: "real",
       pathItem: this.$route.params.item ?? "", //是否從返利管理來,
       path: this.$route.params.title ?? "", //是否從返利管理來,
-      status: true //傳進詳情 是否顯示箭頭
+      status: true, //傳進詳情 是否顯示箭頭
+      currentInfo: {}
     };
   },
   computed: {
@@ -325,7 +320,7 @@ export default {
   },
   filters: {
     dateFormat(date) {
-      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss")) || "--";
     },
     dateFormatNoTime(date) {
       return Vue.moment(date).format("YYYYMMDD");
@@ -386,6 +381,8 @@ export default {
 
           let total = response.data.total ?? "";
           let entries = response.data.ret?.entries[0] ?? "";
+
+          this.currentInfo = { ...entries };
           // 傳進detail判斷是否顯示查看箭頭
           // 狀態=>可領/已達上限/已領取/計算中
           if (

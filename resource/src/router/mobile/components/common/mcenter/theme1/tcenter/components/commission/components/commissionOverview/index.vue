@@ -12,7 +12,7 @@
               <span :class="[$style['profit_date']]"> {{ info.date }}</span>
 
               <span :class="[$style['profit_day']]"
-                >剩余天数{{ info.day }}天</span
+                >剩余天数{{ info.period ? 0 : info.day }}天</span
               >
             </div>
           </div>
@@ -379,6 +379,7 @@ export default {
             info.end_at
           )}`,
           day: this.remainderDays,
+          period: info.period,
           list: [
             {
               name: this.$text("S_EXPECTED_REBATE", "预估返利"),
@@ -439,9 +440,11 @@ export default {
             },
             {
               name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
-              item: this.amountFormat(info.withdraw),
+              item: this.amountFormat(
+                info.withdraw > 0 ? info.withdraw : info.withdraw * -1
+              ),
               key: "withdraw",
-              color: info.withdraw < 0,
+              color: false,
               show: true
             },
             {

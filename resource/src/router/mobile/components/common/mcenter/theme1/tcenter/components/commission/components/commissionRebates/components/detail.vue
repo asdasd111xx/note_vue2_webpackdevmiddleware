@@ -424,7 +424,7 @@ export default {
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .$route.query.memberId || this.memberId}/Friends`,
+          .$route.query.current_entry_id || this.memberId}/Friends`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
@@ -447,7 +447,8 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .$route.query.memberId || this.memberId}/Vendor/Validbet/Report`,
+          .$route.query.current_entry_id ||
+          this.memberId}/Vendor/Validbet/Report`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
@@ -465,7 +466,7 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .$route.query.memberId || this.memberId}/Layer/Condition`,
+          .$route.query.current_entry_id || this.memberId}/Layer/Condition`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
@@ -474,6 +475,7 @@ export default {
       }).then(res => {
         if (res && res.status === "000") {
           //返利比例
+          this.gameRateResult = [];
           this.friendGameRateList = res.data ?? [];
           const name = {
             1: "体育",
