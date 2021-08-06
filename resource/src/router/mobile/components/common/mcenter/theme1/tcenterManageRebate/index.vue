@@ -86,6 +86,7 @@ export default {
     "$route.params.title": {
       handler: function(item) {
         this.path = item;
+        this.switchComponent(item);
         this.getRebateSwitch();
       },
       deep: true,
@@ -141,7 +142,18 @@ export default {
   methods: {
     ...mapActions(["actionChangePage", "actionSetUserdata"]),
     changeTab(tabKey) {
-      switch (this.tabItem[tabKey].key) {
+      if (this.path != this.tabItem[tabKey].key) {
+        this.$router.replace({
+          params: {
+            title: `${this.tabItem[tabKey].key}`,
+            item: `${this.tabItem[tabKey].item}`
+          }
+        });
+      }
+    },
+    switchComponent(value) {
+      this.tabState = true;
+      switch (value) {
         default:
         case "record":
           this.currentLayout = { vendor: "record" };
@@ -155,15 +167,6 @@ export default {
         case "recommendGift":
           this.currentLayout = { vendor: "recommendGift" };
           break;
-      }
-
-      if (this.path != this.tabItem[tabKey].key) {
-        this.$router.replace({
-          params: {
-            title: `${this.tabItem[tabKey].key}`,
-            item: `${this.tabItem[tabKey].item}`
-          }
-        });
       }
     },
     setTabState(state) {

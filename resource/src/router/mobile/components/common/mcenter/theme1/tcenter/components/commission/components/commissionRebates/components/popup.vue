@@ -157,17 +157,8 @@ export default {
       }, 300);
     },
     handleRebateClick() {
-      // this.$router.push("/mobile/mcenter/tcenterManageRebate/real/receive");
-      this.$router.push({
-        params: {
-          title: "record",
-          item: "detail"
-        },
-        query: {
-          assign: "assign",
-          ...this.currentInfo
-        }
-      });
+      this.$router.push("/mobile/mcenter/tcenterManageRebate/real/receive");
+
       setTimeout(() => {
         window.location.reload();
       }, 300);
