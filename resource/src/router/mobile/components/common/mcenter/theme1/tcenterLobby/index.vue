@@ -57,7 +57,13 @@
             </div>
           </div>
           <div :class="$style['list-value']">
-            {{ isShowRebate ? subValidBet : friendsStatistics.valid_bet }}
+            {{
+              isShowRebate
+                ? subValidBet
+                : Number(friendsStatistics.valid_bet) > 0
+                ? friendsStatistics.valid_bet
+                : "--"
+            }}
           </div>
         </div>
         <div :class="$style['list-data']">
@@ -66,7 +72,11 @@
           </div>
           <div :class="$style['list-value']">
             {{
-              isShowRebate ? subUserCount : friendsStatistics.today_has_login
+              isShowRebate
+                ? subUserCount
+                : Number(friendsStatistics.today_has_login) > 0
+                ? friendsStatistics.today_has_login
+                : "--"
             }}
           </div>
         </div>
@@ -314,7 +324,7 @@ export default {
       levelList: [[{ total: 0 }]],
       allTotal: [],
       transPointType: false,
-      summary: null,
+      summary: { today: { amount: 0 } },
       immediateData: [],
       specialList: [
         {
@@ -413,7 +423,6 @@ export default {
 
           dataArray = response.data.ret.entries;
           this.isShowRebate = response.data.ret.show_real_time ?? true;
-
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet
               ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)
