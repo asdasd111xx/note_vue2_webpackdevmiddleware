@@ -50,11 +50,6 @@ export default {
         0
       ).getDate();
 
-      if (this.$route.params.title) {
-        const pathEndDay = new Date(this.summaryContent[2].end_at).getDate();
-        return pathEndDay - today > 0 ? pathEndDay - today : 0;
-      }
-
       return lastDay - today;
     },
     /**
