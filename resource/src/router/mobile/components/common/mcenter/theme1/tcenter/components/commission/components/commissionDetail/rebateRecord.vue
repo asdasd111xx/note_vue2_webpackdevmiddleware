@@ -67,8 +67,12 @@
             />
           </div>
           <div v-else :class="$style['no-data']">
-            <img src="/static/image/_new/mcenter/ic_nodata.png" />
-            <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+            <div :class="$style['no-data-image']">
+              <img src="/static/image/_new/mcenter/ic_nodata.png" />
+            </div>
+            <p>
+              {{ $text("S_NO_DATA_YET", "暂无资料") }}
+            </p>
           </div>
         </div>
       </div>
@@ -226,13 +230,19 @@ export default {
       let strArr = [
         {
           name: "总有效投注",
-          item: this.amountFormat(this.pageTotal?.valid_bet ?? "0.00")
+          item:
+            this.pageTotal?.valid_bet > 0
+              ? this.amountFormat(this.pageTotal.valid_bet)
+              : "--"
         },
         {
           name: "总损益",
-          item: this.amountFormat(this.pageTotal?.profit ?? "0.00")
+          item:
+            this.pageTotal?.profit > 0
+              ? this.amountFormat(this.pageTotal.profit)
+              : "--"
         },
-        { name: "笔数", item: this.pagination?.total ?? "0" }
+        { name: "笔数", item: this.pagination.total ?? "0" }
       ];
       return strArr;
     },
@@ -267,13 +277,16 @@ export default {
       let strArr = [
         {
           name: "总有效投注",
-          item: this.amountFormat(
-            this.friendGameList?.total?.valid_bet ?? "0.00"
-          )
+          item:
+            this.friendGameList?.total?.valid_bet > 0
+              ? this.amountFormat(this.friendGameList.total.valid_bet)
+              : "0.00"
         },
         {
           name: "总损益",
-          item: this.amountFormat(this.friendGameList?.total?.profit ?? "0.00")
+          item: this.friendGameList?.total?.profit
+            ? this.amountFormat(this.friendGameList.total.profit)
+            : "0.00"
         },
         {
           name: "笔数",

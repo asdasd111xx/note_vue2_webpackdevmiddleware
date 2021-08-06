@@ -618,7 +618,7 @@ export default {
             if (this.gameRecordPage) {
               this.gameRecordPage = false;
               this.firstFriends.depth -= 1;
-              this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
+              //this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
             } else {
               this.$router.back();
             }
@@ -634,7 +634,7 @@ export default {
 
         if (!this.path) {
           this.setHeaderTitle(this.depthMapping[value]);
-        } else {
+        } else if (!this.gameRecordPage) {
           this.setHeaderTitle("团队报表");
         }
 
@@ -733,8 +733,8 @@ export default {
       });
     },
     enterGameRecord(val) {
-      this.gameRecordPage = true;
       this.setHeaderTitle(val.alias);
+      this.gameRecordPage = true;
       this.setTabState(false);
       this.gameRecordParams = {
         userId: val.id,

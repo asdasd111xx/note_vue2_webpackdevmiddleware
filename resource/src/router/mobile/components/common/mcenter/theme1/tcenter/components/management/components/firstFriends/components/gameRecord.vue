@@ -5,8 +5,9 @@
         v-for="(item, index) in childTitle"
         :key="index"
         :class="[$style['card-item']]"
-        >{{ item.item }}</span
-      >
+        >{{ item.name }}
+        <span :class="$style[`${item.color}`]">{{ item.item }}</span>
+      </span>
     </div>
     <div :class="$style['date-title']">{{ timeTitle }}</div>
 
@@ -90,18 +91,21 @@ export default {
       //子標題內容
       let strArr = [
         {
-          item: `投注金额： ${this.amountFormat(this.total.bet ?? "0.00")}`
+          name: "投注金额：",
+          item: this.amountFormat(this.total.bet ?? "0.00")
         },
         {
-          item: `总有效投注： ${this.amountFormat(
-            this.total.valid_bet ?? "0.00"
-          )}`
+          name: "总有效投注：",
+          item: this.amountFormat(this.total.valid_bet ?? "0.00")
         },
         {
-          item: `总派彩： ${this.amountFormat(this.total.payoff ?? "0.00")}`
+          name: "总派彩：",
+          item: this.amountFormat(this.total.payoff ?? "0.00"),
+          color: this.chooseColor(this.total.payoff)
         },
         {
-          item: `笔数： ${this.amountFormat(this.pagination.total ?? "0.00")}`
+          name: "笔数：",
+          item: this.amountFormat(this.pagination.total ?? "0.00")
         }
       ];
       return strArr;
@@ -141,9 +145,9 @@ export default {
   methods: {
     chooseColor(val) {
       if (this.themeTPL == "ey1") {
-        return val < 0 ? "red" : "black";
-      } else {
         return val > 0 ? "red" : "black";
+      } else {
+        return val < 0 ? "red" : "black";
       }
     },
     getGameRecord() {

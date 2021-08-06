@@ -302,22 +302,24 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          name: "总有效投注",
-          item: this.amountFormat(
-            this.friendMemberList?.total?.valid_bet ?? "0.00"
-          )
+          name: "总有效投注：",
+          item:
+            this.friendMemberList?.total?.valid_bet > 0
+              ? this.amountFormat(this.friendMemberList.total.valid_bet)
+              : "--"
         },
         {
-          name: "总损益",
-          item: this.amountFormat(
-            this.friendMemberList?.total?.profit ?? "0.00"
-          )
+          name: "总损益：",
+          item:
+            this.friendMemberList?.total?.profit > 0
+              ? this.amountFormat(this.friendMemberList.total.profit)
+              : "--"
         },
         {
-          name: "笔数",
-          item: this.amountFormat(
-            this.friendMemberList?.pagination?.total ?? "0.00"
-          )
+          name: "笔数：",
+          item:
+            this.amountFormat(this.friendMemberList?.pagination?.total) ??
+            "0.00"
         }
       ];
       return strArr;
@@ -352,19 +354,23 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
-            this.friendGameList?.total?.valid_bet ?? "0.00"
-          )}`
+          item: `总有效投注 ${
+            this.friendGameList?.total?.valid_bet > 0
+              ? this.amountFormat(this.friendGameList.total.valid_bet)
+              : "--"
+          }`
         },
         {
-          item: `总损益 ${this.amountFormat(
-            this.friendGameList?.total?.profit ?? "0.00"
-          )}`
+          item: `总损益 ${
+            this.friendGameList?.total?.profit > 0
+              ? this.amountFormat(this.friendGameList.total.profit)
+              : "--"
+          }`
         },
         {
           item: `笔数 ${this.amountFormat(
-            this.friendGameList?.pagination?.total ?? "0.00"
-          )}`
+            this.friendGameList?.pagination?.total
+          ) ?? "0.00"}`
         }
       ];
       return strArr;
