@@ -383,14 +383,10 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     /**
-     * 返利是否只使用本站
+     * 返利是否有開啟第三方返利時
      */
     rewardOnlyLocal() {
-      return (
-        this.memInfo.config.wage &&
-        this.memInfo.config.wage.length === 1 &&
-        this.memInfo.config.wage[0] === "local"
-      );
+      return this.memInfo.config.wage.indexOf("commission") === -1;
     }
   },
   mounted() {},
