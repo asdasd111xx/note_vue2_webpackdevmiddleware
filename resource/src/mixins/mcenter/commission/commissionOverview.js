@@ -52,10 +52,10 @@ export default {
 
       if (this.$route.params.title) {
         const pathEndDay = new Date(this.summaryContent[2].end_at).getDate();
-        return pathEndDay - today + 1 > 0 ? pathEndDay - today + 1 : 0;
+        return pathEndDay - today > 0 ? pathEndDay - today : 0;
       }
 
-      return lastDay - today + 1;
+      return lastDay - today;
     },
     /**
      * 返利是否只使用本站
