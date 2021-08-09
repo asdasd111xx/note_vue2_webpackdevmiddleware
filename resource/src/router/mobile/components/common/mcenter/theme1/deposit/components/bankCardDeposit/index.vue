@@ -1694,11 +1694,11 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
-      // // 代客充值
-      // if (this.curPayInfo.payment_method_id === 20) {
-      //   this.submitInfo();
-      //   return;
-      // }
+      // 代客充值
+      if (this.curPayInfo.payment_method_id === 20 && this.entryBlockStatusData.status < 3) {
+        this.submitInfo();
+        return;
+      }
 
       // 使用者存款封鎖狀態
       //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
