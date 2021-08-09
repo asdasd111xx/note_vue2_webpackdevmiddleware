@@ -418,7 +418,7 @@ export default {
               item: info.profit,
               color: info.profit,
               key: "level",
-              color: false,
+              color: info.profit < 0,
               show: true
             },
             {
@@ -448,7 +448,7 @@ export default {
                 info.withdraw > 0 ? info.withdraw : info.withdraw * -1
               ),
               key: "withdraw",
-              color: false,
+              color: info.withdraw < 0,
               show: true
             },
             {

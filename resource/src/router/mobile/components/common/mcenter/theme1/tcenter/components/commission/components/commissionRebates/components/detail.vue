@@ -317,9 +317,7 @@ export default {
         },
         {
           name: "笔数：",
-          item:
-            this.amountFormat(this.friendMemberList?.pagination?.total) ??
-            "0.00"
+          item: this.friendMemberList?.pagination?.total ?? "0"
         }
       ];
       return strArr;
