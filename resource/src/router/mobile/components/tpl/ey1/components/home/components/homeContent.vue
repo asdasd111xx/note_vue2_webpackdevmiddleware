@@ -5,7 +5,14 @@
     :class="[$style['home-wrap'], 'clearfix']"
   >
     <!-- 上方功能列 -->
-    <div :class="$style['top-wrap']">
+    <div
+      :class="$style['top-wrap']"
+      :style="{
+        'background-image': `url(
+                ${$getCdnPath(`/static/image/ey1/home/nav_bg.png`)}
+              )`
+      }"
+    >
       <!-- 會員中心連結 -->
       <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
         <div :class="$style['mcenter-login-status-wrap']">
@@ -76,7 +83,7 @@
             { [$style.active]: currentType.id === type.id }
           ]"
           @click="onChangeSelectType(type)"
-          :style="{ width: `${typeItemWidth}%` }"
+          :style="{ width: `${typeItemWidth}px` }"
         >
           <div
             :class="[
@@ -91,18 +98,20 @@
         <div
           :class="[$style['type-slide-bar']]"
           :style="{
-            left: `${currentType.id * this.typeItemWidth}%`
+            left: `${currentType.id * this.typeItemWidth}px`
           }"
         >
-          <div
-            :class="[$style['type-slide-bar-title']]"
-            :style="{
-              'background-image': `url(
-                ${$getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)}
-              )`
-            }"
-          >
-            {{ currentType.title }}
+          <div :class="[$style['type-slide-bar-hover']]">
+            <img :src="$getCdnPath(`/static/image/ey1/home/navhover.png`)" />
+          </div>
+
+          <div :class="[$style['type-slide-bar-title']]">
+            <img
+              :src="$getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)"
+            />
+            <div>
+              {{ currentType.title }}
+            </div>
           </div>
         </div>
       </div>
@@ -218,7 +227,8 @@ export default {
       return this.currentType.id * this.typeItemWidth;
     },
     typeItemWidth() {
-      return 100 / this.newTypeList.length;
+      return "68";
+      // return 100 / this.newTypeList.length;
     }
   },
   data() {
@@ -240,6 +250,10 @@ export default {
   }),
   methods: {
     onChangeSelectType(item) {
+      if (this.currentType == item) {
+        return;
+      }
+
       this.currentType = item;
     }
   },
@@ -264,20 +278,30 @@ export default {
   z-index: 4;
 
   // 陰影缺美術
-  border-radius: 17.5px;
-  border: 1px solid gray;
-  box-shadow: 2px 2px 2px 2px gray;
+  // border-radius: 17.5px;
+  // border: 1px solid gray;
+  // box-shadow: 2px 2px 2px 2px gray;
 }
 
 .type-wrap-container {
   position: relative;
   height: 35px;
   line-height: 35px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .type-item {
   display: inline-block;
   width: calc(100% / 6);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .type-title {
@@ -294,26 +318,65 @@ export default {
 }
 
 .type-slide-bar {
-  transition: all 0.31s;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   display: inline-block;
   height: 35px;
-  position: absolute;
-  width: calc(100% / 6);
   left: 0;
+  top: 0;
+  position: absolute;
+  transition: left 0.31s;
+  width: 82px;
+
+  > img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.type-slide-bar-hover {
+  width: 82px;
+  height: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  margin: 0 auto;
+  right: 0;
+
+  > img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .type-slide-bar-title {
-  font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
-  font-size: 12px;
-  font-weight: 700;
   text-align: center;
-  transition: color 0.31s;
-  // background-color: #e42a30;
-  color: #ffffff;
-  // border-radius: 17.5px;
+  width: 68px;
+  height: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 101;
+  margin: 0 auto;
+  right: 0;
 
-  background-position: center;
-  background-size: contain;
+  > img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
+
+  > div {
+    color: #ffffff;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-size: 12px;
+    font-weight: 700;
+    position: relative;
+    z-index: 101;
+  }
 }
 
 .all-game-wrap {
@@ -321,7 +384,9 @@ export default {
 }
 
 .top-wrap {
-  // height: 72px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .tag {
