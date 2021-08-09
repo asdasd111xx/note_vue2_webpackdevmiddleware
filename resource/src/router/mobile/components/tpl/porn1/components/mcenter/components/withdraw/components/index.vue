@@ -1838,11 +1838,11 @@ export default {
 
         case bonusOffer >= this.selectedCard.offer_limit &&
           this.selectedCard.offer_limit !== "0":
-          return `${Number(this.selectedCard.offer_limit).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+          return `${Number(this.selectedCard.offer_limit).toFixed(2)}`;
           break;
 
         default:
-          return `${Number(bonusOffer).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+          return `${Number(bonusOffer).toFixed(2)}`;
           break;
       }
     },
