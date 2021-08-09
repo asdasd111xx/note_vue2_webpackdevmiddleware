@@ -226,7 +226,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      mobileInfo: "getMobileInfo"
     }),
     isIos() {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
@@ -253,7 +254,7 @@ export default {
           break;
       }
     },
-    clickService(type = "") {
+    clickService() {
       let url = this.mobileInfo.service.url;
       if (this.fromlanding) {
         window.location.href = url;

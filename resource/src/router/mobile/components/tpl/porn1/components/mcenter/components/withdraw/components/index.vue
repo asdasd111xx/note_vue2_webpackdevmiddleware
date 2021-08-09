@@ -1833,16 +1833,16 @@ export default {
           break;
 
         case this.selectedCard.offer_percent === "0" || bonusOffer <= 0:
-          return 0;
+          return "0.00";
           break;
 
         case bonusOffer >= this.selectedCard.offer_limit &&
           this.selectedCard.offer_limit !== "0":
-          return this.selectedCard.offer_limit;
+          return `${Number(this.selectedCard.offer_limit).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
           break;
 
         default:
-          return bonusOffer;
+          return `${Number(bonusOffer).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
           break;
       }
     },
