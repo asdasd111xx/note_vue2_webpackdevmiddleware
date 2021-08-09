@@ -21,6 +21,19 @@
           <span
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
             @click="isTick = !isTick"
+            :style="
+              isTick
+                ? {
+                    'background-image': `url(${$getCdnPath(
+                      '/static/image/common/icon_notips_active.png'
+                    )})`
+                  }
+                : {
+                    'background-image': `url(${$getCdnPath(
+                      '/static/image/common/icon_noremember.png'
+                    )})`
+                  }
+            "
           />
           <span :class="$style['checkbox-text']">不再提示</span>
         </div>

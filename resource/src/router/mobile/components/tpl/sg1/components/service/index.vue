@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <div :class="$style['add-wrap']">
+        <div v-if="isIos" :class="$style['add-wrap']">
           <span>添加桌面客服，随时享受一对一在线解答</span>
           <span :class="$style['add-bottom']" @click="handleAddClick"
             >立即添加</span
@@ -254,7 +254,12 @@ export default {
       }
     },
     clickService(type = "") {
-      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+      let url = this.mobileInfo.service.url;
+      if (this.fromlanding) {
+        window.location.href = url;
+      } else {
+        window.open(url);
+      }
     },
     clickPopTip() {
       this.isShowPop = true;
