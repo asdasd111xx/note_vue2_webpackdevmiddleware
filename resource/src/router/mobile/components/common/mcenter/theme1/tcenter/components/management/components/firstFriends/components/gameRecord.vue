@@ -105,7 +105,7 @@ export default {
         },
         {
           name: "笔数：",
-          item: this.pagination.total ?? "0"
+          item: this.playGameList.length ?? "0"
         }
       ];
       return strArr;
