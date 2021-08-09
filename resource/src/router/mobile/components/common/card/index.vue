@@ -222,7 +222,6 @@ export default {
       this.$nextTick(() => {
         this.gameData = [];
         this.updateGameData();
-        this.actionSetFavoriteGame(this.vendor);
         return;
       });
     },
@@ -408,6 +407,10 @@ export default {
 
       this.isFavorite = value === "favorite";
       this.getActivityList();
+
+      if (this.loginStatus) {
+        this.actionSetFavoriteGame(this.vendor);
+      }
     },
     /**
      * 重新取得遊戲資料

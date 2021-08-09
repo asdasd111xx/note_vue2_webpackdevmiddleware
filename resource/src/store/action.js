@@ -1013,8 +1013,8 @@ export const actionSetPost = ({ commit }, postType = 1) =>
   });
 
 // 會員端-加入最愛的遊戲列表
-export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
-  game.favoriteGame({
+export const actionSetFavoriteGame = ({ commit }, vendor = "") => {
+  return game.favoriteGame({
     params: {
       max_results: 1000,
       vendor
@@ -1026,6 +1026,7 @@ export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
       commit(types.SETFAVORITEGAME, []);
     }
   });
+};
 
 // 會員端-設定下方遊戲框顯示狀態
 export const actionSetCollectionStatus = ({ commit }, status) => {
