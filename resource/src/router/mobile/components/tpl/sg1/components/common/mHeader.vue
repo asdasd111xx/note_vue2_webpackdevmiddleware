@@ -355,15 +355,6 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-@media screen and (max-width: $phone) {
-  .header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 6px;
-  }
-}
-
 .header {
   margin: 0 auto;
   max-width: $mobile_max_width;
@@ -406,6 +397,19 @@ export default {
   &.is-home {
     background: none;
     border-bottom: none;
+  }
+}
+
+@media screen and (max-width: $phone) {
+  .header {
+    width: 100%;
+    padding: 0 6px;
+  }
+
+  .balance-wrap {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }
 
