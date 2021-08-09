@@ -12,7 +12,7 @@
               <span :class="[$style['profit_date']]"> {{ info.date }}</span>
 
               <span :class="[$style['profit_day']]"
-                >剩余天数{{ info.period ? 0 : info.day }}天</span
+                >剩余天数{{ info.day }}天</span
               >
             </div>
           </div>
@@ -374,10 +374,14 @@ export default {
       });
       let data = findExpected?.map(info => {
         return {
-          overview: `盈亏返利预估概况`,
-          date: `${this.dateYearFormat(info.start_at)} ~ ${this.dateYearFormat(
-            info.end_at
-          )}`,
+          overview: `盈亏返利概况`,
+          date:
+            this.dateYearFormat(info.start_at) ===
+            this.dateYearFormat(info.end_at)
+              ? this.dateYearFormat(info.start_at)
+              : `${this.dateYearFormat(info.start_at)} ~ ${this.dateYearFormat(
+                  info.end_at
+                )}`,
           day: this.remainderDays,
           period: info.period,
           list: [
@@ -414,7 +418,7 @@ export default {
               item: info.profit,
               color: info.profit,
               key: "level",
-              color: false,
+              color: info.profit < 0,
               show: true
             },
             {
@@ -444,7 +448,7 @@ export default {
                 info.withdraw > 0 ? info.withdraw : info.withdraw * -1
               ),
               key: "withdraw",
-              color: false,
+              color: info.withdraw < 0,
               show: true
             },
             {

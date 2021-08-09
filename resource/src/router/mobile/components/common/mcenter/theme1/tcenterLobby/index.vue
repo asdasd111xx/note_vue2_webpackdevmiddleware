@@ -57,7 +57,13 @@
             </div>
           </div>
           <div :class="$style['list-value']">
-            {{ isShowRebate ? subValidBet : friendsStatistics.valid_bet }}
+            {{
+              isShowRebate
+                ? subValidBet
+                : Number(friendsStatistics.valid_bet) > 0
+                ? friendsStatistics.valid_bet
+                : "--"
+            }}
           </div>
         </div>
         <div :class="$style['list-data']">
@@ -66,7 +72,11 @@
           </div>
           <div :class="$style['list-value']">
             {{
-              isShowRebate ? subUserCount : friendsStatistics.today_has_login
+              isShowRebate
+                ? subUserCount
+                : Number(friendsStatistics.today_has_login) > 0
+                ? friendsStatistics.today_has_login
+                : "--"
             }}
           </div>
         </div>
@@ -314,7 +324,7 @@ export default {
       levelList: [[{ total: 0 }]],
       allTotal: [],
       transPointType: false,
-      summary: null,
+      summary: { today: { amount: 0 } },
       immediateData: [],
       specialList: [
         {
@@ -373,14 +383,10 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     /**
-     * 返利是否只使用本站
+     * 返利是否有開啟第三方返利時
      */
     rewardOnlyLocal() {
-      return (
-        this.memInfo.config.wage &&
-        this.memInfo.config.wage.length === 1 &&
-        this.memInfo.config.wage[0] === "local"
-      );
+      return this.memInfo.config.wage.indexOf("commission") === -1;
     }
   },
   mounted() {},
@@ -413,7 +419,6 @@ export default {
 
           dataArray = response.data.ret.entries;
           this.isShowRebate = response.data.ret.show_real_time ?? true;
-
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet
               ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)

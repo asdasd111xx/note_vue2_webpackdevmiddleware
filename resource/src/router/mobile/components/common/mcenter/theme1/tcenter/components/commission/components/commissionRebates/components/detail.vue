@@ -7,7 +7,7 @@
         v-if="$route.query.total && !$route.query.depth && !$route.query.userId"
       >
         <div :class="$style['date-total']">
-          <span>统计至：{{ filterDate(resultDetail.at) }}</span>
+          <span>统计至：{{ filterDate(resultDetailList.at) }}</span>
         </div>
         <div v-for="(item, index) in detailList" :key="`key-${index}`">
           <div :class="$style['process-bar-wrap']">
@@ -158,6 +158,15 @@ export default {
       //---page1---
       //有效投注金額、会员人数
       resultDetail: [],
+      resultDetailList: {
+        at: "",
+        valid_bet: 0,
+        lack_sub_valid_bet: 0,
+        next_sub_valid_bet: 0,
+        user_count: 0,
+        lack_sub_user_count: 0,
+        next_sub_user_count: 0
+      },
 
       //多層級好友
       resultFriend: [],
@@ -193,7 +202,10 @@ export default {
           //page2
           this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
           this.setTabState(false);
-          this.getFriendsList(this.depth);
+
+          if (this.$route.query.current_entry_id || this.memberId) {
+            this.getFriendsList(this.depth);
+          }
         } else if (item.user) {
           //page3
           this.setHeaderTitle(item.user);
@@ -221,33 +233,35 @@ export default {
       return [
         {
           name: "有效投注金额",
-          valid: this.amountFormat(this.resultDetail.valid_bet) || "0.00",
+          valid: this.amountFormat(this.resultDetailList.valid_bet) || "0.00",
           lack:
-            this.amountFormat(this.resultDetail.lack_sub_valid_bet) || "0.00",
+            this.amountFormat(this.resultDetailList.lack_sub_valid_bet) ||
+            "0.00",
           next:
-            this.amountFormat(this.resultDetail.next_sub_valid_bet) || "0.00",
+            this.amountFormat(this.resultDetailList.next_sub_valid_bet) ||
+            "0.00",
           width:
-            this.resultDetail.valid_bet == 0
+            this.resultDetailList.valid_bet == 0
               ? "0"
-              : this.resultDetail.valid_bet <=
-                parseInt(this.resultDetail.next_sub_valid_bet)
-              ? (parseInt(this.resultDetail.valid_bet) /
-                  parseInt(this.resultDetail.next_sub_valid_bet)) *
+              : this.resultDetailList.valid_bet <=
+                parseInt(this.resultDetailList.next_sub_valid_bet)
+              ? (parseInt(this.resultDetailList.valid_bet) /
+                  parseInt(this.resultDetailList.next_sub_valid_bet)) *
                 100
               : "100"
         },
         {
           name: "有效会员人数",
-          valid: this.resultDetail.user_count || "0",
-          lack: this.resultDetail.lack_sub_user_count || "0",
-          next: this.resultDetail.next_sub_user_count || "0",
+          valid: this.resultDetailList.user_count || "0",
+          lack: this.resultDetailList.lack_sub_user_count || "0",
+          next: this.resultDetailList.next_sub_user_count || "0",
           width:
-            this.resultDetail.user_count == 0
+            this.resultDetailList.user_count == 0
               ? "0"
-              : this.resultDetail.user_count <=
-                parseInt(this.resultDetail.next_sub_user_count)
-              ? (parseInt(this.resultDetail.user_count) /
-                  parseInt(this.resultDetail.next_sub_user_count)) *
+              : this.resultDetailList.user_count <=
+                parseInt(this.resultDetailList.next_sub_user_count)
+              ? (parseInt(this.resultDetailList.user_count) /
+                  parseInt(this.resultDetailList.next_sub_user_count)) *
                 100
               : "100"
         }
@@ -288,22 +302,22 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          name: "总有效投注",
-          item: this.amountFormat(
-            this.friendMemberList?.total?.valid_bet ?? "0.00"
-          )
+          name: "总有效投注：",
+          item:
+            this.friendMemberList?.total?.valid_bet > 0
+              ? this.amountFormat(this.friendMemberList.total.valid_bet)
+              : "--"
         },
         {
-          name: "总损益",
-          item: this.amountFormat(
-            this.friendMemberList?.total?.profit ?? "0.00"
-          )
+          name: "总损益：",
+          item:
+            this.friendMemberList?.total?.profit > 0
+              ? this.amountFormat(this.friendMemberList.total.profit)
+              : "--"
         },
         {
-          name: "笔数",
-          item: this.amountFormat(
-            this.friendMemberList?.pagination?.total ?? "0.00"
-          )
+          name: "笔数：",
+          item: this.friendMemberList?.pagination?.total ?? "0"
         }
       ];
       return strArr;
@@ -338,19 +352,23 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${this.amountFormat(
-            this.friendGameList?.total?.valid_bet ?? "0.00"
-          )}`
+          item: `总有效投注 ${
+            this.friendGameList?.total?.valid_bet > 0
+              ? this.amountFormat(this.friendGameList.total.valid_bet)
+              : "--"
+          }`
         },
         {
-          item: `总损益 ${this.amountFormat(
-            this.friendGameList?.total?.profit ?? "0.00"
-          )}`
+          item: `总损益 ${
+            this.friendGameList?.total?.profit > 0
+              ? this.amountFormat(this.friendGameList.total.profit)
+              : "--"
+          }`
         },
         {
           item: `笔数 ${this.amountFormat(
-            this.friendGameList?.pagination?.total ?? "0.00"
-          )}`
+            this.friendGameList?.pagination?.total
+          ) ?? "0.00"}`
         }
       ];
       return strArr;
@@ -409,8 +427,16 @@ export default {
       }).then(res => {
         if (res && res.status === "000") {
           //有效投注金額、会员人数
-          this.resultDetail = res.data.ret ?? [];
-
+          this.resultDetail = res.data.ret ?? "";
+          this.resultDetailList = {
+            at: this.resultDetail.at,
+            valid_bet: this.resultDetail.valid_bet,
+            lack_sub_valid_bet: this.resultDetail.lack_sub_valid_bet,
+            next_sub_valid_bet: this.resultDetail.next_sub_valid_bet,
+            user_count: this.resultDetail.user_count,
+            lack_sub_user_count: this.resultDetail.lack_sub_user_count,
+            next_sub_user_count: this.resultDetail.next_sub_user_count
+          };
           //entryId
           this.memberId = this.resultDetail.id ?? "";
 
@@ -565,7 +591,10 @@ export default {
     },
     filterDate(date) {
       //取當前時間的整點為主來顯示
-      return EST(Vue.moment(new Date(date), "YYYY-MM-DD HH:00:00"));
+      if (date) {
+        return EST(Vue.moment(new Date(date), "YYYY-MM-DD HH:00:00"));
+      }
+      return "";
     }
   },
   beforeDestroy() {}

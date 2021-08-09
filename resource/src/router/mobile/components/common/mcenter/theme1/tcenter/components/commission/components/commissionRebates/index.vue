@@ -176,7 +176,7 @@
         v-if="immediateData.length === 0"
         :class="[$style['no-data'], { [$style.pathnodata]: path }]"
       >
-        暂时没有可领取的返利
+        {{ path ? "暂没有可领取的返利" : "暂时没有可领取的返利" }}
       </div>
 
       <div
