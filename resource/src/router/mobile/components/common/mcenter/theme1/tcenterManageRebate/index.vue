@@ -186,7 +186,7 @@ export default {
 
         if (response.status === "000") {
           //判斷實時返利開關
-          this.isShowRebate = response.data.ret?.show_real_time ?? true;
+          this.isShowRebate = response.data.ret?.show_real_time;
           return;
         }
       });
