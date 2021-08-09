@@ -231,7 +231,7 @@
           </div>
 
           <div :class="$style.tips">
-            {{ "还没有任何记录" }}
+            {{ path ? "暂无资料" : "还没有任何记录" }}
           </div>
           <div
             :class="$style['btn-money']"

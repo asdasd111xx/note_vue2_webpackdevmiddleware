@@ -666,7 +666,18 @@ export default {
         });
 
         return;
-      } else if (!this.friend_name) {
+      } else if (this.friend_name) {
+        this.setBackFunc(() => {
+          this.gameRecordPage = false;
+          if (this.$route.params.path) {
+            this.$router.replace(
+              "/mobile/mcenter/tcenterManageTeam/firstFriends/custom"
+            );
+          } else {
+            this.$router.back();
+          }
+        });
+      } else {
         // 若返回到1級的頁面 or 停留在1級的情況
         this.isEnterNextLayers = false;
         this.searchResult = false;

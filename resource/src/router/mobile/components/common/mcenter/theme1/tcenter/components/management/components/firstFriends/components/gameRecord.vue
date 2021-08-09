@@ -105,7 +105,7 @@ export default {
         },
         {
           name: "笔数：",
-          item: this.amountFormat(this.pagination.total ?? "0.00")
+          item: this.pagination.total ?? "0"
         }
       ];
       return strArr;
