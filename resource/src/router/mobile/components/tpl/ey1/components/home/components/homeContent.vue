@@ -82,6 +82,7 @@
             $style['type-item'],
             { [$style.active]: currentType.id === type.id }
           ]"
+          :id="`type-${index}`"
           @click="onChangeSelectType(type)"
           :style="{ width: `${typeItemWidth}px` }"
         >
@@ -98,7 +99,7 @@
         <div
           :class="[$style['type-slide-bar']]"
           :style="{
-            left: `${currentType.id * this.typeItemWidth}px`
+            left: `${this.typeBarPosition}px`
           }"
         >
           <div :class="[$style['type-slide-bar-hover']]">
@@ -223,11 +224,17 @@ export default {
   },
   computed: {
     typeBarPosition() {
-      console.log(this.currentType.id * this.typeItemWidth);
-      return this.currentType.id * this.typeItemWidth;
+      let target = document.getElementById(`type-${this.currentType.id}`);
+
+      if (target) {
+        let rect = target.getBoundingClientRect();
+        return rect.x - 12.5;
+      } else {
+        return 0;
+      }
     },
     typeItemWidth() {
-      return "68";
+      return "48";
       // return 100 / this.newTypeList.length;
     }
   },
@@ -287,14 +294,16 @@ export default {
   position: relative;
   height: 35px;
   line-height: 35px;
-  overflow-x: scroll;
+  overflow-x: hidden;
   overflow-y: hidden;
   white-space: nowrap;
+  text-align: center;
 }
 
 .type-item {
   display: inline-block;
   width: calc(100% / 6);
+  margin: 0 5px;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
