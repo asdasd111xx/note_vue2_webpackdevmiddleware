@@ -12,7 +12,7 @@
               <span :class="[$style['profit_date']]"> {{ info.date }}</span>
 
               <span :class="[$style['profit_day']]"
-                >剩余天数{{ info.period ? 0 : info.day }}天</span
+                >剩余天数{{ info.day }}天</span
               >
             </div>
           </div>
@@ -375,9 +375,13 @@ export default {
       let data = findExpected?.map(info => {
         return {
           overview: `盈亏返利概况`,
-          date: `${this.dateYearFormat(info.start_at)} ~ ${this.dateYearFormat(
-            info.end_at
-          )}`,
+          date:
+            this.dateYearFormat(info.start_at) ===
+            this.dateYearFormat(info.end_at)
+              ? this.dateYearFormat(info.start_at)
+              : `${this.dateYearFormat(info.start_at)} ~ ${this.dateYearFormat(
+                  info.end_at
+                )}`,
           day: this.remainderDays,
           period: info.period,
           list: [

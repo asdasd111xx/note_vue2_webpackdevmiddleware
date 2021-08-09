@@ -50,7 +50,9 @@ export default {
         0
       ).getDate();
 
-      return lastDay - today;
+      const endDay = new Date(this.summaryContent[2].end_at).getDate();
+
+      return endDay - today > 0 ? endDay - today : "0";
     },
     /**
      * 返利是否只使用本站
