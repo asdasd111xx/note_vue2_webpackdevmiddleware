@@ -27,6 +27,11 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      path: this.$router.params.page
+    };
+  },
   created() {
     this.actionSetUserdata().then(() => {
       this.isInit = true;

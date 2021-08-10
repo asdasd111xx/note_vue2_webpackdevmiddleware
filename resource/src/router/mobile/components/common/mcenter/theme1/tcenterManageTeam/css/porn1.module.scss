@@ -1,0 +1,48 @@
+@import "@/css/variable.scss";
+
+$fixed_spacing_height: 43px;
+@media (orientation: landscape) {
+  .tab-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
+.tab-wrap {
+  position: fixed;
+  display: flex;
+  height: $fixed_spacing_height;
+  line-height: $fixed_spacing_height;
+  background: #fff;
+  border-bottom: 2px solid #eee;
+  width: 100%;
+  max-width: $mobile_max_width;
+  top: 43px;
+  z-index: 2;
+}
+
+.tab-item {
+  flex: 1;
+  position: relative;
+  height: 43px;
+  line-height: 43px;
+  text-align: center;
+  color: $main_text_color2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.is-current {
+    color: $main_text_color4;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 43px;
+      height: 2px;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      background: #be9e7f;
+    }
+  }
+}
