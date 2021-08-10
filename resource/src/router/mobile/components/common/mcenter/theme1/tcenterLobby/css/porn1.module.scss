@@ -40,14 +40,12 @@
 
 .title-commission {
   position: absolute;
-  color: #bf8646;
-  border: 1px solid #bf8646;
-  border-bottom-left-radius: 20px;
-  border-top-left-radius: 20px;
-  border-right: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
-  right: 0px;
+  color: white;
+  border: 0 solid;
+  border-radius: 20px;
+  padding: 5px;
+  background-color: #9CA3BF;
+  right: 15px;
 }
 
 .main {
@@ -70,21 +68,9 @@
     margin-right: 40px;
     border-bottom: #5e626d dashed 1px;
     padding-top: 15px;
-    padding-bottom: 5px;
 
     .list-name {
-      color: #5e626d;
-      display: flex;
-
-      .list-btn {
-        margin-left: 5px;
-        font-size: 12px;
-        color: #ffffff;
-        border: 0 solid;
-        border-radius: 20px;
-        padding: 0 7px;
-        background-color: #636f93;
-      }
+      color: #5E626D;
     }
 
     .list-value {
@@ -102,44 +88,19 @@
   flex-wrap: wrap;
   box-shadow: 0pt 0pt 10px 0pt rgba(0, 0, 0, 0.75);
 
-  .all-regist-title {
-    margin-left: 1px;
-    margin-top: 5px;
-    width: 100%;
-    display: flex;
-
-    .regist-title-bar {
-      width: 3px;
-      height: 18px;
-      background: linear-gradient(to top, #dccab8, #d2b496);
-      border-radius: 1px;
-      margin-left: 5px;
-      margin-right: 5px;
-    }
-
-    .regist-title-text {
-      font-size: 16px;
-    }
-  }
-
   .regist-content {
-    margin-left: 5px;
-    width: 45%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
 
     .regist-title {
-      color: #a6a9b2;
+      color: #AAAAAA;
     }
 
     .regist-value {
-      color: #414655;
-    }
-
-    .game-lose {
-      color: #db6372;
+      color: #000000;
     }
   }
 }
@@ -149,84 +110,6 @@
 
   .img-icon {
     max-width: 49%;
-  }
-}
-
-.today-pay-content {
-  border-top: #f6f6f6 dashed 1px;
-  width: 100%;
-  margin-bottom: 5px;
-
-  .today-title {
-    margin-top: 5px;
-    display: flex;
-
-    .topday-content {
-      width: 49%;
-      display: flex;
-      margin: 0 15px;
-
-      .title-point {
-        width: 10px;
-        height: 10px;
-        border-radius: 5px;
-        margin: 5px 5px 0 0;
-
-        &.deposit {
-          background-color: #be9e7f;
-        }
-
-        &.withdraw {
-          background-color: #636f93;
-        }
-      }
-
-      .title-text {
-        color: #a6a9b2;
-      }
-
-      &.left {
-        flex-direction: row-reverse;
-      }
-    }
-  }
-
-  .today-bar {
-    margin: 10px 15px;
-
-    .background-bar {
-      z-index: 0;
-      height: 14px;
-      width: 100%;
-      border-radius: 7px;
-      background-color: #636f93;
-
-      .person-bar {
-        z-index: 1;
-        height: 14px;
-        width: 100px;
-        border-radius: 7px;
-        background-color: #be9e7f;
-
-        &.isZero {
-          background-color: #cecece;
-        }
-      }
-    }
-  }
-
-  .today-count {
-    display: flex;
-    margin: 0 15px;
-    justify-content: space-between;
-
-    .count-text {
-      color: #414655;
-    }
-
-    &.left {
-      flex-direction: row-reverse;
-    }
   }
 }
 

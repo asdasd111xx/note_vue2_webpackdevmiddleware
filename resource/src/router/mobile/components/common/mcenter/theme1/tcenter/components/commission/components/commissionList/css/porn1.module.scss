@@ -1,178 +1,105 @@
 @import "@/css/variable.scss";
 
 .commission-list-wrap {
-  position: relative;
-  padding: 0 14px;
-  width: 100%;
-
-  &.commission-list-wrap-record {
-    bottom: 10px;
-  }
+    position: relative;
+    padding: 0 14px;
+    width: 100%;
 }
 
 .total-block {
-  display: flex;
-  justify-content: space-between;
-  color: $main_text_color3;
-  font-size: 12px;
-  height: 40px;
-  line-height: 40px;
-  border-bottom: 1px solid #eee;
-
-  &.total-block-record > span:first-child {
     display: flex;
-    justify-content: flex-end;
-    order: 2;
-  }
-  &.total-block-record > span:nth-child(2) {
-    display: flex;
-  }
+    justify-content: space-between;
+    color: $main_text_color3;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
 
-  span {
-    flex: 1;
+    span {
+        flex: 1;
 
-    &:nth-child(2) {
-      flex: 1;
-      text-align: right;
+        &:nth-child(2) {
+            flex: 1;
+            text-align: right;
+        }
     }
-  }
 }
 
 .list-block {
-  position: relative;
-  margin-top: 10px;
+    position: relative;
+    margin-top: 10px;
 }
 
 .card {
-  background: $main_white_color1;
-  color: $main_text_color3;
-  border-radius: 8px;
-  margin-bottom: 9px;
-  padding-bottom: 6px;
+    background: $main_white_color1;
+    color: $main_text_color3;
+    border-radius: 8px;
+    margin-bottom: 9px;
 
-  div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    // padding-top: 9px;
-    padding: 9px 9px 0 12px;
+    div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        // padding-top: 9px;
+        padding: 9px 9px 0 12px;
 
-    &.total-gap-record {
-      align-items: flex-start;
-
-      > span {
-        color: #a6a9b2;
-      }
-    }
-    .last-item {
-      padding: 9px 9px 9px 12px;
-    }
-    .color-record {
-      color: #a6a9b2;
-    }
-  }
-
-  .card-title {
-    padding: 6px 9px 6px 12px;
-    line-height: 21px;
-
-    border-bottom: 1px solid #eee;
-    margin: auto;
-  }
-
-  .card-name {
-    font-size: 16px;
-    font-weight: 700;
-
-    &.card-name-record {
-      font-size: 14px;
-    }
-  }
-
-  .period.period {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-  }
-
-  .card-getNumber {
-    display: flex;
-    align-items: center;
-    position: relative;
-    right: 0px;
-    line-height: 12px;
-
-    .arrow-next {
-      align-items: center;
-      padding: 0px;
-      > img {
-        width: 13px;
-        height: 13px;
-        margin: auto;
-      }
+        &:last-of-type {
+            padding: 9px 9px 9px 12px;
+        }
     }
 
-    &.card-getNumber-record {
-      font-size: 12px;
-    }
-    &.is-negative {
-      color: $main_error_color1;
-    }
-
-    &.has-detail {
-      color: #6aaaf5;
+    .card-title {
+        padding: 6px 9px 6px 12px;
+        line-height: 21px;
+        border-bottom: 1px solid #eee;
     }
 
-    &::before {
-      content: "返利：";
-      position: relative;
-      color: $main_text_color3;
+    .card-name {
+        font-size: 16px;
+        font-weight: 700;
     }
-  }
 
-  .state-unqualified {
-    color: $main_error_color1;
-  }
+    .period.period {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .card-getNumber {
+        &.is-negative {
+            color: $main_error_color1;
+        }
+
+        &.has-detail {
+            color: #6AAAF5;
+        }
+
+        &::before {
+            content: "返利：";
+            position: relative;
+            color: $main_text_color3;
+        }
+    }
+
+    .state-unqualified {
+        color: $main_error_color1;
+    }
 }
 
 .no-data {
-  padding-top: 40px;
-  text-align: center;
+    padding-top: 40px;
+    text-align: center;
 
-  img {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    margin-bottom: 14px;
-  }
+    img {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 14px;
+    }
 
-  div {
-    font-size: 14px;
-    color: #a6a9b2;
-  }
-}
-
-.date {
-  font-size: 17px;
-  color: $main_text_color3;
-  margin: 7px 0 5px 0;
-  font-weight: bold;
-}
-
-.no-data-path {
-  padding-top: 100px;
-  text-align: center;
-
-  img {
-    display: inline-block;
-    width: 174px;
-    height: 174px;
-    margin-bottom: 14px;
-  }
-
-  p {
-    font-size: 14px;
-    color: #a6a9b2;
-  }
+    div {
+        font-size: 14px;
+        color: #a6a9b2;
+    }
 }
