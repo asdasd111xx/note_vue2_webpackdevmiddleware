@@ -80,7 +80,7 @@
           :key="`type-${index}`"
           :class="[
             $style['type-item'],
-            { [$style.active]: currentType.id === type.id }
+            { [$style.active]: currentType.key === type.key }
           ]"
           :id="`type-${index}`"
           @click="onChangeSelectType(type)"
@@ -88,11 +88,11 @@
         >
           <div
             :class="[
-              $style['type-title'],
-              { [$style.active]: currentType.id === type.id }
+              $style['type-name'],
+              { [$style.active]: currentType.key === type.key }
             ]"
           >
-            {{ type.title }}
+            {{ type.name }}
           </div>
         </div>
 
@@ -106,12 +106,12 @@
             <img :src="$getCdnPath(`/static/image/ey1/home/navhover.png`)" />
           </div>
 
-          <div :class="[$style['type-slide-bar-title']]">
+          <div :class="[$style['type-slide-bar-name']]">
             <img
               :src="$getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)"
             />
             <div>
-              {{ currentType.title }}
+              {{ currentType.name }}
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@
         />
         <div
           :class="[
-            $style['type-title'],
+            $style['type-name'],
             { [$style.active]: typeList[selectedIndex].icon === type.icon }
           ]"
         >
@@ -222,9 +222,10 @@ export default {
     Swiper,
     SwiperSlide
   },
+  watch: {},
   computed: {
     typeBarPosition() {
-      let target = document.getElementById(`type-${this.currentType.id}`);
+      let target = document.getElementById(`type-${this.currentType.key}`);
 
       if (target) {
         let rect = target.getBoundingClientRect();
@@ -235,21 +236,40 @@ export default {
     },
     typeItemWidth() {
       return "48";
-      // return 100 / this.newTypeList.length;
+    },
+    newTypeList() {
+      const list = [
+        { key: 0, name: "我的自选" },
+        { key: 1, name: "视讯" },
+        { key: 2, name: "彩票" },
+        { key: 3, name: "体育" },
+        { key: 4, name: "棋牌" },
+        { key: 5, name: "电子" }
+      ];
+
+      if (this.allGame) {
+        let typeList = this.allGame.map((game, key) => ({
+          key: key,
+          category: game.category,
+          id: game.id,
+          icon: game.iconName.toLowerCase(),
+          name: game.name
+        }));
+
+        // 預設第一個選單
+        if (typeList) {
+          this.currentType = typeList[0];
+        }
+        return typeList;
+      } else {
+        return list;
+      }
     }
   },
   data() {
     return {
       userViplevel: "",
-      currentType: { id: 0 },
-      newTypeList: [
-        { id: 0, title: "我的自选" },
-        { id: 1, title: "视讯" },
-        { id: 2, title: "彩票" },
-        { id: 3, title: "体育" },
-        { id: 4, title: "棋牌" },
-        { id: 5, title: "电子" }
-      ]
+      currentType: { key: 0 }
     };
   },
   ...mapGetters({
@@ -268,9 +288,6 @@ export default {
     if (this.loginStatus) {
       this.getUserViplevel();
     }
-
-    // 預設第一個選單
-    this.currentType = this.newTypeList[0];
   }
 };
 </script>
@@ -313,7 +330,7 @@ export default {
   user-select: none;
 }
 
-.type-title {
+.type-name {
   color: #e42a30;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-size: 12px;
@@ -360,7 +377,7 @@ export default {
   }
 }
 
-.type-slide-bar-title {
+.type-slide-bar-name {
   text-align: center;
   width: 68px;
   height: 35px;
