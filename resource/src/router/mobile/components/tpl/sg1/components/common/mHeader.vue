@@ -400,7 +400,7 @@ export default {
   }
 }
 
-@media screen and (max-width: $phone) {
+@media screen and (max-width: 374px) {
   .header {
     width: 100%;
     padding: 0 6px;
