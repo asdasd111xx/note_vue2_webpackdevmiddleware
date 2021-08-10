@@ -3,6 +3,7 @@ import ajax from "@/lib/ajax";
 import Vue, { nextTick } from "vue";
 import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import EST from "@/lib/EST";
 import {
   API_COMMISSION_LEVEL_LIST,
   API_COMMISSION_FIRST_LEVEL_LIST
@@ -182,7 +183,13 @@ export default {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     titleDateFormat(value) {
-      return Vue.moment(value).format("YYYY-MM-DD");
+      let today = Vue.moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+      let end = Vue.moment(EST(value)).format("YYYY-MM-DD HH:mm:ss");
+
+      if (today > end) {
+        return Vue.moment(EST(value)).format("YYYY-MM-DD 23:59:59");
+      }
+      return Vue.moment(EST(value)).format("YYYY-MM-DD HH:00:00");
     },
 
     /**

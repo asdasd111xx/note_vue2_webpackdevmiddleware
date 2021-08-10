@@ -38,8 +38,8 @@
         <div :class="[$style['total-gap-' + path]]">
           <span>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</span>
           <div :class="$style['period']">
-            <span>{{ EST(info.start_at, "YYYY-MM-DD HH:00:00") }} </span>
-            <span>{{ EST(info.end_at, "YYYY-MM-DD HH:00:00") }} </span>
+            <span>{{ EST(info.start_at) }} </span>
+            <span>{{ EST(info.end_at) }} </span>
           </div>
         </div>
 
@@ -190,6 +190,7 @@ export default {
           this.allTotal = response.data.total; // 總計
           this.detailList = response.data.ret; // 佣金資料列表
           this.mainNoData = false;
+          this.$emit("id", this.detailList[0].id);
         })
         .catch(error => {
           this.actionSetGlobalMessage({ msg: error.response.data.msg });

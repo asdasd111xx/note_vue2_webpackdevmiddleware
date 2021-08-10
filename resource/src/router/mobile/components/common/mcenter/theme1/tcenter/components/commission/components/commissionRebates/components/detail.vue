@@ -352,23 +352,21 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          item: `总有效投注 ${
+          item: `总有效投注： ${
             this.friendGameList?.total?.valid_bet > 0
               ? this.amountFormat(this.friendGameList.total.valid_bet)
               : "--"
           }`
         },
         {
-          item: `总损益 ${
+          item: `总损益： ${
             this.friendGameList?.total?.profit > 0
               ? this.amountFormat(this.friendGameList.total.profit)
               : "--"
           }`
         },
         {
-          item: `笔数 ${this.amountFormat(
-            this.friendGameList?.pagination?.total
-          ) ?? "0.00"}`
+          item: `笔数： ${this.friendGameList?.pagination?.total ?? "0"}`
         }
       ];
       return strArr;

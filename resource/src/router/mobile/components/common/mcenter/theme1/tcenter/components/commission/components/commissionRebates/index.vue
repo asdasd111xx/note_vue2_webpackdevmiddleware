@@ -52,7 +52,11 @@
               <span :class="$style['content-left']">
                 结算区间
               </span>
-              <div :class="$style['content-right']">
+              <div v-if="path" :class="$style['content-right']">
+                <div>{{ caculateList.start_at | dateFormatHour }}</div>
+                <div>{{ caculateList.end_at | dateFormatHour }}</div>
+              </div>
+              <div v-else :class="$style['content-right']">
                 <div>{{ caculateList.start_at | dateFormat }}</div>
                 <div>{{ caculateList.end_at | dateFormat }}</div>
               </div>
@@ -324,6 +328,9 @@ export default {
     },
     dateFormatNoTime(date) {
       return Vue.moment(date).format("YYYYMMDD");
+    },
+    dateFormatHour(date) {
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:00:00")) || "--";
     }
   },
   created() {
@@ -381,8 +388,16 @@ export default {
 
           let total = response.data.total ?? "";
           let entries = response.data.ret?.entries[0] ?? "";
+          this.currentInfo = {
+            period: entries.period,
+            start_at: entries.start_at,
+            end_at: entries.end_at,
+            type: entries.type,
+            amount: entries.amount,
+            show_detail: entries.show_detail,
+            oauth2: entries.oauth2
+          };
 
-          this.currentInfo = { ...entries };
           // 傳進detail判斷是否顯示查看箭頭
           // 狀態=>可領/已達上限/已領取/計算中
           if (

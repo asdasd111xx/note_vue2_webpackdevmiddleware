@@ -38,9 +38,7 @@
           :class="$style['card-wrap']"
         >
           <div v-if="!$route.query.third" :class="$style['date-total']">
-            <span>{{
-              `统计至：${titleDateFormat(currentInfo.period)} ${filterDate}`
-            }}</span>
+            <span>{{ `统计至：${titleDateFormat(currentInfo.end_at)}` }}</span>
           </div>
           <card-item
             :card-item-list="friendLayerList"
@@ -290,9 +288,7 @@ export default {
         },
         {
           name: "笔数",
-          item: this.amountFormat(
-            this.friendGameList?.pagination?.total ?? "0.00"
-          )
+          item: this.amountFormat(this.friendGameList?.pagination?.total ?? "0")
         }
       ];
       return strArr;
