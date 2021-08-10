@@ -628,8 +628,12 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span>
+                      <span :class="[{ [$style['yb']]: themeTPL === 'porn1' && cryptoMoney > 0 },
+                        { [$style['ey']]: themeTPL === 'ey1' && cryptoMoney > 0 },
+                        { [$style['sg']]: themeTPL === 'sg1' && cryptoMoney > 0 }]">
                         {{ cryptoMoney }}
+                      </span>
+                      <span>
                         {{ curPayInfo.payment_method_name }}
                       </span>
                     </span>
@@ -655,7 +659,7 @@
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
                       >1 USDT ≈ {{ rate }} CNY (
-                      <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+                      <span :class="[$style['time'],{ [$style['ey']]: themeTPL === 'ey1'}]">{{ timeUSDT() }}</span>
                       后更新 )</span
                     >
                   </div>
