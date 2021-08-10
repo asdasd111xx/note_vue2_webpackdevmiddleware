@@ -122,7 +122,9 @@
                 v-if="hasCrypto"
                 :class="[$style['check-cell'], $style['custom-color']]"
               >
-                <span :class="$style['sub-title']"> USDT到帐 </span>
+                <span :class="$style['sub-title']">
+                  {{ withdrawName }}到帐
+                </span>
                 <span :class="$style['crypto-money']">
                   {{ cryptoMoney }}
                 </span>
