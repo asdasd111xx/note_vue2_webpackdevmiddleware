@@ -14,7 +14,7 @@
         ]"
         @click="closeTips"
       >
-        确认
+        关闭
       </div>
     </div>
   </div>
