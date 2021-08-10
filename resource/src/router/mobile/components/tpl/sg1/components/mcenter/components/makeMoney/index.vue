@@ -182,9 +182,7 @@ export default {
         customLinkTitle:
           this.$route.query.check || !hasRecommendGift ? "" : "礼金明细",
         customLinkAction: () => {
-          this.$router.push(
-            "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
-          );
+          this.$router.push("/mobile/mcenter/tcenter/recommendGift");
         },
         onClick: () => {
           this.$router.back();

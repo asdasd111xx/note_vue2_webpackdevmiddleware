@@ -7,10 +7,13 @@ import ajax from "@/lib/ajax";
 export default {
   data() {
     return {
-      summary: null,
-      profitSwitch: true, //第三方開關,
-      todayAmout: "" //推廣大廳 今日已领返利
+      summary: null
     };
+  },
+  filters: {
+    dateFormat(date) {
+      return format(new Date(date), "MM/dd");
+    }
   },
   computed: {
     ...mapGetters({
@@ -91,7 +94,6 @@ export default {
         amount: this.summary[key].amount || "--"
       }));
     },
-
     /**
      * 收益慨況內容
      */
@@ -166,7 +168,6 @@ export default {
       });
     }
   },
-
   created() {
     this.actionSetSystemTime();
     this.getSummary();
@@ -186,18 +187,8 @@ export default {
           }
 
           this.summary = ret;
-
-          this.profitSwitch = this.rewardOnlyLocal ? false : true;
-
-          this.todayAmout = this.summary["today"].amount;
         }
       });
-    },
-    dateFormat(date) {
-      return format(new Date(date), "MM/dd");
-    },
-    dateYearFormat(date) {
-      return format(new Date(date), "yyyy/MM/dd");
     }
   }
 };

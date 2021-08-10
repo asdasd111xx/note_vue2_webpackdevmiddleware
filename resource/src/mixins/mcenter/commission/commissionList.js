@@ -3,7 +3,6 @@ import EST from "@/lib/EST";
 import { format, toDate, parseISO } from "date-fns";
 import { API_COMMISSION_LIST } from "@/config/api";
 import { mapActions } from "vuex";
-import Vue from "vue";
 
 export default {
   props: {
@@ -54,13 +53,11 @@ export default {
       );
     }
   },
-  watch: {
-    searchInfo() {
-      this.commissionList = [];
-      this.updateData();
-      this.getListCommission();
-    }
-  },
+  // watch: {
+  //   searchInfo() {
+  //     this.getListCommission();
+  //   }
+  // },
   created() {
     this.getListCommission();
   },
@@ -118,18 +115,6 @@ export default {
         .catch(error => {
           this.actionSetGlobalMessage({ msg: error.response.data.msg });
         });
-    },
-    updateData() {
-      this.showInfinite = false;
-
-      this.mainNoData = true;
-
-      this.$nextTick(() => {
-        this.showInfinite = true;
-      });
-    },
-    rebateDateFormat(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
     },
     /**
      * 捲動加載

@@ -10,17 +10,6 @@
       border-bottom: 1px solid #eaeaea;
       color: #000;
       font-size: 12px;
-
-      &.pathheader {
-        display: flex;
-        justify-content: space-between;
-        padding: 7px 12px;
-
-        .rebate-time {
-          font-weight: bold;
-          font-size: 14px;
-        }
-      }
     }
 
     .rebate-body {
@@ -40,22 +29,6 @@
           &.is-negative {
             color: $main_error_color1;
           }
-        }
-      }
-      &.pathbody {
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        font-size: 12px;
-
-        > .detail-content {
-          padding: 2px 12px;
-        }
-        > .detail-content:first-child {
-          padding-top: 6px;
-        }
-        > .detail-content:last-child {
-          padding-bottom: 10px;
         }
       }
     }
@@ -99,11 +72,6 @@
       }
     }
   }
-
-  &.pathwrap {
-    border-radius: 7px;
-    margin: 10px;
-  }
 }
 
 // No-data
@@ -113,12 +81,6 @@
   background: #fff;
   color: #aaa;
   text-align: center;
-
-  &.pathnodata {
-    border-radius: 7px;
-    margin: 10px;
-    font-size: 12px;
-  }
 }
 
 // 實返說明
@@ -132,10 +94,6 @@
 
 .rebate-manual-wrap {
   background: #fff;
-
-  &.pathmanual {
-    background-color: #f8f8f8;
-  }
 }
 
 .manual-line {
@@ -147,17 +105,6 @@
 .rebate-manual-tip {
   padding: 7px 19px;
   color: #aaa;
-
-  &.pathtip {
-    display: flex;
-    flex-direction: column;
-    align-items: space-between;
-    font-size: 12px;
-
-    div {
-      padding: 3px 0;
-    }
-  }
 }
 
 .title-icon,

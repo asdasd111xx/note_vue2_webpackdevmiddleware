@@ -1,282 +1,190 @@
 <template>
   <div>
-    <div v-if="path">
-      <tcenter-label
-        v-if="tabState"
-        :child-item="childItem"
-        :change-tab="changeTab"
-      />
-      <!-- 進入返利管理 詳情 -->
-      <detail
-        :set-tab-state="setTabState"
-        :set-header-title="setHeaderTitle"
-        v-if="$route.params.item === 'detail'"
-        :status="status"
-      />
-    </div>
-    <div v-if="$route.params.item != 'detail'">
+    <div v-if="immediateData.length > 0" :class="$style['content-wrap']">
       <div
-        v-if="immediateData.length > 0"
-        :class="[$style['content-wrap'], { [$style.pathwrap]: path }]"
+        v-for="(caculateList, listIndex) in immediateData"
+        :key="`caculate-${listIndex}`"
+        :class="$style['content-item']"
       >
-        <div
-          v-for="(caculateList, listIndex) in immediateData"
-          :key="`caculate-${listIndex}`"
-          :class="$style['content-item']"
-        >
-          <div
-            :class="[$style['rebate-header'], { [$style.pathheader]: path }]"
-          >
-            <template v-if="path">
-              <div :class="[$style['rebate-time']]">
-                {{ caculateList.period | dateFormatNoTime }}
-              </div>
-              返利：{{
+        <div :class="$style['rebate-header']">
+          <div>{{ caculateList.period }}</div>
+
+          <div v-if="caculateList.state !== 3 && caculateList.self_times !== 0">
+            {{ caculateList.start_at | dateFormat }}~{{
+              caculateList.end_at | dateFormat
+            }}
+          </div>
+        </div>
+
+        <div :class="$style['rebate-body']">
+          <div :class="$style['detail-content']">
+            <span :class="$style['content-left']">
+              结算方式
+            </span>
+            <div :class="$style['content-right']">
+              {{
+                caculateList.type === 0
+                  ? "盈亏返利"
+                  : caculateList.type === 1
+                  ? "投注返利"
+                  : caculateList.type === 2
+                  ? "损益返利"
+                  : null
+              }}
+            </div>
+          </div>
+
+          <div :class="$style['detail-content']">
+            <span :class="$style['content-left']">
+              {{ $text("S_VALID_BET", "有效投注") }}
+            </span>
+            <div :class="$style['content-right']">
+              <template v-if="caculateList.sub_valid_bet">
+                {{ commaFormat(caculateList.sub_valid_bet) }}
+              </template>
+
+              <template v-else>
+                --
+              </template>
+            </div>
+          </div>
+
+          <div :class="$style['detail-content']">
+            <span :class="$style['content-left']">
+              损益
+            </span>
+            <div
+              :class="[
+                $style['content-right'],
+                { [$style['is-negative']]: caculateList.sub_profit < 0 }
+              ]"
+            >
+              {{
+                caculateList.sub_profit
+                  ? commaFormat(caculateList.sub_profit)
+                  : "--"
+              }}
+            </div>
+          </div>
+
+          <div :class="$style['detail-content']">
+            <span :class="$style['content-left']">
+              返利
+            </span>
+            <div :class="$style['content-right']">
+              {{
                 caculateList.amount ? commaFormat(caculateList.amount) : "--"
               }}
-            </template>
-            <template v-else>
-              <div>{{ caculateList.period }}</div>
-              <div
-                v-if="caculateList.state !== 3 && caculateList.self_times !== 0"
-              >
-                {{ caculateList.start_at | dateFormat }}~{{
-                  caculateList.end_at | dateFormat
-                }}
-              </div>
-            </template>
+            </div>
           </div>
 
-          <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
-            <div
-              v-if="
-                path &&
-                  caculateList.state !== 3 &&
-                  caculateList.self_times !== 0
-              "
-              :class="$style['detail-content']"
+          <div :class="$style['detail-content']">
+            <span :class="$style['content-left']">
+              最低领取金额
+            </span>
+            <div :class="$style['content-right']">
+              {{
+                caculateList.self_min_limit ? caculateList.self_min_limit : "--"
+              }}
+            </div>
+          </div>
+
+          <div :class="$style['detail-content']">
+            <span :class="$style['content-left']">
+              可领取次数
+            </span>
+            <div :class="$style['content-right']">
+              <template
+                v-if="caculateList.state === 3 && caculateList.self_times === 0"
+              >
+                已达上限
+              </template>
+
+              <template v-else>
+                {{ caculateList.self_times }}
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <div :class="$style['rebate-btn']">
+          <template>
+            <button
+              v-if="caculateList.state === 1"
+              @click="handleRebateProcess(caculateList.type)"
             >
-              <span :class="$style['content-left']">
-                结算区间
-              </span>
-              <div :class="$style['content-right']">
-                <div>{{ caculateList.start_at | dateFormat }}</div>
-                <div>{{ caculateList.end_at | dateFormat }}</div>
-              </div>
-            </div>
+              {{ $t("S_RECEIVE") }}
+            </button>
 
-            <div :class="$style['detail-content']">
-              <span :class="$style['content-left']">
-                结算方式
-              </span>
-              <div :class="$style['content-right']">
-                {{
-                  caculateList.type === 0
-                    ? "盈亏返利"
-                    : caculateList.type === 1
-                    ? "投注返利"
-                    : caculateList.type === 2
-                    ? "损益返利"
-                    : null
-                }}
-              </div>
-            </div>
-
-            <div :class="$style['detail-content']">
-              <span :class="$style['content-left']">
-                {{ $text("S_VALID_BET", "有效投注") }}
-              </span>
-              <div :class="$style['content-right']">
-                <template v-if="caculateList.sub_valid_bet">
-                  {{ commaFormat(caculateList.sub_valid_bet) }}
-                </template>
-
-                <template v-else>
-                  --
-                </template>
-              </div>
-            </div>
-
-            <div :class="$style['detail-content']">
-              <span :class="$style['content-left']">
-                损益
-              </span>
-              <div
-                :class="[
-                  $style['content-right'],
-                  { [$style['is-negative']]: caculateList.sub_profit < 0 }
-                ]"
-              >
-                {{
-                  caculateList.sub_profit
-                    ? commaFormat(caculateList.sub_profit)
-                    : "--"
-                }}
-              </div>
-            </div>
-
-            <div v-if="!path" :class="$style['detail-content']">
-              <span :class="$style['content-left']">
-                返利
-              </span>
-              <div :class="$style['content-right']">
-                {{
-                  caculateList.amount ? commaFormat(caculateList.amount) : "--"
-                }}
-              </div>
-            </div>
-
-            <div :class="$style['detail-content']">
-              <span :class="$style['content-left']">
-                最低领取金额
-              </span>
-              <div :class="$style['content-right']">
-                {{
-                  caculateList.self_min_limit
-                    ? caculateList.self_min_limit
-                    : "--"
-                }}
-              </div>
-            </div>
-
-            <div :class="$style['detail-content']">
-              <span :class="$style['content-left']">
-                可领取次数
-              </span>
-              <div :class="$style['content-right']">
-                <template
-                  v-if="
-                    caculateList.state === 3 && caculateList.self_times === 0
-                  "
-                >
-                  已达上限
-                </template>
-
-                <template v-else>
-                  {{ caculateList.self_times }}
-                </template>
-              </div>
-            </div>
-          </div>
-
-          <div :class="$style['rebate-btn']">
-            <template>
-              <button
-                v-if="caculateList.state === 1"
-                @click="handleRebateProcess(caculateList.type)"
-              >
-                {{ $t("S_RECEIVE") }}
-              </button>
-
-              <button
-                v-if="caculateList.state === 3"
-                :class="$style['unrebate-btn']"
-              >
-                {{ $t("S_UNABLE_PASS") }}
-              </button>
-            </template>
-          </div>
+            <button
+              v-if="caculateList.state === 3"
+              :class="$style['unrebate-btn']"
+            >
+              {{ $t("S_UNABLE_PASS") }}
+            </button>
+          </template>
         </div>
       </div>
-
-      <div
-        v-if="immediateData.length === 0"
-        :class="[$style['no-data'], { [$style.pathnodata]: path }]"
-      >
-        暂时没有可领取的返利
-      </div>
-
-      <div
-        v-if="!path"
-        :class="$style['rebate-manual-title']"
-        @click="isShowTip = !isShowTip"
-      >
-        <icon
-          :class="$style['title-icon']"
-          :name="isShowTip ? 'angle-up' : 'angle-down'"
-        />
-        <span :class="$style['manual-title']">{{
-          $text("S_REAL_DIRECTIONS", "实返说明")
-        }}</span>
-      </div>
-
-      <div
-        v-if="isShowTip"
-        :class="[$style['rebate-manual-wrap'], { [$style.pathmanual]: path }]"
-      >
-        <div v-if="!path" :class="$style['manual-line']" />
-        <div :class="[$style['rebate-manual-tip'], { [$style.pathtip]: path }]">
-          <div>
-            (1) 结算周期自美东时间0点整为计算始点。
-          </div>
-          <div>
-            (2)
-            系统于每小时会计算一小时前的返利金额，若未达最低返利金额或可领次数已达上限，当次不提供领取。
-          </div>
-          <div>
-            (3) 周期结算后剩余的返利金额，系统于上午{{
-              dispatch_hour
-            }}点主动派发。
-          </div>
-          <div>
-            (4)
-            另考虑到资料刷新同步或平台维护时，可能造成试算领取存在误差，如有遗漏或偏差敬请见谅。
-          </div>
-          <div v-show="maintainsList">
-            {{ $t("S_CURRENT_PLATFORM") }}：
-            <span :class="$style['maintains-list']">{{ maintainsList }}</span>
-          </div>
-        </div>
-      </div>
-      <template v-if="isShowPopup">
-        <popup
-          :is-show-popup.sync="isShowPopup"
-          :amount="amountResult"
-          :path="path"
-        />
-      </template>
     </div>
+
+    <div v-if="immediateData.length === 0" :class="$style['no-data']">
+      暂时没有可领取的返利
+    </div>
+
+    <div :class="$style['rebate-manual-title']" @click="isShowTip = !isShowTip">
+      <icon
+        :class="$style['title-icon']"
+        :name="isShowTip ? 'angle-up' : 'angle-down'"
+      />
+      <span :class="$style['manual-title']">{{
+        $text("S_REAL_DIRECTIONS", "实返说明")
+      }}</span>
+    </div>
+
+    <div v-if="isShowTip" :class="$style['rebate-manual-wrap']">
+      <div :class="$style['manual-line']" />
+      <div :class="$style['rebate-manual-tip']">
+        <div>
+          (1)结算周期自美东时间0点整为计算始点。
+        </div>
+        <div>
+          (2)系统于每小时会计算一小时前的返利金额，若未达最低返利金额或可领次数已达上限，当次不提供领取。
+        </div>
+        <div>
+          (3)周期结算后剩余的返利金额，系统于上午{{ dispatch_hour }}点主动派发。
+        </div>
+        <div>
+          (4)另考虑到资料刷新同步或平台维护时，可能造成试算领取存在误差，如有遗漏或偏差敬请见谅。
+        </div>
+        <div v-show="maintainsList">
+          {{ $t("S_CURRENT_PLATFORM") }}：
+          <span :class="$style['maintains-list']">{{ maintainsList }}</span>
+        </div>
+      </div>
+    </div>
+
+    <template v-if="isShowPopup">
+      <popup :is-show-popup.sync="isShowPopup" :amount="amountResult" />
+    </template>
   </div>
 </template>
 
 <script>
-import Vue, { nextTick } from "vue";
+import Vue from "vue";
 import mcenter from "@/api/mcenter";
 import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
 import { mapActions, mapGetters } from "vuex";
 import popup from "./components/popup";
-import detail from "./components/detail";
 import EST from "@/lib/EST";
-import tcenterLabel from "../../../../../tcenterSame/tcenterLabel";
 
 export default {
   components: {
-    tcenterLabel,
     popup,
-    detail,
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/square"
       )
-  },
-  props: {
-    setTabState: {
-      type: Function,
-      default: () => {}
-    },
-    setHeaderTitle: {
-      type: Function,
-      default: () => {}
-    },
-    tabState: {
-      type: Boolean,
-      default: true
-    },
-    setBackFunc: {
-      type: Function,
-      default: () => {}
-    }
   },
   data() {
     return {
@@ -287,11 +195,7 @@ export default {
       maintainsList: "",
       rebateState: "",
       amountResult: 0,
-      dispatch_hour: null,
-      title: "real",
-      pathItem: this.$route.params.item ?? "", //是否從返利管理來,
-      path: this.$route.params.title ?? "", //是否從返利管理來,
-      status: true //傳進詳情 是否顯示箭頭
+      dispatch_hour: null
     };
   },
   computed: {
@@ -315,39 +219,18 @@ export default {
       set(value) {
         this.togglePopup = value;
       }
-    },
-    childItem() {
-      return [
-        { name: "receive", text: this.$text("S_RECEIVE", "领取") },
-        { name: "detail", text: this.$text("S_DETAIL", "详情") }
-      ];
     }
   },
   filters: {
     dateFormat(date) {
       return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
-    },
-    dateFormatNoTime(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
     }
   },
   created() {
-    //刷新導回實時返利領取
-    if (this.path && this.pathItem != "receive") {
-      this.$router.replace({
-        params: {
-          title: this.title,
-          item: "receive"
-        }
-      });
-      this.pathItem = "receive";
-    }
-
     this.getImmediateData();
     this.bankRebateMaintains();
     this.actionSetSystemTime();
   },
-
   methods: {
     ...mapActions(["actionSetSystemTime"]),
     commaFormat(value) {
@@ -374,30 +257,12 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          if (this.themeTPL === "ey1" && !this.path) {
+          if (this.themeTPL === "ey1") {
             this.dispatch_hour = response.data.auto_dispatch_hour;
             this.immediateData = response.data.entries;
           } else {
             this.dispatch_hour = response.data.ret.auto_dispatch_hour;
             this.immediateData = response.data.ret.entries;
-          }
-
-          let total = response.data.total ?? "";
-          let entries = response.data.ret.entries[0] ?? "";
-          // 傳進detail判斷是否顯示查看箭頭
-          // 狀態=>可領/已達上限/已領取/計算中
-          if (
-            entries.self_times > 0 ||
-            (entries.state === 3 && entries.self_times === 0) ||
-            (!total.valid_bet.accounting && !entries) ||
-            total.valid_bet.accounting
-          ) {
-            this.status = true;
-          } else if (!total.accounting && entries.amount === 0) {
-            //計算完無實返金額
-            this.status = false;
-          } else {
-            this.status = false;
           }
 
           // 測試資料
@@ -434,20 +299,6 @@ export default {
           this.amountResult = response.data.dispatched_amount;
         }
       });
-    },
-    changeTab(tabKey) {
-      if (this.$route.params.item != tabKey.name) {
-        this.pathItem = tabKey.name;
-        this.$router.replace({
-          params: {
-            title: this.title,
-            item: `${tabKey.name}`
-          },
-          query: {
-            total: "total"
-          }
-        });
-      }
     }
   }
 };

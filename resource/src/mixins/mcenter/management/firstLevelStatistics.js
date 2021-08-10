@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { mapActions } from "vuex";
 import axios from "axios";
-import EST from "@/lib/EST";
 
 /**
  * @param {String} current - 當前頁數
@@ -30,13 +29,6 @@ export default {
         4: "厅主批量",
         5: "代理新增"
       },
-      childLevelTrans: {
-        1: "S_FIRST_LEVEL_FRIEND",
-        2: "S_SECOND_LEVEL_FRIEND",
-        3: "S_THIRD_LEVEL_FRIEND",
-        4: "S_FOURTH_LEVEL_FRIEND",
-        5: "S_FIFTH_LEVEL_FRIEND"
-      },
       firstFriends: {
         depth: 1,
         total: 0,
@@ -46,15 +38,8 @@ export default {
       maxResults: 20,
       pageNow: 0,
       pageAll: 0,
-      showinfo: [-5],
-      estToday: EST(new Date(), "", true),
-      startTime: "",
-      endTime: ""
+      showinfo: [-5]
     };
-  },
-  created() {
-    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
   },
 
   methods: {
@@ -66,9 +51,7 @@ export default {
      * @returns {String} 格式化後的金額
      */
     commaFormat(value) {
-      return `${Number(value)
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     /**
      * 日期格式化
@@ -119,23 +102,13 @@ export default {
         method: "get",
         url: "/api/v1/c/player/friends",
         params: {
-          start_at: this.startTime,
-          end_at: this.endTime,
           first_result: this.firstResult,
           max_results: this.maxResults,
           ...params
         }
       })
         .then(res => {
-          const {
-            ret,
-            result,
-            msg,
-            pagination,
-            depth,
-            total,
-            friend_chain
-          } = res.data;
+          const { ret, result, msg, pagination, depth } = res.data;
 
           if (result !== "ok" || ret.length === 0) {
             this.actionSetGlobalMessage({ msg });
@@ -143,17 +116,15 @@ export default {
           }
 
           this.showInfinite = true;
-          this.isShowDatePicker = false;
+
           if (isInitLoadingStatus) {
             this.initLoadingStatus();
           }
 
           this.firstFriends = {
             depth,
-            alltotal: total,
             total: pagination.total,
-            list: [...this.firstFriends.list, ...ret],
-            friend_chain: friend_chain
+            list: [...this.firstFriends.list, ...ret]
           };
 
           this.pageAll = Math.ceil(+pagination.total / this.maxResults);

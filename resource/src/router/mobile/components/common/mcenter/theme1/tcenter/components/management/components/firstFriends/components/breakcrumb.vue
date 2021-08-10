@@ -1,19 +1,12 @@
 <template>
-  <div
-    :class="[
-      $style['breakcrumb'],
-      { [$style['team-manage']]: path != 'custom' },
-      { [$style['team-manage-search']]: path == 'custom' }
-    ]"
-    id="breakcrumb_id"
-  >
+  <div :class="$style['breakcrumb']" id="breakcrumb_id">
     <span
       v-for="(friend, index) in list"
       :key="friend.id"
       :class="{
         [$style['current']]: lastIndex === index
       }"
-      @click="clickTarget(friend.alias, friend.id, index)"
+      @click="clickTarget(friend.id, index)"
     >
       {{ friend.alias }}
     </span>
@@ -34,11 +27,6 @@ export default {
       default: []
     }
   },
-  data() {
-    return {
-      path: this.$route.params.item
-    };
-  },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -55,13 +43,9 @@ export default {
     dom.scrollLeft = this.depth * 25;
   },
   methods: {
-    clickTarget(alias, id, index) {
-      //搜尋結果的帳號不能點擊
-      if (this.$route.params.item == "custom") {
-        return;
-      }
+    clickTarget(id, index) {
       // 有需要此需求再開啟
-      this.$emit("send-name", { alias: alias, id: id, index: index });
+      // this.$emit("click", { id, index });
     }
   }
 };
@@ -81,22 +65,6 @@ export default {
   white-space: nowrap;
   overflow-x: scroll;
   overflow-y: auto;
-
-  &.team-manage-search {
-    color: #a2a2a2;
-
-    &.team-manage-search span.current {
-      color: #414655;
-    }
-  }
-
-  &.team-manage {
-    color: #2693fc;
-
-    &.team-manage span.current {
-      color: #414655;
-    }
-  }
 
   span.current {
     color: #2693fc;
