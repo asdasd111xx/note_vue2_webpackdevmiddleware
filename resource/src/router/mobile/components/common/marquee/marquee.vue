@@ -196,7 +196,7 @@ export default {
   position: fixed;
   top: 43px;
   z-index: 2;
-  background: white;
+  background: #f8f8f7;
 }
 
 .news-content {
