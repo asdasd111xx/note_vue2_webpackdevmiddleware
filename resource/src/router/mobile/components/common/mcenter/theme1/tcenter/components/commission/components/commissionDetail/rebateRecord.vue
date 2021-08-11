@@ -288,7 +288,7 @@ export default {
         },
         {
           name: "笔数",
-          item: this.amountFormat(this.friendGameList?.pagination?.total ?? "0")
+          item: this.friendGameList?.pagination?.total ?? "0"
         }
       ];
       return strArr;

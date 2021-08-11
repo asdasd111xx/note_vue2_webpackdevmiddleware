@@ -78,13 +78,6 @@ export default {
   mounted() {
     this.current_entry_id = this.$route.query.current_entry_id;
     // oauth2 = 是否為第三方 (true：第三方，false：本站)
-    if (this.$route.query.oauth2 || this.currentInfo.oauth2) {
-      // 第三方返利只取第三方返利資料
-      this.getDetail();
-      return;
-    }
-
-    this.getSummary();
   },
   methods: {
     /**

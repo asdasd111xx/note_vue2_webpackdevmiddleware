@@ -37,7 +37,7 @@
 
     <div
       v-if="(page === 'record' && hasSearch) || (path && hasSearch)"
-      class="search-wrap"
+      :class="$style[`search-wrap-${path}`]"
     >
       <div :class="$style['search-form']">
         <div :class="[$style['form-row'], 'clearfix']">
@@ -275,9 +275,11 @@ export default {
       immediate: true
     },
     "$route.params.page"() {
-      if (this.$route.params.page !== "detail") {
+      if (this.$route.params.page !== "detail" && this.page !== "detail") {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
+      } else {
+        this.setTabState(false);
       }
     }
   },
@@ -388,15 +390,14 @@ export default {
           },
           query: { dateId: data.index }
         });
-        this.rebateTitle = data.name;
       }
-
+      this.rebateTitle = data.name;
       if (data.name === "custom") {
         this.hasSearch = true;
 
         return;
       }
-
+      this.manageRebateDate();
       this.onInquire();
 
       return;
