@@ -567,6 +567,8 @@
         }
       "
     />
+    <!-- 出款單取消Alert -->
+    <withdraw-alert v-if="isAlertShow" :close-fuc="goBack" />
 
     <!-- 彈窗 -->
     <template v-if="showPopStatus.isShow">
@@ -659,6 +661,10 @@ export default {
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
+    withdrawAlert: () =>
+      import(
+        /* webpackChunkName: 'withdrawAlert' */ "@/router/mobile/components/common/mcenter/theme1/withdraw/components/withdrawAlert"
+      ),
     balanceTran,
     confirmOneBtn,
     serialNumber,
@@ -685,7 +691,7 @@ export default {
       isSerial: false,
       isShowMore: true,
       isDoneMarquee: false,
-
+      isAlertShow: false,
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -1071,6 +1077,10 @@ export default {
     ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList"]),
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
+    },
+    goBack() {
+      this.isAlertShow = false;
+      window.scrollTo(0, 0);
     },
     getBankImage(swiftCode) {
       return {
@@ -1531,18 +1541,21 @@ export default {
       if (params) {
         _params = { ..._params, ...params };
       }
-      let methinIdx = null
-      let methonId = null
+      let methinIdx = null;
+      let methonId = null;
       if (
         this.selectedCard.swift_code === "BBUSDTCN1" ||
         this.selectedCard.swift_code === "BBUSDTCN3"
       ) {
-        methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
-        methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
-      }else if(this.selectedCard.bank_id === 2009){
+        methinIdx = this.withdrawUserData.crypto.findIndex(card => {
+          return card.swift_code === this.selectedCard.swift_code;
+        });
+        methonId = this.withdrawUserData.crypto[methinIdx].currency[0]
+          .method_id;
+      } else if (this.selectedCard.bank_id === 2009) {
         methonId = this.withdrawCurrency.method_id;
-      }else{
-        methonId = ""
+      } else {
+        methonId = "";
       }
 
       if (this.memInfo.config.withdraw === "迅付") {
@@ -1557,7 +1570,7 @@ export default {
         };
       }
 
-      console.log(_params);
+      // console.log(_params);
 
       return ajax({
         method: "post",
@@ -1627,9 +1640,10 @@ export default {
                   check: true
                 },
                 fail: res => {
-                  this.actionSetGlobalMessage({
-                    msg: "提现已取消，请重新提交申请"
-                  });
+                  this.isAlertShow = true;
+                  // this.actionSetGlobalMessage({
+                  //   msg: "提现已取消，请重新提交申请"
+                  // });
                 }
               }).then(res => {
                 this.isLoading = false;
@@ -1645,7 +1659,8 @@ export default {
               });
             }
           } else {
-            this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
+            this.isAlertShow = true;
+            // this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
           }
 
           this.isLoading = false;
@@ -1654,11 +1669,12 @@ export default {
         },
         fail: error => {
           if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({
-              msg: error.data.msg,
-              code: error.data.code,
-              origin: "withdraw"
-            });
+            this.isAlertShow = true;
+            // this.actionSetGlobalMessage({
+            //   msg: error.data.msg,
+            //   code: error.data.code,
+            //   origin: "withdraw"
+            // });
 
             this.errTips = error.data.msg;
             this.errCode = error.data.code;
@@ -1693,8 +1709,11 @@ export default {
         this.selectedCard.swift_code === "BBUSDTCN1" ||
         this.selectedCard.swift_code === "BBUSDTCN3"
       ) {
-        let methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
-        let methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
+        let methinIdx = this.withdrawUserData.crypto.findIndex(card => {
+          return card.swift_code === this.selectedCard.swift_code;
+        });
+        let methonId = this.withdrawUserData.crypto[methinIdx].currency[0]
+          .method_id;
 
         _params = {
           ..._params,
@@ -1992,7 +2011,7 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
           this.redJackpotData = res.data;
         } else {
