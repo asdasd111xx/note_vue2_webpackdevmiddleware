@@ -363,6 +363,10 @@ export default {
       }
     },
     backPre() {
+      //刪除數字貨幣路徑 刪除選擇卡片
+      localStorage.removeItem("oneClickBindingMode");
+      localStorage.removeItem("isBackFromService");
+      localStorage.removeItem("selectTarget");
       // 目前只有銀行卡有分兩階段
       if (
         this.currentPage === "addBankCard" &&

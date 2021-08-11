@@ -340,14 +340,19 @@ export default {
 
       errorMsg: "",
 
-      walletTipInfo: []
+      walletTipInfo: [],
+
+      //紀錄卡片資料
+      isBackFromService: "",
+
+      //紀錄是否開啟卡片欄位
+      showBindingFormat: ""
     };
   },
   mounted() {
-    let isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
-    if (isBackFromService) {
-      this.setBank(isBackFromService);
-      localStorage.removeItem("selectTarget");
+    this.isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
+    if (this.isBackFromService) {
+      this.setBank(this.isBackFromService);
     }
   },
   computed: {
@@ -755,12 +760,19 @@ export default {
       this.selectTarget.swiftCode = bank.swift_code;
       this.lockStatus = true;
 
+      this.showBindingFormat = localStorage.getItem("oneClickBindingMode");
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
       if ([21].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
+        if (this.showBindingFormat) {
+          this.selectTarget.oneClickBindingMode = false;
+        } else {
+          this.selectTarget.oneClickBindingMode = true;
+        }
       } else {
         this.selectTarget.oneClickBindingMode = false;
       }
+      if (this.isBackFromService) localStorage.removeItem("isBackFromService");
     },
     clearMsgCallback(_redirect = null) {
       const { query } = this.$route;
@@ -837,8 +849,13 @@ export default {
             cb: () => {
               if (bindingMode) {
                 this.selectTarget.oneClickBindingMode = false;
+                localStorage.setItem(
+                  "oneClickBindingMode",
+                  "oneClickBindingMode"
+                );
               } else {
                 this.selectTarget.oneClickBindingMode = true;
+                localStorage.removeItem("oneClickBindingMode");
               }
             }
           }
