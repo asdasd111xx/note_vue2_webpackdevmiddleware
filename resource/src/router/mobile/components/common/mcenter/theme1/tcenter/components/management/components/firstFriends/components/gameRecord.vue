@@ -9,9 +9,9 @@
         <span :class="$style[`${item.color}`]">{{ item.item }}</span>
       </span>
     </div>
-    <div :class="$style['date-title']">{{ timeTitle }}</div>
 
     <div v-if="cardContent !== undefined && cardContent.length > 0">
+      <div :class="$style['date-title']">{{ timeTitle }}</div>
       <div
         v-for="(info, index) in cardContent"
         :key="index"
@@ -45,6 +45,14 @@
           </div>
         </div>
       </div>
+    </div>
+    <div v-else :class="$style['no-data']">
+      <div :class="$style['no-data-image']">
+        <img src="/static/image/_new/mcenter/ic_nodata.png" />
+      </div>
+      <p>
+        {{ $text("S_NO_DATA_YET", "暂无资料") }}
+      </p>
     </div>
   </div>
 </template>
