@@ -589,6 +589,7 @@ export default {
           this.setBackFunc(() => {
             if (this.firstFriends.depth !== 1) {
               this.firstFriends.depth = 1;
+              this.isEnterNextLayers = false;
             }
             this.searchResult = false;
             this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
