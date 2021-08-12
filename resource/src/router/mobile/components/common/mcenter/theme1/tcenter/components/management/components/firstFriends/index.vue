@@ -506,7 +506,7 @@ export default {
             {
               name: "总有效投注",
               item: this.commaFormat(info.valid_bet),
-              button: info.valid_bet > 0,
+              button: true,
               upShow: true
             },
             {
@@ -589,6 +589,7 @@ export default {
           this.setBackFunc(() => {
             if (this.firstFriends.depth !== 1) {
               this.firstFriends.depth = 1;
+              this.isEnterNextLayers = false;
             }
             this.searchResult = false;
             this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
@@ -807,7 +808,7 @@ export default {
 
       this.startTime = Vue.moment(this.estToday)
         .add(-data.value, "days")
-        .format("YYYY-MM-DD 00:00:00");
+        .format("YYYY-MM-DD");
       this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
 
       if (data.name === "yesterday") {
