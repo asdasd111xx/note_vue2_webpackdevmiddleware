@@ -235,7 +235,7 @@
           </div>
           <div
             :class="$style['btn-money']"
-            @click="$router.push('/mobile/mcenter/makeMoney')"
+            @click="$router.replace('/mobile/mcenter/makeMoney?giftDetail=1')"
           >
             {{ giftTitle }}
           </div>
@@ -341,6 +341,24 @@ export default {
       title: "recommendGift",
       timeTitle: ""
     };
+  },
+  watch: {
+    //判斷是否從禮金明細來
+    "$route.query.gifDetail": {
+      handler: function(item) {
+        this.setBackFunc(() => {
+          if (item) {
+            this.$route.replace(
+              "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
+            );
+          } else {
+            this.$router.back();
+          }
+        });
+      },
+      deep: true,
+      immediate: true
+    }
   },
   computed: {
     ...mapGetters({

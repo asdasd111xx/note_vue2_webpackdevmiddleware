@@ -48,15 +48,18 @@
           </div>
 
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
-            <div v-if="path" :class="$style['detail-content']">
+            <div
+              v-if="
+                path &&
+                  caculateList.state !== 3 &&
+                  caculateList.self_times !== 0
+              "
+              :class="$style['detail-content']"
+            >
               <span :class="$style['content-left']">
                 结算区间
               </span>
-              <div v-if="path" :class="$style['content-right']">
-                <div>{{ dateFormatHour(caculateList.start_at) }}</div>
-                <div>{{ dateFormatHour(caculateList.end_at) }}</div>
-              </div>
-              <div v-else :class="$style['content-right']">
+              <div :class="$style['content-right']">
                 <div>{{ caculateList.start_at | dateFormat }}</div>
                 <div>{{ caculateList.end_at | dateFormat }}</div>
               </div>

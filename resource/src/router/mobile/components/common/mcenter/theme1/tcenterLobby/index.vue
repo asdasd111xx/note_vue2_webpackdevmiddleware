@@ -8,7 +8,7 @@
             `/static/image/${themeTPL}/mcenter/tcenter/icon_home_n.png`
           )
         "
-        @click="$router.back()"
+        @click="$router.push('/mobile/mcenter/home')"
       />
       <div :class="$style['title-label']">我的推广</div>
       <div
