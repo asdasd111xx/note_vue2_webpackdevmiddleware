@@ -48,7 +48,14 @@
           </div>
 
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
-            <div v-if="path" :class="$style['detail-content']">
+            <div
+              v-if="
+                path &&
+                  caculateList.state !== 3 &&
+                  caculateList.self_times !== 0
+              "
+              :class="$style['detail-content']"
+            >
               <span :class="$style['content-left']">
                 结算区间
               </span>
@@ -286,7 +293,8 @@ export default {
       pathItem: this.$route.params.item ?? "", //是否從返利管理來,
       path: this.$route.params.title ?? "", //是否從返利管理來,
       status: true, //傳進詳情 是否顯示箭頭
-      currentInfo: {}
+      currentInfo: {},
+      entries: {}
     };
   },
   computed: {
@@ -374,25 +382,34 @@ export default {
           if (this.themeTPL === "ey1") {
             this.dispatch_hour = response.data.auto_dispatch_hour;
             this.immediateData = response.data.entries;
+            this.entries = this.immediateData[0] || "";
           } else {
             this.dispatch_hour = response.data.ret.auto_dispatch_hour;
             this.immediateData = response.data.ret.entries;
+            this.entries = response.data.ret?.entries[0] ?? "";
           }
-
           let total = response.data.total ?? "";
-          let entries = response.data.ret?.entries[0] ?? "";
 
-          this.currentInfo = { ...entries };
+          this.currentInfo = {
+            period: this.entries.period,
+            start_at: this.entries.start_at,
+            end_at: this.entries.end_at,
+            type: this.entries.type,
+            amount: this.entries.amount,
+            show_detail: this.entries.show_detail,
+            oauth2: this.entries.oauth2
+          };
+
           // 傳進detail判斷是否顯示查看箭頭
           // 狀態=>可領/已達上限/已領取/計算中
           if (
-            entries.self_times > 0 ||
-            (entries.state === 3 && entries.self_times === 0) ||
-            (!total.valid_bet?.accounting && !entries) ||
+            this.entries.self_times > 0 ||
+            (this.entries.state === 3 && this.entries.self_times === 0) ||
+            (!total.valid_bet?.accounting && !this.entries) ||
             total.valid_bet.accounting
           ) {
             this.status = true;
-          } else if (!total.accounting && entries.amount === 0) {
+          } else if (!total.accounting && this.entries.amount === 0) {
             //計算完無實返金額
             this.status = false;
           } else {
@@ -450,6 +467,12 @@ export default {
           }
         });
       }
+    },
+    dateFormatHour(date) {
+      if (date) {
+        return EST(Vue.moment(date).format("YYYY-MM-DD HH:00:00"));
+      }
+      return "--";
     }
   }
 };

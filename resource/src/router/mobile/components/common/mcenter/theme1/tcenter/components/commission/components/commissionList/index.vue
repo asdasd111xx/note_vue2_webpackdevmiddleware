@@ -85,11 +85,16 @@
         </div>
       </template>
     </div>
-    <div v-if="mainNoData && path" :class="$style['no-data-path']">
+    <div v-if="mainNoData && path" :class="[$style['no-data-wrap']]">
       <div :class="$style['no-data-image']">
-        <img src="/static/image/_new/mcenter/ic_nodata.png" />
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+        />
       </div>
-      <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+
+      <div :class="$style.tips">
+        {{ "暂无资料" }}
+      </div>
     </div>
   </div>
 </template>

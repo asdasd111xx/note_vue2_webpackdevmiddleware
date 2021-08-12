@@ -38,9 +38,7 @@
           :class="$style['card-wrap']"
         >
           <div v-if="!$route.query.third" :class="$style['date-total']">
-            <span>{{
-              `统计至：${titleDateFormat(currentInfo.period)} ${filterDate}`
-            }}</span>
+            <span>{{ `统计至：${titleDateFormat(currentInfo.end_at)}` }}</span>
           </div>
           <card-item
             :card-item-list="friendLayerList"
@@ -229,20 +227,20 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          name: "总有效投注",
+          name: "总有效投注：",
           item:
             this.pageTotal?.valid_bet > 0
               ? this.amountFormat(this.pageTotal.valid_bet)
               : "--"
         },
         {
-          name: "总损益",
+          name: "总损益：",
           item:
             this.pageTotal?.profit > 0
               ? this.amountFormat(this.pageTotal.profit)
               : "--"
         },
-        { name: "笔数", item: this.pagination.total ?? "0" }
+        { name: "笔数：", item: this.pagination.total ?? "0" }
       ];
       return strArr;
     },
@@ -276,23 +274,21 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          name: "总有效投注",
+          name: "总有效投注：",
           item:
             this.friendGameList?.total?.valid_bet > 0
               ? this.amountFormat(this.friendGameList.total.valid_bet)
               : "0.00"
         },
         {
-          name: "总损益",
+          name: "总损益：",
           item: this.friendGameList?.total?.profit
             ? this.amountFormat(this.friendGameList.total.profit)
             : "0.00"
         },
         {
-          name: "笔数",
-          item: this.amountFormat(
-            this.friendGameList?.pagination?.total ?? "0.00"
-          )
+          name: "笔数：",
+          item: this.friendGameList?.pagination?.total ?? "0"
         }
       ];
       return strArr;

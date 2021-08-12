@@ -50,9 +50,13 @@ export default {
         0
       ).getDate();
 
-      const endDay = new Date(this.summaryContent[2].end_at).getDate();
+      if (this.$route.params.title) {
+        const endDay = new Date(this.summaryContent[2].end_at).getDate();
 
-      return endDay - today > 0 ? endDay - today : "0";
+        return endDay - today > 0 ? endDay - today : "0";
+      } else {
+        return lastDay - today + 1;
+      }
     },
     /**
      * 返利是否只使用本站

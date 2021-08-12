@@ -27,7 +27,11 @@
       />
     </div>
 
-    <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
+    <assign
+      v-if="currentTemplate === 'assign'"
+      :currentInfo="currentInfo"
+      @id="memberId"
+    />
     <record
       v-if="currentTemplate === 'record' && !path"
       :currentInfo="currentInfo"
@@ -66,7 +70,8 @@ export default {
     return {
       currentTab: 0,
       currentTemplate: "assign",
-      path: this.$route.params.title ?? ""
+      path: this.$route.params.title ?? "",
+      id: ""
     };
   },
 
@@ -153,7 +158,7 @@ export default {
               oauth2_detail: this.$route.query.oauth2_detail,
               type: this.$route.query.type,
               amount: this.$route.query.amount,
-              current_entry_id: this.$route.query.current_entry_id,
+              current_entry_id: this.$route.query.current_entry_id || this.id,
               show_detail: this.$route.query.show_detail,
               oauth2: this.$route.query.oauth2
             }
@@ -166,6 +171,10 @@ export default {
     },
     setTitle(val) {
       this.showTitle = val;
+      return;
+    },
+    memberId(val) {
+      this.id = val;
       return;
     }
   }

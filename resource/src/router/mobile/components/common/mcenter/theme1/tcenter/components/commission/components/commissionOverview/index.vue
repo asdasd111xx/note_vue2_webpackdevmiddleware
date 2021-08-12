@@ -319,7 +319,7 @@ export default {
   props: {
     setHeaderTitle: {
       type: Function,
-      required: true
+      default: () => {}
     },
     setTabState: {
       type: Function,
