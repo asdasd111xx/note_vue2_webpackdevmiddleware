@@ -1640,10 +1640,9 @@ export default {
                   check: true
                 },
                 fail: res => {
-                  this.isAlertShow = true;
-                  // this.actionSetGlobalMessage({
-                  //   msg: "提现已取消，请重新提交申请"
-                  // });
+                  this.actionSetGlobalMessage({
+                    msg: "提现已取消，请重新提交申请"
+                  });
                 }
               }).then(res => {
                 this.isLoading = false;
@@ -1659,8 +1658,7 @@ export default {
               });
             }
           } else {
-            this.isAlertShow = true;
-            // this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
+            this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
           }
 
           this.isLoading = false;
@@ -1669,15 +1667,18 @@ export default {
         },
         fail: error => {
           if (error && error.data && error.data.msg) {
-            this.isAlertShow = true;
-            // this.actionSetGlobalMessage({
-            //   msg: error.data.msg,
-            //   code: error.data.code,
-            //   origin: "withdraw"
-            // });
+            this.actionSetGlobalMessage({
+              msg: error.data.msg,
+              code: error.data.code,
+              origin: "withdraw"
+            });
 
             this.errTips = error.data.msg;
             this.errCode = error.data.code;
+          }
+          //only when C590021 show alert
+          if (error && error.data && error.data.code === "C590021") {
+            this.isAlertShow = true;
           }
 
           if (error && error.data && error.data.code === "M500001") {
