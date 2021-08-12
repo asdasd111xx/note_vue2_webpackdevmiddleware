@@ -83,7 +83,7 @@
             { [$style.active]: currentType.key === type.key }
           ]"
           :id="`type-${index}`"
-          @click="onChangeSelectType(type)"
+          @click="onChangeSelectType(type, true)"
           :style="{ width: `${typeItemWidth}px` }"
         >
           <div
@@ -118,44 +118,106 @@
       </div>
     </div>
 
-    <!-- <div
-      v-show="isShow"
-      ref="type-wrap"
-      :class="$style['type-wrap']"
-      @touchstart="onTypeTouchStart"
-      @touchmove="onTypeTouchMove"
+    <div
+      :class="$style['new-game-wrap']"
+      :style="{
+        height: `${eyWrapHeight}px`
+      }"
     >
-      <div
-        v-for="(type, index) in typeList"
-        :data-id="`${type.id}`"
-        :key="`type-${index}`"
-        :class="[
-          $style['type-swiper'],
-          { [$style.active]: typeList[selectedIndex].icon === type.icon }
-        ]"
-        @click="onChangeSelectIndex(index)"
+      <swiper
+        ref="gameSwiper"
+        :updatedKey="gameSwiperUpdatedKey"
+        :options="gameSwiperOptions"
+        :class="$style['new-game-container']"
       >
-        <img
-          :src="
-            $getCdnPath(
-              `/static/image/ey1/platform/icon/icon2_${type.icon.toLowerCase()}_${
-                typeList[selectedIndex].icon === type.icon ? 'h' : 'n'
-              }.png`
-            )
-          "
-        />
-        <div
-          :class="[
-            $style['type-name'],
-            { [$style.active]: typeList[selectedIndex].icon === type.icon }
-          ]"
+        <swiperSlide
+          v-for="(list, key) in allGameList"
+          :key="`ganme-swiper-${key}`"
+          class="swiper-slide"
         >
-          {{ type.name }}
-        </div>
-      </div>
-    </div> -->
-    <!-- <div v-show="isShow" :class="$style['all-game-wrap']">
-      <div
+          <template>
+            <div
+              v-for="(game, i) in list.vendors"
+              :key="`game-${i}-${game.image}`"
+              :data-img-type="game.imageType"
+              :data-type="game.type"
+              :class="[
+                $style.game,
+                { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
+                { [$style['is-third']]: [4].includes(game.imageType) },
+                { [$style['is-activity']]: [5].includes(game.imageType) }
+              ]"
+            >
+              <template v-if="game.imageType === 4">
+                <div
+                  :class="[$style['third-iamge-wrap']]"
+                  @click="onOpenGame(game)"
+                >
+                  <div :class="[$style['third-iamge-bg']]">
+                    <div :class="[$style['vendor']]">
+                      {{ game.vendor_abridge }}
+                    </div>
+                    <div :class="[$style['third-iamge']]">
+                      <img v-lazy="getImg(game)" />
+                    </div>
+                  </div>
+                  <div :class="[$style['name']]">{{ game.name }}</div>
+                </div>
+              </template>
+              <template v-else>
+                <img
+                  v-lazy="getImg(game)"
+                  :alt="game.name"
+                  @click="onOpenGame(game)"
+                />
+              </template>
+            </div>
+          </template>
+
+          <!-- 子項目 -->
+          <!-- <swiper
+            :key="`sub-ganme-swiper-${key}`"
+            :class="[$style['sub-game-container']]"
+            :options="subGameSwiperOptions(list)"
+            :updatedKey="subGameSwiperUpdatedKey"
+          >
+            <swiperSlide
+              v-for="(game, index) in list.vendors"
+              :key="`sub-ganme-swiper-slide-${index}`"
+              :class="['swiper-slide', $style['sub-game-swiper-slider']]"
+            >
+              <div
+                :class="[
+                  $style.game,
+                  { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
+                  { [$style['is-third']]: [4].includes(game.imageType) },
+                  { [$style['is-activity']]: [5].includes(game.imageType) }
+                ]"
+              >
+                <template v-if="game.imageType === 4">
+                  <div :class="[$style['third-iamge-wrap']]">
+                    <div :class="[$style['third-iamge-bg']]">
+                      <div :class="[$style['vendor']]">
+                        {{ game.vendor_abridge }}
+                      </div>
+                      <div :class="[$style['third-iamge']]">
+                        <img v-lazy="getImg(game)" />
+                      </div>
+                    </div>
+                    <div :class="[$style['name']]">{{ game.name }}</div>
+                  </div>
+                </template>
+                <template v-else>
+                  <img v-lazy="getImg(game)" :alt="game.name" />
+                </template>
+              </div>
+            </swiperSlide>
+          </swiper>
+          -->
+        </swiperSlide>
+      </swiper>
+
+      <!-- <div
         ref="game-wrap"
         :class="[$style['game-list-wrap'], 'clearfix']"
         :style="{
@@ -200,8 +262,8 @@
           </div>
         </template>
         <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
-      </div>
-    </div> -->
+      </div> -->
+    </div>
     <page-loading :isShow="isLoading" />
   </div>
 </template>
@@ -222,33 +284,67 @@ export default {
     Swiper,
     SwiperSlide
   },
-  watch: {},
+  data() {
+    return {
+      userViplevel: "",
+      newTypeList: [],
+      currentType: { key: 0 },
+      gameSwiperUpdatedKey: 0,
+      subGameSwiperUpdatedKey: 0,
+      eyWrapHeight: 420
+    };
+  },
   computed: {
+    gameSwiperOptions() {
+      return {
+        direction: "vertical",
+        loop: true,
+        observer: true,
+        observeParents: true,
+        on: {
+          slideChangeTransitionStart: () => {
+            if (
+              this.newTypeList &&
+              this.$refs["gameSwiper"] &&
+              this.$refs["gameSwiper"].$swiper
+            ) {
+              let realIndex = this.$refs["gameSwiper"].$swiper.realIndex;
+              console.log("realIndex:", realIndex);
+              this.onChangeSelectType(this.newTypeList[realIndex], false);
+            }
+          }
+        }
+      };
+    },
     typeBarPosition() {
       let target = document.getElementById(`type-${this.currentType.key}`);
 
       if (target) {
         let rect = target.getBoundingClientRect();
-        return rect.x - 12.5;
+        return rect.x - 15;
       } else {
         return 0;
       }
     },
     typeItemWidth() {
       return "48";
-    },
-    newTypeList() {
-      const list = [
-        { key: 0, name: "我的自选" },
-        { key: 1, name: "视讯" },
-        { key: 2, name: "彩票" },
-        { key: 3, name: "体育" },
-        { key: 4, name: "棋牌" },
-        { key: 5, name: "电子" }
-      ];
-
+    }
+  },
+  ...mapGetters({
+    loginStatus: "getLoginStatus"
+  }),
+  watch: {
+    allGame() {
+      // const list = [
+      //   { key: 0, name: "我的自选" },
+      //   { key: 1, name: "视讯" },
+      //   { key: 2, name: "彩票" },
+      //   { key: 3, name: "体育" },
+      //   { key: 4, name: "棋牌" },
+      //   { key: 5, name: "电子" }
+      // ];
       if (this.allGame) {
-        let typeList = this.allGame.map((game, key) => ({
+        this.newTypeList = this.allGame.map((game, key) => ({
           key: key,
           category: game.category,
           id: game.id,
@@ -257,34 +353,40 @@ export default {
         }));
 
         // 預設第一個選單
-        if (typeList) {
-          this.currentType = typeList[0];
+        if (this.newTypeList) {
+          this.currentType = this.newTypeList[0];
         }
-        return typeList;
-      } else {
-        return list;
       }
     }
   },
-  data() {
-    return {
-      userViplevel: "",
-      currentType: { key: 0 }
-    };
-  },
-  ...mapGetters({
-    loginStatus: "getLoginStatus"
-  }),
   methods: {
-    onChangeSelectType(item) {
+    subGameSwiperOptions(item) {
+      // console.log(item);
+      return {
+        direction: "vertical",
+        nested: true,
+        slidesPerGroup: item.vendors.length
+      };
+    },
+    onChangeSelectType(item, slide = false) {
       if (this.currentType == item) {
         return;
       }
 
       this.currentType = item;
+      if (
+        slide &&
+        this.$refs["gameSwiper"] &&
+        this.$refs["gameSwiper"].$swiper
+      ) {
+        console.log("key:", item.key);
+        this.$refs["gameSwiper"].$swiper.slideTo(+item.key + 1);
+      }
     }
   },
   mounted() {
+    // window.addEventListener("resize", this.onResize);
+    // window.removeEventListener("resize", this.onResize);
     if (this.loginStatus) {
       this.getUserViplevel();
     }
@@ -320,13 +422,11 @@ export default {
 .type-item {
   display: inline-block;
   width: calc(100% / 6);
-  margin: 0 5px;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  margin: 0 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   user-select: none;
 }
 
@@ -336,7 +436,6 @@ export default {
   font-size: 12px;
   font-weight: 700;
   text-align: center;
-  transition: color 0.31s;
 
   &.active {
     color: #ffffff;
@@ -405,8 +504,23 @@ export default {
   }
 }
 
-.all-game-wrap {
-  margin-left: 63px;
+.new-game-wrap {
+  margin-top: 10px;
+  padding: 0 18px;
+  height: 420px;
+}
+
+.new-game-container {
+  width: 100%;
+  height: 100%;
+}
+
+.sub-game-container {
+  width: 100%;
+}
+
+.sub-game-swiper-slider {
+  height: auto;
 }
 
 .top-wrap {
