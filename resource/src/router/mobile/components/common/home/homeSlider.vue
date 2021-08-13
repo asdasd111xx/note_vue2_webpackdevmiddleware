@@ -1,18 +1,13 @@
 <template>
   <swiper
     id="home-slider"
-    :class="$style['home-slider']"
+    :class="[$style['home-slider'], $style[siteConfig.MOBILE_WEB_TPL]]"
     :options="opts"
     :key="updateKey"
   >
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
-        <img
-          :src="info.image"
-          :class="$style['phone-image']"
-          :data-key="key"
-          :data-link="info.linkTo"
-        />
+        <img :src="info.image" :class="$style['phone-image']" :data-key="key" />
       </div>
     </swiper-slide>
     <div slot="pagination" class="swiper-pagination" />
@@ -212,6 +207,40 @@ export default {
 <style lang="scss" module>
 .home-slider {
   z-index: 4;
+  position: relative;
+
+  .phone-image-wrap {
+    padding: 0 17px;
+  }
+
+  .phone-image {
+    border-radius: 7px;
+    display: block;
+    width: 100%;
+  }
+
+  .pad-image {
+    border-radius: 7px;
+    display: none;
+    width: 100%;
+  }
+
+  &.ey1 {
+    // height: 200px;
+
+    .phone-image-wrap {
+      padding: 0;
+    }
+
+    .phone-image,
+    .pad-image {
+      border-radius: unset;
+      // position: absolute;
+      // top: 0;
+      // bottom: 0;
+      // margin: auto;
+    }
+  }
 }
 
 :global {
@@ -225,21 +254,5 @@ export default {
   .swiper-pagination-bullet-active {
     background-color: #fff;
   }
-}
-
-.phone-image-wrap {
-  padding: 0 17px;
-}
-
-.phone-image {
-  border-radius: 7px;
-  display: block;
-  width: 100%;
-}
-
-.pad-image {
-  border-radius: 7px;
-  display: none;
-  width: 100%;
 }
 </style>
