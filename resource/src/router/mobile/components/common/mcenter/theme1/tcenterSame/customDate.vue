@@ -52,7 +52,7 @@
           {{ "好友帐号" }}
         </div>
 
-        <input v-model="name" />
+        <input v-model="name" @input="onInput" />
       </div>
     </div>
     <div :class="$style['field-search-wrap']">
@@ -206,6 +206,12 @@ export default {
         };
       }
       this.$emit("search-date", this.searchDate);
+    },
+    onInput(e) {
+      e.target.value = e.target.value
+        .replace(/[^a-z0-9]/g, "")
+        .substring(0, 20);
+      this.name = e.target.value;
     }
   }
 };
