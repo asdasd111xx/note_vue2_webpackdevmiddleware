@@ -51,27 +51,29 @@
         v-if="$route.query.depth && !$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
-        <div :class="$style['friend-wrap']">
+        <div
+          v-if="friendNameList !== undefined && friendNameList.length > 0"
+          :class="$style['friend-wrap']"
+        >
           <div>
             <card-total :data="friendBet" />
           </div>
-          <div
-            v-if="friendNameList !== undefined && friendNameList.length > 0"
-            :class="$style['card-item-wrap']"
-          >
+          <div :class="$style['card-item-wrap']">
             <card-item
               :card-item-list="friendNameList"
               @click-card="enterNextLayer"
             />
           </div>
-          <div v-else :class="$style['no-data']">
-            <div :class="$style['no-data-image']">
-              <img src="/static/image/_new/mcenter/ic_nodata.png" />
-            </div>
-            <p>
-              {{ $text("S_NO_DATA_YET", "暂无资料") }}
-            </p>
-          </div>
+        </div>
+        <div v-else :class="$style['no-data']">
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
+              )
+            "
+          />
+          <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
       </div>
 
@@ -190,6 +192,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     friendLayerList() {
       //page1 好友層
