@@ -1422,35 +1422,34 @@ export default {
     withdrawCheck() {
       //CGPay出款前檢查設定
       const params = {
-        wallet_id: this.selectedCard.id,
-        method_id:
+        walletId: this.selectedCard.id,
+        methodId:
           this.selectedCard.bank_id === 2009
             ? this.withdrawCurrency.method_id
             : ""
       };
-
-      return axios({
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v2/c/withdraw/check",
-        params
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Withdraw/Check/V2`,
+        params: {
+          ...params,
+          lang: "zh-cn"
+        }
       })
         .then(res => {
           this.isCheckWithdraw = false;
-
-          if (res.data.result === "ok") {
+          if (res.status === "000") {
             let check = true;
-
             //CGPay取款戶名核實機制
-            if (!res.data.ret.wallet) {
+            if (!res.data.wallet) {
               this.actionSetGlobalMessage({
                 msg: "钱包注册姓名与真实姓名不符"
               });
               check = false;
               return;
             }
-
-            Object.keys(res.data.ret).forEach(i => {
-              if (i !== "bank" && !res.data.ret[i]) {
+            Object.keys(res.data).forEach(i => {
+              if (i !== "bank" && !res.data[i]) {
                 this.actionSetGlobalMessage({
                   msg: "请先设定提现资料",
                   cb: () => {
@@ -1581,40 +1580,13 @@ export default {
         success: response => {
           if (response && response.result === "ok") {
             if (this.memInfo.config.withdraw === "迅付") {
+              console.log("withdraw post tessst", response);
               this.actionSetGlobalMessage({
-                msg: "提现成功",
-                cb: () => {
-                  window.location.reload();
-                }
+                msg: "提现成功"
+                // cb: () => {
+                //   window.location.reload();
+                // }
               });
-
-              // 舊的第二次寫單才需要
-              // 迅付寫單
-              //   ajax({
-              //     method: 'post',
-              //     url: API_TRADE_RELAY,
-              //     errorAlert: false,
-              //     params: {
-              //       api_uri: '/api/trade/v2/c/withdraw/entry',
-              //       [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-              //       //   password: this.withdrawPwd,
-              //       withdraw_id: response.ret.id
-              //     },
-              //     fail: (res) => {
-              //       console.log(res)
-
-              //       this.msg = '提现已取消，请重新提交申请';
-              //     }
-              //   }).then((res) => {
-              //     console.log(res)
-
-              //     this.isLoading = false;
-              //     this.actionSetIsLoading(false);
-
-              //     if (res && res.result === 'ok') {
-              //       this.msg = "提现成功"
-              //     }
-              //   });
             } else {
               // 第三方寫單
               ajax({
