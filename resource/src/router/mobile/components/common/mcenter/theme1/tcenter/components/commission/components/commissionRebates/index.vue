@@ -60,8 +60,8 @@
                 结算区间
               </span>
               <div :class="$style['content-right']">
-                <div>{{ caculateList.start_at | dateFormat }}</div>
-                <div>{{ caculateList.end_at | dateFormat }}</div>
+                <div>{{ dateFormatHour(caculateList.start_at) }}</div>
+                <div>{{ dateFormatHour(caculateList.end_at) }}</div>
               </div>
             </div>
 
