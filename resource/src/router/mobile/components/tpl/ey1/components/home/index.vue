@@ -1,9 +1,5 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :class="$style.container"
-    :is-home="true"
-  >
+  <mobile-container :class="$style.container" :is-home="true">
     <div slot="content" class="content-wrap">
       <div :class="$style['top-bg']" />
       <home-slider />
@@ -44,16 +40,16 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       post: "getPost"
-    }),
-    headerConfig() {
-      return {
-        hasLogo: true,
-        hasMemInfo: true,
-        onClick: () => {
-          this.onClick();
-        }
-      };
-    }
+    })
+    // headerConfig() {
+    //   return {
+    //     hasLogo: true,
+    //     hasMemInfo: true,
+    //     onClick: () => {
+    //       this.onClick();
+    //     }
+    //   };
+    // }
   },
   created() {
     // 先顯示彈跳公告關閉後再顯示一般公告
