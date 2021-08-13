@@ -183,10 +183,10 @@ export default {
           isShow: true
         },
         {
-          classTitle: "customer_service_potato",
-          titleImg: "service04",
-          title: "土豆客服：ey777",
-          smallTitle: "POTATO CHAT",
+          classTitle: "customer_service_qq",
+          titleImg: "service021",
+          title: "企鵝客服: 269816425",
+          smallTitle: "Main Customer Support",
           content: "亿元萌妹专业服务 联系更便利",
           buttonShow: false,
           isShow: true
@@ -258,8 +258,8 @@ export default {
           mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
           break;
 
-        // 客服2.0 土豆客服
-        case "customer_service_potato":
+        // 客服2.0 QQ客服
+        case "customer_service_qq":
         case "customer_service2":
           let newWindow = "";
           newWindow = window.open();
@@ -463,6 +463,15 @@ div.container {
     #baefee,
     #80affd,
     "/static/image/common/service/bg_service04.png",
+    #ffffff
+  );
+}
+
+.customer_service_qq {
+  @include info-card(
+    #f9c4c7,
+    #e56b6e,
+    "/static/image/common/service/bg_service021.png",
     #ffffff
   );
 }
