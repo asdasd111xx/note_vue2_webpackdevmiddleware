@@ -97,9 +97,10 @@
         </div>
 
         <div
+          v-if="typeBarPosition !== null"
           :class="[$style['type-slide-bar']]"
           :style="{
-            left: `${this.typeBarPosition}px`
+            left: `${typeBarPosition}px`
           }"
         >
           <div :class="[$style['type-slide-bar-hover']]">
@@ -132,8 +133,8 @@
       >
         <swiperSlide
           v-for="(list, key) in allGameList"
-          :key="`ganme-swiper-${key}`"
-          class="swiper-slide"
+          :key="`game-swiper-${key}`"
+          :class="[$style['game-swiper-slide'], 'swiper-slide']"
         >
           <template>
             <div
@@ -291,7 +292,8 @@ export default {
       currentType: { key: 0 },
       gameSwiperUpdatedKey: 0,
       subGameSwiperUpdatedKey: 0,
-      eyWrapHeight: 420
+      eyWrapHeight: 420,
+      typeBarPosition: null
     };
   },
   computed: {
@@ -301,6 +303,10 @@ export default {
         loop: true,
         observer: true,
         observeParents: true,
+        // slidesPerView: "auto",
+        lazy: {
+          loadPrevNext: true
+        },
         on: {
           slideChangeTransitionStart: () => {
             if (
@@ -309,23 +315,13 @@ export default {
               this.$refs["gameSwiper"].$swiper
             ) {
               let realIndex = this.$refs["gameSwiper"].$swiper.realIndex;
-              console.log("realIndex:", realIndex);
               this.onChangeSelectType(this.newTypeList[realIndex], false);
             }
           }
         }
       };
     },
-    typeBarPosition() {
-      let target = document.getElementById(`type-${this.currentType.key}`);
 
-      if (target) {
-        let rect = target.getBoundingClientRect();
-        return rect.x - 15;
-      } else {
-        return 0;
-      }
-    },
     typeItemWidth() {
       return "48";
     }
@@ -355,11 +351,30 @@ export default {
         // 預設第一個選單
         if (this.newTypeList) {
           this.currentType = this.newTypeList[0];
+          this.$nextTick(() => {
+            this.onChangeSelectType(this.currentType, false, true);
+          });
         }
       }
     }
   },
   methods: {
+    onResize() {
+      let homeSliderHeight =
+        document.getElementById("home-slider") &&
+        document.getElementById("home-slider").offsetHeight
+          ? document.getElementById("home-slider").offsetHeight
+          : 120;
+
+      // header + footer 上方功能列
+      let extraHeight = 30 + 120 + 60 + homeSliderHeight + 10;
+      this.eyWrapHeight =
+        document.body.offsetHeight - extraHeight > 0
+          ? document.body.offsetHeight - extraHeight
+          : 420;
+
+      // this.onChangeSelectType(this.currentType, true, true);
+    },
     subGameSwiperOptions(item) {
       // console.log(item);
       return {
@@ -368,25 +383,35 @@ export default {
         slidesPerGroup: item.vendors.length
       };
     },
-    onChangeSelectType(item, slide = false) {
-      if (this.currentType == item) {
+    onChangeSelectType(item, slide = false, focus = false) {
+      if (this.currentType == item && !focus) {
         return;
       }
 
       this.currentType = item;
+
+      let target = document.getElementById(`type-${this.currentType.key}`);
+      if (target) {
+        let rect = target.getBoundingClientRect();
+        this.typeBarPosition = rect.x - 15;
+      } else {
+        this.typeBarPosition = 0;
+      }
+
       if (
         slide &&
         this.$refs["gameSwiper"] &&
         this.$refs["gameSwiper"].$swiper
       ) {
-        console.log("key:", item.key);
         this.$refs["gameSwiper"].$swiper.slideTo(+item.key + 1);
       }
     }
   },
+  beforeMount() {
+    window.removeEventListener("resize", this.onResize);
+  },
   mounted() {
-    // window.addEventListener("resize", this.onResize);
-    // window.removeEventListener("resize", this.onResize);
+    window.addEventListener("resize", this.onResize);
     if (this.loginStatus) {
       this.getUserViplevel();
     }
@@ -519,8 +544,12 @@ export default {
   width: 100%;
 }
 
-.sub-game-swiper-slider {
-  height: auto;
+.game-swiper-slide {
+  // height: auto;
+  // width: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  z-index: 2;
 }
 
 .top-wrap {
@@ -575,7 +604,7 @@ export default {
         text-align: right;
         font-size: 13px;
         font-weight: 400;
-        color: #4e5159;
+        color: #8d8d8d;
       }
     }
   }

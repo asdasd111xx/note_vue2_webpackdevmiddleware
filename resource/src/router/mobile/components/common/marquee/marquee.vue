@@ -214,7 +214,7 @@ export default {
   }
 
   &.ey1 {
-    color: #ff7171;
+    color: #5e626d;
   }
 
   &.sg1 {
