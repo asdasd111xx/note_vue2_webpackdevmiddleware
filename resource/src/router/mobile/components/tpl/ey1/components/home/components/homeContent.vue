@@ -9,13 +9,14 @@
       :class="$style['top-wrap']"
       :style="{
         'background-image': `url(
-                ${$getCdnPath(`/static/image/ey1/home/nav_bg.png`)}
+                ${$getCdnPath(`/static/image/ey1/home/nav01_bg.png`)}
               )`
       }"
     >
       <!-- 會員中心連結 -->
       <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
         <div :class="$style['mcenter-login-status-wrap']">
+          <!-- 尚未登入 -->
           <div
             v-if="!loginStatus"
             :class="$style['not-login-wrap']"
@@ -28,17 +29,24 @@
               请先登录&nbsp;/&nbsp;注册后查看
             </div>
           </div>
+
+          <!-- 已登入 -->
           <div v-else :class="$style['is-login-wrap']">
-            <div>
+            <div :class="$style['username']">
               {{ memInfo.user.username }}
             </div>
             <div :class="$style['vip-level']">
               <div>VIP&nbsp;{{ userViplevel }}</div>
             </div>
-            <div
-              :class="{ [$style['normal']]: memInfo.user.username.length < 11 }"
-            >
-              {{ `¥${membalance && membalance.total ? membalance.total : ""}` }}
+            <div :class="$style['balance-wrap']">
+              <span :class="$style['wallet']">
+                {{ $text("S_MCENTER_WALLET") }}
+              </span>
+              <span :class="$style['balance']">
+                {{
+                  `¥${membalance && membalance.total ? membalance.total : ""}`
+                }}
+              </span>
             </div>
           </div>
         </div>
@@ -307,6 +315,7 @@ export default {
         lazy: {
           loadPrevNext: true
         },
+        // mousewheel: true,
         on: {
           slideChangeTransitionStart: () => {
             if (
@@ -425,7 +434,7 @@ export default {
   position: relative;
   padding: 0;
   margin-top: 1px;
-  background: white;
+  background: #f1f1f1;
   z-index: 4;
 
   // 陰影缺美術
@@ -442,6 +451,9 @@ export default {
   overflow-y: hidden;
   white-space: nowrap;
   text-align: center;
+
+  // 修正背景色
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, white 100%);
 }
 
 .type-item {
@@ -538,10 +550,8 @@ export default {
 .new-game-container {
   width: 100%;
   height: 100%;
-}
-
-.sub-game-container {
-  width: 100%;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .game-swiper-slide {
@@ -549,6 +559,8 @@ export default {
   // width: auto;
   overflow-x: hidden;
   overflow-y: scroll;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
   z-index: 2;
 }
 
@@ -582,12 +594,14 @@ export default {
 }
 
 .mcenter-login-status-wrap {
+  background-color: #f9f9f9;
+  height: 33px;
+  line-height: 33px;
+
   > .not-login-wrap {
     position: relative;
     display: flex;
     align-items: center;
-    line-height: 33px;
-    height: 33px;
     padding: 0 17px;
 
     > div {
@@ -609,7 +623,41 @@ export default {
     }
   }
 
-  .is-login-wrap {
+  > .is-login-wrap {
+    padding: 0 17px;
+
+    > div {
+      display: inline-block;
+    }
+
+    .balance-wrap {
+      float: right;
+    }
+
+    .wallet,
+    .username {
+      color: #8d8d8d;
+      font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+      font-size: 12px;
+      font-weight: 400;
+      margin-right: 6px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .username {
+      color: #4e5159;
+      font-family: Arial, Arial-Regular;
+    }
+
+    .balance {
+      color: #4e5159;
+      font-family: Arial, Arial-Bold;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: right;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -617,6 +665,7 @@ export default {
   color: #ffffff;
   font-weight: 700;
   display: inline-block;
+  vertical-align: middle;
 
   > div {
     display: flex;
@@ -632,6 +681,7 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
+  background: white;
 }
 
 .mcenter-func {
