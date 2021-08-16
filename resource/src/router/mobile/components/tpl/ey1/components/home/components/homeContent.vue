@@ -92,7 +92,7 @@
           ]"
           :id="`type-${index}`"
           @click="onChangeSelectType(type, true)"
-          :style="{ width: `${typeItemWidth}px` }"
+          :style="{ width: typeItemWidth ? `${typeItemWidth}px` : {} }"
         >
           <div
             :class="[
@@ -144,7 +144,7 @@
           :key="`game-swiper-${key}`"
           :class="[$style['game-swiper-slide'], 'swiper-slide']"
         >
-          <template>
+          <!-- <template v-if="list.vendors && list.vendors.length < 4">
             <div
               v-for="(game, i) in list.vendors"
               :key="`game-${i}-${game.image}`"
@@ -181,6 +181,69 @@
                 />
               </template>
             </div>
+          </template> -->
+
+          <template>
+            <swiper
+              :ref="`subGameSwiper-${key}`"
+              :updatedKey="gameSwiperUpdatedKey"
+              :options="subGameSwiperOptions"
+              :class="$style['sub-game-container']"
+            >
+              <swiperSlide
+                v-for="(game, i) in list.vendors"
+                :key="`sub-game-swiper-${i}`"
+                :class="[
+                  'swiper-slide',
+                  $style['sub-game-swiper-slide'],
+                  {
+                    [$style['is-full']]: [1, 2, 3].includes(game.imageType)
+                  },
+                  { [$style['is-third']]: [4].includes(game.imageType) },
+                  { [$style['is-activity']]: [5].includes(game.imageType) }
+                ]"
+              >
+                <template>
+                  <div
+                    :key="`game-${i}-${game.image}`"
+                    :data-img-type="game.imageType"
+                    :data-type="game.type"
+                    :class="[
+                      $style.game,
+                      {
+                        [$style['is-full']]: [1, 2, 3].includes(game.imageType)
+                      },
+                      { [$style['is-third']]: [4].includes(game.imageType) },
+                      { [$style['is-activity']]: [5].includes(game.imageType) }
+                    ]"
+                  >
+                    <template v-if="game.imageType === 4">
+                      <div
+                        :class="[$style['third-iamge-wrap']]"
+                        @click="onOpenGame(game)"
+                      >
+                        <div :class="[$style['third-iamge-bg']]">
+                          <div :class="[$style['vendor']]">
+                            {{ game.vendor_abridge }}
+                          </div>
+                          <div :class="[$style['third-iamge']]">
+                            <img v-lazy="getImg(game)" />
+                          </div>
+                        </div>
+                        <div :class="[$style['name']]">{{ game.name }}</div>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <img
+                        v-lazy="getImg(game)"
+                        :alt="game.name"
+                        @click="onOpenGame(game)"
+                      />
+                    </template>
+                  </div>
+                </template>
+              </swiperSlide>
+            </swiper>
           </template>
 
           <!-- 子項目 -->
@@ -305,16 +368,28 @@ export default {
     };
   },
   computed: {
+    subGameSwiperOptions() {
+      return {
+        direction: "vertical",
+        freeMode: true,
+        // autoHeight: true,
+        autoResize: true,
+        observer: true,
+        observeParents: true,
+        nested: true,
+        slidesPerView: 6,
+        spaceBetween: 0
+      };
+    },
     gameSwiperOptions() {
       return {
         direction: "vertical",
         loop: true,
         observer: true,
         observeParents: true,
-        // slidesPerView: "auto",
-        lazy: {
-          loadPrevNext: true
-        },
+        // lazy: {
+        //   loadPrevNext: true
+        // },
         // mousewheel: true,
         on: {
           slideChangeTransitionStart: () => {
@@ -332,7 +407,14 @@ export default {
     },
 
     typeItemWidth() {
-      return "48";
+      if (document.body.clientWidth < 420) {
+        return "48";
+      } else {
+        if (this.newTypeList) {
+          return document.body.clientWidth / this.newTypeList.length;
+        }
+        return "";
+      }
     }
   },
   ...mapGetters({
@@ -384,14 +466,6 @@ export default {
 
       // this.onChangeSelectType(this.currentType, true, true);
     },
-    subGameSwiperOptions(item) {
-      // console.log(item);
-      return {
-        direction: "vertical",
-        nested: true,
-        slidesPerGroup: item.vendors.length
-      };
-    },
     onChangeSelectType(item, slide = false, focus = false) {
       if (this.currentType == item && !focus) {
         return;
@@ -402,7 +476,13 @@ export default {
       let target = document.getElementById(`type-${this.currentType.key}`);
       if (target) {
         let rect = target.getBoundingClientRect();
-        this.typeBarPosition = rect.x - 15;
+        let extraWidth = $(window).width() / 2 - 210;
+
+        if ($(window).width() >= 420) {
+          this.typeBarPosition = rect.x - extraWidth;
+        } else {
+          this.typeBarPosition = rect.x - 15;
+        }
       } else {
         this.typeBarPosition = 0;
       }
@@ -550,18 +630,55 @@ export default {
 .new-game-container {
   width: 100%;
   height: 100%;
-  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
+  // touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  // -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
+}
+
+.sub-game-container {
+  width: auto;
+  height: 100%;
+  position: relative;
+  overflow-y: scroll;
+
+  > * {
+    display: inline-block;
+  }
 }
 
 .game-swiper-slide {
-  // height: auto;
-  // width: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-  z-index: 2;
+  height: 100%;
+  width: 100%;
+  // overflow-x: hidden;
+  // overflow-y: scroll;
+  // touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  // -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
+}
+
+.sub-game-swiper-slide {
+  height: auto !important;
+  position: relative;
+  width: 50%;
+  max-width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  display: inline-block;
+
+  &.is-full {
+    width: 100%;
+  }
+
+  &.is-third {
+    width: 31%;
+    height: 25%;
+    max-height: 150px;
+    position: relative;
+    min-height: 126px;
+    margin: 0 1%;
+  }
+
+  &.is-activity {
+    width: 100%;
+  }
 }
 
 .top-wrap {
@@ -714,70 +831,11 @@ export default {
   }
 }
 
-.game-list-wrap {
-  overflow-y: auto;
-  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-}
-
-.wrap {
-  overflow: hidden;
-  position: relative;
-  float: left;
-  width: 50%;
-  margin-bottom: 3px;
-  border-radius: 7px;
-  box-sizing: border-box;
+.game {
+  width: 98%;
 
   > img {
     display: block;
-    width: 100%;
-    padding: 0 2px;
-  }
-
-  > span {
-    position: absolute;
-    top: 2px;
-    left: 22px;
-    color: #9ca3bf;
-    font-weight: 700;
-    font-size: 12px;
-  }
-
-  > div:not(.third-iamge-wrap) {
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    line-height: 20px;
-    border-radius: 0 0 7px 7px;
-    background-color: #fff;
-    color: #3d3d3d;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    opacity: 0.8;
-  }
-}
-
-.game {
-  composes: wrap;
-
-  &.is-full {
-    width: 100%;
-  }
-
-  &.is-third {
-    width: 31%;
-    height: 25%;
-    max-height: 150px;
-    position: relative;
-    min-height: 126px;
-    margin: 0 1%;
-  }
-
-  &.is-activity {
     width: 100%;
   }
 }
