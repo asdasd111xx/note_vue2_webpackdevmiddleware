@@ -1570,32 +1570,44 @@ export default {
       }
 
       // console.log(_params);
+      //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232
+      //未來有其他第三方再使用/xbb/Withdraw/ext/{extID} C02.321
 
-      return ajax({
+      return goLangApiRequest({
         method: "post",
-        // url: API_WITHDRAW_WRITE, 舊的本站寫單
-        url: API_WITHDRAW_WRITE_2,
-        errorAlert: false,
-        params: _params,
-        success: response => {
-          if (response && response.result === "ok") {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Withdraw/Inpay`,
+        params: {
+          lang: "zh-cn",
+          amount: this.withdrawValue,
+          confirm: true,
+          maxId: this.withdrawData.audit.total.max_id,
+          administrativeAmount: this.withdrawData.audit.total
+            .administrative_amount,
+          offerDeduction: this.withdrawData.audit.total.offer_deduction,
+          auditAmount: this.withdrawData.audit.total.audit_amount,
+          method: this.selectedCard.withdrawType,
+          value: this.selectedCard.id.toString()
+        }
+      })
+        .then(response => {
+          if (response && response.status === "000") {
             if (this.memInfo.config.withdraw === "迅付") {
-              console.log("withdraw post tessst", response);
               this.actionSetGlobalMessage({
-                msg: "提现成功"
-                // cb: () => {
-                //   window.location.reload();
-                // }
+                msg: "提现成功",
+                cb: () => {
+                  window.location.reload();
+                }
               });
             } else {
               // 第三方寫單
-              ajax({
-                method: "get",
-                url: API_WITHDRAW,
+              goLangApiRequest({
+                method: "post",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Withdraw`,
                 errorAlert: false,
                 params: {
-                  amount: response.ret.amount,
-                  withdraw_id: response.ret.id,
+                  lang: "zh-cn",
+                  amount: response.data.amount,
+                  withdrawId: response.data.id,
                   stage: "forward",
                   logo: this.webInfo.logo
                     ? `${this.webInfo.cdn_domain}${this.webInfo.logo}`
@@ -1610,57 +1622,57 @@ export default {
                     ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}`
                     : "",
                   check: true
-                },
-                fail: res => {
-                  this.actionSetGlobalMessage({
-                    msg: "提现已取消，请重新提交申请"
-                  });
                 }
               }).then(res => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
-                if (res.result === "ok") {
+                if (res && res.status === "000") {
                   this.actionSetGlobalMessage({
                     msg: "提现成功"
                   });
 
                   this.thirdUrl = res.ret.uri;
+                } else {
+                  this.actionSetGlobalMessage({
+                    msg: "提现已取消，请重新提交申请"
+                  });
                 }
               });
             }
           } else {
             this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
+            //only when C590021 show alert
+            if (response.code === "C590021") {
+              this.isAlertShow = true;
+            }
           }
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
           return;
-        },
-        fail: error => {
-          if (error && error.data && error.data.msg) {
+        })
+        .catch(error => {
+          if (error && error.msg) {
             this.actionSetGlobalMessage({
-              msg: error.data.msg,
-              code: error.data.code,
+              msg: error.msg,
+              code: error.errodCode,
               origin: "withdraw"
             });
 
-            this.errTips = error.data.msg;
-            this.errCode = error.data.code;
-          }
-          //only when C590021 show alert
-          if (error && error.data && error.data.code === "C590021") {
-            this.isAlertShow = true;
+            this.errTips = error.msg;
+            this.errCode = error.errorCode;
           }
 
-          if (error && error.data && error.data.code === "M500001") {
+          if (error && error.errorCode === "M500001") {
             window.location.reload();
           }
-
+          if (error && error.errorCode === "C590021") {
+            this.isAlertShow = true;
+          }
           this.isLoading = false;
           this.actionSetIsLoading(false);
-        }
-      });
+        });
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
