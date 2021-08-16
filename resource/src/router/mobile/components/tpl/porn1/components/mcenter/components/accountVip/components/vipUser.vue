@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <!-- 說明資訊 -->
+    <!-- //說明資訊 -->
     <div :class="$style['user-desc-block']">
       <div :class="$style['desc-text']">
         ●累计充值(元)：
