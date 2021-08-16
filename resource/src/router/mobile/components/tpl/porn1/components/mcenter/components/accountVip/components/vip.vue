@@ -15,7 +15,7 @@
             :class="{
               [$style['active']]: item.config_id === currentConfigID
             }"
-            v-for="(item, index) in userVipInfo"
+            v-for="item in userVipInfo"
             :key="item.config_id"
             @click="
               loginStatus
@@ -31,6 +31,9 @@
       <template v-if="userVipInfo">
         <vip-user
           :vipLevelList="vipLevelList"
+          :vipConfig="
+            vipConfigList.find(item => item.id === this.currentConfigID)
+          "
           :userVipInfo="
             userVipInfo.find(item => item.config_id === this.currentConfigID)
           "
@@ -43,6 +46,9 @@
       <vip-level-card
         :currentLevelData.sync="setCurrentLevel"
         :vipLevelList="vipLevelList"
+        :vipConfig="
+          vipConfigList.find(item => item.id === this.currentConfigID)
+        "
         :userVipInfo="
           userVipInfo.find(item => item.config_id === this.currentConfigID)
         "
@@ -81,6 +87,7 @@ export default {
       currentConfigID: 0,
       userVipInfo: null,
       vipLevelList: [],
+      vipConfigList: [],
       currentLevelData: {}
     };
   },
@@ -177,7 +184,7 @@ export default {
           this.actionSetGlobalMessage({ msg: "请重新登入", code: res.code });
           return;
         }
-        console.log(res);
+        this.vipConfigList = res.data;
       });
     },
     handleConfigId(value) {

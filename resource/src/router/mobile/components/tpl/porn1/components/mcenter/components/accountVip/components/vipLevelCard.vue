@@ -45,6 +45,16 @@
             <div :class="$style['card-level-text']">
               {{ item.alias }}
             </div>
+            <div
+              v-if="
+                item.seq === userVipInfo.now_level_seq &&
+                  vipConfig.base_type === 3
+              "
+              :class="$style['card-level-downgrade']"
+              @click="onClickDowngrade(true)"
+            >
+              如何保级？
+            </div>
 
             <!-- 有達成時的icon -->
             <img
@@ -100,6 +110,74 @@
       <span>{{ selectedIndex + 1 }}</span
       >/<span>{{ vipLevelList.length }}</span>
     </div>
+
+    <div v-if="showDowngradeData" :class="[$style['downgrade-data']]">
+      <div :class="[$style['downgrade-mask']]" />
+      <div :class="[$style['downgrade-wrap']]">
+        <div :class="[$style['downgrade-value-wrap']]">
+          <div :class="[$style['downgrade-value']]">
+            保级条件(<span :class="[$style['downgrade-limit-day']]">{{
+              userVipInfo.downgrade_day
+            }}</span
+            >天内完成)
+          </div>
+          <div :class="[$style['downgrade-value']]">
+            • 保级充值(元)：
+            <span
+              :class="[
+                $style['downgrade-limit-count'],
+                { [$style['done']]: userVipInfo.downgrade_deposit_achieve }
+              ]"
+              >{{
+                userVipInfo.downgrade_deposit_achieve
+                  ? "已达条件"
+                  : userVipInfo.downgrade_deposit_range
+              }}</span
+            >
+          </div>
+          <div :class="[$style['downgrade-value']]">
+            • 保级流水(元)：
+            <span
+              :class="[
+                $style['downgrade-limit-count'],
+                { [$style['done']]: userVipInfo.downgrade_valid_bet_achieve }
+              ]"
+              >{{
+                userVipInfo.downgrade_valid_bet_achieve
+                  ? "已达条件"
+                  : userVipInfo.downgrade_valid_bet
+              }}</span
+            >
+          </div>
+          <div :class="[$style['downgrade-value']]">
+            • 保级推广(位)：
+            <span
+              :class="[
+                $style['downgrade-limit-count'],
+                { [$style['done']]: userVipInfo.downgrade_members_achieve }
+              ]"
+              >{{
+                userVipInfo.downgrade_members_achieve
+                  ? "已达条件"
+                  : userVipInfo.downgrade_members
+              }}</span
+            >
+          </div>
+          <div
+            v-if="!userVipInfo.downgrade_members_achieve"
+            :class="[$style['downgrade-value']]"
+          >
+            {{ `(每位充值达${userVipInfo.downgrade_members_deposit}元)` }}
+          </div>
+        </div>
+        <div
+          :class="[$style['downgrade-button']]"
+          @click="onClickDowngrade(false)"
+        >
+          关闭
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -124,12 +202,17 @@ export default {
     userVipInfo: {
       type: Object,
       required: true
+    },
+    vipConfig: {
+      type: Array | null,
+      required: true
     }
   },
   data() {
     return {
       selectedIndex: 0,
-      swiperWidth: null
+      swiperWidth: null,
+      showDowngradeData: false
     };
   },
   filters: {
@@ -212,6 +295,9 @@ export default {
     },
     commaFormat(value) {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    onClickDowngrade(type) {
+      this.showDowngradeData = type;
     }
   },
   watch: {
