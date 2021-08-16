@@ -179,6 +179,8 @@ export default {
   display: flex;
   align-content: center;
   padding: 10px 17px 8px;
+  width: 100%;
+  overflow: hidden;
 
   .news-icon {
     height: 100%;

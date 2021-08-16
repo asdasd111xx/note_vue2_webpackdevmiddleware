@@ -101,29 +101,29 @@ export default {
         pc: {
           register: {
             scene: "nc_register",
-            appkey: "FFFF0N0N000000009172"
+            appkey: "FFFF0N0000000000A268"
           },
           login: {
             scene: "nc_login",
-            appkey: "FFFF0N0N000000009172"
+            appkey: "FFFF0N0000000000A268"
           },
           verify: {
             scene: "nc_login",
-            appkey: "FFFF0N0N000000009172"
+            appkey: "FFFF0N0000000000A268"
           }
         },
         mobile: {
           register: {
             scene: "nc_register_h5",
-            appkey: "FFFF0N0N000000009172"
+            appkey: "FFFF0N0000000000A268"
           },
           login: {
             scene: "nc_login_h5",
-            appkey: "FFFF0N0N000000009172"
+            appkey: "FFFF0N0000000000A268"
           },
           verify: {
             scene: "nc_login",
-            appkey: "FFFF0N0N000000009172"
+            appkey: "FFFF0N0000000000A268"
           }
         }
       };
