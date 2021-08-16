@@ -54,10 +54,9 @@
       <!-- page2 -->
       <template v-if="$route.query.depth && !$route.query.userId">
         <div :class="$style['friend-wrap']">
-          <div>
+          <div v-if="friendNameList !== undefined && friendNameList.length > 0">
             <card-total :data="friendBet" />
           </div>
-
           <div
             v-if="friendNameList !== undefined && friendNameList.length > 0"
             :class="$style['card-item-wrap']"
@@ -68,9 +67,11 @@
             />
           </div>
           <div v-else :class="$style['no-data']">
-            <div :class="$style['no-data-image']">
-              <img src="/static/image/_new/mcenter/ic_nodata.png" />
-            </div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)
+              "
+            />
             <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
           </div>
         </div>

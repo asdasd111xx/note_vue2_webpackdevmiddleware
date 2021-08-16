@@ -119,10 +119,8 @@ export default {
         method: "get",
         url: "/api/v1/c/player/friends",
         params: {
-          start_at: Vue.moment(this.startTime).format(
-            "YYYY-MM-DD 00:00:00-04:00"
-          ),
-          end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+          start_at: Vue.moment(this.startTime).format("YYYY-MM-DD"),
+          end_at: Vue.moment(this.endTime).format("YYYY-MM-DD"),
           first_result: this.firstResult,
           max_results: this.maxResults,
           ...params

@@ -225,7 +225,9 @@ export default {
       }
 
       if (data.name === "no-login") {
-        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD 23:59:59");
+        this.endTime = Vue.moment(this.estToday)
+          .add(-data.value, "days")
+          .format("YYYY-MM-DD 23:59:59");
       }
 
       if (this.path && this.pathDay != data.name) {

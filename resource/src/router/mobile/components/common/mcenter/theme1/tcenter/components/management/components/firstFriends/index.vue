@@ -750,8 +750,8 @@ export default {
       this.setTabState(false);
       this.gameRecordParams = {
         userId: val.id,
-        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
-        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD")
       };
 
       this.totalDepth = this.firstFriends.depth;
@@ -814,7 +814,7 @@ export default {
       if (data.name === "yesterday") {
         this.endTime = Vue.moment(this.estToday)
           .add(-data.value, "days")
-          .format("YYYY-MM-DD 23:59:59");
+          .format("YYYY-MM-DD");
       }
 
       if (this.path && this.pathDay != data.name) {
