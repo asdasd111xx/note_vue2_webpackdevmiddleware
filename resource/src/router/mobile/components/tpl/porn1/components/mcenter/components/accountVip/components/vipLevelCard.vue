@@ -75,30 +75,30 @@
               alt="vipLevel_bg"
             />
             <div :class="$style['card-desc-block']">
-              <div>
+              <div v-if="vipConfig.base_type != 3">
                 {{ commaFormat(item.deposit_total) }}
                 <br />
-                累计充值
+                累计充值(元)
+              </div>
+              <div v-else>
+                {{ commaFormat(item.deposit_limit) }}
+                <br />
+                当前充值(元)
               </div>
               <div>
-                {{ commaFormat(item.valid_bet_limit) }}
+                {{
+                  vipConfig.base_type != 3
+                    ? commaFormat(item.valid_bet_limit)
+                    : commaFormat(item.valid_bet_range)
+                }}
                 <br />
-                流水要求
+                当前流水(元)
               </div>
-
-              <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-                <div>
-                保级推广{{ item.downgrade_members }}位 <br />
-                有效会员(充值{{ item.downgrade_deposit | roundTwoPoints }})
+              <div>
+                {{ commaFormat(item.deposit_time) }}
+                <br />
+                充值次数
               </div>
-              </template> -->
-
-              <template v-if="['ey1'].includes(themeTPL)">
-                <div>
-                  {{ item.downgrade_valid_bet }} <br />
-                  保级投注
-                </div>
-              </template>
             </div>
           </div>
         </swiper-slide>

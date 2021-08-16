@@ -69,8 +69,8 @@
 
     <!-- //說明資訊 -->
     <!-- base_type	有效投注計算方式(1.廳開始日, 2.自訂時間, 3.區間統計) -->
-    <div v-if="vipConfig.base_type != 3" :class="$style['user-desc-block']">
-      <div :class="$style['desc-text']">
+    <div :class="$style['user-desc-block']">
+      <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●累计充值(元)：
         <span :class="$style['money']">{{
           userVipInfo.amount_info.deposit_total
@@ -79,25 +79,7 @@
           nextLevelDepositTotalData
         }})
       </div>
-      <div :class="$style['desc-text']">
-        ●当前流水(元)：
-        <span :class="$style['money']">{{
-          userVipInfo.amount_info.valid_bet
-        }}</span>
-        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
-      </div>
-      <template v-if="['ey1'].includes(themeTPL)">
-        <div :class="$style['desc-text']">
-          ●保级投注(元)：
-          <span :class="$style['money']">{{
-            userVipInfo.amount_info.valid_bet
-          }}</span>
-          ({{ downgradeData }} , 保级{{ userVipInfo.downgrade_day }}天)
-        </div>
-      </template>
-    </div>
-    <div v-else :class="$style['user-desc-block']">
-      <div :class="$style['desc-text']">
+      <div v-else :class="$style['desc-text']">
         ●当前充值(元)
         <span :class="$style['money']">{{
           userVipInfo.amount_info.deposit_amount
@@ -107,11 +89,17 @@
         }})
       </div>
       <div :class="$style['desc-text']">
-        ●当前流水(元)
+        ●当前流水(元)：
         <span :class="$style['money']">{{
-          userVipInfo.amount_info.valid_bet
+          vipConfig.base_type != 3
+            ? userVipInfo.amount_info.valid_bet
+            : userVipInfo.downgrade_valid_bet
         }}</span>
-        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
+        ({{
+          vipConfig.base_type != 3
+            ? userVipInfo.amount_info.valid_bet
+            : userVipInfo.downgrade_valid_bet
+        }}/{{ nextLevelValidBetData }})
       </div>
       <div :class="$style['desc-text']">
         ●充值次数
