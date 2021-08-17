@@ -567,6 +567,8 @@
         }
       "
     />
+    <!-- 出款單取消Alert -->
+    <withdraw-alert v-if="isAlertShow" :close-fuc="goBack" />
 
     <!-- 彈窗 -->
     <template v-if="showPopStatus.isShow">
@@ -659,6 +661,10 @@ export default {
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
+    withdrawAlert: () =>
+      import(
+        /* webpackChunkName: 'withdrawAlert' */ "@/router/mobile/components/common/mcenter/theme1/withdraw/components/withdrawAlert"
+      ),
     balanceTran,
     confirmOneBtn,
     serialNumber,
@@ -685,7 +691,7 @@ export default {
       isSerial: false,
       isShowMore: true,
       isDoneMarquee: false,
-
+      isAlertShow: false,
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -1072,6 +1078,10 @@ export default {
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
+    goBack() {
+      this.isAlertShow = false;
+      window.scrollTo(0, 0);
+    },
     getBankImage(swiftCode) {
       return {
         src: `https://images.dormousepie.com/icon/bankIconBySwiftCode/${swiftCode}.png`,
@@ -1412,35 +1422,34 @@ export default {
     withdrawCheck() {
       //CGPay出款前檢查設定
       const params = {
-        wallet_id: this.selectedCard.id,
-        method_id:
+        walletId: this.selectedCard.id,
+        methodId:
           this.selectedCard.bank_id === 2009
             ? this.withdrawCurrency.method_id
             : ""
       };
-
-      return axios({
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v2/c/withdraw/check",
-        params
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Withdraw/Check/V2`,
+        params: {
+          ...params,
+          lang: "zh-cn"
+        }
       })
         .then(res => {
           this.isCheckWithdraw = false;
-
-          if (res.data.result === "ok") {
+          if (res.status === "000") {
             let check = true;
-
             //CGPay取款戶名核實機制
-            if (!res.data.ret.wallet) {
+            if (!res.data.wallet) {
               this.actionSetGlobalMessage({
                 msg: "钱包注册姓名与真实姓名不符"
               });
               check = false;
               return;
             }
-
-            Object.keys(res.data.ret).forEach(i => {
-              if (i !== "bank" && !res.data.ret[i]) {
+            Object.keys(res.data).forEach(i => {
+              if (i !== "bank" && !res.data[i]) {
                 this.actionSetGlobalMessage({
                   msg: "请先设定提现资料",
                   cb: () => {
@@ -1531,18 +1540,21 @@ export default {
       if (params) {
         _params = { ..._params, ...params };
       }
-      let methinIdx = null
-      let methonId = null
+      let methinIdx = null;
+      let methonId = null;
       if (
         this.selectedCard.swift_code === "BBUSDTCN1" ||
         this.selectedCard.swift_code === "BBUSDTCN3"
       ) {
-        methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
-        methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
-      }else if(this.selectedCard.bank_id === 2009){
+        methinIdx = this.withdrawUserData.crypto.findIndex(card => {
+          return card.swift_code === this.selectedCard.swift_code;
+        });
+        methonId = this.withdrawUserData.crypto[methinIdx].currency[0]
+          .method_id;
+      } else if (this.selectedCard.bank_id === 2009) {
         methonId = this.withdrawCurrency.method_id;
-      }else{
-        methonId = ""
+      } else {
+        methonId = "";
       }
 
       if (this.memInfo.config.withdraw === "迅付") {
@@ -1557,16 +1569,28 @@ export default {
         };
       }
 
-      console.log(_params);
+      // console.log(_params);
+      //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232
+      //未來有其他第三方再使用/xbb/Withdraw/ext/{extID} C02.321
 
-      return ajax({
+      return goLangApiRequest({
         method: "post",
-        // url: API_WITHDRAW_WRITE, 舊的本站寫單
-        url: API_WITHDRAW_WRITE_2,
-        errorAlert: false,
-        params: _params,
-        success: response => {
-          if (response && response.result === "ok") {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Withdraw/Inpay`,
+        params: {
+          lang: "zh-cn",
+          amount: this.withdrawValue,
+          confirm: true,
+          maxId: this.withdrawData.audit.total.max_id,
+          administrativeAmount: this.withdrawData.audit.total
+            .administrative_amount,
+          offerDeduction: this.withdrawData.audit.total.offer_deduction,
+          auditAmount: this.withdrawData.audit.total.audit_amount,
+          method: this.selectedCard.withdrawType,
+          value: this.selectedCard.id.toString()
+        }
+      })
+        .then(response => {
+          if (response && response.status === "000") {
             if (this.memInfo.config.withdraw === "迅付") {
               this.actionSetGlobalMessage({
                 msg: "提现成功",
@@ -1574,43 +1598,16 @@ export default {
                   window.location.reload();
                 }
               });
-
-              // 舊的第二次寫單才需要
-              // 迅付寫單
-              //   ajax({
-              //     method: 'post',
-              //     url: API_TRADE_RELAY,
-              //     errorAlert: false,
-              //     params: {
-              //       api_uri: '/api/trade/v2/c/withdraw/entry',
-              //       [`method[${hasAccountId}]`]: this.withdrawAccount.id,
-              //       //   password: this.withdrawPwd,
-              //       withdraw_id: response.ret.id
-              //     },
-              //     fail: (res) => {
-              //       console.log(res)
-
-              //       this.msg = '提现已取消，请重新提交申请';
-              //     }
-              //   }).then((res) => {
-              //     console.log(res)
-
-              //     this.isLoading = false;
-              //     this.actionSetIsLoading(false);
-
-              //     if (res && res.result === 'ok') {
-              //       this.msg = "提现成功"
-              //     }
-              //   });
             } else {
               // 第三方寫單
-              ajax({
-                method: "get",
-                url: API_WITHDRAW,
+              goLangApiRequest({
+                method: "post",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Withdraw`,
                 errorAlert: false,
                 params: {
-                  amount: response.ret.amount,
-                  withdraw_id: response.ret.id,
+                  lang: "zh-cn",
+                  amount: response.data.amount,
+                  withdrawId: response.data.id,
                   stage: "forward",
                   logo: this.webInfo.logo
                     ? `${this.webInfo.cdn_domain}${this.webInfo.logo}`
@@ -1625,53 +1622,57 @@ export default {
                     ? `${this.webInfo.cdn_domain}${this.webInfo.fav_icon}`
                     : "",
                   check: true
-                },
-                fail: res => {
-                  this.actionSetGlobalMessage({
-                    msg: "提现已取消，请重新提交申请"
-                  });
                 }
               }).then(res => {
                 this.isLoading = false;
                 this.actionSetIsLoading(false);
 
-                if (res.result === "ok") {
+                if (res && res.status === "000") {
                   this.actionSetGlobalMessage({
                     msg: "提现成功"
                   });
 
                   this.thirdUrl = res.ret.uri;
+                } else {
+                  this.actionSetGlobalMessage({
+                    msg: "提现已取消，请重新提交申请"
+                  });
                 }
               });
             }
           } else {
             this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
+            //only when C590021 show alert
+            if (response.code === "C590021") {
+              this.isAlertShow = true;
+            }
           }
 
           this.isLoading = false;
           this.actionSetIsLoading(false);
           return;
-        },
-        fail: error => {
-          if (error && error.data && error.data.msg) {
+        })
+        .catch(error => {
+          if (error && error.msg) {
             this.actionSetGlobalMessage({
-              msg: error.data.msg,
-              code: error.data.code,
+              msg: error.msg,
+              code: error.errodCode,
               origin: "withdraw"
             });
 
-            this.errTips = error.data.msg;
-            this.errCode = error.data.code;
+            this.errTips = error.msg;
+            this.errCode = error.errorCode;
           }
 
-          if (error && error.data && error.data.code === "M500001") {
+          if (error && error.errorCode === "M500001") {
             window.location.reload();
           }
-
+          if (error && error.errorCode === "C590021") {
+            this.isAlertShow = true;
+          }
           this.isLoading = false;
           this.actionSetIsLoading(false);
-        }
-      });
+        });
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
@@ -1693,8 +1694,11 @@ export default {
         this.selectedCard.swift_code === "BBUSDTCN1" ||
         this.selectedCard.swift_code === "BBUSDTCN3"
       ) {
-        let methinIdx = this.withdrawUserData.crypto.findIndex((card)=>{return card.swift_code === this.selectedCard.swift_code})
-        let methonId = this.withdrawUserData.crypto[methinIdx].currency[0].method_id
+        let methinIdx = this.withdrawUserData.crypto.findIndex(card => {
+          return card.swift_code === this.selectedCard.swift_code;
+        });
+        let methonId = this.withdrawUserData.crypto[methinIdx].currency[0]
+          .method_id;
 
         _params = {
           ..._params,
@@ -1992,7 +1996,7 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
           this.redJackpotData = res.data;
         } else {
