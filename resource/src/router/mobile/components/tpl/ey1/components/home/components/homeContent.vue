@@ -134,7 +134,7 @@
       }"
     >
       <swiper
-        ref="gameSwiper"
+        :ref="'game-swiper'"
         :updatedKey="gameSwiperUpdatedKey"
         :options="gameSwiperOptions"
         :class="$style['new-game-container']"
@@ -144,69 +144,28 @@
           :key="`game-swiper-${key}`"
           :class="[$style['game-swiper-slide'], 'swiper-slide']"
         >
-          <!-- <template v-if="list.vendors && list.vendors.length < 4">
-            <div
-              v-for="(game, i) in list.vendors"
-              :key="`game-${i}-${game.image}`"
-              :data-img-type="game.imageType"
-              :data-type="game.type"
-              :class="[
-                $style.game,
-                { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
-                { [$style['is-third']]: [4].includes(game.imageType) },
-                { [$style['is-activity']]: [5].includes(game.imageType) }
-              ]"
-            >
-              <template v-if="game.imageType === 4">
-                <div
-                  :class="[$style['third-iamge-wrap']]"
-                  @click="onOpenGame(game)"
-                >
-                  <div :class="[$style['third-iamge-bg']]">
-                    <div :class="[$style['vendor']]">
-                      {{ game.vendor_abridge }}
-                    </div>
-                    <div :class="[$style['third-iamge']]">
-                      <img v-lazy="getImg(game)" />
-                    </div>
-                  </div>
-                  <div :class="[$style['name']]">{{ game.name }}</div>
-                </div>
-              </template>
-              <template v-else>
-                <img
-                  v-lazy="getImg(game)"
-                  :alt="game.name"
-                  @click="onOpenGame(game)"
-                />
-              </template>
-            </div>
-          </template> -->
-
           <template>
             <swiper
-              :ref="`subGameSwiper-${key}`"
-              :updatedKey="gameSwiperUpdatedKey"
+              :ref="`sub-game-swiper-${key}`"
+              :data-key="`sub-game-swiper-${key}`"
               :options="subGameSwiperOptions"
               :class="$style['sub-game-container']"
             >
-              <swiperSlide
-                v-for="(game, i) in list.vendors"
-                :key="`sub-game-swiper-${i}`"
-                :class="[
-                  'swiper-slide',
-                  $style['sub-game-swiper-slide'],
-                  {
-                    [$style['is-full']]: [1, 2, 3].includes(game.imageType)
-                  },
-                  { [$style['is-third']]: [4].includes(game.imageType) },
-                  { [$style['is-activity']]: [5].includes(game.imageType) }
-                ]"
-              >
-                <template>
+              <template v-for="(game, i) in list.vendors">
+                <swiperSlide
+                  v-if="!(list.vendors[i - 1] && list.vendors[i - 1].imageFlag)"
+                  :key="`sub-game-swiper-${i}`"
+                  :class="[
+                    'swiper-slide',
+                    $style['sub-game-swiper-slide'],
+                    {
+                      [$style['flex']]: game.imageFlag
+                    }
+                  ]"
+                >
                   <div
                     :key="`game-${i}-${game.image}`"
-                    :data-img-type="game.imageType"
+                    :data-img-type="`${game.imageType}`"
                     :data-type="game.type"
                     :class="[
                       $style.game,
@@ -241,100 +200,27 @@
                       />
                     </template>
                   </div>
-                </template>
-              </swiperSlide>
+
+                  <!-- imageType === 0, 50% 並排 -->
+                  <div
+                    v-if="game.imageFlag"
+                    :key="`game-${i}-${list.vendors[i + 1].image}-2`"
+                    :data-img-type="0"
+                    :data-type="list.vendors[i + 1].type"
+                    :class="[$style.game]"
+                  >
+                    <img
+                      v-lazy="getImg(list.vendors[i + 1])"
+                      :alt="list.vendors[i + 1].name"
+                      @click="onOpenGame(list.vendors[i + 1])"
+                    />
+                  </div>
+                </swiperSlide>
+              </template>
             </swiper>
           </template>
-
-          <!-- 子項目 -->
-          <!-- <swiper
-            :key="`sub-ganme-swiper-${key}`"
-            :class="[$style['sub-game-container']]"
-            :options="subGameSwiperOptions(list)"
-            :updatedKey="subGameSwiperUpdatedKey"
-          >
-            <swiperSlide
-              v-for="(game, index) in list.vendors"
-              :key="`sub-ganme-swiper-slide-${index}`"
-              :class="['swiper-slide', $style['sub-game-swiper-slider']]"
-            >
-              <div
-                :class="[
-                  $style.game,
-                  { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
-                  { [$style['is-third']]: [4].includes(game.imageType) },
-                  { [$style['is-activity']]: [5].includes(game.imageType) }
-                ]"
-              >
-                <template v-if="game.imageType === 4">
-                  <div :class="[$style['third-iamge-wrap']]">
-                    <div :class="[$style['third-iamge-bg']]">
-                      <div :class="[$style['vendor']]">
-                        {{ game.vendor_abridge }}
-                      </div>
-                      <div :class="[$style['third-iamge']]">
-                        <img v-lazy="getImg(game)" />
-                      </div>
-                    </div>
-                    <div :class="[$style['name']]">{{ game.name }}</div>
-                  </div>
-                </template>
-                <template v-else>
-                  <img v-lazy="getImg(game)" :alt="game.name" />
-                </template>
-              </div>
-            </swiperSlide>
-          </swiper>
-          -->
         </swiperSlide>
       </swiper>
-
-      <!-- <div
-        ref="game-wrap"
-        :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{
-          height: `${wrapHeight}px`,
-          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
-          opacity: stopScroll ? 0 : 1
-        }"
-        @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
-        @touchend="onTouchEnd"
-      >
-        <template>
-          <div
-            v-for="(game, i) in currentGame.vendors"
-            :key="`game-${i}-${game.image}`"
-            :data-img-type="game.imageType"
-            :data-type="game.type"
-            :class="[
-              $style.game,
-              { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
-              { [$style['is-third']]: [4].includes(game.imageType) },
-              { [$style['is-activity']]: [5].includes(game.imageType) }
-            ]"
-            @click.stop="onOpenGame(game)"
-          >
-            <template v-if="game.imageType === 4">
-              <div :class="[$style['third-iamge-wrap']]">
-                <div :class="[$style['third-iamge-bg']]">
-                  <div :class="[$style['vendor']]">
-                    {{ game.vendor_abridge }}
-                  </div>
-                  <div :class="[$style['third-iamge']]">
-                    <img v-lazy="getImg(game)" />
-                  </div>
-                </div>
-                <div :class="[$style['name']]">{{ game.name }}</div>
-              </div>
-            </template>
-            <template v-else>
-              <img v-lazy="getImg(game)" :alt="game.name" />
-            </template>
-          </div>
-        </template>
-        <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
-      </div> -->
     </div>
     <page-loading :isShow="isLoading" />
   </div>
@@ -372,13 +258,14 @@ export default {
       return {
         direction: "vertical",
         freeMode: true,
-        // autoHeight: true,
-        autoResize: true,
-        observer: true,
-        observeParents: true,
+        autoHeight: true,
+        // observer: true,
+        // observeParents: true,
         nested: true,
-        slidesPerView: 6,
-        spaceBetween: 0
+        slidesPerView: document.body.clientWidth < 375 ? true : 3,
+        spaceBetween: 0,
+        mousewheel: false,
+        speed: 100
       };
     },
     gameSwiperOptions() {
@@ -387,19 +274,21 @@ export default {
         loop: true,
         observer: true,
         observeParents: true,
-        // lazy: {
-        //   loadPrevNext: true
-        // },
-        // mousewheel: true,
+        mousewheel: false,
         on: {
           slideChangeTransitionStart: () => {
             if (
               this.newTypeList &&
-              this.$refs["gameSwiper"] &&
-              this.$refs["gameSwiper"].$swiper
+              this.$refs["game-swiper"] &&
+              this.$refs["game-swiper"].$swiper
             ) {
-              let realIndex = this.$refs["gameSwiper"].$swiper.realIndex;
+              let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
               this.onChangeSelectType(this.newTypeList[realIndex], false);
+              this.$nextTick(() => {
+                this.$refs[`sub-game-swiper-${+realIndex}`][0].$swiper.slideTo(
+                  0
+                );
+              });
             }
           }
         }
@@ -407,7 +296,9 @@ export default {
     },
 
     typeItemWidth() {
-      if (document.body.clientWidth < 420) {
+      if (document.body.clientWidth < 375) {
+        return "35";
+      } else if (document.body.clientWidth < 420) {
         return "48";
       } else {
         if (this.newTypeList) {
@@ -459,12 +350,11 @@ export default {
 
       // header + footer 上方功能列
       let extraHeight = 30 + 120 + 60 + homeSliderHeight + 10;
+
       this.eyWrapHeight =
         document.body.offsetHeight - extraHeight > 0
           ? document.body.offsetHeight - extraHeight
           : 420;
-
-      // this.onChangeSelectType(this.currentType, true, true);
     },
     onChangeSelectType(item, slide = false, focus = false) {
       if (this.currentType == item && !focus) {
@@ -489,18 +379,21 @@ export default {
 
       if (
         slide &&
-        this.$refs["gameSwiper"] &&
-        this.$refs["gameSwiper"].$swiper
+        this.$refs["game-swiper"] &&
+        this.$refs["game-swiper"].$swiper
       ) {
-        this.$refs["gameSwiper"].$swiper.slideTo(+item.key + 1);
+        this.$refs[`sub-game-swiper-${+item.key}`][0].$swiper.slideTo(0);
+        this.$nextTick(() => {
+          this.$refs["game-swiper"].$swiper.slideTo(+item.key + 1);
+        });
       }
     }
   },
   beforeMount() {
-    window.removeEventListener("resize", this.onResize);
+    // window.removeEventListener("resize", this.onResize);
   },
   mounted() {
-    window.addEventListener("resize", this.onResize);
+    // window.addEventListener("resize", this.onResize);
     if (this.loginStatus) {
       this.getUserViplevel();
     }
@@ -516,11 +409,6 @@ export default {
   margin-top: 1px;
   background: #f1f1f1;
   z-index: 4;
-
-  // 陰影缺美術
-  // border-radius: 17.5px;
-  // border: 1px solid gray;
-  // box-shadow: 2px 2px 2px 2px gray;
 }
 
 .type-wrap-container {
@@ -639,10 +527,6 @@ export default {
   height: 100%;
   position: relative;
   overflow-y: scroll;
-
-  > * {
-    display: inline-block;
-  }
 }
 
 .game-swiper-slide {
@@ -657,10 +541,19 @@ export default {
 .sub-game-swiper-slide {
   height: auto !important;
   position: relative;
-  width: 50%;
-  max-width: 100%;
+  width: 100%;
   height: 100%;
   border-radius: 7px;
+  display: inline-block;
+
+  &.flex {
+    display: flex;
+  }
+}
+
+.game {
+  width: 48%;
+  padding: 0 2px;
   display: inline-block;
 
   &.is-full {
@@ -677,6 +570,11 @@ export default {
   }
 
   &.is-activity {
+    width: 100%;
+  }
+
+  > img {
+    display: block;
     width: 100%;
   }
 }
@@ -831,15 +729,6 @@ export default {
   }
 }
 
-.game {
-  width: 98%;
-
-  > img {
-    display: block;
-    width: 100%;
-  }
-}
-
 .third-iamge-wrap {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -894,13 +783,17 @@ export default {
   height: 100%;
 }
 
-.wrap-buffer {
-  width: 100%;
-  height: 12%;
-  display: block;
-  overflow: hidden;
-  position: relative;
-  float: left;
-  box-sizing: border-box;
+@media screen and (max-width: 375px) {
+  .type-slide-bar {
+    width: 72px;
+  }
+
+  .type-slide-bar-hover {
+    width: 72px;
+  }
+
+  .type-slide-bar-name {
+    width: 58px;
+  }
 }
 </style>

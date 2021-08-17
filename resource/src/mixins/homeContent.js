@@ -156,13 +156,37 @@ export default {
           });
         });
       }
-      const gameList = this.allGame
+
+      let gameList = this.allGame
         .map(game => game)
         .filter(item => {
           return this.isAdult
             ? item
             : item.iconName.toLowerCase() !== "welfare";
         });
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        let pass = false;
+
+        gameList = gameList.map((item, key) => {
+          let _item = item.vendors.map((vendor, index) => {
+            if (
+              !pass &&
+              vendor.imageType === 0 &&
+              item.vendors[index + 1] &&
+              item.vendors[index + 1].imageType === 0
+            ) {
+              pass = true;
+              return { ...vendor, imageFlag: true };
+            } else {
+              pass = false;
+              return vendor;
+            }
+          });
+
+          return { ...item, vendors: _item };
+        });
+      }
       return gameList;
     },
     currentGame() {
