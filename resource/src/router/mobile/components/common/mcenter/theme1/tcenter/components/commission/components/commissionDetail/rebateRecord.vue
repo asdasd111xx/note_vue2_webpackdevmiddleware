@@ -217,6 +217,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             },
             {
@@ -245,7 +246,11 @@ export default {
           item:
             this.pageTotal?.profit > 0
               ? this.amountFormat(this.pageTotal.profit)
-              : "--"
+              : "--",
+          color:
+            this.pageTotal?.profit > 0
+              ? this.chooseColor(this.pageTotal.profit)
+              : ""
         },
         { name: "笔数：", item: this.pagination.total ?? "0" }
       ];
@@ -270,6 +275,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             }
           ]
@@ -291,7 +297,10 @@ export default {
           name: "总损益：",
           item: this.friendGameList?.total?.profit
             ? this.amountFormat(this.friendGameList.total.profit)
-            : "0.00"
+            : "0.00",
+          color: this.friendGameList?.total?.profit
+            ? this.chooseColor(this.friendGameList.total.profit)
+            : ""
         },
         {
           name: "笔数：",
@@ -314,6 +323,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             }
           ]
@@ -429,6 +439,10 @@ export default {
   methods: {
     toggleSerial() {
       this.isSerial = !this.isSerial;
+    },
+    //損益 正紅負黑
+    chooseColor(val) {
+      return val < 0 ? "red" : "black";
     },
     enterNextLayer(friend) {
       //進到下一頁

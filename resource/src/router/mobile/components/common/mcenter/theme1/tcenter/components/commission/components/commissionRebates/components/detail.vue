@@ -285,8 +285,9 @@ export default {
               show: true
             },
             {
-              name: "总损益",
+              name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             },
             {
@@ -314,7 +315,11 @@ export default {
           item:
             this.friendMemberList?.total?.profit > 0
               ? this.amountFormat(this.friendMemberList.total.profit)
-              : "--"
+              : "--",
+          color:
+            this.friendMemberList?.total?.profit > 0
+              ? this.chooseColor(this.friendMemberList.total.profit)
+              : ""
         },
         {
           name: "笔数：",
@@ -342,6 +347,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             }
           ]
@@ -353,22 +359,24 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          item: `总有效投注： ${
+          name: "总有效投注：",
+          item:
             this.friendGameList?.total?.valid_bet > 0
               ? this.amountFormat(this.friendGameList.total.valid_bet)
               : "--"
-          }`
         },
         {
-          item: `总损益： ${
+          name: "总损益：",
+          item:
             this.friendGameList?.total?.profit > 0
               ? this.amountFormat(this.friendGameList.total.profit)
-              : "--"
-          }`
+              : "--",
+          color:
+            this.friendGameList?.total?.profit > 0
+              ? this.chooseColor(this.friendGameList.total.profit)
+              : ""
         },
-        {
-          item: `笔数： ${this.friendGameList?.pagination?.total ?? "0"}`
-        }
+        { name: "笔数：", item: this.friendGameList?.pagination?.total ?? "0" }
       ];
       return strArr;
     },
@@ -386,6 +394,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             }
           ]
@@ -411,8 +420,9 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
-    getStatus(value) {
-      return value > 0 ? "red" : "black";
+    //損益 正紅負黑
+    chooseColor(val) {
+      return val < 0 ? "red" : "black";
     },
     getAllDetailList() {
       //取得今日實時返利詳情

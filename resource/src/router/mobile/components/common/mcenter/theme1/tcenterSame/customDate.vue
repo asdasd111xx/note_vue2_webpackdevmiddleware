@@ -115,7 +115,6 @@ export default {
     };
   },
   created() {
-    console.log(JSON.stringify(this.dateRange));
     if (this.dateRange) {
       this.inqStart = this.dateRange.startTime;
       this.inqEnd = this.dateRange.endTime;
