@@ -140,7 +140,8 @@ export default {
               amount: this.$route.query.amount,
               current_entry_id: this.$route.query.current_entry_id,
               show_detail: this.$route.query.show_detail,
-              oauth2: this.$route.query.oauth2
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
             }
           });
           break;
@@ -155,13 +156,14 @@ export default {
               record: "record",
               period: this.$route.query.period,
               start_at: this.$route.query.start_at,
-              end_at: this.totalTime,
+              end_at: this.$route.query.end_at,
               oauth2_detail: this.$route.query.oauth2_detail,
               type: this.$route.query.type,
               amount: this.$route.query.amount,
               current_entry_id: this.$route.query.current_entry_id || this.id,
               show_detail: this.$route.query.show_detail,
-              oauth2: this.$route.query.oauth2
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
             }
           });
           break;
