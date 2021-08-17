@@ -89,14 +89,13 @@ export default {
         url: API_COMMISSION_LEVEL_LIST,
         errorAlert: false,
         params: { period: this.$route.query.period || this.currentInfo.period },
-        success: ({ result, ret, total }) => {
+        success: ({ result, ret, total, at }) => {
           if (result !== "ok") {
             return;
           }
 
           this.summaryList = ret;
           this.summaryTotal = total;
-          this.mainNoData = false;
         }
       });
     },
@@ -176,13 +175,12 @@ export default {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     titleDateFormat(value) {
-      let today = Vue.moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-      let end = Vue.moment(EST(value)).format("YYYY-MM-DD HH:mm:ss");
-
+      let today = Vue.moment(new Date()).format("HH:mm:ss");
+      let end = Vue.moment(value).format("HH:mm:ss");
       if (today > end) {
-        return Vue.moment(EST(value)).format("YYYY-MM-DD 23:59:59");
+        return Vue.moment(value).format("YYYY-MM-DD 23:59:59");
       }
-      return Vue.moment(EST(value)).format("YYYY-MM-DD HH:00:00");
+      return Vue.moment(value).format("YYYY-MM-DD HH:mm:ss");
     },
 
     /**

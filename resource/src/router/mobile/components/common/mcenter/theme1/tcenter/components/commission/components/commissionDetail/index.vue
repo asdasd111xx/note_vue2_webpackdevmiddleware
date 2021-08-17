@@ -30,7 +30,7 @@
     <assign
       v-if="currentTemplate === 'assign'"
       :currentInfo="currentInfo"
-      @id="memberId"
+      @id="memberData"
     />
     <record
       v-if="currentTemplate === 'record' && !path"
@@ -71,7 +71,8 @@ export default {
       currentTab: 0,
       currentTemplate: "assign",
       path: this.$route.params.title ?? "",
-      id: ""
+      id: "",
+      totalTime: "" //統計至
     };
   },
 
@@ -139,7 +140,8 @@ export default {
               amount: this.$route.query.amount,
               current_entry_id: this.$route.query.current_entry_id,
               show_detail: this.$route.query.show_detail,
-              oauth2: this.$route.query.oauth2
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
             }
           });
           break;
@@ -160,7 +162,8 @@ export default {
               amount: this.$route.query.amount,
               current_entry_id: this.$route.query.current_entry_id || this.id,
               show_detail: this.$route.query.show_detail,
-              oauth2: this.$route.query.oauth2
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
             }
           });
           break;
@@ -173,8 +176,9 @@ export default {
       this.showTitle = val;
       return;
     },
-    memberId(val) {
-      this.id = val;
+    memberData(val) {
+      this.id = val.id;
+      this.totalTime = val.end_at;
       return;
     }
   }

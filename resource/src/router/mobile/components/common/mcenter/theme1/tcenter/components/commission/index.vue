@@ -371,15 +371,17 @@ export default {
       }
     },
     getTimeRecord(data) {
-      this.start = Vue.moment(this.estToday)
-        .add(-data.value, "days")
-        .format("YYYY-MM-DD");
-      this.end = Vue.moment(this.estToday).format("YYYY-MM-DD");
-
-      if (data.name === "yesterday") {
-        this.end = Vue.moment(this.estToday)
+      if (data.name != "custom") {
+        this.start = Vue.moment(this.estToday)
           .add(-data.value, "days")
           .format("YYYY-MM-DD");
+        this.end = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+        if (data.name === "yesterday") {
+          this.end = Vue.moment(this.estToday)
+            .add(-data.value, "days")
+            .format("YYYY-MM-DD");
+        }
       }
 
       if (this.path && this.$route.params.item != data.name) {

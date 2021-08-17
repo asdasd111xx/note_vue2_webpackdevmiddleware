@@ -7,6 +7,7 @@
       <custom-date
         v-if="isShowDatePicker"
         :options="options"
+        :date-range="dateRange"
         @search-date="receiveSearchCustomDate"
         @select-type="receiveSelectType"
       />
@@ -372,6 +373,15 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    //傳進預設選擇自訂日期區間
+    dateRange: {
+      get() {
+        return { startTime: this.startTime, endTime: this.endTime };
+      },
+      set(val) {
+        return val;
+      }
+    },
     allTotalData() {
       return [
         {
@@ -539,17 +549,19 @@ export default {
       this.updateGame();
     },
     getTimeRecord(data) {
-      this.selectType.status = 1;
+      this.selectType.status = 0;
 
-      this.startTime = Vue.moment(this.estToday)
-        .add(-data.value, "days")
-        .format("YYYY-MM-DD");
-      this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-
-      if (data.name === "yesterday") {
-        this.endTime = Vue.moment(this.estToday)
+      if (data.name != "custom") {
+        this.startTime = Vue.moment(this.estToday)
           .add(-data.value, "days")
           .format("YYYY-MM-DD");
+        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+        if (data.name === "yesterday") {
+          this.endTime = Vue.moment(this.estToday)
+            .add(-data.value, "days")
+            .format("YYYY-MM-DD");
+        }
       }
 
       if (this.path && this.pathDay != data.name) {

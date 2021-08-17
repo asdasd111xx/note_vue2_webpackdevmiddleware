@@ -24,6 +24,7 @@
 
       <custom-date
         v-if="isShowDatePicker"
+        :date-range="dateRange"
         @search-date="receiveSearchCustomDate"
         :choose-status="false"
       />
@@ -403,6 +404,15 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    //傳進預設選擇自訂日期區間
+    dateRange: {
+      get() {
+        return { startTime: this.startTime, endTime: this.endTime };
+      },
+      set(val) {
+        return val;
+      }
+    },
     allTotalList() {
       let strArr = [];
       strArr.push(`笔数：${this.firstFriends.total}`);
@@ -750,8 +760,8 @@ export default {
       this.setTabState(false);
       this.gameRecordParams = {
         userId: val.id,
-        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
-        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD")
       };
 
       this.totalDepth = this.firstFriends.depth;
@@ -806,15 +816,18 @@ export default {
       //切換上方時間功能列
       this.isShowDatePicker = false;
 
-      this.startTime = Vue.moment(this.estToday)
-        .add(-data.value, "days")
-        .format("YYYY-MM-DD");
-      this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-
-      if (data.name === "yesterday") {
-        this.endTime = Vue.moment(this.estToday)
+      //自訂義時間區間 顯示上一個的時間區間
+      if (data.name != "custom") {
+        this.startTime = Vue.moment(this.estToday)
           .add(-data.value, "days")
-          .format("YYYY-MM-DD 23:59:59");
+          .format("YYYY-MM-DD");
+        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+        if (data.name === "yesterday") {
+          this.endTime = Vue.moment(this.estToday)
+            .add(-data.value, "days")
+            .format("YYYY-MM-DD");
+        }
       }
 
       if (this.path && this.pathDay != data.name) {
@@ -826,6 +839,7 @@ export default {
         });
         this.pathDay = data.name;
       }
+
       this.setTimeTitle();
       this.searchResult = false;
       this.setTabState(true);
@@ -833,6 +847,7 @@ export default {
 
       if (this.pathDay === "custom") {
         this.isShowDatePicker = true;
+
         return;
       }
 

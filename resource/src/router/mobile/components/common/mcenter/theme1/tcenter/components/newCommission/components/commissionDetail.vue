@@ -183,12 +183,47 @@ export default {
     detailPage() {
       if (this.detailPage === 2) {
         this.title = this.allLevelFriendArray[this.detailSelectFriend].title;
+        switch (this.detailType) {
+          case "firstDeposit":
+            this.getAllFriendsDetail(
+              "First/Deposit",
+              this.detailSelectFriend + 1
+            );
+            break;
+          case "hasBet":
+            this.getAllFriendsDetail("Wager", this.detailSelectFriend + 1);
+            break;
+          case "deposit":
+            this.getAllFriendsDetail("Deposit", this.detailSelectFriend + 1);
+            break;
+          case "withdraw":
+            this.getAllFriendsDetail("Withdraw", this.detailSelectFriend + 1);
+            break;
+          default:
+            break;
+        }
       } else {
         this.title = `总${this.detailTypeName[this.detailType]}${
           this.detailType === "firstDeposit" || this.detailType === "hasBet"
             ? "人数"
             : "金额"
         }`;
+        switch (this.detailType) {
+          case "firstDeposit":
+            this.getAllFriendsDetail("First/Deposit", 0);
+            break;
+          case "hasBet":
+            this.getAllFriendsDetail("Wager", 0);
+            break;
+          case "deposit":
+            this.getAllFriendsDetail("Deposit", 0);
+            break;
+          case "withdraw":
+            this.getAllFriendsDetail("Withdraw", 0);
+            break;
+          default:
+            break;
+        }
       }
     }
   },
@@ -239,25 +274,6 @@ export default {
     setFriendLevel(level) {
       this.setDetailPage(2);
       this.detailSelectFriend = level;
-      switch (this.detailType) {
-        case "firstDeposit":
-          this.getAllFriendsDetail(
-            "First/Deposit",
-            this.detailSelectFriend + 1
-          );
-          break;
-        case "hasBet":
-          this.getAllFriendsDetail("Wager", this.detailSelectFriend + 1);
-          break;
-        case "deposit":
-          this.getAllFriendsDetail("Deposit", this.detailSelectFriend + 1);
-          break;
-        case "withdraw":
-          this.getAllFriendsDetail("Withdraw", this.detailSelectFriend + 1);
-          break;
-        default:
-          break;
-      }
     },
     formatToPrice(value) {
       //千分位

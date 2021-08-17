@@ -50,9 +50,10 @@
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
             <div
               v-if="
-                path &&
+                (path &&
                   caculateList.state !== 3 &&
-                  caculateList.self_times !== 0
+                  caculateList.self_times !== 0) ||
+                  (path && caculateList.state === 3)
               "
               :class="$style['detail-content']"
             >
@@ -133,7 +134,7 @@
               <div :class="$style['content-right']">
                 {{
                   caculateList.self_min_limit
-                    ? caculateList.self_min_limit
+                    ? commaFormat(caculateList.self_min_limit)
                     : "--"
                 }}
               </div>
