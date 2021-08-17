@@ -93,12 +93,12 @@
         <span :class="$style['money']">{{
           vipConfig.base_type != 3
             ? userVipInfo.amount_info.valid_bet
-            : userVipInfo.downgrade_valid_bet
+            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
         }}</span>
         ({{
           vipConfig.base_type != 3
             ? userVipInfo.amount_info.valid_bet
-            : userVipInfo.downgrade_valid_bet
+            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
         }}/{{ nextLevelValidBetData }})
       </div>
       <div :class="$style['desc-text']">
