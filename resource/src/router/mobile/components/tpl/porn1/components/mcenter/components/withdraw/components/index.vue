@@ -1586,7 +1586,9 @@ export default {
           offerDeduction: this.withdrawData.audit.total.offer_deduction,
           auditAmount: this.withdrawData.audit.total.audit_amount,
           method: this.selectedCard.withdrawType,
-          value: this.selectedCard.id.toString()
+          value: this.selectedCard.id.toString(),
+          keyring: localStorage.getItem("tmp_w_1"),
+          withdrawPassword: this.withdrawPwd ? this.withdrawPwd : ""
         }
       })
         .then(response => {
