@@ -136,31 +136,35 @@
         </div>
         <div
           :class="[$style['data-content']]"
-          @click="setDetailType('deposit', Number(friendDeposit))"
+          @click="setDetailType('deposit', friendDeposit)"
         >
           <div :class="[$style['title']]">
             总充值金额
             <img
-              v-if="Number(friendDeposit) > 0"
+              v-if="friendDeposit > 0"
               :src="`/static/image/common/arrow_next.png`"
               :class="[$style['arrow_next']]"
             />
           </div>
-          <div :class="[$style['content']]">{{ friendDeposit }}</div>
+          <div :class="[$style['content']]">
+            {{ getNoRoundText(friendDeposit) }}
+          </div>
         </div>
         <div
           :class="[$style['data-content']]"
-          @click="setDetailType('withdraw', Number(friendWithdraw))"
+          @click="setDetailType('withdraw', friendWithdraw)"
         >
           <div :class="[$style['title']]">
             总提现金额
             <img
-              v-if="Number(friendWithdraw) > 0"
+              v-if="friendWithdraw > 0"
               :src="`/static/image/common/arrow_next.png`"
               :class="[$style['arrow_next']]"
             />
           </div>
-          <div :class="[$style['content']]">{{ friendWithdraw }}</div>
+          <div :class="[$style['content']]">
+            {{ getNoRoundText(friendWithdraw) }}
+          </div>
         </div>
         <div :class="[$style['data-content'], [$style['darker']]]">
           <div :class="[$style['title']]">
@@ -178,7 +182,7 @@
               { [$style['lose']]: Number(friendPayoff) < 0 }
             ]"
           >
-            {{ friendPayoff }}
+            {{ getNoRoundText(friendPayoff) }}
           </div>
         </div>
       </div>
@@ -523,8 +527,8 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          this.realValidBet = response.data.valid_bet;
-          this.realUserCount = this.getNoRoundText(response.data.user_count);
+          this.realValidBet = this.getNoRoundText(response.data.valid_bet);
+          this.realUserCount = response.data.user_count;
         }
       });
     },
@@ -543,10 +547,10 @@ export default {
         if (response.status === "000") {
           this.friendFirstDeposit = response.data.first_deposit;
           this.friendHasBet = response.data.has_bet;
-          this.friendDeposit = this.getNoRoundText(response.data.deposit);
-          this.friendWithdraw = this.getNoRoundText(response.data.withdraw);
+          this.friendDeposit = response.data.deposit;
+          this.friendWithdraw = response.data.withdraw;
           this.friendValidBet = this.getNoRoundText(response.data.valid_bet);
-          this.friendPayoff = this.getNoRoundText(response.data.payoff);
+          this.friendPayoff = response.data.payoff;
         }
       });
     },
@@ -563,7 +567,7 @@ export default {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     setDetailType(type, count) {
-      if (count === 0) return;
+      if (Number(count) === 0) return;
       this.detailType = type;
       this.setDetailPage(1);
     },
