@@ -38,7 +38,7 @@
           :class="$style['card-wrap']"
         >
           <div v-if="!$route.query.third" :class="$style['date-total']">
-            <span>{{ `统计至：${titleDateFormat(currentInfo.end_at)}` }}</span>
+            <span>{{ `统计至：${titleDateFormat($route.query.end_at)}` }}</span>
           </div>
           <card-item
             :card-item-list="friendLayerList"
