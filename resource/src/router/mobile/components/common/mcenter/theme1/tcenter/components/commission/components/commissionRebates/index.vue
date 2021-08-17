@@ -357,7 +357,10 @@ export default {
   methods: {
     ...mapActions(["actionSetSystemTime"]),
     commaFormat(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      //千分位＋小數點後兩位
+      return `${Number(value)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({
