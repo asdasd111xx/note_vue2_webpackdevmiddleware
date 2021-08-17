@@ -306,7 +306,8 @@ export default {
       },
       isCheckWithdraw: false,
       isOpenOrder: false,
-      selectAccountValue: ""
+      selectAccountValue: "",
+      isAlertTip: true
     };
   },
   computed: {
