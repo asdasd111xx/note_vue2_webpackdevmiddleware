@@ -90,6 +90,10 @@ export default {
     chooseStatus: {
       type: Boolean,
       default: true
+    },
+    dateRange: {
+      type: Object,
+      default: {}
     }
   },
   data() {
@@ -109,6 +113,13 @@ export default {
       searchDate: {},
       name: ""
     };
+  },
+  created() {
+    console.log(JSON.stringify(this.dateRange));
+    if (this.dateRange) {
+      this.inqStart = this.dateRange.startTime;
+      this.inqEnd = this.dateRange.endTime;
+    }
   },
   computed: {
     ...mapGetters({
