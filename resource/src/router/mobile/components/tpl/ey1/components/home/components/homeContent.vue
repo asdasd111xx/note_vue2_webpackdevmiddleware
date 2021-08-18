@@ -44,7 +44,11 @@
               </span>
               <span :class="$style['balance']">
                 {{
-                  `¥${membalance && membalance.total ? membalance.total : ""}`
+                  `¥${
+                    membalance && membalance.vendor.default
+                      ? membalance.vendor.default.amount
+                      : ""
+                  }`
                 }}
               </span>
             </div>
@@ -256,14 +260,15 @@ export default {
   computed: {
     subGameSwiperOptions() {
       return {
+        watchSlidesVisibility: true,
         direction: "vertical",
         freeMode: true,
         autoHeight: true,
-        // observer: true,
-        // observeParents: true,
+        observer: true,
+        observeParents: true,
         nested: true,
-        slidesPerView: document.body.clientHeight < 812 ? 1 : 3,
-        spaceBetween: 0,
+        slidesPerView: document.body.clientHeight < 812 ? 2 : 3,
+        spaceBetween: 3,
         mousewheel: false,
         speed: 100
       };
@@ -275,7 +280,14 @@ export default {
         observer: true,
         observeParents: true,
         mousewheel: false,
+        watchSlidesVisibility: true,
+        autoHeight: true,
+        // effect: "fade",
+        // fadeEffect: {
+        //   crossFade: true
+        // },
         on: {
+          slideChangeTransitionEnd: swiper => {},
           slideChangeTransitionStart: () => {
             if (
               this.newTypeList &&
@@ -284,12 +296,6 @@ export default {
             ) {
               let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
               this.onChangeSelectType(this.newTypeList[realIndex], false);
-
-              // if (realIndex < this.currentType.key) {
-              //   this.$refs[`sub-game-swiper-${+realIndex}`][0].$swiper.slideTo(
-              //     0
-              //   );
-              // }
             }
           }
         }
@@ -297,16 +303,15 @@ export default {
     },
 
     typeItemWidth() {
-      if (document.body.clientWidth < 375) {
-        return "35";
-      } else if (document.body.clientWidth < 420) {
+      if (document.body.clientWidth <= 420) {
         return "48";
       } else {
         if (this.newTypeList) {
           return document.body.clientWidth / this.newTypeList.length;
         }
-        return "";
       }
+      //   return "";
+      // }
     }
   },
   ...mapGetters({
@@ -362,18 +367,17 @@ export default {
         return;
       }
 
+      this.$refs[`sub-game-swiper-${+this.currentType.key}`][0].$swiper.slideTo(
+        0
+      );
       this.currentType = item;
 
       let target = document.getElementById(`type-${this.currentType.key}`);
       if (target) {
         let rect = target.getBoundingClientRect();
         let extraWidth = $(window).width() / 2 - 210;
-
-        if ($(window).width() >= 420) {
-          this.typeBarPosition = rect.x - extraWidth;
-        } else {
-          this.typeBarPosition = rect.x - 15;
-        }
+        extraWidth = extraWidth < 0 ? 0 : extraWidth;
+        this.typeBarPosition = rect.x - extraWidth - 15;
       } else {
         this.typeBarPosition = 0;
       }
@@ -383,10 +387,7 @@ export default {
         this.$refs["game-swiper"] &&
         this.$refs["game-swiper"].$swiper
       ) {
-        // this.$refs[`sub-game-swiper-${+item.key}`][0].$swiper.slideTo(0);
-        this.$nextTick(() => {
-          this.$refs["game-swiper"].$swiper.slideTo(+item.key + 1);
-        });
+        this.$refs["game-swiper"].$swiper.slideTo(+item.key + 1);
       }
     }
   },
@@ -514,13 +515,15 @@ export default {
   margin-top: 10px;
   padding: 0 18px;
   height: 420px;
+  box-sizing: border-box;
+  // touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  // -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .new-game-container {
   width: 100%;
   height: 100%;
-  // touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  // -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
+  max-height: 100%;
 }
 
 .sub-game-container {
@@ -528,6 +531,7 @@ export default {
   height: 100%;
   position: relative;
   overflow-y: scroll;
+  max-height: 100%;
 }
 
 .game-swiper-slide {
@@ -535,8 +539,6 @@ export default {
   width: 100%;
   // overflow-x: hidden;
   // overflow-y: scroll;
-  // touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  // -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .sub-game-swiper-slide {
@@ -577,6 +579,19 @@ export default {
   > img {
     display: block;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 374px) {
+  .game {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > img {
+      display: block;
+      width: 90%;
+    }
   }
 }
 
