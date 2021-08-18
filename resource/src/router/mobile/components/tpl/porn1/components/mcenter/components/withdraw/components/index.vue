@@ -567,6 +567,8 @@
         }
       "
     />
+    <!-- 出款單成功Alert -->
+    <withdraw-success v-if="isSuccessAlertShow" :close-fuc="goBackSuccess" />
     <!-- 出款單取消Alert -->
     <withdraw-alert v-if="isAlertShow" :close-fuc="goBack" />
 
@@ -665,6 +667,10 @@ export default {
       import(
         /* webpackChunkName: 'withdrawAlert' */ "@/router/mobile/components/common/mcenter/theme1/withdraw/components/withdrawAlert"
       ),
+    withdrawSuccess: () =>
+      import(
+        /* webpackChunkName: 'withdrawSuccess' */ "@/router/mobile/components/common/mcenter/theme1/withdraw/components/withdrawSuccess"
+      ),
     balanceTran,
     confirmOneBtn,
     serialNumber,
@@ -692,6 +698,7 @@ export default {
       isShowMore: true,
       isDoneMarquee: false,
       isAlertShow: false,
+      isSuccessAlertShow: false,
       // 彈窗顯示狀態統整
       showPopStatus: {
         isShow: false,
@@ -1081,6 +1088,10 @@ export default {
     goBack() {
       this.isAlertShow = false;
       window.scrollTo(0, 0);
+    },
+    goBackSuccess() {
+      this.isSuccessAlertShow = false;
+      window.location.reload();
     },
     getBankImage(swiftCode) {
       return {
@@ -1594,12 +1605,13 @@ export default {
         .then(response => {
           if (response && response.status === "000") {
             if (this.memInfo.config.withdraw === "迅付") {
-              this.actionSetGlobalMessage({
-                msg: "提现成功",
-                cb: () => {
-                  window.location.reload();
-                }
-              });
+              this.isSuccessAlertShow = true;
+              // this.actionSetGlobalMessage({
+              //   msg: "提现成功",
+              //   cb: () => {
+              //     window.location.reload();
+              //   }
+              // });
             } else {
               // 第三方寫單
               goLangApiRequest({
@@ -1630,9 +1642,10 @@ export default {
                 this.actionSetIsLoading(false);
 
                 if (res && res.status === "000") {
-                  this.actionSetGlobalMessage({
-                    msg: "提现成功"
-                  });
+                  this.isSuccessAlertShow = true;
+                  // this.actionSetGlobalMessage({
+                  //   msg: "提现成功"
+                  // });
 
                   this.thirdUrl = res.ret.uri;
                 } else {
