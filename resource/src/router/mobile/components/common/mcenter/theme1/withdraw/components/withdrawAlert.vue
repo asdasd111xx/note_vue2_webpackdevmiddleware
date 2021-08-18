@@ -15,16 +15,19 @@
         </div>
         <div :class="$style['alert-body-wrap']">
           <div :class="[$style['success-icon-wrap'], 'clearfix']">
-            <icon
+            <!-- <icon
               v-if="type === 'successTip'"
               :class="$style['success-icon']"
               width="60"
               height="60"
               name="regular/check-circle"
-            />
+            /> -->
             <img
-              v-else
-              :src="$getCdnPath(tipImgSrc)"
+              :src="
+                $getCdnPath(
+                  `/static/image/common/mcenter/withdraw/ic_cancel.png`
+                )
+              "
               :class="$style['success-img']"
             />
             <span :class="$style['success-title']">出款单取消</span>

@@ -1643,11 +1643,12 @@ export default {
               });
             }
           } else {
-            this.actionSetGlobalMessage({ msg: "提现已取消，请重新提交申请" });
             //only when C590021 show alert
-            if (response.code === "C590021") {
-              this.isAlertShow = true;
-            }
+            response.code === "C590021"
+              ? (this.isAlertShow = true)
+              : this.actionSetGlobalMessage({
+                  msg: "提现已取消，请重新提交申请"
+                });
           }
 
           this.isLoading = false;

@@ -4,18 +4,16 @@
   height: 100%;
   top: 0;
   left: 0;
-  color: #a6a9b2;
   background: rgba(0, 0, 0, 0.5);
 }
 
 .alert-wrap {
   position: relative;
-  width: 270px;
-  height: 189px;
+  width: 264px;
   margin: 0 auto;
-  top: 220px;
-  left: 0;
-
+  top: 50%;
+  left: 0%;
+  transform: translate(0%, -50%);
   &.alert-cgpay {
     width: 90%;
   }
@@ -68,8 +66,8 @@
 
 .success-img {
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   margin: 10px auto;
 }
 
@@ -83,8 +81,9 @@
 
 .tip-wrap {
   max-width: 250px;
-  margin: 12px auto 24px;
+  margin: 20px auto 24px;
   font-size: 13px;
+  color: #a6a9b2;
 }
 
 .confirm-btn {
