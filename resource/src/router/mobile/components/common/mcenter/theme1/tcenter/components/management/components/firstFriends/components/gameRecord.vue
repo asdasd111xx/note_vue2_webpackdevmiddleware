@@ -1,16 +1,20 @@
 <template>
-  <div :class="[$style['game-record-wrap']]">
+  <div
+    v-if="cardContent !== undefined && cardContent.length > 0"
+    :class="[$style['game-record-wrap']]"
+  >
     <div :class="$style['third-wrap']">
       <span
         v-for="(item, index) in childTitle"
         :key="index"
         :class="[$style['card-item']]"
-        >{{ item.item }}</span
-      >
+        >{{ item.name }}
+        <span :class="$style[`${item.color}`]">{{ item.item }}</span>
+      </span>
     </div>
-    <div :class="$style['date-title']">{{ timeTitle }}</div>
 
-    <div v-if="cardContent !== undefined && cardContent.length > 0">
+    <div>
+      <div :class="$style['date-title']">{{ timeTitle }}</div>
       <div
         v-for="(info, index) in cardContent"
         :key="index"
@@ -45,6 +49,14 @@
         </div>
       </div>
     </div>
+  </div>
+  <div v-else :class="$style['no-data']">
+    <img
+      :src="
+        $getCdnPath(`/static/image/${themeTPL}/mcenter/img_default_no_data.png`)
+      "
+    />
+    <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
   </div>
 </template>
 
@@ -90,18 +102,21 @@ export default {
       //子標題內容
       let strArr = [
         {
-          item: `投注金额： ${this.amountFormat(this.total.bet ?? "0.00")}`
+          name: "投注金额：",
+          item: this.amountFormat(this.total.bet ?? "0.00")
         },
         {
-          item: `总有效投注： ${this.amountFormat(
-            this.total.valid_bet ?? "0.00"
-          )}`
+          name: "总有效投注：",
+          item: this.amountFormat(this.total.valid_bet ?? "0.00")
         },
         {
-          item: `总派彩： ${this.amountFormat(this.total.payoff ?? "0.00")}`
+          name: "总派彩：",
+          item: this.amountFormat(this.total.payoff ?? "0.00"),
+          color: this.chooseColor(this.total.payoff)
         },
         {
-          item: `笔数： ${this.amountFormat(this.pagination.total ?? "0.00")}`
+          name: "笔数：",
+          item: this.playGameList.length ?? "0"
         }
       ];
       return strArr;

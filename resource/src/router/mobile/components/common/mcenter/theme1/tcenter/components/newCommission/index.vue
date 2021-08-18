@@ -61,13 +61,18 @@
       </div>
     </div>
     <div v-if="!hasSearch" :class="[$style['time-range']]">{{ timeTitle }}</div>
-    <div v-if="isShowRebate && !hasSearch" :class="[$style['all-data']]">
+    <div
+      v-if="isShowRebate && !hasSearch && $route.params.item === 'today'"
+      :class="[$style['all-data']]"
+    >
       <div :class="[$style['data-title']]">实时返利统计</div>
       <div :class="[$style['data-content-wrap']]">
         <div
           :class="[$style['data-content']]"
           @click="
-            $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+            $router.push(
+              '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+            )
           "
         >
           <div :class="[$style['title']]">
@@ -82,7 +87,9 @@
         <div
           :class="[$style['data-content']]"
           @click="
-            $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+            $router.push(
+              '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+            )
           "
         >
           <div :class="[$style['title']]">
@@ -101,21 +108,26 @@
       <div :class="[$style['data-content-wrap']]">
         <div
           :class="[$style['data-content']]"
-          @click="setDetailType('firstDeposit')"
+          @click="setDetailType('firstDeposit', Number(friendFirstDeposit))"
         >
           <div :class="[$style['title']]">
             总首存人数
             <img
+              v-if="Number(friendFirstDeposit) > 0"
               :src="`/static/image/common/arrow_next.png`"
               :class="[$style['arrow_next']]"
             />
           </div>
           <div :class="[$style['content']]">{{ friendFirstDeposit }}</div>
         </div>
-        <div :class="[$style['data-content']]" @click="setDetailType('hasBet')">
+        <div
+          :class="[$style['data-content']]"
+          @click="setDetailType('hasBet', Number(friendHasBet))"
+        >
           <div :class="[$style['title']]">
             总投注人数
             <img
+              v-if="Number(friendHasBet) > 0"
               :src="`/static/image/common/arrow_next.png`"
               :class="[$style['arrow_next']]"
             />
@@ -124,29 +136,35 @@
         </div>
         <div
           :class="[$style['data-content']]"
-          @click="setDetailType('deposit')"
+          @click="setDetailType('deposit', friendDeposit)"
         >
           <div :class="[$style['title']]">
             总充值金额
             <img
+              v-if="friendDeposit > 0"
               :src="`/static/image/common/arrow_next.png`"
               :class="[$style['arrow_next']]"
             />
           </div>
-          <div :class="[$style['content']]">{{ friendDeposit }}</div>
+          <div :class="[$style['content']]">
+            {{ getNoRoundText(friendDeposit) }}
+          </div>
         </div>
         <div
           :class="[$style['data-content']]"
-          @click="setDetailType('withdraw')"
+          @click="setDetailType('withdraw', friendWithdraw)"
         >
           <div :class="[$style['title']]">
             总提现金额
             <img
+              v-if="friendWithdraw > 0"
               :src="`/static/image/common/arrow_next.png`"
               :class="[$style['arrow_next']]"
             />
           </div>
-          <div :class="[$style['content']]">{{ friendWithdraw }}</div>
+          <div :class="[$style['content']]">
+            {{ getNoRoundText(friendWithdraw) }}
+          </div>
         </div>
         <div :class="[$style['data-content'], [$style['darker']]]">
           <div :class="[$style['title']]">
@@ -158,7 +176,14 @@
           <div :class="[$style['title']]">
             总损益
           </div>
-          <div :class="[$style['content']]">{{ friendPayoff }}</div>
+          <div
+            :class="[
+              $style['content'],
+              { [$style['lose']]: Number(friendPayoff) < 0 }
+            ]"
+          >
+            {{ getNoRoundText(friendPayoff) }}
+          </div>
         </div>
       </div>
     </div>
@@ -434,9 +459,27 @@ export default {
       }
     },
     getTimeRecord(data) {
+      //搜尋頁日期範圍由前一頁決定
+      if (data.name === "custom") {
+        this.hasSearch = true;
+        if (this.path && this.rebatePathItem != data.name) {
+          this.$router.replace({
+            params: {
+              title: "newCommission",
+              item: `${data.name}`
+            }
+          });
+          this.rebateTitle = data.name;
+        }
+        return;
+      }
+
+      this.allTotalData[3].value = data.value;
+
       this.start = Vue.moment(this.estToday)
         .add(-data.value, "days")
         .format("YYYY-MM-DD");
+
       this.end = Vue.moment(this.estToday).format("YYYY-MM-DD");
 
       if (data.name === "yesterday") {
@@ -454,13 +497,6 @@ export default {
         });
         this.rebateTitle = data.name;
       }
-
-      if (data.name === "custom") {
-        this.hasSearch = true;
-
-        return;
-      }
-
       this.onInquire();
 
       return;
@@ -491,8 +527,8 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          this.realValidBet = response.data.user_count;
-          this.realUserCount = this.getNoRoundText(response.data.valid_bet);
+          this.realValidBet = this.getNoRoundText(response.data.valid_bet);
+          this.realUserCount = response.data.user_count;
         }
       });
     },
@@ -511,10 +547,10 @@ export default {
         if (response.status === "000") {
           this.friendFirstDeposit = response.data.first_deposit;
           this.friendHasBet = response.data.has_bet;
-          this.friendDeposit = this.getNoRoundText(response.data.deposit);
-          this.friendWithdraw = this.getNoRoundText(response.data.withdraw);
+          this.friendDeposit = response.data.deposit;
+          this.friendWithdraw = response.data.withdraw;
           this.friendValidBet = this.getNoRoundText(response.data.valid_bet);
-          this.friendPayoff = this.getNoRoundText(response.data.payoff);
+          this.friendPayoff = response.data.payoff;
         }
       });
     },
@@ -530,7 +566,8 @@ export default {
         .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
-    setDetailType(type) {
+    setDetailType(type, count) {
+      if (Number(count) === 0) return;
       this.detailType = type;
       this.setDetailPage(1);
     },

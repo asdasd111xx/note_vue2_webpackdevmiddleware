@@ -13,6 +13,7 @@
 
 .process-bar-wrap {
   margin: 10px 0;
+  z-index: 0;
 
   > span {
     font-size: 14px;
@@ -63,7 +64,7 @@
       border-radius: 3px;
       top: 0;
       background-color: #be9e7f;
-      z-index: 1;
+      z-index: 0;
     }
   }
 
@@ -92,6 +93,7 @@
 .friend-wrap {
   position: relative;
   bottom: 74px;
+  height: 84vh;
 }
 .card-item-wrap {
   position: relative;
@@ -99,20 +101,33 @@
 }
 
 .no-data {
-  padding-top: 40px;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 
   img {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
+    width: 180px;
+    height: 200px;
     margin-bottom: 14px;
   }
 
-  div {
+  p {
     font-size: 14px;
     color: #a6a9b2;
   }
+}
+
+.rebate-rate {
+  height: 25px;
+  display: flex;
+  justify-content: flex-end;
+  color: #6aaaf5;
+  padding: 9px 2px;
+  text-decoration: underline;
 }
 
 .rebate-rate {

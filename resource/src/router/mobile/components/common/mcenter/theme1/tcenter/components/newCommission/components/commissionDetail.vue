@@ -18,7 +18,7 @@
     </div>
     <div :class="[$style['time-range']]">{{ timeTitle }}</div>
 
-    <div v-if="detailPage === 1">
+    <div v-if="detailPage === 1" :class="[$style['total-friend-layout']]">
       <div
         v-for="(friend, index) in allLevelFriendArray"
         :key="index"
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div v-if="detailPage === 2">
+    <div v-if="detailPage === 2" :class="[$style['level-friend-layout']]">
       <div
         v-for="(detail, index) in friendDetailArray"
         :key="index"
@@ -75,7 +75,7 @@
               充值时间
             </div>
             <div :class="[$style['data-value']]">
-              {{ detail.first_deposit_at }}
+              {{ EST(detail.first_deposit_at) }}
             </div>
           </div>
           <div
@@ -122,6 +122,7 @@ import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import EST from "@/lib/EST";
 export default {
   data() {
     return {
@@ -182,12 +183,47 @@ export default {
     detailPage() {
       if (this.detailPage === 2) {
         this.title = this.allLevelFriendArray[this.detailSelectFriend].title;
+        switch (this.detailType) {
+          case "firstDeposit":
+            this.getAllFriendsDetail(
+              "First/Deposit",
+              this.detailSelectFriend + 1
+            );
+            break;
+          case "hasBet":
+            this.getAllFriendsDetail("Wager", this.detailSelectFriend + 1);
+            break;
+          case "deposit":
+            this.getAllFriendsDetail("Deposit", this.detailSelectFriend + 1);
+            break;
+          case "withdraw":
+            this.getAllFriendsDetail("Withdraw", this.detailSelectFriend + 1);
+            break;
+          default:
+            break;
+        }
       } else {
         this.title = `总${this.detailTypeName[this.detailType]}${
           this.detailType === "firstDeposit" || this.detailType === "hasBet"
             ? "人数"
             : "金额"
         }`;
+        switch (this.detailType) {
+          case "firstDeposit":
+            this.getAllFriendsDetail("First/Deposit", 0);
+            break;
+          case "hasBet":
+            this.getAllFriendsDetail("Wager", 0);
+            break;
+          case "deposit":
+            this.getAllFriendsDetail("Deposit", 0);
+            break;
+          case "withdraw":
+            this.getAllFriendsDetail("Withdraw", 0);
+            break;
+          default:
+            break;
+        }
       }
     }
   },
@@ -238,25 +274,6 @@ export default {
     setFriendLevel(level) {
       this.setDetailPage(2);
       this.detailSelectFriend = level;
-      switch (this.detailType) {
-        case "firstDeposit":
-          this.getAllFriendsDetail(
-            "First/Deposit",
-            this.detailSelectFriend + 1
-          );
-          break;
-        case "hasBet":
-          this.getAllFriendsDetail("Wager", this.detailSelectFriend + 1);
-          break;
-        case "deposit":
-          this.getAllFriendsDetail("Deposit", this.detailSelectFriend + 1);
-          break;
-        case "withdraw":
-          this.getAllFriendsDetail("Withdraw", this.detailSelectFriend + 1);
-          break;
-        default:
-          break;
-      }
     },
     formatToPrice(value) {
       //千分位
@@ -312,10 +329,9 @@ export default {
                 response.data.total_per_depth[index + 1];
             });
           } else {
-            this.totalCount =
-              response.data.total_per_depth[level + 1].total_count;
+            this.totalCount = response.data.total_per_depth[level].total_count;
             this.totalAmount =
-              response.data.total_per_depth[level + 1].total_amount;
+              response.data.total_per_depth[level].total_amount;
             let dataKey = "";
             switch (url) {
               case "First/Deposit":
@@ -359,7 +375,9 @@ export default {
           }
         }
       });
-    }
+    },
+    //轉美東
+    EST
   }
 };
 </script>

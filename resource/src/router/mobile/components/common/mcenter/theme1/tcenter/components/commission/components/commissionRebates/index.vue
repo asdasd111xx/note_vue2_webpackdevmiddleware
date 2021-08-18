@@ -49,19 +49,15 @@
 
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
             <div
-              v-if="
-                path &&
-                  caculateList.state !== 3 &&
-                  caculateList.self_times !== 0
-              "
-              :class="$style['detail-content']"
-            >
+              v-if="caculateList.state === 3 && caculateList.self_times === 0"
+            ></div>
+            <div v-else :class="$style['detail-content']">
               <span :class="$style['content-left']">
                 结算区间
               </span>
               <div :class="$style['content-right']">
-                <div>{{ caculateList.start_at | dateFormat }}</div>
-                <div>{{ caculateList.end_at | dateFormat }}</div>
+                <div>{{ dateFormatHour(caculateList.start_at) }}</div>
+                <div>{{ dateFormatHour(caculateList.end_at) }}</div>
               </div>
             </div>
 
@@ -133,7 +129,7 @@
               <div :class="$style['content-right']">
                 {{
                   caculateList.self_min_limit
-                    ? caculateList.self_min_limit
+                    ? commaFormat(caculateList.self_min_limit)
                     : "--"
                 }}
               </div>
@@ -183,7 +179,7 @@
         v-if="immediateData.length === 0"
         :class="[$style['no-data'], { [$style.pathnodata]: path }]"
       >
-        暂时没有可领取的返利
+        {{ path ? "暂没有可领取的返利" : "暂时没有可领取的返利" }}
       </div>
 
       <div
@@ -233,6 +229,7 @@
           :is-show-popup.sync="isShowPopup"
           :amount="amountResult"
           :path="path"
+          :current-info="currentInfo"
         />
       </template>
     </div>
@@ -291,7 +288,9 @@ export default {
       title: "real",
       pathItem: this.$route.params.item ?? "", //是否從返利管理來,
       path: this.$route.params.title ?? "", //是否從返利管理來,
-      status: true //傳進詳情 是否顯示箭頭
+      status: true, //傳進詳情 是否顯示箭頭
+      currentInfo: {},
+      entries: {}
     };
   },
   computed: {
@@ -325,22 +324,24 @@ export default {
   },
   filters: {
     dateFormat(date) {
-      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
+      return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss")) || "--";
     },
     dateFormatNoTime(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(date).format("YYYYMMDD");
     }
   },
   created() {
     //刷新導回實時返利領取
     if (this.path && this.pathItem != "receive") {
-      this.$router.replace({
-        params: {
-          title: this.title,
-          item: "receive"
-        }
-      });
-      this.pathItem = "receive";
+      if (!this.$route.query.toDetail || this.$route.query.toDetail != "Y") {
+        this.$router.replace({
+          params: {
+            title: this.title,
+            item: "receive"
+          }
+        });
+        this.pathItem = "receive";
+      }
     }
 
     this.getImmediateData();
@@ -351,7 +352,10 @@ export default {
   methods: {
     ...mapActions(["actionSetSystemTime"]),
     commaFormat(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      //千分位＋小數點後兩位
+      return `${Number(value)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({
@@ -374,26 +378,37 @@ export default {
         params: { lang: "zh-cn" }
       }).then(response => {
         if (response.status === "000") {
-          if (this.themeTPL === "ey1" && !this.path) {
+          if (this.themeTPL === "ey1") {
             this.dispatch_hour = response.data.auto_dispatch_hour;
             this.immediateData = response.data.entries;
+            this.entries = this.immediateData[0] || "";
           } else {
             this.dispatch_hour = response.data.ret.auto_dispatch_hour;
             this.immediateData = response.data.ret.entries;
+            this.entries = response.data.ret?.entries[0] ?? "";
           }
-
           let total = response.data.total ?? "";
-          let entries = response.data.ret.entries[0] ?? "";
+
+          this.currentInfo = {
+            period: this.entries.period,
+            start_at: this.entries.start_at,
+            end_at: this.entries.end_at,
+            type: this.entries.type,
+            amount: this.entries.amount,
+            show_detail: this.entries.show_detail,
+            oauth2: this.entries.oauth2
+          };
+
           // 傳進detail判斷是否顯示查看箭頭
           // 狀態=>可領/已達上限/已領取/計算中
           if (
-            entries.self_times > 0 ||
-            (entries.state === 3 && entries.self_times === 0) ||
-            (!total.valid_bet.accounting && !entries) ||
+            this.entries.self_times > 0 ||
+            (this.entries.state === 3 && this.entries.self_times === 0) ||
+            (!total.valid_bet?.accounting && !this.entries) ||
             total.valid_bet.accounting
           ) {
             this.status = true;
-          } else if (!total.accounting && entries.amount === 0) {
+          } else if (!total.accounting && this.entries.amount === 0) {
             //計算完無實返金額
             this.status = false;
           } else {
@@ -438,6 +453,9 @@ export default {
     changeTab(tabKey) {
       if (this.$route.params.item != tabKey.name) {
         this.pathItem = tabKey.name;
+
+        if (this.pathItem === "receive") this.getImmediateData();
+
         this.$router.replace({
           params: {
             title: this.title,
@@ -448,6 +466,12 @@ export default {
           }
         });
       }
+    },
+    dateFormatHour(date) {
+      if (date) {
+        return EST(Vue.moment(date).format("YYYY-MM-DD HH:00:00"));
+      }
+      return "--";
     }
   }
 };

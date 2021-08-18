@@ -3,6 +3,7 @@ import ajax from "@/lib/ajax";
 import Vue, { nextTick } from "vue";
 import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import EST from "@/lib/EST";
 import {
   API_COMMISSION_LEVEL_LIST,
   API_COMMISSION_FIRST_LEVEL_LIST
@@ -77,13 +78,6 @@ export default {
   mounted() {
     this.current_entry_id = this.$route.query.current_entry_id;
     // oauth2 = 是否為第三方 (true：第三方，false：本站)
-    if (this.$route.query.oauth2 || this.currentInfo.oauth2) {
-      // 第三方返利只取第三方返利資料
-      this.getDetail();
-      return;
-    }
-
-    this.getSummary();
   },
   methods: {
     /**
@@ -95,14 +89,13 @@ export default {
         url: API_COMMISSION_LEVEL_LIST,
         errorAlert: false,
         params: { period: this.$route.query.period || this.currentInfo.period },
-        success: ({ result, ret, total }) => {
+        success: ({ result, ret, total, at }) => {
           if (result !== "ok") {
             return;
           }
 
           this.summaryList = ret;
           this.summaryTotal = total;
-          this.mainNoData = false;
         }
       });
     },
@@ -150,7 +143,8 @@ export default {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .current_entry_id || this.currentInfo.current_entry_id}/Amount`,
+          .$route.query.current_entry_id ||
+          this.currentInfo.current_entry_id}/Amount`,
         params: {
           lang: "zh-cn",
           cid: this.cid
@@ -181,7 +175,12 @@ export default {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     titleDateFormat(value) {
-      return Vue.moment(value).format("YYYY-MM-DD");
+      let today = Vue.moment(new Date()).format("HH:mm:ss");
+      let end = Vue.moment(value).format("HH:mm:ss");
+      if (today > end) {
+        return Vue.moment(value).format("YYYY-MM-DD 23:59:59");
+      }
+      return Vue.moment(value).format("YYYY-MM-DD HH:mm:ss");
     },
 
     /**
@@ -243,7 +242,7 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .current_entry_id ||
+          .$route.query.current_entry_id ||
           this.currentInfo.current_entry_id}/Vendor/Validbet/Report`,
         params: {
           lang: "zh-cn",
@@ -262,7 +261,7 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .current_entry_id ||
+          .$route.query.current_entry_id ||
           this.currentInfo.current_entry_id}/Layer/Condition`,
         params: {
           lang: "zh-cn",
@@ -272,6 +271,7 @@ export default {
       }).then(res => {
         if (res && res.status === "000") {
           //返利比例
+          this.gameRateResult = [];
           this.friendGameRateList = res.data ?? [];
           const name = {
             1: "体育",

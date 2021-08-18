@@ -19,10 +19,12 @@
         :depth="firstFriends.depth"
         :list="currentSavedFreindList"
         @send-name="clickTargetFriend"
+        :search-result="searchResult"
       />
 
       <custom-date
         v-if="isShowDatePicker"
+        :date-range="dateRange"
         @search-date="receiveSearchCustomDate"
         :choose-status="false"
       />
@@ -377,7 +379,8 @@ export default {
       searchResult: false, //自訂時間是否搜尋到結果
       saveCustomDate: {}, //儲存自訂的資料
       card: true,
-      totalDepth: ""
+      totalDepth: "",
+      friend_name: ""
     };
   },
   created() {
@@ -400,6 +403,15 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    //傳進預設選擇自訂日期區間
+    dateRange: {
+      get() {
+        return { startTime: this.startTime, endTime: this.endTime };
+      },
+      set(val) {
+        return val;
+      }
     },
     allTotalList() {
       let strArr = [];
@@ -504,7 +516,7 @@ export default {
             {
               name: "总有效投注",
               item: this.commaFormat(info.valid_bet),
-              button: info.valid_bet > 0,
+              button: true,
               upShow: true
             },
             {
@@ -581,11 +593,13 @@ export default {
     searchResult(value) {
       if (value) {
         this.setHeaderTitle(this.timeTitle);
-        this.setTabState(false);
-        if (this.pathDay === "custom") {
+
+        if (this.friend_name) {
+          this.setTabState(false);
           this.setBackFunc(() => {
             if (this.firstFriends.depth !== 1) {
               this.firstFriends.depth = 1;
+              this.isEnterNextLayers = false;
             }
             this.searchResult = false;
             this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
@@ -615,7 +629,7 @@ export default {
             if (this.gameRecordPage) {
               this.gameRecordPage = false;
               this.firstFriends.depth -= 1;
-              this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
+              //this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
             } else {
               this.$router.back();
             }
@@ -631,7 +645,7 @@ export default {
 
         if (!this.path) {
           this.setHeaderTitle(this.depthMapping[value]);
-        } else {
+        } else if (!this.gameRecordPage) {
           this.setHeaderTitle("团队报表");
         }
 
@@ -639,7 +653,7 @@ export default {
         this.setSubTabState(false);
 
         this.setBackFunc(() => {
-          if (this.pathDay === "custom") {
+          if (this.pathDay === "custom" && this.searchResult) {
             this.gameRecordPage = false;
             this.isEnterNextLayers = false;
             this.card = false;
@@ -663,6 +677,17 @@ export default {
         });
 
         return;
+      } else if (this.friend_name) {
+        this.setBackFunc(() => {
+          this.gameRecordPage = false;
+          if (this.$route.params.path) {
+            this.$router.replace(
+              "/mobile/mcenter/tcenterManageTeam/firstFriends/custom"
+            );
+          } else {
+            this.$router.back();
+          }
+        });
       } else {
         // 若返回到1級的頁面 or 停留在1級的情況
         this.isEnterNextLayers = false;
@@ -676,6 +701,7 @@ export default {
         }
 
         // 上方選項列顯示狀態
+
         this.setTabState(true);
         this.setSubTabState(true);
 
@@ -701,6 +727,7 @@ export default {
       }
     }
   },
+
   methods: {
     /*
      * 點擊下一層級使用
@@ -728,13 +755,13 @@ export default {
       });
     },
     enterGameRecord(val) {
-      this.gameRecordPage = true;
       this.setHeaderTitle(val.alias);
+      this.gameRecordPage = true;
       this.setTabState(false);
       this.gameRecordParams = {
         userId: val.id,
-        startAt: this.startTime,
-        endAt: this.endTime
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD")
       };
 
       this.totalDepth = this.firstFriends.depth;
@@ -789,15 +816,18 @@ export default {
       //切換上方時間功能列
       this.isShowDatePicker = false;
 
-      this.startTime = Vue.moment(this.estToday)
-        .add(-data.value, "days")
-        .format("YYYY-MM-DD");
-      this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-
-      if (data.name === "yesterday") {
-        this.endTime = Vue.moment(this.estToday)
+      //自訂義時間區間 顯示上一個的時間區間
+      if (data.name != "custom") {
+        this.startTime = Vue.moment(this.estToday)
           .add(-data.value, "days")
           .format("YYYY-MM-DD");
+        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+        if (data.name === "yesterday") {
+          this.endTime = Vue.moment(this.estToday)
+            .add(-data.value, "days")
+            .format("YYYY-MM-DD");
+        }
       }
 
       if (this.path && this.pathDay != data.name) {
@@ -810,25 +840,14 @@ export default {
         this.pathDay = data.name;
       }
 
-      if (this.path) {
-        switch (this.pathDay) {
-          case "today":
-          case "yesterday":
-            this.timeTitle = this.startTime;
-            break;
-          case "month":
-
-          case "custom":
-            this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
-            break;
-        }
-      }
+      this.setTimeTitle();
       this.searchResult = false;
       this.setTabState(true);
       this.setSubTabState(true);
 
       if (this.pathDay === "custom") {
         this.isShowDatePicker = true;
+
         return;
       }
 
@@ -866,6 +885,7 @@ export default {
       this.searchResult = false;
 
       this.friend_name = value.friend_name;
+      this.setTimeTitle();
 
       this.updateFirstFriends({
         friend_name: this.friend_name
@@ -876,20 +896,38 @@ export default {
           return;
         }
 
-        //為了顯示上方許多好友 把api回傳許多好友帳號存進去
-        for (let i = 1; i < this.firstFriends.depth; i++) {
-          this.addToSavedFreindList(
-            this.firstFriends.friend_chain[i].username,
-            ""
-          );
+        if (this.friend_name) {
+          this.searchResult = true;
+
+          //為了顯示上方許多好友 把api回傳許多好友帳號存進去
+          for (let i = 1; i < this.firstFriends.depth; i++) {
+            this.addToSavedFreindList(
+              this.firstFriends.friend_chain[i].username,
+              ""
+            );
+          }
         }
 
-        this.searchResult = true;
         this.card = true;
       });
     },
     chooseColor(val) {
       return val < 0 ? "red" : "black";
+    },
+    setTimeTitle() {
+      if (this.path) {
+        switch (this.pathDay) {
+          case "today":
+          case "yesterday":
+            this.timeTitle = this.startTime;
+            break;
+          case "month":
+
+          case "custom":
+            this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
+            break;
+        }
+      }
     }
   }
 };

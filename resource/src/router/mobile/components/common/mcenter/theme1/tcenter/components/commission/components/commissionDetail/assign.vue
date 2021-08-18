@@ -82,8 +82,12 @@ export default {
   },
   props: {
     currentInfo: {
-      type: Object | null,
+      type: Object,
       required: true
+    },
+    setTabState: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
@@ -186,6 +190,10 @@ export default {
           this.allTotal = response.data.total; // 總計
           this.detailList = response.data.ret; // 佣金資料列表
           this.mainNoData = false;
+          this.$emit("id", {
+            id: this.detailList[0].id,
+            end_at: EST(this.detailList[0].end_at)
+          });
         })
         .catch(error => {
           this.actionSetGlobalMessage({ msg: error.response.data.msg });

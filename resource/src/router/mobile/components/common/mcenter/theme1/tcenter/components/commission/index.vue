@@ -37,7 +37,7 @@
 
     <div
       v-if="(page === 'record' && hasSearch) || (path && hasSearch)"
-      class="search-wrap"
+      :class="$style[`search-wrap-${path}`]"
     >
       <div :class="$style['search-form']">
         <div :class="[$style['form-row'], 'clearfix']">
@@ -275,34 +275,26 @@ export default {
       immediate: true
     },
     "$route.params.page"() {
-      if (this.$route.params.page !== "detail") {
+      if (this.$route.params.page !== "detail" && this.page !== "detail") {
         this.setTabState(true);
         this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
+      } else {
+        this.setTabState(false);
       }
     }
   },
   created() {
-    if (this.path) {
+    if (!this.$route.query.assign && this.path) {
       this.getTimeRecord(this.allTotalData[0]);
-      this.hasSearch = false;
     } else {
       this.hasSearch = true;
     }
+    this.hasSearch = false;
     this.getRebateSwitch();
 
     // 因 detail 的資料可能為第三方 or 各級好友(從上一個傳下來的data)，統一重整回summary
     if (this.page === "detail") {
       this.$router.replace("/mobile/mcenter/tcenter/commission/summary");
-    }
-
-    if (this.$route.params.item === "detail") {
-      this.$router.replace({
-        params: {
-          title: "record",
-          item: "today"
-        },
-        query: { dateId: 0 }
-      });
     }
 
     // // 重整的時候，根據當下render page
@@ -327,9 +319,9 @@ export default {
     },
     onInquire() {
       this.onSearch();
+      this.manageRebateDate();
       this.hasSearch = false;
       //返利管理多要顯示日期
-      this.manageRebateDate();
     },
     getRebateSwitch() {
       this.isReceive = false;
@@ -379,15 +371,17 @@ export default {
       }
     },
     getTimeRecord(data) {
-      this.start = Vue.moment(this.estToday)
-        .add(-data.value, "days")
-        .format("YYYY-MM-DD");
-      this.end = Vue.moment(this.estToday).format("YYYY-MM-DD");
-
-      if (data.name === "yesterday") {
-        this.end = Vue.moment(this.estToday)
+      if (data.name != "custom") {
+        this.start = Vue.moment(this.estToday)
           .add(-data.value, "days")
           .format("YYYY-MM-DD");
+        this.end = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+        if (data.name === "yesterday") {
+          this.end = Vue.moment(this.estToday)
+            .add(-data.value, "days")
+            .format("YYYY-MM-DD");
+        }
       }
 
       if (this.path && this.$route.params.item != data.name) {
@@ -398,15 +392,14 @@ export default {
           },
           query: { dateId: data.index }
         });
-        this.rebateTitle = data.name;
       }
-
+      this.rebateTitle = data.name;
       if (data.name === "custom") {
         this.hasSearch = true;
 
         return;
       }
-
+      this.manageRebateDate();
       this.onInquire();
 
       return;

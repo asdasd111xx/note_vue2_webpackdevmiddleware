@@ -124,3 +124,26 @@
 .blue {
   color: #6aaaf5;
 }
+
+.no-data {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  position: relative;
+  top: -87px;
+
+  img {
+    width: 174px;
+    height: 174px;
+    margin-bottom: 14px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #a6a9b2;
+  }
+}

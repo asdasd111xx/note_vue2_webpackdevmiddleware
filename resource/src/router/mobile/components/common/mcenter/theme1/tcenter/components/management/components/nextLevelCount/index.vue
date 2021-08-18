@@ -58,6 +58,7 @@ import friendsNextLevelCount from "@/mixins/mcenter/management/friendsNextLevelC
 import tcenterLabel from "../../../../../tcenterSame/tcenterLabel";
 import cardItem from "../../../../../tcenterSame/cardItem";
 import cardTotal from "../../../../../tcenterSame/cardAllTotal";
+import EST from "@/lib/EST";
 export default {
   components: {
     tcenterLabel,
@@ -146,6 +147,7 @@ export default {
       let data = this.friendList?.map(info => {
         return {
           title: info.username,
+          fontCss: "title-font-style",
           list: [
             { name: "上级好友", item: info.upper_name, show: true },
             {
@@ -169,8 +171,8 @@ export default {
             },
             {
               name: "最后离线时间",
-              item: info.last_online ? this.filterDate(info.last_online) : "",
-              show: info.last_online ? true : false
+              item: info.last_online ? this.filterDate(info.last_online) : "--",
+              show: true
             },
             {
               name: "注册时间",
@@ -190,13 +192,14 @@ export default {
   },
 
   methods: {
-    amountFormat(amount) {
-      return `${Number(amount)
-        .toString()
+    amountFormat(value) {
+      //千分位＋小數點後兩位
+      return `${Number(value)
+        .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     filterDate(date) {
-      return Vue.moment(date).format("YYYY-MM-DD HH:mm:ss");
+      return Vue.moment(EST(date)).format("YYYY-MM-DD HH:mm:ss");
     },
     getTimeRecord(data) {
       //切換上方子功能列
@@ -222,7 +225,9 @@ export default {
       }
 
       if (data.name === "no-login") {
-        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD 23:59:59");
+        this.endTime = Vue.moment(this.estToday)
+          .add(-data.value, "days")
+          .format("YYYY-MM-DD 23:59:59");
       }
 
       if (this.path && this.pathDay != data.name) {

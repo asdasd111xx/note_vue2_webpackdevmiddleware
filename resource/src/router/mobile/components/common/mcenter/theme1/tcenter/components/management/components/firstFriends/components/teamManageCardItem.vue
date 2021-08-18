@@ -148,6 +148,10 @@ export default {
   },
   watch: {
     cardItemList() {
+      this.openCloseWord = "全展开";
+      this.bigImage = "btn_details_expand";
+      this.showOpen = false;
+      this.showAllButton = false;
       this.getNew();
     }
   },

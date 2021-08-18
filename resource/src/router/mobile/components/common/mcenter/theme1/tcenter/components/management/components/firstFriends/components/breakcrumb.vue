@@ -2,8 +2,8 @@
   <div
     :class="[
       $style['breakcrumb'],
-      { [$style['team-manage']]: path != 'custom' },
-      { [$style['team-manage-search']]: path == 'custom' }
+      { [$style['team-manage']]: !searchResult },
+      { [$style['team-manage-search']]: searchResult }
     ]"
     id="breakcrumb_id"
   >
@@ -32,6 +32,11 @@ export default {
     list: {
       type: Array,
       default: []
+    },
+    // searchResult:true =>自訂日期＋好友名稱搜尋  searchResult:false =>自訂日期搜尋
+    searchResult: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -57,7 +62,7 @@ export default {
   methods: {
     clickTarget(alias, id, index) {
       //搜尋結果的帳號不能點擊
-      if (this.$route.params.item == "custom") {
+      if (this.searchResult) {
         return;
       }
       // 有需要此需求再開啟

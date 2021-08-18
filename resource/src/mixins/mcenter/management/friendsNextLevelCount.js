@@ -23,8 +23,12 @@ export default {
     };
   },
   created() {
-    this.startTime = Vue.moment(this.estToday).format("YYYY-MM-DD 00:00:00");
-    this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD 23:59:59");
+    this.startTime = Vue.moment(this.estToday).format(
+      "YYYY-MM-DD 00:00:00-04:00"
+    );
+    this.endTime = Vue.moment(this.estToday).format(
+      "YYYY-MM-DD 23:59:59-04:00"
+    );
   },
   mounted() {},
   computed: {
@@ -71,9 +75,15 @@ export default {
       }
 
       let params = {
-        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00"),
-        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
       };
+
+      if (this.$route.params.item === "no-login") {
+        params = {
+          endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+        };
+      }
 
       return goLangApiRequest({
         method: "get",
@@ -84,7 +94,8 @@ export default {
           //好友統計類別（login 登入資料，register 註冊資料，預設抓取註冊資料）
           type: this.currentDate.key,
           lang: "zh-cn",
-          depth: this.depth
+          depth: this.depth,
+          maxResults: 50
         }
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {

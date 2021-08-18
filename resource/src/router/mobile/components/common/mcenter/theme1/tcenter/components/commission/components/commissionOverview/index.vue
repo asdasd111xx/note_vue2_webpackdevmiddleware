@@ -301,6 +301,7 @@
 import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 import { mapGetters } from "vuex";
 import EST from "@/lib/EST";
+import Vue from "vue";
 
 export default {
   mixins: [commissionOverview],
@@ -318,7 +319,7 @@ export default {
   props: {
     setHeaderTitle: {
       type: Function,
-      required: true
+      default: () => {}
     },
     setTabState: {
       type: Function,
@@ -373,10 +374,16 @@ export default {
       });
       let data = findExpected?.map(info => {
         return {
-          overview: `盈亏返利预估概况`,
-          date: `${this.dateYearFormat(info.start_at)} ~
-                ${this.dateYearFormat(info.end_at)}`,
+          overview: `盈亏返利概况`,
+          date:
+            this.dateYearFormat(info.start_at) ===
+            this.dateYearFormat(info.end_at)
+              ? this.dateYearFormat(info.start_at)
+              : `${this.dateYearFormat(info.start_at)} ~ ${this.dateYearFormat(
+                  info.end_at
+                )}`,
           day: this.remainderDays,
+          period: info.period,
           list: [
             {
               name: this.$text("S_EXPECTED_REBATE", "预估返利"),
@@ -411,7 +418,7 @@ export default {
               item: info.profit,
               color: info.profit,
               key: "level",
-              color: false,
+              color: info.profit < 0,
               show: true
             },
             {
@@ -437,7 +444,9 @@ export default {
             },
             {
               name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
-              item: this.amountFormat(info.withdraw),
+              item: this.amountFormat(
+                info.withdraw > 0 ? info.withdraw : info.withdraw * -1
+              ),
               key: "withdraw",
               color: info.withdraw < 0,
               show: true
@@ -470,6 +479,9 @@ export default {
     },
     amountFormat(amount) {
       return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    dateYearFormat(date) {
+      return Vue.moment(new Date(date)).format("YYYY-MM-DD");
     }
   }
 };

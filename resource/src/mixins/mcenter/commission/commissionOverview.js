@@ -3,13 +3,13 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";
-
+import EST from "@/lib/EST";
 export default {
   data() {
     return {
       summary: null,
       profitSwitch: true, //第三方開關,
-      todayAmout: "" //推廣大廳 今日已领返利
+      todayAmout: "" //推廣大廳 今日已领返利,
     };
   },
   computed: {
@@ -50,7 +50,13 @@ export default {
         0
       ).getDate();
 
-      return lastDay - today + 1;
+      if (this.$route.params.title) {
+        const endDay = new Date(this.summaryContent[2].end_at).getDate();
+
+        return endDay - today > 0 ? endDay - today : "0";
+      } else {
+        return lastDay - today + 1;
+      }
     },
     /**
      * 返利是否只使用本站
@@ -195,9 +201,6 @@ export default {
     },
     dateFormat(date) {
       return format(new Date(date), "MM/dd");
-    },
-    dateYearFormat(date) {
-      return format(new Date(date), "yyyy/MM/dd");
     }
   }
 };

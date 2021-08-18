@@ -65,106 +65,118 @@
   font-weight: 700;
 }
 
-.total-friend-warp {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border: 0px solid white;
-  border-radius: 5px;
-  margin: 10px 10px;
-  padding: 5px;
-  justify-content: space-around;
+.total-friend-layout {
+  position: relative;
+  max-height: 85%;
+  overflow: auto;
 
-  .total-friend-title {
+  .total-friend-warp {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px 10px;
+    flex-direction: column;
+    background-color: white;
+    border: 0px solid white;
+    border-radius: 5px;
+    margin: 10px 10px;
+    padding: 5px;
+    justify-content: space-around;
 
-    .title {
-      color: #414655;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .title-next {
-      color: #414655;
-      font-size: 14px;
+    .total-friend-title {
       display: flex;
-      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 10px 10px;
 
-      &::after {
-        content: "";
-        height: 15px;
-        width: 15px;
-        background-image: url("/static/image/common/arrow_next.png");
-        display: inline-block;
-        background-size: contain;
+      .title {
+        color: #414655;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .title-next {
+        color: #414655;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+
+        &::after {
+          content: "";
+          height: 15px;
+          width: 15px;
+          background-image: url("/static/image/common/arrow_next.png");
+          display: inline-block;
+          background-size: contain;
+        }
       }
     }
-  }
 
-  .total-friend-count {
-    border-top: 1px solid #EEEEEE;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 5px 10px;
-    line-height: 2;
+    .total-friend-count {
+      border-top: 1px solid #EEEEEE;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 5px 10px;
+      line-height: 2;
 
-    .count-title {
-      color: #A6A9B2;
-    }
+      .count-title {
+        color: #A6A9B2;
+      }
 
-    .count-content {
-      color: #414655;
-      text-align: right;
+      .count-content {
+        color: #414655;
+        text-align: right;
+      }
     }
   }
 }
 
-.level-friend-warp {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border: 0px solid white;
-  border-radius: 5px;
-  margin: 10px 10px;
-  padding: 5px;
-  justify-content: space-around;
+.level-friend-layout {
+  position: relative;
+  max-height: 85%;
+  overflow: auto;
 
-  .level-friend-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px 10px;
-
-    .title {
-      color: #414655;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-  }
-
-  .level-friend-count {
-    border-top: 1px solid #EEEEEE;
+  .level-friend-warp {
     display: flex;
     flex-direction: column;
-    padding: 5px 10px;
-    line-height: 20px;
+    background-color: white;
+    border: 0px solid white;
+    border-radius: 5px;
+    margin: 10px 10px;
+    padding: 5px;
+    justify-content: space-around;
 
-    .friend-data {
+    .level-friend-title {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      padding: 10px 10px;
 
-      .data-name {
-        color: #A6A9B2;
+      .title {
+        color: #414655;
+        font-size: 16px;
+        font-weight: 700;
       }
 
-      .data-value {
-        color: #414655;
+    }
+
+    .level-friend-count {
+      border-top: 1px solid #EEEEEE;
+      display: flex;
+      flex-direction: column;
+      padding: 5px 10px;
+      line-height: 20px;
+
+      .friend-data {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .data-name {
+          color: #A6A9B2;
+        }
+
+        .data-value {
+          color: #414655;
+        }
       }
     }
   }

@@ -66,7 +66,8 @@ export default {
         C_WS_WAGE: "您的返利已入帐，请前往查看",
         C_WS_RECYCLE_FAIL: "额度无法转移，请稍后再试",
         C_WS_RECYCLE_ALL_FAIL: "额度无法转移，请稍后再试",
-        C_WS_RECYCLE_OK: "一键回收完成"
+        C_WS_RECYCLE_OK: "一键回收完成",
+        C_WS_WAGE_SELF: "您有返利可领取，请前往查看"
       },
       msgType: [
         "player_deposit",
@@ -249,7 +250,9 @@ export default {
         case "C_WS_WAGE":
           this.$router.push("/mobile/mcenter/wallet");
           break;
-
+        case "C_WS_WAGE_SELF":
+          this.$router.push("/mobile/mcenter/tcenterManageRebate/real/receive");
+          break;
         case "C_WS_SERVICE_MAINTAIN":
           break;
       }

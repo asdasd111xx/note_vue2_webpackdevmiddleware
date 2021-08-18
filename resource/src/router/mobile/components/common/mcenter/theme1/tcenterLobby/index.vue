@@ -8,13 +8,15 @@
             `/static/image/${themeTPL}/mcenter/tcenter/icon_home_n.png`
           )
         "
-        @click="$router.back()"
+        @click="$router.push('/mobile/mcenter/home')"
       />
       <div :class="$style['title-label']">我的推广</div>
       <div
         v-if="!rewardOnlyLocal"
         :class="$style['title-commission']"
-        @click="$router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')"
+        @click="
+          $router.push('/mobile/mcenter/tcenterManageRebate/profit/profit')
+        "
       >
         盈亏返利
       </div>
@@ -46,14 +48,22 @@
               v-if="isShowRebate"
               :class="$style['list-btn']"
               @click="
-                $router.push('/mobile/mcenter/tcenterManageRebate/real/detail')
+                $router.push(
+                  '/mobile/mcenter/tcenterManageRebate/real/detail?toDetail=Y&total=total'
+                )
               "
             >
               详情
             </div>
           </div>
           <div :class="$style['list-value']">
-            {{ isShowRebate ? subValidBet : friendsStatistics.valid_bet }}
+            {{
+              isShowRebate
+                ? subValidBet
+                : Number(friendsStatistics.valid_bet) > 0
+                ? friendsStatistics.valid_bet
+                : "--"
+            }}
           </div>
         </div>
         <div :class="$style['list-data']">
@@ -62,7 +72,11 @@
           </div>
           <div :class="$style['list-value']">
             {{
-              isShowRebate ? subUserCount : friendsStatistics.today_has_login
+              isShowRebate
+                ? subUserCount
+                : Number(friendsStatistics.today_has_login) > 0
+                ? friendsStatistics.today_has_login
+                : "--"
             }}
           </div>
         </div>
@@ -278,6 +292,7 @@
         </div>
       </div>
       <img
+        v-if="themeTPL != 'ey1'"
         :class="$style['promote-content']"
         :src="
           $getCdnPath(
@@ -309,7 +324,7 @@ export default {
       levelList: [[{ total: 0 }]],
       allTotal: [],
       transPointType: false,
-      summary: null,
+      summary: { today: { amount: 0 } },
       immediateData: [],
       specialList: [
         {
@@ -368,14 +383,10 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     /**
-     * 返利是否只使用本站
+     * 返利是否有開啟第三方返利時
      */
     rewardOnlyLocal() {
-      return (
-        this.memInfo.config.wage &&
-        this.memInfo.config.wage.length === 1 &&
-        this.memInfo.config.wage[0] === "local"
-      );
+      return this.memInfo.config.wage.indexOf("commission") === -1;
     }
   },
   mounted() {},
@@ -407,8 +418,7 @@ export default {
           let dataArray = [];
 
           dataArray = response.data.ret.entries;
-          this.isShowRebate = response.data.ret.show_real_time;
-
+          this.isShowRebate = response.data.ret.show_real_time ?? true;
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet
               ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)
@@ -426,9 +436,7 @@ export default {
             } else if (this.immediateData && this.immediateData.state === 1) {
               // 可領
               this.getRebateText = "领取";
-              this.rebateCount = this.getNoRoundText(
-                this.immediateData.self_min_limit
-              );
+              this.rebateCount = this.getNoRoundText(this.immediateData.amount);
             } else {
               // 已达上限
               this.getRebateText = "查看";

@@ -27,7 +27,11 @@
       />
     </div>
 
-    <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
+    <assign
+      v-if="currentTemplate === 'assign'"
+      :currentInfo="currentInfo"
+      @id="memberData"
+    />
     <record
       v-if="currentTemplate === 'record' && !path"
       :currentInfo="currentInfo"
@@ -66,7 +70,9 @@ export default {
     return {
       currentTab: 0,
       currentTemplate: "assign",
-      path: this.$route.params.title ?? ""
+      path: this.$route.params.title ?? "",
+      id: "",
+      totalTime: "" //統計至
     };
   },
 
@@ -134,7 +140,8 @@ export default {
               amount: this.$route.query.amount,
               current_entry_id: this.$route.query.current_entry_id,
               show_detail: this.$route.query.show_detail,
-              oauth2: this.$route.query.oauth2
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
             }
           });
           break;
@@ -153,9 +160,10 @@ export default {
               oauth2_detail: this.$route.query.oauth2_detail,
               type: this.$route.query.type,
               amount: this.$route.query.amount,
-              current_entry_id: this.$route.query.current_entry_id,
+              current_entry_id: this.$route.query.current_entry_id || this.id,
               show_detail: this.$route.query.show_detail,
-              oauth2: this.$route.query.oauth2
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
             }
           });
           break;
@@ -166,6 +174,11 @@ export default {
     },
     setTitle(val) {
       this.showTitle = val;
+      return;
+    },
+    memberData(val) {
+      this.id = val.id;
+      this.totalTime = val.end_at;
       return;
     }
   }

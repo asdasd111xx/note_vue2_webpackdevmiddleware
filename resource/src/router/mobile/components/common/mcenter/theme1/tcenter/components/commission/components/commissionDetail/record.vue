@@ -301,6 +301,15 @@ export default {
   created() {
     this.getFriends();
   },
+  mounted() {
+    if (this.currentInfo.oauth2) {
+      // 第三方返利只取第三方返利資料
+      this.getDetail();
+      return;
+    }
+
+    this.getSummary();
+  },
   filters: {
     amountFormat(amount) {
       return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

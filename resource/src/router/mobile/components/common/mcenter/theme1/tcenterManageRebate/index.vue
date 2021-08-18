@@ -81,12 +81,13 @@ export default {
   },
   mounted() {
     this.setHeaderTitle(this.$text("S_TEAM_REBATE", "返利管理"));
-    this.getRebateSwitch();
   },
   watch: {
     "$route.params.title": {
       handler: function(item) {
         this.path = item;
+        this.switchComponent(item);
+        this.getRebateSwitch();
       },
       deep: true,
       immediate: true
@@ -141,7 +142,18 @@ export default {
   methods: {
     ...mapActions(["actionChangePage", "actionSetUserdata"]),
     changeTab(tabKey) {
-      switch (this.tabItem[tabKey].key) {
+      if (this.path != this.tabItem[tabKey].key) {
+        this.$router.replace({
+          params: {
+            title: `${this.tabItem[tabKey].key}`,
+            item: `${this.tabItem[tabKey].item}`
+          }
+        });
+      }
+    },
+    switchComponent(value) {
+      this.tabState = true;
+      switch (value) {
         default:
         case "record":
           this.currentLayout = { vendor: "record" };
@@ -155,15 +167,6 @@ export default {
         case "recommendGift":
           this.currentLayout = { vendor: "recommendGift" };
           break;
-      }
-
-      if (this.path != this.tabItem[tabKey].key) {
-        this.$router.replace({
-          params: {
-            title: `${this.tabItem[tabKey].key}`,
-            item: `${this.tabItem[tabKey].item}`
-          }
-        });
       }
     },
     setTabState(state) {
@@ -183,7 +186,10 @@ export default {
 
         if (response.status === "000") {
           //判斷實時返利開關
-          this.isShowRebate = response.data.ret.show_real_time;
+          this.isShowRebate =
+            this.themeTPL === "ey1"
+              ? response.data.show_real_time
+              : response.data.ret.show_real_time;
           return;
         }
       });

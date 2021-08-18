@@ -39,7 +39,7 @@
         >
           <div v-if="!$route.query.third" :class="$style['date-total']">
             <span>{{
-              `统计至：${titleDateFormat(currentInfo.period)} ${filterDate}`
+              `统计至：${titleDateFormat($route.query.totalTime)}`
             }}</span>
           </div>
           <card-item
@@ -53,23 +53,29 @@
         v-if="$route.query.depth && !$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
-        <div :class="$style['friend-wrap']">
+        <div
+          v-if="friendNameList !== undefined && friendNameList.length > 0"
+          :class="$style['friend-wrap']"
+        >
           <div>
             <card-total :data="friendBet" />
           </div>
-          <div
-            v-if="friendNameList !== undefined && friendNameList.length > 0"
-            :class="$style['card-item-wrap']"
-          >
+          <div :class="$style['card-item-wrap']">
             <card-item
               :card-item-list="friendNameList"
               @click-card="enterNextLayer"
             />
           </div>
-          <div v-else :class="$style['no-data']">
-            <img src="/static/image/_new/mcenter/ic_nodata.png" />
-            <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
-          </div>
+        </div>
+        <div v-else :class="$style['no-data']">
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
+              )
+            "
+          />
+          <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
       </div>
 
@@ -150,13 +156,16 @@ export default {
       handler: function(item) {
         if (item.record) {
           //page1
-          this.setHeaderTitle(this.rebateDateFormat(this.$route.query.period));
+          this.setHeaderTitle(
+            this.$route.query.type != 0
+              ? this.rebateDateFormat(this.$route.query.period)
+              : this.$route.query.period
+          );
           this.setTabState(true);
 
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
-            this.setHeaderTitle(this.$route.query.period);
             return;
           }
           this.getSummary();
@@ -186,6 +195,9 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     friendLayerList() {
       //page1 好友層
       let data = this.summaryList?.map(info => {
@@ -205,6 +217,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             },
             {
@@ -222,14 +235,24 @@ export default {
       //page2 上方標題
       let strArr = [
         {
-          name: "总有效投注",
-          item: this.amountFormat(this.pageTotal?.valid_bet ?? "0.00")
+          name: "总有效投注：",
+          item:
+            this.pageTotal?.valid_bet > 0
+              ? this.amountFormat(this.pageTotal.valid_bet)
+              : "--"
         },
         {
-          name: "总损益",
-          item: this.amountFormat(this.pageTotal?.profit ?? "0.00")
+          name: "总损益：",
+          item:
+            this.pageTotal?.profit > 0
+              ? this.amountFormat(this.pageTotal.profit)
+              : "--",
+          color:
+            this.pageTotal?.profit > 0
+              ? this.chooseColor(this.pageTotal.profit)
+              : ""
         },
-        { name: "笔数", item: this.pagination?.total ?? "0" }
+        { name: "笔数：", item: this.pagination.total ?? "0" }
       ];
       return strArr;
     },
@@ -252,6 +275,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             }
           ]
@@ -263,20 +287,24 @@ export default {
       //page3 上方標題
       let strArr = [
         {
-          name: "总有效投注",
-          item: this.amountFormat(
-            this.friendGameList?.total?.valid_bet ?? "0.00"
-          )
+          name: "总有效投注：",
+          item:
+            this.friendGameList?.total?.valid_bet > 0
+              ? this.amountFormat(this.friendGameList.total.valid_bet)
+              : "0.00"
         },
         {
-          name: "总损益",
-          item: this.amountFormat(this.friendGameList?.total?.profit ?? "0.00")
+          name: "总损益：",
+          item: this.friendGameList?.total?.profit
+            ? this.amountFormat(this.friendGameList.total.profit)
+            : "0.00",
+          color: this.friendGameList?.total?.profit
+            ? this.chooseColor(this.friendGameList.total.profit)
+            : ""
         },
         {
-          name: "笔数",
-          item: this.amountFormat(
-            this.friendGameList?.pagination?.total ?? "0.00"
-          )
+          name: "笔数：",
+          item: this.friendGameList?.pagination?.total ?? "0"
         }
       ];
       return strArr;
@@ -295,6 +323,7 @@ export default {
             {
               name: "损益",
               item: this.amountFormat(info.profit),
+              color: this.chooseColor(info.profit),
               show: true
             }
           ]
@@ -411,6 +440,10 @@ export default {
     toggleSerial() {
       this.isSerial = !this.isSerial;
     },
+    //損益 正紅負黑
+    chooseColor(val) {
+      return val < 0 ? "red" : "black";
+    },
     enterNextLayer(friend) {
       //進到下一頁
       let title = "";
@@ -459,7 +492,7 @@ export default {
       }, 300);
     },
     rebateDateFormat(date) {
-      return Vue.moment(date).format("YYYY-MM-DD");
+      return Vue.moment(date).format("YYYYMMDD");
     }
   }
 };

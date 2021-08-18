@@ -52,7 +52,7 @@
           {{ "好友帐号" }}
         </div>
 
-        <input v-model="name" />
+        <input v-model="name" @input="onInput" />
       </div>
     </div>
     <div :class="$style['field-search-wrap']">
@@ -90,6 +90,10 @@ export default {
     chooseStatus: {
       type: Boolean,
       default: true
+    },
+    dateRange: {
+      type: Object,
+      default: {}
     }
   },
   data() {
@@ -109,6 +113,12 @@ export default {
       searchDate: {},
       name: ""
     };
+  },
+  created() {
+    if (this.dateRange) {
+      this.inqStart = this.dateRange.startTime;
+      this.inqEnd = this.dateRange.endTime;
+    }
   },
   computed: {
     ...mapGetters({
@@ -206,6 +216,12 @@ export default {
         };
       }
       this.$emit("search-date", this.searchDate);
+    },
+    onInput(e) {
+      e.target.value = e.target.value
+        .replace(/[^a-z0-9]/g, "")
+        .substring(0, 20);
+      this.name = e.target.value;
     }
   }
 };

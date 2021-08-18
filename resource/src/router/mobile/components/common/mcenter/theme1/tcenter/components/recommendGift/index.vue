@@ -7,6 +7,7 @@
       <custom-date
         v-if="isShowDatePicker"
         :options="options"
+        :date-range="dateRange"
         @search-date="receiveSearchCustomDate"
         @select-type="receiveSelectType"
       />
@@ -222,15 +223,20 @@
       </template>
       <div v-else :class="[$style['no-data-wrap'], { [$style.newpath]: path }]">
         <template v-if="!isShowDatePicker">
-          <img
-            :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
-          />
+          <div :class="$style['no-data-image']">
+            <img
+              :src="
+                $getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)
+              "
+            />
+          </div>
+
           <div :class="$style.tips">
             {{ path ? "暂无资料" : "还没有任何记录" }}
           </div>
           <div
             :class="$style['btn-money']"
-            @click="$router.push('/mobile/mcenter/makeMoney')"
+            @click="$router.replace('/mobile/mcenter/makeMoney?giftDetail=1')"
           >
             {{ giftTitle }}
           </div>
@@ -280,6 +286,10 @@ export default {
     tabState: {
       type: Boolean,
       default: false
+    },
+    setBackFunc: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
@@ -333,6 +343,24 @@ export default {
       timeTitle: ""
     };
   },
+  watch: {
+    //判斷是否從禮金明細來
+    "$route.query.gifDetail": {
+      handler: function(item) {
+        this.setBackFunc(() => {
+          if (item) {
+            this.$route.replace(
+              "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
+            );
+          } else {
+            this.$router.back();
+          }
+        });
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -344,6 +372,15 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    //傳進預設選擇自訂日期區間
+    dateRange: {
+      get() {
+        return { startTime: this.startTime, endTime: this.endTime };
+      },
+      set(val) {
+        return val;
+      }
     },
     allTotalData() {
       return [
@@ -434,16 +471,33 @@ export default {
           fontCss: "title-font-style",
           childTitle: `礼金 : ${this.amountFormat(info.total_invite_gift)}`,
           list: [
-            { name: "注册时间", item: this.filterDate(info.user_created_at) },
-            { name: "首存金额", item: this.amountFormat(info.amount) },
-            { name: "推荐礼金", item: this.amountFormat(info.deposit_gift) },
-            { name: "推荐人奖励", item: this.amountFormat(info.invite_gift) },
+            {
+              name: "注册时间",
+              item: this.filterDate(info.user_created_at),
+              isShow: true
+            },
+            {
+              name: "首存金额",
+              item: this.amountFormat(info.amount),
+              isShow: true
+            },
+            {
+              name: "推荐礼金",
+              item: this.amountFormat(info.deposit_gift),
+              isShow: info.deposit_gift > 0
+            },
+            {
+              name: "推荐人奖励",
+              item: this.amountFormat(info.invite_gift),
+              isShow: info.invite_gift > 0
+            },
             {
               name: "状态",
               item: this.getStatus(info),
-              color: this.getStatus(info, "y")
+              color: this.getStatus(info, "y"),
+              isShow: true
             }
-          ]
+          ].filter(item => item.isShow)
         };
       });
       return data;
@@ -475,7 +529,7 @@ export default {
   methods: {
     getStatus(info, color) {
       if (!info.allow) {
-        return "资格不符";
+        return color ? "red" : "资格不符";
       }
 
       if (info.revoked) {
@@ -495,17 +549,19 @@ export default {
       this.updateGame();
     },
     getTimeRecord(data) {
-      this.currentSelectTime = data.text;
+      this.selectType.status = 0;
 
-      this.startTime = Vue.moment(this.estToday)
-        .add(-data.value, "days")
-        .format("YYYY-MM-DD");
-      this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-
-      if (data.name === "yesterday") {
-        this.endTime = Vue.moment(this.estToday)
+      if (data.name != "custom") {
+        this.startTime = Vue.moment(this.estToday)
           .add(-data.value, "days")
           .format("YYYY-MM-DD");
+        this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
+
+        if (data.name === "yesterday") {
+          this.endTime = Vue.moment(this.estToday)
+            .add(-data.value, "days")
+            .format("YYYY-MM-DD");
+        }
       }
 
       if (this.path && this.pathDay != data.name) {
@@ -546,9 +602,7 @@ export default {
         first_result: this.maxResults * this.showPage
       };
 
-      if (this.selectType.status > 0) {
-        params.status = this.selectType.status;
-      }
+      params.status = this.selectType.status;
 
       this.startTime = Vue.moment(this.startTime).format("YYYY-MM-DD");
       this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
