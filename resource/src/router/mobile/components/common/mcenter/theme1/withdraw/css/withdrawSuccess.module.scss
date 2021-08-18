@@ -5,6 +5,7 @@
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 5;
 }
 
 .alert-wrap {
@@ -61,7 +62,7 @@
 
 .success-icon {
   margin: 30px 0;
-  color: #db6372;
+  color: #6aaaf5;
 }
 
 .success-img {
@@ -76,7 +77,7 @@
   //   padding-bottom: 12px;
   text-align: center;
   font-size: 18px;
-  color: #db6372;
+  color: #6aaaf5;
 }
 
 .tip-wrap {

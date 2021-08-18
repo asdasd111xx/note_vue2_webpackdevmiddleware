@@ -1032,7 +1032,7 @@
   "S_DEPOSIT_APPLY": "充值申请",
   "S_WITHDRAW_APPLY": "提现申请",
   "S_ENTER_SUCCESS": "提交成功",
-  "S_DEPOSIT_TIP02": "财务将尽快为您添加额度，请稍候",
+  "S_DEPOSIT_TIP02": "财务将尽快为您添加额度,请稍后",
   "S_DEPOSIT_TIP03": "若长时间未到帐请联络客服",
   "S_ENTER01": "我知道了",
   "S_WITHDRAW_ACCOUNT": "收款帐号",
