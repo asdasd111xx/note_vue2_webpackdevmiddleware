@@ -41,7 +41,9 @@
                   :jackpotData="jackpotData"
                 />
               </template>
-              <template v-else-if="gameInfo">
+              <template
+                v-else-if="gameInfo && typeof gameInfo.is_pc === 'undefined'"
+              >
                 <!-- 活動入口 -->
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
