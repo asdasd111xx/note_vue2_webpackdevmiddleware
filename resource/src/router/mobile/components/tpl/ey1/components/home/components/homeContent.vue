@@ -662,7 +662,9 @@ export default {
     }
 
     .balance-wrap {
-      float: right;
+      position: absolute;
+      top: 0;
+      right: 17px;
     }
 
     .wallet,
