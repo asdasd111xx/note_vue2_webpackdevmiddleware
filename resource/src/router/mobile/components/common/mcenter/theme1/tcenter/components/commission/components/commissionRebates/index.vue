@@ -49,14 +49,9 @@
 
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
             <div
-              v-if="
-                (path &&
-                  caculateList.state !== 3 &&
-                  caculateList.self_times !== 0) ||
-                  (path && caculateList.state === 3)
-              "
-              :class="$style['detail-content']"
-            >
+              v-if="caculateList.state === 3 && caculateList.self_times === 0"
+            ></div>
+            <div v-else :class="$style['detail-content']">
               <span :class="$style['content-left']">
                 结算区间
               </span>
@@ -357,7 +352,10 @@ export default {
   methods: {
     ...mapActions(["actionSetSystemTime"]),
     commaFormat(value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      //千分位＋小數點後兩位
+      return `${Number(value)
+        .toFixed(2)
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({

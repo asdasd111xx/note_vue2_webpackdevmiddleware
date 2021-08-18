@@ -18,7 +18,7 @@
     </div>
     <div :class="[$style['time-range']]">{{ timeTitle }}</div>
 
-    <div v-if="detailPage === 1">
+    <div v-if="detailPage === 1" :class="[$style['total-friend-layout']]">
       <div
         v-for="(friend, index) in allLevelFriendArray"
         :key="index"
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div v-if="detailPage === 2">
+    <div v-if="detailPage === 2" :class="[$style['level-friend-layout']]">
       <div
         v-for="(detail, index) in friendDetailArray"
         :key="index"
