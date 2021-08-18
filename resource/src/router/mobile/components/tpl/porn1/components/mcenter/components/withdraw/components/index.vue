@@ -1598,7 +1598,9 @@ export default {
           auditAmount: this.withdrawData.audit.total.audit_amount,
           method: this.selectedCard.withdrawType,
           value: this.selectedCard.id.toString(),
-          keyring: localStorage.getItem("tmp_w_1"),
+          keyring: localStorage.getItem("tmp_w_1")
+            ? localStorage.getItem("tmp_w_1")
+            : "",
           withdrawPassword: this.withdrawPwd ? this.withdrawPwd : ""
         }
       })
