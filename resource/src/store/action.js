@@ -1970,6 +1970,10 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
     );
 
+    if (!uri) {
+      return;
+    }
+
     axios
       .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
       .then(function(res) {
