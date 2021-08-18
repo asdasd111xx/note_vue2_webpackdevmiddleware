@@ -10,7 +10,7 @@
         <div v-if="getAgentLink || landingLink" :class="$style['qrcode-wrap']">
           <qrcode
             :value="loginStatus ? getAgentLink : landingLink"
-            :options="{ width: 60, margin: 1 }"
+            :options="{ width: 75, margin: 1 }"
             tag="img"
           />
         </div>
@@ -145,7 +145,7 @@ export default {
   width: 281px;
 
   .img {
-    height: 370px;
+    height: 360px;
     width: 100%;
     overflow-y: hidden;
 
@@ -171,7 +171,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 9%;
+    bottom: 7%;
     left: 50%;
     transform: translateX(-50%);
   }
