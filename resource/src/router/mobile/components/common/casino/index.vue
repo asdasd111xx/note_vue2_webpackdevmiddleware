@@ -41,7 +41,9 @@
                   :jackpotData="jackpotData"
                 />
               </template>
-              <template v-else-if="gameInfo.display">
+              <template
+                v-else-if="gameInfo && typeof gameInfo.is_pc === 'undefined'"
+              >
                 <!-- 活動入口 -->
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
@@ -245,7 +247,6 @@ export default {
       this.$nextTick(() => {
         this.gameData = [];
         this.updateGameData();
-        this.actionSetFavoriteGame(this.vendor);
         return;
       });
     },
@@ -366,20 +367,22 @@ export default {
             // 1,5 不顯示
             if (res.data.ret.events && res.data.ret.events.length > 0) {
               let result = res.data;
-              let activityEvents = result.ret.events
-                .filter(i => i.display)
-                .filter(
-                  i => +i.status === 2 || +i.status === 3 || +i.status === 4
-                );
+              let activityEvents = result.ret.events.filter(
+                i => +i.status === 2 || +i.status === 3 || +i.status === 4
+              );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
               if (activityEvents) {
-                this.hasActivity = true;
+                // 活動中頁籤只顯示活動中
+                if (activityEvents.find(i => +i.status == 3)) {
+                  this.hasActivity = true;
+                }
+
                 result.ret.events = activityEvents.sort((i, j) => {
-                  if (i.kind === 3) {
+                  if (i.status === 3) {
                     return 1;
                   }
-                  return i.kind - j.kind > 0 ? 1 : -1;
+                  return i.status - j.status > 0 ? 1 : -1;
                 });
               }
               this.activityData = result;
@@ -439,6 +442,10 @@ export default {
 
       this.isFavorite = value === "favorite";
       this.getActivityList();
+
+      if (this.loginStatus) {
+        this.actionSetFavoriteGame(this.vendor);
+      }
     },
     /**
      * 重新取得遊戲資料

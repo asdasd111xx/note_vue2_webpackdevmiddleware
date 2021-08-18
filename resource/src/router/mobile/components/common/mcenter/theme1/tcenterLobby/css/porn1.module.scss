@@ -1,6 +1,14 @@
 @import "@/css/variable.scss";
 
+@media (orientation: landscape) {
+  .title {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
 .title {
+  max-width: $mobile_max_width;
+  min-width: 0;
   position: absolute;
   width: 100%;
   top: 0;
@@ -11,7 +19,7 @@
   align-items: center;
   color: white;
   height: 43px;
-  background-image: url('/static/image/porn1/mcenter/tcenter/promote_topbg.png');
+  background-image: url("/static/image/porn1/mcenter/tcenter/promote_topbg.png");
   background-size: 100% 43px;
   max-height: 43px;
 }
@@ -32,8 +40,8 @@
 
 .title-commission {
   position: absolute;
-  color: #BF8646;
-  border: 1px solid #BF8646;
+  color: #bf8646;
+  border: 1px solid #bf8646;
   border-bottom-left-radius: 20px;
   border-top-left-radius: 20px;
   border-right: 0px;
@@ -44,7 +52,7 @@
 
 .main {
   margin-top: 43px;
-  background-image: url('/static/image/porn1/mcenter/tcenter/promote_bg.png');
+  background-image: url("/static/image/porn1/mcenter/tcenter/promote_bg.png");
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -60,22 +68,22 @@
     justify-content: space-between;
     margin-left: 40px;
     margin-right: 40px;
-    border-bottom: #5E626D dashed 1px;
+    border-bottom: #5e626d dashed 1px;
     padding-top: 15px;
     padding-bottom: 5px;
 
     .list-name {
-      color: #5E626D;
+      color: #5e626d;
       display: flex;
 
       .list-btn {
         margin-left: 5px;
         font-size: 12px;
-        color: #FFFFFF;
+        color: #ffffff;
         border: 0 solid;
         border-radius: 20px;
         padding: 0 7px;
-        background-color: #636F93;
+        background-color: #636f93;
       }
     }
 
@@ -83,13 +91,12 @@
       color: #414655;
     }
   }
-
 }
 
 .regist-data {
   display: flex;
-  background-color: #FFFFFF;
-  border: #FFFFFF solid;
+  background-color: #ffffff;
+  border: #ffffff solid;
   border-radius: 10px;
   margin: 20px;
   flex-wrap: wrap;
@@ -124,7 +131,7 @@
     padding: 10px;
 
     .regist-title {
-      color: #A6A9B2;
+      color: #a6a9b2;
     }
 
     .regist-value {
@@ -132,7 +139,7 @@
     }
 
     .game-lose {
-      color: #DB6372;
+      color: #db6372;
     }
   }
 }
@@ -146,7 +153,7 @@
 }
 
 .today-pay-content {
-  border-top: #F6F6F6 dashed 1px;
+  border-top: #f6f6f6 dashed 1px;
   width: 100%;
   margin-bottom: 5px;
 
@@ -166,22 +173,21 @@
         margin: 5px 5px 0 0;
 
         &.deposit {
-          background-color: #BE9E7F
+          background-color: #be9e7f;
         }
 
         &.withdraw {
-          background-color: #636F93
+          background-color: #636f93;
         }
       }
 
       .title-text {
-        color: #A6A9B2;
+        color: #a6a9b2;
       }
 
       &.left {
         flex-direction: row-reverse;
       }
-
     }
   }
 
@@ -193,24 +199,23 @@
       height: 14px;
       width: 100%;
       border-radius: 7px;
-      background-color: #636F93;
+      background-color: #636f93;
 
       .person-bar {
         z-index: 1;
         height: 14px;
         width: 100px;
         border-radius: 7px;
-        background-color: #BE9E7F;
+        background-color: #be9e7f;
 
         &.isZero {
-          background-color: #CECECE;
+          background-color: #cecece;
         }
       }
     }
   }
 
   .today-count {
-
     display: flex;
     margin: 0 15px;
     justify-content: space-between;
@@ -227,8 +232,8 @@
 
 .special {
   display: flex;
-  background-color: #FFFFFF;
-  border: #FFFFFF solid;
+  background-color: #ffffff;
+  border: #ffffff solid;
   border-radius: 10px;
   margin: 20px;
   padding-top: 10px;
@@ -271,7 +276,7 @@
 
     .special-data {
       align-items: center;
-      border-left: #D2D2D2 solid 1px;
+      border-left: #d2d2d2 solid 1px;
       display: inline-block;
       flex-direction: column;
       font-size: 12px;
@@ -286,7 +291,7 @@
       }
 
       &.first {
-        border-left: #FFFFFF solid 1px;
+        border-left: #ffffff solid 1px;
       }
 
       .img-icon {
@@ -297,7 +302,6 @@
         }
       }
     }
-
   }
 
   &.less {

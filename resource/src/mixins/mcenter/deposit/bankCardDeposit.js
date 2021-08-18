@@ -679,7 +679,7 @@ export default {
                 this.curPayInfo.payment_method_id === 404
               ) {
                 this.isOuterCrypto = true;
-                // this.getVendorCryptoOuterUserAddressList();
+                this.getVendorCryptoOuterUserAddressList();
               }
             }
           }

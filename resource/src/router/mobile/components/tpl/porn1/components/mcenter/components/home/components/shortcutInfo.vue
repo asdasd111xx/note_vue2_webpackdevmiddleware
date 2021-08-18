@@ -114,9 +114,7 @@ export default {
         { path: "/mobile/mcenter/accountVip", pageName: "accountVip" } // VIP
       ],
       //   vipData: {},
-      createdTime: "",
-      imgID: 0,
-      imgIndex: 0
+      createdTime: ""
     };
   },
   computed: {
@@ -133,9 +131,6 @@ export default {
         this.countDays(res.ret.user.created_at);
       }
     });
-
-    this.imgIndex = this.memInfo.user.image;
-    this.imgID = this.memInfo.user.image;
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),

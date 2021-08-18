@@ -10,7 +10,7 @@
         <div v-if="getAgentLink || landingLink" :class="$style['qrcode-wrap']">
           <qrcode
             :value="loginStatus ? getAgentLink : landingLink"
-            :options="{ width: 60, margin: 1 }"
+            :options="{ width: 75, margin: 1 }"
             tag="img"
           />
         </div>
@@ -136,28 +136,33 @@ export default {
 }
 
 .pic-wrap {
-  position: absolute;
-  width: 281px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border-radius: 8px;
-  // overflow: hidden;
+  height: 392px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 281px;
+
   .img {
-    height: 370px;
-    overflow: hidden;
+    height: 360px;
+    width: 100%;
+    overflow-y: hidden;
+
     img {
       width: 100%;
     }
   }
+
   .text {
     background: #fff;
-    color: #78a8f0;
-    padding: 9px;
-    text-align: center;
-    font-size: 12px;
-    z-index: 999;
     border-radius: 0 0 3px 3px;
+    color: #78a8f0;
+    font-size: 12px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    z-index: 999;
 
     img {
       vertical-align: middle;
@@ -166,7 +171,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 9%;
+    bottom: 7%;
     left: 50%;
     transform: translateX(-50%);
   }

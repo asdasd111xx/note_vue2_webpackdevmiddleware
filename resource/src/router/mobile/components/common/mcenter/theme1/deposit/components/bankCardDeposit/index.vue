@@ -628,8 +628,12 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span>
+                      <span :class="[{ [$style['yb']]: themeTPL === 'porn1' && cryptoMoney > 0 },
+                        { [$style['ey']]: themeTPL === 'ey1' && cryptoMoney > 0 },
+                        { [$style['sg']]: themeTPL === 'sg1' && cryptoMoney > 0 }]">
                         {{ cryptoMoney }}
+                      </span>
+                      <span>
                         {{ curPayInfo.payment_method_name }}
                       </span>
                     </span>
@@ -655,7 +659,7 @@
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
                       >1 USDT ≈ {{ rate }} CNY (
-                      <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+                      <span :class="[$style['time'],{ [$style['ey']]: themeTPL === 'ey1'}]">{{ timeUSDT() }}</span>
                       后更新 )</span
                     >
                   </div>
@@ -1075,7 +1079,9 @@
                 {{ statusText }}
               </div>
             </div>
-            <ul :class="$style['entry-message-confirm']">
+            <ul :class="[$style['entry-message-confirm'],
+                  { [$style['sg']]: themeTPL === 'sg1' },
+                  { [$style['ey']]: themeTPL === 'ey1' }]">
               <li @click="submitInfo">确定</li>
               <!-- has_csr: 是否啟用代客充值 -->
               <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
@@ -1547,6 +1553,7 @@ export default {
           return `您有提单未完成支付，请尝试其它充值通道。若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
 
         case 3:
+        case 5:
           return `为了保证您的使用安全，规避IP监控，我方将为您暂停${this.entryBlockStatusData.block_times}小时的充值服务功能，如需继续存款，请联繫我方客服。祝您游戏愉快!`;
 
         default:
@@ -1692,7 +1699,7 @@ export default {
     },
     clickSubmit() {
       // 代客充值
-      if (this.curPayInfo.payment_method_id === 20) {
+      if (this.curPayInfo.payment_method_id === 20 && this.entryBlockStatusData.status < 3) {
         this.submitInfo();
         return;
       }
@@ -1726,12 +1733,7 @@ export default {
      * @method submitInfo
      */
     submitInfo() {
-      // block -> 是否封鎖
-      if (this.entryBlockStatusData.block) {
-        this.closePopup();
-        return;
-      }
-
+      // status = 5-> 封鎖阻擋與跳轉網址
       if(this.entryBlockStatusData.status === 5){
         this.actionSetGlobalMessage({
             msg: this.entryBlockStatusData.custom_point
@@ -1741,8 +1743,15 @@ export default {
             window.open(this.entryBlockStatusData.external_url);
             return;
           }, 700);
+          this.closePopup();
           return;
       }
+      // block -> 是否封鎖
+      if (this.entryBlockStatusData.block) {
+        this.closePopup();
+        return;
+      }
+
 
       this.closePopup();
 

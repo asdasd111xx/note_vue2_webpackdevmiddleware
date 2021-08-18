@@ -34,7 +34,8 @@
                   item.status === 'processing' ||
                   item.status === 'complete' ||
                   item.method_id === 25 ||
-                  item.method_id === 402
+                  item.method_id === 402 ||
+                  item.method_id === 404
                     ? showDetailPop(item)
                     : '';
                 }
@@ -51,7 +52,8 @@
                 item.status === 'processing' ||
                   item.status === 'complete' ||
                   item.method_id === 25 ||
-                  item.method_id === 402
+                  item.method_id === 402 ||
+                  item.method_id === 404
               "
               :class="$style['processing-icon']"
               @click="showDetailPop(item)"

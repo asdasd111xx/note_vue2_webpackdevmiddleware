@@ -400,6 +400,19 @@ export default {
   }
 }
 
+@media screen and (max-width: 374px) {
+  .header {
+    width: 100%;
+    padding: 0 6px;
+  }
+
+  .balance-wrap {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
 .agent {
   background: url("/static/image/porn1/agent/common/herder_bg.png");
   border-bottom: 1px solid #000;

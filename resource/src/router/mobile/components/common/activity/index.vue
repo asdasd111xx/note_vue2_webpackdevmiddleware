@@ -125,8 +125,6 @@ export default {
   created() {
     // 强档活动
     let title = localStorage.getItem("iframe-third-url-title") || "强档活动";
-    console.log(title);
-
     this.$emit("update:lobbyName", title);
   },
   mounted() {

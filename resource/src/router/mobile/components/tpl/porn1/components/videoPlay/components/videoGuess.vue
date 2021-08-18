@@ -166,7 +166,6 @@ export default {
   margin-bottom: 15px;
   color: $main_discover_color1;
   font-weight: 500;
-  position: relative;
 
   &.custom {
     color: #333;
@@ -191,18 +190,12 @@ export default {
 
 .image-wrap {
   overflow: hidden;
-  position: relative;
   width: 40%;
 
   > img {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
     width: 100%;
-    min-height: 100%;
-    margin: auto;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

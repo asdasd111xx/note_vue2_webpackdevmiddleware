@@ -10,7 +10,13 @@
       ]"
       @click="onClick(info)"
     >
-      <div>
+      <div v-if="info.key === 'home'">
+        <img
+          :class="[$style['btn-home'], { [$style.active]: isActive('home') }]"
+          :src="$getCdnPath(`/static/image/ey1/home/btn_home.png`)"
+        />
+      </div>
+      <div v-else>
         <img
           v-if="isActive(info.key)"
           :src="
@@ -53,21 +59,21 @@ export default {
     }),
     list() {
       return [
-        { key: "home", name: this.$text("S_HOME", "首页"), path: "/mobile" },
+        {
+          key: "gift",
+          name: this.$text("S_GIFT", "礼包"),
+          path: "/mobile/gift"
+        },
         {
           key: "promotion",
           name: this.$text("S_PROMOTION", "优惠"),
           path: "/mobile/promotion"
         },
+        { key: "home", name: this.$text("S_HOME", "首页"), path: "/mobile" },
         {
           key: "service",
           name: this.$text("S_SERVIEC", "客服"),
           path: "/mobile/service?prev=false"
-        },
-        {
-          key: "gift",
-          name: this.$text("S_GIFT", "礼包"),
-          path: "/mobile/gift"
         },
         {
           key: "mcenter-home",
@@ -121,9 +127,13 @@ export default {
   height: 45px;
   color: #ff7171;
   position: relative;
+  text-align: center;
 
   &.active {
-    color: #e42a30;
+    color: #bd0000;
+    font-size: 12.5px;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-weight: 700;
   }
 
   > div {
@@ -144,6 +154,12 @@ export default {
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .btn-home {
+    margin: -30px auto 2px;
+    width: 60px;
+    height: 60px;
   }
 }
 

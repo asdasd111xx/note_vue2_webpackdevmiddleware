@@ -1,9 +1,5 @@
 <template>
-  <mobile-container
-    :header-config="headerConfig"
-    :class="$style.container"
-    :is-home="true"
-  >
+  <mobile-container :class="$style.container" :is-home="true">
     <div slot="content" class="content-wrap">
       <div :class="$style['top-bg']" />
       <home-slider />
@@ -44,45 +40,38 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       post: "getPost"
-    }),
-    headerConfig() {
-      return {
-        hasLogo: true,
-        hasMemInfo: true,
-        onClick: () => {
-          this.onClick();
-        }
-      };
-    }
+    })
+    // headerConfig() {
+    //   return {
+    //     hasLogo: true,
+    //     hasMemInfo: true,
+    //     onClick: () => {
+    //       this.onClick();
+    //     }
+    //   };
+    // }
   },
   created() {
     // 先顯示彈跳公告關閉後再顯示一般公告
     // 顯示過公告 localStorage.getItem('is-shown-announcement')
     // 不在提示 localStorage.getItem('do-not-show-home-post')
-    if (
-      this.loginStatus &&
-      !localStorage.getItem("do-not-show-home-post") &&
-      !localStorage.getItem("is-shown-announcement")
-    ) {
+    if (this.loginStatus) {
       localStorage.setItem("is-shown-announcement", true);
-
       axios({
         method: "get",
         url: "/api/v1/c/player/popup-announcement"
-      })
-        .then(res => {
-          if (res.data) {
-            if (res.data.ret && res.data.ret.length > 0) {
-              // 顯示彈跳公告
-              this.sitePostList = res.data.ret;
-              this.isShowPop = true;
-            } else {
-              // 顯示一般公吿
-              this.closePop(true);
-            }
+      }).then(res => {
+        if (res.data) {
+          if (res.data.ret && res.data.ret.length > 0) {
+            // 顯示彈跳公告
+            this.sitePostList = res.data.ret;
+            this.isShowPop = true;
+          } else {
+            // 顯示一般公吿
+            this.closePop(true);
           }
-        })
-        .catch(res => {});
+        }
+      });
     }
   },
   watch: {
@@ -123,7 +112,7 @@ export default {
       this.isShowPop = false;
       this.sitePostList = null;
 
-      if (!localStorage.getItem("do-not-show-home-post")) {
+      if (localStorage.getItem("do-not-show-home-post") !== "true") {
         setTimeout(() => {
           this.$nextTick(() => {
             if (isFromSitePost && this.post && this.post.list.length > 0) {

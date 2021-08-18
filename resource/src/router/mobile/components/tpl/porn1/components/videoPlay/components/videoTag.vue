@@ -50,9 +50,10 @@ export default {
   display: flex;
   overflow-x: auto;
   width: 100%;
+  height: 40px;
 
   &.padding {
-    padding: 12px 14px 10px 14px;
+    padding: 0 14px;
   }
 
   > .tag {

@@ -179,6 +179,8 @@ export default {
   display: flex;
   align-content: center;
   padding: 10px 17px 8px;
+  width: 100%;
+  overflow: hidden;
 
   .news-icon {
     height: 100%;
@@ -196,7 +198,7 @@ export default {
   position: fixed;
   top: 43px;
   z-index: 2;
-  background: white;
+  background: #f8f8f7;
 }
 
 .news-content {
@@ -214,7 +216,7 @@ export default {
   }
 
   &.ey1 {
-    color: #ff7171;
+    color: #5e626d;
   }
 
   &.sg1 {

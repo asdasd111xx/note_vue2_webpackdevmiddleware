@@ -1013,8 +1013,8 @@ export const actionSetPost = ({ commit }, postType = 1) =>
   });
 
 // 會員端-加入最愛的遊戲列表
-export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
-  game.favoriteGame({
+export const actionSetFavoriteGame = ({ commit }, vendor = "") => {
+  return game.favoriteGame({
     params: {
       max_results: 1000,
       vendor
@@ -1026,6 +1026,7 @@ export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
       commit(types.SETFAVORITEGAME, []);
     }
   });
+};
 
 // 會員端-設定下方遊戲框顯示狀態
 export const actionSetCollectionStatus = ({ commit }, status) => {
@@ -1968,6 +1969,10 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
     );
+
+    if (!uri) {
+      return;
+    }
 
     axios
       .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)

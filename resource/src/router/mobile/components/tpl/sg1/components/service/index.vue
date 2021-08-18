@@ -1,6 +1,6 @@
 <template>
   <mobile-container
-    :has-footer="!hasPrev || !fromlanding"
+    :has-footer="!hasPrev && !fromlanding"
     :class="$style['container']"
   >
     <div slot="content" :class="$style['content-wrap']">
@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <div :class="$style['add-wrap']">
+        <div v-if="isIos" :class="$style['add-wrap']">
           <span>添加桌面客服，随时享受一对一在线解答</span>
           <span :class="$style['add-bottom']" @click="handleAddClick"
             >立即添加</span
@@ -226,7 +226,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      mobileInfo: "getMobileInfo"
     }),
     isIos() {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
@@ -253,8 +254,13 @@ export default {
           break;
       }
     },
-    clickService(type = "") {
-      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+    clickService() {
+      let url = this.mobileInfo.service.url;
+      if (this.fromlanding) {
+        window.location.href = url;
+      } else {
+        window.open(url);
+      }
     },
     clickPopTip() {
       this.isShowPop = true;

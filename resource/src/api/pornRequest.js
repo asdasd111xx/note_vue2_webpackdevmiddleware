@@ -12,7 +12,6 @@ const PORN_DOMAIN =
     ? `${store.state.pornDomain}/api/v1`
     : "https://xxxfuck.app/api/v1";
 
-console.log(localDomain);
 // 色站Lucas機器 測試站 api domain
 const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
 const enableNewApi = !!getCookie("s_enable");

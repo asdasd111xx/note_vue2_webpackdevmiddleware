@@ -2,7 +2,6 @@
 
 .swiper-wrap {
   margin-top: 31px;
-  margin-bottom: 10px;
   background-color: #fff;
 }
 
@@ -337,6 +336,12 @@
   .time {
     color: #be9e7f;
     margin: 0 5px 0 5px;
+
+
+    &.ey {
+      color: #E42A30;
+    }
+
   }
 
   .content {
@@ -352,6 +357,21 @@
 
     &.money {
       color: #414655;
+    }
+
+    .yb {
+      color: #414655;
+      font-weight: 500;
+    }
+
+    .ey {
+      color: #E42A30;
+      font-weight: 500;
+    }
+
+    .sg {
+      color: #BE9E7F;
+      font-weight: 500;
     }
   }
 
@@ -1030,6 +1050,15 @@
   li {
     flex: 1;
     border-right: 1px solid #f8f8f7;
+  }
+
+
+  &.sg {
+    color: #bf8646;
+  }
+
+  &.ey {
+    color: #e42a30;
   }
 }
 
