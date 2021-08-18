@@ -403,6 +403,11 @@ export default {
     },
     onTouchMove(e) {
       let wrap = this.$refs["game-wrap"];
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        wrap = this.$refs["new-game-wrap"];
+      }
+
       if (this.isSliding) {
         return;
       }
@@ -426,6 +431,11 @@ export default {
       }
 
       if (this.slideDirection === "") {
+        return;
+      }
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        console.log(this.isTop, this.isBottom);
         return;
       }
 

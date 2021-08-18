@@ -262,7 +262,7 @@ export default {
         // observer: true,
         // observeParents: true,
         nested: true,
-        slidesPerView: document.body.clientWidth < 375 ? true : 3,
+        slidesPerView: document.body.clientHeight < 812 ? 1 : 3,
         spaceBetween: 0,
         mousewheel: false,
         speed: 100
@@ -284,11 +284,12 @@ export default {
             ) {
               let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
               this.onChangeSelectType(this.newTypeList[realIndex], false);
-              this.$nextTick(() => {
-                this.$refs[`sub-game-swiper-${+realIndex}`][0].$swiper.slideTo(
-                  0
-                );
-              });
+
+              // if (realIndex < this.currentType.key) {
+              //   this.$refs[`sub-game-swiper-${+realIndex}`][0].$swiper.slideTo(
+              //     0
+              //   );
+              // }
             }
           }
         }
@@ -382,7 +383,7 @@ export default {
         this.$refs["game-swiper"] &&
         this.$refs["game-swiper"].$swiper
       ) {
-        this.$refs[`sub-game-swiper-${+item.key}`][0].$swiper.slideTo(0);
+        // this.$refs[`sub-game-swiper-${+item.key}`][0].$swiper.slideTo(0);
         this.$nextTick(() => {
           this.$refs["game-swiper"].$swiper.slideTo(+item.key + 1);
         });
@@ -390,10 +391,10 @@ export default {
     }
   },
   beforeMount() {
-    // window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("resize", this.onResize);
   },
   mounted() {
-    // window.addEventListener("resize", this.onResize);
+    window.addEventListener("resize", this.onResize);
     if (this.loginStatus) {
       this.getUserViplevel();
     }
