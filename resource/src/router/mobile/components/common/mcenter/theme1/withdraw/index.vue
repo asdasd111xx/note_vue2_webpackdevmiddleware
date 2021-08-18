@@ -255,6 +255,15 @@
         :tip-title="alertData.tipTitle"
         :tip-img-src="alertData.tipImgSrc"
       />
+      <withdraw-success
+        v-if="isAlertTip"
+        :close-fuc="alertTipClose"
+        :title="alertData.title"
+        :close-btn-text="alertData.closeBtnText"
+        :type="alertData.type"
+        :tip-title="alertData.tipTitle"
+        :tip-img-src="alertData.tipImgSrc"
+      />
     </div>
     <serial-number v-if="isSerial" :close-fuc="serialClose" />
     <div v-if="isLoading" :class="$style['loading-wrap']">
@@ -282,6 +291,10 @@ export default {
     withdrawAlert: () =>
       import(
         /* webpackChunkName: 'withdrawAlert' */ "./components/withdrawAlert"
+      ),
+    WithdrawSuccess: () =>
+      import(
+        /* webpackChunkName: 'WithdrawSuccess' */ "./components/WithdrawSuccess"
       ),
     mcenterHeader: () =>
       import(
