@@ -6,7 +6,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 10;
   color: #000;
   background: rgba(0, 0, 0, 0.5);
 }
@@ -110,7 +110,7 @@
   font-size: 18px;
   font-weight: bold;
 
-  &:active {
-    background-color: #be9e7f;
-  }
+  // &:active {
+  //   background-color: #be9e7f;
+  // }
 }
