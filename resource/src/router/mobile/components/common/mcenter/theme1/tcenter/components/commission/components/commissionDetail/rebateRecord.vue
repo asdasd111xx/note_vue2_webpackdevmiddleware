@@ -69,11 +69,7 @@
         </div>
         <div v-else :class="$style['no-data']">
           <img
-            :src="
-              $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
-              )
-            "
+            :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
           />
           <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
@@ -243,9 +239,10 @@ export default {
         },
         {
           name: "总损益：",
-          item: this.pageTotal?.profit
-            ? this.amountFormat(this.pageTotal.profit)
-            : "--",
+          item:
+            this.pageTotal?.profit != 0
+              ? this.amountFormat(this.pageTotal.profit)
+              : "--",
           color:
             this.pageTotal?.profit > 0
               ? this.chooseColor(this.pageTotal.profit)
@@ -294,9 +291,10 @@ export default {
         },
         {
           name: "总损益：",
-          item: this.friendGameList?.total?.profit
-            ? this.amountFormat(this.friendGameList.total.profit)
-            : "--",
+          item:
+            this.friendGameList?.total?.profit != 0
+              ? this.amountFormat(this.friendGameList.total.profit)
+              : "--",
           color: this.friendGameList?.total?.profit
             ? this.chooseColor(this.friendGameList.total.profit)
             : ""

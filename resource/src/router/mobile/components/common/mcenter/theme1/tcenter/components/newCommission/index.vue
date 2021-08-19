@@ -503,18 +503,10 @@ export default {
     },
     manageRebateDate() {
       if (this.path) {
-        switch (this.rebateTitle) {
-          case "today":
-          case "yesterday":
-            this.timeTitle = this.start;
-            break;
-          case "month":
-          case "custom":
-            this.timeTitle = `${this.start} ~ ${this.end}`;
-            break;
-          default:
-            this.timeTitle = this.start;
-            break;
+        if (this.startTime !== this.endTime) {
+          this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
+        } else {
+          this.timeTitle = this.startTime;
         }
       }
       return;

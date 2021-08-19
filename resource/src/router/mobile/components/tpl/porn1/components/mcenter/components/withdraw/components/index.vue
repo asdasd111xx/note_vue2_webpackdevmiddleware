@@ -567,10 +567,6 @@
         }
       "
     />
-    <!-- 出款單成功Alert -->
-    <withdraw-success v-if="isSuccessAlertShow" :close-fuc="goBackSuccess" />
-    <!-- 出款單取消Alert -->
-    <withdraw-alert v-if="isAlertShow" :close-fuc="goBack" />
 
     <!-- 彈窗 -->
     <template v-if="showPopStatus.isShow">
@@ -624,6 +620,11 @@
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
       </template>
     </template>
+
+    <!-- 出款單成功Alert -->
+    <withdraw-success v-if="isSuccessAlertShow" :close-fuc="goBackSuccess" />
+    <!-- 出款單取消Alert -->
+    <withdraw-alert v-if="isAlertShow" :close-fuc="goBack" />
 
     <page-loading :is-show="isLoading" />
   </div>
@@ -1601,7 +1602,8 @@ export default {
           keyring: localStorage.getItem("tmp_w_1")
             ? localStorage.getItem("tmp_w_1")
             : "",
-          withdrawPassword: this.withdrawPwd ? this.withdrawPwd : ""
+          withdrawPassword: this.withdrawPwd ? this.withdrawPwd : "",
+          swiftCode: this.selectedCard.swift_code
         }
       })
         .then(response => {
