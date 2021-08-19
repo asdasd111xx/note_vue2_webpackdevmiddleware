@@ -38,7 +38,16 @@
             <div :class="$style['vip-level']">
               <div>VIP&nbsp;{{ userViplevel }}</div>
             </div>
-            <div :class="$style['balance-wrap']">
+            <div
+              :class="[
+                $style['balance-wrap'],
+                $style['long'],
+                {
+                  [$style['long']]:
+                    memInfo.user.username && memInfo.user.username.length > 15
+                }
+              ]"
+            >
               <span :class="$style['wallet']">
                 {{ $text("S_MCENTER_WALLET") }}
               </span>
@@ -683,6 +692,15 @@ export default {
       position: absolute;
       top: 0;
       right: 17px;
+
+      &.long {
+        display: grid;
+
+        > span {
+          line-height: 20px;
+          height: 20px;
+        }
+      }
     }
 
     .wallet,
