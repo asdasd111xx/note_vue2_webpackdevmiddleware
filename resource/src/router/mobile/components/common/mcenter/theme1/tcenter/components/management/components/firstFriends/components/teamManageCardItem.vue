@@ -145,6 +145,9 @@ export default {
   created() {
     this.showAllButton = false;
     this.getNew();
+    if (this.$route.params.item === "custom") {
+      this.clickAdd("all");
+    }
   },
   watch: {
     cardItemList() {
