@@ -25,6 +25,11 @@ export default ({
   url = "",
   fail = () => {}
 }) => {
+  if (!PORN_DOMAIN) {
+    console.log("not found domain");
+    return resolve("error");
+  }
+
   const host = PORN_DOMAIN;
   const args = {
     jwt: getCookie("s_jwt") || "",
