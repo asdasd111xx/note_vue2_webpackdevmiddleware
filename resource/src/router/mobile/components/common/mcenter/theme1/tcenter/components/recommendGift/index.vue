@@ -610,15 +610,10 @@ export default {
       this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
 
       if (this.path) {
-        switch (this.pathDay) {
-          case "today":
-          case "yesterday":
-            this.timeTitle = this.startTime;
-            break;
-          case "month":
-          case "custom":
-            this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
-            break;
+        if (this.startTime !== this.endTime) {
+          this.timeTitle = `${this.startTime} ~ ${this.endTime}`;
+        } else {
+          this.timeTitle = this.startTime;
         }
       }
 
