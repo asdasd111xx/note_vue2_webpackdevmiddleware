@@ -296,9 +296,20 @@
         :class="$style['promote-content']"
         :src="
           $getCdnPath(
-            `/static/image/${themeTPL}/mcenter/tcenter/five_level.png`
+            `/static/image/${themeTPL}/mcenter/tcenter/Consultation.png`
           )
         "
+        @click="openPromotion('Consultation')"
+      />
+      <img
+        v-if="themeTPL != 'ey1'"
+        :class="$style['promote-content']"
+        :src="
+          $getCdnPath(
+            `/static/image/${themeTPL}/mcenter/tcenter/Commission.png`
+          )
+        "
+        @click="openPromotion('Commission')"
       />
     </div>
   </div>
@@ -522,6 +533,25 @@ export default {
           this.summary = ret;
         }
       });
+    },
+    openPromotion(position) {
+      let newWindow = "";
+      let url = "";
+      switch (position) {
+        case "Consultation":
+          url =
+            this.themeTPL === "pron1"
+              ? "https://nxs.yaboxxxcs.net/chat/text/chat_0cUEpU.html?skill=8ae482a07b065f30017b0ed952e513c4"
+              : "https://nxs.siguacs.net/chat/text/chat_0cUkFJ.html?skill=8ae482a07b065f30017b1043477519cc";
+          break;
+        case "Commission":
+          url =
+            this.themeTPL === "pron1"
+              ? "https://yb01.666uxm.com/p/2103090002"
+              : "https://sg.666uxm.com/p/2103090002";
+          break;
+      }
+      newWindow = window.open(`${url}`, "_blank");
     }
   }
 };
