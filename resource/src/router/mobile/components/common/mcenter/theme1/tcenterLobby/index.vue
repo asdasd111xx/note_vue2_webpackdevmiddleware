@@ -299,7 +299,7 @@
             `/static/image/${themeTPL}/mcenter/tcenter/Consultation.png`
           )
         "
-        @click="openPromotion('Consultation')"
+        @click="openPromotion('agent_service')"
       />
       <img
         v-if="themeTPL != 'ey1'"
@@ -309,7 +309,7 @@
             `/static/image/${themeTPL}/mcenter/tcenter/Commission.png`
           )
         "
-        @click="openPromotion('Commission')"
+        @click="openPromotion('rebate_promotion')"
       />
     </div>
   </div>
@@ -429,7 +429,7 @@ export default {
           let dataArray = [];
 
           dataArray = response.data.ret.entries;
-          this.isShowRebate = response.data.ret.show_real_time ?? true;
+          this.isShowRebate = !(response.data.ret.show_real_time === false);
           if (this.isShowRebate) {
             this.subValidBet = response.data.total.valid_bet.sub_valid_bet
               ? this.getNoRoundText(response.data.total.valid_bet.sub_valid_bet)
@@ -536,22 +536,17 @@ export default {
     },
     openPromotion(position) {
       let newWindow = "";
-      let url = "";
-      switch (position) {
-        case "Consultation":
-          url =
-            this.themeTPL === "pron1"
-              ? "https://nxs.yaboxxxcs.net/chat/text/chat_0cUEpU.html?skill=8ae482a07b065f30017b0ed952e513c4"
-              : "https://nxs.siguacs.net/chat/text/chat_0cUkFJ.html?skill=8ae482a07b065f30017b1043477519cc";
-          break;
-        case "Commission":
-          url =
-            this.themeTPL === "pron1"
-              ? "https://yb01.666uxm.com/p/2103090002"
-              : "https://sg.666uxm.com/p/2103090002";
-          break;
-      }
-      newWindow = window.open(`${url}`, "_blank");
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: position,
+          lang: "zh-cn",
+          needToken: "false"
+        }
+      }).then(res => {
+        newWindow = window.open(`${res.data.uri}`, "_blank");
+      });
     }
   }
 };
