@@ -677,17 +677,6 @@ export default {
         });
 
         return;
-      } else if (this.friend_name) {
-        this.setBackFunc(() => {
-          this.gameRecordPage = false;
-          if (this.$route.params.path) {
-            this.$router.replace(
-              "/mobile/mcenter/tcenterManageTeam/firstFriends/custom"
-            );
-          } else {
-            this.$router.back();
-          }
-        });
       } else {
         // 上方選項列顯示狀態
 
@@ -812,6 +801,7 @@ export default {
     },
     getTimeRecord(data) {
       //切換上方時間功能列
+      localStorage.removeItem("friend-name");
       this.isShowDatePicker = false;
       this.friend_name = "";
 

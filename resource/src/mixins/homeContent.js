@@ -813,14 +813,14 @@ export default {
         case "link_to":
           switch (game.vendor) {
             case "agent":
-              if (!this.loginStatus) {
-                if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-                  this.$router.push("/mobile/login");
-                } else {
-                  this.$router.push("/mobile/joinmember");
-                }
-                return;
-              }
+              // if (!this.loginStatus) {
+              //   if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+              //     this.$router.push("/mobile/login");
+              //   } else {
+              //     this.$router.push("/mobile/joinmember");
+              //   }
+              //   return;
+              // }
               let newWindow = "";
               newWindow = window.open(`${game.memo}`, "_blank");
               // this.$router.push("/mobile/mcenter/makeMoney");

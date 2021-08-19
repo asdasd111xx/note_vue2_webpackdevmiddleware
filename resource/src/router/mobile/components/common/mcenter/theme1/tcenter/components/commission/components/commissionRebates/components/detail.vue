@@ -189,6 +189,7 @@ export default {
     if (!this.cid && this.loginStatus) {
       return;
     }
+    this.getAllDetailList();
   },
   mounted() {},
   watch: {
@@ -312,10 +313,9 @@ export default {
         },
         {
           name: "总损益：",
-          item:
-            this.friendMemberList?.total?.profit > 0
-              ? this.amountFormat(this.friendMemberList.total.profit)
-              : "--",
+          item: this.friendMemberList?.total?.profit
+            ? this.amountFormat(this.friendMemberList.total.profit)
+            : "--",
           color:
             this.friendMemberList?.total?.profit > 0
               ? this.chooseColor(this.friendMemberList.total.profit)
@@ -367,10 +367,9 @@ export default {
         },
         {
           name: "总损益：",
-          item:
-            this.friendGameList?.total?.profit > 0
-              ? this.amountFormat(this.friendGameList.total.profit)
-              : "--",
+          item: this.friendGameList?.total?.profit
+            ? this.amountFormat(this.friendGameList.total.profit)
+            : "--",
           color:
             this.friendGameList?.total?.profit > 0
               ? this.chooseColor(this.friendGameList.total.profit)

@@ -470,7 +470,7 @@ export default {
     },
     dateFormatHour(date) {
       if (date) {
-        return EST(Vue.moment(date).format("YYYY-MM-DD HH:00:00"));
+        return EST(Vue.moment(date).format("YYYY-MM-DD HH:mm:ss"));
       }
       return "--";
     }

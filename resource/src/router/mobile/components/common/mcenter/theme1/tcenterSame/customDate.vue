@@ -58,7 +58,7 @@
     <div :class="$style['field-search-wrap']">
       <div
         :class="[$style['btn-search'], { [$style['disable']]: !checkDate }]"
-        @click="
+        @click.once="
           () => {
             if (!checkDate) {
               return;
@@ -118,6 +118,10 @@ export default {
     if (this.dateRange) {
       this.inqStart = this.dateRange.startTime;
       this.inqEnd = this.dateRange.endTime;
+    }
+    let friend = localStorage.getItem("friend-name");
+    if (friend) {
+      this.name = friend;
     }
   },
   computed: {
@@ -214,7 +218,9 @@ export default {
           inqEnd: this.inqEnd,
           friend_name: this.name
         };
+        localStorage.setItem("friend-name", this.name);
       }
+
       this.$emit("search-date", this.searchDate);
     },
     onInput(e) {
