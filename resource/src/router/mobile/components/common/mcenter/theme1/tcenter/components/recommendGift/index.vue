@@ -602,7 +602,9 @@ export default {
         first_result: this.maxResults * this.showPage
       };
 
-      params.status = this.selectType.status;
+      if (this.selectType.status != 0) {
+        params.status = this.selectType.status;
+      }
 
       this.startTime = Vue.moment(this.startTime).format("YYYY-MM-DD");
       this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
