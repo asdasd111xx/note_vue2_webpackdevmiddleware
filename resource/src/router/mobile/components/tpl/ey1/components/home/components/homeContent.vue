@@ -9,7 +9,7 @@
       :class="$style['top-wrap']"
       :style="{
         'background-image': `url(
-                ${$getCdnPath(`/static/image/ey1/home/nav01_bg.png`)}
+               ${$getCdnPath(`/static/image/ey1/home/nav01_bg.png`)}
               )`
       }"
     >
@@ -38,7 +38,16 @@
             <div :class="$style['vip-level']">
               <div>VIP&nbsp;{{ userViplevel }}</div>
             </div>
-            <div :class="$style['balance-wrap']">
+            <div
+              :class="[
+                $style['balance-wrap'],
+                $style['long'],
+                {
+                  [$style['long']]:
+                    memInfo.user.username && memInfo.user.username.length > 15
+                }
+              ]"
+            >
               <span :class="$style['wallet']">
                 {{ $text("S_MCENTER_WALLET") }}
               </span>
@@ -88,31 +97,11 @@
       <!-- 上方自選列表 -->
       <div :class="$style['type-wrap-container']">
         <div
-          v-for="(type, index) in newTypeList"
-          :key="`type-${index}`"
-          :class="[
-            $style['type-item'],
-            { [$style.active]: currentType.key === type.key }
-          ]"
-          :id="`type-${index}`"
-          @click="onChangeSelectType(type, true)"
-          :style="{ width: typeItemWidth ? `${typeItemWidth}px` : {} }"
-        >
-          <div
-            :class="[
-              $style['type-name'],
-              { [$style.active]: currentType.key === type.key }
-            ]"
-          >
-            {{ type.name }}
-          </div>
-        </div>
-
-        <div
           v-if="typeBarPosition !== null"
           :class="[$style['type-slide-bar']]"
           :style="{
-            left: `${typeBarPosition}px`
+            right: `${typeBarPosition}px`,
+            width: `${typeItemWidth}px`
           }"
         >
           <div :class="[$style['type-slide-bar-hover']]">
@@ -128,6 +117,8 @@
             </div>
           </div>
         </div>
+
+        <div :class="['type-slide-pagination']"></div>
       </div>
     </div>
 
@@ -254,7 +245,8 @@ export default {
       gameSwiperUpdatedKey: 0,
       subGameSwiperUpdatedKey: 0,
       eyWrapHeight: 420,
-      typeBarPosition: null
+      typeBarPosition: null,
+      typeItemWidth: 48
     };
   },
   computed: {
@@ -282,13 +274,19 @@ export default {
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
-        // effect: "fade",
-        // fadeEffect: {
-        //   crossFade: true
-        // },
+        pagination: {
+          el: ".type-slide-pagination",
+          clickable: true,
+          bulletActiveClass: "type-slide-pagination-bullet-active",
+          bulletClass: "type-slide-pagination-bullet",
+          renderBullet: (index, className) => {
+            return `<div id="type-${index}" class="${className}" style="width:${this.typeItemWidth}px">
+            <div class="type-slide-name">${this.newTypeList[index].name}</div>
+            </div>`;
+          }
+        },
         on: {
-          slideChangeTransitionEnd: swiper => {},
-          slideChangeTransitionStart: () => {
+          slideChange: () => {
             if (
               this.newTypeList &&
               this.$refs["game-swiper"] &&
@@ -297,21 +295,11 @@ export default {
               let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
               this.onChangeSelectType(this.newTypeList[realIndex], false);
             }
-          }
+          },
+          slideChangeTransitionEnd: () => {},
+          slideChangeTransitionStart: () => {}
         }
       };
-    },
-
-    typeItemWidth() {
-      if (document.body.clientWidth <= 420) {
-        return "48";
-      } else {
-        if (this.newTypeList) {
-          return document.body.clientWidth / this.newTypeList.length;
-        }
-      }
-      //   return "";
-      // }
     }
   },
   ...mapGetters({
@@ -342,6 +330,9 @@ export default {
           this.$nextTick(() => {
             this.onChangeSelectType(this.currentType, false, true);
           });
+
+          this.typeItemWidth =
+            (document.body.clientWidth - 10) / this.newTypeList.length;
         }
       }
     }
@@ -358,44 +349,48 @@ export default {
       let extraHeight = 30 + 120 + 60 + homeSliderHeight + 10;
 
       this.eyWrapHeight =
-        document.body.offsetHeight - extraHeight > 0
+        document.body.offsetHeight - extraHeight > 420
           ? document.body.offsetHeight - extraHeight
           : 420;
+
+      this.slideTypeBar();
+    },
+    slideTypeBar() {
+      if (this.newTypeList) {
+        this.typeItemWidth =
+          (document.body.clientWidth - 10) / this.newTypeList.length;
+      }
+
+      let target = document.getElementById(`type-${this.currentType.key}`);
+      if (target) {
+        let offsetLeft = target.offsetLeft;
+        let offsetWidth = target.offsetWidth;
+        this.typeBarPosition =
+          document.body.clientWidth - (offsetLeft + offsetWidth);
+      } else {
+        this.typeBarPosition = 0;
+      }
     },
     onChangeSelectType(item, slide = false, focus = false) {
       if (this.currentType == item && !focus) {
         return;
       }
 
+      // 置頂原本的swiper
       this.$refs[`sub-game-swiper-${+this.currentType.key}`][0].$swiper.slideTo(
         0
       );
       this.currentType = item;
-
-      let target = document.getElementById(`type-${this.currentType.key}`);
-      if (target) {
-        let rect = target.getBoundingClientRect();
-        let extraWidth = $(window).width() / 2 - 210;
-        extraWidth = extraWidth < 0 ? 0 : extraWidth;
-        this.typeBarPosition = rect.x - extraWidth - 15;
-      } else {
-        this.typeBarPosition = 0;
-      }
-
-      if (
-        slide &&
-        this.$refs["game-swiper"] &&
-        this.$refs["game-swiper"].$swiper
-      ) {
-        this.$refs["game-swiper"].$swiper.slideTo(+item.key + 1);
-      }
+      this.slideTypeBar();
     }
   },
   beforeMount() {
     window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("orientationchange", this.onResize);
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
+    window.addEventListener("orientationchange", this.onResize);
     if (this.loginStatus) {
       this.getUserViplevel();
     }
@@ -414,6 +409,8 @@ export default {
 }
 
 .type-wrap-container {
+  padding: 0 5px;
+  width: 100%;
   position: relative;
   height: 35px;
   line-height: 35px;
@@ -426,26 +423,42 @@ export default {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, white 100%);
 }
 
-.type-item {
-  display: inline-block;
-  width: calc(100% / 6);
-  margin: 0 10px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
-  user-select: none;
-}
+:global {
+  .type-slide-pagination {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
 
-.type-name {
-  color: #e42a30;
-  font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
+  .type-slide-pagination-bullet {
+    height: 100%;
+    display: inline-block;
 
-  &.active {
-    color: #ffffff;
+    width: auto;
+    padding: 0 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    user-select: none;
+
+    > .type-slide-name {
+      color: #e42a30;
+      font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+
+  .type-slide-pagination-bullet-active {
+    > .type-slide-name {
+      color: #ffffff;
+      font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
   }
 }
 
@@ -455,11 +468,11 @@ export default {
   background-size: contain;
   display: inline-block;
   height: 35px;
-  left: 0;
+  right: -100vw;
   top: 0;
   position: absolute;
-  transition: left 0.31s;
-  width: 82px;
+  transition: right 0.31s;
+  width: auto;
 
   > img {
     width: 100%;
@@ -468,7 +481,7 @@ export default {
 }
 
 .type-slide-bar-hover {
-  width: 82px;
+  width: 100%;
   height: 35px;
   position: absolute;
   top: 0;
@@ -485,7 +498,7 @@ export default {
 
 .type-slide-bar-name {
   text-align: center;
-  width: 68px;
+  width: calc(80%);
   height: 35px;
   position: absolute;
   top: 0;
@@ -516,14 +529,14 @@ export default {
   padding: 0 18px;
   height: 420px;
   box-sizing: border-box;
-  // touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  // -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .new-game-container {
   width: 100%;
   height: 100%;
   max-height: 100%;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .sub-game-container {
@@ -532,6 +545,8 @@ export default {
   position: relative;
   overflow-y: scroll;
   max-height: 100%;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
 .game-swiper-slide {
@@ -547,17 +562,18 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 7px;
-  display: inline-block;
 
   &.flex {
     display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
 .game {
   width: 48%;
   padding: 0 2px;
-  display: inline-block;
+  position: relative;
 
   &.is-full {
     width: 100%;
@@ -567,7 +583,6 @@ export default {
     width: 31%;
     height: 25%;
     max-height: 150px;
-    position: relative;
     min-height: 126px;
     margin: 0 1%;
   }
@@ -582,7 +597,19 @@ export default {
   }
 }
 
+@media screen and (min-width: 375px) {
+  .top-wrap {
+    background-image: url("/static/image/ey1/home/nav01_bg@2x.png");
+    background-position: bottom !important;
+    background-size: contain !important;
+  }
+}
+
 @media screen and (max-width: 374px) {
+  .new-game-wrap {
+    padding: 0 14px;
+  }
+
   .game {
     display: flex;
     align-items: center;
@@ -590,7 +617,7 @@ export default {
 
     > img {
       display: block;
-      width: 90%;
+      width: 98%;
     }
   }
 }
@@ -665,6 +692,15 @@ export default {
       position: absolute;
       top: 0;
       right: 17px;
+
+      &.long {
+        display: grid;
+
+        > span {
+          line-height: 20px;
+          height: 20px;
+        }
+      }
     }
 
     .wallet,
@@ -799,19 +835,5 @@ export default {
   background-position: -7px -5px;
   width: 100%;
   height: 100%;
-}
-
-@media screen and (max-width: 375px) {
-  .type-slide-bar {
-    width: 72px;
-  }
-
-  .type-slide-bar-hover {
-    width: 72px;
-  }
-
-  .type-slide-bar-name {
-    width: 58px;
-  }
 }
 </style>
