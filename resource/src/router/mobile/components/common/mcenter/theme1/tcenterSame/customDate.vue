@@ -58,7 +58,7 @@
     <div :class="$style['field-search-wrap']">
       <div
         :class="[$style['btn-search'], { [$style['disable']]: !checkDate }]"
-        @click.once="
+        @click.stop="
           () => {
             if (!checkDate) {
               return;
