@@ -188,17 +188,16 @@ export default {
           });
           return;
         }
-
-        // 無認證直接呼叫
-        if (this.memInfo.config.friend_captcha_type === 0) {
-          this.handleSend();
+        if (this.allInput.some(key => this.allTip[key].error)) {
           return;
         } else {
-          if (this.allInput.some(key => this.allTip[key].error)) {
+          // 無認證直接呼叫
+          if (this.memInfo.config.friend_captcha_type === 0) {
+            this.handleSend();
             return;
+          } else {
+            this.showCaptchaPopup();
           }
-
-          this.showCaptchaPopup();
         }
       });
     },
