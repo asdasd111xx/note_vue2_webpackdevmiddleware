@@ -175,12 +175,12 @@ export default {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     titleDateFormat(value) {
-      let today = Vue.moment(new Date()).format("HH:mm:ss");
-      let end = Vue.moment(value).format("HH:mm:ss");
+      let today = Vue.moment(new Date()).format("YYYY-MM-DD");
+      let end = Vue.moment(value).format("YYYY-MM-DD");
       if (today > end) {
         return Vue.moment(value).format("YYYY-MM-DD 23:59:59");
       }
-      return Vue.moment(value).format("YYYY-MM-DD HH:mm:ss");
+      return Vue.moment(value).format("YYYY-MM-DD HH:00:00");
     },
 
     /**

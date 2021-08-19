@@ -189,6 +189,7 @@ export default {
     if (!this.cid && this.loginStatus) {
       return;
     }
+    this.getAllDetailList();
   },
   mounted() {},
   watch: {
