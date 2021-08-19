@@ -1,7 +1,7 @@
 <template>
   <mobile-container :class="$style.container" :is-home="true">
     <div slot="content" class="content-wrap">
-      <div :class="$style['top-bg']" />
+      <!-- <div :class="$style['top-bg']" /> -->
       <home-slider />
       <home-new />
       <home-content />
