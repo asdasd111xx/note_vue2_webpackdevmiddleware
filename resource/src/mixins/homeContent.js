@@ -821,7 +821,9 @@ export default {
                 }
                 return;
               }
-              this.$router.push("/mobile/mcenter/makeMoney");
+              let newWindow = "";
+              newWindow = window.open(`${game.memo}`, "_blank");
+              // this.$router.push("/mobile/mcenter/makeMoney");
               return;
 
             case "YV":
