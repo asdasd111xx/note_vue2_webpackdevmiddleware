@@ -86,7 +86,8 @@ export default {
   white-space: nowrap;
   overflow-x: scroll;
   overflow-y: auto;
-
+  position: relative;
+  bottom: 7px;
   &.team-manage-search {
     color: #a2a2a2;
 

@@ -13,9 +13,8 @@
         :child-item="allTotalData"
         :change-tab="getTimeRecord"
       />
-
       <breakcrumb
-        v-if="isEnterNextLayers"
+        v-if="firstFriends.depth >= 2 || searchResult"
         :depth="firstFriends.depth"
         :list="currentSavedFreindList"
         @send-name="clickTargetFriend"
@@ -606,11 +605,13 @@ export default {
             this.setTabState(true);
             this.isShowDatePicker = true;
             this.firstFriends.depth -= 1; //為了可以返回大廳
+            this.currentSavedFreindList = [];
           });
         } else {
           this.setBackFunc(() => {
             if (this.firstFriends.depth === 1) {
               this.searchResult = false;
+
               this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
               this.setTabState(true);
               this.isShowDatePicker = true;
@@ -642,7 +643,6 @@ export default {
     "firstFriends.depth"(value) {
       if (value >= 2) {
         this.isEnterNextLayers = true;
-
         if (!this.path) {
           this.setHeaderTitle(this.depthMapping[value]);
         } else if (!this.gameRecordPage) {
@@ -689,21 +689,19 @@ export default {
           }
         });
       } else {
+        // 上方選項列顯示狀態
+
+        this.setTabState(true);
+        this.setSubTabState(true);
         // 若返回到1級的頁面 or 停留在1級的情況
         this.isEnterNextLayers = false;
         this.searchResult = false;
-
         // 標題設定
         if (!this.path) {
           this.setHeaderTitle(this.$text("S_TEAM_CENTER", "我的推广"));
         } else {
           this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
         }
-
-        // 上方選項列顯示狀態
-
-        this.setTabState(true);
-        this.setSubTabState(true);
 
         // 返回鍵事件(同最外層預設一致)
         this.setBackFunc(() => {
@@ -815,6 +813,7 @@ export default {
     getTimeRecord(data) {
       //切換上方時間功能列
       this.isShowDatePicker = false;
+      this.friend_name = "";
 
       //自訂義時間區間 顯示上一個的時間區間
       if (data.name != "custom") {
@@ -839,7 +838,6 @@ export default {
         });
         this.pathDay = data.name;
       }
-
       this.setTimeTitle();
       this.searchResult = false;
       this.setTabState(true);
@@ -898,7 +896,6 @@ export default {
 
         if (this.friend_name) {
           this.searchResult = true;
-
           //為了顯示上方許多好友 把api回傳許多好友帳號存進去
           for (let i = 1; i < this.firstFriends.depth; i++) {
             this.addToSavedFreindList(

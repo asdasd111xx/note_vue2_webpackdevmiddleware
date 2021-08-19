@@ -50,6 +50,7 @@
           <div :class="[$style['rebate-body'], { [$style.pathbody]: path }]">
             <div
               v-if="caculateList.state === 3 && caculateList.self_times === 0"
+              :class="$style['detail-content']"
             ></div>
             <div v-else :class="$style['detail-content']">
               <span :class="$style['content-left']">
