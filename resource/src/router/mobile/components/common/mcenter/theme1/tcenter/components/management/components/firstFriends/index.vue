@@ -663,16 +663,29 @@ export default {
             this.gameRecordPage = false;
             this.firstFriends.depth -= 1;
           } else {
-            // 選擇的 index 為目前所選的上一個，因需等 API 成功後再執行 remove 的動作，因此減掉2
-            const previousIndex = this.currentSavedFreindList.length - 2;
+            if (this.path) {
+              //新的團隊報表點進去下一頁返回改成回到一級好友
+              this.firstFriends.depth = 1;
+              this.setTabState(true);
+              this.setSubTabState(true);
 
-            this.updateFirstFriends({
-              friend_id: this.currentSavedFreindList[previousIndex].id
-            }).then(status => {
-              if (status === "error") return;
-
-              this.removeLastIndexTargets();
-            });
+              this.getTimeRecord(
+                this.allTotalData.find(
+                  item => item.name === this.$route.params.item
+                )
+              );
+              this.timeTitle = this.$route.query.time;
+              this.setHeaderTitle(this.$text("S_TEAM_MANAGEMENT", "团队管理"));
+            } else {
+              //選擇的 index 為目前所選的上一個，因需等 API 成功後再執行 remove 的動作，因此減掉2
+              const previousIndex = this.currentSavedFreindList.length - 2;
+              this.updateFirstFriends({
+                friend_id: this.currentSavedFreindList[previousIndex].id
+              }).then(status => {
+                if (status === "error") return;
+                this.removeLastIndexTargets();
+              });
+            }
           }
         });
 
@@ -818,20 +831,22 @@ export default {
             .format("YYYY-MM-DD");
         }
       }
-
+      this.setTimeTitle();
+      this.searchResult = false;
+      this.setTabState(true);
+      this.setSubTabState(true);
       if (this.path && this.pathDay != data.name) {
         this.$router.replace({
           params: {
             title: this.title,
             item: `${data.name}`
+          },
+          query: {
+            time: this.timeTitle
           }
         });
         this.pathDay = data.name;
       }
-      this.setTimeTitle();
-      this.searchResult = false;
-      this.setTabState(true);
-      this.setSubTabState(true);
 
       if (this.pathDay === "custom") {
         this.isShowDatePicker = true;
