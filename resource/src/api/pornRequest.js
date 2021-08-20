@@ -10,7 +10,7 @@ let localDomain = localStorage.getItem("p-domain")
 const PORN_DOMAIN =
   localDomain || (store && store.state && store.state.pornDomain)
     ? `${store.state.pornDomain}/api/v1`
-    : "https://xxxfuck.app/api/v1";
+    : "";
 
 // 色站Lucas機器 測試站 api domain
 const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
@@ -26,8 +26,9 @@ export default ({
   fail = () => {}
 }) => {
   if (!PORN_DOMAIN) {
-    console.log("not found domain");
-    return resolve("error");
+    return new Promise(resolve => {
+      resolve("error");
+    });
   }
 
   const host = PORN_DOMAIN;
