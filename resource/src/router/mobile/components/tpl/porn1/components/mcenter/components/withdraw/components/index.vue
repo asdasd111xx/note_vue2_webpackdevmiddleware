@@ -1599,11 +1599,12 @@ export default {
           auditAmount: this.withdrawData.audit.total.audit_amount,
           method: this.selectedCard.withdrawType,
           value: this.selectedCard.id.toString(),
+          withdrawPassword: this.withdrawPwd ? this.withdrawPwd : "",
+          swiftCode: this.selectedCard.swift_code,
           keyring: localStorage.getItem("tmp_w_1")
             ? localStorage.getItem("tmp_w_1")
             : "",
-          withdrawPassword: this.withdrawPwd ? this.withdrawPwd : "",
-          swiftCode: this.selectedCard.swift_code
+          methodId: methonId.toString()
         }
       })
         .then(response => {
