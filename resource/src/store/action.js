@@ -731,10 +731,9 @@ export const actionSetUserdata = (
         dispatch("actionSetUserWithdrawCheck");
       }
 
-      //訪客登入
       goLangApiRequest({
-        method: "post",
-        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestlogin",
+        method: "put",
+        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
         params: {
           account: uuidAccount
         }
@@ -743,7 +742,6 @@ export const actionSetUserdata = (
           if (res.status === "000") {
             let guestCid = res.data.cid;
             let guestUserid = res.data.userid;
-
             setCookie("guestCid", guestCid);
             setCookie("guestUserid", guestUserid);
           }
