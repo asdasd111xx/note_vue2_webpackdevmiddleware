@@ -41,7 +41,6 @@
             <div
               :class="[
                 $style['balance-wrap'],
-                $style['long'],
                 {
                   [$style['long']]:
                     memInfo.user.username && memInfo.user.username.length > 15
