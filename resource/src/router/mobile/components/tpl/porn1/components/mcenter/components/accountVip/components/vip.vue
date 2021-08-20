@@ -15,7 +15,7 @@
             :class="{
               [$style['active']]: item.config_id === currentConfigID
             }"
-            v-for="(item, index) in userVipInfo"
+            v-for="item in userVipInfo"
             :key="item.config_id"
             @click="
               loginStatus
@@ -31,6 +31,9 @@
       <template v-if="userVipInfo">
         <vip-user
           :vipLevelList="vipLevelList"
+          :vipConfig="
+            vipConfigList.find(item => item.id === this.currentConfigID)
+          "
           :userVipInfo="
             userVipInfo.find(item => item.config_id === this.currentConfigID)
           "
@@ -43,6 +46,9 @@
       <vip-level-card
         :currentLevelData.sync="setCurrentLevel"
         :vipLevelList="vipLevelList"
+        :vipConfig="
+          vipConfigList.find(item => item.id === this.currentConfigID)
+        "
         :userVipInfo="
           userVipInfo.find(item => item.config_id === this.currentConfigID)
         "
@@ -81,6 +87,7 @@ export default {
       currentConfigID: 0,
       userVipInfo: null,
       vipLevelList: [],
+      vipConfigList: [],
       currentLevelData: {}
     };
   },
@@ -110,22 +117,11 @@ export default {
     if (!this.loginStatus) {
       this.$router.push("/mobile/login");
     }
+    this.getVipConfig();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     getUserDetail() {
-      // yaboRequest({
-      //   method: "get",
-      //   url: `${
-      //     this.siteConfig.YABO_API_DOMAIN
-      //     }/player/vipinfo/${getCookie("cid")}`,
-      //   headers: { "x-domain": this.memInfo.user.domain }
-      // }).then(res => {
-      //   this.userVipInfo = res.data;
-
-      //   // 起始預設 config_id 為分類中的第一筆
-      //   this.currentConfigID = this.userVipInfo[0].config_id;
-      // });
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
@@ -155,17 +151,6 @@ export default {
       }
 
       // 依vip分類回傳所有等級清單(不分⾴)
-      // yaboRequest({
-      //   method: "get",
-      //   url: `${
-      //     this.siteConfig.YABO_API_DOMAIN
-      //     }/player/viplevel/${getCookie("cid")}?configId=${
-      //     this.currentConfigID
-      //     }`,
-      //   headers: { "x-domain": this.memInfo.user.domain }
-      // }).then(res => {
-      //   this.vipLevelList = res.data;
-      // });
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/viplevel/${this.currentConfigID}`,
@@ -178,6 +163,28 @@ export default {
           return;
         }
         this.vipLevelList = res.data;
+      });
+    },
+
+    getVipConfig() {
+      if (!this.loginStatus || !getCookie("cid")) {
+        this.$router.push("/mobile/login");
+      }
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vip/Config/List`,
+        headers: {
+          cid: getCookie("cid")
+        },
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.code === "M00001") {
+          this.actionSetGlobalMessage({ msg: "请重新登入", code: res.code });
+          return;
+        }
+        this.vipConfigList = res.data;
       });
     },
     handleConfigId(value) {

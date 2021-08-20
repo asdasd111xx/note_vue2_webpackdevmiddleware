@@ -67,9 +67,10 @@
       </div>
     </div>
 
-    <!-- 說明資訊 -->
+    <!-- //說明資訊 -->
+    <!-- base_type	有效投注計算方式(1.廳開始日, 2.自訂時間, 3.區間統計) -->
     <div :class="$style['user-desc-block']">
-      <div :class="$style['desc-text']">
+      <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●累计充值(元)：
         <span :class="$style['money']">{{
           userVipInfo.amount_info.deposit_total
@@ -78,35 +79,37 @@
           nextLevelDepositTotalData
         }})
       </div>
+      <div v-else :class="$style['desc-text']">
+        ●当前充值(元)
+        <span :class="$style['money']">{{
+          userVipInfo.amount_info.deposit_amount
+        }}</span>
+        ({{ userVipInfo.amount_info.deposit_amount }}/{{
+          nextLevelDepositTotalData
+        }})
+      </div>
       <div :class="$style['desc-text']">
         ●当前流水(元)：
         <span :class="$style['money']">{{
-          userVipInfo.amount_info.valid_bet
+          vipConfig.base_type != 3
+            ? userVipInfo.amount_info.valid_bet
+            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
         }}</span>
-        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
+        ({{
+          vipConfig.base_type != 3
+            ? userVipInfo.amount_info.valid_bet
+            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
+        }}/{{ nextLevelValidBetData }})
       </div>
-
-      <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-        <div :class="$style['desc-text']">
-          ●保级推广(位)：
-          <span :class="$style['money']">{{
-            userVipInfo.downgrade_members
-          }}</span>
-          (有效会员充值{{ userVipInfo.downgrade_valid_bet }} , 保级{{
-            userVipInfo.downgrade_day
-          }}天)
-        </div>
-      </template> -->
-
-      <template v-if="['ey1'].includes(themeTPL)">
-        <div :class="$style['desc-text']">
-          ●保级投注(元)：
-          <span :class="$style['money']">{{
-            userVipInfo.amount_info.valid_bet
-          }}</span>
-          ({{ downgradeData }} , 保级{{ userVipInfo.downgrade_day }}天)
-        </div>
-      </template>
+      <div :class="$style['desc-text']">
+        ●充值次数
+        <span :class="$style['money']">{{
+          userVipInfo.amount_info.deposit_count
+        }}</span>
+        ({{ userVipInfo.amount_info.deposit_count }}/{{
+          nextLevelDepositTimeData
+        }})
+      </div>
     </div>
   </div>
 </template>
@@ -122,6 +125,10 @@ export default {
     },
     userVipInfo: {
       type: Object | null,
+      required: true
+    },
+    vipConfig: {
+      type: Array | null,
       required: true
     }
   },
@@ -181,6 +188,17 @@ export default {
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
           .deposit_total;
+      }
+    },
+    nextLevelDepositTimeData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        return this.userVipInfo.next_level_deposit_times;
+      } else {
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+          .deposit_time;
       }
     },
     nextLevelValidBetData() {
