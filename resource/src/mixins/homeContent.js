@@ -463,8 +463,18 @@ export default {
       }
 
       let offsetTop = 0;
-
       if (type === "anchor") {
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          let key = Object.keys(this.newTypeList).find(
+            key => this.newTypeList[key].id === +index
+          );
+
+          if (key) {
+            this.setSlideTypeBar(this.newTypeList[+key]);
+            this.$refs[`game-swiper`].$swiper.slideTo(+key + 1);
+          }
+        }
+
         let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
         if (anchor && anchor[1]) {
           offsetTop = anchor[1].offsetTop;

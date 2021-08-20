@@ -96,6 +96,7 @@
 
       <!-- 上方自選列表 -->
       <div :class="$style['type-wrap-container']">
+        <!-- active -->
         <div
           v-if="typeBarPosition !== null"
           :class="[$style['type-slide-bar']]"
@@ -281,6 +282,7 @@ export default {
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
+        spaceBetween: 100,
         pagination: {
           el: ".type-slide-pagination",
           clickable: true,
@@ -300,7 +302,7 @@ export default {
               this.$refs["game-swiper"].$swiper
             ) {
               let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
-              this.onChangeSelectType(this.newTypeList[realIndex], false);
+              this.setSlideTypeBar(this.newTypeList[realIndex]);
             }
           },
           slideChangeTransitionEnd: () => {},
@@ -334,9 +336,7 @@ export default {
         // 預設第一個選單
         if (this.newTypeList) {
           this.currentType = this.newTypeList[0];
-          this.$nextTick(() => {
-            this.onChangeSelectType(this.currentType, false, true);
-          });
+          this.setSlideTypeBar(this.currentType);
 
           this.typeItemWidth =
             (document.body.clientWidth - 10) / this.newTypeList.length;
@@ -353,42 +353,51 @@ export default {
           : 120;
 
       // header + footer 上方功能列
-      let extraHeight = 30 + 120 + 60 + homeSliderHeight + 10;
+      let extraHeight = 30 + 120 + 60 + homeSliderHeight + 12;
 
       this.eyWrapHeight =
         document.body.offsetHeight - extraHeight > 420
           ? document.body.offsetHeight - extraHeight
           : 420;
 
-      this.slideTypeBar();
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+      this.setSlideTypeBar(this.currentType, true);
     },
-    slideTypeBar() {
-      if (this.newTypeList) {
-        this.typeItemWidth =
-          (document.body.clientWidth - 10) / this.newTypeList.length;
-      }
+    setSlideTypeBar(item, resize = false) {
+      if (
+        item &&
+        this.currentType &&
+        this.$refs[`sub-game-swiper-${+this.currentType.key}`]
+      ) {
+        setTimeout(
+          () => {
+            // 置頂原本的swiper
+            this.$refs[
+              `sub-game-swiper-${+this.currentType.key}`
+            ][0].$swiper.slideTo(0);
+            this.currentType = item;
 
-      let target = document.getElementById(`type-${this.currentType.key}`);
-      if (target) {
-        let offsetLeft = target.offsetLeft;
-        let offsetWidth = target.offsetWidth;
-        this.typeBarPosition =
-          document.body.clientWidth - (offsetLeft + offsetWidth);
-      } else {
-        this.typeBarPosition = 0;
-      }
-    },
-    onChangeSelectType(item, slide = false, focus = false) {
-      if (this.currentType == item && !focus) {
-        return;
-      }
+            if (this.newTypeList) {
+              this.typeItemWidth =
+                (document.body.clientWidth - 10) / this.newTypeList.length;
+            }
 
-      // 置頂原本的swiper
-      this.$refs[`sub-game-swiper-${+this.currentType.key}`][0].$swiper.slideTo(
-        0
-      );
-      this.currentType = item;
-      this.slideTypeBar();
+            let target = document.getElementById(
+              `type-${this.currentType.key}`
+            );
+            if (target) {
+              let offsetLeft = target.offsetLeft;
+              let offsetWidth = target.offsetWidth;
+              this.typeBarPosition =
+                document.body.clientWidth - (offsetLeft + offsetWidth);
+            } else {
+              this.typeBarPosition = 0;
+            }
+          },
+          resize ? 300 : 50
+        );
+      }
     }
   },
   beforeMount() {
@@ -559,6 +568,7 @@ export default {
 .game-swiper-slide {
   height: 100%;
   width: 100%;
+  // padding-bottom: 10%;
   // overflow-x: hidden;
   // overflow-y: scroll;
 }
@@ -601,6 +611,13 @@ export default {
   > img {
     display: block;
     width: 100%;
+    max-height: 160px;
+  }
+}
+
+@media (orientation: landscape) {
+  .new-game-wrap {
+    width: 95%;
   }
 }
 
@@ -848,5 +865,15 @@ export default {
   background-position: -7px -5px;
   width: 100%;
   height: 100%;
+}
+
+.wrap-buffer {
+  width: 100%;
+  height: 200px;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  background-color: red;
 }
 </style>
