@@ -52,6 +52,7 @@
               }}</a>
             </li>
           </div> -->
+          <hr style="background-color:#ddd; height:0.5px; border:none;" />
           <div
             :class="[
               ['ey1'].includes(themeTPL)
