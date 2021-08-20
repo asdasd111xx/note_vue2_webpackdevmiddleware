@@ -1,38 +1,46 @@
 <template>
-  <div
-    class="news-wrap"
-    :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
-  >
-    <div class="news-icon">
-      <img
-        :src="$getCdnPath(`/static/image/${themeTPL}/common/icon_news.png`)"
-      />
-    </div>
-
+  <div>
     <div
-      ref="container"
-      :class="[
-        'news-content',
-        `${themeTPL}`,
-        { notHome: !isDepositOrWithdraw }
-      ]"
+      class="news-wrap"
+      :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
     >
-      <div
-        ref="news"
-        class="news-content-text"
-        :style="`left: ${currentLeft}px;`"
-      >
-        <span
-          class="title-item"
-          v-for="(item, index) in newsTitleList"
-          :key="index"
-          @click="handleClick()"
-          v-html="item.title.replace(/<br>/g, '')"
+      <div class="news-icon">
+        <img
+          :src="$getCdnPath(`/static/image/${themeTPL}/common/icon_news.png`)"
         />
       </div>
-    </div>
 
-    <template v-if="showPopStatus.isShow">
+      <div
+        ref="container"
+        :class="[
+          'news-content',
+          `${themeTPL}`,
+          { notHome: !isDepositOrWithdraw }
+        ]"
+      >
+        <VTextMarquee
+          :speed="35"
+          :animate="paused"
+          :content="newsTitleList.join('&nbsp;&nbsp;&nbsp;')"
+          @click="handleClick()"
+        ></VTextMarquee>
+
+        <!-- <div
+          ref="news"
+          class="news-content-text"
+          :style="`left: ${currentLeft}px;`"
+        >
+          <span
+            class="title-item"
+            v-for="(item, index) in newsTitleList"
+            :key="index"
+            @click="handleClick()"
+            v-html="item.title.replace(/<br>/g, '')"
+          />
+        </div> -->
+      </div>
+    </div>
+    <div v-if="showPopStatus.isShow">
       <!-- 跑馬燈內容彈窗 -->
       <popup
         v-if="showPopStatus.type === 'popup'"
@@ -41,17 +49,19 @@
         :isFirstShow="isFirstShow"
         @close="togglePopup"
       />
-    </template>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import popup from "./popup/popup";
-
+import { VTextMarquee } from "vue-text-marquee";
+// https://github.com/satrong/vue-text-marquee
 export default {
   components: {
-    popup
+    popup,
+    VTextMarquee: VTextMarquee
   },
   props: {
     list: {
@@ -72,7 +82,7 @@ export default {
       commonClass: ["news-content-wrap", "clearfix"],
       totalWidth: 0,
       currentLeft: 0,
-      paused: false,
+      paused: true,
 
       isFirstShow: false,
       isDepositOrWithdraw: false,
@@ -96,7 +106,12 @@ export default {
     },
     // 只取跑馬燈 Title 的資料
     newsTitleList() {
-      return this.titleList;
+      let data = [];
+      data = this.titleList.map(item => {
+        return item.title;
+      });
+
+      return data;
     },
     // 確認跑馬燈的資料中，有任一 announceSwitch 開啟
     hasAnySwitch() {
@@ -104,14 +119,12 @@ export default {
     }
   },
   mounted() {
-    this.currentLeft = this.$refs.container.offsetWidth;
-
-    this.totalWidth =
-      this.$refs.news.offsetWidth > this.currentLeft
-        ? this.$refs.news.offsetWidth
-        : 1.5 * this.currentLeft;
-
-    this.startMove();
+    // this.currentLeft = this.$refs.container.offsetWidth;
+    // this.totalWidth =
+    //   this.$refs.news.offsetWidth > this.currentLeft
+    //     ? this.$refs.news.offsetWidth
+    //     : 1.5 * this.currentLeft;
+    //  this.startMove();
     this.isDepositOrWithdraw = this.$route.name === "home";
     if (this.list?.length <= 0 || !this.hasAnySwitch) {
       return;
@@ -144,9 +157,9 @@ export default {
       } else {
         this.paused = !this.paused;
 
-        if (!this.paused) {
-          this.startMove();
-        }
+        // if (!this.paused) {
+        //   this.startMove();
+        // }
 
         document.querySelector("body").style = !this.showPopStatus.isShow
           ? "overflow: hidden"
@@ -210,6 +223,7 @@ export default {
   font-size: 12px;
   overflow: hidden;
   min-width: calc(100vw - 51px);
+  -webkit-tap-highlight-color: transparent;
 
   &.porn1 {
     color: #9ca3bf;
@@ -247,6 +261,7 @@ export default {
   right: 0;
   z-index: 99;
   background: rgba(0, 0, 0, 0.4);
+
   overflow: hidden;
 }
 
