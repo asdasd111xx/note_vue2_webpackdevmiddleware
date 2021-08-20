@@ -27,7 +27,7 @@
                 {{ $text("S_DEPOSIT_TIP03", "若长时间未到帐请联络客服") }}
               </li>
             </div>
-
+            <hr style="background-color:#ddd; height:0.5px; border:none;" />
             <div :class="$style['confirm-btn']" @click="closeFuc(false)">
               知道了
             </div>
