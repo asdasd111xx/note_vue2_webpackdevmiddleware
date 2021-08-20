@@ -32,7 +32,15 @@
 
           <!-- 已登入 -->
           <div v-else :class="$style['is-login-wrap']">
-            <div :class="$style['username']">
+            <div
+              :class="[
+                $style['username'],
+                {
+                  [$style['long']]:
+                    memInfo.user.username && memInfo.user.username.length > 15
+                }
+              ]"
+            >
               {{ memInfo.user.username }}
             </div>
             <div :class="$style['vip-level']">
@@ -42,8 +50,7 @@
               :class="[
                 $style['balance-wrap'],
                 {
-                  [$style['long']]:
-                    memInfo.user.username && memInfo.user.username.length > 15
+                  [$style['long']]: membalanceDefaultAmount.length > 18
                 }
               ]"
             >
@@ -51,13 +58,7 @@
                 {{ $text("S_MCENTER_WALLET") }}
               </span>
               <span :class="$style['balance']">
-                {{
-                  `¥${
-                    membalance && membalance.vendor.default
-                      ? membalance.vendor.default.amount
-                      : ""
-                  }`
-                }}
+                {{ `¥${membalanceDefaultAmount}` }}
               </span>
             </div>
           </div>
@@ -249,6 +250,13 @@ export default {
     };
   },
   computed: {
+    membalanceDefaultAmount() {
+      return this.membalance &&
+        this.membalance.vendor.default &&
+        this.membalance.vendor.default.amount
+        ? this.membalance.vendor.default.amount
+        : "";
+    },
     subGameSwiperOptions() {
       return {
         watchSlidesVisibility: true,
@@ -716,6 +724,12 @@ export default {
     .username {
       color: #4e5159;
       font-family: Arial, Arial-Regular;
+      max-width: 25%;
+
+      &.long {
+        line-height: initial;
+        word-break: break-all;
+      }
     }
 
     .balance {
