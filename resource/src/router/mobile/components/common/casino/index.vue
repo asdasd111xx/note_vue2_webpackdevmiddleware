@@ -41,7 +41,9 @@
                   :jackpotData="jackpotData"
                 />
               </template>
-              <template v-else-if="gameInfo.display">
+              <template
+                v-else-if="gameInfo && typeof gameInfo.is_pc === 'undefined'"
+              >
                 <!-- 活動入口 -->
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
@@ -365,11 +367,9 @@ export default {
             // 1,5 不顯示
             if (res.data.ret.events && res.data.ret.events.length > 0) {
               let result = res.data;
-              let activityEvents = result.ret.events
-                .filter(i => i.display)
-                .filter(
-                  i => +i.status === 2 || +i.status === 3 || +i.status === 4
-                );
+              let activityEvents = result.ret.events.filter(
+                i => +i.status === 2 || +i.status === 3 || +i.status === 4
+              );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
               if (activityEvents) {

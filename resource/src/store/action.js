@@ -744,27 +744,6 @@ export const actionSetUserdata = (
             let guestUserid = res.data.userid;
             setCookie("guestCid", guestCid);
             setCookie("guestUserid", guestUserid);
-          } else {
-            //訪客登入
-            goLangApiRequest({
-              method: "post",
-              url:
-                configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestlogin",
-              params: {
-                account: uuidAccount
-              }
-            })
-              .then(res => {
-                if (res.status === "000") {
-                  let guestCid = res.data.cid;
-                  let guestUserid = res.data.userid;
-
-                  setCookie("guestCid", guestCid);
-                  setCookie("guestUserid", guestUserid);
-                } else {
-                }
-              })
-              .catch(error => {});
           }
         })
         .catch(error => {});
@@ -1969,6 +1948,10 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
     );
+
+    if (!uri) {
+      return;
+    }
 
     axios
       .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)

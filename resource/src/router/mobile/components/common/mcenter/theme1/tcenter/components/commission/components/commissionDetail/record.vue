@@ -8,7 +8,7 @@
           :key="`level-${item.depth}`"
         >
           <div :class="$style['card-title']">
-            {{ levelTrans[item.depth] }}
+            {{ $text(levelTrans[item.depth]) }}
           </div>
           <div style="display: none;">
             <span>{{ $text("S_COMMISSION_01", "返利") }}</span>
@@ -297,6 +297,18 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo"
     })
+  },
+  created() {
+    this.getFriends();
+  },
+  mounted() {
+    if (this.currentInfo.oauth2) {
+      // 第三方返利只取第三方返利資料
+      this.getDetail();
+      return;
+    }
+
+    this.getSummary();
   },
   filters: {
     amountFormat(amount) {

@@ -64,6 +64,8 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("content_rating");
   // swag內部開關
   localStorage.removeItem("enable-swag");
+  // 色站預設網址
+  localStorage.removeItem("p-domain");
 
   if (reload) {
     window.location.reload();

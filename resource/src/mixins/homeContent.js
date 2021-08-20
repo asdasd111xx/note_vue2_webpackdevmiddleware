@@ -45,7 +45,7 @@ export default {
       mcenterEy1List: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
-        { name: "makemoney", text: "推广", path: "makemoney" },
+        { name: "makemoney", text: "推广", path: "tcenterManageTeam" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
       timer: null
@@ -156,13 +156,37 @@ export default {
           });
         });
       }
-      const gameList = this.allGame
+
+      let gameList = this.allGame
         .map(game => game)
         .filter(item => {
           return this.isAdult
             ? item
             : item.iconName.toLowerCase() !== "welfare";
         });
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        let pass = false;
+
+        gameList = gameList.map((item, key) => {
+          let _item = item.vendors.map((vendor, index) => {
+            if (
+              !pass &&
+              vendor.imageType === 0 &&
+              item.vendors[index + 1] &&
+              item.vendors[index + 1].imageType === 0
+            ) {
+              pass = true;
+              return { ...vendor, imageFlag: true };
+            } else {
+              pass = false;
+              return vendor;
+            }
+          });
+
+          return { ...item, vendors: _item };
+        });
+      }
       return gameList;
     },
     currentGame() {
@@ -379,6 +403,11 @@ export default {
     },
     onTouchMove(e) {
       let wrap = this.$refs["game-wrap"];
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        wrap = this.$refs["new-game-wrap"];
+      }
+
       if (this.isSliding) {
         return;
       }
@@ -402,6 +431,11 @@ export default {
       }
 
       if (this.slideDirection === "") {
+        return;
+      }
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        console.log(this.isTop, this.isBottom);
         return;
       }
 
@@ -530,6 +564,10 @@ export default {
           }
 
           this.$router.push(routerPush);
+          return;
+
+        case "tcenterManageTeam":
+          this.$router.push("mcenter/tcenterManageTeam/newCommission/today");
           return;
 
         default:
@@ -779,15 +817,17 @@ export default {
         case "link_to":
           switch (game.vendor) {
             case "agent":
-              if (!this.loginStatus) {
-                if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-                  this.$router.push("/mobile/login");
-                } else {
-                  this.$router.push("/mobile/joinmember");
-                }
-                return;
-              }
-              this.$router.push("/mobile/mcenter/makeMoney");
+              // if (!this.loginStatus) {
+              //   if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+              //     this.$router.push("/mobile/login");
+              //   } else {
+              //     this.$router.push("/mobile/joinmember");
+              //   }
+              //   return;
+              // }
+              let newWindow = "";
+              newWindow = window.open(`${game.memo}`, "_blank");
+              // this.$router.push("/mobile/mcenter/makeMoney");
               return;
 
             case "YV":

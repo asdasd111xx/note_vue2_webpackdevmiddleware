@@ -56,7 +56,9 @@ export default {
         title: "一键快赚",
         customLinkTitle: hasRecommendGift ? "礼金明细" : "",
         customLinkAction: () => {
-          this.$router.push("/mobile/mcenter/tcenter/recommendGift");
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageRebate/recommendGift/today?giftDetail=1"
+          );
         },
         onClick: () => {
           this.$router.back();

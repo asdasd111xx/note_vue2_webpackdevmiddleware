@@ -10,9 +10,8 @@ let localDomain = localStorage.getItem("p-domain")
 const PORN_DOMAIN =
   localDomain || (store && store.state && store.state.pornDomain)
     ? `${store.state.pornDomain}/api/v1`
-    : "https://xxxfuck.app/api/v1";
+    : "";
 
-console.log(localDomain);
 // 色站Lucas機器 測試站 api domain
 const S_PORN_DOMAIN = "https://sexsite-api.in-app.cc/api/v1";
 const enableNewApi = !!getCookie("s_enable");
@@ -26,6 +25,12 @@ export default ({
   url = "",
   fail = () => {}
 }) => {
+  if (!PORN_DOMAIN) {
+    return new Promise(resolve => {
+      resolve("error");
+    });
+  }
+
   const host = PORN_DOMAIN;
   const args = {
     jwt: getCookie("s_jwt") || "",

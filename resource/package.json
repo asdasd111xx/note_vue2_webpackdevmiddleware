@@ -73,6 +73,7 @@
     "vue-socket.io": "^3.0.7",
     "vue-sweetalert2": "1.2.4",
     "vue-template-compiler": "2.4.1",
+    "vue-text-marquee": "^1.1.0",
     "vue-waterfall": "1.0.6",
     "vue2-datepicker": "3.1.1",
     "vuebar": "0.0.18",
@@ -83,7 +84,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.8.3",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-proposal-decorators": "7.8.3",
     "@babel/plugin-proposal-export-namespace-from": "7.8.3",
     "@babel/plugin-proposal-function-sent": "7.8.3",
