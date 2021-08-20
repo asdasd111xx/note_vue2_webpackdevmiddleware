@@ -53,7 +53,12 @@ $buttonTextColor: #fff;
 }
 
 //card-item
-.black,
+.black {
+  background: #fff;
+  font-size: 12px;
+  border-radius: 7px;
+  color: #414655;
+}
 .info-item {
   background: #fff;
   margin-bottom: 10px;

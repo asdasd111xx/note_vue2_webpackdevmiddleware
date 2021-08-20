@@ -536,6 +536,7 @@ export default {
     },
     openPromotion(position) {
       let newWindow = "";
+      newWindow = window.open();
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
@@ -545,7 +546,11 @@ export default {
           needToken: "false"
         }
       }).then(res => {
-        newWindow = window.open(`${res.data.uri}`, "_blank");
+        if (res && res.data && res.data.uri) {
+          newWindow.location = res.data.uri;
+        } else {
+          newWindow.close();
+        }
       });
     }
   }

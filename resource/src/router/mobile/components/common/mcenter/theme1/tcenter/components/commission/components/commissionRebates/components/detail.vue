@@ -313,14 +313,16 @@ export default {
         },
         {
           name: "总损益：",
-          item:
-            this.friendMemberList?.total?.profit != 0
+          item: this.friendMemberList?.total?.profit
+            ? this.friendMemberList?.total?.profit != 0
               ? this.amountFormat(this.friendMemberList.total.profit)
-              : "--",
-          color:
-            this.friendMemberList?.total?.profit > 0
+              : "--"
+            : "--",
+          color: this.friendMemberList?.total?.profit
+            ? this.friendMemberList?.total?.profit != 0
               ? this.chooseColor(this.friendMemberList.total.profit)
-              : ""
+              : "--"
+            : "--"
         },
         {
           name: "笔数：",
@@ -368,14 +370,16 @@ export default {
         },
         {
           name: "总损益：",
-          item:
-            this.friendGameList?.total?.profit != 0
+          item: this.friendGameList?.total?.profit
+            ? this.friendGameList?.total?.profit != 0
               ? this.amountFormat(this.friendGameList.total.profit)
-              : "--",
-          color:
-            this.friendGameList?.total?.profit > 0
+              : "--"
+            : "--",
+          color: this.friendGameList?.total?.profit
+            ? this.friendGameList?.total?.profit != 0
               ? this.chooseColor(this.friendGameList.total.profit)
-              : ""
+              : "--"
+            : "--"
         },
         { name: "笔数：", item: this.friendGameList?.pagination?.total ?? "0" }
       ];
