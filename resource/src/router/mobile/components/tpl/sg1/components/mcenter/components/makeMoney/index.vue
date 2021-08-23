@@ -39,12 +39,12 @@
           :src="`/static/image/sg1/mcenter/makeMoney/img003.png`"
         />
       </div> -->
-      <div :class="$style['img-wrap']">
+      <!-- <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/sg1/mcenter/makeMoney/btn_promote2.png`"
         />
-      </div>
+      </div> -->
       <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
