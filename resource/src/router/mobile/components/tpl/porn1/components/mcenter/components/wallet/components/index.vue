@@ -482,7 +482,7 @@ export default {
             const routerPush = "/mobile/mcenter/bankCard";
 
             if (this.themeTPL === "ey1") {
-              lib_useLocalWithdrawCheck("wallet", routerPush);
+              lib_useLocalWithdrawCheck("bankCard", routerPush);
               return;
             } else {
               this.$router.push(routerPush);

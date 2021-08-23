@@ -392,7 +392,16 @@ export default {
             // 改強制跳銀行卡
             // http://fb.vir888.com/default.asp?494542#4261984
             if (!this.checkBankSwitch || this.ub_before_bet_mode !== 0) {
-              this.$router.replace(`/mobile/mcenter/bankCard`);
+              // 卡片管理
+              if (_redirect === "bankCard") {
+                this.$router.replace(`/mobile/mcenter/bankCard`);
+                return;
+              }
+
+              this.$router.replace(
+                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=bankCard`
+              );
+
               return;
             } else {
               this.$router.back();
