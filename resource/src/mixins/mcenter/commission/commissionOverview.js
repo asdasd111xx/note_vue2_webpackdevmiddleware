@@ -7,9 +7,7 @@ import EST from "@/lib/EST";
 export default {
   data() {
     return {
-      summary: null,
-      profitSwitch: true, //第三方開關,
-      todayAmout: "" //推廣大廳 今日已领返利,
+      summary: null
     };
   },
   computed: {
@@ -192,10 +190,6 @@ export default {
           }
 
           this.summary = ret;
-
-          this.profitSwitch = this.rewardOnlyLocal ? false : true;
-
-          this.todayAmout = this.summary["today"].amount;
         }
       });
     },
