@@ -577,7 +577,9 @@ export default {
           return;
 
         case "tcenterManageTeam":
-          this.$router.push("mcenter/tcenterManageTeam/newCommission/today");
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageTeam/newCommission/today"
+          );
           return;
 
         default:

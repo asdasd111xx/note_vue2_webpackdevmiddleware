@@ -95,7 +95,10 @@
       </div>
 
       <!-- 上方自選列表 -->
-      <div :class="$style['type-wrap-container']">
+      <div
+        v-if="allGameList && allGameList.length > 1"
+        :class="$style['type-wrap-container']"
+      >
         <!-- active -->
         <div
           v-if="typeBarPosition !== null"
@@ -274,9 +277,13 @@ export default {
       };
     },
     gameSwiperOptions() {
+      // 強制刷新swiper
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+
       return {
         direction: "vertical",
-        loop: true,
+        loop: this.allGameList && this.allGameList.length > 1 ? true : false,
         observer: true,
         observeParents: true,
         mousewheel: false,
@@ -365,6 +372,10 @@ export default {
       this.setSlideTypeBar(this.currentType, true);
     },
     setSlideTypeBar(item, resize = false) {
+      if (this.allGameList && this.allGameList.length <= 1) {
+        return;
+      }
+
       if (
         item &&
         this.currentType &&
