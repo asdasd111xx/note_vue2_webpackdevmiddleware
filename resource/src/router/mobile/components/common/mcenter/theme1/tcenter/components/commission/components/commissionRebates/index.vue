@@ -351,7 +351,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionSetSystemTime"]),
+    ...mapActions(["actionSetSystemTime", "actionSetGlobalMessage"]),
     commaFormat(value) {
       //千分位＋小數點後兩位
       return `${Number(value)
@@ -377,63 +377,70 @@ export default {
           Vendor: this.memInfo.user.domain
         },
         params: { lang: "zh-cn" }
-      }).then(response => {
-        if (response.status === "000") {
-          if (this.themeTPL === "ey1") {
-            this.dispatch_hour = response.data.auto_dispatch_hour;
-            this.immediateData = response.data.entries;
-            this.entries = this.immediateData[0] || "";
-          } else {
-            this.dispatch_hour = response.data.ret.auto_dispatch_hour;
-            this.immediateData = response.data.ret.entries;
-            this.entries = response.data.ret?.entries[0] ?? "";
+      })
+        .then(response => {
+          if (response.status === "000") {
+            if (this.themeTPL === "ey1") {
+              this.dispatch_hour = response.data.auto_dispatch_hour;
+              this.immediateData = response.data.entries;
+              this.entries = this.immediateData[0] || "";
+            } else {
+              this.dispatch_hour = response.data.ret.auto_dispatch_hour;
+              this.immediateData = response.data.ret.entries;
+              this.entries = response.data.ret?.entries[0] ?? "";
+            }
+            let total = response.data.total ?? "";
+
+            this.currentInfo = {
+              period: this.entries.period,
+              start_at: this.entries.start_at,
+              end_at: this.entries.end_at,
+              type: this.entries.type,
+              amount: this.entries.amount,
+              show_detail: this.entries.show_detail,
+              oauth2: this.entries.oauth2
+            };
+
+            // 傳進detail判斷是否顯示查看箭頭
+            // 狀態=>可領/已達上限/已領取/計算中
+            if (
+              this.entries.self_times > 0 ||
+              (this.entries.state === 3 && this.entries.self_times === 0) ||
+              (!total.valid_bet?.accounting && !this.entries) ||
+              total.valid_bet.accounting
+            ) {
+              this.status = true;
+            } else if (!total.accounting && this.entries.amount === 0) {
+              //計算完無實返金額
+              this.status = false;
+            } else {
+              this.status = false;
+            }
+
+            // 測試資料
+            // this.immediateData = [
+            //     {
+            //         period: "20200421",
+            //         start_at: "2020-04-21T12:00:00+0800",
+            //         end_at: "2020-04-21T07:15:18+0800",
+            //         sub_valid_bet: "14875039.6179",
+            //         sub_profit: "0.00",
+            //         state: 1,
+            //         self_times: 10,
+            //         self_min_limit: "10",
+            //         type: 1,
+            //         amount: "200.00"
+            //     }
+            // ];
+            return;
           }
-          let total = response.data.total ?? "";
-
-          this.currentInfo = {
-            period: this.entries.period,
-            start_at: this.entries.start_at,
-            end_at: this.entries.end_at,
-            type: this.entries.type,
-            amount: this.entries.amount,
-            show_detail: this.entries.show_detail,
-            oauth2: this.entries.oauth2
-          };
-
-          // 傳進detail判斷是否顯示查看箭頭
-          // 狀態=>可領/已達上限/已領取/計算中
-          if (
-            this.entries.self_times > 0 ||
-            (this.entries.state === 3 && this.entries.self_times === 0) ||
-            (!total.valid_bet?.accounting && !this.entries) ||
-            total.valid_bet.accounting
-          ) {
-            this.status = true;
-          } else if (!total.accounting && this.entries.amount === 0) {
-            //計算完無實返金額
-            this.status = false;
-          } else {
-            this.status = false;
-          }
-
-          // 測試資料
-          // this.immediateData = [
-          //     {
-          //         period: "20200421",
-          //         start_at: "2020-04-21T12:00:00+0800",
-          //         end_at: "2020-04-21T07:15:18+0800",
-          //         sub_valid_bet: "14875039.6179",
-          //         sub_profit: "0.00",
-          //         state: 1,
-          //         self_times: 10,
-          //         self_min_limit: "10",
-          //         type: 1,
-          //         amount: "200.00"
-          //     }
-          // ];
-          return;
-        }
-      });
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg
+          });
+        });
     },
     handleRebateProcess(type) {
       bbosRequest({
