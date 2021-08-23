@@ -744,9 +744,21 @@ export const actionSetUserdata = (
             let guestUserid = res.data.userid;
             setCookie("guestCid", guestCid);
             setCookie("guestUserid", guestUserid);
+          } else {
+            dispatch("actionSetGlobalMessage", {
+              msg: res.msg,
+              code: res.code
+            });
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.status != "000") {
+            dispatch("actionSetGlobalMessage", {
+              msg: error.msg,
+              code: res.code
+            });
+          }
+        });
     };
 
     if (window.location.host.includes("localhost")) {
