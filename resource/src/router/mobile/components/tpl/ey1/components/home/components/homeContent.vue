@@ -227,7 +227,7 @@
 
 <script>
 /* global $ */
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
 
@@ -289,7 +289,7 @@ export default {
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
-        spaceBetween: 100,
+        spaceBetween: 310,
         pagination: {
           el: ".type-slide-pagination",
           clickable: true,
@@ -302,7 +302,7 @@ export default {
           }
         },
         on: {
-          slideChange: () => {
+          transitionStart: () => {
             if (
               this.newTypeList &&
               this.$refs["game-swiper"] &&
@@ -311,9 +311,7 @@ export default {
               let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
               this.setSlideTypeBar(this.newTypeList[realIndex]);
             }
-          },
-          slideChangeTransitionEnd: () => {},
-          slideChangeTransitionStart: () => {}
+          }
         }
       };
     }
@@ -323,6 +321,9 @@ export default {
   }),
   watch: {
     allGame() {
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+
       // const list = [
       //   { key: 0, name: "我的自选" },
       //   { key: 1, name: "视讯" },
@@ -342,8 +343,15 @@ export default {
 
         // 預設第一個選單
         if (this.newTypeList) {
-          this.currentType = this.newTypeList[0];
-          this.setSlideTypeBar(this.currentType);
+          let defult = +localStorage.getItem("default-home-menu-type") || 0;
+          this.currentType = this.newTypeList[defult] || this.newTypeList[0];
+
+          this.$nextTick(() => {
+            this.setSlideTypeBar(this.currentType);
+            if (this.$refs[`game-swiper`]) {
+              this.$refs[`game-swiper`].$swiper.slideTo(defult + 1);
+            }
+          });
 
           this.typeItemWidth =
             (document.body.clientWidth - 10) / this.newTypeList.length;
@@ -360,7 +368,8 @@ export default {
           : 120;
 
       // header + footer 上方功能列
-      let extraHeight = 30 + 120 + 60 + homeSliderHeight + 12;
+      let typeHeight = this.allGameList && this.allGameList.length > 1 ? 30 : 5;
+      let extraHeight = typeHeight + 120 + 60 + homeSliderHeight + 12;
 
       this.eyWrapHeight =
         document.body.offsetHeight - extraHeight > 420
@@ -374,6 +383,11 @@ export default {
     setSlideTypeBar(item, resize = false) {
       if (this.allGameList && this.allGameList.length <= 1) {
         return;
+      }
+
+      console.log("setItem:", item.key, resize);
+      if (!resize) {
+        localStorage.setItem("default-home-menu-type", item.key);
       }
 
       if (
@@ -397,6 +411,7 @@ export default {
             let target = document.getElementById(
               `type-${this.currentType.key}`
             );
+
             if (target) {
               let offsetLeft = target.offsetLeft;
               let offsetWidth = target.offsetWidth;
@@ -406,7 +421,7 @@ export default {
               this.typeBarPosition = 0;
             }
           },
-          resize ? 300 : 50
+          resize ? 300 : 100
         );
       }
     }
@@ -468,6 +483,7 @@ export default {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     user-select: none;
+    transition: color 0.31s;
 
     > .type-slide-name {
       color: #e42a30;
