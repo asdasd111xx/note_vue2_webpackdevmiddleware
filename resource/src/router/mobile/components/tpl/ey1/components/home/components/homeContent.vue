@@ -385,7 +385,6 @@ export default {
         return;
       }
 
-      console.log("setItem:", item.key, resize);
       if (!resize) {
         localStorage.setItem("default-home-menu-type", item.key);
       }
@@ -483,7 +482,6 @@ export default {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     user-select: none;
-    transition: color 0.31s;
 
     > .type-slide-name {
       color: #e42a30;
@@ -496,7 +494,8 @@ export default {
 
   .type-slide-pagination-bullet-active {
     > .type-slide-name {
-      color: #ffffff;
+      z-index: -1;
+      // color: #ffffff;
       font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
       font-size: 12px;
       font-weight: 700;
