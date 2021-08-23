@@ -104,8 +104,7 @@
           v-if="typeBarPosition !== null"
           :class="[$style['type-slide-bar']]"
           :style="{
-            right: `${typeBarPosition}px`,
-            width: `${typeItemWidth}px`
+            right: `${typeBarPosition}px`
           }"
         >
           <div :class="[$style['type-slide-bar-hover']]">
@@ -289,7 +288,7 @@ export default {
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
-        spaceBetween: 310,
+        spaceBetween: document.body.clientHeight / 2.5,
         pagination: {
           el: ".type-slide-pagination",
           clickable: true,
@@ -414,13 +413,16 @@ export default {
             if (target) {
               let offsetLeft = target.offsetLeft;
               let offsetWidth = target.offsetWidth;
+
               this.typeBarPosition =
-                document.body.clientWidth - (offsetLeft + offsetWidth);
+                document.body.clientWidth -
+                (offsetLeft + offsetWidth) +
+                (offsetWidth - 68) / 2;
             } else {
               this.typeBarPosition = 0;
             }
           },
-          resize ? 300 : 100
+          resize ? 300 : 0
         );
       }
     }
@@ -450,7 +452,7 @@ export default {
 }
 
 .type-wrap-container {
-  padding: 0 5px;
+  padding: 0px;
   width: 100%;
   position: relative;
   height: 35px;
@@ -514,7 +516,7 @@ export default {
   top: 0;
   position: absolute;
   transition: right 0.31s;
-  width: auto;
+  width: 68px;
 
   > img {
     width: 100%;
