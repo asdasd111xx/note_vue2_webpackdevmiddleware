@@ -145,7 +145,8 @@ export default {
   created() {
     this.showAllButton = false;
     this.getNew();
-    if (this.$route.params.item === "custom") {
+    let friend = localStorage.getItem("friend-name");
+    if (this.$route.params.item === "custom" && friend) {
       this.clickAdd("all");
     }
   },
