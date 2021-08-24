@@ -398,8 +398,14 @@ export default {
                 return;
               }
 
+              // http://192.168.151.161/T2O8MV/#id=jih6sg&p=%E5%84%84%E5%85%83%E5%AE%A2%E7%AB%AF&g=1
+              // 系統端 設定投注/轉帳前 需綁定 銀行卡/電子錢包擇一 跳轉到綁電子錢包
               this.$router.replace(
-                `/mobile/mcenter/bankCard?redirect=${_redirect}&type=bankCard`
+                `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=${
+                  this.themeTPL === "ey1" && this.ub_before_bet_mode === 1
+                    ? "bankCard"
+                    : "wallet"
+                }`
               );
 
               return;
