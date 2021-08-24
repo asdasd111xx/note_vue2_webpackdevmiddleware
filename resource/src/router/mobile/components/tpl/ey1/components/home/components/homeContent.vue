@@ -294,7 +294,7 @@ export default {
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
-        spaceBetween: document.body.clientHeight / 2.5,
+        spaceBetween: Math.min(document.body.clientHeight / 2.5, 300),
         pagination: {
           el: ".type-slide-pagination",
           clickable: true,
@@ -421,7 +421,6 @@ export default {
           this.currentType = item;
         };
 
-        console.log(resize);
         if (resize) {
           setTimeout(() => {
             setPosition();
