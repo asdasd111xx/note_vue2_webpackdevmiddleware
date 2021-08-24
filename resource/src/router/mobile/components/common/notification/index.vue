@@ -251,7 +251,9 @@ export default {
           this.$router.push("/mobile/mcenter/wallet");
           break;
         case "C_WS_WAGE_SELF":
-          this.$router.push("/mobile/mcenter/tcenterManageRebate/real/receive");
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageRebate/real/receive?notification=1"
+          );
           break;
         case "C_WS_SERVICE_MAINTAIN":
           break;
