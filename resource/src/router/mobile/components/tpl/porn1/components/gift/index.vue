@@ -48,6 +48,7 @@ export default {
 iframe {
   width: 100%;
   height: 100vh;
+  border: none;
 }
 div.container {
   background-color: $main_background_white1;
