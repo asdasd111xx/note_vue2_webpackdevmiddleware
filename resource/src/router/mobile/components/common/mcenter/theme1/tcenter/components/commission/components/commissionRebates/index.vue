@@ -294,6 +294,15 @@ export default {
       entries: {}
     };
   },
+  watch: {
+    "$route.query.notification": {
+      handler: function() {
+        this.getImmediateData();
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters({
       systemTime: "getSystemTime",
