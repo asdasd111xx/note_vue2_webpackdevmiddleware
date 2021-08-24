@@ -20,20 +20,24 @@ export default {
       memInfo: "getMemInfo"
     }),
     campaignUrl() {
-      // //鸭博娱乐 正式站正式環境
-      // if (siteConfigOfficial[`site_67`]) {
-      //   return "https://yb01.iplay.bet/p/2107230001";
-      // }
-      // //鸭博娱乐 正式站Demo環境
-      // else if (siteConfigOfficial[`site_69`]) {
-      //   return "https://yb01.iplay.bet/p/2107220001";
-      // }
-      // //鸭博娱乐 Beta環境
-      // else if (siteConfigOfficial[`site_100003`]) {
-      return "https://yb01.iplay.bet/p/2108030001";
-      // } else {
-      //   return "";
-      // }
+      switch (this.memInfo.user.domain) {
+        // 鴨博
+        // qa
+        case "500015":
+          return "https://yb01.iplay.bet/p/2108030001";
+          break;
+        // demo
+        case "69":
+          return "https://yb01.iplay.bet/p/2107220001";
+          break;
+        // 正式
+        case "67":
+          return "https://yb01.iplay.bet/p/2107230001";
+          break;
+
+        default:
+          break;
+      }
     }
   }
 };
@@ -42,7 +46,7 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 iframe {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 }
 div.container {

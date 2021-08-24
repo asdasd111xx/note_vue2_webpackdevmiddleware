@@ -19,7 +19,24 @@ export default {
       memInfo: "getMemInfo"
     }),
     campaignUrl() {
-      return "https://sgtt.iplay.bet/p/2108030001";
+      switch (this.memInfo.user.domain) {
+        // 絲瓜
+        //qa
+        case "500035":
+          return "https://sgtt.iplay.bet/p/2108030001";
+          break;
+        //demo
+        case "81":
+          return "https://sgtt.iplay.bet/p/2108020001";
+          break;
+        //正式
+        case "80":
+          return "https://sgtt.iplay.bet/p/2107230001";
+          break;
+
+        default:
+          break;
+      }
     }
   }
 };
