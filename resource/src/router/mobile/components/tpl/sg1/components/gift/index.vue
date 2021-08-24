@@ -45,7 +45,7 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 iframe {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 }
 div.container {
