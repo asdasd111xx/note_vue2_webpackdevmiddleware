@@ -69,7 +69,13 @@
       </div>
 
       <div v-else-if="sitePostList" class="clearfix">
-        <div :class="[$style['modal-button-center']]" @click="closePop()">
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closePop()"
+        >
           关闭
         </div>
       </div>
@@ -232,6 +238,10 @@ export default {
   line-height: 50px;
   text-align: center;
   font-size: 18px;
+
+  &.ey1 {
+    color: #e42a30;
+  }
 }
 
 .post-header {

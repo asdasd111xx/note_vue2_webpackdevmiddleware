@@ -68,15 +68,15 @@ const embedGamesList = [
   {
     vendor: "rich88",
     kind: 3
-  },
-  {
-    vendor: "fg",
-    kind: 3
-  },
-  {
-    vendor: "fg",
-    kind: 5
   }
+  // {
+  //   vendor: "fg",
+  //   kind: 3
+  // },
+  // {
+  //   vendor: "fg",
+  //   kind: 5
+  // }
 ];
 
 // code: "38001"
