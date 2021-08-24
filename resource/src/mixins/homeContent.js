@@ -45,7 +45,7 @@ export default {
       mcenterEy1List: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
-        { name: "makemoney", text: "推广", path: "tcenterManageTeam" },
+        { name: "makemoney", text: "推广", path: "tcenterLobby" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
       timer: null
@@ -581,10 +581,8 @@ export default {
           this.$router.push(routerPush);
           return;
 
-        case "tcenterManageTeam":
-          this.$router.push(
-            "/mobile/mcenter/tcenterManageTeam/newCommission/today"
-          );
+        case "tcenterLobby":
+          this.$router.push("/mobile/mcenter/tcenterLobby");
           return;
 
         default:
