@@ -121,6 +121,7 @@ export default {
         case "home":
         case "mcenter-home":
         case "discover":
+        case "gift":
         case "promotion":
         case "service":
           return true;

@@ -56,6 +56,10 @@ export default {
       import(
         /* webpackChunkName: 'discoverPorn1' */ "../../tpl/porn1/components/discover"
       ),
+    giftPorn1: () =>
+      import(
+        /* webpackChunkName: 'giftPorn1' */ "../../tpl/porn1/components/gift"
+      ),
     artistPorn1: () =>
       import(
         /* webpackChunkName: 'artistPorn1' */ "../../tpl/porn1/components/artist"
