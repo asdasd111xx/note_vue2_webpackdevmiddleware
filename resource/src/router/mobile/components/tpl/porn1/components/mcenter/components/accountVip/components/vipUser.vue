@@ -91,15 +91,9 @@
       <div :class="$style['desc-text']">
         ●当前流水(元)：
         <span :class="$style['money']">{{
-          vipConfig.base_type != 3
-            ? userVipInfo.amount_info.valid_bet
-            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
+          userVipInfo.amount_info.valid_bet
         }}</span>
-        ({{
-          vipConfig.base_type != 3
-            ? userVipInfo.amount_info.valid_bet
-            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
-        }}/{{ nextLevelValidBetData }})
+        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
       </div>
       <div :class="$style['desc-text']">
         ●充值次数
@@ -172,7 +166,9 @@ export default {
         } else {
           return `${this.userVipInfo.amount_info.valid_bet}/${
             this.vipLevelList[this.userVipInfo.now_level_seq]
-              .downgrade_valid_bet
+              ? this.vipLevelList[this.userVipInfo.now_level_seq]
+                  .downgrade_valid_bet
+              : ""
           }`;
         }
       } else {
@@ -187,7 +183,8 @@ export default {
         return this.userVipInfo.next_level_deposit_total;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          .deposit_total;
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_total
+          : "";
       }
     },
     nextLevelDepositTimeData() {
@@ -198,7 +195,8 @@ export default {
         return this.userVipInfo.next_level_deposit_times;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          .deposit_time;
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_time
+          : "";
       }
     },
     nextLevelValidBetData() {
@@ -209,7 +207,9 @@ export default {
         return this.userVipInfo.next_level_valid_bet;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          .valid_bet_limit;
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+              .valid_bet_limit
+          : "";
       }
     }
   },
