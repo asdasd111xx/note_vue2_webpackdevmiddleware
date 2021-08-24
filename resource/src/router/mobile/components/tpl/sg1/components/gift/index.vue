@@ -9,7 +9,6 @@
 <script>
 import { mapGetters } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
 
 export default {
   components: {
@@ -20,20 +19,7 @@ export default {
       memInfo: "getMemInfo"
     }),
     campaignUrl() {
-      // //鸭博娱乐 正式站正式環境
-      // if (siteConfigOfficial[`site_67`]) {
-      //   return "https://yb01.iplay.bet/p/2107230001";
-      // }
-      // //鸭博娱乐 正式站Demo環境
-      // else if (siteConfigOfficial[`site_69`]) {
-      //   return "https://yb01.iplay.bet/p/2107220001";
-      // }
-      // //鸭博娱乐 Beta環境
-      // else if (siteConfigOfficial[`site_100003`]) {
-      return "https://yb01.iplay.bet/p/2108030001";
-      // } else {
-      //   return "";
-      // }
+      return "https://sgtt.iplay.bet/p/2108030001";
     }
   }
 };
