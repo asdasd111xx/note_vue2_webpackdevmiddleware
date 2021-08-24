@@ -386,12 +386,6 @@ export default {
             }
           };
 
-          // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
-          if (!this.withdrawCheckStatus.account) {
-            lib_useGlobalWithdrawCheck("home");
-            return;
-          }
-
           openGame(
             {
               kind: this.$route.query.kind || "",
@@ -644,6 +638,12 @@ export default {
                   });
                 }
               };
+
+              // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
+              if (!this.withdrawCheckStatus.account) {
+                lib_useGlobalWithdrawCheck("home");
+                return;
+              }
 
               openGame(
                 {
