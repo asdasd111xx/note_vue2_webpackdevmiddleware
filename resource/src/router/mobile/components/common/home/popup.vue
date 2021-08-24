@@ -239,9 +239,9 @@ export default {
   text-align: center;
   font-size: 18px;
 
-  &.ey1 {
-    color: #e42a30;
-  }
+  // &.ey1 {
+  //   color: #e42a30;
+  // }
 }
 
 .post-header {
