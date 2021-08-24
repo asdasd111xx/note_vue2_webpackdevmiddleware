@@ -318,23 +318,23 @@ export default {
   position: relative;
   margin: 194px auto 0;
   border-radius: 4px;
-  background: #222;
+  background: #ffffff;
   padding-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   max-width: 340px;
-  color: #fff;
+  color: #5e626d;
   font-size: 14px;
 }
 
 .title {
   margin-bottom: 16px;
   padding: 15px 20%;
-  background: #493535;
+  background: #222222;
   width: 100%;
   font-size: 20px;
   line-height: 20px;
   text-align: center;
-  color: #fff;
+  color: #ffffff;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -349,8 +349,8 @@ export default {
 
   input {
     display: block;
-    background-color: #56433c;
-    border: none;
+    background-color: #ffffff;
+    border: 1px solid #a5a5a5;
     border-radius: 8px;
     width: 100%;
     height: 40px;
@@ -359,7 +359,7 @@ export default {
     color: #fff;
 
     &::-webkit-input-placeholder {
-      color: #fff;
+      color: #a5a5a5;
     }
   }
 }
@@ -370,11 +370,11 @@ export default {
 .submit {
   margin: 0 auto;
   border-radius: 8px;
-  background: #f2c925;
+  background: linear-gradient(to left, #e61938, #fe593c);
   width: 80%;
   height: 40px;
   line-height: 40px;
-  color: #493535;
+  color: #ffffff;
   cursor: pointer;
   text-align: center;
 }

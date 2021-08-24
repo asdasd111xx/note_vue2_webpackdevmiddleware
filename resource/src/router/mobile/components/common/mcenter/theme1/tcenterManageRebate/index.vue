@@ -26,12 +26,11 @@
 </template>
 
 <script>
-import bbosRequest from "@/api/bbosRequest";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapGetters, mapActions } from "vuex";
-import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import axios from "axios";
 export default {
-  mixins: [commissionOverview],
   components: {
     Swiper,
     SwiperSlide,
@@ -67,6 +66,7 @@ export default {
     return {
       tabState: true,
       isShowRebate: true,
+      isShowThirdRebate: true,
       currentLayout: {},
       path: this.$route.params.title ?? ""
     };
@@ -88,6 +88,7 @@ export default {
         this.path = item;
         this.switchComponent(item);
         this.getRebateSwitch();
+        this.getDomainConfig();
       },
       deep: true,
       immediate: true
@@ -122,7 +123,7 @@ export default {
           key: "profit",
           item: "profit",
           text: this.$text("S_LOSS_REBATE", "盈虧返利"),
-          show: this.profitSwitch
+          show: this.isShowThirdRebate
         },
         {
           key: "recommendGift",
@@ -174,25 +175,43 @@ export default {
     },
     getRebateSwitch() {
       this.isReceive = false;
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/SelfDispatchInfo`,
         params: { lang: "zh-cn" }
       }).then(response => {
         this.isReceive = true;
 
         if (response.status === "000") {
           //判斷實時返利開關
-          this.isShowRebate =
-            this.themeTPL === "ey1"
-              ? response.data.show_real_time
-              : response.data.ret.show_real_time;
+          this.isShowRebate = response.data.ret.show_real_time;
           return;
         }
       });
+    },
+    getDomainConfig() {
+      return axios({
+        method: "get",
+        url: "/api/v2/c/domain-config"
+      })
+        .then(res => {
+          if (res && res.data && res.data.ret) {
+            const wage = res.data.ret.wage;
+
+            //判斷第三方返利開關
+            this.isShowThirdRebate = wage.some(
+              item => item.code === "commission"
+            );
+          }
+        })
+        .catch(res => {
+          this.actionSetGlobalMessage({
+            msg: res.response.data.msg,
+            code: res.response.data.code,
+            origin: "home"
+          });
+        });
     }
   }
 };

@@ -207,7 +207,7 @@ export default {
         });
         return;
       }
-
+      // this.checkItem = "name";//測試真實姓名
       this.login(loginInfo, callBackFuc);
     },
     /**

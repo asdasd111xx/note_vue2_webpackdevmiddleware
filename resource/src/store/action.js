@@ -730,23 +730,37 @@ export const actionSetUserdata = (
       if (state.webDomain.site === "ey1" && hasLogin) {
         dispatch("actionSetUserWithdrawCheck");
       }
-
-      goLangApiRequest({
-        method: "put",
-        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
-        params: {
-          account: uuidAccount
-        }
-      })
-        .then(res => {
-          if (res.status === "000") {
-            let guestCid = res.data.cid;
-            let guestUserid = res.data.userid;
-            setCookie("guestCid", guestCid);
-            setCookie("guestUserid", guestUserid);
+      if (state.webDomain.site != "ey1") {
+        goLangApiRequest({
+          method: "put",
+          url:
+            configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
+          params: {
+            account: uuidAccount
           }
         })
-        .catch(error => {});
+          .then(res => {
+            if (res.status === "000") {
+              let guestCid = res.data.cid;
+              let guestUserid = res.data.userid;
+              setCookie("guestCid", guestCid);
+              setCookie("guestUserid", guestUserid);
+            } else {
+              dispatch("actionSetGlobalMessage", {
+                msg: res.msg,
+                code: res.code
+              });
+            }
+          })
+          .catch(error => {
+            if (error.status != "000") {
+              dispatch("actionSetGlobalMessage", {
+                msg: error.msg,
+                code: res.code
+              });
+            }
+          });
+      }
     };
 
     if (window.location.host.includes("localhost")) {
