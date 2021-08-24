@@ -44,6 +44,7 @@
         <div
           :class="[
             $style['modal-button'],
+            $style[themeTPL],
             { [$style[themeTPL]]: origin !== 'home' }
           ]"
           @click="closePop()"
