@@ -399,37 +399,36 @@ export default {
         this.currentType &&
         this.$refs[`sub-game-swiper-${+this.currentType.key}`]
       ) {
-        setTimeout(
-          () => {
-            // 置頂原本的swiper
-            this.$refs[
-              `sub-game-swiper-${+this.currentType.key}`
-            ][0].$swiper.slideTo(0);
-            this.currentType = item;
+        const setPosition = () => {
+          let target = document.getElementById(`type-${item.key}`);
 
-            if (this.newTypeList) {
-              this.typeItemWidth =
-                (document.body.clientWidth - 10) / this.newTypeList.length;
-            }
+          if (target) {
+            let offsetLeft = target.offsetLeft;
+            let offsetWidth = target.offsetWidth;
 
-            let target = document.getElementById(
-              `type-${this.currentType.key}`
-            );
+            this.typeBarPosition =
+              document.body.clientWidth -
+              (offsetLeft + offsetWidth) +
+              (offsetWidth - 68) / 2;
+          } else {
+            this.typeBarPosition = 0;
+          }
 
-            if (target) {
-              let offsetLeft = target.offsetLeft;
-              let offsetWidth = target.offsetWidth;
+          // 置頂原本的swiper
+          this.$refs[
+            `sub-game-swiper-${+this.currentType.key}`
+          ][0].$swiper.slideTo(0);
+          this.currentType = item;
+        };
 
-              this.typeBarPosition =
-                document.body.clientWidth -
-                (offsetLeft + offsetWidth) +
-                (offsetWidth - 68) / 2;
-            } else {
-              this.typeBarPosition = 0;
-            }
-          },
-          resize ? 300 : 0
-        );
+        console.log(resize);
+        if (resize) {
+          setTimeout(() => {
+            setPosition();
+          }, 300);
+        } else {
+          setPosition();
+        }
       }
     }
   },
@@ -487,6 +486,7 @@ export default {
     padding: 0 4px;
     -webkit-appearance: none;
     -moz-appearance: none;
+    outline: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     user-select: none;
@@ -513,6 +513,9 @@ export default {
 }
 
 .type-slide-bar {
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -522,6 +525,7 @@ export default {
   top: 0;
   position: absolute;
   transition: right 0.31s;
+  -webkit-transition: right 0.31s;
   width: 68px;
 
   > img {
