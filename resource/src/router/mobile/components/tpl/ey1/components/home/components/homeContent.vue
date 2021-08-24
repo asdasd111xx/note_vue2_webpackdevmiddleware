@@ -64,13 +64,13 @@
           </div>
         </div>
         <div :class="$style['mcenter-func']">
-          <div
-            v-for="(info, index) in mcenterEy1List"
-            :key="`mcenter-${index}`"
-            :class="$style['mcenter-cell']"
-            @click="onGoToMcenter(info.path)"
-          >
-            <template v-if="info.name === 'grade'">
+          <template v-for="(info, index) in mcenterEy1List">
+            <div
+              v-if="info.name === 'grade'"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-cell']"
+              @click="onGoToMcenter(info.path)"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -79,8 +79,14 @@
                 "
               />
               <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
-            </template>
-            <template v-else-if="info.name !== 'makemoney' || showPromotion">
+            </div>
+
+            <div
+              v-else-if="info.name !== 'makemoney' || showPromotion"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-cell']"
+              @click="onGoToMcenter(info.path)"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -89,8 +95,8 @@
                 "
               />
               <div>{{ info.text }}</div>
-            </template>
-          </div>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -813,7 +819,7 @@ export default {
 
 .mcenter-func {
   width: 100%;
-  display: inline-block;
+  display: inline-flex;
   margin: 10px 0;
 }
 
@@ -822,7 +828,7 @@ export default {
   display: inline-flex;
   justify-content: center;
   text-align: center;
-  width: 25%;
+  flex: 1;
 
   > img {
     width: 27px;
