@@ -371,7 +371,7 @@ export default {
 .submit {
   margin: 0 auto;
   border-radius: 8px;
-  background: #be9e7f;
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
   width: 80%;
   height: 40px;
   line-height: 40px;

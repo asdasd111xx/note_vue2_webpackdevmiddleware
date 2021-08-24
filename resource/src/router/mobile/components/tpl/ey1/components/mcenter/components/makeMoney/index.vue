@@ -56,12 +56,17 @@ export default {
         title: "一键快赚",
         customLinkTitle: hasRecommendGift ? "礼金明细" : "",
         customLinkAction: () => {
-          this.$router.push(
+          this.$router.replace(
             "/mobile/mcenter/tcenterManageRebate/recommendGift/today?giftDetail=1"
           );
         },
         onClick: () => {
-          this.$router.back();
+          //從推薦禮金點擊推廣賺錢後 進入推廣賺錢或禮金明細返回統一到我的頁面
+          if (this.$route.query.giftDetail) {
+            this.$router.push("/mobile/mcenter/home");
+          } else {
+            this.$router.back();
+          }
         }
       };
     },
