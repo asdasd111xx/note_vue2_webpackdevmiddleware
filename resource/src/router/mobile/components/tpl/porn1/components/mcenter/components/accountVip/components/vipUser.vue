@@ -91,15 +91,9 @@
       <div :class="$style['desc-text']">
         ●当前流水(元)：
         <span :class="$style['money']">{{
-          vipConfig.base_type != 3
-            ? userVipInfo.amount_info.valid_bet
-            : validBetRangeData
+          userVipInfo.amount_info.valid_bet
         }}</span>
-        ({{
-          vipConfig.base_type != 3
-            ? userVipInfo.amount_info.valid_bet
-            : validBetRangeData
-        }}/{{ nextLevelValidBetData }})
+        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
       </div>
       <div :class="$style['desc-text']">
         ●充值次数
@@ -180,11 +174,6 @@ export default {
       } else {
         return "已达条件";
       }
-    },
-    validBetRangeData() {
-      return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-        ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].valid_bet_range
-        : "";
     },
     nextLevelDepositTotalData() {
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
