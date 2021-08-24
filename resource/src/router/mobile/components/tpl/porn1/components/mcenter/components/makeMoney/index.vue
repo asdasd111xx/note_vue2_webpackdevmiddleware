@@ -188,7 +188,12 @@ export default {
           );
         },
         onClick: () => {
-          this.$router.back();
+          //從推薦禮金點擊推廣賺錢後 進入推廣賺錢或禮金明細返回統一到我的頁面
+          if (this.$route.query.giftDetail) {
+            this.$router.push("/mobile/mcenter/home");
+          } else {
+            this.$router.back();
+          }
         }
       };
     },
