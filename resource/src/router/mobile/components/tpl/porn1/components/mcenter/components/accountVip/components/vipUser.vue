@@ -85,7 +85,7 @@
           userVipInfo.amount_info.deposit_amount
         }}</span>
         ({{ userVipInfo.amount_info.deposit_amount }}/{{
-          nextLevelDepositTotalData
+          nextLevelDepositLimitData
         }})
       </div>
       <div :class="$style['desc-text']">
@@ -184,6 +184,18 @@ export default {
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
           ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_total
+          : "";
+      }
+    },
+    nextLevelDepositLimitData() {
+      if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
+        return;
+      }
+      if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
+        return this.userVipInfo.next_level_deposit_total;
+      } else {
+        return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_limit
           : "";
       }
     },
