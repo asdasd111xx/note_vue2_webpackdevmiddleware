@@ -3,9 +3,9 @@
 // Global Method 的情況不適用於上述，因此區分 Local
 // By Chia
 
-import store from "@/store";
-import router from "@/router";
 import axios from "axios";
+import router from "@/router";
+import store from "@/store";
 
 // 以全域的狀態來判斷
 export const lib_useGlobalWithdrawCheck = (redirect = "home") => {

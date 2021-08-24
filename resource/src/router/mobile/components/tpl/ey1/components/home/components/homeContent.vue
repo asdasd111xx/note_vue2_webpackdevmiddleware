@@ -95,14 +95,16 @@
       </div>
 
       <!-- 上方自選列表 -->
-      <div :class="$style['type-wrap-container']">
+      <div
+        v-if="allGameList && allGameList.length > 1"
+        :class="$style['type-wrap-container']"
+      >
         <!-- active -->
         <div
           v-if="typeBarPosition !== null"
           :class="[$style['type-slide-bar']]"
           :style="{
-            right: `${typeBarPosition}px`,
-            width: `${typeItemWidth}px`
+            right: `${typeBarPosition}px`
           }"
         >
           <div :class="[$style['type-slide-bar-hover']]">
@@ -224,7 +226,7 @@
 
 <script>
 /* global $ */
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
 
@@ -274,15 +276,19 @@ export default {
       };
     },
     gameSwiperOptions() {
+      // 強制刷新swiper
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+
       return {
         direction: "vertical",
-        loop: true,
+        loop: this.allGameList && this.allGameList.length > 1 ? true : false,
         observer: true,
         observeParents: true,
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
-        spaceBetween: 100,
+        spaceBetween: document.body.clientHeight / 2.5,
         pagination: {
           el: ".type-slide-pagination",
           clickable: true,
@@ -295,7 +301,7 @@ export default {
           }
         },
         on: {
-          slideChange: () => {
+          transitionStart: () => {
             if (
               this.newTypeList &&
               this.$refs["game-swiper"] &&
@@ -304,9 +310,7 @@ export default {
               let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
               this.setSlideTypeBar(this.newTypeList[realIndex]);
             }
-          },
-          slideChangeTransitionEnd: () => {},
-          slideChangeTransitionStart: () => {}
+          }
         }
       };
     }
@@ -316,6 +320,9 @@ export default {
   }),
   watch: {
     allGame() {
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+
       // const list = [
       //   { key: 0, name: "我的自选" },
       //   { key: 1, name: "视讯" },
@@ -335,8 +342,15 @@ export default {
 
         // 預設第一個選單
         if (this.newTypeList) {
-          this.currentType = this.newTypeList[0];
-          this.setSlideTypeBar(this.currentType);
+          let defult = +localStorage.getItem("default-home-menu-type") || 0;
+          this.currentType = this.newTypeList[defult] || this.newTypeList[0];
+
+          this.$nextTick(() => {
+            this.setSlideTypeBar(this.currentType);
+            if (this.$refs[`game-swiper`]) {
+              this.$refs[`game-swiper`].$swiper.slideTo(defult + 1);
+            }
+          });
 
           this.typeItemWidth =
             (document.body.clientWidth - 10) / this.newTypeList.length;
@@ -353,7 +367,8 @@ export default {
           : 120;
 
       // header + footer 上方功能列
-      let extraHeight = 30 + 120 + 60 + homeSliderHeight + 12;
+      let typeHeight = this.allGameList && this.allGameList.length > 1 ? 30 : 5;
+      let extraHeight = typeHeight + 120 + 60 + homeSliderHeight + 12;
 
       this.eyWrapHeight =
         document.body.offsetHeight - extraHeight > 420
@@ -365,6 +380,14 @@ export default {
       this.setSlideTypeBar(this.currentType, true);
     },
     setSlideTypeBar(item, resize = false) {
+      if (this.allGameList && this.allGameList.length <= 1) {
+        return;
+      }
+
+      if (!resize) {
+        localStorage.setItem("default-home-menu-type", item.key);
+      }
+
       if (
         item &&
         this.currentType &&
@@ -386,16 +409,20 @@ export default {
             let target = document.getElementById(
               `type-${this.currentType.key}`
             );
+
             if (target) {
               let offsetLeft = target.offsetLeft;
               let offsetWidth = target.offsetWidth;
+
               this.typeBarPosition =
-                document.body.clientWidth - (offsetLeft + offsetWidth);
+                document.body.clientWidth -
+                (offsetLeft + offsetWidth) +
+                (offsetWidth - 68) / 2;
             } else {
               this.typeBarPosition = 0;
             }
           },
-          resize ? 300 : 50
+          resize ? 300 : 0
         );
       }
     }
@@ -425,7 +452,7 @@ export default {
 }
 
 .type-wrap-container {
-  padding: 0 5px;
+  padding: 0px;
   width: 100%;
   position: relative;
   height: 35px;
@@ -469,7 +496,8 @@ export default {
 
   .type-slide-pagination-bullet-active {
     > .type-slide-name {
-      color: #ffffff;
+      z-index: -1;
+      // color: #ffffff;
       font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
       font-size: 12px;
       font-weight: 700;
@@ -488,7 +516,7 @@ export default {
   top: 0;
   position: absolute;
   transition: right 0.31s;
-  width: auto;
+  width: 68px;
 
   > img {
     width: 100%;

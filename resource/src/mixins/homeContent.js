@@ -219,41 +219,46 @@ export default {
   mounted() {
     window.addEventListener("resize", this.onResize);
 
-    // 首頁選單列表預設拿local
-    const cache = this.getAllGameFromCache();
-
-    const setDefaultSelected = () => {
-      this.isReceive = true;
-      setTimeout(() => {
-        this.onResize();
-        //0616 預設選項為list 第一個
-        let defaultType = "";
-        let selectIndex = 0;
-        if (localStorage.getItem("home-menu-type")) {
-          defaultType = localStorage.getItem("home-menu-type");
-          let defaultIndex = this.typeList.findIndex(type => {
-            return type.icon.toLowerCase() === defaultType.toLowerCase();
-          });
-
-          defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
-
-          selectIndex = this.typeList.length / 3 + defaultIndex;
-        } else {
-          selectIndex = this.typeList.length / 3;
-        }
-        this.onChangeSelectIndex(selectIndex);
-        this.isShow = true;
-      }, 300);
-    };
-
-    if (!cache) {
-      const params = [this.getAllGame()];
-      Promise.all(params).then(() => {
-        setDefaultSelected();
-      });
-    } else {
-      setDefaultSelected();
+    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
       this.getAllGame();
+    } else {
+      // 首頁選單列表預設拿local
+      const cache = this.getAllGameFromCache();
+
+      const setDefaultSelected = () => {
+        setTimeout(() => {
+          this.onResize();
+          //0616 預設選項為list 第一個
+          let defaultType = "";
+          let selectIndex = 0;
+          if (localStorage.getItem("default-home-menu-type")) {
+            defaultType = localStorage.getItem("default-home-menu-type");
+            let defaultIndex = this.typeList.findIndex(type => {
+              return type.icon.toLowerCase() === defaultType.toLowerCase();
+            });
+
+            defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+
+            selectIndex = this.typeList.length / 3 + defaultIndex;
+          } else {
+            selectIndex = this.typeList.length / 3;
+          }
+          this.onChangeSelectIndex(selectIndex);
+          this.isShow = true;
+        }, 300);
+      };
+
+      if (!cache) {
+        const params = [this.getAllGame()];
+        Promise.all(params).then(() => {
+          this.isReceive = true;
+          setDefaultSelected();
+        });
+      } else {
+        this.isReceive = true;
+        setDefaultSelected();
+        this.getAllGame();
+      }
     }
 
     if (!this.loginStatus) {
@@ -434,11 +439,6 @@ export default {
         return;
       }
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-        console.log(this.isTop, this.isBottom);
-        return;
-      }
-
       if (this.isTop) {
         const index =
           this.selectedIndex <= 0
@@ -458,13 +458,9 @@ export default {
     },
     // 切換當前分類
     onChangeSelectIndex(index, isSetEnd = false, type) {
-      if (index === this.selectedIndex) {
-        return;
-      }
-
-      let offsetTop = 0;
-      if (type === "anchor") {
-        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      // 億元特立獨行
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        if (type === "anchor") {
           let key = Object.keys(this.newTypeList).find(
             key => this.newTypeList[key].id === +index
           );
@@ -475,6 +471,15 @@ export default {
           }
         }
 
+        return;
+      }
+
+      if (index === this.selectedIndex) {
+        return;
+      }
+
+      let offsetTop = 0;
+      if (type === "anchor") {
         let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
         if (anchor && anchor[1]) {
           offsetTop = anchor[1].offsetTop;
@@ -502,7 +507,7 @@ export default {
 
       if (this.typeList[this.selectedIndex]) {
         localStorage.setItem(
-          "home-menu-type",
+          "default-home-menu-type",
           this.typeList[this.selectedIndex].icon
         );
       }
@@ -577,7 +582,9 @@ export default {
           return;
 
         case "tcenterManageTeam":
-          this.$router.push("mcenter/tcenterManageTeam/newCommission/today");
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageTeam/newCommission/today"
+          );
           return;
 
         default:
