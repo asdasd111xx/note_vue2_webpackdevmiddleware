@@ -93,12 +93,12 @@
         <span :class="$style['money']">{{
           vipConfig.base_type != 3
             ? userVipInfo.amount_info.valid_bet
-            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
+            : validBetRangeData
         }}</span>
         ({{
           vipConfig.base_type != 3
             ? userVipInfo.amount_info.valid_bet
-            : vipLevelList[userVipInfo.now_level_seq - 1].valid_bet_range
+            : validBetRangeData
         }}/{{ nextLevelValidBetData }})
       </div>
       <div :class="$style['desc-text']">
@@ -172,12 +172,19 @@ export default {
         } else {
           return `${this.userVipInfo.amount_info.valid_bet}/${
             this.vipLevelList[this.userVipInfo.now_level_seq]
-              .downgrade_valid_bet
+              ? this.vipLevelList[this.userVipInfo.now_level_seq]
+                  .downgrade_valid_bet
+              : ""
           }`;
         }
       } else {
         return "已达条件";
       }
+    },
+    validBetRangeData() {
+      return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+        ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].valid_bet_range
+        : "";
     },
     nextLevelDepositTotalData() {
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
@@ -187,7 +194,8 @@ export default {
         return this.userVipInfo.next_level_deposit_total;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          .deposit_total;
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_total
+          : "";
       }
     },
     nextLevelDepositTimeData() {
@@ -198,7 +206,8 @@ export default {
         return this.userVipInfo.next_level_deposit_times;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          .deposit_time;
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_time
+          : "";
       }
     },
     nextLevelValidBetData() {
@@ -209,7 +218,9 @@ export default {
         return this.userVipInfo.next_level_valid_bet;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          .valid_bet_limit;
+          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+              .valid_bet_limit
+          : "";
       }
     }
   },
