@@ -64,13 +64,13 @@
           </div>
         </div>
         <div :class="$style['mcenter-func']">
-          <div
-            v-for="(info, index) in mcenterEy1List"
-            :key="`mcenter-${index}`"
-            :class="$style['mcenter-cell']"
-            @click="onGoToMcenter(info.path)"
-          >
-            <template v-if="info.name === 'grade'">
+          <template v-for="(info, index) in mcenterEy1List">
+            <div
+              v-if="info.name === 'grade'"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-cell']"
+              @click="onGoToMcenter(info.path)"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -79,8 +79,14 @@
                 "
               />
               <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
-            </template>
-            <template v-else-if="info.name !== 'makemoney' || showPromotion">
+            </div>
+
+            <div
+              v-else-if="info.name !== 'makemoney' || showPromotion"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-cell']"
+              @click="onGoToMcenter(info.path)"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -89,8 +95,8 @@
                 "
               />
               <div>{{ info.text }}</div>
-            </template>
-          </div>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -288,7 +294,7 @@ export default {
         mousewheel: false,
         watchSlidesVisibility: true,
         autoHeight: true,
-        spaceBetween: document.body.clientHeight / 2.5,
+        spaceBetween: Math.min(document.body.clientHeight / 2.5, 300),
         pagination: {
           el: ".type-slide-pagination",
           clickable: true,
@@ -393,37 +399,35 @@ export default {
         this.currentType &&
         this.$refs[`sub-game-swiper-${+this.currentType.key}`]
       ) {
-        setTimeout(
-          () => {
-            // 置頂原本的swiper
-            this.$refs[
-              `sub-game-swiper-${+this.currentType.key}`
-            ][0].$swiper.slideTo(0);
-            this.currentType = item;
+        const setPosition = () => {
+          let target = document.getElementById(`type-${item.key}`);
 
-            if (this.newTypeList) {
-              this.typeItemWidth =
-                (document.body.clientWidth - 10) / this.newTypeList.length;
-            }
+          if (target) {
+            let offsetLeft = target.offsetLeft;
+            let offsetWidth = target.offsetWidth;
 
-            let target = document.getElementById(
-              `type-${this.currentType.key}`
-            );
+            this.typeBarPosition =
+              document.body.clientWidth -
+              (offsetLeft + offsetWidth) +
+              (offsetWidth - 68) / 2;
+          } else {
+            this.typeBarPosition = 0;
+          }
 
-            if (target) {
-              let offsetLeft = target.offsetLeft;
-              let offsetWidth = target.offsetWidth;
+          // 置頂原本的swiper
+          this.$refs[
+            `sub-game-swiper-${+this.currentType.key}`
+          ][0].$swiper.slideTo(0);
+          this.currentType = item;
+        };
 
-              this.typeBarPosition =
-                document.body.clientWidth -
-                (offsetLeft + offsetWidth) +
-                (offsetWidth - 68) / 2;
-            } else {
-              this.typeBarPosition = 0;
-            }
-          },
-          resize ? 300 : 0
-        );
+        if (resize) {
+          setTimeout(() => {
+            setPosition();
+          }, 300);
+        } else {
+          setPosition();
+        }
       }
     }
   },
@@ -481,6 +485,7 @@ export default {
     padding: 0 4px;
     -webkit-appearance: none;
     -moz-appearance: none;
+    outline: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     user-select: none;
@@ -507,6 +512,9 @@ export default {
 }
 
 .type-slide-bar {
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -516,6 +524,7 @@ export default {
   top: 0;
   position: absolute;
   transition: right 0.31s;
+  -webkit-transition: right 0.31s;
   width: 68px;
 
   > img {
@@ -813,7 +822,7 @@ export default {
 
 .mcenter-func {
   width: 100%;
-  display: inline-block;
+  display: inline-flex;
   margin: 10px 0;
 }
 
@@ -822,7 +831,7 @@ export default {
   display: inline-flex;
   justify-content: center;
   text-align: center;
-  width: 25%;
+  flex: 1;
 
   > img {
     width: 27px;

@@ -185,7 +185,7 @@ export default {
         {
           classTitle: "customer_service_qq",
           titleImg: "service021",
-          title: "企鵝客服: 269816425",
+          title: "企鹅客服: 269816425",
           smallTitle: "Main Customer Support",
           content: "亿元萌妹专业服务 联系更便利",
           buttonShow: false,

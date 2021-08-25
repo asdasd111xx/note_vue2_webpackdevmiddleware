@@ -542,6 +542,20 @@ export default {
 
             return;
 
+          case "EVENT_THIRDPARTY_WALLET":
+            if (this.loginStatus) {
+              this.$router.push("/mobile/mcenter/wallet?prev=back");
+              return;
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
+            return;
+
           case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
           case "EVENT_THIRDPARTY_DEPOSIT":
             // localStorage.setItem("iframe-third-url-swag", "https://yabo.care/");
@@ -624,6 +638,12 @@ export default {
                   });
                 }
               };
+
+              // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
+              if (!this.withdrawCheckStatus.account) {
+                lib_useGlobalWithdrawCheck("home");
+                return;
+              }
 
               openGame(
                 {

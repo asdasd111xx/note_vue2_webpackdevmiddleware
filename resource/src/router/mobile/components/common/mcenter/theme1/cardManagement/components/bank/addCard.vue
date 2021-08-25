@@ -100,7 +100,7 @@
             <input
               v-model.trim="formData.branch"
               type="text"
-              placeholder="请输入开户支行名称"
+              placeholder="请输入开户银行的支行(网点)名称"
               maxlength="36"
               @input="checkData($event.target.value, 'branch')"
             />
