@@ -46,10 +46,7 @@
               {{ item.alias }}
             </div>
             <div
-              v-if="
-                item.seq === userVipInfo.now_level_seq &&
-                  vipConfig.base_type === 3
-              "
+              v-if="item.seq === userVipInfo.now_level_seq"
               :class="$style['card-level-downgrade']"
               @click="onClickDowngrade(true)"
             >
