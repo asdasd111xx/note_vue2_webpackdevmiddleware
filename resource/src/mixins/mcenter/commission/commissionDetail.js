@@ -178,9 +178,20 @@ export default {
       let today = Vue.moment(new Date()).format("YYYY-MM-DD");
       let end = Vue.moment(value).format("YYYY-MM-DD");
       if (today > end) {
+        let todayTime = Vue.moment(EST(new Date())).format("HH:mm:ss");
+        let endTime = Vue.moment(value).format("HH:mm:ss");
+
+        if (todayTime > endTime) {
+          return `${Vue.moment(value).format("YYYY-MM-DD")} ${Vue.moment(
+            EST(new Date())
+          ).format("HH:00:00")}`;
+        }
         return Vue.moment(value).format("YYYY-MM-DD 23:59:59");
       }
-      return Vue.moment(value).format("YYYY-MM-DD HH:00:00");
+
+      return `${Vue.moment(value).format("YYYY-MM-DD")} ${Vue.moment(
+        EST(new Date())
+      ).format("HH:00:00")}`;
     },
 
     /**
