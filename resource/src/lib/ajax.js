@@ -79,7 +79,7 @@ export default ({
           setCookie("y_token", "");
           setCookie("aid", "");
 
-          window.location.reload(true);
+          window.location.reload();
           window.location.href = "/mobile/login";
           return;
         }

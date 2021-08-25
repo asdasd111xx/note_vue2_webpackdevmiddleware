@@ -199,7 +199,7 @@ export default {
       this.outPutYime = `${hour}:${min}`;
       // console.log(this.outPutYime);
       if (hour < 0 || (hour === 0 && min === 0)) {
-        window.location.reload(true);
+        window.location.reload();
       }
     },
     getRedJackpotMoney() {
