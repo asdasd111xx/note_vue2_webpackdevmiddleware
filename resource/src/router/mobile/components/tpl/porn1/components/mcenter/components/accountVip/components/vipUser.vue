@@ -89,11 +89,20 @@
         }})
       </div>
       <div :class="$style['desc-text']">
-        ●当前流水(元)：
+        {{ vipConfig.base_type != 3 ? "●累计流水(元)：" : "●当前流水(元)：" }}
         <span :class="$style['money']">{{
           userVipInfo.amount_info.valid_bet
         }}</span>
         ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
+      </div>
+      <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
+        ●当前充值(元)：
+        <span :class="$style['money']">{{
+          userVipInfo.amount_info.deposit_amount
+        }}</span>
+        ({{ userVipInfo.amount_info.deposit_amount }}/{{
+          nextLevelDepositLimitData
+        }})
       </div>
       <div :class="$style['desc-text']">
         ●充值次数
