@@ -1,12 +1,10 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" class="content-wrap">
-      <div class="manage-rebate-wrap">
-        <tcenter-manage-rebate
-          :set-header-title="setHeaderTitle"
-          :set-back-func="setBackFunc"
-        />
-      </div>
+      <tcenter-manage-rebate
+        :set-header-title="setHeaderTitle"
+        :set-back-func="setBackFunc"
+      />
     </div>
   </mobile-container>
 </template>
@@ -44,21 +42,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "~@/css/variable.scss";
-.manage-rebate-wrap {
-  margin-top: 87px;
-}
-</style>
