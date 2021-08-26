@@ -1608,6 +1608,8 @@ export default {
       })
         .then(response => {
           if (response && response.status === "000") {
+            this.withdrawValue = "";
+            this.withdrawPwd = "";
             if (this.memInfo.config.withdraw === "迅付") {
               this.isSuccessAlertShow = true;
               // this.actionSetGlobalMessage({
