@@ -1184,7 +1184,7 @@ export default {
         this.actualMoney = _actualMoney;
 
         // 實際提現金額 < 0
-        if (_actualMoney <= 0) {
+        if (this.withdrawValue !== "" && _actualMoney <= 0) {
           this.errTips = "实际提现金额须大于0，请重新输入";
           // 實際提現金額 => 有流水時為 0
           this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
@@ -1197,9 +1197,9 @@ export default {
         const withdrawMin = +this.withdrawData.payment_charge.ret.withdraw_min;
         // 3.判斷是否有超過最大、最小值
         if (
-          value <= 0 ||
-          value < withdrawMin ||
-          (withdrawMax > 0 && value > withdrawMax)
+          (this.withdrawValue !== "" && value <= 0) ||
+          (this.withdrawValue !== "" && value < withdrawMin) ||
+          (this.withdrawValue !== "" && withdrawMax > 0 && value > withdrawMax)
         ) {
           this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
             withdrawMax ? `${withdrawMax}元` : "无限制"
@@ -1210,7 +1210,10 @@ export default {
         // 4.可提現餘額是否超過中心錢包餘額
         const balance = Number(this.withdrawData.cash.available_balance);
 
-        if (this.withdrawValue > Math.floor(balance)) {
+        if (
+          this.withdrawValue !== "" &&
+          this.withdrawValue > Math.floor(balance)
+        ) {
           // this.errTips = ["porn1", "sg1"].includes(this.themeTPL)
           //   ? "提现金额不可大於中心钱包余额"
           //   : "提现金额不可大于最高提现金额";
