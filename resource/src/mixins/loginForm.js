@@ -269,7 +269,7 @@ export default {
             window.location.href = this.redirect;
             return;
           }
-          window.location.reload(true);
+          window.location.reload();
           // 登入公告
           // ajax({
           //     method: 'get',
