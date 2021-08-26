@@ -26,6 +26,7 @@ export default {
       curModeGroup: {},
       curPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
+      offerInfo: {},
       moneyValue: "",
       isShow: true,
       isErrorMoney: false,
@@ -129,10 +130,10 @@ export default {
      * @return number or string
      */
     realSaveMoney() {
-      let promotionValue = this.curPayInfo.offer_enable
+      let promotionValue = this.offerInfo.offer_enable
         ? new BigNumber(this.moneyValue)
             .multipliedBy(
-              new BigNumber(this.curPayInfo.offer_percent).dividedBy(100)
+              new BigNumber(this.offerInfo.offer_percent).dividedBy(100)
             )
             .toNumber()
         : 0;
@@ -160,7 +161,7 @@ export default {
       }
 
       // 未達到單筆存款金額，無優惠
-      if (+this.moneyValue < +this.curPayInfo.offer_amount) {
+      if (+this.moneyValue < +this.offerInfo.offer_amount) {
         total = deductionValue
           ? new BigNumber(this.moneyValue)
               .minus(new BigNumber(deductionValue))
@@ -176,10 +177,10 @@ export default {
 
       // 超過優惠金額以單筆上限為主
       if (
-        +this.curPayInfo.per_offer_limit > 0 &&
-        promotionValue > +this.curPayInfo.per_offer_limit
+        +this.offerInfo.per_offer_limit > 0 &&
+        promotionValue > +this.offerInfo.per_offer_limit
       ) {
-        promotionValue = +this.curPayInfo.per_offer_limit;
+        promotionValue = +this.offerInfo.per_offer_limit;
       }
 
       // 總額計算
@@ -246,60 +247,26 @@ export default {
      * @return string
      */
     promitionText() {
-      if (+this.curPayInfo.offer_limit && +this.curPayInfo.per_offer_limit) {
-        return this.$text("S_DEPOSIT_PROMOTION_TEXT", {
-          replace: [
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.offer_amount}</span>`
-            },
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.offer_percent}</span>`
-            },
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.per_offer_limit}</span>`
-            },
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.offer_limit}</span>`
-            }
-          ]
-        });
+      /**
+       * • 此笔充值成功加赠优惠 15.00元
+• 单笔联络300元，单日联络70元(美东时间计算)
+• 单笔充值200元+，优惠加赠3.00%
+•今日优惠已领 12.00元
+       */
+      let textValue = "";
+
+      if (!this.offerInfo.is_full_offer) {
+        textValue += `• 此笔充值成功加赠优惠 ${this.offerInfo.offer}元`;
       }
 
-      if (+this.curPayInfo.per_offer_limit) {
-        return this.$text("S_DEPOSIT_PROMOTION_TEXT02", {
-          replace: [
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.offer_amount}</span>`
-            },
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.offer_percent}</span>`
-            },
-            {
-              target: "%s",
-              value: `<span>${this.curPayInfo.per_offer_limit}</span>`
-            }
-          ]
-        });
-      }
+      ftextValue += `• 单笔充值 ${this.oferInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %`;
+      textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)`;
 
-      return this.$text("S_DEPOSIT_PROMOTION_TEXT03", {
-        replace: [
-          {
-            target: "%s",
-            value: `<span>${this.curPayInfo.offer_amount}</span>`
-          },
-          {
-            target: "%s",
-            value: `<span>${this.curPayInfo.offer_percent}</span>`
-          }
-        ]
-      });
+      textValue += this.offerInfo.is_full_offer
+        ? "• 今日领取已达上限"
+        : `•今日优惠已领 ${gotten_offer}元`;
+
+      return textValue;
     },
     /**
      * 手續費提示訊息
@@ -309,14 +276,13 @@ export default {
     feeText() {
       // 百分比手續費
       if (+this.getPassRoadOrAi.fee_percent) {
-        return this.$text("S_DEPOSIT_TIP06", {
-          replace: [{ target: "%s", value: this.getPassRoadOrAi.fee_percent }]
-        });
+        return `需承担  ${+this.realSaveMoney *
+          +this.getPassRoadOrAi.fee_percent}% 手续费(充值金额 ${
+          this.getPassRoadOrAi.fee_percent
+        } %)，费用由第三方收取`;
       }
 
-      return this.$text("S_DEPOSIT_TIP07", {
-        replace: [{ target: "%s", value: this.getPassRoadOrAi.fee_amount }]
-      });
+      return `需承担 ${this.getPassRoadOrAi.fee_amount} 元手续费，费用由第三方收取`;
     },
     /**
      * 存款金額最小至最大值
@@ -687,6 +653,7 @@ export default {
           this.isShow = false;
           this.actionSetIsLoading(false);
           this.PassRoadOrAi();
+          this.getPayOffer();
         })
         .catch(error => {
           const { msg, code } = error.response.data;
@@ -705,6 +672,24 @@ export default {
             this.getPayGroup();
           }
         });
+    },
+
+    /**
+     * 取得支付優惠
+     * @method getPayOffer
+     */
+    getPayOffer() {
+      console.log(123);
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Offer/And/Fee`,
+        params: {
+          channelId: this.curPassRoad.id,
+          paymentMethodId: this.curPayInfo.payment_method_id,
+          username: this.username,
+          lang: "zh-cn"
+        }
+      }).then(res => {});
     },
     /**
      * 切換支付群組

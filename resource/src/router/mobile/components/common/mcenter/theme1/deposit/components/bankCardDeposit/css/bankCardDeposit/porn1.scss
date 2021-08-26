@@ -733,6 +733,18 @@
   }
 }
 
+.message-content-title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  padding-bottom: 10px;
+}
+
+.message-content-line {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f8f8f7;
+}
+
 .message-close {
   padding: 10px 0;
   text-align: center;
