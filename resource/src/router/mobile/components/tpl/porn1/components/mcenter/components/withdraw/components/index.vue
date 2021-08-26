@@ -1092,7 +1092,6 @@ export default {
     },
     goBackSuccess() {
       this.isSuccessAlertShow = false;
-      window.location.reload();
     },
     getBankImage(swiftCode) {
       return {
