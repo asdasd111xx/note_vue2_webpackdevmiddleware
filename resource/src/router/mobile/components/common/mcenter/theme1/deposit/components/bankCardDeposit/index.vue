@@ -966,7 +966,9 @@
               ]"
               @click="showRealStatus = true"
             >
-              实际到帐： ¥{{ realSaveMoney }} (详情)
+              实际到帐： ¥{{ realSaveMoney }} 
+              <span v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"> (充值优惠) </span>
+              <span v-else-if="+getPassRoadOrAi.fee_percent || +getPassRoadOrAi.fee_amount"> (详情) </span>
             </span>
           </div>
 
@@ -974,11 +976,12 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <li>• 实际到帐： ¥{{ realSaveMoney }}</li>
+                <div :class="$style['message-content-title']">{{offerInfo.offer_enable && +offerInfo.offer_percent > 0 ? '充值优惠' : '详情'}}</div>
                 <template
                   v-if="
-                    curPayInfo.offer_enable && +curPayInfo.offer_percent > 0
+                    offerInfo.offer_enable && +offerInfo.offer_percent > 0
                   "
+                  :class="$style['message-content-line']"
                 >
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
