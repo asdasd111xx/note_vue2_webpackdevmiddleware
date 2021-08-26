@@ -764,6 +764,7 @@ export default {
     }
   },
   created() {
+    this.isSuccessAlertShow = true;
     // 判斷分項維護優先度最高
     this.actionGetServiceMaintain()
       .then(data => {
@@ -1092,7 +1093,6 @@ export default {
     },
     goBackSuccess() {
       this.isSuccessAlertShow = false;
-      window.location.reload();
     },
     getBankImage(swiftCode) {
       return {
