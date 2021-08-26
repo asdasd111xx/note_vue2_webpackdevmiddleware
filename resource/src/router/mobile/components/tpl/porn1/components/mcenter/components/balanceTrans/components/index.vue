@@ -562,7 +562,7 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
-      let nums = this.redJackpotData.enable ? 2: 3;
+      let nums = this.redJackpotData.enable ? 2 : 3;
 
       Object.keys(this.membalance.vendor)
         .slice(0, nums)
@@ -934,7 +934,7 @@ export default {
             cid: getCookie("cid")
           }
         }).then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "000") {
             if (res.data.status != -1) {
               this.actionSetShowRedEnvelope(res.data);
@@ -999,7 +999,7 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
           this.redJackpotData = res.data;
         } else {
