@@ -1661,14 +1661,15 @@ export default {
               });
             }
           } else {
-            //only when C590021 show alert
+            //只有 C590021 出現alert彈窗,其他錯誤顯示為toast
             response.code === "C590021"
               ? (this.isAlertShow = true)
               : this.actionSetGlobalMessage({
-                  msg: "提现已取消，请重新提交申请"
+                  msg: response.msg,
+                  code: response.errodCode,
+                  origin: "withdraw"
                 });
           }
-
           this.isLoading = false;
           this.actionSetIsLoading(false);
           return;
