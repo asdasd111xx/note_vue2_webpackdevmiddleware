@@ -754,6 +754,7 @@ export default {
     },
     setBank(bank) {
       this.closePopup();
+      localStorage.setItem("selectTarget", JSON.stringify(bank));
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
