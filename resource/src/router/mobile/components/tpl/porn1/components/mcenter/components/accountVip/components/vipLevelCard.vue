@@ -128,7 +128,7 @@
               >{{
                 userVipInfo.downgrade_deposit_achieve
                   ? "已达条件"
-                  : `${depositVaule}(${depositVaule}/${userVipInfo.downgrade_deposit_range})`
+                  : `${userVipInfo.downgrade_own_deposit}(${userVipInfo.downgrade_own_deposit}/${userVipInfo.downgrade_deposit_range})`
               }}</span
             >
           </div>
@@ -142,7 +142,7 @@
               >{{
                 userVipInfo.downgrade_valid_bet_achieve
                   ? "已达条件"
-                  : `${userVipInfo.amount_info.valid_bet}(${userVipInfo.amount_info.valid_bet}/${userVipInfo.downgrade_valid_bet})`
+                  : `${userVipInfo.downgrade_own_valid_bet}(${userVipInfo.downgrade_own_valid_bet}/${userVipInfo.downgrade_valid_bet})`
               }}</span
             >
           </div>
@@ -156,7 +156,7 @@
               >{{
                 userVipInfo.downgrade_members_achieve
                   ? "已达条件"
-                  : `${membersVaule}(${membersVaule}/${userVipInfo.downgrade_members})`
+                  : `${userVipInfo.downgrade_own_members}(${userVipInfo.downgrade_own_members}/${userVipInfo.downgrade_members})`
               }}</span
             >
           </div>
@@ -244,14 +244,6 @@ export default {
         width: this.swiperWidth,
         spaceBetween: 10
       };
-    },
-    depositVaule() {
-      return this.vipConfig.base_type === 3
-        ? this.userVipInfo.amount_info.deposit_amount
-        : this.userVipInfo.amount_info.deposit_total;
-    },
-    membersVaule() {
-      return this.vipConfig.base_type === 3 ? "0" : "0";
     }
   },
   created() {
