@@ -77,7 +77,7 @@
     </tr>
 </table>
 
-## 三端同時佈署方式
+## 四端同時佈署方式
 
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 allQA- 】（大小寫需一致）
   - git tag -a "allQA-v1.3.57" -m "allQA-v1.3.57"
@@ -135,8 +135,6 @@
   - git push origin master --tags
 
 ## aubo 佈署方式
-
-
 
 
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 abQA- 】（大小寫需一致）
