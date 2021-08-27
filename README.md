@@ -133,3 +133,18 @@
 - 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sgProd- 】（大小寫需一致）
   - git tag -a "sgProd-v0.1" -m "sgProd-v0.0.1"
   - git push origin master --tags
+
+## aubo 佈署方式
+
+
+
+
+- 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 abQA- 】（大小寫需一致）
+  - git tag -a "abQA-v1.3.57" -m "abQA-v1.3.57"
+  - git push origin master --tags
+<!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yaboBeta- 】（大小寫需一致）
+  - git tag -a "yaboBeta-v1.3.57" -m "yaboBeta-v1.3.57"
+  - git push origin master --tags -->
+- 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 abProd- 】（大小寫需一致）
+  - git tag -a "abProd-v0.1" -m "abProd-v0.0.1"
+  - git push origin master --tags
