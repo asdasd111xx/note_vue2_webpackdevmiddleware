@@ -395,7 +395,7 @@ steps:
 - name: deploy2GKE-QA
   image: nytimes/drone-gke
   settings:
-    cluster: yaboxxx-prod
+    cluster: yaboxxx-test
     project: rd7-project
     template: configs/aubo/.istio-kube.yml
     vars:
