@@ -182,6 +182,16 @@ export default {
       ) {
         promotionValue = +this.offerInfo.per_offer_limit;
       }
+      // 檢查每日優惠金額上限
+      if (this.offerInfo.is_full_offer) {
+        promotionValue = 0;
+      } else if (
+        promotionValue >
+        +this.offerInfo.per_offer_limit - +this.offerInfo.gotten_offer
+      ) {
+        promotionValue =
+          +this.offerInfo.per_offer_limit - +this.offerInfo.gotten_offer;
+      }
 
       // 總額計算
       total = deductionValue

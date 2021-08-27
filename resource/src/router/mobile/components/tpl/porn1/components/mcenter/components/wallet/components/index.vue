@@ -95,6 +95,7 @@
             </div>
 
             <div
+              v-if="bonus.balance"
               :class="[$style['balance-item'], $style['item-fix']]"
               @click="$router.push('/mobile/mcenter/bonus')"
             >
@@ -515,12 +516,7 @@ export default {
       .add(-30, "days")
       .format("YYYY-MM-DD");
     this.endTime = Vue.moment(this.estToday).format("YYYY-MM-DD");
-    //紅利帳戶api
-    axios.get("/api/v1/c/gift-card").then(response => {
-      if (response.data.result === "ok") {
-        this.bonus = response.data.total;
-      }
-    });
+    this.getDomainConfig();
 
     // 清除交易紀錄搜尋快取
     localStorage.removeItem("money-detail-params");
@@ -725,6 +721,31 @@ export default {
           }
         }
       });
+    },
+    getDomainConfig() {
+      return axios({
+        method: "get",
+        url: "/api/v2/c/domain-config"
+      })
+        .then(res => {
+          if (res && res.data && res.data.ret) {
+            if (res.data.ret.gift_card) {
+              //紅利帳戶api
+              axios.get("/api/v1/c/gift-card").then(response => {
+                if (response.data.result === "ok") {
+                  this.bonus = response.data.total;
+                }
+              });
+            }
+          }
+        })
+        .catch(res => {
+          this.actionSetGlobalMessage({
+            msg: res.response.data.msg,
+            code: res.response.data.code,
+            origin: "home"
+          });
+        });
     }
   }
 };
