@@ -740,11 +740,6 @@
   padding-bottom: 10px;
 }
 
-.message-content-line {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f8f8f7;
-}
-
 .message-close {
   padding: 10px 0;
   text-align: center;
@@ -760,6 +755,10 @@
 
 .tip-list {
   font-size: 12px;
+  white-space: pre-wrap;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f8f8f7;
+  margin-bottom: 5px;
 }
 
 .depositName-wrap {

@@ -256,15 +256,14 @@ export default {
       let textValue = "";
 
       if (!this.offerInfo.is_full_offer) {
-        textValue += `• 此笔充值成功加赠优惠 ${this.offerInfo.offer}元`;
+        textValue += `• 此笔充值成功加赠优惠 ${this.offerInfo.offer}元\n`;
       }
-
-      textValue += `• 单笔充值 ${this.oferInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %`;
-      textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)`;
+      textValue += `• 单笔充值 ${this.offerInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %\n`;
+      textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)\n`;
 
       textValue += this.offerInfo.is_full_offer
         ? "• 今日领取已达上限"
-        : `•今日优惠已领 ${gotten_offer}元`;
+        : `•今日优惠已领 ${this.offerInfo.gotten_offer}元`;
 
       return textValue;
     },
