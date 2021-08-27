@@ -197,11 +197,12 @@ export default {
       }
     },
     nextLevelDepositLimitData() {
+      console.log(123);
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
         return;
       }
       if (this.userVipInfo.now_level_seq < this.vipLevelList.length) {
-        return this.userVipInfo.next_level_deposit_total;
+        return this.userVipInfo.next_level_deposit_amount;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
           ? this.vipLevelList[this.userVipInfo.now_level_seq - 1].deposit_limit
