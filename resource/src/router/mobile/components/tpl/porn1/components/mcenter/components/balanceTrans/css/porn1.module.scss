@@ -50,7 +50,7 @@
     vertical-align: text-bottom;
   }
 
-  >span {
+  > span {
     margin-left: 5px;
   }
 
@@ -111,20 +111,20 @@
   }
 
   /* Focus */
-  .ui.toggle.checkbox input:focus~.box:before,
-  .ui.toggle.checkbox input:focus~label:before {
+  .ui.toggle.checkbox input:focus ~ .box:before,
+  .ui.toggle.checkbox input:focus ~ label:before {
     background-color: rgba(0, 0, 0, 0.05) !important;
   }
 
   /* Active */
-  .ui.toggle.checkbox input:checked~.box:before,
-  .ui.toggle.checkbox input:checked~label:before {
+  .ui.toggle.checkbox input:checked ~ .box:before,
+  .ui.toggle.checkbox input:checked ~ label:before {
     background-color: #7d87a3 !important;
   }
 
   /* Active Focus */
-  .ui.toggle.checkbox input:focus:checked~.box:before,
-  .ui.toggle.checkbox input:focus:checked~label:before {
+  .ui.toggle.checkbox input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox input:focus:checked ~ label:before {
     background-color: #7d87a3 !important;
   }
 
@@ -134,15 +134,15 @@
     height: 29px;
   }
 
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~.box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~label:after {
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:after,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:after {
     left: 20px;
     top: 1px;
     box-shadow: none;
   }
 
-  .ui.toggle.checkbox.field-checkbox.ey1 input~.box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input~label:after {
+  .ui.toggle.checkbox.field-checkbox.ey1 input ~ .box:after,
+  .ui.toggle.checkbox.field-checkbox.ey1 input ~ label:after {
     left: 1px;
     top: 1px;
     box-shadow: none;
@@ -161,10 +161,10 @@
   }
 
   .ui.toggle.checkbox.field-checkbox.ey1 .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~.box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~label:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked~.box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked~label:before {
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ label:before {
     background-color: #6aaaf5 !important;
   }
 }
@@ -250,12 +250,12 @@
   }
 }
 
-.balance-refjackpot-text {
-  color: #BE9E7F;
+.balance-redjackpot-text {
+  color: #be9e7f;
   word-break: break-word;
 }
 
-.balance-refjackpot-image {
+.balance-redjackpot-image {
   position: absolute;
   top: 0;
   right: 0;
@@ -283,7 +283,8 @@
 .balance-transfer-wrap {
   margin: 1% 0 2%;
   border-radius: 4px;
-  background: url("/static/image/common/mcenter/balanceTrans/ic_transfergo.png") #fff 50% 50% no-repeat;
+  background: url("/static/image/common/mcenter/balanceTrans/ic_transfergo.png")
+    #fff 50% 50% no-repeat;
   background-size: 20px 15px;
 }
 

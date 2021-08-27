@@ -88,7 +88,7 @@
         @click="setMenuState('balance')"
       >
         <span>
-          {{ getLoginMoney }}
+          {{ loginMoney }}
         </span>
         <div>
           <img
@@ -108,10 +108,10 @@
           :class="[
             $style['visitor-money'],
             $style['just-money'],
-            { [$style['more']]: guestAmount.length > 11 }
+            { [$style['more']]: guestMoney.length > 11 }
           ]"
           @click="$router.push('/mobile/joinmember')"
-          >{{ `${guestAmount}元` }}</span
+          >{{ `${guestMoney}元` }}</span
         >
         <span
           :class="[$style['visitor-money'], $style['visitor-border']]"
@@ -217,8 +217,12 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
+      remainBonus: 0,
+      loginMoney: "",
+
       guestAmount: 0,
-      remainBonus: 0
+      personalMaxBonus: "",
+      guestMoney: ""
     };
   },
   computed: {
@@ -244,14 +248,23 @@ export default {
     },
     path() {
       return this.$route.path.split("/").filter(path => path);
+    }
+  },
+  watch: {
+    // 一般登入
+    membalance() {
+      this.getLoginMoney();
     },
-    getLoginMoney() {
-      if (this.membalance && this.membalance.total) {
-        return `${Number(
-          parseFloat(this.remainBonus) + parseFloat(this.membalance.total)
-        ).toFixed(2)} 元 `;
-      }
-      return ``;
+    remainBonus() {
+      this.getLoginMoney();
+    },
+
+    // 訪客
+    personalMaxBonus() {
+      this.getGuestMoney();
+    },
+    guestAmount() {
+      this.getGuestMoney();
     }
   },
   created() {
@@ -262,18 +275,49 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetThousandsCurrency"]),
+    getGuestMoney() {
+      let guestAmount =
+        this.guestAmount && Number(this.guestAmount)
+          ? parseFloat(+this.guestAmount)
+          : 0;
+
+      let personalMaxBonus =
+        this.personalMaxBonus && Number(this.personalMaxBonus)
+          ? parseInt(+this.personalMaxBonus)
+          : 0;
+
+      let money = (guestAmount + personalMaxBonus).toFixed(2);
+
+      this.actionSetThousandsCurrency(money).then(value => {
+        this.guestMoney = value;
+      });
+    },
+    getLoginMoney() {
+      if (!this.loginStatus) {
+        return;
+      }
+
+      let total =
+        this.membalance &&
+        this.membalance.total &&
+        Number(this.membalance.total)
+          ? +this.membalance.total
+          : 0;
+      let remainBonus =
+        this.remainBonus && Number(this.remainBonus) ? +this.remainBonus : 0;
+
+      let money = (total + remainBonus).toFixed(2);
+
+      this.actionSetThousandsCurrency(money).then(value => {
+        this.loginMoney = value;
+      });
+    },
     // 自訂幫助中心事件
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
         this.headerConfig.hasHelp.func();
       }
-
-      // 充值不開放
-      // if (this.headerConfig.hasHelp.type === "deposit") {
-      //   this.actionSetGlobalMessage({ type: "incoming" });
-      //   return;
-      // }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
@@ -337,10 +381,7 @@ export default {
             if (this.loginStatus) {
               this.remainBonus = res.data.remain_bonus;
             } else {
-              this.guestAmount = Number(
-                parseFloat(this.guestAmount) +
-                  parseInt(res.data.personal_max_bonus)
-              ).toFixed(2);
+              this.personalMaxBonus = res.data.personal_max_bonus;
             }
           }
         }

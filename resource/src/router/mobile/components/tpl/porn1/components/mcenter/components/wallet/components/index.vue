@@ -75,7 +75,7 @@
               <span
                 :class="[
                   $style['balance-item-vendor'],
-                  $style['balance-refjackpot-text']
+                  $style['balance-redjackpot-text']
                 ]"
               >
                 <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -86,12 +86,12 @@
               <span
                 :class="[
                   $style['balance-item-money'],
-                  $style['balance-refjackpot-text']
+                  $style['balance-redjackpot-text']
                 ]"
               >
                 {{ redJackpotData.remain_bonus }}
               </span>
-              <span :class="[$style['balance-refjackpot-image']]" />
+              <span :class="[$style['balance-redjackpot-image']]" />
             </div>
 
             <div
@@ -319,6 +319,7 @@ import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
 export default {
   components: {
@@ -343,6 +344,7 @@ export default {
       birdBalance: "--",
       redJackpotData: null,
       loginMoney: ""
+      // updateBalance: null
     };
   },
   computed: {
@@ -508,7 +510,10 @@ export default {
       }
     }
     if (["ey1"].includes(this.themeTPL)) {
-      this.loginMoney = `${this.membalance.total}`;
+      this.loginMoney =
+        this.membalance && +this.membalance.total
+          ? `${thousandsCurrency(+this.membalance.total)}`
+          : "";
       this.birdMoney();
     }
 
@@ -524,10 +529,26 @@ export default {
     localStorage.removeItem("money-detail-params-category");
     localStorage.removeItem("money-detail-params-date");
 
-    this.getRedJackpot();
+    this.actionSetUserBalance().then(() => {
+      this.getRedJackpot();
+    });
+  },
+  beforeUnmount() {
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
   },
   mounted() {
     this.getRecordList();
+    this.updateBalance = setInterval(() => {
+      let cid = getCookie("cid");
+
+      if (!cid) {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+      } else {
+        this.actionSetUserBalance();
+      }
+    }, 30000);
   },
   watch: {
     // swagBalance(val) {
@@ -535,7 +556,10 @@ export default {
     // },
     membalance() {
       if (["ey1"].includes(this.themeTPL)) {
-        this.loginMoney = `${this.membalance.total}`;
+        this.loginMoney =
+          this.membalance && this.membalance.total
+            ? `${thousandsCurrency(+this.membalance.total)}`
+            : "";
       }
     }
   },
@@ -689,9 +713,6 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
-        headers: {
-          cid: getCookie("cid")
-        },
         params: {
           lang: "zh-cn"
         }
@@ -700,14 +721,21 @@ export default {
           this.redJackpotData = res.data;
           if (res.data.enable) {
             if (this.loginStatus) {
-              this.loginMoney = `${Number(
-                parseFloat(this.membalance.total) +
-                  parseInt(res.data.remain_bonus)
-              ).toFixed(2)}`;
+              let total =
+                this.membalance && this.membalance.total
+                  ? +this.membalance.total
+                  : 0;
+              let remain_bonus =
+                res.data.remain_bonus && res.data.remain_bonus
+                  ? +res.data.remain_bonus
+                  : 0;
+              this.loginMoney = `${thousandsCurrency(
+                (total + remain_bonus).toFixed(2)
+              )}`;
             }
           } else {
             if (this.membalance && this.membalance.total) {
-              this.loginMoney = `${this.membalance.total}`;
+              this.loginMoney = `${thousandsCurrency(this.membalance.total)}`;
             } else {
               this.loginMoney = "";
             }
@@ -715,7 +743,7 @@ export default {
         } else {
           this.redJackpotData = null;
           if (this.membalance && this.membalance.total) {
-            this.loginMoney = `${this.membalance.total}`;
+            this.loginMoney = `${thousandsCurrency(this.membalance.total)}`;
           } else {
             this.loginMoney = "";
           }

@@ -15,7 +15,7 @@
         <span
           :class="[
             $style['balance-item-vendor'],
-            $style['balance-refjackpot-text']
+            $style['balance-redjackpot-text']
           ]"
         >
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -26,12 +26,12 @@
         <span
           :class="[
             $style['balance-item-money'],
-            $style['balance-refjackpot-text']
+            $style['balance-redjackpot-text']
           ]"
         >
           {{ redJackpotData.remain_bonus }}
         </span>
-        <span :class="[$style['balance-refjackpot-image']]" />
+        <span :class="[$style['balance-redjackpot-image']]" />
       </div>
       <div
         v-if="bonus.balance"
@@ -719,7 +719,7 @@ export default {
 
         if (
           this.membalance.vendor[index].amount !== "--" &&
-          +this.membalance.vendor[index].amount >= 1 &&
+          +this.membalance.vendor[index].balance >= 1 &&
           !this.membalance.vendor[index].maintain
         ) {
           const text =
@@ -754,7 +754,7 @@ export default {
     getMaxMoney(balanceList, transferTargetOut) {
       if (balanceList.vendor[transferTargetOut]) {
         this.transferMoney = Math.floor(
-          +balanceList.vendor[transferTargetOut].amount
+          +balanceList.vendor[transferTargetOut].balance
         );
         return;
       }
@@ -871,19 +871,27 @@ export default {
       const target = this.tranIn;
       const money = this.transferMoney;
 
+      let isError = false;
+
       if (+source === 0 || +target === 0) {
         this.actionSetGlobalMessage({ msg: this.$t("S_SELECT_ACCOUNT") });
-        this.btnLock = false;
-        return;
+        isError = true;
       }
+
       if (money === "") {
         this.actionSetGlobalMessage({ msg: this.$t("S_AMOUNT_NULL_VALUE") });
-        this.btnLock = false;
-        return;
+        isError = true;
       }
+
       if (!re.test(money)) {
         this.actionSetGlobalMessage({ msg: this.$t("S_DAW_ONLY_INT") });
-        this.btnLock = false;
+        isError = true;
+      }
+
+      if (isError) {
+        setTimeout(() => {
+          this.btnLock = false;
+        }, 1500);
         return;
       }
 
@@ -903,13 +911,17 @@ export default {
               localStorage.removeItem("tranfer-tranOut");
 
               this.lockSec = 0;
+              setTimeout(() => {
+                this.btnLock = false;
+              }, 1500);
               this.actionSetUserBalance();
-              this.btnLock = false;
               this.isInitTranList = false;
               this.initTranList(true);
             },
             fail: res => {
-              this.btnLock = false;
+              setTimeout(() => {
+                this.btnLock = false;
+              }, 1500);
               this.actionSetGlobalMessage({
                 code: res.data.code,
                 origin: "balanceTrans",
@@ -946,13 +958,17 @@ export default {
                     localStorage.removeItem("tranfer-tranOut");
 
                     this.lockSec = 0;
+                    setTimeout(() => {
+                      this.btnLock = false;
+                    }, 1500);
                     this.actionSetUserBalance();
-                    this.btnLock = false;
                     this.isInitTranList = false;
                     this.initTranList(true);
                   },
                   fail: res => {
-                    this.btnLock = false;
+                    setTimeout(() => {
+                      this.btnLock = false;
+                    }, 1500);
                     this.actionSetGlobalMessage({
                       code: res.data.code,
                       origin: "balanceTrans",

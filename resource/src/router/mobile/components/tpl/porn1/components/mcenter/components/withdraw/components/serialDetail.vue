@@ -44,9 +44,9 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              getDeductionNumber(data.deduction) > 0
-                ? "-" + getDeductionNumber(data.deduction)
-                : getDeductionNumber(data.deduction)
+              data.deduction > 0
+                ? "-" + formatThousandsCurrency(data.deduction)
+                : formatThousandsCurrency(data.deduction)
             }}
           </div>
         </div>
@@ -76,9 +76,9 @@
           <span
             >{{
               item.deduction
-                ? item.deduction +
-                  ":" +
-                  `${Number(item.value) > 0 ? "-" + item.value : item.value}`
+                ? `${item.deduction}:${
+                    Number(item.value) > 0 ? "-" + item.value : item.value
+                  }`
                 : item.rateValue === "-"
                 ? "-"
                 : item.value
@@ -116,9 +116,6 @@ export default {
       default: () => {}
     },
     data: {}
-  },
-  created() {
-    console.log(this.data);
   },
   computed: {
     ...mapGetters({
@@ -170,7 +167,9 @@ export default {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
             rateValue:
               this.data.audit_amount > 0 ? this.data.audit_amount : "-",
-            value: this.getDeductionNumber(this.data.administrative_amount),
+            value: this.formatThousandsCurrency(
+              this.data.administrative_amount
+            ),
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }
         ],
@@ -185,9 +184,9 @@ export default {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
             rateValue:
               this.data.offer_audit_amount > 0
-                ? this.data.offer_audit_amount
+                ? this.formatThousandsCurrency(this.data.offer_audit_amount)
                 : "-",
-            value: this.getDeductionNumber(this.data.offer),
+            value: this.data.offer,
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }
         ]

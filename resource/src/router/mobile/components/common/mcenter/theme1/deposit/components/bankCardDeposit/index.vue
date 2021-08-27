@@ -248,7 +248,11 @@
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
-              v-if="passRoad.length > 0 && !isSelectBindWallet(402)&& !isSelectBindWallet(404)"
+              v-if="
+                passRoad.length > 0 &&
+                  !isSelectBindWallet(402) &&
+                  !isSelectBindWallet(404)
+              "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">支付通道</span>
@@ -366,43 +370,57 @@
             </div>
 
             <div
-              v-if="isSelectBindWallet(25, 402,404) && this.curPassRoad.is_outer_crypto &&
-                  this.curPassRoad.is_bind_wallet"
-              :class="[$style['feature-wrap'],
-              $style['select-card-wrap'],
-              'clearfix']">
+              v-if="
+                isSelectBindWallet(25, 402, 404) &&
+                  this.curPassRoad.is_outer_crypto &&
+                  this.curPassRoad.is_bind_wallet
+              "
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
               <span :class="$style['select-bank-title']">
                 您的位址
               </span>
-              <select v-model="defaultOuterCrypto" :class="$style['outer-crypto-selected']">
-                <option v-for="(option, idx) in outerCryptoOption"
-                :key="idx" 
-                v-bind:value="option">
+              <select
+                v-model="defaultOuterCrypto"
+                :class="$style['outer-crypto-selected']"
+              >
+                <option
+                  v-for="(option, idx) in outerCryptoOption"
+                  :key="idx"
+                  v-bind:value="option"
+                >
                   {{ option }}
                 </option>
-          </select>
-              
-              
+              </select>
+
               <!-- <div :class="$style['select-bank-item']">
               {{ curSelectedBank.label }}
               </div> -->
             </div>
             <div
               v-if="showOuterCryptoAddress"
-              :class="[$style['feature-wrap'],
-              $style['select-card-wrap'],
-              'clearfix']">
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
               钱包位址
               <input
-                    v-model="outerCryptoAddress"
-                    :class="$style['input-cgpay-address']"
-                    type="text"
-                    :placeholder="'请输入钱包位址'"
-                  />
-              <div :class="$style['wallet-address-text']">为即时到帐，请务必输入正确的钱包位址</div>
-
+                v-model="outerCryptoAddress"
+                :class="$style['input-cgpay-address']"
+                type="text"
+                :placeholder="'请输入钱包位址'"
+              />
+              <div :class="$style['wallet-address-text']">
+                为即时到帐，请务必输入正确的钱包位址
+              </div>
             </div>
-            
+
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div
@@ -465,7 +483,7 @@
                     () => {
                       changeMoney(item);
                       if (
-                        isSelectBindWallet(25, 402,404) &&
+                        isSelectBindWallet(25, 402, 404) &&
                         isClickCoversionBtn &&
                         moneyValue > 0
                       ) {
@@ -501,7 +519,7 @@
                       () => {
                         changeMoney('', true);
                         if (
-                          isSelectBindWallet(25, 402,404) &&
+                          isSelectBindWallet(25, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue > 0
                         ) {
@@ -583,7 +601,7 @@
                       $event => {
                         verification('money', $event.target.value);
                         if (
-                          isSelectBindWallet(25, 402,404) &&
+                          isSelectBindWallet(25, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -592,15 +610,17 @@
                       }
                     "
                     @input="verification('money', $event.target.value)"
-                    @keyup="$event => {
+                    @keyup="
+                      $event => {
                         if (
-                          isSelectBindWallet(25, 402,404) &&
+                          isSelectBindWallet(25, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
-                          moneyUSDT($event)
+                          moneyUSDT($event);
                         }
-                      }"
+                      }
+                    "
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>
@@ -618,7 +638,7 @@
               </div>
 
               <!-- USDT 匯率試算 -->
-              <template v-if="isSelectBindWallet(25, 402,404)">
+              <template v-if="isSelectBindWallet(25, 402, 404)">
                 <div :class="$style['crypto-block']">
                   <span>转入数量</span>
                   <div :class="[$style['content']]">
@@ -628,9 +648,22 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span :class="[{ [$style['yb']]: themeTPL === 'porn1' && cryptoMoney > 0 },
-                        { [$style['ey']]: themeTPL === 'ey1' && cryptoMoney > 0 },
-                        { [$style['sg']]: themeTPL === 'sg1' && cryptoMoney > 0 }]">
+                      <span
+                        :class="[
+                          {
+                            [$style['yb']]:
+                              themeTPL === 'porn1' && cryptoMoney > 0
+                          },
+                          {
+                            [$style['ey']]:
+                              themeTPL === 'ey1' && cryptoMoney > 0
+                          },
+                          {
+                            [$style['sg']]:
+                              themeTPL === 'sg1' && cryptoMoney > 0
+                          }
+                        ]"
+                      >
                         {{ cryptoMoney }}
                       </span>
                       <span>
@@ -659,7 +692,13 @@
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
                       >1 USDT ≈ {{ rate }} CNY (
-                      <span :class="[$style['time'],{ [$style['ey']]: themeTPL === 'ey1'}]">{{ timeUSDT() }}</span>
+                      <span
+                        :class="[
+                          $style['time'],
+                          { [$style['ey']]: themeTPL === 'ey1' }
+                        ]"
+                        >{{ timeUSDT() }}</span
+                      >
                       后更新 )</span
                     >
                   </div>
@@ -1013,11 +1052,11 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402,404) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(25, 402, 404) && !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
-                    (showOuterCryptoAddress && outerCryptoAddress === '')
+                  (showOuterCryptoAddress && outerCryptoAddress === '')
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1081,9 +1120,13 @@
                 {{ statusText }}
               </div>
             </div>
-            <ul :class="[$style['entry-message-confirm'],
-                  { [$style['sg']]: themeTPL === 'sg1' },
-                  { [$style['ey']]: themeTPL === 'ey1' }]">
+            <ul
+              :class="[
+                $style['entry-message-confirm'],
+                { [$style['sg']]: themeTPL === 'sg1' },
+                { [$style['ey']]: themeTPL === 'ey1' }
+              ]"
+            >
               <li @click="submitInfo">确定</li>
               <!-- has_csr: 是否啟用代客充值 -->
               <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
@@ -1110,8 +1153,11 @@
 
       <!-- 綁定電子錢包 -->
       <template v-if="showPopStatus.type === 'bindWallet'">
-        <bind-wallet-popup :walletType="bindWalletType" 
-        :eyBindWalletData="eyBindWalletData" @close="closePopup" />
+        <bind-wallet-popup
+          :walletType="bindWalletType"
+          :eyBindWalletData="eyBindWalletData"
+          @close="closePopup"
+        />
       </template>
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
@@ -1177,7 +1223,7 @@ export default {
       isBlockChecked: false,
 
       bindWalletType: "CGPay",
-      eyBindWalletData:{},
+      eyBindWalletData: {},
 
       // 彈窗參數(待之後整理)
       showRealStatus: false,
@@ -1643,14 +1689,15 @@ export default {
       // 億元 USDT 的部份仍以彈窗顯示
       if (
         ["ey1"].includes(this.themeTPL) &&
-        (this.curPayInfo.payment_method_id === 402 || this.curPayInfo.payment_method_id === 404)
+        (this.curPayInfo.payment_method_id === 402 ||
+          this.curPayInfo.payment_method_id === 404)
       ) {
         this.bindWalletType = "USDT";
         this.eyBindWalletData = this.curPayInfo;
         this.setPopupStatus(true, "bindWallet");
         return;
       }
-      console.log(123)
+      console.log(123);
       switch (this.curPayInfo.payment_method_id) {
         // CGPay
         case 16:
@@ -1701,7 +1748,10 @@ export default {
     },
     clickSubmit() {
       // 代客充值
-      if (this.curPayInfo.payment_method_id === 20 && this.entryBlockStatusData.status < 3) {
+      if (
+        this.curPayInfo.payment_method_id === 20 &&
+        this.entryBlockStatusData.status < 3
+      ) {
         this.submitInfo();
         return;
       }
@@ -1736,17 +1786,17 @@ export default {
      */
     submitInfo() {
       // status = 5-> 封鎖阻擋與跳轉網址
-      if(this.entryBlockStatusData.status === 5){
+      if (this.entryBlockStatusData.status === 5) {
         this.actionSetGlobalMessage({
-            msg: this.entryBlockStatusData.custom_point
-          });
+          msg: this.entryBlockStatusData.custom_point
+        });
 
-          setTimeout(() => {
-            window.open(this.entryBlockStatusData.external_url);
-            return;
-          }, 700);
-          this.closePopup();
+        setTimeout(() => {
+          window.open(this.entryBlockStatusData.external_url);
           return;
+        }, 700);
+        this.closePopup();
+        return;
       }
       // block -> 是否封鎖
       if (this.entryBlockStatusData.block) {
@@ -1754,11 +1804,10 @@ export default {
         return;
       }
 
-
       this.closePopup();
 
       //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 402,404)) {
+      if (this.isSelectBindWallet(25, 402, 404)) {
         let oldrate = this.rate;
         this.convertCryptoMoney();
         if (this.rate !== oldrate) {
@@ -1980,7 +2029,7 @@ export default {
         this.curPayInfo.payment_method_id === 16 ||
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 22 ||
-        this.curPayInfo.payment_method_id === 402||
+        this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404
       );
     },
