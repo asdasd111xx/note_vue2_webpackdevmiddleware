@@ -37,7 +37,7 @@
             {{ $text("S_SERIAL_CHANGE", "流水要求") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ serialNumberData.total.audit_amount }}
+            {{ formatThousandsCurrency(serialNumberData.total.audit_amount) }}
           </div>
         </div>
 
@@ -46,7 +46,9 @@
             {{ $text("S_SERIAL_POOR", "流水不足") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ serialNumberData.total.audit_amount_lack }}
+            {{
+              formatThousandsCurrency(serialNumberData.total.audit_amount_lack)
+            }}
           </div>
         </div>
 
@@ -54,12 +56,16 @@
 
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
-            扣除行政费用({{ `${serialNumberData.administrative_rate}%` }})
+            扣除行政费用({{
+              `${formatThousandsCurrency(
+                serialNumberData.administrative_rate
+              )}%`
+            }})
           </div>
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.administrative_amount > 0
-                ? `-${getDeductionNumber(
+                ? `-${formatThousandsCurrency(
                     serialNumberData.total.administrative_amount
                   )}`
                 : `0.00`
@@ -73,7 +79,7 @@
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.offer_deduction > 0
-                ? `-${getDeductionNumber(
+                ? `-${formatThousandsCurrency(
                     serialNumberData.total.offer_deduction
                   )}`
                 : `0.00`
@@ -87,7 +93,7 @@
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.fee > 0
-                ? `-${getDeductionNumber(serialNumberData.total.fee)}`
+                ? `-${formatThousandsCurrency(serialNumberData.total.fee)}`
                 : `0.00`
             }}
           </div>
@@ -98,7 +104,7 @@
           <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.total_deduction > 0
-                ? `-${getDeductionNumber(
+                ? `-${formatThousandsCurrency(
                     serialNumberData.total.total_deduction
                   )}`
                 : `0.00`
@@ -143,7 +149,7 @@
                 <span :class="$style['money']">
                   {{
                     serialInfo.total_audit_amount > 0
-                      ? serialInfo.total_audit_amount
+                      ? formatThousandsCurrency(serialInfo.total_audit_amount)
                       : "-"
                   }}
                 </span>
@@ -155,7 +161,7 @@
                 <span :class="$style['money']">
                   {{
                     serialInfo.deduction > 0
-                      ? `-${getDeductionNumber(serialInfo.deduction)}`
+                      ? `-${formatThousandsCurrency(serialInfo.deduction)}`
                       : `0.00`
                   }}
                 </span>
@@ -184,6 +190,7 @@
 import mixin from "@/mixins/mcenter/withdraw/serialNumber";
 import serialDetail from "./serialDetail";
 import { mapGetters, mapActions } from "vuex";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
 export default {
   mixins: [mixin],

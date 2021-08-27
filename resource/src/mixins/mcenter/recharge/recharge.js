@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
 import axios from "axios";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
 export default {
   props: {},
@@ -135,50 +136,40 @@ export default {
         }
       }
       this.bonusList = [];
+
       if (bonusArrays.first) {
+        let firstAmount = Math.max(...bonusArrays.first);
+        firstAmount = thousandsCurrency(firstAmount);
+
         this.bonusList.push({
           key: "first",
-          text: `喜讯：首次额度转让旗下会员赠彩金${
-            bonusArrays.first ? Math.max(...bonusArrays.first) : null
-          }元/位`,
+          text: `喜讯：首次额度转让旗下会员赠彩金${firstAmount}元/位`,
           isShow: this.rechargeConfig.first_bonus_enable
         });
       }
+
       if (bonusArrays.monthly) {
+        let monthlyAmount = Math.max(...bonusArrays.monthly);
+        monthlyAmount = thousandsCurrency(monthlyAmount);
+
         this.bonusList.push({
           key: "monthly",
-          text: `喜讯：每月首次额度转让旗下会员赠${
-            bonusArrays.monthly ? Math.max(...bonusArrays.monthly) : null
-          }元/位`,
+          text: `喜讯：每月首次额度转让旗下会员赠${monthlyAmount}元/位`,
           isShow: this.rechargeConfig.monthly_bonus_enable
         });
       }
+
       if (bonusArrays.weekly) {
+        let monthlyWeekly = Math.max(...bonusArrays.weekly);
+        monthlyWeekly = thousandsCurrency(monthlyWeekly);
+
         this.bonusList.push({
           key: "weekly",
-          text: `喜讯：每周首次额度转让旗下会员赠${
-            bonusArrays.weekly ? Math.max(...bonusArrays.weekly) : null
-          }元/位`,
+          text: `喜讯：每周首次额度转让旗下会员赠${monthlyWeekly}元/位`,
           isShow: this.rechargeConfig.weekly_bonus_enable
         });
       }
-      // this.bonusList = [
-      //     {
-      //         key: "first",
-      //         text: `喜讯：首次额度转让旗下会员赠彩金${bonusArrays.first ? Math.max(...bonusArrays.first) : null}元/位`,
-      //         isShow: this.rechargeConfig.first_bonus_enable,
-      //     },
-      //     {
-      //         key: "monthly",
-      //         text: `喜讯：每月首次额度转让旗下会员赠${bonusArrays.monthly ? Math.max(...bonusArrays.monthly) : null}元/位`,
-      //         isShow: this.rechargeConfig.monthly_bonus_enable,
-      //     },
-      //     {
-      //         key: "weekly",
-      //         text: `喜讯：每周首次额度转让旗下会员赠${bonusArrays.weekly ? Math.max(...bonusArrays.weekly) : null}元/位`,
-      //         isShow: this.rechargeConfig.weekly_bonus_enable,
-      //     }
-      // ].filter(item => item.isShow)
+
       this.bonusList = this.bonusList.filter(item => item.isShow);
     }
   },
@@ -523,18 +514,26 @@ export default {
             return;
           }
           if (!isAudit || msg.includes("未完成")) {
-            msg_desc += `单笔转让最低${config.recharge_limit_unaudited_min}元`;
+            msg_desc += `单笔转让最低${thousandsCurrency(
+              config.recharge_limit_unaudited_min
+            )}元`;
 
             if (config.recharge_limit_unaudited_max_enable) {
-              msg_desc += `、最高${config.recharge_limit_unaudited_max}元`;
+              msg_desc += `、最高${thousandsCurrency(
+                config.recharge_limit_unaudited_max
+              )}元`;
             }
             this.errorMessage.amount = msg_desc;
             return;
           } else if (isAudit || msg.includes("完成")) {
-            msg_desc += `单笔转让最低${config.recharge_limit_audited_min}元`;
+            msg_desc += `单笔转让最低${thousandsCurrency(
+              config.recharge_limit_audited_min
+            )}元`;
 
             if (config.recharge_limit_audited_max_enable) {
-              msg_desc += `、最高${config.recharge_limit_audited_max}元`;
+              msg_desc += `、最高${thousandsCurrency(
+                config.recharge_limit_audited_max
+              )}元`;
             }
 
             this.errorMessage.amount = msg_desc;

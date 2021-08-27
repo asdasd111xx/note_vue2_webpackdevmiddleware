@@ -7,6 +7,7 @@ import EST from "@/lib/EST";
 import Vue from "vue";
 import i18n from "@/config/i18n";
 import jwt from "jwt-simple";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
 export default {
   // Webview介接(客端、廳主端)
@@ -238,9 +239,15 @@ export default {
           ? i18n.t("S_MCENTER_WALLET")
           : i18n.t("S_MAIN_BALANCE");
       }
+      let amount =
+        data.ret[i].balance === "--"
+          ? "--"
+          : thousandsCurrency(data.ret[i].balance);
 
+      // 原始餘額,千分為餘額
       temp[key] = {
-        amount: data.ret[i].balance,
+        balance: data.ret[i].balance,
+        amount: amount,
         text
       };
 
@@ -252,7 +259,9 @@ export default {
       }
     }
     state.memInfo.balance = {
+      total: thousandsCurrency(data.total),
       total: data.total,
+
       maintain: maintainList,
       vendor: temp
     };

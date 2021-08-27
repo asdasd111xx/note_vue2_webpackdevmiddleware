@@ -32,6 +32,7 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 import { v4 as uuidv4 } from "uuid";
 import version from "@/config/version.json";
 
@@ -1875,6 +1876,14 @@ export const actionVerificationFormData = (
 
     case "money":
       val = val.replace(/[^0-9]/g, "").substring(0, 13);
+      // 輸入金額轉千分位
+      // val = val
+      //   .toString()
+      //   .replace(
+      //     /^(-?\d+?)((?:\d{3})+)(?=\.\d+$|$)/,
+      //     (all, pre, groupOf3Digital) =>
+      //       pre + groupOf3Digital.replace(/\d{3}/g, ",$&")
+      //   );
       break;
 
     case "withdrawPwd":
@@ -2386,4 +2395,9 @@ export const actionGetToManyRequestMsg = ({ state }, response) => {
       return response;
     }
   }
+};
+
+// 千分位
+export const actionSetThousandsCurrency = ({ state }, data) => {
+  return thousandsCurrency(data);
 };

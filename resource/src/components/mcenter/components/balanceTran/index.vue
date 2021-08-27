@@ -257,6 +257,10 @@ export default {
     },
     firstThirdBalanceInfo() {
       const data = {};
+      if (!this.redJackpotData) {
+        return;
+      }
+
       let nums = this.redJackpotData.enable ? 2 : 3;
 
       Object.keys(this.membalance.vendor)

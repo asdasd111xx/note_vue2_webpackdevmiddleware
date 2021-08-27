@@ -42,7 +42,7 @@
             <span
               :class="[
                 $style['balance-item-vendor'],
-                $style['balance-refjackpot-text']
+                $style['balance-redjackpot-text']
               ]"
             >
               <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -53,12 +53,12 @@
             <span
               :class="[
                 $style['balance-item-money'],
-                $style['balance-refjackpot-text']
+                $style['balance-redjackpot-text']
               ]"
             >
-              {{ redJackpotData.remain_bonus }}
+              {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
             </span>
-            <span :class="[$style['balance-refjackpot-image']]" />
+            <span :class="[$style['balance-redjackpot-image']]" />
           </div>
           <!-- 紅利彩金 -->
           <div
@@ -414,8 +414,14 @@
       <!-- <div v-if="hasBankCard" :class="[$style['withdraw-input']]"> -->
       <div :class="[$style['withdraw-input']]">
         <span :class="$style['money-currency']">¥</span>
+        <!-- <div
+          v-if="displayWithdrawValue"
+          :class="$style['display-withdraw-value']"
+        >
+          {{ displayWithdrawValue }}
+        </div> -->
         <input
-          v-model="withdrawValue"
+          v-model="displayWithdrawValue"
           autocomplete="off"
           type="text"
           inputmode="decimal"
@@ -476,7 +482,9 @@
         <span :class="$style['money-currency']"
           >{{ selectedCard.name }}到帐</span
         >
-        <span :class="$style['money-currency']">{{ cryptoMoney }}</span>
+        <span :class="$style['money-currency']">{{
+          formatThousandsCurrency(cryptoMoney)
+        }}</span>
       </div>
 
       <!-- 參考匯率 -->
@@ -650,13 +658,9 @@ import withdrawMoreMethod from "./withdrawMoreMethod";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
-import {
-  API_TRADE_RELAY,
-  API_CRYPTO_MONEY,
-  API_WITHDRAW,
-  API_WITHDRAW_WRITE_2
-} from "@/config/api";
+import { API_CRYPTO_MONEY } from "@/config/api";
 import common from "@/api/common";
 
 export default {
@@ -742,7 +746,9 @@ export default {
         cb: () => {}
       },
       redJackpotData: { enable: false },
-      marqueeList: []
+      marqueeList: [],
+
+      displayWithdrawValue: ""
     };
   },
   watch: {
@@ -947,15 +953,27 @@ export default {
       ) {
         const ret = this.withdrawData.payment_charge.ret;
         if (ret.withdraw_count && Number(ret.withdraw_count) > 0) {
-          string.push(`今日可用提现次数：${ret.allow_withdraw_count}次`);
+          string.push(
+            `今日可用提现次数：${this.formatThousandsCurrency(
+              ret.allow_withdraw_count
+            )}次`
+          );
         }
 
         if (ret.withdraw_limit && Number(ret.withdraw_limit) > 0) {
-          string.push(`今日可用提现额度：${ret.allow_withdraw_limit}元`);
+          string.push(
+            `今日可用提现额度：${this.formatThousandsCurrency(
+              ret.allow_withdraw_limit
+            )}元`
+          );
         }
 
         if (ret.withdraw_max && Number(ret.withdraw_max) > 0) {
-          string.push(`单次最高提现额度：${ret.withdraw_max}元`);
+          string.push(
+            `单次最高提现额度：${this.formatThousandsCurrency(
+              ret.withdraw_max
+            )}元`
+          );
         }
 
         return string.join("，");
@@ -1141,22 +1159,24 @@ export default {
       return;
     },
     moneyUSDT(e) {
-      if (this.actualMoney) {
-        this.verification("withdrawValue", this.withdrawValue);
-      }
+      if (this.isSelectedUSDT && this.withdrawValue) {
+        if (this.actualMoney) {
+          this.verification("withdrawValue", this.withdrawValue);
+        }
 
-      //防止輸入連續call api
-      clearTimeout(this.timerUSDT);
-      this.timerUSDT = setTimeout(() => {
-        //USDT、CGP-USDT到帳
-        this.convertCryptoMoney();
-      }, 1000);
+        //防止輸入連續call api
+        clearTimeout(this.timerUSDT);
+        this.timerUSDT = setTimeout(() => {
+          //USDT、CGP-USDT到帳
+          this.convertCryptoMoney();
+        }, 1000);
+      }
     },
     validateMoney(target) {
       if (!target || Number(target) === 0) {
         return this.$text("S_UNLIMITED", "无限制");
       } else {
-        return target;
+        return this.formatThousandsCurrency(target);
       }
     },
     toggleSerial() {
@@ -1165,6 +1185,15 @@ export default {
 
     verification(target, value) {
       if (target === "withdrawValue") {
+        if (value) {
+          this.displayWithdrawValue = this.formatThousandsCurrency(
+            String(value).replace(",", "")
+          );
+        } else {
+          this.displayWithdrawValue = "";
+        }
+
+        this.withdrawValue = value;
         value = String(value).replace(/[^0-9]/g, "");
         this.withdrawValue = value;
 
@@ -1202,8 +1231,12 @@ export default {
           (this.withdrawValue !== "" && value < withdrawMin) ||
           (this.withdrawValue !== "" && withdrawMax > 0 && value > withdrawMax)
         ) {
-          this.errTips = `单笔提现金额最小为${withdrawMin}元，最大为${
-            withdrawMax ? `${withdrawMax}元` : "无限制"
+          this.errTips = `单笔提现金额最小为${this.formatThousandsCurrency(
+            withdrawMin
+          )}元，最大为${
+            withdrawMax
+              ? `${this.formatThousandsCurrency(withdrawMax)}元`
+              : "无限制"
           }`;
           return;
         }
@@ -1705,7 +1738,7 @@ export default {
     convertCryptoMoney() {
       let _params = {
         type: 2,
-        amount: this.actualMoneyPlusOffer()
+        amount: this.actualMoneyPlusOffer(false)
       };
       if (
         this.selectedCard.bank_id === 2009 &&
@@ -1894,15 +1927,22 @@ export default {
           break;
       }
     },
-    actualMoneyPlusOffer() {
+    actualMoneyPlusOffer(format = true) {
       if (this.actualMoney) {
         this.verification("withdrawValue", this.withdrawValue);
       }
 
       // 有取款優惠金額 && 實際提現金額 > 0
       if (+this.offer() && this.actualMoney > 0) {
-        return Number(+this.actualMoney + +this.offer()).toFixed(2);
+        let amount = Number(+this.actualMoney + +this.offer()).toFixed(2);
+        if (format) {
+          return this.formatThousandsCurrency(amount);
+        }
+        return amount;
       } else {
+        if (format) {
+          return this.formatThousandsCurrency(this.actualMoney.toFixed(2));
+        }
         return this.actualMoney.toFixed(2);
       }
     },
@@ -2047,6 +2087,9 @@ export default {
           this.redJackpotData = null;
         }
       });
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   },
   destroyed() {

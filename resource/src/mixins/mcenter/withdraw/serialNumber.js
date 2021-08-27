@@ -1,7 +1,8 @@
-import { mapActions } from "vuex";
 import { API_WITHDRAW_ASSIST } from "@/config/api";
-import axios from "axios";
 import EST from "@/lib/EST";
+import axios from "axios";
+import { mapActions } from "vuex";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
 export default {
   data() {
@@ -60,11 +61,6 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     getNowTime() {
       return EST(new Date());
-    },
-    // 轉換扣除金額
-    getDeductionNumber(number) {
-      return Number(number).toFixed(2);
-      // return Number(_n) > 0 ? `-${_n}` : _n;
     },
     // 取得流水
     getSerialNumberData(swift_code = "") {
@@ -129,6 +125,9 @@ export default {
       }
 
       return +info[objKey] === 0 ? "-" : info[objKey];
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

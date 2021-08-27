@@ -220,3 +220,47 @@ export const site_100009 = {
     }
   }
 };
+
+/**
+ * 澳博国际 正式站正式環境
+ */
+export const site_92 = {
+  ...preset,
+  MOBILE_WEB_TPL: "aobo1", // 手機網頁版模版
+  VERSION: getVersion("aobo1"),
+  SITE_NAME: "澳博国际",
+  ACTIVES_BOUNS_WEBSOCKETV2:
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "1",
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
+};
+
+/**
+ * 澳博国际 Demo環境
+ */
+export const site_93 = {
+  ...preset,
+  MOBILE_WEB_TPL: "aobo1",
+  VERSION: getVersion("aobo1"),
+  SITE_NAME: "澳博国际",
+  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
+  ACTIVES_BOUNS_WEBSOCKETV2:
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "1",
+      YB: "9",
+      SP: "13",
+      GAY: "7",
+      LES: "8"
+    }
+  }
+};

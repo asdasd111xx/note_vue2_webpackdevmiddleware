@@ -31,7 +31,9 @@
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']"> 流水要求 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(serialNumberData.total.audit_amount) }}
+                  {{
+                    formatThousandsCurrency(serialNumberData.total.audit_amount)
+                  }}
                 </span>
               </div>
               <div :class="$style['check-cell']">
@@ -40,7 +42,9 @@
                 </span>
                 <span :class="$style['money']">
                   {{
-                    getDeductionNumber(serialNumberData.total.audit_amount_lack)
+                    formatThousandsCurrency(
+                      serialNumberData.total.audit_amount_lack
+                    )
                   }}
                 </span>
               </div>
@@ -48,7 +52,7 @@
               <div :class="[$style['check-cell'], $style['check-total']]">
                 <span :class="$style['sub-title']"> 提现金额 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(withdrawValue) }}
+                  {{ formatThousandsCurrency(withdrawValue) }}
                 </span>
               </div>
 
@@ -61,10 +65,15 @@
                 </span>
                 <span :class="$style['money']">
                   {{
-                    getDeductionNumber(serialNumberData.total.deduction) > 0
+                    formatThousandsCurrency(serialNumberData.total.deduction) >
+                    0
                       ? "-" +
-                        getDeductionNumber(serialNumberData.total.deduction)
-                      : getDeductionNumber(serialNumberData.total.deduction)
+                        formatThousandsCurrency(
+                          serialNumberData.total.deduction
+                        )
+                      : formatThousandsCurrency(
+                          serialNumberData.total.deduction
+                        )
                   }}
                 </span>
               </div>
@@ -74,7 +83,7 @@
                   {{ $text("S_FEE", "手续费") }}
                 </span>
                 <span :class="$style['money']">
-                  -{{ getDeductionNumber(serialNumberData.total.fee) }}
+                  -{{ formatThousandsCurrency(serialNumberData.total.fee) }}
                 </span>
               </div>
 
@@ -82,13 +91,14 @@
                 <span :class="$style['sub-title']"> 扣除总计 </span>
                 <span :class="$style['money']">
                   {{
-                    getDeductionNumber(serialNumberData.total.total_deduction) >
-                    0
+                    formatThousandsCurrency(
+                      serialNumberData.total.total_deduction
+                    ) > 0
                       ? "-" +
-                        getDeductionNumber(
+                        formatThousandsCurrency(
                           serialNumberData.total.total_deduction
                         )
-                      : getDeductionNumber(
+                      : formatThousandsCurrency(
                           serialNumberData.total.total_deduction
                         )
                   }}
@@ -105,7 +115,7 @@
                 <span :class="$style['money']">
                   {{
                     +bonusOffer && +bonusOffer > 0
-                      ? getDeductionNumber(bonusOffer)
+                      ? formatThousandsCurrency(bonusOffer)
                       : "0.00"
                   }}
                 </span>
@@ -114,7 +124,7 @@
               <div :class="[$style['check-cell'], $style['check-actual']]">
                 <span :class="$style['sub-title']"> 实际提现金额 </span>
                 <span :class="$style['money']">
-                  {{ getDeductionNumber(actualMoney) }}
+                  {{ formatThousandsCurrency(actualMoney) }}
                 </span>
               </div>
 

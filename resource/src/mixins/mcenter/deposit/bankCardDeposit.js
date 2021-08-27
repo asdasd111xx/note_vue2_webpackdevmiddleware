@@ -1,9 +1,9 @@
 import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_CHANNEL,
+  API_MCENTER_DEPOSIT_OUTER_WALLET,
   API_MCENTER_DEPOSIT_THIRD,
-  API_TRADE_RELAY,
-  API_MCENTER_DEPOSIT_OUTER_WALLET
+  API_TRADE_RELAY
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -12,6 +12,7 @@ import ajax from "@/lib/ajax";
 import axios from "axios";
 import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
 
 export default {
   data() {
@@ -172,7 +173,7 @@ export default {
         total = total.toString().replace(/^([-]?(\d*))$/, "$1.");
         // 只取小數點後二位
         total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
-        return total;
+        return thousandsCurrency(total);
       }
 
       // 超過優惠金額以單筆上限為主
@@ -204,7 +205,7 @@ export default {
       total = total.toString().replace(/^([-]?(\d*))$/, "$1.");
       // 只取小數點後二位
       total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
-      return total;
+      return thousandsCurrency(total);
     },
     /**
      * 設定當前選擇的銀行
@@ -1263,7 +1264,8 @@ export default {
         return str;
       }
 
-      // -----金額顯示判斷邏輯-----
+      minMoney = thousandsCurrency(minMoney);
+      maxMoney = thousandsCurrency(maxMoney);
 
       switch (true) {
         // 最大金額不為0的時候，顯示最小值~最大值
