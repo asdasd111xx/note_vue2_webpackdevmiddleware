@@ -5,19 +5,19 @@ kind: Deployment
 metadata:
   namespace: istio-aubo
   labels:
-    app: aubo-frontend-proxy-{{.env}}
+    app: aubo-frontend-{{.env}}
     base: aubo-frontend
   name: {{.deployName}}
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: aubo-frontend-proxy-{{.env}}
+      app: aubo-frontend-{{.env}}
       base: aubo-frontend
   template:
     metadata:
       labels:
-        app: aubo-frontend-proxy-{{.env}}
+        app: aubo-frontend-{{.env}}
         base: aubo-frontend
     spec:
       containers:
@@ -33,7 +33,7 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        name: aubo-frontend-proxy
+        name: aubo-frontend
         ports:
         - containerPort: 80
           protocol: TCP
