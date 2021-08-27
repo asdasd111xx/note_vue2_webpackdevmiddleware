@@ -981,7 +981,6 @@
                   v-if="
                     offerInfo.offer_enable && +offerInfo.offer_percent > 0
                   "
-                  :class="$style['message-content-line']"
                 >
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
