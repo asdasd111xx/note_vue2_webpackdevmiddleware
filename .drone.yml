@@ -405,7 +405,7 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-qa
       k8sNginxSSL: ""
       nfs: 10.27.1.142
-      nodePoolName: e2-16
+      nodePoolName: n2-8
     zone: asia-east1-b
   environment:
     TOKEN:
