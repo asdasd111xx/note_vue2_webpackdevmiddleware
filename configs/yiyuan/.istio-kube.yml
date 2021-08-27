@@ -77,4 +77,6 @@ spec:
         nfs:
           path: /exports/backend-upload
           server: {{.nfs}}
+      nodeSelector:
+        cloud.google.com/gke-nodepool: {{.nodePoolName}}          
 
