@@ -259,7 +259,7 @@ export default {
         textValue += `• 此笔充值成功加赠优惠 ${this.offerInfo.offer}元`;
       }
 
-      ftextValue += `• 单笔充值 ${this.oferInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %`;
+      textValue += `• 单笔充值 ${this.oferInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %`;
       textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)`;
 
       textValue += this.offerInfo.is_full_offer
