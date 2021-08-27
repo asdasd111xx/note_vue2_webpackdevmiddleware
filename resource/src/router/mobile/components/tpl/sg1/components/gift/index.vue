@@ -43,7 +43,7 @@ export default {
         this.url = res.data.uri;
       } else {
         this.actionSetGlobalMessage({
-          msg: res.data,
+          msg: res.msg || res.data,
           code: res.errodCode
         });
       }
