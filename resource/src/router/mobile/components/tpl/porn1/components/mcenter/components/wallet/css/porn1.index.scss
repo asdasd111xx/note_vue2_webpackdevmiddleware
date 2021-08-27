@@ -93,10 +93,12 @@
   right: 0;
   width: 15px;
   height: 15px;
-  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png") center center / 100% 100%;
+  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png")
+    center center / 100% 100%;
 
   &.collapse {
-    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png") center center / 100% 100%;
+    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png")
+      center center / 100% 100%;
   }
 }
 
@@ -264,7 +266,7 @@
   }
 
   .balance-refjackpot-text {
-    color: #BE9E7F;
+    color: #be9e7f;
     word-break: break-word;
   }
 
@@ -274,7 +276,8 @@
     right: 0;
     width: 25px;
     height: 25px;
-    background: url("/static/image/common/ic_event.png") center center / 100% 100%;
+    background: url("/static/image/common/ic_event.png") center center / 100%
+      100%;
   }
 
   .item-fix {
@@ -291,25 +294,28 @@
   border-radius: 34px;
 
   .content {
+    color: #be9e7f;
+    font-size: 16px;
+    margin-left: 8%;
+    font-weight: 700;
+    height: 100%;
     width: 60%;
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    color: #be9e7f;
-    padding: 16px 0 16px 10%;
-    font-size: 14px;
-    font-weight: 700;
 
-    div:last-of-type {
-      font-size: 10px;
+    .sub {
+      font-size: 12px;
+      text-align: left;
+      color: #be9e7f;
       font-weight: 400;
-      padding-top: 3px;
     }
   }
 
   .image {
     position: absolute;
     top: 0;
-    right: 28px;
+    right: 20px;
     width: 100px;
     height: 68px;
 
@@ -356,7 +362,8 @@
       height: 15px;
       right: 0;
       top: 1;
-      background: url("/static/image/common/arrow_next.png") center center / 100% 100%;
+      background: url("/static/image/common/arrow_next.png") center center /
+        100% 100%;
     }
   }
 }

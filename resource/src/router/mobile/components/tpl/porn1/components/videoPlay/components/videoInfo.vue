@@ -15,7 +15,7 @@
           <span> {{ videoInfo.created_at }} </span>
         </div>
 
-        <div :class="[$style['desc'], { [$style['open']]: isOpenDesc }]">
+        <div v-if="isOpenDesc" :class="[$style['desc'], $style['open']]">
           <span> {{ videoInfo.desc }}</span>
         </div>
 

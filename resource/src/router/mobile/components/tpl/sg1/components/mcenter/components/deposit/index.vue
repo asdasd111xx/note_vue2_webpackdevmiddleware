@@ -11,36 +11,37 @@
 </template>
 
 <script>
-import depsoit from '@/router/mobile/components/common/mcenter/theme1/deposit';
-import mobileContainer from '../../../common/mobileContainer';
+import depsoit from "@/router/mobile/components/common/mcenter/theme1/deposit";
+import mobileContainer from "../../../common/mobileContainer";
 
 export default {
   data() {
-    return {
-    }
+    return {};
   },
   components: {
     mobileContainer,
-    depsoit,
+    depsoit
   },
   computed: {
     headerConfig() {
       return {
         prev: true,
-        title: '充值',
+        title: "充值",
         hasHelp: {
-          type: 'deposit',
-          url: '/mobile/mcenter/help/deposit'
+          type: "deposit",
+          url: "/mobile/mcenter/help/deposit"
         },
         onClick: () => {
-          let step = this.$refs.depsoit.resultHeaderSetting && this.$refs.depsoit.resultHeaderSetting.submitStatus
+          let step =
+            this.$refs.depsoit.resultHeaderSetting &&
+            this.$refs.depsoit.resultHeaderSetting.submitStatus;
           if (step === "stepTwo") {
             window.location.reload();
-            this.$router.push('/mobile/mcenter/deposit');
+            this.$router.push("/mobile/mcenter/deposit");
           } else {
-            this.$router.push('/mobile/mcenter');
+            this.$router.push("/mobile/mcenter");
           }
-        },
+        }
       };
     }
   }
@@ -49,7 +50,7 @@ export default {
 
 <style lang="scss" module>
 .container {
-  position: relative;
+  // position: relative;
   background-color: #f8f8f7;
 
   .content-wrap {

@@ -1,7 +1,7 @@
 <template>
   <transition :name="'fade'">
     <div :class="[$style['deposit-alert-wrap']]">
-      <template v-if="['sg1'].includes(themeTPL)">
+      <template v-if="['sg1', 'ey1', 'porn1'].includes(themeTPL)">
         <div :class="$style['alert-wrap']">
           <div :class="$style['alert-body-wrap']">
             <div :class="$style['success-icon-wrap']">
@@ -21,13 +21,13 @@
 
             <div :class="$style['tip-wrap']">
               <li>
-                {{ $text("S_DEPOSIT_TIP02", "财务将尽快为您添加额度，请稍候") }}
+                {{ $text("S_DEPOSIT_TIP02", "财务将尽快为您添加额度,请稍后") }}
               </li>
               <li>
                 {{ $text("S_DEPOSIT_TIP03", "若长时间未到帐请联络客服") }}
               </li>
             </div>
-
+            <hr style="background-color:#ddd; height:0.5px; border:none;" />
             <div :class="$style['confirm-btn']" @click="closeFuc(false)">
               知道了
             </div>
@@ -61,7 +61,7 @@
             </div>
             <div :class="$style['tip-wrap']">
               <li>
-                {{ $text("S_DEPOSIT_TIP02", "财务将尽快为您添加额度，请稍候") }}
+                {{ $text("S_DEPOSIT_TIP02", "财务将尽快为您添加额度,请稍后") }}
               </li>
               <li>
                 {{ $text("S_DEPOSIT_TIP03", "若长时间未到帐请联络客服") }}

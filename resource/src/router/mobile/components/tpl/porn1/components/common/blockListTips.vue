@@ -6,15 +6,22 @@
         <div>温馨提示</div>
         <div>{{ parseType }}功能无法使用，请联系在线客服</div>
       </div>
-      <div :class="$style['close']" @click="closeTips">
-        确认
+      <div
+        :class="[
+          $style['close'],
+          { [$style['sg']]: themeTPL === 'sg1' },
+          { [$style['ey']]: themeTPL === 'ey1' }
+        ]"
+        @click="closeTips"
+      >
+        关闭
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
@@ -27,6 +34,9 @@ export default {
     return {};
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
     parseType() {
       switch (this.type) {
         case "transfer":
@@ -41,6 +51,9 @@ export default {
           return "充值";
           break;
       }
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {
@@ -98,5 +111,13 @@ export default {
   padding: 15px 0;
   border-top: 2px solid #f9f9f8;
   color: #93c1ff;
+
+  &.sg {
+    color: #bf8646;
+  }
+
+  &.ey {
+    color: #e42a30;
+  }
 }
 </style>

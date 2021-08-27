@@ -224,7 +224,6 @@
   margin: 20px 0;
 
   &.disabled {
-    opacity: 0.5;
     pointer-events: none;
     background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
     background: linear-gradient(right, #e9dacb, #eee5db);
@@ -291,7 +290,7 @@
   width: 12px;
   top: 0;
 
-  > img {
+  >img {
     height: 12px;
     width: 12px;
   }

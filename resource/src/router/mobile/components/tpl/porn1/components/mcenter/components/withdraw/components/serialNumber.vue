@@ -54,18 +54,32 @@
 
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
-            {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-            (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
+            扣除行政费用({{ `${serialNumberData.administrative_rate}%` }})
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              serialNumberData.total.deduction > 0
-                ? `-${getDeductionNumber(serialNumberData.total.deduction)}`
+              serialNumberData.total.administrative_amount > 0
+                ? `-${getDeductionNumber(
+                    serialNumberData.total.administrative_amount
+                  )}`
                 : `0.00`
             }}
           </div>
         </div>
-
+        <div :class="$style['serial-basic-cell']">
+          <div :class="$style['serial-basic-title']">
+            扣除优惠
+          </div>
+          <div :class="$style['serial-basic-value']">
+            {{
+              serialNumberData.total.offer_deduction > 0
+                ? `-${getDeductionNumber(
+                    serialNumberData.total.offer_deduction
+                  )}`
+                : `0.00`
+            }}
+          </div>
+        </div>
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">
             {{ $text("S_FEE", "手续费") }}
@@ -124,7 +138,7 @@
             <div>
               <div>
                 <span :class="$style['sub-title']">
-                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}
+                  {{ $text("S_SERIAL_CHANGE", "流水要求") }}:
                 </span>
                 <span :class="$style['money']">
                   {{
@@ -136,7 +150,7 @@
               </div>
               <div>
                 <span :class="$style['sub-title']">
-                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
+                  {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}:
                 </span>
                 <span :class="$style['money']">
                   {{

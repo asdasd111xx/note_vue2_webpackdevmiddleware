@@ -1,0 +1,140 @@
+@import "@/css/variable.scss";
+.detail-wrap {
+  padding: 0 13px;
+}
+
+//page1
+.date-total {
+  width: 100%;
+  padding-bottom: 10px;
+  color: $main_text_color3;
+  border-bottom: 2px solid #eee;
+}
+
+.process-bar-wrap {
+  margin: 10px 0;
+  z-index: 0;
+
+  > span {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .process-bar-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #414655;
+    height: 16px;
+    line-height: 16px;
+
+    .current-num {
+      color: #be9e7f;
+    }
+    .total-num {
+      display: flex;
+      font-size: 0;
+      > span {
+        font-size: 12px;
+      }
+      .caret-right {
+        width: 10px;
+        height: 10px;
+        margin: auto;
+
+        > img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .process-bar-line {
+    background-color: #dddddd;
+    height: 6px;
+    border-radius: 3px;
+    margin: 3px 0;
+    position: relative;
+
+    .process-bar-current-line {
+      position: absolute;
+      width: 0px;
+      height: 6px;
+      border-radius: 3px;
+      top: 0;
+      background-color: #be9e7f;
+      z-index: 0;
+    }
+  }
+
+  .process-bar-bottom {
+    display: flex;
+    justify-content: flex-end;
+    height: 19px;
+    line-height: 19px;
+    flex-wrap: nowrap;
+
+    > span:first-child {
+      font-size: 12px;
+      color: #a6a9b2;
+    }
+    > span:last-child {
+      font-size: 14px;
+      color: #6aaaf5;
+      font-weight: bold;
+      line-height: 17px;
+      margin-left: 2px;
+    }
+  }
+}
+
+//page2、3
+.friend-wrap {
+  position: relative;
+  bottom: 74px;
+  height: 84vh;
+}
+.card-item-wrap {
+  position: relative;
+  top: 10px;
+}
+
+.no-data {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+
+  img {
+    width: 180px;
+    height: 200px;
+    margin-bottom: 14px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #a6a9b2;
+  }
+}
+
+.rebate-rate {
+  height: 25px;
+  display: flex;
+  justify-content: flex-end;
+  color: #6aaaf5;
+  padding: 9px 2px;
+  text-decoration: underline;
+}
+
+.rebate-rate {
+  height: 25px;
+  display: flex;
+  justify-content: flex-end;
+  color: #6aaaf5;
+  padding: 9px 2px;
+  text-decoration: underline;
+}

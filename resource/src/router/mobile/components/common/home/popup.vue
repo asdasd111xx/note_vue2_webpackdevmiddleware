@@ -21,6 +21,19 @@
           <span
             :class="[$style['checkbox-circle'], { [$style.active]: isTick }]"
             @click="isTick = !isTick"
+            :style="
+              isTick
+                ? {
+                    'background-image': `url(${$getCdnPath(
+                      '/static/image/common/icon_notips_active.png'
+                    )})`
+                  }
+                : {
+                    'background-image': `url(${$getCdnPath(
+                      '/static/image/common/icon_noremember.png'
+                    )})`
+                  }
+            "
           />
           <span :class="$style['checkbox-text']">不再提示</span>
         </div>
@@ -56,7 +69,13 @@
       </div>
 
       <div v-else-if="sitePostList" class="clearfix">
-        <div :class="[$style['modal-button-center']]" @click="closePop()">
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closePop()"
+        >
           关闭
         </div>
       </div>
@@ -219,6 +238,10 @@ export default {
   line-height: 50px;
   text-align: center;
   font-size: 18px;
+
+  // &.ey1 {
+  //   color: #e42a30;
+  // }
 }
 
 .post-header {

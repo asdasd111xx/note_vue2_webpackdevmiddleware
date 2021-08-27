@@ -191,7 +191,8 @@ export default {
       "actionVerificationFormData",
       "actionGetMemInfoV3",
       "actionGetRechargeStatus",
-      "actionSetRechargeBonusConfig"
+      "actionSetRechargeBonusConfig",
+      "actionGetToManyRequestMsg"
     ]),
     // setPromotionTips() {
     //     let result = ''
@@ -383,6 +384,7 @@ export default {
       })
         .then(res => {
           if (res && res.data && res.data.result === "ok") {
+            this.errorMessage.phone = "";
             this.getPhoneTTL().then(() => {
               this.timer = setInterval(() => {
                 if (this.ttl === 0) {
@@ -397,22 +399,25 @@ export default {
                 this.ttl -= 1;
               }, 1000);
               this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME").replace(
-                  "%s",
-                  "5"
-                )
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
               });
             });
           } else {
             setTimeout(() => {
               this.isSendKeyring = false;
-            }, 1500);
+            }, 1000);
             this.errorMessage.phone = `${res.data.msg}`;
           }
         })
         .catch(error => {
+          setTimeout(() => {
+            this.isSendKeyring = false;
+          }, 1000);
+
           if (error.response && error.response.status === 429) {
-            this.errorMessage.phone = "操作太频繁，请稍候再试";
+            this.actionGetToManyRequestMsg(error.response).then(res => {
+              this.errorMessage.phone = res;
+            });
             return;
           }
 
@@ -423,10 +428,6 @@ export default {
           } else {
             this.errorMessage.phone = `${error.response.data}`;
           }
-
-          setTimeout(() => {
-            this.isSendKeyring = false;
-          }, 1500);
         });
     },
     sendRecharge() {
@@ -464,14 +465,14 @@ export default {
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           })
           .catch(error => {
             this.setErrorCode(error.response.data);
             setTimeout(() => {
               this.isVerifyForm = false;
               this.isSendRecharge = false;
-            }, 1500);
+            }, 1000);
           });
       });
     },
@@ -517,7 +518,7 @@ export default {
 
           let msg_desc = msg ? msg + "，" : "";
 
-          if (!msg_desc || msg == "馀额不足") {
+          if (!msg_desc || msg == "可转金额不足") {
             this.errorMessage.amount = msg;
             return;
           }

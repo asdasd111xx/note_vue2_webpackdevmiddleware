@@ -1,6 +1,14 @@
 <template>
-  <div :class="$style['commission-detail-wrap']">
-    <div v-if="!currentInfo.oauth2" :class="$style['tab-wrap']">
+  <div
+    :class="[
+      $style['commission-detail-wrap'],
+      $style['commission-detail-wrap-' + path]
+    ]"
+  >
+    <div
+      v-if="!$route.query.third && !$route.query.depth && !$route.query.user"
+      :class="$style['tab-wrap']"
+    >
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -19,8 +27,20 @@
       />
     </div>
 
-    <assign v-if="currentTemplate === 'assign'" :currentInfo="currentInfo" />
-    <record v-if="currentTemplate === 'record'" :currentInfo="currentInfo" />
+    <assign
+      v-if="currentTemplate === 'assign'"
+      :currentInfo="currentInfo"
+      @id="memberData"
+    />
+    <record
+      v-if="currentTemplate === 'record' && !path"
+      :currentInfo="currentInfo"
+    />
+    <rebate-record
+      v-if="currentTemplate === 'record' && path"
+      :currentInfo="currentInfo"
+      :set-header-title="setHeaderTitle"
+    />
   </div>
 </template>
 
@@ -28,24 +48,34 @@
 import { mapGetters } from "vuex";
 import assign from "./assign";
 import record from "./record";
-
+import rebateRecord from "./rebateRecord";
+import Vue, { nextTick } from "vue";
 export default {
   components: {
     assign,
-    record
+    record,
+    rebateRecord
   },
   props: {
     currentInfo: {
       type: Object,
+      required: true
+    },
+    setHeaderTitle: {
+      type: Function,
       required: true
     }
   },
   data() {
     return {
       currentTab: 0,
-      currentTemplate: "assign"
+      currentTemplate: "assign",
+      path: this.$route.params.title ?? "",
+      id: "",
+      totalTime: "" //統計至
     };
   },
+
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
@@ -60,11 +90,11 @@ export default {
       return [
         {
           key: "assign",
-          text: this.$text("S_ASSIGIN_DETAIL", "派发详情")
+          text: this.path ? "派发" : this.$text("S_ASSIGIN_DETAIL", "派发详情")
         },
         {
           key: "record",
-          text: this.$text("S_RECORD_DETAIL", "统计详情")
+          text: this.path ? "详情" : this.$text("S_RECORD_DETAIL", "统计详情")
         }
       ];
     }
@@ -76,18 +106,80 @@ export default {
       return;
     }
   },
+  watch: {
+    "$route.query": {
+      handler: function(item) {
+        if (item.assign) {
+          this.currentTemplate = "assign";
+          this.currentTab = 0;
+        } else if (item.record || item.inner) {
+          this.currentTemplate = "record";
+          this.currentTab = 1;
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
     setCurrentTab(index) {
-      this.currentTab = index;
       switch (index) {
         case 0:
-          this.currentTemplate = "assign";
+          this.$router.push({
+            params: {
+              title: "record",
+              item: "detail"
+            },
+            query: {
+              assign: "assign",
+              period: this.$route.query.period,
+              start_at: this.$route.query.start_at,
+              end_at: this.$route.query.end_at,
+              oauth2_detail: this.$route.query.oauth2_detail,
+              type: this.$route.query.type,
+              amount: this.$route.query.amount,
+              current_entry_id: this.$route.query.current_entry_id,
+              show_detail: this.$route.query.show_detail,
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
+            }
+          });
           break;
 
         case 1:
-          this.currentTemplate = "record";
+          this.$router.push({
+            params: {
+              title: "record",
+              item: "detail"
+            },
+            query: {
+              record: "record",
+              period: this.$route.query.period,
+              start_at: this.$route.query.start_at,
+              end_at: this.$route.query.end_at,
+              oauth2_detail: this.$route.query.oauth2_detail,
+              type: this.$route.query.type,
+              amount: this.$route.query.amount,
+              current_entry_id: this.$route.query.current_entry_id || this.id,
+              show_detail: this.$route.query.show_detail,
+              oauth2: this.$route.query.oauth2,
+              totalTime: this.totalTime
+            }
+          });
           break;
       }
+    },
+    rebateDateFormat(date) {
+      return Vue.moment(date).format("YYYY-MM-DD");
+    },
+    setTitle(val) {
+      this.showTitle = val;
+      return;
+    },
+    memberData(val) {
+      this.id = val.id;
+      this.totalTime = val.end_at;
+      return;
     }
   }
 };

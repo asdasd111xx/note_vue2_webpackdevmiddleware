@@ -79,6 +79,10 @@ export default {
     activitySg1: () =>
       import(
         /* webpackChunkName: 'activitySg1' */ "../../tpl/sg1/components/activity"
+      ),
+    mahjongSg1: () =>
+      import(
+        /* webpackChunkName: 'mahjongSg1' */ "../../tpl/sg1/components/mahjong"
       )
   },
   mcenter: {
@@ -257,6 +261,22 @@ export default {
     tcenterLobbySg1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbySg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterLobby"
+      ),
+    tcenterManageRebateSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageRebateSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterManageRebate"
+      ),
+    tcenterManageTeamSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterManageTeamSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/tcenterManageTeam"
+      ),
+    tcenterNewRecommendSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewRecommendSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newRecommend"
+      ),
+    tcenterNewCommissionSg1: () =>
+      import(
+        /* webpackChunkName: 'tcenterNewCommissionSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newCommission"
       )
     // historyCardSg1: () =>
     //   import(

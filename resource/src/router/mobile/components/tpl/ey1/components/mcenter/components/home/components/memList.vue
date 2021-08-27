@@ -45,11 +45,8 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
-import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import { API_MCENTER_DESPOSIT_AMOUNT } from "@/config/api";
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import share from "./share";
 
@@ -103,7 +100,8 @@ export default {
         {
           initName: "我的推广",
           name: "S_TEAM_CENTER",
-          path: "/mobile/mcenter/tcenter/management/member",
+          path: "/mobile/mcenter/tcenterLobby",
+          // path: "/mobile/mcenter/tcenter/management/member",
           pageName: "mypromotion",
           image: "mypromotion",
           info: "合营计划",

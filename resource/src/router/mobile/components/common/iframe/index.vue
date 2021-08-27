@@ -530,7 +530,30 @@ export default {
             }
             return;
           case "EVENT_THIRDPARTY_LOGIN":
-            this.$router.replace("/mobile/joinmember?prev=home");
+            if (this.loginStatus) {
+              return;
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
+            return;
+
+          case "EVENT_THIRDPARTY_WALLET":
+            if (this.loginStatus) {
+              this.$router.push("/mobile/mcenter/wallet?prev=back");
+              return;
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
@@ -540,7 +563,16 @@ export default {
             return;
 
           case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
-            this.$router.push("/mobile/mcenter/deposit?prev=back");
+            if (this.loginStatus) {
+              this.$router.push("/mobile/mcenter/deposit?prev=back");
+            } else {
+              if (this.themeTPL === "ey1") {
+                this.$router.replace("/mobile/login");
+              } else {
+                this.$router.replace("/mobile/joinmember?prev=home");
+              }
+            }
+
             return;
 
           case "EVENT_THIRDPARTY_HOME":
@@ -553,6 +585,10 @@ export default {
       }
     },
     linkToGame(data) {
+      if (this.isLoading) {
+        return;
+      }
+
       this.isLoading = true;
 
       if (!data) {
@@ -580,20 +616,9 @@ export default {
           const vendor = target[1] || "";
           const kind = target[2] || "";
           const code = target[3] || "";
-          let gameName = "";
+
           switch (vendor) {
             default:
-              openGame(
-                {
-                  kind: kind,
-                  vendor: vendor,
-                  code: code,
-                  getGames: true
-                },
-                openGameSuccessFunc,
-                openGameFailFunc
-              );
-
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
                 if (this.$route.query.vendor === "sigua_ly") {
@@ -613,6 +638,23 @@ export default {
                   });
                 }
               };
+
+              // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
+              if (!this.withdrawCheckStatus.account) {
+                lib_useGlobalWithdrawCheck("home");
+                return;
+              }
+
+              openGame(
+                {
+                  kind: kind,
+                  vendor: vendor,
+                  code: code,
+                  getGames: true
+                },
+                openGameSuccessFunc,
+                openGameFailFunc
+              );
 
               break;
           }
@@ -682,7 +724,7 @@ export default {
   max-width: $mobile_max_width;
   position: absolute;
   top: 0;
-  z-index: 3;
+  z-index: 10;
   width: 100%;
   height: 43px;
   padding: 0 17px;
@@ -784,19 +826,19 @@ export default {
   position: fixed;
   top: 0;
   margin: 0 auto;
-  transform: rotate(90deg);
   height: 19px;
   margin: 0 auto;
-  left: calc(50% - 9px);
+  left: calc(50% - 15px);
   background: rgba(0, 0, 0, 0.4);
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 0 5px 5px;
   opacity: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  width: 30px;
   > img {
     height: 15px;
+    transform: rotate(90deg);
   }
 }
 

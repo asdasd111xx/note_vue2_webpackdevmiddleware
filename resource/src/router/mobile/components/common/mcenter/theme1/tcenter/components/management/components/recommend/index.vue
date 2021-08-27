@@ -50,32 +50,31 @@
         <div v-for="key in allInput" :key="key" :class="$style['input-group']">
           <!-- 欄位名稱 -->
           <div :class="$style['input-title']">
-            {{ $text(allText[key].placeholder) }}
+            {{ allTip[key].title }}
           </div>
           <!-- 輸入框 -->
           <div
             :class="[
               $style[key],
               $style.placeholder,
-              { [$style.error]: allText[key].error }
+              { [$style.error]: allTip[key].error }
             ]"
           >
-            <template v-if="!allValue[key]">
-              {{ $text(texts[key].placeholder) }}
-            </template>
             <input
               v-if="key !== 'password' && key !== 'confirm_password'"
               v-validate="'required'"
               :class="[
                 {
                   [$style.active]: allValue[key],
-                  [$style.error]: allText[key].error,
+                  [$style.error]: allTip[key].error,
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
-              :maxlength="allText[key].maxLength"
+              :placeholder="allTip[key].placeholder"
+              :maxlength="allTip[key].maxLength"
               v-model="allValue[key]"
               data-vv-scope="form-page"
+              @blur="onInput($event.target.value, key)"
               @input="onInput($event.target.value, key)"
               @keydown.13="onSubmit"
             />
@@ -85,15 +84,17 @@
               :class="[
                 {
                   [$style.active]: allValue[key],
-                  [$style.error]: allText[key].error,
+                  [$style.error]: allTip[key].error,
                   [$style['show-placeholder']]: !allValue[key]
                 }
               ]"
+              :placeholder="allTip[key].placeholder"
               :data-key="key"
-              :maxlength="allText[key].maxLength"
+              :maxlength="allTip[key].maxLength"
               v-model="allValue[key]"
               type="password"
               data-vv-scope="form-page"
+              @blur="onInput($event.target.value, key)"
               @input="onInput($event.target.value, key)"
               @keydown.13="onSubmit"
             />
@@ -107,11 +108,8 @@
             />
           </div>
           <!-- 錯誤訊息 -->
-          <div
-            v-if="allText[key].error && texts[key].error"
-            :class="$style['error-message']"
-          >
-            {{ $text(texts[key].error) }}
+          <div v-if="allTip[key].error" :class="$style['error-message']">
+            {{ allTip[key].error }}
           </div>
         </div>
         <!-- 驗證碼 -->
@@ -124,7 +122,7 @@
               $style['captcha-unit'],
               $style['captcha-unit-captcha'],
               $style['clearfix'],
-              { [$style.error]: captchaError }
+              { [$style.error]: captchaErrorMsg }
             ]"
           >
             <input
@@ -147,10 +145,13 @@
               <img :src="'/static/image/common/ic_verification_reform.png'" />
             </div>
           </div>
-          <!-- 錯誤訊息 -->
-          <div v-if="captchaError" :class="$style['captcha-error']">
-            {{ captchaErrorMsg }}
-          </div>
+        </div>
+        <!-- 錯誤訊息 -->
+        <div
+          v-if="memInfo.config.friend_captcha_type === 1 && captchaErrorMsg"
+          :class="$style['captcha-error']"
+        >
+          {{ captchaErrorMsg }}
         </div>
         <popup-verification
           v-if="isShowCaptcha"
@@ -161,13 +162,6 @@
         <button @click="checkInput">{{ $text("S_ADD") }}</button>
       </div>
     </transition>
-
-    <!-- 訊息 -->
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">
-        {{ msg }}
-      </div>
-    </message>
 
     <!-- 連結複製提示與 QR Code -->
     <popup
@@ -182,16 +176,12 @@
 <script>
 import friendsRecommend from "@/mixins/mcenter/management/friendsRecommend";
 import promoteFunction from "@/mixins/mcenter/management/promoteFunction";
-import message from "@/router/mobile/components/common/message";
 import { mapGetters, mapActions } from "vuex";
 import popupVerification from "@/components/popupVerification";
-import * as apis from "@/config/api";
-import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: {
     popup: () => import(/* webpackChunkName: 'popup' */ "../popup/index"),
-    message,
     popupVerification
   },
   mixins: [friendsRecommend, promoteFunction],

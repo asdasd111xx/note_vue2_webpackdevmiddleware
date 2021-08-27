@@ -45,7 +45,7 @@ export default {
       mcenterEy1List: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
-        { name: "makemoney", text: "推广", path: "makemoney" },
+        { name: "makemoney", text: "推广", path: "tcenterLobby" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
       timer: null
@@ -57,10 +57,12 @@ export default {
     },
     noticeData() {
       if (this.noticeData && this.noticeData.length > 0) {
-        // this.data = this.noticeData.pop();
         let temp = this.noticeData[this.noticeData.length - 1];
         if (temp.event === "vendor_maintain_notice") {
-          this.getMaintainList();
+          setTimeout(() => {
+            this.getMaintainList();
+          }, 7000);
+
           clearInterval(this.timer);
           this.timer = setInterval(() => {
             this.getMaintainList();
@@ -154,13 +156,37 @@ export default {
           });
         });
       }
-      const gameList = this.allGame
+
+      let gameList = this.allGame
         .map(game => game)
         .filter(item => {
           return this.isAdult
             ? item
             : item.iconName.toLowerCase() !== "welfare";
         });
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        let pass = false;
+
+        gameList = gameList.map((item, key) => {
+          let _item = item.vendors.map((vendor, index) => {
+            if (
+              !pass &&
+              vendor.imageType === 0 &&
+              item.vendors[index + 1] &&
+              item.vendors[index + 1].imageType === 0
+            ) {
+              pass = true;
+              return { ...vendor, imageFlag: true };
+            } else {
+              pass = false;
+              return vendor;
+            }
+          });
+
+          return { ...item, vendors: _item };
+        });
+      }
       return gameList;
     },
     currentGame() {
@@ -193,41 +219,46 @@ export default {
   mounted() {
     window.addEventListener("resize", this.onResize);
 
-    // 首頁選單列表預設拿local
-    const cache = this.getAllGameFromCache();
-
-    const setDefaultSelected = () => {
-      this.isReceive = true;
-      setTimeout(() => {
-        this.onResize();
-        //0616 預設選項為list 第一個
-        let defaultType = "";
-        let selectIndex = 0;
-        if (localStorage.getItem("home-menu-type")) {
-          defaultType = localStorage.getItem("home-menu-type");
-          let defaultIndex = this.typeList.findIndex(type => {
-            return type.icon.toLowerCase() === defaultType.toLowerCase();
-          });
-
-          defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
-
-          selectIndex = this.typeList.length / 3 + defaultIndex;
-        } else {
-          selectIndex = this.typeList.length / 3;
-        }
-        this.onChangeSelectIndex(selectIndex);
-        this.isShow = true;
-      }, 300);
-    };
-
-    if (!cache) {
-      const params = [this.getAllGame()];
-      Promise.all(params).then(() => {
-        setDefaultSelected();
-      });
-    } else {
-      setDefaultSelected();
+    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
       this.getAllGame();
+    } else {
+      // 首頁選單列表預設拿local
+      const cache = this.getAllGameFromCache();
+
+      const setDefaultSelected = () => {
+        setTimeout(() => {
+          this.onResize();
+          //0616 預設選項為list 第一個
+          let defaultType = "";
+          let selectIndex = 0;
+          if (localStorage.getItem("default-home-menu-type")) {
+            defaultType = localStorage.getItem("default-home-menu-type");
+            let defaultIndex = this.typeList.findIndex(type => {
+              return type.icon.toLowerCase() === defaultType.toLowerCase();
+            });
+
+            defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
+
+            selectIndex = this.typeList.length / 3 + defaultIndex;
+          } else {
+            selectIndex = this.typeList.length / 3;
+          }
+          this.onChangeSelectIndex(selectIndex);
+          this.isShow = true;
+        }, 300);
+      };
+
+      if (!cache) {
+        const params = [this.getAllGame()];
+        Promise.all(params).then(() => {
+          this.isReceive = true;
+          setDefaultSelected();
+        });
+      } else {
+        this.isReceive = true;
+        setDefaultSelected();
+        this.getAllGame();
+      }
     }
 
     if (!this.loginStatus) {
@@ -377,6 +408,11 @@ export default {
     },
     onTouchMove(e) {
       let wrap = this.$refs["game-wrap"];
+
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        wrap = this.$refs["new-game-wrap"];
+      }
+
       if (this.isSliding) {
         return;
       }
@@ -422,12 +458,27 @@ export default {
     },
     // 切換當前分類
     onChangeSelectIndex(index, isSetEnd = false, type) {
+      // 億元特立獨行
+      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        if (type === "anchor") {
+          let key = Object.keys(this.newTypeList).find(
+            key => this.newTypeList[key].id === +index
+          );
+
+          if (key) {
+            this.setSlideTypeBar(this.newTypeList[+key]);
+            this.$refs[`game-swiper`].$swiper.slideTo(+key + 1);
+          }
+        }
+
+        return;
+      }
+
       if (index === this.selectedIndex) {
         return;
       }
 
       let offsetTop = 0;
-
       if (type === "anchor") {
         let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
         if (anchor && anchor[1]) {
@@ -456,7 +507,7 @@ export default {
 
       if (this.typeList[this.selectedIndex]) {
         localStorage.setItem(
-          "home-menu-type",
+          "default-home-menu-type",
           this.typeList[this.selectedIndex].icon
         );
       }
@@ -530,6 +581,10 @@ export default {
           this.$router.push(routerPush);
           return;
 
+        case "tcenterLobby":
+          this.$router.push("/mobile/mcenter/tcenterLobby");
+          return;
+
         default:
           this.$router.push(`/mobile/mcenter/${path}`);
           return;
@@ -542,8 +597,6 @@ export default {
       }
       switch (game.type) {
         case "strong_activity":
-          // 預設帶全部
-          // this.$router.push(`/mobile/activity/all/?kind=${game.kind}`);
           localStorage.setItem("iframe-third-url-title", game.name);
           this.$router.push(`/mobile/activity/all/`);
           return;
@@ -779,15 +832,17 @@ export default {
         case "link_to":
           switch (game.vendor) {
             case "agent":
-              if (!this.loginStatus) {
-                if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-                  this.$router.push("/mobile/login");
-                } else {
-                  this.$router.push("/mobile/joinmember");
-                }
-                return;
-              }
-              this.$router.push("/mobile/mcenter/makeMoney");
+              // if (!this.loginStatus) {
+              //   if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+              //     this.$router.push("/mobile/login");
+              //   } else {
+              //     this.$router.push("/mobile/joinmember");
+              //   }
+              //   return;
+              // }
+              let newWindow = "";
+              newWindow = window.open(`${game.memo}`, "_blank");
+              // this.$router.push("/mobile/mcenter/makeMoney");
               return;
 
             case "YV":

@@ -46,6 +46,7 @@
 }
 
 .withdraw-wrap {
+  margin-top: 31px;
   margin-bottom: 16px;
 }
 
@@ -188,6 +189,7 @@
   }
 }
 
+.exchange-rate,
 .actual-money,
 .crypto-block {
   background-color: $main_white_color1;
@@ -199,6 +201,10 @@
 
   &.error {
     color: #ff7171;
+  }
+
+  .time {
+    color: #be9e7f;
   }
 
   .serial {
@@ -423,7 +429,7 @@
     // For Crypto
     .crypto-money::after {
       content: "USDT";
-      color: #e9dacc;
+      color: #E9DACC;
       padding-left: 1px;
       font-weight: 400;
     }

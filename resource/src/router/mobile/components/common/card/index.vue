@@ -4,7 +4,6 @@
       <template v-if="slotKey === 'label'">
         <game-label
           :key="`slot-${slotKey}`"
-          :theme="labelTheme"
           :is-label-receive="isLabelReceive"
           :label="paramsData.label.toString()"
           :label-data="labelData"
@@ -30,12 +29,14 @@
                   :redirect-card="redirectBankCard"
                 />
               </template>
-              <template v-else-if="gameInfo.display">
+              <template
+                v-else-if="gameInfo && typeof gameInfo.is_pc === 'undefined'"
+              >
                 <!-- 活動入口 -->
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :event-data="gameInfo"
-                  :display-type="'game'"
+                  :display-type="'game-lobby'"
                 />
               </template>
             </template>
@@ -115,6 +116,10 @@ export default {
       )
   },
   props: {
+    kind: {
+      type: Number,
+      default: 5
+    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "list"]
@@ -152,16 +157,16 @@ export default {
     return {
       isReceive: false,
       isInit: false,
-      showInfinite: true,
+      showInfinite: false,
       isFavorite: false,
       needShowRedEnvelope: false,
       redEnvelopeData: {},
       paramsData: {
         kind: 5,
-        label: "hot", // 棋牌遊戲分類預設“棋牌遊戲”
+        label: "hot",
         enable: true,
-        first_result: 0,
-        max_results: 36,
+        firstResult: 0,
+        maxResults: 36,
         name: ""
       },
       searchText: "",
@@ -184,10 +189,10 @@ export default {
           name: this.$t("S_HOT")
         }
       ],
-      hasActivity: false,
       isGameDataReceive: false,
       gameData: [],
-      activityData: []
+      activityData: [],
+      hasActivity: false
     };
   },
   computed: {
@@ -219,7 +224,6 @@ export default {
       this.$nextTick(() => {
         this.gameData = [];
         this.updateGameData();
-        this.actionSetFavoriteGame(this.vendor);
         return;
       });
     },
@@ -265,49 +269,47 @@ export default {
         this.labelData = this.labelData.filter(i => i.label !== "activity");
       }
 
-      // 抓取遊戲導覽清單
-      ajax({
-        method: "get",
-        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
-        success: response => {
-          this.labelData = this.labelData.concat(response.ret);
-        }
-      }).then(response => {
-        if (this.loginStatus) {
-          let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
-          this.labelData = this.labelData.concat(favData);
-        }
-        // this.paramsData.label = 27; // 棋牌遊戲分類預設“棋牌遊戲”
-        this.isLabelReceive = true;
-        if (this.$route.query.label) {
-          this.paramsData.label = this.$route.query.label;
-          return;
-        }
-        if (
-          !this.labelData
-            .concat(response.ret)
-            .some(item => item.label === this.paramsData.label)
-        ) {
-          this.paramsData.label = "";
-        }
+      if (!this.isLabelReceive) {
+        // 抓取遊戲導覽清單
+        ajax({
+          method: "get",
+          url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
+          success: response => {
+            this.labelData = this.labelData.concat(response.ret);
+          }
+        }).then(response => {
+          if (this.loginStatus) {
+            let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
+            this.labelData = this.labelData.concat(favData);
+          }
+          this.isLabelReceive = true;
+        });
 
-        if (this.$route.query.label) {
-          this.paramsData.label = this.$route.query.label;
-          return;
+        if (this.$route.query.label == "favorite") {
+          this.isFavorite = "favorite";
+          this.paramsData.label = "favorite";
         }
-
-        if (this.$route.params.type) {
-          this.paramsData.label = this.$route.params.type;
-          return;
-        }
-      });
-
-      if (this.$route.query.label == "favorite") {
-        this.isFavorite = "favorite";
-        this.paramsData.label = "favorite";
       }
 
-      this.updateGameData(this.$route.query.label);
+      // if (
+      //   !this.labelData
+      //     .concat(response.ret)
+      //     .some(item => item.label === this.paramsData.label)
+      // ) {
+      //   this.paramsData.label = "";
+      // }
+
+      if (this.$route.query.label) {
+        this.paramsData.label = this.$route.query.label;
+        return;
+      }
+
+      if (this.$route.params.type) {
+        this.paramsData.label = this.$route.params.type;
+        return;
+      }
+
+      this.updateGameData();
     },
     getActivityList() {
       goLangApiRequest({
@@ -317,11 +319,11 @@ export default {
           `/xbb/Vendor/${this.vendor}/Event`,
         params: {
           lang: "zh-cn",
-          kind: 3,
+          kind: 5,
           games: true,
           enable: true,
-          firstResult: this.paramsData.firstResult,
-          maxResults: this.paramsData.maxResults
+          firstResult: 0,
+          maxResults: 100
         }
       })
         .then(res => {
@@ -330,20 +332,22 @@ export default {
             // 1,5 不顯示
             if (res.data.ret.events && res.data.ret.events.length > 0) {
               let result = res.data;
-              let activityEvents = result.ret.events
-                .filter(i => i.display)
-                .filter(
-                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
-                );
+              let activityEvents = result.ret.events.filter(
+                i => +i.status === 2 || +i.status === 3 || +i.status === 4
+              );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
               if (activityEvents) {
-                this.hasActivity = true;
+                // 活動中頁籤只顯示活動中
+                if (activityEvents.find(i => +i.status == 3)) {
+                  this.hasActivity = true;
+                }
+
                 result.ret.events = activityEvents.sort((i, j) => {
-                  if (i.kind === 3) {
+                  if (i.status === 3) {
                     return 1;
                   }
-                  return i.kind - j.kind > 0 ? 1 : -1;
+                  return i.status - j.status > 0 ? 1 : -1;
                 });
               }
               this.activityData = result;
@@ -361,7 +365,7 @@ export default {
           this.updateGameData();
         })
         .catch(error => {
-          if (error && error.data.msg) {
+          if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage(error.data.msg);
           }
         });
@@ -378,7 +382,6 @@ export default {
         return;
       }
       this.updateGameData();
-      this.getGameLabelList();
     },
     /**
      * 設定遊戲分類
@@ -388,6 +391,7 @@ export default {
       if (+value === +this.paramsData.label) {
         return;
       }
+
       this.isInit = false;
       this.paramsData = {
         ...this.paramsData,
@@ -403,6 +407,10 @@ export default {
 
       this.isFavorite = value === "favorite";
       this.getActivityList();
+
+      if (this.loginStatus) {
+        this.actionSetFavoriteGame(this.vendor);
+      }
     },
     /**
      * 重新取得遊戲資料
@@ -486,7 +494,6 @@ export default {
       }).then(response => {
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
-        const isAllLabel = this.$route.query.label === "all";
         const activityGames =
           this.activityData.ret &&
           this.activityData.ret &&
@@ -494,12 +501,17 @@ export default {
             ? this.activityData.ret.games
             : [];
 
-        const activityEvents =
+        let activityEvents =
           this.activityData.ret &&
           this.activityData.ret &&
           this.activityData.ret.events
             ? this.activityData.ret.events
             : [];
+
+        // 活動中頁籤只顯示活動中
+        if (isActivityLabel && activityEvents) {
+          activityEvents = activityEvents.filter(i => i.status === 3);
+        }
 
         let list = [];
         if (this.paramsData.firstResult === 0) {
@@ -510,20 +522,17 @@ export default {
         if (isActivityLabel) {
           list.push(...activityGames);
         } else {
+          this.paramsData.firstResult += +response.ret.length;
           list.push(...response.ret);
         }
 
         this.gameData.push(...list);
-        this.paramsData.firstResult = isAllLabel
-          ? +response.ret.length
-          : +this.gameData.length;
-
         this.isReceive = false;
         this.isGameDataReceive = true;
 
         $state.loaded();
 
-        if (!isAllLabel && (!activityGames || activityGames.length === 0)) {
+        if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();
           return;
         }
@@ -552,7 +561,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .game-item-wrap {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .empty-wrap {
@@ -578,6 +587,7 @@ export default {
   background: #ededed;
   width: 100%;
   z-index: 5;
+  margin-bottom: 5px;
 }
 
 @media (orientation: landscape) {

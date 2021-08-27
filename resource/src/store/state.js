@@ -149,15 +149,15 @@ export default {
       key: "password",
       text: "S_PASSWORD",
       type: "password",
-      regExp: /^[a-z0-9._\-!@#$&*+=|]{6,12}$/,
+      regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
       errorMsg: "S_PASSWORD_ERROR",
-      defaultErrMsg: "请输入6-12位字母或数字"
+      defaultErrMsg: "请输入6-12位(须含英文1大写、1小写、1数字)"
     },
     chkPwd: {
       key: "chkPwd",
       text: "S_PWD_CONFIRM",
       type: "password",
-      regExp: "",
+      regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
       errorMsg: "S_JM_PASSWD_CONFIRM_ERROR",
       defaultErrMsg: "确认密码错误，请重新输入"
     }

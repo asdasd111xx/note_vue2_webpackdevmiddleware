@@ -8,7 +8,7 @@
   padding: 0 6%;
   background-color: #e9dacc;
 
-  >div {
+  > div {
     height: 37px;
     line-height: 37px;
     font-size: 14px;
@@ -34,7 +34,7 @@
   float: left;
   border: 1px solid #aaa;
 
-  >img {
+  > img {
     display: block;
   }
 }
@@ -43,7 +43,7 @@
   float: right;
   width: calc(100% - 131px - 10px);
 
-  >div {
+  > div {
     height: 33px;
     margin: 8px 0;
     padding: 0 4%;
@@ -94,7 +94,7 @@
   height: 19px;
   margin-top: 10px;
 
-  >span {
+  > span {
     display: inline-block;
     line-height: 14px;
     color: #222;
@@ -192,7 +192,6 @@
 
     &.show-placeholder {
       opacity: 0.4;
-      position: absolute;
     }
   }
 }
@@ -209,13 +208,13 @@
   bottom: 7px;
   width: 30px;
   height: 30px;
-  background-image: url("/static/image/_new/mcenter/tcenter/btn_eye.png");
+  background-image: url("/static/image/common/login/btn_eye_d.png");
   background-position: 50% 50%;
   background-size: 30px 30px;
   background-repeat: no-repeat;
 
   &.active {
-    background-image: url("/static/image/_new/mcenter/tcenter/btn_eye_active.png");
+    background-image: url("/static/image/common/login/btn_eye_n.png");
   }
 }
 
@@ -260,12 +259,11 @@
     justify-content: center;
     border-right: 1px solid rgba(128, 128, 128, 0.26);
 
-    >img {
+    > img {
       width: 18px;
       height: 18px;
     }
   }
-
 }
 
 .captcha-error {
@@ -291,10 +289,12 @@
     width: 20px;
     position: absolute;
     right: 0;
-    top: calc(50% - 10px);
+    display: flex;
+    align-items: center;
     margin: 0px 5px;
+    justify-content: center;
 
-    >img {
+    > img {
       width: 20px;
       height: 20px;
     }

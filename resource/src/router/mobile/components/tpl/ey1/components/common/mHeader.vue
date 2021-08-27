@@ -1,12 +1,12 @@
 <template>
   <div :class="mainClass" id="header">
-    <div
+    <!-- <div
       v-if="headerConfig.hasLogo"
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
       <img :src="$getCdnPath('/static/image/ey1/common/logo.png')" />
-    </div>
+    </div> -->
 
     <div
       v-if="headerConfig.prev"
@@ -36,7 +36,7 @@
       </div>
     </template>
 
-    <template v-if="headerConfig.hasMemInfo">
+    <!-- <template v-if="headerConfig.hasMemInfo">
       <div v-if="loginStatus" :class="$style['balance-wrap']">
         <div>
           <img
@@ -58,7 +58,7 @@
           @click="handleClickAsk"
         />
       </div>
-    </template>
+    </template> -->
 
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
@@ -219,7 +219,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 10;
   width: 100%;
   height: 43px;
   padding: 0 17px;

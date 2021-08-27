@@ -1,7 +1,8 @@
 <template>
   <div :class="`casino-wrap ${gameTheme}`">
     <template v-for="slotKey in slotSort">
-      <template v-if="slotKey === 'label'">
+      <!-- kind = 6 麻將特例移除分類 -->
+      <template v-if="slotKey === 'label' && kind !== 6">
         <game-label
           :key="`slot-${slotKey}`"
           :is-label-receive="isLabelReceive"
@@ -14,7 +15,11 @@
       <template v-if="slotKey === 'list'">
         <div
           :key="`slot-${slotKey}`"
-          :class="[[$style['game-item-wrap']], 'clearfix']"
+          :class="[
+            [$style['game-item-wrap']],
+            { [$style['game-item-mahjong']]: kind === 6 },
+            'clearfix'
+          ]"
         >
           <div
             :class="$style['jackpot-wrap']"
@@ -36,12 +41,14 @@
                   :jackpotData="jackpotData"
                 />
               </template>
-              <template v-else-if="gameInfo.display">
+              <template
+                v-else-if="gameInfo && typeof gameInfo.is_pc === 'undefined'"
+              >
                 <!-- 活動入口 -->
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :event-data="gameInfo"
-                  :display-type="'game'"
+                  :display-type="'game-lobby'"
                 />
               </template>
             </template>
@@ -125,6 +132,10 @@ export default {
       )
   },
   props: {
+    kind: {
+      type: Number,
+      default: 3
+    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "jackpot", "list"]
@@ -236,7 +247,6 @@ export default {
       this.$nextTick(() => {
         this.gameData = [];
         this.updateGameData();
-        this.actionSetFavoriteGame(this.vendor);
         return;
       });
     },
@@ -263,6 +273,7 @@ export default {
     }
   },
   created() {
+    this.paramsData.kind = this.kind;
     localStorage.removeItem("is-open-game");
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
@@ -276,7 +287,8 @@ export default {
         data &&
         ((data.jpGrand && data.jpGrand.length > 0) ||
           (data.jpMinor && data.jpMinor.length > 0) ||
-          (data.jpUserList && data.jpUserList.length > 0))
+          (data.jpUserList && data.jpUserList.length > 0) ||
+          data.jpMajor)
       ) {
         this.jackpotData = data;
       }
@@ -292,42 +304,44 @@ export default {
         this.labelData = this.labelData.filter(i => i.label !== "activity");
       }
 
-      // 抓取遊戲導覽清單
-      ajax({
-        method: "get",
-        url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
-        success: response => {
-          this.labelData = this.labelData.concat(response.ret);
-        }
-      }).then(response => {
-        if (this.loginStatus) {
-          let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
-          this.labelData = this.labelData.concat(favData);
-        }
-        this.isLabelReceive = true;
+      if (!this.isLabelReceive) {
+        // 抓取遊戲導覽清單
+        ajax({
+          method: "get",
+          url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
+          success: response => {
+            this.labelData = this.labelData.concat(response.ret);
+          }
+        }).then(response => {
+          if (this.loginStatus) {
+            let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
+            this.labelData = this.labelData.concat(favData);
+          }
+          this.isLabelReceive = true;
+        });
 
-        if (
-          !this.labelData
-            .concat(response.ret)
-            .some(item => item.label === this.paramsData.label)
-        ) {
-          this.paramsData.label = "";
+        if (this.$route.query.label == "favorite") {
+          this.isFavorite = "favorite";
+          this.paramsData.label = "favorite";
         }
+      }
 
-        if (this.$route.query.label) {
-          this.paramsData.label = this.$route.query.label;
-          return;
-        }
+      // if (
+      //   !this.labelData
+      //     .concat(response.ret)
+      //     .some(item => item.label === this.paramsData.label)
+      // ) {
+      //   this.paramsData.label = "";
+      // }
 
-        if (this.$route.params.type) {
-          this.paramsData.label = this.$route.params.type;
-          return;
-        }
-      });
+      if (this.$route.query.label) {
+        this.paramsData.label = this.$route.query.label;
+        return;
+      }
 
-      if (this.$route.query.label == "favorite") {
-        this.isFavorite = "favorite";
-        this.paramsData.label = "favorite";
+      if (this.$route.params.type) {
+        this.paramsData.label = this.$route.params.type;
+        return;
       }
 
       this.updateGameData();
@@ -343,8 +357,8 @@ export default {
           kind: 3,
           games: true,
           enable: true,
-          firstResult: this.paramsData.firstResult,
-          maxResults: this.paramsData.maxResults
+          firstResult: 0,
+          maxResults: 100
         }
       })
         .then(res => {
@@ -353,20 +367,22 @@ export default {
             // 1,5 不顯示
             if (res.data.ret.events && res.data.ret.events.length > 0) {
               let result = res.data;
-              let activityEvents = result.ret.events
-                .filter(i => i.display)
-                .filter(
-                  i => +i.status === 3 || +i.status === 4 || +i.status === 5
-                );
+              let activityEvents = result.ret.events.filter(
+                i => +i.status === 2 || +i.status === 3 || +i.status === 4
+              );
 
               //  入口圖排序【活動中->活動預告->結果查詢】
               if (activityEvents) {
-                this.hasActivity = true;
+                // 活動中頁籤只顯示活動中
+                if (activityEvents.find(i => +i.status == 3)) {
+                  this.hasActivity = true;
+                }
+
                 result.ret.events = activityEvents.sort((i, j) => {
-                  if (i.kind === 3) {
+                  if (i.status === 3) {
                     return 1;
                   }
-                  return i.kind - j.kind > 0 ? 1 : -1;
+                  return i.status - j.status > 0 ? 1 : -1;
                 });
               }
               this.activityData = result;
@@ -384,7 +400,7 @@ export default {
           this.updateGameData();
         })
         .catch(error => {
-          if (error && error.data.msg) {
+          if (error && error.data && error.data.msg) {
             this.actionSetGlobalMessage(error.data.msg);
           }
         });
@@ -426,6 +442,10 @@ export default {
 
       this.isFavorite = value === "favorite";
       this.getActivityList();
+
+      if (this.loginStatus) {
+        this.actionSetFavoriteGame(this.vendor);
+      }
     },
     /**
      * 重新取得遊戲資料
@@ -509,7 +529,6 @@ export default {
       }).then(response => {
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
-        const isAllLabel = this.$route.query.label === "all";
         const activityGames =
           this.activityData.ret &&
           this.activityData.ret &&
@@ -525,7 +544,7 @@ export default {
             : [];
 
         // 活動中頁籤只顯示活動中
-        if (isActivityLabel) {
+        if (isActivityLabel && activityEvents) {
           activityEvents = activityEvents.filter(i => i.status === 3);
         }
 
@@ -538,20 +557,17 @@ export default {
         if (isActivityLabel) {
           list.push(...activityGames);
         } else {
+          this.paramsData.firstResult += +response.ret.length;
           list.push(...response.ret);
         }
 
         this.gameData.push(...list);
-        this.paramsData.firstResult = isAllLabel
-          ? +response.ret.length
-          : +this.gameData.length;
-
         this.isReceive = false;
         this.isGameDataReceive = true;
 
         $state.loaded();
 
-        if (!isAllLabel && (!activityGames || activityGames.length === 0)) {
+        if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();
           return;
         }
@@ -580,9 +596,12 @@ export default {
 @import "~@/css/variable.scss";
 
 .game-item-wrap {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
+.game-item-mahjong {
+  margin-top: 30px;
+}
 .empty-wrap {
   padding-top: 90px;
   color: #a6a9b2;
@@ -606,6 +625,7 @@ export default {
   background: #ededed;
   width: 100%;
   z-index: 5;
+  margin-bottom: 5px;
 }
 
 @media (orientation: landscape) {

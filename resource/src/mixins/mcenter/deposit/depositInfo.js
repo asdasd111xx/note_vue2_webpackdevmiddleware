@@ -116,12 +116,13 @@ export default {
             ]
           },
           {
-            objKey: "receiveWalletAddress",
+            objKey: "receiveWalletNumber",
             title: this.$text("S_NEED_TRANSFER_IN_COUNT", "需转入数量"),
             value: `${this.orderData.orderInfo.crypto_num} ${this.orderData.method_name}`,
+            cryptoNum: this.orderData.orderInfo.crypto_num,
             isFontBold: true,
             isHighlightValue: true,
-            copyShow: false
+            copyShow: true
           }
         ];
       }

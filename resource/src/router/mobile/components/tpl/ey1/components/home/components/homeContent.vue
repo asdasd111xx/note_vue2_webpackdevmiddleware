@@ -5,10 +5,18 @@
     :class="[$style['home-wrap'], 'clearfix']"
   >
     <!-- 上方功能列 -->
-    <div :class="$style['top-wrap']">
+    <div
+      :class="$style['top-wrap']"
+      :style="{
+        'background-image': `url(
+               ${$getCdnPath(`/static/image/ey1/home/nav01_bg.png`)}
+              )`
+      }"
+    >
       <!-- 會員中心連結 -->
       <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
         <div :class="$style['mcenter-login-status-wrap']">
+          <!-- 尚未登入 -->
           <div
             v-if="!loginStatus"
             :class="$style['not-login-wrap']"
@@ -21,28 +29,48 @@
               请先登录&nbsp;/&nbsp;注册后查看
             </div>
           </div>
+
+          <!-- 已登入 -->
           <div v-else :class="$style['is-login-wrap']">
-            <div>
+            <div
+              :class="[
+                $style['username'],
+                {
+                  [$style['long']]:
+                    memInfo.user.username && memInfo.user.username.length > 15
+                }
+              ]"
+            >
               {{ memInfo.user.username }}
             </div>
             <div :class="$style['vip-level']">
               <div>VIP&nbsp;{{ userViplevel }}</div>
             </div>
             <div
-              :class="{ [$style['normal']]: memInfo.user.username.length < 11 }"
+              :class="[
+                $style['balance-wrap'],
+                {
+                  [$style['long']]: membalanceDefaultAmount.length > 18
+                }
+              ]"
             >
-              {{ `¥${membalance && membalance.total ? membalance.total : ""}` }}
+              <span :class="$style['wallet']">
+                {{ $text("S_MCENTER_WALLET") }}
+              </span>
+              <span :class="$style['balance']">
+                {{ `¥${membalanceDefaultAmount}` }}
+              </span>
             </div>
           </div>
         </div>
         <div :class="$style['mcenter-func']">
-          <div
-            v-for="(info, index) in mcenterEy1List"
-            :key="`mcenter-${index}`"
-            :class="$style['mcenter-cell']"
-            @click="onGoToMcenter(info.path)"
-          >
-            <template v-if="info.name === 'grade'">
+          <template v-for="(info, index) in mcenterEy1List">
+            <div
+              v-if="info.name === 'grade'"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-cell']"
+              @click="onGoToMcenter(info.path)"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -51,8 +79,14 @@
                 "
               />
               <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
-            </template>
-            <template v-else-if="info.name !== 'makemoney' || showPromotion">
+            </div>
+
+            <div
+              v-else-if="info.name !== 'makemoney' || showPromotion"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-cell']"
+              @click="onGoToMcenter(info.path)"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -61,98 +95,136 @@
                 "
               />
               <div>{{ info.text }}</div>
-            </template>
-          </div>
+            </div>
+          </template>
         </div>
       </div>
-    </div>
-    <!-- 左側分類 -->
-    <div
-      v-show="isShow"
-      ref="type-wrap"
-      :class="$style['type-wrap']"
-      @touchstart="onTypeTouchStart"
-      @touchmove="onTypeTouchMove"
-    >
+
+      <!-- 上方自選列表 -->
       <div
-        v-for="(type, index) in typeList"
-        :data-id="`${type.id}`"
-        :key="`type-${index}`"
-        :class="[
-          $style['type-swiper'],
-          { [$style.active]: typeList[selectedIndex].icon === type.icon }
-        ]"
-        @click="onChangeSelectIndex(index)"
+        v-if="allGameList && allGameList.length > 1"
+        :class="$style['type-wrap-container']"
       >
-        <img
-          :src="
-            $getCdnPath(
-              `/static/image/ey1/platform/icon/icon2_${type.icon.toLowerCase()}_${
-                typeList[selectedIndex].icon === type.icon ? 'h' : 'n'
-              }.png`
-            )
-          "
-        />
+        <!-- active -->
         <div
-          :class="[
-            $style['type-title'],
-            { [$style.active]: typeList[selectedIndex].icon === type.icon }
-          ]"
+          v-if="typeBarPosition !== null"
+          :class="[$style['type-slide-bar']]"
+          :style="{
+            right: `${typeBarPosition}px`
+          }"
         >
-          {{ type.name }}
+          <div :class="[$style['type-slide-bar-hover']]">
+            <img :src="$getCdnPath(`/static/image/ey1/home/navhover.png`)" />
+          </div>
+
+          <div :class="[$style['type-slide-bar-name']]">
+            <img
+              :src="$getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)"
+            />
+            <div>
+              {{ currentType.name }}
+            </div>
+          </div>
         </div>
+
+        <div :class="['type-slide-pagination']"></div>
       </div>
     </div>
-    <!-- 右側內容 -->
-    <div v-show="isShow" :class="$style['all-game-wrap']">
-      <!-- 下方影片與遊戲 -->
-      <div
-        ref="game-wrap"
-        :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{
-          height: `${wrapHeight}px`,
-          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
-          opacity: stopScroll ? 0 : 1
-        }"
-        @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
-        @touchend="onTouchEnd"
+
+    <div
+      :class="$style['new-game-wrap']"
+      :style="{
+        height: `${eyWrapHeight}px`
+      }"
+    >
+      <swiper
+        :ref="'game-swiper'"
+        :updatedKey="gameSwiperUpdatedKey"
+        :options="gameSwiperOptions"
+        :class="$style['new-game-container']"
       >
-        <!-- 遊戲 -->
-        <template>
-          <div
-            v-for="(game, i) in currentGame.vendors"
-            :key="`game-${i}-${game.image}`"
-            :data-img-type="game.imageType"
-            :data-type="game.type"
-            :class="[
-              $style.game,
-              { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
-              { [$style['is-third']]: [4].includes(game.imageType) },
-              { [$style['is-activity']]: [5].includes(game.imageType) }
-            ]"
-            @click.stop="onOpenGame(game)"
-          >
-            <template v-if="game.imageType === 4">
-              <div :class="[$style['third-iamge-wrap']]">
-                <div :class="[$style['third-iamge-bg']]">
-                  <div :class="[$style['vendor']]">
-                    {{ game.vendor_abridge }}
+        <swiperSlide
+          v-for="(list, key) in allGameList"
+          :key="`game-swiper-${key}`"
+          :class="[$style['game-swiper-slide'], 'swiper-slide']"
+        >
+          <template>
+            <swiper
+              :ref="`sub-game-swiper-${key}`"
+              :data-key="`sub-game-swiper-${key}`"
+              :options="subGameSwiperOptions"
+              :class="$style['sub-game-container']"
+            >
+              <template v-for="(game, i) in list.vendors">
+                <swiperSlide
+                  v-if="!(list.vendors[i - 1] && list.vendors[i - 1].imageFlag)"
+                  :key="`sub-game-swiper-${i}`"
+                  :class="[
+                    'swiper-slide',
+                    $style['sub-game-swiper-slide'],
+                    {
+                      [$style['flex']]: game.imageFlag
+                    }
+                  ]"
+                >
+                  <div
+                    :key="`game-${i}-${game.image}`"
+                    :data-img-type="`${game.imageType}`"
+                    :data-type="game.type"
+                    :class="[
+                      $style.game,
+                      {
+                        [$style['is-full']]: [1, 2, 3].includes(game.imageType)
+                      },
+                      { [$style['is-third']]: [4].includes(game.imageType) },
+                      { [$style['is-activity']]: [5].includes(game.imageType) }
+                    ]"
+                  >
+                    <template v-if="game.imageType === 4">
+                      <div
+                        :class="[$style['third-iamge-wrap']]"
+                        @click="onOpenGame(game)"
+                      >
+                        <div :class="[$style['third-iamge-bg']]">
+                          <div :class="[$style['vendor']]">
+                            {{ game.vendor_abridge }}
+                          </div>
+                          <div :class="[$style['third-iamge']]">
+                            <img v-lazy="getImg(game)" />
+                          </div>
+                        </div>
+                        <div :class="[$style['name']]">{{ game.name }}</div>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <img
+                        v-lazy="getImg(game)"
+                        :alt="game.name"
+                        @click="onOpenGame(game)"
+                      />
+                    </template>
                   </div>
-                  <div :class="[$style['third-iamge']]">
-                    <img v-lazy="getImg(game)" />
+
+                  <!-- imageType === 0, 50% 並排 -->
+                  <div
+                    v-if="game.imageFlag"
+                    :key="`game-${i}-${list.vendors[i + 1].image}-2`"
+                    :data-img-type="0"
+                    :data-type="list.vendors[i + 1].type"
+                    :class="[$style.game]"
+                  >
+                    <img
+                      v-lazy="getImg(list.vendors[i + 1])"
+                      :alt="list.vendors[i + 1].name"
+                      @click="onOpenGame(list.vendors[i + 1])"
+                    />
                   </div>
-                </div>
-                <div :class="[$style['name']]">{{ game.name }}</div>
-              </div>
-            </template>
-            <template v-else>
-              <img v-lazy="getImg(game)" :alt="game.name" />
-            </template>
-          </div>
-        </template>
-        <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
-      </div>
+                </swiperSlide>
+              </template>
+            </swiper>
+          </template>
+        </swiperSlide>
+      </swiper>
     </div>
     <page-loading :isShow="isLoading" />
   </div>
@@ -160,7 +232,7 @@
 
 <script>
 /* global $ */
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
 
@@ -176,13 +248,196 @@ export default {
   },
   data() {
     return {
-      userViplevel: ""
+      userViplevel: "",
+      newTypeList: [],
+      currentType: { key: 0 },
+      gameSwiperUpdatedKey: 0,
+      subGameSwiperUpdatedKey: 0,
+      eyWrapHeight: 420,
+      typeBarPosition: null,
+      typeItemWidth: 48
     };
+  },
+  computed: {
+    membalanceDefaultAmount() {
+      return this.membalance &&
+        this.membalance.vendor.default &&
+        this.membalance.vendor.default.amount
+        ? this.membalance.vendor.default.amount
+        : "";
+    },
+    subGameSwiperOptions() {
+      return {
+        watchSlidesVisibility: true,
+        direction: "vertical",
+        freeMode: true,
+        autoHeight: true,
+        observer: true,
+        observeParents: true,
+        nested: true,
+        slidesPerView: document.body.clientHeight < 812 ? 2 : 3,
+        spaceBetween: 3,
+        mousewheel: false,
+        speed: 100
+      };
+    },
+    gameSwiperOptions() {
+      // 強制刷新swiper
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+
+      return {
+        direction: "vertical",
+        loop: this.allGameList && this.allGameList.length > 1 ? true : false,
+        observer: true,
+        observeParents: true,
+        mousewheel: false,
+        watchSlidesVisibility: true,
+        autoHeight: true,
+        spaceBetween: Math.min(document.body.clientHeight / 2.5, 300),
+        pagination: {
+          el: ".type-slide-pagination",
+          clickable: true,
+          bulletActiveClass: "type-slide-pagination-bullet-active",
+          bulletClass: "type-slide-pagination-bullet",
+          renderBullet: (index, className) => {
+            return `<div id="type-${index}" class="${className}" style="width:${this.typeItemWidth}px">
+            <div class="type-slide-name">${this.newTypeList[index].name}</div>
+            </div>`;
+          }
+        },
+        on: {
+          transitionStart: () => {
+            if (
+              this.newTypeList &&
+              this.$refs["game-swiper"] &&
+              this.$refs["game-swiper"].$swiper
+            ) {
+              let realIndex = this.$refs["game-swiper"].$swiper.realIndex;
+              this.setSlideTypeBar(this.newTypeList[realIndex]);
+            }
+          }
+        }
+      };
+    }
   },
   ...mapGetters({
     loginStatus: "getLoginStatus"
   }),
+  watch: {
+    allGame() {
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+
+      // const list = [
+      //   { key: 0, name: "我的自选" },
+      //   { key: 1, name: "视讯" },
+      //   { key: 2, name: "彩票" },
+      //   { key: 3, name: "体育" },
+      //   { key: 4, name: "棋牌" },
+      //   { key: 5, name: "电子" }
+      // ];
+      if (this.allGame) {
+        this.newTypeList = this.allGame.map((game, key) => ({
+          key: key,
+          category: game.category,
+          id: game.id,
+          icon: game.iconName.toLowerCase(),
+          name: game.name
+        }));
+
+        // 預設第一個選單
+        if (this.newTypeList) {
+          let defult = +localStorage.getItem("default-home-menu-type") || 0;
+          this.currentType = this.newTypeList[defult] || this.newTypeList[0];
+
+          this.$nextTick(() => {
+            this.setSlideTypeBar(this.currentType);
+            if (this.$refs[`game-swiper`]) {
+              this.$refs[`game-swiper`].$swiper.slideTo(defult + 1);
+            }
+          });
+
+          this.typeItemWidth =
+            (document.body.clientWidth - 10) / this.newTypeList.length;
+        }
+      }
+    }
+  },
+  methods: {
+    onResize() {
+      let homeSliderHeight =
+        document.getElementById("home-slider") &&
+        document.getElementById("home-slider").offsetHeight
+          ? document.getElementById("home-slider").offsetHeight
+          : 120;
+
+      // header + footer 上方功能列
+      let typeHeight = this.allGameList && this.allGameList.length > 1 ? 30 : 5;
+      let extraHeight = typeHeight + 120 + 60 + homeSliderHeight + 12;
+
+      this.eyWrapHeight =
+        document.body.offsetHeight - extraHeight > 420
+          ? document.body.offsetHeight - extraHeight
+          : 420;
+
+      this.gameSwiperUpdatedKey += 1;
+      this.subGameSwiperUpdatedKey += 1;
+      this.setSlideTypeBar(this.currentType, true);
+    },
+    setSlideTypeBar(item, resize = false) {
+      if (this.allGameList && this.allGameList.length <= 1) {
+        return;
+      }
+
+      if (!resize) {
+        localStorage.setItem("default-home-menu-type", item.key);
+      }
+
+      if (
+        item &&
+        this.currentType &&
+        this.$refs[`sub-game-swiper-${+this.currentType.key}`]
+      ) {
+        const setPosition = () => {
+          let target = document.getElementById(`type-${item.key}`);
+
+          if (target) {
+            let offsetLeft = target.offsetLeft;
+            let offsetWidth = target.offsetWidth;
+
+            this.typeBarPosition =
+              document.body.clientWidth -
+              (offsetLeft + offsetWidth) +
+              (offsetWidth - 68) / 2;
+          } else {
+            this.typeBarPosition = 0;
+          }
+
+          // 置頂原本的swiper
+          this.$refs[
+            `sub-game-swiper-${+this.currentType.key}`
+          ][0].$swiper.slideTo(0);
+          this.currentType = item;
+        };
+
+        if (resize) {
+          setTimeout(() => {
+            setPosition();
+          }, 300);
+        } else {
+          setPosition();
+        }
+      }
+    }
+  },
+  beforeMount() {
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("orientationchange", this.onResize);
+  },
   mounted() {
+    window.addEventListener("resize", this.onResize);
+    window.addEventListener("orientationchange", this.onResize);
     if (this.loginStatus) {
       this.getUserViplevel();
     }
@@ -194,71 +449,244 @@ export default {
 .home-wrap {
   overflow: hidden;
   position: relative;
-  padding: 0 18px 0 13px;
+  padding: 0;
   margin-top: 1px;
-  background: white;
+  background: #f1f1f1;
   z-index: 4;
 }
 
-.type-wrap {
-  overflow-y: auto;
+.type-wrap-container {
+  padding: 0px;
+  width: 100%;
+  position: relative;
+  height: 35px;
+  line-height: 35px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+  text-align: center;
+
+  // 修正背景色
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, white 100%);
+}
+
+:global {
+  .type-slide-pagination {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .type-slide-pagination-bullet {
+    height: 100%;
+    display: inline-block;
+
+    width: auto;
+    padding: 0 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    user-select: none;
+
+    > .type-slide-name {
+      color: #e42a30;
+      font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+
+  .type-slide-pagination-bullet-active {
+    > .type-slide-name {
+      z-index: -1;
+      // color: #ffffff;
+      font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+}
+
+.type-slide-bar {
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  height: 35px;
+  right: -100vw;
+  top: 0;
   position: absolute;
-  top: 72px;
-  bottom: 0;
-  left: 13px;
-  z-index: 1;
-  width: 63px;
+  transition: right 0.31s;
+  -webkit-transition: right 0.31s;
+  width: 68px;
+
+  > img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.type-slide-bar-hover {
+  width: 100%;
+  height: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  margin: 0 auto;
+  right: 0;
+
+  > img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.type-slide-bar-name {
+  text-align: center;
+  width: calc(80%);
+  height: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 101;
+  margin: 0 auto;
+  right: 0;
+
+  > img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
+
+  > div {
+    color: #ffffff;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+    font-size: 12px;
+    font-weight: 700;
+    position: relative;
+    z-index: 101;
+  }
+}
+
+.new-game-wrap {
+  margin-top: 10px;
+  padding: 0 18px;
+  height: 420px;
+  box-sizing: border-box;
+}
+
+.new-game-container {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
 }
 
-.type-swiper {
+.sub-game-container {
+  width: auto;
+  height: 100%;
   position: relative;
-  width: 63px;
-  height: 63px;
-  background-image: url("/static/image/ey1/platform/icon/btn_menu_n.png");
-  background-position: 0 0;
-  background-size: 63px 63px;
-  background-repeat: no-repeat;
+  overflow-y: scroll;
+  max-height: 100%;
+  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
+  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
+}
+
+.game-swiper-slide {
+  height: 100%;
+  width: 100%;
+  // padding-bottom: 10%;
+  // overflow-x: hidden;
+  // overflow-y: scroll;
+}
+
+.sub-game-swiper-slide {
+  height: auto !important;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+
+  &.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.game {
+  width: 48%;
+  padding: 0 2px;
+  position: relative;
+
+  &.is-full {
+    width: 100%;
+  }
+
+  &.is-third {
+    width: 31%;
+    height: 25%;
+    max-height: 150px;
+    min-height: 126px;
+    margin: 0 1%;
+  }
+
+  &.is-activity {
+    width: 100%;
+  }
 
   > img {
     display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto;
-  }
-
-  &.active {
-    background-image: url("/static/image/ey1/platform/icon/btn_menu_h.png");
+    width: 100%;
+    max-height: 160px;
   }
 }
 
-.type-title {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  left: 0;
-  color: #ff7171;
-  font-size: 12px;
-  text-align: center;
-  font-family: MicrosoftJhengHeiBold;
-  font-weight: 500;
-
-  &.active {
-    color: #fff;
+@media (orientation: landscape) {
+  .new-game-wrap {
+    width: 95%;
   }
 }
 
-.all-game-wrap {
-  margin-left: 63px;
+@media screen and (min-width: 375px) {
+  .top-wrap {
+    background-image: url("/static/image/ey1/home/nav01_bg@2x.png");
+    background-position: bottom !important;
+    background-size: contain !important;
+  }
+}
+
+@media screen and (max-width: 374px) {
+  .new-game-wrap {
+    padding: 0 14px;
+  }
+
+  .game {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > img {
+      display: block;
+      width: 98%;
+    }
+  }
 }
 
 .top-wrap {
-  height: 72px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .tag {
@@ -284,64 +712,87 @@ export default {
   }
 }
 
-@media only screen and (max-width: 374px) {
-  .mcenter-login-status-wrap {
-    max-width: 33%;
-  }
-}
-
 .mcenter-login-status-wrap {
-  position: relative;
-  padding-left: 5px;
-  float: left;
-  height: 100%;
-  width: 140px;
+  background-color: #f9f9f9;
+  height: 33px;
+  line-height: 33px;
 
   > .not-login-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 17px;
+
     > div {
-      height: 50%;
-      line-height: 25px;
-    }
+      width: 50%;
 
-    font-size: 17px;
-    font-weight: 700;
-    text-align: left;
-    color: #fe9154;
+      &:first-child {
+        text-align: left;
+        font-size: 17px;
+        font-weight: 700;
+        color: #fe9154;
+      }
 
-    > div:last-of-type {
-      height: 50%;
-      line-height: 20px;
-      font-size: 13px;
-      font-weight: 400;
-      text-align: left;
-      color: #4e5159;
+      &:last-child {
+        text-align: right;
+        font-size: 13px;
+        font-weight: 400;
+        color: #8d8d8d;
+      }
     }
   }
 
-  .is-login-wrap {
-    position: relative;
+  > .is-login-wrap {
+    padding: 0 17px;
 
-    > div:first-of-type {
-      font-size: 12px;
-      font-weight: 400;
-      text-align: left;
-      color: #4e5159;
-      position: relative;
-      word-break: break-all;
+    > div {
       display: inline-block;
-      margin-right: 4px;
     }
 
-    > div:last-of-type {
-      font-size: 16px;
-      font-family: Segoe UI, Segoe UI-Bold;
-      font-weight: 700;
-      text-align: left;
-      color: #4e5159;
+    .balance-wrap {
+      position: absolute;
+      top: 0;
+      right: 17px;
 
-      &.normal {
-        margin-top: 5px;
+      &.long {
+        display: grid;
+
+        > span {
+          line-height: 20px;
+          height: 20px;
+        }
       }
+    }
+
+    .wallet,
+    .username {
+      color: #8d8d8d;
+      font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+      font-size: 12px;
+      font-weight: 400;
+      margin-right: 6px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .username {
+      color: #4e5159;
+      font-family: Arial, Arial-Regular;
+      max-width: 25%;
+
+      &.long {
+        line-height: initial;
+        word-break: break-all;
+      }
+    }
+
+    .balance {
+      color: #4e5159;
+      font-family: Arial, Arial-Bold;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: right;
+      vertical-align: middle;
     }
   }
 }
@@ -350,6 +801,7 @@ export default {
   color: #ffffff;
   font-weight: 700;
   display: inline-block;
+  vertical-align: middle;
 
   > div {
     display: flex;
@@ -365,100 +817,36 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
-  height: 72px;
-  transition: all 0.5s;
+  background: white;
 }
 
 .mcenter-func {
-  position: absolute;
-  right: 14px;
+  width: 100%;
+  display: inline-flex;
+  margin: 10px 0;
 }
 
 .mcenter-cell {
-  float: left;
-  margin: 0 5px;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
 
   > img {
-    display: block;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto 1px;
+    width: 27px;
+    height: 27px;
+    display: inline-block;
   }
 
   > div {
-    height: 16px;
-    line-height: 16px;
     color: #ff8400;
-    font-size: 12px;
-    text-align: center;
-  }
-}
-
-.game-list-wrap {
-  overflow-y: auto;
-  touch-action: default; // 誤刪，否則在touchmove事件會有cancelable錯誤
-  -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
-}
-
-.wrap {
-  overflow: hidden;
-  position: relative;
-  float: left;
-  width: 50%;
-  margin-bottom: 3px;
-  border-radius: 7px;
-  box-sizing: border-box;
-
-  > img {
-    display: block;
-    width: 100%;
-    padding: 0 2px;
-  }
-
-  > span {
-    position: absolute;
-    top: 2px;
-    left: 22px;
-    color: #9ca3bf;
-    font-weight: 700;
-    font-size: 12px;
-  }
-
-  > div:not(.third-iamge-wrap) {
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    line-height: 20px;
-    border-radius: 0 0 7px 7px;
-    background-color: #fff;
-    color: #3d3d3d;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    opacity: 0.8;
-  }
-}
-
-.game {
-  composes: wrap;
-
-  &.is-full {
-    width: 100%;
-  }
-
-  &.is-third {
-    width: 31%;
-    height: 25%;
-    max-height: 150px;
-    position: relative;
-    min-height: 126px;
-    margin: 0 1%;
-  }
-
-  &.is-activity {
-    width: 100%;
+    display: inline-block;
+    font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 3px;
+    text-align: left;
   }
 }
 
@@ -518,11 +906,11 @@ export default {
 
 .wrap-buffer {
   width: 100%;
-  height: 12%;
+  height: 200px;
   display: block;
   overflow: hidden;
   position: relative;
-  float: left;
   box-sizing: border-box;
+  background-color: red;
 }
 </style>

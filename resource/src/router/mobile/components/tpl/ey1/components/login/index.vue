@@ -25,13 +25,7 @@
                   maxlength="20"
                   tabindex="1"
                   @keydown.13="keyDownSubmit()"
-                  @input="
-                    username = $event.target.value
-                      .toLowerCase()
-                      .replace(' ', '')
-                      .trim()
-                      .replace(/[\W]/g, '')
-                  "
+                  @input="verification('username', $event.target.value)"
                 />
                 <div class="input-icon">
                   <img
@@ -59,12 +53,7 @@
                   type="password"
                   maxlength="12"
                   tabindex="2"
-                  @input="
-                    password = $event.target.value
-                      .replace(' ', '')
-                      .trim()
-                      .replace(/[\W]/g, '')
-                  "
+                  @input="verification('login_password', $event.target.value)"
                   @keydown.13="keyDownSubmit()"
                   autocomplete="password"
                 />
@@ -155,7 +144,7 @@
                 <!-- 滑動驗證 -->
                 <slide-verification
                   v-if="memInfo.config.login_captcha_type === 2"
-                  ref="slider"
+                  ref="slide-verification"
                   :is-enable="isSlideAble"
                   :success-fuc="slideLogin"
                   page-status="login"
@@ -267,7 +256,7 @@ export default {
                 return;
             }
           } else {
-            this.$router.push("/mobile");
+            this.$router.push(`/mobile/home`);
           }
         },
         hasClose: true,
@@ -280,13 +269,6 @@ export default {
       }
 
       return false;
-    },
-    isSlideAble() {
-      if (!this.username || !this.password) {
-        return false;
-      }
-
-      return true;
     }
   },
   created() {
@@ -407,7 +389,6 @@ export default {
   cursor: pointer;
   transition: all 0.3s ease;
   background-image: url("/static/image/common/btn_close_white.png");
-
   &:hover {
     transform: rotate(90deg);
   }

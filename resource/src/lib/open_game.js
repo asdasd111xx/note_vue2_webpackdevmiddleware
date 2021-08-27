@@ -46,7 +46,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   let gameTitle = "";
   let option = `width=800, height=600, scrollbars=yes, resizable=yes, location=no, menubar=no, toolbar=no`;
   // 是否調整內嵌
-  let embedGame = getEmbedGameVendor(vendor, kind);
+  let embedGame = getEmbedGameVendor(vendor, kind, code);
 
   if (embedGame) {
     gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
@@ -80,7 +80,13 @@ export default (params, success = () => {}, fail = () => {}) => {
     });
   };
 
-  if (getGames) {
+  // 丝瓜直播固定標題
+  if (vendor === "sigua_ly") {
+    gameTitle = "丝瓜直播";
+  }
+
+  // 是否強制取得遊戲標題
+  else if (getGames) {
     reqs.push(getGameName());
   }
 
@@ -111,14 +117,15 @@ export default (params, success = () => {}, fail = () => {}) => {
 
           /* 補各自遊戲參數 */
           // 80桌參數
-          if (
-            vendor === "lg_live" &&
-            String(kind) === "2" &&
-            gameType &&
-            gameType === "sdk"
-          ) {
-            query += "&customize=yabo&tableType=3310";
-          }
+          // 20210625 移除
+          // if (
+          //   vendor === "lg_live" &&
+          //   String(kind) === "2" &&
+          //   gameType &&
+          //   gameType === "sdk"
+          // ) {
+          //   query += "&customize=yabo&tableType=3310";
+          // }
 
           // ISB參數
           if (vendor && vendor.toUpperCase() === "ISB") {
@@ -178,7 +185,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
             if (embedGame && !localStorage.getItem("reload-game")) {
               router.push(
-                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}`
+                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
               );
               return;
             }

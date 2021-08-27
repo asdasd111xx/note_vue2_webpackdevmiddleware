@@ -589,7 +589,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
 
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
-    dispatch("actionSetWebInfo", state.webDomain.domain);
+    await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMobileInfo");
     dispatch("actionGetMemInfoV3");
 
@@ -730,44 +730,37 @@ export const actionSetUserdata = (
       if (state.webDomain.site === "ey1" && hasLogin) {
         dispatch("actionSetUserWithdrawCheck");
       }
-
-      goLangApiRequest({
-        method: "put",
-        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
-        params: {
-          account: uuidAccount
-        }
-      })
-        .then(res => {
-          if (res.status === "000") {
-            let guestCid = res.data.cid;
-            let guestUserid = res.data.userid;
-            setCookie("guestCid", guestCid);
-            setCookie("guestUserid", guestUserid);
-          } else {
-            //訪客登入
-            goLangApiRequest({
-              method: "post",
-              url:
-                configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestlogin",
-              params: {
-                account: uuidAccount
-              }
-            })
-              .then(res => {
-                if (res.status === "000") {
-                  let guestCid = res.data.cid;
-                  let guestUserid = res.data.userid;
-
-                  setCookie("guestCid", guestCid);
-                  setCookie("guestUserid", guestUserid);
-                } else {
-                }
-              })
-              .catch(error => {});
+      if (state.webDomain.site != "ey1") {
+        goLangApiRequest({
+          method: "put",
+          url:
+            configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
+          params: {
+            account: uuidAccount
           }
         })
-        .catch(error => {});
+          .then(res => {
+            if (res.status === "000") {
+              let guestCid = res.data.cid;
+              let guestUserid = res.data.userid;
+              setCookie("guestCid", guestCid);
+              setCookie("guestUserid", guestUserid);
+            } else {
+              dispatch("actionSetGlobalMessage", {
+                msg: res.msg,
+                code: res.code
+              });
+            }
+          })
+          .catch(error => {
+            if (error.status != "000") {
+              dispatch("actionSetGlobalMessage", {
+                msg: error.msg,
+                code: res.code
+              });
+            }
+          });
+      }
     };
 
     if (window.location.host.includes("localhost")) {
@@ -888,34 +881,37 @@ export const actionIsLogin = ({ commit }, isLogin) => {
   commit(types.ISLOGIN, isLogin);
 };
 // 會員端-設定會員餘額
-export const actionSetUserBalance = ({ commit, dispatch }) => {
-  return axios({
+export const actionSetUserBalance = ({ commit, dispatch, state }) => {
+  return goLangApiRequest({
     method: "get",
-    url: "/api/v1/c/vendor/all/balance"
+    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Vendor/All/Balance",
+    params: {
+      lang: "zh-cn"
+    }
   })
     .then(res => {
-      if (res && res.data && res.data.result === "ok") {
+      if (res && res.status === "000" && res.data) {
         commit(types.SETUSERBALANCE, res.data);
+      } else {
+        const data = res && res.data;
+        if (data && data.code === "M00001") {
+          dispatch("actionSetGlobalMessage", {
+            msg: data.msg,
+            cb: () => {
+              member.logout().then(() => {
+                window.location.href = "/mobile/login?logout=true";
+              });
+            }
+          });
+        } else {
+          dispatch("actionSetGlobalMessage", {
+            msg: data.msg,
+            code: data.code
+          });
+        }
       }
     })
-    .catch(error => {
-      const data = error && error.response && error.response.data;
-      if (data && data.code === "M00001") {
-        dispatch("actionSetGlobalMessage", {
-          msg: data.msg,
-          cb: () => {
-            member.logout().then(() => {
-              window.location.href = "/mobile/login?logout=true";
-            });
-          }
-        });
-      } else {
-        dispatch("actionSetGlobalMessage", {
-          msg: data.msg,
-          code: data.code
-        });
-      }
-    });
+    .catch(error => {});
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
@@ -1010,8 +1006,8 @@ export const actionSetPost = ({ commit }, postType = 1) =>
   });
 
 // 會員端-加入最愛的遊戲列表
-export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
-  game.favoriteGame({
+export const actionSetFavoriteGame = ({ commit }, vendor = "") => {
+  return game.favoriteGame({
     params: {
       max_results: 1000,
       vendor
@@ -1023,6 +1019,7 @@ export const actionSetFavoriteGame = ({ commit }, vendor = "") =>
       commit(types.SETFAVORITEGAME, []);
     }
   });
+};
 
 // 會員端-設定下方遊戲框顯示狀態
 export const actionSetCollectionStatus = ({ commit }, status) => {
@@ -1358,6 +1355,7 @@ export const actionSetSiteConfig = ({ commit }, data) => {
 
 // 推播中心資料
 export const actionNoticeData = ({ commit }, data) => {
+  console.log(`6   ${data}`);
   commit(types.SETNOTICEDATA, data);
 };
 
@@ -1406,41 +1404,60 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   }
 
   let domain = new Promise(resolve => {
-    bbosRequest({
+    goLangApiRequest({
       method: "get",
-      url: configInfo.BBOS_DOMIAN + "/Domain/Hostnames",
-      reqHeaders: {
-        Vendor: state.memInfo.user.domain,
-        ...reqHeaders
-      },
+      url:
+        configInfo.YABO_GOLANG_API_DOMAIN +
+        "/xbb/Domain/Hostnames/V2?lang=zh-cn",
       params: {
-        lang: "zh-cn"
+        // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+        clientType: 6
       }
     }).then(res => {
-      if (res.errorCode !== "00" || res.status !== "000") {
-        return;
+      if (res && res.data) {
+        return resolve(res.data[0]);
+      } else {
+        return resolve("");
       }
-      return resolve(res.data[0]);
     });
   });
 
   let agentCode = new Promise(resolve => {
-    bbosRequest({
+    // bbosRequest({
+    //   method: "get",
+    //   url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
+    //   reqHeaders: {
+    //     Vendor: state.memInfo.user.domain,
+    //     ...reqHeaders
+    //   },
+    //   params: {
+    //     lang: "zh-cn",
+    //     clientType: 6
+    //   }
+    // }).then(res => {
+    //   if (res && res.data && res.data.url) {
+    //     commit(types.SET_PROMOTION_LINK, res.data.url);
+    //     return resolve(res.data.code);
+    //   } else {
+    //     return resolve("");
+    //   }
+    // });
+
+    goLangApiRequest({
       method: "get",
-      url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
-      reqHeaders: {
-        Vendor: state.memInfo.user.domain,
-        ...reqHeaders
-      },
+      url:
+        configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
       params: {
-        lang: "zh-cn"
+        // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+        clientType: 3
       }
     }).then(res => {
-      if (res.errorCode !== "00" || res.status !== "000") {
-        return;
+      if (res && res.data) {
+        commit(types.SET_PROMOTION_LINK, res.data.url);
+        return resolve(res.data.code);
+      } else {
+        return resolve("");
       }
-      commit(types.SET_PROMOTION_LINK, res.data.url);
-      return resolve(res.data.code);
     });
   });
 
@@ -1790,6 +1807,7 @@ export const actionVerificationFormData = (
     case "username":
       val = val
         .replace(/[\W]/g, "")
+        .replace(/\_/g, "")
         .substring(0, 20)
         .toLowerCase();
       break;
@@ -1814,9 +1832,18 @@ export const actionVerificationFormData = (
 
       break;
 
+    case "login_password":
+      val = val.replace(/[^A-Za-z0-9._\-!@#$&+=|*]/g, "").substring(0, 12);
+      break;
+
     case "password":
+    case "new_password":
     case "confirm_password":
-      val = val.replace(/[\W]/g, "").substring(0, 50);
+      // val = val.replace(/[^\a-\z\A-\Z0-9\._\!@#$&=|\-\=\+]/g, "");
+      val = val
+        .replace(/[\W]/g, "")
+        .replace(/\_/g, "")
+        .substring(0, 12);
       // .toLowerCase();
       break;
 
@@ -1862,6 +1889,12 @@ export const actionVerificationFormData = (
       regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
       val = val.replace(regex, "").substring(0, 20);
       break;
+
+    case "search_video":
+      regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF[0-9a-zA-Z]/g;
+      val = val.replace(regex, "");
+      break;
+
     // case "USDT-address":
     //   val = val.substring(0, 42);
     //   break;
@@ -1929,6 +1962,10 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
     );
+
+    if (!uri) {
+      return;
+    }
 
     axios
       .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
@@ -2307,7 +2344,6 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 
         // Loop 帳戶欄位
         Object.keys(ret).forEach(item => {
-          console.log(item, ret[item]);
           // 有帳戶欄位未填過
           if (!ret[item] && item !== "bank") {
             isAccountPassed = false;
@@ -2333,4 +2369,21 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
         });
       });
   });
+};
+
+// 取得429發送太頻繁字串
+export const actionGetToManyRequestMsg = ({ state }, response) => {
+  if (response && Number(response.status) === 429) {
+    if (response.data && response.data.message) {
+      console.log(response.data.message);
+      return i18n.t(
+        response.data.message
+          .toString()
+          .toUpperCase()
+          .replace(/ /g, "_")
+      );
+    } else {
+      return response;
+    }
+  }
 };

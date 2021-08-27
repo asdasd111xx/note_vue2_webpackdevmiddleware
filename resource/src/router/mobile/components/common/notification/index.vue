@@ -66,7 +66,8 @@ export default {
         C_WS_WAGE: "您的返利已入帐，请前往查看",
         C_WS_RECYCLE_FAIL: "额度无法转移，请稍后再试",
         C_WS_RECYCLE_ALL_FAIL: "额度无法转移，请稍后再试",
-        C_WS_RECYCLE_OK: "一键回收完成"
+        C_WS_RECYCLE_OK: "一键回收完成",
+        C_WS_WAGE_SELF: "您有返利可领取，请前往查看"
       },
       msgType: [
         "player_deposit",
@@ -125,7 +126,9 @@ export default {
       if (this.noticeData && this.noticeData.length > 0) {
         let _noticeData = this.noticeData.slice();
         let temp = _noticeData[this.noticeData.length - 1];
-        this.noticeData.pop();
+        if (temp.event != "vendor_maintain_notice") {
+          this.noticeData.pop();
+        }
 
         if (temp.extend && temp.extend === "verification_code") {
           return;
@@ -137,13 +140,20 @@ export default {
             if (this.lang[temp.content]) {
               switch (temp.content) {
                 case "C_WS_RECYCLE_FAIL":
+                  let content = "";
+                  if (temp.vendorName["zh-cn"]) {
+                    content = `${temp.vendorName["zh-cn"]}${
+                      this.lang[temp.content]
+                    }`;
+                  } else {
+                    content = this.lang[temp.content];
+                  }
+
                   this.noticeQueue.push({
                     ...temp,
                     timestamp: Date.now(),
                     showType: "showToast",
-                    showContent: `${temp.vendorName["zh-cn"]}${
-                      this.lang[temp.content]
-                    }`
+                    showContent: content
                   });
                   return;
                 case "C_WS_RECYCLE_ALL_FAIL":
@@ -240,7 +250,11 @@ export default {
         case "C_WS_WAGE":
           this.$router.push("/mobile/mcenter/wallet");
           break;
-
+        case "C_WS_WAGE_SELF":
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageRebate/real/receive?notification=1"
+          );
+          break;
         case "C_WS_SERVICE_MAINTAIN":
           break;
       }

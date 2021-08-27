@@ -51,7 +51,7 @@ if (window && window.parent) {
 }
 window.RESET_LOCAL_SETTING = reload => {
   // 首頁選單選單
-  localStorage.removeItem("home-menu-type");
+  localStorage.removeItem("default-home-menu-type");
   // 遊戲開啟暫存
   localStorage.removeItem("is-open-game");
   // 是否顯示過首頁公告
@@ -64,6 +64,8 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("content_rating");
   // swag內部開關
   localStorage.removeItem("enable-swag");
+  // 色站預設網址
+  localStorage.removeItem("p-domain");
 
   if (reload) {
     window.location.reload();

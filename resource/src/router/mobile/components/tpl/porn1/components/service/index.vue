@@ -1,5 +1,8 @@
 <template>
-  <mobile-container :class="$style.container" :has-footer="!hasPrev">
+  <mobile-container
+    :class="$style.container"
+    :has-footer="!hasPrev && !fromlanding"
+  >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
@@ -7,6 +10,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
+          v-if="!fromlanding"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -37,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <div :class="$style['add-wrap']">
+        <div v-if="isIos" :class="$style['add-wrap']">
           <span>添加桌面客服，随时享受一对一在线解答</span>
           <span :class="$style['add-bottom']" @click="handleAddClick"
             >立即添加</span
@@ -45,7 +49,7 @@
         </div>
       </div>
 
-      <div :class="$style['info-card']" @click="clickService(2)">
+      <div :class="$style['info-card']" @click="clickService">
         <div>
           <div>
             <img
@@ -94,9 +98,10 @@
       </div>
 
       <div
+        v-if="isIos"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev ? { bottom: '15px' } : {}"
+        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img
@@ -175,7 +180,6 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import mobileLinkOpen from "@/lib/mobile_link_open";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 
@@ -185,13 +189,12 @@ export default {
   },
   data() {
     return {
-      imgID: 0,
-      imgIndex: 0,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/common/default/avatar_nologin.png`
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`,
+      fromlanding: false
     };
   },
   created() {
@@ -199,25 +202,19 @@ export default {
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
     }
+
+    if (this.$route.query.fromlanding !== undefined) {
+      this.fromlanding = this.$route.query.fromlanding === "true";
+    }
   },
   mounted() {
-    this.actionSetUserdata(true).then(() => {
-      this.getAvatarSrc();
-    });
+    if (this.loginStatus && !this.fromlanding) {
+      this.actionSetUserdata(true).then(() => {
+        this.getAvatarSrc();
+      });
+    }
 
     this.divHeight = document.body.offsetHeight - 60;
-
-    // yaboRequest({
-    //   method: "get",
-    //   url: `${this.siteConfig.YABO_API_DOMAIN}/system/downloadlink`,
-    //   headers: {
-    //     'x-domain': this.memInfo.user.domain
-    //   }
-    // }).then(res => {
-    //   if (res && res.data) {
-    //     this.linkArray = res.data;
-    //   }
-    // });
 
     goLangApiRequest({
       method: "get",
@@ -232,10 +229,14 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      mobileInfo: "getMobileInfo"
     }),
+    isIos() {
+      return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    },
     name() {
-      if (this.loginStatus) {
+      if (this.loginStatus && !this.fromlanding) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -246,15 +247,35 @@ export default {
   methods: {
     ...mapActions(["actionSetUserdata"]),
     handleBack() {
-      const redirect = this.$route.query.redirect;
+      const { query } = this.$route;
+      let redirect = query.redirect;
       switch (redirect) {
+        case "withdraw":
+          localStorage.setItem("service-back", true);
         default:
           this.$router.back();
           break;
       }
     },
-    clickService(type = "") {
-      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+    clickService() {
+      let url = this.mobileInfo.service.url;
+      if (this.fromlanding) {
+        window.location.href = url;
+      } else {
+        window.open(url);
+      }
+
+      // window.open(url);
+      // // 在線客服流量分析事件
+      // window.dataLayer.push({
+      //   dep: 2,
+      //   event: "ga_click",
+      //   eventCategory: "online_service",
+      //   eventAction: "online_service_contact",
+      //   eventLabel: "online_service_contact"
+      // });
+      // return;
+      // mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
     clickPopTip() {
       this.isShowPop = true;
@@ -263,7 +284,7 @@ export default {
       this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
-      if (!this.loginStatus) return;
+      if (!this.loginStatus || this.fromlanding) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {

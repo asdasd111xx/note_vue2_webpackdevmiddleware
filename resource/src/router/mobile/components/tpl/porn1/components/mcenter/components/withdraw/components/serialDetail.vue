@@ -43,20 +43,32 @@
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ `-${getDeductionNumber(data.deduction)}` }}
+            {{
+              getDeductionNumber(data.deduction) > 0
+                ? "-" + getDeductionNumber(data.deduction)
+                : getDeductionNumber(data.deduction)
+            }}
           </div>
         </div>
       </div>
 
       <div :class="[$style['detail-wrap'], 'clearfix']" v-if="data">
-        <div v-for="item in detailList">
+        <div v-for="item in detailList" :key="item.title">
           <span>{{ item.title }} </span>
           <span>{{ item.value }} </span>
         </div>
       </div>
 
-      <div v-for="list in auditList" :class="$style['detail-wrap']">
-        <div v-for="item in list" :class="$style['audit-cell']">
+      <div
+        v-for="(list, key) in auditList"
+        :key="`wrap-${key}`"
+        :class="$style['detail-wrap']"
+      >
+        <div
+          v-for="item in list"
+          :key="item.title"
+          :class="$style['audit-cell']"
+        >
           <span>
             <span>{{ item.title }} </span>
             <span>{{ item.rateValue }} </span>
@@ -64,7 +76,9 @@
           <span
             >{{
               item.deduction
-                ? item.deduction + ":" + `-${item.value}`
+                ? item.deduction +
+                  ":" +
+                  `${Number(item.value) > 0 ? "-" + item.value : item.value}`
                 : item.rateValue === "-"
                 ? "-"
                 : item.value
@@ -77,7 +91,7 @@
 
       <div :class="$style.tips">
         如需帮助，请
-        <span @click="$router.push('/mobile/service')">联系客服</span>
+        <span @click="linkToService">联系客服</span>
       </div>
     </div>
   </div>
@@ -181,6 +195,10 @@ export default {
     }
   },
   methods: {
+    linkToService() {
+      this.$router.push("/mobile/service?redirect=withdraw");
+      localStorage.setItem("serial-detail-data", JSON.stringify(this.data));
+    },
     onClose() {
       this.$nextTick(() => {
         setTimeout(() => {

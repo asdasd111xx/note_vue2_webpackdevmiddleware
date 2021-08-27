@@ -94,7 +94,8 @@ export default {
       sortId: +this.$route.query.sortId,
       tagId: +this.$route.query.tagId,
       source: this.$route.query.source,
-      isDisable: false
+      isDisable: false,
+      queryTitle: this.$route.query.tag
     };
   },
   computed: {
@@ -135,7 +136,7 @@ export default {
     const swiper = this.$refs.swiper.$swiper;
     this.divHeight = document.body.offsetHeight - 137;
 
-    this.getVideoTab().then(() => {
+    this.getNewTab().then(() => {
       // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
       let initIndex = this.videoTabs.findIndex(item => {
         return item.id === this.sortId;
@@ -146,13 +147,46 @@ export default {
     this.setVideoList();
   },
   methods: {
+    getNewTab() {
+      return pornRequest({
+        method: "post",
+        url: `/video/videolist`,
+        data: {
+          tag: this.queryTitle === "全部" ? "" : this.queryTitle,
+          siteId: this.siteId,
+          page: 1
+        }
+      }).then(response => {
+        if (response.result && response.result.length > 0) {
+          let videoArray = [];
+          for (let i = 0; i < Object.keys(response.result).length; i++) {
+            videoArray.push({
+              id: response.result[i].id,
+              title: response.result[i].name
+            });
+          }
+          if (this.$route.query.tag === "全部") {
+            this.videoTabs = [
+              { id: 0, title: "全部" },
+              { id: 1, title: "热门推荐" },
+              ...videoArray
+            ];
+          } else {
+            this.videoTabs = [{ id: 0, title: "全部" }, ...videoArray];
+          }
+        } else {
+          this.videoTabs = [];
+        }
+      });
+    },
     getVideoTab() {
       return pornRequest({
         method: "get",
         url: `/video/sort`,
         smallPig: true,
         params: {
-          tagId: !this.tagId ? "" : this.tagId,
+          tag: this.$route.query.tag,
+          tagId: this.tagId || "",
           siteId: this.siteId
         },
         timeout: 30000
@@ -165,10 +199,15 @@ export default {
       });
     },
     setSortId(value) {
+      if (this.sortId === value) {
+        return;
+      }
+
       this.sortId = value;
       this.current = 0;
       this.$router.replace({
         query: {
+          tag: this.$route.query.tag,
           source: this.$route.query.source,
           tagId: this.tagId,
           sortId: value
@@ -184,7 +223,7 @@ export default {
     changeTab(time) {
       const swiper = this.$refs.swiper.$swiper;
 
-      this.getVideoTab().then(() => {
+      this.getNewTab().then(() => {
         // 讓 Swiper 的 index 在初始進來時，能將 Label 置中
         let initIndex = this.videoTabs.findIndex(item => {
           return item.id === this.sortId;
@@ -200,7 +239,7 @@ export default {
         smallPig: true,
         data: {
           tagId: this.tagId,
-          sortId: this.sortId,
+          sortId: this.sortId === 1 ? 0 : this.sortId,
           page: page,
           siteId: this.siteId
         }

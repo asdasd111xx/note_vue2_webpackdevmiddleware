@@ -2,16 +2,16 @@ import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_THIRD,
-  API_TRADE_RELAY
+  API_TRADE_RELAY,
+  API_MCENTER_DEPOSIT_OUTER_WALLET
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
 import BigNumber from "bignumber.js/bignumber";
 import ajax from "@/lib/ajax";
 import axios from "axios";
-import goLangApiRequest from "@/api/goLangApiRequest";
-
 import { getCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -44,6 +44,11 @@ export default {
       webviewOpenUrl: "",
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
+      defaultOuterCrypto: "",
+      outerCryptoOption: [],
+      isOuterCrypto: false,
+      showOuterCryptoAddress: false,
+      outerCryptoAddress: "",
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
@@ -59,6 +64,10 @@ export default {
       cryptoMoney: "--",
       isClickCoversionBtn: false,
 
+      //USDT參考匯率
+      rate: "--",
+      updateTime: false,
+
       // 倒數器
       timer: null,
       countdownSec: 0,
@@ -72,6 +81,9 @@ export default {
       setTimeout(() => {
         document.location.href = this.webviewOpenUrl;
       }, 200);
+    },
+    defaultOuterCrypto() {
+      this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     }
   },
   computed: {
@@ -649,16 +661,27 @@ export default {
         }
       })
         .then(response => {
-          const { result, ret } = response.data;
+          if (response && response.data) {
+            const { result, ret } = response.data;
 
-          if (result === "ok") {
-            this.passRoad = ret.map((info, index) => ({
-              ...info,
-              mainTitle: this.$text("S_PASS_TEXT", {
-                replace: [{ target: "%s", value: index + 1 }]
-              })
-            }));
-            this.curPassRoad = { ...this.passRoad[0] };
+            if (result === "ok") {
+              this.passRoad = ret.map((info, index) => ({
+                ...info,
+                mainTitle: this.$text("S_PASS_TEXT", {
+                  replace: [{ target: "%s", value: index + 1 }]
+                })
+              }));
+              this.curPassRoad = { ...this.passRoad[0] };
+              this.isOuterCrypto = false;
+              if (
+                this.curPayInfo.payment_method_id === 25 ||
+                this.curPayInfo.payment_method_id === 402 ||
+                this.curPayInfo.payment_method_id === 404
+              ) {
+                this.isOuterCrypto = true;
+                this.getVendorCryptoOuterUserAddressList();
+              }
+            }
           }
 
           this.isShow = false;
@@ -732,6 +755,7 @@ export default {
       this.resetStatus();
       this.resetTimerStatus();
       this.curPayInfo = info;
+      this.chooseUSDT();
 
       if (info.payment_method_id === 20) {
         this.checkSuccess = true;
@@ -753,6 +777,7 @@ export default {
       }
 
       this.checkDepositInput();
+      this.getVendorCryptoOuterUserAddressList();
     },
     /**
      * 切換通道
@@ -773,6 +798,7 @@ export default {
      * @param {String} money - 金額
      */
     changeMoney(money, canCustomMoney) {
+      this.cryptoMoney = "--";
       this.isSelectedCustomMoney = !!canCustomMoney;
       this.isDisableDepositInput = !canCustomMoney;
       this.moneyValue = money;
@@ -810,6 +836,7 @@ export default {
       this.isErrorMoney = false;
       this.nameCheckFail = false;
       this.checkSuccess = false;
+      this.showOuterCryptoAddress = false;
 
       this.walletData["CGPay"].password = "";
       this.cryptoMoney = "--";
@@ -907,6 +934,20 @@ export default {
           ...paramsData,
           wallet_token: +this.walletData["CGPay"].password
         };
+      }
+
+      if (this.curPassRoad.is_outer_crypto) {
+        if (this.showOuterCryptoAddress) {
+          paramsData = {
+            ...paramsData,
+            user_address: this.outerCryptoAddress
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            user_address: this.defaultOuterCrypto
+          };
+        }
       }
 
       let _isPWA =
@@ -1064,6 +1105,12 @@ export default {
 
           if (_isPWA) {
             newWindow.close();
+          }
+          if (code === 1501020021) {
+            (async () => {
+              await this.getPayPass();
+              this.verificationMoney(this.moneyValue);
+            })();
           }
 
           this.actionSetGlobalMessage({
@@ -1283,32 +1330,45 @@ export default {
           const { result, ret } = response.data;
           if (!response || result !== "ok") return;
 
-          this.cryptoMoney = ret.crypto_amount;
+          this.rate = ret.rate;
+
+          if (this.moneyValue != "") {
+            this.cryptoMoney = ret.crypto_amount;
+          } else {
+            this.cryptoMoney = "--";
+          }
+
           this.isClickCoversionBtn = true;
-          this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+
+          //當切換成USDT和歸零的時候才重call秒數
+          if (this.updateTime) {
+            this.updateTime = false;
+            this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+          }
 
           // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
           if (this.countdownSec && !this.timer) {
             this.timer = setInterval(() => {
               if (this.countdownSec === 0) {
-                if (this.submitStatus !== "stepTwo") {
-                  // 需重新判斷
-                  // 將「confirmOneBtn」彈窗打開
-                  this.setPopupStatus(true, "funcTips");
+                // if (this.submitStatus !== "stepTwo") {
+                //   // 需重新判斷
+                //   // 將「confirmOneBtn」彈窗打開
+                //   this.setPopupStatus(true, "funcTips");
 
-                  this.confirmPopupObj = {
-                    title: ["porn1", "sg1"].includes(this.themeTPL)
-                      ? "汇率已失效"
-                      : "汇率已失效，请再次确认汇率",
-                    btnText: "刷新汇率",
-                    cb: () => {
-                      this.closePopup();
-                      this.convertCryptoMoney();
-                    }
-                  };
-                }
+                //   this.confirmPopupObj = {
+                //     title: ["porn1", "sg1"].includes(this.themeTPL)
+                //       ? "汇率已失效"
+                //       : "汇率已失效，请再次确认汇率",
+                //     btnText: "刷新汇率",
+                //     cb: () => {
+                //       this.closePopup();
+                //       this.convertCryptoMoney();
+                //     }
+                //   };
+                // }
 
                 this.resetTimerStatus();
+                this.cryptoMoney = "--";
                 return;
               }
               this.countdownSec -= 1;
@@ -1322,6 +1382,39 @@ export default {
             code
           });
         });
+    },
+    // 取得使用者站外錢包入款錢包地址
+    getVendorCryptoOuterUserAddressList() {
+      console.log("getVendorCryptoOuterUserAddressList");
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_OUTER_WALLET,
+        params: {
+          payment_method_id: this.curPayInfo.payment_method_id
+        }
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            console.log(response);
+            this.outerCryptoOption = [];
+            this.defaultOuterCrypto = "";
+            response.data.ret.forEach(outerAddress => {
+              if (outerAddress.is_default) {
+                this.defaultOuterCrypto = outerAddress.address;
+              }
+              this.outerCryptoOption.push(outerAddress.address);
+            });
+            this.defaultOuterCrypto =
+              this.defaultOuterCrypto === ""
+                ? this.outerCryptoOption[0]
+                : this.defaultOuterCrypto;
+
+            this.outerCryptoOption.push("其他位址");
+          }
+
+          // this.outerCryptoOption = ["1", "2", "3"];
+        })
+        .catch(error => {});
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
@@ -1341,6 +1434,35 @@ export default {
       this.timer = null;
       this.countdownSec = 0;
       this.isClickCoversionBtn = false;
+    },
+    timeUSDT() {
+      if (this.countdownSec > 0) {
+        return this.formatCountdownSec();
+      } else if (this.countdownSec === 0) {
+        this.updateTime = true;
+        this.resetTimerStatus();
+        this.convertCryptoMoney();
+        return "--";
+      }
+    },
+    chooseUSDT() {
+      //選擇 CGPAY-USDT ,USDT
+      if (
+        this.curPayInfo.payment_method_id === 25 ||
+        this.curPayInfo.payment_method_id === 402 ||
+        this.curPayInfo.payment_method_id === 404
+      ) {
+        this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
+      }
+      return;
+    },
+    moneyUSDT(e) {
+      //防止輸入連續call api
+      clearTimeout(this.timerUSDT);
+      this.timerUSDT = setTimeout(() => {
+        //USDT、CGP-USDT
+        this.convertCryptoMoney();
+      }, 1000);
     }
   }
 };

@@ -358,7 +358,7 @@ export default {
   max-width: $mobile_max_width;
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 10;
   width: 100%;
   height: 43px;
   padding: 0 17px;
@@ -394,6 +394,19 @@ export default {
 
   &.is-home {
     border-bottom: none;
+  }
+}
+
+@media screen and (max-width: 374px) {
+  .header {
+    width: 100%;
+    padding: 0 6px;
+  }
+
+  .balance-wrap {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }
 

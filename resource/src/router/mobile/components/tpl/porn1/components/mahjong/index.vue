@@ -2,52 +2,57 @@
   <mobile-container
     :header-config="headerConfig"
     :update-search-status="updateSearchStatus"
+    :has-footer="false"
   >
     <div slot="content" class="content-wrap">
-      <mahjong-wrap
-        :slot-sort="['search', 'list']"
+      <casino-wrap
         :is-show-search.sync="isShowSearch"
+        :game-show-jackpot="true"
+        :kind="kind"
       />
     </div>
   </mobile-container>
 </template>
 
 <script>
-import mahjongWrap from '@/router/mobile/components/common/mahjong';
-import mobileContainer from '../common/mobileContainer';
+import casinoWrap from "@/router/mobile/components/common/casino";
+import mobileContainer from "../common/mobileContainer";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    mahjongWrap,
-    mobileContainer
+    mobileContainer,
+    casinoWrap
   },
   data() {
     return {
+      kind: 6,
       searchStatus: false
     };
   },
   computed: {
-    headerTitle() {
-      const vendor = this.$route.params.vendor || 'all';
-      let textCode = '';
-
-      switch (vendor) {
-        case 'all':
-          textCode = 'S_ALL';
-          break;
-        default:
-          textCode = `S_${vendor}`.toUpperCase();
-          break;
-      }
-
-      return this.$text(textCode);
-    },
+    ...mapGetters({
+      memInfo: "getMemInfo"
+    }),
     headerConfig() {
+      let vendor = this.$route.params.vendor;
+      const target = this.memInfo.vendors.find(
+        item => item.vendor === vendor && item.kind === this.kind
+      );
       return {
         prev: true,
-        title: this.headerTitle,
+        title: target ? target.alias : "",
         hasSearchBtn: true,
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          if (localStorage.getItem("_iframe-back-route")) {
+            const target =
+              Number(localStorage.getItem("_iframe-back-route")) || 3;
+            localStorage.removeItem("_iframe-back-route");
+            this.$router.push("/mobile");
+            return;
+          }
+          this.$router.back();
+        }
       };
     },
     isShowSearch: {
@@ -65,26 +70,16 @@ export default {
     }
   }
 };
-
 </script>
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
 :global {
   .game-item-wrap {
     max-width: 960px;
     min-width: 320px;
     margin: 0 auto;
     padding: 45px 10px;
-  }
-}
-
-@media screen and (min-width: $phone) {
-  :global {
-    .game-item-wrap {
-      padding: 62px 20px;
-    }
   }
 }
 </style>

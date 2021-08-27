@@ -51,16 +51,12 @@
 </template>
 
 <script>
-import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
-import common from "@/api/common";
-import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";
-import Vue from "vue";
 import yaboRequest from "@/api/yaboRequest";
 
 export default {
@@ -141,16 +137,16 @@ export default {
           isPart: false,
           show: this.isShowPromotion
         },
-        {
-          initName: "打码王",
-          name: "S_LEADERBOARD",
-          path: "",
-          pageName: "leaderboard",
-          image: "leaderboard",
-          info: "",
-          isPart: false,
-          show: true
-        },
+        // {
+        //   initName: "打码王",
+        //   name: "S_LEADERBOARD",
+        //   path: "",
+        //   pageName: "leaderboard",
+        //   image: "leaderboard",
+        //   info: "",
+        //   isPart: false,
+        //   show: true
+        // },
         {
           initName: "分享APP",
           name: "S_SHARE_APP",
@@ -243,7 +239,9 @@ export default {
           platform: 1
         }
       }).then(res => {
-        this.superAppUrl = res.data.url;
+        if (res.data && res.data.url) {
+          this.superAppUrl = res.data.url;
+        }
       });
     });
   },
@@ -321,9 +319,9 @@ export default {
         success: () => {
           localStorage.setItem("content_rating", +!this.pornSwitchState);
           if (+!this.pornSwitchState) {
-            localStorage.setItem("home-menu-type", "welfare");
+            localStorage.setItem("default-home-menu-type", "welfare");
           } else {
-            localStorage.setItem("home-menu-type", "");
+            localStorage.setItem("default-home-menu-type", "");
           }
           this.memInfo.user.content_rating = +!this.pornSwitchState;
           this.pornSwitchState = !this.pornSwitchState;

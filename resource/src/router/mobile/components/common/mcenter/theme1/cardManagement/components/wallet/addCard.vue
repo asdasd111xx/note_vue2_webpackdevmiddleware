@@ -429,16 +429,16 @@ export default {
     },
     walletList() {
       // 在有指定選擇特定錢包的狀況下
-      if (this.$route.query.wallet) {
-        let wallet = this.$route.query.wallet;
-        let mapping = {
-          CGPay: 21,
-          goBao: 37,
-          usdt: 39 // USDT(ERC20)
-        };
+      if (this.$route.query.swift) {
+        // let wallet = this.$route.query.wallet;
+        // let mapping = {
+        //   CGPay: 21,
+        //   goBao: 37,
+        //   usdt: 39 // USDT(ERC20)
+        // };
 
         this.filterWalletList = this.walletList.filter(item => {
-          return item.id === mapping[wallet];
+          return item.swift_code === this.$route.query.swift;
         });
 
         // 如果使用者未綁定特定卡片，則導到 特定卡片 指定選項
@@ -627,7 +627,7 @@ export default {
         params: {
           lang: "zh-cn",
           address: this.formData["walletAddress"].value,
-          virtualBankId: this.selectTarget.walletId
+          virtualBankId: String(this.selectTarget.walletId)
         }
       })
         .then(response => {
@@ -745,6 +745,7 @@ export default {
       this.selectTarget.walletName = bank.name;
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
+      this.lockStatus = true;
 
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
       if ([21].includes(this.selectTarget.walletId)) {
@@ -927,25 +928,25 @@ export default {
         return;
       }
 
-      if (
-        ["porn1", "sg1"].includes(this.themeTPL) &&
-        this.selectTarget.swiftCode === "BBUSDTCN1"
-      ) {
-        this.walletTipInfo = [
-          {
-            key: "USDT",
-            text: `还没有数字货币帐号？`,
-            hasCallback: true,
-            dataObj: {
-              text: "点我查看交易所",
-              cb: () => {
-                this.setPopupStatus(true, "tip");
-              }
-            }
-          }
-        ];
-        return;
-      }
+      // if (
+      //   ["porn1", "sg1"].includes(this.themeTPL) &&
+      //   this.selectTarget.swiftCode === "BBUSDTCN1"
+      // ) {
+      //   this.walletTipInfo = [
+      //     {
+      //       key: "USDT",
+      //       text: `还没有数字货币帐号？`,
+      //       hasCallback: true,
+      //       dataObj: {
+      //         text: "点我查看交易所",
+      //         cb: () => {
+      //           this.setPopupStatus(true, "tip");
+      //         }
+      //       }
+      //     }
+      //   ];
+      //   return;
+      // }
     },
     handleSmbmit() {
       if (this.selectTarget.oneClickBindingMode) {

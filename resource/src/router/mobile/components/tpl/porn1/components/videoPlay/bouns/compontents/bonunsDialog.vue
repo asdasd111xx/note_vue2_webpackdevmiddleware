@@ -37,6 +37,11 @@
           加入娱乐会员<br />
           享有观影送钱
         </template> -->
+        <template v-else-if="type.includes('disable')">
+          <span style="margin-top: 12%;display: block;font-size: 20px;">
+            {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
+          </span>
+        </template>
         <template v-else>
           <span style="margin-top: 10%;display: block;">
             {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 天天看天天送") }}
@@ -49,7 +54,8 @@
           type == 'tips' ||
             type.includes('poor') ||
             type.includes('wait') ||
-            type.includes('full-open')
+            type.includes('full-open') ||
+            type.includes('disable')
         "
       >
         <div :class="$style['bouns-func']">
@@ -57,8 +63,11 @@
           <!-- <div v-if="isUnloginMode" @click="handleClose">
             继续观影
           </div> -->
+          <div v-if="type.includes('disable')" @click="$router.push('/mobile')">
+            {{ $text("S_FIRST_LOOK", "先去逛逛") }}
+          </div>
           <div
-            v-if="
+            v-else-if="
               (missionDesc && type.includes('wait')) ||
                 earnCellNum === hadEarnNum
             "
@@ -72,15 +81,15 @@
           </div>
 
           <!-- 右邊第一個按鈕 -->
-          <!-- <div
-            v-if="isUnloginMode && !loginStatus"
-            @click="$router.push('/mobile/login')"
+          <div
+            v-if="type.includes('disable')"
+            @click="$router.push('/mobile/joinmember')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}
-          </div> -->
+          </div>
           <div
-            v-if="type.includes('poor')"
+            v-else-if="type.includes('poor')"
             @click="$router.push('/mobile/mcenter/deposit')"
             :class="$style['active-btn']"
           >
@@ -100,13 +109,6 @@
           >
             去推广
           </div>
-          <!-- <div
-            v-else-if="!loginStatus"
-            @click="$router.push('/mobile/login')"
-            :class="$style['active-btn']"
-          >
-            {{ $text("S_JOIN_MEMBER", "加入会员") }}
-          </div> -->
           <div v-else @click="handleAcionType" :class="$style['active-btn']">
             {{ getActionName(missionActionType) }}
           </div>

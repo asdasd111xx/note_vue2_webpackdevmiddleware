@@ -36,17 +36,57 @@ const embedGamesList = [
   {
     vendor: "bc",
     kind: 2
-  }
+  },
+  {
+    vendor: "bbp",
+    kind: 3
+  },
   // {
   //   vendor: "hb",
   //   kind: 3
   // },
+  {
+    vendor: "bbin",
+    kind: 3
+  },
+  {
+    vendor: "bbp",
+    kind: 3
+  },
   // {
-  //   vendor: "bbin",
+  //   vendor: "mg2",
   //   kind: 3
+  // },
+  {
+    vendor: "mg_sport",
+    kind: 1
+  },
+  {
+    vendor: "ky",
+    kind: 5
+  },
+  {
+    vendor: "rich88",
+    kind: 3
+  }
+  // {
+  //   vendor: "fg",
+  //   kind: 3
+  // },
+  // {
+  //   vendor: "fg",
+  //   kind: 5
   // }
 ];
 
+// code: "38001"
+// gameName: "捕鱼大师"
+// code: "30599"
+// gameName: "捕鱼达人"
+// code: "30598"
+// gameName: "捕鱼达人2"
+// const embedCodeList = ["38001", "30598", "30599"];
+const embedCodeList = [];
 const checkVersion = function() {
   var agent = window.navigator.userAgent,
     start = agent.indexOf("OS");
@@ -59,7 +99,7 @@ const checkVersion = function() {
   return 0;
 };
 
-export const getEmbedGameVendor = (vendor, kind = 0) => {
+export const getEmbedGameVendor = (vendor, kind = 0, code = "") => {
   console.log(vendor, kind);
   if (!vendor) {
     return null;
@@ -74,6 +114,12 @@ export const getEmbedGameVendor = (vendor, kind = 0) => {
     is = embedGamesList.find(i => i.vendor === vendor);
   }
 
+  // bbin 目前只有捕魚需要
+  if (vendor === "bbin" && code) {
+    is = embedCodeList.find(i => i === code);
+  }
+
+  console.log(is, code);
   let version = checkVersion();
   console.log("IOS VERSION:", version);
 

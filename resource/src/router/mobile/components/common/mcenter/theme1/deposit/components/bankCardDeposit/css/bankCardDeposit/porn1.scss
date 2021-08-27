@@ -1,7 +1,7 @@
 @import "~@/css/variable.scss";
 
 .swiper-wrap {
-  margin-bottom: 10px;
+  margin-top: 31px;
   background-color: #fff;
 }
 
@@ -200,7 +200,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -324,29 +324,59 @@
   color: #db6372;
 }
 
+.exchange-rate,
 .crypto-block {
   float: left;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 52px;
   color: $main_text_color2;
 
+  .time {
+    color: #be9e7f;
+    margin: 0 5px 0 5px;
+
+
+    &.ey {
+      color: #E42A30;
+    }
+
+  }
+
   .content {
     display: flex;
     align-items: center;
     margin-right: 10px;
+  }
 
-    &.onClick {
-      color: $main_text_color3;
+  .no-money {
+    word-break: break-all;
+    margin-left: 10px;
+    color: #a6a9b2;
+
+    &.money {
+      color: #414655;
+    }
+
+    .yb {
+      color: #414655;
+      font-weight: 500;
+    }
+
+    .ey {
+      color: #E42A30;
+      font-weight: 500;
+    }
+
+    .sg {
+      color: #BE9E7F;
+      font-weight: 500;
     }
   }
 
-  .money {
-    max-width: 100px;
-    word-break: break-all;
-    margin-right: 5px;
+  .rate {
+    margin-left: 10px;
   }
 
   .conversion-btn {
@@ -896,6 +926,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -999,7 +1030,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 }
@@ -1019,6 +1050,15 @@
   li {
     flex: 1;
     border-right: 1px solid #f8f8f7;
+  }
+
+
+  &.sg {
+    color: #bf8646;
+  }
+
+  &.ey {
+    color: #e42a30;
   }
 }
 
@@ -1043,4 +1083,51 @@
   height: 34px;
   line-height: 34px;
   text-align: left;
+}
+
+.input-cgpay-address {
+  box-sizing: border-box;
+  width: 70%;
+  height: 20px;
+  line-height: 20px;
+  padding-left: 40px;
+  text-align: left;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+
+  // Chrome/Opera/Safari
+  &::-webkit-input-placeholder {
+    color: #BEBCBC;
+  }
+
+  // Firefox 19+
+  &::-moz-placeholder {
+    color: #BEBCBC;
+  }
+
+  // IE 10+
+  &:-ms-input-placeholder {
+    color: #BEBCBC;
+  }
+
+  // Firefox 18-
+  &:-moz-placeholder {
+    color: #BEBCBC;
+  }
+}
+
+.outer-crypto-selected {
+  width: 80%;
+  padding-left: 40px;
+  background-color: white;
+}
+
+.wallet-address-text {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 5px;
+  font-size: 12px;
+  color: #db6372;
 }
