@@ -68,3 +68,22 @@ export const site_500035 = {
     }
   }
 };
+
+/**
+ * 澳博国际QA@952t(ID：9999894) 測試站
+ */
+export const site_9999894 = {
+  ...preset,
+  MOBILE_WEB_TPL: "aobo1",
+  VERSION: getVersion("aobo1"),
+  SITE_NAME: "澳博国际",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "1",
+      YB: "9",
+      SP: "113",
+      GAY: "7",
+      LES: "8"
+    }
+  }
+};
