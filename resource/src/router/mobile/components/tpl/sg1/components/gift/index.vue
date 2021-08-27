@@ -1,43 +1,53 @@
 <template>
   <mobile-container :class="$style.container">
     <div slot="content" class="content-wrap">
-      <iframe :src="campaignUrl"></iframe>
+      <iframe :src="url"></iframe>
     </div>
   </mobile-container>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
     mobileContainer
   },
+  data() {
+    return {
+      url: ""
+    };
+  },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    }),
-    campaignUrl() {
-      switch (this.memInfo.user.domain) {
-        // 絲瓜
-        //qa
-        case "500035":
-          return "https://sgtt.iplay.bet/p/2108030001";
-          break;
-        //demo
-        case "81":
-          return "https://sgtt.iplay.bet/p/2108020001";
-          break;
-        //正式
-        case "80":
-          return "https://sgtt.iplay.bet/p/2107230001";
-          break;
-
-        default:
-          break;
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    })
+  },
+  methods: {
+    ...mapActions(["actionSetGlobalMessage"])
+  },
+  created() {
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+      params: {
+        lang: "zh-cn",
+        urlName: "specific_promotion",
+        needToken: false
       }
-    }
+    }).then(res => {
+      if (res.status === "000") {
+        this.url = res.data.uri;
+      } else {
+        this.actionSetGlobalMessage({
+          msg: res.data,
+          code: res.errodCode
+        });
+      }
+    });
   }
 };
 </script>
