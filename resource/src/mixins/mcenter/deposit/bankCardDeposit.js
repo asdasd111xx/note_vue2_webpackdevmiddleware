@@ -182,6 +182,16 @@ export default {
       ) {
         promotionValue = +this.offerInfo.per_offer_limit;
       }
+      // 檢查每日優惠金額上限
+      if (this.offerInfo.is_full_offer) {
+        promotionValue = 0;
+      } else if (
+        promotionValue >
+        +this.offerInfo.per_offer_limit - +this.offerInfo.gotten_offer
+      ) {
+        promotionValue =
+          +this.offerInfo.per_offer_limit - +this.offerInfo.gotten_offer;
+      }
 
       // 總額計算
       total = deductionValue
@@ -274,14 +284,20 @@ export default {
      */
     feeText() {
       // 百分比手續費
-      if (+this.getPassRoadOrAi.fee_percent) {
-        return `需承担  ${+this.realSaveMoney *
-          +this.getPassRoadOrAi.fee_percent}% 手续费(充值金额 ${
-          this.getPassRoadOrAi.fee_percent
-        } %)，费用由第三方收取`;
-      }
+      // if (+this.getPassRoadOrAi.fee_percent) {
+      //   return `需承担  ${+this.realSaveMoney *
+      //     +this.getPassRoadOrAi.fee_percent}% 手续费(充值金额 ${
+      //     this.getPassRoadOrAi.fee_percent
+      //   } %)，费用由第三方收取`;
+      // }
 
-      return `需承担 ${this.getPassRoadOrAi.fee_amount} 元手续费，费用由第三方收取`;
+      return (
+        `需承担 ${this.offerInfo.fee_amount} 元手续费` +
+        (+this.offerInfo.fee_percent > 0
+          ? `(充值金额 ${this.offerInfo.fee_percent} %)`
+          : "") +
+        `，费用由第三方收取`
+      );
     },
     /**
      * 存款金額最小至最大值
@@ -677,7 +693,7 @@ export default {
      * 取得支付優惠
      * @method getPayOffer
      */
-    getPayOffer() {
+    getPayOffer(amount) {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Offer/And/Fee`,
@@ -685,6 +701,7 @@ export default {
           channelId: this.curPassRoad.id,
           paymentMethodId: this.curPayInfo.payment_method_id,
           username: this.username,
+          amount: amount,
           lang: "zh-cn"
         }
       }).then(res => {

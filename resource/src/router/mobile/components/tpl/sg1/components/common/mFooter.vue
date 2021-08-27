@@ -65,9 +65,9 @@ export default {
           path: "/mobile/service?prev=false"
         },
         {
-          key: "sponsor",
-          name: this.$text("S_ALLIANCE", "联盟"),
-          path: "/mobile/discover/sponsor?prev=false"
+          key: "gift",
+          name: this.$text("S_GIFT", "礼包"),
+          path: "/mobile/gift"
         },
         {
           key: "mcenter-home",

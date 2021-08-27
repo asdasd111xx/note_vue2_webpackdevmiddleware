@@ -964,7 +964,7 @@
                   [$style['success']]: moneyValue
                 }
               ]"
-              @click="showRealStatus = true"
+              @click="showRealStatusType(true)"
             >
               实际到帐： ¥{{ realSaveMoney }} 
               <span v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"> (充值优惠) </span>
@@ -996,7 +996,7 @@
               </ul>
               <div
                 :class="$style['message-close']"
-                @click="showRealStatus = false"
+                @click="showRealStatusType(false)"
               >
                 关闭
               </div>
@@ -2050,6 +2050,12 @@ export default {
       };
       //預設當前時間
       this.speedField["depositTime"] = new Date().Format("yyyy-MM-dd hh:mm:ss");
+    },
+    showRealStatusType(type){
+      this.showRealStatus = type;
+      if(type){
+        this.getPayOffer(this.moneyValue)
+      }
     }
   }
 };

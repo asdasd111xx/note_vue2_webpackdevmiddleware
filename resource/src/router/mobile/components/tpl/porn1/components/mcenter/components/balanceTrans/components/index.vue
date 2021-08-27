@@ -34,7 +34,7 @@
         <span :class="[$style['balance-refjackpot-image']]" />
       </div>
       <div
-        v-if="bonus"
+        v-if="bonus.balance"
         :class="[
           $style['balance-item'],
           {
@@ -612,12 +612,7 @@ export default {
       //     this.backAccount();
       //   }
     });
-    //紅利帳戶api
-    axios.get("/api/v1/c/gift-card").then(response => {
-      if (response.data.result === "ok") {
-        this.bonus = response.data.total;
-      }
-    });
+    this.getDomainConfig();
     // this.getRecentlyOpened()
     this.initTranList(true);
     this.getRedJackpot();
@@ -1006,6 +1001,31 @@ export default {
           this.redJackpotData = null;
         }
       });
+    },
+    getDomainConfig() {
+      return axios({
+        method: "get",
+        url: "/api/v2/c/domain-config"
+      })
+        .then(res => {
+          if (res && res.data && res.data.ret) {
+            if (res.data.ret.gift_card) {
+              //紅利帳戶api
+              axios.get("/api/v1/c/gift-card").then(response => {
+                if (response.data.result === "ok") {
+                  this.bonus = response.data.total;
+                }
+              });
+            }
+          }
+        })
+        .catch(res => {
+          this.actionSetGlobalMessage({
+            msg: res.response.data.msg,
+            code: res.response.data.code,
+            origin: "home"
+          });
+        });
     }
   }
 };

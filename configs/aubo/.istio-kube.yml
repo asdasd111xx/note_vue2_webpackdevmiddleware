@@ -3,25 +3,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: istio-sigua
+  namespace: istio-aubo
   labels:
-    app: sigua-frontend-proxy-{{.env}}
-    base: sigua-frontend
-    version: v1
+    app: aubo-frontend-{{.env}}
+    base: aubo-frontend
   name: {{.deployName}}
 spec:
   replicas: 3
   selector:
     matchLabels:
-        app: sigua-frontend-proxy-{{.env}}
-        base: sigua-frontend
-        version: v1
+      app: aubo-frontend-{{.env}}
+      base: aubo-frontend
   template:
     metadata:
       labels:
-        app: sigua-frontend-proxy-{{.env}}
-        base: sigua-frontend
-        version: v1
+        app: aubo-frontend-{{.env}}
+        base: aubo-frontend
     spec:
       containers:
       - image: {{.imageName}}
@@ -36,7 +33,7 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        name: sigua-frontend-proxy
+        name: aubo-frontend
         ports:
         - containerPort: 80
           protocol: TCP

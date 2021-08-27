@@ -28,6 +28,8 @@ export default {
       import(
         /* webpackChunkName: 'discoverSg1' */ "../../tpl/sg1/components/discover"
       ),
+    giftSg1: () =>
+      import(/* webpackChunkName: 'giftSg1' */ "../../tpl/sg1/components/gift"),
     serviceSg1: () =>
       import(
         /* webpackChunkName: 'serviceSg1' */ "../../tpl/sg1/components/service"
