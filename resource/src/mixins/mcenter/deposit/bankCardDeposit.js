@@ -679,7 +679,6 @@ export default {
      * @method getPayOffer
      */
     getPayOffer() {
-      console.log(123);
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Offer/And/Fee`,
@@ -689,7 +688,11 @@ export default {
           username: this.username,
           lang: "zh-cn"
         }
-      }).then(res => {});
+      }).then(res => {
+        if (res.status === "000") {
+          this.offerInfo = res.data;
+        }
+      });
     },
     /**
      * 切換支付群組
