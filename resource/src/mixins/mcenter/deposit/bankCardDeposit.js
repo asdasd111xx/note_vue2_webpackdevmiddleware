@@ -287,15 +287,12 @@ export default {
      */
     feeText() {
       // 百分比手續費
-      // if (+this.getPassRoadOrAi.fee_percent) {
-      //   return `需承担  ${+this.realSaveMoney *
-      //     +this.getPassRoadOrAi.fee_percent}% 手续费(充值金额 ${
-      //     this.getPassRoadOrAi.fee_percent
-      //   } %)，费用由第三方收取`;
-      // }
-
       return (
-        `需承担 ${this.offerInfo.fee_amount} 元手续费` +
+        `需承担 ${
+          +this.offerInfo.fee_percent > 0
+            ? this.offerInfo.fee
+            : this.offerInfo.fee_amount
+        } 元手续费` +
         (+this.offerInfo.fee_percent > 0
           ? `(充值金额 ${this.offerInfo.fee_percent} %)`
           : "") +
