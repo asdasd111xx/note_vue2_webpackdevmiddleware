@@ -15,9 +15,9 @@ export const basic = {
 };
 
 export const getVersion = tpl => {
-  let tpl = version.find(i => i.site === tpl);
-  if (tpl) {
-    return version.find(i => i.site === tpl).version;
+  let _tpl = version.find(i => i.site === tpl);
+  if (_tpl) {
+    return _tpl.version;
   }
   return "";
 };
