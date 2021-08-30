@@ -10,11 +10,19 @@
             :class="$style['news-item']"
           >
             <h4 :class="$style['news-title']">{{ item.title }}</h4>
-            <p
-              :class="$style['news-content']"
-              v-html="item.content.replace('\n', '<br>')"
-              v-if="item.content"
-            />
+
+            <template v-if="item.content">
+              <p
+                :class="$style['news-content']"
+                v-html="item.content.replace('\n', '<br>')"
+                v-if="item.content"
+              />
+            </template>
+            <template v-else-if="item.image && postImage">
+              <div :class="$style['news-image']">
+                <img :src="postImage" />
+              </div>
+            </template>
           </div>
         </div>
         <div :class="[$style['no-remind'], 'clearfix']">
@@ -85,6 +93,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
@@ -94,7 +103,8 @@ export default {
   },
   data() {
     return {
-      isTick: false
+      isTick: false,
+      postImage: ""
     };
   },
   computed: {
@@ -104,6 +114,16 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    }
+  },
+  created() {
+    if (this.post && this.post.list) {
+      this.post.list.forEach(item => {
+        if (item && item.image) {
+          console.log(item.image);
+          this.getImage(item.image);
+        }
+      });
     }
   },
   methods: {
@@ -118,6 +138,14 @@ export default {
       }
 
       this.$emit("close", !!this.sitePostList);
+    },
+    getImage(imageID) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Image/${imageID}`
+      }).then(res => {
+        this.postImage = res.data;
+      });
     }
   }
 };
@@ -250,5 +278,14 @@ export default {
   text-align: center;
   width: 100%;
   margin-bottom: 5px;
+}
+
+.news-image {
+  width: 100%;
+
+  > img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

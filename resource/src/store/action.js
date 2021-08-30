@@ -614,6 +614,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     }
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
+    dispatch("actionSetPost");
 
     if (state.loginStatus) {
       const params = {
@@ -630,7 +631,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       };
 
       // dispatch('actionSetVip');
-      dispatch("actionSetPost");
       dispatch("actionSetUserBalance");
       dispatch("actionSetUserConfig");
       // 取得會員我的返水
@@ -996,15 +996,21 @@ export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
     });
 };
 // 會員端-設定公告
-export const actionSetPost = ({ commit }, postType = 1) =>
-  member.post({
+export const actionSetPost = ({ commit, state }, postType = 1) => {
+  return goLangApiRequest({
+    method: "get",
+    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Announcement",
     params: {
       page: postType //0 首頁與優惠頁, 1首頁, 2優惠頁
-    },
-    success: response => {
-      commit(types.SETPOST, response);
     }
-  });
+  })
+    .then(res => {
+      if (res && res.data && res.data.ret) {
+        commit(types.SETPOST, res.data);
+      }
+    })
+    .catch(error => {});
+};
 
 // 會員端-加入最愛的遊戲列表
 export const actionSetFavoriteGame = ({ commit }, vendor = "") => {
