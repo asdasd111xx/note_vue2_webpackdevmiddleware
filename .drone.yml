@@ -153,7 +153,7 @@ steps:
     project: rd7-project
     template: configs/aubo/.istio-kube.yml
     vars:
-      deployName: aubo-frontend-proxy-qa
+      deployName: aubo-frontend-qa
       env: qa
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-qa
@@ -328,7 +328,7 @@ steps:
     project: rd7-project
     template: configs/aubo/.istio-kube.yml
     vars:
-      deployName: aubo-frontend-proxy-demo
+      deployName: aubo-frontend-demo
       env: demo
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
@@ -349,7 +349,7 @@ steps:
     project: rd7-project
     template: configs/aubo/.istio-kube.yml
     vars:
-      deployName: aubo-frontend-proxy-prod
+      deployName: aubo-frontend-prod
       env: prod
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
