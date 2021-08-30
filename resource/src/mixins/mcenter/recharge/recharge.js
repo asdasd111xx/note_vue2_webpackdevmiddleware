@@ -3,7 +3,7 @@ import { mapActions, mapGetters } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
 import axios from "axios";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   props: {},

@@ -2,7 +2,7 @@ import { API_WITHDRAW_ASSIST } from "@/config/api";
 import EST from "@/lib/EST";
 import axios from "axios";
 import { mapActions } from "vuex";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   data() {

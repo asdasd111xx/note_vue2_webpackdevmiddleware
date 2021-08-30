@@ -73,36 +73,38 @@
       <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●累计充值(元)：
         <span :class="$style['money']">{{
-          userVipInfo.amount_info.deposit_total
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_total)
         }}</span>
-        ({{ userVipInfo.amount_info.deposit_total }}/{{
-          nextLevelDepositTotalData
+        ({{ formatThousandsCurrency(userVipInfo.amount_info.deposit_total) }}/{{
+          formatThousandsCurrency(nextLevelDepositTotalData)
         }})
       </div>
       <div v-else :class="$style['desc-text']">
         ●当前充值(元)
         <span :class="$style['money']">{{
-          userVipInfo.amount_info.deposit_amount
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
         }}</span>
-        ({{ userVipInfo.amount_info.deposit_amount }}/{{
-          nextLevelDepositLimitData
-        }})
+        ({{
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
+        }}/{{ formatThousandsCurrency(nextLevelDepositLimitData) }})
       </div>
       <div :class="$style['desc-text']">
         {{ vipConfig.base_type != 3 ? "●累计流水(元)：" : "●当前流水(元)：" }}
         <span :class="$style['money']">{{
-          userVipInfo.amount_info.valid_bet
+          formatThousandsCurrency(userVipInfo.amount_info.valid_bet)
         }}</span>
-        ({{ userVipInfo.amount_info.valid_bet }}/{{ nextLevelValidBetData }})
+        ({{ formatThousandsCurrency(userVipInfo.amount_info.valid_bet) }}/{{
+          formatThousandsCurrency(nextLevelValidBetData)
+        }})
       </div>
       <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●当前充值(元)：
         <span :class="$style['money']">{{
-          userVipInfo.amount_info.deposit_amount
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
         }}</span>
-        ({{ userVipInfo.amount_info.deposit_amount }}/{{
-          nextLevelDepositLimitData
-        }})
+        ({{
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
+        }}/{{ formatThousandsCurrency(nextLevelDepositLimitData) }})
       </div>
       <div :class="$style['desc-text']">
         ●充值次数
@@ -120,6 +122,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
+
 export default {
   props: {
     vipLevelList: {
@@ -258,6 +262,9 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     getAvatarSrc() {
       if (!this.loginStatus) return;
 

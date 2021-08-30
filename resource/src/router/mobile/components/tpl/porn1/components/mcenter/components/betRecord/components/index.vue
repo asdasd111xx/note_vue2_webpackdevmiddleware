@@ -261,6 +261,8 @@ import InfiniteLoading from "vue-infinite-loading";
 import EST from "@/lib/EST";
 import ajax from "@/lib/ajax";
 import datePicker from "@/router/mobile/components/common/datePicker";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
+
 export default {
   components: {
     datePicker,
@@ -553,10 +555,13 @@ export default {
     getCount(date) {
       return this.mainListData.filter(item => item.day === date).length;
     },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     getNoRoundText(value) {
       let val = String(value);
       // 需要無條件捨去小數點(不需要四捨五入)
-      return val.substr(0, val.indexOf(".") + 3);
+      return this.formatThousandsCurrency(val.substr(0, val.indexOf(".") + 3));
     },
     /**
      * 捲動加載

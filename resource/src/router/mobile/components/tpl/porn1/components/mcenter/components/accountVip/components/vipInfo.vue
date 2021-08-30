@@ -47,7 +47,11 @@
                   >无限制</span
                 >
                 <span v-else>
-                  {{ currentLevelData.withdraw_fee.withdraw_limit }}
+                  {{
+                    formatThousandsCurrency(
+                      currentLevelData.withdraw_fee.withdraw_limit
+                    )
+                  }}
                 </span>
               </div>
             </div>
@@ -63,7 +67,9 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>{{ currentLevelData.gift_amount }}</div>
+            <div>
+              {{ formatThousandsCurrency(currentLevelData.gift_amount) }}
+            </div>
             <div>晋级礼金(晋级自动派发)</div>
           </div>
         </div>
@@ -113,7 +119,9 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>{{ currentLevelData.birth_amount }}</div>
+            <div>
+              {{ formatThousandsCurrency(currentLevelData.birth_amount) }}
+            </div>
             <div>生日礼金</div>
           </div>
         </div>
@@ -150,6 +158,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   props: {
@@ -169,6 +178,11 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    }
+  },
+  methods: {
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

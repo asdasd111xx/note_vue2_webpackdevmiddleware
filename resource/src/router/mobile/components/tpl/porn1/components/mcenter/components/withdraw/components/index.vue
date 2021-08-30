@@ -62,7 +62,7 @@
           </div>
           <!-- 紅利彩金 -->
           <div
-          v-if="bonus.balance"
+            v-if="bonus.balance"
             :class="[
               $style['balance-item'],
               {
@@ -658,7 +658,7 @@ import withdrawMoreMethod from "./withdrawMoreMethod";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 import { API_CRYPTO_MONEY } from "@/config/api";
 import common from "@/api/common";

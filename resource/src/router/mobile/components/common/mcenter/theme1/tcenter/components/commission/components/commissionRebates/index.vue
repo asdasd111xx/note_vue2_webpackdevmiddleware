@@ -32,7 +32,9 @@
                 {{ caculateList.period | dateFormatNoTime }}
               </div>
               返利：{{
-                caculateList.amount ? commaFormat(caculateList.amount) : "--"
+                caculateList.amount
+                  ? formatThousandsCurrency(caculateList.amount)
+                  : "--"
               }}
             </template>
             <template v-else>
@@ -85,7 +87,7 @@
               </span>
               <div :class="$style['content-right']">
                 <template v-if="caculateList.sub_valid_bet">
-                  {{ commaFormat(caculateList.sub_valid_bet) }}
+                  {{ formatThousandsCurrency(caculateList.sub_valid_bet) }}
                 </template>
 
                 <template v-else>
@@ -106,7 +108,7 @@
               >
                 {{
                   caculateList.sub_profit
-                    ? commaFormat(caculateList.sub_profit)
+                    ? formatThousandsCurrency(caculateList.sub_profit)
                     : "--"
                 }}
               </div>
@@ -118,7 +120,9 @@
               </span>
               <div :class="$style['content-right']">
                 {{
-                  caculateList.amount ? commaFormat(caculateList.amount) : "--"
+                  caculateList.amount
+                    ? formatThousandsCurrency(caculateList.amount)
+                    : "--"
                 }}
               </div>
             </div>
@@ -130,7 +134,7 @@
               <div :class="$style['content-right']">
                 {{
                   caculateList.self_min_limit
-                    ? commaFormat(caculateList.self_min_limit)
+                    ? formatThousandsCurrency(caculateList.self_min_limit)
                     : "--"
                 }}
               </div>
@@ -238,7 +242,7 @@
 </template>
 
 <script>
-import Vue, { nextTick } from "vue";
+import Vue from "vue";
 import mcenter from "@/api/mcenter";
 import { format } from "date-fns";
 import bbosRequest from "@/api/bbosRequest";
@@ -247,6 +251,7 @@ import popup from "./components/popup";
 import detail from "./components/detail";
 import EST from "@/lib/EST";
 import tcenterLabel from "../../../../../tcenterSame/tcenterLabel";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -361,11 +366,8 @@ export default {
 
   methods: {
     ...mapActions(["actionSetSystemTime", "actionSetGlobalMessage"]),
-    commaFormat(value) {
-      //千分位＋小數點後兩位
-      return `${Number(value)
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     },
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({
