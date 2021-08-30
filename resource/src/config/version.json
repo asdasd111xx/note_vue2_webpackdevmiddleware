@@ -10,5 +10,9 @@
   {
     "site": "sg1",
     "version": "1.0.237"
+  },
+  {
+    "site": "aobo1",
+    "version": "1.0.1"
   }
 ]
