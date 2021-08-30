@@ -15,28 +15,27 @@
 </template>
 
 <script>
-import notification from '@/router/mobile/components/common/notification';
-import message from '@/router/mobile/components/common/message2';
-import { mapGetters, mapActions } from 'vuex';
+import notification from "@/router/mobile/components/common/notification";
+import message from "@/router/mobile/components/common/message2";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     notification,
     message
   },
+  created() {},
   data() {
-    return {
-    };
+    return {};
   },
   watch: {
-    globalMessage() {
-    }
+    globalMessage() {}
   },
   computed: {
     ...mapGetters({
-      globalMessage: 'getGlobalMessage'
-    }),
-  },
+      globalMessage: "getGlobalMessage"
+    })
+  }
 };
 </script>
 <style src="@/css/index.scss" lang="scss"></style>

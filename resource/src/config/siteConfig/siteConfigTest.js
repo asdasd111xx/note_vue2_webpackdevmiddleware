@@ -74,7 +74,7 @@ export const site_500035 = {
  */
 export const site_9999894 = {
   ...preset,
-  MOBILE_WEB_TPL: "aobo1",
+  MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
   PORN_CONFIG: {

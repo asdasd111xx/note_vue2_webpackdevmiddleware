@@ -226,7 +226,7 @@ export const site_100009 = {
  */
 export const site_92 = {
   ...preset,
-  MOBILE_WEB_TPL: "aobo1", // 手機網頁版模版
+  MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
   ACTIVES_BOUNS_WEBSOCKETV2:
@@ -247,7 +247,7 @@ export const site_92 = {
  */
 export const site_93 = {
   ...preset,
-  MOBILE_WEB_TPL: "aobo1",
+  MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",

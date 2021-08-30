@@ -1,300 +1,304 @@
 export default {
   normal: {
-    iframePorn1: () =>
+    iframeAobo1: () =>
       import(
-        /* webpackChunkName: 'iframePorn1' */ "../../tpl/porn1/components/iframe"
+        /* webpackChunkName: 'iframeAobo1' */ "../../tpl/porn1/components/iframe"
       ),
-    homePorn1: () =>
+    homeAobo1: () =>
       import(
-        /* webpackChunkName: 'homePorn1' */ "../../tpl/porn1/components/home"
+        /* webpackChunkName: 'homeAobo1' */ "../../tpl/porn1/components/home"
       ),
-    loginPorn1: () =>
+    loginAobo1: () =>
       import(
-        /* webpackChunkName: 'loginPorn1' */ "../../tpl/porn1/components/login"
+        /* webpackChunkName: 'loginAobo1' */ "../../tpl/porn1/components/login"
       ),
-    hotLobbyPorn1: () =>
+    hotLobbyAobo1: () =>
       import(
-        /* webpackChunkName: 'hotLobbyPorn1' */ "../../tpl/porn1/components/hotLobby"
+        /* webpackChunkName: 'hotLobbyAobo1' */ "../../tpl/porn1/components/hotLobby"
       ),
-    activityPorn1: () =>
+    activityAobo1: () =>
       import(
-        /* webpackChunkName: 'activityPorn1' */ "../../tpl/porn1/components/activity"
+        /* webpackChunkName: 'activityAobo1' */ "../../tpl/porn1/components/activity"
       ),
-    casinoPorn1: () =>
+    casinoAobo1: () =>
       import(
-        /* webpackChunkName: 'casinoPorn1' */ "../../tpl/porn1/components/casino"
+        /* webpackChunkName: 'casinoAobo1' */ "../../tpl/porn1/components/casino"
       ),
-    cardPorn1: () =>
+    cardAobo1: () =>
       import(
-        /* webpackChunkName: 'cardPorn1' */ "../../tpl/porn1/components/card"
+        /* webpackChunkName: 'cardAobo1' */ "../../tpl/porn1/components/card"
       ),
-    mahjongPorn1: () =>
+    mahjongAobo1: () =>
       import(
-        /* webpackChunkName: 'mahjongPorn1' */ "../../tpl/porn1/components/mahjong"
+        /* webpackChunkName: 'mahjongAobo1' */ "../../tpl/porn1/components/mahjong"
       ),
-    promotionPorn1: () =>
+    promotionAobo1: () =>
       import(
-        /* webpackChunkName: 'promotionPorn1' */ "../../tpl/porn1/components/promotion"
+        /* webpackChunkName: 'promotionAobo1' */ "../../tpl/porn1/components/promotion"
       ),
-    forgetPwdPorn1: () =>
+    forgetPwdAobo1: () =>
       import(
-        /* webpackChunkName: 'forgetPwdPorn1' */ "../../tpl/porn1/components/forgetPwd"
+        /* webpackChunkName: 'forgetPwdAobo1' */ "../../tpl/porn1/components/forgetPwd"
       ),
-    resetPwdPorn1: () =>
+    resetPwdAobo1: () =>
       import(
-        /* webpackChunkName: 'resetPwdPorn1' */ "../../tpl/porn1/components/resetPwd"
+        /* webpackChunkName: 'resetPwdAobo1' */ "../../tpl/porn1/components/resetPwd"
       ),
-    videoPlayPorn1: () =>
+    videoPlayAobo1: () =>
       import(
-        /* webpackChunkName: 'videoPlayPorn1' */ "../../tpl/porn1/components/videoPlay"
+        /* webpackChunkName: 'videoPlayAobo1' */ "../../tpl/porn1/components/videoPlay"
       ),
-    videoListPorn1: () =>
+    videoListAobo1: () =>
       import(
-        /* webpackChunkName: 'videoListPorn1' */ "../../tpl/porn1/components/videoList"
+        /* webpackChunkName: 'videoListAobo1' */ "../../tpl/porn1/components/videoList"
       ),
-    discoverPorn1: () =>
+    discoverAobo1: () =>
       import(
-        /* webpackChunkName: 'discoverPorn1' */ "../../tpl/porn1/components/discover"
+        /* webpackChunkName: 'discoverAobo1' */ "../../tpl/porn1/components/discover"
       ),
-    artistPorn1: () =>
+    giftAobo1: () =>
       import(
-        /* webpackChunkName: 'artistPorn1' */ "../../tpl/porn1/components/artist"
+        /* webpackChunkName: 'giftAobo1' */ "../../tpl/porn1/components/gift"
       ),
-    searchPorn1: () =>
+    artistAobo1: () =>
       import(
-        /* webpackChunkName: 'searchPorn1' */ "../../tpl/porn1/components/search"
+        /* webpackChunkName: 'artistAobo1' */ "../../tpl/porn1/components/artist"
       ),
-    tagPorn1: () =>
+    searchAobo1: () =>
       import(
-        /* webpackChunkName: 'tagPorn1' */ "../../tpl/porn1/components/tag"
+        /* webpackChunkName: 'searchAobo1' */ "../../tpl/porn1/components/search"
       ),
-    joinMemberPorn1: () =>
+    tagAobo1: () =>
       import(
-        /* webpackChunkName: 'joinMemberPorn1' */ "../../tpl/porn1/components/joinMember"
+        /* webpackChunkName: 'tagAobo1' */ "../../tpl/porn1/components/tag"
       ),
-    liveStreamPorn1: () =>
+    joinMemberAobo1: () =>
       import(
-        /* webpackChunkName: 'liveStreamPorn1' */ "../../tpl/porn1/components/liveStream"
+        /* webpackChunkName: 'joinMemberAobo1' */ "../../tpl/porn1/components/joinMember"
       ),
-    servicePorn1: () =>
+    liveStreamAobo1: () =>
       import(
-        /* webpackChunkName: 'servicePorn1' */ "../../tpl/porn1/components/service"
+        /* webpackChunkName: 'liveStreamAobo1' */ "../../tpl/porn1/components/liveStream"
       ),
-    webviewPorn1: () =>
+    serviceAobo1: () =>
       import(
-        /* webpackChunkName: 'webviewPorn1' */ "../../tpl/porn1/components/webview"
+        /* webpackChunkName: 'serviceAobo1' */ "../../tpl/porn1/components/service"
       ),
-    installPorn1: () =>
+    webviewAobo1: () =>
       import(
-        /* webpackChunkName: 'installPorn1' */ "../../tpl/porn1/components/install"
+        /* webpackChunkName: 'webviewAobo1' */ "../../tpl/porn1/components/webview"
       ),
-    shareDownloadPorn1: () =>
+    installAobo1: () =>
       import(
-        /* webpackChunkName: 'shareDownloadPorn1' */ "../../tpl/porn1/components/shareDownload"
+        /* webpackChunkName: 'installAobo1' */ "../../tpl/porn1/components/install"
       ),
-    launchPorn1: () =>
+    shareDownloadAobo1: () =>
       import(
-        /* webpackChunkName: 'launchPorn1' */ "../../tpl/porn1/components/launch"
+        /* webpackChunkName: 'shareDownloadAobo1' */ "../../tpl/porn1/components/shareDownload"
       ),
-    withdrawAccountPorn1: () =>
+    launchAobo1: () =>
       import(
-        /* webpackChunkName: 'withdrawAccountPorn1' */ "../../common/withdrawAccount/withdrawAccount"
+        /* webpackChunkName: 'launchAobo1' */ "../../tpl/porn1/components/launch"
       ),
-    agLoginPorn1: () =>
+    withdrawAccountAobo1: () =>
       import(
-        /* webpackChunkName: 'agLoginPorn1' */ "../../tpl/porn1/components/agLogin/components"
+        /* webpackChunkName: 'withdrawAccountAobo1' */ "../../common/withdrawAccount/withdrawAccount"
       ),
-    joinAgentPorn1: () =>
+    agLoginAobo1: () =>
       import(
-        /* webpackChunkName: 'joinAgentPorn1' */ "../../tpl/porn1/components/joinAgent/components"
+        /* webpackChunkName: 'agLoginAobo1' */ "../../tpl/porn1/components/agLogin/components"
+      ),
+    joinAgentAobo1: () =>
+      import(
+        /* webpackChunkName: 'joinAgentAobo1' */ "../../tpl/porn1/components/joinAgent/components"
       )
   },
   mcenter: {
-    homePorn1: () =>
+    homeAobo1: () =>
       import(
-        /* webpackChunkName: 'homePorn1' */ "../../tpl/porn1/components/mcenter/components/home"
+        /* webpackChunkName: 'homeAobo1' */ "../../tpl/porn1/components/mcenter/components/home"
       ),
-    accountDataPorn1: () =>
+    accountDataAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData"
+        /* webpackChunkName: 'accountDataAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData"
       ),
-    // bindingDevicePorn1: () => import(/* webpackChunkName: 'bindingDevicePorn1' */'../../tpl/porn1/components/mcenter/components/bindingDevice'),
-    balanceTransPorn1: () =>
+    // bindingDeviceAobo1: () => import(/* webpackChunkName: 'bindingDeviceAobo1' */'../../tpl/porn1/components/mcenter/components/bindingDevice'),
+    balanceTransAobo1: () =>
       import(
-        /* webpackChunkName: 'balanceTransPorn1' */ "../../tpl/porn1/components/mcenter/components/balanceTrans"
+        /* webpackChunkName: 'balanceTransAobo1' */ "../../tpl/porn1/components/mcenter/components/balanceTrans"
       ),
-    creditTransPorn1: () =>
+    creditTransAobo1: () =>
       import(
-        /* webpackChunkName: 'creditTransPorn1' */ "../../tpl/porn1/components/mcenter/components/creditTrans"
+        /* webpackChunkName: 'creditTransAobo1' */ "../../tpl/porn1/components/mcenter/components/creditTrans"
       ),
-    bankCardPorn1: () =>
+    bankCardAobo1: () =>
       import(
-        /* webpackChunkName: 'bankCardPorn1' */ "../../tpl/porn1/components/mcenter/components/bankCard"
+        /* webpackChunkName: 'bankCardAobo1' */ "../../tpl/porn1/components/mcenter/components/bankCard"
       ),
-    bankRebatePorn1: () =>
+    bankRebateAobo1: () =>
       import(
-        /* webpackChunkName: 'bankRebatePorn1' */ "../../tpl/porn1/components/mcenter/components/bankRebate"
+        /* webpackChunkName: 'bankRebateAobo1' */ "../../tpl/porn1/components/mcenter/components/bankRebate"
       ),
-    betRecordPorn1: () =>
+    betRecordAobo1: () =>
       import(
-        /* webpackChunkName: 'betRecordPorn1' */ "../../tpl/porn1/components/mcenter/components/betRecord"
+        /* webpackChunkName: 'betRecordAobo1' */ "../../tpl/porn1/components/mcenter/components/betRecord"
       ),
-    // bonusAccountPorn1: () => import(/* webpackChunkName: 'bonusAccountPorn1' */'../../tpl/porn1/components/mcenter/components/bonusAccount'),
-    moneyDetailPorn1: () =>
+    // bonusAccountAobo1: () => import(/* webpackChunkName: 'bonusAccountAobo1' */'../../tpl/porn1/components/mcenter/components/bonusAccount'),
+    moneyDetailAobo1: () =>
       import(
-        /* webpackChunkName: 'moneyDetailPorn1' */ "../../tpl/porn1/components/mcenter/components/moneyDetail"
+        /* webpackChunkName: 'moneyDetailAobo1' */ "../../tpl/porn1/components/mcenter/components/moneyDetail"
       ),
-    informationPorn1: () =>
+    informationAobo1: () =>
       import(
-        /* webpackChunkName: 'informationPorn1' */ "../../tpl/porn1/components/mcenter/components/information"
+        /* webpackChunkName: 'informationAobo1' */ "../../tpl/porn1/components/mcenter/components/information"
       ),
-    withdrawPorn1: () =>
+    withdrawAobo1: () =>
       import(
-        /* webpackChunkName: 'withdrawPorn1' */ "../../tpl/porn1/components/mcenter/components/withdraw"
+        /* webpackChunkName: 'withdrawAobo1' */ "../../tpl/porn1/components/mcenter/components/withdraw"
       ),
-    depositPorn1: () =>
+    depositAobo1: () =>
       import(
-        /* webpackChunkName: 'depositPorn1' */ "../../tpl/porn1/components/mcenter/components/deposit"
+        /* webpackChunkName: 'depositAobo1' */ "../../tpl/porn1/components/mcenter/components/deposit"
       ),
-    accountVipPorn1: () =>
+    accountVipAobo1: () =>
       import(
-        /* webpackChunkName: 'accountVipPorn1' */ "../../tpl/porn1/components/mcenter/components/accountVip"
+        /* webpackChunkName: 'accountVipAobo1' */ "../../tpl/porn1/components/mcenter/components/accountVip"
       ),
-    accountVipDetailPorn1: () =>
+    accountVipDetailAobo1: () =>
       import(
-        /* webpackChunkName: 'accountVipDetailPorn1' */ "../../tpl/porn1/components/mcenter/components/vipDetail"
+        /* webpackChunkName: 'accountVipDetailAobo1' */ "../../tpl/porn1/components/mcenter/components/vipDetail"
       ),
-    tcenterCommissionPorn1: () =>
+    tcenterCommissionAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterCommissionPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/commission"
+        /* webpackChunkName: 'tcenterCommissionAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/commission"
       ),
-    tcenterGameRecordPorn1: () =>
+    tcenterGameRecordAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterGameRecordPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/gameRecord"
+        /* webpackChunkName: 'tcenterGameRecordAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/gameRecord"
       ),
-    tcenterManagementPorn1: () =>
+    tcenterManagementAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterManagementPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/management"
+        /* webpackChunkName: 'tcenterManagementAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/management"
       ),
-    tcenterRecommendGiftPorn1: () =>
+    tcenterRecommendGiftAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenteRecommendGiftPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/recommendGift"
+        /* webpackChunkName: 'tcenteRecommendGiftAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/recommendGift"
       ),
-    aboutPorn1: () =>
+    aboutAobo1: () =>
       import(
-        /* webpackChunkName: 'aboutPorn1' */ "../../tpl/porn1/components/mcenter/components/about"
+        /* webpackChunkName: 'aboutAobo1' */ "../../tpl/porn1/components/mcenter/components/about"
       ),
-    settingPorn1: () =>
+    settingAobo1: () =>
       import(
-        /* webpackChunkName: 'settingPorn1' */ "../../tpl/porn1/components/mcenter/components/setting"
+        /* webpackChunkName: 'settingAobo1' */ "../../tpl/porn1/components/mcenter/components/setting"
       ),
-    feedbackPorn1: () =>
+    feedbackAobo1: () =>
       import(
-        /* webpackChunkName: 'feedbackPorn1' */ "../../tpl/porn1/components/mcenter/components/feedback"
+        /* webpackChunkName: 'feedbackAobo1' */ "../../tpl/porn1/components/mcenter/components/feedback"
       ),
-    helpPorn1: () =>
+    helpAobo1: () =>
       import(
-        /* webpackChunkName: 'helpPorn1' */ "../../tpl/porn1/components/mcenter/components/help/components"
+        /* webpackChunkName: 'helpAobo1' */ "../../tpl/porn1/components/mcenter/components/help/components"
       ),
-    helpCenterPorn1: () =>
+    helpCenterAobo1: () =>
       import(
-        /* webpackChunkName: 'helpCenterPorn1' */ "../../tpl/porn1/components/mcenter/components/help"
+        /* webpackChunkName: 'helpCenterAobo1' */ "../../tpl/porn1/components/mcenter/components/help"
       ),
-    helpDetailPorn1: () =>
+    helpDetailAobo1: () =>
       import(
-        /* webpackChunkName: 'helpDetailPorn1' */ "../../tpl/porn1/components/mcenter/components/help/components/detail"
+        /* webpackChunkName: 'helpDetailAobo1' */ "../../tpl/porn1/components/mcenter/components/help/components/detail"
       ),
-    accountDataAliasPorn1: () =>
+    accountDataAliasAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataAliasPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editAlias"
+        /* webpackChunkName: 'accountDataAliasAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editAlias"
       ),
-    accountDataNamePorn1: () =>
+    accountDataNameAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataNamePorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName"
+        /* webpackChunkName: 'accountDataNameAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName"
       ),
-    accountDataPhonePorn1: () =>
+    accountDataPhoneAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataPhonePorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone"
+        /* webpackChunkName: 'accountDataPhoneAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone"
       ),
-    accountDataEmailPorn1: () =>
+    accountDataEmailAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataEmailPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail"
+        /* webpackChunkName: 'accountDataEmailAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail"
       ),
-    accountDataQqPorn1: () =>
+    accountDataQqAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataQqPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editQq"
+        /* webpackChunkName: 'accountDataQqAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editQq"
       ),
-    accountDataLinePorn1: () =>
+    accountDataLineAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataLinePorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editLine"
+        /* webpackChunkName: 'accountDataLineAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editLine"
       ),
-    accountDataWeixinPorn1: () =>
+    accountDataWeixinAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataWeixinPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin"
+        /* webpackChunkName: 'accountDataWeixinAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin"
       ),
-    accountDataBirthdayPorn1: () =>
+    accountDataBirthdayAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataBirthdayPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday"
+        /* webpackChunkName: 'accountDataBirthdayAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday"
       ),
-    accountDataWithdrawpwdPorn1: () =>
+    accountDataWithdrawpwdAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataWithdrawpwdPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
+        /* webpackChunkName: 'accountDataWithdrawpwdAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
       ),
-    accountDataSkypePorn1: () =>
+    accountDataSkypeAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataSkypePorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
+        /* webpackChunkName: 'accountDataSkypeAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
       ),
-    accountDataTelegramPorn1: () =>
+    accountDataTelegramAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataTelegramPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editTelegram"
+        /* webpackChunkName: 'accountDataTelegramAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editTelegram"
       ),
-    accountDataKakaotalkPorn1: () =>
+    accountDataKakaotalkAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataKakaotalkPorn1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
+        /* webpackChunkName: 'accountDataKakaotalkAobo1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
       ),
-    walletPorn1: () =>
+    walletAobo1: () =>
       import(
-        /* webpackChunkName: 'walletPorn1' */ "../../tpl/porn1/components/mcenter/components/wallet"
+        /* webpackChunkName: 'walletAobo1' */ "../../tpl/porn1/components/mcenter/components/wallet"
       ),
-    makeMoneyPorn1: () =>
+    makeMoneyAobo1: () =>
       import(
-        /* webpackChunkName: 'makeMoneyPorn1' */ "../../tpl/porn1/components/mcenter/components/makeMoney"
+        /* webpackChunkName: 'makeMoneyAobo1' */ "../../tpl/porn1/components/mcenter/components/makeMoney"
       ),
-    bonusPorn1: () =>
+    bonusAobo1: () =>
       import(
-        /* webpackChunkName: 'bonusPorn1' */ "../../tpl/porn1/components/mcenter/components/bonus"
+        /* webpackChunkName: 'bonusAobo1' */ "../../tpl/porn1/components/mcenter/components/bonus"
       ),
-    redJackpotPorn1: () =>
+    redJackpotAobo1: () =>
       import(
-        /* webpackChunkName: 'redJackpotPorn1' */ "../../tpl/porn1/components/mcenter/components/redJackpot"
+        /* webpackChunkName: 'redJackpotAobo1' */ "../../tpl/porn1/components/mcenter/components/redJackpot"
       ),
-    rewardRulesPorn1: () =>
+    rewardRulesAobo1: () =>
       import(
-        /* webpackChunkName: 'rewardRulesPorn1' */ "../../tpl/porn1/components/mcenter/components/rewardRules"
+        /* webpackChunkName: 'rewardRulesAobo1' */ "../../tpl/porn1/components/mcenter/components/rewardRules"
       ),
-    swagPorn1: () =>
+    swagAobo1: () =>
       import(
-        /* webpackChunkName: 'swagPorn1' */ "../../tpl/porn1/components/mcenter/components/swag"
+        /* webpackChunkName: 'swagAobo1' */ "../../tpl/porn1/components/mcenter/components/swag"
       ),
-    tcenterLobbyPorn1: () =>
+    tcenterLobbyAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterLobbyPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"
+        /* webpackChunkName: 'tcenterLobbyAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"
       ),
-    tcenterManageRebatePorn1: () =>
+    tcenterManageRebateAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterManageRebatePorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageRebate"
+        /* webpackChunkName: 'tcenterManageRebateAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageRebate"
       ),
-    tcenterManageTeamPorn1: () =>
+    tcenterManageTeamAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterManageTeamPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageTeam"
+        /* webpackChunkName: 'tcenterManageTeamAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterManageTeam"
       ),
-    tcenterNewRecommendPorn1: () =>
+    tcenterNewRecommendAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterNewRecommendPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newRecommend"
+        /* webpackChunkName: 'tcenterNewRecommendAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newRecommend"
       ),
-    tcenterNewCommissionPorn1: () =>
+    tcenterNewCommissionAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterNewCommissionPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newCommission"
+        /* webpackChunkName: 'tcenterNewCommissionAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newCommission"
       )
     // historyCardSg1: () =>
     //   import(
@@ -302,45 +306,45 @@ export default {
     //   )
   },
   agcenter: {
-    homePorn1: () =>
+    homeAobo1: () =>
       import(
-        /* webpackChunkName: 'homePorn1' */ "../../tpl/porn1/components/agcenter/components/home/components"
+        /* webpackChunkName: 'homeAobo1' */ "../../tpl/porn1/components/agcenter/components/home/components"
       ),
-    accountDataPorn1: () =>
+    accountDataAobo1: () =>
       import(
-        /* webpackChunkName: 'accountDataPorn1' */ "../../tpl/porn1/components/agcenter/components/accountData/components"
+        /* webpackChunkName: 'accountDataAobo1' */ "../../tpl/porn1/components/agcenter/components/accountData/components"
       ),
-    bankCardPorn1: () =>
+    bankCardAobo1: () =>
       import(
-        /* webpackChunkName: 'bankCardPorn1' */ "../../tpl/porn1/components/agcenter/components/bankCard/components"
+        /* webpackChunkName: 'bankCardAobo1' */ "../../tpl/porn1/components/agcenter/components/bankCard/components"
       ),
-    financeRewardPorn1: () =>
+    financeRewardAobo1: () =>
       import(
-        /* webpackChunkName: 'financeRewardPorn1' */ "../../tpl/porn1/components/agcenter/components/financeReward/components"
+        /* webpackChunkName: 'financeRewardAobo1' */ "../../tpl/porn1/components/agcenter/components/financeReward/components"
       ),
-    financeWithdrawPorn1: () =>
+    financeWithdrawAobo1: () =>
       import(
-        /* webpackChunkName: 'financeWithdrawPorn1' */ "../../tpl/porn1/components/agcenter/components/financeWithdraw/components"
+        /* webpackChunkName: 'financeWithdrawAobo1' */ "../../tpl/porn1/components/agcenter/components/financeWithdraw/components"
       ),
-    gameRecordPorn1: () =>
+    gameRecordAobo1: () =>
       import(
-        /* webpackChunkName: 'gameRecordPorn1' */ "../../tpl/porn1/components/agcenter/components/gameRecord/components"
+        /* webpackChunkName: 'gameRecordAobo1' */ "../../tpl/porn1/components/agcenter/components/gameRecord/components"
       ),
-    messagePorn1: () =>
+    messageAobo1: () =>
       import(
-        /* webpackChunkName: 'messagePorn1' */ "../../tpl/porn1/components/agcenter/components/message/components"
+        /* webpackChunkName: 'messageAobo1' */ "../../tpl/porn1/components/agcenter/components/message/components"
       ),
-    postPorn1: () =>
+    postAobo1: () =>
       import(
-        /* webpackChunkName: 'postPorn1' */ "../../tpl/porn1/components/agcenter/components/post/components"
+        /* webpackChunkName: 'postAobo1' */ "../../tpl/porn1/components/agcenter/components/post/components"
       ),
-    feedBackPorn1: () =>
+    feedBackAobo1: () =>
       import(
-        /* webpackChunkName: 'feedBackPorn1' */ "../../tpl/porn1/components/agcenter/components/feedBack/components"
+        /* webpackChunkName: 'feedBackAobo1' */ "../../tpl/porn1/components/agcenter/components/feedBack/components"
       ),
-    reportMemberPorn1: () =>
+    reportMemberAobo1: () =>
       import(
-        /* webpackChunkName: 'reportMemberPorn1' */ "../../tpl/porn1/components/agcenter/components/reportMember/components"
+        /* webpackChunkName: 'reportMemberAobo1' */ "../../tpl/porn1/components/agcenter/components/reportMember/components"
       )
   }
 };

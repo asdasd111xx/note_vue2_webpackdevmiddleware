@@ -12,7 +12,6 @@ const domain = "https://yb01.66boxing.com/";
 // Prod
 // const domain = "https://yaboxxxapp01.com/";
 // const domain = 'https://yaboxxxapp02.com/';
-
 // Beta
 // const domain = 'https://ybbe1.qghco.com/';
 // const domain = 'https://yb0t.66apples.com';
@@ -27,7 +26,6 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://ey0099.com/';
 // const domain = 'https://ey8866.com/';
 // const domain = 'https://ey.688lg.com/';
-
 // Beta
 // const domain = 'https://ey01.66boxing-beta.com/';
 // const domain = 'https://eyd.66apples.com/';
@@ -36,7 +34,6 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = "https://sgtt.66boxing.com/";
 // const domain = "https://sgqa1-io.yaslbox.com/";
 // const domain = "https://sgqa1.yaslbox.com/";
-
 // Demo
 // const domain = 'https://sgt.66relish.com/';
 // Prod
@@ -46,6 +43,13 @@ const domain = "https://yb01.66boxing.com/";
 
 // Beta
 // const domain = "https://sgbe1.grtymart.com/";
+
+// 澳博国际 QA
+// temp
+// const domain = "https://ybqa1-io.bbin-asia.com/";
+// Demo
+// Beta
+// Prod
 module.exports = {
   build: {
     env: require("./prod.env"),
