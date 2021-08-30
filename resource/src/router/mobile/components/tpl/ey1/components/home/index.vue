@@ -72,6 +72,9 @@ export default {
           }
         }
       });
+    } else {
+      // 登入前公告
+      this.closePop(true);
     }
   },
   watch: {

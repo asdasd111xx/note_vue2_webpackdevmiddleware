@@ -47,6 +47,11 @@ export default ({
     data: {}
   };
 
+  // 語系預設簡中
+  if (!params["lang"]) {
+    params["lang"] = "zh-cn";
+  }
+
   // 不需要formdata params
   if (method === "post" || method === "put" || method === "delete") {
     obj.data = { ...yaboParams, ...params };
