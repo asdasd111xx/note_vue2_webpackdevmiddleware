@@ -158,7 +158,7 @@ export default {
         (this.depositInterval.maxMoney &&
           this.depositInterval.maxMoney < this.moneyValue) ||
         (+this.getPassRoadOrAi.fee_percent <= 0 &&
-          this.getPassRoadOrAi.fee_amount > this.moneyValue)
+          +this.getPassRoadOrAi.fee_amount > +this.moneyValue)
       ) {
         return "0.00";
       }
