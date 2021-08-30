@@ -319,7 +319,7 @@ import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {

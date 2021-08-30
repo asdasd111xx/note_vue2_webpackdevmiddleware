@@ -1,4 +1,5 @@
 export const thousandsCurrency = data => {
+  console.log(data);
   const formatter = function(val) {
     if (!data || parseFloat(data) === NaN) {
       return "";

@@ -35,7 +35,7 @@
             </div>
           </div>
           <div :class="$style.amount">
-            {{ item.amount }}
+            {{ formatThousandsCurrency(item.amount) }}
             <img
               :class="$style['right-arrow']"
               :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -64,6 +64,8 @@
 <script>
 import Vue from "vue";
 import { mapGetters } from "vuex";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
+
 export default {
   data() {
     return {
@@ -140,6 +142,9 @@ export default {
     }
   },
   methods: {
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     onClick(info) {
       this.$emit("update:detailInfo", info);
       localStorage.setItem("money-detail-id", info.id);

@@ -38,14 +38,14 @@
             <template v-if="computeState">
               <div :class="$style['result-item']">
                 <div>{{ $text("S_COMPUTING_VALID_BET", "结算有效投注") }}</div>
-                <span>{{ data.total }}</span>
+                <span>{{ formatThousandsCurrency(data.total) }}</span>
               </div>
 
               <div :class="$style['result-item']">
                 <div>
                   {{ $text("S_COMPUTING_PREMIUM_AMOUNT", "结算返水金额") }}
                 </div>
-                <span>{{ data.rebate }}</span>
+                <span>{{ formatThousandsCurrency(data.rebate) }}</span>
               </div>
 
               <div :class="$style['button-wrap']">
@@ -82,6 +82,7 @@ import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import EST from "@/lib/EST";
 import mcenter from "@/api/mcenter";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   props: {
@@ -117,6 +118,9 @@ export default {
   },
 
   methods: {
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     close() {
       this.$emit("close");
     },

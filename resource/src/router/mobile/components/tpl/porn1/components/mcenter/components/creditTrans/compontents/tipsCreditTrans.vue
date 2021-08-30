@@ -29,7 +29,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   data() {

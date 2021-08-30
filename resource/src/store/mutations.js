@@ -7,7 +7,7 @@ import EST from "@/lib/EST";
 import Vue from "vue";
 import i18n from "@/config/i18n";
 import jwt from "jwt-simple";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   // Webview介接(客端、廳主端)
