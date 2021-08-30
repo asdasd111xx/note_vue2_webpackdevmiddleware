@@ -257,7 +257,7 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
         
         # istio-aubo
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
-            ,"qa","aubo-frontend-proxy-qa","","aubo-frontend-nginx-config-qa"
+            ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
             ,"yaboxxx-web","10.27.1.142","aubo","istio","n2-8"),
         // onlyGKE("QA","yaboxxx-prod","asia-east1-b"
         //     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
@@ -291,10 +291,10 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 
         # istio-aubo
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"demo","aubo-frontend-proxy-demo","","aubo-frontend-nginx-config-demo"
+            ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
             ,"yaboxxx-web","10.17.0.181","aubo","istio","e2-16"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"prod","aubo-frontend-proxy-prod","","aubo-frontend-nginx-config-prod"
+            ,"prod","aubo-frontend-prod","","aubo-frontend-nginx-config-prod"
             ,"yaboxxx-web","10.17.0.181","aubo","istio","e2-16"),
 
  
