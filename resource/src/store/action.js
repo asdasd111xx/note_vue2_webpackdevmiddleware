@@ -32,7 +32,7 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { v4 as uuidv4 } from "uuid";
 import version from "@/config/version.json";
 

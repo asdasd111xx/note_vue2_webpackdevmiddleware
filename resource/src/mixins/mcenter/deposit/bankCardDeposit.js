@@ -12,7 +12,7 @@ import ajax from "@/lib/ajax";
 import axios from "axios";
 import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   data() {
@@ -156,7 +156,9 @@ export default {
         (this.depositInterval.minMoney &&
           this.depositInterval.minMoney > this.moneyValue) ||
         (this.depositInterval.maxMoney &&
-          this.depositInterval.maxMoney < this.moneyValue)
+          this.depositInterval.maxMoney < this.moneyValue) ||
+        (+this.getPassRoadOrAi.fee_percent <= 0 &&
+          this.getPassRoadOrAi.fee_amount > this.moneyValue)
       ) {
         return "0.00";
       }
@@ -183,15 +185,15 @@ export default {
       ) {
         promotionValue = +this.offerInfo.per_offer_limit;
       }
-      // 檢查每日優惠金額上限
+      // 檢查每日優惠金額有無達到上限
       if (this.offerInfo.is_full_offer) {
         promotionValue = 0;
       } else if (
         promotionValue >
-        +this.offerInfo.per_offer_limit - +this.offerInfo.gotten_offer
+        +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
       ) {
         promotionValue =
-          +this.offerInfo.per_offer_limit - +this.offerInfo.gotten_offer;
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
       }
 
       // 總額計算

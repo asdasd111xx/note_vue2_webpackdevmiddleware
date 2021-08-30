@@ -2,7 +2,9 @@
   <div :class="$style['detail-info-wrap']">
     <div :class="$style.amount">
       <span :class="$style.symbol">¥</span>
-      <span :class="$style.number">{{ detailInfo.amount }}</span>
+      <span :class="$style.number">{{
+        formatThousandsCurrency(detailInfo.amount)
+      }}</span>
     </div>
     <div :class="$style.wrap">
       <div :class="[$style.detail, 'clearfix']">
@@ -60,6 +62,7 @@
 import Vue from "vue";
 import message from "@/router/mobile/components/common/message";
 import { mapGetters } from "vuex";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -132,6 +135,9 @@ export default {
         : this.detailInfo.trans_id;
       this.$copyText(numberId);
       this.msg = "已复制到剪贴板";
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   },
   beforeDestroy() {

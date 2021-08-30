@@ -190,7 +190,7 @@
 import mixin from "@/mixins/mcenter/withdraw/serialNumber";
 import serialDetail from "./serialDetail";
 import { mapGetters, mapActions } from "vuex";
-import { thousandsCurrency } from "@/lib/moneyThousandsCurrency";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   mixins: [mixin],

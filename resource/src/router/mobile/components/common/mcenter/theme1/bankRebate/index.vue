@@ -79,14 +79,16 @@
                   $text("S_VALID_BET_TOTAL", "总有效投注")
                 }}</span>
                 <div :class="$style['content-right']">
-                  {{ item.valid_bet }}
+                  {{ formatThousandsCurrency(item.valid_bet) }}
                 </div>
               </div>
               <div :class="$style['detail-content']">
                 <span :class="$style['content-left']">{{
                   $text("S_PREMIUM_AMOUNT", "返水金额")
                 }}</span>
-                <div :class="$style['content-right']">{{ item.amount }}</div>
+                <div :class="$style['content-right']">
+                  {{ formatThousandsCurrency(item.amount) }}
+                </div>
               </div>
               <div :class="$style['detail-content']">
                 <span :class="$style['content-left']">{{
@@ -168,7 +170,7 @@
 
           <div :class="$style['real-vip-title']">
             {{ $text("S_RECEIVE_REBATE", "可领返水") }}：{{
-              realTimeRebateTotal
+              formatThousandsCurrency(realTimeRebateTotal)
             }}
           </div>
         </div>
@@ -258,7 +260,9 @@
               </span>
               <div :class="$style['content-right']">
                 <ele-loading v-if="rebateState === 'loading'" />
-                <template v-else>{{ caculateList.total }}</template>
+                <template v-else>{{
+                  formatThousandsCurrency(caculateList.total)
+                }}</template>
               </div>
             </div>
 
@@ -272,7 +276,9 @@
                   >{{ $t("S_UPPER_LIMIT") }}</template
                 >
                 <ele-loading v-if="rebateState === 'loading'" />
-                <template v-else>{{ caculateList.rebate }}</template>
+                <template v-else>{{
+                  formatThousandsCurrency(caculateList.rebate)
+                }}</template>
               </div>
             </div>
 
@@ -281,7 +287,7 @@
                 {{ $text("S_MINIMUM_PREMIUM_AMOUNT", "最低返水金额") }}
               </span>
               <div :class="$style['content-right']">
-                {{ addTwoPoint(caculateList.min_rebate) }}
+                {{ formatThousandsCurrency(caculateList.min_rebate) }}
               </div>
             </div>
 
@@ -370,6 +376,7 @@ import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapActions, mapGetters } from "vuex";
 import receivePopup from "./components/receivePopup";
 import mixin from "@/mixins/mcenter/bankRebate/index";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -458,10 +465,8 @@ export default {
     closeReceivePopup() {
       this.isShowReceivePopup = false;
     },
-    addTwoPoint(val) {
-      // toFixed => 取到小數點第二位
-
-      return Number(val).toFixed(2);
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };
