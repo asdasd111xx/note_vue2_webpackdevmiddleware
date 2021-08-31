@@ -1,7 +1,7 @@
 <template>
   <mobile-container :class="$style.container">
     <div slot="content" class="content-wrap">
-      <iframe :src="url"></iframe>
+      <iframe :style="giftIfrStyle" :src="url"></iframe>
     </div>
   </mobile-container>
 </template>
@@ -25,7 +25,14 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
-    })
+    }),
+    giftIfrStyle() {
+      return {
+        width: "100%",
+        height: "calc(100vh - 60px)",
+        border: "none"
+      };
+    }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"])
@@ -55,11 +62,7 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-iframe {
-  width: 100%;
-  height: 100vh;
-  border: none;
-}
+
 div.container {
   background-color: $main_background_white1;
 }
