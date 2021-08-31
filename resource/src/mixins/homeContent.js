@@ -37,7 +37,7 @@ export default {
       RedEnvelopeTouchType: true,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
-        { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
+        { name: "myWallet", text: "钱包", path: "wallet?redirect=home" },
         { name: "withdraw", text: "提现", path: "withdraw" },
         { name: "creditTrans", text: "转让", path: "creditTrans" },
         { name: "grade", text: "等级", path: "accountVip" }
@@ -48,10 +48,19 @@ export default {
         { name: "makemoney", text: "推广", path: "tcenterLobby" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
-      timer: null
+      timer: null,
+      isShowPop: false,
+      sitePostList: null
     };
   },
   watch: {
+    isShowPop(val) {
+      if (val) {
+        document.querySelector("body").style = "overflow: hidden";
+      } else {
+        document.querySelector("body").style = "";
+      }
+    },
     isReceive() {
       this.onResize();
     },
@@ -96,7 +105,8 @@ export default {
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
       noticeData: "getNoticeData",
-      withdrawCheckStatus: "getWithdrawCheckStatus"
+      withdrawCheckStatus: "getWithdrawCheckStatus",
+      post: "getPost"
     }),
     isAdult() {
       if (localStorage.getItem("content_rating")) {
@@ -202,6 +212,40 @@ export default {
     localStorage.removeItem("is-open-game");
     localStorage.removeItem("iframe-third-url");
     localStorage.removeItem("enable-swag");
+
+    // 先顯示彈跳公告關閉後再顯示一般公告
+    // 顯示過公告 localStorage.getItem('is-shown-announcement')
+    // 不在提示 localStorage.getItem('do-not-show-home-post')
+    if (this.loginStatus) {
+      localStorage.setItem("is-shown-announcement", true);
+      axios({
+        method: "get",
+        url: "/api/v1/c/player/popup-announcement"
+      }).then(res => {
+        if (res.data) {
+          if (res.data.ret && res.data.ret.length > 0) {
+            // 顯示彈跳公告
+            this.sitePostList = res.data.ret;
+            this.isShowPop = true;
+          } else {
+            // 顯示一般公吿
+            this.actionSetPost("1").then(() => {
+              this.closePop(true);
+            });
+          }
+        }
+      });
+    } else {
+      // 顯示一般公吿
+      // 登入前公告
+      this.actionSetPost("1").then(() => {
+        console.log(this.post.list.length);
+        if (this.post) {
+          this.closePop(true);
+        }
+      });
+    }
+
     this.showPromotion = this.loginStatus
       ? this.memInfo.user.show_promotion
       : true;
@@ -288,8 +332,23 @@ export default {
       "actionGetRechargeStatus",
       "actionGetMemInfoV3",
       "actionSetYaboConfig",
-      "actionSetShowRedEnvelope"
+      "actionSetShowRedEnvelope",
+      "actionSetPost"
     ]),
+    // 關閉彈跳公告後是否顯示公告
+    closePop(isFromSitePost) {
+      this.isShowPop = false;
+      this.sitePostList = null;
+
+      if (
+        localStorage.getItem("do-not-show-home-post") !== "true" &&
+        isFromSitePost &&
+        this.post &&
+        this.post.list.length > 0
+      ) {
+        this.isShowPop = true;
+      }
+    },
     getImg(info) {
       const longSizeImag = [1, 5];
 

@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/mobileContainer';
-import wallet from '@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/index';
+import mobileContainer from "../../../common/mobileContainer";
+import wallet from "@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/index";
 
 export default {
   components: {
@@ -20,22 +20,27 @@ export default {
     wallet
   },
   data() {
-    return {
-    }
+    return {};
   },
-  methods: {
-  },
+  methods: {},
   computed: {
     headerConfig() {
       return {
         prev: true,
         onClick: () => {
-          this.$router.push('/mobile/mcenter');
+          let redirect = this.$route.query.redirect;
+          if (redirect) {
+            if (redirect === "home") {
+              this.$router.back();
+            }
+          } else {
+            this.$router.push("/mobile/mcenter");
+          }
         },
-        title: this.$text('S_WALLET2', '钱包'),
+        title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
         customLinkAction: () => {
-          this.$router.push('/mobile/mcenter/moneyDetail')
+          this.$router.push("/mobile/mcenter/moneyDetail");
         }
       };
     }

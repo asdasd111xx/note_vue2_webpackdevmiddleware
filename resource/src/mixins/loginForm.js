@@ -269,6 +269,8 @@ export default {
             window.location.href = this.redirect;
             return;
           }
+          // 是否顯示過首頁公告
+          localStorage.removeItem("is-shown-announcement");
           window.location.reload();
           // 登入公告
           // ajax({

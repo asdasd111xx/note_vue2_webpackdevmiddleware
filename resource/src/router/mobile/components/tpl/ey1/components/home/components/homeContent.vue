@@ -1,232 +1,243 @@
 <template>
-  <div
-    v-if="isReceive"
-    ref="home-wrap"
-    :class="[$style['home-wrap'], 'clearfix']"
-  >
-    <!-- 上方功能列 -->
+  <div>
+    <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
     <div
-      :class="$style['top-wrap']"
-      :style="{
-        'background-image': `url(
+      v-if="isReceive"
+      ref="home-wrap"
+      :class="[$style['home-wrap'], 'clearfix']"
+    >
+      <!-- 上方功能列 -->
+      <div
+        :class="$style['top-wrap']"
+        :style="{
+          'background-image': `url(
                ${$getCdnPath(`/static/image/ey1/home/nav01_bg.png`)}
               )`
-      }"
-    >
-      <!-- 會員中心連結 -->
-      <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
-        <div :class="$style['mcenter-login-status-wrap']">
-          <!-- 尚未登入 -->
-          <div
-            v-if="!loginStatus"
-            :class="$style['not-login-wrap']"
-            @click="$router.push('/mobile/login')"
-          >
-            <div>
-              您还未登录
-            </div>
-            <div>
-              请先登录&nbsp;/&nbsp;注册后查看
-            </div>
-          </div>
-
-          <!-- 已登入 -->
-          <div v-else :class="$style['is-login-wrap']">
-            <div
-              :class="[
-                $style['username'],
-                {
-                  [$style['long']]:
-                    memInfo.user.username && memInfo.user.username.length > 15
-                }
-              ]"
-            >
-              {{ memInfo.user.username }}
-            </div>
-            <div :class="$style['vip-level']">
-              <div>VIP&nbsp;{{ userViplevel }}</div>
-            </div>
-            <div
-              :class="[
-                $style['balance-wrap'],
-                {
-                  [$style['long']]: membalanceDefaultAmount.length > 18
-                }
-              ]"
-            >
-              <span :class="$style['wallet']">
-                {{ $text("S_MCENTER_WALLET") }}
-              </span>
-              <span :class="$style['balance']">
-                {{ `¥${membalanceDefaultAmount}` }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div :class="$style['mcenter-func']">
-          <template v-for="(info, index) in mcenterEy1List">
-            <div
-              v-if="info.name === 'grade'"
-              :key="`mcenter-${index}`"
-              :class="$style['mcenter-cell']"
-              @click="onGoToMcenter(info.path)"
-            >
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/_new/level/icon_level_${vipLevel}.png`
-                  )
-                "
-              />
-              <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
-            </div>
-
-            <div
-              v-else-if="info.name !== 'makemoney' || showPromotion"
-              :key="`mcenter-${index}`"
-              :class="$style['mcenter-cell']"
-              @click="onGoToMcenter(info.path)"
-            >
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/ey1/wallet/icon_wallet_${info.name}.png`
-                  )
-                "
-              />
-              <div>{{ info.text }}</div>
-            </div>
-          </template>
-        </div>
-      </div>
-
-      <!-- 上方自選列表 -->
-      <div
-        v-if="allGameList && allGameList.length > 1"
-        :class="$style['type-wrap-container']"
+        }"
       >
-        <!-- active -->
+        <!-- 會員中心連結 -->
+        <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
+          <div :class="$style['mcenter-login-status-wrap']">
+            <!-- 尚未登入 -->
+            <div
+              v-if="!loginStatus"
+              :class="$style['not-login-wrap']"
+              @click="$router.push('/mobile/login')"
+            >
+              <div>
+                您还未登录
+              </div>
+              <div>
+                请先登录&nbsp;/&nbsp;注册后查看
+              </div>
+            </div>
+
+            <!-- 已登入 -->
+            <div v-else :class="$style['is-login-wrap']">
+              <div
+                :class="[
+                  $style['username'],
+                  {
+                    [$style['long']]:
+                      memInfo.user.username && memInfo.user.username.length > 15
+                  }
+                ]"
+              >
+                {{ memInfo.user.username }}
+              </div>
+              <div :class="$style['vip-level']">
+                <div>VIP&nbsp;{{ userViplevel }}</div>
+              </div>
+              <div
+                :class="[
+                  $style['balance-wrap'],
+                  {
+                    [$style['long']]: membalanceDefaultAmount.length > 18
+                  }
+                ]"
+              >
+                <span :class="$style['wallet']">
+                  {{ $text("S_MCENTER_WALLET") }}
+                </span>
+                <span :class="$style['balance']">
+                  {{ `¥${membalanceDefaultAmount}` }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div :class="$style['mcenter-func']">
+            <template v-for="(info, index) in mcenterEy1List">
+              <div
+                v-if="info.name === 'grade'"
+                :key="`mcenter-${index}`"
+                :class="$style['mcenter-cell']"
+                @click="onGoToMcenter(info.path)"
+              >
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/_new/level/icon_level_${vipLevel}.png`
+                    )
+                  "
+                />
+                <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
+              </div>
+
+              <div
+                v-else-if="info.name !== 'makemoney' || showPromotion"
+                :key="`mcenter-${index}`"
+                :class="$style['mcenter-cell']"
+                @click="onGoToMcenter(info.path)"
+              >
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/ey1/wallet/icon_wallet_${info.name}.png`
+                    )
+                  "
+                />
+                <div>{{ info.text }}</div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- 上方自選列表 -->
         <div
-          v-if="typeBarPosition !== null"
-          :class="[$style['type-slide-bar']]"
-          :style="{
-            right: `${typeBarPosition}px`
-          }"
+          v-if="allGameList && allGameList.length > 1"
+          :class="$style['type-wrap-container']"
         >
-          <div :class="[$style['type-slide-bar-hover']]">
-            <img :src="$getCdnPath(`/static/image/ey1/home/navhover.png`)" />
-          </div>
+          <!-- active -->
+          <div
+            v-if="typeBarPosition !== null"
+            :class="[$style['type-slide-bar']]"
+            :style="{
+              right: `${typeBarPosition}px`
+            }"
+          >
+            <div :class="[$style['type-slide-bar-hover']]">
+              <img :src="$getCdnPath(`/static/image/ey1/home/navhover.png`)" />
+            </div>
 
-          <div :class="[$style['type-slide-bar-name']]">
-            <img
-              :src="$getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)"
-            />
-            <div>
-              {{ currentType.name }}
+            <div :class="[$style['type-slide-bar-name']]">
+              <img
+                :src="
+                  $getCdnPath(`/static/image/ey1/home/navbtn_bg_active.png`)
+                "
+              />
+              <div>
+                {{ currentType.name }}
+              </div>
             </div>
           </div>
+
+          <div :class="['type-slide-pagination']"></div>
         </div>
-
-        <div :class="['type-slide-pagination']"></div>
       </div>
-    </div>
 
-    <div
-      :class="$style['new-game-wrap']"
-      :style="{
-        height: `${eyWrapHeight}px`
-      }"
-    >
-      <swiper
-        :ref="'game-swiper'"
-        :updatedKey="gameSwiperUpdatedKey"
-        :options="gameSwiperOptions"
-        :class="$style['new-game-container']"
+      <div
+        :class="$style['new-game-wrap']"
+        :style="{
+          height: `${eyWrapHeight}px`
+        }"
       >
-        <swiperSlide
-          v-for="(list, key) in allGameList"
-          :key="`game-swiper-${key}`"
-          :class="[$style['game-swiper-slide'], 'swiper-slide']"
+        <swiper
+          :ref="'game-swiper'"
+          :updatedKey="gameSwiperUpdatedKey"
+          :options="gameSwiperOptions"
+          :class="$style['new-game-container']"
         >
-          <template>
-            <swiper
-              :ref="`sub-game-swiper-${key}`"
-              :data-key="`sub-game-swiper-${key}`"
-              :options="subGameSwiperOptions"
-              :class="$style['sub-game-container']"
-            >
-              <template v-for="(game, i) in list.vendors">
-                <swiperSlide
-                  v-if="!(list.vendors[i - 1] && list.vendors[i - 1].imageFlag)"
-                  :key="`sub-game-swiper-${i}`"
-                  :class="[
-                    'swiper-slide',
-                    $style['sub-game-swiper-slide'],
-                    {
-                      [$style['flex']]: game.imageFlag
-                    }
-                  ]"
-                >
-                  <div
-                    :key="`game-${i}-${game.image}`"
-                    :data-img-type="`${game.imageType}`"
-                    :data-type="game.type"
+          <swiperSlide
+            v-for="(list, key) in allGameList"
+            :key="`game-swiper-${key}`"
+            :class="[$style['game-swiper-slide'], 'swiper-slide']"
+          >
+            <template>
+              <swiper
+                :ref="`sub-game-swiper-${key}`"
+                :data-key="`sub-game-swiper-${key}`"
+                :options="subGameSwiperOptions"
+                :class="$style['sub-game-container']"
+              >
+                <template v-for="(game, i) in list.vendors">
+                  <swiperSlide
+                    v-if="
+                      !(list.vendors[i - 1] && list.vendors[i - 1].imageFlag)
+                    "
+                    :key="`sub-game-swiper-${i}`"
                     :class="[
-                      $style.game,
+                      'swiper-slide',
+                      $style['sub-game-swiper-slide'],
                       {
-                        [$style['is-full']]: [1, 2, 3].includes(game.imageType)
-                      },
-                      { [$style['is-third']]: [4].includes(game.imageType) },
-                      { [$style['is-activity']]: [5].includes(game.imageType) }
+                        [$style['flex']]: game.imageFlag
+                      }
                     ]"
                   >
-                    <template v-if="game.imageType === 4">
-                      <div
-                        :class="[$style['third-iamge-wrap']]"
-                        @click="onOpenGame(game)"
-                      >
-                        <div :class="[$style['third-iamge-bg']]">
-                          <div :class="[$style['vendor']]">
-                            {{ game.vendor_abridge }}
+                    <div
+                      :key="`game-${i}-${game.image}`"
+                      :data-img-type="`${game.imageType}`"
+                      :data-type="game.type"
+                      :class="[
+                        $style.game,
+                        {
+                          [$style['is-full']]: [1, 2, 3].includes(
+                            game.imageType
+                          )
+                        },
+                        { [$style['is-third']]: [4].includes(game.imageType) },
+                        {
+                          [$style['is-activity']]: [5].includes(game.imageType)
+                        }
+                      ]"
+                    >
+                      <template v-if="game.imageType === 4">
+                        <div
+                          :class="[$style['third-iamge-wrap']]"
+                          @click="onOpenGame(game)"
+                        >
+                          <div :class="[$style['third-iamge-bg']]">
+                            <div :class="[$style['vendor']]">
+                              {{ game.vendor_abridge }}
+                            </div>
+                            <div :class="[$style['third-iamge']]">
+                              <img v-lazy="getImg(game)" />
+                            </div>
                           </div>
-                          <div :class="[$style['third-iamge']]">
-                            <img v-lazy="getImg(game)" />
-                          </div>
+                          <div :class="[$style['name']]">{{ game.name }}</div>
                         </div>
-                        <div :class="[$style['name']]">{{ game.name }}</div>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <img
-                        v-lazy="getImg(game)"
-                        :alt="game.name"
-                        @click="onOpenGame(game)"
-                      />
-                    </template>
-                  </div>
+                      </template>
+                      <template v-else>
+                        <img
+                          v-lazy="getImg(game)"
+                          :alt="game.name"
+                          @click="onOpenGame(game)"
+                        />
+                      </template>
+                    </div>
 
-                  <!-- imageType === 0, 50% 並排 -->
-                  <div
-                    v-if="game.imageFlag"
-                    :key="`game-${i}-${list.vendors[i + 1].image}-2`"
-                    :data-img-type="0"
-                    :data-type="list.vendors[i + 1].type"
-                    :class="[$style.game]"
-                  >
-                    <img
-                      v-lazy="getImg(list.vendors[i + 1])"
-                      :alt="list.vendors[i + 1].name"
-                      @click="onOpenGame(list.vendors[i + 1])"
-                    />
-                  </div>
-                </swiperSlide>
-              </template>
-            </swiper>
-          </template>
-        </swiperSlide>
-      </swiper>
+                    <!-- imageType === 0, 50% 並排 -->
+                    <div
+                      v-if="game.imageFlag"
+                      :key="`game-${i}-${list.vendors[i + 1].image}-2`"
+                      :data-img-type="0"
+                      :data-type="list.vendors[i + 1].type"
+                      :class="[$style.game]"
+                    >
+                      <img
+                        v-lazy="getImg(list.vendors[i + 1])"
+                        :alt="list.vendors[i + 1].name"
+                        @click="onOpenGame(list.vendors[i + 1])"
+                      />
+                    </div>
+                  </swiperSlide>
+                </template>
+              </swiper>
+            </template>
+          </swiperSlide>
+        </swiper>
+      </div>
+      <page-loading :isShow="isLoading" />
     </div>
-    <page-loading :isShow="isLoading" />
   </div>
 </template>
 
@@ -235,6 +246,7 @@
 import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
+import popup from "@/router/mobile/components/common/home/popup";
 
 export default {
   mixins: [mixin],
@@ -244,7 +256,8 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    popup
   },
   data() {
     return {

@@ -5,7 +5,6 @@
       <home-slider />
       <home-new />
       <home-content />
-      <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
     </div>
   </mobile-container>
 </template>
@@ -19,72 +18,23 @@ import homeNew from "@/router/mobile/components/common/home/homeNew";
 import homeSlider from "@/router/mobile/components/common/home/homeSlider";
 import mcenter from "@/api/mcenter";
 import mobileContainer from "../common/mobileContainer";
-import popup from "@/router/mobile/components/common/home/popup";
 
 export default {
   components: {
     mobileContainer,
     homeSlider,
     homeNew,
-    homeContent,
-    popup
+    homeContent
   },
   data() {
     return {
-      updateBalance: null,
-      isShowPop: false,
-      sitePostList: null
+      updateBalance: null
     };
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus",
-      post: "getPost"
+      loginStatus: "getLoginStatus"
     })
-    // headerConfig() {
-    //   return {
-    //     hasLogo: true,
-    //     hasMemInfo: true,
-    //     onClick: () => {
-    //       this.onClick();
-    //     }
-    //   };
-    // }
-  },
-  created() {
-    // 先顯示彈跳公告關閉後再顯示一般公告
-    // 顯示過公告 localStorage.getItem('is-shown-announcement')
-    // 不在提示 localStorage.getItem('do-not-show-home-post')
-    if (this.loginStatus) {
-      localStorage.setItem("is-shown-announcement", true);
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/popup-announcement"
-      }).then(res => {
-        if (res.data) {
-          if (res.data.ret && res.data.ret.length > 0) {
-            // 顯示彈跳公告
-            this.sitePostList = res.data.ret;
-            this.isShowPop = true;
-          } else {
-            // 顯示一般公吿
-            this.closePop(true);
-          }
-        }
-      });
-    } else {
-      // 登入前公告
-      this.closePop(true);
-    }
-  },
-  watch: {
-    isShowPop(val) {
-      if (val) {
-        document.querySelector("body").style = "overflow: hidden";
-      } else {
-        document.querySelector("body").style = "";
-      }
-    }
   },
   mounted() {
     this.updateBalance = setInterval(() => {
@@ -103,27 +53,9 @@ export default {
     this.updateBalance = null;
   },
   methods: {
-    ...mapActions([
-      "actionSetPost",
-      "actionSetUserBalance",
-      "actionSetUserdata"
-    ]),
+    ...mapActions(["actionSetUserBalance", "actionSetUserdata"]),
     onClick() {
       this.$router.push("/mobile");
-    },
-    closePop(isFromSitePost) {
-      this.isShowPop = false;
-      this.sitePostList = null;
-
-      if (localStorage.getItem("do-not-show-home-post") !== "true") {
-        setTimeout(() => {
-          this.$nextTick(() => {
-            if (isFromSitePost && this.post && this.post.list.length > 0) {
-              this.isShowPop = true;
-            }
-          });
-        }, 250);
-      }
     }
   }
 };

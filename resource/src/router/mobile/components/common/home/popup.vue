@@ -109,6 +109,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loginStatus: "getLoginStatus",
       post: "getPost",
       siteConfig: "getSiteConfig"
     }),
@@ -120,7 +121,6 @@ export default {
     if (this.post && this.post.list) {
       this.post.list.forEach(item => {
         if (item && item.image) {
-          console.log(item.image);
           this.getImage(item.image);
         }
       });
@@ -128,6 +128,15 @@ export default {
   },
   methods: {
     closePop(showDetail) {
+      if (!this.loginStatus && showDetail) {
+        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          this.$router.push("/mobile/login");
+        } else {
+          this.$router.push("/mobile/joinmember");
+        }
+        return;
+      }
+
       if (showDetail) {
         this.$router.push("mobile/mcenter/information/post");
         return;
