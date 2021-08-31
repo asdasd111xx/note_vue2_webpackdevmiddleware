@@ -31,9 +31,8 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://eyd.66apples.com/';
 
 // 丝瓜
-// const domain = "https://sgtt.66boxing.com/";
-// const domain = "https://sgqa1-io.yaslbox.com/";
 // const domain = "https://sgqa1.yaslbox.com/";
+// const domain = "https://sgqa1-io.yaslbox.com/";
 // Demo
 // const domain = 'https://sgt.66relish.com/';
 // Prod
@@ -46,10 +45,14 @@ const domain = "https://yb01.66boxing.com/";
 
 // 澳博国际 QA
 // temp
-// const domain = "https://ybqa1-io.bbin-asia.com/";
+// const domain = "https://auqa1.66boxing.com/";
 // Demo
+// const domain = "https://aude1.688lg.com/";
 // Beta
+// const domain = "";
 // Prod
+// const domain = "https://aupr1.688lg.com";
+
 module.exports = {
   build: {
     env: require("./prod.env"),
