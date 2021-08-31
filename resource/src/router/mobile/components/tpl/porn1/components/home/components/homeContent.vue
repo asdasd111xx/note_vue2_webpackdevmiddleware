@@ -1,229 +1,234 @@
 <template>
-  <div
-    v-if="isReceive"
-    ref="home-wrap"
-    :class="[$style['home-wrap'], 'clearfix']"
-  >
-    <!-- 左側分類 -->
+  <div>
+    <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
     <div
-      v-show="isShow"
-      ref="type-wrap"
-      :class="$style['type-wrap']"
-      @touchstart="onTypeTouchStart"
-      @touchmove="onTypeTouchMove"
+      v-if="isReceive"
+      ref="home-wrap"
+      :class="[$style['home-wrap'], 'clearfix']"
     >
+      <!-- 左側分類 -->
       <div
-        v-for="(type, index) in typeList"
-        :key="`type-${index}`"
-        :data-id="`${type.id}`"
-        :class="[
-          $style['type-swiper'],
-          { [$style.active]: typeList[selectedIndex].icon === type.icon }
-        ]"
-        @click="onChangeSelectIndex(index)"
+        v-show="isShow"
+        ref="type-wrap"
+        :class="$style['type-wrap']"
+        @touchstart="onTypeTouchStart"
+        @touchmove="onTypeTouchMove"
       >
-        <img
-          v-if="typeList[selectedIndex].icon === type.icon"
-          :src="
-            $getCdnPath(
-              `/static/image/porn1/platform/icon/icon_${type.icon}_h.png`
-            )
-          "
-        />
-        <img
-          v-else
-          :src="
-            $getCdnPath(
-              `/static/image/porn1/platform/icon/icon_${type.icon}_n.png`
-            )
-          "
-        />
         <div
+          v-for="(type, index) in typeList"
+          :key="`type-${index}`"
+          :data-id="`${type.id}`"
           :class="[
-            $style['type-title'],
+            $style['type-swiper'],
             { [$style.active]: typeList[selectedIndex].icon === type.icon }
           ]"
+          @click="onChangeSelectIndex(index)"
         >
-          {{ type.name }}
-        </div>
-      </div>
-    </div>
-    <!-- 右側內容 -->
-    <div v-show="isShow" :class="$style['all-game-wrap']">
-      <!-- 上方功能列 -->
-      <div :class="$style['top-wrap']">
-        <!-- 會員中心連結 -->
-        <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
+          <img
+            v-if="typeList[selectedIndex].icon === type.icon"
+            :src="
+              $getCdnPath(
+                `/static/image/porn1/platform/icon/icon_${type.icon}_h.png`
+              )
+            "
+          />
+          <img
+            v-else
+            :src="
+              $getCdnPath(
+                `/static/image/porn1/platform/icon/icon_${type.icon}_n.png`
+              )
+            "
+          />
           <div
-            v-for="(info, index) in mcenterList"
-            :key="`mcenter-${index}`"
-            :class="$style['mcenter-wrap']"
-            @click="onGoToMcenter(info.path)"
+            :class="[
+              $style['type-title'],
+              { [$style.active]: typeList[selectedIndex].icon === type.icon }
+            ]"
           >
-            <template v-if="info.name === 'grade'">
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/_new/level/icon_level_${vipLevel}.png`
-                  )
-                "
-              />
-              <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
-            </template>
-            <template v-else>
-              <img
-                :src="
-                  $getCdnPath(
-                    `/static/image/_new/wallet/icon_wallet_${info.name}.png`
-                  )
-                "
-              />
-              <div>{{ info.text }}</div>
-            </template>
+            {{ type.name }}
           </div>
         </div>
       </div>
-      <!-- 下方影片與遊戲 -->
-      <div
-        ref="game-wrap"
-        :class="[$style['game-list-wrap'], 'clearfix']"
-        :style="{
-          height: `${wrapHeight}px`,
-          'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
-          opacity: stopScroll ? 0 : 1
-        }"
-        @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
-        @touchend="onTouchEnd"
-      >
-        <!-- 遊戲 -->
-        <template>
-          <div
-            v-for="(game, i) in currentGame.vendors"
-            :key="`game-${i}-${game.image}`"
-            :data-img-type="game.imageType"
-            :data-type="game.type"
-            :data-code="game.code"
-            :class="[
-              $style.game,
-              { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
-              { [$style['is-third']]: [4].includes(game.imageType) },
-              { [$style['is-activity']]: [5].includes(game.imageType) }
-            ]"
-            @click.stop="onOpenGame(game)"
-          >
-            <template v-if="game.imageType === 4">
-              <div :class="[$style['third-iamge-wrap']]">
-                <div :class="[$style['vendor']]">{{ game.vendor_abridge }}</div>
-                <div :class="[$style['third-iamge']]">
-                  <img v-lazy="getImg(game)" />
-                </div>
-                <div :class="[$style['name']]">{{ game.name }}</div>
-              </div>
-            </template>
-            <template v-else>
-              <img v-lazy="getImg(game)" :alt="game.name" />
-            </template>
+      <!-- 右側內容 -->
+      <div v-show="isShow" :class="$style['all-game-wrap']">
+        <!-- 上方功能列 -->
+        <div :class="$style['top-wrap']">
+          <!-- 會員中心連結 -->
+          <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
             <div
-              v-if="
-                game.isMaintain || (isMaintainSwag && game.vendor === 'SWAG')
-              "
-              :class="[$style['maintain-mask']]"
+              v-for="(info, index) in mcenterList"
+              :key="`mcenter-${index}`"
+              :class="$style['mcenter-wrap']"
+              @click="onGoToMcenter(info.path)"
             >
+              <template v-if="info.name === 'grade'">
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/_new/level/icon_level_${vipLevel}.png`
+                    )
+                  "
+                />
+                <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
+              </template>
+              <template v-else>
+                <img
+                  :src="
+                    $getCdnPath(
+                      `/static/image/_new/wallet/icon_wallet_${info.name}.png`
+                    )
+                  "
+                />
+                <div>{{ info.text }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <!-- 下方影片與遊戲 -->
+        <div
+          ref="game-wrap"
+          :class="[$style['game-list-wrap'], 'clearfix']"
+          :style="{
+            height: `${wrapHeight}px`,
+            'overflow-y': `${stopScroll ? 'hidden' : 'auto'}`,
+            opacity: stopScroll ? 0 : 1
+          }"
+          @touchstart="onTouchStart"
+          @touchmove="onTouchMove"
+          @touchend="onTouchEnd"
+        >
+          <!-- 遊戲 -->
+          <template>
+            <div
+              v-for="(game, i) in currentGame.vendors"
+              :key="`game-${i}-${game.image}`"
+              :data-img-type="game.imageType"
+              :data-type="game.type"
+              :data-code="game.code"
+              :class="[
+                $style.game,
+                { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
+                { [$style['is-third']]: [4].includes(game.imageType) },
+                { [$style['is-activity']]: [5].includes(game.imageType) }
+              ]"
+              @click.stop="onOpenGame(game)"
+            >
+              <template v-if="game.imageType === 4">
+                <div :class="[$style['third-iamge-wrap']]">
+                  <div :class="[$style['vendor']]">
+                    {{ game.vendor_abridge }}
+                  </div>
+                  <div :class="[$style['third-iamge']]">
+                    <img v-lazy="getImg(game)" />
+                  </div>
+                  <div :class="[$style['name']]">{{ game.name }}</div>
+                </div>
+              </template>
+              <template v-else>
+                <img v-lazy="getImg(game)" :alt="game.name" />
+              </template>
               <div
-                :class="[
-                  {
-                    [$style['maintain-mask-1']]:
-                      game.imageType === 1 ||
-                      game.imageType === 2 ||
-                      game.vendor === 'SWAG'
-                  },
-                  { [$style['maintain-mask-2']]: game.imageType === 0 },
-                  { [$style['swag']]: game.vendor === 'SWAG' }
-                ]"
+                v-if="
+                  game.isMaintain || (isMaintainSwag && game.vendor === 'SWAG')
+                "
+                :class="[$style['maintain-mask']]"
               >
                 <div
-                  v-if="game.name.length >= 5 && game.imageType === 0"
-                  :class="[$style['maintain-text-2']]"
+                  :class="[
+                    {
+                      [$style['maintain-mask-1']]:
+                        game.imageType === 1 ||
+                        game.imageType === 2 ||
+                        game.vendor === 'SWAG'
+                    },
+                    { [$style['maintain-mask-2']]: game.imageType === 0 },
+                    { [$style['swag']]: game.vendor === 'SWAG' }
+                  ]"
                 >
-                  {{ `${game.name}` }}
-                  <br />
-                  维护中
-                </div>
-                <div v-else :class="[$style['maintain-text-1']]">
-                  {{
-                    `${
-                      game.name === "亚博直播真人视讯80桌"
-                        ? "鸭博直播真人视讯80桌"
-                        : game.name
-                    } 维护中`
-                  }}
-                </div>
-                <div
-                  v-if="
-                    game.isMaintain ||
-                      (isMaintainSwag &&
-                        game.vendor === 'SWAG' &&
-                        swagConfig &&
-                        swagConfig.enable !== 0)
-                  "
-                  :class="[$style['container']]"
-                >
-                  <div :class="[$style['us-time']]">
-                    {{ `-美东时间-` }}
+                  <div
+                    v-if="game.name.length >= 5 && game.imageType === 0"
+                    :class="[$style['maintain-text-2']]"
+                  >
+                    {{ `${game.name}` }}
+                    <br />
+                    维护中
                   </div>
-                  <div :class="[$style['container-maintain']]">
-                    <div
-                      :class="[
-                        $style['container-maintain-time'],
-                        { [$style['swag']]: game.vendor === 'SWAG' }
-                      ]"
-                    >
-                      {{
-                        `${
-                          game.vendor === "SWAG"
-                            ? swagESTMaintainStartAt
-                            : game.start_at
-                        }`
-                      }}
+                  <div v-else :class="[$style['maintain-text-1']]">
+                    {{
+                      `${
+                        game.name === "亚博直播真人视讯80桌"
+                          ? "鸭博直播真人视讯80桌"
+                          : game.name
+                      } 维护中`
+                    }}
+                  </div>
+                  <div
+                    v-if="
+                      game.isMaintain ||
+                        (isMaintainSwag &&
+                          game.vendor === 'SWAG' &&
+                          swagConfig &&
+                          swagConfig.enable !== 0)
+                    "
+                    :class="[$style['container']]"
+                  >
+                    <div :class="[$style['us-time']]">
+                      {{ `-美东时间-` }}
                     </div>
-                    <img
-                      :src="
-                        $getCdnPath(`/static/image/casino/ic_transfergo.png`)
-                      "
-                    />
-                    <div
-                      :class="[
-                        $style['container-maintain-time'],
-                        { [$style['swag']]: game.vendor === 'SWAG' }
-                      ]"
-                    >
-                      {{
-                        `${
-                          game.vendor === "SWAG"
-                            ? swagESTMaintainEndAt
-                            : game.end_at
-                        }`
-                      }}
+                    <div :class="[$style['container-maintain']]">
+                      <div
+                        :class="[
+                          $style['container-maintain-time'],
+                          { [$style['swag']]: game.vendor === 'SWAG' }
+                        ]"
+                      >
+                        {{
+                          `${
+                            game.vendor === "SWAG"
+                              ? swagESTMaintainStartAt
+                              : game.start_at
+                          }`
+                        }}
+                      </div>
+                      <img
+                        :src="
+                          $getCdnPath(`/static/image/casino/ic_transfergo.png`)
+                        "
+                      />
+                      <div
+                        :class="[
+                          $style['container-maintain-time'],
+                          { [$style['swag']]: game.vendor === 'SWAG' }
+                        ]"
+                      >
+                        {{
+                          `${
+                            game.vendor === "SWAG"
+                              ? swagESTMaintainEndAt
+                              : game.end_at
+                          }`
+                        }}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </template>
-        <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
+          </template>
+          <div ref="wrap-buffer" :class="$style['wrap-buffer']" />
+        </div>
       </div>
+      <page-loading :isShow="isLoading" />
     </div>
-    <page-loading :isShow="isLoading" />
   </div>
 </template>
 
 <script>
 /* global $ */
-import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
+import popup from "@/router/mobile/components/common/home/popup";
 
 export default {
   mixins: [mixin],
@@ -233,7 +238,8 @@ export default {
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    popup
   },
   mounted() {}
 };

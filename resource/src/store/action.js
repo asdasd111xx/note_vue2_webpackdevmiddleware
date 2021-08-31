@@ -614,7 +614,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     }
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
-    dispatch("actionSetPost");
+    // dispatch("actionSetPost");
 
     if (state.loginStatus) {
       const params = {
@@ -836,6 +836,10 @@ export const actionSetUserdata = (
         cdnRoot = `https://${headers["x-cdn-sg"].split(",")[0]}`;
       }
 
+      if (headers["x-cdn-ab"] && configInfo.MOBILE_WEB_TPL === "aobo1") {
+        cdnRoot = `https://${headers["x-cdn-ab"].split(",")[0]}`;
+      }
+
       commit(types.SETCDNROOT, cdnRoot);
     },
     fail: response => {
@@ -1001,7 +1005,7 @@ export const actionSetPost = ({ commit, state }, postType = 1) => {
     method: "get",
     url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Announcement",
     params: {
-      page: postType //0 首頁與優惠頁, 1首頁, 2優惠頁
+      page: +postType //0 首頁與優惠頁, 1首頁, 2優惠頁
     }
   })
     .then(res => {
@@ -1362,7 +1366,6 @@ export const actionSetSiteConfig = ({ commit }, data) => {
 
 // 推播中心資料
 export const actionNoticeData = ({ commit }, data) => {
-  console.log(`6   ${data}`);
   commit(types.SETNOTICEDATA, data);
 };
 
