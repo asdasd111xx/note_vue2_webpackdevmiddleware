@@ -28,7 +28,14 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.push("/mobile/mcenter");
+          let redirect = this.$route.query.redirect;
+          if (redirect) {
+            if (redirect === "home") {
+              this.$router.back();
+            }
+          } else {
+            this.$router.push("/mobile/mcenter");
+          }
         },
         title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),

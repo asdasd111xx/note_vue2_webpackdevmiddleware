@@ -37,7 +37,7 @@ export default {
       RedEnvelopeTouchType: true,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
-        { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
+        { name: "myWallet", text: "钱包", path: "wallet?redirect=home" },
         { name: "withdraw", text: "提现", path: "withdraw" },
         { name: "creditTrans", text: "转让", path: "creditTrans" },
         { name: "grade", text: "等级", path: "accountVip" }
