@@ -160,11 +160,15 @@
       content: "";
       position: absolute;
       bottom: 2px;
-      right: 12.5px;
+      right: 17.5px;
       transform: translate(50%, 100%);
       border-top: 7px solid black;
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
+    }
+
+    &.full {
+      right: -10px;
     }
   }
 }

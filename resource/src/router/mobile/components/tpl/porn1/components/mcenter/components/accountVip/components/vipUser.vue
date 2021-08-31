@@ -53,7 +53,7 @@
             "
             alt="run"
           />
-          <span ::style="`right: ${userVipInfo.percent > 90 ? -10 : -15 }px`"
+          <span :class="{ [$style['full']]: userVipInfo.percent > 90 }"
             >{{ userVipInfo.percent }}%</span
           >
         </div>
@@ -233,8 +233,11 @@ export default {
         return this.userVipInfo.next_level_valid_bet;
       } else {
         return this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-          ? this.vipLevelList[this.userVipInfo.now_level_seq - 1]
-              .valid_bet_limit
+          ? this.vipConfig.base_type === 3
+            ? this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+                .valid_bet_range
+            : this.vipLevelList[this.userVipInfo.now_level_seq - 1]
+                .valid_bet_limit
           : "";
       }
     }
