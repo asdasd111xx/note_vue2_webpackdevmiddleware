@@ -53,7 +53,7 @@
             "
             alt="run"
           />
-          <span ::style="`right: ${userVipInfo.percent > 90 ? -10 : -15 }px`"
+          <span :class="{ [$style['full']]: userVipInfo.percent > 90 }"
             >{{ userVipInfo.percent }}%</span
           >
         </div>
