@@ -29,7 +29,7 @@
             $style['balance-redjackpot-text']
           ]"
         >
-          {{ redJackpotData.remain_bonus }}
+          {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
         </span>
         <span :class="[$style['balance-redjackpot-image']]" />
       </div>
@@ -406,9 +406,9 @@
           <span :class="$style['transfer-money']">
             <span>¥</span>
             <input
-              v-model="transferMoney"
+              v-model="displayTransferMoney"
               :class="$style['transfer-money-input']"
-              @input="verification()"
+              @input="verification($event.target.value)"
               type="tel"
               placeholder="请输入转帐金额"
             />
@@ -469,6 +469,7 @@ import yaboRequest from "@/api/yaboRequest";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -519,7 +520,8 @@ export default {
       needShowRedEnvelope: false,
       RedEnvelopeTouchType: true,
       redEnvelopeData: {},
-      redJackpotData: { enable: false }
+      redJackpotData: { enable: false },
+      displayTransferMoney: ""
     };
   },
   watch: {
@@ -621,6 +623,9 @@ export default {
     //   保留輸入資料
     if (localStorage.getItem("form-withdraw-account")) {
       this.transferMoney = localStorage.getItem("tranfer-money") || "";
+      this.displayTransferMoney = this.formatThousandsCurrency(
+        this.transferMoney
+      );
       if (localStorage.getItem("tranfer-tranIn")) {
         this.setTranIn(JSON.parse(localStorage.getItem("tranfer-tranIn")));
       }
@@ -655,10 +660,21 @@ export default {
         this.setTranInList(reload);
         this.setTranOutList(reload);
         this.transferMoney = null;
+        this.displayTransferMoney = "";
         this.isInitTranList = true;
       });
     },
-    verification() {
+    verification(value) {
+      this.transferMoney = value;
+
+      if (value) {
+        this.displayTransferMoney = this.formatThousandsCurrency(
+          String(value).replace(/\,/g, "")
+        );
+      } else {
+        this.displayTransferMoney = "";
+      }
+
       if (!this.transferMoney) {
         return;
       }
@@ -756,10 +772,16 @@ export default {
         this.transferMoney = Math.floor(
           +balanceList.vendor[transferTargetOut].balance
         );
+
+        this.displayTransferMoney = this.formatThousandsCurrency(
+          this.transferMoney
+        );
+
         return;
       }
 
       this.transferMoney = 0;
+      this.displayTransferMoney = 0;
     },
     toggleShowMore() {
       this.isShowMore = !this.isShowMore;
@@ -1042,6 +1064,9 @@ export default {
             origin: "home"
           });
         });
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

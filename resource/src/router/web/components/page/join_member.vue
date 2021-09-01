@@ -16,7 +16,7 @@
         <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
-            {{ `领取彩金：${guestAmount}元` }}
+            {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
         </div>
         <!-- 錯誤訊息 -->
@@ -263,7 +263,7 @@
         </template>
       </div>
 
-        <!-- :is-enable="isSlideAble" -->
+      <!-- :is-enable="isSlideAble" -->
       <slide-verification
         v-if="memInfo.config.register_captcha_type === 2"
         :class="$style['join-btn-wrap']"
@@ -313,6 +313,7 @@ import slideVerification from "@/components/slideVerification";
 import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -1172,6 +1173,9 @@ export default {
           }
         }
       });
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

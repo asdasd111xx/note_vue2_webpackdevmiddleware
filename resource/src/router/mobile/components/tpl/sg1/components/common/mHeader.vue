@@ -87,9 +87,7 @@
         :class="$style['balance-wrap']"
         @click="setMenuState('balance')"
       >
-        <span>
-          {{ getLoginMoney }}
-        </span>
+        <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
         <div>
           <img
             :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
@@ -113,7 +111,7 @@
             { [$style['more']]: guestAmount.length > 11 }
           ]"
           @click="$router.push('/mobile/joinmember')"
-          >{{ `${guestAmount}元` }}</span
+          >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
         <span
           :class="$style['visitor-money']"
@@ -195,6 +193,7 @@
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -250,11 +249,10 @@ export default {
     },
     getLoginMoney() {
       if (this.membalance && this.membalance.total) {
-        return `${Number(
-          parseFloat(this.remainBonus) + parseFloat(this.membalance.total)
-        ).toFixed(2)} 元 `;
+        return `${parseFloat(this.remainBonus) +
+          parseFloat(this.membalance.total)}`;
       }
-      return ``;
+      return "";
     }
   },
   created() {
@@ -266,6 +264,9 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     // 自訂幫助中心事件
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {

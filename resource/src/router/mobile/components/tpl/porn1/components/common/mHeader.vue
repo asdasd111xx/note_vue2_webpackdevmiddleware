@@ -5,7 +5,7 @@
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/_new/common/logo.png')" />
+      <img :src="$getCdnPath('/static/image/porn1/common/logo.png')" />
     </div>
 
     <div
@@ -87,15 +87,15 @@
         :class="$style['balance-wrap']"
         @click="setMenuState('balance')"
       >
-        <span>
-          {{ loginMoney }}
-        </span>
+        <span> {{ `${formatThousandsCurrency(getLoginMoney)}元` }} </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['red-dot']" />
+          </div>
         </div>
       </div>
       <div v-else :class="$style['login-wrap']">
@@ -108,13 +108,13 @@
           :class="[
             $style['visitor-money'],
             $style['just-money'],
-            { [$style['more']]: guestMoney.length > 11 }
+            { [$style['more']]: guestAmount.length > 11 }
           ]"
           @click="$router.push('/mobile/joinmember')"
-          >{{ `${guestMoney}元` }}</span
+          >{{ `${formatThousandsCurrency(guestAmount)}元` }}</span
         >
         <span
-          :class="[$style['visitor-money'], $style['visitor-border']]"
+          :class="$style['visitor-money']"
           @click="$router.push('/mobile/joinmember')"
           >领取</span
         >
@@ -182,7 +182,7 @@
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img :src="$getCdnPath('/static/image/_new/common/btn_help.png')" />
+          <img :src="$getCdnPath('/static/image/porn1/common/btn_help.png')" />
         </div>
       </div>
     </template>
@@ -193,10 +193,12 @@
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
     // sideBalance,
+    // topGameList: () => import(/* webpackChunkName: 'topGameList' */'./topGameList')
   },
   props: {
     headerConfig: {
@@ -217,12 +219,8 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
-      remainBonus: 0,
-      loginMoney: "",
-
       guestAmount: 0,
-      personalMaxBonus: "",
-      guestMoney: ""
+      remainBonus: 0
     };
   },
   computed: {
@@ -248,23 +246,13 @@ export default {
     },
     path() {
       return this.$route.path.split("/").filter(path => path);
-    }
-  },
-  watch: {
-    // 一般登入
-    membalance() {
-      this.getLoginMoney();
     },
-    remainBonus() {
-      this.getLoginMoney();
-    },
-
-    // 訪客
-    personalMaxBonus() {
-      this.getGuestMoney();
-    },
-    guestAmount() {
-      this.getGuestMoney();
+    getLoginMoney() {
+      if (this.membalance && this.membalance.total) {
+        return `${parseFloat(this.remainBonus) +
+          parseFloat(this.membalance.total)}`;
+      }
+      return "";
     }
   },
   created() {
@@ -275,43 +263,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetThousandsCurrency"]),
-    getGuestMoney() {
-      let guestAmount =
-        this.guestAmount && Number(this.guestAmount)
-          ? parseFloat(+this.guestAmount)
-          : 0;
-
-      let personalMaxBonus =
-        this.personalMaxBonus && Number(this.personalMaxBonus)
-          ? parseInt(+this.personalMaxBonus)
-          : 0;
-
-      let money = (guestAmount + personalMaxBonus).toFixed(2);
-
-      this.actionSetThousandsCurrency(money).then(value => {
-        this.guestMoney = value;
-      });
-    },
-    getLoginMoney() {
-      if (!this.loginStatus) {
-        return;
-      }
-
-      let total =
-        this.membalance &&
-        this.membalance.total &&
-        Number(this.membalance.total)
-          ? +this.membalance.total
-          : 0;
-      let remainBonus =
-        this.remainBonus && Number(this.remainBonus) ? +this.remainBonus : 0;
-
-      let money = (total + remainBonus).toFixed(2);
-
-      this.actionSetThousandsCurrency(money).then(value => {
-        this.loginMoney = value;
-      });
+    ...mapActions(["actionSetGlobalMessage"]),
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     },
     // 自訂幫助中心事件
     handleHelpLinkTo() {
@@ -340,7 +294,6 @@ export default {
       }
     },
     goSearch() {
-      // 一般遊戲大廳 & 熱門遊戲大廳
       if (
         ["casino", "card", "mahjong", "hotLobby"].includes(this.$route.name)
       ) {
@@ -381,7 +334,10 @@ export default {
             if (this.loginStatus) {
               this.remainBonus = res.data.remain_bonus;
             } else {
-              this.personalMaxBonus = res.data.personal_max_bonus;
+              this.guestAmount = Number(
+                parseFloat(this.guestAmount) +
+                  parseInt(res.data.personal_max_bonus)
+              );
             }
           }
         }

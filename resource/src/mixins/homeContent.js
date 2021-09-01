@@ -239,7 +239,6 @@ export default {
       // 顯示一般公吿
       // 登入前公告
       this.actionSetPost("1").then(() => {
-        console.log(this.post.list.length);
         if (this.post) {
           this.closePop(true);
         }

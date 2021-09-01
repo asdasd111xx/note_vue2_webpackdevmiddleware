@@ -20,21 +20,31 @@
         <div :class="$style['menu-wrap']">
           <p :class="$style['small']">锁定中彩金</p>
           <p :class="$style['money-text']">
-            {{ redJackpotData !== null ? redJackpotData.remain_bonus : "0.00" }}
+            {{
+              redJackpotData !== null
+                ? formatThousandsCurrency(redJackpotData.remain_bonus)
+                : "0.00"
+            }}
           </p>
         </div>
         <div :class="$style['menu-wrap']">
           <p :class="$style['small']">累计已领取</p>
           <p :class="$style['money-text']">
             {{
-              redJackpotData !== null ? redJackpotData.receive_bonus : "0.00"
+              redJackpotData !== null
+                ? formatThousandsCurrency(redJackpotData.receive_bonus)
+                : "0.00"
             }}
           </p>
         </div>
         <div :class="$style['menu-wrap']">
           <p :class="$style['small']">每日赠送最高</p>
           <p :class="$style['money-text']">
-            {{ redJackpotData !== null ? redJackpotData.daily_bonus : "0.00" }}
+            {{
+              redJackpotData !== null
+                ? formatThousandsCurrency(redJackpotData.daily_bonus)
+                : "0.00"
+            }}
           </p>
         </div>
       </div>
@@ -76,6 +86,7 @@ import detailInfo from "@/router/mobile/components/common/mcenter/theme1/moneyDe
 import common from "@/api/common";
 import recoardDetailSlider from "../../creditTrans/compontents/recoardDetailSilder";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -258,6 +269,9 @@ export default {
       return `${Number(value)
         .toFixed(2)
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   },
   beforeDestroy() {

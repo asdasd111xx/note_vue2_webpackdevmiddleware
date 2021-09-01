@@ -1187,7 +1187,7 @@ export default {
       if (target === "withdrawValue") {
         if (value) {
           this.displayWithdrawValue = this.formatThousandsCurrency(
-            String(value).replace(",", "")
+            String(value).replace(/\,/g, "")
           );
         } else {
           this.displayWithdrawValue = "";
@@ -1646,6 +1646,7 @@ export default {
         .then(response => {
           if (response && response.status === "000") {
             this.withdrawValue = "";
+            this.displayWithdrawValue = "";
             this.withdrawPwd = "";
             if (this.memInfo.config.withdraw === "迅付") {
               this.isSuccessAlertShow = true;

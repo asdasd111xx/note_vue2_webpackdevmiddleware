@@ -89,7 +89,7 @@
                   $style['balance-redjackpot-text']
                 ]"
               >
-                {{ redJackpotData.remain_bonus }}
+                {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
               </span>
               <span :class="[$style['balance-redjackpot-image']]" />
             </div>
@@ -276,7 +276,7 @@
             <div :class="$style['game-desc']">
               <span :class="$style['game']">{{ item.game_name }}</span>
               <span :class="$style['money']">{{
-                parseFloat(item.valid_bet).toFixed(2)
+                formatThousandsCurrency(item.valid_bet)
               }}</span>
             </div>
           </div>
@@ -749,6 +749,9 @@ export default {
           }
         }
       });
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     },
     getDomainConfig() {
       return axios({
