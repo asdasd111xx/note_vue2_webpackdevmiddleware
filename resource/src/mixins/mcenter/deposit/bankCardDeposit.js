@@ -189,8 +189,9 @@ export default {
       if (this.offerInfo.is_full_offer) {
         promotionValue = 0;
       } else if (
+        +this.offerInfo.offer_limit > 0 &&
         promotionValue >
-        +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
       ) {
         promotionValue =
           +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
@@ -260,19 +261,20 @@ export default {
      * @return string
      */
     promitionText() {
-      /**
-       * • 此笔充值成功加赠优惠 15.00元
-• 单笔联络300元，单日联络70元(美东时间计算)
-• 单笔充值200元+，优惠加赠3.00%
-•今日优惠已领 12.00元
-       */
       let textValue = "";
 
       if (!this.offerInfo.is_full_offer) {
         textValue += `• 此笔充值成功加赠优惠 ${this.offerInfo.offer}元\n`;
       }
       textValue += `• 单笔充值 ${this.offerInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %\n`;
-      textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)\n`;
+
+      if (+this.offerInfo.per_offer_limit && +this.offerInfo.offer_limit) {
+        textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)\n`;
+      } else if (+this.offerInfo.per_offer_limit) {
+        textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元\n`;
+      } else if (+this.offerInfo.offer_limit) {
+        textValue += `• 单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)\n`;
+      }
 
       textValue += this.offerInfo.is_full_offer
         ? "• 今日领取已达上限"
