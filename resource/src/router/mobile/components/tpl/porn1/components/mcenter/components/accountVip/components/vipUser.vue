@@ -201,7 +201,6 @@ export default {
       }
     },
     nextLevelDepositLimitData() {
-      console.log(123);
       if (this.vipLevelList.length <= 0 || !this.userVipInfo) {
         return;
       }

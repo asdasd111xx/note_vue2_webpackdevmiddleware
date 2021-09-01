@@ -1,7 +1,7 @@
 <script>
-import kebabCase from 'lodash/kebabCase';
-import config from './config';
-import { mapGetters } from 'vuex';
+import kebabCase from "lodash/kebabCase";
+import config from "./config";
+import { mapGetters } from "vuex";
 
 export default {
   components: config.mcenter,
@@ -13,14 +13,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig'
+      siteConfig: "getSiteConfig"
     }),
     headerConfigValue: {
       get() {
         return this.headerConfig;
       },
       set(value) {
-        this.$emit('update:headerConfig', value);
+        this.$emit("update:headerConfig", value);
       }
     }
   },
@@ -28,16 +28,19 @@ export default {
     next();
   },
   render(createElement) {
-
-    const routeName = this.$route.name.replace(/^mcenter-/, '');
-    let target = `${routeName}-${this.siteConfig.MOBILE_WEB_TPL}`;
+    const routeName = this.$route.name.replace(/^mcenter-/, "");
+    let ROUTER_TPL =
+      this.siteConfig.ROUTER_TPL || this.siteConfig.MOBILE_WEB_TPL;
+    let target = `${routeName}-${ROUTER_TPL}`;
 
     return createElement(kebabCase(target), {
       props: {
         headerConfig: this.headerConfigValue
       },
       on: {
-        'update:headerConfig': (value) => { this.headerConfigValue = value; }
+        "update:headerConfig": value => {
+          this.headerConfigValue = value;
+        }
       }
     });
   }

@@ -1,10 +1,11 @@
 {
-  "name": "鸭脖娱乐",
-  "short_name": "鸭脖娱乐",
+  "name": "澳博国际",
+  "short_name": "澳博国际",
   "start_url": "/mobile/launch",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "鸭脖娱乐",
+  "description": "澳博国际",
+  "scope": "/",
   "icons": [
     {
       "src": "../pwa/porn1/48.png",
@@ -27,8 +28,8 @@
       "type": "image/png"
     },
     {
-      "src": "../pwa/porn1/168.png",
-      "sizes": "168x168",
+      "src": "../pwa/porn1/167.png",
+      "sizes": "167x167",
       "type": "image/png"
     },
     {
