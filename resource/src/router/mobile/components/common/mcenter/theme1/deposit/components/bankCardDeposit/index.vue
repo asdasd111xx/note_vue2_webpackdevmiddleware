@@ -1003,11 +1003,10 @@
                   [$style['success']]: moneyValue
                 }
               ]"
-              @click="showRealStatusType(true)"
             >
               实际到帐： ¥{{ realSaveMoney }} 
-              <span v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"> (充值优惠) </span>
-              <span v-else-if="+getPassRoadOrAi.fee_percent || +getPassRoadOrAi.fee_amount"> (详情) </span>
+              <span v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0" @click="showRealStatusType(true)"> (充值优惠) </span>
+              <span v-else-if="+getPassRoadOrAi.fee_percent || +getPassRoadOrAi.fee_amount" @click="showRealStatusType(true)"> (详情) </span>
             </span>
           </div>
 
