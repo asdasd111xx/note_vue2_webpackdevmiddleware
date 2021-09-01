@@ -175,7 +175,7 @@ export default {
         total = total.toString().replace(/^([-]?(\d*))$/, "$1.");
         // 只取小數點後二位
         total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
-        return thousandsCurrency(total);
+        return this.formatThousandsCurrency(total);
       }
 
       // 超過優惠金額以單筆上限為主
@@ -208,7 +208,7 @@ export default {
       total = total.toString().replace(/^([-]?(\d*))$/, "$1.");
       // 只取小數點後二位
       total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
-      return thousandsCurrency(total);
+      return this.formatThousandsCurrency(total);
     },
     /**
      * 設定當前選擇的銀行
@@ -264,21 +264,37 @@ export default {
       let textValue = "";
 
       if (!this.offerInfo.is_full_offer) {
-        textValue += `• 此笔充值成功加赠优惠 ${this.offerInfo.offer}元\n`;
+        textValue += `• 此笔充值成功加赠优惠 ${this.formatThousandsCurrency(
+          this.offerInfo.offer
+        )}元\n`;
       }
-      textValue += `• 单笔充值 ${this.offerInfo.offer_amount} 元+，优惠加赠 ${this.offerInfo.offer_percent} %\n`;
+      textValue += `• 单笔充值 ${this.formatThousandsCurrency(
+        this.offerInfo.offer_amount
+      )} 元+，优惠加赠 ${this.formatThousandsCurrency(
+        this.offerInfo.offer_percent
+      )} %\n`;
 
       if (+this.offerInfo.per_offer_limit && +this.offerInfo.offer_limit) {
-        textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元，单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)\n`;
+        textValue += `• 单笔上限 ${this.formatThousandsCurrency(
+          this.offerInfo.per_offer_limit
+        )} 元，单日上限 ${this.formatThousandsCurrency(
+          this.offerInfo.offer_limit
+        )} 元(美东时间计算)\n`;
       } else if (+this.offerInfo.per_offer_limit) {
-        textValue += `• 单笔上限 ${this.offerInfo.per_offer_limit} 元\n`;
+        textValue += `• 单笔上限 ${this.formatThousandsCurrency(
+          this.offerInfo.per_offer_limit
+        )} 元\n`;
       } else if (+this.offerInfo.offer_limit) {
-        textValue += `• 单日上限 ${this.offerInfo.offer_limit} 元(美东时间计算)\n`;
+        textValue += `• 单日上限 ${this.formatThousandsCurrency(
+          this.offerInfo.offer_limit
+        )} 元(美东时间计算)\n`;
       }
 
       textValue += this.offerInfo.is_full_offer
         ? "• 今日领取已达上限"
-        : `•今日优惠已领 ${this.offerInfo.gotten_offer}元`;
+        : `•今日优惠已领 ${this.formatThousandsCurrency(
+            this.offerInfo.gotten_offer
+          )}元`;
 
       return textValue;
     },
@@ -293,10 +309,12 @@ export default {
         `需承担 ${
           +this.offerInfo.fee_percent > 0
             ? this.offerInfo.fee
-            : this.offerInfo.fee_amount
+            : this.formatThousandsCurrency(this.offerInfo.fee_amount)
         } 元手续费` +
         (+this.offerInfo.fee_percent > 0
-          ? `(充值金额 ${this.offerInfo.fee_percent} %)`
+          ? `(充值金额 ${this.formatThousandsCurrency(
+              this.offerInfo.fee_percent
+            )} %)`
           : "") +
         `，费用由第三方收取`
       );
@@ -1265,8 +1283,8 @@ export default {
         return str;
       }
 
-      minMoney = thousandsCurrency(minMoney);
-      maxMoney = thousandsCurrency(maxMoney);
+      minMoney = this.formatThousandsCurrency(minMoney);
+      maxMoney = this.formatThousandsCurrency(maxMoney);
 
       switch (true) {
         // 最大金額不為0的時候，顯示最小值~最大值
@@ -1470,6 +1488,9 @@ export default {
         //USDT、CGP-USDT
         this.convertCryptoMoney();
       }, 1000);
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

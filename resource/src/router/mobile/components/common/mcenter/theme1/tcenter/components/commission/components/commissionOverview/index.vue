@@ -302,6 +302,7 @@ import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
 import { mapGetters } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   mixins: [commissionOverview],
@@ -415,7 +416,7 @@ export default {
             },
             {
               name: this.$text("S_TOTAL_REBATE", "总损益"),
-              item: info.profit,
+              item: this.amountFormat(info.profit),
               color: info.profit,
               key: "level",
               color: info.profit < 0,
@@ -478,7 +479,7 @@ export default {
       this.isSummaryShow[key] = !this.isSummaryShow[key];
     },
     amountFormat(amount) {
-      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return thousandsCurrency(amount);
     },
     dateYearFormat(date) {
       return Vue.moment(new Date(date)).format("YYYY-MM-DD");

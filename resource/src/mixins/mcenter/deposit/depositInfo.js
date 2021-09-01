@@ -2,7 +2,7 @@ import { API_TRADE_RELAY } from "@/config/api";
 import Vue from "vue";
 import axios from "axios";
 import { mapActions } from "vuex";
-
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 export default {
   props: {
     requiredFields: {
@@ -267,7 +267,7 @@ export default {
         {
           objKey: "yourMoney",
           title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
-          value: this.orderData.amount,
+          value: this.formatThousandsCurrency(this.orderData.amount),
           isFontBold: true
         }
       ];
@@ -379,6 +379,9 @@ export default {
     copyInfo(text) {
       this.$copyText(text);
       this.msg = "已复制到剪贴板";
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

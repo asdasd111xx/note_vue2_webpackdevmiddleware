@@ -4,13 +4,13 @@
       <div :class="$style['menu-wrap-left']">
         <p :class="$style['small']">累计红利总计</p>
         <p :class="$style['big']">
-          {{ info !== null ? total.amount : "0.00" }}
+          {{ info !== null ? formatThousandsCurrency(total.amount) : "0.00" }}
         </p>
       </div>
       <div :class="$style['menu-wrap-right']">
         <p :class="$style['small']">未兑现红利总计</p>
         <p :class="$style['big']">
-          {{ info !== null ? total.balance : "0.00" }}
+          {{ info !== null ? formatThousandsCurrency(total.amount) : "0.00" }}
         </p>
       </div>
     </div>
@@ -40,10 +40,10 @@
                 <p>未兑现红利</p>
               </div>
               <div :class="$style['content-right']">
-                <p>{{ ret.amount }}</p>
-                <p>{{ ret.total }}</p>
-                <p>{{ ret.aggregation }}</p>
-                <p>{{ ret.balance }}</p>
+                <p>{{ formatThousandsCurrency(ret.amount) }}</p>
+                <p>{{ formatThousandsCurrency(ret.total) }}</p>
+                <p>{{ formatThousandsCurrency(ret.aggregation) }}</p>
+                <p>{{ formatThousandsCurrency(ret.balance) }}</p>
               </div>
             </div>
           </div>
@@ -84,11 +84,9 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import Vue from "vue";
 import InfiniteLoading from "vue-infinite-loading";
-import EST from "@/lib/EST";
-import ajax from "@/lib/ajax";
 import axios from "axios";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -122,6 +120,9 @@ export default {
     this.getCredit();
   },
   methods: {
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     getCredit() {
       axios.get("/api/v1/c/gift-card").then(response => {
         this.info = response.data.ret;

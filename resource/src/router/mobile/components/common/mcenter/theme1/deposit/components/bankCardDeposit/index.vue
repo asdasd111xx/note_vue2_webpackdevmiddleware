@@ -492,7 +492,7 @@
                     }
                   "
                 >
-                  ¥ {{ item }}
+                  ¥ {{ formatThousandsCurrency(item) }}
                   <img
                     v-if="moneyValue === item"
                     :class="$style['pay-active']"
@@ -581,7 +581,7 @@
               >
                 <div class="money-input-wrap">
                   <input
-                    v-model="moneyValue"
+                    v-model="displayMoneyValue"
                     :class="[
                       $style['deposit-input'],
                       {
@@ -664,7 +664,7 @@
                           }
                         ]"
                       >
-                        {{ cryptoMoney }}
+                        {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
                         {{ curPayInfo.payment_method_name }}
@@ -1004,9 +1004,21 @@
                 }
               ]"
             >
-              实际到帐： ¥{{ realSaveMoney }} 
-              <span v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0" @click="showRealStatusType(true)"> (充值优惠) </span>
-              <span v-else-if="+getPassRoadOrAi.fee_percent || +getPassRoadOrAi.fee_amount" @click="showRealStatusType(true)"> (详情) </span>
+              实际到帐： ¥{{ realSaveMoney }}
+              <span
+                v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
+                @click="showRealStatusType(true)"
+              >
+                (充值优惠)
+              </span>
+              <span
+                v-else-if="
+                  +getPassRoadOrAi.fee_percent || +getPassRoadOrAi.fee_amount
+                "
+                @click="showRealStatusType(true)"
+              >
+                (详情)
+              </span>
             </span>
           </div>
 
@@ -1014,11 +1026,15 @@
             <div :class="$style['pop-message-mark']" />
             <div :class="$style['message-container']">
               <ul :class="$style['message-content']">
-                <div :class="$style['message-content-title']">{{offerInfo.offer_enable && +offerInfo.offer_percent > 0 ? '充值优惠' : '详情'}}</div>
-                <template
-                  v-if="
+                <div :class="$style['message-content-title']">
+                  {{
                     offerInfo.offer_enable && +offerInfo.offer_percent > 0
-                  "
+                      ? "充值优惠"
+                      : "详情"
+                  }}
+                </div>
+                <template
+                  v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
                 >
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
@@ -1247,7 +1263,8 @@ export default {
         cb: () => {}
       },
 
-      marqueeList: []
+      marqueeList: [],
+      displayMoneyValue: ""
     };
   },
   watch: {
@@ -1264,6 +1281,7 @@ export default {
         this.getPassRoadOrAi.amounts.length > 0
       ) {
         this.moneyValue = this.getPassRoadOrAi.amounts[0];
+        this.displayMoneyValue = this.formatThousandsCurrency(this.moneyValue);
         this.changeMoney(this.getPassRoadOrAi.amounts[0]);
       }
     },
@@ -1427,6 +1445,7 @@ export default {
 
         this.submitStatus = value;
         this.moneyValue = "";
+        this.displayMoneyValue = "";
         this.isErrorMoney = false;
       }
     },
@@ -1696,7 +1715,6 @@ export default {
         this.setPopupStatus(true, "bindWallet");
         return;
       }
-      console.log(123);
       switch (this.curPayInfo.payment_method_id) {
         // CGPay
         case 16:
@@ -1990,6 +2008,14 @@ export default {
       }
 
       if (target === "money") {
+        if (value) {
+          this.displayMoneyValue = this.formatThousandsCurrency(
+            String(value).replace(/\,/g, "")
+          );
+        } else {
+          this.displayMoneyValue = "";
+        }
+
         this.actionVerificationFormData({
           target: "money",
           value: value
@@ -2099,10 +2125,10 @@ export default {
       //預設當前時間
       this.speedField["depositTime"] = new Date().Format("yyyy-MM-dd hh:mm:ss");
     },
-    showRealStatusType(type){
+    showRealStatusType(type) {
       this.showRealStatus = type;
-      if(type){
-        this.getPayOffer(this.moneyValue)
+      if (type) {
+        this.getPayOffer(this.moneyValue);
       }
     }
   }
