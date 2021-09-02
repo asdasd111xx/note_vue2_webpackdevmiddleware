@@ -13,9 +13,9 @@
 
             <template v-if="item.content">
               <p
-                :class="$style['news-content']"
-                v-html="item.content.replace('\n', '<br>')"
                 v-if="item.content"
+                v-html="setContent(item.content, true)"
+                :class="$style['news-content']"
               />
             </template>
             <template v-else-if="item.image">
@@ -98,8 +98,10 @@
 <script>
 import { mapGetters } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import mixin from "@/mixins/mcenter/message/message";
 
 export default {
+  mixins: [mixin],
   props: {
     sitePostList: {
       default: null
@@ -234,14 +236,18 @@ export default {
 }
 
 .news-item {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   word-break: break-all;
   width: 100%;
   height: 100%;
   position: relative;
 
   img {
-    width: 100%;
+    width: 100% !important;
+  }
+
+  table {
+    width: 100% !important;
   }
 }
 
@@ -254,7 +260,7 @@ export default {
 }
 
 .news-content {
-  line-height: 21px;
+  line-height: 17px;
   font-size: 14px;
   color: #a5a9b3;
   width: 100%;
