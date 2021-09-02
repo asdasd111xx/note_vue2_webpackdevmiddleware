@@ -753,6 +753,7 @@ export default {
   align-items: center;
   float: right;
   color: #f9e8b4;
+  padding: 6px;
   > span {
     display: inline-block;
     font-size: 18px;
