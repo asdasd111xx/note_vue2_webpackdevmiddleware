@@ -97,10 +97,6 @@ export default {
       }
     });
 
-    if (this.post) {
-      console.log(this.post.list);
-      this.isShowPop = true;
-    }
     if (this.loginStatus) {
       bbosRequest({
         method: "get",

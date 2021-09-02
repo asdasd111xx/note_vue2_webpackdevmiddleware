@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import EST from "@/lib/EST";
 import Vue from "vue";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -30,19 +31,29 @@ export default {
       return style;
     }
   },
+
   mounted() {},
   methods: {
-    setTitleContent(content){
+    setTitleContent(content) {
       if (!content) {
         return;
       }
       let urlRegex = /\<p\>|\<\/p\>|\n|\<\/br\>/g;
       return content.replace(urlRegex, "");
     },
+    getImage(imageID) {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Image/${imageID}`
+      }).then(res => {
+        return res.data;
+      });
+    },
     setContent(content) {
       if (!content) {
         return;
       }
+
       let urlRegex = /(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
       return content.replace(/\n/g, "<br/>").replace(urlRegex, function(url) {
         return '<a href="' + url + '" target="_blank">' + url + "</a>";

@@ -90,7 +90,7 @@
         <span> {{ `${formatThousandsCurrency(getLoginMoney)}元` }} </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
@@ -108,7 +108,7 @@
           :class="[
             $style['visitor-money'],
             $style['just-money'],
-            { [$style['more']]: guestAmount.length > 11 }
+            { [$style['more']]: guestAmount.length > 9 }
           ]"
           @click="$router.push('/mobile/joinmember')"
           >{{ `${formatThousandsCurrency(guestAmount)}元` }}</span

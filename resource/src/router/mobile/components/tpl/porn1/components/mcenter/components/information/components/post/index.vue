@@ -28,10 +28,24 @@
           </div>
         </div>
       </div>
-      <div
-        :class="$style['content-wrap']"
-        v-html="setContent(currentPost.content)"
-      />
+      <template>
+        <div v-if="currentPost.content">
+          <div
+            :class="$style['content-wrap']"
+            v-html="
+              setContent(
+                currentPost.content || currentPost.image,
+                !!currentPost.image
+              )
+            "
+          />
+        </div>
+      </template>
+      <template>
+        <div :class="$style['post-image']">
+          <img :id="`image-${currentPost.id}`" :src="currentPostImage" />
+        </div>
+      </template>
     </div>
     <div v-else :class="$style['post-list']">
       <div
@@ -52,7 +66,9 @@
         <div :class="$style.wrap">
           <div class="clearfix">
             <div :class="$style.title" v-html="post.title" />
-            <div :class="$style.category">{{ post.categoryText }}</div>
+            <div v-if="post.categoryText" :class="$style.category">
+              {{ post.categoryText }}
+            </div>
             <div :class="$style['post-time']">
               {{ post.enable_at | shortDateFormat }}
             </div>
@@ -65,25 +81,22 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
-import { API_GET_POST } from "@/config/api";
-import ajax from "@/lib/ajax";
-import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/message/message";
-import axios from "axios";
 
 export default {
   mixins: [mixin],
   data() {
     return {
       hasReceive: false,
-      postData: []
+      postData: [],
+      currentPostImage: ""
     };
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      post: "getPost"
     }),
     $style() {
       return this[`$style_default`];
@@ -93,46 +106,42 @@ export default {
         this.$router.back();
         return null;
       }
+      let target = this.postData.find(
+        post => post.id === this.$route.query.pid
+      );
+
+      if (target.image) {
+        this.getImage(target.image).then(data => {
+          this.currentPostImage = data;
+        });
+      }
 
       return this.postData.find(post => post.id === this.$route.query.pid);
     }
   },
-  methods: { ...mapActions(["actionSetGlobalMessage"]) },
+  methods: { ...mapActions(["actionSetGlobalMessage", "actionSetPost"]) },
   created() {
-    axios({
-      method: "get",
-      url: "/api/v1/c/player/announcement",
-      params: {
-        page: 0 //0 首頁與優惠頁, 1首頁, 2優惠頁
-      }
-    })
-      .then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          if (!res.data.ret || !res.data.ret.length > 0) {
-            this.postData = [];
-            this.hasReceive = true;
-            return;
-          }
-
-          const categoryList = {
-            0: "",
-            1: "最新",
-            2: "重要",
-            3: "活动",
-            4: "维护"
-          };
-
-          this.postData = res.data.ret.map(item => ({
-            ...item,
-            categoryText: categoryList[item.category]
-          }));
-          this.hasReceive = true;
-        }
-      })
-      .catch(error => {
+    this.actionSetPost("0").then(() => {
+      this.hasReceive = true;
+      if (!this.post || !this.post.list) {
         this.postData = [];
-        this.actionSetGlobalMessage({ msg: error.data.msg });
-      });
+        return;
+      }
+
+      const categoryList = {
+        0: "",
+        1: "最新",
+        2: "重要",
+        3: "活动",
+        4: "维护"
+      };
+
+      this.postData = this.post.list.map(item => ({
+        ...item,
+        categoryText: categoryList[item.category]
+      }));
+      this.hasReceive = true;
+    });
   }
 };
 </script>
@@ -323,5 +332,14 @@ export default {
   margin-top: 6px;
   color: #a6a9b2;
   font-size: 12px;
+}
+
+.post-image {
+  width: 100%;
+  padding: 0 7px;
+
+  > img {
+    width: 100%;
+  }
 }
 </style>

@@ -108,7 +108,7 @@
           :class="[
             $style['visitor-money'],
             $style['just-money'],
-            { [$style['more']]: guestAmount.length > 11 }
+            { [$style['more']]: guestAmount.length > 9 }
           ]"
           @click="$router.push('/mobile/joinmember')"
           >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
