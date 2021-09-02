@@ -118,7 +118,7 @@
           @click="$router.push('/mobile/joinmember')"
           >领取</span
         >
-        <span @click="$router.push('/mobile/login')">{{
+        <span :class="$style['login']" @click="$router.push('/mobile/login')">{{
           $text("S_LOGON", "登录")
         }}</span>
         <!-- <span @click="$router.push('/mobile/joinmember')">{{
@@ -430,11 +430,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-
+  @media screen and (max-width: 320px) {
+    width: 86px;
+  }
   > img {
     display: block;
     height: 33px;
     width: 100%;
+    @media screen and (max-width: 320px) {
+      height: 24px;
+    }
   }
 }
 
@@ -452,6 +457,10 @@ export default {
     color: #f9e8b4;
     font-size: 17px;
     vertical-align: middle;
+    @media screen and (max-width: 320px) {
+      font-size: 13px;
+      padding: 0 2px;
+    }
   }
 
   img {
@@ -484,7 +493,7 @@ export default {
     padding-right: 2px;
 
     &.just-money {
-      max-width: 85px;
+      max-width: 88px;
       word-break: break-word;
       text-align: right;
     }
