@@ -2,12 +2,18 @@
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
-        <div :class="[$style['promotion-gift'], $style['right']]" @click="onGiftClick(giftList[0])">
+        <div
+          :class="[$style['promotion-gift'], $style['right']]"
+          @click="onGiftClick(giftList[0])"
+        >
           <span>{{ giftList[0].name }}</span>
           <div v-show="hasNewGift" :class="$style['red-dot']" />
         </div>
 
-        <div :class="[$style['promotion-gift'], $style['left']]" @click="onGiftClick(giftList[1])">
+        <div
+          :class="[$style['promotion-gift'], $style['left']]"
+          @click="onGiftClick(giftList[1])"
+        >
           <span>{{ giftList[1].name }}</span>
         </div>
       </div>
@@ -41,12 +47,16 @@
                   $getCdnPath('/static/image/common/promotion/icon_time.png')
                 "
               />
-              <span v-if="info.end_time">{{ info.start_time }} ~ {{ info.end_time }}</span>
+              <span v-if="info.end_time"
+                >{{ info.start_time }} ~ {{ info.end_time }}</span
+              >
               <span v-else>{{ $text("S_NOW_DATE", "即日起") }}</span>
             </div>
           </div>
         </div>
       </div>
+
+      <popup v-if="isShowPop" @close="closePop" />
     </div>
   </mobile-container>
 </template>
@@ -59,23 +69,35 @@ import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import popup from "@/router/mobile/components/common/home/popup";
+
 export default {
   components: {
     mobileContainer,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    popup
   },
   data() {
     return {
       tabId: 0,
       tabList: [],
       promotionList: [],
-      hasNewGift: false
+      hasNewGift: false,
+      isShowPop: false
     };
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
+
+    this.actionSetPost("2").then(() => {
+      if (this.post) {
+        console.log(this.post);
+
+        this.isShowPop = true;
+      }
+    });
 
     if (this.loginStatus) {
       bbosRequest({
@@ -98,7 +120,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      post: "getPost"
     }),
     giftList() {
       return [
@@ -119,7 +142,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetPost"]),
+    closePop() {
+      this.isShowPop = false;
+    },
     getPromotionList(id) {
       this.tabId = +id;
       // this.$nextTick(() => {
@@ -366,7 +392,6 @@ $fixed_spacing_height: 43px;
   justify-content: center;
   color: #731c25;
   background: linear-gradient(to left, #f4b22e 0%, #f9d388 100%);
-
   &.right {
     right: 14px;
   }

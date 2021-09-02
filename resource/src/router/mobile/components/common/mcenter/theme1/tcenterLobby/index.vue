@@ -393,6 +393,10 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
+    },
     /**
      * 返利是否有開啟第三方返利時
      */
@@ -535,23 +539,34 @@ export default {
       });
     },
     openPromotion(position) {
-      let newWindow = "";
-      newWindow = window.open();
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-        params: {
-          urlName: position,
-          lang: "zh-cn",
-          needToken: "false"
-        }
-      }).then(res => {
-        if (res && res.data && res.data.uri) {
-          newWindow.location = res.data.uri;
-        } else {
-          newWindow.close();
-        }
-      });
+      if (this.routerTPL === "aobo1" && position === "rebate_promotion") {
+        this.openPromotionEmbedded(position);
+      } else {
+        let newWindow = "";
+        newWindow = window.open();
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+          params: {
+            urlName: position,
+            lang: "zh-cn",
+            needToken: "false"
+          }
+        }).then(res => {
+          if (res && res.data && res.data.uri) {
+            newWindow.location = res.data.uri;
+          } else {
+            newWindow.close();
+          }
+        });
+      }
+    },
+    openPromotionEmbedded(position) {
+      //優小祕內嵌連結
+      localStorage.setItem("iframe-third-url-title", "代理佣金制度");
+      this.$router.push(
+        `/mobile/iframe/promotionTcenterLobby?alias=${position}`
+      );
     }
   }
 };

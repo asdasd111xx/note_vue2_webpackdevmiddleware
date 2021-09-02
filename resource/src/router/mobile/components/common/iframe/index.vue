@@ -141,6 +141,10 @@ export default {
           return "/mobile/promotion";
         case "SWAG":
           return "/mobile";
+        case "PROMOTIONHOME":
+          return "/mobile/mcenter/home";
+        case "PROMOTIONTCENTERLOBBY":
+          return "/mobile/mcenter/tcenterLobby";
         default:
           return "/mobile";
       }
@@ -402,7 +406,10 @@ export default {
           );
 
           break;
+
         case "PROMOTION":
+        case "PROMOTIONHOME":
+        case "PROMOTIONTCENTERLOBBY":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
           if (url) {
@@ -879,10 +886,5 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
-
-  &.promotion {
-    // height: calc(100% + 50px);
-    // margin-top: -50px;
-  }
 }
 </style>
