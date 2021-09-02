@@ -118,7 +118,7 @@
           @click="$router.push('/mobile/joinmember')"
           >领取</span
         >
-        <span :class="$style['login']" @click="$router.push('/mobile/login')">{{
+        <span @click="$router.push('/mobile/login')">{{
           $text("S_LOGON", "登录")
         }}</span>
         <!-- <span @click="$router.push('/mobile/joinmember')">{{
