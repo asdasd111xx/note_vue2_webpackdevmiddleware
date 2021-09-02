@@ -37,6 +37,10 @@ export default {
         height: "calc(100vh - 60px)",
         border: "none"
       };
+    },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   methods: {
@@ -45,10 +49,18 @@ export default {
       window.history.back();
     }
   },
+
   created() {
+    let header = {};
+    if (this.routerTPL === "aobo1") {
+      //因為澳博目前沒有這支"/xbb/Link/External/Url" api,所以先用鴨博代替
+      header = { "x-domain": "500015" };
+    }
+
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+      headers: header,
       params: {
         lang: "zh-cn",
         urlName: "specific_promotion",
@@ -65,6 +77,7 @@ export default {
         //取得優小祕優惠頁面標題
         goLangApiRequest({
           method: "get",
+          headers: header,
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
           params: {
             lang: "zh-cn"
