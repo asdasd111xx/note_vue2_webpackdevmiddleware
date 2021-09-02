@@ -1193,9 +1193,7 @@ export default {
           this.displayWithdrawValue = "";
         }
 
-        this.withdrawValue = value;
-        value = String(value).replace(/[^0-9]/g, "");
-        this.withdrawValue = value;
+        this.withdrawValue = String(value).replace(/[^0-9]/g, "");
 
         // 針對加密貨幣
         if (this.isSelectedUSDT && !value) {
@@ -1920,11 +1918,13 @@ export default {
 
         case bonusOffer >= this.selectedCard.offer_limit &&
           this.selectedCard.offer_limit !== "0":
-          return `${Number(this.selectedCard.offer_limit).toFixed(2)}`;
+          return `${this.formatThousandsCurrency(
+            this.selectedCard.offer_limit
+          )}`;
           break;
 
         default:
-          return `${Number(bonusOffer).toFixed(2)}`;
+          return `${this.formatThousandsCurrency(bonusOffer)}`;
           break;
       }
     },
@@ -2043,8 +2043,10 @@ export default {
       this.updateAmount(this.selectedCard.swift_code);
 
       // 金額部份
-      this.withdrawValue =
-        localStorage.getItem("tmp_w_amount") || this.withdrawValue;
+      let tempAmount = localStorage.getItem("tmp_w_amount")
+        ? this.formatThousandsCurrency(localStorage.getItem("tmp_w_amount"))
+        : this.withdrawValue;
+      this.withdrawValue = tempAmount;
       this.actualMoney =
         JSON.parse(localStorage.getItem("tmp_w_actualAmount")) ||
         this.actualMoney;

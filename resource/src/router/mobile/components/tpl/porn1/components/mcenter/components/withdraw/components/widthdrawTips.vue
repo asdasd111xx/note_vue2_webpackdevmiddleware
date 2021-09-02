@@ -136,7 +136,7 @@
                   {{ withdrawName }}到帐
                 </span>
                 <span :class="$style['crypto-money']">
-                  {{ cryptoMoney }}
+                  {{ formatThousandsCurrency(cryptoMoney) }}
                 </span>
               </div>
             </div>

@@ -34,7 +34,7 @@
             {{ $text("S_VALID_BET", "有效投注") }}
           </div>
           <div :class="$style['serial-basic-value']">
-            {{ data.effective_betting }}
+            {{ formatThousandsCurrency(data.effective_betting) }}
           </div>
         </div>
 
@@ -138,10 +138,13 @@ export default {
           title: this.$text("S_TYPE", "类别"),
           value: this.data.opcode
         },
-        { title: "充值金额", value: this.data.amount },
+        {
+          title: "充值金额",
+          value: this.formatThousandsCurrency(this.data.amount)
+        },
         {
           title: this.$text("S_OFFER_MONEY", "优惠金额"),
-          value: this.data.offer
+          value: this.formatThousandsCurrency(this.data.offer)
         }
       ];
     },
