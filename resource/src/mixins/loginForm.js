@@ -271,21 +271,8 @@ export default {
           }
           // 是否顯示過首頁公告
           localStorage.removeItem("is-shown-announcement");
+          localStorage.removeItem("do-not-show-home-post");
           window.location.reload();
-          // 登入公告
-          // ajax({
-          //     method: 'get',
-          //     url: apis.API_MEMBER_ANNOUNCEMENT,
-          //     errorAlert: false,
-          //     success: (response) => {
-          //         if (response.result === 'ok') {
-          //             response.ret.forEach((post) => {
-          //             });
-          //         }
-          //     }
-          // }).then(() => {
-          // });
-
           return;
         }
 

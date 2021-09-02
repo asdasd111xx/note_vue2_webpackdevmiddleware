@@ -229,20 +229,14 @@ export default {
             this.isShowPop = true;
           } else {
             // 顯示一般公吿
-            this.actionSetPost("1").then(() => {
-              this.closePop(true);
-            });
+            this.closePop(true);
           }
         }
       });
     } else {
       // 顯示一般公吿
       // 登入前公告
-      this.actionSetPost("1").then(() => {
-        if (this.post) {
-          this.closePop(true);
-        }
-      });
+      this.closePop(true);
     }
 
     this.showPromotion = this.loginStatus
@@ -340,12 +334,15 @@ export default {
       this.sitePostList = null;
 
       if (
-        localStorage.getItem("do-not-show-home-post") !== "true" &&
         isFromSitePost &&
-        this.post &&
-        this.post.list.length > 0
+        localStorage.getItem("do-not-show-home-post") !== "true" &&
+        isFromSitePost
       ) {
-        this.isShowPop = true;
+        this.actionSetPost("1").then(() => {
+          if (this.post && this.post.list.length > 0) {
+            this.isShowPop = true;
+          }
+        });
       }
     },
     getImg(info) {

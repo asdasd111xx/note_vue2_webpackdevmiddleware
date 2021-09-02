@@ -154,7 +154,7 @@ export default {
 }
 
 .modal-content {
-  padding: 15px 20px;
+  padding: 15px 17px;
 
   &.hasBorderBottom {
     border-bottom: 1px solid #eee;
@@ -197,6 +197,13 @@ export default {
 .news-item {
   margin-bottom: 20px;
   word-break: break-all;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  > img {
+    width: 100%;
+  }
 }
 
 .news-title {

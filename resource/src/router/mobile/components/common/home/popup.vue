@@ -18,9 +18,13 @@
                 v-if="item.content"
               />
             </template>
-            <template v-else-if="item.image && postImage">
+            <template v-else-if="item.image">
               <div :class="$style['news-image']">
-                <img :src="postImage" />
+                <img
+                  v-show="false"
+                  :src="postImage[item.id]"
+                  :id="`image-${item.id}`"
+                />
               </div>
             </template>
           </div>
@@ -104,7 +108,7 @@ export default {
   data() {
     return {
       isTick: false,
-      postImage: ""
+      postImage: {}
     };
   },
   computed: {
@@ -117,11 +121,11 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
-  created() {
+  mounted() {
     if (this.post && this.post.list) {
       this.post.list.forEach(item => {
         if (item && item.image) {
-          this.getImage(item.image);
+          this.getImage(item.id, item.image);
         }
       });
     }
@@ -138,7 +142,7 @@ export default {
       }
 
       if (showDetail) {
-        this.$router.push("mobile/mcenter/information/post");
+        this.$router.push("/mobile/mcenter/information/post");
         return;
       }
 
@@ -148,12 +152,17 @@ export default {
 
       this.$emit("close", !!this.sitePostList);
     },
-    getImage(imageID) {
+    getImage(id, imageID) {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Image/${imageID}`
       }).then(res => {
-        this.postImage = res.data;
+        let target = document.getElementById(`image-${id}`);
+        if (target) {
+          this.postImage[id] = res.data;
+          target.src = res.data;
+          target.style = "display:unset";
+        }
       });
     }
   }
@@ -227,6 +236,13 @@ export default {
 .news-item {
   margin-bottom: 20px;
   word-break: break-all;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  img {
+    width: 100%;
+  }
 }
 
 .news-title {
@@ -241,6 +257,12 @@ export default {
   line-height: 21px;
   font-size: 14px;
   color: #a5a9b3;
+  width: 100%;
+  position: relative;
+
+  img {
+    width: 100%;
+  }
 }
 
 .modal-button {
