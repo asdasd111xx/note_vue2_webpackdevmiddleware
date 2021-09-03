@@ -116,7 +116,7 @@ export default {
   mcenter: {
     homeAobo1: () =>
       import(
-        /* webpackChunkName: 'homeAobo1' */ "../../tpl/aobo1/components/mcenter/components/home"
+        /* webpackChunkName: 'homeAobo1' */ "../../tpl/porn1/components/mcenter/components/home"
       ),
     accountDataAobo1: () =>
       import(
@@ -129,7 +129,7 @@ export default {
       ),
     creditTransAobo1: () =>
       import(
-        /* webpackChunkName: 'creditTransAobo1' */ "../../tpl/aobo1/components/mcenter/components/creditTrans"
+        /* webpackChunkName: 'creditTransAobo1' */ "../../tpl/porn1/components/mcenter/components/creditTrans"
       ),
     bankCardAobo1: () =>
       import(
@@ -282,7 +282,7 @@ export default {
       ),
     tcenterLobbyAobo1: () =>
       import(
-        /* webpackChunkName: 'tcenterLobbyAobo1' */ "../../tpl/aobo1/components/mcenter/components/tcenter/tcenterLobby"
+        /* webpackChunkName: 'tcenterLobbyAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"
       ),
     tcenterManageRebateAobo1: () =>
       import(
