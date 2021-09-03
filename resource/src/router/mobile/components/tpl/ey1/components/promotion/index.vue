@@ -54,6 +54,7 @@
           </div>
         </div>
       </div>
+      <popup v-if="isShowPop" @close="closePop" />
     </div>
   </mobile-container>
 </template>
@@ -64,38 +65,41 @@ import ajax from "@/lib/ajax";
 import { API_PROMOTION_LIST } from "@/config/api";
 import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
+import popup from "@/router/mobile/components/common/home/popup";
 import goLangApiRequest from "@/api/goLangApiRequest";
+
 export default {
   components: {
     mobileContainer,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    popup
   },
   data() {
     return {
       tabId: 0,
       tabList: [],
       promotionList: [],
-      hasNewGift: false
+      hasNewGift: false,
+      isShowPop: false
     };
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
 
+    this.actionSetPost("2").then(() => {
+      if (this.post) {
+        this.isShowPop = true;
+      }
+    });
+
     if (this.loginStatus) {
-      bbosRequest({
+      goLangApiRequest({
         method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: {
-          // tabId: "",
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/User/Collect/Count`
       }).then(res => {
-        if (res && res.data) {
+        if (res.data && res.status === "000") {
           this.hasNewGift = res.data.count > 0;
         }
       });
@@ -105,7 +109,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      post: "getPost"
     }),
     giftList() {
       return [
@@ -126,7 +131,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetPost"]),
+    closePop() {
+      this.isShowPop = false;
+    },
     handleClickTab(tab, index) {
       this.getPromotionList(tab.id);
     },
