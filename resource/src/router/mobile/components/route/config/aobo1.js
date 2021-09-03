@@ -198,15 +198,15 @@ export default {
       ),
     helpAobo1: () =>
       import(
-        /* webpackChunkName: 'helpAobo1' */ "../../tpl/porn1/components/mcenter/components/help/components"
+        /* webpackChunkName: 'helpAobo1' */ "../../tpl/aobo1/components/mcenter/components/help/components"
       ),
     helpCenterAobo1: () =>
       import(
-        /* webpackChunkName: 'helpCenterAobo1' */ "../../tpl/porn1/components/mcenter/components/help"
+        /* webpackChunkName: 'helpCenterAobo1' */ "../../tpl/aobo1/components/mcenter/components/help"
       ),
     helpDetailAobo1: () =>
       import(
-        /* webpackChunkName: 'helpDetailAobo1' */ "../../tpl/porn1/components/mcenter/components/help/components/detail"
+        /* webpackChunkName: 'helpDetailAobo1' */ "../../tpl/aobo1/components/mcenter/components/help/components/detail"
       ),
     accountDataAliasAobo1: () =>
       import(
