@@ -46,7 +46,14 @@
                   "
                   >无限制</span
                 >
-                <span v-else>
+                <span
+                  v-else
+                  :class="{
+                    [$style['long']]:
+                      currentLevelData.withdraw_fee.withdraw_limit &&
+                      currentLevelData.withdraw_fee.withdraw_limit.length > 9
+                  }"
+                >
                   {{
                     formatThousandsCurrency(
                       currentLevelData.withdraw_fee.withdraw_limit
@@ -67,7 +74,13 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>
+            <div
+              :class="{
+                [$style['long']]:
+                  currentLevelData.withdraw_fee.withdraw_limit &&
+                  currentLevelData.withdraw_fee.withdraw_limit.length > 9
+              }"
+            >
               {{ formatThousandsCurrency(currentLevelData.gift_amount) }}
             </div>
             <div>晋级礼金(晋级自动派发)</div>
@@ -119,7 +132,13 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <div>
+            <div
+              :class="{
+                [$style['long']]:
+                  currentLevelData.withdraw_fee.withdraw_limit &&
+                  currentLevelData.withdraw_fee.withdraw_limit.length > 9
+              }"
+            >
               {{ formatThousandsCurrency(currentLevelData.birth_amount) }}
             </div>
             <div>生日礼金</div>
