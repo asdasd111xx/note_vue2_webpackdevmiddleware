@@ -137,6 +137,8 @@ export default {
       switch (origin) {
         case "THIRD":
           return "/mobile/gift";
+        case "GIFT":
+          return "/mobile";
         case "PROMOTION":
           return "/mobile/promotion";
         case "SWAG":
@@ -313,6 +315,7 @@ export default {
           // SWAG
           // this.src = 'https://feature-yabo.app.swag.live/';
           break;
+
         case "THIRD":
           let type = this.$route.params.type;
 
@@ -405,6 +408,47 @@ export default {
             openGameFailFunc
           );
 
+          break;
+
+        case "GIFT":
+          // 優小秘
+          let giftUrl = localStorage.getItem("iframe-third-url") || "";
+          if (giftUrl) {
+            if (!giftUrl.includes("v=m")) {
+              giftUrl = `${giftUrl}&v=m`;
+            }
+            this.src = giftUrl;
+            return;
+          }
+
+          if (query.alias) {
+            goLangApiRequest({
+              method: "get",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+              params: {
+                urlName: query.alias,
+                lang: "zh-cn",
+                needToken: "true",
+                externalCode: "promotion"
+              }
+            }).then(res => {
+              this.isLoading = false;
+              if (res && res.data && res.data.uri) {
+                url = res.data.uri;
+
+                if (!url.includes("v=m")) {
+                  url = `${url}&v=m`;
+                }
+
+                this.src = url;
+              }
+
+              if (res && res.msg) {
+                this.actionSetGlobalMessage({ msg: res.msg });
+                return;
+              }
+            });
+          }
           break;
 
         case "PROMOTION":
