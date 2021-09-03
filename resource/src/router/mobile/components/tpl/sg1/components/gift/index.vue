@@ -2,10 +2,25 @@
   <mobile-container :class="$style.container">
     <div slot="content" class="content-wrap">
       <div :class="$style['header-title']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
+            )
+          "
+          @click="goBack"
+        />
         {{ giftTitle }}
-        <!-- <span @click="goBack">返回</span> -->
       </div>
-      <iframe :style="giftIfrStyle" :src="url"></iframe>
+      <iframe :style="giftIfrStyle" :src="giftIfrUrl"></iframe>
     </div>
   </mobile-container>
 </template>
@@ -36,12 +51,22 @@ export default {
         height: "calc(100vh - 60px)",
         border: "none"
       };
+    },
+    giftIfrUrl() {
+      return `/mobile/iframe/gift?alias=specific_promotion&fullscreen=false&hasHeader=false`;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     goBack() {
-      window.history.back();
+      if (this.$router.history.current.path == "/mobile/gift") {
+        window.history.back();
+      } else {
+        this.$router.push("/mobile");
+      }
     }
   },
   created() {
@@ -105,5 +130,11 @@ div.container {
   align-items: center;
   margin-bottom: 8px;
   box-shadow: 0 0.04rem 0.08rem 0 rgba(0, 0, 0, 0.05);
+  img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 15px;
+  }
 }
 </style>

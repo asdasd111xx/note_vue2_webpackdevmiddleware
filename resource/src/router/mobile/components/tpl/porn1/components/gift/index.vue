@@ -2,10 +2,26 @@
   <mobile-container :class="$style.container">
     <div slot="content" class="content-wrap">
       <div :class="$style['header-title']">
+        <img
+          :src="
+            $getCdnPath(
+              `/static/image/common/btn_back_${
+                themeTPL === 'porn1'
+                  ? 'grey'
+                  : themeTPL === 'ey1'
+                  ? 'white'
+                  : themeTPL === 'sg1'
+                  ? 'black'
+                  : null
+              }.png`
+            )
+          "
+          @click="goBack"
+        />
         {{ giftTitle }}
-        <!-- <span @click="goBack">返回</span> -->
       </div>
-      <iframe :style="giftIfrStyle" :src="url"></iframe>
+      <!-- <iframe-content :src="giftIfrUrl"/> -->
+      <iframe :style="giftIfrStyle" :src="giftIfrUrl"></iframe>
     </div>
   </mobile-container>
 </template>
@@ -15,10 +31,12 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
 import goLangApiRequest from "@/api/goLangApiRequest";
+// import iframeContent from "@/router/mobile/components/common/iframe";
 
 export default {
   components: {
     mobileContainer
+    // iframeContent
   },
   data() {
     return {
@@ -31,6 +49,9 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    giftIfrUrl() {
+      return `/mobile/iframe/gift?alias=specific_promotion&fullscreen=false&hasHeader=false`;
+    },
     giftIfrStyle() {
       return {
         width: "100%",
@@ -41,12 +62,19 @@ export default {
     routerTPL() {
       //先用ROUTER_TPL判斷aobo
       return this.siteConfig.ROUTER_TPL;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     goBack() {
-      window.history.back();
+      if (this.$router.history.current.path == "/mobile/gift") {
+        window.history.back();
+      } else {
+        this.$router.push("/mobile");
+      }
     }
   },
 
@@ -68,11 +96,7 @@ export default {
       }
     }).then(res => {
       if (res.status === "000") {
-        //優小秘網址多加上v=m時,頁面標題需另外取得
-        if (!this.url.includes("v=m")) {
-          this.url = `${res.data.uri}&v=m`;
-        }
-        // this.url = res.data.uri;
+        this.url = res.data.uri;
 
         //取得優小祕優惠頁面標題
         goLangApiRequest({
@@ -87,6 +111,7 @@ export default {
             res.data.ret.forEach(promo => {
               if (this.url.includes(promo.link)) {
                 this.giftTitle = promo.name;
+                localStorage.setItem("iframe-third-url-title", promo.name);
               }
             });
           }
@@ -119,5 +144,12 @@ div.container {
   align-items: center;
   margin-bottom: 8px;
   box-shadow: 0 0.04rem 0.08rem 0 rgba(0, 0, 0, 0.05);
+
+  img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 15px;
+  }
 }
 </style>
