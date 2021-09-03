@@ -317,7 +317,12 @@ export default {
     }
 
     Object.keys(ret).forEach(index => {
-      if (ret[index].popup === isLogin || ret[index].popup === 3) {
+      // ingress 1電腦版, 2行動版, 3不限制（預設）
+      // popup	1登入前, 2登入後, 3不限制
+      if (
+        (ret[index].ingress === 2 || ret[index].ingress === 3) &&
+        (ret[index].popup === isLogin || ret[index].popup === 3)
+      ) {
         const resultData = ret[index];
         list.push(resultData);
       }

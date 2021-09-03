@@ -138,13 +138,17 @@ export default {
             )
             .toNumber()
         : 0;
-      const deductionValue = +this.getPassRoadOrAi.fee_percent
+      //充值優惠小數點後兩位捨去
+      promotionValue = Math.floor(promotionValue * 100) / 100;
+      let deductionValue = +this.getPassRoadOrAi.fee_percent
         ? new BigNumber(this.moneyValue)
             .multipliedBy(
               new BigNumber(this.getPassRoadOrAi.fee_percent).dividedBy(100)
             )
             .toNumber()
         : Number(this.getPassRoadOrAi.fee_amount);
+      //手續費小數點後兩位捨去
+      deductionValue = Math.floor(deductionValue * 100) / 100;
       let total = "0.00";
 
       // 尚未輸入金額
@@ -826,6 +830,7 @@ export default {
       this.isSelectedCustomMoney = !!canCustomMoney;
       this.isDisableDepositInput = !canCustomMoney;
       this.moneyValue = money;
+      this.displayMoneyValue = this.formatThousandsCurrency(this.moneyValue);
       this.isErrorMoney = false;
       this.checkOrderData();
     },
@@ -855,6 +860,7 @@ export default {
       this.curPassRoad = {};
 
       this.moneyValue = "";
+      this.displayMoneyValue = this.formatThousandsCurrency(this.moneyValue);
 
       this.isDisableDepositInput = false;
       this.isErrorMoney = false;

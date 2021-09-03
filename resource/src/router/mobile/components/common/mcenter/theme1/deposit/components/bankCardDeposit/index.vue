@@ -1000,7 +1000,7 @@
               :class="[
                 $style['feature-tip-title'],
                 {
-                  [$style['success']]: moneyValue
+                  [$style['success']]: +realSaveMoney.replaceAll(',','') >0
                 }
               ]"
             >
@@ -2008,19 +2008,15 @@ export default {
       }
 
       if (target === "money") {
-        if (value) {
-          this.displayMoneyValue = this.formatThousandsCurrency(
-            String(value).replace(/\,/g, "")
-          );
-        } else {
-          this.displayMoneyValue = "";
-        }
-
         this.actionVerificationFormData({
           target: "money",
           value: value
         }).then(val => {
           this.moneyValue = val;
+          this.displayMoneyValue = this.moneyValue
+            ? this.formatThousandsCurrency(this.moneyValue)
+            : "";
+
           this.isErrorMoney = false;
           this.cryptoMoney = val ? this.cryptoMoney : "--";
 

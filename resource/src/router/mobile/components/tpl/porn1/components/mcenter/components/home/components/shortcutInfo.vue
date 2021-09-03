@@ -21,7 +21,9 @@
       <div
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/makeMoney')
+            ? routerTPL === 'aobo1'
+              ? openPromotionEmbedded()
+              : $router.push('/mobile/mcenter/makeMoney')
             : $router.push('/mobile/joinmember')
         "
       >
@@ -122,8 +124,13 @@ export default {
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
       memCurrency: "getMemCurrency",
-      memBalance: "getMemBalance"
-    })
+      memBalance: "getMemBalance",
+      siteConfig: "getSiteConfig"
+    }),
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   created() {
     member.data({
@@ -160,6 +167,12 @@ export default {
       const now = moment(new Date());
 
       this.createdTime = now.diff(startTime, "days") + 1;
+    },
+    openPromotionEmbedded() {
+      //優小祕內嵌連結
+      let url = "promotion_earn";
+      localStorage.setItem("iframe-third-url-title", "推广赚钱");
+      this.$router.push(`/mobile/iframe/promotionHome?alias=${url}`);
     }
   }
 };
