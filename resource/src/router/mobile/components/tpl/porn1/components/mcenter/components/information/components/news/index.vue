@@ -73,9 +73,6 @@ export default {
       newsData: "getNews",
       siteConfig: "getSiteConfig"
     }),
-    $style() {
-      return this[`$style_default`];
-    },
     currentNews() {
       if (!this.$route.query.pid || this.newsData.length == 0) {
         this.$router.back();
@@ -90,7 +87,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module="$style_default">
+<style lang="scss">
 .no-data {
   position: relative;
   min-height: calc(100vh - 43px - 42px - 10px);

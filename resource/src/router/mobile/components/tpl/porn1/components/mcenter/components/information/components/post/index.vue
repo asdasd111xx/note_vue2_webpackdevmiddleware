@@ -98,9 +98,6 @@ export default {
       siteConfig: "getSiteConfig",
       post: "getPost"
     }),
-    $style() {
-      return this[`$style_default`];
-    },
     currentPost() {
       if (!this.$route.query.pid || this.postData.length == 0) {
         this.$router.back();
@@ -146,7 +143,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module="$style_default">
+<style lang="scss" module>
 .no-data {
   position: relative;
   min-height: calc(100vh - 43px - 42px - 10px);
