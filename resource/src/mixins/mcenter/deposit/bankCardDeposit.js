@@ -312,7 +312,7 @@ export default {
       return (
         `需承担 ${
           +this.offerInfo.fee_percent > 0
-            ? this.offerInfo.fee
+            ? this.formatThousandsCurrency(this.offerInfo.fee)
             : this.formatThousandsCurrency(this.offerInfo.fee_amount)
         } 元手续费` +
         (+this.offerInfo.fee_percent > 0
