@@ -43,10 +43,14 @@
 }
 
 .message-wrap {
+  padding: 8px 0;
   background-color: #fefffe;
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
 }
 
 .message-list {
+  height: 100%;
   min-height: calc(100vh - 43px - 42px - 10px);
   margin-top: 52px;
 }
@@ -126,8 +130,7 @@
   }
 }
 
-.content-wrap {
-  padding: 8px 18px;
+.message-content-wrap {
   color: #414655;
   font-size: 14px;
   word-break: break-all;
@@ -388,13 +391,12 @@
 
 .message-header {
   width: 100%;
-  position: fixed;
+  position: absolute;
+  left: 0;
   top: 0;
   height: 43px;
   z-index: 20;
   display: flex;
-  background-color: #fefffe;
-  // background: linear-gradient(#fe2a2a, #b60303);
   align-items: center;
 
   .message-header-title {

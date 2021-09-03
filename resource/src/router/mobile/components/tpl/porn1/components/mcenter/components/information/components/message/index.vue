@@ -1,15 +1,5 @@
 <template>
-  <div v-if="hasReceive && messageData.length === 0" :class="$style['no-data']">
-    <div :class="$style['no-data-wrap']">
-      <img
-        :src="
-          $getCdnPath('/static/image/porn1/mcenter/information/no_message.png')
-        "
-      />
-      <div>还没有新通知</div>
-    </div>
-  </div>
-  <div v-else :class="$style['message-wrap']">
+  <div>
     <div id="header" :class="[$style['message-header']]">
       <div
         v-if="!isEditing"
@@ -54,10 +44,6 @@
           "
         />
       </div>
-      <div :class="$style['message-header-title']">
-        {{ $route.query.pid ? "通知" : "消息中心" }}
-      </div>
-
       <div v-if="!$route.query.pid" :class="$style['btn-more']">
         <template v-if="isEditing">
           <span v-if="isSelectAll" @click="selectMessage = []">取消全选</span>
@@ -76,138 +62,171 @@
       </div>
     </div>
     <div
-      v-if="!$route.query.pid"
-      :class="[
-        $style['message-list'],
-        { [$style['message-list-editing']]: isEditing }
-      ]"
+      v-if="hasReceive && messageData.length === 0"
+      :class="$style['no-data']"
     >
+      <div :class="$style['no-data-wrap']">
+        <img
+          :src="
+            $getCdnPath(
+              '/static/image/porn1/mcenter/information/no_message.png'
+            )
+          "
+        />
+        <div>还没有新通知</div>
+      </div>
+    </div>
+    <div v-else :class="$style['message-wrap']">
       <div
-        v-for="message in messageData"
-        :key="message.id"
+        v-if="!$route.query.pid"
         :class="[
-          $style.message,
-          { [$style['edit-mode']]: isEditing },
-          'clearfix'
+          $style['message-list'],
+          { [$style['message-list-editing']]: isEditing }
         ]"
-        @click="!isEditing ? onClick(message) : {}"
       >
         <div
-          v-if="isEditing"
-          @click="onClick(message)"
+          v-for="message in messageData"
+          :key="message.id"
           :class="[
-            $style['icon-edit'],
-            { [$style.active]: selectMessage.includes(message.id) }
+            $style.message,
+            { [$style['edit-mode']]: isEditing },
+            'clearfix'
           ]"
-        />
-        <div :class="$style['icon-message']">
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
-              )
-            "
+          @click="!isEditing ? onClick(message) : {}"
+        >
+          <div
+            v-if="isEditing"
+            @click="onClick(message)"
+            :class="[
+              $style['icon-edit'],
+              { [$style.active]: selectMessage.includes(message.id) }
+            ]"
           />
-          <span v-if="!message.read" />
+          <div :class="$style['icon-message']">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
+                )
+              "
+            />
+            <span v-if="!message.read" />
+          </div>
+          <div :class="$style.wrap">
+            <div class="clearfix">
+              <div
+                :class="$style.title"
+                v-html="setTitleContent(message.title)"
+              />
+              <div :class="$style['msg-time']">
+                {{ message.sent_at | shortDateFormat }}
+              </div>
+            </div>
+            <div
+              :class="$style.content"
+              v-html="setTitleContent(message.content)"
+            />
+          </div>
         </div>
-        <div :class="$style.wrap">
-          <div class="clearfix">
-            <div :class="$style.title" v-html="setTitleContent(message.title)" />
-            <div :class="$style['msg-time']">
-              {{ message.sent_at | shortDateFormat }}
+      </div>
+      <div v-else-if="currentMessage" :class="$style['message-content']">
+        <div :class="[$style['content-title'], 'clearfix']">
+          <div :class="$style['icon-message']">
+            <img
+              :src="
+                $getCdnPath(
+                  `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
+                )
+              "
+            />
+          </div>
+          <div :class="$style.wrap">
+            <div
+              :class="$style.title"
+              v-html="setTitleContent(currentMessage.title)"
+            />
+            <div :class="$style.time">
+              {{ currentMessage.sent_at | dateFormat }}
             </div>
           </div>
-          <div :class="$style.content" v-html="setTitleContent(message.content)" />
         </div>
-      </div>
-    </div>
-    <div v-else-if="currentMessage" :class="$style['message-content']">
-      <div :class="[$style['content-title'], 'clearfix']">
-        <div :class="$style['icon-message']">
-          <img
-            :src="
-              $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/information/icon_information.png`
-              )
-            "
-          />
-        </div>
-        <div :class="$style.wrap">
-          <div :class="$style.title" v-html="setTitleContent(currentMessage.title)" />
-          <div :class="$style.time">
-            {{ currentMessage.sent_at | dateFormat }}
-          </div>
-        </div>
-      </div>
-      <div
-        :class="$style['content-wrap']"
-        v-html="setContent(currentMessage.content)"
-      />
-    </div>
-    <div
-      v-if="showFunctionButton"
-      :class="$style['function-button']"
-      @click="onShowFunction(false)"
-    >
-      <div :class="$style['button-wrap']">
-        <div :class="$style.button" @click="isEditing = true">编辑消息</div>
-        <div :class="$style.divider" />
         <div
-          :class="[$style.button, { [$style.disable]: memInfo.msgCount === 0 }]"
-          @click.stop="onAllRead"
-        >
-          全部已读
-        </div>
-        <div :class="$style.cancel" @click.stop="onShowFunction(false)">
-          取消
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="isEditing"
-      :class="[$style['bottom-button'], { [$style.show]: true }, 'clearfix']"
-    >
-      <div
-        :class="[$style.read, { [$style.disable]: hasAllRead }]"
-        @click="onRead"
-      >
-        标记已读
+          :class="$style['message-content-wrap']"
+          v-html="setContent(currentMessage.content)"
+        />
       </div>
       <div
-        :class="[
-          $style.delete,
-          { [$style['disable']]: !selectMessage || !selectMessage.length > 0 }
-        ]"
-        @click="
-          () => {
-            if (!selectMessage || !selectMessage.length > 0) {
-              return;
-            } else {
-              isDelete = true;
-            }
-          }
-        "
+        v-if="showFunctionButton"
+        :class="$style['function-button']"
+        @click="onShowFunction(false)"
       >
-        删除
-      </div>
-    </div>
-    <div v-if="isLoading" :class="$style.loading">
-      <div :class="$style['loading-wrap']">
-        <div :class="$style['icon-loading']">
-          <icon name="spinner" width="32" height="32" pulse />
-        </div>
-        <div :class="$style['loading-text']">数据加载中...</div>
-      </div>
-    </div>
-    <div v-if="isDelete" :class="$style['delete-tips']">
-      <div :class="$style['tips-wrap']">
-        <div :class="$style['tips-title']">温馨提醒</div>
-        <div :class="$style['tips-text']">删除后将无法恢复，确定要删除吗？</div>
-        <div :class="[$style['tips-button'], 'clearfix']">
-          <div :class="$style['delete-cancel']" @click="isDelete = false">
+        <div :class="$style['button-wrap']">
+          <div :class="$style.button" @click="isEditing = true">编辑消息</div>
+          <div :class="$style.divider" />
+          <div
+            :class="[
+              $style.button,
+              { [$style.disable]: memInfo.msgCount === 0 }
+            ]"
+            @click.stop="onAllRead"
+          >
+            全部已读
+          </div>
+          <div :class="$style.cancel" @click.stop="onShowFunction(false)">
             取消
           </div>
-          <div :class="[$style['delete-confirm']]" @click="onDelete">确定</div>
+        </div>
+      </div>
+      <div
+        v-if="isEditing"
+        :class="[$style['bottom-button'], { [$style.show]: true }, 'clearfix']"
+      >
+        <div
+          :class="[$style.read, { [$style.disable]: hasAllRead }]"
+          @click="onRead"
+        >
+          标记已读
+        </div>
+        <div
+          :class="[
+            $style.delete,
+            { [$style['disable']]: !selectMessage || !selectMessage.length > 0 }
+          ]"
+          @click="
+            () => {
+              if (!selectMessage || !selectMessage.length > 0) {
+                return;
+              } else {
+                isDelete = true;
+              }
+            }
+          "
+        >
+          删除
+        </div>
+      </div>
+      <div v-if="isLoading" :class="$style.loading">
+        <div :class="$style['loading-wrap']">
+          <div :class="$style['icon-loading']">
+            <icon name="spinner" width="32" height="32" pulse />
+          </div>
+          <div :class="$style['loading-text']">数据加载中...</div>
+        </div>
+      </div>
+      <div v-if="isDelete" :class="$style['delete-tips']">
+        <div :class="$style['tips-wrap']">
+          <div :class="$style['tips-title']">温馨提醒</div>
+          <div :class="$style['tips-text']">
+            删除后将无法恢复，确定要删除吗？
+          </div>
+          <div :class="[$style['tips-button'], 'clearfix']">
+            <div :class="$style['delete-cancel']" @click="isDelete = false">
+              取消
+            </div>
+            <div :class="[$style['delete-confirm']]" @click="onDelete">
+              确定
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -215,22 +234,14 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import find from "lodash/find";
 import mcenter from "@/api/mcenter";
 import { API_MCENTER_MESSAGES_CONTENT } from "@/config/api";
-import { getCookie, setCookie } from "@/lib/cookie";
 import mixin from "@/mixins/mcenter/message/message";
 export default {
   mixins: [mixin],
-  props: {
-    headerConfig: {
-      type: Object | null,
-      default: null
-    }
-  },
   data() {
     return {
       hasReceive: false,

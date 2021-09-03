@@ -269,7 +269,6 @@ export default {
 }
 
 .content-wrap {
-  padding: 8px 18px;
   color: #414655;
   font-size: 14px;
 }
