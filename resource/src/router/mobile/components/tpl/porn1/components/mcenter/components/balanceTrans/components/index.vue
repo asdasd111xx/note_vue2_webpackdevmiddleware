@@ -665,23 +665,17 @@ export default {
       });
     },
     verification(value) {
-      this.transferMoney = value;
-
-      if (value) {
-        this.displayTransferMoney = this.formatThousandsCurrency(
-          String(value).replace(/\,/g, "")
-        );
-      } else {
-        this.displayTransferMoney = "";
-      }
-
-      if (!this.transferMoney) {
+      if (!value) {
         return;
       }
-      this.transferMoney = this.transferMoney
+      this.transferMoney = value
         .replace(" ", "")
         .trim()
         .replace(/[^0-9]/g, "");
+
+      this.displayTransferMoney = this.transferMoney
+        ? this.formatThousandsCurrency(this.transferMoney)
+        : "";
     },
     setTranOut(vendor) {
       this.tranOut = vendor.value;

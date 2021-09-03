@@ -1185,15 +1185,10 @@ export default {
 
     verification(target, value) {
       if (target === "withdrawValue") {
-        if (value) {
-          this.displayWithdrawValue = this.formatThousandsCurrency(
-            String(value).replace(/\,/g, "")
-          );
-        } else {
-          this.displayWithdrawValue = "";
-        }
-
         this.withdrawValue = String(value).replace(/[^0-9]/g, "");
+        this.displayWithdrawValue = this.withdrawValue
+          ? this.formatThousandsCurrency(this.withdrawValue)
+          : "";
 
         // 針對加密貨幣
         if (this.isSelectedUSDT && !value) {
