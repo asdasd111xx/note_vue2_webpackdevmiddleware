@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['popup']">
+  <div>
     <div :class="$style['mask']" />
     <div :class="$style['modal-wrap']">
       <div v-if="!sitePostList" :class="$style['modal-content']">
@@ -172,9 +172,6 @@ export default {
 </script>
 
 <style lang="scss" module>
-.popup {
-}
-
 .mask {
   position: fixed;
   top: 0;
