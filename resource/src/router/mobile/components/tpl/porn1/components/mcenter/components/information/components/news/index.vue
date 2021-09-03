@@ -87,7 +87,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" module>
 .no-data {
   position: relative;
   min-height: calc(100vh - 43px - 42px - 10px);
@@ -211,7 +211,6 @@ export default {
 }
 
 .content-wrap {
-  padding: 8px 18px;
   color: #414655;
   font-size: 14px;
   word-break: break-all;
