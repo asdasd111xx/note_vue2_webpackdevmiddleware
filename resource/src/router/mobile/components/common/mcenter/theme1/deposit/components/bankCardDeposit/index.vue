@@ -1000,7 +1000,7 @@
               :class="[
                 $style['feature-tip-title'],
                 {
-                  [$style['success']]: moneyValue
+                  [$style['success']]: +realSaveMoney.replaceAll(',','') >0
                 }
               ]"
             >
