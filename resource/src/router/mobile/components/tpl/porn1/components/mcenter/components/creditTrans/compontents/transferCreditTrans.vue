@@ -102,10 +102,10 @@
             <div :class="$style['form-input']">
               <input
                 v-if="item.key === 'amount'"
-                v-model="formData[item.key]"
-                :class="{ [$style.amount]: item.key === 'amount' }"
-                @blur="verification(item)"
-                @input="verification(item)"
+                v-model="displayAmount"
+                :class="[$style.amount]"
+                @blur="verification(item, $event.target.value)"
+                @input="verification(item, $event.target.value)"
                 :placeholder="item.placeholder"
                 type="text"
                 inputmode="decimal"

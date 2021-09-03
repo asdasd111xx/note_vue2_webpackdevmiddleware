@@ -1206,9 +1206,9 @@ export default {
         //   return;
         // }
 
-        // 實際金額
+        // 實際金額 輸入金額扣除total_deduction
         let _actualMoney =
-          value - +this.withdrawData.audit.total.total_deduction;
+          +this.withdrawValue - +this.withdrawData.audit.total.total_deduction;
         this.actualMoney = _actualMoney;
 
         // 實際提現金額 < 0
@@ -1932,7 +1932,6 @@ export default {
       if (this.actualMoney) {
         this.verification("withdrawValue", this.withdrawValue);
       }
-
       // 有取款優惠金額 && 實際提現金額 > 0
       if (+this.offer() && this.actualMoney > 0) {
         let amount = Number(+this.actualMoney + +this.offer()).toFixed(2);
@@ -1942,8 +1941,9 @@ export default {
         return amount;
       } else {
         if (format) {
-          return this.formatThousandsCurrency(this.actualMoney.toFixed(2));
+          return this.formatThousandsCurrency(this.actualMoney);
         }
+
         return this.actualMoney.toFixed(2);
       }
     },
@@ -2092,7 +2092,7 @@ export default {
       });
     },
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      return +value === 0 || +value === NaN ? 0 : thousandsCurrency(value);
     }
   },
   destroyed() {

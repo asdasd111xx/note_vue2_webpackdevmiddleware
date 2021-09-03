@@ -19,6 +19,7 @@ export default {
         phone: "", //手機號碼
         keyring: "" //驗證碼
       },
+      displayAmount: "", //千分位 輸入額度
       errorMessage: {
         target_username: "",
         amount: "",
@@ -204,7 +205,7 @@ export default {
     onGoToRewardRules() {
       return this.$router.push("/mobile/mcenter/rewardRules");
     },
-    verification(item) {
+    verification(item, value) {
       let errorMessage = "";
       if (item.key === "phone") {
         this.actionVerificationFormData({
@@ -227,9 +228,8 @@ export default {
         const limit = Number(this.rechargeConfig.recharge_limit) || 0;
         const amount = Number(this.formData.amount);
 
-        this.formData.amount = this.formData.amount
-          .replace(/[^0-9]/g, "")
-          .substring(0, 16);
+        this.formData.amount = value.replace(/[^0-9]/g, "").substring(0, 16);
+        this.displayAmount = thousandsCurrency(this.formData.amount);
 
         if (this.formData.amount !== "" && amount === 0) {
           errorMessage = "请输入转让金额";
@@ -443,6 +443,7 @@ export default {
           .then(res => {
             this.actionSetUserBalance();
             if (res && res.data && res.data.result === "ok") {
+              this.displayAmount = "";
               this.formData.amount = "";
               this.formData.phone = "";
               this.formData.target_username = "";

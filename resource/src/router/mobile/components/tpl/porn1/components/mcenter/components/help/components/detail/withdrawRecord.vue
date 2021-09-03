@@ -85,7 +85,7 @@
               {{ $text(col.title) }}
             </div>
             <div :class="$style['value']">
-              {{ item[col.key] }}
+              {{ formatThousandsCurrency(col.key, item[col.key]) }}
             </div>
           </div>
         </template>
@@ -132,7 +132,7 @@ import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import editWithdrawField from "./editWithdrawField";
-import member from "@/api/member";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -228,6 +228,7 @@ export default {
         .then(res => {
           if (res && res.data && res.data.result === "ok") {
             this.data = res.data.ret;
+            console.log(this.data);
             this.total = res.data.pagination.total;
             this.filterStatus();
           }
@@ -257,6 +258,12 @@ export default {
       this.editOpen = true;
       this.withdrawData = info;
       this.getData();
+    },
+    formatThousandsCurrency(key, value) {
+      if (["amount", "deduction", "real_amount"].includes(key)) {
+        return thousandsCurrency(value);
+      }
+      return value;
     }
   }
 };
