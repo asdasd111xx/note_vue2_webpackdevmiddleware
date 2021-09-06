@@ -160,6 +160,12 @@ export default {
             },
             {
               number: "❸",
+              title: "保级要求",
+              content:
+                "会员在达到某VIP等级后，30天内投注需要完成保级要求。如果在此期间完成晋升，保级要求重新按照当前等级计算。"
+            },
+            {
+              number: "❹",
               title: "晋级礼金",
               content: `晋级礼金在会员达到该会员等级后系统自动派发，每个级别的晋级礼金，每位会员仅能领取1次。(${
                 this.themeTPL === "porn1"
@@ -170,7 +176,7 @@ export default {
               })`
             },
             {
-              number: "❹",
+              number: "❺",
               title: "生日礼金",
               content: `将会在生日的隔月的第2个周四系统自动派发。每年仅可领取一次。(${
                 this.themeTPL === "porn1"
@@ -181,7 +187,7 @@ export default {
               })`
             },
             {
-              number: "❺",
+              number: "❻",
               title: "每月红包",
               content: `会员在上个月有过至少3次成功充值且累计充值 ≧ 当月VIP相应等级的红包金额，即可于每月的第1个周四获得上半月红包，每月的第3个周四前获得下半月红包！(${
                 this.themeTPL === "porn1"
@@ -190,10 +196,10 @@ export default {
                   ? "每月红包8倍流水即可提现"
                   : null
               })`,
-              note: `※成功充值判断条件:【第三方入款、公司入款、数字货币（含电子钱包）】渠道所进行的充值。`
+              note: `※成功充值判断条件:【第三方入款、银行卡入款、数字货币（含电子钱包）】渠道所进行的充值。`
             },
             {
-              number: "❻",
+              number: "❼",
               title: `${this.siteConfig.SITE_NAME}保留对活动的修改，停止及最终解释权。`,
               content: ""
             }
