@@ -154,7 +154,7 @@ export default {
 }
 
 .modal-content {
-  padding: 15px 17px;
+  padding: 15px 18px 1px 18px;
 
   &.hasBorderBottom {
     border-bottom: 1px solid #eee;
@@ -163,7 +163,7 @@ export default {
 
 .modal-news {
   height: 192px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   overflow-x: hidden;
   overflow-y: auto;
 }
