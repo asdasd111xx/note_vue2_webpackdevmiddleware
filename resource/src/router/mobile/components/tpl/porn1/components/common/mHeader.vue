@@ -5,7 +5,7 @@
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/porn1/common/logo.png')" />
+      <img :src="$getCdnPath(`/static/image/${routerTPL}/common/logo.png`)" />
     </div>
 
     <div
@@ -248,6 +248,9 @@ export default {
           parseFloat(this.membalance.total)}`;
       }
       return "";
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
