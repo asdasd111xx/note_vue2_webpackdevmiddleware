@@ -1,21 +1,21 @@
 <template>
   <div
-    v-if="themeTPL"
+    v-if="routerTPL"
     :class="[
       $style['content'],
       {
-        [$style['ey1']]: themeTPL === 'ey1'
+        [$style['ey1']]: routerTPL === 'ey1'
       }
     ]"
   >
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
+      <img :src="$getCdnPath(`/static/image/${routerTPL}/common/logo_b.png`)" />
     </div>
     <div
       :class="[
         $style['title'],
         {
-          [$style['sg1']]: themeTPL === 'sg1'
+          [$style['sg1']]: routerTPL === 'sg1'
         }
       ]"
     >
@@ -23,7 +23,7 @@
     </div>
     <div :class="$style['main-img']">
       <img
-        :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_maintain.png`)"
+        :src="$getCdnPath(`/static/image/${routerTPL}/status/pic_maintain.png`)"
       />
     </div>
     <div :class="[$style['desc'], $style['has-time']]">
@@ -104,6 +104,9 @@ export default {
   computed: {
     localGMT() {
       return `GMT${Vue.moment(new Date()).format("Z")}`;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
