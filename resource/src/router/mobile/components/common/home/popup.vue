@@ -242,9 +242,9 @@ export default {
 
 .news-item {
   margin-bottom: 15px;
-  word-break: break-all;
-  width: 100%;
   position: relative;
+  width: 100%;
+  word-break: break-all;
 
   img {
     width: 100% !important;
