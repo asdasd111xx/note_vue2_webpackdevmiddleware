@@ -34,6 +34,7 @@ export const preset = {
  */
 export const site_67 = {
   ...preset,
+  ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
@@ -55,6 +56,7 @@ export const site_67 = {
  */
 export const site_69 = {
   ...preset,
+  ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
@@ -78,6 +80,7 @@ export const site_69 = {
  */
 export const site_100003 = {
   ...preset,
+  ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
@@ -103,6 +106,7 @@ export const site_100003 = {
  */
 export const site_41 = {
   ...preset,
+  ROUTER_TPL: "ey1",
   MOBILE_WEB_TPL: "ey1",
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
@@ -126,6 +130,7 @@ export const site_41 = {
 // cxbb.pearchess.com
 export const site_74 = {
   ...preset,
+  ROUTER_TPL: "ey1",
   MOBILE_WEB_TPL: "ey1",
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
@@ -139,6 +144,7 @@ export const site_74 = {
  */
 export const site_100004 = {
   ...preset,
+  ROUTER_TPL: "ey1",
   MOBILE_WEB_TPL: "ey1",
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
@@ -156,6 +162,7 @@ export const site_100004 = {
  */
 export const site_80 = {
   ...preset,
+  ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1", // 手機網頁版模版
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜直播",
@@ -177,6 +184,7 @@ export const site_80 = {
  */
 export const site_81 = {
   ...preset,
+  ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜直播",
@@ -201,6 +209,7 @@ export const site_81 = {
  */
 export const site_100009 = {
   ...preset,
+  ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜直播",

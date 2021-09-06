@@ -21,6 +21,7 @@ export const preset = {
  */
 export const site_500015 = {
   ...preset,
+  ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "鸭博娱乐",
@@ -40,6 +41,7 @@ export const site_500015 = {
  */
 export const site_500023 = {
   ...preset,
+  ROUTER_TPL: "ey1",
   MOBILE_WEB_TPL: "ey1",
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
@@ -55,6 +57,7 @@ export const site_500023 = {
  */
 export const site_500035 = {
   ...preset,
+  ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
   SITE_NAME: "丝瓜直播",

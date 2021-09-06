@@ -796,6 +796,11 @@ export const actionSetUserdata = (
       let domain = data.ret.user.domain.toString();
       let configInfo;
       switch (domain) {
+        case "9999894":
+        case "93":
+        case "92":
+          configInfo = siteConfigOfficial[`site_92`];
+          break;
         case "500023":
         case "41":
         case "74":
