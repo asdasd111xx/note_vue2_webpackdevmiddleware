@@ -6,7 +6,9 @@
   >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['yabo']">
-        <img :src="$getCdnPath(`/static/image/porn1/common/appicon.png`)" />
+        <img
+          :src="$getCdnPath(`/static/image/${routerTPL}/common/appicon.png`)"
+        />
       </div>
       <div :class="$style['version']">版本号 {{ version }}</div>
       <div :class="$style['officel']">
@@ -108,6 +110,9 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     headerConfig() {
       return {
         prev: true,

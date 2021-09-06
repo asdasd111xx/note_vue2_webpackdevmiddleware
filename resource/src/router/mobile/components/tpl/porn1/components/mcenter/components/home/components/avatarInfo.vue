@@ -36,7 +36,7 @@
         <span :class="$style['money-symbol']">¥</span>
         <span> 彩金分分送 </span>
       </div> -->
-      <div>
+      <div v-if="routerTPL === 'porn1'">
         <span> 观影60秒计时奖励 </span>
         <span :class="$style['money-symbol']">¥</span>
         <span> 彩金无上限 </span>
@@ -76,7 +76,10 @@ export default {
       memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
       siteConfig: "getSiteConfig"
-    })
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   mounted() {
     this.getUserViplevel();
