@@ -149,7 +149,15 @@ export default {
       }
 
       if (this.isTick) {
-        localStorage.setItem("do-not-show-home-post", true);
+        let routeName = this.$route.name;
+        switch (routeName) {
+          case "promotion":
+            localStorage.setItem("do-not-show-promotion-post", true);
+            break;
+          case "home":
+            localStorage.setItem("do-not-show-home-post", true);
+            break;
+        }
       }
 
       this.$emit("close", !!this.sitePostList);

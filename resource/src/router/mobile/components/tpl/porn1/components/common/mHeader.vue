@@ -129,11 +129,6 @@
           @click="handleClickAsk"
         />
       </div>
-      <!-- 側開額度 -->
-      <side-balance
-        v-if="currentMenu === 'balance'"
-        :open-state.sync="currentMenu"
-      />
     </template>
 
     <template v-if="headerConfig.isMCenter">

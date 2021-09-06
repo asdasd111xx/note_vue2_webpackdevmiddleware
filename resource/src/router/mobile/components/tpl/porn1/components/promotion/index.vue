@@ -91,11 +91,13 @@ export default {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
 
-    this.actionSetPost("2").then(() => {
-      if (this.post) {
-        this.isShowPop = true;
-      }
-    });
+    if (localStorage.getItem("do-not-show-promotion-post") !== "true") {
+      this.actionSetPost("2").then(() => {
+        if (this.post) {
+          this.isShowPop = true;
+        }
+      });
+    }
 
     if (this.loginStatus) {
       bbosRequest({
@@ -141,6 +143,7 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetPost"]),
+    //
     closePop() {
       this.isShowPop = false;
     },
