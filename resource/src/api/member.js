@@ -62,6 +62,7 @@ export default {
           setCookie("cid", "");
           setCookie("aid", "");
           window.RESET_LOCAL_SETTING();
+          window.RESET_MEM_SETTING();
           // GA流量統計
           window.dataLayer.push({
             ga_uid: undefined
@@ -73,6 +74,7 @@ export default {
         setCookie("cid", "");
         setCookie("aid", "");
         window.RESET_LOCAL_SETTING();
+        window.RESET_MEM_SETTING();
         // 不在提示首頁公告
         if (error.response.data.code === "M00001") {
           // GA流量統計
