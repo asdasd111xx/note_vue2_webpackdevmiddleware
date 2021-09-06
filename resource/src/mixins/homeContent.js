@@ -335,8 +335,7 @@ export default {
 
       if (
         isFromSitePost &&
-        localStorage.getItem("do-not-show-home-post") !== "true" &&
-        isFromSitePost
+        localStorage.getItem("do-not-show-home-post") !== "true"
       ) {
         this.actionSetPost("1").then(() => {
           if (this.post && this.post.list.length > 0) {

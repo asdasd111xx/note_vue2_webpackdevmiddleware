@@ -66,6 +66,11 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("enable-swag");
   // 色站預設網址
   localStorage.removeItem("p-domain");
+  // 公告系列
+  localStorage.removeItem("do-not-show-home-post");
+  localStorage.removeItem("do-not-show-promotion-post");
+  localStorage.removeItem("do-not-show-deposit-post");
+  localStorage.removeItem("do-not-show-withdraw-post");
 
   if (reload) {
     window.location.reload();

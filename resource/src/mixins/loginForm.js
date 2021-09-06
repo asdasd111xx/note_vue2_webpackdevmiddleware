@@ -272,6 +272,8 @@ export default {
           // 是否顯示過首頁公告
           localStorage.removeItem("is-shown-announcement");
           localStorage.removeItem("do-not-show-home-post");
+          localStorage.removeItem("do-not-show-promotion-post");
+
           window.location.reload();
           return;
         }
