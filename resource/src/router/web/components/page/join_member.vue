@@ -1084,6 +1084,7 @@ export default {
                 localStorage.removeItem("password");
               }
               window.RESET_LOCAL_SETTING(true);
+              window.RESET_MEM_SETTING();
             }
           });
           return;

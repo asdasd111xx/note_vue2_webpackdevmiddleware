@@ -53,7 +53,7 @@ export default {
         return content.replace("href=", " target='_blank' href=");
       }
 
-      let urlRegex = /(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
+      let urlRegex = /(?<!src\=[\"|\'])(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
       return content
         .replace("href=", " target='_blank' href=")
         .replace(urlRegex, function(url) {

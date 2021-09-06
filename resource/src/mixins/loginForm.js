@@ -265,14 +265,12 @@ export default {
           }
           this.handleSaveAccont();
           this.actionIsLogin(true);
+          window.RESET_MEM_SETTING();
+
           if (this.redirect) {
             window.location.href = this.redirect;
             return;
           }
-          // 是否顯示過首頁公告
-          localStorage.removeItem("is-shown-announcement");
-          localStorage.removeItem("do-not-show-home-post");
-          localStorage.removeItem("do-not-show-promotion-post");
 
           window.location.reload();
           return;
