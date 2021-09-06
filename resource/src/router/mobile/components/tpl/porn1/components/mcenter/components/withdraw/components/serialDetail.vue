@@ -44,7 +44,7 @@
           </div>
           <div :class="$style['serial-basic-value']">
             {{
-              data.deduction > 0
+              +data.deduction > 0
                 ? "-" + formatThousandsCurrency(data.deduction)
                 : formatThousandsCurrency(data.deduction)
             }}
@@ -76,9 +76,9 @@
           <span
             >{{
               item.deduction
-                ? `${item.deduction}:${
-                    Number(item.value) > 0 ? "-" + item.value : item.value
-                  }`
+                ? item.deduction +
+                  ":" +
+                  `${Number(item.value) > 0 ? "-" + item.value : item.value}`
                 : item.rateValue === "-"
                 ? "-"
                 : item.value
@@ -156,11 +156,9 @@ export default {
       // 完成/未完成 administrative_checked
 
       // 优惠稽核倍数 offer_audit_rate
-      // 優惠稽核扣除金額 offer
+      // 優惠稽核扣除金額 offer  offer_deduction
       // 優惠稽核流水要求 offer_audit_amount
       // 完成/未完成 offer_checked
-
-      console.log(this.data.offer, this.data.offer_audit_amount);
       return [
         [
           {
@@ -188,10 +186,13 @@ export default {
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
             rateValue:
-              this.data.offer_audit_amount > 0
+              +this.data.offer_audit_amount > 0
                 ? this.formatThousandsCurrency(this.data.offer_audit_amount)
                 : "-",
-            value: this.data.offer,
+            value:
+              +this.data.offer_deduction > 0
+                ? this.formatThousandsCurrency(this.data.offer_deduction)
+                : 0,
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }
         ]
