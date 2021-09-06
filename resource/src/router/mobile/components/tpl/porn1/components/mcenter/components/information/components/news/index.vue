@@ -214,6 +214,10 @@ export default {
   color: #414655;
   font-size: 14px;
   word-break: break-all;
+  padding: 0 17px;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 .date {

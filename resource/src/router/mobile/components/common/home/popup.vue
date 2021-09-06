@@ -203,13 +203,13 @@ export default {
 }
 
 .modal-content {
-  padding: 15px 20px;
+  padding: 15px 18px 1px 18px;
   border-bottom: 1px solid #eee;
 }
 
 .modal-news {
   height: 192px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -319,7 +319,7 @@ export default {
   font-weight: normal;
   text-align: center;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 9px;
 }
 
 .news-image {

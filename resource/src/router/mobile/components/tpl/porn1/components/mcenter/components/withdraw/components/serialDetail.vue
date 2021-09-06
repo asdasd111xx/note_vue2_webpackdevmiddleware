@@ -159,6 +159,8 @@ export default {
       // 優惠稽核扣除金額 offer
       // 優惠稽核流水要求 offer_audit_amount
       // 完成/未完成 offer_checked
+
+      console.log(this.data.offer, this.data.offer_audit_amount);
       return [
         [
           {
