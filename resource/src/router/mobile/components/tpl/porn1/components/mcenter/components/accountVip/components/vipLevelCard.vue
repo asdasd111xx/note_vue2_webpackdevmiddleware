@@ -77,27 +77,27 @@
               <div v-if="vipConfig.base_type != 3">
                 {{ commaFormat(item.deposit_total) }}
                 <br />
-                累计充值(元)
+                累计充值
               </div>
               <div v-else>
                 {{ commaFormat(item.deposit_limit) }}
                 <br />
-                当前充值(元)
+                当前充值
               </div>
               <div v-if="vipConfig.base_type != 3">
                 {{ commaFormat(item.valid_bet_limit) }}
                 <br />
-                累计流水(元)
+                累计流水
               </div>
               <div v-else>
                 {{ commaFormat(item.valid_bet_range) }}
                 <br />
-                当前流水(元)
+                当前流水
               </div>
               <div v-if="vipConfig.base_type != 3">
                 {{ commaFormat(item.deposit_limit) }}
                 <br />
-                当前充值(元)
+                当前充值
               </div>
 
               <div>

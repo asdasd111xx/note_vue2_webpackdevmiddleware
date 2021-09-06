@@ -48,7 +48,7 @@ export default {
     giftIfrStyle() {
       return {
         width: "100%",
-        height: "calc(100vh - 60px)",
+        minHeight: "calc(100vh - 120px)",
         border: "none"
       };
     },
