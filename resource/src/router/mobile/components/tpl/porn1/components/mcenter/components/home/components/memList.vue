@@ -88,6 +88,7 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
+
     isShowShare: {
       get() {
         return this.toggleShare;
@@ -119,7 +120,10 @@ export default {
         },
         {
           initName: "关于鸭博娱乐",
-          name: "S_ABOUT_YABOLIVE",
+          name:
+            this.routerTPL === "porn1"
+              ? "S_ABOUT_YABOLIVE"
+              : "S_ABOUT_AOBOLIVE",
           path: "/mobile/mcenter/about",
           pageName: "about",
           image: "about",

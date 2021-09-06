@@ -9,9 +9,7 @@
         <div :class="$style['notification-header']">
           <div :class="$style['icon']">
             <img
-              :src="
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/appicon.png`
-              "
+              :src="`/static/image/${siteConfig.ROUTER_TPL}/common/appicon.png`"
             />
           </div>
           <div :class="$style['title']">

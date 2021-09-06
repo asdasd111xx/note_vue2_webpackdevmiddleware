@@ -105,7 +105,7 @@
       >
         <div :class="$style['tip-img']">
           <img
-            :src="$getCdnPath(`/static/image/porn1/service/appicon_yabo.png`)"
+            :src="$getCdnPath(`/static/image/${routerTPL}/service/appicon.png`)"
           />
         </div>
 
@@ -133,25 +133,27 @@
               <img
                 :src="
                   $getCdnPath(
-                    '/static/image/porn1/service/popup/popup_img01.png'
+                    `/static/image/${routerTPL}/service/popup/popup_img01.png`
                   )
                 "
                 alt="img01"
               />
             </div>
-            <span
-              >尊敬的鸭博娱乐会员，当iOS用户的鸭博娱乐App掉签无法打开时，可以通过以下方法继续游戏</span
-            >
+            <span>{{
+              `尊敬的${routerName}会员，当iOS用户的${routerName}App掉签无法打开时，可以通过以下方法继续游戏`
+            }}</span>
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过鸭博娱乐图标上的网址，重新下载App：</span>
+              <span>{{
+                `1.通过${routerName}图标上的网址，重新下载App：`
+              }}</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
                     $getCdnPath(
-                      '/static/image/porn1/service/popup/popup_img02.png'
+                      `/static/image/${routerTPL}/service/popup/popup_img02.png`
                     )
                   "
                   alt="img02"
@@ -160,7 +162,9 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏鸭博娱乐永久网址，浏览器打开，随时畅玩：</span>
+              <span>{{
+                `2.收藏${routerName}永久网址，浏览器打开，随时畅玩：`
+              }}</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -242,6 +246,17 @@ export default {
           : this.memInfo.user.username;
       }
       return "尊敬的用户";
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
+    routerName() {
+      switch (this.siteConfig.ROUTER_TPL) {
+        case "porn1":
+          return "鸭博娱乐";
+        case "aobo1":
+          return "澳博国际";
+      }
     }
   },
   methods: {

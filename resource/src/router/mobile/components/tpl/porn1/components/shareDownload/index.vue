@@ -9,7 +9,9 @@
     <div :class="$style['pic-wrap']">
       <img
         :src="
-          $getCdnPath(`/static/image/porn1/mcenter/share/shareapp_save.png`)
+          $getCdnPath(
+            `/static/image/${routerTPL}/mcenter/share/shareapp_save.png`
+          )
         "
         alt="shareApp"
       />
@@ -54,6 +56,9 @@ export default {
       }
 
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
