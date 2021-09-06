@@ -1,6 +1,6 @@
 <template>
   <div :class="$style['container']">
-    <img :src="$getCdnPath(`/static/image/${themeTPL}/common/loading.png`)" />
+    <img :src="$getCdnPath(`/static/image/${routerTPL}/common/loading.png`)" />
     <div :class="$style['timer']" @click="click">
       <span>{{ sec }}</span>
       <span>|</span>
@@ -24,8 +24,8 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
-    themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {

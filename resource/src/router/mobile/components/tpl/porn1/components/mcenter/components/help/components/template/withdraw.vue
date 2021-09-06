@@ -24,7 +24,7 @@
         </div>
 
         <div
-          v-for="(item, index) in data"
+          v-for="item in data"
           :id="`q-${item.key}`"
           :class="[$style['cell'], { [$style['active']]: item.isOpen }]"
           :key="item.key"
@@ -79,13 +79,11 @@
         </div>
       </div>
     </div>
-  </mobile-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import member from '@/api/member';
-import info from '../../json/withdraw.json';
 import { getCookie } from '@/lib/cookie';
 
 export default {
@@ -95,15 +93,24 @@ export default {
     return {
       isShowRecoard: false,
       hasCid: false,
-      data: info.data.map(function (el) {
+      data: null
+    };
+  },
+  mounted() {
+    fetch(`/i18n/json/${this.routerTPL}/withdraw.json`)
+    .then(res => res.json())
+    .then(data => {
+      this.source = data
+      this.data = this.source.data.map(function (el) {
         let _o = Object.assign({}, el);
         _o.isOpen = false;
         return _o;
       })
-    };
-  },
-  mounted() {
-    if (!info) this.$router.back();
+    }).then(final=>{
+      if (!this.source) this.$router.back();
+    }
+    )
+    
     this.hasCid = getCookie('cid') || false;
 
     const query = this.$route.query;
@@ -113,6 +120,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      siteConfig: "getSiteConfig",
       loginStatus: 'getLoginStatus'
     }),
     isApp() {
@@ -127,6 +135,12 @@ export default {
           title: this.$text('S_HELP_CENTER', '帮助中心'),
         };
     },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   methods: {
     handleToggleContent(key) {

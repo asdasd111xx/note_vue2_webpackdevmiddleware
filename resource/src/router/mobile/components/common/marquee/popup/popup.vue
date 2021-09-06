@@ -198,7 +198,6 @@ export default {
   margin-bottom: 20px;
   word-break: break-all;
   width: 100%;
-  height: 100%;
   position: relative;
 
   > img {
