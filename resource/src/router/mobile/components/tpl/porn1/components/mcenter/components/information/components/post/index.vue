@@ -271,6 +271,7 @@ export default {
 .content-wrap {
   color: #414655;
   font-size: 14px;
+  margin-top: 8px;
   padding: 0 17px;
   width: 100%;
   overflow-x: scroll;

@@ -55,7 +55,6 @@ export default {
 
       let urlRegex = /(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
       return content
-        .replace(/\n/g, "<br/>")
         .replace("href=", " target='_blank' href=")
         .replace(urlRegex, function(url) {
           return '<a href="' + url + '" target="_blank">' + url + "</a>";
