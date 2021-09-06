@@ -4,7 +4,7 @@
       <div class="container">
         <div class="login-wrap clearfix">
           <div class="login-logo">
-            <img :src="'/static/image/porn1/common/logo_b.png'" />
+            <img :src="`/static/image/${routerTPL}/common/logo_b.png`" />
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
@@ -269,6 +269,9 @@ export default {
       }
 
       return false;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
