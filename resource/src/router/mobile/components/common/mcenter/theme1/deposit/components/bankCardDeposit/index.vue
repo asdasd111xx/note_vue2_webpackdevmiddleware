@@ -1870,7 +1870,7 @@ export default {
 
           if (response.status === "third") {
             // this.resetStatus();
-            // this.moneyValue = "";
+            this.changeMoney(this.getPassRoadOrAi.amounts[0]);
             this.cryptoMoney = "--";
             this.resetTimerStatus();
           }
