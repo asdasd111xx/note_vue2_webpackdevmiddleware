@@ -152,7 +152,8 @@ export default {
         let routeName = this.$route.name;
         switch (routeName) {
           case "promotion":
-            localStorage.setItem("do-not-show-promotion-post", true);
+            // localStorage.setItem("do-not-show-promotion-post", true);
+            localStorage.setItem("do-not-show-home-post", true);
             break;
           case "home":
             localStorage.setItem("do-not-show-home-post", true);
@@ -244,15 +245,6 @@ export default {
   margin-bottom: 15px;
   position: relative;
   width: 100%;
-  word-break: break-all;
-
-  img {
-    width: 100% !important;
-  }
-
-  table {
-    width: 100% !important;
-  }
 }
 
 .news-title {
@@ -269,6 +261,7 @@ export default {
   color: #a5a9b3;
   width: 100%;
   position: relative;
+  overflow: scroll;
 
   img {
     width: 100%;
@@ -325,8 +318,8 @@ export default {
   width: 100%;
 
   > img {
-    width: 100%;
-    height: 100%;
+    // width: 100%;
+    // height: 100%;
   }
 }
 </style>
