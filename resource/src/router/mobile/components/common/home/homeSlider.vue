@@ -52,7 +52,7 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   watch: {
