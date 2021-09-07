@@ -199,6 +199,9 @@ export default {
       ) {
         promotionValue =
           +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
+
+        //充值優惠小數點後兩位捨去
+        promotionValue = Math.floor(promotionValue * 100) / 100;
       }
 
       // 總額計算
