@@ -470,7 +470,7 @@
         </span>
         <span :class="$style['money-currency']">¥</span>
         <span :class="$style['money-currency']">
-          {{ actualMoneyPlusOffer() }}
+          {{ actualMoneyPlusOffer(true) }}
         </span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
@@ -953,11 +953,7 @@ export default {
       ) {
         const ret = this.withdrawData.payment_charge.ret;
         if (ret.withdraw_count && Number(ret.withdraw_count) > 0) {
-          string.push(
-            `今日可用提现次数：${this.formatThousandsCurrency(
-              ret.allow_withdraw_count
-            )}次`
-          );
+          string.push(`今日可用提现次数：${ret.allow_withdraw_count}次`);
         }
 
         if (ret.withdraw_limit && Number(ret.withdraw_limit) > 0) {
@@ -1187,7 +1183,7 @@ export default {
       if (target === "withdrawValue") {
         this.withdrawValue = String(value).replace(/[^0-9]/g, "");
         this.displayWithdrawValue = this.withdrawValue
-          ? this.formatThousandsCurrency(this.withdrawValue)
+          ? this.formatThousandsCurrency(this.withdrawValue, true)
           : "";
 
         // 針對加密貨幣
@@ -1210,7 +1206,7 @@ export default {
         if (this.withdrawValue !== "" && _actualMoney <= 0) {
           this.errTips = "实际提现金额须大于0，请重新输入";
           // 實際提現金額 => 有流水時為 0
-         this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
+          this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
           return;
         }
 
@@ -1222,9 +1218,7 @@ export default {
         if (
           (this.withdrawValue !== "" && value <= 0) ||
           (this.withdrawValue !== "" && value < withdrawMin) ||
-          (this.withdrawValue !== "" &&
-            withdrawMax > 0 &&
-            value > withdrawMax)
+          (this.withdrawValue !== "" && withdrawMax > 0 && value > withdrawMax)
         ) {
           this.errTips = `单笔提现金额最小为${this.formatThousandsCurrency(
             withdrawMin
@@ -1932,10 +1926,10 @@ export default {
         // 有取款優惠金額 && 實際提現金額 > 0
         if (+this.offer() && this.actualMoney > 0) {
           result = this.formatThousandsCurrency(
-            (+this.actualMoney + +this.offer()).toFixed(2)
+            +this.actualMoney + +this.offer()
           );
         } else {
-          result = this.formatThousandsCurrency(+this.actualMoney.toFixed(2));
+          result = this.formatThousandsCurrency(+this.actualMoney);
         }
       } else {
         if (+this.offer() && this.actualMoney > 0) {
@@ -2094,8 +2088,15 @@ export default {
         }
       });
     },
-    formatThousandsCurrency(value) {
-      return +value === 0 || +value === NaN ? "0.00" : thousandsCurrency(value);
+    formatThousandsCurrency(value, isDisplay) {
+      if (+value === 0 || +value === NaN) {
+        return "0.00";
+      }
+
+      if (isDisplay) {
+        return thousandsCurrency(Number(value));
+      }
+      return thousandsCurrency(Number(value).toFixed(2));
     }
   },
   destroyed() {
