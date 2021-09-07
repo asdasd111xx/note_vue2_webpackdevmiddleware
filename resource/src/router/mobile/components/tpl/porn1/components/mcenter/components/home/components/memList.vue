@@ -88,7 +88,9 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
-
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     isShowShare: {
       get() {
         return this.toggleShare;
