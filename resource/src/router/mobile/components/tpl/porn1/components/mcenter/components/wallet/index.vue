@@ -29,10 +29,13 @@ export default {
         prev: true,
         onClick: () => {
           let redirect = this.$route.query.redirect;
+          let prev = this.$route.query.prev;
           if (redirect) {
             if (redirect === "home") {
               this.$router.back();
             }
+          } else if (prev && prev === "back") {
+            this.$router.back();
           } else {
             this.$router.push("/mobile/mcenter");
           }

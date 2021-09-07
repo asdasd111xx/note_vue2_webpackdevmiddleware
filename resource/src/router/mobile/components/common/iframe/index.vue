@@ -378,6 +378,7 @@ export default {
 
           const openGameSuccessFunc = res => {
             this.isShowLoading = false;
+            this.src = localStorage.getItem("iframe-third-url");
           };
 
           const openGameFailFunc = res => {
