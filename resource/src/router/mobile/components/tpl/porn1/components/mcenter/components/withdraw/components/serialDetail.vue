@@ -76,9 +76,7 @@
           <span
             >{{
               item.deduction
-                ? item.deduction +
-                  ":" +
-                  `${Number(item.value) > 0 ? "-" + item.value : item.value}`
+                ? item.deduction + ":" + `${item.value}`
                 : item.rateValue === "-"
                 ? "-"
                 : item.value
@@ -170,10 +168,15 @@ export default {
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
             rateValue:
-              this.data.audit_amount > 0 ? this.data.audit_amount : "-",
-            value: this.formatThousandsCurrency(
-              this.data.administrative_amount
-            ),
+              this.data.audit_amount > 0
+                ? this.formatThousandsCurrency(this.data.audit_amount)
+                : "-",
+            value:
+              +this.data.administrative_amount > 0
+                ? `-${this.formatThousandsCurrency(
+                    this.data.administrative_amount
+                  )}`
+                : "0.00",
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }
         ],
@@ -192,8 +195,8 @@ export default {
                 : "-",
             value:
               +this.data.offer_deduction > 0
-                ? this.formatThousandsCurrency(this.data.offer_deduction)
-                : 0,
+                ? `-${this.formatThousandsCurrency(this.data.offer_deduction)}`
+                : "0.00",
             deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
           }
         ]
