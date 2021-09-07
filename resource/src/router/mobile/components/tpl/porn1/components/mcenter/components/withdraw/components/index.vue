@@ -1210,7 +1210,7 @@ export default {
         if (this.withdrawValue !== "" && _actualMoney <= 0) {
           this.errTips = "实际提现金额须大于0，请重新输入";
           // 實際提現金額 => 有流水時為 0
-          this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
+         this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
           return;
         }
 
@@ -1222,7 +1222,9 @@ export default {
         if (
           (this.withdrawValue !== "" && value <= 0) ||
           (this.withdrawValue !== "" && value < withdrawMin) ||
-          (this.withdrawValue !== "" && withdrawMax > 0 && value > withdrawMax)
+          (this.withdrawValue !== "" &&
+            withdrawMax > 0 &&
+            value > withdrawMax)
         ) {
           this.errTips = `单笔提现金额最小为${this.formatThousandsCurrency(
             withdrawMin
@@ -2093,7 +2095,7 @@ export default {
       });
     },
     formatThousandsCurrency(value) {
-      return +value === 0 || +value === NaN ? 0 : thousandsCurrency(value);
+      return +value === 0 || +value === NaN ? "0.00" : thousandsCurrency(value);
     }
   },
   destroyed() {
