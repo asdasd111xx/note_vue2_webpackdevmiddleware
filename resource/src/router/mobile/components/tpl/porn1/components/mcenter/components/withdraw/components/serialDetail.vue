@@ -154,9 +154,10 @@ export default {
       // 充值稽核扣除金額 administrative_amount
       // 充值稽核流水要求 audit_amount
       // 完成/未完成 administrative_checked
-
+      // 充值金额 amount
+      // 优惠金额 offer
       // 优惠稽核倍数 offer_audit_rate
-      // 優惠稽核扣除金額 offer  offer_deduction
+      // 優惠稽核扣除金額 offer_deduction
       // 優惠稽核流水要求 offer_audit_amount
       // 完成/未完成 offer_checked
       return [
