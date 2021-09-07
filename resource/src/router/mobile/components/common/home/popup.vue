@@ -314,12 +314,9 @@ export default {
   margin-bottom: 9px;
 }
 
+// 不限制公告圖片大小
 .news-image {
   width: 100%;
-
-  > img {
-    // width: 100%;
-    // height: 100%;
-  }
+  overflow: scroll;
 }
 </style>

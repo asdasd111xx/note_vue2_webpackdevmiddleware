@@ -52,7 +52,7 @@
         v-for="post in postData"
         :key="post.id"
         :class="[$style.post, 'clearfix']"
-        @click="$router.push({ query: { pid: post.id } })"
+        @click="onClickPost(post.id)"
       >
         <div :class="$style['icon-post']">
           <img
@@ -90,19 +90,28 @@ export default {
     return {
       hasReceive: false,
       postData: [],
-      currentPostImage: ""
+      currentPostImage: "",
+      currentPost: {}
     };
   },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       post: "getPost"
-    }),
-    currentPost() {
+    })
+  },
+  methods: {
+    ...mapActions(["actionSetGlobalMessage", "actionSetPost"]),
+    onClickPost(id) {
+      this.currentPost = {};
+      this.currentPostImage = "";
+      this.$router.push({ query: { pid: id } });
+
       if (!this.$route.query.pid || this.postData.length == 0) {
         this.$router.back();
         return null;
       }
+
       let target = this.postData.find(
         post => post.id === this.$route.query.pid
       );
@@ -113,10 +122,11 @@ export default {
         });
       }
 
-      return this.postData.find(post => post.id === this.$route.query.pid);
+      this.currentPost = this.postData.find(
+        post => post.id === this.$route.query.pid
+      );
     }
   },
-  methods: { ...mapActions(["actionSetGlobalMessage", "actionSetPost"]) },
   created() {
     this.actionSetPost("0").then(() => {
       this.hasReceive = true;
@@ -138,6 +148,10 @@ export default {
         categoryText: categoryList[item.category]
       }));
       this.hasReceive = true;
+
+      if (this.$route.query.pid && this.postData.length !== 0) {
+        this.onClickPost(this.$route.query.pid);
+      }
     });
   }
 };
