@@ -113,11 +113,7 @@
                   {{ withdrawName }}出款额外赠送
                 </span>
                 <span :class="$style['money']">
-                  {{
-                    +bonusOffer && +bonusOffer > 0
-                      ? formatThousandsCurrency(bonusOffer)
-                      : "0.00"
-                  }}
+                  {{ bonusOffer }}
                 </span>
               </div>
 

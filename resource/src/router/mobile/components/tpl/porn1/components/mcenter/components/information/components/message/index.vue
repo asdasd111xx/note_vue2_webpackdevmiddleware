@@ -1,28 +1,10 @@
 <template>
   <div>
-    <div id="header" :class="[$style['message-header']]">
-      <div
-        v-if="!isEditing"
-        :class="$style['btn-close']"
-        @click="$router.back()"
-      >
-        <img
-          @click="getMessgae()"
-          :src="
-            $getCdnPath(
-              `/static/image/common/btn_back_${
-                themeTPL === 'porn1'
-                  ? 'grey'
-                  : themeTPL === 'ey1'
-                  ? 'white'
-                  : themeTPL === 'sg1'
-                  ? 'black'
-                  : null
-              }.png`
-            )
-          "
-        />
-      </div>
+    <div
+      id="header"
+      :class="[$style['message-header']]"
+      :style="isEditing ? { width: '100%' } : {}"
+    >
       <div
         v-if="isEditing"
         :class="$style['btn-close']"

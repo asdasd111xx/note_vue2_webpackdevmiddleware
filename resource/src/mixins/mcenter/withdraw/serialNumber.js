@@ -127,7 +127,8 @@ export default {
       return +info[objKey] === 0 ? "-" : info[objKey];
     },
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     }
   }
 };

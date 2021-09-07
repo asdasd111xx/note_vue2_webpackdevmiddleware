@@ -1,4 +1,3 @@
-import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
 import EST from "@/lib/EST";
@@ -26,8 +25,6 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
-
-  mounted() {},
   methods: {
     setTitleContent(content) {
       if (!content) {
@@ -49,19 +46,20 @@ export default {
         return;
       }
 
-      if (fromPopup) {
-        return content.replace("href=", " target='_blank' href=");
-      }
-
       let urlRegex = new RegExp(
-        /(?:!src\=[\"|\'])(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/,
+        /(https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/,
         "g"
       );
-      return content
-        .replace("href=", " target='_blank' href=")
-        .replace(urlRegex, function(url) {
-          return '<a href="' + url + '" target="_blank">' + url + "</a>";
-        });
+
+      // if (fromPopup) {
+      //   return content.replace("href=", " target='_blank' href=");
+      // }
+
+      return content.replace("href=", " target='_blank' href=");
+      // .replace(urlRegex, function(url) {
+      //   console.log(url);
+      //   return '<a href="' + url + '" target="_blank">' + url + "</a>";
+      // });
     }
   }
 };

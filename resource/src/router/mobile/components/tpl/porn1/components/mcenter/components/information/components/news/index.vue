@@ -29,7 +29,7 @@
         </div>
       </div>
       <div
-        :class="$style['content-wrap']"
+        :class="$style['new-content-wrap']"
         v-html="setContent(currentNews.content)"
       />
     </div>
@@ -210,15 +210,15 @@ export default {
   }
 }
 
-.content-wrap {
+.new-content-wrap {
   color: #414655;
   font-size: 14px;
   word-break: break-all;
   margin-top: 8px;
   padding: 0 17px;
   width: 100%;
-  overflow-x: scroll;
-  overflow-y: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .date {

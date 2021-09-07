@@ -5,15 +5,16 @@
     :class="$style.container"
   >
     <div slot="content" class="content-wrap">
-      <information @getCurrentTemplate="getCurrentTemplate" />
+      <information :currentTemplate.sync="currentTemplate" />
     </div>
   </mobile-container>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import information from '@/router/mobile/components/tpl/porn1/components/mcenter/components/information/components/index';
+import { mapGetters, mapActions } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import information from "@/router/mobile/components/tpl/porn1/components/mcenter/components/information/components/index";
+
 export default {
   components: {
     mobileContainer,
@@ -21,30 +22,23 @@ export default {
   },
   data() {
     return {
-      currentTemplate: "message",
-    }
-  },
-  created() {
-  },
-  methods: {
-    getCurrentTemplate(value) {
-      this.currentTemplate = value
-    }
+      currentTemplate: "message"
+    };
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     headerConfig() {
-      const trans = { message: '通知', news: '消息', post: '公告' };
+      const trans = { message: "通知", news: "消息", post: "公告" };
       return {
         prev: true,
-        title: this.$route.query.pid ? trans[this.currentTemplate] : '消息中心',
+        title: this.$route.query.pid ? trans[this.currentTemplate] : "消息中心",
         onClick: () => {
           this.$router.back();
         }
       };
-    },
+    }
   }
 };
 </script>
