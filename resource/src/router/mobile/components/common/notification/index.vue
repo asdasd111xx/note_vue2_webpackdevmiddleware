@@ -31,7 +31,7 @@
           >
             <img
               :src="
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/icon_maintain.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_maintain.png`
               "
             />
           </div>

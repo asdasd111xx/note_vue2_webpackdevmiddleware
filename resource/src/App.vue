@@ -98,7 +98,7 @@ export default {
           document.createElement("link");
         link.type = "image/x-icon";
         link.rel = "shortcut icon";
-        link.href = `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/favicon.ico`;
+        link.href = `/static/image/${this.siteConfig.ROUTER_TPL}/favicon.ico`;
         document.getElementsByTagName("head")[0].appendChild(link);
       }
     }
