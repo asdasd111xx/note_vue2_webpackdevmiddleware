@@ -50,7 +50,6 @@
 <script>
 /* global $ */
 import Vue from "vue";
-import { mapGetters } from "vuex";
 import store from "@/store";
 import member from "@/api/member";
 import getLang from "@/lib/getLang";
@@ -103,14 +102,8 @@ export default {
     });
   },
   computed: {
-    ...mapGetters({
-      siteConfig: "getSiteConfig"
-    }),
     localGMT() {
       return `GMT${Vue.moment(new Date()).format("Z")}`;
-    },
-    routerTPL() {
-      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
