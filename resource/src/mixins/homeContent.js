@@ -339,7 +339,7 @@ export default {
         localStorage.getItem("do-not-show-home-post") !== "true"
       ) {
         this.actionSetPost("1").then(() => {
-          if (this.post && this.post.list.length > 0) {
+          if (this.post && this.post.list && this.post.list.length > 0) {
             this.isShowPop = true;
           }
         });
