@@ -1905,42 +1905,48 @@ export default {
       switch (true) {
         case !this.withdrawValue:
           return "--";
-          break;
 
         case this.selectedCard.offer_percent === "0" || bonusOffer <= 0:
           return "0.00";
-          break;
 
         case bonusOffer >= this.selectedCard.offer_limit &&
           this.selectedCard.offer_limit !== "0":
           return `${this.formatThousandsCurrency(
             this.selectedCard.offer_limit
           )}`;
-          break;
 
         default:
           return `${this.formatThousandsCurrency(bonusOffer)}`;
-          break;
       }
     },
     actualMoneyPlusOffer(format = true) {
       if (this.actualMoney) {
         this.verification("withdrawValue", this.withdrawValue);
       }
-      // 有取款優惠金額 && 實際提現金額 > 0
-      if (+this.offer() && this.actualMoney > 0) {
-        let amount = Number(+this.actualMoney + +this.offer()).toFixed(2);
-        if (format) {
-          return this.formatThousandsCurrency(amount);
-        }
-        return amount;
-      } else {
-        if (format) {
-          return this.formatThousandsCurrency(this.actualMoney);
-        }
 
-        return this.actualMoney.toFixed(2);
+      let result = "";
+
+      if (format) {
+        // 有取款優惠金額 && 實際提現金額 > 0
+        if (+this.offer() && this.actualMoney > 0) {
+          result = this.formatThousandsCurrency(
+            (+this.actualMoney + +this.offer()).toFixed(2)
+          );
+        } else {
+          result = this.formatThousandsCurrency(+this.actualMoney.toFixed(2));
+        }
+      } else {
+        if (+this.offer() && this.actualMoney > 0) {
+          result = Number(+this.actualMoney + +this.offer()).toFixed(2);
+        } else {
+          result = Number(this.actualMoney).toFixed(2);
+        }
       }
+
+      if (String(result).replace(/\,/g, "") <= 0) {
+        return 0;
+      }
+      return result;
     },
     handleServiceMain(target) {
       // 現在當地時間的"時區"

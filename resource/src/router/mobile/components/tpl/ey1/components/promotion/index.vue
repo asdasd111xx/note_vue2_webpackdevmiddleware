@@ -90,7 +90,7 @@ export default {
 
     if (localStorage.getItem("do-not-show-promotion-post") !== "true") {
       this.actionSetPost("2").then(() => {
-        if (this.post) {
+        if (this.post && this.post.list && this.post.list.length > 0) {
           this.isShowPop = true;
         }
       });

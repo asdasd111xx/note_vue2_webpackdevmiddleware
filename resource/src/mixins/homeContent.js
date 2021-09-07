@@ -175,7 +175,7 @@ export default {
             : item.iconName.toLowerCase() !== "welfare";
         });
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      if (this.siteConfig.ROUTER_TPL === "ey1") {
         let pass = false;
 
         gameList = gameList.map((item, key) => {
@@ -244,8 +244,9 @@ export default {
       : true;
     this.getMaintainList();
     if (
-      this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
-      this.siteConfig.MOBILE_WEB_TPL === "sg1"
+      this.siteConfig.ROUTER_TPL === "porn1" ||
+      this.siteConfig.ROUTER_TPL === "sg1" ||
+      this.siteConfig.ROUTER_TPL === "aobo1"
     ) {
       this.initSWAGConfig(true);
       if (this.loginStatus) {
@@ -256,7 +257,7 @@ export default {
   mounted() {
     window.addEventListener("resize", this.onResize);
 
-    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+    if (this.siteConfig.ROUTER_TPL === "ey1") {
       this.getAllGame();
     } else {
       // 首頁選單列表預設拿local
@@ -338,7 +339,7 @@ export default {
         localStorage.getItem("do-not-show-home-post") !== "true"
       ) {
         this.actionSetPost("1").then(() => {
-          if (this.post && this.post.list.length > 0) {
+          if (this.post && this.post.list && this.post.list.length > 0) {
             this.isShowPop = true;
           }
         });
@@ -355,10 +356,10 @@ export default {
       return {
         src: info.image,
         error: this.$getCdnPath(
-          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${imageType}.png`
+          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.siteConfig.MOBILE_WEB_TPL}/default/default_${imageType}.png`
+          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
         )
       };
     },
@@ -418,7 +419,7 @@ export default {
             : 120;
 
         // 上方功能列
-        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        if (this.siteConfig.ROUTER_TPL === "ey1") {
           extraHeight += homeSliderHeight + 72;
         } else {
           extraHeight += homeSliderHeight + 50;
@@ -463,7 +464,7 @@ export default {
     onTouchMove(e) {
       let wrap = this.$refs["game-wrap"];
 
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      if (this.siteConfig.ROUTER_TPL === "ey1") {
         wrap = this.$refs["new-game-wrap"];
       }
 
@@ -513,7 +514,7 @@ export default {
     // 切換當前分類
     onChangeSelectIndex(index, isSetEnd = false, type) {
       // 億元特立獨行
-      if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+      if (this.siteConfig.ROUTER_TPL === "ey1") {
         if (type === "anchor") {
           let key = Object.keys(this.newTypeList).find(
             key => this.newTypeList[key].id === +index
@@ -579,7 +580,7 @@ export default {
     // 前往會員中心
     onGoToMcenter(path) {
       if (!this.loginStatus) {
-        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+        if (this.siteConfig.ROUTER_TPL === "ey1") {
           this.$router.push("/mobile/login");
         } else {
           this.$router.push("/mobile/joinmember");
@@ -627,7 +628,7 @@ export default {
         case "withdraw":
           const routerPush = "/mobile/mcenter/withdraw";
 
-          if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+          if (this.siteConfig.ROUTER_TPL === "ey1") {
             lib_useLocalWithdrawCheck("withdraw", routerPush);
             return;
           }
@@ -699,7 +700,7 @@ export default {
               localStorage.setItem("is-open-game", true);
               if (
                 game.vendor === "SL" &&
-                this.siteConfig.MOBILE_WEB_TPL != "ey1" &&
+                this.siteConfig.ROUTER_TPL != "ey1" &&
                 this.RedEnvelopeTouchType
               ) {
                 this.RedEnvelopeTouchType = false;
@@ -787,7 +788,7 @@ export default {
 
                         // 未登入開關 未開啟時需登入可進入
                         if (!this.loginStatus) {
-                          if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                          if (this.siteConfig.ROUTER_TPL === "ey1") {
                             this.$router.push("/mobile/login");
                           } else {
                             this.$router.push("/mobile/joinmember");
@@ -870,7 +871,7 @@ export default {
 
                   // 未登入開關 未開啟時需登入可進入
                   if (!this.loginStatus) {
-                    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                    if (this.siteConfig.ROUTER_TPL === "ey1") {
                       this.$router.push("/mobile/login");
                     } else {
                       this.$router.push("/mobile/joinmember");
@@ -887,7 +888,7 @@ export default {
           switch (game.vendor) {
             case "agent":
               // if (!this.loginStatus) {
-              //   if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+              //   if (this.siteConfig.ROUTER_TPL === "ey1") {
               //     this.$router.push("/mobile/login");
               //   } else {
               //     this.$router.push("/mobile/joinmember");
@@ -938,7 +939,7 @@ export default {
             case "lg_yb_card":
             case "lg_yb_casino":
               if (!this.loginStatus) {
-                if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                if (this.siteConfig.ROUTER_TPL === "ey1") {
                   this.$router.push("/mobile/login");
                 } else {
                   this.$router.push("/mobile/joinmember");
@@ -965,7 +966,7 @@ export default {
         // 大廳
         case "game_lobby":
           if (!this.loginStatus) {
-            if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+            if (this.siteConfig.ROUTER_TPL === "ey1") {
               this.$router.push("/mobile/login");
             } else {
               this.$router.push("/mobile/joinmember");
@@ -987,7 +988,7 @@ export default {
               break;
             default:
               if (!this.loginStatus) {
-                if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
+                if (this.siteConfig.ROUTER_TPL === "ey1") {
                   this.$router.push("/mobile/login");
                 } else {
                   this.$router.push("/mobile/joinmember");
@@ -1018,7 +1019,7 @@ export default {
             if (res && res.data) {
               let data = res.data;
 
-              if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
+              if (this.siteConfig.ROUTER_TPL != "ey1") {
                 if (data.code === "C50101" || data.code === "C50100") {
                   goLangApiRequest({
                     method: "get",
