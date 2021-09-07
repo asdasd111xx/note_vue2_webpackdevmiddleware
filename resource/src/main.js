@@ -68,7 +68,6 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("p-domain");
   // 公告系列
   localStorage.removeItem("do-not-show-home-post");
-  localStorage.removeItem("do-not-show-promotion-post");
   localStorage.removeItem("do-not-show-deposit-post");
   localStorage.removeItem("do-not-show-withdraw-post");
 
@@ -80,7 +79,6 @@ window.RESET_LOCAL_SETTING = reload => {
 window.RESET_MEM_SETTING = reload => {
   // 公告系列
   localStorage.removeItem("do-not-show-home-post");
-  localStorage.removeItem("do-not-show-promotion-post");
   localStorage.removeItem("do-not-show-deposit-post");
   localStorage.removeItem("do-not-show-withdraw-post");
 
