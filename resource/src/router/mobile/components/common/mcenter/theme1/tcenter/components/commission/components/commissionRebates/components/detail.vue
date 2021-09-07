@@ -115,6 +115,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import cardItem from "../../../../../../tcenterSame/cardItem";
 import cardTotal from "../../../../../../tcenterSame/cardAllTotal";
 import rebateRate from "../../../../../../tcenterSame/rebateRate";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -235,13 +236,17 @@ export default {
       return [
         {
           name: "有效投注金额",
-          valid: this.amountFormat(this.resultDetailList.valid_bet) || "0.00",
+          valid:
+            this.formatThousandsCurrency(this.resultDetailList.valid_bet) ||
+            "0.00",
           lack:
-            this.amountFormat(this.resultDetailList.lack_sub_valid_bet) ||
-            "0.00",
+            this.formatThousandsCurrency(
+              this.resultDetailList.lack_sub_valid_bet
+            ) || "0.00",
           next:
-            this.amountFormat(this.resultDetailList.next_sub_valid_bet) ||
-            "0.00",
+            this.formatThousandsCurrency(
+              this.resultDetailList.next_sub_valid_bet
+            ) || "0.00",
           width:
             this.resultDetailList.valid_bet == 0
               ? "0"
@@ -282,12 +287,12 @@ export default {
           list: [
             {
               name: "有效投注",
-              item: this.amountFormat(info.valid_bet),
+              item: this.formatThousandsCurrency(info.valid_bet),
               show: true
             },
             {
               name: "损益",
-              item: this.amountFormat(info.profit),
+              item: this.formatThousandsCurrency(info.profit),
               color: this.chooseColor(info.profit),
               show: true
             },
@@ -308,14 +313,16 @@ export default {
           name: "总有效投注：",
           item:
             this.friendMemberList?.total?.valid_bet > 0
-              ? this.amountFormat(this.friendMemberList.total.valid_bet)
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList.total.valid_bet
+                )
               : "--"
         },
         {
           name: "总损益：",
           item: this.friendMemberList?.total?.profit
             ? this.friendMemberList?.total?.profit != 0
-              ? this.amountFormat(this.friendMemberList.total.profit)
+              ? this.formatThousandsCurrency(this.friendMemberList.total.profit)
               : "--"
             : "--",
           color: this.friendMemberList?.total?.profit
@@ -344,12 +351,12 @@ export default {
           list: [
             {
               name: "有效投注",
-              item: this.amountFormat(info.valid_bet),
+              item: this.formatThousandsCurrency(info.valid_bet),
               show: true
             },
             {
               name: "损益",
-              item: this.amountFormat(info.profit),
+              item: this.formatThousandsCurrency(info.profit),
               color: this.chooseColor(info.profit),
               show: true
             }
@@ -365,14 +372,16 @@ export default {
           name: "总有效投注：",
           item:
             this.friendGameList?.total?.valid_bet > 0
-              ? this.amountFormat(this.friendGameList.total.valid_bet)
+              ? this.formatThousandsCurrency(
+                  this.friendGameList.total.valid_bet
+                )
               : "--"
         },
         {
           name: "总损益：",
           item: this.friendGameList?.total?.profit
             ? this.friendGameList?.total?.profit != 0
-              ? this.amountFormat(this.friendGameList.total.profit)
+              ? this.formatThousandsCurrency(this.friendGameList.total.profit)
               : "--"
             : "--",
           color: this.friendGameList?.total?.profit
@@ -393,12 +402,12 @@ export default {
           list: [
             {
               name: "有效投注",
-              item: this.amountFormat(info.valid_bet),
+              item: this.formatThousandsCurrency(info.valid_bet),
               show: true
             },
             {
               name: "损益",
-              item: this.amountFormat(info.profit),
+              item: this.formatThousandsCurrency(info.profit),
               color: this.chooseColor(info.profit),
               show: true
             }
@@ -428,6 +437,9 @@ export default {
     //損益 正紅負黑
     chooseColor(val) {
       return val < 0 ? "red" : "black";
+    },
+    formatThousandsCurrency(value) {
+      return +value > 0 ? thousandsCurrency(value) : "0.00";
     },
     getAllDetailList() {
       //取得今日實時返利詳情
@@ -596,12 +608,6 @@ export default {
     },
     toggleSerial() {
       this.isSerial = !this.isSerial;
-    },
-    amountFormat(value) {
-      //小數點後2位+千分位
-      return `${Number(value)
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
     },
     filterDate(date) {
       //取當前時間的整點為主來顯示

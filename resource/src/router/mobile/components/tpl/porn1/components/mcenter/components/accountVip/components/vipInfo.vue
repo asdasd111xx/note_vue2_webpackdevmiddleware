@@ -101,9 +101,9 @@
                   `${
                     currentLevelData.monthly_gift == ""
                       ? "--"
-                      : currentLevelData.monthly_gift +
+                      : formatThousandsCurrency(currentLevelData.monthly_gift) +
                         "/" +
-                        currentLevelData.monthly_gift
+                        formatThousandsCurrency(currentLevelData.monthly_gift)
                   }`
                 }}
               </div>
@@ -111,7 +111,9 @@
             </template>
 
             <template v-if="['ey1'].includes(themeTPL)">
-              <div>{{ currentLevelData.weekly_gift }}</div>
+              <div>
+                {{ formatThousandsCurrency(currentLevelData.weekly_gift) }}
+              </div>
               <div>每周红包(周一自动派发)</div>
             </template>
           </div>
@@ -157,7 +159,7 @@
               {{
                 currentLevelData.monthly_gift == ""
                   ? "--"
-                  : currentLevelData.monthly_gift
+                  : formatThousandsCurrency(currentLevelData.monthly_gift)
               }}
             </div>
             <div>每月红包(月初自动派发)</div>

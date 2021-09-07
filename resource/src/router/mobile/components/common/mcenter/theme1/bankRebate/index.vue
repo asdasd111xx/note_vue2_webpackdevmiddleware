@@ -49,7 +49,7 @@
                   { [$style['is-current']]: item.type === currentType }
                 ]"
               >
-                {{ rebateSubTotal[item.type] }}
+                {{ formatThousandsCurrency(rebateSubTotal[item.type]) }}
               </div>
               <div :class="$style['total-item-date']">{{ item.text }}</div>
             </div>

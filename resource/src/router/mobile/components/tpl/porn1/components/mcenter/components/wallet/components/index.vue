@@ -110,7 +110,9 @@
               </span>
 
               <span :class="[$style['balance-item-money'], $style['more']]">
-                {{ bonus.balance }}
+                {{
+                  bonus.balance ? formatThousandsCurrency(bonus.balance) : 0.0
+                }}
               </span>
             </div>
 
