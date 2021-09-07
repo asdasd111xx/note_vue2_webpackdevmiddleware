@@ -292,21 +292,21 @@
         </div>
       </div>
       <img
-        v-if="themeTPL != 'ey1'"
+        v-if="routerTPL != 'ey1'"
         :class="$style['promote-content']"
         :src="
           $getCdnPath(
-            `/static/image/${themeTPL}/mcenter/tcenter/Consultation.png`
+            `/static/image/${routerTPL}/mcenter/tcenter/Consultation.png`
           )
         "
         @click="openPromotion('agent_service')"
       />
       <img
-        v-if="themeTPL != 'ey1'"
+        v-if="routerTPL != 'ey1'"
         :class="$style['promote-content']"
         :src="
           $getCdnPath(
-            `/static/image/${themeTPL}/mcenter/tcenter/Commission.png`
+            `/static/image/${routerTPL}/mcenter/tcenter/Commission.png`
           )
         "
         @click="openPromotion('rebate_promotion')"
