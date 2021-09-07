@@ -1942,7 +1942,7 @@ export default {
       }
 
       if (String(result).replace(/\,/g, "") <= 0) {
-        return 0;
+        return "0.00";
       }
       return result;
     },
@@ -2091,7 +2091,11 @@ export default {
       });
     },
     formatThousandsCurrency(value, isDisplay) {
-      if (+value === 0 || +value === NaN) {
+      if (value === "--") {
+        return "--";
+      }
+
+      if (+value === 0 || +value === NaN || value === "--") {
         return "0.00";
       }
 

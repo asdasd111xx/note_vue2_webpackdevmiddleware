@@ -120,7 +120,7 @@
               <div :class="[$style['check-cell'], $style['check-actual']]">
                 <span :class="$style['sub-title']"> 实际提现金额 </span>
                 <span :class="$style['money']">
-                  {{ formatThousandsCurrency(actualMoney) }}
+                  {{ actualMoney }}
                 </span>
               </div>
 
