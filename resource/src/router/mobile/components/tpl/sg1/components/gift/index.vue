@@ -95,8 +95,12 @@ export default {
           }
         }).then(res => {
           if (res.status === "000") {
+            let promotionId = this.url.split("?")[0].split("/")[
+              this.url.split("?")[0].split("/").length - 1
+            ];
+
             res.data.ret.forEach(promo => {
-              if (this.url.includes(promo.link)) {
+              if (promo.link.includes(promotionId)) {
                 this.giftTitle = promo.name;
               }
             });
