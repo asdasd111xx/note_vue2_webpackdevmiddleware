@@ -2043,7 +2043,7 @@ export default {
 
       // 金額部份
       let tempAmount = localStorage.getItem("tmp_w_amount")
-        ? this.formatThousandsCurrency(localStorage.getItem("tmp_w_amount"))
+        ? this.formatThousandsCurrency(localStorage.getItem("tmp_w_amount"),true)
         : this.withdrawValue;
       this.withdrawValue = tempAmount;
       this.actualMoney =
