@@ -369,6 +369,9 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     swagIcons() {
       return [
         {
@@ -602,7 +605,13 @@ export default {
       this.$router.push(path);
     },
     onClickInvite() {
-      this.$router.push("/mobile/mcenter/makeMoney");
+      if (this.routerTPL === "aobo1") {
+        let url = "promotion_earn";
+        localStorage.setItem("iframe-third-url-title", "推广赚钱");
+        this.$router.push(`/mobile/iframe/promotionWallet?alias=${url}`);
+      } else {
+        this.$router.push("/mobile/mcenter/makeMoney");
+      }
     },
     toggleTrans() {
       this.isShowTrans = !this.isShowTrans;
