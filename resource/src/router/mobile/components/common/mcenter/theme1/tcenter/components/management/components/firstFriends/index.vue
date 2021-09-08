@@ -692,9 +692,10 @@ export default {
         return;
       } else {
         // 上方選項列顯示狀態
-
-        this.setTabState(true);
-        this.setSubTabState(true);
+        if (!this.gameRecordPage) {
+          this.setTabState(true);
+          this.setSubTabState(true);
+        }
         // 若返回到1級的頁面 or 停留在1級的情況
         this.isEnterNextLayers = false;
         this.searchResult = false;
@@ -708,8 +709,9 @@ export default {
         // 返回鍵事件(同最外層預設一致)
         this.setBackFunc(() => {
           if (this.path) {
-            this.gameRecordPage = false;
-            if (this.$route.params.path) {
+            if (this.$route.params.item && this.gameRecordPage) {
+              this.setTabState(true);
+              this.gameRecordPage = false;
               this.$router.replace(
                 "/mobile/mcenter/tcenterManageTeam/firstFriends/custom"
               );

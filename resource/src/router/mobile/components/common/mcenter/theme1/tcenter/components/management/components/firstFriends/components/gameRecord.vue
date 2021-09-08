@@ -63,6 +63,7 @@
 <script>
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { mapGetters } from "vuex";
 
 export default {
@@ -111,7 +112,7 @@ export default {
         },
         {
           name: "总派彩：",
-          item: this.amountFormat(this.total.payoff ?? "0.00"),
+          item: this.formatThousandsCurrency(this.total.payoff ?? "0.00"),
           color: this.chooseColor(this.total.payoff)
         },
         {
@@ -125,7 +126,11 @@ export default {
       let data = this.playGameList?.map(info => {
         return {
           title: info.vendor_alias,
-          childTitle: ["派彩：", info.payoff, this.chooseColor(info.payoff)],
+          childTitle: [
+            "派彩：",
+            this.formatThousandsCurrency(info.payoff ?? "0.00"),
+            this.chooseColor(info.payoff)
+          ],
           gameName: info.game_name,
           list: [
             {
@@ -160,6 +165,9 @@ export default {
       } else {
         return val > 0 ? "red" : "black";
       }
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     },
     getGameRecord() {
       //取得會員一級好友注單統計資料 C02.96
