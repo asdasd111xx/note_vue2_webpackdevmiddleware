@@ -260,7 +260,8 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     },
     // 自訂幫助中心事件
     handleHelpLinkTo() {
