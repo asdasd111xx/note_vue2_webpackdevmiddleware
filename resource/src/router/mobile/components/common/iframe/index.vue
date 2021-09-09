@@ -147,6 +147,8 @@ export default {
           return "/mobile/mcenter/home";
         case "PROMOTIONTCENTERLOBBY":
           return "/mobile/mcenter/tcenterLobby";
+        case "PROMOTIONWALLET":
+          return "/mobile/mcenter/wallet";
         default:
           return "/mobile";
       }
@@ -455,6 +457,7 @@ export default {
         case "PROMOTION":
         case "PROMOTIONHOME":
         case "PROMOTIONTCENTERLOBBY":
+        case "PROMOTIONWALLET":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
           if (url) {
