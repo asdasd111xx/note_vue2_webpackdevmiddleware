@@ -57,6 +57,9 @@ export default {
         process.env.NODE_ENV === "development" ||
         (this.$route.query && this.$route.query.testmode)
       );
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   watch: {
@@ -76,7 +79,7 @@ export default {
             this.getWsV2RSA();
           });
         }
-        this.connectYaboWS();
+        if (this.routerTPL !== "aobo1") this.connectYaboWS();
       }
     },
     siteConfig() {
@@ -91,7 +94,7 @@ export default {
           });
         }
 
-        this.connectYaboWS();
+        if (this.routerTPL !== "aobo1") this.connectYaboWS();
 
         let link =
           document.querySelector("link[rel*='icon']") ||
