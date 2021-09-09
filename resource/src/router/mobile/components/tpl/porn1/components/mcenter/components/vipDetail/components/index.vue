@@ -107,6 +107,9 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     rowColumn() {
       let count = this.detailData.titleList.length;
 
@@ -200,7 +203,11 @@ export default {
             },
             {
               number: "❼",
-              title: `${this.siteConfig.SITE_NAME}保留对活动的修改，停止及最终解释权。`,
+              title: `${
+                this.routerTPL === "aobo1"
+                  ? "澳博国际"
+                  : this.siteConfig.SITE_NAME
+              }保留对活动的修改，停止及最终解释权。`,
               content: ""
             }
           ];
