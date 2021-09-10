@@ -203,7 +203,8 @@ export default {
     height: 50%;
 
     span:last-of-type {
-      color: $main_vip_color1;
+      // color: $main_vip_color1;
+      color: #414655;
     }
   }
 }
