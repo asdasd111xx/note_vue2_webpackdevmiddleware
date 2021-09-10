@@ -1000,7 +1000,7 @@
               :class="[
                 $style['feature-tip-title'],
                 {
-                  [$style['success']]: +realSaveMoney.replaceAll(',','') >0
+                  [$style['success']]: +realSaveMoney.replaceAll(',', '') > 0
                 }
               ]"
             >
@@ -1486,9 +1486,9 @@ export default {
         },
         {
           objKey: "depositAccount",
-          title: "充值帐号",
+          title: "充值银行帐号",
           value: this.speedField.depositAccount,
-          placeholderText: "请输入充值帐号",
+          placeholderText: "请输入充值银行帐号",
           showCondition: this.curPayInfo.field.find(
             e => e.name === "pay_account" && e.required
           ),

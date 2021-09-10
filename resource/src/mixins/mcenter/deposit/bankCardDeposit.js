@@ -1224,7 +1224,7 @@ export default {
             key: "depositAccount",
             alertMessage: this.$text(
               "S_ENTER_DEPOSIT_ACCOUNT",
-              "请输入充值帐号"
+              "请输入充值银行帐号"
             )
           },
           pay_username: {
