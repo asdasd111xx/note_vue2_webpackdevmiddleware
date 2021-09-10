@@ -32,28 +32,31 @@ export default {
         //　鴨博
         case "500015":
           return "/static/tpl/install/porn1/qa/index.htm";
-          break;
 
         case "69":
           return "/static/tpl/install/porn1/demo/index.htm";
-          break;
 
         case "67":
           return "/static/tpl/install/porn1/official/index.htm";
-          break;
 
         // 絲瓜
         case "500035":
           return "/static/tpl/install/sg1/qa/index.htm";
-          break;
 
         case "81":
           return "/static/tpl/install/sg1/demo/index.htm";
-          break;
 
         case "80":
           return "/static/tpl/install/sg1/official/index.htm";
-          break;
+
+        case "9999894":
+          return "/static/tpl/install/aobo1/qa/index.htm";
+
+        case "93":
+          return "/static/tpl/install/aobo1/demo/index.htm";
+
+        case "92":
+          return "/static/tpl/install/aobo1/official/index.htm";
 
         default:
           break;

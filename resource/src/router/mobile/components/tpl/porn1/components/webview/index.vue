@@ -132,11 +132,11 @@ export default {
     }),
     $style() {
       const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+        this[`$style_${this.siteConfig.ROUTER_TPL}`] || this.$style_porn1;
       return style;
     },
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     iosCard() {
       return [
@@ -158,6 +158,12 @@ export default {
               case "81":
               case "80":
                 bundleID = "siguaxxxapp01.com.platformG";
+                break;
+
+              case "9999894":
+              case "93":
+              case "92":
+                bundleID = "aupr1.688lg.com.platformG";
                 break;
 
               default:
@@ -196,6 +202,16 @@ export default {
 
               case "80":
                 bundleID = "bbin.mobile.sigua";
+                break;
+
+              case "9999894":
+                bundleID = "com.aoboCasino.qa";
+                break;
+              case "93":
+                bundleID = "com.aoboCasino.demo";
+                break;
+              case "92":
+                bundleID = "com.aoboCasino.prod";
                 break;
 
               default:
