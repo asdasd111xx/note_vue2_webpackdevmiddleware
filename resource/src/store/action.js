@@ -1516,7 +1516,15 @@ export const actionSetGlobalMessage = ({ commit }, data) => {
 };
 
 export const actionSetRechargeConfig = ({ commit, state }, data) => {
-  if (!["porn1", "sg1"].includes(state.webDomain.site)) {
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
+  }
+  if (!["porn1", "sg1", "aobo1"].includes(configInfo.MOBILE_WEB_TPL)) {
     return Promise.resolve(null);
   }
 
