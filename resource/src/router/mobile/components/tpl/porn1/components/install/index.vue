@@ -19,6 +19,16 @@ export default {
     }),
     src() {
       switch (this.memInfo.user.domain) {
+        //澳博
+        case "9999894":
+          return "/static/tpl/install/aobo1/qa/index.htm";
+          break;
+        case "93":
+          return "/static/tpl/install/aobo1/demo/index.htm";
+          break;
+        case "92":
+          return "/static/tpl/install/aobo1/official/index.htm";
+          break;
         //　鴨博
         case "500015":
           return "/static/tpl/install/porn1/qa/index.htm";
