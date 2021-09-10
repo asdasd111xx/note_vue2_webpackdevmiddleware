@@ -161,11 +161,7 @@ export default {
     window.sportEvent = type => {
       if (type === "GO_IM_SPORT") {
         if (!this.loginStatus) {
-          if (this.themeTPL === "ey1") {
-            this.$router.push("/mobile/login");
-          } else {
-            this.$router.push("/mobile/joinmember");
-          }
+          this.$router.push("/mobile/login");
           return;
         } else {
           const openGameSuccessFunc = res => {

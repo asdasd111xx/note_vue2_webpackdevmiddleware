@@ -6,7 +6,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/accountVIP')
-            : $router.push('/mobile/joinmember')
+            : $router.push('/mobile/login')
         "
       >
         <img
@@ -24,7 +24,7 @@
             ? routerTPL === 'aobo1'
               ? openPromotionEmbedded()
               : $router.push('/mobile/mcenter/makeMoney')
-            : $router.push('/mobile/joinmember')
+            : $router.push('/mobile/login')
         "
       >
         <img
@@ -43,7 +43,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/wallet')
-            : $router.push('/mobile/joinmember')
+            : $router.push('/mobile/login')
         "
       >
         <div>
@@ -56,7 +56,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/betRecord')
-            : $router.push('/mobile/joinmember')
+            : $router.push('/mobile/login')
         "
       >
         <div>
@@ -71,7 +71,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/moneyDetail')
-            : $router.push('/mobile/joinmember')
+            : $router.push('/mobile/login')
         "
       >
         <div>
@@ -86,7 +86,7 @@
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/joinmember')
+            : $router.push('/mobile/login')
         "
       >
         <div>
@@ -145,7 +145,7 @@ export default {
       const item = this.list[listIndex];
 
       if (!this.loginStatus) {
-        this.goLogin();
+        this.$router.push("/mobile/login");
         return;
       }
       if (item.pageName === "deposit") {
@@ -158,9 +158,6 @@ export default {
           this.$router.push(item.path);
         }
       });
-    },
-    goLogin() {
-      this.$router.push("/mobile/joinmember");
     },
     countDays(ceatedTime) {
       const startTime = moment(ceatedTime);

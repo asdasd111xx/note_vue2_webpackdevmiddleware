@@ -84,11 +84,7 @@ export default {
     ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     onEnter() {
       if (!this.loginStatus) {
-        if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-          this.$router.push("/mobile/login");
-        } else {
-          this.$router.push("/mobile/joinmember");
-        }
+        this.$router.push("/mobile/login");
         return;
       }
 
