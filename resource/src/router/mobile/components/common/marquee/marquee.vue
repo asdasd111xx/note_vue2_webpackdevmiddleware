@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="['news-container', `${themeTPL}`]">
     <div
       class="news-wrap"
       :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
@@ -188,6 +188,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.news-container {
+  &.ey1 {
+    background: linear-gradient(#ffffff, #cbd8ff);
+  }
+}
 .news-wrap {
   display: flex;
   align-content: center;
@@ -230,7 +235,7 @@ export default {
   }
 
   &.ey1 {
-    color: #5e626d;
+    color: #2348b3;
   }
 
   &.sg1 {
