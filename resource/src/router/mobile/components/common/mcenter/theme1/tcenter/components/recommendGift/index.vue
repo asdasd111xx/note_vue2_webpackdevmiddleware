@@ -234,7 +234,20 @@
           <div :class="$style.tips">
             {{ path ? "暂无资料" : "还没有任何记录" }}
           </div>
+
           <div
+            v-if="routerTPL == 'aobo1'"
+            :class="$style['btn-money']"
+            @click="
+              $router.replace(
+                '/mobile/iframe/promotionHome?alias=promotion_earn'
+              )
+            "
+          >
+            {{ giftTitle }}
+          </div>
+          <div
+            v-else
             :class="$style['btn-money']"
             @click="$router.replace('/mobile/mcenter/makeMoney?giftDetail=1')"
           >
@@ -368,6 +381,9 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -461,7 +477,10 @@ export default {
     },
     giftTitle() {
       let title =
-        this.siteConfig.MOBILE_WEB_TPL === "ey1" ? "一键快赚" : "推广赚钱";
+        this.siteConfig.ROUTER_TPL === "ey1" ? "一键快赚" : "推广赚钱";
+      if (this.siteConfig.ROUTER_TPL === "aobo1") {
+        localStorage.setItem("iframe-third-url-title", "推广赚钱");
+      }
       return title;
     },
     cardItemList() {
