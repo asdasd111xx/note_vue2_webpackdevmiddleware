@@ -1,7 +1,48 @@
 <template>
-  <div :class="[$style.footer, 'clearfix']" id="footer">
+  <div
+    v-if="routerTPL !== 'aobo1'"
+    :class="[$style.footer, 'clearfix']"
+    id="footer"
+  >
     <div
       v-for="info in list"
+      :key="info.key"
+      :class="[
+        $style['footer-item'],
+        $style[`${info.key}`],
+        { [$style.active]: isActive(info.key) }
+      ]"
+      @click="onClick(info)"
+    >
+      <div>
+        <img
+          v-if="isActive(info.key)"
+          :src="
+            $getCdnPath(
+              `/static/image/_new/common/footer/icon_${info.key}_h.png`
+            )
+          "
+        />
+        <img
+          v-else
+          :src="
+            $getCdnPath(
+              `/static/image/_new/common/footer/icon_${info.key}_n.png`
+            )
+          "
+        />
+        <div
+          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          :class="$style['red-dot']"
+        />
+      </div>
+      <div>{{ info.name }}</div>
+    </div>
+  </div>
+
+  <div v-else :class="[$style.footer, 'clearfix']" id="footer">
+    <div
+      v-for="info in listAobo"
       :key="info.key"
       :class="[
         $style['footer-item'],
@@ -49,8 +90,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     list() {
       return [
         {
@@ -72,6 +117,35 @@ export default {
           key: "gift",
           name: this.$text("S_GIFT", "礼包"),
           path: "/mobile/gift"
+        },
+        {
+          key: "mcenter-home",
+          name: this.$text("S_INFORMATION", "我的"),
+          path: "/mobile/mcenter/home"
+        }
+      ];
+    },
+    listAobo() {
+      return [
+        {
+          key: "home",
+          name: this.$text("S_HOME", "首页"),
+          path: "/mobile"
+        },
+        {
+          key: "promotion",
+          name: this.$text("S_PROMOTION", "优惠"),
+          path: "/mobile/promotion"
+        },
+        {
+          key: "service",
+          name: this.$text("S_SERVIEC", "客服"),
+          path: "/mobile/service?prev=false"
+        },
+        {
+          key: "discover",
+          name: this.$text("S_ALLIANCE", "联盟"),
+          path: "/mobile/discover/sponsor?prev=false"
         },
         {
           key: "mcenter-home",
