@@ -83,7 +83,7 @@
           <!-- 右邊第一個按鈕 -->
           <div
             v-if="type.includes('disable')"
-            @click="$router.push('/mobile/joinmember')"
+            @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
             {{ $text("S_JOIN_MEMBER", "加入会员") }}

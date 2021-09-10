@@ -178,11 +178,7 @@ export default target => {
       case "withdraw":
       case "bankRebate":
         if (!store.state.loginStatus) {
-          if (store.state.webDomain.site === "ey1") {
-            router.push("/mobile/login");
-          } else {
-            router.push("/mobile/joinmember");
-          }
+          router.push("/mobile/login");
           return;
         }
 
@@ -206,11 +202,7 @@ export default target => {
         console.log(linkTo);
 
         if (!store.state.loginStatus) {
-          if (store.state.siteConfig.MOBILE_WEB_TPL === "ey1") {
-            router.push("/mobile/login");
-          } else {
-            router.push("/mobile/joinmember");
-          }
+          router.push("/mobile/login");
           return;
         }
 
@@ -276,11 +268,7 @@ export default target => {
 
   // 遊戲需登入
   if (!store.state.loginStatus) {
-    if (store.state.webDomain.site === "ey1") {
-      router.push("/mobile/login");
-    } else {
-      router.push("/mobile/joinmember");
-    }
+    router.push("/mobile/login");
     return;
   }
 

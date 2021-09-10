@@ -178,11 +178,11 @@ export default {
         },
         {
           objKey: "depositAccount",
-          title: "充值帐号",
+          title: "充值银行帐号",
           value: this.speedField.depositAccount,
           placeholderText: this.$text(
             "S_ENTER_DEPOSIT_ACCOUNT",
-            "请输入充值帐号"
+            "请输入充值银行帐号"
           ),
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(

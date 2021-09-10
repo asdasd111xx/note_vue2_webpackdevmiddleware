@@ -245,11 +245,7 @@ export default {
               window.sportEvent = type => {
                 if (type === "GO_IM_SPORT") {
                   if (!this.loginStatus) {
-                    if (this.themeTPL === "ey1") {
-                      this.$router.push("/mobile/login");
-                    } else {
-                      this.$router.push("/mobile/joinmember");
-                    }
+                    this.$router.push("/mobile/login");
                     return;
                   } else {
                     // 0421 進入遊戲前檢查withdrawcheck
@@ -559,11 +555,7 @@ export default {
               this.actionSetGlobalMessage({
                 msg: "请重新登入",
                 cb: () => {
-                  if (this.themeTPL === "ey1") {
-                    this.$router.push("/mobile/login");
-                  } else {
-                    this.$router.push("/mobile/joinmember");
-                  }
+                  this.$router.push("/mobile/login");
                 }
               });
             }
@@ -588,11 +580,13 @@ export default {
             if (this.loginStatus) {
               return;
             } else {
-              if (this.themeTPL === "ey1") {
-                this.$router.replace("/mobile/login");
-              } else {
-                this.$router.replace("/mobile/joinmember?prev=home");
-              }
+              this.$router.push("/mobile/login");
+
+              // if (this.themeTPL === "ey1") {
+              //   this.$router.replace("/mobile/login");
+              // } else {
+              //   this.$router.replace("/mobile/joinmember?prev=home");
+              // }
             }
 
             return;
@@ -602,11 +596,13 @@ export default {
               this.$router.push("/mobile/mcenter/wallet?prev=back");
               return;
             } else {
-              if (this.themeTPL === "ey1") {
-                this.$router.replace("/mobile/login");
-              } else {
-                this.$router.replace("/mobile/joinmember?prev=home");
-              }
+              this.$router.push("/mobile/login");
+
+              // if (this.themeTPL === "ey1") {
+              //   this.$router.replace("/mobile/login");
+              // } else {
+              //   this.$router.replace("/mobile/joinmember?prev=home");
+              // }
             }
 
             return;
@@ -621,11 +617,13 @@ export default {
             if (this.loginStatus) {
               this.$router.push("/mobile/mcenter/deposit?prev=back");
             } else {
-              if (this.themeTPL === "ey1") {
-                this.$router.replace("/mobile/login");
-              } else {
-                this.$router.replace("/mobile/joinmember?prev=home");
-              }
+              this.$router.replace("/mobile/login");
+
+              // if (this.themeTPL === "ey1") {
+              //   this.$router.replace("/mobile/login");
+              // } else {
+              //   this.$router.replace("/mobile/joinmember?prev=home");
+              // }
             }
 
             return;

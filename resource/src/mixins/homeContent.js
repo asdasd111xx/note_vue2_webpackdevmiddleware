@@ -580,11 +580,7 @@ export default {
     // 前往會員中心
     onGoToMcenter(path) {
       if (!this.loginStatus) {
-        if (this.siteConfig.ROUTER_TPL === "ey1") {
-          this.$router.push("/mobile/login");
-        } else {
-          this.$router.push("/mobile/joinmember");
-        }
+        this.$router.push("/mobile/login");
         return;
       }
 
@@ -788,11 +784,7 @@ export default {
 
                         // 未登入開關 未開啟時需登入可進入
                         if (!this.loginStatus) {
-                          if (this.siteConfig.ROUTER_TPL === "ey1") {
-                            this.$router.push("/mobile/login");
-                          } else {
-                            this.$router.push("/mobile/joinmember");
-                          }
+                          this.$router.push("/mobile/login");
                           return;
                         } else {
                           getThridUrl();
@@ -871,11 +863,7 @@ export default {
 
                   // 未登入開關 未開啟時需登入可進入
                   if (!this.loginStatus) {
-                    if (this.siteConfig.ROUTER_TPL === "ey1") {
-                      this.$router.push("/mobile/login");
-                    } else {
-                      this.$router.push("/mobile/joinmember");
-                    }
+                    this.$router.push("/mobile/login");
                     return;
                   } else {
                     getThridUrl();
@@ -939,11 +927,7 @@ export default {
             case "lg_yb_card":
             case "lg_yb_casino":
               if (!this.loginStatus) {
-                if (this.siteConfig.ROUTER_TPL === "ey1") {
-                  this.$router.push("/mobile/login");
-                } else {
-                  this.$router.push("/mobile/joinmember");
-                }
+                this.$router.push("/mobile/login");
                 return;
               }
 
@@ -966,11 +950,7 @@ export default {
         // 大廳
         case "game_lobby":
           if (!this.loginStatus) {
-            if (this.siteConfig.ROUTER_TPL === "ey1") {
-              this.$router.push("/mobile/login");
-            } else {
-              this.$router.push("/mobile/joinmember");
-            }
+            this.$router.push("/mobile/login");
             return;
           }
 
@@ -988,11 +968,7 @@ export default {
               break;
             default:
               if (!this.loginStatus) {
-                if (this.siteConfig.ROUTER_TPL === "ey1") {
-                  this.$router.push("/mobile/login");
-                } else {
-                  this.$router.push("/mobile/joinmember");
-                }
+                this.$router.push("/mobile/login");
                 return;
               }
           }

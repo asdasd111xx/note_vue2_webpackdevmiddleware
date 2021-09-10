@@ -44,7 +44,7 @@ export default {
   methods: {
     goMessage() {
       if (!this.loginStatus) {
-        this.$router.push("/mobile/joinmember");
+        this.$router.push("/mobile/login");
         return;
       }
       this.$router.push("/mobile/mcenter/information/message");

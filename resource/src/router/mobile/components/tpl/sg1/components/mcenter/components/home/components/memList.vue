@@ -250,7 +250,7 @@ export default {
     onListClick(item) {
       if (item.pageName === "super") {
         if (!this.loginStatus) {
-          this.$router.push("/mobile/joinmember");
+          this.$router.push("/mobile/login");
           return;
         }
 
@@ -268,7 +268,7 @@ export default {
 
       if (item.pageName === "mypromotion") {
         if (!this.loginStatus) {
-          this.$router.push("/mobile/joinmember");
+          this.$router.push("/mobile/login");
           return;
         }
       }
@@ -299,7 +299,7 @@ export default {
      */
     toggleSwitch() {
       if (!this.loginStatus) {
-        this.$router.push("/mobile/joinmember");
+        this.$router.push("/mobile/login");
         return;
       }
       if (!this.memInfo.config.content_rating) {

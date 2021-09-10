@@ -101,7 +101,7 @@
       <div v-else :class="$style['login-wrap']">
         <span
           :class="$style['visitor-title']"
-          @click="$router.push('/mobile/joinmember')"
+          @click="$router.push('/mobile/login')"
           >访客彩金</span
         >
         <span
@@ -110,20 +110,17 @@
             $style['just-money'],
             { [$style['more']]: guestAmount.length > 10 }
           ]"
-          @click="$router.push('/mobile/joinmember')"
+          @click="$router.push('/mobile/login')"
           >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
         <span
           :class="$style['visitor-money']"
-          @click="$router.push('/mobile/joinmember')"
+          @click="$router.push('/mobile/login')"
           >领取</span
         >
         <span @click="$router.push('/mobile/login')">{{
           $text("S_LOGON", "登录")
         }}</span>
-        <!-- <span @click="$router.push('/mobile/joinmember')">{{
-          $text("S_REGISTER", "注册")
-        }}</span> -->
         <img
           :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
           @click="handleClickAsk"
@@ -285,14 +282,14 @@ export default {
       if (this.loginStatus) {
         this.$router.push({ name: "mcenter-information" });
       } else {
-        this.$router.push("/mobile/joinmember");
+        this.$router.push("/mobile/login");
       }
     },
     handleClickSetting() {
       if (this.loginStatus) {
         this.$router.push("/mobile/mcenter/setting");
       } else {
-        this.$router.push("/mobile/joinmember");
+        this.$router.push("/mobile/login");
       }
     },
     goSearch() {
