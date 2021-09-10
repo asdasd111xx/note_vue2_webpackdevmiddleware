@@ -112,14 +112,28 @@
                 <span :class="$style['sub-title']">
                   {{ withdrawName }}出款额外赠送
                 </span>
-                <span :class="$style['money']">
+                <span
+                  :style="
+                    bonusOffer && bonusOffer.length > 6
+                      ? { 'font-size': '12px' }
+                      : {}
+                  "
+                  :class="[$style['money']]"
+                >
                   {{ bonusOffer }}
                 </span>
               </div>
 
               <div :class="[$style['check-cell'], $style['check-actual']]">
                 <span :class="$style['sub-title']"> 实际提现金额 </span>
-                <span :class="$style['money']">
+                <span
+                  :style="
+                    actualMoney && actualMoney.length > 6
+                      ? { 'font-size': '12px' }
+                      : {}
+                  "
+                  :class="$style['money']"
+                >
                   {{ actualMoney }}
                 </span>
               </div>
@@ -131,7 +145,14 @@
                 <span :class="$style['sub-title']">
                   {{ withdrawName }}到帐
                 </span>
-                <span :class="$style['crypto-money']">
+                <span
+                  :style="
+                    cryptoMoney && cryptoMoney.length > 6
+                      ? { 'font-size': '12px' }
+                      : {}
+                  "
+                  :class="$style['crypto-money']"
+                >
                   {{ formatThousandsCurrency(cryptoMoney) }}
                 </span>
               </div>
