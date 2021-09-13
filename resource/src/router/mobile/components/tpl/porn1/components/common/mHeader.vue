@@ -616,15 +616,15 @@ export default {
 
 .header-custom-wrap {
   .header-custom-btn {
+    position: absolute;
+    right: 15px;
+    top: 0px;
     -webkit-appearance: none;
     -moz-appearance: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     cursor: pointer;
     line-height: 43px;
-    position: fixed;
-    right: 14px;
-    top: 0;
     color: #414655;
     font-family: Arial, Arial-Bold;
     font-size: 14px;

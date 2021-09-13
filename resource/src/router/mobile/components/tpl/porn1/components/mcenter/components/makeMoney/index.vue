@@ -5,53 +5,58 @@
     :class="$style.container"
   >
     <div slot="content">
-      <div :class="$style['img-wrap']">
-        <img
-          :class="$style['img-wrap']"
-          :src="
-            `/static/image/porn1/mcenter/makeMoney/pic_promotion_banner.png`
-          "
-        />
+      <div v-if="['aobo1'].includes(routerTPL)" :class="$style['iframe-wrap']">
+        <iframe v-if="src" :src="src" :class="$style['iframe-item']" />
       </div>
-      <div :class="$style['img-wrap']">
-        <img
-          :class="$style['img-wrap']"
-          :src="`/static/image/porn1/mcenter/makeMoney/img001.png`"
-        />
-        <span :class="$style['agent-code']">{{ agentLink.agentCode }}</span>
-        <div @click="copyCode" :class="$style['copy-btn']">
-          复制
+      <div v-else>
+        <div :class="$style['img-wrap']">
+          <img
+            :class="$style['img-wrap']"
+            :src="
+              `/static/image/porn1/mcenter/makeMoney/pic_promotion_banner.png`
+            "
+          />
         </div>
-      </div>
-      <div :class="$style['img-wrap']">
-        <img
-          :class="$style['img-wrap']"
-          :src="`/static/image/porn1/mcenter/makeMoney/img002.png`"
-        />
-      </div>
-      <!-- <div :class="$style['img-wrap']">
+        <div :class="$style['img-wrap']">
+          <img
+            :class="$style['img-wrap']"
+            :src="`/static/image/porn1/mcenter/makeMoney/img001.png`"
+          />
+          <span :class="$style['agent-code']">{{ agentLink.agentCode }}</span>
+          <div @click="copyCode" :class="$style['copy-btn']">
+            复制
+          </div>
+        </div>
+        <div :class="$style['img-wrap']">
+          <img
+            :class="$style['img-wrap']"
+            :src="`/static/image/porn1/mcenter/makeMoney/img002.png`"
+          />
+        </div>
+        <!-- <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/porn1/mcenter/makeMoney/btn_promote.png`"
         />
       </div> -->
-      <!-- <div :class="$style['img-wrap']">
+        <!-- <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/porn1/mcenter/makeMoney/img003.png`"
         />
       </div> -->
-      <!-- <div :class="$style['img-wrap']">
+        <!-- <div :class="$style['img-wrap']">
         <img
           :class="$style['img-wrap']"
           :src="`/static/image/porn1/mcenter/makeMoney/btn_promote2.png`"
         />
       </div> -->
-      <div :class="$style['img-wrap']">
-        <img
-          :class="$style['img-wrap']"
-          :src="`/static/image/porn1/mcenter/makeMoney/img004.png`"
-        />
+        <div :class="$style['img-wrap']">
+          <img
+            :class="$style['img-wrap']"
+            :src="`/static/image/porn1/mcenter/makeMoney/img004.png`"
+          />
+        </div>
       </div>
     </div>
   </mobile-container>
@@ -63,6 +68,7 @@ import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mobileContainer from "../../../common/mobileContainer";
 import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -70,7 +76,8 @@ export default {
   },
   data() {
     return {
-      isShowPromotion: false
+      isShowPromotion: false,
+      src: ""
     };
   },
   created() {
@@ -166,6 +173,7 @@ export default {
   },
   mounted() {
     document.getElementById("mobile-wrap").scrollTo(0, 0);
+    if (["aobo1"].includes(this.routerTPL)) this.aoboLink();
   },
   computed: {
     ...mapGetters({
@@ -175,6 +183,9 @@ export default {
       agentLink: "getAgentLink",
       promotionLink: "getPromotionLink"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     headerConfig() {
       let hasRecommendGift = this.isShowPromotion;
       return {
@@ -230,6 +241,29 @@ export default {
       this.$copyText(this.getAgentLink).then(() => {
         this.actionSetGlobalMessage({ msg: "复制成功" });
       });
+    },
+    aoboLink() {
+      let target = "promotion_earn";
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: target,
+          lang: "zh-cn",
+          needToken: "true",
+          externalCode: "promotion"
+        }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.data && res.data.uri) {
+          this.src = res.data.uri;
+        }
+
+        if (res && res.msg) {
+          this.actionSetGlobalMessage({ msg: res.msg });
+          return;
+        }
+      });
     }
   }
 };
@@ -273,5 +307,19 @@ export default {
   position: absolute;
   bottom: 4vw;
   left: 46%;
+}
+
+.iframe-wrap {
+  width: 100%;
+  height: calc(100vh - 43px);
+  background-color: #fff;
+
+  .iframe-item {
+    border: none;
+    display: block;
+    height: 100%;
+    padding: 0;
+    width: 100%;
+  }
 }
 </style>

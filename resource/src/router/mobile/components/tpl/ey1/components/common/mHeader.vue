@@ -444,8 +444,8 @@ export default {
     cursor: pointer;
     line-height: 43px;
     position: absolute;
-    right: 14px;
-    top: 0;
+    right: 15px;
+    top: 0px;
     color: #ffffff;
     font-family: Arial, Arial-Bold;
     font-size: 14px;
