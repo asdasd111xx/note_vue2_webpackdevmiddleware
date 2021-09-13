@@ -161,7 +161,11 @@ export default {
                 break;
 
               case "9999894":
+                bundleID = "auqa1.66boxing.com/iframe";
+                break;
               case "93":
+                bundleID = "aude1.688lg.com.iframe.html.platformG";
+                break;
               case "92":
                 bundleID = "aupr1.688lg.com.platformG";
                 break;
