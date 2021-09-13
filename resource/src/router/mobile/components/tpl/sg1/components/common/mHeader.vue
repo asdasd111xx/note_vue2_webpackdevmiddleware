@@ -643,9 +643,9 @@ export default {
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     cursor: pointer;
     line-height: 43px;
-    position: fixed;
-    right: 14px;
-    top: 0;
+    position: absolute;
+    right: 15px;
+    top: 0px;
     color: #414655;
     font-family: Arial, Arial-Bold;
     font-size: 14px;
