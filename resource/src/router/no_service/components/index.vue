@@ -21,8 +21,12 @@
     </div>
 
     <div :class="$style['desc']">
-      <template v-if="themeTPL === 'porn1' || themeTPL === 'aobo1'">
+      <template v-if="themeTPL === 'porn1'">
         {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
+      </template>
+
+      <template v-if="themeTPL === 'aobo1'">
+        {{ $t("ROUTER_NO_SERVICE_TEXTAB") }}
       </template>
 
       <template v-if="themeTPL === 'sg1'">
