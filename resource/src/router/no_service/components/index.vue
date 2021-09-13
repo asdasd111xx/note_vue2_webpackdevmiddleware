@@ -1,6 +1,9 @@
 <template>
   <div
-    v-if="themeTPL && (themeTPL === 'porn1' || themeTPL === 'sg1')"
+    v-if="
+      themeTPL &&
+        (themeTPL === 'porn1' || themeTPL === 'sg1' || themeTPL === 'aobo1')
+    "
     :class="[$style['content'], $style[themeTPL]]"
   >
     <div :class="$style['logo-header']">
@@ -18,7 +21,7 @@
     </div>
 
     <div :class="$style['desc']">
-      <template v-if="themeTPL === 'porn1'">
+      <template v-if="themeTPL === 'porn1' || themeTPL === 'aobo1'">
         {{ $t("ROUTER_NO_SERVICE_TEXT1") }}
       </template>
 
@@ -122,6 +125,10 @@ export default {
     mailURL() {
       if (this.themeTPL === "porn1") {
         return "cs2@yaboxxx.net";
+      }
+
+      if (this.themeTPL === "aobo1") {
+        return "juzi8872@outlook.com";
       }
 
       if (this.themeTPL === "sg1") {
