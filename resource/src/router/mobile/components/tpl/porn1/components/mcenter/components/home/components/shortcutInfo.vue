@@ -21,9 +21,7 @@
       <div
         @click="
           loginStatus
-            ? routerTPL === 'aobo1'
-              ? openPromotionEmbedded()
-              : $router.push('/mobile/mcenter/makeMoney')
+            ? $router.push('/mobile/mcenter/makeMoney')
             : $router.push('/mobile/login')
         "
       >
@@ -164,12 +162,6 @@ export default {
       const now = moment(new Date());
 
       this.createdTime = now.diff(startTime, "days") + 1;
-    },
-    openPromotionEmbedded() {
-      //優小祕內嵌連結
-      let url = "promotion_earn";
-      localStorage.setItem("iframe-third-url-title", "推广赚钱");
-      this.$router.push(`/mobile/iframe/promotionHome?alias=${url}`);
     }
   }
 };

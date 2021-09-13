@@ -605,13 +605,7 @@ export default {
       this.$router.push(path);
     },
     onClickInvite() {
-      if (this.routerTPL === "aobo1") {
-        let url = "promotion_earn";
-        localStorage.setItem("iframe-third-url-title", "推广赚钱");
-        this.$router.push(`/mobile/iframe/promotionWallet?alias=${url}`);
-      } else {
-        this.$router.push("/mobile/mcenter/makeMoney");
-      }
+      this.$router.push("/mobile/mcenter/makeMoney");
     },
     toggleTrans() {
       this.isShowTrans = !this.isShowTrans;
