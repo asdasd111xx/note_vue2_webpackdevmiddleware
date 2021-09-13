@@ -315,12 +315,10 @@ export default {
       memInfo: "getMemInfo"
     }),
     $style() {
-      return (
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
-      );
+      return this[`$style_${this.siteConfig.ROUTER_TPL}`] || this.$style_porn1;
     },
-    themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     isShowPopup: {
       get() {
@@ -391,7 +389,7 @@ export default {
       })
         .then(response => {
           if (response.status === "000") {
-            if (this.themeTPL === "ey1") {
+            if (this.routerTPL === "ey1") {
               this.dispatch_hour = response.data.auto_dispatch_hour;
               this.immediateData = response.data.entries;
               this.entries = this.immediateData[0] || "";
@@ -497,5 +495,6 @@ export default {
 </script>
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/aobo1.index.scss" module="$style_aobo1"></style>
 <style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>
 <style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
