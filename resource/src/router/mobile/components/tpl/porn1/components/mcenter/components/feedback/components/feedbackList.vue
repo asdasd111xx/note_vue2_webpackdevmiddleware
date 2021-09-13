@@ -162,7 +162,7 @@ export default {
       return style;
     },
     theme() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     siteName() {
       return this.siteConfig.SITE_NAME;
