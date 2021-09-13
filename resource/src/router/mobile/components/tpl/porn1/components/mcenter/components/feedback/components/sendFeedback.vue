@@ -108,28 +108,40 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import ajax from '@/lib/ajax';
-import { API_FEEDBACK_CREATED } from '@/config/api';
+import { mapGetters, mapActions } from "vuex";
+import ajax from "@/lib/ajax";
+import { API_FEEDBACK_CREATED } from "@/config/api";
 
 export default {
   data() {
     return {
-      isSend: '',
+      isSend: "",
       paramsData: {
-        type_id: '',
-        title: '',
-        content: ''
+        type_id: "",
+        title: "",
+        content: ""
       },
       typeList: null,
-      currentIndex: '',
+      currentIndex: "",
       isShow: false,
       stepText: [
-        `${this.$text('S_FEEDBACK_TIP01', '步骤一： 点击「上传图片」前往网址')} (https://imgbb.com/)。`,
-        this.$text('S_FEEDBACK_TIP02', '步骤二： 将图片上传并获取图片网址链结。'),
-        this.$text('S_FEEDBACK_TIP03', '步骤三： 将获取的网址链结贴至对话输入框内。'),
-        this.$text('S_FEEDBACK_TIP04', '特别说明： 部分浏览器不支援拖曳上传图片，请使用上传按钮')
-      ],
+        `${this.$text(
+          "S_FEEDBACK_TIP01",
+          "步骤一： 点击「上传图片」前往网址"
+        )} (https://imgbb.com/)。`,
+        this.$text(
+          "S_FEEDBACK_TIP02",
+          "步骤二： 将图片上传并获取图片网址链结。"
+        ),
+        this.$text(
+          "S_FEEDBACK_TIP03",
+          "步骤三： 将获取的网址链结贴至对话输入框内。"
+        ),
+        this.$text(
+          "S_FEEDBACK_TIP04",
+          "特别说明： 部分浏览器不支援拖曳上传图片，请使用上传按钮"
+        )
+      ]
     };
   },
   created() {
@@ -137,44 +149,43 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig'
+      siteConfig: "getSiteConfig"
     }),
     contentLenght() {
-      return this.paramsData.content.trim().replace(' ', '').length;
+      return this.paramsData.content.trim().replace(" ", "").length;
     },
     theme() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     $style() {
-      const style = this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
     },
     contextLimit() {
-      return this.$text('S_CONTEXT_LIMIT', {
+      return this.$text("S_CONTEXT_LIMIT", {
         replace: [
-          { target: '%s', value: 20 },
-          { target: '%S', value: 200 }
+          { target: "%s", value: 20 },
+          { target: "%S", value: 200 }
         ]
       });
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     getTypeList() {
       ajax({
-        method: 'get',
-        url: '/api/v1/c/feedback_type/list',
+        method: "get",
+        url: "/api/v1/c/feedback_type/list",
         errorAlert: false
-      }).then((res) => {
+      }).then(res => {
         this.typeList = res.ret.map((item, index) => {
           return {
             id: item.id,
             content: item.content,
             imageId: index + 1 < 8 ? index + 1 : 8
-          }
-        })
+          };
+        });
       });
     },
     setValue(value) {
@@ -192,49 +203,70 @@ export default {
       }
 
       if (!this.paramsData.title || this.isSend) {
-        this.actionSetGlobalMessage({ msg: this.$text('S_SELECT_QUESTION_CATEGORY', '请选择问题类型') });
+        this.actionSetGlobalMessage({
+          msg: this.$text("S_SELECT_QUESTION_CATEGORY", "请选择问题类型")
+        });
         return;
       }
 
       this.isSend = true;
       ajax({
-        method: 'post',
+        method: "post",
         url: API_FEEDBACK_CREATED,
         params: {
-          ...this.paramsData,
+          ...this.paramsData
           //  content: this.paramsData.content.replace(/\n/g, '<br/>')
         },
         errorAlert: false,
-        fail: (res) => {
+        fail: res => {
           this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
-        },
-      }).then((res) => {
+        }
+      }).then(res => {
         this.isSend = false;
-        if (res && res.result === 'ok') {
-
-          this.actionSetGlobalMessage({ msg: this.$text('S_FEEDBACK_SUCCESS', '您的意见反馈已送出') });
-          Object.keys(this.paramsData).forEach((info) => {
-            this.paramsData[info] = '';
+        if (res && res.result === "ok") {
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_FEEDBACK_SUCCESS", "您的意见反馈已送出")
+          });
+          Object.keys(this.paramsData).forEach(info => {
+            this.paramsData[info] = "";
           });
 
-          this.currentIndex = '';
+          this.currentIndex = "";
         }
       });
     },
     goImageRelease() {
-      const url = 'https://imgbb.com/';
-      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || window.location.hostname === 'yaboxxxapp02.com') {
+      const url = "https://imgbb.com/";
+      if (
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone ||
+        window.location.hostname === "yaboxxxapp02.com"
+      ) {
         this.$copyText(url);
-        this.actionSetGlobalMessage({ msg: `「上传图片」链接已复制<br />请使用浏览器打开` });
+        this.actionSetGlobalMessage({
+          msg: `「上传图片」链接已复制<br />请使用浏览器打开`
+        });
         return;
       }
 
-      window.open(url, 'imageWrap');
+      window.open(url, "imageWrap");
     }
   }
 };
 </script>
 
-<style lang="scss" src="./css/sendFeedback.module.scss" module="$style_porn1"></style>
-<style lang="scss" src="./css/ey1.sendFeedback.scss" module="$style_ey1"></style>
-<style lang="scss" src="./css/sg1.sendFeedback.scss" module="$style_sg1"></style>
+<style
+  lang="scss"
+  src="./css/sendFeedback.module.scss"
+  module="$style_porn1"
+></style>
+<style
+  lang="scss"
+  src="./css/ey1.sendFeedback.scss"
+  module="$style_ey1"
+></style>
+<style
+  lang="scss"
+  src="./css/sg1.sendFeedback.scss"
+  module="$style_sg1"
+></style>
