@@ -87,7 +87,7 @@
         :class="$style['balance-wrap']"
         @click="setMenuState('balance')"
       >
-        <span> {{ `${formatThousandsCurrency(getLoginMoney)}元` }} </span>
+        <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
         <div>
           <img
             :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
@@ -98,24 +98,26 @@
           </div>
         </div>
       </div>
-      <div v-else :class="$style['login-wrap']">
+      <div
+        v-else
+        :class="[
+          $style['login-wrap'],
+          { [$style['more']]: String(guestAmount).length > 6 }
+        ]"
+      >
         <span
           :class="$style['visitor-title']"
-          @click="$router.push('/mobile/login')"
+          @click="$router.push('/mobile/joinmember')"
           >访客彩金</span
         >
         <span
-          :class="[
-            $style['visitor-money'],
-            $style['just-money'],
-            { [$style['more']]: guestAmount.length > 9 }
-          ]"
-          @click="$router.push('/mobile/login')"
-          >{{ `${formatThousandsCurrency(guestAmount)}元` }}</span
+          :class="[$style['visitor-money'], $style['just-money']]"
+          @click="$router.push('/mobile/joinmember')"
+          >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
         <span
           :class="$style['visitor-money']"
-          @click="$router.push('/mobile/login')"
+          @click="$router.push('/mobile/joinmember')"
           >领取</span
         >
         <span @click="$router.push('/mobile/login')">{{
@@ -429,9 +431,17 @@ export default {
 
 .login-wrap {
   height: 100%;
-  display: flex;
-  align-items: center;
-  float: right;
+  position: absolute;
+  right: 17px;
+  top: 0;
+
+  &.more {
+    > * {
+      padding: 0 !important;
+      line-height: 12px;
+    }
+  }
+
   > span {
     display: inline-block;
     height: 20px;
@@ -475,9 +485,6 @@ export default {
       max-width: 90px;
       word-break: break-word;
       text-align: right;
-    }
-    &.more {
-      line-height: 12px;
     }
   }
   .visitor-border {
