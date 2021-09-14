@@ -177,13 +177,12 @@ export default target => {
       case "deposit":
       case "withdraw":
       case "bankRebate":
-      case "bank-rebate":
         if (!store.state.loginStatus) {
           router.push("/mobile/login");
           return;
         }
 
-        router.push(`/mobile/mcenter/${linkTo.replace("-")}`);
+        router.push(`/mobile/mcenter/${linkTo}`);
         return;
 
       case "cgPay":
