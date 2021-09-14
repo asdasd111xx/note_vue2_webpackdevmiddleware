@@ -114,7 +114,7 @@
                 </span>
                 <span
                   :style="
-                    bonusOffer && bonusOffer.length > 6
+                    bonusOffer && bonusOffer.length > 10
                       ? { 'font-size': '12px' }
                       : {}
                   "
@@ -128,7 +128,7 @@
                 <span :class="$style['sub-title']"> 实际提现金额 </span>
                 <span
                   :style="
-                    actualMoney && actualMoney.length > 6
+                    actualMoney && actualMoney.length > 10
                       ? { 'font-size': '12px' }
                       : {}
                   "
