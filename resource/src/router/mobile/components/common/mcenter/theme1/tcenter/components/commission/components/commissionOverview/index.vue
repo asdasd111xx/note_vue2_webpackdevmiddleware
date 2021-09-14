@@ -402,7 +402,7 @@ export default {
             },
             {
               name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
-              item: this.amountFormat(info.valid_user),
+              item: info.valid_user,
               key: "member",
               color: false,
               show: true
