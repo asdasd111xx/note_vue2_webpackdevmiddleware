@@ -139,7 +139,7 @@ export default {
             .toNumber()
         : 0;
       //充值優惠小數點後兩位捨去
-      promotionValue = Math.floor(promotionValue * 100) / 100;
+      // promotionValue = Math.floor(promotionValue * 100) / 100;
       let deductionValue = +this.getPassRoadOrAi.fee_percent
         ? new BigNumber(this.moneyValue)
             .multipliedBy(
@@ -148,7 +148,7 @@ export default {
             .toNumber()
         : Number(this.getPassRoadOrAi.fee_amount);
       //手續費小數點後兩位捨去
-      deductionValue = Math.floor(deductionValue * 100) / 100;
+      // deductionValue = Math.floor(deductionValue * 100) / 100;
       let total = "0.00";
 
       // 尚未輸入金額
