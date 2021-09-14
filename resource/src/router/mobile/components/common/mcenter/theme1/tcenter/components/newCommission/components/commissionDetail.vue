@@ -86,7 +86,7 @@
               首存金额
             </div>
             <div :class="[$style['data-value']]">
-              {{ detail.first_deposit_amount }}
+              {{ formatThousandsCurrency(detail.first_deposit_amount) }}
             </div>
           </div>
           <div v-if="detailType === 'hasBet'" :class="[$style['friend-data']]">
@@ -94,7 +94,7 @@
               有效投注
             </div>
             <div :class="[$style['data-value']]">
-              {{ getNoRoundText(detail.valid_bet_amount) }}
+              {{ formatThousandsCurrency(detail.valid_bet_amount) }}
             </div>
           </div>
           <div
@@ -107,8 +107,8 @@
             <div :class="[$style['data-value']]">
               {{
                 detailType === "deposit"
-                  ? detail.deposit_amount
-                  : detail.withdraw_amount
+                  ? formatThousandsCurrency(detail.deposit_amount)
+                  : formatThousandsCurrency(detail.withdraw_amount)
               }}
             </div>
           </div>
@@ -380,7 +380,11 @@ export default {
       });
     },
     //轉美東
-    EST
+    EST,
+
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    }
   }
 };
 </script>

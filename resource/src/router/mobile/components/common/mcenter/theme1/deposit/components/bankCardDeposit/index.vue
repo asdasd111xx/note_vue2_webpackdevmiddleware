@@ -293,7 +293,7 @@
                 </template>
 
                 <template v-else>
-                  充值前请先绑定{{ curPayInfo.payment_method_name }}帐号
+                  充值前请先绑定{{ isSelectBindWallet(16, 25 ,30) ? "CGPay" : curPayInfo.payment_method_name }}帐号
                 </template>
 
                 <div :class="$style['no-bind-wallet']">
@@ -321,7 +321,7 @@
             >
               <!-- 億元: 尚未綁定會彈窗 -->
               <!-- CGPay -->
-              <template v-if="isSelectBindWallet(16, 25)">
+              <template v-if="isSelectBindWallet(16, 25 ,30)">
                 <span :class="$style['bank-card-title']"> 验证方式 </span>
 
                 <div :class="$style['no-bind-wallet']">
@@ -371,7 +371,7 @@
 
             <div
               v-if="
-                isSelectBindWallet(25, 402, 404) &&
+                isSelectBindWallet(25, 30, 402, 404) &&
                   this.curPassRoad.is_outer_crypto &&
                   this.curPassRoad.is_bind_wallet
               "
@@ -483,7 +483,7 @@
                     () => {
                       changeMoney(item);
                       if (
-                        isSelectBindWallet(25, 402, 404) &&
+                        isSelectBindWallet(25, 30, 402, 404) &&
                         isClickCoversionBtn &&
                         moneyValue > 0
                       ) {
@@ -519,7 +519,7 @@
                       () => {
                         changeMoney('', true);
                         if (
-                          isSelectBindWallet(25, 402, 404) &&
+                          isSelectBindWallet(25, 30, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue > 0
                         ) {
@@ -601,7 +601,7 @@
                       $event => {
                         verification('money', $event.target.value);
                         if (
-                          isSelectBindWallet(25, 402, 404) &&
+                          isSelectBindWallet(25, 30, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -613,7 +613,7 @@
                     @keyup="
                       $event => {
                         if (
-                          isSelectBindWallet(25, 402, 404) &&
+                          isSelectBindWallet(25, 30, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -638,7 +638,7 @@
               </div>
 
               <!-- USDT 匯率試算 -->
-              <template v-if="isSelectBindWallet(25, 402, 404)">
+              <template v-if="isSelectBindWallet(25, 30, 402, 404)">
                 <div :class="$style['crypto-block']">
                   <span>转入数量</span>
                   <div :class="[$style['content']]">
@@ -1067,7 +1067,7 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 402, 404) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(25, 30, 402, 404) && !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
@@ -1718,10 +1718,12 @@ export default {
       switch (this.curPayInfo.payment_method_id) {
         // CGPay
         case 16:
-        // CGPay-USDT
+        // CGPay-USDT(ERC20)
         case 25:
+        // CGPay-USDT(TRC20)
+        case 30:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
           );
           break;
 
@@ -1824,7 +1826,7 @@ export default {
       this.closePopup();
 
       //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 402, 404)) {
+      if (this.isSelectBindWallet(25, 30, 402, 404)) {
         let oldrate = this.rate;
         this.convertCryptoMoney();
         if (this.rate !== oldrate) {
@@ -2049,6 +2051,7 @@ export default {
       return (
         this.curPayInfo.payment_method_id === 16 ||
         this.curPayInfo.payment_method_id === 25 ||
+        this.curPayInfo.payment_method_id === 30 ||
         this.curPayInfo.payment_method_id === 22 ||
         this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404

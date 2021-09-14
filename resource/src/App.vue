@@ -79,7 +79,7 @@ export default {
             this.getWsV2RSA();
           });
         }
-        if (this.routerTPL !== "aobo1") this.connectYaboWS();
+        this.connectYaboWS();
       }
     },
     siteConfig() {
@@ -94,7 +94,7 @@ export default {
           });
         }
 
-        if (this.routerTPL !== "aobo1") this.connectYaboWS();
+        this.connectYaboWS();
 
         let link =
           document.querySelector("link[rel*='icon']") ||
@@ -188,10 +188,7 @@ export default {
     },
     /* 彩金websocket */
     reconnectYaboWS() {
-      if (
-        this.siteConfig.MOBILE_WEB_TPL === "porn1" ||
-        this.siteConfig.MOBILE_WEB_TPL === "sg1"
-      ) {
+      if (["porn1", "sg1"].includes(this.routerTPL)) {
         window.YABO_SOCKET = null;
         window.YABO_SOCKET_ID = null;
         window.YABO_SOCKET_RECONECT_STATUS = true;
@@ -215,6 +212,10 @@ export default {
       }
     },
     connectYaboWS() {
+      if (!["porn1", "sg1"].includes(this.routerTPL)) {
+        return;
+      }
+
       if (this.isConnecting) return;
 
       try {
