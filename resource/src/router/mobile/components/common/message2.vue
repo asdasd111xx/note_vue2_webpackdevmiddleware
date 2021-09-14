@@ -139,6 +139,7 @@ export default {
           case "C50102":
           case "C50116":
           case "C650003":
+          case "C50117":
           case "bindcard":
             this.$router.push(
               `/mobile/mcenter/bankCard?redirect=${
@@ -151,13 +152,7 @@ export default {
           case "C50103":
           case "C50105":
           case "bindVirtualBank":
-            if (["porn1", "sg1"].includes(this.themeTPL)) {
-              this.$router.push(
-                `/mobile/mcenter/bankCard?redirect=${
-                  redirect ? redirect : "home"
-                }&type=bankCard`
-              );
-            } else {
+            if (["ey1"].includes(this.themeTPL)) {
               // 億元
               // this.$router.push(
               //   `/mobile/withdrawAccount?redirect=${
@@ -170,6 +165,12 @@ export default {
                 `/mobile/mcenter/bankCard?redirect=${
                   redirect ? redirect : "home"
                 }&type=wallet`
+              );
+            } else {
+              this.$router.push(
+                `/mobile/mcenter/bankCard?redirect=${
+                  redirect ? redirect : "home"
+                }&type=bankCard`
               );
             }
             break;

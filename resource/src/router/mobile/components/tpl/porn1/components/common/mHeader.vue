@@ -730,8 +730,11 @@ export default {
   height: 100%;
   display: flex;
   align-items: center;
-  float: right;
+  position: absolute;
+  right: 17px;
+  top: 0;
   color: #5e626d;
+
   > span {
     display: inline-block;
     font-size: 18px;
