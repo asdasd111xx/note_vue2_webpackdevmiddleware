@@ -5,7 +5,7 @@
       :class="[$style['logo-wrap']]"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath('/static/image/sg1/common/logo.png')" />
+      <img :src="$getCdnPath(`/static/image/sg1/common/logo.png`)" />
     </div>
 
     <div
@@ -90,7 +90,7 @@
         <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
@@ -98,18 +98,20 @@
           </div>
         </div>
       </div>
-      <div v-else :class="$style['login-wrap']">
+      <div
+        v-else
+        :class="[
+          $style['login-wrap'],
+          { [$style['more']]: String(guestAmount).length > 6 }
+        ]"
+      >
         <span
           :class="$style['visitor-title']"
           @click="$router.push('/mobile/joinmember')"
           >访客彩金</span
         >
         <span
-          :class="[
-            $style['visitor-money'],
-            $style['just-money'],
-            { [$style['more']]: guestAmount.length > 10 }
-          ]"
+          :class="[$style['visitor-money'], $style['just-money']]"
           @click="$router.push('/mobile/joinmember')"
           >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
@@ -245,6 +247,9 @@ export default {
           parseFloat(this.membalance.total)}`;
       }
       return "";
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
@@ -438,9 +443,17 @@ export default {
 
 .login-wrap {
   height: 100%;
-  display: flex;
-  align-items: center;
-  float: right;
+  position: absolute;
+  right: 17px;
+  top: 0;
+
+  &.more {
+    > * {
+      padding: 0 !important;
+      line-height: 12px;
+    }
+  }
+
   > span {
     display: inline-block;
     height: 20px;
@@ -489,9 +502,6 @@ export default {
       max-width: 88px;
       word-break: break-word;
       text-align: right;
-    }
-    &.more {
-      line-height: 12px;
     }
   }
 }
@@ -567,16 +577,6 @@ export default {
   }
 }
 
-.game-list-wrap {
-  overflow-y: auto;
-  position: fixed;
-  top: 43px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
 .search-wrap {
   display: inline-block;
   position: relative;
@@ -637,15 +637,15 @@ export default {
 
 .header-custom-wrap {
   .header-custom-btn {
+    position: absolute;
+    right: 15px;
+    top: 0px;
     -webkit-appearance: none;
     -moz-appearance: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
     cursor: pointer;
     line-height: 43px;
-    position: absolute;
-    right: 15px;
-    top: 0px;
     color: #414655;
     font-family: Arial, Arial-Bold;
     font-size: 14px;
