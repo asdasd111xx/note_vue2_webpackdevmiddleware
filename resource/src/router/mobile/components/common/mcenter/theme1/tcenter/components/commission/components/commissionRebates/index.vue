@@ -394,7 +394,9 @@ export default {
               this.immediateData = response.data.entries;
               this.entries = this.immediateData[0] || "";
             } else {
-              this.dispatch_hour = response.data.ret.auto_dispatch_hour;
+              this.dispatch_hour =
+                response.data.auto_dispatch_hour ||
+                response.data.ret.auto_dispatch_hour;
               this.immediateData = response.data.ret.entries;
               this.entries = response.data.ret?.entries[0] ?? "";
             }
