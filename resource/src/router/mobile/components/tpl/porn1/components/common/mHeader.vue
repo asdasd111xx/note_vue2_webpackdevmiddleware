@@ -101,7 +101,7 @@
       <div v-else :class="$style['login-wrap']">
         <span
           :class="$style['visitor-title']"
-          @click="$router.push('/mobile/login')"
+          @click="$router.push('/mobile/joinmember')"
           >访客彩金</span
         >
         <span
@@ -110,12 +110,12 @@
             $style['just-money'],
             { [$style['more']]: guestAmount.length > 9 }
           ]"
-          @click="$router.push('/mobile/login')"
+          @click="$router.push('/mobile/joinmember')"
           >{{ `${formatThousandsCurrency(guestAmount)}元` }}</span
         >
         <span
           :class="$style['visitor-money']"
-          @click="$router.push('/mobile/login')"
+          @click="$router.push('/mobile/joinmember')"
           >领取</span
         >
         <span @click="$router.push('/mobile/login')">{{
