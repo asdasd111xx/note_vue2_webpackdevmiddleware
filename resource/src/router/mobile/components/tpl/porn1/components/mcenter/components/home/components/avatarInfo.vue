@@ -199,13 +199,9 @@ export default {
 
   div:last-of-type {
     color: $main_text_color1;
-    font-size: 12px;
+    font-size: 15px;
     height: 50%;
-
-    span:last-of-type {
-      // color: $main_vip_color1;
-      color: #414655;
-    }
+    color: #414655;
   }
 }
 .btn-next {

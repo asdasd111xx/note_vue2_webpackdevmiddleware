@@ -20,12 +20,12 @@ export default {
         {
           key: "sponsor_jdb"
         },
-        {
-          key: "sponsor_sigualive"
-        },
-        {
-          key: "sponsor_hglive"
-        },
+        // {
+        //   key: "sponsor_sigualive"
+        // },
+        // {
+        //   key: "sponsor_hglive"
+        // },
         {
           key: "sponsor_aglive"
         },
