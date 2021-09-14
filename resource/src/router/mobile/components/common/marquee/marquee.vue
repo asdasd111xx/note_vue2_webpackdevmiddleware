@@ -6,7 +6,15 @@
     >
       <div class="news-icon">
         <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/common/icon_news.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/${themeTPL}/common/${
+                ['withdraw', 'deposit'].includes(origin)
+                  ? 'icon_news'
+                  : 'icon_news_index'
+              }.png`
+            )
+          "
         />
       </div>
 
