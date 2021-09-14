@@ -83,11 +83,8 @@ export const site_9999894 = {
   SITE_NAME: "澳博国际",
   PORN_CONFIG: {
     ID: {
-      SPACE: "1",
-      YB: "9",
-      SP: "113",
-      GAY: "7",
-      LES: "8"
+      SPACE: "119",
+      YB: "120"
     }
   }
 };

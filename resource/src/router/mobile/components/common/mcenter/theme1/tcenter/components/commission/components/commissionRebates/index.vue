@@ -252,6 +252,7 @@ import detail from "./components/detail";
 import EST from "@/lib/EST";
 import tcenterLabel from "../../../../../tcenterSame/tcenterLabel";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -379,27 +380,16 @@ export default {
       });
     },
     getImmediateData() {
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/SelfDispatchInfo`,
         params: { lang: "zh-cn" }
       })
         .then(response => {
           if (response.status === "000") {
-            if (this.routerTPL === "ey1") {
-              this.dispatch_hour = response.data.auto_dispatch_hour;
-              this.immediateData = response.data.entries;
-              this.entries = this.immediateData[0] || "";
-            } else {
-              this.dispatch_hour =
-                response.data.auto_dispatch_hour ||
-                response.data.ret.auto_dispatch_hour;
-              this.immediateData = response.data.ret.entries;
-              this.entries = response.data.ret?.entries[0] ?? "";
-            }
+            this.dispatch_hour = response.data.ret.auto_dispatch_hour;
+            this.immediateData = response.data.ret.entries;
+            this.entries = response.data.ret?.entries[0] ?? "";
             let total = response.data.total ?? "";
 
             this.currentInfo = {

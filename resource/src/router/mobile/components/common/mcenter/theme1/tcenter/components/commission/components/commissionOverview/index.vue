@@ -478,8 +478,9 @@ export default {
     onClick({ key }) {
       this.isSummaryShow[key] = !this.isSummaryShow[key];
     },
-    amountFormat(amount) {
-      return thousandsCurrency(amount);
+    amountFormat(value) {
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     },
     dateYearFormat(date) {
       return Vue.moment(new Date(date)).format("YYYY-MM-DD");
