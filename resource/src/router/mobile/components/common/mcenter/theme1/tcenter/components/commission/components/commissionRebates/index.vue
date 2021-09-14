@@ -389,7 +389,7 @@ export default {
       })
         .then(response => {
           if (response.status === "000") {
-            if (this.routerTPL === "ey1") {
+            if (this.routerTPL === "ey1" || this.routerTPL === "aobo1") {
               this.dispatch_hour = response.data.auto_dispatch_hour;
               this.immediateData = response.data.entries;
               this.entries = this.immediateData[0] || "";
