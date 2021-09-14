@@ -94,7 +94,7 @@
               有效投注
             </div>
             <div :class="[$style['data-value']]">
-              {{ detail.valid_bet_amount }}
+              {{ getNoRoundText(detail.valid_bet_amount) }}
             </div>
           </div>
           <div
@@ -123,6 +123,7 @@ import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import EST from "@/lib/EST";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 export default {
   data() {
     return {
@@ -283,9 +284,11 @@ export default {
     },
     getNoRoundText(value) {
       //千分位＋小數點後兩位
-      return `${Number(value)
-        .toFixed(2)
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      // return `${Number(value)
+      //   .toFixed(2)
+      //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     },
     getAllFriendsDetail(url, level) {
       goLangApiRequest({
