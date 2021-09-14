@@ -36,7 +36,7 @@
         <span :class="$style['money-symbol']">¥</span>
         <span> 彩金分分送 </span>
       </div> -->
-      <div v-if="routerTPL === 'porn1'">
+      <div v-if="routerTPL === 'porn1'" :class="$style['porn-wrap']">
         <span> 观影60秒计时奖励 </span>
         <span :class="$style['money-symbol']">¥</span>
         <span> 彩金无上限 </span>
@@ -197,7 +197,7 @@ export default {
     line-height: 50%;
   }
 
-  div:last-of-type {
+  .porn-wrap {
     color: $main_text_color1;
     font-size: 12px;
     height: 50%;

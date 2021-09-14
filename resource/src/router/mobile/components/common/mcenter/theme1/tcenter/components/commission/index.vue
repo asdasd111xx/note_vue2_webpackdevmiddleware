@@ -111,6 +111,7 @@ import bbosRequest from "@/api/bbosRequest";
 import commission from "@/mixins/mcenter/commission";
 import EST from "@/lib/EST";
 import tcenterLabel from "../../../tcenterSame/tcenterLabel";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -327,21 +328,15 @@ export default {
       this.isReceive = false;
 
       // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/SelfDispatchInfo`,
         params: { lang: "zh-cn" }
       }).then(response => {
         this.isReceive = true;
 
         if (response.status === "000") {
-          this.isShowRebate =
-            this.themeTPL === "ey1"
-              ? response.data.show_real_time
-              : response.data.ret.show_real_time;
+          this.isShowRebate = response.data.ret.show_real_time;
           return;
         }
       });

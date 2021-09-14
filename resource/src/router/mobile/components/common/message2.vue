@@ -133,8 +133,11 @@ export default {
 
           // 銀行卡
           case "C50099":
+          case "C50117":
           case "C150099":
+          case "C150101":
           case "C50102":
+          case "C50116":
           case "C650003":
           case "bindcard":
             this.$router.push(
