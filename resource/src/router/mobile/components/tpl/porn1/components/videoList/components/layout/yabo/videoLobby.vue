@@ -311,7 +311,7 @@ export default {
           siteId: this.siteId
         }
       }).then(response => {
-        if (response.status !== 200) {
+        if (response.status !== 200 || !response.result) {
           return;
         }
         let _sort = response.result.sort(
