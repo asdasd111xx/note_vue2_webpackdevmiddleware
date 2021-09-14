@@ -29,6 +29,7 @@
         </div>
       </div>
     </div>
+    <service-tips :edit="edit" :type="'alias'" />
   </div>
 </template>
 
@@ -41,10 +42,12 @@ import { mapGetters, mapActions } from "vuex";
 import accountHeader from "../../accountHeader";
 import ajax from "@/lib/ajax";
 import mcenter from "@/api/mcenter";
+import serviceTips from "../../serviceTips";
 
 export default {
   components: {
-    accountHeader
+    accountHeader,
+    serviceTips
   },
   data() {
     return {
