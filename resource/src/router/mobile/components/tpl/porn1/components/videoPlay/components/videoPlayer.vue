@@ -11,7 +11,11 @@
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
-    <div id="video-play-block" :class="$style['video-block']">
+    <div
+      v-if="isActiveBouns"
+      id="video-play-block"
+      :class="$style['video-block']"
+    >
       <bonuns-dialog
         ref="bonunsDialog"
         :type="dialogType"
@@ -90,8 +94,6 @@ export default {
     }
   },
   mounted() {
-    this.connectMessage();
-
     if (!this.videoInfo.url) return;
     let obj = {
       sources: [
@@ -119,6 +121,12 @@ export default {
     };
 
     this.player = videojs(this.$refs["video-player"], obj);
+
+    if (!this.checkTPL()) {
+      return;
+    }
+
+    this.connectMessage();
 
     // 彩金疊加在播放器上
     let videoDom = document.getElementById("video-play");
@@ -293,6 +301,9 @@ export default {
       //   }
       //   return;
       // }
+      if (!this.checkTPL()) {
+        return;
+      }
 
       if (window.YABO_SOCKET && window.YABO_SOCKET.readyState === 1) {
         if (this.isDebug) {
@@ -327,6 +338,14 @@ export default {
 
       const bonunsProcess = this.$refs.bonunsProcess;
       bonunsProcess.processType = "loading";
+    },
+    checkTPL() {
+      if (!["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL)) {
+        this.isInit = true;
+        this.isActiveBouns = false;
+        return false;
+      }
+      return true;
     },
     onMessage(e) {
       if (e && e.data) {
@@ -580,6 +599,11 @@ export default {
   },
   created() {
     this.actionSetVideoBounsPageStatus(true);
+
+    if (!this.checkTPL()) {
+      return;
+    }
+
     this.actionSetYaboConfig().then(() => {
       if (this.yaboConfig) {
         setTimeout(() => {
