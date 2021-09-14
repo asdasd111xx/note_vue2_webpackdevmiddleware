@@ -186,7 +186,7 @@ export default {
   bottom: 0;
   width: 100%;
   min-height: 60px;
-  z-index: 2;
+  z-index: 5;
 
   background: -webkit-linear-gradient(right, #ffffff, #eeeeee);
   background: -o-linear-gradient(left, #ffffff, #eeeeee);

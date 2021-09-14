@@ -243,11 +243,8 @@ export const site_92 = {
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
-      SPACE: "1",
-      YB: "9",
-      SP: "13",
-      GAY: "7",
-      LES: "8"
+      SPACE: "16",
+      YB: "17"
     }
   }
 };
@@ -267,11 +264,8 @@ export const site_93 = {
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
     ID: {
-      SPACE: "1",
-      YB: "9",
-      SP: "13",
-      GAY: "7",
-      LES: "8"
+      SPACE: "16",
+      YB: "17"
     }
   }
 };

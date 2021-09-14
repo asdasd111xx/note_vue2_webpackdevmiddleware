@@ -6,7 +6,15 @@
     >
       <div class="news-icon">
         <img
-          :src="$getCdnPath(`/static/image/${themeTPL}/common/icon_news.png`)"
+          :src="
+            $getCdnPath(
+              `/static/image/${themeTPL}/common/${
+                ['withdraw', 'deposit'].includes(origin)
+                  ? 'icon_news'
+                  : 'icon_news_index'
+              }.png`
+            )
+          "
         />
       </div>
 
@@ -98,7 +106,7 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     // 完整的跑馬燈資料
     newslist() {
