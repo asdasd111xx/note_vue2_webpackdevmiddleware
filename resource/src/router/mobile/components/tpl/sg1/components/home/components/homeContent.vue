@@ -118,7 +118,25 @@
                 </div>
               </template>
               <template v-else>
-                <img v-lazy="getImg(game)" :alt="game.name" />
+                <template>
+                  <img v-lazy="getImg(game)" :alt="game.name" />
+                  <img
+                    v-if="
+                      game.type === 'game_lobby' &&
+                        game.vendor &&
+                        trialList.find(
+                          i =>
+                            i.vendor === game.vendor &&
+                            +i.kind === +game.kind &&
+                            i.mobile_trial
+                        )
+                    "
+                    :class="[$style['free-image']]"
+                    :src="
+                      $getCdnPath(`/static/image/common/home/ic_freegame.png`)
+                    "
+                  />
+                </template>
               </template>
               <div
                 v-if="
@@ -371,7 +389,7 @@ export default {
   border-radius: 7px;
   box-sizing: border-box;
 
-  > img {
+  > img:first-child {
     display: block;
     width: 100%;
     padding: 0 2px;
@@ -580,6 +598,14 @@ export default {
     position: absolute;
     bottom: 5px;
   }
+}
+
+.free-image {
+  position: absolute;
+  bottom: 0px;
+  left: 3px;
+  width: 60px;
+  height: 25px;
 }
 
 .wrap-buffer {

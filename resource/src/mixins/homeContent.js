@@ -50,7 +50,8 @@ export default {
       ],
       timer: null,
       isShowPop: false,
-      sitePostList: null
+      sitePostList: null,
+      trialList: []
     };
   },
   watch: {
@@ -248,7 +249,7 @@ export default {
       this.siteConfig.ROUTER_TPL === "sg1" ||
       this.siteConfig.ROUTER_TPL === "aobo1"
     ) {
-      this.initSWAGConfig(true);
+      // this.initSWAGConfig(true);
       if (this.loginStatus) {
         this.getTaskCheck();
       }
@@ -329,6 +330,16 @@ export default {
       "actionSetShowRedEnvelope",
       "actionSetPost"
     ]),
+    getTrialList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.trialList = res.data;
+        }
+      });
+    },
     // 關閉彈跳公告後是否顯示公告
     closePop(isFromSitePost) {
       this.isShowPop = false;
@@ -352,7 +363,6 @@ export default {
       if (longSizeImag.includes(imageType)) {
         imageType = 1;
       }
-
       return {
         src: info.image,
         error: this.$getCdnPath(
@@ -380,6 +390,8 @@ export default {
     },
     // 取得所有遊戲
     getAllGame() {
+      this.getTrialList();
+
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Game/list`
@@ -391,13 +403,14 @@ export default {
         this.isReceive = true;
         let data = response.data;
         // SWAG 客製客端判斷開關
-        let welfare = data.find(i => i.category === "Welfare");
-        if (welfare) {
-          let swag = welfare.vendors.find(i => i.vendor === "SWAG");
-          const isEnableSWAG =
-            swag && swag.type && swag.type.toLowerCase() === "thirdparty";
-          // localStorage.setItem("enable-swag", isEnableSWAG || false);
-        }
+        // let welfare = data.find(i => i.category === "Welfare");
+        // if (welfare) {
+        //   let swag = welfare.vendors.find(i => i.vendor === "SWAG");
+        //   const isEnableSWAG =
+        //     swag && swag.type && swag.type.toLowerCase() === "thirdparty";
+        //   // localStorage.setItem("enable-swag", isEnableSWAG || false);
+        // }
+
         try {
           localStorage.setItem("game-list", JSON.stringify(response.data));
         } catch (e) {
@@ -949,14 +962,26 @@ export default {
 
         // 大廳
         case "game_lobby":
-          if (!this.loginStatus) {
-            this.$router.push("/mobile/login");
-            return;
-          }
+          let hasTrial = this.trialList.find(
+            i =>
+              i.vendor === game.vendor &&
+              +i.kind === +game.kind &&
+              i.mobile_trial
+          );
 
+          if (!this.loginStatus) {
+            if (!hasTrial) {
+              this.$router.push("/mobile/login");
+              return;
+            }
+          }
           if ([3, 5, 6].includes(game.kind)) {
             const trans = { 3: "casino", 5: "card", 6: "mahjong" };
-            this.$router.push(`/mobile/${trans[game.kind]}/${game.vendor}`);
+            this.$router.push(
+              `/mobile/${trans[game.kind]}/${game.vendor}${
+                hasTrial ? "?label=trial" : ""
+              }`
+            );
             return;
           }
           return;
