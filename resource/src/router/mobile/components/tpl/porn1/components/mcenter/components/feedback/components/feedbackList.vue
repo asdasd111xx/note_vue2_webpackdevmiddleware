@@ -16,7 +16,6 @@
         <ul v-else :class="$style['feedback-list']">
           <template v-for="message in feedbackAddReply">
             <li
-              v-if="message.imageId"
               :class="[$style['feedback-item'], 'clearfix']"
               :key="message.id"
               @click="getCurrentMassage(message)"
@@ -25,7 +24,9 @@
                 <template v-if="typeList && typeList.length > 0">
                   <img
                     :src="
-                      `/static/image/${theme}/mcenter/feedback/question_${message.imageId}.png`
+                      message.imageId
+                        ? `/static/image/${theme}/mcenter/feedback/question_${message.imageId}.png`
+                        : `/static/image/${theme}/mcenter/feedback/question_8.png`
                     "
                   />
                 </template>
@@ -55,10 +56,13 @@
             <template v-if="typeList && typeList.length > 0">
               <img
                 :src="
-                  `/static/image/${theme}/mcenter/feedback/question_${
-                    typeList.find(i => i.id === String(currentFeedback.type_id))
-                      .imageId
-                  }.png`
+                  typeList.find(i => i.id === String(currentFeedback.type_id))
+                    ? `/static/image/${theme}/mcenter/feedback/question_${
+                        typeList.find(
+                          i => i.id === String(currentFeedback.type_id)
+                        ).imageId
+                      }.png`
+                    : `/static/image/${theme}/mcenter/feedback/ic_feedback_answer.png`
                 "
               />
             </template>
