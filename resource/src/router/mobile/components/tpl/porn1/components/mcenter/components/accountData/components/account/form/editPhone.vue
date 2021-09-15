@@ -313,7 +313,13 @@ export default {
         this.info.verification = response.ret.config[this.info.key].code;
         this.hasVerified = response.ret.user.phone; //是否已驗證
         this.phoneHeadOption = response.ret.config.phone.country_codes;
-        this.edit = response.ret.config.phone.editable;
+        //1.個人資料綁定手機頁面顯示『为了你的隐私安全，信息在确认后将无法修改 如需帮助，请联系客服』
+        //2.取款驗證顯示『如需帮助，请联系客服』
+        if (this.$route.query.redirect === "withdraw") {
+          this.edit = true;
+        } else {
+          this.edit = response.ret.config.phone.editable;
+        }
 
         let verified = this.hasVerified ? this.edit : this.hasVerified;
         if (this.memInfo.phone.phone) {
