@@ -31,9 +31,8 @@
               v-else
               @click="
                 () => {
-                  item.status === 'processing' ||
-                  item.status === 'complete' ||
                   item.method_id === 25 ||
+                  item.method_id === 30 ||
                   item.method_id === 402 ||
                   item.method_id === 404
                     ? showDetailPop(item)
@@ -46,12 +45,10 @@
             >
               {{ getStatus(item.status) }}
             </div>
-
             <div
               v-if="
-                item.status === 'processing' ||
-                  item.status === 'complete' ||
-                  item.method_id === 25 ||
+                item.method_id === 25 ||
+                  item.method_id === 30 ||
                   item.method_id === 402 ||
                   item.method_id === 404
               "
