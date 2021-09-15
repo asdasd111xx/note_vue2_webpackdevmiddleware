@@ -99,7 +99,7 @@ module.exports = {
           configFile: resolve("babel.config.js"),
           comments: process.env.NODE_ENV !== "production"
         },
-        include: [resolve("src"), resolve("node_modules")],
+        include: [resolve("src"), resolve("node_modules"), resolve("config")],
         exclude: file => /node_modules/.test(file) && !/\.vue\.js/.test(file)
       },
       {
