@@ -390,14 +390,6 @@ export default {
         return;
       }
 
-      let isMobileView;
-
-      try {
-        isMobileView = this.$route.matched[0].meta.isMobile;
-      } catch (e) {
-        isMobileView = false;
-      }
-
       const { vendor, kind, code, url } = this.gameInfo;
 
       // 活動
@@ -415,18 +407,11 @@ export default {
         return;
       }
 
-      if (
-        !this.loginStatus &&
-        !(isMobile() ? this.gameInfo.mobile_trial : this.gameInfo.trial)
-      ) {
-        if (isMobileView) {
-          this.$router.push("/mobile/login");
-        } else {
-          alert(this.$i18n.t("S_LOGIN_TIPS"));
-        }
-
+      if (!this.loginStatus && !this.gameInfo.mobile_trial) {
+        this.$router.push("/mobile/login");
         return;
       }
+
       this.isShowLoading = true;
 
       // 0421 進入遊戲前檢查withdrawcheck

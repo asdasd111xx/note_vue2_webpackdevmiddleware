@@ -181,6 +181,10 @@ export default {
           name: this.$t("S_IN_PROGRESS_ACTIVITY")
         },
         {
+          label: "trial",
+          name: this.$t("S_GAME_TRIAL")
+        },
+        {
           label: "new",
           name: this.$t("S_NEW_GAMES")
         },
@@ -191,6 +195,7 @@ export default {
       ],
       isGameDataReceive: false,
       gameData: [],
+      trialList: [],
       activityData: [],
       hasActivity: false
     };
@@ -255,11 +260,28 @@ export default {
       this.actionSetFavoriteGame(this.vendor);
     }
     this.getActivityList();
+    this.getTrialList();
   },
   methods: {
     ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
     redirectBankCard() {
       return `card-${this.vendor}-${this.paramsData.label}`;
+    },
+    getTrialList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.trialList = res.data;
+
+          if (
+            !this.trialList.find(i => i.vendor === this.$route.params.vendor)
+          ) {
+            this.labelData = this.labelData.filter(i => i.label !== "trial");
+          }
+        }
+      });
     },
     /**
      * 取得遊戲平台分類
@@ -471,18 +493,18 @@ export default {
       };
 
       new Promise(resolve => {
-        ajax({
-          method: "get",
-          url: gameApiInfo.url,
+        goLangApiRequest({
+          method: "post",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
           errorAlert: false,
           params: {
             ...gameApiInfo.params,
-            first_result: _params["firstResult"],
-            max_results: _params["maxResults"]
+            firstResult: _params["firstResult"],
+            maxResults: _params["maxResults"]
           }
-        }).then(response => {
-          if (response && response.result === "ok") {
-            resolve(response);
+        }).then(res => {
+          if (res && res.status === "000") {
+            resolve(res);
             return;
           }
 
@@ -492,6 +514,7 @@ export default {
           }, 3000);
         });
       }).then(response => {
+        let data = res.data;
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
         const activityGames =
@@ -523,7 +546,7 @@ export default {
           list.push(...activityGames);
         } else {
           this.paramsData.firstResult += +response.ret.length;
-          list.push(...response.ret);
+          list.push(...data.ret);
         }
 
         this.gameData.push(...list);
@@ -539,7 +562,7 @@ export default {
 
         const total = isActivityLabel
           ? this.activityData.pagination.total
-          : response.pagination.total;
+          : data.pagination.total;
 
         if (+this.gameData.length >= +total) {
           $state.complete();

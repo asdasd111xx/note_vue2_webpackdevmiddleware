@@ -1,11 +1,7 @@
 <template>
   <div>
     <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
-    <div
-      v-if="isReceive"
-      ref="home-wrap"
-      :class="[$style['home-wrap'], 'clearfix']"
-    >
+    <div ref="home-wrap" :class="[$style['home-wrap'], 'clearfix']">
       <!-- 上方功能列 -->
       <div
         :class="$style['top-wrap']"
@@ -136,6 +132,7 @@
       </div>
 
       <div
+        v-if="isReceive"
         :class="$style['new-game-wrap']"
         :style="{
           height: `${eyWrapHeight}px`
@@ -207,11 +204,31 @@
                         </div>
                       </template>
                       <template v-else>
-                        <img
-                          v-lazy="getImg(game)"
-                          :alt="game.name"
-                          @click="onOpenGame(game)"
-                        />
+                        <template>
+                          <img
+                            v-lazy="getImg(game)"
+                            :alt="game.name"
+                            @click="onOpenGame(game)"
+                          />
+                          <img
+                            v-if="
+                              game.type === 'game_lobby' &&
+                                game.vendor &&
+                                trialList.find(
+                                  i =>
+                                    i.vendor === game.vendor &&
+                                    +i.kind === +game.kind &&
+                                    i.mobile_trial
+                                )
+                            "
+                            :class="[$style['free-image']]"
+                            :src="
+                              $getCdnPath(
+                                `/static/image/common/home/ic_freegame.png`
+                              )
+                            "
+                          />
+                        </template>
                       </template>
                     </div>
 
@@ -658,7 +675,7 @@ export default {
     width: 100%;
   }
 
-  > img {
+  > img:first-child {
     display: block;
     width: 100%;
     max-height: 160px;
@@ -915,6 +932,14 @@ export default {
   background-position: -7px -5px;
   width: 100%;
   height: 100%;
+}
+
+.free-image {
+  position: absolute;
+  bottom: 0px;
+  left: 3px;
+  width: 60px;
+  height: 25px;
 }
 
 .wrap-buffer {
