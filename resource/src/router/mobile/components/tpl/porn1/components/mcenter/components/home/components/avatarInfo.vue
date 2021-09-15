@@ -198,10 +198,13 @@ export default {
   }
 
   .porn-wrap {
-    color: $main_text_color1;
-    font-size: 15px;
+    color: #9ca3bf;
+    font-size: 12px;
     height: 50%;
-    color: #414655;
+
+    span:last-of-type {
+      color: #eeb72d;
+    }
   }
 }
 .btn-next {
