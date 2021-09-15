@@ -2147,6 +2147,8 @@ export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
 };
 
 export const actionSetSwagBalance = ({ commit, state }, data) => {
+  return;
+
   const hasLogin = Vue.cookie.get("cid");
   if (!hasLogin) {
     return;
