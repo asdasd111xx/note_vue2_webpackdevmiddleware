@@ -395,16 +395,19 @@
 
   function siteConfig(domain) {
     switch (domain) {
+      case "9999894":
       case '500015': // qa
         return "https://yaboapi.bbin-asia.com/api-v2";
 
       case '100003': // beta
         return "https://ybbe2.qghco.com/api-v2";
 
+      case "93":
       case '69':  // demo
         return "https://yaboapi.canarycherrytart.com/api-v2";
 
       default:
+      case "92":
       case '67': // prod
         return "https://yaboapi.canarycherrytart.com/api-v2";
     }
