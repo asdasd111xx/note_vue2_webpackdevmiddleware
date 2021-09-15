@@ -366,7 +366,9 @@ export default {
   methods: {
     ...mapActions(["actionSetSystemTime", "actionSetGlobalMessage"]),
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      //新千分位＋小數點後兩位
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     },
     bankRebateMaintains() {
       mcenter.bankRebateMaintains({
