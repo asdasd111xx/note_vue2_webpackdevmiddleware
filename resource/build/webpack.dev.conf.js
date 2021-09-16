@@ -3,7 +3,6 @@ const webpack = require("webpack");
 const config = require("../config");
 const merge = require("webpack-merge");
 const baseWebpackConfig = require("./webpack.base.conf");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
@@ -70,18 +69,6 @@ module.exports = merge(baseWebpackConfig, {
     //     hash: true
     // }),
     new FriendlyErrorsPlugin(),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        warnings: false,
-        mangle: {
-          safari10: true
-        },
-        parse: {},
-        compress: {},
-        ie8: false
-      },
-      parallel: true
-    })
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ]
 });
