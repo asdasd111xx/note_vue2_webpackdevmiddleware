@@ -236,7 +236,8 @@ export default {
         .catch(error => {});
     },
     setSingleBonuns() {
-      if (!this.jackpotData.jpMinor) {
+      if (!this.jackpotData.jpMinor || this.jackpotData.jpMinor.length === 0) {
+        this.currentBonus = [];
         return;
       }
 
@@ -267,7 +268,11 @@ export default {
       }
     },
     setCurrentUsers() {
-      if (!this.jackpotData.jpUserList) {
+      if (
+        !this.jackpotData.jpUserList ||
+        this.jackpotData.jpUserList.length === 0
+      ) {
+        this.currentUsers = [];
         return;
       }
 
