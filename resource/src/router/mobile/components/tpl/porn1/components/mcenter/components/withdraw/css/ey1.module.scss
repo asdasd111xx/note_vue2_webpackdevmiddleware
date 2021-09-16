@@ -5,7 +5,7 @@
 }
 
 .bank-card-cell {
-  > .check-box {
+  >.check-box {
     &.checked {
       background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
@@ -37,13 +37,13 @@
 }
 
 .withdraw-max {
-  > span {
+  >span {
     background: #e42a30;
   }
 }
 
 .submit-btn {
-  > div {
+  >div {
     background: #e42a30;
   }
 
@@ -80,4 +80,10 @@
 
 .offer {
   color: #bf8646;
+}
+
+.exchange-rate {
+  .time {
+    color: #e42a30;
+  }
 }
