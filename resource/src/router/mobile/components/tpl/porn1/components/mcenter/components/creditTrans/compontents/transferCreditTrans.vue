@@ -188,7 +188,11 @@ export default {
     thirdyCaptchaObj(val) {}
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetUserdata"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionSetUserdata",
+      "actionSetDomainConfigV2"
+    ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
       this.getKeyring(obj);
@@ -208,7 +212,11 @@ export default {
         return;
       }
 
-      const params = [this.rechargeCheck(), this.actionSetUserdata(true)];
+      const params = [
+        this.rechargeCheck(),
+        this.actionSetUserdata(true),
+        this.actionSetDomainConfigV2()
+      ];
 
       Promise.all(params).then(res => {
         if (res[0] === true) {

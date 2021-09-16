@@ -165,7 +165,8 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       webInfo: "getWebInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =
@@ -240,9 +241,12 @@ export default {
     ]),
     locker() {
       this.countdownSec = this.ttl;
-      this.actionSetGlobalMessage({
-        msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-      });
+      if (this.domainConfig && this.domainConfig.auto_keyring) {
+      } else {
+        this.actionSetGlobalMessage({
+          msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+        });
+      }
       this.timer = setInterval(() => {
         if (this.countdownSec <= 1) {
           this.countdownSec = 0;
