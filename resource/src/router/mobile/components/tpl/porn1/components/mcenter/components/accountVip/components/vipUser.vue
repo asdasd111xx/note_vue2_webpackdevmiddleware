@@ -17,7 +17,11 @@
 
       <div
         :class="$style['user-vip-desc']"
-        @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+        @click="
+          routerTPL !== 'aobo1'
+            ? openPromotion('promotion_vip')
+            : $router.push('/mobile/mcenter/accountVIP/detail')
+        "
       >
         <div :class="$style['vip-text']">VIP详情</div>
         <div :class="$style['vip-level']">
@@ -159,6 +163,10 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
     },
     runPercent() {
       return this.userVipInfo.percent + "%";
@@ -302,6 +310,16 @@ export default {
       } else {
         this.downgradeData = `${this.userVipInfo.amount_info.valid_bet}/${this.userVipInfo.downgrade_valid_bet}`;
       }
+    },
+    openPromotion(position) {
+      if (this.routerTPL !== "aobo1" && position === "promotion_vip") {
+        this.openPromotionEmbedded(position);
+      }
+    },
+    openPromotionEmbedded(position) {
+      //優小祕內嵌連結
+      localStorage.setItem("iframe-third-url-title", "VIP詳情");
+      this.$router.push(`/mobile/iframe/vipInfo?alias=${position}`);
     }
   }
 };
