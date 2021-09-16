@@ -291,26 +291,35 @@
           </div>
         </div>
       </div>
-      <img
-        v-if="routerTPL != 'ey1'"
-        :class="$style['promote-content']"
-        :src="
-          $getCdnPath(
-            `/static/image/${routerTPL}/mcenter/tcenter/Consultation.png`
-          )
-        "
-        @click="openPromotion('agent_service')"
-      />
-      <img
-        v-if="routerTPL != 'ey1'"
-        :class="$style['promote-content']"
-        :src="
-          $getCdnPath(
-            `/static/image/${routerTPL}/mcenter/tcenter/Commission.png`
-          )
-        "
-        @click="openPromotion('rebate_promotion')"
-      />
+      <template v-if="cardList">
+        <div v-for="(item, index) in cardList" :key="`key-${index}`">
+          <img
+            :class="$style['promote-content']"
+            :src="item.image"
+            @click="openApiLink(item)"
+          />
+        </div>
+      </template>
+      <template v-else-if="routerTPL === 'aobo1'">
+        <img
+          :class="$style['promote-content']"
+          :src="
+            $getCdnPath(
+              `/static/image/${routerTPL}/mcenter/tcenter/Consultation.png`
+            )
+          "
+          @click="openPromotion('agent_service')"
+        />
+        <img
+          :class="$style['promote-content']"
+          :src="
+            $getCdnPath(
+              `/static/image/${routerTPL}/mcenter/tcenter/Commission.png`
+            )
+          "
+          @click="openPromotion('rebate_promotion')"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -363,7 +372,8 @@ export default {
           image: "ic_giftmoney",
           path: "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
         }
-      ]
+      ],
+      cardList: []
     };
   },
   created() {
@@ -404,7 +414,9 @@ export default {
       return this.memInfo.config.wage.indexOf("commission") === -1;
     }
   },
-  mounted() {},
+  mounted() {
+    this.promotionImageLink();
+  },
   methods: {
     formatToPrice(value) {
       //千分位
@@ -538,6 +550,30 @@ export default {
         }
       });
     },
+    /**
+     * 取得外部網址連結-我的推廣專用(有按順序) C02.325
+     * @method promotionImageLink
+     */
+    promotionImageLink() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/My/Promote`
+      }).then(res => {
+        if (res.data && res.status === "000") {
+          this.cardList = res.data ?? [];
+        }
+      });
+
+      //     {
+      //       "id": 128,
+      //       "domain": "500015",
+      //       "url_name": "myPromote",
+      //       "url": "https://rlt.yaboxxxcs.net/chat/text/chat_0cUEpU.html?skill=8ae482a07b065f30017b0ed952e513c4",
+      //       "name": "測試",
+      //       "sequence": 1,
+      //       "image": "https://images.bbin-asia.com/externalLink/500015/128_long.png?v=1631772922"
+      //     }
+    },
     openPromotion(position) {
       if (this.routerTPL === "aobo1" && position === "rebate_promotion") {
         this.openPromotionEmbedded(position);
@@ -567,6 +603,13 @@ export default {
       this.$router.push(
         `/mobile/iframe/promotionTcenterLobby?alias=${position}`
       );
+    },
+    openApiLink(item) {
+      const { id, url } = item;
+
+      let newWindow = "";
+      newWindow = window.open();
+      newWindow.location = url;
     }
   }
 };

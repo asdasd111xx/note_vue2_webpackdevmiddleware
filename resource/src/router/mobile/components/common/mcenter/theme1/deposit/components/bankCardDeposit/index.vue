@@ -1872,7 +1872,11 @@ export default {
 
           if (response.status === "third") {
             // this.resetStatus();
-            this.changeMoney(this.getPassRoadOrAi.amounts[0]);
+            if(this.getPassRoadOrAi.amounts.length>0){
+              this.changeMoney(this.getPassRoadOrAi.amounts[0]);
+            }else{
+              this.changeMoney('', true)
+            }
             this.cryptoMoney = "--";
             this.resetTimerStatus();
           }
