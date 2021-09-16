@@ -45,7 +45,7 @@
             )
           "
         />
-        <div>返回</div>
+        <div v-if="showText">返回</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ headerConfig.title }}
@@ -83,7 +83,8 @@ export default {
     return {
       isLoading: true,
       isFullScreen: false,
-      src: ""
+      src: "",
+      showText: true
     };
   },
   components: {
@@ -450,7 +451,6 @@ export default {
 
         case "PROMOTION":
         case "PROMOTIONTCENTERLOBBY":
-        case "VIPINFO":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
           if (url) {
@@ -458,6 +458,47 @@ export default {
               url = `${url}&v=m`;
             }
             this.src = url;
+            return;
+          }
+
+          if (query.alias) {
+            goLangApiRequest({
+              method: "get",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+              params: {
+                urlName: query.alias,
+                lang: "zh-cn",
+                needToken: "true",
+                externalCode: "promotion"
+              }
+            }).then(res => {
+              this.isLoading = false;
+              if (res && res.data && res.data.uri) {
+                url = res.data.uri;
+                // 由API提供
+                // if (!url.includes("v=m")) {
+                //   url = `${url}&v=m`;
+                // }
+                this.src = url;
+              }
+
+              if (res && res.msg) {
+                this.actionSetGlobalMessage({ msg: res.msg });
+                return;
+              }
+            });
+          }
+          break;
+
+        case "VIPINFO":
+          this.showText = false;
+          // 優小秘
+          let vipurl = localStorage.getItem("iframe-third-url") || "";
+          if (vipurl) {
+            if (!vipurl.includes("v=m")) {
+              vipurl = `${vipurl}&v=m`;
+            }
+            this.src = vipurl;
             return;
           }
 
