@@ -55,7 +55,8 @@ export default {
       membalance: "getMemBalance",
       rechargeConfig: "getRechargeConfig",
       rechargeBonusConfig: "getRechargeBonusConfig",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =
@@ -184,7 +185,8 @@ export default {
       "actionGetMemInfoV3",
       "actionGetRechargeStatus",
       "actionSetRechargeBonusConfig",
-      "actionGetToManyRequestMsg"
+      "actionGetToManyRequestMsg",
+      "actionSetDomainConfigV2"
     ]),
     // setPromotionTips() {
     //     let result = ''
@@ -389,9 +391,12 @@ export default {
                 }
                 this.ttl -= 1;
               }, 1000);
-              this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-              });
+              if (this.domainConfig && this.domainConfig.auto_keyring) {
+              } else {
+                this.actionSetGlobalMessage({
+                  msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+                });
+              }
             });
           } else {
             setTimeout(() => {

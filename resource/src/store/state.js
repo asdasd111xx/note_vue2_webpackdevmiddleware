@@ -454,10 +454,10 @@ export default {
   swagConfig: {},
   swagBalance: {},
   showRedEnvelope: false,
-
   // 檢查 withdraw account
   withdrawCheckStatus: {
     bank: true,
     account: true
-  }
+  },
+  domainConfig: {}
 };

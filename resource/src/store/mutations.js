@@ -612,5 +612,8 @@ export default {
       ...state.withdrawCheckStatus,
       ...data
     };
+  },
+  [types.SET_DOMAINCONFIG](state, data) {
+    state.domainConfig = data;
   }
 };

@@ -187,7 +187,8 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       webInfo: "getWebInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =
@@ -355,7 +356,8 @@ export default {
       "actionSetWithdrawCheck",
       "actionVerificationFormData",
       "actionSetGlobalMessage",
-      "actionGetToManyRequestMsg"
+      "actionGetToManyRequestMsg",
+      "actionSetDomainConfigV2"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -435,9 +437,14 @@ export default {
     locker() {
       if (this.timer) return;
       this.countdownSec = this.ttl;
-      this.actionSetGlobalMessage({
-        msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-      });
+
+      if (this.domainConfig && this.domainConfig.auto_keyring) {
+      } else {
+        this.actionSetGlobalMessage({
+          msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+        });
+      }
+
       this.timer = setInterval(() => {
         if (this.countdownSec <= 1) {
           this.countdownSec = 0;
@@ -452,11 +459,17 @@ export default {
       if (this.isClickedCaptcha || this.isSendSMS) return;
 
       this.isClickedCaptcha = true;
-      setTimeout(() => {
-        this.isClickedCaptcha = false;
-      }, 1200);
 
-      this.actionSetUserdata(true).then(() => {
+      const params = [
+        this.actionSetUserdata(true),
+        this.actionSetDomainConfigV2()
+      ];
+
+      Promise.all(params).then(() => {
+        setTimeout(() => {
+          this.isClickedCaptcha = false;
+        }, 1200);
+
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
           this.handleSend();

@@ -310,7 +310,8 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =
@@ -339,7 +340,8 @@ export default {
       "actionSetGlobalMessage",
       "actionVerificationFormData",
       "actionSetUserWithdrawCheck",
-      "actionGetToManyRequestMsg"
+      "actionGetToManyRequestMsg",
+      "actionSetDomainConfigV2"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -542,7 +544,12 @@ export default {
         return;
       }
 
-      this.actionSetUserdata(true).then(() => {
+      const params = [
+        this.actionSetUserdata(true),
+        this.actionSetDomainConfigV2()
+      ];
+
+      Promise.all(params).then(() => {
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
           this.sendKeyring();
@@ -586,9 +593,12 @@ export default {
           if (this.timer) return;
 
           if (res && res.data && res.data.result === "ok") {
-            this.actionSetGlobalMessage({
-              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-            });
+            if (this.domainConfig && this.domainConfig.auto_keyring) {
+            } else {
+              this.actionSetGlobalMessage({
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+              });
+            }
             this.getPhoneTTL().then(() => {
               this.countdownSec = this.ttl;
               this.timer = setInterval(() => {
