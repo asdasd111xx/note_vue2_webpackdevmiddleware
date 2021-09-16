@@ -166,10 +166,13 @@
           </div>
         </div>
       </div>
-
       <div
         :class="$style['vip-detail']"
-        @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+        @click="
+          routerTPL !== 'aobo1'
+            ? openPromotion('promotion_vip')
+            : $router.push('/mobile/mcenter/accountVIP/detail')
+        "
       >
         查看VIP详情 》
       </div>
@@ -199,11 +202,25 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   methods: {
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    openPromotion(position) {
+      if (this.routerTPL !== "aobo1" && position === "promotion_vip") {
+        this.openPromotionEmbedded(position);
+      }
+    },
+    openPromotionEmbedded(position) {
+      //優小祕內嵌連結
+      localStorage.setItem("iframe-third-url-title", "VIP詳情");
+      this.$router.push(`/mobile/iframe/vipInfo?alias=${position}`);
     }
   }
 };
