@@ -2,7 +2,7 @@ import "vue-loading-overlay/dist/vue-loading.min.css";
 // semantic ui
 import "./css/plugins/semantic/semantic.css";
 // vue-awesome-swiper
-import "swiper/dist/css/swiper.min.css";
+import "swiper/css/swiper.css";
 // vue-multiselect
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import "vue2-datepicker/index.css";
