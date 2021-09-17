@@ -1,115 +1,116 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .speed-field-wrap {
-    border-bottom: 1px solid #EEE;
-    background: #FFF;
+  border-bottom: 1px solid #eee;
+  background: #fff;
 }
 
 .speed-field {
-    padding: 0 17px;
-    &:nth-child(2n-1) {
-        background: #F6F4F4;
-    }
+  padding: 0 17px;
+  &:nth-child(2n-1) {
+    background: #f6f4f4;
+  }
 }
 
 .field-title {
-    position: relative;
-    display: inline-block;
-    width: 40%;
-    line-height: 33px;
-    text-align: left;
+  position: relative;
+  display: inline-block;
+  width: 40%;
+  line-height: 33px;
+  text-align: left;
 }
 
 .field-info {
-    position: relative;
-    display: inline-block;
-    width: 58%;
-    line-height: 33px;
+  position: relative;
+  display: inline-block;
+  width: 58%;
+  line-height: 33px;
 
-    input {
-        background: transparent;
-    }
+  input {
+    background: transparent;
+  }
 }
 
 .speed-field-title {
-    color: #222;
+  color: #222;
 }
 
 .speed-deposit-input {
-    box-sizing: border-box;
-    width: 176px;
-    height: 33px;
-    line-height: 33px;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    color: #222;
+  box-sizing: border-box;
+  width: 176px;
+  height: 33px;
+  line-height: 33px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  color: #222;
+  padding: 0;
 
-    // Chrome/Opera/Safari
-    &::-webkit-input-placeholder {
-        color: #BEBCBC;
-    }
-    // Firefox 19+
-    &::-moz-placeholder {
-        color: #BEBCBC;
-    }
-    // IE 10+
-    &:-ms-input-placeholder {
-        color: #BEBCBC;
-    }
-    // Firefox 18-
-    &:-moz-placeholder {
-        color: #BEBCBC;
-    }
+  // Chrome/Opera/Safari
+  &::-webkit-input-placeholder {
+    color: #bebcbc;
+  }
+  // Firefox 19+
+  &::-moz-placeholder {
+    color: #bebcbc;
+  }
+  // IE 10+
+  &:-ms-input-placeholder {
+    color: #bebcbc;
+  }
+  // Firefox 18-
+  &:-moz-placeholder {
+    color: #bebcbc;
+  }
 }
 
 .speed-deposit-input-error-messgae {
-    font-size: 12px;
-    margin-top: 5px;
-    color: #DB6372;
+  font-size: 12px;
+  margin-top: 5px;
+  color: #db6372;
 }
 
 .depositMethod-no-data {
-    color: #BEBCBC;
+  color: #bebcbc;
 }
 
 // 日期套件
 :global {
-    .mx-datepicker {
-        width: 100%;
+  .mx-datepicker {
+    width: 100%;
 
-        .mx-input {
-            height: 33px;
-            line-height: 33px;
-            padding: 0;
-            box-shadow: none;
-            border: none;
-            background: transparent;
-            // Chrome/Opera/Safari
-            &::-webkit-input-placeholder {
-                color: #BEBCBC;
-            }
-            // Firefox 19+
-            &::-moz-placeholder {
-                color: #BEBCBC;
-            }
-            // IE 10+
-            &:-ms-input-placeholder {
-                color: #BEBCBC;
-            }
-            // Firefox 18-
-            &:-moz-placeholder {
-                color: #BEBCBC;
-            }
-        }
+    .mx-input {
+      height: 33px;
+      line-height: 33px;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+      // Chrome/Opera/Safari
+      &::-webkit-input-placeholder {
+        color: #bebcbc;
+      }
+      // Firefox 19+
+      &::-moz-placeholder {
+        color: #bebcbc;
+      }
+      // IE 10+
+      &:-ms-input-placeholder {
+        color: #bebcbc;
+      }
+      // Firefox 18-
+      &:-moz-placeholder {
+        color: #bebcbc;
+      }
     }
+  }
 
-    .mx-icon-calendar {
-        right: 0;
-        display: none;
-    }
+  .mx-icon-calendar {
+    right: 0;
+    display: none;
+  }
 
-    .mx-icon-clear {
-        right: 0;
-    }
+  .mx-icon-clear {
+    right: 0;
+  }
 }

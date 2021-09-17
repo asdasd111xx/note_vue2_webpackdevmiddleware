@@ -52,6 +52,10 @@ export default {
     displayType: {
       type: String,
       default: ""
+    },
+    trialList: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -83,26 +87,39 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     onEnter() {
-      if (!this.loginStatus) {
-        this.$router.push("/mobile/login");
-        return;
-      }
-
       if (localStorage.getItem("is-open-game")) {
         return;
       }
 
       const { kind, vendor } = this.eventData;
+
+      let hasTrial = this.trialList.find(
+        i => i.vendor === vendor && +i.kind === kind && i.mobile_trial
+      );
+
+      if (!hasTrial && !this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+
       // 活動大廳
       // 電子棋牌大廳
       if (this.displayType !== "game-lobby") {
         switch (kind) {
           case 3:
-            this.$router.push(`/mobile/casino/${vendor}?label=hot`);
+            if (!this.loginStatus) {
+              this.$router.push(`/mobile/casino/${vendor}?label=trial`);
+            } else {
+              this.$router.push(`/mobile/casino/${vendor}?label=hot`);
+            }
             return;
 
           case 5:
-            this.$router.push(`/mobile/card/${vendor}?label=hot`);
+            if (!this.loginStatus) {
+              this.$router.push(`/mobile/card/${vendor}?label=trial`);
+            } else {
+              this.$router.push(`/mobile/card/${vendor}?label=hot`);
+            }
             return;
         }
 
