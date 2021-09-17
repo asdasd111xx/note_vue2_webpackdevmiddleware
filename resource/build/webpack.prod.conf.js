@@ -9,7 +9,6 @@ const TerserJSPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 let env =
   process.env.NODE_ENV === "testing"
@@ -33,18 +32,6 @@ let webpackConfig = merge(baseWebpackConfig, {
       : utils.assetsPath("[id].[chunkhash].js")
   },
   plugins: [
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        },
-        mangle: {
-          safari10: true
-        }
-      },
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
-    }),
     // new webpack.ProvidePlugin({
     //     $              : "jquery",
     //     jQuery         : "jquery",
