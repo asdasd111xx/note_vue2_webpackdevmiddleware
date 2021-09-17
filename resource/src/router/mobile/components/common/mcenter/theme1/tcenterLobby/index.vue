@@ -291,7 +291,7 @@
           </div>
         </div>
       </div>
-      <template v-if="cardList">
+      <template v-if="cardList && routerTPL != 'aobo1'">
         <div v-for="(item, index) in cardList" :key="`key-${index}`">
           <img
             :class="$style['promote-content']"
@@ -300,7 +300,7 @@
           />
         </div>
       </template>
-      <template v-else-if="routerTPL === 'aobo1'">
+      <template v-if="routerTPL === 'aobo1'">
         <img
           :class="$style['promote-content']"
           :src="
