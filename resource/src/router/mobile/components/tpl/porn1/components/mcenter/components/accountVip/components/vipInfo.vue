@@ -205,7 +205,7 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     vipTitle() {
-      return localStorage.getItem("iframe-third-url-title");
+      return localStorage.getItem("iframe-third-url-title") || "";
     }
   },
   created() {
