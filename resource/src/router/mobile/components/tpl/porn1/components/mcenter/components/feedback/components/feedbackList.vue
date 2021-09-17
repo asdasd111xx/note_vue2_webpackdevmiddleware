@@ -62,7 +62,7 @@
                           i => i.id === String(currentFeedback.type_id)
                         ).imageId
                       }.png`
-                    : `/static/image/${theme}/mcenter/feedback/ic_feedback_answer.png`
+                    : `/static/image/${theme}/mcenter/feedback/question_8.png`
                 "
               />
             </template>
