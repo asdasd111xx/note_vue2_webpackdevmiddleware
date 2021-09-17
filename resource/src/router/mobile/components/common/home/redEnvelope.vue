@@ -44,8 +44,8 @@ export default {
     }
   },
   mounted() {
-    this.encelopeMessage = this.redEnvelopeData.bonusMessage.replaceAll(
-      "<br>",
+    this.encelopeMessage = this.redEnvelopeData.bonusMessage.replace(
+      /\<br\>/g,
       "<br/>"
     );
   },

@@ -1005,7 +1005,8 @@
                 $style['feature-tip-title'],
                 {
                   [$style['success']]:
-                    realSaveMoney && Number(realSaveMoney.replaceAll(',', '')) > 0
+                    realSaveMoney &&
+                    Number(String(realSaveMoney).replace(/\,/g, '')) > 0
                 }
               ]"
             >
