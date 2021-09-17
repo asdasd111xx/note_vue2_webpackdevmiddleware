@@ -246,7 +246,7 @@ export default {
       }
     },
     vipTitle() {
-      return localStorage.getItem("iframe-third-url-title");
+      return localStorage.getItem("iframe-third-url-title") || "";
     }
   },
   created() {
