@@ -17,7 +17,7 @@
 
       <div
         :class="$style['user-vip-desc']"
-        @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+        @click="openPromotion('promotion_vip')"
       >
         <div :class="$style['vip-text']">VIP详情</div>
         <div :class="$style['vip-level']">
@@ -123,7 +123,7 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-
+import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   props: {
     vipLevelList: {
@@ -143,7 +143,8 @@ export default {
     return {
       avatarSrc: "",
       levelIcon: "00",
-      setVipTextDisplay: "inline"
+      setVipTextDisplay: "inline",
+      url: ""
     };
   },
   computed: {
@@ -159,6 +160,10 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
     },
     runPercent() {
       return this.userVipInfo.percent + "%";
@@ -239,7 +244,13 @@ export default {
                 .valid_bet_limit
           : "";
       }
+    },
+    vipTitle() {
+      return localStorage.getItem("iframe-third-url-title") || "";
     }
+  },
+  created() {
+    this.getTitle();
   },
   mounted() {
     this.avatarSrc = `/static/image/common/default/avatar_nologin.png`;
@@ -302,6 +313,59 @@ export default {
       } else {
         this.downgradeData = `${this.userVipInfo.amount_info.valid_bet}/${this.userVipInfo.downgrade_valid_bet}`;
       }
+    },
+    openPromotion(position) {
+      if (position === "promotion_vip") {
+        this.openPromotionEmbedded(position);
+      }
+    },
+    openPromotionEmbedded(position) {
+      //優小祕內嵌連結
+      this.$router.push(
+        `/mobile/iframe/vipInfo?func=false&alias=${position}&title=${this.vipTitle}`
+      );
+    },
+    getTitle() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          lang: "zh-cn",
+          urlName: "promotion_vip",
+          needToken: false
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.url = res.data.uri;
+
+          //取得優小祕優惠頁面標題
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+            params: {
+              lang: "zh-cn"
+            }
+          }).then(res => {
+            if (res.status === "000") {
+              let promotionId = this.url.split("?")[0].split("/")[
+                this.url.split("?")[0].split("/").length - 1
+              ];
+
+              res.data.ret.forEach(promo => {
+                if (promo.link.includes(promotionId)) {
+                  this.vipTitle = promo.name;
+                  localStorage.setItem("iframe-third-url-title", promo.name);
+                }
+              });
+            }
+          });
+        } else {
+          this.actionSetGlobalMessage({
+            msg: res.msg || res.data,
+            code: res.errodCode
+          });
+        }
+      });
     }
   }
 };

@@ -293,7 +293,11 @@
                 </template>
 
                 <template v-else>
-                  充值前请先绑定{{ isSelectBindWallet(16, 25 ,30) ? "CGPay" : curPayInfo.payment_method_name }}帐号
+                  充值前请先绑定{{
+                    isSelectBindWallet(16, 25, 30)
+                      ? "CGPay"
+                      : curPayInfo.payment_method_name
+                  }}帐号
                 </template>
 
                 <div :class="$style['no-bind-wallet']">
@@ -321,7 +325,7 @@
             >
               <!-- 億元: 尚未綁定會彈窗 -->
               <!-- CGPay -->
-              <template v-if="isSelectBindWallet(16, 25 ,30)">
+              <template v-if="isSelectBindWallet(16, 25, 30)">
                 <span :class="$style['bank-card-title']"> 验证方式 </span>
 
                 <div :class="$style['no-bind-wallet']">
@@ -1000,7 +1004,9 @@
               :class="[
                 $style['feature-tip-title'],
                 {
-                  [$style['success']]: +realSaveMoney.replaceAll(',', '') > 0
+                  [$style['success']]:
+                    realSaveMoney &&
+                    Number(String(realSaveMoney).replace(/\,/g, '')) > 0
                 }
               ]"
             >
@@ -1067,7 +1073,8 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 30, 402, 404) && !isClickCoversionBtn) ||
+                  (isSelectBindWallet(25, 30, 402, 404) &&
+                    !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
@@ -1872,7 +1879,11 @@ export default {
 
           if (response.status === "third") {
             // this.resetStatus();
-            this.changeMoney(this.getPassRoadOrAi.amounts[0]);
+            if (this.getPassRoadOrAi.amounts.length > 0) {
+              this.changeMoney(this.getPassRoadOrAi.amounts[0]);
+            } else {
+              this.changeMoney("", true);
+            }
             this.cryptoMoney = "--";
             this.resetTimerStatus();
           }

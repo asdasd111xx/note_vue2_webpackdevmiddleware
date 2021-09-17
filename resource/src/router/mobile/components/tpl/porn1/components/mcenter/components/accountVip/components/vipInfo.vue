@@ -166,10 +166,9 @@
           </div>
         </div>
       </div>
-
       <div
         :class="$style['vip-detail']"
-        @click="$router.push('/mobile/mcenter/accountVIP/detail')"
+        @click="openPromotion('promotion_vip')"
       >
         查看VIP详情 》
       </div>
@@ -180,13 +179,18 @@
 <script>
 import { mapGetters } from "vuex";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-
+import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   props: {
     currentLevelData: {
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      url: ""
+    };
   },
   computed: {
     ...mapGetters({
@@ -199,11 +203,70 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    vipTitle() {
+      return localStorage.getItem("iframe-third-url-title") || "";
     }
+  },
+  created() {
+    this.getTitle();
   },
   methods: {
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    openPromotion(position) {
+      if (position === "promotion_vip") {
+        this.openPromotionEmbedded(position);
+      }
+    },
+    openPromotionEmbedded(position) {
+      //優小祕內嵌連結
+      this.$router.push(
+        `/mobile/iframe/vipInfo?func=false&alias=${position}&title=${this.vipTitle}`
+      );
+    },
+    getTitle() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          lang: "zh-cn",
+          urlName: "promotion_vip",
+          needToken: false
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.url = res.data.uri;
+
+          //取得優小祕優惠頁面標題
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+            params: {
+              lang: "zh-cn"
+            }
+          }).then(res => {
+            if (res.status === "000") {
+              let promotionId = this.url.split("?")[0].split("/")[
+                this.url.split("?")[0].split("/").length - 1
+              ];
+
+              res.data.ret.forEach(promo => {
+                if (promo.link.includes(promotionId)) {
+                  this.vipTitle = promo.name;
+                  localStorage.setItem("iframe-third-url-title", promo.name);
+                }
+              });
+            }
+          });
+        } else {
+          this.actionSetGlobalMessage({
+            msg: res.msg || res.data,
+            code: res.errodCode
+          });
+        }
+      });
     }
   }
 };

@@ -614,6 +614,8 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     }
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
+    dispatch("actionSetDomainConfigV2");
+
     // dispatch("actionSetPost");
 
     if (state.loginStatus) {
@@ -2424,4 +2426,16 @@ export const actionGetToManyRequestMsg = ({ state }, response) => {
 // 千分位
 export const actionSetThousandsCurrency = ({ state }, data) => {
   return thousandsCurrency(data);
+};
+
+// 取得廳設定 C02.233
+export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, next) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Config/V2`
+  }).then(res => {
+    if (res && res.data) {
+      commit(types.SET_DOMAINCONFIG, res.data);
+    }
+  });
 };

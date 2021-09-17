@@ -246,7 +246,7 @@ export default {
         case "C_WS_REBATE":
         case "C_WS_ACTIVITY":
         case "C_WS_WAGE":
-          this.$router.push("/mobile/mcenter/wallet");
+          this.$router.push("/mobile/mcenter/moneyDetail");
           break;
         case "C_WS_WAGE_SELF":
           this.$router.push(

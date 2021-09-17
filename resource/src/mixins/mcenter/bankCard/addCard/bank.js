@@ -39,7 +39,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      domainConfig: "getDomainConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -161,7 +162,8 @@ export default {
       "actionSetUserdata",
       "actionVerificationFormData",
       "actionSetGlobalMessage",
-      "actionGetToManyRequestMsg"
+      "actionGetToManyRequestMsg",
+      "actionSetDomainConfigV2"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
@@ -367,8 +369,12 @@ export default {
         this.isClickedCaptcha = false;
       }, 2000);
 
-      // 按下驗證碼再更新一次驗證碼類型
-      this.actionSetUserdata(true).then(() => {
+      const params = [
+        this.actionSetUserdata(true),
+        this.actionSetDomainConfigV2()
+      ];
+
+      Promise.all(params).then(() => {
         // 無認證直接呼叫
         if (this.memInfo.config.default_captcha_type === 0) {
           this.getKeyring();
@@ -399,9 +405,12 @@ export default {
         .then(res => {
           this.lockStatus = false;
           if (res && res.data && res.data.result === "ok") {
-            this.actionSetGlobalMessage({
-              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-            });
+            if (this.domainConfig && this.domainConfig.auto_keyring) {
+            } else {
+              this.actionSetGlobalMessage({
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+              });
+            }
             axios({
               method: "get",
               url: "/api/v1/c/player/phone/ttl"

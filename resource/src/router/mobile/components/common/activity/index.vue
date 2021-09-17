@@ -23,7 +23,11 @@
     <!-- 遊戲列表 -->
     <div :class="$style['game-item-wrap']">
       <template v-for="(item, index) in eventList">
-        <activity-item :event-data="item" :key="'image-' + index" />
+        <activity-item
+          :event-data="item"
+          :key="'image-' + index"
+          :trialList="trialList"
+        />
       </template>
     </div>
 
@@ -92,7 +96,8 @@ export default {
       ],
       currentLabel: 0,
       needShowRedEnvelope: false,
-      redEnvelopeData: {}
+      redEnvelopeData: {},
+      trialList: []
     };
   },
   watch: {
@@ -126,6 +131,7 @@ export default {
     // 强档活动
     let title = localStorage.getItem("iframe-third-url-title") || "强档活动";
     this.$emit("update:lobbyName", title);
+    this.getTrialList();
   },
   mounted() {
     // if (!this.loginStatus) {
@@ -135,6 +141,16 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    getTrialList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.trialList = res.data;
+        }
+      });
+    },
     closeEvelope() {
       this.needShowRedEnvelope = false;
       this.actionSetGlobalMessage({

@@ -470,10 +470,15 @@
             }`
           }}
         </span>
-        <span :class="$style['money-currency']">¥</span>
+        <span
+          v-if="selectedCard.name != 'CGPay'"
+          :class="$style['money-currency']"
+          >¥</span
+        >
         <span :class="$style['money-currency']">
           {{ actualMoneyPlusOffer(true) }}
         </span>
+        <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -487,6 +492,7 @@
         <span :class="$style['money-currency']">{{
           formatThousandsCurrency(cryptoMoney)
         }}</span>
+        <span v-if="selectedCard.name === 'CGPay'">USDT</span>
       </div>
 
       <!-- 參考匯率 -->
@@ -1143,7 +1149,7 @@ export default {
         this.updateTime = true;
         this.resetTimerStatus();
         this.convertCryptoMoney();
-        return "--";
+        return "00:00";
       }
     },
     chooseUSDT() {
@@ -1301,13 +1307,12 @@ export default {
       if (!withdraw_max || Number(withdraw_max) == 0) {
         this.withdrawValue = Math.floor(Number(balance));
         this.verification("withdrawValue", Math.floor(Number(balance)));
-        return;
+      } else {
+        let result =
+          Number(withdraw_max) >= Number(balance) ? balance : withdraw_max;
+        this.withdrawValue = Math.floor(Number(result));
+        this.verification("withdrawValue", Math.floor(Number(result)));
       }
-
-      let result =
-        Number(withdraw_max) >= Number(balance) ? balance : withdraw_max;
-      this.withdrawValue = Math.floor(Number(result));
-      this.verification("withdrawValue", Math.floor(Number(result)));
 
       if (this.isSelectedUSDT) {
         this.convertCryptoMoney();
@@ -1904,7 +1909,7 @@ export default {
         case !this.withdrawValue:
           return "--";
 
-        case this.selectedCard.offer_percent === "0" || bonusOffer <= 0:
+        case this.selectedCard.offer_percent === "0" || bonusOffer <= 0 || +this.actualMoney <=0:
           return "0.00";
 
         case bonusOffer >= this.selectedCard.offer_limit &&
@@ -1921,7 +1926,6 @@ export default {
       if (this.actualMoney) {
         this.verification("withdrawValue", this.withdrawValue);
       }
-
       let result = "";
 
       if (format) {
@@ -2043,7 +2047,10 @@ export default {
 
       // 金額部份
       let tempAmount = localStorage.getItem("tmp_w_amount")
-        ? this.formatThousandsCurrency(localStorage.getItem("tmp_w_amount"),true)
+        ? this.formatThousandsCurrency(
+            localStorage.getItem("tmp_w_amount"),
+            true
+          )
         : this.withdrawValue;
       this.withdrawValue = tempAmount;
       this.actualMoney =
