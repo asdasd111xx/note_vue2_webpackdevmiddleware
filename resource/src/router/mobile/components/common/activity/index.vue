@@ -131,7 +131,9 @@ export default {
     // 强档活动
     let title = localStorage.getItem("iframe-third-url-title") || "强档活动";
     this.$emit("update:lobbyName", title);
-    this.getTrialList();
+    if (!this.loginStatus) {
+      this.getTrialList();
+    }
   },
   mounted() {
     // if (!this.loginStatus) {

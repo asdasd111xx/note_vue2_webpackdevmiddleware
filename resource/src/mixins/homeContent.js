@@ -390,7 +390,9 @@ export default {
     },
     // 取得所有遊戲
     getAllGame() {
-      this.getTrialList();
+      if (!this.loginStatus) {
+        this.getTrialList();
+      }
 
       return goLangApiRequest({
         method: "get",
