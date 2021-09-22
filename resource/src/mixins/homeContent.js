@@ -336,6 +336,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
       }).then(res => {
         if (res && res.status === "000") {
+          localStorage.setItem("trial-game-list", JSON.stringify(res.data));
           this.trialList = res.data;
         }
       });

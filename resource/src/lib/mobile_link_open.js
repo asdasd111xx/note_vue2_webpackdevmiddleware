@@ -267,6 +267,81 @@ export default target => {
   }
 
   // 遊戲需登入
+  let hasTrial = false;
+  let kind = "";
+  let code = linkItem || "";
+  let vendor = linkTo;
+
+  switch (linkType) {
+    case "sport":
+      kind = 1;
+      break;
+
+    case "live":
+      kind = 2;
+      break;
+
+    case "casino":
+      kind = 3;
+      break;
+
+    case "lottery":
+      kind = 4;
+      break;
+
+    case "card":
+      kind = 5;
+      break;
+
+    case "mahjong":
+      kind = 6;
+      break;
+
+    default:
+      break;
+  }
+
+  function getTrialList() {
+    const hasHall = [3, 5, 6];
+    if (hasHall.includes(kind) && !linkItem) {
+      let trialList = JSON.parse(localStorage.getItem("trial-game-list"));
+      hasTrial = trialList.find(i => i.vendor === vendor && i.mobile_trial);
+    }
+
+    // return  goLangApiRequest({
+    //   method: "get",
+    //   url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
+    // }).then(res => {
+    //   let trialList = res.data;
+    //   hasTrial = trialList.find(
+    //     i => i.vendor === vendor && +i.kind === +game.kind && i.mobile_trial
+    //   );
+    // });
+  }
+
+  getTrialList();
+
+  // 有遊戲大廳的遊戲
+  if (store.state.loginStatus || (!store.state.loginStatus && hasTrial)) {
+    const hasHall = [3, 5, 6];
+    if (hasHall.includes(kind) && !linkItem) {
+      switch (kind) {
+        case 3:
+          router.push(`/mobile/casino/${vendor}`);
+          break;
+        case 5:
+          router.push(`/mobile/card/${vendor}`);
+          break;
+        case 6:
+          router.push(`/mobile/mahjong/${vendor}`);
+          break;
+        default:
+          return;
+      }
+      return;
+    }
+  }
+
   if (!store.state.loginStatus) {
     router.push("/mobile/login");
     return;
@@ -288,11 +363,7 @@ export default target => {
     // 熱門
     switch (linkTo) {
       case "lg_yb_card":
-      // case "lg_ey_card":
-      // case "lg_sg_card":
       case "lg_yb_casino":
-        // case "lg_ey_casino":
-        // case "lg_sg_casino":
         if (!linkItem) {
           router.push(`/mobile/hotLobby/${linkTo}`);
           return;
@@ -302,47 +373,16 @@ export default target => {
         break;
     }
 
-    let kind = "";
-    let code = linkItem || "";
-    let vendor = linkTo;
-
     let notVipGame = JSON.parse(
       localStorage.getItem("needFilterGameData")
     ).find(filterData => {
       return filterData.gameCode === code;
     });
     // console.log(notVipGame);
+
     if (linkTo === "lg_yb_card" && notVipGame) {
       store.dispatch("actionSetGlobalMessage", { msg: "VIP等级不足" });
       return;
-    }
-    switch (linkType) {
-      case "sport":
-        kind = 1;
-        break;
-
-      case "live":
-        kind = 2;
-        break;
-
-      case "casino":
-        kind = 3;
-        break;
-
-      case "lottery":
-        kind = 4;
-        break;
-
-      case "card":
-        kind = 5;
-        break;
-
-      case "mahjong":
-        kind = 6;
-        break;
-
-      default:
-        break;
     }
 
     const gameData = store.state.gameData["_allGame"];
@@ -361,30 +401,6 @@ export default target => {
 
     if (!activedGame) {
       console.log("游戏未开放");
-      return;
-    }
-
-    // 有遊戲大廳的遊戲
-    const hasHall = [3, 5];
-    if (hasHall.includes(kind) && !linkItem) {
-      switch (kind) {
-        case 3:
-          router.push(`/mobile/casino/${vendor}`);
-          break;
-        case 5:
-          router.push(`/mobile/card/${vendor}`);
-          break;
-        // case 6:
-        //   router.push(`/mobile/mahjong/${vendor}`);
-        //   break;
-        default:
-          return;
-      }
-      return;
-    }
-
-    // 未開放其他大廳
-    if ([6].includes(kind) && !linkItem) {
       return;
     }
 
