@@ -95,7 +95,7 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+            <template v-if="['porn1', 'sg1'].includes(routerTPL)">
               <div>
                 {{
                   `${
@@ -109,6 +109,23 @@
               </div>
               <div>每月红包</div>
             </template>
+            <template v-if="['aobo1'].includes(routerTPL)">
+              <div>
+                {{
+                  `${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : formatThousandsCurrency(currentLevelData.monthly_gift)
+                  }`
+                }}
+              </div>
+              <div>
+                每月红包
+                <span v-if="['aobo1'].includes(routerTPL)">
+                  (每月15日派发)
+                </span>
+              </div>
+            </template>
 
             <template v-if="['ey1'].includes(themeTPL)">
               <div>
@@ -119,7 +136,7 @@
           </div>
 
           <div
-            v-if="['porn1', 'sg1'].includes(themeTPL)"
+            v-if="['porn1', 'sg1'].includes(routerTPL)"
             :class="$style['special-cell']"
           >
             (第1、3个周四派发奖金)
@@ -168,7 +185,11 @@
       </div>
       <div
         :class="$style['vip-detail']"
-        @click="openPromotion('promotion_vip')"
+        @click="
+          routerTPL !== 'aobo1'
+            ? openPromotion('promotion_vip')
+            : $router.push('/mobile/mcenter/accountVIP/detail')
+        "
       >
         查看VIP详情 》
       </div>
@@ -203,6 +224,10 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
     },
     vipTitle() {
       return localStorage.getItem("iframe-third-url-title") || "";
