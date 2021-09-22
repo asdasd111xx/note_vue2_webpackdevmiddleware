@@ -8,6 +8,7 @@
       { [$style['fullScreen']]: isFullScreen }
     ]"
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
+    style="overflow-y:scroll; -webkit-overflow-scrolling: touch;"
   >
     <div
       v-if="headerConfig.hasHeader"
@@ -62,9 +63,11 @@
       :src="src"
       @load="onLoadiframe"
       allow="geolocation"
+      scrolling="no"
       allowfullscreen="allowfullscreen"
       frameborder="0"
       crossorigin
+      style="width: 1px !important; min-width: 100%"
     />
     <page-loading :is-show="isLoading" />
   </div>
