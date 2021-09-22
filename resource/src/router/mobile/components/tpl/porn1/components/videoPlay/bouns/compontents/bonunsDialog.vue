@@ -11,6 +11,7 @@
       ref="wrap"
     >
       <div
+        v-if="['porn1', 'sg1'].includes(routerTPL)"
         :class="$style['title-coin']"
         :style="
           dialogHeight && { top: `calc(100% - ${dialogHeight}px - 64px)` }
@@ -38,8 +39,14 @@
           享有观影送钱
         </template> -->
         <template v-else-if="type.includes('disable')">
-          <span style="margin-top: 12%;display: block;font-size: 20px;">
+          <span
+            v-if="['porn1', 'sg1'].includes(routerTPL)"
+            style="margin-top: 12%;display: block;font-size: 20px;"
+          >
             {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
+          </span>
+          <span v-else style="margin-top: 12%;display: block;font-size: 20px;">
+            观看视频&nbsp;请先登录
           </span>
         </template>
         <template v-else>
@@ -86,7 +93,12 @@
             @click="$router.push('/mobile/login')"
             :class="$style['active-btn']"
           >
-            {{ $text("S_JOIN_MEMBER", "加入会员") }}
+            <template v-if="['porn1', 'sg1'].includes(routerTPL)">
+              {{ $text("S_JOIN_MEMBER", "加入会员") }}
+            </template>
+            <template v-else>
+              会员登录
+            </template>
           </div>
           <div
             v-else-if="type.includes('poor')"
@@ -229,7 +241,10 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
       loginStatus: "getLoginStatus"
-    })
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   mounted() {
     window.addEventListener("resize", this.getDialogHeight);

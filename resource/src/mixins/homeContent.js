@@ -110,13 +110,14 @@ export default {
       post: "getPost"
     }),
     isAdult() {
-      if (localStorage.getItem("content_rating")) {
-        return localStorage.getItem("content_rating") === "1" ? true : false;
-      } else {
-        return (
-          this.memInfo.config.content_rating && this.memInfo.user.content_rating
-        );
-      }
+      return true;
+      // if (localStorage.getItem("content_rating")) {
+      //   return localStorage.getItem("content_rating") === "1" ? true : false;
+      // } else {
+      //   return (
+      //     this.memInfo.config.content_rating && this.memInfo.user.content_rating
+      //   );
+      // }
     },
     typeList() {
       if (this.allGame) {

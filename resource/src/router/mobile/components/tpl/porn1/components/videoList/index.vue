@@ -54,11 +54,9 @@ export default {
         switch (this.source) {
           case "yabo":
             return "#eee";
-            break;
 
           case "smallPig":
             return "#333";
-            break;
 
           default:
             break;

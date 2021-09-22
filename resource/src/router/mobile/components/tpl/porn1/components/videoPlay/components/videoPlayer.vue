@@ -11,11 +11,7 @@
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
-    <div
-      v-if="isActiveBouns"
-      id="video-play-block"
-      :class="$style['video-block']"
-    >
+    <div id="video-play-block" :class="$style['video-block']">
       <bonuns-dialog
         ref="bonunsDialog"
         :type="dialogType"
@@ -24,6 +20,7 @@
         @close="handleCloseDialog"
       />
       <bonuns-process
+        v-if="isActiveBouns"
         ref="bonunsProcess"
         :type="dialogType"
         :is-unlogin-mode="isUnloginMode"
@@ -123,6 +120,12 @@ export default {
     this.player = videojs(this.$refs["video-player"], obj);
 
     if (!this.checkTPL()) {
+      this.player.on("play", () => {
+        if (this.disableVideo) {
+          this.handleDisableVideoMode();
+          return;
+        }
+      });
       return;
     }
 
@@ -343,6 +346,10 @@ export default {
       if (!["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL)) {
         this.isInit = true;
         this.isActiveBouns = false;
+        if (!this.loginStatus) {
+          this.disableVideo = true;
+        }
+
         return false;
       }
       return true;
