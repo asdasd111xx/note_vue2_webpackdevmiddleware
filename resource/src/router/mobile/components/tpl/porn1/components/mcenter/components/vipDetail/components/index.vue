@@ -75,7 +75,7 @@
           </div>
         </div>
 
-        <template v-if="['porn1', 'sg1'].includes(this.themeTPL)">
+        <template v-if="['porn1', 'sg1'].includes(this.routerTPL)">
           <div :class="$style['table-desc']">
             ※当日返水将会在次日北京时间16：00-16：30派发
           </div>
@@ -172,7 +172,7 @@ export default {
     },
     rowColumn2() {
       return {
-        gridTemplateColumns: `70px repeat(6 ,1fr)`
+        gridTemplateColumns: `45px repeat(6 ,1fr)`
       };
     },
     detailData() {
