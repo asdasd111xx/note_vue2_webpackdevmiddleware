@@ -245,6 +245,25 @@
                         :alt="list.vendors[i + 1].name"
                         @click="onOpenGame(list.vendors[i + 1])"
                       />
+
+                      <img
+                        v-if="
+                          game.type === 'game_lobby' &&
+                            game.vendor &&
+                            trialList.find(
+                              i =>
+                                i.vendor === game.vendor &&
+                                +i.kind === +game.kind &&
+                                i.mobile_trial
+                            )
+                        "
+                        :class="[$style['free-image']]"
+                        :src="
+                          $getCdnPath(
+                            `/static/image/common/home/ic_freegame.png`
+                          )
+                        "
+                      />
                     </div>
                   </swiperSlide>
                 </template>

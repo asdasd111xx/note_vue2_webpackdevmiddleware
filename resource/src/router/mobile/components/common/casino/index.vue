@@ -303,6 +303,11 @@ export default {
       return `casino-${this.vendor}-${this.paramsData.label}`;
     },
     getTrialList() {
+      if (this.loginStatus) {
+        this.labelData = this.labelData.filter(i => i.label !== "trial");
+        return;
+      }
+
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
