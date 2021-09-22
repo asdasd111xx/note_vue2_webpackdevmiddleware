@@ -291,7 +291,7 @@
           </div>
         </div>
       </div>
-      <template v-if="cardList && routerTPL != 'aobo1'">
+      <template v-if="cardList">
         <div v-for="(item, index) in cardList" :key="`key-${index}`">
           <img
             :class="$style['promote-content']"
@@ -299,26 +299,6 @@
             @click="openApiLink(item)"
           />
         </div>
-      </template>
-      <template v-if="routerTPL === 'aobo1'">
-        <img
-          :class="$style['promote-content']"
-          :src="
-            $getCdnPath(
-              `/static/image/${routerTPL}/mcenter/tcenter/Consultation.png`
-            )
-          "
-          @click="openPromotion('agent_service')"
-        />
-        <img
-          :class="$style['promote-content']"
-          :src="
-            $getCdnPath(
-              `/static/image/${routerTPL}/mcenter/tcenter/Commission.png`
-            )
-          "
-          @click="openPromotion('rebate_promotion')"
-        />
       </template>
     </div>
   </div>
@@ -550,6 +530,25 @@ export default {
         }
       });
     },
+    openPromotion(position) {
+      let newWindow = "";
+      newWindow = window.open();
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: position,
+          lang: "zh-cn",
+          needToken: "false"
+        }
+      }).then(res => {
+        if (res && res.data && res.data.uri) {
+          newWindow.location = res.data.uri;
+        } else {
+          newWindow.close();
+        }
+      });
+    },
     /**
      * 取得外部網址連結-我的推廣專用(有按順序) C02.325
      * @method promotionImageLink
@@ -574,42 +573,13 @@ export default {
       //       "image": "https://images.bbin-asia.com/externalLink/500015/128_long.png?v=1631772922"
       //     }
     },
-    openPromotion(position) {
-      if (this.routerTPL === "aobo1" && position === "rebate_promotion") {
-        this.openPromotionEmbedded(position);
-      } else {
-        let newWindow = "";
-        newWindow = window.open();
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-          params: {
-            urlName: position,
-            lang: "zh-cn",
-            needToken: "false"
-          }
-        }).then(res => {
-          if (res && res.data && res.data.uri) {
-            newWindow.location = res.data.uri;
-          } else {
-            newWindow.close();
-          }
-        });
-      }
-    },
-    openPromotionEmbedded(position) {
-      //優小祕內嵌連結
-      localStorage.setItem("iframe-third-url-title", "代理佣金制度");
-      this.$router.push(
-        `/mobile/iframe/promotionTcenterLobby?alias=${position}`
-      );
-    },
     openApiLink(item) {
-      const { id, url } = item;
+      const { name, url } = item;
+      // console.log(url);
+      localStorage.setItem("iframe-third-url-title", name) || "";
+      localStorage.setItem("iframe-third-url", url) || "";
 
-      let newWindow = "";
-      newWindow = window.open();
-      newWindow.location = url;
+      this.$router.push(`/mobile/iframe/tcenterLobby?title=${name}`);
     }
   }
 };

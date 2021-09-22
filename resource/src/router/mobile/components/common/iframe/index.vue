@@ -144,7 +144,7 @@ export default {
           return "/mobile/promotion";
         case "SWAG":
           return "/mobile";
-        case "PROMOTIONTCENTERLOBBY":
+        case "TCENTERLOBBY":
           return "/mobile/mcenter/tcenterLobby";
         case "VIPINFO":
           return "/mobile/mcenter/accountVIP";
@@ -450,7 +450,6 @@ export default {
           break;
 
         case "PROMOTION":
-        case "PROMOTIONTCENTERLOBBY":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
           if (url) {
@@ -530,7 +529,11 @@ export default {
             });
           }
           break;
-
+        case "TCENTERLOBBY":
+          let tcenterUrl = localStorage.getItem("iframe-third-url") || "";
+          this.src = tcenterUrl;
+          return;
+          break;
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
