@@ -208,6 +208,10 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
+    },
     vipTitle() {
       return localStorage.getItem("iframe-third-url-title") || "";
     }
