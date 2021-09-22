@@ -22,21 +22,20 @@
 }
 
 .title {
+  margin-top: 10px;
   font-size: 18px;
   padding: 12px 17px;
   font-weight: 700;
   color: #424654;
+  background: #d3c3b4;
+  text-align: center;
+}
 
-  &::before {
-    content: "";
-    position: relative;
-    display: inline-block;
-    width: 3px;
-    height: 20px;
-    top: 2.5px;
-    margin-right: 12px;
-    background: linear-gradient(#d2bba4, #f1e5db);
-  }
+.title-play {
+  font-size: 18px;
+  padding: 12px 17px;
+  font-weight: 700;
+  color: #424654;
 }
 
 .table-wrap {
@@ -53,6 +52,10 @@
     @include grid-item-style();
     width: 30px;
     margin: 0 auto;
+
+    &.new {
+      width: 40px;
+    }
 
     &:first-of-type {
       width: 100%;
