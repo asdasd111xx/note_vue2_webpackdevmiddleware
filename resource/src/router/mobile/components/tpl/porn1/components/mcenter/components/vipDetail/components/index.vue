@@ -229,7 +229,7 @@ export default {
             },
             {
               number: "❼",
-              title: `${this.siteConfig.SITE_NAME}保有本活动执行、修正、解释及终止等权力。`,
+              title: `${this.siteConfig.SITE_NAME}保留对活动的修改，停止及最终解释权。`,
               content: ""
             }
           ];
