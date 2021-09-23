@@ -997,6 +997,17 @@ export default {
               break;
             default:
               if (!this.loginStatus) {
+                let hasTrial = this.trialList.find(
+                  i =>
+                    i.vendor === game.vendor &&
+                    +i.kind === +game.kind &&
+                    i.mobile_trial
+                );
+
+                if (hasTrial) {
+                  break;
+                }
+
                 this.$router.push("/mobile/login");
                 return;
               }
