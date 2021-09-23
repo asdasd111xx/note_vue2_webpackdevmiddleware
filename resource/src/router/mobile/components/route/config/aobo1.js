@@ -276,10 +276,6 @@ export default {
       import(
         /* webpackChunkName: 'rewardRulesAobo1' */ "../../tpl/porn1/components/mcenter/components/rewardRules"
       ),
-    swagAobo1: () =>
-      import(
-        /* webpackChunkName: 'swagAobo1' */ "../../tpl/porn1/components/mcenter/components/swag"
-      ),
     tcenterLobbyAobo1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbyAobo1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"

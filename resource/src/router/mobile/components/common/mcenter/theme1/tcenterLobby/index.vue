@@ -579,7 +579,7 @@ export default {
       localStorage.setItem("iframe-third-url-title", name) || "";
       localStorage.setItem("iframe-third-url", url) || "";
 
-      this.$router.push(`/mobile/iframe/tcenterLobby?title=${name}`);
+      this.$router.push(`/mobile/iframe/tcenterLobby?func=false&title=${name}`);
     }
   }
 };

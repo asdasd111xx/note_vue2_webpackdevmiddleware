@@ -119,7 +119,8 @@ export default {
       if (!this.loginStatus) return;
       let isProd =
         this.memInfo.user.domain === "67" || this.memInfo.user.domain == "80";
-      const enable = localStorage.getItem("enable-swag") !== "false" && isProd;
+      // const enable = localStorage.getItem("enable-swag") !== "false" && isProd;
+      const enable = false; // 關閉swag
 
       if (this.isCheckingInit || !enable) {
         return new Promise((resolve, reject) => {

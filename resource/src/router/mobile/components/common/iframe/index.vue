@@ -533,10 +533,6 @@ export default {
           }
           break;
         case "TCENTERLOBBY":
-          let tcenterUrl = localStorage.getItem("iframe-third-url") || "";
-          this.src = tcenterUrl;
-          return;
-          break;
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
