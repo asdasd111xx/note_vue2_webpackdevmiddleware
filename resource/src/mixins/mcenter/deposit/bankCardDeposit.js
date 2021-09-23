@@ -491,6 +491,7 @@ export default {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`,
+        timeout: 30000,
         params: {
           username: this.username,
           lang: "zh-cn"

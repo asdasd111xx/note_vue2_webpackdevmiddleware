@@ -122,7 +122,7 @@
                   <img v-lazy="getImg(game)" :alt="game.name" />
                   <img
                     v-if="
-                         ['game_lobby', 'game'].includes(game.type) &&
+                      ['game_lobby', 'game'].includes(game.type) &&
                         game.vendor &&
                         trialList.find(
                           i =>
