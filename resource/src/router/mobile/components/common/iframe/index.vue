@@ -533,6 +533,9 @@ export default {
           }
           break;
         case "TCENTERLOBBY":
+          this.showText = false;
+          this.src = localStorage.getItem("iframe-third-url");
+          break;
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
