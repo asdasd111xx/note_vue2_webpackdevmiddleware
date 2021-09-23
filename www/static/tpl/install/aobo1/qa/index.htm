@@ -1,4 +1,4 @@
-<!-- saved from url=(0051)https://vipsign-demo.inslotx.com/71?appSystemType=6 -->
+<!-- saved from url=(0048)https://demo.vipwheresign.com/96?appSystemType=6 -->
 <html lang="zh-CN">
 
 <head>
@@ -523,7 +523,7 @@
     <meta name="author" content="">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="X9GoLg3Cu5eEgwR1YXtlPswF8zbS15B10k8sHOXy">
+    <meta name="csrf-token" content="laePdCbnOvpK7t17WPow1NsHDazHqn5ef00I7izb">
     <title>VIPSign前台</title>
     <link rel="shortcut icon" href="https://vipsign-demo.inslotx.com/images/favicon-vip-fe.png" type="image/x-icon">
 
@@ -549,8 +549,36 @@
             transform: translateY(-30px) !important;
         }
     </style>
+    <script src="../../../src/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // var apiUrl = 'https://vapi.vipwheresign.com/api';
+
+            htmlobj = $.ajax({
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    token: "eb0f8f43-8a1a-4deb-9869-e06028d6d25b",
+                    Ekey: 'sobb',
+                    Vendor: 9999894,
+                    Useragent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
+                },
+                data: {
+                    bundleID: 'auqa1.66boxing.com/mobile/webview',
+                    lang: "zh-cn",
+                    platform: 2
+                },
+                type: "GET",
+                url: 'https://bbos.bbin-asia.com/elibomApi/WebService/App/Download',
+                async: false,
+                success: function (res) {
+                    $('#url').attr('href', res.data.url);
+                }
+            });
 
 
+        });
+    </script>
 
     <!-- 自定義Styles -->
 
@@ -573,12 +601,13 @@
                     <img src="../../../../image/aobo1/install/service_appicon_1.png" />
                 </div>
                 <div class="app-info-rig">
+
+
                     <strong>澳博国际客服QA</strong>
                     <p>娱乐</p>
                     <div class="clr">
                         <!-- <a class="arouse"><b>?</b>安装教程</a> -->
-                        <a class="btn btn-mini step1"
-                            href="https://vipsign-web.in-mobile.com/app/86/config/s_9173ac88036f4864b24d4efb0dac1fc2.mobileconfig">免费安装</a>
+                        <a id="url" class="btn btn-mini step1">免费安装</a>
                         <a class="btn btn-mini step3" style="display: none"><span>等待下载</span><em></em></a>
                     </div>
                 </div>
@@ -962,7 +991,7 @@
 
     <!-- 開始初始化共用 Scripts -->
     <!-- bootstrap 4.3.1 -->
-    <script src="../../../src/jquery.min.js"></script>
+
     <script src="../../../src/bootstrap.bundle.min.js" defer=""></script>
 
 
@@ -1016,13 +1045,6 @@
         // 設定dateTable載入語系
         dataTable_locale = "zh-CN";
 
-        // 所有的 AJAX 請求將會自動帶入 CSRF token
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         // 設定根路徑
         baseUrl = '';
 
@@ -1034,7 +1056,7 @@
     <!-- QRCode 生成器-->
     <script src="../../../src/jquery.qrcode.min.js"></script>
     <script>
-        $('#QRCode').qrcode('https://vipsign-demo.inslotx.com/71?appSystemType=6');
+        $('#QRCode').qrcode('https://demo.vipwheresign.com/96?appSystemType=6');
         function goBack() {
             window.history.back();
         }
