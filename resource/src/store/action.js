@@ -1010,7 +1010,7 @@ export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
 export const actionSetPost = ({ commit, state }, postType = 1) => {
   return goLangApiRequest({
     method: "get",
-    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Announcement",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Announcement`,
     params: {
       page: +postType //0 首頁與優惠頁, 1首頁, 2優惠頁
     }
@@ -1024,19 +1024,24 @@ export const actionSetPost = ({ commit, state }, postType = 1) => {
 };
 
 // 會員端-加入最愛的遊戲列表
-export const actionSetFavoriteGame = ({ commit }, vendor = "") => {
-  return game.favoriteGame({
+export const actionSetFavoriteGame = ({ commit, state }, vendor = "") => {
+  return goLangApiRequest({
+    method: "post",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Favorite/Game`,
     params: {
-      max_results: 1000,
-      vendor
-    },
-    success: response => {
-      commit(types.SETFAVORITEGAME, response.ret);
-    },
-    fail: () => {
-      commit(types.SETFAVORITEGAME, []);
+      firstResult: 0,
+      maxResults: 100,
+      vendor: vendor
     }
-  });
+  })
+    .then(res => {
+      if (res && res.data && res.data.ret) {
+        commit(types.SETFAVORITEGAME, res.data.ret);
+      } else {
+        commit(types.SETFAVORITEGAME, []);
+      }
+    })
+    .catch(error => {});
 };
 
 // 會員端-設定下方遊戲框顯示狀態

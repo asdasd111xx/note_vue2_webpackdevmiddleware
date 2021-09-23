@@ -81,6 +81,7 @@ window.RESET_MEM_SETTING = reload => {
   localStorage.removeItem("do-not-show-home-post");
   localStorage.removeItem("do-not-show-deposit-post");
   localStorage.removeItem("do-not-show-withdraw-post");
+  localStorage.removeItem("trial-game-list");
 
   if (reload) {
     window.location.reload();

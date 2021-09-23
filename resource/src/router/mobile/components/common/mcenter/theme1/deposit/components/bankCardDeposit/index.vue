@@ -1194,16 +1194,15 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import { getCookie } from "@/lib/cookie";
 import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
 import bbosRequest from "@/api/bbosRequest";
 import DatePicker from "vue2-datepicker";
-import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -1596,8 +1595,8 @@ export default {
         objKey: "depositName",
         title:
           this.curPayInfo.payment_type_id === 6
-            ? this.$text("充值昵称")
-            : this.$text("充值人姓名"),
+            ? this.$text("S_DEPOSIT_NICKNAME", "充值昵称")
+            : this.$text("S_DEPOSIT_NAME", "请输入充值人姓名"),
         value: this.speedField.depositName,
         placeholderText:
           this.curPayInfo.payment_type_id === 6
@@ -1938,38 +1937,31 @@ export default {
     checkEntryBlockStatus() {
       // 使用者存款封鎖狀態
       this.isBlockChecked = false;
-      return bbosRequest({
+
+      return goLangApiRequest({
         method: "get",
-        url:
-          this.siteConfig.BBOS_DOMIAN + "/Ext/V2/CreateEntryBlock/User/Check",
-        reqHeaders: {
-          vendor: this.memInfo.user.domain
-        },
-        params: {
-          lang: "zh-cn"
-        }
-      })
-        .then(res => {
-          this.isBlockChecked = true;
-          if (res.status === "000" && res.data && res.data.ret) {
-            this.entryBlockStatusData = res.data.ret;
-          } else {
-            // 存款功能無法使用
-            if (res.code !== "TM020074") {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
+        timeout: 30000
+      }).then(res => {
+        this.isBlockChecked = true;
+        if (res && res.status === "000") {
+          this.entryBlockStatusData = res.data.ret;
+        } else {
+          if (res.code !== "TM020074") {
+            if (res.msg) {
               this.actionSetGlobalMessage({
                 msg: res.msg,
                 code: res.code
               });
+            } else {
+              console.log(res);
+              // this.actionSetGlobalMessage({
+              //   msg: res
+              // });
             }
           }
-        })
-        .catch(error => {
-          const { msg, code } = error.response.data;
-          this.actionSetGlobalMessage({
-            msg,
-            code
-          });
-        });
+        }
+      });
     },
     // 代客充值
     goToValetDeposit() {

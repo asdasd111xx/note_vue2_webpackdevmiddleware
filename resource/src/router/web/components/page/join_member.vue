@@ -677,25 +677,18 @@ export default {
       }
 
       this.isGetCaptcha = true;
-      setTimeout(() => {
-        this.isGetCaptcha = false;
-      }, 800);
 
-      bbosRequest({
+      goLangApiRequest({
         method: "post",
-        url: `${this.siteConfig.BBOS_DOMIAN}/Captcha`,
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: {
-          lang: "zh-cn",
-          format: "png"
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`
       }).then(res => {
-        if (res.data && res.data.data) {
-          this.captchaImg = res.data.data;
-          this.aid = res.data.cookie.aid;
+        if (res.data && res.status === "000") {
+          setTimeout(() => {
+            this.isGetCaptcha = false;
+          }, 800);
+
           setCookie("aid", res.data.cookie.aid);
+          this.captchaImg = res.data.data;
         }
       });
     },

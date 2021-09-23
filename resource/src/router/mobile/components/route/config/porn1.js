@@ -276,10 +276,10 @@ export default {
       import(
         /* webpackChunkName: 'rewardRulesPorn1' */ "../../tpl/porn1/components/mcenter/components/rewardRules"
       ),
-    swagPorn1: () =>
-      import(
-        /* webpackChunkName: 'swagPorn1' */ "../../tpl/porn1/components/mcenter/components/swag"
-      ),
+    // swagPorn1: () =>
+    //   import(
+    //     /* webpackChunkName: 'swagPorn1' */ "../../tpl/porn1/components/mcenter/components/swag"
+    //   ),
     tcenterLobbyPorn1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbyPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"

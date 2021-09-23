@@ -327,13 +327,19 @@ export default target => {
     if (hasHall.includes(kind) && !linkItem) {
       switch (kind) {
         case 3:
-          router.push(`/mobile/casino/${vendor}`);
+          router.push(
+            `/mobile/casino/${vendor}${hasTrial ? "?label=trial" : ""}`
+          );
           break;
         case 5:
-          router.push(`/mobile/card/${vendor}`);
+          router.push(
+            `/mobile/card/${vendor}${hasTrial ? "?label=trial" : ""}`
+          );
           break;
         case 6:
-          router.push(`/mobile/mahjong/${vendor}`);
+          router.push(
+            `/mobile/mahjong/${vendor}${hasTrial ? "?label=trial" : ""}`
+          );
           break;
         default:
           return;

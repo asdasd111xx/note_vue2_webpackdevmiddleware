@@ -663,9 +663,11 @@ export default {
       if (localStorage.getItem("is-open-game")) {
         return;
       }
+
+      localStorage.setItem("iframe-third-url-title", game.name);
+
       switch (game.type) {
         case "strong_activity":
-          localStorage.setItem("iframe-third-url-title", game.name);
           this.$router.push(`/mobile/activity/all/`);
           return;
 
@@ -782,10 +784,6 @@ export default {
                                 "iframe-third-url",
                                 res.data
                               );
-                              localStorage.setItem(
-                                "iframe-third-url-title",
-                                game.name
-                              );
                               this.$router.push(
                                 `/mobile/iframe/thirdParty?vendor=${game.vendor}`
                               );
@@ -861,10 +859,6 @@ export default {
                         return;
                       } else {
                         localStorage.setItem("iframe-third-url", res.data);
-                        localStorage.setItem(
-                          "iframe-third-url-title",
-                          game.name
-                        );
                         this.$router.push(
                           `/mobile/iframe/thirdParty?vendor=${game.vendor}`
                         );
@@ -997,6 +991,17 @@ export default {
               break;
             default:
               if (!this.loginStatus) {
+                let hasTrial = this.trialList.find(
+                  i =>
+                    i.vendor === game.vendor &&
+                    +i.kind === +game.kind &&
+                    i.mobile_trial
+                );
+
+                if (hasTrial) {
+                  break;
+                }
+
                 this.$router.push("/mobile/login");
                 return;
               }

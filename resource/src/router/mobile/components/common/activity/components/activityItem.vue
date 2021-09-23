@@ -67,7 +67,6 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      BBOSDomain: "getBBOSDomain",
       withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
