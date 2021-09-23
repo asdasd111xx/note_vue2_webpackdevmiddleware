@@ -1596,8 +1596,8 @@ export default {
         objKey: "depositName",
         title:
           this.curPayInfo.payment_type_id === 6
-            ? this.$text("充值昵称")
-            : this.$text("充值人姓名"),
+            ? this.$text("S_DEPOSIT_NICKNAME", "充值昵称")
+            : this.$text("S_DEPOSIT_NAME", "请输入充值人姓名"),
         value: this.speedField.depositName,
         placeholderText:
           this.curPayInfo.payment_type_id === 6
