@@ -63,7 +63,7 @@
       :src="src"
       @load="onLoadiframe"
       allow="geolocation"
-      scrolling="no"
+      scrolling="auto"
       allowfullscreen="allowfullscreen"
       frameborder="0"
       crossorigin
