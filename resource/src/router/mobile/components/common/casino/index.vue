@@ -29,7 +29,7 @@
           </div>
           <template>
             <template v-for="(gameInfo, index) in gameData">
-              <template v-if="gameInfo.is_mobile || isFavorite">
+              <template v-if="typeof gameInfo.is_secure === 'undefined'">
                 <game-item
                   :key="`game-${gameInfo.vendor}-${index}`"
                   :game-info="gameInfo"
@@ -41,9 +41,7 @@
                   :jackpotData="jackpotData"
                 />
               </template>
-              <template
-                v-else-if="gameInfo && typeof gameInfo.is_pc === 'undefined'"
-              >
+              <template v-else>
                 <!-- 活動入口 -->
                 <activity-item
                   :key="`game-${gameInfo.vendor}-${index}`"
@@ -65,12 +63,7 @@
         </div>
       </template>
     </template>
-    <template
-      v-if="
-        (gameData === favoriteData && gameData.length === 0) ||
-          (gameData.length === 0 && isInit)
-      "
-    >
+    <template v-if="gameData.length === 0 && isInit">
       <div :class="$style['empty-wrap']">
         <div :class="$style['empty-icon']" />
         <div>{{ $text("S_NO_GAME", "未查询到相关游戏") }}</div>
@@ -175,12 +168,10 @@ export default {
   },
   data() {
     return {
-      favTab: false,
       isReceive: false,
       isInit: false,
       showInfinite: false,
       isFavorite: false,
-      tabItem: "",
       needShowRedEnvelope: false,
       redEnvelopeData: {},
       paramsData: {
@@ -376,9 +367,7 @@ export default {
     getActivityList() {
       goLangApiRequest({
         method: "post",
-        url:
-          this.siteConfig.YABO_GOLANG_API_DOMAIN +
-          `/xbb/Vendor/${this.vendor}/Event`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/${this.vendor}/Event`,
         params: {
           lang: "zh-cn",
           kind: 3,
@@ -485,7 +474,24 @@ export default {
       //非搜尋頁面才篩選“最愛”
       if (this.paramsData.label === "favorite" && !this.isShowSearch) {
         setTimeout(() => {
-          this.gameData = this.favoriteData;
+          let activityEvents =
+            this.activityData.ret &&
+            this.activityData.ret &&
+            this.activityData.ret.events
+              ? this.activityData.ret.events
+              : [];
+
+          if (activityEvents) {
+            activityEvents = activityEvents.filter(i => i.status === 3);
+          }
+
+          let list = [];
+          if (this.paramsData.firstResult === 0) {
+            list.push(...activityEvents);
+          }
+          list.push(...this.favoriteData);
+          this.gameData = list;
+          this.isInit = true;
         }, 300);
         return;
       }
@@ -555,6 +561,10 @@ export default {
         });
       }).then(res => {
         let data = res.data;
+
+        // 只顯示is_mobile
+        data.ret = data.ret.filter(i => i.is_mobile);
+
         this.isInit = true;
         const isActivityLabel = this.$route.query.label === "activity";
         const activityGames =
@@ -592,7 +602,6 @@ export default {
         this.gameData.push(...list);
         this.isReceive = false;
         this.isGameDataReceive = true;
-
         $state.loaded();
 
         if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
