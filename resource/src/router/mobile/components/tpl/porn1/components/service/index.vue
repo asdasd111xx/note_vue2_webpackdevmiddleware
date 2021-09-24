@@ -475,7 +475,7 @@ div.container {
   background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
 
   > div:first-child {
-    background: url("/static/image/common/service/bg_service02.png");
+    background: url("/static/image/porn1/service/service_card.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     background-repeat: no-repeat;

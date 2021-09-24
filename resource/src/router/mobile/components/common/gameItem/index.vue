@@ -10,12 +10,6 @@
       ])
     "
   >
-    <!-- <div
-      v-if="gameInfo.code && gameInfo.status < 4"
-      :class="getClass(['game-active'])"
-    >
-      <img :src="$getCdnPath(getActivityImg)" />
-    </div> -->
     <!-- vendor 標示 -->
     <div v-if="showVendor" :class="getClass(['game-vendor'])">
       {{ vendorName }}
@@ -229,7 +223,7 @@ export default {
       const ey1_default_img = "/static/image/ey1/default/bg_gamecard_d.png";
 
       return {
-        src: `${resultUrl}?v=${Date.now().toString()}`,
+        src: this.gameInfo.image_url,
         error:
           this.themeTPL === "ey1"
             ? ey1_default_img
@@ -239,16 +233,6 @@ export default {
             ? ey1_default_img
             : this.$getCdnPath("/static/image/game_loading_s.gif")
       };
-    },
-    /**
-     * 取得活動圖片
-     * @method getActivityImg
-     * @returns {string} 圖片路徑
-     */
-    getActivityImg() {
-      return `/static/image/casino/theme/brilliant/lang/${this.curLang}/${
-        this.gameInfo.status !== 2 ? "upcoming_ribbon" : "activity_ribbon"
-      }.png`;
     },
     getJackpotImg() {
       let src = "/static/image/common/casino/jackpot/";
