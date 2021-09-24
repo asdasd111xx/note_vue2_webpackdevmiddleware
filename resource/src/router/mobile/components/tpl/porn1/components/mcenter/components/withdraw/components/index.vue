@@ -448,7 +448,7 @@
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
-          使用{{ selectedCard.name }}出款，额外赠送{{ offer() }}元(CNY)优惠
+          使用{{ selectedCard.name }}出款，额外赠送{{ formatThousandsCurrency(offer()) }}元(CNY)优惠
         </span>
       </div>
       <!-- 到帳金額 -->
@@ -601,7 +601,7 @@
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
           :swift-code="selectedCard.swift_code"
-          :bonus-offer="offer()"
+          :bonus-offer="formatThousandsCurrency(offer())"
           :withdraw-name="selectedCard.name"
           :has-offer="hasOffer"
           @close="closePopup"
@@ -1914,12 +1914,10 @@ export default {
 
         case bonusOffer >= this.selectedCard.offer_limit &&
           this.selectedCard.offer_limit !== "0":
-          return `${this.formatThousandsCurrency(
-            this.selectedCard.offer_limit
-          )}`;
+          return `${this.selectedCard.offer_limit}`;
 
         default:
-          return `${this.formatThousandsCurrency(bonusOffer)}`;
+          return `${bonusOffer}`;
       }
     },
     actualMoneyPlusOffer(format = true) {
