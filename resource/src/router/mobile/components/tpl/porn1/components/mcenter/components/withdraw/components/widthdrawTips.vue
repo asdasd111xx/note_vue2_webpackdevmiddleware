@@ -147,7 +147,7 @@
                 </span>
                 <span
                   :style="
-                    cryptoMoney && cryptoMoney.length > 6
+                    cryptoMoney && cryptoMoney.length > 10
                       ? { 'font-size': '12px' }
                       : {}
                   "
