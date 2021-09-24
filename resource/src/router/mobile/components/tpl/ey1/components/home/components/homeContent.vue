@@ -245,16 +245,16 @@
                         :alt="list.vendors[i + 1].name"
                         @click="onOpenGame(list.vendors[i + 1])"
                       />
-
                       <img
                         v-if="
-                          ['game_lobby', 'game'].includes(game.type) &&
-                            game.vendor &&
+                          ['game_lobby', 'game'].includes(
+                            list.vendors[i + 1].type
+                          ) &&
                             trialList.find(
-                              i =>
-                                i.vendor === game.vendor &&
-                                +i.kind === +game.kind &&
-                                i.mobile_trial
+                              x =>
+                                x.vendor === list.vendors[i + 1].vendor &&
+                                +x.kind === list.vendors[i + 1].kind &&
+                                x.mobile_trial
                             )
                         "
                         :class="[$style['free-image']]"
