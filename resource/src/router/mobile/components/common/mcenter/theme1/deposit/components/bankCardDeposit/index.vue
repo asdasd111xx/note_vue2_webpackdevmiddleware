@@ -1616,7 +1616,12 @@ export default {
       };
     },
     statusText() {
-      if (!this.entryBlockStatusData) return;
+      if (
+        !this.entryBlockStatusData ||
+        typeof this.entryBlockStatusData.status === "undefined"
+      ) {
+        return;
+      }
       switch (this.entryBlockStatusData.status) {
         case 1:
           return `您已多次提单未完成支付，请尝试其他充值通道，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
@@ -1772,38 +1777,45 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
-      // 代客充值
-      if (
-        this.curPayInfo.payment_method_id === 20 &&
-        this.entryBlockStatusData.status < 3
-      ) {
-        this.submitInfo();
-        return;
-      }
-
-      // 使用者存款封鎖狀態
-      //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
-      switch (this.entryBlockStatusData.status) {
-        case 0:
+      this.checkEntryBlockStatus(true).then(() => {
+        // 代客充值
+        if (
+          this.curPayInfo.payment_method_id === 20 &&
+          this.entryBlockStatusData &&
+          +this.entryBlockStatusData.status < 3
+        ) {
           this.submitInfo();
-          break;
+          return;
+        }
 
-        case 4:
-          this.actionSetGlobalMessage({
-            msg: this.entryBlockStatusData.custom_point
-          });
+        if (this.entryBlockStatusData === null) {
+          return;
+        }
 
-          setTimeout(() => {
-            window.open(this.entryBlockStatusData.external_url);
-            return;
-          }, 700);
+        // 使用者存款封鎖狀態
+        //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
+        switch (this.entryBlockStatusData.status) {
+          case 0:
+            this.submitInfo();
+            break;
 
-          break;
+          case 4:
+            this.actionSetGlobalMessage({
+              msg: this.entryBlockStatusData.custom_point
+            });
 
-        default:
-          this.setPopupStatus(true, "blockStatus");
-          break;
-      }
+            setTimeout(() => {
+              window.open(this.entryBlockStatusData.external_url);
+              return;
+            }, 700);
+
+            break;
+
+          default:
+            this.setPopupStatus(true, "blockStatus");
+            break;
+        }
+      });
     },
     /**
      * 提交訂單
@@ -1934,9 +1946,10 @@ export default {
         index
       ];
     },
-    checkEntryBlockStatus() {
+    checkEntryBlockStatus(showMsg = false) {
       // 使用者存款封鎖狀態
       this.isBlockChecked = false;
+      this.entryBlockStatusData = null;
 
       return goLangApiRequest({
         method: "get",
@@ -1947,17 +1960,13 @@ export default {
         if (res && res.status === "000") {
           this.entryBlockStatusData = res.data;
         } else {
-          if (res.code !== "TM020074") {
-            if (res.msg) {
+          if (res.msg) {
+            // if (res.code !== "TM020074") {
+            if (showMsg) {
               this.actionSetGlobalMessage({
                 msg: res.msg,
                 code: res.code
               });
-            } else {
-              console.log(res);
-              // this.actionSetGlobalMessage({
-              //   msg: res
-              // });
             }
           }
         }
