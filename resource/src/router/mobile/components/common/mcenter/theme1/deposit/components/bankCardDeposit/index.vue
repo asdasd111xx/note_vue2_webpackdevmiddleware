@@ -1196,7 +1196,6 @@ import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
-import bbosRequest from "@/api/bbosRequest";
 import DatePicker from "vue2-datepicker";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
@@ -1616,12 +1615,7 @@ export default {
       };
     },
     statusText() {
-      if (
-        !this.entryBlockStatusData ||
-        typeof this.entryBlockStatusData.status === "undefined"
-      ) {
-        return;
-      }
+      if (!this.entryBlockStatusData) return;
       switch (this.entryBlockStatusData.status) {
         case 1:
           return `您已多次提单未完成支付，请尝试其他充值通道，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
@@ -1777,45 +1771,43 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
-      this.checkEntryBlockStatus(true).then(() => {
-        // 代客充值
-        if (
-          this.curPayInfo.payment_method_id === 20 &&
-          this.entryBlockStatusData &&
-          +this.entryBlockStatusData.status < 3
-        ) {
+      // 代客充值
+      if (
+        this.curPayInfo.payment_method_id === 20 &&
+        this.entryBlockStatusData.status < 3
+      ) {
+        this.submitInfo();
+        return;
+      }
+
+      // 重新檢查狀態
+      if (this.entryBlockStatusData === null) {
+        this.checkEntryBlockStatus(true);
+        return;
+      }
+      // 使用者存款封鎖狀態
+      //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
+      switch (this.entryBlockStatusData.status) {
+        case 0:
           this.submitInfo();
-          return;
-        }
+          break;
 
-        if (this.entryBlockStatusData === null) {
-          return;
-        }
+        case 4:
+          this.actionSetGlobalMessage({
+            msg: this.entryBlockStatusData.custom_point
+          });
 
-        // 使用者存款封鎖狀態
-        //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
-        switch (this.entryBlockStatusData.status) {
-          case 0:
-            this.submitInfo();
-            break;
+          setTimeout(() => {
+            window.open(this.entryBlockStatusData.external_url);
+            return;
+          }, 700);
 
-          case 4:
-            this.actionSetGlobalMessage({
-              msg: this.entryBlockStatusData.custom_point
-            });
+          break;
 
-            setTimeout(() => {
-              window.open(this.entryBlockStatusData.external_url);
-              return;
-            }, 700);
-
-            break;
-
-          default:
-            this.setPopupStatus(true, "blockStatus");
-            break;
-        }
-      });
+        default:
+          this.setPopupStatus(true, "blockStatus");
+          break;
+      }
     },
     /**
      * 提交訂單
@@ -1949,28 +1941,32 @@ export default {
     checkEntryBlockStatus(showMsg = false) {
       // 使用者存款封鎖狀態
       this.isBlockChecked = false;
-      this.entryBlockStatusData = null;
-
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
         timeout: 30000
-      }).then(res => {
-        this.isBlockChecked = true;
-        if (res && res.status === "000") {
-          this.entryBlockStatusData = res.data;
-        } else {
-          if (res.msg) {
-            // if (res.code !== "TM020074") {
-            if (showMsg) {
+      })
+        .then(res => {
+          this.isBlockChecked = true;
+          if (res.status === "000" && res.data) {
+            this.entryBlockStatusData = res.data;
+          } else {
+            // 存款功能無法使用
+            if (res.code !== "TM020074" || showMsg) {
               this.actionSetGlobalMessage({
                 msg: res.msg,
                 code: res.code
               });
             }
           }
-        }
-      });
+        })
+        .catch(error => {
+          const { msg, code } = error.response.data;
+          this.actionSetGlobalMessage({
+            msg,
+            code
+          });
+        });
     },
     // 代客充值
     goToValetDeposit() {
