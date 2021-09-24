@@ -52,6 +52,10 @@
         {{ headerConfig.title }}
       </div>
 
+      <div v-else :class="[$style.title, $style[themeTPL]]">
+        {{ giftTitle }}
+      </div>
+
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
         <!-- <div @click="reload">刷新</div> -->
@@ -87,7 +91,8 @@ export default {
       isLoading: true,
       isFullScreen: false,
       src: "",
-      showText: true
+      showText: true,
+      giftTitle: ""
     };
   },
   components: {
@@ -210,7 +215,13 @@ export default {
             this.$router.replace(`${this.originUrl}`);
             return;
           }
-
+          if (
+            this.$route.params.page.toUpperCase() === "GIFT" &&
+            !iframeThirdOrigin
+          ) {
+            window.history.back();
+            return;
+          }
           this.$router.replace(this.originUrl);
           return;
         }
@@ -412,6 +423,7 @@ export default {
           break;
 
         case "GIFT":
+          this.showText = false;
           // 優小秘
           let giftUrl = localStorage.getItem("iframe-third-url") || "";
           if (giftUrl) {
@@ -442,6 +454,31 @@ export default {
                 }
 
                 this.src = url;
+
+                //取得優小祕優惠頁面標題
+                goLangApiRequest({
+                  method: "get",
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+                  params: {
+                    lang: "zh-cn"
+                  }
+                }).then(res => {
+                  if (res.status === "000") {
+                    let promotionId = this.src.split("?")[0].split("/")[
+                      this.src.split("?")[0].split("/").length - 1
+                    ];
+
+                    res.data.ret.forEach(promo => {
+                      if (promo.link.includes(promotionId)) {
+                        this.giftTitle = promo.name;
+                        localStorage.setItem(
+                          "iframe-third-url-title",
+                          promo.name
+                        );
+                      }
+                    });
+                  }
+                });
               }
 
               if (res && res.msg) {
