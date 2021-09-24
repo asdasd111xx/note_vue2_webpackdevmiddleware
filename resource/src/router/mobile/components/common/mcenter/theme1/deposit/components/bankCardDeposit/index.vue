@@ -1945,7 +1945,7 @@ export default {
       }).then(res => {
         this.isBlockChecked = true;
         if (res && res.status === "000") {
-          this.entryBlockStatusData = res.data.ret;
+          this.entryBlockStatusData = res.data;
         } else {
           if (res.code !== "TM020074") {
             if (res.msg) {
