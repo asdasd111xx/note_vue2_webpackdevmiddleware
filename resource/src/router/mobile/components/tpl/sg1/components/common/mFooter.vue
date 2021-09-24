@@ -65,9 +65,10 @@ export default {
           path: "/mobile/service?prev=false"
         },
         {
-          key: "gift",
+          key: "iframe",
           name: this.$text("S_GIFT", "礼包"),
-          path: "/mobile/gift"
+          path:
+            "/mobile/iframe/gift?alias=specific_promotion&fullscreen=false&hasHeader=true&hasFooter=true&func=false"
         },
         {
           key: "mcenter-home",
