@@ -147,9 +147,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
 import animatedNumber from "animated-number-vue";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -221,19 +221,17 @@ export default {
   methods: {
     ...mapActions(["actionNoticeData"]),
     getJackpotList() {
-      return axios({
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/vendor/jackpot_list",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/JackpotList`,
         params: { vendor: this.vendor }
-      })
-        .then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.jackpotData = res.data.ret;
-            this.$emit("setJackpotData", this.jackpotData);
-            this.initJackpot();
-          }
-        })
-        .catch(error => {});
+      }).then(res => {
+        if (res.data && res.status === "000") {
+          this.jackpotData = res.data;
+          this.$emit("setJackpotData", this.jackpotData);
+          this.initJackpot();
+        }
+      });
     },
     setSingleBonuns() {
       if (!this.jackpotData.jpMinor || this.jackpotData.jpMinor.length === 0) {
