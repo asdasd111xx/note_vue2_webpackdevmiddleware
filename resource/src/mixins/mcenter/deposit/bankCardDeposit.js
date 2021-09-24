@@ -1477,7 +1477,7 @@ export default {
         this.updateTime = true;
         this.resetTimerStatus();
         this.convertCryptoMoney();
-        return "--";
+        return "00:00";
       }
     },
     chooseUSDT() {
