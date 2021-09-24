@@ -101,6 +101,7 @@ import mobileLinkOpen from "@/lib/mobile_link_open";
 import bbosRequest from "@/api/bbosRequest";
 import yaboRequest from "@/api/yaboRequest";
 import { mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -240,14 +241,11 @@ export default {
   },
   created() {
     // 取得開關設定 & 隱藏版 url
-    yaboRequest({
+    goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
-      params: {
-        type: "lcf"
-      }
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/lcf`
     }).then(res => {
-      if ((res.status === "ok" || res.status === "000") && res.data) {
+      if (res.data && res.status === "000") {
         this.downloadConfigData = res.data;
 
         const iTarget = this.downloadConfigData.find(item => {

@@ -185,7 +185,11 @@
       </div>
       <div
         :class="$style['vip-detail']"
-        @click="openPromotion('promotion_vip')"
+        @click="
+          routerTPL !== 'aobo1'
+            ? openPromotion('promotion_vip')
+            : $router.push('/mobile/mcenter/accountVIP/detail')
+        "
       >
         查看VIP详情 》
       </div>
