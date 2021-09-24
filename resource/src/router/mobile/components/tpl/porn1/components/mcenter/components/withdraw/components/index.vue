@@ -471,7 +471,7 @@
           }}
         </span>
         <span
-          v-if="selectedCard.name != 'CGPay'"
+          v-if="withdrawCurrency.name != 'CGP'"
           :class="$style['money-currency']"
           >¥</span
         >
