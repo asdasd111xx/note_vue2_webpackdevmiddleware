@@ -202,7 +202,7 @@
 
         .customer_service_potato__2529A {
             color: white;
-            background: linear-gradient(270deg, #baefee, #80affd);
+            background: linear-gradient(270deg, #f9c4c7, #e56b6e);
             box-shadow: 0px 20px 40px 0px rgb(0 0 0 / 15%);
             margin: 15px;
             height: 100px;
@@ -214,7 +214,7 @@
             display: flex;
             flex-direction: column;
             padding: 14px;
-            background-image: url("/static/image/common/service/bg_service04.png");
+            background-image: url("/static/image/common/service/bg_service021.png");
             background-size: contain;
             background-position: top 0 right 0;
             /* height: 100%; */
@@ -347,12 +347,12 @@
                     </div>
                 </div>
                 <div class="customer_service_potato__2529A">
-                    <div onclick="service('customer_service_potato')">
-                        <div><img src="/static/image/common/service/ic_service04.png?v=18911983.1">
+                    <div onclick="service('customer_service_qq')">
+                        <div><img src="/static/image/common/service/ic_service021.png?v=32730589.1">
                             &nbsp;
-                            <span>土豆客服：ey777</span>
+                            <span>企鹅客服: 269816425</span>
                         </div>
-                        <div>POTATO CHAT</div>
+                        <div>Main Customer Support</div>
                         <div>亿元萌妹专业服务 联系更便利</div>
                     </div>
                 </div>
@@ -393,7 +393,6 @@
 
         function getNewComm(domain, configInfo, title) { //在線客服2.0, 土豆客服
             let uri = `${configInfo}/xbb/Link/External/Url?lang=zh-cn&urlName=${title}&needToken=false`;
-
 
             if (title === 'customer_service') {
                 uri = `${configInfo}/xbb/Common/Jackfruit/List?lang=zh-cn&t=${Date.now()}`;

@@ -12,55 +12,49 @@
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     src() {
-      switch (this.memInfo.user.domain) {
-        //澳博
-        case "9999894":
-          return "/static/tpl/install/aobo1/qa/index.htm";
-          break;
-        case "93":
-          return "/static/tpl/install/aobo1/demo/index.htm";
-          break;
-        case "92":
-          return "/static/tpl/install/aobo1/official/index.htm";
-          break;
-        //　鴨博
-        case "500015":
-          return "/static/tpl/install/porn1/qa/index.htm";
+      const { ROUTER_TPL, SITE_NAME } = this.siteConfig;
 
-        case "69":
-          return "/static/tpl/install/porn1/demo/index.htm";
+      const bundleIDList = {
+        67: "yaboxxxapp01.com.mobile.webview",
+        69: "yb0t.66relish.com/mobile/webview",
+        100003: "yb0t.66relish.com/mobile/webview",
+        500015: "yb01.66boxing.com/mobile/webview",
 
-        case "67":
-          return "/static/tpl/install/porn1/official/index.htm";
+        41: "",
+        74: "",
+        100004: "",
+        500023: "",
 
-        // 絲瓜
-        case "500035":
-          return "/static/tpl/install/sg1/qa/index.htm";
+        80: "siguaxxxapp01.com.mobile.webview",
+        81: "sgt.66relish.com.mobile.webview",
+        100009: "sgt.66relish.com.mobile.webview",
+        500035: "sgtt.66boxing.com.mobile.webview",
 
-        case "81":
-          return "/static/tpl/install/sg1/demo/index.htm";
+        92: "aupr1.688lg.com.mobile.webview",
+        93: "aude1.688lg.com.mobile.webview",
+        9999894: "auqa1.66boxing.com/mobile/webview"
+      };
 
-        case "80":
-          return "/static/tpl/install/sg1/official/index.htm";
+      localStorage.setItem(
+        "service-app-bundleID",
+        bundleIDList[this.memInfo.user.domain]
+      );
 
-        case "9999894":
-          return "/static/tpl/install/aobo1/qa/index.htm";
+      localStorage.setItem(
+        "YABO_GOLANG_API_DOMAIN",
+        this.siteConfig.YABO_GOLANG_API_DOMAIN
+      );
 
-        case "93":
-          return "/static/tpl/install/aobo1/demo/index.htm";
-
-        case "92":
-          return "/static/tpl/install/aobo1/official/index.htm";
-
-        default:
-          break;
-      }
+      return `/static/tpl/install/index.htm?title=${SITE_NAME}&vendor=${this.memInfo.user.domain}`;
+      // return `/static/tpl/install/${ROUTER_TPL}/index.htm?title=${SITE_NAME}&vendor=${this.memInfo.user.domain}`;
     }
   },
   mounted() {
@@ -69,7 +63,6 @@ export default {
   },
   methods: {
     backPre() {
-      // this.$router.push("/mobile/mcenter");
       this.$router.back();
     }
   }
@@ -99,7 +92,6 @@ export default {
 
 iframe {
   width: 100%;
-  // height: 100vh;
   overflow: hidden;
 }
 </style>
