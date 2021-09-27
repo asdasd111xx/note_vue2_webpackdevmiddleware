@@ -825,7 +825,7 @@ export const actionSetUserdata = (
       }
 
       let cdnRoot = "";
-      if (!["41", "80", "67", "100009"].includes(domain)) {
+      if (!["41", "80", "67", "92"].includes(domain)) {
         commit(types.SETCDNROOT, "");
         return;
       }
