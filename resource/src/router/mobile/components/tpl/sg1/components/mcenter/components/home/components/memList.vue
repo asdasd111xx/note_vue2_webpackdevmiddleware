@@ -34,7 +34,7 @@
       :class="[$style['list'], $style['list-part']]"
     >
       <div :class="$style['list-icon']">
-        <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_18+.png`)" />
+        <img :src="$getCdnPath(`/static/image/_new/mcenter/ic_18+.png`)" />
       </div>
       <span>{{ $text("S_PORN_SWITCH", "色站开关") }}</span>
       <label
@@ -57,7 +57,7 @@ import bbosRequest from "@/api/bbosRequest";
 import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";
-import yaboRequest from "@/api/yaboRequest";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -88,6 +88,9 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     isShowShare: {
       get() {
         return this.toggleShare;
@@ -169,21 +172,6 @@ export default {
         this.memInfo.config.content_rating && this.memInfo.user.content_rating;
     }
 
-    let type = "ccf";
-
-    yaboRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_API_DOMAIN}/System/config`,
-      params: {
-        type: type
-      }
-    }).then(res => {
-      if (res && res.data) {
-        this.isShowSuper =
-          res.data.find(i => i.name === "VipDownload").value === "true";
-      }
-    });
-
     if (this.loginStatus) {
       this.isShowPromotion =
         localStorage.getItem("is-show-promotion") === "true";
@@ -199,19 +187,38 @@ export default {
       return;
     }
 
-    // 超級籤需滿足的最低金額
-    const requiredMoney = 200;
-
-    // 會員存款狀態
-    axios({
+    // 超級簽開關
+    goLangApiRequest({
       method: "get",
-      url: "/api/v1/c/user-stat/deposit-withdraw"
-    })
-      .then(res => {
-        if (res && res.data && res.data.ret.deposit_total) {
-          const depositTotal = Number(res.data.ret.deposit_total);
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/ccf`
+    }).then(res => {
+      if (res.data && res.status === "000") {
+        if (res && res.data) {
+          this.isShowSuper =
+            res.data.find(i => i.name === "VipDownload").value === "true";
+        }
+      }
+    });
+  },
+  watch: {
+    isShowSuper(val) {
+      if (!val) {
+        return;
+      }
+
+      // 超級籤需滿足的最低金額
+      const requiredMoney = 200;
+
+      // 會員存款狀態
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/UserState/Deposit/Withdraw`
+      }).then(res => {
+        if (res.data && res.status === "000") {
+          const depositTotal = Number(res.data.deposit_total);
+
           //   超級簽需求200充值
-          if (depositTotal >= requiredMoney) {
+          if (+depositTotal >= +requiredMoney) {
             this.requiredMoneyStatus = "ok";
             return;
           } else {
@@ -221,29 +228,38 @@ export default {
             ).replace("％s", requiredMoney);
           }
         }
-      })
-      .catch(error => {
-        console.log(error);
       });
 
-    setTimeout(() => {
-      bbosRequest({
+      let _vendor = "",
+        _bundleID = "";
+      this.superAppUrl = "https://user.51cjq.xyz/pkgs/ybsp2.app";
+      switch (this.routerTPL) {
+        case "sg1":
+          _bundleID: "chungyo.foxyporn.prod.enterprise.vip";
+          break;
+
+        // 缺bundleID
+        case "aobo1":
+          _vendor = 92;
+          _bundleID = "";
+          break;
+      }
+
+      goLangApiRequest({
         method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
-        reqHeaders: {
-          Vendor: 67
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/App/Download`,
         params: {
-          lang: "zh-cn",
-          bundleID: "chungyo.foxyporn.prod.enterprise.vip",
+          bundleID: _bundleID,
           platform: 1
         }
       }).then(res => {
-        if (res.data && res.data.url) {
-          this.superAppUrl = res.data.url;
+        if (res.data && res.status === "000") {
+          if (res && res.data) {
+            this.superAppUrl = res.data.url;
+          }
         }
       });
-    });
+    }
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
@@ -256,8 +272,7 @@ export default {
 
         if (this.requiredMoneyStatus === "ok") {
           // 超級籤app下載網址
-          const appUrl =
-            this.superAppUrl || "https://user.51cjq.xyz/pkgs/ybsp2.app";
+          const appUrl = this.superAppUrl;
           window.open(appUrl, "_blank");
         } else {
           this.actionSetGlobalMessage({ msg: this.superErrorMsg });

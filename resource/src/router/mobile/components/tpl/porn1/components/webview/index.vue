@@ -98,8 +98,7 @@
 
 <script>
 import mobileLinkOpen from "@/lib/mobile_link_open";
-import bbosRequest from "@/api/bbosRequest";
-import yaboRequest from "@/api/yaboRequest";
+
 import { mapGetters } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
@@ -108,7 +107,20 @@ export default {
     return {
       isIos: !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
       downloadConfigData: [],
-      downloadToggle: {},
+      downloadToggle: {
+        ios: {
+          show: false,
+          bundleID: ""
+        },
+        pwa: {
+          show: false,
+          bundleID: ""
+        },
+        hide: {
+          show: false,
+          link: ""
+        }
+      },
       iconList: [
         {
           text: "多种玩法",
@@ -143,97 +155,107 @@ export default {
       return [
         {
           text: "极速版",
-          isShow: this.downloadToggle.pwa,
+          isShow: this.downloadToggle.pwa.show,
           onClick: () => {
-            let bundleID = "";
-            switch (this.memInfo.user.domain) {
-              // 鴨博
-              case "500015":
-              case "69":
-              case "67":
-                bundleID = "yaboxxxapp01.com.platformG";
-                break;
+            this.download(2, this.downloadToggle.pwa.bundleID);
+            // switch (this.memInfo.user.domain) {
+            //   // 鴨博
+            //   case "500015":
+            //     bundleID = "yb01.66boxing.com/iframe";
+            //     break;
 
-              // 絲瓜
-              case "500035":
-              case "81":
-              case "80":
-                bundleID = "siguaxxxapp01.com.platformG";
-                break;
+            //   case "69":
+            //     bundleID = "yb0t.66relish.com.iframe.html.platformG";
+            //     break;
 
-              case "9999894":
-                bundleID = "auqa1.66boxing.com/iframe";
-                break;
-              case "93":
-                bundleID = "aude1.688lg.com.iframe.html.platformG";
-                break;
-              case "92":
-                bundleID = "aupr1.688lg.com.platformG";
-                break;
+            //   case "67":
+            //     bundleID = "yaboxxxapp01.com.platformG";
+            //     break;
 
-              default:
-                break;
-            }
-            this.download(2, bundleID);
+            //   // 絲瓜
+            //   case "500035":
+            //     bundleID = "sgtt.66boxing.com/iframe";
+            //     break;
+
+            //   case "81":
+            //     bundleID = "sgt.66relish.com/iframe";
+            //     break;
+
+            //   case "80":
+            //     bundleID = "siguaxxxapp01.com.platformG";
+            //     break;
+
+            //   case "9999894":
+            //     bundleID = "auqa1.66boxing.com/iframe";
+            //     break;
+
+            //   case "93":
+            //     bundleID = "aude1.688lg.com.iframe.html.platformG";
+            //     break;
+
+            //   case "92":
+            //     bundleID = "aupr1.688lg.com.platformG";
+            //     break;
+
+            //   default:
+            //     break;
+            // }
           }
         },
         {
           text: "IOS版",
-          isShow: this.downloadToggle.ios,
+          isShow: this.downloadToggle.ios.show,
           onClick: () => {
-            let bundleID = "";
-            switch (this.memInfo.user.domain) {
-              //　鴨博
-              case "500015":
-                bundleID = "bbin.mobile.xbbPorn.qa";
-                break;
+            this.download(1, this.downloadToggle.ios.bundleID);
+            // switch (this.memInfo.user.domain) {
+            //   //　鴨博
+            //   case "500015":
+            //     bundleID = "bbin.mobile.xbbPorn.qa";
+            //     break;
 
-              case "69":
-                bundleID = "chungyo.foxyporn.stage.enterprise";
-                break;
+            //   case "69":
+            //     bundleID = "chungyo.foxyporn.stage.enterprise";
+            //     break;
 
-              case "67":
-                bundleID = "chungyo.foxyporn.prod.enterprise";
-                break;
+            //   case "67":
+            //     bundleID = "chungyo.foxyporn.prod.enterprise";
+            //     break;
 
-              // 絲瓜
-              case "500035":
-                bundleID = "bbin.mobile.sigua.qa";
-                break;
+            //   // 絲瓜
+            //   case "500035":
+            //     bundleID = "bbin.mobile.sigua.qa";
+            //     break;
 
-              case "81":
-                bundleID = "bbin.mobile.sigua.stage";
-                break;
+            //   case "81":
+            //     bundleID = "bbin.mobile.sigua.stage";
+            //     break;
 
-              case "80":
-                bundleID = "bbin.mobile.sigua";
-                break;
+            //   case "80":
+            //     bundleID = "bbin.mobile.sigua";
+            //     break;
 
-              case "9999894":
-                bundleID = "com.aoboCasino.qa";
-                break;
-              case "93":
-                bundleID = "com.aoboCasino.demo";
-                break;
-              case "92":
-                bundleID = "com.aoboCasino.prod";
-                break;
+            //   case "9999894":
+            //     bundleID = "com.aoboCasino.qa";
+            //     break;
+            //   case "93":
+            //     bundleID = "com.aoboCasino.demo";
+            //     break;
+            //   case "92":
+            //     bundleID = "com.aoboCasino.prod";
+            //     break;
 
-              default:
-                break;
-            }
+            //   default:
+            //     break;
+            // }
 
-            this.download(1, bundleID);
+            // this.download(1, bundleID);
           }
         },
         {
           text: "隐藏版",
-          isShow: this.downloadToggle.hide,
+          isShow: this.downloadToggle.hide.show,
           onClick: () => {
-            const target = this.downloadConfigData.find(item => {
-              return item.name === "appStoreMajaLink";
-            });
-            window.open(target.value, "_blank");
+            window.open(this.downloadToggle.hide.link, "_blank");
           }
         }
       ].filter(item => item.isShow === "true");
@@ -252,18 +274,39 @@ export default {
           return item.name === "showIPADownload";
         });
 
+        const iOSBundleID = this.downloadConfigData.find(item => {
+          return item.name === "bbosApiIOSBundleID";
+        });
+
         const pTarget = this.downloadConfigData.find(item => {
           return item.name === "showPWADownload";
+        });
+
+        const pwaBundleID = this.downloadConfigData.find(item => {
+          return item.name === "bbosApiPWABundleID";
         });
 
         const hTarget = this.downloadConfigData.find(item => {
           return item.name === "showStoreDownload";
         });
 
+        const hBundleID = this.downloadConfigData.find(item => {
+          return item.name === "bbosApiMajaLink";
+        });
+
         this.downloadToggle = {
-          ios: iTarget.value,
-          pwa: pTarget.value,
-          hide: hTarget.value
+          ios: {
+            show: iTarget.value,
+            bundleID: iOSBundleID.value
+          },
+          pwa: {
+            show: pTarget.value,
+            bundleID: pwaBundleID.value
+          },
+          hide: {
+            show: hTarget.value,
+            link: hBundleID.value
+          }
         };
       }
     });
@@ -274,19 +317,15 @@ export default {
       this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
     },
     download(platform = null, bundleID = "") {
-      bbosRequest({
+      goLangApiRequest({
         method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/App/Download",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/App/Download`,
         params: {
           bundleID,
-          lang: "zh-cn",
           platform
         }
       }).then(res => {
-        if (res.status === "000" && res.data && res.data.url) {
+        if (res.data && res.status === "000") {
           location.href = res.data.url;
         }
       });
