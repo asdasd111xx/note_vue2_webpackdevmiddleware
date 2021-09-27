@@ -516,7 +516,7 @@ export default {
     }
     if (["ey1"].includes(this.themeTPL)) {
       this.loginMoney =
-        this.membalance && +this.membalance.total
+        this.membalance && this.membalance.total
           ? `${thousandsCurrency(+this.membalance.total)}`
           : "";
       this.birdMoney();
@@ -563,7 +563,7 @@ export default {
       if (["ey1"].includes(this.themeTPL)) {
         this.loginMoney =
           this.membalance && this.membalance.total
-            ? `${thousandsCurrency(+this.membalance.total)}`
+            ? `${thousandsCurrency(this.membalance.total)}`
             : "";
       }
     }

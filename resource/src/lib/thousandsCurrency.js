@@ -1,8 +1,5 @@
 export const thousandsCurrency = data => {
   const formatter = function(val) {
-    if (!data || parseFloat(data) === NaN) {
-      return "";
-    }
     return val
       .toString()
       .replace(
