@@ -40,7 +40,11 @@ export default {
 
         92: "aupr1.688lg.com.mobile.webview",
         93: "aude1.688lg.com.mobile.webview",
-        9999894: "auqa1.66boxing.com/mobile/webview"
+        9999894: "auqa1.66boxing.com/mobile/webview",
+
+        94: "sppr1.688lg.com.mobile.webview",
+        95: "spde1.688lg.com.mobile.webview",
+        9999905: "spqa1.66boxing.com/mobile/webview"
       };
 
       localStorage.setItem(

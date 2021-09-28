@@ -588,6 +588,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
 
+    // 取得當前廳號
     await dispatch("actionSetWebDomain");
     await dispatch("actionSetUserdata");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
@@ -795,59 +796,48 @@ export const actionSetUserdata = (
       commit(types.ISLOGIN, true);
     },
     headers: (headers, data) => {
-      let domain = data.ret.user.domain.toString();
       let configInfo;
-      switch (domain) {
-        case "9999894":
-        case "93":
-        case "92":
-          configInfo = siteConfigOfficial[`site_92`];
-          break;
-        case "500023":
-        case "41":
-        case "74":
-        case "100004":
-          configInfo = siteConfigOfficial[`site_41`];
-          break;
-        case "500035":
-        case "80":
-        case "81":
-        case "100009":
-          configInfo = siteConfigOfficial[`site_80`];
-          break;
-        case "500015":
-        case "69":
-        case "67":
-        case "100003":
-        default:
-          configInfo = siteConfigOfficial[`site_67`];
-          break;
+
+      if (state.webDomain) {
+        configInfo =
+          siteConfigTest[`site_${state.webDomain.domain}`] ||
+          siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+          siteConfigOfficial.preset;
       }
 
+      // 設置正式環境cdn圖片路徑
       let cdnRoot = "";
-      if (!["41", "80", "67", "92"].includes(domain)) {
-        commit(types.SETCDNROOT, "");
-        return;
+      if (headers[configInfo.CDN_HEADER]) {
+        cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
-
-      // 設置cdn圖片路徑
-      if (headers["x-cdn-ey"] && configInfo.MOBILE_WEB_TPL === "ey1") {
-        cdnRoot = `https://${headers["x-cdn-ey"].split(",")[0]}`;
-      }
-
-      if (headers["x-cdn-yb"] && configInfo.MOBILE_WEB_TPL === "porn1") {
-        cdnRoot = `https://${headers["x-cdn-yb"].split(",")[0]}`;
-      }
-
-      if (headers["x-cdn-sg"] && configInfo.MOBILE_WEB_TPL === "sg1") {
-        cdnRoot = `https://${headers["x-cdn-sg"].split(",")[0]}`;
-      }
-
-      if (headers["x-cdn-ab"] && configInfo.MOBILE_WEB_TPL === "aobo1") {
-        cdnRoot = `https://${headers["x-cdn-ab"].split(",")[0]}`;
-      }
-
       commit(types.SETCDNROOT, cdnRoot);
+      // let domain = data.ret.user.domain.toString();
+      // switch (domain) {
+      //   case "9999894":
+      //   case "93":
+      //   case "92":
+      //     configInfo = siteConfigOfficial[`site_92`];
+      //     break;
+      //   case "500023":
+      //   case "41":
+      //   case "74":
+      //   case "100004":
+      //     configInfo = siteConfigOfficial[`site_41`];
+      //     break;
+      //   case "500035":
+      //   case "80":
+      //   case "81":
+      //   case "100009":
+      //     configInfo = siteConfigOfficial[`site_80`];
+      //     break;
+      //   case "500015":
+      //   case "69":
+      //   case "67":
+      //   case "100003":
+      //   default:
+      //     configInfo = siteConfigOfficial[`site_67`];
+      //     break;
+      // }
     },
     fail: response => {
       // 連線逾時
