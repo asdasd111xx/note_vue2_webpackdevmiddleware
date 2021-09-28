@@ -18,6 +18,8 @@ function getCDNHost() {
         cdnHost = h.get(`x-cdn-ey`);
       } else if (data.site === "aobo1" && data.domain === "92") {
         cdnHost = h.get(`x-cdn-ab`);
+      } else if (data.site === "sp51" && data.domain === "94") {
+        cdnHost = h.get(`x-cdn-ab`);
       } else {
         cdnHost = "";
       }

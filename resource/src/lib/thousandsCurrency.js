@@ -1,5 +1,8 @@
 export const thousandsCurrency = data => {
   const formatter = function(val) {
+    if (data === undefined) {
+      return "";
+    }
     return val
       .toString()
       .replace(

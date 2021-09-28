@@ -12,7 +12,8 @@ export const preset = {
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2:
-    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  CDN_HEADER: ""
 };
 
 /* ---------- ↓ 正式站 ---------- */
@@ -48,7 +49,8 @@ export const site_67 = {
       GAY: "7",
       LES: "8"
     }
-  }
+  },
+  CDN_HEADER: "x-cdn-yb"
 };
 
 /**
@@ -112,7 +114,8 @@ export const site_41 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.chessrunroll.com/api",
   YABO_GOLANG_API_DOMAIN: "https://cxbb.chessrunroll.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://cxbb.chesspink.com/wsn/promosocket?"
+  ACTIVES_BOUNS_WEBSOCKETV2: "wss://cxbb.chesspink.com/wsn/promosocket?",
+  CDN_HEADER: "x-cdn-ey"
 };
 
 /**
@@ -176,7 +179,8 @@ export const site_80 = {
       GAY: "7",
       LES: "8"
     }
-  }
+  },
+  CDN_HEADER: "x-cdn-ey"
 };
 
 /**
@@ -246,7 +250,8 @@ export const site_92 = {
       SPACE: "16",
       YB: "17"
     }
-  }
+  },
+  CDN_HEADER: "x-cdn-ab"
 };
 
 /**
@@ -268,4 +273,45 @@ export const site_93 = {
       YB: "17"
     }
   }
+};
+
+/**
+ * 51体育 正式站正式環境
+ */
+export const site_94 = {
+  ...preset,
+  ROUTER_TPL: "sp1",
+  MOBILE_WEB_TPL: "porn1",
+  VERSION: getVersion("sp1"),
+  SITE_NAME: "51体育",
+  ACTIVES_BOUNS_WEBSOCKETV2:
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  // PORN_CONFIG: {
+  //   ID: {
+  //     SPACE: "16",
+  //     YB: "17"
+  //   }
+  // }
+  CDN_HEADER: "x-cdn-sp51"
+};
+
+/**
+ * 51体育 Demo環境
+ */
+export const site_95 = {
+  ...preset,
+  ROUTER_TPL: "sp1",
+  MOBILE_WEB_TPL: "porn1",
+  VERSION: getVersion("sp1"),
+  SITE_NAME: "51体育",
+  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
+  ACTIVES_BOUNS_WEBSOCKETV2:
+    "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
+  // PORN_CONFIG: {
+  //   ID: {
+  //     SPACE: "16",
+  //     YB: "17"
+  //   }
+  // }
 };

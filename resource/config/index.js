@@ -5,53 +5,59 @@ const outputDirName = process.env.CDN_HOST
   ? process.env.CDN_HOST.split("://")[1]
   : "www";
 
-// 鸭博娱乐
+// 鸭博娱乐 500015
 const domain = "https://yb01.66boxing.com/";
-// Demo
+// Demo 69
 // const domain = 'https://yb0t.66relish.com/';
-// Prod
+// Prod 67
 // const domain = "https://yaboxxxapp01.com/";
-// const domain = 'https://yaboxxxapp02.com/';
-// Beta
+// const domain = "https://yaboxxxapp02.com/";
+// Beta 100003
 // const domain = 'https://ybbe1.qghco.com/';
-// const domain = 'https://yb0t.66apples.com';
+// const domain = 'https://yb0t.66apples.com/';
 
-// 亿元
+// 亿元 500023
 // const domain = "https://eyt.66boxing.com/";
-// Demo
+// Demo 74
 // const domain = 'https://eyd.688lg.com/';
 // const domain = 'https://ey01.66poo.com/';
-// Prod
+// Prod 41
 // const domain = 'https://ey6999.com/';
-// const domain = 'https://ey0099.com/';
+// const domain = "https://ey0099.com/";
 // const domain = 'https://ey8866.com/';
 // const domain = 'https://ey.688lg.com/';
-// Beta
-// const domain = 'https://ey01.66boxing-beta.com/';
+// Beta 100004
 // const domain = 'https://eyd.66apples.com/';
 
-// 丝瓜
+// 丝瓜 500035
 // const domain = "https://sgqa1.yaslbox.com/";
 // const domain = "https://sgqa1-io.yaslbox.com/";
-// Demo
+// Demo 81
 // const domain = 'https://sgt.66relish.com/';
-// Prod
+// Prod 80
 // const domain = 'https://sgpr1.yaslart.com/';
 // const domain = 'https://siguaxxxapp01.com/';
 // const domain = 'https://siguaxxxapp02.com/';
-
-// Beta
+// Beta 100009
 // const domain = "https://sgbe1.grtymart.com/";
 
-// 澳博国际 QA
-// temp
+// 澳博国际 QA 9999894
 // const domain = "https://auqa1.66boxing.com/";
-// Demo
+// Demo 93
 // const domain = "https://aude1.688lg.com/";
 // Beta
 // const domain = "";
-// Prod
-// const domain = "https://aupr1.688lg.com";
+// Prod 92
+// const domain = "https://aupr1.688lg.com/";
+
+// 51体育 QA 9999905
+// const domain = "https://spqa1.66boxing.com/";
+// Demo 95
+// const domain = "https://spde1.688lg.com/";
+// Beta
+// const domain = "";
+// Prod 94
+// const domain = "https://sppr1.688lg.com/";
 
 module.exports = {
   build: {
