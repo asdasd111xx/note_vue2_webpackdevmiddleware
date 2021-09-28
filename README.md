@@ -1,81 +1,200 @@
-## 開發設置
-
-#### cookie 相關設定
-
-##### 非開發環境下使用的，用 TEST 開頭，只有開發階段可以用的，用 DEV 開頭
-
+#### 鸭博娱乐
 <table border="1">
     <tr>
-        <th>cookie name</th>
-        <th>example</th>
-        <th>說明</th>
+        <th></th>
+        <th>廳號(Vendor)</th>
+        <th>客端</th>
+        <th>落地頁</th>
+        <th>廳主端</th>
     </tr>
     <tr>
-        <td>TEST_HOME</td>
-        <td>13(alias)</td>
-        <td>測試客製化首頁</td>
-    </tr>
-    <tr>
-        <td>TEST_TEMPLATE</td>
-        <td>5,dark-grey(模版代碼,色系代碼)</td>
-        <td>套版用，測試版面</td>
-    </tr>
-    <tr>
-        <td>TEST_MOBILE_TPL</td>
-        <td>519(模版代碼，預設在 basic)</td>
-        <td>測試手網頁版多模版</td>
-    </tr>
-    <tr>
-        <td>IS_BB_APP</td>
-        <td>Y</td>
-        <td>測試 webview (此為與 RD7 設定嵌 webview 參數，不可異動)</td>
-    </tr>
-</table>
-
-## 網站列表
-
-<table border="1">
-    <tr>
-        <th width="14%">網站名稱</th>
-        <th width="4%">客端</th>
-        <th width="5%">廳主端</th>
-        <th width="4%">alias</th>
-        <th width="5%">後置碼</th>
-        <th width="5%">客製版</th>
-        <th width="7%">客製首頁</th>
-        <th width="56%">備註</th>
-    </tr>
-    <tr>
-        <td>鸭博娱乐測試站</td>
-        <td><a href="https://yb01.66boxing.com/">客端</a></td>
-        <td><a href="https://yb01.66polo.com/">廳主端</a></td>
+        <td>QA 測試站</td>
         <td>500015</td>
-        <td>@yb01</td>
-        <td></td>
-        <td></td>
-        <td>只有手機網頁版</td>
+        <td>https://yb01.66boxing.com/</td>
+        <td>https://landing500015.com/</td>
+        <td>https://yb01.66polo.com/</td>
     </tr>
     <tr>
-        <td>鸭博娱乐正式站（測試環境）</td>
-        <td><a href="https://yb0t.66relish.com/">客端</a></td>
-        <td><a href="yb0t.88lard.com">廳主端</a></td>
+        <td>Beta</td>
+        <td>100003</td>
+        <td>https://ybbe1.qghco.com/ <br/> https://yb0t.66apples.com/</td>
+        <td>https://7de4e33aa7a8f.com/</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Demo</td>
         <td>69</td>
-        <td>@yb01</td>
+        <td>https://yb0t.66relish.com/</td>
+        <td>https://yaboxxx.app/</td>
         <td></td>
-        <td></td>
-        <td>只有手機網頁版</td>
     </tr>
     <tr>
-        <td>鸭博娱乐正式站</td>
-        <td><a href="https://yaboxxxapp01.com/">客端</a></td>
-        <td><a href="https://yb01.88lard.com/">廳主端</a></td>
+        <td>Prod</td>
         <td>67</td>
-        <td>@yb01</td>
+        <td>https://yaboxxxapp01.com/ <br/> https://yaboxxxapp02.com/</td>
         <td></td>
         <td></td>
-        <td>只有手機網頁版</td>
     </tr>
 </table>
+
+#### 亿元
+<table border="1">
+    <tr>
+        <th></th>
+        <th>廳號(Vendor)</th>
+        <th>客端</th>
+        <th>落地頁</th>
+        <th>廳主端</th>
+    </tr>
+    <tr>
+        <td>QA 測試站</td>
+        <td>500023</td>
+        <td>https://eyt.66boxing.com/</td>
+        <td>https://landing500023.com/</td>
+        <td>https://eyt.66polo.com/</td>
+    </tr>
+    <tr>
+        <td>Beta</td>
+        <td>100004</td>
+        <td>https://eyd.66apples.com/</td>
+        <td>https://landing74beta.com/</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Demo</td>
+        <td>74</td>
+        <td>https://eyd.688lg.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Prod</td>
+        <td>41</td>
+        <td>https://ey6999.com/ <br/> https://ey0099.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+#### 丝瓜直播
+<table border="1">
+    <tr>
+        <th></th>
+        <th>廳號(Vendor)</th>
+        <th>客端</th>
+        <th>落地頁</th>
+        <th>廳主端</th>
+    </tr>
+    <tr>
+        <td>QA 測試站</td>
+        <td>500035</td>
+        <td>https://sgqa1.yaslbox.com/</td>
+        <td>https://siguatest.com/</td>
+        <td>https://sgtt.66polo.com/</td>
+    </tr>
+    <tr>
+        <td>Beta</td>
+        <td>100009</td>
+        <td>https://sgbe1.grtymart.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Demo</td>
+        <td>81</td>
+        <td>https://sgt.66relish.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Prod</td>
+        <td>80</td>
+        <td>https://sgpr1.yaslart.com/ <br/> https://siguaxxxapp01.com/ <br/> https://siguaxxxapp02.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+
+#### 澳博国际
+<table border="1">
+    <tr>
+        <th></th>
+        <th>廳號(Vendor)</th>
+        <th>客端</th>
+        <th>落地頁</th>
+        <th>廳主端</th>
+    </tr>
+    <tr>
+        <td>QA 測試站</td>
+        <td>9999905</td>
+        <td>https://auqa1.66boxing.com/</td>
+        <td>https://auqa0.66boxing.com/</td>
+        <td>https://952t.66polo.com/</td>
+    </tr>
+    <tr>
+        <td>Beta</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Demo</td>
+        <td>93</td>
+        <td>https://aude1.688lg.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Prod</td>
+        <td>92</td>
+        <td>https://aupr1.688lg.com/</td>
+        <td>https://aupr6.688lg.com/</td>
+        <td></td>
+    </tr>
+</table>
+
+#### 51体育
+<table border="1">
+    <tr>
+        <th></th>
+        <th>廳號(Vendor)</th>
+        <th>客端</th>
+        <th>落地頁</th>
+        <th>廳主端</th>
+    </tr>
+    <tr>
+        <td>QA 測試站</td>
+        <td>9999905</td>
+        <td>https://spqa1.66boxing.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Beta</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Demo</td>
+        <td>95</td>
+        <td>https://spde1.688lg.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Prod</td>
+        <td>94</td>
+        <td>https://sppr1.688lg.com/</td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+
 
 ## 四端同時佈署方式
 
