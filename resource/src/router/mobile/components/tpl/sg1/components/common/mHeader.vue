@@ -90,7 +90,7 @@
         <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+            :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
