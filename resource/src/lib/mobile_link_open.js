@@ -301,10 +301,10 @@ export default target => {
       break;
   }
 
+  const hasHall = [3, 5, 6];
   function getTrialList() {
-    const hasHall = [3, 5, 6];
     if (hasHall.includes(kind) && !linkItem) {
-      let trialList = JSON.parse(localStorage.getItem("trial-game-list"));
+      let trialList = JSON.parse(localStorage.getItem("trial-game-list")) || [];
       hasTrial = trialList.find(i => i.vendor === vendor && i.mobile_trial);
     }
 
@@ -319,11 +319,12 @@ export default target => {
     // });
   }
 
-  getTrialList();
+  if (!store.state.loginStatus) {
+    getTrialList();
+  }
 
   // 有遊戲大廳的遊戲
   if (store.state.loginStatus || (!store.state.loginStatus && hasTrial)) {
-    const hasHall = [3, 5, 6];
     if (hasHall.includes(kind) && !linkItem) {
       switch (kind) {
         case 3:
