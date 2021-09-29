@@ -500,6 +500,54 @@ export default {
             return;
           }
 
+          switch (query.alias) {
+            // alias: "self_collect_promotion",
+            // name: "领取优惠"
+            // alias: "verify_promotion",
+            // name: "审核查询"
+            case "self_collect_promotion":
+            case "verify_promotion":
+              let uri = "";
+              let targetUri = {
+                self_collect_promotion: "collect_status",
+                verify_promotion: "verify_status"
+              };
+
+              let getPromotionForestageConfig = () => {
+                return goLangApiRequest({
+                  method: "get",
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/Forestage/Config`
+                }).then(res => {
+                  if (res && res.data && res.data.path) {
+                    uri = res.data.path[targetUri[query.alias]];
+                  }
+                });
+              };
+
+              let getCustomizeLink = () => {
+                return goLangApiRequest({
+                  method: "post",
+                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+                  params: {
+                    code: "promotion",
+                    clientUri: uri
+                  }
+                }).then(res => {
+                  if (res && res.data && res.data.uri) {
+                    console.log(res.data.uri);
+                    this.src = res.data.uri;
+                  }
+                });
+              };
+
+              getPromotionForestageConfig().then(() => {
+                getCustomizeLink();
+              });
+              return;
+            default:
+              break;
+          }
+
           if (query.alias) {
             goLangApiRequest({
               method: "get",
