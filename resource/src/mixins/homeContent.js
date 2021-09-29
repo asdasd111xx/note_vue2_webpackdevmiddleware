@@ -334,7 +334,10 @@ export default {
     getTrialList() {
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`,
+        params: {
+          kind: 3
+        }
       }).then(res => {
         if (res && res.status === "000") {
           localStorage.setItem("trial-game-list", JSON.stringify(res.data));
