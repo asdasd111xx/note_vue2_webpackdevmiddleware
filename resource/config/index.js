@@ -43,6 +43,7 @@ const domain = "https://yb01.66boxing.com/";
 
 // 澳博国际 QA 9999894
 // const domain = "https://auqa1.66boxing.com/";
+// const domain = "https://952t.66boxing.com/";
 // Demo 93
 // const domain = "https://aude1.688lg.com/";
 // Beta

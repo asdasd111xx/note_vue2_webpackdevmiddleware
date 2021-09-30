@@ -2434,3 +2434,38 @@ export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, next) => {
     }
   });
 };
+
+// 友盟事件
+export const actionSendYM = ({ state }, eventCode) => {
+  let category = "";
+  let action = "";
+  let label = "";
+
+  if (eventCode < 24) {
+    category = "首页";
+  }
+  switch (eventCode) {
+    case 1:
+      action = "进入";
+      break;
+    default:
+      action = "点击";
+  }
+  switch (eventCode) {
+    case 3:
+      label = "登录";
+      break;
+    default:
+      label = "";
+      break;
+  }
+  const { aplus_queue } = window;
+  aplus_queue.push({
+    action: "aplus.record",
+    arguments: [
+      eventCode.toString(),
+      "CLK",
+      { category: category, action: action, label: label }
+    ]
+  });
+};
