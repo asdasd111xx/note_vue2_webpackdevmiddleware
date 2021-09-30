@@ -120,9 +120,15 @@
           @click="$router.push('/mobile/joinmember')"
           >领取</span
         >
-        <span @click="$router.push('/mobile/login')">{{
-          $text("S_LOGON", "登录")
-        }}</span>
+        <span
+          @click="
+            () => {
+              actionSendYM(3);
+              $router.push('/mobile/login');
+            }
+          "
+          >{{ $text("S_LOGON", "登录") }}</span
+        >
         <img
           :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
           @click="handleClickAsk"
@@ -260,7 +266,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSendYM"]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
