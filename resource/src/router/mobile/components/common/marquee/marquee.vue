@@ -26,12 +26,24 @@
           { notHome: !isDepositOrWithdraw }
         ]"
       >
-        <VTextMarquee
+        <div class="marqueecom" @click="handleClick()">
+          <div :class="!paused ? 'paused' : ''">
+            <span
+              v-for="(item, index) in newsTitleList"
+              :key="index"
+              :class="item.length > 60 ? 'longtitle' : ''"
+            >
+              {{ item }}
+            </span>
+          </div>
+        </div>
+
+        <!-- <VTextMarquee
           :speed="35"
           :animate="paused"
           :content="newsTitleList.join('&nbsp;&nbsp;&nbsp;')"
           @click="handleClick()"
-        ></VTextMarquee>
+        ></VTextMarquee> -->
 
         <!-- <div
           ref="news"
@@ -91,7 +103,6 @@ export default {
       totalWidth: 0,
       currentLeft: 0,
       paused: true,
-
       isFirstShow: false,
       isDepositOrWithdraw: false,
       // 彈窗顯示狀態統整
@@ -205,7 +216,7 @@ export default {
   display: flex;
   align-content: center;
   padding: 10px 17px 8px;
-  width: 100%;
+  max-width: 420px;
   overflow: hidden;
 
   .news-icon {
@@ -261,8 +272,53 @@ export default {
   white-space: nowrap;
 
   .title-item {
-    padding-right: 10px;
+    padding-right: 25px;
     white-space: nowrap;
+  }
+}
+
+.marqueecom {
+  height: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.marqueecom div {
+  display: flex;
+  height: 12px;
+  min-width: 325px;
+  position: absolute;
+  white-space: nowrap;
+  animation: marqueecom 22s linear infinite;
+
+  &.paused {
+    animation-play-state: paused;
+  }
+}
+
+.marqueecom span {
+  padding-right: 10px;
+
+  &.longtitle {
+    max-width: 600px;
+    overflow: hidden;
+  }
+}
+
+@-webkit-keyframes marqueecom {
+  0% {
+    -webkit-transform: translate3d(100%, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+  }
+}
+@keyframes marqueecom {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
 </style>
