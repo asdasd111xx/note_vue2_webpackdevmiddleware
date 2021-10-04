@@ -298,7 +298,7 @@ export default {
     },
     checkLayeredURL() {
       this.actionGetLayeredURL().then(res => {
-        if (res.indexOf(window.location.host) === -1) {
+        if (res.indexOf(window.location.host) != -1 || res.length < 1) {
           this.linktoJoin();
         } else {
           window.location.href = `https://${res[0]}/mobile/joinmember?login=1`;
