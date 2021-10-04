@@ -192,7 +192,7 @@
   </mobile-container>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import loginForm from "@/mixins/loginForm";
 import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/components/thirdyVerification";
@@ -293,11 +293,17 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionGetLayeredURL"]),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+    },
+    checkLayeredURL() {
+      this.actionGetLayeredURL.then(res => {
+        console.log(res);
+      });
     }
   }
 };

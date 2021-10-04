@@ -35,6 +35,7 @@ export default {
       isLoading: false,
       isCheckWithdraw: false,
       RedEnvelopeTouchType: true,
+      showRedirectJump: false,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
         { name: "myWallet", text: "钱包", path: "wallet?redirect=home" },
@@ -208,9 +209,16 @@ export default {
     },
     vipLevel() {
       return this.currentLevel <= 10 ? this.currentLevel : "max";
+    },
+    siteName() {
+      return this.siteConfig.SITE_NAME;
     }
   },
   created() {
+    if (localStorage.getItem("redirect_url")) {
+      // console.log("jump to redirect_url");
+      this.showRedirectJump = true;
+    }
     localStorage.removeItem("is-open-game");
     localStorage.removeItem("iframe-third-url");
     localStorage.removeItem("enable-swag");
@@ -1166,6 +1174,12 @@ export default {
         if (res.errorCode === "00" && res.status === "000") {
         }
       });
+    },
+    closeRedirect_url() {
+      // console.log(localStorage.getItem("redirect_url"));
+
+      window.location.href = `https://${localStorage.getItem("redirect_url")}`;
+      localStorage.removeItem("redirect_url");
     }
   }
 };
