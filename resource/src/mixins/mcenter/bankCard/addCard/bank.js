@@ -440,7 +440,7 @@ export default {
                 }
               })
               .catch(error => {
-                if (error.response && error.response.status === 429) {
+                if (error && error.status === 429) {
                   this.actionGetToManyRequestMsg(error.response).then(res => {
                     this.errorMsg = res;
                   });
@@ -459,7 +459,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response && error.response.status === 429) {
+          if (error && error.status === 429) {
             this.actionGetToManyRequestMsg(error.response).then(res => {
               this.errorMsg = res;
             });
