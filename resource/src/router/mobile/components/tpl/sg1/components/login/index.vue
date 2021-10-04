@@ -302,6 +302,7 @@ export default {
         console.log(res);
         // this.linktoJoin()
       });
+      this.linktoJoin();
     }
   }
 };
