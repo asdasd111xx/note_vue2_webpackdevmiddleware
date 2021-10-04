@@ -1,3 +1,4 @@
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
@@ -400,7 +401,8 @@ export default {
         params: {
           lang: "zh-cn",
           phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
-          ...captchaParams
+          ...captchaParams,
+          aid: getCookie("aid") || ""
         }
       })
         .then(res => {
