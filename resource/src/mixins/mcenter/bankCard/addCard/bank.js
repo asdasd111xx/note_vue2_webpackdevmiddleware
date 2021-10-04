@@ -400,7 +400,7 @@ export default {
         params: {
           lang: "zh-cn",
           phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
-          captchaText: this.thirdyCaptchaObj || ""
+          ...captchaParams
         }
       })
         .then(res => {
@@ -431,6 +431,10 @@ export default {
                     }
                     this.time -= 1;
                   }, 1500);
+                } else {
+                  if (res.msg) {
+                    this.errorMsg = res.msg;
+                  }
                 }
               })
               .catch(error => {
@@ -442,16 +446,13 @@ export default {
                 }
 
                 if (error.status) {
-                  this.errorMsg = `${error.errorCode}`;
+                  this.errorMsg = `${error.msg}`;
                   return;
                 }
               });
           } else {
-            if (res.data && res.data.msg) {
-              this.errorMsg = res.data.msg;
-            } else {
-              // console.log(res.data);
-              this.errorMsg = res.data;
+            if (res.msg) {
+              this.errorMsg = res.msg;
             }
           }
         })
@@ -465,92 +466,12 @@ export default {
 
           this.lockStatus = false;
 
-          // console.log(error.response);
           if (error.response.data && error.response.data.msg) {
             this.errorMsg = error.response.data.msg;
           } else {
             this.errorMsg = error.response.data;
           }
         });
-
-      // axios({
-      //   method: "post",
-      //   url: "/api/v1/c/player/verify/user_bank/sms",
-      //   data: {
-      //     phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
-      //     ...captchaParams
-      //   }
-      // })
-      //   .then(res => {
-      //     this.lockStatus = false;
-      //     console.log("1111111111", res);
-      //     if (res && res.data && res.data.result === "ok") {
-      //       if (this.domainConfig && this.domainConfig.auto_keyring) {
-      //       } else {
-      //         this.actionSetGlobalMessage({
-      //           msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
-      //         });
-      //       }
-      //       axios({
-      //         method: "get",
-      //         url: "/api/v1/c/player/phone/ttl"
-      //       })
-      //         .then(res => {
-      //           console.log("2222222", res);
-      //           if (res && res.data && res.data.result === "ok") {
-      //             this.time = res.data.ret;
-      //             this.smsTimer = setInterval(() => {
-      //               if (this.time <= 0) {
-      //                 clearInterval(this.smsTimer);
-      //                 this.smsTimer = null;
-      //                 return;
-      //               }
-      //               this.time -= 1;
-      //             }, 1500);
-      //           }
-      //         })
-      //         .catch(error => {
-      //           console.log("2222222errrr", error);
-      //           if (error.response && error.response.status === 429) {
-      //             this.actionGetToManyRequestMsg(error.response).then(res => {
-      //               this.errorMsg = res;
-      //             });
-      //             return;
-      //           }
-
-      //           if (error.response.data.msg) {
-      //             this.errorMsg = `${error.response.data.msg}`;
-      //             return;
-      //           }
-      //         });
-      //     } else {
-      //       console.log("elseelseelse", res);
-      //       if (res.data && res.data.msg) {
-      //         this.errorMsg = res.data.msg;
-      //       } else {
-      //         console.log(res.data);
-      //         this.errorMsg = res.data;
-      //       }
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log("111111111errrrrr", error);
-      //     if (error.response && error.response.status === 429) {
-      //       this.actionGetToManyRequestMsg(error.response).then(res => {
-      //         this.errorMsg = res;
-      //       });
-      //       return;
-      //     }
-
-      //     this.lockStatus = false;
-
-      //     console.log(error.response);
-      //     if (error.response.data && error.response.data.msg) {
-      //       this.errorMsg = error.response.data.msg;
-      //     } else {
-      //       this.errorMsg = error.response.data;
-      //     }
-      //   });
     }
   }
 };
