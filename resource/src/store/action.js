@@ -2469,3 +2469,45 @@ export const actionSendYM = ({ state }, eventCode) => {
     ]
   });
 };
+
+export const actionGetLayeredURL = ({ state }, eventCode) => {
+  // return (
+  //   axios({
+  //     method: "get",
+  //     url: "/api/v2/c/hostnames",
+  //     params: {
+  //       // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+  //       client_type: 0,
+  //       with_level_hostname: false,
+  //       lang: "zh-cn"
+  //     }
+  //   })
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostnames/V2?lang=zh-cn`,
+    params: {
+      // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+      clientType: 0,
+      withLevelHostname: true
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
+
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg
+        });
+        return Promise.resolve(false);
+      }
+
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg
+      });
+    });
+  // );
+};

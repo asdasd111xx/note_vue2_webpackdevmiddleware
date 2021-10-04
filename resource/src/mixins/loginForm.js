@@ -247,33 +247,35 @@ export default {
         // 重置驗證碼
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
         this.captcha = "";
-
-        if (
-          res &&
-          res.data &&
-          res.data &&
-          res.data.cookie &&
-          res.data.cookie.cid
-        ) {
-          try {
-            let cookie = res.data.cookie;
-            for (let [key, value] of Object.entries(cookie)) {
-              setCookie(key, value);
+        if (res && res.data && res.data.cookie) {
+          if (res.data.cookie.cid != "") {
+            try {
+              let cookie = res.data.cookie;
+              for (let [key, value] of Object.entries(cookie)) {
+                setCookie(key, value);
+              }
+            } catch (e) {
+              setCookie("cid", res.data.cookie.cid);
             }
-          } catch (e) {
-            setCookie("cid", res.data.cookie.cid);
-          }
-          this.handleSaveAccont();
-          this.actionIsLogin(true);
-          window.RESET_MEM_SETTING();
+            this.handleSaveAccont();
+            this.actionIsLogin(true);
+            window.RESET_MEM_SETTING();
 
-          if (this.redirect) {
-            window.location.href = this.redirect;
+            if (this.redirect) {
+              window.location.href = this.redirect;
+              return;
+            }
+
+            window.location.reload();
             return;
+          } else if (
+            res.data.redirect &&
+            res.data.redirect_url &&
+            localStorage.getItem("isPWA")
+          ) {
+            localStorage.setItem("redirect_url", res.data.redirect_url);
+            this.$router.push("/mobile/home");
           }
-
-          window.location.reload();
-          return;
         }
 
         if (res && res.status !== "000") {
