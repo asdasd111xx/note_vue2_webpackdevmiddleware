@@ -1176,8 +1176,6 @@ export default {
       });
     },
     closeRedirect_url() {
-      // console.log(localStorage.getItem("redirect_url"));
-
       window.location.href = `https://${localStorage.getItem("redirect_url")}`;
       localStorage.removeItem("redirect_url");
     }
