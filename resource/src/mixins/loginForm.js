@@ -268,7 +268,11 @@ export default {
 
             window.location.reload();
             return;
-          } else if (res.data.redirect && res.data.redirect_url) {
+          } else if (
+            res.data.redirect &&
+            res.data.redirect_url &&
+            localStorage.getItem("isPWA")
+          ) {
             localStorage.setItem("redirect_url", res.data.redirect_url);
             this.$router.push("/mobile/home");
           }
