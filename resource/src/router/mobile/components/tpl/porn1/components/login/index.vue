@@ -163,7 +163,7 @@
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
                 <div class="link-button link-join-mem">
-                  <span @click="linktoJoin()">
+                  <span @click="checkLayeredURL">
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
@@ -301,8 +301,12 @@ export default {
       this.thirdyCaptchaObj = obj;
     },
     checkLayeredURL() {
-      this.actionGetLayeredURL.then(res => {
-        console.log(res);
+      this.actionGetLayeredURL().then(res => {
+        if (res.indexOf(window.location.host) === -1) {
+          this.linktoJoin();
+        } else {
+          window.location.href = `https://${res[0]}/mobile/joinmember?login=1`;
+        }
       });
     }
   }

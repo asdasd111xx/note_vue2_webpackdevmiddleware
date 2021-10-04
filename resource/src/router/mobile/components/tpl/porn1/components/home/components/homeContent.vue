@@ -239,6 +239,27 @@
       </div>
       <page-loading :isShow="isLoading" />
     </div>
+    <div v-if="showRedirectJump">
+      <div :class="$style['mask']" />
+
+      <div :class="$style['modal-wrap']">
+        <div :class="$style['modal-content']">
+          {{
+            `尊敬的會員您好，${siteName}為進行線路與安全分流，將為您導至${siteName}子網址，並請您以後利用此網址登入，如有疑慮，歡迎洽詢線上客服!`
+          }}
+        </div>
+
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closeRedirect_url()"
+        >
+          关闭
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -630,5 +651,52 @@ export default {
   position: relative;
   float: left;
   box-sizing: border-box;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.modal-wrap {
+  width: 270px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+}
+
+.modal-content {
+  padding: 15px 15px 10px 15px;
+  // border-bottom: 1px solid #eee;
+}
+
+.modal-button-center {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 18px;
+
+  &:last-child {
+    color: #d2b79c;
+  }
+
+  &.ey1:last-child {
+    color: #e42a30;
+  }
+
+  &.porn1:last-child {
+    color: #d2b79c;
+  }
 }
 </style>
