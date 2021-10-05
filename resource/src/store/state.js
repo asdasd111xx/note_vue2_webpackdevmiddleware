@@ -459,5 +459,6 @@ export default {
     bank: true,
     account: true
   },
-  domainConfig: {}
+  domainConfig: {},
+  systemConfig:{}
 };

@@ -2418,13 +2418,8 @@ export const actionGetToManyRequestMsg = ({ state }, response) => {
   }
 };
 
-// 千分位
-export const actionSetThousandsCurrency = ({ state }, data) => {
-  return thousandsCurrency(data);
-};
-
 // 取得廳設定 C02.233
-export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, next) => {
+export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
   return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Config/V2`
@@ -2498,4 +2493,19 @@ export const actionGetLayeredURL = ({ state }, eventCode) => {
         msg
       });
     });
+};
+
+// 取得BundleID APP下載開關
+export const actionSetLCFSystemConfig = (
+  { state, dispatch, commit },
+  target = "lcf"
+) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/lcf`
+  }).then(res => {
+    if (res && res.data) {
+      commit(types.SET_LCFSYSTEMCONFIG, res.data);
+    }
+  });
 };

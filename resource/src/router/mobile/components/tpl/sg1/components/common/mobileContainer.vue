@@ -5,16 +5,20 @@
       $style.container,
       {
         [$style['has-header']]: hasHeader && !isApp,
-        [$style['has-footer']]: hasFooter
+        [$style['has-footer']]: hasFooter,
+        [$style['has-appTips']]: showApptips
       }
     ]"
     :style="resizeOverFlow ? { 'overflow-y': 'auto' } : {}"
   >
+    <appTips :class="[$style['app-tips']]" @toogleAppTips="toogleAppTips" />
+
     <m-header
       v-if="headerConfig && !isApp"
       :header-config="headerConfig"
       :update-search-status="updateSearchStatus"
       :has-unread-message="hasUnreadMessage"
+      :has-app-tips="showApptips"
     />
     <slot name="content" />
     <m-footer
@@ -37,9 +41,11 @@
 import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import appTips from "@/router/mobile/components/common/appTips";
 
 export default {
   components: {
+    appTips,
     mHeader: () => import(/* webpackChunkName: 'mHeader' */ "./mHeader"),
     mFooter: () => import(/* webpackChunkName: 'mFooter' */ "./mFooter"),
     agentNote: () =>
@@ -49,11 +55,15 @@ export default {
   },
   data() {
     return {
-      hasUnreadMessage: false
+      hasUnreadMessage: false,
+      showApptips: false
     };
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"])
+    ...mapActions(["actionSetGlobalMessage"]),
+    toogleAppTips(toogle) {
+      this.showApptips = toogle;
+    }
   },
   props: {
     headerConfig: {
@@ -165,5 +175,14 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 0;
+}
+
+.app-tips {
+  margin-bottom: 60px;
+}
+
+.has-appTips {
+  // 60 apptips + 43 header
+  padding-top: 103px;
 }
 </style>
