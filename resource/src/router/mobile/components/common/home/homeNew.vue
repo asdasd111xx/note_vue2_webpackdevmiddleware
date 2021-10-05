@@ -1,5 +1,10 @@
 <template>
-  <marquee :list="newslist" :titleList="newsTitle" :origin="'home'" />
+  <marquee
+    v-if="newslist && newslist.length > 0"
+    :list="newslist"
+    :titleList="newsTitle"
+    :origin="'home'"
+  />
 </template>
 
 <script>
