@@ -291,7 +291,7 @@ export default {
       width: 100%;
 
       span {
-        color: #5a4b4b;
+        color: #ffffff;
         font-size: 12px;
         font-weight: 700;
         text-align: center;
