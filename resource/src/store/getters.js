@@ -210,5 +210,6 @@ export default {
   getSwagBalance: state => state.swagBalance,
   getShowRedEnvelope: state => state.showRedEnvelope,
   getWithdrawCheckStatus: state => state.withdrawCheckStatus,
-  getDomainConfig: state => state.domainConfig
+  getDomainConfig: state => state.domainConfig,
+  getSystemConfig: state => target => state.systemConfig[target]
 };

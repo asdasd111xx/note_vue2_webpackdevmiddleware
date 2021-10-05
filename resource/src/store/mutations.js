@@ -615,5 +615,8 @@ export default {
   },
   [types.SET_DOMAINCONFIG](state, data) {
     state.domainConfig = data;
+  },
+  [types.SET_LCFSYSTEMCONFIG](state, data) {
+    state.systemConfig["lcf"] = data;
   }
 };
