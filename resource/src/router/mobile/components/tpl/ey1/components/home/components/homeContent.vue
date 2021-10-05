@@ -280,7 +280,7 @@
       <div :class="$style['modal-wrap']">
         <div :class="$style['modal-content']">
           {{
-            `尊敬的會員您好，${siteName}為進行線路與安全分流，將為您導至${siteName}子網址，並請您以後利用此網址登入，如有疑慮，歡迎洽詢線上客服!`
+            `尊敬的会员您好，${siteName}为进行线路与安全分流，将为您导至${siteName}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
           }}
         </div>
 
@@ -291,7 +291,7 @@
           ]"
           @click="closeRedirect_url()"
         >
-          关闭
+          确定
         </div>
       </div>
     </div>
