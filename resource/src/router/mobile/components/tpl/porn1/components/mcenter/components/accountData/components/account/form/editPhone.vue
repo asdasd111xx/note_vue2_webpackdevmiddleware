@@ -143,6 +143,7 @@ import mcenter from "@/api/mcenter";
 import member from "@/api/member";
 import popupVerification from "@/components/popupVerification";
 import serviceTips from "../../serviceTips";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -482,17 +483,27 @@ export default {
     },
     // 回傳會員手機驗證簡訊剩餘秒數可以重送
     getPhoneTTL() {
-      return axios({
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/phone/ttl"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Phone/TTL`,
+        params: {
+          lang: "zh-cn"
+        }
       })
         .then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.ttl = res.data.ret;
+          if (res && res.status === "000") {
+            this.ttl = res.data;
+          } else {
+            if (res.msg) {
+              this.errorMsg = res.msg;
+            }
           }
         })
         .catch(error => {
-          this.tipMsg = `${error.response.data.msg}`;
+          if (error.status) {
+            this.tipMsg = `${error.msg}`;
+            return;
+          }
         });
     },
     handleSend() {
@@ -512,12 +523,52 @@ export default {
         smsUrl = "/api/v1/c/player/outer/sms";
         params["vendor"] = "swag";
       } else if (this.isfromWithdraw) {
-        smsUrl = "/api/v1/c/player/withdraw/verify/sms";
+        smsUrl = `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Withdraw/Verify/Sms`;
       } else {
         smsUrl = "/api/v1/c/player/verify/phone";
       }
+      if (this.isfromWithdraw) {
+        goLangApiRequest({
+          method: "post",
+          url: smsUrl,
+          params: {
+            lang: "zh-cn",
+            ...params,
+            aid: getCookie("aid") || ""
+          }
+        })
+          .then(res => {
+            if (res && res.data === "operate success" && res.status === "000") {
+              this.getPhoneTTL().then(() => {
+                this.locker();
+                this.isSendSMS = false;
+              });
+            } else {
+              if (res && res.msg) {
+                this.tipMsg = res.msg;
+              }
+              this.isSendSMS = false;
+              this.showCaptcha(false);
+            }
+          })
+          .catch(error => {
+            this.showCaptcha(false);
+            this.countdownSec = "";
+            this.isSendSMS = false;
 
-      if (this.isfromWithdraw || this.isfromSWAG) {
+            if (error && error.msg) {
+              this.tipMsg = error.msg;
+            } else {
+              if (error && error.status === 429) {
+                this.actionGetToManyRequestMsg(error.msg).then(res => {
+                  this.tipMsg = res;
+                });
+                return;
+              }
+              this.tipMsg = error.msg;
+            }
+          });
+      } else if (this.isfromSWAG) {
         axios({
           method: "post",
           url: smsUrl,
