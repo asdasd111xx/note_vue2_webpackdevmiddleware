@@ -224,7 +224,7 @@ export default {
       let params = {
         username: this.username,
         password: this.password,
-        captcha: this.captcha,
+        captchaText: this.captcha,
         host: window.location.host,
         ...validate
       };
@@ -233,72 +233,79 @@ export default {
         params["aid"] = getCookie("aid") || "";
       }
 
-      return bbosRequest({
+      // return bbosRequest({
+      //   method: "put",
+      //   url: this.siteConfig.BBOS_DOMIAN + "/Login",
+      //   reqHeaders: {
+      //     Vendor: this.memInfo.user.domain,
+      //     kind: platform === "H" ? "h" : "pwa"
+      //   },
+      //   params: params
+      return goLangApiRequest({
         method: "put",
-        url: this.siteConfig.BBOS_DOMIAN + "/Login",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain,
-          kind: platform === "H" ? "h" : "pwa"
-        },
-        params: params
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Login`,
+        params: {
+          lang: "zh-cn",
+          ...params
+        }
       }).then(res => {
         this.isLoading = false;
 
         // 重置驗證碼
-        if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-        this.captcha = "";
-        if (res && res.data && res.data.cookie) {
-          if (res.data.cookie.cid != "") {
-            try {
-              let cookie = res.data.cookie;
-              for (let [key, value] of Object.entries(cookie)) {
-                setCookie(key, value);
-              }
-            } catch (e) {
-              setCookie("cid", res.data.cookie.cid);
-            }
-            this.handleSaveAccont();
-            this.actionIsLogin(true);
-            window.RESET_MEM_SETTING();
+        // if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
+        // this.captcha = "";
+        // if (res && res.data && res.data.cookie) {
+        //   if (res.data.cookie.cid != "") {
+        //     try {
+        //       let cookie = res.data.cookie;
+        //       for (let [key, value] of Object.entries(cookie)) {
+        //         setCookie(key, value);
+        //       }
+        //     } catch (e) {
+        //       setCookie("cid", res.data.cookie.cid);
+        //     }
+        //     this.handleSaveAccont();
+        //     this.actionIsLogin(true);
+        //     window.RESET_MEM_SETTING();
 
-            if (this.redirect) {
-              window.location.href = this.redirect;
-              return;
-            }
+        //     if (this.redirect) {
+        //       window.location.href = this.redirect;
+        //       return;
+        //     }
 
-            window.location.reload();
-            return;
-          } else if (
-            res.data.redirect &&
-            res.data.redirect_url &&
-            !localStorage.getItem("isPWA")
-          ) {
-            localStorage.setItem("redirect_url", res.data.redirect_url);
-            this.$router.push("/mobile/home");
-          }
-        }
+        //     window.location.reload();
+        //     return;
+        //   } else if (
+        //     res.data.redirect &&
+        //     res.data.redirect_url &&
+        //     !localStorage.getItem("isPWA")
+        //   ) {
+        //     localStorage.setItem("redirect_url", res.data.redirect_url);
+        //     this.$router.push("/mobile/home");
+        //   }
+        // }
 
-        if (res && res.status !== "000") {
-          this.getCaptcha();
-          this.checkItem = "";
-          if (this.memInfo.config.login_captcha_type === 2) {
-            this.$refs["slide-verification"].ncReload();
-          }
-          if (res.msg) {
-            this.errMsg = res.msg;
-            // msg: "验证码错误"
-            if (res.code === "C00024") {
-              this.$refs.captcha.focus();
-            }
-            return;
-          }
+        // if (res && res.status !== "000") {
+        //   this.getCaptcha();
+        //   this.checkItem = "";
+        //   if (this.memInfo.config.login_captcha_type === 2) {
+        //     this.$refs["slide-verification"].ncReload();
+        //   }
+        //   if (res.msg) {
+        //     this.errMsg = res.msg;
+        //     // msg: "验证码错误"
+        //     if (res.code === "C00024") {
+        //       this.$refs.captcha.focus();
+        //     }
+        //     return;
+        //   }
 
-          this.errMsg = res.status;
-        }
+        //   this.errMsg = res.status;
+        // }
 
-        if (callBackFuc) {
-          callBackFuc.reset();
-        }
+        // if (callBackFuc) {
+        //   callBackFuc.reset();
+        // }
       });
     },
     handleSaveAccont() {
