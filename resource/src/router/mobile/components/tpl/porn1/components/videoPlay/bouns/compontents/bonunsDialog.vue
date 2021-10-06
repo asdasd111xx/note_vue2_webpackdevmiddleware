@@ -188,7 +188,7 @@
 <script>
 import { getCookie } from "@/lib/cookie";
 import yaboRequest from "@/api/yaboRequest";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
@@ -256,6 +256,7 @@ export default {
     window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
+    ...mapActions(["actionGetLayeredURL"]),
     handleBack() {
       this.$router.back();
     },
@@ -323,7 +324,14 @@ export default {
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
         case 7:
-          this.$router.push(`/mobile/joinmember`);
+          // this.$router.push(`/mobile/joinmember`);
+          this.actionGetLayeredURL().then(res => {
+            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+              this.$router.push(`/mobile/joinmember`);
+            } else {
+              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+            }
+          });
         default:
           return;
       }

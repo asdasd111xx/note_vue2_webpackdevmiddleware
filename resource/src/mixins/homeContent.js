@@ -216,51 +216,51 @@ export default {
   },
   created() {
     if (localStorage.getItem("redirect_url")) {
-      // console.log("jump to redirect_url");
       this.showRedirectJump = true;
-    }
-    localStorage.removeItem("is-open-game");
-    localStorage.removeItem("iframe-third-url");
-    localStorage.removeItem("enable-swag");
-
-    // 先顯示彈跳公告關閉後再顯示一般公告
-    // 顯示過公告 localStorage.getItem('is-shown-announcement')
-    // 不在提示 localStorage.getItem('do-not-show-home-post')
-    if (this.loginStatus) {
-      localStorage.setItem("is-shown-announcement", true);
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/popup-announcement"
-      }).then(res => {
-        if (res.data) {
-          if (res.data.ret && res.data.ret.length > 0) {
-            // 顯示彈跳公告
-            this.sitePostList = res.data.ret;
-            this.isShowPop = true;
-          } else {
-            // 顯示一般公吿
-            this.closePop(true);
-          }
-        }
-      });
     } else {
-      // 顯示一般公吿
-      // 登入前公告
-      this.closePop(true);
-    }
+      localStorage.removeItem("is-open-game");
+      localStorage.removeItem("iframe-third-url");
+      localStorage.removeItem("enable-swag");
 
-    this.showPromotion = this.loginStatus
-      ? this.memInfo.user.show_promotion
-      : true;
-    this.getMaintainList();
-    if (
-      this.siteConfig.ROUTER_TPL === "porn1" ||
-      this.siteConfig.ROUTER_TPL === "sg1" ||
-      this.siteConfig.ROUTER_TPL === "aobo1"
-    ) {
-      // this.initSWAGConfig(true);
+      // 先顯示彈跳公告關閉後再顯示一般公告
+      // 顯示過公告 localStorage.getItem('is-shown-announcement')
+      // 不在提示 localStorage.getItem('do-not-show-home-post')
       if (this.loginStatus) {
-        this.getTaskCheck();
+        localStorage.setItem("is-shown-announcement", true);
+        axios({
+          method: "get",
+          url: "/api/v1/c/player/popup-announcement"
+        }).then(res => {
+          if (res.data) {
+            if (res.data.ret && res.data.ret.length > 0) {
+              // 顯示彈跳公告
+              this.sitePostList = res.data.ret;
+              this.isShowPop = true;
+            } else {
+              // 顯示一般公吿
+              this.closePop(true);
+            }
+          }
+        });
+      } else {
+        // 顯示一般公吿
+        // 登入前公告
+        this.closePop(true);
+      }
+
+      this.showPromotion = this.loginStatus
+        ? this.memInfo.user.show_promotion
+        : true;
+      this.getMaintainList();
+      if (
+        this.siteConfig.ROUTER_TPL === "porn1" ||
+        this.siteConfig.ROUTER_TPL === "sg1" ||
+        this.siteConfig.ROUTER_TPL === "aobo1"
+      ) {
+        // this.initSWAGConfig(true);
+        if (this.loginStatus) {
+          this.getTaskCheck();
+        }
       }
     }
   },

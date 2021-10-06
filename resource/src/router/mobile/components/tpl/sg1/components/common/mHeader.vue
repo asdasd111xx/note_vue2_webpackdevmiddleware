@@ -109,19 +109,15 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <span
-          :class="$style['visitor-title']"
-          @click="$router.push('/mobile/joinmember')"
+        <span :class="$style['visitor-title']" @click="checkLayeredURL"
           >访客彩金</span
         >
         <span
           :class="[$style['visitor-money'], $style['just-money']]"
-          @click="$router.push('/mobile/joinmember')"
+          @click="checkLayeredURL"
           >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
-        <span
-          :class="$style['visitor-money']"
-          @click="$router.push('/mobile/joinmember')"
+        <span :class="$style['visitor-money']" @click="checkLayeredURL"
           >领取</span
         >
         <span @click="$router.push('/mobile/login')">{{
@@ -268,7 +264,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
@@ -352,6 +348,15 @@ export default {
               ).toFixed(2);
             }
           }
+        }
+      });
+    },
+    checkLayeredURL() {
+      this.actionGetLayeredURL().then(res => {
+        if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+          this.$router.push(`/mobile/joinmember`);
+        } else {
+          window.location.replace(`https://${res[0]}/mobile/joinmember`);
         }
       });
     }
