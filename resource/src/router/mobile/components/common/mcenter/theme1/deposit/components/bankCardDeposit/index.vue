@@ -1944,7 +1944,11 @@ export default {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
-        timeout: 30000
+        timeout: 30000,
+        params: {
+          tUserID: this.memInfo.user.user_id,
+          tUserName: this.memInfo.user.username
+        }
       })
         .then(res => {
           this.isBlockChecked = true;
