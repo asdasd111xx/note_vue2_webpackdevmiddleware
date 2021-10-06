@@ -46,7 +46,7 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
-  let platform = "G";
+  let platform = "";
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams && urlParams.get("platform")) {
     platform = urlParams.get("platform");
@@ -2466,7 +2466,10 @@ export const actionSendYM = ({ state }, eventCode) => {
 };
 
 // 取得BundleID APP下載開關
-export const actionSetLCFSystemConfig = ({ state, dispatch, commit }, target = 'lcf') => {
+export const actionSetLCFSystemConfig = (
+  { state, dispatch, commit },
+  target = "lcf"
+) => {
   return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/lcf`
