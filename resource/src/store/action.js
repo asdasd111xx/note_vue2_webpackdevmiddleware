@@ -584,6 +584,16 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
   commit(types.SETENV, "mem");
 
   return (async () => {
+    await axios({
+      method: "get",
+      url: "/getcid"
+    })
+      .then(res => {
+        if (getCookie("cid") != res.data.cid) {
+          setCookie("cidd", res.data.cid);
+        }
+      })
+      .catch(res => {});
     // dispatch("actionSetSystemTime");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');

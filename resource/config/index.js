@@ -140,6 +140,11 @@ module.exports = {
         target: domain,
         changeOrigin: true,
         secure: false
+      },
+      "/getcid": {
+        target: domain,
+        changeOrigin: true,
+        secure: false
       }
     },
     cssSourceMap: false
