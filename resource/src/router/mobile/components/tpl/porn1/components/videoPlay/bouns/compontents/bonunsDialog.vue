@@ -325,13 +325,18 @@ export default {
           return;
         case 7:
           // this.$router.push(`/mobile/joinmember`);
-          this.actionGetLayeredURL().then(res => {
-            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-              this.$router.push(`/mobile/joinmember`);
-            } else {
-              window.location.replace(`https://${res[0]}/mobile/joinmember`);
-            }
-          });
+
+          if (!localStorage.getItem("isPWA")) {
+            this.actionGetLayeredURL().then(res => {
+              if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+                this.$router.push(`/mobile/joinmember`);
+              } else {
+                window.location.replace(`https://${res[0]}/mobile/joinmember`);
+              }
+            });
+          } else {
+            this.$router.push(`/mobile/joinmember`);
+          }
         default:
           return;
       }
