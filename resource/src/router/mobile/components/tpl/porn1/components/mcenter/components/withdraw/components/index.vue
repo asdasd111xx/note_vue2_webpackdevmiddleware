@@ -448,7 +448,9 @@
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
-          使用{{ selectedCard.name }}出款，额外赠送{{ formatThousandsCurrency(offer()) }}元(CNY)优惠
+          使用{{ selectedCard.name }}出款，额外赠送{{
+            formatThousandsCurrency(offer())
+          }}元(CNY)优惠
         </span>
       </div>
       <!-- 到帳金額 -->
@@ -1645,6 +1647,8 @@ export default {
             this.displayWithdrawValue = "";
             this.withdrawPwd = "";
             if (this.memInfo.config.withdraw === "迅付") {
+              // 更新 Withdraw Info
+              this.updateAmount(this.selectedCard.swift_code);
               this.isSuccessAlertShow = true;
               // this.actionSetGlobalMessage({
               //   msg: "提现成功",
@@ -1682,6 +1686,8 @@ export default {
                 this.actionSetIsLoading(false);
 
                 if (res && res.status === "000") {
+                  // 更新 Withdraw Info
+                  this.updateAmount(this.selectedCard.swift_code);
                   this.isSuccessAlertShow = true;
                   // this.actionSetGlobalMessage({
                   //   msg: "提现成功"
@@ -1909,7 +1915,9 @@ export default {
         case !this.withdrawValue:
           return "--";
 
-        case this.selectedCard.offer_percent === "0" || bonusOffer <= 0 || +this.actualMoney <=0:
+        case this.selectedCard.offer_percent === "0" ||
+          bonusOffer <= 0 ||
+          +this.actualMoney <= 0:
           return "0.00";
 
         case bonusOffer >= this.selectedCard.offer_limit &&
