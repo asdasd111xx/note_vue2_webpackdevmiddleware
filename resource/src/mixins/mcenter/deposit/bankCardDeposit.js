@@ -494,7 +494,9 @@ export default {
         timeout: 30000,
         params: {
           username: this.username,
-          lang: "zh-cn"
+          lang: "zh-cn",
+          tUserID: this.memInfo.user.user_id,
+          tUserName: this.memInfo.user.username
         }
       })
         .then(res => {
@@ -730,7 +732,9 @@ export default {
           paymentMethodId: this.curPayInfo.payment_method_id,
           username: this.username,
           amount: amount,
-          lang: "zh-cn"
+          lang: "zh-cn",
+          tUserID: this.memInfo.user.user_id,
+          tUserName: this.memInfo.user.username
         }
       }).then(res => {
         if (res.status === "000") {

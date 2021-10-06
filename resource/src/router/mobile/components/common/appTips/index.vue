@@ -35,7 +35,7 @@
         </div>
 
         <div :class="$style['download-wrap']">
-          <div @click="handleClickDownload" :class="$style['download-btn']">
+          <div @click="handleClickToLanding" :class="$style['download-btn']">
             <span> {{ $text("S_NOW_DOWNLOAD") }}</span>
           </div>
         </div>
@@ -59,7 +59,8 @@ export default {
         platform: "",
         show: false,
         bundleID: ""
-      }
+      },
+      href: ""
     };
   },
   created() {
@@ -116,11 +117,24 @@ export default {
 
         if (this.downloadConfigData.show) {
           this.$emit("toogleAppTips", true);
+
+          goLangApiRequest({
+            method: "get",
+            url:
+              this.siteConfig.YABO_GOLANG_API_DOMAIN +
+              "/xbb/Domain/Hostnames/V2?lang=zh-cn",
+            params: {
+              // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+              clientType: 3
+            }
+          }).then(res => {
+            if (res && res.data && res.data[0]) {
+              this.href = `${res.data[0]}`;
+            }
+          });
         } else {
           this.$emit("toogleAppTips", false);
         }
-
-        console.log(this.downloadConfigData);
       });
     }
   },
@@ -144,18 +158,12 @@ export default {
       "actionSetGlobalMessage",
       "actionSetLCFSystemConfig"
     ]),
-    handleClickDownload() {
-      if (this.isDownloading || !this.downloadConfigData.show) {
+    setGAObj() {
+      if (!ga || ga === undefined) {
         return;
       }
 
-      this.isDownloading = true;
       let site = "";
-      let platformMapping = {
-        IOS: 1,
-        PWA: 2,
-        ANDROID: 3
-      };
 
       switch (this.siteConfig.ROUTER_TPL) {
         case "porn1":
@@ -176,9 +184,33 @@ export default {
       // event_label: `Download_ANDROID_YABO`,
       // event_label: `Download_PWA_SG`,
       // event_label: `Download_ANDROID_SG`,
+      if (ga) {
+        ga("event", "Download Click", gaObj);
+      }
 
-      ga("event", "Download Click", gaObj);
       console.log("Download Click:", gaObj);
+    },
+    handleClickToLanding() {
+      if (!this.downloadConfigData.show) {
+        return;
+      }
+      this.isDownloading = true;
+      this.setGAObj();
+
+      location.href = `https://${this.href}`;
+    },
+    handleClickDownload() {
+      if (this.isDownloading || !this.downloadConfigData.show) {
+        return;
+      }
+      this.isDownloading = true;
+      this.setGAObj();
+
+      let platformMapping = {
+        IOS: 1,
+        PWA: 2,
+        ANDROID: 3
+      };
 
       goLangApiRequest({
         method: "get",
@@ -244,7 +276,7 @@ export default {
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 501;
+  z-index: 50;
 }
 
 .container {
