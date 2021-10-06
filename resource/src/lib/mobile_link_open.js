@@ -158,7 +158,17 @@ export default target => {
         if (store.state.loginStatus) {
           return;
         }
-        router.push("/mobile/joinmember");
+        if (!localStorage.getItem("isPWA")) {
+          store.dispatch("actionGetLayeredURL").then(res => {
+            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+              router.push(`/mobile/joinmember`);
+            } else {
+              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+            }
+          });
+        } else {
+          router.push(`/mobile/joinmember`);
+        }
         return;
 
       case "promotion":
