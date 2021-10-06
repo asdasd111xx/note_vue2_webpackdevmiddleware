@@ -63,6 +63,12 @@ export default {
     ...mapActions(["actionSetGlobalMessage", "actionSetLCFSystemConfig"]),
     toogleAppTips(toogle) {
       this.showApptips = toogle;
+
+      if (toogle) {
+        document.querySelector("#mobile-wrap").style = "overflow: hidden";
+      } else {
+        document.querySelector("#mobile-wrap").style = "";
+      }
     }
   },
   props: {
