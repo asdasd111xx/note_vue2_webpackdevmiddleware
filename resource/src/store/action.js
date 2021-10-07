@@ -698,7 +698,7 @@ export const actionSetUserdata = (
     memstatus = true;
   }, 1000);
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (hasLogin) {
     axios({
       method: "get",
@@ -1535,7 +1535,7 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
     return Promise.resolve(null);
   }
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return Promise.resolve(null);
   }
@@ -1552,7 +1552,7 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
 };
 
 export const actionSetRechargeBonusConfig = ({ commit }, data) => {
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return;
   }
@@ -1781,7 +1781,7 @@ export const actionSetUserLevels = ({ commit, dispatch }) => {
 };
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin || window.CHECKV3PLAYERSTATUS) {
     return;
   }
@@ -2156,7 +2156,7 @@ export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
 export const actionSetSwagBalance = ({ commit, state }, data) => {
   return;
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return;
   }

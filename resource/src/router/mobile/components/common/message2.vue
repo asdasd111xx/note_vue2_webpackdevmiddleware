@@ -191,6 +191,7 @@ export default {
           case "C150100":
           case "77700036":
             setCookie("cid", "");
+            setCookie("cidd", "");
             setCookie("y_token", "");
             setCookie("aid", "");
             this.$router.push("/mobile/login");

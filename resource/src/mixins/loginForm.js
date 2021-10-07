@@ -51,6 +51,7 @@ export default {
   beforeCreate() {
     if (this.$route.query.logout) {
       setCookie("cid", "");
+      setCookie("cidd", "");
       setCookie("y_token", "");
       setCookie("aid", "");
       this.$router.replace("/mobile/login");
@@ -255,6 +256,7 @@ export default {
               }
             } catch (e) {
               setCookie("cid", res.data.cookie.cid);
+              setCookie("cidd", res.data.cookie.cid);
             }
             this.handleSaveAccont();
             this.actionIsLogin(true);

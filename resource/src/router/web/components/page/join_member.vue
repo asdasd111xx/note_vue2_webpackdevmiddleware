@@ -1050,6 +1050,7 @@ export default {
             }
           } catch (e) {
             setCookie("cid", cookieData.cookie.cid);
+            setCookie("cidd", cookieData.cookie.cid);
           }
           // GA流量統計
           window.dataLayer.push({
