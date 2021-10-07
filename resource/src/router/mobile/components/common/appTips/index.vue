@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
@@ -66,6 +67,7 @@ export default {
   created() {
     if (
       this.$route.name === "home" &&
+      Vue.cookie.get("platform") !== "G" &&
       (this.isMobileSafari() || this.isMobileAndroid())
     ) {
       // this.showAppTips = true;

@@ -46,7 +46,7 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
-  let platform = "G";
+  let platform = "";
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams && urlParams.get("platform")) {
     platform = urlParams.get("platform");
