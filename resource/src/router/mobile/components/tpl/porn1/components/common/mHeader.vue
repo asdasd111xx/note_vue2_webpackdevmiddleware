@@ -370,7 +370,7 @@ export default {
   z-index: 10;
   width: 100%;
   height: 43px;
-  padding: 0 17px;
+  padding: 0 10px;
   background: $main_white_color1;
   text-align: center;
   border-bottom: 1px solid #eee;
@@ -409,7 +409,6 @@ export default {
 @media screen and (max-width: 374px) {
   .header {
     width: 100%;
-    padding: 0 6px;
   }
 
   .balance-wrap {
@@ -438,41 +437,51 @@ export default {
 
   > img {
     display: block;
-    height: 33px;
+    height: auto;
     width: 100%;
+  }
+
+  @media screen and (max-width: 320px) {
+    width: 87px;
   }
 }
 
 .login-wrap {
   height: 100%;
   position: absolute;
-  right: 17px;
+  right: 8px;
   top: 0;
 
   &.more {
     > * {
       padding: 0 !important;
-      line-height: 12px;
+      line-height: 15px;
     }
   }
 
   > span {
     display: inline-block;
     height: 20px;
-    line-height: 20px;
-    margin: 0 1.5px;
-    padding: 0 3px;
+    // line-height: 20px;
+    margin: 0 1px;
     color: black;
     font-size: 17px;
     vertical-align: middle;
+    @media screen and(max-width: 320px) {
+      font-size: 14px;
+    }
   }
 
   img {
     display: inline-block;
     height: 20px;
     width: 20px;
-    margin-left: 1.5px;
     vertical-align: middle;
+
+    @media screen and (max-width: 320px) {
+      height: 16px;
+      width: 16px;
+    }
   }
 
   &::before {
@@ -486,19 +495,30 @@ export default {
     font-size: 14px;
     margin: 0;
     padding: 0;
-    padding-right: 2px;
+    @media screen and(max-width: 320px) {
+      font-size: 12px;
+    }
   }
   .visitor-money {
-    font-size: 12px;
+    font-size: 14px;
+    height: 14px;
+    line-height: 14px;
+    vertical-align: middle;
     color: #fb7126;
     margin: 0;
     padding: 0;
-    padding-right: 2px;
 
     &.just-money {
       max-width: 90px;
       word-break: break-word;
       text-align: right;
+      @media screen and(max-width: 320px) {
+        max-width: 85px;
+      }
+    }
+    @media screen and(max-width: 320px) {
+      font-size: 12px;
+      line-height: 12px;
     }
   }
   .visitor-border {
