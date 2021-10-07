@@ -1176,7 +1176,19 @@ export default {
       });
     },
     closeRedirect_url() {
-      window.location.href = `https://${localStorage.getItem("redirect_url")}`;
+      if (localStorage.getItem("redirect_url").includes("http")) {
+        // window.location.replace(localStorage.getItem("redirect_url"));
+        // window.location.replace(window.location.href);
+        window.location.href = localStorage.getItem("redirect_url");
+        // setTimeout(() => {
+        //   window.location.replace(window.location.href);
+        // }, 1000);
+      } else {
+        window.location.href = `https://${localStorage.getItem(
+          "redirect_url"
+        )}`;
+      }
+
       localStorage.removeItem("redirect_url");
     }
   }
