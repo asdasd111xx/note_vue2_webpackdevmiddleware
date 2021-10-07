@@ -60,6 +60,7 @@ export default {
       .then(res => {
         if (res && res.data && res.data.result === "ok") {
           setCookie("cid", "");
+          setCookie("cidd", "");
           setCookie("aid", "");
           window.RESET_LOCAL_SETTING();
           window.RESET_MEM_SETTING();
@@ -72,6 +73,7 @@ export default {
       })
       .catch(error => {
         setCookie("cid", "");
+        setCookie("cidd", "");
         setCookie("aid", "");
         window.RESET_LOCAL_SETTING();
         window.RESET_MEM_SETTING();

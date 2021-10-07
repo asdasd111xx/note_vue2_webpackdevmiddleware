@@ -76,6 +76,7 @@ export default ({
           }
 
           setCookie("cid", "");
+          setCookie("cidd", "");
           setCookie("y_token", "");
           setCookie("aid", "");
 
