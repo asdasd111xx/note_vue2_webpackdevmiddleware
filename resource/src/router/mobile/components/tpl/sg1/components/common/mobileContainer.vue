@@ -66,8 +66,10 @@ export default {
 
       if (toogle) {
         document.querySelector("#mobile-wrap").style = "overflow: hidden";
+        document.querySelector("#home-top-bg").style = "top: 60px";
       } else {
         document.querySelector("#mobile-wrap").style = "";
+        document.querySelector("#home-top-bg").style = "";
       }
     }
   },
