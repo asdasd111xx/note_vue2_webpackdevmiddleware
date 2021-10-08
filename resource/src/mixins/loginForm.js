@@ -270,7 +270,7 @@ export default {
           } else if (
             res.data.redirect &&
             res.data.redirect_url &&
-            !localStorage.getItem("isPWA")
+            getCookie("platform") === "h"
           ) {
             localStorage.setItem("redirect_url", res.data.redirect_url);
             this.$router.push("/mobile/home");

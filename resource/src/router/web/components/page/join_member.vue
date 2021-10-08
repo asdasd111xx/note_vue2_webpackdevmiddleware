@@ -294,6 +294,27 @@
       <slot name="bottom-content" />
     </div>
     <page-loading :is-show="isLoading" />
+    <div v-if="showRedirectJump">
+      <div :class="$style['mask']" />
+
+      <div :class="$style['modal-wrap']">
+        <div :class="$style['modal-content']">
+          {{
+            `尊敬的会员您好，${siteName}为进行线路与安全分流，将为您导至${siteName}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
+          }}
+        </div>
+
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closeRedirect_url()"
+        >
+          确定
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -429,7 +450,9 @@ export default {
         }
       },
       isGetCaptcha: false,
-      isLoading: false
+      isLoading: false,
+      showRedirectJump: false,
+      redirect_url: ""
     };
   },
   computed: {
@@ -1046,9 +1069,10 @@ export default {
           if (
             res.data.redirect &&
             res.data.redirect_url &&
-            !localStorage.getItem("isPWA")
+            getCookie("platform") === "h"
           ) {
-            localStorage.setItem("redirect_url", res.data.redirect_url);
+            this.redirect_url = res.data.redirect_url;
+            this.showRedirectJump = true;
           } else {
             try {
               const { cookie } = res.data;
@@ -1178,6 +1202,14 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+
+    closeRedirect_url() {
+      if (this.redirect_url.includes("http")) {
+        window.location.href = this.redirect_url;
+      } else {
+        window.location.href = `https://${this.redirect_url}`;
+      }
     }
   }
 };

@@ -8,6 +8,7 @@ import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
+import { getCookie } from "@/lib/cookie";
 
 export default target => {
   const curLang = store.state.curLang || "zh-cn";
@@ -158,7 +159,7 @@ export default target => {
         if (store.state.loginStatus) {
           return;
         }
-        if (!localStorage.getItem("isPWA")) {
+        if (getCookie("platform") === "h") {
           store.dispatch("actionGetLayeredURL").then(res => {
             if (res.indexOf(window.location.host) != -1 || res.length < 1) {
               router.push(`/mobile/joinmember`);
