@@ -20,7 +20,9 @@
                   ref="username"
                   v-model="username"
                   :title="$text('S_ACCOUNT', '帐号')"
-                  :placeholder="$text('S_USER_NAME', '用户名')"
+                  :placeholder="
+                    $text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字')
+                  "
                   class="login-input"
                   maxlength="20"
                   tabindex="1"
@@ -48,7 +50,9 @@
                   id="pwd"
                   v-model="password"
                   :title="$text('S_PASSWORD', '密码')"
-                  :placeholder="$text('S_PASSWORD', '密码')"
+                  :placeholder="
+                    $text('S_PASSWORD_PLACEHOLDER', '请输入6-12位字母及数字')
+                  "
                   class="login-input"
                   type="password"
                   maxlength="12"
