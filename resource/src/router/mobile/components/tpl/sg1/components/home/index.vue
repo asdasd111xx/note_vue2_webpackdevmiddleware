@@ -106,7 +106,10 @@ export default {
 div.container {
   background-color: #fff;
 }
-
+.content-wrap {
+  max-width: $mobile_max_width;
+  overflow: hidden;
+}
 .top-bg {
   // background: url("/static/image/sg1/common/pic_top.png");
   // -moz-background-size: 100% 100%;
@@ -115,13 +118,18 @@ div.container {
   height: 150px;
   width: 140%;
   top: 0;
-  left: -20%;
   z-index: 0;
   position: absolute;
   background: linear-gradient(#fe593c, #e61938);
   box-shadow: 0px 3px 30px 0px rgba(255, 0, 0, 0.3);
   border-radius: 0 0 50% 50%;
 
+  @media screen and (min-width: 800px) {
+    height: 200px;
+  }
+  @media screen and (max-width: 420px) {
+    left: -20%;
+  }
   @media screen and (max-width: 320px) {
     height: 135px;
   }
