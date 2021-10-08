@@ -494,8 +494,8 @@ export default {
         params: {
           username: this.username,
           lang: "zh-cn",
-          tUserID: this.memInfo.user.user_id,
-          tUserName: this.memInfo.user.username
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
         }
       })
         .then(res => {
@@ -732,8 +732,8 @@ export default {
           username: this.username,
           amount: amount,
           lang: "zh-cn",
-          tUserID: this.memInfo.user.user_id,
-          tUserName: this.memInfo.user.username
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
         }
       }).then(res => {
         if (res.status === "000") {

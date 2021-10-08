@@ -1945,8 +1945,8 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
         params: {
-          tUserID: this.memInfo.user.user_id,
-          tUserName: this.memInfo.user.username
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
         }
       })
         .then(res => {
