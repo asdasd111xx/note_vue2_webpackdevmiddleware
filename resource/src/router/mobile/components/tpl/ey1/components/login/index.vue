@@ -192,7 +192,7 @@
   </mobile-container>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import loginForm from "@/mixins/loginForm";
 import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/components/thirdyVerification";
@@ -298,7 +298,7 @@ export default {
       this.thirdyCaptchaObj = obj;
     },
     checkLayeredURL() {
-      if (!localStorage.getItem("isPWA")) {
+      if (getCookie("platform") === "h") {
         this.actionGetLayeredURL().then(res => {
           if (res.indexOf(window.location.host) != -1 || res.length < 1) {
             this.linktoJoin();

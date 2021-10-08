@@ -344,7 +344,7 @@ export default {
       });
     },
     checkLayeredURL() {
-      if (!localStorage.getItem("isPWA")) {
+      if (getCookie("platform") === "h") {
         this.actionGetLayeredURL().then(res => {
           if (res.indexOf(window.location.host) != -1 || res.length < 1) {
             this.$router.push(`/mobile/joinmember`);
