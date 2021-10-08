@@ -75,9 +75,7 @@ export default {
           videoLobby: "yaboVideoLobby",
           videoMore: "yaboVideoMore",
           setHeaderTitle: () => {
-            this.setHeaderTitle(
-              localStorage.getItem("iframe-third-url-title") || "鸭脖视频"
-            );
+            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
           }
         };
         break;
@@ -89,9 +87,7 @@ export default {
           videoLobby: "smallPigVideoLobby",
           videoMore: "smallPigVideoMore",
           setHeaderTitle: () => {
-            this.setHeaderTitle(
-              localStorage.getItem("iframe-third-url-title") || "小猪视频"
-            );
+            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
           }
         };
         break;
@@ -103,9 +99,7 @@ export default {
           videoLobby: "gayVideoLobby",
           videoMore: "gayVideoMore",
           setHeaderTitle: () => {
-            this.setHeaderTitle(
-              localStorage.getItem("iframe-third-url-title") || "男男视频"
-            );
+            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
           }
         };
         break;
@@ -117,9 +111,7 @@ export default {
           videoLobby: "lesVideoLobby",
           videoMore: "lesVideoMore",
           setHeaderTitle: () => {
-            this.setHeaderTitle(
-              localStorage.getItem("iframe-third-url-title") || "女女视频"
-            );
+            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
           }
         };
         break;

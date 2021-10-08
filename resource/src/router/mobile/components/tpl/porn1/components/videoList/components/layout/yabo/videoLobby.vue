@@ -214,17 +214,17 @@ export default {
     switch (this.source) {
       case "yabo":
         setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
-        this.setHeaderTitle(this.$text("鸭脖视频", "鸭脖视频"));
+        this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
         break;
 
       case "gay":
         setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
-        this.setHeaderTitle("男男视频");
+        this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
         break;
 
       case "les":
         setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
-        this.setHeaderTitle("女女视频");
+        this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
         break;
 
       default:
