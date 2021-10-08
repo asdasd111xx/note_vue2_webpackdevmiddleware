@@ -276,14 +276,14 @@ export const site_93 = {
 };
 
 /**
- * 51体育 正式站正式環境
+ * 51国际 正式站正式環境
  */
 export const site_94 = {
   ...preset,
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51体育",
+  SITE_NAME: "51国际",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   // PORN_CONFIG: {
@@ -296,14 +296,14 @@ export const site_94 = {
 };
 
 /**
- * 51体育 Demo環境
+ * 51国际 Demo環境
  */
 export const site_95 = {
   ...preset,
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51体育",
+  SITE_NAME: "51国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
