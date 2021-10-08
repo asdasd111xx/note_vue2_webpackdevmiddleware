@@ -1006,8 +1006,7 @@ export default {
           method: "post",
           url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
           reqHeaders: {
-            Vendor: this.memInfo.user.domain,
-            kind: platform === "H" ? "h" : "pwa"
+            Vendor: this.memInfo.user.domain
           },
           params: {
             ...params,
@@ -1032,8 +1031,7 @@ export default {
           method: "put",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
           headers: {
-            Vendor: this.memInfo.user.domain,
-            kind: platform === "H" ? "h" : "pwa"
+            Vendor: this.memInfo.user.domain
           },
           params: {
             ...params,

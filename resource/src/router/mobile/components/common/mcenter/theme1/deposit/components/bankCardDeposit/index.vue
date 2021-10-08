@@ -1974,10 +1974,6 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.closePopup();
-      // let isPWA =
-      //   getCookie("platform") === "G" ||
-      //   window.location.host === "yaboxxxapp01.com";
-
       // let newWindow = "";
       // if (isPWA) {
       //   newWindow = window.open("", "", "_blank", true);
