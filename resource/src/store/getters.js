@@ -1,4 +1,5 @@
 export default {
+  getVersion: state => state.version,
   // 判斷極速版、pwa、webclip
   getIsPwa: state => state.isPwa,
   // Webview介接(客端、廳主端)
@@ -211,5 +212,6 @@ export default {
   getShowRedEnvelope: state => state.showRedEnvelope,
   getWithdrawCheckStatus: state => state.withdrawCheckStatus,
   getDomainConfig: state => state.domainConfig,
-  getSystemConfig: state => target => state.systemConfig[target]
+  getSystemConfig: state => target => state.systemConfig[target],
+  getVersion: state => state.version
 };

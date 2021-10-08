@@ -240,7 +240,8 @@ export default {
       cdnDomain: "getCdnDomain",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      onlineService: "getOnlineService"
+      onlineService: "getOnlineService",
+      version: "getVersion"
     }),
     headerConfig() {
       return {

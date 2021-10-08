@@ -24,7 +24,6 @@ export default {
       password: "",
       rememberPwd: false,
       username: "",
-      version: "",
       isShowPwd: false,
       isGetCaptcha: false // 重新取得驗證碼
     };
@@ -33,7 +32,8 @@ export default {
     ...mapGetters({
       isBackEnd: "getIsBackEnd",
       siteConfig: "getSiteConfig",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      version: "getVersion"
     }),
     isSlideAble() {
       if (!this.username || !this.password) {
@@ -61,7 +61,6 @@ export default {
     this.username = localStorage.getItem("username") || "";
     this.password = localStorage.getItem("password") || "";
     this.rememberPwd = localStorage.getItem("rememberPwd") === "true";
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
   },
   methods: {
     ...mapActions([
