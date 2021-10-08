@@ -67,7 +67,7 @@ export default {
   created() {
     if (
       this.$route.name === "home" &&
-      Vue.cookie.get("platform") !== "pwa" &&
+      Vue.cookie.get("platform") !== "h" &&
       (this.isMobileSafari() || this.isMobileAndroid())
     ) {
       // this.showAppTips = true;
