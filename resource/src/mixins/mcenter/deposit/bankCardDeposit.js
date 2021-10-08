@@ -987,10 +987,6 @@ export default {
         }
       }
 
-      let _isPWA =
-        getCookie("platform") === "G" ||
-        window.location.host === "yaboxxxapp01.com";
-
       return axios({
         method: "post",
         url: API_TRADE_RELAY,
@@ -1008,10 +1004,6 @@ export default {
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
-          // let _isPWA =
-          //   getCookie("platform") === "G" ||
-          //   window.location.host === "yaboxxxapp01.com";
-
           if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -1026,9 +1018,7 @@ export default {
               code
             });
 
-            if (_isPWA) {
-              newWindow.close();
-            }
+            newWindow.close();
 
             return { status: "error" };
           }

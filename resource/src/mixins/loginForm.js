@@ -238,7 +238,7 @@ export default {
         url: this.siteConfig.BBOS_DOMIAN + "/Login",
         reqHeaders: {
           Vendor: this.memInfo.user.domain,
-          kind: platform === "H" ? "h" : "pwa"
+          kind: platform
         },
         params: params
       }).then(res => {
