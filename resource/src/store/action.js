@@ -584,6 +584,16 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
   commit(types.SETENV, "mem");
 
   return (async () => {
+    await axios({
+      method: "get",
+      url: "/getcid"
+    })
+      .then(res => {
+        // if (getCookie("cid") != res.data.cid) {
+        //   setCookie("cidd", res.data.cid);
+        // }
+      })
+      .catch(res => {});
     // dispatch("actionSetSystemTime");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
@@ -689,7 +699,7 @@ export const actionSetUserdata = (
     memstatus = true;
   }, 1000);
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (hasLogin) {
     axios({
       method: "get",
@@ -1537,7 +1547,7 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
     return Promise.resolve(null);
   }
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return Promise.resolve(null);
   }
@@ -1554,7 +1564,7 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
 };
 
 export const actionSetRechargeBonusConfig = ({ commit }, data) => {
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return;
   }
@@ -1783,7 +1793,7 @@ export const actionSetUserLevels = ({ commit, dispatch }) => {
 };
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin || window.CHECKV3PLAYERSTATUS) {
     return;
   }
@@ -2158,7 +2168,7 @@ export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
 export const actionSetSwagBalance = ({ commit, state }, data) => {
   return;
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return;
   }
@@ -2477,6 +2487,35 @@ export const actionSendYM = ({ state }, eventCode) => {
   });
 };
 
+export const actionGetLayeredURL = ({ state }, eventCode) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostnames/V2?lang=zh-cn`,
+    params: {
+      // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+      clientType: 0,
+      withLevelHostname: true
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
+
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg
+        });
+        return Promise.resolve(false);
+      }
+
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg
+      });
+    });
+};
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (
   { state, dispatch, commit },
