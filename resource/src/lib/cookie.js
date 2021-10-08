@@ -15,11 +15,11 @@ export const getCookie = cookieName => {
     result[index] = value;
   });
 
-  if (cookieName === "cid") {
-    if (result[cookieName] != result["cidd"]) {
-      return result["cidd"];
-    }
-  }
+  // if (cookieName === "cid") {
+  //   if (result[cookieName] != result["cidd"]) {
+  //     return result["cidd"];
+  //   }
+  // }
 
   return cookieName ? result[cookieName] : result;
 };

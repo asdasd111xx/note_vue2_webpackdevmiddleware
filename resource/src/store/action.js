@@ -589,9 +589,9 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       url: "/getcid"
     })
       .then(res => {
-        if (getCookie("cid") != res.data.cid) {
-          setCookie("cidd", res.data.cid);
-        }
+        // if (getCookie("cid") != res.data.cid) {
+        //   setCookie("cidd", res.data.cid);
+        // }
       })
       .catch(res => {});
     // dispatch("actionSetSystemTime");

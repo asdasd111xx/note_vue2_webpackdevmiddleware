@@ -85,11 +85,9 @@ export default {
 
     if (query && query.cid) {
       setCookie("cid", "");
-      setCookie("cidd", "");
       setCookie("y_token", "");
       this.actionSetAgentLink({ reqHeaders: { cid: this.$route.query.cid } });
       setCookie("cid", query.cid);
-      setCookie("cidd", query.cid);
     } else {
       this.actionSetAgentLink();
     }
@@ -109,7 +107,6 @@ export default {
         domain = query.domain;
 
       setCookie("cid", cid);
-      setCookie("cidd", cid);
 
       let _headers = {
         cid: cid,
