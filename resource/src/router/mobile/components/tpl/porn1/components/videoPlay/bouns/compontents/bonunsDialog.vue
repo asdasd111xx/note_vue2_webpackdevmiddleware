@@ -90,7 +90,7 @@
           <!-- 右邊第一個按鈕 -->
           <div
             v-if="type.includes('disable')"
-            @click="$router.push('/mobile/login')"
+            @click="toJoin"
             :class="$style['active-btn']"
           >
             <template v-if="['porn1', 'sg1'].includes(routerTPL)">
@@ -188,7 +188,7 @@
 <script>
 import { getCookie } from "@/lib/cookie";
 import yaboRequest from "@/api/yaboRequest";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
@@ -256,6 +256,7 @@ export default {
     window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
+    ...mapActions(["actionGetLayeredURL"]),
     handleBack() {
       this.$router.back();
     },
@@ -325,7 +326,7 @@ export default {
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
         case 7:
-          this.$router.push(`/mobile/joinmember`);
+          this.$router.push("/mobile/login");
         default:
           return;
       }
@@ -369,6 +370,19 @@ export default {
         this.isShow = false;
         this.isClose = false;
       }, 300);
+    },
+    toJoin() {
+      if (getCookie("platform") === "h") {
+        this.actionGetLayeredURL().then(res => {
+          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+            this.$router.push(`/mobile/joinmember`);
+          } else {
+            window.location.replace(`https://${res[0]}/mobile/joinmember`);
+          }
+        });
+      } else {
+        this.$router.push(`/mobile/joinmember`);
+      }
     }
   }
 };

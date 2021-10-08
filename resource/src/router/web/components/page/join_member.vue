@@ -294,6 +294,27 @@
       <slot name="bottom-content" />
     </div>
     <page-loading :is-show="isLoading" />
+    <div v-if="showRedirectJump">
+      <div :class="$style['mask']" />
+
+      <div :class="$style['modal-wrap']">
+        <div :class="$style['modal-content']">
+          {{
+            `尊敬的会员您好，${siteConfig.SITE_NAME}为进行线路与安全分流，将为您导至${siteConfig.SITE_NAME}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
+          }}
+        </div>
+
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closeRedirect_url()"
+        >
+          确定
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -428,7 +449,9 @@ export default {
         }
       },
       isGetCaptcha: false,
-      isLoading: false
+      isLoading: false,
+      showRedirectJump: false,
+      redirect_url: ""
     };
   },
   computed: {
@@ -1034,50 +1057,59 @@ export default {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-
+        console.log(123);
         let cookieData;
         if (res.data) {
           cookieData = this.themeTPL === "ey1" ? res.data : res.data.ret;
         }
         if (cookieData && res.data && cookieData.cookie) {
-          try {
-            const { cookie } = res.data;
-            for (const [key, value] of Object.entries(cookie)) {
-              setCookie(key, value);
+          if (
+            cookieData.redirect &&
+            cookieData.redirect_url &&
+            getCookie("platform") === "h"
+          ) {
+            this.redirect_url = cookieData.redirect_url;
+            this.showRedirectJump = true;
+          } else {
+            try {
+              const { cookie } = res.data;
+              for (const [key, value] of Object.entries(cookie)) {
+                setCookie(key, value);
+              }
+            } catch (e) {
+              setCookie("cid", cookieData.cookie.cid);
             }
-          } catch (e) {
-            setCookie("cid", cookieData.cookie.cid);
-          }
-          // GA流量統計
-          window.dataLayer.push({
-            dep: 2,
-            event: "ga_click",
-            eventCategory: "sign_up",
-            eventAction: "sign_up",
-            eventLabel: "sign_up",
-            ga_hall_id: 3820325,
-            ga_domain_id: this.memInfo.user.domain
-          });
-          if (this.isWebview) {
-            appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+            // GA流量統計
+            window.dataLayer.push({
+              dep: 2,
+              event: "ga_click",
+              eventCategory: "sign_up",
+              eventAction: "sign_up",
+              eventLabel: "sign_up",
+              ga_hall_id: 3820325,
+              ga_domain_id: this.memInfo.user.domain
+            });
+            if (this.isWebview) {
+              appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+              return;
+            }
+            self.actionSetUserdata(true);
+            this.actionSetGlobalMessage({
+              msg: "注册成功",
+              cb: () => {
+                if (localStorage.getItem("rememberPwd")) {
+                  localStorage.setItem("username", this.allValue.username);
+                  localStorage.setItem("password", this.allValue.password);
+                } else {
+                  localStorage.removeItem("username");
+                  localStorage.removeItem("password");
+                }
+                window.RESET_LOCAL_SETTING(true);
+                window.RESET_MEM_SETTING();
+              }
+            });
             return;
           }
-          self.actionSetUserdata(true);
-          this.actionSetGlobalMessage({
-            msg: "注册成功",
-            cb: () => {
-              if (localStorage.getItem("rememberPwd")) {
-                localStorage.setItem("username", this.allValue.username);
-                localStorage.setItem("password", this.allValue.password);
-              } else {
-                localStorage.removeItem("username");
-                localStorage.removeItem("password");
-              }
-              window.RESET_LOCAL_SETTING(true);
-              window.RESET_MEM_SETTING();
-            }
-          });
-          return;
         }
         if (captchaInfo && captchaInfo.slideFuc) {
           captchaInfo.slideFuc.reset();
@@ -1167,6 +1199,14 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+
+    closeRedirect_url() {
+      if (this.redirect_url.includes("http")) {
+        window.location.href = this.redirect_url;
+      } else {
+        window.location.href = `https://${this.redirect_url}`;
+      }
     }
   }
 };
