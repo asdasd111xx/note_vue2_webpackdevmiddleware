@@ -37,7 +37,11 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.back();
+          if (this.$route.query.login === "1") {
+            this.$router.replace(`/mobile/login`);
+          } else {
+            this.$router.push(`/mobile/home`);
+          }
         },
         hasClose: true,
         title: this.$text("S_REGISTER", "注册")

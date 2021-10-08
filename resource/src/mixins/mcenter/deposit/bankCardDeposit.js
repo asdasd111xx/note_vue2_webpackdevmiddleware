@@ -987,7 +987,7 @@ export default {
         }
       }
 
-      let _isPWA = true
+      let _isPWA = true;
 
       return axios({
         method: "post",
