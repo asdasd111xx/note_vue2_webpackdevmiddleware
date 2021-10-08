@@ -439,7 +439,7 @@ export default {
       return val < 0 ? "red" : "black";
     },
     formatThousandsCurrency(value) {
-      return +value > 0 ? thousandsCurrency(value) : "0.00";
+      return +value ? thousandsCurrency(value) : "0.00";
     },
     getAllDetailList() {
       //取得今日實時返利詳情
