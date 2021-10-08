@@ -290,6 +290,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionGetLayeredURL"]),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
