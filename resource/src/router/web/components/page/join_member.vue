@@ -998,61 +998,30 @@ export default {
       const self = this;
       const platform = getCookie("platform");
 
-      let registFn;
-      if (this.themeTPL === "ey1") {
-        //一般註冊
-        registFn = bbosRequest({
-          method: "post",
-          url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
-          reqHeaders: {
-            Vendor: this.memInfo.user.domain
-          },
-          params: {
-            ...params,
-            host: window.location.host,
-            lang: "zh-cn"
-          },
-          fail: error => {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-            if (error && error.status === 429) {
-              this.actionGetToManyRequestMsg(error).then(res => {
-                this.errMsg = res;
-              });
-              return;
-            }
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
+        headers: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: {
+          ...params,
+          host: window.location.host,
+          deviceId: getCookie("uuidAccount"),
+          lang: "zh-cn"
+        },
+        fail: error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+          if (error && error.status === 429) {
+            this.actionGetToManyRequestMsg(error).then(res => {
+              this.errMsg = res;
+            });
+            return;
           }
-        });
-      } else {
-        //訪客註冊
-        registFn = goLangApiRequest({
-          method: "put",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
-          headers: {
-            Vendor: this.memInfo.user.domain
-          },
-          params: {
-            ...params,
-            host: window.location.host,
-            deviceId: getCookie("uuidAccount"),
-            lang: "zh-cn"
-          },
-          fail: error => {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-            if (error && error.status === 429) {
-              this.actionGetToManyRequestMsg(error).then(res => {
-                this.errMsg = res;
-              });
-              return;
-            }
-          }
-        });
-      }
-
-      registFn.then(res => {
+        }
+      }).then(res => {
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);
@@ -1060,7 +1029,7 @@ export default {
         console.log(123);
         let cookieData;
         if (res.data) {
-          cookieData = this.themeTPL === "ey1" ? res.data : res.data.ret;
+          cookieData = res.data.ret;
         }
         if (cookieData && res.data && cookieData.cookie) {
           if (
