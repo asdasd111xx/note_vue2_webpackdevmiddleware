@@ -987,6 +987,8 @@ export default {
         }
       }
 
+      let _isPWA = true
+
       return axios({
         method: "post",
         url: API_TRADE_RELAY,
