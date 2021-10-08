@@ -138,6 +138,8 @@ export default {
           this.$emit("toogleAppTips", false);
         }
       });
+    } else {
+      this.$emit("toogleAppTips", false);
     }
   },
   computed: {
