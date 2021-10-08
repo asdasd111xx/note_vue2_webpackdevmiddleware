@@ -300,7 +300,7 @@
       <div :class="$style['modal-wrap']">
         <div :class="$style['modal-content']">
           {{
-            `尊敬的会员您好，${siteName}为进行线路与安全分流，将为您导至${siteName}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
+            `尊敬的会员您好，${siteConfig.SITE_NAME}为进行线路与安全分流，将为您导至${siteConfig.SITE_NAME}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
           }}
         </div>
 
@@ -359,7 +359,6 @@ export default {
   },
   data() {
     return {
-      version: "",
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
@@ -460,7 +459,8 @@ export default {
       isWebview: "getIsWebview",
       webInfo: "getWebInfo",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     fieldsData() {
       return this.registerData.filter(
@@ -528,7 +528,6 @@ export default {
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
     const username = {
       key: "username",
       content: {
@@ -1058,18 +1057,18 @@ export default {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-
+        console.log(123);
         let cookieData;
         if (res.data) {
           cookieData = this.themeTPL === "ey1" ? res.data : res.data.ret;
         }
         if (cookieData && res.data && cookieData.cookie) {
           if (
-            res.data.redirect &&
-            res.data.redirect_url &&
+            cookieData.redirect &&
+            cookieData.redirect_url &&
             getCookie("platform") === "h"
           ) {
-            this.redirect_url = res.data.redirect_url;
+            this.redirect_url = cookieData.redirect_url;
             this.showRedirectJump = true;
           } else {
             try {

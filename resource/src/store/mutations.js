@@ -618,5 +618,8 @@ export default {
   },
   [types.SET_LCFSYSTEMCONFIG](state, data) {
     state.systemConfig["lcf"] = data;
+  },
+  [types.SETVERSION](state, data) {
+    state.version = data;
   }
 };

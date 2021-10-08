@@ -38,7 +38,6 @@ import { getCookie, setCookie } from "@/lib/cookie";
 export default {
   data() {
     return {
-      version: "",
       partners: [
         "bbin",
         "xbb",
@@ -60,7 +59,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     headerConfig() {
       return {
@@ -72,9 +72,7 @@ export default {
       };
     }
   },
-  mounted() {
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
-  }
+  mounted() {}
 };
 </script>
 

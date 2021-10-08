@@ -65,7 +65,6 @@ export default {
       this.showApptips = toogle;
       if (toogle) {
         document.querySelector("#mobile-wrap").style = "overflow: hidden";
-        document.querySelector("#home-top-bg").style = "top: 60px";
       } else {
         document.querySelector("#mobile-wrap").style = "";
         if (document.querySelector("#home-top-bg"))

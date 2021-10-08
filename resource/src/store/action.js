@@ -626,6 +626,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
     dispatch("actionSetDomainConfigV2");
+    dispatch("actionSetVersion");
 
     // dispatch("actionSetPost");
 
@@ -877,6 +878,17 @@ export const actionSetUserdata = (
     }
   });
 };
+
+export const actionSetVersion = ({ commit, state }) => {
+  let platform = Vue.cookie.get("platform")
+    ? String(Vue.cookie.get("platform"))
+        .toUpperCase()
+        .charAt(0)
+    : "H";
+  let version = `${state.siteConfig.VERSION} ${platform}`;
+  commit(types.SETVERSION, version);
+};
+
 // 會員端-設定登入狀態
 export const actionIsLogin = ({ commit }, isLogin) => {
   // GA流量統計
@@ -2504,7 +2516,6 @@ export const actionGetLayeredURL = ({ state }, eventCode) => {
       });
     });
 };
-
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (
   { state, dispatch, commit },

@@ -18,9 +18,7 @@
         <template v-if="!listInfo.isVersion">
           <span> {{ listInfo.name }} </span>
           <div :class="$style['btn-next']">
-            <img
-              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-            />
+            <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
           </div>
         </template>
         <template v-else>
@@ -38,10 +36,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import member from '@/api/member';
-import mobileContainer from '../../../common/mobileContainer';
-import { getCookie, setCookie } from '@/lib/cookie';
+import { mapGetters } from "vuex";
+import member from "@/api/member";
+import mobileContainer from "../../../common/mobileContainer";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -49,35 +47,47 @@ export default {
   },
   data() {
     return {
-      version: "",
       list: [
-        { name: this.$text('S_CHANGE_PASSWD', '代理登入'), path: '/mobile/resetPwd', isPart: true },
-        { name: this.$text('S_FEEDBACK', '意见反馈'), path: '/mobile/mcenter/feedback/sendFeedback', isPart: false },
+        {
+          name: this.$text("S_CHANGE_PASSWD", "代理登入"),
+          path: "/mobile/resetPwd",
+          isPart: true
+        },
+        {
+          name: this.$text("S_FEEDBACK", "意见反馈"),
+          path: "/mobile/mcenter/feedback/sendFeedback",
+          isPart: false
+        }
       ]
     };
   },
   mounted() {
-    this.version = `${this.siteConfig.VERSION}${getCookie('platform') || ''}`;
     this.list.push({
-      name: this.$text("S_CURRENT_VERSION", "当前版本"), path: '', isPart: true, isVersion: true
-    })
+      name: this.$text("S_CURRENT_VERSION", "当前版本"),
+      path: "",
+      isPart: true,
+      isVersion: true
+    });
   },
   computed: {
     ...mapGetters({
-      loginStatus: 'getLoginStatus',
+      loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.back(); },
-        title: this.$text('S_SETTING', '设置')
+        onClick: () => {
+          this.$router.back();
+        },
+        title: this.$text("S_SETTING", "设置")
       };
     }
   },
   created() {
-    if (!this.loginStatus || !getCookie('cid')) {
-      this.$router.push('/mobile/home');
+    if (!this.loginStatus || !getCookie("cid")) {
+      this.$router.push("/mobile/home");
     }
   },
   methods: {
@@ -85,7 +95,7 @@ export default {
       this.$router.push(path);
     },
     logout() {
-      member.logout().then(() => { });
+      member.logout().then(() => {});
     }
   }
 };
