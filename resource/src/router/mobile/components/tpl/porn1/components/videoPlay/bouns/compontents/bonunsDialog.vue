@@ -306,7 +306,9 @@ export default {
       let redirect = `?redirect=videoPlay-${this.videoid}`;
       switch (this.missionActionType) {
         case 1:
-          this.$router.push(`/mobile/mcenter/bankCard${redirect}`);
+          this.$router.push(
+            `/mobile/mcenter/bankCard${redirect}&type=bankCard`
+          );
           return;
         case 2:
           this.$router.push(`/mobile/mcenter/deposit${redirect}`);

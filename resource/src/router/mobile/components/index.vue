@@ -50,7 +50,7 @@ export default {
   },
   created() {
     // 版本&平台
-    let platform = this.$route.query.platform || getCookie("platform") || "";
+    let platform = this.$route.query.platform || "h";
     setCookie("platform", platform);
 
     // 設置隱藏屬性和改變可見屬性的事件的名稱

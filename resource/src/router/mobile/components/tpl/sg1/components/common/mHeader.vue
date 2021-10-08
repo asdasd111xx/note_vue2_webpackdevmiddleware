@@ -1,5 +1,9 @@
 <template>
-  <div :class="mainClass" id="header">
+  <div
+    :class="mainClass"
+    id="header"
+    :style="hasAppTips ? { top: '60px' } : {}"
+  >
     <div
       v-if="headerConfig.hasLogo"
       :class="[$style['logo-wrap']]"
@@ -200,6 +204,10 @@ export default {
       default: () => {}
     },
     hasUnreadMessage: {
+      type: Boolean,
+      default: false
+    },
+    hasAppTips: {
       type: Boolean,
       default: false
     }

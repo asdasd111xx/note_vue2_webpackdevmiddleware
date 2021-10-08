@@ -491,10 +491,11 @@ export default {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`,
-        timeout: 30000,
         params: {
           username: this.username,
-          lang: "zh-cn"
+          lang: "zh-cn",
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
         }
       })
         .then(res => {
@@ -730,7 +731,9 @@ export default {
           paymentMethodId: this.curPayInfo.payment_method_id,
           username: this.username,
           amount: amount,
-          lang: "zh-cn"
+          lang: "zh-cn",
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
         }
       }).then(res => {
         if (res.status === "000") {
@@ -984,10 +987,6 @@ export default {
         }
       }
 
-      let _isPWA =
-        getCookie("platform") === "G" ||
-        window.location.host === "yaboxxxapp01.com";
-
       return axios({
         method: "post",
         url: API_TRADE_RELAY,
@@ -1005,10 +1004,6 @@ export default {
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
-          // let _isPWA =
-          //   getCookie("platform") === "G" ||
-          //   window.location.host === "yaboxxxapp01.com";
-
           if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -1023,9 +1018,7 @@ export default {
               code
             });
 
-            if (_isPWA) {
-              newWindow.close();
-            }
+            newWindow.close();
 
             return { status: "error" };
           }

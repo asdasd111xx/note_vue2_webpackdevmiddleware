@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
-      <div :class="$style['top-bg']" />
+      <div id="home-top-bg" :class="$style['top-bg']" />
       <home-slider />
       <home-new />
       <home-content />
@@ -106,7 +106,10 @@ export default {
 div.container {
   background-color: #fff;
 }
-
+.content-wrap {
+  max-width: $mobile_max_width;
+  overflow: hidden;
+}
 .top-bg {
   background: url("/static/image/sg1/common/pic_top.png");
   -moz-background-size: 100% 100%;

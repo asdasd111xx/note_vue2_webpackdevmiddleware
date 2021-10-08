@@ -1,4 +1,5 @@
 #### 鸭博娱乐
+
 <table border="1">
     <tr>
         <th></th>
@@ -38,6 +39,7 @@
 </table>
 
 #### 亿元
+
 <table border="1">
     <tr>
         <th></th>
@@ -77,6 +79,7 @@
 </table>
 
 #### 丝瓜直播
+
 <table border="1">
     <tr>
         <th></th>
@@ -115,8 +118,8 @@
     </tr>
 </table>
 
-
 #### 澳博国际
+
 <table border="1">
     <tr>
         <th></th>
@@ -155,7 +158,8 @@
     </tr>
 </table>
 
-#### 51体育
+#### 51 国际
+
 <table border="1">
     <tr>
         <th></th>
@@ -194,11 +198,10 @@
     </tr>
 </table>
 
-
-
 ## 四端同時佈署方式
 
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 allQA- 】（大小寫需一致）
+
   - git tag -a "allQA-v1.3.57" -m "allQA-v1.3.57"
   - git push origin master --tags
 
@@ -210,11 +213,10 @@
 
 ### 已測試列表
 
-
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 ybQA- 】（大小寫需一致）
   - git tag -a "ybQA-v1.3.57" -m "ybQA-v1.3.57"
   - git push origin master --tags
-<!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yaboBeta- 】（大小寫需一致）
+  <!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yaboBeta- 】（大小寫需一致）
   - git tag -a "yaboBeta-v1.3.57" -m "yaboBeta-v1.3.57"
   - git push origin master --tags -->
 - 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 ybProd- 】（大小寫需一致）
@@ -223,11 +225,10 @@
 
 ## yiyuan 佈署方式
 
-
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 eyQA- 】（大小寫需一致）
   - git tag -a "eyQA-v1.3.57" -m "eyQA-v1.3.57"
   - git push origin master --tags
-<!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yiyuanBeta- 】（大小寫需一致）
+  <!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yiyuanBeta- 】（大小寫需一致）
   - git tag -a "yiyuanBeta-v1.3.57" -m "yiyuanBeta-v1.3.57"
   - git push origin master --tags -->
 - 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 eyProd- 】（大小寫需一致）
@@ -246,7 +247,7 @@
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA- 】（大小寫需一致）
   - git tag -a "sgQA-v1.3.57" -m "sgQA-v1.3.57"
   - git push origin master --tags
-<!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 siguaBeta- 】（大小寫需一致）
+  <!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 siguaBeta- 】（大小寫需一致）
   - git tag -a "siguaBeta-v1.3.57" -m "siguaBeta-v1.3.57"
   - git push origin master --tags -->
 - 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sgProd- 】（大小寫需一致）
@@ -255,11 +256,10 @@
 
 ## aubo 佈署方式
 
-
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 abQA- 】（大小寫需一致）
   - git tag -a "abQA-v1.3.57" -m "abQA-v1.3.57"
   - git push origin master --tags
-<!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yaboBeta- 】（大小寫需一致）
+  <!-- - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 yaboBeta- 】（大小寫需一致）
   - git tag -a "yaboBeta-v1.3.57" -m "yaboBeta-v1.3.57"
   - git push origin master --tags -->
 - 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 abProd- 】（大小寫需一致）

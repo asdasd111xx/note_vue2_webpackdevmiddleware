@@ -10,6 +10,7 @@ export const SETPREVIEW = "SETPREVIEW";
 export const SETCDNROOT = "SETCDNROOT";
 // 遊戲資料
 export const SETGAMEDATA = "SETGAMEDATA";
+export const SETVERSION = "SETVERSION";
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     客端 page
@@ -158,3 +159,4 @@ export const SET_BBOSDOMAIN = "SET_BBOSDOMAIN";
 export const SET_DOMAINCONFIG = "SET_DOMAINCONFIG";
 export const SET_REDENVELOPE = "SET_REDENVELOPE";
 export const SET_USER_WITHDRAWCHECKSTATUS = "SET_USER_WITHDRAWCHECKSTATUS";
+export const SET_LCFSYSTEMCONFIG = "SET_LCFSYSTEMCONFIG";

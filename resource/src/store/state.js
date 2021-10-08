@@ -2,6 +2,7 @@ import gameData from "@/config/games";
 import i18n from "@/config/i18n";
 
 export default {
+  version: "",
   // 判斷極速版、pwa、webclip
   isPwa:
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -459,5 +460,6 @@ export default {
     bank: true,
     account: true
   },
-  domainConfig: {}
+  domainConfig: {},
+  systemConfig: {}
 };

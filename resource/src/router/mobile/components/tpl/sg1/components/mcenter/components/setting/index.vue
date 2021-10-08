@@ -47,7 +47,6 @@ export default {
   },
   data() {
     return {
-      version: "",
       list: [
         {
           name: this.$text("S_CHANGE_PASSWD", "代理登入"),
@@ -63,7 +62,6 @@ export default {
     };
   },
   mounted() {
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
     this.list.push({
       name: this.$text("S_CURRENT_VERSION", "当前版本"),
       path: "",
@@ -74,7 +72,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     headerConfig() {
       return {

@@ -1944,7 +1944,10 @@ export default {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
-        timeout: 30000
+        params: {
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
+        }
       })
         .then(res => {
           this.isBlockChecked = true;
@@ -1971,10 +1974,6 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.closePopup();
-      // let isPWA =
-      //   getCookie("platform") === "G" ||
-      //   window.location.host === "yaboxxxapp01.com";
-
       // let newWindow = "";
       // if (isPWA) {
       //   newWindow = window.open("", "", "_blank", true);

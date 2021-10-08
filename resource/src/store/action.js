@@ -46,7 +46,7 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
-  let platform = "G";
+  let platform = "";
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams && urlParams.get("platform")) {
     platform = urlParams.get("platform");
@@ -626,6 +626,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     dispatch("actionSetSystemDomain");
     dispatch("actionSetBBOSDomain");
     dispatch("actionSetDomainConfigV2");
+    dispatch("actionSetVersion");
 
     // dispatch("actionSetPost");
 
@@ -877,6 +878,17 @@ export const actionSetUserdata = (
     }
   });
 };
+
+export const actionSetVersion = ({ commit, state }) => {
+  let platform = Vue.cookie.get("platform")
+    ? String(Vue.cookie.get("platform"))
+        .toUpperCase()
+        .charAt(0)
+    : "H";
+  let version = `${state.siteConfig.VERSION} ${platform}`;
+  commit(types.SETVERSION, version);
+};
+
 // 會員端-設定登入狀態
 export const actionIsLogin = ({ commit }, isLogin) => {
   // GA流量統計
@@ -2428,13 +2440,8 @@ export const actionGetToManyRequestMsg = ({ state }, response) => {
   }
 };
 
-// 千分位
-export const actionSetThousandsCurrency = ({ state }, data) => {
-  return thousandsCurrency(data);
-};
-
 // 取得廳設定 C02.233
-export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, next) => {
+export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
   return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Config/V2`
@@ -2508,4 +2515,18 @@ export const actionGetLayeredURL = ({ state }, eventCode) => {
         msg
       });
     });
+};
+// 取得BundleID APP下載開關
+export const actionSetLCFSystemConfig = (
+  { state, dispatch, commit },
+  target = "lcf"
+) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/lcf`
+  }).then(res => {
+    if (res && res.data) {
+      commit(types.SET_LCFSYSTEMCONFIG, res.data);
+    }
+  });
 };
