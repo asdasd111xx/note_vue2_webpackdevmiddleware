@@ -1043,45 +1043,52 @@ export default {
           cookieData = this.themeTPL === "ey1" ? res.data : res.data.ret;
         }
         if (cookieData && res.data && cookieData.cookie) {
-          try {
-            const { cookie } = res.data;
-            for (const [key, value] of Object.entries(cookie)) {
-              setCookie(key, value);
+          if (
+            res.data.redirect &&
+            res.data.redirect_url &&
+            !localStorage.getItem("isPWA")
+          ) {
+            localStorage.setItem("redirect_url", res.data.redirect_url);
+          } else {
+            try {
+              const { cookie } = res.data;
+              for (const [key, value] of Object.entries(cookie)) {
+                setCookie(key, value);
+              }
+            } catch (e) {
+              setCookie("cid", cookieData.cookie.cid);
             }
-          } catch (e) {
-            setCookie("cid", cookieData.cookie.cid);
-            setCookie("cidd", cookieData.cookie.cid);
-          }
-          // GA流量統計
-          window.dataLayer.push({
-            dep: 2,
-            event: "ga_click",
-            eventCategory: "sign_up",
-            eventAction: "sign_up",
-            eventLabel: "sign_up",
-            ga_hall_id: 3820325,
-            ga_domain_id: this.memInfo.user.domain
-          });
-          if (this.isWebview) {
-            appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+            // GA流量統計
+            window.dataLayer.push({
+              dep: 2,
+              event: "ga_click",
+              eventCategory: "sign_up",
+              eventAction: "sign_up",
+              eventLabel: "sign_up",
+              ga_hall_id: 3820325,
+              ga_domain_id: this.memInfo.user.domain
+            });
+            if (this.isWebview) {
+              appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+              return;
+            }
+            self.actionSetUserdata(true);
+            this.actionSetGlobalMessage({
+              msg: "注册成功",
+              cb: () => {
+                if (localStorage.getItem("rememberPwd")) {
+                  localStorage.setItem("username", this.allValue.username);
+                  localStorage.setItem("password", this.allValue.password);
+                } else {
+                  localStorage.removeItem("username");
+                  localStorage.removeItem("password");
+                }
+                window.RESET_LOCAL_SETTING(true);
+                window.RESET_MEM_SETTING();
+              }
+            });
             return;
           }
-          self.actionSetUserdata(true);
-          this.actionSetGlobalMessage({
-            msg: "注册成功",
-            cb: () => {
-              if (localStorage.getItem("rememberPwd")) {
-                localStorage.setItem("username", this.allValue.username);
-                localStorage.setItem("password", this.allValue.password);
-              } else {
-                localStorage.removeItem("username");
-                localStorage.removeItem("password");
-              }
-              window.RESET_LOCAL_SETTING(true);
-              window.RESET_MEM_SETTING();
-            }
-          });
-          return;
         }
         if (captchaInfo && captchaInfo.slideFuc) {
           captchaInfo.slideFuc.reset();
