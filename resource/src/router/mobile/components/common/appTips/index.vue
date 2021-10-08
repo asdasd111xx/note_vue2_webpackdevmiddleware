@@ -163,7 +163,7 @@ export default {
       "actionSetLCFSystemConfig"
     ]),
     setGAObj() {
-      if (!ga || ga === undefined) {
+      if (typeof ga === "undefined") {
         return;
       }
 
@@ -201,7 +201,11 @@ export default {
       this.isDownloading = true;
       this.setGAObj();
 
-      location.href = `https://${this.href}`;
+      console.log(this.href);
+      // safari
+      setTimeout(() => {
+        location.href = `https://${this.href}`;
+      }, 250);
     },
     handleClickDownload() {
       if (this.isDownloading || !this.downloadConfigData.show) {
