@@ -438,12 +438,12 @@ export default {
 .apptips-wrap {
   &.sg1 {
     .title {
-      color: #e61938;
+      color: #b1b1b1;
     }
 
     .download-wrap {
       > .download-btn {
-        background: #e61938;
+        background: #000000;
 
         span {
           color: #ffffff;

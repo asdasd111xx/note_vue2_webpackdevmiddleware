@@ -53,14 +53,14 @@ export const site_500023 = {
 /* eslint-enable camelcase */
 
 /**
- * 丝瓜直播 測試站
+ * 泡泡直播 測試站
  */
 export const site_500035 = {
   ...preset,
   ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜直播",
+  SITE_NAME: "泡泡直播",
   PORN_CONFIG: {
     ID: {
       SPACE: "112",
