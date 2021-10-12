@@ -11,6 +11,8 @@ function getCDNHost() {
     })
     .then(function(data) {
       if (data.site === "porn1" && data.domain === "67") {
+        console.log("YM key 203467608");
+        localStorage.setItem("YMKey", "203467608");
         cdnHost = h.get(`x-cdn-yb`);
       } else if (data.site === "sg1" && data.domain === "80") {
         cdnHost = h.get(`x-cdn-sg`);
