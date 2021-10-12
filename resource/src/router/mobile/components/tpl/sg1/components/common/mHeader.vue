@@ -755,7 +755,7 @@ export default {
   position: absolute;
   right: 17px;
   top: 0;
-  color: #f9e8b4;
+  color: #ffffff;
   padding: 6px;
 
   > span {
