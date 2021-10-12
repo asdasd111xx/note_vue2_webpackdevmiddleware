@@ -6,6 +6,11 @@
   >
     <div slot="content" class="content-wrap">
       <div :class="$style['join-member-wrap']">
+        <img
+          :class="$style['slide-banner']"
+          src="/static/image/sg1/mcenter/tcenter/slidebanner.png"
+          alt=""
+        />
         <join-member :theme="$style">
           <template slot="join-header" />
         </join-member>
@@ -44,7 +49,7 @@ export default {
           }
         },
         hasClose: true,
-        title: "领取彩金"
+        title: "访客注册"
       };
     }
   },
@@ -94,7 +99,7 @@ export default {
 .join-input {
   background-color: #fff;
   border: 1px solid #d8d8d8;
-
+  border-radius: 75px;
   &::placeholder {
     color: #a5a5a5;
   }
@@ -123,5 +128,22 @@ export default {
   max-width: 300px;
   padding: 0;
   width: 100%;
+}
+
+.slide-banner {
+  width: 85%;
+  border-radius: 5px;
+  display: block;
+  margin: 15px auto 0 auto;
+}
+
+.has-visitor {
+  span {
+    padding: 0 10px;
+  }
+
+  span:nth-child(3) {
+    color: #6aaaf5;
+  }
 }
 </style>

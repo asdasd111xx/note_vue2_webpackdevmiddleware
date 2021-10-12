@@ -13,11 +13,21 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
+        <div
+          v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
+          style="margin-top: 40px;"
+        >
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
+        </div>
+
+        <div v-if="themeTPL == 'sg1'" style="margin-top: 20px; ">
+          <div :class="$style['visitor-get-sg']">
+            {{ `访客彩金：${formatThousandsCurrency(guestAmount)}元` }}
+          </div>
+          <div :class="$style['visitor-get-sg']">{{ "注册即送 58.00 钻" }}</div>
         </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
@@ -281,13 +291,43 @@
         </div>
       </div>
 
+      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
+        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
+        <span>成为主播</span>
+        <span @click.stop="$router.push('/mobile')">访客进入</span>
+      </div>
+      <!-- <div
+        v-if="themeTPL == 'sg1'"
+        class="login-link-wrap"
+        style="display:flex"
+      >
+       
+        <div class="link-button link-join-mem">
+          <span @click="linktoJoin()">
+            {{ $text("S_FREE_REGISTER", "免费注册") }}
+          </span>
+        </div>
+        <div class="link-button ">
+          <span @click="$router.push('/mobile/login')">
+            {{ $text("S_JOINTOLIVERS", "成为主播") }}
+          </span>
+        </div>
+        <div
+          class="link-button link-submit"
+          @click="$router.push('/mobile/service')"
+        >
+          {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+        </div>
+      </div> -->
+
       <div
-        v-if="themeTPL != 'ey1'"
+        v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
         已有会员帐号
       </div>
+
       <div :class="$style['version']">
         {{ version }}
       </div>

@@ -6,13 +6,24 @@
       .nc_scale {
         min-height: inherit;
         height: initial;
-        border-radius: 5px;
+        border-radius: 75px;
+        border: 1px solid #aaa;
+
+        .nc_iconfont {
+          left: -1px;
+          top: -1px;
+        }
 
         .nc_bg {
           width: 0px;
-          border-top-left-radius: 5px;
-          border-bottom-left-radius: 5px;
-          background: linear-gradient(to right, #E61938, #FE593C);
+          border-top-left-radius: 75px;
+          border-bottom-left-radius: 75px;
+          background: #000;
+        }
+
+        .btn_slide {
+          border-radius: 50px;
+          border: 1px solid #aaa;
         }
       }
     }

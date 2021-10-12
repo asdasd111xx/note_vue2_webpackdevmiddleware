@@ -85,7 +85,7 @@
   height: 40px;
   border: 1px solid #595959;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 12px;
   outline: 0;
   display: block;
 }
@@ -380,6 +380,15 @@
 .visitor-get {
   margin-top: 5px;
   color: #9b6b40;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.visitor-get-sg {
+  margin-top: 5px;
+  color: #000;
   width: 100%;
   text-align: center;
   font-weight: 500;
