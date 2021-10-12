@@ -33,6 +33,7 @@
         </template>
         <template v-else>
           <img
+            v-if="messageData.length !== 0"
             :src="
               $getCdnPath(
                 `/static/image/${siteConfig.MOBILE_WEB_TPL}/common/btn_more.png`
