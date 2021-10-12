@@ -719,6 +719,15 @@ export default {
 
             return;
 
+          case "EVENT_THIRDPARTY_JOINMEMBER":
+            if (this.loginStatus) {
+              return;
+            } else {
+              this.$router.push("/mobile/joinmember?prev=home");
+            }
+
+            return;
+
           case "EVENT_THIRDPARTY_WALLET":
             if (this.loginStatus) {
               this.$router.push("/mobile/mcenter/wallet?prev=back");
@@ -758,6 +767,16 @@ export default {
 
           case "EVENT_THIRDPARTY_HOME":
             this.$router.push("/mobile");
+            return;
+
+          // 彩金任務
+          // 去推广
+          case "EVENT_BOUNS_PROMOTE":
+            const { tagId, cid, userid, domain } = data;
+            return;
+
+          // 绑定银行卡
+          case "EVENT_BOUNS_BANKCARD":
             return;
 
           default:
