@@ -46,12 +46,8 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
-  let platform = "";
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams && urlParams.get("platform")) {
-    platform = urlParams.get("platform");
-  }
-  Vue.cookie.set("platform", platform);
+  // PWA/H5 平台
+  if (Vue.cookie.get("platform") !== "pwa") Vue.cookie.set("platform", "h");
 
   // cache 10分鐘
   const timestamp = Math.floor(Date.parse(new Date()) / 600000);
