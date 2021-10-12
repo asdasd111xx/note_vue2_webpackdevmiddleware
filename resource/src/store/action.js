@@ -2450,6 +2450,7 @@ export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
 
 // 友盟事件
 export const actionSendYM = ({ state }, eventCode) => {
+  if (!localStorage.getItem("YMKey")) return;
   let category = "";
   let action = "";
   let label = "";
