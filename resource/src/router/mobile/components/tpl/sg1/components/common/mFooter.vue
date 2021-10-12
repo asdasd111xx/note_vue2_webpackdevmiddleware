@@ -60,15 +60,15 @@ export default {
           path: "/mobile/promotion"
         },
         {
-          key: "service",
-          name: this.$text("S_SERVIEC", "客服"),
-          path: "/mobile/service?prev=false"
-        },
-        {
           key: "iframe",
           name: this.$text("S_GIFT", "礼包"),
           path:
             "/mobile/iframe/gift?alias=specific_promotion&fullscreen=false&hasHeader=true&hasFooter=true&func=false"
+        },
+        {
+          key: "service",
+          name: this.$text("S_SERVIEC", "客服"),
+          path: "/mobile/service?prev=false"
         },
         {
           key: "mcenter-home",
@@ -105,10 +105,10 @@ export default {
   min-height: 66px;
   z-index: 5;
 
-  background: -webkit-linear-gradient(bottom, #ffffff, #f8efe6);
-  background: -o-linear-gradient(bottom, #ffffff, #f8efe6);
-  background: -moz-linear-gradient(bottom, #ffffff, #f8efe6);
-  background: linear-gradient(to bottom, #ffffff, #f8efe6);
+  background: -webkit-linear-gradient(bottom, #ffffff, #f0f0f0);
+  background: -o-linear-gradient(bottom, #ffffff, #f0f0f0);
+  background: -moz-linear-gradient(bottom, #ffffff, #f0f0f0);
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
 
   border-radius: 20px 20px 0 0;
   box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
@@ -128,16 +128,16 @@ export default {
   > div {
     img {
       display: block;
-      width: 18px;
-      height: 18px;
+      width: 33px;
+      height: 33px;
       margin: 6px auto 0;
     }
   }
 
   > div:last-of-type {
     overflow: hidden;
-    height: 21px;
-    line-height: 21px;
+    height: 18px;
+    line-height: 18px;
     padding: 0 3px;
     font-size: 12px;
     text-align: center;

@@ -108,19 +108,15 @@ div.container {
 }
 
 .top-bg {
-  // background: url("/static/image/sg1/common/pic_top.png");
-  // -moz-background-size: 100% 100%;
-  // background-size: 100% 100%;
-  // max-width: $mobile_max_width;
+  background: url("/static/image/sg1/common/pic_top.png");
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  max-width: $mobile_max_width;
   height: 150px;
-  width: 140%;
+  width: 100%;
   top: 0;
-  left: -20%;
   z-index: 0;
   position: absolute;
-  background: linear-gradient(#fe593c, #e61938);
-  box-shadow: 0px 3px 30px 0px rgba(255, 0, 0, 0.3);
-  border-radius: 0 0 50% 50%;
 
   @media screen and (max-width: 320px) {
     height: 135px;

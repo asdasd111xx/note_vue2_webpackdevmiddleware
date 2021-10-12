@@ -441,7 +441,7 @@ export default {
   }
   > img {
     display: block;
-    height: 33px;
+    height: auto;
     width: 100%;
     @media screen and (max-width: 320px) {
       height: 24px;
