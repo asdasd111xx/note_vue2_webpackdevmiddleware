@@ -132,7 +132,7 @@ export default {
             this.errMsg = "请先点击按钮进行验证";
             return;
           }
-          this.loginCheck({ captcha: this.thirdyCaptchaObj });
+          this.loginCheck({ captchaText: this.thirdyCaptchaObj });
           this.thirdyData = null;
           break;
 
@@ -223,7 +223,7 @@ export default {
       let params = {
         username: this.username,
         password: this.password,
-        captchaText: this.captcha,
+        captchaText: this.captcha || validate.captcha,
         host: window.location.host,
         ...validate
       };
