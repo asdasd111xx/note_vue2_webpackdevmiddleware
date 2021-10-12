@@ -289,7 +289,7 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: #e61938;
+  background-color: #000000;
   width: 50px;
   transition: left 0.31s;
 }
@@ -299,10 +299,10 @@ $fixed_spacing_height: 43px;
   flex: 1;
   height: 43px;
   line-height: 43px;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   text-align: center;
-  color: $main_text_color2;
+  color: #000000;
 
   &.active {
     color: $main_text_color4;
@@ -355,7 +355,7 @@ $fixed_spacing_height: 43px;
 
 @media screen and (min-width: $phone) {
   .type-btn {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .time {
@@ -365,7 +365,7 @@ $fixed_spacing_height: 43px;
 
 @media screen and (min-width: $pad) {
   .type-btn {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .time {
@@ -383,8 +383,8 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #731c25;
-  background: linear-gradient(to left, #f4b22e 0%, #f9d388 100%);
+  color: #e53266;
+  background-color: #ededed;
   &.right {
     right: 14px;
   }
@@ -396,7 +396,7 @@ $fixed_spacing_height: 43px;
   > .red-dot {
     position: absolute;
     right: -4px;
-    background: red;
+    background: #e42a30;
     border-radius: 50%;
     width: 9px;
     height: 9px;
