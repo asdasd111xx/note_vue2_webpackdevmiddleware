@@ -67,7 +67,7 @@ export default {
   created() {
     if (
       this.$route.name === "home" &&
-      Vue.cookie.get("platform") === "h" &&
+      !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
     ) {
       // this.showAppTips = true;
@@ -108,9 +108,7 @@ export default {
             });
           }
 
-          this.downloadConfigData["show"] = showData
-            ? showData.value === "true"
-            : false;
+          this.downloadConfigData["show"] = !window.navigator.standalone;
 
           this.downloadConfigData["bundleID"] = bundleIDData
             ? bundleIDData.value
