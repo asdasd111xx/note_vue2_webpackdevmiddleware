@@ -16,11 +16,9 @@
         <div>
           <img :src="cell.iconUrl" />
         </div>
-        <div>
-          <div>
-            <div>{{ cell.name }}</div>
-            <div>{{ cell.value }}</div>
-          </div>
+        <div :class="$style['left-line']">
+          <div>{{ cell.name }}</div>
+          <div>{{ cell.value }}</div>
         </div>
         <div :class="$style['copy-btn']">
           <div @click="copy(cell.value)">{{ $text("S_COPY", "复制") }}</div>
@@ -90,15 +88,27 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #fe593c, #e61938);
+    background: #000000;
     border-radius: 1px;
     margin-left: 10px;
     margin-right: 10px;
   }
 }
+
 .content {
   padding: 5px;
+
+  .cell:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    width: 95%;
+    height: 1px;
+    background-color: #eeeeee;
+    bottom: 0px;
+  }
+
   .cell {
+    position: relative;
     background-color: $main_white_color1;
     display: flex;
     align-items: center;
@@ -113,29 +123,38 @@ export default {
       justify-content: center;
       margin: 0 20px;
       border-right: #f8f8f7 solid 1px;
+
       img {
         width: 28px;
       }
     }
 
     > div:nth-child(2) {
-      margin-left: 20px;
+      // margin-left: 20px;
       width: 100%;
     }
 
     > .copy-btn {
-      color: #d3b498;
+      color: #000000;
       width: 120px;
       text-align: center;
+      background-color: #ededed;
       > div {
-        border-radius: 5px;
-        border: 1px solid #d3b498;
-        color: #d3b498;
+        border-radius: 14px;
+        border: 1px solid #000000;
+        color: #000000;
         padding: 2.5px 5px;
       }
     }
   }
 }
+
+.content:not(:first-child) {
+  .cell .left-line > div:last-child {
+    color: rgba(65, 70, 85, 0.3);
+  }
+}
+
 .online-btn {
   height: 45px;
   margin-top: 30px;
@@ -146,10 +165,23 @@ export default {
   > div {
     color: white;
     height: 45px;
-    border-radius: 5px;
+    border-radius: 23px;
     font-size: 16px;
     line-height: 45px;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: #000000;
+  }
+}
+
+.left-line {
+  border-left: 1px solid #eeeeee;
+  padding: 0 20px;
+
+  > div:first-child {
+    font-size: 14px;
+  }
+
+  > div:last-child {
+    font-size: 12px;
   }
 }
 </style>
