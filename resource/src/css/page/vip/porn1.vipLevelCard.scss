@@ -92,7 +92,7 @@ $card-width: calc(100% - 30px);
     padding: 0px 5px;
     top: 50px;
     left: 25px;
-    background: linear-gradient(to right, #99A3C1, #636F93);
+    background: linear-gradient(to right, #99a3c1, #636f93);
   }
 
   // VIP徽章
@@ -118,6 +118,7 @@ $card-width: calc(100% - 30px);
 
     div {
       min-width: 65px;
+      word-break: break-word;
     }
   }
 }
@@ -165,19 +166,18 @@ $card-width: calc(100% - 30px);
       padding-bottom: 10px;
 
       .downgrade-value {
-        color: #A6A9B2;
+        color: #a6a9b2;
         padding-bottom: 5px;
 
         .downgrade-limit-day {
-          color: #6AAAF5;
-
+          color: #6aaaf5;
         }
 
         .downgrade-limit-count {
           color: #414655;
 
           &.done {
-            color: #6AAAF5
+            color: #6aaaf5;
           }
         }
       }
@@ -187,7 +187,7 @@ $card-width: calc(100% - 30px);
       text-align: center;
       line-height: 20px;
       padding-top: 10px;
-      border-top: #F8F8F7 1px solid;
+      border-top: #f8f8f7 1px solid;
       color: #d1b79c;
       font-weight: 600;
     }
