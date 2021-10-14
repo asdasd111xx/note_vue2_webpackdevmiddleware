@@ -10,7 +10,9 @@ function getCDNHost() {
       return response.json();
     })
     .then(function(data) {
-      if (data.site === "porn1" && data.domain === "67") {
+      if (data.cdn) {
+        cdnHost = h.get(`${data.cdn}`);
+      } else if (data.site === "porn1" && data.domain === "67") {
         cdnHost = h.get(`x-cdn-yb`);
       } else if (data.site === "sg1" && data.domain === "80") {
         cdnHost = h.get(`x-cdn-sg`);

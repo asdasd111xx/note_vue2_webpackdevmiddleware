@@ -2003,7 +2003,13 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   const getV2Token = uri => {
     let bodyFormData = new FormData();
-    bodyFormData.append("spaceId", configInfo.PORN_CONFIG.ID.SPACE);
+    let spaceID =
+      (configInfo.PORN_CONFIG &&
+        configInfo.PORN_CONFIG.ID &&
+        configInfo.PORN_CONFIG.ID.SPACE) ||
+      "";
+
+    bodyFormData.append("spaceId", spaceID);
     bodyFormData.append(
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"

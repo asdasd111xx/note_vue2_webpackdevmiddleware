@@ -11,7 +11,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
