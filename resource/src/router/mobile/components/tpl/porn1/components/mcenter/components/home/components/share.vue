@@ -179,7 +179,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 9%;
+    bottom: 7%;
     left: 50%;
     transform: translateX(-50%);
   }
