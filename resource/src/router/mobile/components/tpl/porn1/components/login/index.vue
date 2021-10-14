@@ -152,7 +152,11 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  class="login-button login-submit"
+                  :class="[
+                    'login-button',
+                    'login-submit',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -162,13 +166,23 @@
               </div>
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
-                <div class="link-button link-join-mem">
+                <div
+                  :class="[
+                    'link-button',
+                    'link-join-mem',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
+                >
                   <span @click="checkLayeredURL">
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
                 <div
-                  class="link-button link-submit"
+                  :class="[
+                    'link-button',
+                    'link-submit',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
                   @click="$router.push('/mobile/service')"
                 >
                   {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}

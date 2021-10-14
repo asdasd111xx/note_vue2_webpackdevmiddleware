@@ -97,11 +97,11 @@ export const site_9999905 = {
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51国际"
-  // PORN_CONFIG: {
-  //   ID: {
-  //     SPACE: "119",
-  //     YB: "120"
-  //   }
-  // }
+  SITE_NAME: "51国际",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "1",
+      YB: "9"
+    }
+  }
 };

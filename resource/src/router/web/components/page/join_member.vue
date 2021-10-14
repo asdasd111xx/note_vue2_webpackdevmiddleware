@@ -272,9 +272,13 @@
         page-status="register"
       />
 
-      <div v-else :class="$style['join-btn-wrap']">
+      <div v-else :class="[$style['join-btn-wrap']]">
         <div
-          :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
+          :class="[
+            $style['join-btn'],
+            { [$style.disabled]: isLoading },
+            $style[this.siteConfig.ROUTER_TPL]
+          ]"
           @click="joinSubmit()"
         >
           {{ $text("S_REGISTER", "注册") }}

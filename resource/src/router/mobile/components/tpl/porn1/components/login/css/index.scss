@@ -1,7 +1,7 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .container {
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .title {
@@ -33,14 +33,11 @@
   }
 }
 
-
 @media screen and (min-height: 811px) {
-
   .login-logo {
     height: 180px;
   }
 }
-
 
 .login-name {
   font-size: 21px;
@@ -83,7 +80,7 @@
       justify-content: center;
       border-right: 1px solid rgba(128, 128, 128, 0.26);
 
-      >img {
+      > img {
         width: 18px;
         height: 18px;
       }
@@ -112,7 +109,7 @@
       top: calc(50% - 10px);
       margin: 0px 5px;
 
-      >img {
+      > img {
         width: 20px;
         height: 20px;
       }
@@ -142,7 +139,7 @@
     .login-unit-link {
       float: right;
       position: relative;
-      color: #5E626D;
+      color: #5e626d;
     }
   }
 
@@ -152,16 +149,23 @@
     justify-content: center;
     align-items: center;
 
-    >div {
+    > div {
       color: white;
       text-align: center;
       line-height: 50px;
-      background: linear-gradient(to left, #BD9D7D 0%, #F9DDBD 100%);
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
       width: 100%;
       max-width: 375px;
+    }
+
+    &.sp1 {
+      > div {
+        color: $main_text_color6;
+        background: $sp1_main_color1;
+      }
     }
   }
 }
@@ -181,8 +185,13 @@
       color: $main_text_color1;
     }
 
-    a {
-      color: $main_text_color4;
+    &.sp1 {
+      &.link-join-mem {
+        color: $main_text_color4;
+      }
+      &.link-submit {
+        color: $sp1_main_color1;
+      }
     }
   }
 }
@@ -210,7 +219,7 @@
   right: 10px;
   top: 0;
 
-  >img {
+  > img {
     width: 18px;
     height: 18px;
   }
@@ -225,7 +234,7 @@
   right: 10px;
   top: 0;
 
-  >img {
+  > img {
     width: 12px;
     height: 12px;
   }

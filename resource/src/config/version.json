@@ -14,5 +14,9 @@
   {
     "site": "aobo1",
     "version": "3.0.11"
+  },
+  {
+    "site": "sp1",
+    "version": "0.0.0"
   }
 ]
