@@ -1,6 +1,15 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
+      <template v-if="['sp1'].includes(siteConfig.ROUTER_TPL)">
+        <div
+          id="home-top-bg"
+          :class="$style['top-bg']"
+          :style="{
+            'background-image': `url(${`/static/image/${siteConfig.ROUTER_TPL}/common/pic_top.png`})`
+          }"
+        />
+      </template>
       <home-slider />
       <home-new />
       <home-content />
@@ -41,6 +50,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      siteConfig: "getSiteConfig",
       loginStatus: "getLoginStatus",
       showRedEnvelope: "getShowRedEnvelope"
     }),
@@ -101,7 +111,21 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
+
 div.container {
   background-color: #fff;
+}
+
+.top-bg {
+  // background: url("/static/image/sp1/common/pic_top.png");
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  height: 120px;
+  width: 100%;
+  max-width: $mobile_max_width;
+  top: 0;
+  z-index: 0;
+  position: absolute;
 }
 </style>

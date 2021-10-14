@@ -116,6 +116,16 @@ export default {
 
   &.disable {
     background: linear-gradient(#e9dacb, #eee5db);
+    pointer-events: none;
+  }
+
+  &.sp1 {
+    color: $main_text_color6;
+    background: $sp1_main_color1;
+
+    &.disable {
+      opacity: 0.5;
+    }
   }
 }
 
