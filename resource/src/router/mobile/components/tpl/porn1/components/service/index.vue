@@ -123,7 +123,7 @@
           />
         </div>
 
-        <div :class="$style['tip-text']">永久网址</div>
+        <div :class="[$style['tip-text'], $style['sp1']]">永久网址</div>
       </div>
 
       <div v-if="isShowPop" :class="$style['pop-wrap']">
@@ -586,14 +586,15 @@ div.container {
 
 .tip-block {
   position: absolute;
-  right: 20px;
-  bottom: 65px;
+  right: 8px;
+  bottom: 80px;
 }
 
 .tip-img {
-  width: 65px;
-  height: 65px;
-
+  width: 50px;
+  height: 50px;
+  display: block;
+  margin: 5px auto;
   img {
     width: 100%;
     height: 100%;
@@ -605,11 +606,15 @@ div.container {
   text-align: center;
   padding: 0 5px;
   margin: 0 auto;
-  font-size: 12px;
+  font-size: 8px;
   color: #fff;
   background: #be9e7f;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
+
+  &.sp1 {
+    background: #000;
+  }
 }
 
 .pop-wrap {
