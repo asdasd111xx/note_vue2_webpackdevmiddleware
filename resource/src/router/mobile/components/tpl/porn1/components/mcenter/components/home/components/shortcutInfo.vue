@@ -10,7 +10,11 @@
         "
       >
         <img
-          :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
+          :src="
+            $getCdnPath(
+              `/static/image/${routerTPL}/mcenter/ic_vipprivicege.png`
+            )
+          "
         />
         <div>
           <div>VIP特权</div>
@@ -26,7 +30,9 @@
         "
       >
         <img
-          :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
+          :src="
+            $getCdnPath(`/static/image/${routerTPL}/mcenter/ic_promotion.png`)
+          "
         />
         <div>
           <div>推广赚钱</div>
@@ -45,7 +51,11 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+          <img
+            :src="
+              $getCdnPath(`/static/image/${routerTPL}/mcenter/ic_wallet.png`)
+            "
+          />
         </div>
         <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
       </div>
@@ -59,7 +69,11 @@
       >
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${routerTPL}/mcenter/ic_bethistory.png`
+              )
+            "
           />
         </div>
         <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
@@ -74,7 +88,11 @@
       >
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${routerTPL}/mcenter/ic_transaction.png`
+              )
+            "
           />
         </div>
         <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
@@ -88,7 +106,11 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
+          <img
+            :src="
+              $getCdnPath(`/static/image/${routerTPL}/mcenter/ic_rebate.png`)
+            "
+          />
         </div>
         <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
       </div>
@@ -126,7 +148,7 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     routerTPL() {
-      //先用ROUTER_TPL判斷aobo
+      //先用ROUTER_TPL判斷aobo,51sp
       return this.siteConfig.ROUTER_TPL;
     }
   },
