@@ -83,7 +83,7 @@
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/wallet/icon_wallet_${info.name}.png`
+                      `/static/image/${siteConfig.ROUTER_TPL}/wallet/icon_wallet_${info.name}.png`
                     )
                   "
                 />

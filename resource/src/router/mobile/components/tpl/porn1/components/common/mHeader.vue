@@ -135,7 +135,11 @@
           >{{ $text("S_LOGON", "登录") }}</span
         >
         <img
-          :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+            )
+          "
           @click="handleClickAsk"
         />
       </div>
@@ -149,7 +153,11 @@
         />
         <div>
           <img
-            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+              )
+            "
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
