@@ -70,7 +70,6 @@ export default {
       !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
     ) {
-      console.log(123);
       // this.showAppTips = true;
       this.actionSetLCFSystemConfig().then(() => {
         let systemConfig = this.systemConfig("lcf");
