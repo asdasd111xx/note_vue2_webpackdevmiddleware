@@ -123,7 +123,9 @@
           />
         </div>
 
-        <div :class="[$style['tip-text'], $style['sp1']]">永久网址</div>
+        <div :class="[$style['tip-text'], $style[`${routerTPL}`]]">
+          永久网址
+        </div>
       </div>
 
       <div v-if="isShowPop" :class="$style['pop-wrap']">
