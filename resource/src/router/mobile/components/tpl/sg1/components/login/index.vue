@@ -328,22 +328,21 @@ export default {
   margin: 194px auto 0;
   border-radius: 4px;
   background: #ffffff;
-  padding-bottom: 24px;
+  padding-bottom: 45px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  max-width: 340px;
+  max-width: 270px;
   color: #5e626d;
   font-size: 14px;
+  border-radius: 14px;
 }
 
 .title {
-  margin-bottom: 16px;
-  padding: 15px 20%;
-  background: #222222;
+  padding: 18px 20%;
   width: 100%;
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 18px;
   text-align: center;
-  color: #ffffff;
+  color: #414655;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -359,13 +358,14 @@ export default {
   input {
     display: block;
     background-color: #ffffff;
-    border: 1px solid #a5a5a5;
-    border-radius: 8px;
+    border: 1px solid #e3e3e3;
+    font-size: 12px;
+    border-radius: 60px;
     width: 100%;
     height: 40px;
     text-indent: 10px;
     outline: none;
-    color: #fff;
+    color: #000;
 
     &::-webkit-input-placeholder {
       color: #a5a5a5;
@@ -377,41 +377,47 @@ export default {
   color: $main_text_color1;
 }
 .submit {
-  margin: 0 auto;
-  border-radius: 8px;
-  background: linear-gradient(to left, #e61938, #fe593c);
-  width: 80%;
+  background: #fff;
+  width: 50%;
   height: 40px;
   line-height: 40px;
-  color: #ffffff;
+  color: #e53266;
   cursor: pointer;
   text-align: center;
+  font-size: 18px;
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  border-left: 1px solid #f8f8f7;
 }
 
 .close {
   position: absolute;
-  top: 5px;
-  right: 10px;
-  width: 40px;
+  bottom: 8px;
+  left: 0px;
+  width: 50%;
   height: 40px;
-  line-height: 36px;
-  font-size: 36px;
+  line-height: 40px;
   text-align: center;
-  color: #fff;
+  color: #414655;
   cursor: pointer;
   transition: all 0.3s ease;
 
-  &:hover {
-    transform: rotate(90deg);
+  &::before {
+    content: "取消";
+    font-size: 18px;
   }
 }
 
 .tip {
   margin: 20px auto 0;
-  width: 80%;
-  font-size: 15px;
+  width: 100%;
+  font-size: 14px;
   text-align: center;
-  color: #f94444;
+  color: #ff1010;
+  margin: 8px 0;
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid #f8f8f7;
 }
 
 .mask {
