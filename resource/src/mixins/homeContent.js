@@ -103,7 +103,6 @@ export default {
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      hasBank: "getHasBank",
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
       noticeData: "getNoticeData",

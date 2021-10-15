@@ -114,7 +114,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      hasBank: "getHasBank",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
     }),

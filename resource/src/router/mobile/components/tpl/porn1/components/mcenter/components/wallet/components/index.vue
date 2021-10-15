@@ -355,7 +355,6 @@ export default {
       memInfo: "getMemInfo",
       gameData: "getGameData",
       siteConfig: "getSiteConfig",
-      hasBank: "getHasBank",
       rechargeConfig: "getRechargeConfig",
       // swagConfig: "getSwagConfig",
       // swagBalance: "getSwagBalance",
