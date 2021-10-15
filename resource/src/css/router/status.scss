@@ -35,6 +35,10 @@ body {
   &.sg1 {
     background-image: url("/static/image/sg1/common/bg.png");
   }
+
+  &.sp1 {
+    background-image: url("/static/image/sp1/common/bg.png");
+  }
 }
 
 .logo-header {
@@ -59,6 +63,9 @@ body {
 
   &.sg1 {
     color: #4e5159;
+  }
+  &.sp1 {
+    color: #5e626d;
   }
 }
 
