@@ -15,7 +15,8 @@ export default merge(
 
       // 仿鸭博
       rootAobo1: () =>
-        import(/* webpackChunkName: 'rootSg1' */ "../../tpl/aobo1/")
+        import(/* webpackChunkName: 'rootSg1' */ "../../tpl/aobo1/"),
+      rootSp1: () => import(/* webpackChunkName: 'rootSp1' */ "../../tpl/sp1/")
     }
   },
   tplPorn1, // 鸭博娱乐

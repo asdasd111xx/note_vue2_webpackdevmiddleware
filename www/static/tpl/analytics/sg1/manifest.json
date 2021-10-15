@@ -1,39 +1,40 @@
 {
-  "name": "澳博国际Demo",
-  "short_name": "澳博国际Demo",
+  "name": "丝瓜直播",
+  "short_name": "丝瓜直播",
   "start_url": "/mobile/launch",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "澳博国际Demo",
+  "description": "丝瓜直播",
+  "scope": "/",
   "icons": [
     {
-      "src": "../pwa/porn1/48.png",
+      "src": "../pwa/sg1/48.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "../pwa/porn1/72.png",
+      "src": "../pwa/sg1/72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "../pwa/porn1/96.png",
-      "sizes": "96x96",
+      "src": "../pwa/sg1/100.png",
+      "sizes": "100x100",
       "type": "image/png"
     },
     {
-      "src": "../pwa/porn1/144.png",
+      "src": "../pwa/sg1/144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "../pwa/porn1/168.png",
-      "sizes": "168x168",
+      "src": "../pwa/sg1/167.png",
+      "sizes": "167x167",
       "type": "image/png"
     },
     {
-      "src": "../pwa/porn1/192.png",
-      "sizes": "192x192",
+      "src": "../pwa/sg1/196.png",
+      "sizes": "196x196",
       "type": "image/png"
     }
   ]
