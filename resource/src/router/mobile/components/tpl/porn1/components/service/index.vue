@@ -656,7 +656,7 @@ div.container {
   width: 50px;
   height: 50px;
   display: block;
-  margin: 5px auto;
+  margin: 0px auto;
   img {
     width: 100%;
     height: 100%;
@@ -742,28 +742,22 @@ div.container {
 
   .title-img {
     width: 100%;
-    height: 80px;
 
     img {
       width: 100%;
-      height: 100%;
     }
   }
 
   .content-cell {
-    margin-top: 12px;
-
     span {
       padding: 2px 0;
     }
 
     .content-img {
       width: 100%;
-      height: 100px;
 
       img {
         width: 100%;
-        height: 100%;
       }
     }
 

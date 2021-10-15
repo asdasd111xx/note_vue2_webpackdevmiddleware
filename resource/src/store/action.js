@@ -1308,11 +1308,10 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
-  // const status = Vue.cookie.get("newsite") ? "New" : "";
-  const status = "";
+  document.title = configInfo.SITE_NAME;
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
-  manifest.href = `/static/tpl/analytics/${state.webDomain.domain}/manifest.json`;
+  manifest.href = `/static/tpl/analytics/${state.webDomain.site}/manifest.json`;
   manifest.setAttribute("data-name", "manifest");
 
   if (!document.querySelector('script[data-name="manifest"]')) {

@@ -495,7 +495,7 @@ div.container {
 .tip-block {
   position: absolute;
   right: 20px;
-  bottom: 65px;
+  bottom: 80px;
 }
 
 .tip-img {
@@ -520,7 +520,6 @@ div.container {
   background: #e42a30;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
-  margin-top: 5px;
 }
 
 .pop-wrap {
@@ -589,24 +588,19 @@ div.container {
 
     img {
       width: 100%;
-      height: 100%;
     }
   }
 
   .content-cell {
-    margin-top: 12px;
-
     span {
       padding: 2px 0;
     }
 
     .content-img {
       width: 100%;
-      height: 100px;
 
       img {
         width: 100%;
-        height: 100%;
       }
     }
     .content-link {

@@ -21,12 +21,14 @@ function getCDNHost() {
       } else if (data.site === "aobo1" && data.domain === "92") {
         cdnHost = h.get(`x-cdn-ab`);
       } else if (data.site === "sp51" && data.domain === "94") {
-        cdnHost = h.get(`x-cdn-ab`);
+        cdnHost = h.get(`x-cdn-sp51`);
       } else {
         cdnHost = "";
       }
 
       console.log("__webpack_public_path__:", cdnHost);
+      window.SITE_NAME = data.site;
+      window.SITE_DOMAIN = data.domain;
       window.SCRIPT_CDN_HOST = cdnHost ? `https://${cdnHost}/` : "";
       __webpack_public_path__ = cdnHost ? `https://${cdnHost}/` : "/";
     })

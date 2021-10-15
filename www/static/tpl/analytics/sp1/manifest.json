@@ -1,10 +1,11 @@
 {
-  "name": "丝瓜直播Demo",
-  "short_name": "丝瓜直播Demo",
+  "name": "51国际",
+  "short_name": "51国际",
   "start_url": "/mobile/launch",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "丝瓜直播Demo",
+  "description": "51国际",
+  "scope": "/",
   "icons": [
     {
       "src": "../pwa/sg1/48.png",
@@ -17,8 +18,8 @@
       "type": "image/png"
     },
     {
-      "src": "../pwa/sg1/96.png",
-      "sizes": "96x96",
+      "src": "../pwa/sg1/100.png",
+      "sizes": "100x100",
       "type": "image/png"
     },
     {
@@ -27,13 +28,13 @@
       "type": "image/png"
     },
     {
-      "src": "../pwa/sg1/168.png",
-      "sizes": "168x168",
+      "src": "../pwa/sg1/167.png",
+      "sizes": "167x167",
       "type": "image/png"
     },
     {
-      "src": "../pwa/sg1/192.png",
-      "sizes": "192x192",
+      "src": "../pwa/sg1/196.png",
+      "sizes": "196x196",
       "type": "image/png"
     }
   ]
