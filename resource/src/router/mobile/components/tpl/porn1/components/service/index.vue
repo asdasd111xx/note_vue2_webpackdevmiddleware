@@ -656,7 +656,7 @@ div.container {
   width: 50px;
   height: 50px;
   display: block;
-  margin: 0px auto;
+  margin: 5px auto;
   img {
     width: 100%;
     height: 100%;
