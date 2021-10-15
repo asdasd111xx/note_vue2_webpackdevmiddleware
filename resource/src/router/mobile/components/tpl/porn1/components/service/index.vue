@@ -53,7 +53,7 @@
         :class="
           routerTPL === 'porn1'
             ? $style['info-card']
-            : $style['info-card-aobo1']
+            : $style[`info-card-${routerTPL}`]
         "
         @click="clickService"
       >
@@ -84,7 +84,7 @@
         :class="
           routerTPL === 'porn1'
             ? $style['info-card2']
-            : $style['info-card2-aobo1']
+            : $style[`info-card2-${routerTPL}`]
         "
         @click="clickService"
       >
@@ -272,6 +272,8 @@ export default {
           return "鸭博娱乐";
         case "aobo1":
           return "澳博国际";
+        case "sp1":
+          return "51国际";
       }
     }
   },
@@ -497,7 +499,7 @@ div.container {
     background-repeat: no-repeat;
   }
 }
-
+//澳博客服
 .info-card-aobo1,
 .info-card2-aobo1 {
   color: white;
@@ -549,6 +551,64 @@ div.container {
 
   > div:first-child {
     background: url("/static/image/aobo1/service/service_card.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+  }
+}
+
+//51客服
+.info-card-sp1,
+.info-card2-sp1 {
+  color: white;
+  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
+  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
+  margin: 15px;
+  height: 100px;
+  border-radius: 10px;
+  position: relative;
+
+  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+
+  > div:first-child {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    background-image: url("/static/image/sp1/service/service_card.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+
+    > div {
+      height: 25px;
+      line-height: 25px;
+    }
+
+    > div:first-child {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    > div:nth-child(2) {
+      color: hsla(0, 0%, 100%, 0.5);
+    }
+
+    > div > img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.info-card2-sp1 {
+  margin-top: 20px;
+  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
+  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+
+  > div:first-child {
+    background: url("/static/image/sp1/service/service_card.png");
     background-size: auto 100%;
     background-position: top 0 right 0;
     background-repeat: no-repeat;
