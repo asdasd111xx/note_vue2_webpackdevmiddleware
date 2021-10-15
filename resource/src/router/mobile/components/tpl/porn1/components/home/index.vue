@@ -123,7 +123,7 @@ div.container {
   background-size: 100% 100%;
   height: 120px;
   width: 100%;
-  max-width: $mobile_max_width;
+  max-width: 768px;
   top: 0;
   z-index: 0;
   position: absolute;
