@@ -73,11 +73,15 @@
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/level/icon_level_${vipLevel}.png`
+                      `/static/image/${
+                        siteConfig.ROUTER_TPL
+                      }/level/icon_level_${
+                        vipLevel === 'max' ? 'max' : vipLevel
+                      }.png`
                     )
                   "
                 />
-                <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
+                <div>{{ +vipLevel > 9 ? vipLevel : info.text }}</div>
               </template>
               <template v-else>
                 <img
