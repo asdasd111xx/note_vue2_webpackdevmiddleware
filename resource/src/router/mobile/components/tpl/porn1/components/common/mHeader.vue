@@ -88,7 +88,7 @@
     <template v-if="headerConfig.hasMemInfo">
       <div
         v-if="loginStatus"
-        :class="$style['balance-wrap']"
+        :class="[$style['balance-wrap'], $style[siteConfig.ROUTER_TPL]]"
         @click="setMenuState('balance')"
       >
         <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
@@ -841,6 +841,10 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+
+  &.sp1 {
+    color: #ffffff;
   }
 }
 
