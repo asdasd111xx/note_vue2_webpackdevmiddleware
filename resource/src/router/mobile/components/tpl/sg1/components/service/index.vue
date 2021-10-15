@@ -104,7 +104,7 @@
         :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
-          <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
+          <img :src="$getCdnPath(`/static/image/sg1/common/appicon_pao.png`)" />
         </div>
 
         <div :class="$style['tip-text']">永久网址</div>
@@ -136,13 +136,13 @@
               />
             </div>
             <span
-              >尊敬的丝瓜直播会员，当iOS用户的丝瓜直播App掉签无法打开时，可以通过以下方法继续游戏</span
+              >尊敬的泡泡直播会员，当iOS用户的泡泡直播App掉签无法打开时，可以通过以下方法继续游戏</span
             >
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过丝瓜直播图标上的网址，重新下载App：</span>
+              <span>1.通过泡泡直播图标上的网址，重新下载App：</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
@@ -156,7 +156,7 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏丝瓜直播永久网址，浏览器打开，随时畅玩：</span>
+              <span>2.收藏泡泡直播永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -365,7 +365,7 @@ div.container {
 
   .add-bottom {
     color: #fff;
-    background: #6aaaf5;
+    background: #000000;
     border-radius: 36px;
     padding: 3px 12px;
   }
@@ -392,8 +392,8 @@ div.container {
 .info-card,
 .info-card2 {
   color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
+  background-image: -webkit-linear-gradient(196deg, #ff726e, #e61f19);
+  background-image: linear-gradient(254deg, #ff726e, #e61f19);
   margin: 15px;
   height: 100px;
   border-radius: 10px;
@@ -435,8 +435,8 @@ div.container {
 
 .info-card2 {
   margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+  background-image: -webkit-linear-gradient(16deg, #88dcea, #71c6d4);
+  background-image: linear-gradient(74deg, #88dcea, #71c6d4);
 
   > div:first-child {
     background: url("/static/image/common/service/bg_service02.png");
@@ -501,7 +501,7 @@ div.container {
   padding: 0 5px;
   font-size: 12px;
   color: #fff;
-  background: #fb4e74;
+  background: #000000;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
 }
@@ -528,7 +528,7 @@ div.container {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #f8f8f7;
+  background: #ffffff;
   border-radius: 8px;
 
   .close {
@@ -555,7 +555,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: #000000;
       border-radius: 9px 0 0 9px;
     }
   }
