@@ -569,28 +569,22 @@ div.container {
 
   .title-img {
     width: 100%;
-    height: 80px;
 
     img {
       width: 100%;
-      height: 100%;
     }
   }
 
   .content-cell {
-    margin-top: 12px;
-
     span {
       padding: 2px 0;
     }
 
     .content-img {
       width: 100%;
-      height: 100px;
 
       img {
         width: 100%;
-        height: 100%;
       }
     }
 
