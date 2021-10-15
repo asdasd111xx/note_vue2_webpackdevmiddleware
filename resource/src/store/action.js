@@ -1505,15 +1505,6 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
-  // return yaboRequest({
-  //   method: 'get',
-  //   url: configInfo.YABO_API_DOMAIN + '/system/switch',
-  // }).then((res) => {
-  //   console.log("api switch test");
-  //   if (res && res.data) {
-  //     commit(types.SET_YABOCONFIG, res.data);
-  //   }
-  // });
 
   return goLangApiRequest({
     method: "get",
