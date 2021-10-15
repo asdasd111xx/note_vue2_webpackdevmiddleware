@@ -23,7 +23,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import template1 from "../../../../../../../../../web/components/common/securityCheck/components/template1.vue";
 
@@ -53,13 +52,6 @@ export default {
     }
   },
   mounted() {
-    // yaboRequest({
-    //   method: 'get',
-    //   url: this.siteConfig.YABO_API_DOMAIN + '/System/quotaad',
-    // }).then((res) => {
-    //   this.imgList = res.data;
-    // });
-
     if (this.routerTPL === "aobo1") {
       let target = "quota_transfer";
       goLangApiRequest({

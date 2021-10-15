@@ -187,8 +187,8 @@
 </template>
 <script>
 import { getCookie } from "@/lib/cookie";
-import yaboRequest from "@/api/yaboRequest";
 import { mapGetters, mapActions } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
@@ -337,9 +337,9 @@ export default {
       }
       this.unlocked = true;
       let cid = getCookie("cid");
-      yaboRequest({
-        method: "put",
-        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Account/UnlockTagId`,
         params: {
           cid: cid,
           userid: this.memInfo.user.id,

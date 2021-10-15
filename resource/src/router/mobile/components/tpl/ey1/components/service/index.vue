@@ -146,7 +146,6 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import mobileLinkOpen from "@/lib/mobile_link_open";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 

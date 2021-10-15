@@ -70,8 +70,6 @@ import { getCookie } from "@/lib/cookie";
 import vipUser from "./vipUser";
 import vipLevelCard from "./vipLevelCard";
 import vipInfo from "./vipInfo";
-import mcenter from "@/api/mcenter";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {

@@ -25,7 +25,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
