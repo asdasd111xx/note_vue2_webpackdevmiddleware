@@ -7,6 +7,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import porn1Service from "@/router/mobile/components/tpl/porn1/components/service";
+import sp1Service from "@/router/mobile/components/tpl/porn1/components/service";
+import aobo1Service from "@/router/mobile/components/tpl/porn1/components/service";
 import sg1Service from "@/router/mobile/components/tpl/sg1/components/service";
 import ey1Service from "@/router/mobile/components/tpl/ey1/components/service";
 import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
@@ -21,7 +23,9 @@ export default {
   components: {
     porn1Service,
     sg1Service,
-    ey1Service
+    ey1Service,
+    sp1Service,
+    aobo1Service
   },
   computed: {
     ...mapGetters({
