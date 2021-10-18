@@ -215,6 +215,7 @@ export default {
   data() {
     return {
       show: false,
+      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,

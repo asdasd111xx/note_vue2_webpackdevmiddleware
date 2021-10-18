@@ -163,6 +163,7 @@ export default {
   data() {
     return {
       show: false,
+      sourceSiteConfig: null,
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
