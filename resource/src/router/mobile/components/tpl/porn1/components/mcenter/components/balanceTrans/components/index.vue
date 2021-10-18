@@ -530,6 +530,11 @@ export default {
     showRedEnvelope() {
       this.needShowRedEnvelope = true;
       this.redEnvelopeData = this.showRedEnvelope;
+    },
+    isShowTransOutSelect() {
+      if (this.isShowTransOutSelect) {
+        this.setTranOutList(true);
+      }
     }
   },
   computed: {
