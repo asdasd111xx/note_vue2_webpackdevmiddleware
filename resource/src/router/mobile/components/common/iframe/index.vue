@@ -776,6 +776,9 @@ export default {
 
           // 绑定银行卡
           case "EVENT_BOUNS_BANKCARD":
+            this.$router.push(
+              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+            );
             return;
 
           default:
