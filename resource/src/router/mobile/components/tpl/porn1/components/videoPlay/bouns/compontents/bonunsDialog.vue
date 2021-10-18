@@ -189,6 +189,8 @@
 import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import yaboRequest from "@/api/yaboRequest";
+import Vue from "vue";
 
 export default {
   props: {
@@ -337,25 +339,32 @@ export default {
       }
       this.unlocked = true;
       let cid = getCookie("cid");
-      goLangApiRequest({
+
+      yaboRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/Account/UnlockTagId`,
-        params: {
-          cid: cid,
-          userid: this.memInfo.user.id,
-          tagId: this.tagId,
-          domain: this.memInfo.user.domain
+        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/GetAuthorizationToken`
+      }).then(res => {
+        if (res.data) {
+          this.yToken = res.data;
+          Vue.cookie.set("y_token", res.data);
+
+          yaboRequest({
+            method: "put",
+            url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
+            params: {
+              cid: cid,
+              userid: this.memInfo.user.id,
+              tagId: this.tagId,
+              domain: this.memInfo.user.domain
+            }
+          }).then(res => {
+            setTimeout(() => {
+              this.unlocked = false;
+              this.$router.push(`/mobile/mcenter/makeMoney`);
+            }, 200);
+          });
         }
-      })
-        .then(res => {
-          setTimeout(() => {
-            this.unlocked = false;
-            this.$router.push(`/mobile/mcenter/makeMoney`);
-          }, 200);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      });
     },
     getDialogHeight() {
       let t = document.getElementById("earn-wrap");
