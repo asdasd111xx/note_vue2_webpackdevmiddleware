@@ -188,14 +188,14 @@
           删除
         </div>
       </div>
-      <div v-if="isLoading" :class="$style.loading">
+      <!-- <div v-if="isLoading" :class="$style.loading">
         <div :class="$style['loading-wrap']">
           <div :class="$style['icon-loading']">
             <icon name="spinner" width="32" height="32" pulse />
           </div>
           <div :class="$style['loading-text']">数据加载中...</div>
         </div>
-      </div>
+      </div> -->
       <div v-if="isDelete" :class="$style['delete-tips']">
         <div :class="$style['tips-wrap']">
           <div :class="$style['tips-title']">温馨提醒</div>
@@ -322,7 +322,7 @@ export default {
             setTimeout(() => {
               this.isLoading = false;
               this.$nextTick(() => {
-                window.location.reload(true);
+                window.location.reload();
               });
             }, 1000);
           });
@@ -388,13 +388,12 @@ export default {
             msg: res.data.msg,
             code: res.data.code
           });
-          return;
+        } else {
+          this.getMessgae();
+          this.onShowFunction(false);
+          this.isEditing = false;
+          this.actionSetGlobalMessage({ msg: "消息删除成功" });
         }
-
-        this.actionSetGlobalMessage({ msg: "消息删除成功" });
-        this.getMessgae();
-        this.onShowFunction(false);
-        this.isEditing = false;
       });
     }
   }

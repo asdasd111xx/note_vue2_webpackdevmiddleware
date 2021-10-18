@@ -2111,7 +2111,7 @@ export const actionSetWebDomain = ({ commit }) => {
         "background: #222; color: yellow; font-size:14px",
         {
           ...res.data,
-          version: version.find(i => i.site === res.data.site).version
+          version: version.find(i => i.site === "porn1").version
         }
       );
       const site = (res && res.data && String(res.data.site)) || "";
