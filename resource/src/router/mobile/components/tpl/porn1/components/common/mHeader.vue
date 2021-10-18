@@ -301,7 +301,11 @@ export default {
       }
       switch (this.headerConfig.hasHelp.type) {
         case "deposit":
-          sendUmeng(48);
+          if (this.routerTPL === "sg1") {
+            sendUmeng(47);
+          } else {
+            sendUmeng(48);
+          }
           break;
         default:
           break;

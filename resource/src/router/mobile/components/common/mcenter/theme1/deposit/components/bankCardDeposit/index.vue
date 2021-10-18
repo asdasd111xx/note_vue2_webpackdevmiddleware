@@ -1366,6 +1366,9 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     paySelectData() {
       return {
         payMethod: {
@@ -1643,6 +1646,11 @@ export default {
     }
   },
   created() {
+    if (this.routerTPL === "sg1") {
+      sendUmeng(46);
+    } else {
+      sendUmeng(47);
+    }
     this.initHeaderSetting = this.headerSetting;
 
     // 判斷分項維護優先度最高
@@ -1772,7 +1780,11 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
-      sendUmeng(50);
+      if (this.routerTPL === "sg1") {
+        sendUmeng(49);
+      } else {
+        sendUmeng(50);
+      }
       // 代客充值
       if (
         this.curPayInfo.payment_method_id === 20 &&
@@ -2140,7 +2152,11 @@ export default {
       }
     },
     onClickService(){
-      sendUmeng(51)
+      if (this.routerTPL === "sg1") {
+        sendUmeng(50);
+      } else {
+        sendUmeng(51);
+      }
       this.$router.push('/mobile/service')
     }
   }

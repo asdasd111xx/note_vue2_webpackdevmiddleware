@@ -89,7 +89,11 @@ export default {
     };
   },
   created() {
-    sendUmeng(52);
+    if (this.routerTPL === "sg1") {
+      sendUmeng(51);
+    } else {
+      sendUmeng(52);
+    }
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
@@ -127,6 +131,9 @@ export default {
       siteConfig: "getSiteConfig",
       post: "getPost"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     giftList() {
       return [
         {
@@ -175,10 +182,18 @@ export default {
     onGiftClick(target) {
       switch (target) {
         case "审核查询":
-          sendUmeng(53);
+          if (this.routerTPL === "sg1") {
+            sendUmeng(52);
+          } else {
+            sendUmeng(53);
+          }
           break;
         case "自领优惠":
-          sendUmeng(54);
+          if (this.routerTPL === "sg1") {
+            sendUmeng(53);
+          } else {
+            sendUmeng(54);
+          }
           break;
         default:
           break;

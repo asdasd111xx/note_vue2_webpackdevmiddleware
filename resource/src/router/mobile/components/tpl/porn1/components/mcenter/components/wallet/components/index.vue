@@ -441,7 +441,12 @@ export default {
           text: this.$text("S_TRANSFER", "转帐"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
-            sendUmeng(40);
+            if (this.routerTPL === "sg1") {
+              sendUmeng(39);
+            } else {
+              sendUmeng(40);
+            }
+
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
@@ -459,7 +464,12 @@ export default {
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
-            sendUmeng(41);
+            if (this.routerTPL === "sg1") {
+              sendUmeng(40);
+            } else {
+              sendUmeng(41);
+            }
+
             const routerPush = "/mobile/mcenter/withdraw";
 
             if (this.themeTPL === "ey1") {
@@ -477,7 +487,12 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallet_trans.png`,
           onClick: () => {
-            sendUmeng(42);
+            if (this.routerTPL === "sg1") {
+              sendUmeng(41);
+            } else {
+              sendUmeng(42);
+            }
+
             this.actionGetMemInfoV3().then(() => {
               this.actionGetRechargeStatus("wallet");
             });
@@ -489,7 +504,12 @@ export default {
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
-            sendUmeng(43);
+            if (this.routerTPL === "sg1") {
+              sendUmeng(42);
+            } else {
+              sendUmeng(43);
+            }
+
             const routerPush = "/mobile/mcenter/bankCard";
 
             if (this.themeTPL === "ey1") {
@@ -582,7 +602,11 @@ export default {
       return this.actionSetGlobalMessage({ msg: msg });
     },
     handleDeposit() {
-      sendUmeng(39);
+      if (this.routerTPL === "sg1") {
+        sendUmeng(38);
+      } else {
+        sendUmeng(39);
+      }
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡
       //   yaboRequest({
@@ -609,7 +633,12 @@ export default {
       this.$router.push(path);
     },
     onClickInvite() {
-      sendUmeng(44);
+      if (this.routerTPL === "sg1") {
+        sendUmeng(43);
+      } else {
+        sendUmeng(44);
+      }
+
       this.$router.push("/mobile/mcenter/makeMoney");
     },
     toggleTrans() {
