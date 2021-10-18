@@ -98,9 +98,8 @@
 
 <script>
 import mobileLinkOpen from "@/lib/mobile_link_open";
-
-import { mapGetters } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -141,7 +140,8 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      systemConfig: "getSystemConfig"
     }),
     $style() {
       const style =
@@ -158,48 +158,6 @@ export default {
           isShow: this.downloadToggle.pwa.show,
           onClick: () => {
             this.download(2, this.downloadToggle.pwa.bundleID);
-            // switch (this.memInfo.user.domain) {
-            //   // 鴨博
-            //   case "500015":
-            //     bundleID = "yb01.66boxing.com/iframe";
-            //     break;
-
-            //   case "69":
-            //     bundleID = "yb0t.66relish.com.iframe.html.platformG";
-            //     break;
-
-            //   case "67":
-            //     bundleID = "yaboxxxapp01.com.platformG";
-            //     break;
-
-            //   // 絲瓜
-            //   case "500035":
-            //     bundleID = "sgtt.66boxing.com/iframe";
-            //     break;
-
-            //   case "81":
-            //     bundleID = "sgt.66relish.com/iframe";
-            //     break;
-
-            //   case "80":
-            //     bundleID = "siguaxxxapp01.com.platformG";
-            //     break;
-
-            //   case "9999894":
-            //     bundleID = "auqa1.66boxing.com/iframe";
-            //     break;
-
-            //   case "93":
-            //     bundleID = "aude1.688lg.com.iframe.html.platformG";
-            //     break;
-
-            //   case "92":
-            //     bundleID = "aupr1.688lg.com.platformG";
-            //     break;
-
-            //   default:
-            //     break;
-            // }
           }
         },
         {
@@ -207,48 +165,6 @@ export default {
           isShow: this.downloadToggle.ios.show,
           onClick: () => {
             this.download(1, this.downloadToggle.ios.bundleID);
-            // switch (this.memInfo.user.domain) {
-            //   //　鴨博
-            //   case "500015":
-            //     bundleID = "bbin.mobile.xbbPorn.qa";
-            //     break;
-
-            //   case "69":
-            //     bundleID = "chungyo.foxyporn.stage.enterprise";
-            //     break;
-
-            //   case "67":
-            //     bundleID = "chungyo.foxyporn.prod.enterprise";
-            //     break;
-
-            //   // 絲瓜
-            //   case "500035":
-            //     bundleID = "bbin.mobile.sigua.qa";
-            //     break;
-
-            //   case "81":
-            //     bundleID = "bbin.mobile.sigua.stage";
-            //     break;
-
-            //   case "80":
-            //     bundleID = "bbin.mobile.sigua";
-            //     break;
-
-            //   case "9999894":
-            //     bundleID = "com.aoboCasino.qa";
-            //     break;
-            //   case "93":
-            //     bundleID = "com.aoboCasino.demo";
-            //     break;
-            //   case "92":
-            //     bundleID = "com.aoboCasino.prod";
-            //     break;
-
-            //   default:
-            //     break;
-            // }
-
-            // this.download(1, bundleID);
           }
         },
         {
@@ -263,55 +179,52 @@ export default {
   },
   created() {
     // 取得開關設定 & 隱藏版 url
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/lcf`
-    }).then(res => {
-      if (res.data && res.status === "000") {
-        this.downloadConfigData = res.data;
+    this.actionSetLCFSystemConfig().then(() => {
+      let systemConfig = this.systemConfig("lcf");
+      this.downloadConfigData = systemConfig;
 
-        const iTarget = this.downloadConfigData.find(item => {
-          return item.name === "showIPADownload";
-        });
+      const iTarget = this.downloadConfigData.find(item => {
+        return item.name === "showIPADownload";
+      });
 
-        const iOSBundleID = this.downloadConfigData.find(item => {
-          return item.name === "bbosApiIOSBundleID";
-        });
+      const iOSBundleID = this.downloadConfigData.find(item => {
+        return item.name === "bbosApiIOSBundleID";
+      });
 
-        const pTarget = this.downloadConfigData.find(item => {
-          return item.name === "showPWADownload";
-        });
+      const pTarget = this.downloadConfigData.find(item => {
+        return item.name === "showPWADownload";
+      });
 
-        const pwaBundleID = this.downloadConfigData.find(item => {
-          return item.name === "bbosApiPWABundleID";
-        });
+      const pwaBundleID = this.downloadConfigData.find(item => {
+        return item.name === "bbosApiPWABundleID";
+      });
 
-        const hTarget = this.downloadConfigData.find(item => {
-          return item.name === "showStoreDownload";
-        });
+      const hTarget = this.downloadConfigData.find(item => {
+        return item.name === "showStoreDownload";
+      });
 
-        const hBundleID = this.downloadConfigData.find(item => {
-          return item.name === "bbosApiMajaLink";
-        });
+      const hBundleID = this.downloadConfigData.find(item => {
+        return item.name === "bbosApiMajaLink";
+      });
 
-        this.downloadToggle = {
-          ios: {
-            show: iTarget.value,
-            bundleID: iOSBundleID.value
-          },
-          pwa: {
-            show: pTarget.value,
-            bundleID: pwaBundleID.value
-          },
-          hide: {
-            show: hTarget.value,
-            link: hBundleID.value
-          }
-        };
-      }
+      this.downloadToggle = {
+        ios: {
+          show: iTarget.value,
+          bundleID: iOSBundleID.value
+        },
+        pwa: {
+          show: pTarget.value,
+          bundleID: pwaBundleID.value
+        },
+        hide: {
+          show: hTarget.value,
+          link: hBundleID.value
+        }
+      };
     });
   },
   methods: {
+    ...mapActions(["actionSetLCFSystemConfig"]),
     mobileLinkOpen,
     clickService() {
       this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
@@ -325,8 +238,13 @@ export default {
           platform
         }
       }).then(res => {
-        if (res.data && res.status === "000") {
-          location.href = res.data.url;
+        if (res.data && res.status === "000" && res.data.url) {
+          let a = document.createElement("a");
+          a.download = "res.data.url";
+          a.href = res.data.url;
+          a.style.display = "none";
+          document.body.appendChild(a);
+          a.click();
         }
       });
     }
