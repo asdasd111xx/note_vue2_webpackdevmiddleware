@@ -316,7 +316,6 @@ import balanceTran from "@/components/mcenter/components/balanceTran";
 import EST from "@/lib/EST";
 import message from "@/router/mobile/components/common/message";
 import Vue from "vue";
-import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -356,7 +355,6 @@ export default {
       memInfo: "getMemInfo",
       gameData: "getGameData",
       siteConfig: "getSiteConfig",
-      hasBank: "getHasBank",
       rechargeConfig: "getRechargeConfig",
       // swagConfig: "getSwagConfig",
       // swagBalance: "getSwagBalance",

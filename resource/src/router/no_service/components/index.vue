@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="
-      themeTPL &&
-        (themeTPL === 'porn1' || themeTPL === 'sg1' || themeTPL === 'aobo1')
-    "
-    :class="[$style['content'], $style[themeTPL]]"
-  >
+  <div v-if="themeTPL" :class="[$style['content'], $style[themeTPL]]">
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
@@ -33,6 +27,9 @@
         {{ $t("ROUTER_NO_SERVICE_TEXTSG") }}
       </template>
 
+      <template v-if="themeTPL === 'sp1'">
+        {{ $t("ROUTER_NO_SERVICE_TEXTSP") }}
+      </template>
       <a
         :class="[
           $style['mail-link'],
@@ -137,6 +134,10 @@ export default {
 
       if (this.themeTPL === "sg1") {
         return "cs1@siguacs.net";
+      }
+
+      if (this.themeTPL === "sp1") {
+        return "senghout5151@gmail.com";
       }
     }
   },

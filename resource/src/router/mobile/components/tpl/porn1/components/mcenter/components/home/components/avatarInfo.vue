@@ -43,12 +43,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import moment from "moment";
-import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import mcenter from "@/api/mcenter";
-import member from "@/api/member";
 import { getCookie, setCookie } from "@/lib/cookie";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 import { sendUmeng } from "@/lib/sendUmeng";
@@ -119,15 +114,7 @@ export default {
       if (!cid) {
         return;
       }
-      // yaboRequest({
-      //   method: "get",
-      //   url: `${
-      //     this.siteConfig.YABO_API_DOMAIN
-      //     }/player/vipinfo/${cid}`,
-      //   headers: { "x-domain": this.memInfo.user.domain }
-      // }).then(res => {
-      //   this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
-      // });
+
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,

@@ -126,7 +126,9 @@ export default {
           name:
             this.routerTPL === "porn1"
               ? "S_ABOUT_YABOLIVE"
-              : "S_ABOUT_AOBOLIVE",
+              : this.routerTPL === "aobo1" && this.routerTPL !== "porn1"
+              ? "S_ABOUT_AOBOLIVE"
+              : "S_ABOUT_SPLIVE",
           path: "/mobile/mcenter/about",
           pageName: "about",
           image: "about",

@@ -80,7 +80,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";

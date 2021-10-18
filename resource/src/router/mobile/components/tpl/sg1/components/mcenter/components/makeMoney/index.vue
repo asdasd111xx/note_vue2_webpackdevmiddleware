@@ -60,7 +60,6 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mobileContainer from "../../../common/mobileContainer";
-import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {

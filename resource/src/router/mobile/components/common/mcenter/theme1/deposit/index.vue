@@ -11,8 +11,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { getCookie } from "@/lib/cookie";
-import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="routerTPL !== 'aobo1'"
+    v-if="routerTPL === 'porn1'"
     :class="[$style.footer, 'clearfix']"
     id="footer"
   >
@@ -42,7 +42,11 @@
     </div>
   </div>
 
-  <div v-else :class="[$style.footer, 'clearfix']" id="footer">
+  <div
+    v-else-if="routerTPL === 'aobo1'"
+    :class="[$style.footer, 'clearfix']"
+    id="footer"
+  >
     <div
       v-for="info in listAobo"
       :key="info.key"
@@ -67,6 +71,48 @@
           :src="
             $getCdnPath(
               `/static/image/_new/common/footer/icon_${info.key}_n.png`
+            )
+          "
+        />
+        <div
+          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          :class="$style['red-dot']"
+        />
+      </div>
+      <div>{{ info.name }}</div>
+    </div>
+  </div>
+
+  <div
+    v-else-if="routerTPL === 'sp1'"
+    :class="[$style.footer, 'clearfix']"
+    id="footer"
+  >
+    <div
+      v-for="info in listSp"
+      :key="info.key"
+      :class="[
+        $style['footer-item'],
+        $style['sp1'],
+        $style[`${info.key}`],
+        { [$style.active]: isActive(info.key) }
+      ]"
+      @click="onClick(info)"
+    >
+      <div>
+        <img
+          v-if="isActive(info.key)"
+          :src="
+            $getCdnPath(
+              `/static/image/sp1/common/footer/icon_${info.key}_h.png`
+            )
+          "
+        />
+        <img
+          v-else
+          :src="
+            $getCdnPath(
+              `/static/image/sp1/common/footer/icon_${info.key}_n.png`
             )
           "
         />
@@ -130,6 +176,35 @@ export default {
       ];
     },
     listAobo() {
+      return [
+        {
+          key: "home",
+          name: this.$text("S_HOME", "首页"),
+          path: "/mobile"
+        },
+        {
+          key: "promotion",
+          name: this.$text("S_PROMOTION", "优惠"),
+          path: "/mobile/promotion"
+        },
+        {
+          key: "service",
+          name: this.$text("S_SERVIEC", "客服"),
+          path: "/mobile/service?prev=false"
+        },
+        {
+          key: "discover",
+          name: this.$text("S_ALLIANCE", "联盟"),
+          path: "/mobile/discover/sponsor?prev=false"
+        },
+        {
+          key: "mcenter-home",
+          name: this.$text("S_INFORMATION", "我的"),
+          path: "/mobile/mcenter/home"
+        }
+      ];
+    },
+    listSp() {
       return [
         {
           key: "home",
@@ -246,6 +321,10 @@ export default {
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  &.sp1 {
+    color: #222222;
   }
 }
 

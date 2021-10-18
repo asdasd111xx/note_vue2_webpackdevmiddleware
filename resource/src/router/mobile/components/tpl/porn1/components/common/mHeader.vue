@@ -88,13 +88,17 @@
     <template v-if="headerConfig.hasMemInfo">
       <div
         v-if="loginStatus"
-        :class="$style['balance-wrap']"
+        :class="[$style['balance-wrap'], $style[siteConfig.ROUTER_TPL]]"
         @click="setMenuState('balance')"
       >
         <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+              )
+            "
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
@@ -106,6 +110,7 @@
         v-else
         :class="[
           $style['login-wrap'],
+          $style[siteConfig.ROUTER_TPL],
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
@@ -130,7 +135,11 @@
           >{{ $text("S_LOGON", "登录") }}</span
         >
         <img
-          :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+            )
+          "
           @click="handleClickAsk"
         />
       </div>
@@ -144,7 +153,11 @@
         />
         <div>
           <img
-            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
+              )
+            "
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
@@ -236,6 +249,9 @@ export default {
     }),
     mainClass() {
       const style = this.$style;
+      let disableBackgroundColor = !!["sp1"].includes(
+        this.siteConfig.ROUTER_TPL
+      );
 
       return {
         [style.header]: true,
@@ -246,6 +262,8 @@ export default {
           ? true
           : false,
         [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
+        [style["disable-bgcolor"]]: disableBackgroundColor,
+        [style[this.siteConfig.ROUTER_TPL]]: true,
         clearfix: true
       };
     },
@@ -425,6 +443,11 @@ export default {
   &.is-home {
     border-bottom: none;
   }
+
+  &.disable-bgcolor {
+    background: unset;
+    background-color: unset;
+  }
 }
 
 @media screen and (max-width: 374px) {
@@ -547,6 +570,18 @@ export default {
   }
 }
 
+.login-wrap {
+  &.sp1 {
+    .visitor-money {
+      color: #ffffff;
+    }
+
+    > span {
+      color: $sp1_main_color1;
+    }
+  }
+}
+
 .mcenter-wrap {
   position: absolute;
   right: 10px;
@@ -599,7 +634,7 @@ export default {
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
-
+  background: #fff;
   &.les,
   &.gay {
     color: #fff;
@@ -814,6 +849,10 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+
+  &.sp1 {
+    color: #ffffff;
   }
 }
 

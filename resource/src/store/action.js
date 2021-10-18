@@ -1308,11 +1308,10 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
-  // const status = Vue.cookie.get("newsite") ? "New" : "";
-  const status = "";
+  document.title = configInfo.SITE_NAME;
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
-  manifest.href = `/static/tpl/analytics/${state.webDomain.domain}/manifest.json`;
+  manifest.href = `/static/tpl/analytics/${state.webDomain.site}/manifest.json`;
   manifest.setAttribute("data-name", "manifest");
 
   if (!document.querySelector('script[data-name="manifest"]')) {
@@ -1506,15 +1505,6 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
-  // return yaboRequest({
-  //   method: 'get',
-  //   url: configInfo.YABO_API_DOMAIN + '/system/switch',
-  // }).then((res) => {
-  //   console.log("api switch test");
-  //   if (res && res.data) {
-  //     commit(types.SET_YABOCONFIG, res.data);
-  //   }
-  // });
 
   return goLangApiRequest({
     method: "get",
@@ -2003,7 +1993,13 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   const getV2Token = uri => {
     let bodyFormData = new FormData();
-    bodyFormData.append("spaceId", configInfo.PORN_CONFIG.ID.SPACE);
+    let spaceID =
+      (configInfo.PORN_CONFIG &&
+        configInfo.PORN_CONFIG.ID &&
+        configInfo.PORN_CONFIG.ID.SPACE) ||
+      "";
+
+    bodyFormData.append("spaceId", spaceID);
     bodyFormData.append(
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"

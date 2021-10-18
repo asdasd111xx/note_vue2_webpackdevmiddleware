@@ -175,8 +175,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import mobileLinkOpen from "@/lib/mobile_link_open";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 
@@ -569,28 +567,22 @@ div.container {
 
   .title-img {
     width: 100%;
-    height: 80px;
 
     img {
       width: 100%;
-      height: 100%;
     }
   }
 
   .content-cell {
-    margin-top: 12px;
-
     span {
       padding: 2px 0;
     }
 
     .content-img {
       width: 100%;
-      height: 100px;
 
       img {
         width: 100%;
-        height: 100%;
       }
     }
 

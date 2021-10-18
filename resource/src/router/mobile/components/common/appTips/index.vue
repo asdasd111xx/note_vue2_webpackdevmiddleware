@@ -66,6 +66,7 @@ export default {
   },
   created() {
     if (
+      ["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
       !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())

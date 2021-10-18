@@ -53,7 +53,7 @@
         :class="
           routerTPL === 'porn1'
             ? $style['info-card']
-            : $style['info-card-aobo1']
+            : $style[`info-card-${routerTPL}`]
         "
         @click="clickService"
       >
@@ -84,7 +84,7 @@
         :class="
           routerTPL === 'porn1'
             ? $style['info-card2']
-            : $style['info-card2-aobo1']
+            : $style[`info-card2-${routerTPL}`]
         "
         @click="clickService"
       >
@@ -123,7 +123,9 @@
           />
         </div>
 
-        <div :class="$style['tip-text']">永久网址</div>
+        <div :class="[$style['tip-text'], $style[`${routerTPL}`]]">
+          永久网址
+        </div>
       </div>
 
       <div v-if="isShowPop" :class="$style['pop-wrap']">
@@ -270,6 +272,8 @@ export default {
           return "鸭博娱乐";
         case "aobo1":
           return "澳博国际";
+        case "sp1":
+          return "51国际";
       }
     }
   },
@@ -495,7 +499,7 @@ div.container {
     background-repeat: no-repeat;
   }
 }
-
+//澳博客服
 .info-card-aobo1,
 .info-card2-aobo1 {
   color: white;
@@ -553,6 +557,64 @@ div.container {
   }
 }
 
+//51客服
+.info-card-sp1,
+.info-card2-sp1 {
+  color: white;
+  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
+  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
+  margin: 15px;
+  height: 100px;
+  border-radius: 10px;
+  position: relative;
+
+  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
+
+  > div:first-child {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    background-image: url("/static/image/sp1/service/service_card.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+
+    > div {
+      height: 25px;
+      line-height: 25px;
+    }
+
+    > div:first-child {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    > div:nth-child(2) {
+      color: hsla(0, 0%, 100%, 0.5);
+    }
+
+    > div > img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.info-card2-sp1 {
+  margin-top: 20px;
+  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
+  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+
+  > div:first-child {
+    background: url("/static/image/sp1/service/service_card.png");
+    background-size: auto 100%;
+    background-position: top 0 right 0;
+    background-repeat: no-repeat;
+  }
+}
+
 .btn-next {
   position: absolute;
   height: 100%;
@@ -586,14 +648,15 @@ div.container {
 
 .tip-block {
   position: absolute;
-  right: 20px;
-  bottom: 65px;
+  right: 8px;
+  bottom: 80px;
 }
 
 .tip-img {
-  width: 65px;
-  height: 65px;
-
+  width: 50px;
+  height: 50px;
+  display: block;
+  margin: 5px auto;
   img {
     width: 100%;
     height: 100%;
@@ -605,11 +668,15 @@ div.container {
   text-align: center;
   padding: 0 5px;
   margin: 0 auto;
-  font-size: 12px;
+  font-size: 8px;
   color: #fff;
   background: #be9e7f;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
+
+  &.sp1 {
+    background: #000;
+  }
 }
 
 .pop-wrap {
@@ -675,28 +742,22 @@ div.container {
 
   .title-img {
     width: 100%;
-    height: 80px;
 
     img {
       width: 100%;
-      height: 100%;
     }
   }
 
   .content-cell {
-    margin-top: 12px;
-
     span {
       padding: 2px 0;
     }
 
     .content-img {
       width: 100%;
-      height: 100px;
 
       img {
         width: 100%;
-        height: 100%;
       }
     }
 
