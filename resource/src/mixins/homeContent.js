@@ -574,13 +574,25 @@ export default {
       }
       switch (this.typeList[this.selectedIndex].name) {
         case "体育":
-          sendUmeng(10);
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(15);
+          } else {
+            sendUmeng(10);
+          }
           break;
         case "福利":
-          sendUmeng(11);
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(10);
+          } else {
+            sendUmeng(11);
+          }
           break;
         case "真人":
-          sendUmeng(12);
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(16);
+          } else {
+            sendUmeng(12);
+          }
           break;
         case "捕鱼":
           sendUmeng(13);
@@ -589,10 +601,18 @@ export default {
           sendUmeng(14);
           break;
         case "电子":
-          sendUmeng(15);
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(12);
+          } else {
+            sendUmeng(15);
+          }
           break;
         case "棋牌":
-          sendUmeng(16);
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(11);
+          } else {
+            sendUmeng(16);
+          }
           break;
         case "彩票":
           sendUmeng(17);
@@ -718,43 +738,93 @@ export default {
       }
 
       localStorage.setItem("iframe-third-url-title", game.name);
-      switch (game.vendor) {
-        // 鸭脖视频;
-        case "YV":
-          sendUmeng(56);
-          break;
-        // 丝瓜;
-        case "LF":
-          sendUmeng(57);
-          break;
-        // 向日葵;
-        case "SF":
-          sendUmeng(58);
-          break;
-        // 丝瓜小说;
-        case "DZ":
-          sendUmeng(59);
-          break;
-        // 小猪视频;
-        case "PIG":
-          sendUmeng(60);
-          break;
-        // 草莓;
-        case "STB":
-          sendUmeng(61);
-          break;
-        // 芭乐;
-        case "BALE":
-          sendUmeng(62);
-          break;
-        // SWAG小说;
-        case "LQ":
-          sendUmeng(63);
-          break;
-        // 鸭脖影视;
-        case "PPV":
-          sendUmeng(64);
-          break;
+
+      if (this.routerTPL === "sg1") {
+        switch (game.vendor) {
+          //丝瓜直播
+          case "sigua_ly":
+            sendUmeng(55);
+            break;
+          // 丝瓜;
+          case "LF":
+            sendUmeng(56);
+            break;
+          // 鸭脖视频;
+          case "YV":
+            sendUmeng(57);
+            break;
+          // 向日葵;
+          case "SF":
+            sendUmeng(58);
+            break;
+          // 小猪视频;
+          case "PIG":
+            sendUmeng(59);
+            break;
+          // 丝瓜小说;
+          case "DZ":
+            sendUmeng(60);
+            break;
+          // 芭乐;
+          case "BALE":
+            sendUmeng(61);
+            break;
+          // 草莓;
+          case "STB":
+            sendUmeng(62);
+            break;
+          // SWAG小说;
+          case "LQ":
+            sendUmeng(63);
+            break;
+          // 鸭脖影视;
+          case "PPV":
+            sendUmeng(64);
+            break;
+        }
+      } else {
+        switch (game.vendor) {
+          //丝瓜直播
+          // case "sigua_ly":
+          //   sendUmeng(55);
+          //   break;
+          // 鸭脖视频;
+          case "YV":
+            sendUmeng(56);
+            break;
+          // 丝瓜;
+          case "LF":
+            sendUmeng(57);
+            break;
+          // 向日葵;
+          case "SF":
+            sendUmeng(58);
+            break;
+          // 丝瓜小说;
+          case "DZ":
+            sendUmeng(59);
+            break;
+          // 小猪视频;
+          case "PIG":
+            sendUmeng(60);
+            break;
+          // 草莓;
+          case "STB":
+            sendUmeng(61);
+            break;
+          // 芭乐;
+          case "BALE":
+            sendUmeng(62);
+            break;
+          // SWAG小说;
+          case "LQ":
+            sendUmeng(63);
+            break;
+          // 鸭脖影视;
+          case "PPV":
+            sendUmeng(64);
+            break;
+        }
       }
 
       switch (game.type) {

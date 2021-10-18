@@ -23,8 +23,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     headerConfig() {
       return {
         prev: true,
@@ -44,14 +48,22 @@ export default {
         title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
         customLinkAction: () => {
-          sendUmeng(38);
+          if (this.routerTPL === "sg1") {
+            sendUmeng(37);
+          } else {
+            sendUmeng(38);
+          }
           this.$router.push("/mobile/mcenter/moneyDetail");
         }
       };
     }
   },
   created() {
-    sendUmeng(37);
+    if (this.routerTPL === "sg1") {
+      sendUmeng(36);
+    } else {
+      sendUmeng(37);
+    }
   }
 };
 </script>
