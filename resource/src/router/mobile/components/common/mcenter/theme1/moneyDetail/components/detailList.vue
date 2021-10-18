@@ -88,6 +88,9 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -159,7 +162,11 @@ export default {
       }
     },
     onDeposit() {
-      sendUmeng(46);
+      if (this.routerTPL === "sg1") {
+        sendUmeng(45);
+      } else {
+        sendUmeng(46);
+      }
       this.$router.push("/mobile/mcenter/deposit");
     }
   }

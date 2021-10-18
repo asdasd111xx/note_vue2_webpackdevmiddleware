@@ -242,6 +242,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -270,7 +273,11 @@ export default {
     }
   },
   created() {
-    sendUmeng(45);
+    if (this.routerTPL === "sg1") {
+      sendUmeng(44);
+    } else {
+      sendUmeng(45);
+    }
     if (this.$route.params.page === "detail") {
       let detailparams = localStorage.getItem("money-detail-params");
 

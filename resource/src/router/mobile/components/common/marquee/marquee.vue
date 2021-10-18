@@ -109,6 +109,9 @@ export default {
     themeTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     // 完整的跑馬燈資料
     newslist() {
       return this.list;
@@ -189,11 +192,15 @@ export default {
       }
     },
     handleClick() {
-      console.log(this.$route.name);
+      // console.log(this.$route.name);
       if (this.$route.name === "home") {
         sendUmeng(4);
       } else if (this.$route.name === "mcenter-deposit") {
-        sendUmeng(49);
+        if (this.routerTPL === "sg1") {
+          sendUmeng(48);
+        } else {
+          sendUmeng(49);
+        }
       }
       this.isFirstShow = false;
       this.togglePopup();
