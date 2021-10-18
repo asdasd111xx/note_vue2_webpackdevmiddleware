@@ -3,7 +3,11 @@
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
         <div
-          :class="[$style['promotion-gift'], $style['right']]"
+          :class="[
+            $style['promotion-gift'],
+            $style['right'],
+            $style[routerTPL]
+          ]"
           @click="onGiftClick(giftList[0])"
         >
           <span>{{ giftList[0].name }}</span>
@@ -11,7 +15,7 @@
         </div>
 
         <div
-          :class="[$style['promotion-gift'], $style['left']]"
+          :class="[$style['promotion-gift'], $style['left'], $style[routerTPL]]"
           @click="onGiftClick(giftList[1])"
         >
           <span>{{ giftList[1].name }}</span>
@@ -429,6 +433,12 @@ $fixed_spacing_height: 43px;
 
   &.left {
     left: 14px;
+  }
+
+  &.sp1 {
+    color: #222222;
+    background: #ffbb00;
+    border-radius: 10px;
   }
 
   > .red-dot {

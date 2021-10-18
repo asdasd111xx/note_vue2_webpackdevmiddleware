@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import mobileContainer from "../../../common/mobileContainer";
 import information from "./components/index";
 

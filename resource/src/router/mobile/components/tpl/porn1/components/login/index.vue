@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
-        <div class="login-wrap clearfix">
+        <div :class="['login-wrap', this.siteConfig.ROUTER_TPL]">
           <div class="login-logo">
             <img :src="`/static/image/${routerTPL}/common/logo_b.png`" />
           </div>

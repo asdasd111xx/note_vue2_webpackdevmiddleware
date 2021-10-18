@@ -63,13 +63,17 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     toogleAppTips(toogle) {
       this.showApptips = toogle;
+
+      let mobileWrap = document.querySelector("#mobile-wrap"),
+        homeTopBg = document.querySelector("#home-top-bg");
+
       if (toogle) {
-        document.querySelector("#mobile-wrap").style = "overflow: hidden";
-        document.querySelector("#home-top-bg").style = "top: 60px";
+        mobileWrap
+          ? (document.querySelector("#mobile-wrap").style = "overflow: hidden")
+          : "";
       } else {
-        document.querySelector("#mobile-wrap").style = "";
-        if (document.querySelector("#home-top-bg"))
-          document.querySelector("#home-top-bg").style = "";
+        mobileWrap ? (document.querySelector("#mobile-wrap").style = "") : "";
+        homeTopBg ? (document.querySelector("#home-top-bg").style = "") : "";
       }
     }
   },

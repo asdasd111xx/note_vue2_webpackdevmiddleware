@@ -312,6 +312,7 @@ export default {
       setTimeout(() => {
         analytics({
           domain: this.memInfo.user.domain,
+          site: this.siteConfig.ROUTER_TPL,
           result: html => {
             $("head").append(html);
           }

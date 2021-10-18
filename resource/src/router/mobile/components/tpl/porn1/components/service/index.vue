@@ -10,7 +10,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding"
+          v-if="!fromlanding && !isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <div v-if="isIos" :class="$style['add-wrap']">
+        <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
           <span>添加桌面客服，随时享受一对一在线解答</span>
           <span :class="$style['add-bottom']" @click="handleAddClick"
             >立即添加</span
@@ -112,7 +112,7 @@
       </div>
 
       <div
-        v-if="isIos"
+        v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
         :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
@@ -156,15 +156,13 @@
               />
             </div>
             <span>{{
-              `尊敬的${routerName}会员，当iOS用户的${routerName}App掉签无法打开时，可以通过以下方法继续游戏`
+              `尊敬的${siteName}会员，当iOS用户的${siteName}App掉签无法打开时，可以通过以下方法继续游戏`
             }}</span>
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>{{
-                `1.通过${routerName}图标上的网址，重新下载App：`
-              }}</span>
+              <span>{{ `1.通过${siteName}图标上的网址，重新下载App：` }}</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
@@ -179,7 +177,7 @@
 
             <div :class="$style['content-cell']">
               <span>{{
-                `2.收藏${routerName}永久网址，浏览器打开，随时畅玩：`
+                `2.收藏${siteName}永久网址，浏览器打开，随时畅玩：`
               }}</span>
               <div
                 :class="$style['link']"
@@ -199,16 +197,25 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import mobileLinkOpen from "@/lib/mobile_link_open";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
+import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 
 export default {
   components: {
     mobileContainer
   },
+  props: {
+    isStatic: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
+      show: false,
+      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
@@ -226,6 +233,27 @@ export default {
     if (this.$route.query.fromlanding !== undefined) {
       this.fromlanding = this.$route.query.fromlanding === "true";
     }
+
+    if (this.isStatic) {
+      this.actionSetWebDomain().then(res => {
+        this.actionGetMobileInfo();
+        let configInfo = {};
+
+        if (res) {
+          configInfo =
+            siteConfigTest[`site_${res.domain}`] ||
+            siteConfigOfficial[`site_${res.domain}`];
+        }
+
+        this.sourceSiteConfig = configInfo;
+        this.template = `${res.site}Service`;
+        if (configInfo) {
+          this.show = true;
+        }
+      });
+    } else {
+      this.show = true;
+    }
   },
   mounted() {
     if (this.loginStatus && !this.fromlanding) {
@@ -235,23 +263,27 @@ export default {
     }
 
     this.divHeight = document.body.offsetHeight - 60;
-
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
-    }).then(res => {
-      if (res && res.data) {
-        this.linkArray = res.data;
-      }
-    });
+    if (!this.isStatic) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
+      }).then(res => {
+        if (res && res.data) {
+          this.linkArray = res.data;
+        }
+      });
+    }
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      systemSiteConfig: "getSiteConfig",
       mobileInfo: "getMobileInfo"
     }),
+    siteConfig() {
+      return this.sourceSiteConfig || this.systemSiteConfig;
+    },
     isIos() {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
@@ -266,19 +298,18 @@ export default {
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
-    routerName() {
-      switch (this.siteConfig.ROUTER_TPL) {
-        case "porn1":
-          return "鸭博娱乐";
-        case "aobo1":
-          return "澳博国际";
-        case "sp1":
-          return "51国际";
-      }
+    siteName() {
+      return this.siteConfig.SITE_NAME;
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionSetWebDomain",
+      "actionSetWebInfo",
+      "actionGetMobileInfo"
+    ]),
     handleBack() {
       const { query } = this.$route;
       let redirect = query.redirect;
