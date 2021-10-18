@@ -36,25 +36,7 @@ export default {
   },
   methods: {
     linkToService() {
-      let on_service_url =
-        store &&
-        store.state &&
-        store.state.mobileInfo &&
-        store.state.mobileInfo.service &&
-        store.state.mobileInfo.service.url;
-      localStorage.setItem("service-url", on_service_url || "");
-
-      if (this.domain.site === "ey1") {
-        window.location.href = `/static/upup/ey1/index.html?username=${this.username}`;
-      } else if (this.domain.site === "sg1") {
-        window.location.href = `/static/upup/sg1/index.html?username=${this.username}`;
-      } else if (this.domain.site === "sp1") {
-        window.location.href = `/static/upup/sp1/index.html?username=${this.username}`;
-      } else {
-        // if (this.domain.site === "porn1")
-        window.location.href = `/static/upup/index.html?username=${this.username}`;
-      }
-      window.location.title = "在线客服";
+      window.location.href = "/static/service";
     }
   }
 };

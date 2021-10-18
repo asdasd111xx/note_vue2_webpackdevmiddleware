@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      v-show="downloadConfigData.show"
+      v-if="downloadConfigData.show"
       :class="[
         $style['apptips-wrap'],
         { [$style['close']]: !downloadConfigData.show },

@@ -3,14 +3,14 @@
     :class="$style.container"
     :has-footer="!hasPrev && !fromlanding"
   >
-    <div slot="content" :class="$style['content-wrap']">
+    <div v-if="show" slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
           <img :src="$getCdnPath(`/static/image/common/btn_back_white.png`)" />
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding"
+          v-if="!fromlanding && !isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -69,7 +69,7 @@
       </div>
 
       <div
-        v-if="isIos"
+        v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
         :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
@@ -148,15 +148,21 @@ import mobileContainer from "../common/mobileContainer";
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
-
+import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 export default {
   components: {
     mobileContainer
   },
+  props: {
+    isStatic: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      imgID: 0,
-      imgIndex: 0,
+      show: false,
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
@@ -202,6 +208,27 @@ export default {
     if (this.$route.query.fromlanding !== undefined) {
       this.fromlanding = this.$route.query.fromlanding === "true";
     }
+
+    if (this.isStatic) {
+      this.actionSetWebDomain().then(res => {
+        this.actionGetMobileInfo();
+        let configInfo = {};
+
+        if (res) {
+          configInfo =
+            siteConfigTest[`site_${res.domain}`] ||
+            siteConfigOfficial[`site_${res.domain}`];
+        }
+
+        this.sourceSiteConfig = configInfo;
+        this.template = `${res.site}Service`;
+        if (configInfo) {
+          this.show = true;
+        }
+      });
+    } else {
+      this.show = true;
+    }
   },
   mounted() {
     if (this.loginStatus && !this.fromlanding) {
@@ -209,22 +236,26 @@ export default {
         this.getAvatarSrc();
       });
     }
-
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
-    }).then(res => {
-      if (res && res.data) {
-        this.linkArray = res.data;
-      }
-    });
+    if (!this.isStatic) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
+      }).then(res => {
+        if (res && res.data) {
+          this.linkArray = res.data;
+        }
+      });
+    }
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      systemSiteConfig: "getSiteConfig"
     }),
+    siteConfig() {
+      return this.sourceSiteConfig || this.systemSiteConfig;
+    },
     isIos() {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
@@ -238,7 +269,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionSetWebDomain",
+      "actionSetWebInfo",
+      "actionGetMobileInfo"
+    ]),
     handleBack() {
       const { query } = this.$route;
       let redirect = query.redirect;

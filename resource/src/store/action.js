@@ -2123,6 +2123,7 @@ export const actionSetWebDomain = ({ commit }) => {
       result["site"] = site;
       result["domain"] = domain;
       commit(types.SET_WEB_DOMAIN, result);
+      return result;
     })
     .catch(res => {
       console.log("[conf/domain]:", res);
