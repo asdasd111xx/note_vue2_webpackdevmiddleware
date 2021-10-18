@@ -1,6 +1,7 @@
 import * as moment from "moment-timezone";
 
 import axios from "axios";
+import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import i18n from "@/config/i18n";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
@@ -8,13 +9,13 @@ import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
-import { getCookie } from "@/lib/cookie";
 
 export default target => {
   const curLang = store.state.curLang || "zh-cn";
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
+  localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
     console.log(target);
