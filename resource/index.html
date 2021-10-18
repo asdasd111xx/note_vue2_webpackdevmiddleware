@@ -137,10 +137,11 @@
       })
       .then(function (data) {
         if (data.site === "porn1") {// && data.domain === "67") {
-          ymkey = "203467608";
+          ymkey = "61555a7c14e22b6a4f132e18";
         } else if (data.site === "sg1") {// && data.domain === "80") {
           console.log("YM key sg1");
         }
+        localStorage.setItem("YMKey", ymkey);
         if (ymkey != '') {
           console.log('友盟 set config');
           (function (w, d, s, q, i) {
@@ -150,12 +151,12 @@
             j.id = 'beacon-aplus';
             j.src = 'https://d.alicdn.com/alilog/mlog/aplus/' + i + '.js';
             f.parentNode.insertBefore(j, f);
-          })(window, document, 'script', 'aplus_queue', ymkey);
+          })(window, document, 'script', 'aplus_queue', '203467608');
 
           //集成应用的appKey
           aplus_queue.push({
             action: 'aplus.setMetaInfo',
-            arguments: ['appKey', '61555a7c14e22b6a4f132e18']
+            arguments: ['appKey', ymkey]
           });
           /************************以下内容为可选配置内容****************************/
           //sdk提供手动pv发送机制，启用手动pv(即关闭自动pv)，需设置aplus-waiting=MAN;

@@ -70,6 +70,7 @@ import axios from "axios";
 import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -86,6 +87,9 @@ export default {
       hasNewGift: false,
       isShowPop: false
     };
+  },
+  created() {
+    sendUmeng(52);
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
@@ -169,6 +173,16 @@ export default {
       });
     },
     onGiftClick(target) {
+      switch (target) {
+        case "审核查询":
+          sendUmeng(53);
+          break;
+        case "自领优惠":
+          sendUmeng(54);
+          break;
+        default:
+          break;
+      }
       let url = "";
       localStorage.setItem("iframe-third-url-title", target.name);
       this.$router.push(

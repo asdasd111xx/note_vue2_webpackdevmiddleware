@@ -14,6 +14,7 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../common/mobileContainer";
 import wallet from "./components/index";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -43,10 +44,14 @@ export default {
         title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
         customLinkAction: () => {
+          sendUmeng(38);
           this.$router.push("/mobile/mcenter/moneyDetail");
         }
       };
     }
+  },
+  created() {
+    sendUmeng(37);
   }
 };
 </script>
