@@ -30,7 +30,7 @@
       <template v-if="themeTPL === 'sp1'">
         {{ $t("ROUTER_NO_SERVICE_TEXTSP") }}
       </template>
-      <a
+      <div
         :class="[
           $style['mail-link'],
           {
@@ -40,7 +40,7 @@
         @click="mailTo()"
       >
         <span>{{ mailURL }}</span>
-      </a>
+      </div>
 
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
     </div>
