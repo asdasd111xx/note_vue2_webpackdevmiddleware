@@ -321,6 +321,7 @@ import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -440,6 +441,7 @@ export default {
           text: this.$text("S_TRANSFER", "转帐"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
+            sendUmeng(40);
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
@@ -457,6 +459,7 @@ export default {
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
+            sendUmeng(41);
             const routerPush = "/mobile/mcenter/withdraw";
 
             if (this.themeTPL === "ey1") {
@@ -474,6 +477,7 @@ export default {
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallet_trans.png`,
           onClick: () => {
+            sendUmeng(42);
             this.actionGetMemInfoV3().then(() => {
               this.actionGetRechargeStatus("wallet");
             });
@@ -485,6 +489,7 @@ export default {
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
+            sendUmeng(43);
             const routerPush = "/mobile/mcenter/bankCard";
 
             if (this.themeTPL === "ey1") {
@@ -577,6 +582,7 @@ export default {
       return this.actionSetGlobalMessage({ msg: msg });
     },
     handleDeposit() {
+      sendUmeng(39);
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡
       //   yaboRequest({
@@ -603,6 +609,7 @@ export default {
       this.$router.push(path);
     },
     onClickInvite() {
+      sendUmeng(44);
       this.$router.push("/mobile/mcenter/makeMoney");
     },
     toggleTrans() {

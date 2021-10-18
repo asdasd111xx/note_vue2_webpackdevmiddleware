@@ -58,6 +58,7 @@ import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -287,6 +288,26 @@ export default {
         }
 
         return;
+      }
+
+      switch (item.pageName) {
+        case "help":
+          sendUmeng(32);
+          break;
+        case "about":
+          sendUmeng(33);
+          break;
+        case "mypromotion":
+          sendUmeng(34);
+          break;
+        case "leaderboard":
+          sendUmeng(35);
+          break;
+        case "share":
+          sendUmeng(36);
+          break;
+        default:
+          break;
       }
 
       if (item.pageName === "mypromotion") {

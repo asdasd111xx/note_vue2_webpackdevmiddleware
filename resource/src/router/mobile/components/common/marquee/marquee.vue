@@ -65,6 +65,7 @@
 import { mapGetters, mapActions } from "vuex";
 import popup from "./popup/popup";
 import { VTextMarquee } from "vue-text-marquee";
+import { sendUmeng } from "@/lib/sendUmeng";
 // https://github.com/satrong/vue-text-marquee
 export default {
   components: {
@@ -188,6 +189,12 @@ export default {
       }
     },
     handleClick() {
+      console.log(this.$route.name);
+      if (this.$route.name === "home") {
+        sendUmeng(4);
+      } else if (this.$route.name === "mcenter-deposit") {
+        sendUmeng(49);
+      }
       this.isFirstShow = false;
       this.togglePopup();
     }

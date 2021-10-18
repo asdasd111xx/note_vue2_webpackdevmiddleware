@@ -7,9 +7,26 @@ export const sendUmeng = eventCode => {
 
   if (eventCode < 24) {
     category = "首页";
+  } else if (eventCode > 23 && eventCode < 37) {
+    category = "首页_我的";
+  } else if (eventCode > 36 && eventCode < 45) {
+    category = "首页_我的_我的钱包";
+  } else if (eventCode === 45 || eventCode === 46) {
+    category = "首页-我的-交易记录";
+  } else if (eventCode > 46 && eventCode < 52) {
+    category = "首页_充值";
+  } else if (eventCode > 51 && eventCode < 55) {
+    category = "首页_下方Tab区_优惠";
+  } else if (eventCode > 54) {
+    category = "游戏导览列_福利";
   }
   switch (eventCode) {
     case 1:
+    case 24:
+    case 37:
+    case 45:
+    case 47:
+    case 52:
       action = "进入";
       break;
     default:
@@ -87,6 +104,7 @@ export const sendUmeng = eventCode => {
   //     break;
   // }
   const { aplus_queue } = window;
+
   aplus_queue.push({
     action: "aplus.record",
     arguments: [

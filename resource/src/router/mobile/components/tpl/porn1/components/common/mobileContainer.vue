@@ -60,7 +60,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetLCFSystemConfig"]),
+    ...mapActions(["actionSetGlobalMessage"]),
     toogleAppTips(toogle) {
       this.showApptips = toogle;
       if (toogle) {

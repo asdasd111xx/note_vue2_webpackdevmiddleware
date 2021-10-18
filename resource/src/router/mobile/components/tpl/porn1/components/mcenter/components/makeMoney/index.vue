@@ -5,10 +5,7 @@
     :class="$style.container"
   >
     <div slot="content">
-      <div v-if="['aobo1'].includes(routerTPL)" :class="$style['iframe-wrap']">
-        <iframe v-if="src" :src="src" :class="$style['iframe-item']" />
-      </div>
-      <div v-else>
+      <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
         <div :class="$style['img-wrap']">
           <img
             :class="$style['img-wrap']"
@@ -57,6 +54,9 @@
             :src="`/static/image/porn1/mcenter/makeMoney/img004.png`"
           />
         </div>
+      </div>
+      <div v-else :class="$style['iframe-wrap']">
+        <iframe v-if="src" :src="src" :class="$style['iframe-item']" />
       </div>
     </div>
   </mobile-container>
@@ -172,7 +172,9 @@ export default {
   },
   mounted() {
     document.getElementById("mobile-wrap").scrollTo(0, 0);
-    if (["aobo1"].includes(this.routerTPL)) this.aoboLink();
+    if (!["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
+      this.embeddedLink();
+    }
   },
   computed: {
     ...mapGetters({
@@ -241,7 +243,7 @@ export default {
         this.actionSetGlobalMessage({ msg: "复制成功" });
       });
     },
-    aoboLink() {
+    embeddedLink() {
       let target = "promotion_earn";
       goLangApiRequest({
         method: "get",

@@ -165,6 +165,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import common from "@/api/common";
 import mcenter from "@/api/mcenter";
 import EST from "@/lib/EST";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   props: {
@@ -269,6 +270,7 @@ export default {
     }
   },
   created() {
+    sendUmeng(45);
     if (this.$route.params.page === "detail") {
       let detailparams = localStorage.getItem("money-detail-params");
 

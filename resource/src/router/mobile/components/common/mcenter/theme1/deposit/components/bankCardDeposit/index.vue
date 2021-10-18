@@ -1090,7 +1090,7 @@
           <p :class="$style['service-remind']">
             如需帮助，请<span
               :class="$style['service-btn']"
-              @click="$router.push('/mobile/service')"
+              @click="onClickService"
               >联系客服</span
             >
           </p>
@@ -1202,6 +1202,7 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -1771,6 +1772,7 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
+      sendUmeng(50);
       // 代客充值
       if (
         this.curPayInfo.payment_method_id === 20 &&
@@ -2136,6 +2138,10 @@ export default {
       if (type) {
         this.getPayOffer(this.moneyValue);
       }
+    },
+    onClickService(){
+      sendUmeng(51)
+      this.$router.push('/mobile/service')
     }
   }
 };

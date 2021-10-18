@@ -128,7 +128,7 @@
         <span
           @click="
             () => {
-              actionSendYM(3);
+              sendUmengEvent(3);
               $router.push('/mobile/login');
             }
           "
@@ -207,6 +207,7 @@ import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -288,11 +289,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "actionSetGlobalMessage",
-      "actionSendYM",
-      "actionGetLayeredURL"
-    ]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
@@ -301,6 +298,13 @@ export default {
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
         this.headerConfig.hasHelp.func();
+      }
+      switch (this.headerConfig.hasHelp.type) {
+        case "deposit":
+          sendUmeng(48);
+          break;
+        default:
+          break;
       }
 
       this.$router.push(this.headerConfig.hasHelp.url);
@@ -374,6 +378,7 @@ export default {
       });
     },
     checkLayeredURL() {
+      sendUmeng(2);
       if (getCookie("platform") === "h") {
         this.actionGetLayeredURL().then(res => {
           if (res.indexOf(window.location.host) != -1 || res.length < 1) {
@@ -385,6 +390,9 @@ export default {
       } else {
         this.$router.push(`/mobile/joinmember`);
       }
+    },
+    sendUmengEvent(key) {
+      sendUmeng(key);
     }
   }
 };

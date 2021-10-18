@@ -11,6 +11,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
 import swag from "@/mixins/mcenter/swag/swag";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   mixins: [swag],
@@ -38,7 +39,7 @@ export default {
       showRedirectJump: false,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
-        { name: "myWallet", text: "钱包", path: "wallet?redirect=home" },
+        { name: "myWallet", text: "钱包", path: "wallet" },
         { name: "withdraw", text: "提现", path: "withdraw" },
         { name: "creditTrans", text: "转让", path: "creditTrans" },
         { name: "grade", text: "等级", path: "accountVip" }
@@ -214,6 +215,7 @@ export default {
     }
   },
   created() {
+    sendUmeng(1);
     if (localStorage.getItem("redirect_url")) {
       this.showRedirectJump = true;
     } else {
@@ -559,7 +561,6 @@ export default {
       if (index === this.selectedIndex) {
         return;
       }
-
       let offsetTop = 0;
       if (type === "anchor") {
         let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
@@ -570,6 +571,37 @@ export default {
       } else {
         offsetTop = index * 63;
         this.selectedIndex = index;
+      }
+      switch (this.typeList[this.selectedIndex].name) {
+        case "体育":
+          sendUmeng(10);
+          break;
+        case "福利":
+          sendUmeng(11);
+          break;
+        case "真人":
+          sendUmeng(12);
+          break;
+        case "捕鱼":
+          sendUmeng(13);
+          break;
+        case "牛牛":
+          sendUmeng(14);
+          break;
+        case "电子":
+          sendUmeng(15);
+          break;
+        case "棋牌":
+          sendUmeng(16);
+          break;
+        case "彩票":
+          sendUmeng(17);
+          break;
+        case "代理":
+          sendUmeng(18);
+          break;
+        default:
+          break;
       }
 
       this.isSliding = true;
@@ -610,9 +642,10 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
-
+      console.log(123);
       switch (path) {
         case "deposit":
+          sendUmeng(5);
           this.$router.push(`/mobile/mcenter/deposit`);
           //   0706 統一RD5判斷銀行卡
           // yaboRequest({
@@ -633,6 +666,7 @@ export default {
           return;
 
         case "creditTrans":
+          sendUmeng(8);
           this.actionGetMemInfoV3().then(() => {
             this.actionGetRechargeStatus("home");
           });
@@ -649,6 +683,7 @@ export default {
         // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useLocalWithdrawCheck(path , routerPush)
 
         case "withdraw":
+          sendUmeng(7);
           const routerPush = "/mobile/mcenter/withdraw";
 
           if (this.siteConfig.ROUTER_TPL === "ey1") {
@@ -663,6 +698,14 @@ export default {
           this.$router.push("/mobile/mcenter/tcenterLobby");
           return;
 
+        case "wallet":
+          sendUmeng(6);
+          this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
+          return;
+        case "accountVip":
+          sendUmeng(9);
+          this.$router.push(`/mobile/mcenter/accountVip`);
+          return;
         default:
           this.$router.push(`/mobile/mcenter/${path}`);
           return;
@@ -675,6 +718,44 @@ export default {
       }
 
       localStorage.setItem("iframe-third-url-title", game.name);
+      switch (game.vendor) {
+        // 鸭脖视频;
+        case "YV":
+          sendUmeng(56);
+          break;
+        // 丝瓜;
+        case "LF":
+          sendUmeng(57);
+          break;
+        // 向日葵;
+        case "SF":
+          sendUmeng(58);
+          break;
+        // 丝瓜小说;
+        case "DZ":
+          sendUmeng(59);
+          break;
+        // 小猪视频;
+        case "PIG":
+          sendUmeng(60);
+          break;
+        // 草莓;
+        case "STB":
+          sendUmeng(61);
+          break;
+        // 芭乐;
+        case "BALE":
+          sendUmeng(62);
+          break;
+        // SWAG小说;
+        case "LQ":
+          sendUmeng(63);
+          break;
+        // 鸭脖影视;
+        case "PPV":
+          sendUmeng(64);
+          break;
+      }
 
       switch (game.type) {
         case "strong_activity":
