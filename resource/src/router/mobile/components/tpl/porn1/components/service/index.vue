@@ -207,12 +207,6 @@ export default {
     mobileContainer
   },
   props: {
-    sourceSiteConfig: {
-      type: Object,
-      default() {
-        return {};
-      }
-    },
     isStatic: {
       type: Boolean,
       default: false
