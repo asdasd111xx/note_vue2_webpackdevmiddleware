@@ -358,9 +358,7 @@ export default {
     color: #fff;
   }
   &.sp1 {
-    &.active {
-      color: #353541;
-    }
+    color: #353541;
   }
 }
 
