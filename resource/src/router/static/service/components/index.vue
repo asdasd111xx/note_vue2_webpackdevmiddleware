@@ -45,8 +45,11 @@ export default {
           siteConfigTest[`site_${res.domain}`] ||
           siteConfigOfficial[`site_${res.domain}`];
       }
-
-      this.template = `${res.site}Service`;
+      if (["ey1", "sg1"].includes(res.site)) {
+        this.template = `${res.site}Service`;
+      } else {
+        this.template = `porn1Service`;
+      }
       if (configInfo) {
         this.show = true;
       }
