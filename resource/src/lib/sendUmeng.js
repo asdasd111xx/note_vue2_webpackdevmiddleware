@@ -1,6 +1,6 @@
 export const sendUmeng = eventCode => {
   if (!localStorage.getItem("YMKey")) return;
-  console.log(`YM Code ` + eventCode);
+  // console.log(`YM Code ` + eventCode);
   let category = "";
   let action = "";
   let label = "";
