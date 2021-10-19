@@ -1144,6 +1144,11 @@ export default {
             return;
           }
           return;
+        case "external":
+          console.log("外開？");
+          let newWindow = "";
+          newWindow = window.open(`${game.memo}`, "_blank");
+          return;
         // 開啟遊戲
         case "game":
         default:
