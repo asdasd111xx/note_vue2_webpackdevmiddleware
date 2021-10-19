@@ -121,8 +121,8 @@ export default {
           show: true
         },
         {
-          initName: "关于丝瓜直播",
-          name: "S_ABOUT_SGLIVE",
+          initName: "关于泡泡直播",
+          name: "S_ABOUT_PAOLIVE",
           path: "/mobile/mcenter/about",
           pageName: "about",
           image: "about",
