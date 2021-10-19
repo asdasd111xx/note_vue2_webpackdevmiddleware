@@ -457,7 +457,9 @@ export default {
         this.isShowPopup = true;
         this.immediateData = [];
         if (response.status === "000") {
-          this.amountResult = response.data.dispatched_amount;
+          this.amountResult = this.formatThousandsCurrency(
+            response.data.dispatched_amount
+          );
         }
       });
     },
