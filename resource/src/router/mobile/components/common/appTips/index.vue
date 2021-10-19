@@ -149,6 +149,9 @@ export default {
       systemConfig: "getSystemConfig"
     }),
     siteName() {
+      if (this.siteConfig.ROUTER_TPL == "sg1") {
+        return "泡泡APP";
+      }
       return this.siteConfig.SITE_NAME;
     },
     getText() {
