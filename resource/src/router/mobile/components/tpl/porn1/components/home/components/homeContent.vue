@@ -50,6 +50,7 @@
           <div
             :class="[
               $style['type-title'],
+              $style[siteConfig.ROUTER_TPL],
               { [$style.active]: typeList[selectedIndex].icon === type.icon }
             ]"
           >
@@ -355,6 +356,11 @@ export default {
 
   &.active {
     color: #fff;
+  }
+  &.sp1 {
+    &.active {
+      color: #353541;
+    }
   }
 }
 
