@@ -1174,8 +1174,10 @@ export default {
   .button-item {
     font-size: 18px;
     width: 50%;
+    padding: 10px 0;
     &.close {
       color: #414655;
+      border-right: 1px solid #f7f8fb;
     }
     &.confirm {
       color: #bf8646;
