@@ -98,7 +98,9 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['red-dot']" />
+            <div :class="$style['information-dot']">
+              <span>{{ messageCount }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -141,7 +143,7 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask_my.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage" :class="$style['information-dot']" />
         </div>
       </div>
     </template>
@@ -218,7 +220,8 @@ export default {
       msg: "",
       source: this.$route.query.source,
       guestAmount: 0,
-      remainBonus: 0
+      remainBonus: 0,
+      messageCount: 0
     };
   },
   computed: {
@@ -261,6 +264,7 @@ export default {
       this.getGuestBalance();
     } else {
       this.getRedJackpot();
+      this.getMsgCount();
     }
   },
   methods: {
@@ -325,6 +329,21 @@ export default {
         if (res.status === "000") {
           this.guestAmount = res.data.totalAmount;
           this.getRedJackpot();
+        }
+      });
+    },
+
+    //取得通知數量
+    getMsgCount() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Messages`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.messageCount = res.data.ret.length;
         }
       });
     },
@@ -794,15 +813,22 @@ export default {
   }
 }
 
-.red-dot {
+.information-dot {
   position: absolute;
-  right: -1px;
-  background: red;
-  border-radius: 60%;
+  left: 10px;
+  background: #fecb2f;
+  border-radius: 20px;
   border: 1px solid #f9e8b4;
-  width: 7px;
-  height: 7px;
-  top: -2px;
+  width: 20px;
+  height: 12px;
+  line-height: 8px;
+  top: -5px;
+  padding: 0.5px 2px;
+  span {
+    color: #731c25;
+    font-size: 7px;
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: $pad) {
