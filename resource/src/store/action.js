@@ -620,7 +620,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       dispatch("actionSetRechargeConfig");
     }
     dispatch("actionSetSystemDomain");
-    // dispatch("actionSetBBOSDomain");
     dispatch("actionSetDomainConfigV2");
     dispatch("actionSetVersion");
 
@@ -1923,43 +1922,6 @@ export const actionVerificationFormData = (
   return val;
 };
 
-// export const actionSetBBOSDomain = ({ commit, state }, data) => {
-//   let configInfo;
-
-//   if (state.webDomain) {
-//     configInfo =
-//       siteConfigTest[`site_${state.webDomain.domain}`] ||
-//       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-//       siteConfigTest[`site_${state.webDomain.domain}`] ||
-//       siteConfigOfficial.preset;
-//   }
-
-//   return bbosRequest({
-//     method: "get",
-//     url: configInfo.BBOS_DOMIAN + "/Domain/List",
-//     reqHeaders: {
-//       Vendor: state.webDomain.domain
-//     },
-//     params: {
-//       lang: "zh-tw"
-//     }
-//   }).then(res => {
-//     if (res && res.data) {
-//       let length = res.data.length;
-//       let result = "";
-//       if (length > 0) {
-//         let domainList = res.data.filter(
-//           i => !i.replace("https://").includes(":")
-//         );
-//         result = domainList[Math.floor(Math.random() * domainList.length)];
-//         commit(types.SET_BBOSDOMAIN, result);
-//       } else {
-//         commit(types.SET_BBOSDOMAIN, res.data[0]);
-//       }
-//     }
-//   });
-// };
-
 export const actionSetSystemDomain = ({ commit, state }, data) => {
   let configInfo;
 
@@ -2117,62 +2079,64 @@ export const actionSetWebDomain = ({ commit }) => {
 
 // SWAG設定
 export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
-  let configInfo;
-  if (state.webDomain) {
-    configInfo =
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial.preset;
-  }
+  return;
 
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
-    reqHeaders: {
-      Vendor: state.webDomain.domain
-    },
-    params: {
-      lang: "zh-cn"
-    }
-  }).then(res => {
-    if (res.errorCode !== "00" || res.status !== "000") {
-      return res;
-    }
-    commit(types.SET_SWAG_CONFIG, res.data);
-  });
+  // let configInfo;
+  // if (state.webDomain) {
+  //   configInfo =
+  //     siteConfigTest[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial.preset;
+  // }
+
+  // return bbosRequest({
+  //   method: "get",
+  //   url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
+  //   reqHeaders: {
+  //     Vendor: state.webDomain.domain
+  //   },
+  //   params: {
+  //     lang: "zh-cn"
+  //   }
+  // }).then(res => {
+  //   if (res.errorCode !== "00" || res.status !== "000") {
+  //     return res;
+  //   }
+  //   commit(types.SET_SWAG_CONFIG, res.data);
+  // });
 };
 
 export const actionSetSwagBalance = ({ commit, state }, data) => {
   return;
 
-  const hasLogin = getCookie("cid");
-  if (!hasLogin) {
-    return;
-  }
+  // const hasLogin = getCookie("cid");
+  // if (!hasLogin) {
+  //   return;
+  // }
 
-  let configInfo = {};
-  if (state.webDomain) {
-    configInfo =
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial.preset;
-  }
+  // let configInfo = {};
+  // if (state.webDomain) {
+  //   configInfo =
+  //     siteConfigTest[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial.preset;
+  // }
 
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
-    reqHeaders: {
-      Vendor: state.webDomain.domain
-    },
-    params: {
-      lang: "zh-cn"
-    }
-  }).then(res => {
-    if (res.errorCode !== "00" || res.status !== "000") {
-      return;
-    }
-    commit(types.SET_SWAG_BALANCE, res.data);
-  });
+  // return bbosRequest({
+  //   method: "get",
+  //   url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
+  //   reqHeaders: {
+  //     Vendor: state.webDomain.domain
+  //   },
+  //   params: {
+  //     lang: "zh-cn"
+  //   }
+  // }).then(res => {
+  //   if (res.errorCode !== "00" || res.status !== "000") {
+  //     return;
+  //   }
+  //   commit(types.SET_SWAG_BALANCE, res.data);
+  // });
 };
 
 /**
