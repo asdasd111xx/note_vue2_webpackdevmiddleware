@@ -28,6 +28,7 @@ export default ({
     ...headers,
     cid: getCookie("cid") || "",
     kind: getCookie("platform") || "h",
+    // kind: window.navigator.standalone ? "pwa" : "h",
     "x-domain": store.state.webDomain.domain
   };
 
