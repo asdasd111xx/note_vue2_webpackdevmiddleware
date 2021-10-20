@@ -1029,7 +1029,6 @@ export default {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-        console.log(123);
         let cookieData;
         if (res.data) {
           cookieData = res.data.ret;

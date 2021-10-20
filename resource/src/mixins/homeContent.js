@@ -10,8 +10,8 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
-import swag from "@/mixins/mcenter/swag/swag";
 import { sendUmeng } from "@/lib/sendUmeng";
+import swag from "@/mixins/mcenter/swag/swag";
 
 export default {
   mixins: [swag],
@@ -662,7 +662,6 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
-      console.log(123);
       switch (path) {
         case "deposit":
           sendUmeng(5);
