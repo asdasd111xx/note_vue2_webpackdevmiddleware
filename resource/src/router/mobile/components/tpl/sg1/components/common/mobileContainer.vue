@@ -117,7 +117,9 @@ export default {
               const unreadList = ret.filter(i => {
                 return i.read === false;
               });
-              this.UnreadMessageCount = unreadList.length;
+              if (unreadList) {
+                this.UnreadMessageCount = unreadList.length;
+              }
             }
 
             if (data && data.msg && data.code) {
