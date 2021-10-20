@@ -293,15 +293,9 @@ export default {
           kind: this.currentKind
         };
       }
-
-      bbosRequest({
+      goLangApiRequest({
         method: "get",
-        url:
-          this.siteConfig.BBOS_DOMIAN +
-          "/Stats/Player/Friends/WagerReport/ByDayGame",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/Friends/WagerReport/ByDayGame`,
         params: {
           lang: "zh-cn",
           username: this.selectedUser,
@@ -314,6 +308,26 @@ export default {
           ..._params
         }
       })
+        // bbosRequest({
+        //   method: "get",
+        //   url:
+        //     this.siteConfig.BBOS_DOMIAN +
+        //     "/Stats/Player/Friends/WagerReport/ByDayGame",
+        //   reqHeaders: {
+        //     Vendor: this.memInfo.user.domain
+        //   },
+        //   params: {
+        //     lang: "zh-cn",
+        //     username: this.selectedUser,
+        //     startAt: Vue.moment(this.currentStart).format(
+        //       "YYYY-MM-DD 00:00:00-04:00"
+        //     ),
+        //     endAt: Vue.moment(this.currentEnd).format(
+        //       "YYYY-MM-DD 23:59:59-04:00"
+        //     ),
+        //     ..._params
+        //   }
+        // })
         .then(response => {
           if (response.status === "000") {
             this.$router.push({ params: { page: "bet" } });

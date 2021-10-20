@@ -53,7 +53,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
 import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";

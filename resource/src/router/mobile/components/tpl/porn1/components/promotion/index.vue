@@ -71,7 +71,6 @@ import ajax from "@/lib/ajax";
 import { API_PROMOTION_LIST } from "@/config/api";
 import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
 import { sendUmeng } from "@/lib/sendUmeng";
@@ -112,15 +111,9 @@ export default {
     }
 
     if (this.loginStatus) {
-      bbosRequest({
+      goLangApiRequest({
         method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: {
-          // tabId: "",
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/User/Collect/Count`
       }).then(res => {
         if (res && res.data) {
           this.hasNewGift = res.data.count > 0;

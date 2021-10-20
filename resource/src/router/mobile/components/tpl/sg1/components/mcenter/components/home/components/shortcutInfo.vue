@@ -98,7 +98,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import bbosRequest from "@/api/bbosRequest";
 import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import mcenter from "@/api/mcenter";
@@ -178,25 +177,17 @@ export default {
 
     getRebateSwitch() {
       // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
-      bbosRequest({
-        method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/SelfDispatchInfo`,
         params: { lang: "zh-cn" }
-      })
-        .then(response => {
-          if (response.status === "000" && response.data.ret.show_real_time) {
-            this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
-          } else {
-            this.$router.push("/mobile/mcenter/tcenter/commission/summary");
-          }
-        })
-        .catch(error => {
-          const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
-        });
+      }).then(response => {
+        if (response.status === "000" && response.data.ret.show_real_time) {
+          this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
+        } else {
+          this.$router.push("/mobile/mcenter/tcenter/commission/summary");
+        }
+      });
     }
   }
 };

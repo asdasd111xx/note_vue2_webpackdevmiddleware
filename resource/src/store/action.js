@@ -620,7 +620,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       dispatch("actionSetRechargeConfig");
     }
     dispatch("actionSetSystemDomain");
-    dispatch("actionSetBBOSDomain");
+    // dispatch("actionSetBBOSDomain");
     dispatch("actionSetDomainConfigV2");
     dispatch("actionSetVersion");
 
@@ -1939,42 +1939,42 @@ export const actionVerificationFormData = (
   return val;
 };
 
-export const actionSetBBOSDomain = ({ commit, state }, data) => {
-  let configInfo;
+// export const actionSetBBOSDomain = ({ commit, state }, data) => {
+//   let configInfo;
 
-  if (state.webDomain) {
-    configInfo =
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial.preset;
-  }
+//   if (state.webDomain) {
+//     configInfo =
+//       siteConfigTest[`site_${state.webDomain.domain}`] ||
+//       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+//       siteConfigTest[`site_${state.webDomain.domain}`] ||
+//       siteConfigOfficial.preset;
+//   }
 
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Domain/List",
-    reqHeaders: {
-      Vendor: state.webDomain.domain
-    },
-    params: {
-      lang: "zh-tw"
-    }
-  }).then(res => {
-    if (res && res.data) {
-      let length = res.data.length;
-      let result = "";
-      if (length > 0) {
-        let domainList = res.data.filter(
-          i => !i.replace("https://").includes(":")
-        );
-        result = domainList[Math.floor(Math.random() * domainList.length)];
-        commit(types.SET_BBOSDOMAIN, result);
-      } else {
-        commit(types.SET_BBOSDOMAIN, res.data[0]);
-      }
-    }
-  });
-};
+//   return bbosRequest({
+//     method: "get",
+//     url: configInfo.BBOS_DOMIAN + "/Domain/List",
+//     reqHeaders: {
+//       Vendor: state.webDomain.domain
+//     },
+//     params: {
+//       lang: "zh-tw"
+//     }
+//   }).then(res => {
+//     if (res && res.data) {
+//       let length = res.data.length;
+//       let result = "";
+//       if (length > 0) {
+//         let domainList = res.data.filter(
+//           i => !i.replace("https://").includes(":")
+//         );
+//         result = domainList[Math.floor(Math.random() * domainList.length)];
+//         commit(types.SET_BBOSDOMAIN, result);
+//       } else {
+//         commit(types.SET_BBOSDOMAIN, res.data[0]);
+//       }
+//     }
+//   });
+// };
 
 export const actionSetSystemDomain = ({ commit, state }, data) => {
   let configInfo;
