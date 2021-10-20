@@ -99,7 +99,7 @@
           />
           <div v-show="hasUnreadMessage">
             <div :class="$style['information-dot']">
-              <span>{{ messageCount }}</span>
+              <span>{{ unreadMessageCount }}</span>
             </div>
           </div>
         </div>
@@ -209,6 +209,10 @@ export default {
       type: Boolean,
       default: false
     },
+    unreadMessageCount: {
+      type: Number,
+      default: 0
+    },
     hasAppTips: {
       type: Boolean,
       default: false
@@ -220,8 +224,7 @@ export default {
       msg: "",
       source: this.$route.query.source,
       guestAmount: 0,
-      remainBonus: 0,
-      messageCount: 0
+      remainBonus: 0
     };
   },
   computed: {
@@ -264,7 +267,6 @@ export default {
       this.getGuestBalance();
     } else {
       this.getRedJackpot();
-      this.getMsgCount();
     }
   },
   methods: {
@@ -329,21 +331,6 @@ export default {
         if (res.status === "000") {
           this.guestAmount = res.data.totalAmount;
           this.getRedJackpot();
-        }
-      });
-    },
-
-    //取得通知數量
-    getMsgCount() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Messages`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.messageCount = res.data.ret.length;
         }
       });
     },
