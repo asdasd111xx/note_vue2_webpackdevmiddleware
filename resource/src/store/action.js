@@ -1435,9 +1435,11 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   let domain = new Promise(resolve => {
     goLangApiRequest({
       method: "get",
-      url:
-        configInfo.YABO_GOLANG_API_DOMAIN +
-        "/xbb/Domain/Hostnames/V2?lang=zh-cn",
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/Hostnames/V2",
+      headers: {
+        // "x-cid": data.reqHeaders.cid,
+        cid: data.reqHeaders.cid
+      },
       params: {
         // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
         clientType: 6
@@ -2435,6 +2437,10 @@ export const actionGetToManyRequestMsg = ({ state }, response) => {
 
 // 取得廳設定 C02.233
 export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
+  if (!state.loginStatus) {
+    return;
+  }
+
   return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Config/V2`
@@ -2448,7 +2454,7 @@ export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
 export const actionGetLayeredURL = ({ state }, eventCode) => {
   return goLangApiRequest({
     method: "get",
-    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostnames/V2?lang=zh-cn`,
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostnames/V2`,
     params: {
       // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
       clientType: 0,
