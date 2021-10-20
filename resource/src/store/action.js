@@ -1437,8 +1437,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
       method: "get",
       url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/Hostnames/V2",
       headers: {
-        // "x-cid": data.reqHeaders.cid,
-        cid: data.reqHeaders.cid
+        ...reqHeaders
       },
       params: {
         // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
@@ -1454,36 +1453,19 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   });
 
   let agentCode = new Promise(resolve => {
-    // bbosRequest({
-    //   method: "get",
-    //   url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
-    //   reqHeaders: {
-    //     Vendor: state.memInfo.user.domain,
-    //     ...reqHeaders
-    //   },
-    //   params: {
-    //     lang: "zh-cn",
-    //     clientType: 6
-    //   }
-    // }).then(res => {
-    //   if (res && res.data && res.data.url) {
-    //     commit(types.SET_PROMOTION_LINK, res.data.url);
-    //     return resolve(res.data.code);
-    //   } else {
-    //     return resolve("");
-    //   }
-    // });
-
     goLangApiRequest({
       method: "get",
-      url:
-        configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion",
+      headers: {
+        ...reqHeaders
+      },
       params: {
         // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
         clientType: 3
       }
     }).then(res => {
       if (res && res.data) {
+        // 縮網址推廣連結
         commit(types.SET_PROMOTION_LINK, res.data.url);
         return resolve(res.data.code);
       } else {

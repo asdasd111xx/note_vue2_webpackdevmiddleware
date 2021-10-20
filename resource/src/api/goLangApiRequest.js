@@ -32,10 +32,6 @@ export default ({
     "x-domain": store.state.webDomain.domain
   };
 
-  // if (!url.includes("GetAuthorizationToken")) {
-  //   _headers["AuthToken"] = getCookie("y_token");
-  // }
-
   const obj = {
     method,
     url,
