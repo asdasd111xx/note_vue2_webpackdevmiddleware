@@ -80,9 +80,9 @@ export default (params, success = () => {}, fail = () => {}) => {
     });
   };
 
-  // 丝瓜直播固定標題
+  // 泡泡直播固定標題
   if (vendor === "sigua_ly") {
-    gameTitle = "丝瓜直播";
+    gameTitle = "泡泡直播";
   }
 
   // 是否強制取得遊戲標題
