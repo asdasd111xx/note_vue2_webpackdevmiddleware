@@ -68,12 +68,11 @@ export default {
         homeTopBg = document.querySelector("#home-top-bg");
 
       if (toogle) {
-        mobileWrap
-          ? (document.querySelector("#mobile-wrap").style = "overflow: hidden")
-          : "";
+        mobileWrap ? (mobileWrap.style = "overflow: hidden") : "";
+        homeTopBg ? (homeTopBg.style = "top: 60px") : "";
       } else {
-        mobileWrap ? (document.querySelector("#mobile-wrap").style = "") : "";
-        homeTopBg ? (document.querySelector("#home-top-bg").style = "") : "";
+        mobileWrap ? (mobileWrap.style = "") : "";
+        homeTopBg ? (homeTopBg.style = "") : "";
       }
     }
   },
