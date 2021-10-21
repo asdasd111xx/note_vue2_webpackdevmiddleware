@@ -48,6 +48,7 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   data() {
@@ -197,6 +198,7 @@ export default {
       if (!this.downloadConfigData.show) {
         return;
       }
+      sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
 
