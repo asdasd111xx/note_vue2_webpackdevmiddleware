@@ -20,7 +20,14 @@
           @click="item.onClick"
         >
           <div :class="$style['image']">
-            <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+            <img
+              :src="
+                ['sg1'].includes(themeTPL)
+                  ? $getCdnPath(item.imgSrcSg1)
+                  : $getCdnPath(item.imgSrc)
+              "
+              alt="icon"
+            />
           </div>
           <span>
             {{ item.text }}
@@ -233,7 +240,13 @@
     </template>
 
     <div :class="$style['invite-wrap']" @click="onClickInvite">
-      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+      <template v-if="['porn1'].includes(themeTPL)">
+        <div :class="$style['content']">
+          <div>邀请好友获得现金奖励</div>
+        </div>
+      </template>
+
+      <template v-if="['sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
         </div>
@@ -441,6 +454,7 @@ export default {
           show: true,
           text: this.$text("S_TRANSFER", "转帐"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_tranfer.png`,
+          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
             switch (this.themeTPL) {
               case "porn1":
@@ -458,6 +472,7 @@ export default {
           show: true,
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
+          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
             const routerPush = "/mobile/mcenter/withdraw";
 
@@ -475,6 +490,7 @@ export default {
           show: false,
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallet_trans.png`,
+          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallet_trans.png`,
           onClick: () => {
             this.actionGetMemInfoV3().then(() => {
               this.actionGetRechargeStatus("wallet");
@@ -486,6 +502,7 @@ export default {
           show: true,
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
+          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
             const routerPush = "/mobile/mcenter/bankCard";
 
