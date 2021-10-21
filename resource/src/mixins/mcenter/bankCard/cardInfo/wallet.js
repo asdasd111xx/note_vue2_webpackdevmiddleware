@@ -55,19 +55,19 @@ export default {
       return false;
     },
     isShowAddCardButton() {
-      switch (this.themeTPL) {
-        case "porn1":
-        case "sg1":
-          return !this.isBindNowOpenAllWallets;
+      // switch (this.themeTPL) {
+      //   case "porn1":
+      //   case "sg1":
+      //     return !this.isBindNowOpenAllWallets;
 
-        case "ey1":
-          return (
-            (!this.userLevelObj.virtual_bank_single &&
-              this.wallet_card.length < 15) ||
-            (this.userLevelObj.virtual_bank_single &&
-              this.wallet_card.length < this.nowOpenWallet.length)
-          );
-      }
+      //   case "ey1":
+      return (
+        (!this.userLevelObj.virtual_bank_single &&
+          this.wallet_card.length < this.userLevelObj.virtual_bank_max) ||
+        (this.userLevelObj.virtual_bank_single &&
+          this.wallet_card.length < this.nowOpenWallet.length)
+      );
+      // }
     }
   },
   methods: {

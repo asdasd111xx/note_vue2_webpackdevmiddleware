@@ -81,11 +81,11 @@
         </div>
 
         <p :class="$style['remind']">
-          <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+          <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $t("S_DIGITAL_CURRENCY_LIMIT").replace("%s", 1) }}
-          </template>
+          </template> -->
 
-          <template v-if="['ey1'].includes(themeTPL)">
+          <template>
             <span v-if="userLevelObj.virtual_bank_single">
               {{
                 $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
@@ -96,7 +96,12 @@
             </span>
 
             <span v-else>
-              {{ $t("S_VIRTUAL_BANKCARD_LIMIT").replace("%s", 15) }}
+              {{
+                $t("S_VIRTUAL_BANKCARD_LIMIT").replace(
+                  "%s",
+                  userLevelObj.virtual_bank_max
+                )
+              }}
             </span>
           </template>
         </p>

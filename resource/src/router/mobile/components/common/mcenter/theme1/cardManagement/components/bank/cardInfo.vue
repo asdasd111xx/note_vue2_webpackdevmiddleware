@@ -47,7 +47,9 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template v-if="isRevice && isCommon && bank_card.length < 3">
+      <template
+        v-if="isRevice && isCommon && bank_card.length < userLevelObj.bank_max"
+      >
         <div :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"
@@ -59,7 +61,7 @@
         </div>
 
         <p :class="$style['remind']">
-          {{ $t("S_BANKCARD_LIMIT").replace("%s", 3) }}
+          {{ $t("S_BANKCARD_LIMIT").replace("%s", userLevelObj.bank_max) }}
         </p>
       </template>
     </template>
@@ -156,6 +158,10 @@ export default {
       default: () => {}
     },
     statusList: {
+      type: Object,
+      required: true
+    },
+    userLevelObj: {
       type: Object,
       required: true
     }
