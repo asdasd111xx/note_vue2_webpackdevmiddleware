@@ -1,5 +1,27 @@
 <template>
   <div :class="$style['mcenter-vip-wrap']">
+    <div :class="$style['tool-wrap']">
+      <div :class="$style['myTool']">
+        <i
+          ><img
+            :src="$getCdnPath(`/static/image/sg1/mcenter/icon_props.png`)"/></i
+        >道具
+      </div>
+      <div :class="$style['myStyle']">
+        <i
+          ><img
+            :src="$getCdnPath(`/static/image/sg1/mcenter/icon_style.png`)"/></i
+        >我的风格
+      </div>
+      <div :class="$style['myContribute']">
+        <i
+          ><img
+            :src="
+              $getCdnPath(`/static/image/sg1/mcenter/icon_contribution.png`)
+            "/></i
+        >贡献榜
+      </div>
+    </div>
     <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
       <div
@@ -377,6 +399,29 @@ export default {
 
   .mcenter-func {
     padding: 0 16px;
+  }
+}
+
+.tool-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #eeeeee;
+
+  div {
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    i {
+      margin: 3px;
+      img {
+        width: 23px;
+        height: 23px;
+      }
+    }
   }
 }
 </style>
