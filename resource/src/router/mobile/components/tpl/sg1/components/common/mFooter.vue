@@ -56,10 +56,13 @@ export default {
           path: "/mobile/home"
         },
         {
+          // kind: this.$route.query.kind || "",
+          //     vendor: this.$route.query.vendor || "",
+          //     code: this.$route.query.code |
           key: "sport",
           routeName: "live-sport",
           name: this.$text("S_SPORTS_SHORT", "体育"),
-          path: "/mobile/live/sport"
+          path: `/mobile/iframe/game?kind=1&vendor=lg_sport&hasFooter=true`
         },
         {
           key: "game",

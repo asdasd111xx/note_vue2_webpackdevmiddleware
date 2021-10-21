@@ -199,6 +199,16 @@ export default {
           baseConfig.title = "SWAG";
           this.isFullScreen = true;
           break;
+
+        // 泡泡特例
+        case "GAME":
+          if (
+            this.siteConfig.ROUTER_TPL === "sg1" &&
+            this.$route.query.vendor === "lg_sport"
+          ) {
+            baseConfig.hasFooter = true;
+            break;
+          }
       }
 
       return {

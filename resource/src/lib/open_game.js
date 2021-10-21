@@ -182,10 +182,17 @@ export default (params, success = () => {}, fail = () => {}) => {
             }
 
             success();
+            let hasFooter = false;
+            if (
+              state.store.siteConfig.ROUTER_TPL === "sg1" &&
+              vendor === "lg_sport"
+            ) {
+              hasFooter = true;
+            }
 
             if (embedGame && !localStorage.getItem("reload-game")) {
               router.push(
-                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
+                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}&hasFooter=${hasFooter}`
               );
               return;
             }

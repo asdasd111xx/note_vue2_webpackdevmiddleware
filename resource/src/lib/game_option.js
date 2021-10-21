@@ -68,7 +68,12 @@ const embedGamesList = [
   {
     vendor: "rich88",
     kind: 3
+  },
+  {
+    vendor: "lg_sport",
+    kind: 1
   }
+
   // {
   //   vendor: "fg",
   //   kind: 3
