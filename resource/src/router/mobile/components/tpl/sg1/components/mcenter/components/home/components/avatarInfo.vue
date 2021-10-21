@@ -9,21 +9,26 @@
   >
     <!-- 大頭照 -->
     <div :class="$style['avatar-wrap']">
-      <img :src="avatarSrc" />
+      <img :class="$style['avatar-pic']" :src="avatarSrc" />
+      <img
+        v-if="loginStatus"
+        :class="$style['avatar-circle']"
+        :src="$getCdnPath(`/static/image/sg1/mcenter/avatar_frame.png`)"
+        alt=""
+      />
     </div>
 
     <!-- 姓名/註冊 -->
     <div :class="$style['info-wrap']">
       <div>
         <template v-if="loginStatus">
-          <span>
+          <span :class="$style['info-name']">
             {{
               memInfo.user.show_alias
                 ? memInfo.user.alias
                 : memInfo.user.username
             }}
           </span>
-          <span :class="$style['vip-level']"> VIP{{ viplevel }} </span>
         </template>
         <template v-else>
           <span @click.stop="$router.push('/mobile/login')">
@@ -31,20 +36,19 @@
           </span>
         </template>
       </div>
-      <!-- <div v-if="!loginStatus">
-        <span> 观影60秒计时奖励 </span>
-        <span :class="$style['money-symbol']">¥</span>
-        <span> 彩金分分送 </span>
-      </div> -->
-      <div>
-        <span> 观影60秒计时奖励 </span>
-        <span :class="$style['money-symbol']">¥</span>
-        <!-- <span> 最高送6元 </span> -->
-        <span> 彩金无上限 </span>
-      </div>
     </div>
-    <div :class="$style['btn-next']">
-      <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+    <div :class="$style['level-wrap']">
+      <span :class="$style['vip-level']">
+        <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
+        LEVEL {{ viplevel }}
+        <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+      </span>
+    </div>
+
+    <div :class="$style['data-content']">
+      <div :class="$style['follower']"><span>3423566</span>追踪人数</div>
+      <div :class="$style['favorite']"><span>56</span>我的最爱</div>
+      <div :class="$style['bubbles']"><span>342654375</span>送出泡泡</div>
     </div>
   </div>
 </template>
@@ -142,82 +146,81 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .mcenter-avatar-info-wrap {
-  height: 100px;
+  width: 100%;
+  height: 310px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 0 14px;
-  background-color: #fefffe;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0px 0px 10px 10px;
+  box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.16);
+  margin: 0 0 5px 0;
+  padding: 10px;
+  background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
+    no-repeat;
 }
 
 .avatar-wrap {
-  height: 70px;
-  width: 70px;
-
-  > img {
+  margin: 65px 0 20px 0;
+  height: 82px;
+  width: 82px;
+  position: relative;
+  .avatar-pic {
     height: 100%;
     border-radius: 50%;
-    width: 70px;
+    width: 82px;
   }
-}
 
-.money-symbol {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 18px;
-  border-radius: 50%;
-  color: white;
-  width: 18px;
-  height: 18px;
-  background: #ff8900;
-  border: 2pt solid #fecf34;
-  margin: 0 5px;
+  .avatar-circle {
+    position: absolute;
+    width: 140px;
+    left: -28px;
+    top: -28px;
+  }
 }
 
 .info-wrap {
-  height: 70px;
-  padding: 10px 4px;
   width: 100%;
-
-  > div {
-    text-align: left;
-    font-size: 15px;
-    height: 50%;
-    display: flex;
-    align-items: center;
-    line-height: 50%;
-  }
-
-  div:last-of-type {
-    color: #be9e7f;
-    font-size: 12px;
-    height: 50%;
-
-    span:last-of-type {
-      color: $main_vip_color1;
-    }
-  }
-}
-.btn-next {
-  > img {
-    height: 20px;
-    width: 20px;
+  margin-bottom: 10px;
+  .info-name {
+    font-size: 22px;
   }
 }
 
 .vip-level {
-  margin-left: 5px;
-  font-size: 11px;
-  line-height: 17px;
-  height: 17px;
-  color: #ffffff;
+  font-size: 14px;
+  color: #ffbc24;
   text-align: center;
-  font-weight: bold;
-  width: 40px;
-  border-radius: 4px;
-  background: -webkit-linear-gradient(left, #febdb2, #ff8093);
-  background: -o-linear-gradient(right, #febdb2, #ff8093);
-  background: -moz-linear-gradient(right, #febdb2, #ff8093);
-  background: linear-gradient(to right, #febdb2, #ff8093);
+  height: 30px;
+  border-radius: 25px;
+  background: #000;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+
+  img:first-child {
+    width: 20px;
+    height: 20px;
+  }
+  img {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.data-content {
+  margin-top: 15px;
+  border-top: 1px solid #eeeeee;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  color: #939393;
+  padding: 10px 0;
+  font-size: 12px;
+  span {
+    display: block;
+    font-size: 16px;
+  }
 }
 </style>
