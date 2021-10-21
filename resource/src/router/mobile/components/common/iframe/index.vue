@@ -49,13 +49,8 @@
         <div v-if="showText">返回</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
-        {{ headerConfig.title }}
+        {{ contentTitle || headerConfig.title }}
       </div>
-
-      <div v-else :class="[$style.title, $style[themeTPL]]">
-        {{ giftTitle }}
-      </div>
-
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
         <!-- <div @click="reload">刷新</div> -->
@@ -91,7 +86,7 @@ export default {
       isFullScreen: false,
       src: "",
       showText: true,
-      giftTitle: ""
+      contentTitle: ""
     };
   },
   components: {
@@ -188,8 +183,13 @@ export default {
         prev: query.prev === undefined ? true : query.prev,
         hasFunc: query.func === undefined ? true : query.func === "true",
         title:
-          query.title || localStorage.getItem("iframe-third-url-title") || ""
+          this.contentTitle ||
+          query.title ||
+          localStorage.getItem("iframe-third-url-title") ||
+          ""
       };
+
+      localStorage.removeItem("iframe-third-url-title");
       // SWAG 固定
       switch (origin) {
         case "SWAG":
@@ -469,11 +469,7 @@ export default {
 
                     res.data.ret.forEach(promo => {
                       if (promo.link.includes(promotionId)) {
-                        this.giftTitle = promo.name;
-                        localStorage.setItem(
-                          "iframe-third-url-title",
-                          promo.name
-                        );
+                        this.contentTitle = promo.name;
                       }
                     });
                   }
