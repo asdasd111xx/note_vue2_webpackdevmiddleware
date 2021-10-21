@@ -279,10 +279,14 @@ export default {
     tcenterNewCommissionSg1: () =>
       import(
         /* webpackChunkName: 'tcenterNewCommissionSg1' */ "../../tpl/sg1/components/mcenter/components/tcenter/components/newCommission"
+      ),
+    memberCardSg1: () =>
+      import(
+        /* webpackChunkName: 'memberCardSg1' */ "../../tpl/sg1/components/mcenter/components/memberCard"
       )
     // historyCardSg1: () =>
     //   import(
     //     /* webpackChunkName: 'historyCardSg1' */ "../../tpl/sg1/components/mcenter/components/historyCard"
-    //   )
+    //   ),
   }
 };

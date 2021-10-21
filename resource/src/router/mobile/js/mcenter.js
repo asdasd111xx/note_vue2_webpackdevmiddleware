@@ -362,6 +362,12 @@ export default {
       path: "newCommission",
       name: "mcenter-tcenterNewCommission",
       component
+    },
+    {
+      // 會員名片
+      path: "memberCard",
+      name: "mcenter-memberCard",
+      component
     }
   ]
 };
