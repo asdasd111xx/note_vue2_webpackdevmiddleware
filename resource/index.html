@@ -135,14 +135,14 @@
         return response.json();
       })
       .then(function (data) {
-        if (data.site === "porn1") {// && data.domain === "67") {
+        if (data.site === "porn1" && data.domain === "67") {
           ymkey = "61555a7c14e22b6a4f132e18";
-        } else if (data.site === "sg1") {// && data.domain === "80") {
+        } else if (data.site === "sg1" && data.domain === "80") {
           ymkey = "616ce2efac9567566e9b2890";
         }
         localStorage.setItem("YMKey", ymkey);
         if (ymkey != '') {
-          console.log('友盟 set config');
+          // console.log('友盟 set config');
           (function (w, d, s, q, i) {
             w[q] = w[q] || [];
             var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
