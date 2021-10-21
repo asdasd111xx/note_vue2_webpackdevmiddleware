@@ -20,7 +20,7 @@
         <div :class="$style['icon']">
           <img
             :src="
-              $getCdnPath(`/static/image/_new/actives/bouns/${curCoinSrc}.png`)
+              $getCdnPath(`/static/image/porn1/activesBouns/${curCoinSrc}.png`)
             "
           />
         </div>

@@ -107,7 +107,6 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
-import bbosRequest from "@/api/bbosRequest";
 import commission from "@/mixins/mcenter/commission";
 import EST from "@/lib/EST";
 import tcenterLabel from "../../../tcenterSame/tcenterLabel";
@@ -337,26 +336,6 @@ export default {
           return;
         }
       });
-
-      // 因開關在此 api 的回傳，所以在入口點先呼叫此 api
-      // bbosRequest({
-      //   method: "get",
-      //   url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatchInfo",
-      //   reqHeaders: {
-      //     Vendor: this.memInfo.user.domain
-      //   },
-      //   params: { lang: "zh-cn" }
-      // }).then(response => {
-      //   this.isReceive = true;
-
-      //   if (response.status === "000") {
-      //     this.isShowRebate =
-      //       this.themeTPL === "ey1"
-      //         ? response.data.show_real_time
-      //         : response.data.ret.show_real_time;
-      //     return;
-      //   }
-      // });
     },
     limitDate(key, val) {
       let _value = Vue.moment(val).format("YYYY/MM/DD");

@@ -327,7 +327,6 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
 import appEvent from "@/lib/appEvent";
-import bbosRequest from "@/api/bbosRequest";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
@@ -1030,7 +1029,6 @@ export default {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-        console.log(123);
         let cookieData;
         if (res.data) {
           cookieData = res.data.ret;

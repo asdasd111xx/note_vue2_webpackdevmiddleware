@@ -307,7 +307,6 @@
 <script>
 import { mapGetters } from "vuex";
 import friendsStatistics from "@/mixins/mcenter/management/friendsStatistics";
-import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";

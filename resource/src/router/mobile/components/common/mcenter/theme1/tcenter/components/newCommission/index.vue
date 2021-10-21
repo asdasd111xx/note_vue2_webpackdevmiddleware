@@ -201,7 +201,6 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
-import bbosRequest from "@/api/bbosRequest";
 import commission from "@/mixins/mcenter/commission";
 import EST from "@/lib/EST";
 import tcenterLabel from "../../../tcenterSame/tcenterLabel";

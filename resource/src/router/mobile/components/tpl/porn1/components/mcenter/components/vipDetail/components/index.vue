@@ -183,7 +183,6 @@ export default {
         titleList2: [],
         vipList2: []
       };
-      console.log(123);
       switch (this.routerTPL) {
         case "aobo1":
           data.titleList = aoboData.titleList;

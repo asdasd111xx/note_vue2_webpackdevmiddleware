@@ -4,7 +4,6 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
 import ajax from "@/lib/ajax";
-import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {

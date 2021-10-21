@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     linkToService() {
-      window.location.href = "/static/service";
+      window.location.href = "/custom/service";
     }
   }
 };

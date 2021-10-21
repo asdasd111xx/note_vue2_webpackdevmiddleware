@@ -88,7 +88,6 @@ export const site_100003 = {
   SITE_NAME: "鸭博娱乐",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
-  // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
@@ -153,8 +152,6 @@ export const site_100004 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://eybe2.77num.com/api",
   YABO_GOLANG_API_DOMAIN: "https://eybe2.77num.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://eybe2.77num.com/api-v2/cxbb",
-  // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://eybe2.77num.com/wsn/promosocket?"
 };

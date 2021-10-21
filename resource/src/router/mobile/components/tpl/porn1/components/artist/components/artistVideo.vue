@@ -28,7 +28,7 @@
     <div v-else :class="$style['no-data']">
       <div :class="$style['search-img']">
         <img
-          :src="$getCdnPath('/static/image/_new/common/search_none.png')"
+          :src="$getCdnPath('/static/image/common/search_none.png')"
           alt="search"
         />
       </div>
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import { getEncryptImage } from '@/lib/crypto';
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   data() {
     return {
       img: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
-    }
+    };
   },
   props: {
     videoList: {
@@ -56,18 +56,20 @@ export default {
     setTimeout(() => {
       this.videoList.forEach(item => {
         getEncryptImage(item);
-      })
-    }, 300)
+      });
+    }, 300);
   },
   methods: {
     getImg(image) {
       return {
         src: image,
         error: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`),
-        loading: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
-      }
-    },
-  },
+        loading: this.$getCdnPath(
+          `/static/image/porn1/default/bg_video03_d.png`
+        )
+      };
+    }
+  }
 };
 </script>
 
