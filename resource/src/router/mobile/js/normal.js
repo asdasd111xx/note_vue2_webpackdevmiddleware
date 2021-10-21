@@ -232,5 +232,17 @@ export default [
     path: "iframe/:page?/:type?",
     name: "iframe",
     component
+  },
+
+  // 泡泡
+  {
+    path: "live",
+    name: "live",
+    component
+  },
+  {
+    path: "live/sport",
+    name: "live-sport",
+    component
   }
 ];

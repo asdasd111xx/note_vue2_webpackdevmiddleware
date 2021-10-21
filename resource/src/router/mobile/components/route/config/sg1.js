@@ -85,6 +85,16 @@ export default {
     mahjongSg1: () =>
       import(
         /* webpackChunkName: 'mahjongSg1' */ "../../tpl/sg1/components/mahjong"
+      ),
+
+    // 泡泡
+    liveSg1: () =>
+      import(
+        /* webpackChunkName: 'liveSg1' */ "../../tpl/sg1/components/live/home"
+      ),
+    liveSportSg1: () =>
+      import(
+        /* webpackChunkName: 'liveSportSg1' */ "../../tpl/sg1/components/live/sport"
       )
   },
   mcenter: {

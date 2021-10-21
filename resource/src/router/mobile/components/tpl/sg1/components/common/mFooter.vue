@@ -6,13 +6,13 @@
       :class="[
         $style['footer-item'],
         $style[`${info.key}`],
-        { [$style.active]: isActive(info.key) }
+        { [$style.active]: isActive(info) }
       ]"
       @click="onClick(info)"
     >
       <div>
         <img
-          v-if="isActive(info.key)"
+          v-if="isActive(info)"
           :src="
             $getCdnPath(`/static/image/sg1/home/footer/icon_${info.key}_h.png`)
           "
@@ -51,27 +51,31 @@ export default {
       return [
         {
           key: "home",
+          routeName: "home",
           name: this.$text("S_HOME", "首页"),
-          path: "/mobile"
+          path: "/mobile/home"
         },
         {
-          key: "promotion",
-          name: this.$text("S_PROMOTION", "优惠"),
-          path: "/mobile/promotion"
+          key: "sport",
+          routeName: "live-sport",
+          name: this.$text("S_SPORTS_SHORT", "体育"),
+          path: "/mobile/live/sport"
         },
         {
-          key: "iframe",
-          name: this.$text("S_GIFT", "礼包"),
-          path:
-            "/mobile/iframe/gift?alias=specific_promotion&fullscreen=false&hasHeader=true&hasFooter=true&func=false"
+          key: "game",
+          routeName: "game",
+          name: this.$text("S_GAME", "游戏"),
+          path: "/mobile/iframe/game/paopao"
         },
         {
-          key: "service",
-          name: this.$text("S_SERVIEC", "客服"),
-          path: "/mobile/service?prev=false"
+          key: "deposit",
+          routeName: "deposit",
+          name: this.$text("S_DEPOSIT_BTN", "充值"),
+          path: "/mobile/mcenter/deposit?prev=false"
         },
         {
-          key: "mcenter-home",
+          key: "my",
+          routeName: "mcenter-home",
           name: this.$text("S_INFORMATION", "我的"),
           path: "/mobile/mcenter/home"
         }
@@ -82,11 +86,8 @@ export default {
     onClick({ key, path }) {
       this.$router.push(path);
     },
-    isActive(key) {
-      // if (this.$route.name === "discover" && key === "sponsor") {
-      //   return true;
-      // }
-      return key === this.$route.name;
+    isActive(info) {
+      return info.routeName === this.$route.name;
     }
   }
 };

@@ -1,9 +1,11 @@
 import merge from "lodash/merge";
+import store from "../../../../../store";
 import tplAobo1 from "./aobo1";
 import tplEy1 from "./ey1";
 import tplPorn1 from "./porn1";
 import tplSg1 from "./sg1";
 
+console.log(store.state.siteConfig);
 export default merge(
   {
     root: {
