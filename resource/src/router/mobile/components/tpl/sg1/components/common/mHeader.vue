@@ -143,7 +143,11 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask_my.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['information-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['information-dot']">
+              <span>{{ unreadMessageCount }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </template>
