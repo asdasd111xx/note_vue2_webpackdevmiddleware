@@ -88,13 +88,13 @@ export default {
       ),
 
     // 泡泡
-    liveSg1: () =>
+    liveHomeSg1: () =>
       import(
-        /* webpackChunkName: 'liveSg1' */ "../../tpl/sg1/components/live/home"
+        /* webpackChunkName: 'liveHomeSg1' */ "../../tpl/sg1/components/live/home"
       ),
-    liveSportSg1: () =>
+    liveIframeSg1: () =>
       import(
-        /* webpackChunkName: 'liveSportSg1' */ "../../tpl/sg1/components/live/sport"
+        /* webpackChunkName: 'liveIframeSg1' */ "../../tpl/sg1/components/live/iframe"
       )
   },
   mcenter: {
@@ -293,6 +293,18 @@ export default {
     memberCardSg1: () =>
       import(
         /* webpackChunkName: 'memberCardSg1' */ "../../tpl/sg1/components/mcenter/components/memberCard"
+      ),
+    liveDiamondSg1: () =>
+      import(
+        /* webpackChunkName: 'liveDiamondSg1' */ "../../tpl/sg1/components/mcenter/components/live/diamond"
+      ),
+    liveMissionSg1: () =>
+      import(
+        /* webpackChunkName: 'liveMissionSg1' */ "../../tpl/sg1/components/mcenter/components/live/mission"
+      ),
+    liveShopSg1: () =>
+      import(
+        /* webpackChunkName: 'liveShopSg1' */ "../../tpl/sg1/components/mcenter/components/live/shop"
       )
     // historyCardSg1: () =>
     //   import(

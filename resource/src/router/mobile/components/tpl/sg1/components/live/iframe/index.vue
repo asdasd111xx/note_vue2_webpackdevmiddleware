@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig">
     <div slot="content" :class="$style['']">
-      sport
+      iframe-{{ this.$route.params.page }}
     </div>
   </mobile-container>
 </template>
@@ -29,11 +29,13 @@ export default {
     }),
     headerConfig() {
       return {
-        title: this.$text("S_SPORTS_SHORT", "体育")
+        title: this.$route.params.page
       };
     }
   },
-  created() {},
+  created() {
+    console.log(this.$route.params);
+  },
   mounted() {},
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),

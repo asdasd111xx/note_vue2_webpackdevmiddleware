@@ -51,24 +51,23 @@ export default {
       return [
         {
           key: "home",
-          routeName: "home",
+          routeName: "liveHome",
           name: this.$text("S_HOME", "首页"),
-          path: "/mobile/home"
+          path: "/mobile/live/home"
         },
         {
-          // kind: this.$route.query.kind || "",
-          //     vendor: this.$route.query.vendor || "",
-          //     code: this.$route.query.code |
+          // 泡泡直播體育開啟BB體育
           key: "sport",
           routeName: "live-sport",
           name: this.$text("S_SPORTS_SHORT", "体育"),
           path: `/mobile/iframe/game?kind=1&vendor=lg_sport&hasFooter=true`
         },
         {
+          // 泡泡直播娛樂城
           key: "game",
-          routeName: "game",
+          routeName: "home",
           name: this.$text("S_GAME", "游戏"),
-          path: "/mobile/iframe/game/paopao"
+          path: "/mobile/home"
         },
         {
           key: "deposit",
@@ -90,6 +89,17 @@ export default {
       this.$router.push(path);
     },
     isActive(info) {
+      if (
+        this.$route.name.indexOf("mcenter-live") > -1 &&
+        info.routeName === "mcenter-home"
+      ) {
+        return true;
+      } else if (
+        this.$route.name.indexOf("live") > -1 &&
+        info.routeName === "liveHome"
+      ) {
+        return true;
+      }
       return info.routeName === this.$route.name;
     }
   }

@@ -1,19 +1,28 @@
 <template>
   <div :class="$style['mcenter-vip-wrap']">
     <div :class="$style['tool-wrap']">
-      <div :class="$style['myTool']">
+      <div
+        :class="$style['myTool']"
+        @click="$router.push('/mobile/live/iframe/tool')"
+      >
         <i
           ><img
             :src="$getCdnPath(`/static/image/sg1/mcenter/icon_props.png`)"/></i
         >道具
       </div>
-      <div :class="$style['myStyle']">
+      <div
+        :class="$style['myStyle']"
+        @click="$router.push('/mobile/live/iframe/style')"
+      >
         <i
           ><img
             :src="$getCdnPath(`/static/image/sg1/mcenter/icon_style.png`)"/></i
         >我的风格
       </div>
-      <div :class="$style['myContribute']">
+      <div
+        :class="$style['myContribute']"
+        @click="$router.push('/mobile/live/iframe/contribute')"
+      >
         <i
           ><img
             :src="
@@ -37,7 +46,9 @@
           />我的钻石
         </p>
         <span>35,569</span>
-        <button>兌換</button>
+        <button @click="$router.push('/mobile/mcenter/live/diamond')">
+          兌換
+        </button>
       </div>
     </div>
     <!-- VIP 推廣 -->
@@ -45,12 +56,12 @@
       <div
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/accountVIP')
+            ? $router.push('/mobile/live/iframe/shop')
             : $router.push('/mobile/login')
         "
       >
         <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_mall.png')" />
-        <div>
+        <div @click="$router.push('/mobile/live/iframe/shop')">
           <div>商城</div>
           <!-- <div :class="$style['sub-text']">VIP PRIVILEGE</div> -->
         </div>
@@ -76,7 +87,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/wallet')
+            ? $router.push('/mobile/live/iframe/experince')
             : $router.push('/mobile/login')
         "
       >
@@ -91,7 +102,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/betRecord')
+            ? $router.push('/mobile/live/iframe/rank')
             : $router.push('/mobile/login')
         "
       >
@@ -106,7 +117,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/moneyDetail')
+            ? $router.push('/mobile/mcenter/live/mission')
             : $router.push('/mobile/login')
         "
       >

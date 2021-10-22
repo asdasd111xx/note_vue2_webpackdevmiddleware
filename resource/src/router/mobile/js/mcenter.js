@@ -368,6 +368,31 @@ export default {
       path: "memberCard",
       name: "mcenter-memberCard",
       component
+    },
+
+    // 泡泡
+    {
+      path: "live",
+      name: "mcenter-live",
+      component,
+      redirect: "/mobile/mcenter/home",
+      children: [
+        {
+          path: "diamond",
+          name: "mcenter-live-diamond",
+          component
+        },
+        {
+          path: "shop",
+          name: "mcenter-live-shop",
+          component
+        },
+        {
+          path: "mission",
+          name: "mcenter-live-mission",
+          component
+        }
+      ]
     }
   ]
 };

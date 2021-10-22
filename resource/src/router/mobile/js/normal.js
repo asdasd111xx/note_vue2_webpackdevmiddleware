@@ -238,11 +238,19 @@ export default [
   {
     path: "live",
     name: "live",
-    component
-  },
-  {
-    path: "live/sport",
-    name: "live-sport",
-    component
+    redirect: "/mobile/live/home",
+    component,
+    children: [
+      {
+        path: "home",
+        name: "liveHome",
+        component
+      },
+      {
+        path: "iframe/:page?",
+        name: "liveIframe",
+        component
+      }
+    ]
   }
 ];
