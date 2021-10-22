@@ -437,7 +437,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     font-size: 15px;
     i {
       margin: 3px;
@@ -462,11 +461,13 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   p {
-    height: 14px;
     font-size: 14px;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    margin: 0;
     img {
       max-width: 20px;
+      margin-right: 5px;
     }
   }
   span {
@@ -475,7 +476,7 @@ export default {
     color: #e53266;
     font-size: 16px;
     text-align: center;
-    margin: 5px 0;
+    margin: 8px 0 5px 0;
   }
 
   button {
@@ -490,12 +491,16 @@ export default {
 .myDiamond {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   p {
-    height: 14px;
+    height: 16px;
     font-size: 14px;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    margin: 0;
     img {
       max-width: 20px;
+      margin-right: 5px;
     }
   }
   span {
@@ -504,7 +509,7 @@ export default {
     color: #e53266;
     font-size: 16px;
     text-align: center;
-    margin: 5px 0;
+    margin: 8px 0 5px 0;
   }
 
   button {
