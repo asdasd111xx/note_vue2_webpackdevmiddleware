@@ -143,52 +143,9 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+          <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_vip.png')" />
         </div>
-        <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/betRecord')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
-          />
-        </div>
-        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/moneyDetail')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
-          />
-        </div>
-        <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
-        </div>
-        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+        <div>娱乐城VIP</div>
       </div>
       <div
         :class="$style['cell']"
@@ -199,7 +156,9 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+          <img
+            :src="$getCdnPath('/static/image/sg1/mcenter/ic_mywallet.png')"
+          />
         </div>
         <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
       </div>
@@ -213,7 +172,7 @@
       >
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_bethistory.png')"
           />
         </div>
         <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
@@ -228,7 +187,7 @@
       >
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_transaction.png')"
           />
         </div>
         <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
@@ -242,9 +201,57 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
+          <img
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_rebate.png')"
+          />
         </div>
         <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+      </div>
+
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/betRecord')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_userprocess.png')"
+          />
+        </div>
+        <div>我的推广</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/moneyDetail')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_process.png')"
+          />
+        </div>
+        <div>推广赚钱</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/bankRebate')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_transfer.png')"
+          />
+        </div>
+        <div>额度转让</div>
       </div>
     </div>
   </div>
