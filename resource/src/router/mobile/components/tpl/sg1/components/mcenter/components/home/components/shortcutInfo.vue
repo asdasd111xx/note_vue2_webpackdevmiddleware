@@ -21,6 +21,24 @@
             "/></i
         >贡献榜
       </div>
+      <div :class="$style['myCenterWallet']">
+        <p>
+          <img
+            :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
+          />中心钱包
+        </p>
+        <span>1,698,564,722</span>
+        <button>充值</button>
+      </div>
+      <div :class="$style['myDiamond']">
+        <p>
+          <img
+            :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)"
+          />我的钻石
+        </p>
+        <span>35,569</span>
+        <button>兌換</button>
+      </div>
     </div>
     <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
@@ -403,17 +421,23 @@ export default {
 }
 
 .tool-wrap {
+  position: relative;
   width: 100%;
+  height: 160px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #eeeeee;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.05);
 
   div {
+    width: 33.3%;
     text-align: center;
-    padding: 20px;
-    cursor: pointer;
     display: flex;
+    justify-content: center;
     align-items: center;
+    cursor: pointer;
     font-size: 15px;
     i {
       margin: 3px;
@@ -422,6 +446,73 @@ export default {
         height: 23px;
       }
     }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 0.5px solid #eeeeee;
+    width: 90%;
+    top: 60px;
+  }
+}
+
+.myCenterWallet {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  p {
+    height: 14px;
+    font-size: 14px;
+    padding: 0;
+    img {
+      max-width: 20px;
+    }
+  }
+  span {
+    display: block;
+    height: 16px;
+    color: #e53266;
+    font-size: 16px;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  button {
+    color: #fff;
+    font-size: 12px;
+    background: #000;
+    padding: 3px 25px;
+    border-radius: 10px;
+  }
+}
+
+.myDiamond {
+  display: flex;
+  flex-direction: column;
+  p {
+    height: 14px;
+    font-size: 14px;
+    padding: 0;
+    img {
+      max-width: 20px;
+    }
+  }
+  span {
+    display: block;
+    height: 16px;
+    color: #e53266;
+    font-size: 16px;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  button {
+    color: #fff;
+    font-size: 12px;
+    background: #000;
+    padding: 3px 25px;
+    border-radius: 10px;
   }
 }
 </style>

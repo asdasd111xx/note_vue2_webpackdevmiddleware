@@ -154,11 +154,15 @@ export default {
   text-align: center;
   background-color: #fff;
   border-radius: 0px 0px 10px 10px;
-  box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.08);
   margin: 0 0 5px 0;
   padding: 10px;
   background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
     no-repeat;
+
+  @media screen and (min-width: 800px) {
+    background-size: 95% 45%;
+  }
 }
 
 .avatar-wrap {
