@@ -49,12 +49,10 @@
             : $router.push('/mobile/login')
         "
       >
-        <img
-          :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
-        />
+        <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_mall.png')" />
         <div>
-          <div>VIP特权</div>
-          <div :class="$style['sub-text']">VIP PRIVILEGE</div>
+          <div>商城</div>
+          <!-- <div :class="$style['sub-text']">VIP PRIVILEGE</div> -->
         </div>
       </div>
       <!-- <div :class="$style['v-line']" /> -->
@@ -65,12 +63,10 @@
             : $router.push('/mobile/login')
         "
       >
-        <img
-          :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
-        />
+        <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_guard.png')" />
         <div>
-          <div>推广赚钱</div>
-          <div :class="$style['sub-text']">PROMOTION</div>
+          <div>守护</div>
+          <!-- <div :class="$style['sub-text']">PROMOTION</div> -->
         </div>
       </div>
     </div>
@@ -85,9 +81,11 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+          <img
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_experince.png')"
+          />
         </div>
-        <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
+        <div>经验值</div>
       </div>
       <div
         :class="$style['cell']"
@@ -99,10 +97,10 @@
       >
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"
           />
         </div>
-        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
+        <div>排行榜</div>
       </div>
       <div
         :class="$style['cell']"
@@ -114,10 +112,10 @@
       >
         <div>
           <img
-            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
+            :src="$getCdnPath('/static/image/sg1/mcenter/icon_mission.png')"
           />
         </div>
-        <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
+        <div>任务</div>
       </div>
       <div
         :class="$style['cell']"
@@ -128,9 +126,9 @@
         "
       >
         <div>
-          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
+          <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_share.png')" />
         </div>
-        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+        <div>分享APP</div>
       </div>
     </div>
 
@@ -384,9 +382,10 @@ export default {
     width: 50%;
     height: 60px;
     display: flex;
-
+    align-items: center;
+    justify-content: center;
     > div {
-      width: 100%;
+      // width: 100%;
       padding: 10px 0;
 
       > div {
@@ -399,20 +398,21 @@ export default {
       }
 
       > div:last-of-type {
-        font-size: 8px;
+        font-size: 14px;
       }
     }
 
     > img {
-      //   width: 60px;
-      height: 100%;
+      width: 37px;
+      height: 37px;
+      margin-right: 5px;
     }
   }
-  .v-line {
-    border-left: 1px solid #eee;
-    height: 38px;
-    width: 1px;
-  }
+  // .v-line {
+  //   border-left: 1px solid #eee;
+  //   height: 38px;
+  //   width: 1px;
+  // }
 }
 
 .mcenter-func-four {
