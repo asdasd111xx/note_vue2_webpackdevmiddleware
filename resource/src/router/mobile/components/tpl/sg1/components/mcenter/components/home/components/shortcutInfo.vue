@@ -57,7 +57,7 @@
           <div :class="$style['sub-text']">VIP PRIVILEGE</div>
         </div>
       </div>
-      <div :class="$style['v-line']" />
+      <!-- <div :class="$style['v-line']" /> -->
       <div
         @click="
           loginStatus
@@ -74,8 +74,124 @@
         </div>
       </div>
     </div>
-    <!-- 快捷功能 -->
-    <div :class="$style['mcenter-func']">
+    <!-- 快捷功能4 -->
+    <div :class="$style['mcenter-func-four']">
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/wallet')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+        </div>
+        <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/betRecord')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
+          />
+        </div>
+        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/moneyDetail')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
+          />
+        </div>
+        <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/bankRebate')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
+        </div>
+        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+      </div>
+    </div>
+
+    <!-- 快捷功能8 -->
+    <div :class="$style['mcenter-func-eight']">
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/wallet')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
+        </div>
+        <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/betRecord')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
+          />
+        </div>
+        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/moneyDetail')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img
+            :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
+          />
+        </div>
+        <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
+      </div>
+      <div
+        :class="$style['cell']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/mcenter/bankRebate')
+            : $router.push('/mobile/login')
+        "
+      >
+        <div>
+          <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
+        </div>
+        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+      </div>
       <div
         :class="$style['cell']"
         @click="
@@ -299,11 +415,42 @@ export default {
   }
 }
 
-.mcenter-func {
+.mcenter-func-four {
   height: 100px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  margin-top: 3px;
+  margin-top: 10px;
+  padding: 0 18px;
+
+  .cell {
+    width: 25%;
+    > div {
+      text-align: center;
+    }
+
+    > div:first-child {
+      width: 37px;
+      height: 37px;
+      margin: 5px auto;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    > div:last-child {
+      font-size: 15px;
+    }
+  }
+}
+
+.mcenter-func-eight {
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   padding: 0 18px;
 
   .cell {

@@ -111,35 +111,45 @@ export default {
           show: true
         },
         {
+          initName: "成為主播",
+          name: "",
+          path: "",
+          pageName: "host",
+          image: "host",
+          info: "",
+          isPart: false,
+          show: true
+        },
+        {
           initName: "帮助中心",
           name: "S_HELP_CENTER",
           path: "/mobile/mcenter/helpCenter",
           pageName: "help",
           image: "help",
-          info: "存提现、投注有疑问，看这里",
-          isPart: true,
+          info: "",
+          isPart: false,
           show: true
         },
         {
-          initName: "关于丝瓜直播",
-          name: "S_ABOUT_SGLIVE",
+          initName: "关于泡泡直播",
+          name: "S_ABOUT_PAOLIVE",
           path: "/mobile/mcenter/about",
           pageName: "about",
           image: "about",
           isPart: false,
           show: true
-        },
-        {
-          initName: "我的推广",
-          name: "S_TEAM_CENTER",
-          path: "/mobile/mcenter/tcenterLobby",
-          // path: "/mobile/mcenter/tcenter/management/member",
-          pageName: "mypromotion",
-          image: "mypromotion",
-          info: "合营计划",
-          isPart: false,
-          show: this.isShowPromotion
-        },
+        }
+        // {
+        //   initName: "我的推广",
+        //   name: "S_TEAM_CENTER",
+        //   path: "/mobile/mcenter/tcenterLobby",
+        //   // path: "/mobile/mcenter/tcenter/management/member",
+        //   pageName: "mypromotion",
+        //   image: "mypromotion",
+        //   info: "合营计划",
+        //   isPart: false,
+        //   show: this.isShowPromotion
+        // },
         // {
         //   initName: "打码王",
         //   name: "S_LEADERBOARD",
@@ -150,16 +160,16 @@ export default {
         //   isPart: false,
         //   show: true
         // },
-        {
-          initName: "分享APP",
-          name: "S_SHARE_APP",
-          path: "",
-          pageName: "share",
-          image: "share",
-          info: "",
-          isPart: false,
-          show: true
-        }
+        // {
+        //   initName: "分享APP",
+        //   name: "S_SHARE_APP",
+        //   path: "",
+        //   pageName: "share",
+        //   image: "share",
+        //   info: "",
+        //   isPart: false,
+        //   show: true
+        // }
       ].filter(item => item.show);
     }
   },
@@ -356,6 +366,7 @@ export default {
 
 .mem-list {
   background-color: $main_background_white1;
+  margin-bottom: 50px;
 }
 
 .list-part {
