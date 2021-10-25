@@ -780,6 +780,8 @@ export default {
 
       let redirect = _redirect || query?.redirect;
 
+      //重置選取卡片資料
+      localStorage.removeItem("selectTarget");
       if (!redirect) {
         this.setPageStatus(1, "walletCardInfo", true);
         return;

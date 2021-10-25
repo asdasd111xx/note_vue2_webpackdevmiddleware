@@ -64,8 +64,7 @@ export default {
       return (
         (!this.userLevelObj.virtual_bank_single &&
           this.wallet_card.length < this.userLevelObj.virtual_bank_max) ||
-        (this.userLevelObj.virtual_bank_single &&
-          this.wallet_card.length < this.nowOpenWallet.length)
+        (this.userLevelObj.virtual_bank_single && !this.isBindNowOpenAllWallets)
       );
       // }
     }
