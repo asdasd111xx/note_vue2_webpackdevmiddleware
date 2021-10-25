@@ -923,10 +923,12 @@ export const actionSetUserBalance = ({ commit, dispatch, state }) => {
             }
           });
         } else {
-          dispatch("actionSetGlobalMessage", {
-            msg: data.msg,
-            code: data.code
-          });
+          if (res) {
+            dispatch("actionSetGlobalMessage", {
+              msg: res.msg,
+              code: res.code
+            });
+          }
         }
       }
     })
