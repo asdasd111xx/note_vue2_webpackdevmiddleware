@@ -289,6 +289,7 @@ export default {
     getActionName() {
       switch (this.missionActionType) {
         case 1:
+        case 8:
           return "去绑定";
         case 2:
           return "去充值";
@@ -308,6 +309,7 @@ export default {
       let redirect = `?redirect=videoPlay-${this.videoid}`;
       switch (this.missionActionType) {
         case 1:
+        case 8:
           this.$router.push(
             `/mobile/mcenter/bankCard${redirect}&type=bankCard`
           );
