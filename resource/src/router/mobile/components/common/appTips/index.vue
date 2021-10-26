@@ -345,7 +345,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: $main_text_color1;
+    color: $main_button_color;
     height: 20px;
   }
 
