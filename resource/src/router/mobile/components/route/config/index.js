@@ -19,7 +19,7 @@ export default merge(
       rootSp1: () => import(/* webpackChunkName: 'rootSp1' */ "../../tpl/sp1/")
     }
   },
-  tplPorn1, // 鸭博娱乐
+  tplPorn1, // 币发BIFA
   tplEy1,
   tplSg1,
   tplAobo1,

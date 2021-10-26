@@ -16,14 +16,14 @@ export const preset = {
 /* ---------- ↓ 測試站 ---------- */
 
 /**
- * 鸭博娱乐 測試站
+ * 币发BIFA 測試站
  */
 export const site_500015 = {
   ...preset,
   ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
-  SITE_NAME: "鸭博娱乐",
+  SITE_NAME: "币发BIFA",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
