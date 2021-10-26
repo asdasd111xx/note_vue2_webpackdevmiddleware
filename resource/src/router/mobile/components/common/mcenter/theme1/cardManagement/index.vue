@@ -264,7 +264,8 @@ export default {
 
       const walletHistory =
         ["walletCardInfo"].includes(currentPage) &&
-        !userLevelObj.virtual_bank_single;
+        !userLevelObj.virtual_bank_single &&
+        userLevelObj.virtual_bank_max > 1;
 
       const showButton = isCommon && !showDetail && walletHistory;
 
