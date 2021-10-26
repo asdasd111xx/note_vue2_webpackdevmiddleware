@@ -323,7 +323,7 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: #be9e7f;
+  background-color: #222222;
   width: 50px;
   transition: left 0.31s;
 }
@@ -417,8 +417,8 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  background: linear-gradient(#bd9d7d, #f9ddbd);
+  color: #222222;
+  background: #ffefdd;
 
   &.right {
     right: 14px;
