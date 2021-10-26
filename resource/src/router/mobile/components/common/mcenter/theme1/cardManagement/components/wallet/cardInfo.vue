@@ -81,18 +81,9 @@
         </div>
 
         <p :class="$style['remind']">
-          <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-            {{ $t("S_DIGITAL_CURRENCY_LIMIT").replace("%s", 1) }}
-          </template> -->
-
           <template>
             <span v-if="userLevelObj.virtual_bank_single">
-              {{
-                $t("S_VIRTUAL_BANKCARD_TYPE_LIMIT").replace(
-                  "%s",
-                  nowOpenWallet.length
-                )
-              }}
+              每个货币支持添加1个钱包
             </span>
 
             <span v-else>
