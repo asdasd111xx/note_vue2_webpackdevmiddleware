@@ -412,7 +412,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ad9982;
+    color: #707994;
     font-size: 12px;
     text-align: center;
   }
