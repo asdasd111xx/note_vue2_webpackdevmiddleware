@@ -264,7 +264,8 @@ export default {
 
       const walletHistory =
         ["walletCardInfo"].includes(currentPage) &&
-        !userLevelObj.virtual_bank_single;
+        !userLevelObj.virtual_bank_single &&
+        userLevelObj.virtual_bank_max > 1;
 
       const showButton = isCommon && !showDetail && walletHistory;
 
@@ -403,7 +404,12 @@ export default {
           // 卡片管理-詳細頁面
           if (this.statusList.showDetail) {
             this.statusList.showDetail = false;
-            this.setPageStatus(this.currentTab, this.currentPage, true);
+
+            this.setPageStatus(
+              this.currentTab,
+              this.currentPage,
+              this.$route.name != "mcenter-historyCard"
+            );
             return;
           }
 

@@ -134,7 +134,7 @@ export default {
       }
 
       if (this.themeTPL === "sg1") {
-        return "cs1@siguacs.net";
+        return "cs@paocs.co";
       }
 
       if (this.themeTPL === "sp1") {

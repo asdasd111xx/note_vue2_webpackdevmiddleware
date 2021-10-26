@@ -136,13 +136,13 @@
               />
             </div>
             <span
-              >尊敬的丝瓜直播会员，当iOS用户的丝瓜直播App掉签无法打开时，可以通过以下方法继续游戏</span
+              >尊敬的泡泡直播会员，当iOS用户的泡泡直播App掉签无法打开时，可以通过以下方法继续游戏</span
             >
           </div>
 
           <div :class="$style['content']">
             <div :class="$style['content-cell']">
-              <span>1.通过丝瓜直播图标上的网址，重新下载App：</span>
+              <span>1.通过泡泡直播图标上的网址，重新下载App：</span>
               <div :class="$style['content-img']">
                 <img
                   :src="
@@ -156,7 +156,7 @@
             </div>
 
             <div :class="$style['content-cell']">
-              <span>2.收藏丝瓜直播永久网址，浏览器打开，随时畅玩：</span>
+              <span>2.收藏泡泡直播永久网址，浏览器打开，随时畅玩：</span>
               <div
                 :class="$style['link']"
                 v-for="(item, index) in linkArray"
@@ -399,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #6aaaf5;
+  color: #be9e7f;
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: #6aaaf5;
+    background: linear-gradient(to left, #fe593c, #e61938);
     border-radius: 36px;
     padding: 3px 12px;
   }
