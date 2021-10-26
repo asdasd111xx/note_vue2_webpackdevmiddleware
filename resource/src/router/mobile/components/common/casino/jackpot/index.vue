@@ -77,7 +77,7 @@
         ]"
         :style="
           currentBonus && currentBonus.length <= 1
-            ? { animation: 'none', height: '80px' }
+            ? { animation: 'none', height: '42px' }
             : ''
         "
       >
@@ -246,10 +246,10 @@ export default {
           // loopFillGroupWithBlank: true,
           loop: this.jackpotData.jpMinor.length > 1,
           direction: "vertical",
-          slidesPerView: 2,
-          slidesPerGroup: 2,
+          slidesPerView: this.jackpotData.jpMinor.length > 1 ? 2 : 1,
+          slidesPerGroup: this.jackpotData.jpMinor.length > 1 ? 2 : 1,
           autoplay: { delay: 3000, disableOnInteraction: false },
-          spaceBetween: 5
+          spaceBetween: this.jackpotData.jpMinor.length > 1 ? 5 : 0
         };
         this.updateKey = 1;
       } else {
