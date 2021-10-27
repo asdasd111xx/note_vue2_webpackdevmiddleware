@@ -63,7 +63,7 @@ export default {
       //   case "ey1":
       return (
         (!this.userLevelObj.virtual_bank_single &&
-          this.wallet_card.length < this.userLevelObj.virtual_bank_max) ||
+          this.wallet_card.length <= this.userLevelObj.virtual_bank_max) ||
         (this.userLevelObj.virtual_bank_single && !this.isBindNowOpenAllWallets)
       );
       // }
