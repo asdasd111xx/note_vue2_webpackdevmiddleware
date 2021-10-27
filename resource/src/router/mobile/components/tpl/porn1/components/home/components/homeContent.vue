@@ -425,6 +425,8 @@ export default {
     top: 10px;
     left: 37%;
     position: absolute;
+    font-weight: 700;
+    color: #906246;
   }
 }
 
