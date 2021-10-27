@@ -18,7 +18,7 @@
         "
       >
         <img
-          :src="$getCdnPath('/static/image/_new/actives/bouns/coin_title.png')"
+          :src="$getCdnPath('/static/image/porn1/activesBouns/coin_title.png')"
         />
       </div>
       <!-- 第一行文字 -->
@@ -156,7 +156,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        '/static/image/_new/actives/bouns/coin_solid.png'
+                        '/static/image/porn1/activesBouns/coin_solid.png'
                       )
                     "
                   />
@@ -168,7 +168,7 @@
                   v-if="index <= hadEarnNum"
                   :class="[$style['had-earned']]"
                   :src="
-                    $getCdnPath('/static/image/_new/actives/bouns/get_icon.png')
+                    $getCdnPath('/static/image/porn1/activesBouns/get_icon.png')
                   "
                 />
               </div>
