@@ -77,12 +77,15 @@
                       `/static/image/${
                         siteConfig.ROUTER_TPL
                       }/level/icon_level_${
-                        vipLevel === 'max' ? 'max' : vipLevel
+                        currentLevel > 10 ? 'max' : currentLevel
                       }.png`
                     )
                   "
                 />
-                <div>{{ +vipLevel > 9 ? vipLevel : info.text }}</div>
+                <div v-if="+currentLevel > 10" :class="$style['level-text']">
+                  {{ currentLevel }}
+                </div>
+                <div>{{ info.text }}</div>
               </template>
               <template v-else>
                 <img
@@ -401,6 +404,7 @@ export default {
 .mcenter-wrap {
   float: left;
   width: 20%;
+  position: relative;
 
   > img {
     display: block;
@@ -415,6 +419,12 @@ export default {
     color: #ad9982;
     font-size: 12px;
     text-align: center;
+  }
+
+  .level-text {
+    top: 10px;
+    left: 37%;
+    position: absolute;
   }
 }
 
