@@ -321,51 +321,7 @@ export default {
     },
     openPromotionEmbedded(position) {
       //優小祕內嵌連結
-      this.$router.push(
-        `/mobile/iframe/vipInfo?func=false&alias=${position}&title=${this.vipTitle}`
-      );
-    },
-    getTitle() {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-        params: {
-          lang: "zh-cn",
-          urlName: "promotion_vip",
-          needToken: false
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.url = res.data.uri;
-
-          //取得優小祕優惠頁面標題
-          goLangApiRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-            params: {
-              lang: "zh-cn"
-            }
-          }).then(res => {
-            if (res.status === "000") {
-              let promotionId = this.url.split("?")[0].split("/")[
-                this.url.split("?")[0].split("/").length - 1
-              ];
-
-              res.data.ret.forEach(promo => {
-                if (promo.link.includes(promotionId)) {
-                  this.vipTitle = promo.name;
-                  localStorage.setItem("iframe-third-url-title", promo.name);
-                }
-              });
-            }
-          });
-        } else {
-          this.actionSetGlobalMessage({
-            msg: res.msg || res.data,
-            code: res.errodCode
-          });
-        }
-      });
+      this.$router.push(`/mobile/iframe/vipInfo?func=false&alias=${position}`);
     }
   }
 };

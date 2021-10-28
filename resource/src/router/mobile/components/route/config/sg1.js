@@ -190,7 +190,7 @@ export default {
       ),
     makeMoneySg1: () =>
       import(
-        /* webpackChunkName: 'makeMoneySg1' */ "../../tpl/sg1/components/mcenter/components/makeMoney"
+        /* webpackChunkName: 'makeMoneySg1' */ "../../tpl/porn1/components/mcenter/components/makeMoney"
       ),
     bonusSg1: () =>
       import(

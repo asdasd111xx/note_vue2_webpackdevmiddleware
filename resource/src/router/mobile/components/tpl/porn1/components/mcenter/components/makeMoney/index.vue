@@ -5,7 +5,7 @@
     :class="$style.container"
   >
     <div slot="content">
-      <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
+      <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL) && showOldVersion">
         <div :class="$style['img-wrap']">
           <img
             :class="$style['img-wrap']"
@@ -76,7 +76,10 @@ export default {
   data() {
     return {
       isShowPromotion: false,
-      src: ""
+      src: "",
+      // 舊版推廣賺錢
+      showOldVersion: false,
+      contentTitle: "推广赚钱"
     };
   },
   created() {
@@ -151,18 +154,11 @@ export default {
         });
     } else {
       if (this.loginStatus) {
-        // this.isShowPromotion =
-        //   localStorage.getItem("is-show-promotion") === "true";
-
         this.actionSetUserdata(true).then(() => {
           // 我的推廣開關 && 禮金開關需同時開啟，才顯示禮金明細
           this.isShowPromotion =
             this.memInfo.user.show_promotion && this.memInfo.config.festival;
           localStorage.setItem("is-show-promotion", this.isShowPromotion);
-          // localStorage.setItem(
-          //   "is-show-promotion",
-          //   this.memInfo.user.show_promotion
-          // );
         });
       } else {
         this.isShowPromotion = true;
@@ -172,9 +168,7 @@ export default {
   },
   mounted() {
     document.getElementById("mobile-wrap").scrollTo(0, 0);
-    if (!["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
-      this.embeddedLink();
-    }
+    this.embeddedLink();
   },
   computed: {
     ...mapGetters({
@@ -191,7 +185,7 @@ export default {
       let hasRecommendGift = this.isShowPromotion;
       return {
         prev: true,
-        title: "推广赚钱",
+        title: this.contentTitle,
         customLinkTitle:
           this.$route.query.check || !hasRecommendGift ? "" : "礼金明细",
         customLinkAction: () => {
@@ -264,6 +258,27 @@ export default {
           this.actionSetGlobalMessage({ msg: res.msg });
           return;
         }
+
+        // 標題
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          if (res.status === "000") {
+            let promotionId = this.src.split("?")[0].split("/")[
+              this.src.split("?")[0].split("/").length - 1
+            ];
+
+            res.data.ret.forEach(promo => {
+              if (promo.link.includes(promotionId)) {
+                this.contentTitle = promo.name;
+              }
+            });
+          }
+        });
       });
     }
   }

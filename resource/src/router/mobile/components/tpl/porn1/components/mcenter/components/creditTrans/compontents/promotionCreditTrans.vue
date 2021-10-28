@@ -1,6 +1,6 @@
 <template>
   <div class="clearfix">
-    <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
+    <!-- <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
       <div
         v-for="(item, index) in imgList"
         :class="$style['discount-item']"
@@ -8,9 +8,9 @@
       >
         <img :src="item" :key="index" />
       </div>
-    </div>
-    <div v-else :class="$style[`discount-wrap-embedded`]">
-      <iframe v-if="src" :src="src" :class="$style[`discount-item-embedded`]" />
+    </div> -->
+    <div v-if="src" :class="$style[`discount-wrap-embedded`]">
+      <iframe :src="src" :class="$style[`discount-item-embedded`]" />
     </div>
   </div>
 </template>
@@ -43,36 +43,36 @@ export default {
     }
   },
   mounted() {
-    if (["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
-      goLangApiRequest({
-        method: "get",
-        url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
-      }).then(res => {
-        this.imgList = res.data;
-      });
-    } else {
-      let target = "quota_transfer";
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-        params: {
-          urlName: target,
-          lang: "zh-cn",
-          needToken: "true",
-          externalCode: "promotion"
-        }
-      }).then(res => {
-        this.isLoading = false;
-        if (res && res.data && res.data.uri) {
-          this.src = res.data.uri;
-        }
+    // if (["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
+    //   goLangApiRequest({
+    //     method: "get",
+    //     url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
+    //   }).then(res => {
+    //     this.imgList = res.data;
+    //   });
+    // }
 
-        if (res && res.msg) {
-          this.actionSetGlobalMessage({ msg: res.msg });
-          return;
-        }
-      });
-    }
+    let target = "quota_transfer";
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+      params: {
+        urlName: target,
+        lang: "zh-cn",
+        needToken: "true",
+        externalCode: "promotion"
+      }
+    }).then(res => {
+      this.isLoading = false;
+      if (res && res.data && res.data.uri) {
+        this.src = res.data.uri;
+      }
+
+      if (res && res.msg) {
+        this.actionSetGlobalMessage({ msg: res.msg });
+        return;
+      }
+    });
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"])
