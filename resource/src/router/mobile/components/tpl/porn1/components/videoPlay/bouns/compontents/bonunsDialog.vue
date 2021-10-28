@@ -18,7 +18,7 @@
         "
       >
         <img
-          :src="$getCdnPath('/static/image/_new/actives/bouns/coin_title.png')"
+          :src="$getCdnPath('/static/image/porn1/activesBouns/coin_title.png')"
         />
       </div>
       <!-- 第一行文字 -->
@@ -156,7 +156,7 @@
                   <img
                     :src="
                       $getCdnPath(
-                        '/static/image/_new/actives/bouns/coin_solid.png'
+                        '/static/image/porn1/activesBouns/coin_solid.png'
                       )
                     "
                   />
@@ -168,7 +168,7 @@
                   v-if="index <= hadEarnNum"
                   :class="[$style['had-earned']]"
                   :src="
-                    $getCdnPath('/static/image/_new/actives/bouns/get_icon.png')
+                    $getCdnPath('/static/image/porn1/activesBouns/get_icon.png')
                   "
                 />
               </div>
@@ -295,12 +295,11 @@ export default {
           return "去充值";
         case 3:
         case 4:
+        case 6:
           return "去推广";
         case 5:
         case 7:
           return "去查看";
-        case 6:
-          return "去推广";
         default:
           return;
       }
@@ -309,7 +308,6 @@ export default {
       let redirect = `?redirect=videoPlay-${this.videoid}`;
       switch (this.missionActionType) {
         case 1:
-        case 8:
           this.$router.push(
             `/mobile/mcenter/bankCard${redirect}&type=bankCard`
           );
@@ -330,7 +328,9 @@ export default {
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
         case 7:
+        case 8:
           this.$router.push("/mobile/login");
+          return;
         default:
           return;
       }

@@ -18,10 +18,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import template1 from "../../../../../../../../../web/components/common/securityCheck/components/template1.vue";
 
 export default {
-  components: { template1 },
   data() {
     return {
       imgList: [],
