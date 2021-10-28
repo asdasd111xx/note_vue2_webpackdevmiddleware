@@ -104,7 +104,7 @@
     </div>
 
     <div
-      v-if="!isDetailPage && data.auditing"
+      v-if="!isDetailPage && data.auditing && !['ey1'].includes(themeTPL)"
       :class="[
         $style['card__status-audit'],
         {
@@ -120,6 +120,20 @@
 
     <div v-if="isStopped" :class="[$style['card__status-stopped']]">
       停用
+    </div>
+    <div
+      v-if="!isDetailPage && data.auditing && ['ey1'].includes(themeTPL)"
+      :class="[
+        $style['card__status-audit-ey'],
+        {
+          [$style['card__status-audit-ey--theme-square-ey']]: isSquare
+        },
+        {
+          [$style['card__status-audit-ey--theme-rectangle-ey']]: isRectangle
+        }
+      ]"
+    >
+      删除审核中
     </div>
   </div>
 </template>

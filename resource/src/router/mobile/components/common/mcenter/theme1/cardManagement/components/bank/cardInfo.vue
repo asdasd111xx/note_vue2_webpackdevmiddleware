@@ -47,10 +47,13 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template
-        v-if="isRevice && isCommon && bank_card.length < userLevelObj.bank_max"
-      >
-        <div :class="$style['add-wrap']">
+      <template>
+        <div
+          v-if="
+            isRevice && isCommon && bank_card.length <= userLevelObj.bank_max
+          "
+          :class="$style['add-wrap']"
+        >
           <div
             :class="$style['add-btn']"
             @click="setPageStatus(0, 'addBankCard', false)"

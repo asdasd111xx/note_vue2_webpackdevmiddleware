@@ -597,7 +597,7 @@ export default {
                   return [21, 37].includes(item.virtual_bank_id);
                 } else if (
                   // 億元沒開限綁一組，則可添加多個同種類錢包，
-                  ["ey1"].includes(this.themeTPL) &&
+                  // ["ey1"].includes(this.themeTPL) &&
                   !this.userLevelObj.virtual_bank_single
                 ) {
                   return;
@@ -780,8 +780,6 @@ export default {
 
       let redirect = _redirect || query?.redirect;
 
-      //重置選取卡片資料
-      localStorage.removeItem("selectTarget");
       if (!redirect) {
         this.setPageStatus(1, "walletCardInfo", true);
         return;

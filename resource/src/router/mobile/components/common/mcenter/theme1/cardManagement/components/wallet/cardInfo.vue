@@ -14,9 +14,9 @@
 
             <template v-else>
               {{
-                ["porn1", "sg1"].includes(themeTPL)
-                  ? $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
-                  : $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
+                ["ey1"].includes(themeTPL)
+                  ? $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
+                  : $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
               }}
             </template>
           </span>
@@ -63,8 +63,8 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template v-if="isCommon && isShowAddCardButton">
-        <div :class="$style['add-wrap']">
+      <template>
+        <div v-if="isCommon && isShowAddCardButton" :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"
             @click="setPageStatus(1, 'addWalletCard', false)"
@@ -72,9 +72,9 @@
             <img :src="`/static/image/common/mcenter/add_2.png`" />
             <span>
               {{
-                ["porn1", "sg1"].includes(themeTPL)
-                  ? $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
-                  : $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
+                ["ey1"].includes(themeTPL)
+                  ? $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
+                  : $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
               }}
             </span>
           </div>
@@ -118,7 +118,11 @@
         <div :class="$style['edit-button']">
           <template v-if="['ey1'].includes(themeTPL)">
             <div
-              v-if="userLevelObj.virtual_bank_single && hasSameTypeCard"
+              v-if="
+                (userLevelObj.virtual_bank_single ||
+                  userLevelObj.virtual_bank_max === 1) &&
+                  hasSameTypeCard
+              "
               :class="$style['edit-option-item']"
               @click="moveCard"
             >
@@ -126,7 +130,10 @@
             </div>
 
             <div
-              v-if="!userLevelObj.virtual_bank_single"
+              v-if="
+                !userLevelObj.virtual_bank_single ||
+                  userLevelObj.virtual_bank_max > 1
+              "
               :class="$style['edit-option-item']"
               @click="moveCard"
             >
@@ -138,13 +145,11 @@
             v-if="memInfo.config.delete_bank_card"
             :class="[
               $style['edit-option-item'],
-              { [$style['confirm']]: ['porn1', 'sg1'].includes(themeTPL) }
+              { [$style['confirm']]: !['ey1'].includes(themeTPL) }
             ]"
             @click="isShowPop = true"
           >
-            {{
-              ["porn1", "sg1"].includes(themeTPL) ? "解除绑定" : "删除电子钱包"
-            }}
+            {{ ["ey1"].includes(themeTPL) ? "删除电子钱包" : "解除绑定" }}
           </div>
 
           <div
@@ -169,9 +174,9 @@
 
           <span>
             {{
-              ["porn1", "sg1"].includes(themeTPL)
-                ? "确定解除绑定该钱包？"
-                : "确定删除该张卡片吗？"
+              ["ey1"].includes(themeTPL)
+                ? "确定删除该张卡片吗？"
+                : "确定解除绑定该钱包？"
             }}
           </span>
         </div>
