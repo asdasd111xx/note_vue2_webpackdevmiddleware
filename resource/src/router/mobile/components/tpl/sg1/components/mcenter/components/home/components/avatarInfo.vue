@@ -46,9 +46,21 @@
     </div>
 
     <div :class="$style['data-content']">
-      <div :class="$style['follower']"><span>3423566</span>追踪人数</div>
-      <div :class="$style['favorite']"><span>56</span>我的最爱</div>
-      <div :class="$style['bubbles']"><span>342654375</span>送出泡泡</div>
+      <div :class="$style['follower']">
+        <span v-if="follower > 0">{{ follower }}</span>
+        <span v-else>- -</span>
+        追踪人数
+      </div>
+      <div :class="$style['favorite']">
+        <span v-if="favorite > 0">{{ favorite }}</span>
+        <span v-else>- -</span>
+        我的最爱
+      </div>
+      <div :class="$style['bubbles']">
+        <span v-if="bubbles > 0">{{ bubbles }}</span>
+        <span v-else>- -</span>
+        送出泡泡
+      </div>
     </div>
   </div>
 </template>
@@ -71,6 +83,9 @@ export default {
       isShow: false,
       msg: "",
       viplevel: "",
+      follower: 0,
+      favorite: 0,
+      bubbles: 0,
       avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
@@ -154,7 +169,7 @@ export default {
   text-align: center;
   border-radius: 0px 0px 10px 10px;
   box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.08);
-  margin: 0 0 5px 0;
+  margin: 0 0 10px 0;
   padding: 10px;
   background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
       no-repeat,

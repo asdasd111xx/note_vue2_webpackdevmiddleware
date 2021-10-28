@@ -36,7 +36,8 @@
             :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
           />中心钱包
         </p>
-        <span>1,698,564,722</span>
+        <span v-if="centerWallet > 0">{{ centerWallet }}</span>
+        <span v-else style="color: #939393"> - - </span>
         <button>充值</button>
       </div>
       <div :class="$style['myDiamond']">
@@ -45,7 +46,8 @@
             :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)"
           />我的钻石
         </p>
-        <span>35,569</span>
+        <span v-if="diamond > 0">{{ diamond }}</span>
+        <span v-else style="color: #939393"> - - </span>
         <button @click="$router.push('/mobile/mcenter/live/diamond')">
           兌換
         </button>
@@ -54,6 +56,7 @@
     <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
       <div
+        :class="$style['sec-1']"
         @click="
           loginStatus
             ? $router.push('/mobile/live/iframe/shop')
@@ -68,6 +71,7 @@
       </div>
       <!-- <div :class="$style['v-line']" /> -->
       <div
+        :class="$style['sec-1']"
         @click="
           loginStatus
             ? $router.push('/mobile/mcenter/makeMoney')
@@ -80,66 +84,69 @@
           <!-- <div :class="$style['sub-text']">PROMOTION</div> -->
         </div>
       </div>
-    </div>
-    <!-- 快捷功能4 -->
-    <div :class="$style['mcenter-func-four']">
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/experince')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_experince.png')"
-          />
+
+      <!-- 快捷功能4 -->
+      <div :class="$style['mcenter-func-four']">
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/live/iframe/experince')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_experince.png')"
+            />
+          </div>
+          <div>经验值</div>
         </div>
-        <div>经验值</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/rank')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"
-          />
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/live/iframe/rank')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"
+            />
+          </div>
+          <div>排行榜</div>
         </div>
-        <div>排行榜</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/live/mission')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_mission.png')"
-          />
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/mcenter/live/mission')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_mission.png')"
+            />
+          </div>
+          <div>任务</div>
         </div>
-        <div>任务</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_share.png')" />
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/mcenter/bankRebate')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_share.png')"
+            />
+          </div>
+          <div>分享APP</div>
         </div>
-        <div>分享APP</div>
       </div>
     </div>
 
@@ -290,7 +297,9 @@ export default {
       createdTime: "",
       isShowPromotion: localStorage.getItem("is-show-promotion")
         ? localStorage.getItem("is-show-promotion") === "true"
-        : true
+        : true,
+      centerWallet: 0,
+      diamond: 0
     };
   },
   computed: {
@@ -376,6 +385,115 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+.vip-promotion-wrap > .sec-1 {
+  height: 55px;
+}
+
+.sub-text {
+  font-size: 8px;
+}
+
+.tool-wrap {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.05);
+
+  div {
+    width: 33.3%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    i {
+      margin: 3px;
+      img {
+        width: 23px;
+        height: 23px;
+      }
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 0.5px solid #eeeeee;
+    width: 90%;
+    top: 60px;
+  }
+}
+
+.myCenterWallet {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  p {
+    height: 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    img {
+      max-width: 20px;
+      margin-right: 5px;
+    }
+  }
+  span {
+    display: block;
+    height: 16px;
+    color: #e53266;
+    font-size: 16px;
+    text-align: center;
+    margin: 8px 0 5px 0;
+  }
+
+  button {
+    color: #fff;
+    font-size: 12px;
+    background: #000;
+    padding: 3px 25px;
+    border-radius: 10px;
+  }
+}
+
+.myDiamond {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  p {
+    height: 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    img {
+      max-width: 20px;
+      margin-right: 5px;
+    }
+  }
+  span {
+    display: block;
+    height: 16px;
+    color: #e53266;
+    font-size: 16px;
+    text-align: center;
+    margin: 8px 0 5px 0;
+  }
+
+  button {
+    color: #fff;
+    font-size: 12px;
+    background: #000;
+    padding: 3px 25px;
+    border-radius: 10px;
+  }
+}
 
 .mcenter-vip-wrap {
   margin-bottom: 10px;
@@ -387,16 +505,18 @@ export default {
 }
 
 .vip-promotion-wrap {
-  margin: 0px 18px 0;
+  position: relative;
+  margin-bottom: 10px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  /* width: 347pt; */
-  height: 50pt;
+  justify-content: center;
+  height: 120pt;
   background: #ffffff;
   border-radius: 10pt;
-  box-shadow: 0pt 0pt 7px 0pt rgba(0, 0, 0, 0.05);
+  box-shadow: 0pt 0pt 8px 0pt rgba(0, 0, 0, 0.05);
 
-  > div {
+  > .sec-1 {
     width: 50%;
     height: 60px;
     display: flex;
@@ -431,14 +551,22 @@ export default {
   //   height: 38px;
   //   width: 1px;
   // }
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 0.5px solid #eeeeee;
+    width: 90%;
+    top: 70px;
+  }
 }
 
 .mcenter-func-four {
-  height: 100px;
+  width: 100%;
+  height: 80px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 10px;
   padding: 0 18px;
 
   .cell {
@@ -465,11 +593,14 @@ export default {
 }
 
 .mcenter-func-eight {
-  height: 200px;
+  position: relative;
+  height: 165px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   padding: 0 18px;
+  background: #fff;
 
   .cell {
     width: 25%;
@@ -491,6 +622,14 @@ export default {
     > div:last-child {
       font-size: 15px;
     }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    border: 0.5px solid #eeeeee;
+    width: 90%;
+    top: 85px;
   }
 }
 .login-view {
@@ -572,117 +711,8 @@ export default {
     font-size: 14px;
   }
 
-  .vip-promotion-wrap > div {
-    height: 55px;
-  }
-
-  .sub-text {
-    font-size: 8px;
-  }
-
   .mcenter-func {
     padding: 0 16px;
-  }
-}
-
-.tool-wrap {
-  position: relative;
-  width: 100%;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.05);
-
-  div {
-    width: 33.3%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 15px;
-    i {
-      margin: 3px;
-      img {
-        width: 23px;
-        height: 23px;
-      }
-    }
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    border: 0.5px solid #eeeeee;
-    width: 90%;
-    top: 60px;
-  }
-}
-
-.myCenterWallet {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  p {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    margin: 0;
-    img {
-      max-width: 20px;
-      margin-right: 5px;
-    }
-  }
-  span {
-    display: block;
-    height: 16px;
-    color: #e53266;
-    font-size: 16px;
-    text-align: center;
-    margin: 8px 0 5px 0;
-  }
-
-  button {
-    color: #fff;
-    font-size: 12px;
-    background: #000;
-    padding: 3px 25px;
-    border-radius: 10px;
-  }
-}
-
-.myDiamond {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  p {
-    height: 16px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    margin: 0;
-    img {
-      max-width: 20px;
-      margin-right: 5px;
-    }
-  }
-  span {
-    display: block;
-    height: 16px;
-    color: #e53266;
-    font-size: 16px;
-    text-align: center;
-    margin: 8px 0 5px 0;
-  }
-
-  button {
-    color: #fff;
-    font-size: 12px;
-    background: #000;
-    padding: 3px 25px;
-    border-radius: 10px;
   }
 }
 </style>
