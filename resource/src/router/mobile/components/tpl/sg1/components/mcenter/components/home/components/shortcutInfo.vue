@@ -36,7 +36,9 @@
             :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
           />中心钱包
         </p>
-        <span v-if="centerWallet > 0">{{ centerWallet }}</span>
+        <span v-if="centerWallet > 0"
+          >{{ centerWallet | thousandFormat }}
+        </span>
         <span v-else style="color: #939393"> - - </span>
         <button>充值</button>
       </div>
@@ -46,7 +48,7 @@
             :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)"
           />我的钻石
         </p>
-        <span v-if="diamond > 0">{{ diamond }}</span>
+        <span v-if="diamond > 0">{{ diamond | thousandFormat }}</span>
         <span v-else style="color: #939393"> - - </span>
         <button @click="$router.push('/mobile/mcenter/live/diamond')">
           兌換
@@ -298,7 +300,7 @@ export default {
       isShowPromotion: localStorage.getItem("is-show-promotion")
         ? localStorage.getItem("is-show-promotion") === "true"
         : true,
-      centerWallet: 0,
+      centerWallet: 10000,
       diamond: 0
     };
   },
@@ -317,6 +319,11 @@ export default {
         this.countDays(res.ret.user.created_at);
       }
     });
+  },
+  filters: {
+    thousandFormat(val) {
+      return val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    }
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
