@@ -46,7 +46,7 @@
             )
           "
         />
-        <div v-if="showText">返回</div>
+        <div v-if="showBack">{{ $text("S_GO_BACK") }}</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ contentTitle || headerConfig.title }}
@@ -85,7 +85,7 @@ export default {
       isLoading: true,
       isFullScreen: false,
       src: "",
-      showText: true,
+      showBack: true,
       contentTitle: ""
     };
   },
@@ -189,7 +189,6 @@ export default {
           ""
       };
 
-      localStorage.removeItem("iframe-third-url-title");
       // SWAG 固定
       switch (origin) {
         case "SWAG":
@@ -332,28 +331,7 @@ export default {
           switch (type) {
             case "fengniao":
               if (query.alias) {
-                goLangApiRequest({
-                  method: "get",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-                  params: {
-                    urlName: query.alias,
-                    lang: "zh-cn",
-                    needToken: "true",
-                    externalCode: "fengniao"
-                  }
-                }).then(res => {
-                  this.isLoading = false;
-
-                  if (res && res.data && res.data.uri) {
-                    this.src = res.data.uri + "&cors=embed";
-                    return;
-                  }
-
-                  if (res && res.msg) {
-                    this.actionSetGlobalMessage({ msg: res.msg });
-                    return;
-                  }
-                });
+                this.getExternalUrl(type);
                 return;
               }
 
@@ -422,68 +400,7 @@ export default {
           break;
 
         case "GIFT":
-          this.showText = false;
-          // 優小秘
-          let giftUrl = localStorage.getItem("iframe-third-url") || "";
-          if (giftUrl) {
-            if (!giftUrl.includes("v=m")) {
-              giftUrl = `${giftUrl}&v=m`;
-            }
-            this.src = giftUrl;
-            return;
-          }
-
-          if (query.alias) {
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-              params: {
-                urlName: query.alias,
-                lang: "zh-cn",
-                needToken: "true",
-                externalCode: "promotion"
-              }
-            }).then(res => {
-              this.isLoading = false;
-              if (res && res.data && res.data.uri) {
-                url = res.data.uri;
-
-                if (!url.includes("v=m")) {
-                  url = `${url}&v=m`;
-                }
-
-                this.src = url;
-
-                //取得優小祕優惠頁面標題
-                goLangApiRequest({
-                  method: "get",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-                  params: {
-                    lang: "zh-cn"
-                  }
-                }).then(res => {
-                  if (res.status === "000") {
-                    let promotionId = this.src.split("?")[0].split("/")[
-                      this.src.split("?")[0].split("/").length - 1
-                    ];
-
-                    res.data.ret.forEach(promo => {
-                      if (promo.link.includes(promotionId)) {
-                        this.contentTitle = promo.name;
-                      }
-                    });
-                  }
-                });
-              }
-
-              if (res && res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
-                return;
-              }
-            });
-          }
-          break;
-
+        case "VIPINFO":
         case "PROMOTION":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
@@ -491,6 +408,8 @@ export default {
             if (!url.includes("v=m")) {
               url = `${url}&v=m`;
             }
+
+            this.contentTitle = localStorage.getItem("iframe-third-url-title");
             this.src = url;
             return;
           }
@@ -529,7 +448,6 @@ export default {
                   }
                 }).then(res => {
                   if (res && res.data && res.data.uri) {
-                    console.log(res.data.uri);
                     this.src = res.data.uri;
                   }
                 });
@@ -540,86 +458,70 @@ export default {
               });
               return;
             default:
+              this.getExternalUrl("promotion");
               break;
           }
-
-          if (query.alias) {
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-              params: {
-                urlName: query.alias,
-                lang: "zh-cn",
-                needToken: "true",
-                externalCode: "promotion"
-              }
-            }).then(res => {
-              this.isLoading = false;
-              if (res && res.data && res.data.uri) {
-                url = res.data.uri;
-                // 由API提供
-                // if (!url.includes("v=m")) {
-                //   url = `${url}&v=m`;
-                // }
-                this.src = url;
-              }
-
-              if (res && res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
-                return;
-              }
-            });
-          }
           break;
 
-        case "VIPINFO":
-          this.showText = false;
-          // 優小秘
-          let vipurl = localStorage.getItem("iframe-third-url") || "";
-          if (vipurl) {
-            if (!vipurl.includes("v=m")) {
-              vipurl = `${vipurl}&v=m`;
-            }
-            this.src = vipurl;
-            return;
-          }
-
-          if (query.alias) {
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-              params: {
-                urlName: query.alias,
-                lang: "zh-cn",
-                needToken: "true",
-                externalCode: "promotion"
-              }
-            }).then(res => {
-              this.isLoading = false;
-              if (res && res.data && res.data.uri) {
-                url = res.data.uri;
-                // 由API提供
-                // if (!url.includes("v=m")) {
-                //   url = `${url}&v=m`;
-                // }
-                this.src = url;
-              }
-
-              if (res && res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
-                return;
-              }
-            });
-          }
-          break;
         case "TCENTERLOBBY":
-          this.showText = false;
+          this.showBack = false;
           this.src = localStorage.getItem("iframe-third-url");
           break;
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
       }
+    },
+    getExternalUrl(externalCode = "promotion") {
+      this.isLoading = true;
+
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: this.$route.query.alias || "",
+          lang: "zh-cn",
+          needToken: "true",
+          externalCode: externalCode
+        }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.data && res.data.uri) {
+          let url = res.data.uri;
+
+          if (externalCode === "fengniao") {
+            url = res.data.uri + "&cors=embed";
+          }
+
+          this.src = url;
+        }
+
+        if (res && res.msg) {
+          this.actionSetGlobalMessage({ msg: res.msg });
+          return;
+        }
+
+        // 標題
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          if (res.status === "000") {
+            let promotionId = this.src.split("?")[0].split("/")[
+              this.src.split("?")[0].split("/").length - 1
+            ];
+
+            res.data.ret.forEach(promo => {
+              if (promo.link.includes(promotionId)) {
+                this.contentTitle = promo.name;
+              }
+            });
+          }
+        });
+      });
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;

@@ -69,51 +69,7 @@ export default {
       }
     }
   },
-  created() {
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-      params: {
-        lang: "zh-cn",
-        urlName: "specific_promotion",
-        needToken: false
-      }
-    }).then(res => {
-      if (res.status === "000") {
-        //優小秘網址多加上v=m時,頁面標題需另外取得
-        if (!this.url.includes("v=m")) {
-          this.url = `${res.data.uri}&v=m`;
-        }
-        // this.url = res.data.uri;
-
-        //取得優小祕優惠頁面標題
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-          params: {
-            lang: "zh-cn"
-          }
-        }).then(res => {
-          if (res.status === "000") {
-            let promotionId = this.url.split("?")[0].split("/")[
-              this.url.split("?")[0].split("/").length - 1
-            ];
-
-            res.data.ret.forEach(promo => {
-              if (promo.link.includes(promotionId)) {
-                this.giftTitle = promo.name;
-              }
-            });
-          }
-        });
-      } else {
-        this.actionSetGlobalMessage({
-          msg: res.msg || res.data,
-          code: res.errodCode
-        });
-      }
-    });
-  }
+  created() {}
 };
 </script>
 
