@@ -301,7 +301,7 @@ export default {
         ? localStorage.getItem("is-show-promotion") === "true"
         : true,
       centerWallet: 10000,
-      diamond: 0
+      diamond: 1000000000
     };
   },
   computed: {
@@ -322,7 +322,10 @@ export default {
   },
   filters: {
     thousandFormat(val) {
-      return val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+      return val
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+        .slice(0, -3);
     }
   },
   methods: {
