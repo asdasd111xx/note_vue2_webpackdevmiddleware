@@ -82,7 +82,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   // 泡泡直播固定標題
   if (vendor === "sigua_ly") {
-    gameTitle = "泡泡直播";
+    gameTitle = "絲瓜直播";
   }
 
   if (vendor === "lg_live") {
