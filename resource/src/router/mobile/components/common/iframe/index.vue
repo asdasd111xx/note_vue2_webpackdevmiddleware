@@ -10,6 +10,44 @@
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
     style="overflow-y:scroll; -webkit-overflow-scrolling: touch;"
   >
+    <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
+    <transition name="fade">
+      <div v-if="exitCheck" :class="$style['pop-wrap']">
+        <div :class="$style['pop-mask']" />
+        <div :class="$style['pop-block']">
+          <div :class="$style['title']">
+            温馨提示
+          </div>
+
+          <div :class="$style['content-wrap']">
+            <div :class="$style['content']">
+              <span>
+                您确定返回到大厅吗?
+              </span>
+
+              <template>
+                <div :class="$style['button-wrap']">
+                  <div
+                    :class="[$style['button-item'], $style['close']]"
+                    @click="closePop"
+                  >
+                    取消
+                  </div>
+
+                  <div
+                    :class="[$style['button-item'], $style['confirm']]"
+                    @click="$router.push('/mobile')"
+                  >
+                    确定
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 泡泡真人視訊離開防呆提示 ⬆️ -->
     <div
       v-if="headerConfig.hasHeader"
       id="header"
@@ -86,7 +124,8 @@ export default {
       isFullScreen: false,
       src: "",
       showText: true,
-      contentTitle: ""
+      contentTitle: "",
+      exitCheck: false
     };
   },
   components: {
@@ -204,6 +243,10 @@ export default {
         ...baseConfig,
         onClick: () => {
           const iframeThirdOrigin = localStorage.getItem("iframe-third-origin");
+          if (this.$route.query.vendor === "lg_live") {
+            this.exitCheck = true;
+            return;
+          }
           if (
             this.$route.params.page.toUpperCase() === "GAME" &&
             iframeThirdOrigin &&
@@ -234,6 +277,10 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    closePop() {
+      this.exitCheck = false;
+      return;
+    },
     initIframe() {
       let container = document.getElementById("mobile-container");
       if (container && container.style) {
@@ -1077,5 +1124,64 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
+}
+
+// Popup Style
+.pop-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.pop-block {
+  position: absolute;
+  width: 65%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $main_white_color1;
+  border-radius: 8px;
+  text-align: center;
+  color: #a6a9b2;
+  font-size: 14px;
+  .title {
+    color: #414655;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.button-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid #f7f8fb;
+  margin-top: 20px;
+
+  .button-item {
+    font-size: 18px;
+    width: 50%;
+    padding: 10px 0;
+    &.close {
+      color: #414655;
+      border-right: 1px solid #f7f8fb;
+    }
+    &.confirm {
+      color: #bf8646;
+    }
+  }
 }
 </style>

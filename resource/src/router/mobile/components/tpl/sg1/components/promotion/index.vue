@@ -299,7 +299,6 @@ $fixed_spacing_height: 43px;
   flex: 1;
   height: 43px;
   line-height: 43px;
-  font-weight: 500;
   font-size: 14px;
   text-align: center;
   color: $main_text_color2;
@@ -355,7 +354,7 @@ $fixed_spacing_height: 43px;
 
 @media screen and (min-width: $phone) {
   .type-btn {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .time {
@@ -383,8 +382,9 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #731c25;
-  background: linear-gradient(to left, #f4b22e 0%, #f9d388 100%);
+  color: #222222;
+  background: #ffefdd;
+  border-radius: 32px;
   &.right {
     right: 14px;
   }
