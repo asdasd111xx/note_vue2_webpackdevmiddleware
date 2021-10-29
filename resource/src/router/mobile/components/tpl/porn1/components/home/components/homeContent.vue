@@ -297,6 +297,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .home-wrap {
   overflow: hidden;
   position: relative;
@@ -412,9 +413,13 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #707994;
+    color: $share_text_color1;
     font-size: 12px;
     text-align: center;
+
+    &.porn1 {
+      color: #707994;
+    }
   }
 }
 

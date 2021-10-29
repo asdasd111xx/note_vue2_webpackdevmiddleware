@@ -296,11 +296,18 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: $main_footer_color1;
+  color: $share_footer_color1;
   position: relative;
 
   &.active {
-    color: $main_footer_active_color1;
+    color: $share_footer_active_color1;
+  }
+
+  &.porn1 {
+    color: $main_footer_color1;
+    &.active {
+      color: $main_footer_active_color1;
+    }
   }
 
   > div {

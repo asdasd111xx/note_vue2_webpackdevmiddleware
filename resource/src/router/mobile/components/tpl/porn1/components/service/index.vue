@@ -701,10 +701,13 @@ div.container {
   margin: 0 auto;
   font-size: 8px;
   color: $main_button_text_color;
-  background: $main_button_color;
+  background: $share_main_button_color;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
 
+  &.porn1 {
+    background: $main_button_color;
+  }
   &.sp1 {
     background: #000;
   }

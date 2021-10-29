@@ -18,7 +18,6 @@ $main_text_color5: #bebcbc;
 $main_text_color6: #222222;
 $main_text_color7: #9ca3bf;
 $main_button_color: #3354ad;
-$main_button_text_color: #ffffff;
 
 $main_title_color1: #000000;
 
@@ -26,13 +25,19 @@ $main_footer_color1: #707994;
 $main_footer_active_color1: #323943;
 
 $main_vip_color1: #eeb72d;
-
 $main_discover_color1: #bf8646;
 
 $main_error_color1: #db6372;
 
 /* 包網 */
 // 澳博国际
+$share_main_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+$main_button_text_color: #ffffff;
+$share_footer_color1: #9ca3bf;
+$share_footer_active_color1: #be9e7f;
+$share_text_color1: #ad9982; //首頁上方icon文字顏色
+$share_text_color2: #5e626d; //登入 左下字
+$share_text_color3: #9ca3bf; ////登入 右下字
 
 // 51国际
 $sp1_main_color1: #ffbb00;

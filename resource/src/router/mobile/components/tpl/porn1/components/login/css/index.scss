@@ -157,12 +157,17 @@
       color: $main_button_text_color;
       text-align: center;
       line-height: 50px;
-      background: $main_button_color;
+      background: $share_main_button_color;
       border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
       width: 100%;
       max-width: 375px;
+    }
+    &.porn1 {
+      > div {
+        background: #3354ad;
+      }
     }
 
     &.sp1 {
@@ -184,10 +189,19 @@
     display: inline-block;
     text-align: center;
     margin: 0 10px;
-    color: $main_text_color4;
-
+    color: $share_text_color2;
     &.link-submit {
-      color: $main_button_color;
+      color: $share_text_color3;
+    }
+
+    &.porn1 {
+      &.link-join-mem {
+        color: $main_text_color4;
+      }
+
+      &.link-submit {
+        color: $main_button_color;
+      }
     }
 
     &.sp1 {
