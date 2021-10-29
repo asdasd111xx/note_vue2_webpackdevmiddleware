@@ -49,7 +49,7 @@
           <!-- 會員中心連結 -->
           <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
             <div
-              v-for="(info, index) in mcenterList"
+              v-for="(info, index) in mcenterSg1List"
               :key="`mcenter-${index}`"
               :class="$style['mcenter-wrap']"
               @click="onGoToMcenter(info.path)"
