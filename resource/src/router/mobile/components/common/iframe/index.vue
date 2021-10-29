@@ -674,8 +674,12 @@ export default {
 
           // 绑定银行卡
           case "EVENT_THIRDPARTY_BANKCARD":
+            localStorage.setItem(
+              "bank-card-back-redirect",
+              location.pathname + location.search
+            );
             this.$router.push(
-              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+              `/mobile/mcenter/bankCard?redirect=iframe&type=bankCard`
             );
             return;
 
