@@ -86,6 +86,10 @@ export default {
   },
   methods: {
     onClick({ key, path }) {
+      if (key == "sport" && !this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
       this.$router.push(path);
     },
     isActive(info) {
