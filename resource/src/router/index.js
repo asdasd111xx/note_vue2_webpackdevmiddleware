@@ -9,9 +9,9 @@ import isMobile from "@/lib/is_mobile";
 import mobile from "./mobile";
 import noService from "./no_service";
 import popControl from "./popcontrol";
+import staticService from "./static/";
 import timeout from "./timeout";
 import upup from "./upup";
-
 // prevent NavigationDuplicated error see: https://github.com/vuejs/vue-router/issues/2881
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location, onResolve, onReject) {
@@ -56,6 +56,7 @@ export default new Router({
     noService,
     upup,
     timeout,
-    error404
+    error404,
+    staticService
   ]
 });

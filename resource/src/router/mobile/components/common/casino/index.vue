@@ -651,7 +651,7 @@ export default {
   margin: 0 auto 20px;
   width: 62px;
   height: 62px;
-  background: url("/static/image/_new/common/search_none.png") 0 0 / contain
+  background: url("/static/image/common/search_none.png") 0 0 / contain
     no-repeat;
 }
 

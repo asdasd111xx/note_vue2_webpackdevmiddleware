@@ -63,17 +63,6 @@ export default {
   methods: {
     ...mapActions(["actionGetMobileInfo"]),
     mobileLinkOpen,
-    getImg(src) {
-      return {
-        src: this.$getCdnPath(src),
-        error: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bg_banner_d.png`
-        ),
-        loading: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bg_banner_d.png`
-        )
-      };
-    },
     initSlider() {
       const info = this.mobileInfo;
       const mobile_slide =

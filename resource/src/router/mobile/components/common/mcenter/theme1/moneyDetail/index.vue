@@ -165,6 +165,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import common from "@/api/common";
 import mcenter from "@/api/mcenter";
 import EST from "@/lib/EST";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   props: {
@@ -241,6 +242,9 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
@@ -269,6 +273,11 @@ export default {
     }
   },
   created() {
+    if (this.routerTPL === "sg1") {
+      sendUmeng(44);
+    } else {
+      sendUmeng(45);
+    }
     if (this.$route.params.page === "detail") {
       let detailparams = localStorage.getItem("money-detail-params");
 

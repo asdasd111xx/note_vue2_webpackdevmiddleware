@@ -1,7 +1,7 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .container {
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .title {
@@ -17,6 +17,11 @@
   margin: 0 auto;
   min-height: calc(100vh - 43px);
   position: relative;
+
+  &.sp1 {
+    background-image: url("/static/image/sp1/common/bg.png");
+  }
+
 }
 
 .login-logo {
@@ -33,14 +38,11 @@
   }
 }
 
-
 @media screen and (min-height: 811px) {
-
   .login-logo {
     height: 180px;
   }
 }
-
 
 .login-name {
   font-size: 21px;
@@ -142,7 +144,7 @@
     .login-unit-link {
       float: right;
       position: relative;
-      color: #5E626D;
+      color: #5e626d;
     }
   }
 
@@ -156,12 +158,19 @@
       color: white;
       text-align: center;
       line-height: 50px;
-      background: linear-gradient(to left, #BD9D7D 0%, #F9DDBD 100%);
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
       width: 100%;
       max-width: 375px;
+    }
+
+    &.sp1 {
+      >div {
+        color: $main_text_color6;
+        background: $sp1_main_color1;
+      }
     }
   }
 }
@@ -181,8 +190,14 @@
       color: $main_text_color1;
     }
 
-    a {
-      color: $main_text_color4;
+    &.sp1 {
+      &.link-join-mem {
+        color: $main_text_color4;
+      }
+
+      &.link-submit {
+        color: $sp1_main_color1;
+      }
     }
   }
 }

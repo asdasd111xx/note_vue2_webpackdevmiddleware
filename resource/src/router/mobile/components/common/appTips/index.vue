@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      v-show="downloadConfigData.show"
+      v-if="downloadConfigData.show"
       :class="[
         $style['apptips-wrap'],
         { [$style['close']]: !downloadConfigData.show },
@@ -66,8 +66,9 @@ export default {
   },
   created() {
     if (
+      ["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
-      Vue.cookie.get("platform") !== "G" &&
+      !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
     ) {
       // this.showAppTips = true;
@@ -108,9 +109,7 @@ export default {
             });
           }
 
-          this.downloadConfigData["show"] = showData
-            ? showData.value === "true"
-            : false;
+          this.downloadConfigData["show"] = !window.navigator.standalone;
 
           this.downloadConfigData["bundleID"] = bundleIDData
             ? bundleIDData.value
@@ -138,6 +137,8 @@ export default {
           this.$emit("toogleAppTips", false);
         }
       });
+    } else {
+      this.$emit("toogleAppTips", false);
     }
   },
   computed: {
@@ -148,6 +149,9 @@ export default {
       systemConfig: "getSystemConfig"
     }),
     siteName() {
+      if (this.siteConfig.ROUTER_TPL == "sg1") {
+        return "泡泡APP";
+      }
       return this.siteConfig.SITE_NAME;
     },
     getText() {
@@ -161,7 +165,7 @@ export default {
       "actionSetLCFSystemConfig"
     ]),
     setGAObj() {
-      if (!ga || ga === undefined) {
+      if (typeof ga === "undefined") {
         return;
       }
 
@@ -199,7 +203,11 @@ export default {
       this.isDownloading = true;
       this.setGAObj();
 
-      location.href = `https://${this.href}`;
+      console.log(this.href);
+      // safari
+      setTimeout(() => {
+        location.href = `https://${this.href}`;
+      }, 250);
     },
     handleClickDownload() {
       if (this.isDownloading || !this.downloadConfigData.show) {

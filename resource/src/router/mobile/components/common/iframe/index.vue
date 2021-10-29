@@ -10,6 +10,44 @@
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
     style="overflow-y:scroll; -webkit-overflow-scrolling: touch;"
   >
+    <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
+    <transition name="fade">
+      <div v-if="exitCheck" :class="$style['pop-wrap']">
+        <div :class="$style['pop-mask']" />
+        <div :class="$style['pop-block']">
+          <div :class="$style['title']">
+            温馨提示
+          </div>
+
+          <div :class="$style['content-wrap']">
+            <div :class="$style['content']">
+              <span>
+                您确定返回到大厅吗?
+              </span>
+
+              <template>
+                <div :class="$style['button-wrap']">
+                  <div
+                    :class="[$style['button-item'], $style['close']]"
+                    @click="closePop"
+                  >
+                    取消
+                  </div>
+
+                  <div
+                    :class="[$style['button-item'], $style['confirm']]"
+                    @click="$router.push('/mobile')"
+                  >
+                    确定
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 泡泡真人視訊離開防呆提示 ⬆️ -->
     <div
       v-if="headerConfig.hasHeader"
       id="header"
@@ -49,13 +87,8 @@
         <div v-if="showText">返回</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
-        {{ headerConfig.title }}
+        {{ contentTitle || headerConfig.title }}
       </div>
-
-      <div v-else :class="[$style.title, $style[themeTPL]]">
-        {{ giftTitle }}
-      </div>
-
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
         <!-- <div @click="reload">刷新</div> -->
@@ -80,7 +113,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
@@ -92,7 +124,8 @@ export default {
       isFullScreen: false,
       src: "",
       showText: true,
-      giftTitle: ""
+      contentTitle: "",
+      exitCheck: false
     };
   },
   components: {
@@ -189,8 +222,13 @@ export default {
         prev: query.prev === undefined ? true : query.prev,
         hasFunc: query.func === undefined ? true : query.func === "true",
         title:
-          query.title || localStorage.getItem("iframe-third-url-title") || ""
+          this.contentTitle ||
+          query.title ||
+          localStorage.getItem("iframe-third-url-title") ||
+          ""
       };
+
+      localStorage.removeItem("iframe-third-url-title");
       // SWAG 固定
       switch (origin) {
         case "SWAG":
@@ -215,6 +253,10 @@ export default {
         ...baseConfig,
         onClick: () => {
           const iframeThirdOrigin = localStorage.getItem("iframe-third-origin");
+          if (this.$route.query.vendor === "lg_live") {
+            this.exitCheck = true;
+            return;
+          }
           if (
             this.$route.params.page.toUpperCase() === "GAME" &&
             iframeThirdOrigin &&
@@ -245,6 +287,10 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    closePop() {
+      this.exitCheck = false;
+      return;
+    },
     initIframe() {
       let container = document.getElementById("mobile-container");
       if (container && container.style) {
@@ -480,11 +526,7 @@ export default {
 
                     res.data.ret.forEach(promo => {
                       if (promo.link.includes(promotionId)) {
-                        this.giftTitle = promo.name;
-                        localStorage.setItem(
-                          "iframe-third-url-title",
-                          promo.name
-                        );
+                        this.contentTitle = promo.name;
                       }
                     });
                   }
@@ -729,6 +771,15 @@ export default {
 
             return;
 
+          case "EVENT_THIRDPARTY_JOINMEMBER":
+            if (this.loginStatus) {
+              return;
+            } else {
+              this.$router.push("/mobile/joinmember?prev=home");
+            }
+
+            return;
+
           case "EVENT_THIRDPARTY_WALLET":
             if (this.loginStatus) {
               this.$router.push("/mobile/mcenter/wallet?prev=back");
@@ -768,6 +819,19 @@ export default {
 
           case "EVENT_THIRDPARTY_HOME":
             this.$router.push("/mobile");
+            return;
+
+          // 彩金任務
+          // 去推广
+          case "EVENT_BOUNS_PROMOTE":
+            const { tagId, cid, userid, domain } = data;
+            return;
+
+          // 绑定银行卡
+          case "EVENT_THIRDPARTY_BANKCARD":
+            this.$router.push(
+              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+            );
             return;
 
           default:
@@ -1070,5 +1134,64 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
+}
+
+// Popup Style
+.pop-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.pop-block {
+  position: absolute;
+  width: 65%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $main_white_color1;
+  border-radius: 8px;
+  text-align: center;
+  color: #a6a9b2;
+  font-size: 14px;
+  .title {
+    color: #414655;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.button-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid #f7f8fb;
+  margin-top: 20px;
+
+  .button-item {
+    font-size: 18px;
+    width: 50%;
+    padding: 10px 0;
+    &.close {
+      color: #414655;
+      border-right: 1px solid #f7f8fb;
+    }
+    &.confirm {
+      color: #bf8646;
+    }
+  }
 }
 </style>

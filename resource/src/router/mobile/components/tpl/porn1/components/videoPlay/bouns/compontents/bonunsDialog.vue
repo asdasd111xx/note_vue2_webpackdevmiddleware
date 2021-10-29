@@ -90,7 +90,7 @@
           <!-- 右邊第一個按鈕 -->
           <div
             v-if="type.includes('disable')"
-            @click="$router.push('/mobile/login')"
+            @click="toJoin"
             :class="$style['active-btn']"
           >
             <template v-if="['porn1', 'sg1'].includes(routerTPL)">
@@ -187,8 +187,10 @@
 </template>
 <script>
 import { getCookie } from "@/lib/cookie";
+import { mapGetters, mapActions } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import yaboRequest from "@/api/yaboRequest";
-import { mapGetters } from "vuex";
+import Vue from "vue";
 
 export default {
   props: {
@@ -256,6 +258,7 @@ export default {
     window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
+    ...mapActions(["actionGetLayeredURL"]),
     handleBack() {
       this.$router.back();
     },
@@ -325,7 +328,7 @@ export default {
           this.$router.push(`/mobile/mcenter/makeMoney`);
           return;
         case 7:
-          this.$router.push(`/mobile/joinmember`);
+          this.$router.push("/mobile/login");
         default:
           return;
       }
@@ -336,25 +339,32 @@ export default {
       }
       this.unlocked = true;
       let cid = getCookie("cid");
+
       yaboRequest({
-        method: "put",
-        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId?`,
-        params: {
-          cid: cid,
-          userid: this.memInfo.user.id,
-          tagId: this.tagId,
-          domain: this.memInfo.user.domain
+        method: "get",
+        url: `${this.siteConfig.YABO_API_DOMAIN}/Account/GetAuthorizationToken`
+      }).then(res => {
+        if (res.data) {
+          this.yToken = res.data;
+          Vue.cookie.set("y_token", res.data);
+
+          yaboRequest({
+            method: "put",
+            url: `${this.siteConfig.YABO_API_DOMAIN}/Account/UnlockTagId`,
+            params: {
+              cid: cid,
+              userid: this.memInfo.user.id,
+              tagId: this.tagId,
+              domain: this.memInfo.user.domain
+            }
+          }).then(res => {
+            setTimeout(() => {
+              this.unlocked = false;
+              this.$router.push(`/mobile/mcenter/makeMoney`);
+            }, 200);
+          });
         }
-      })
-        .then(res => {
-          setTimeout(() => {
-            this.unlocked = false;
-            this.$router.push(`/mobile/mcenter/makeMoney`);
-          }, 200);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      });
     },
     getDialogHeight() {
       let t = document.getElementById("earn-wrap");
@@ -369,6 +379,19 @@ export default {
         this.isShow = false;
         this.isClose = false;
       }, 300);
+    },
+    toJoin() {
+      if (getCookie("platform") === "h") {
+        this.actionGetLayeredURL().then(res => {
+          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+            this.$router.push(`/mobile/joinmember`);
+          } else {
+            window.location.replace(`https://${res[0]}/mobile/joinmember`);
+          }
+        });
+      } else {
+        this.$router.push(`/mobile/joinmember`);
+      }
     }
   }
 };

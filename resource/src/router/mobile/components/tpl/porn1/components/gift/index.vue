@@ -79,6 +79,8 @@ export default {
   },
 
   created() {
+    localStorage.removeItem("iframe-third-url-title");
+
     let header = {};
     if (this.routerTPL === "aobo1") {
       //因為澳博目前沒有這支"/xbb/Link/External/Url" api,所以先用鴨博代替

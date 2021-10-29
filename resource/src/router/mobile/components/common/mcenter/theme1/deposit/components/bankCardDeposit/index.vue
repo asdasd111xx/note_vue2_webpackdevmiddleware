@@ -1090,7 +1090,7 @@
           <p :class="$style['service-remind']">
             如需帮助，请<span
               :class="$style['service-btn']"
-              @click="$router.push('/mobile/service')"
+              @click="onClickService"
               >联系客服</span
             >
           </p>
@@ -1202,6 +1202,7 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -1364,6 +1365,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     paySelectData() {
       return {
@@ -1642,6 +1646,11 @@ export default {
     }
   },
   created() {
+    if (this.routerTPL === "sg1") {
+      sendUmeng(46);
+    } else {
+      sendUmeng(47);
+    }
     this.initHeaderSetting = this.headerSetting;
 
     // 判斷分項維護優先度最高
@@ -1771,6 +1780,11 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
+      if (this.routerTPL === "sg1") {
+        sendUmeng(49);
+      } else {
+        sendUmeng(50);
+      }
       // 代客充值
       if (
         this.curPayInfo.payment_method_id === 20 &&
@@ -1945,8 +1959,8 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
         params: {
-          tUserID: this.memInfo.user.user_id,
-          tUserName: this.memInfo.user.username
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
         }
       })
         .then(res => {
@@ -1974,10 +1988,6 @@ export default {
     // 代客充值
     goToValetDeposit() {
       this.closePopup();
-      // let isPWA =
-      //   getCookie("platform") === "G" ||
-      //   window.location.host === "yaboxxxapp01.com";
-
       // let newWindow = "";
       // if (isPWA) {
       //   newWindow = window.open("", "", "_blank", true);
@@ -2140,6 +2150,14 @@ export default {
       if (type) {
         this.getPayOffer(this.moneyValue);
       }
+    },
+    onClickService(){
+      if (this.routerTPL === "sg1") {
+        sendUmeng(50);
+      } else {
+        sendUmeng(51);
+      }
+      this.$router.push('/mobile/service')
     }
   }
 };

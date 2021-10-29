@@ -3,7 +3,6 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import joinMemInfo from "@/config/joinMemInfo";
 
@@ -319,15 +318,11 @@ export default {
         this.isGetCaptcha = false;
       }, 800);
 
-      bbosRequest({
+      goLangApiRequest({
         method: "post",
-        url: this.siteConfig.BBOS_DOMIAN + "/Captcha",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`,
         params: {
-          lang: "zh-cn",
-          format: "png"
+          lang: "zh-cn"
         }
       }).then(res => {
         if (res.data && res.data.data) {

@@ -53,11 +53,11 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
 import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -125,7 +125,9 @@ export default {
           name:
             this.routerTPL === "porn1"
               ? "S_ABOUT_YABOLIVE"
-              : "S_ABOUT_AOBOLIVE",
+              : this.routerTPL === "aobo1" && this.routerTPL !== "porn1"
+              ? "S_ABOUT_AOBOLIVE"
+              : "S_ABOUT_SPLIVE",
           path: "/mobile/mcenter/about",
           pageName: "about",
           image: "about",
@@ -285,6 +287,30 @@ export default {
         }
 
         return;
+      }
+
+      switch (item.pageName) {
+        case "help":
+          sendUmeng(32);
+          break;
+        case "about":
+          sendUmeng(33);
+          break;
+        case "mypromotion":
+          sendUmeng(34);
+          break;
+        case "leaderboard":
+          sendUmeng(35);
+          break;
+        case "share":
+          if (this.routerTPL === "sg1") {
+            sendUmeng(35);
+          } else {
+            sendUmeng(36);
+          }
+          break;
+        default:
+          break;
       }
 
       if (item.pageName === "mypromotion") {

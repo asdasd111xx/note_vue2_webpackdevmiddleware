@@ -2,6 +2,7 @@ import gameData from "@/config/games";
 import i18n from "@/config/i18n";
 
 export default {
+  version: "",
   // 判斷極速版、pwa、webclip
   isPwa:
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -436,9 +437,7 @@ export default {
   //     各網站設定檔
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   siteConfig: {},
-  // 是否Loading
   isLoading: false,
-  // 會員中心-個人資料-手機/姓名/信箱 綁定成功訊息
   mcenterBindMessage: {},
   yaboConfig: {},
   globalMessage: "",
@@ -454,11 +453,10 @@ export default {
   swagConfig: {},
   swagBalance: {},
   showRedEnvelope: false,
-  // 檢查 withdraw account
   withdrawCheckStatus: {
     bank: true,
     account: true
   },
   domainConfig: {},
-  systemConfig:{}
+  systemConfig: {}
 };

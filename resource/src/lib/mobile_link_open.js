@@ -1,6 +1,7 @@
 import * as moment from "moment-timezone";
 
 import axios from "axios";
+import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import i18n from "@/config/i18n";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
@@ -14,6 +15,7 @@ export default target => {
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
+  localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
     console.log(target);
@@ -158,7 +160,17 @@ export default target => {
         if (store.state.loginStatus) {
           return;
         }
-        router.push("/mobile/joinmember");
+        if (getCookie("platform") === "h") {
+          store.dispatch("actionGetLayeredURL").then(res => {
+            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+              router.push(`/mobile/joinmember`);
+            } else {
+              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+            }
+          });
+        } else {
+          router.push(`/mobile/joinmember`);
+        }
         return;
 
       case "promotion":

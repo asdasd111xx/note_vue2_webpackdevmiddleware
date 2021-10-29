@@ -299,7 +299,6 @@ $fixed_spacing_height: 43px;
   flex: 1;
   height: 43px;
   line-height: 43px;
-  font-weight: 400;
   font-size: 14px;
   text-align: center;
   color: #000000;
@@ -383,8 +382,9 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e53266;
-  background-color: #ededed;
+  color: #222222;
+  background: #ffefdd;
+  border-radius: 32px;
   &.right {
     right: 14px;
   }

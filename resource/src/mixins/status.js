@@ -20,7 +20,7 @@ export default {
       if (res && res.site) {
         this.domain = res;
 
-        if (["sg1", "ey1", "aobo1"].includes(res.site)) {
+        if (["sg1", "ey1", "aobo1", "sp1"].includes(res.site)) {
           this.themeTPL = res.site;
         } else {
           this.themeTPL = "porn1";
@@ -36,23 +36,7 @@ export default {
   },
   methods: {
     linkToService() {
-      let on_service_url =
-        store &&
-        store.state &&
-        store.state.mobileInfo &&
-        store.state.mobileInfo.service &&
-        store.state.mobileInfo.service.url;
-      localStorage.setItem("service-url", on_service_url || "");
-
-      if (this.domain.site === "ey1") {
-        window.location.href = `/static/upup/ey1/index.html?username=${this.username}`;
-      } else if (this.domain.site === "sg1") {
-        window.location.href = `/static/upup/sg1/index.html?username=${this.username}`;
-      } else {
-        // if (this.domain.site === "porn1")
-        window.location.href = `/static/upup/index.html?username=${this.username}`;
-      }
-      window.location.title = "在线客服";
+      window.location.href = "/custom/service";
     }
   }
 };

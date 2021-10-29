@@ -18,6 +18,7 @@
       :header-config="headerConfig"
       :update-search-status="updateSearchStatus"
       :has-unread-message="hasUnreadMessage"
+      :unread-message-count="UnreadMessageCount"
       :has-app-tips="showApptips"
     />
     <slot name="content" />
@@ -56,6 +57,7 @@ export default {
   data() {
     return {
       hasUnreadMessage: false,
+      UnreadMessageCount: 0,
       showApptips: false
     };
   },
@@ -64,10 +66,15 @@ export default {
     toogleAppTips(toogle) {
       this.showApptips = toogle;
 
+      let mobileWrap = document.querySelector("#mobile-wrap"),
+        homeTopBg = document.querySelector("#home-top-bg");
+
       if (toogle) {
-        document.querySelector("#mobile-wrap").style = "overflow: hidden";
+        mobileWrap ? (mobileWrap.style = "overflow: hidden") : "";
+        homeTopBg ? (homeTopBg.style = "top: 60px") : "";
       } else {
-        document.querySelector("#mobile-wrap").style = "";
+        mobileWrap ? (mobileWrap.style = "") : "";
+        homeTopBg ? (homeTopBg.style = "") : "";
       }
     }
   },
@@ -105,6 +112,13 @@ export default {
                   this.hasUnreadMessage = true;
                 }
               });
+              //取得未讀數量
+              const unreadList = ret.filter(i => {
+                return i.read === false;
+              });
+              if (unreadList) {
+                this.UnreadMessageCount = unreadList.length;
+              }
             }
 
             if (data && data.msg && data.code) {

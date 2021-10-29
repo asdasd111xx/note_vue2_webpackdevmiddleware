@@ -92,7 +92,7 @@
           "
         >
           <div :class="$style['single-bonus-image']">
-            <img :src="item.imgSrc" />
+            <img :src="item.image_url" />
           </div>
           <div :class="$style['single-bonus-content']">
             <div>
@@ -214,8 +214,7 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      loginStatus: "getLoginStatus",
-      BBOSDomain: "getBBOSDomain"
+      loginStatus: "getLoginStatus"
     })
   },
   methods: {
@@ -241,12 +240,8 @@ export default {
 
       if (this.jackpotData.jpMinor.length > 0) {
         this.currentBonus = [];
-        this.jackpotData.jpMinor.forEach(i => {
-          this.currentBonus.push({
-            ...i,
-            imgSrc: `${this.BBOSDomain}/elibom/gameIcon/${this.$route.name}/Game_${i.code}.png`
-          });
-        });
+        this.currentBonus = this.jackpotData.jpMinor;
+
         this.swiperOpts = {
           // loopFillGroupWithBlank: true,
           loop: this.jackpotData.jpMinor.length > 1,
@@ -259,10 +254,7 @@ export default {
         this.updateKey = 1;
       } else {
         this.currentBonus = [];
-        this.currentBonus.push({
-          ...this.jackpotData.jpMinor[0],
-          imgSrc: imgSrc
-        });
+        this.currentBonus = this.jackpotData.jpMinor[0];
       }
     },
     setCurrentUsers() {

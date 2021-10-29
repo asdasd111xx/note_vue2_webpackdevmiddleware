@@ -69,6 +69,7 @@
 import { mapGetters, mapActions } from "vuex";
 import popup from "./popup/popup";
 import { VTextMarquee } from "vue-text-marquee";
+import { sendUmeng } from "@/lib/sendUmeng";
 // https://github.com/satrong/vue-text-marquee
 export default {
   components: {
@@ -110,6 +111,9 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     themeTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
+    routerTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
     // 完整的跑馬燈資料
@@ -192,6 +196,16 @@ export default {
       }
     },
     handleClick() {
+      // console.log(this.$route.name);
+      if (this.$route.name === "home") {
+        sendUmeng(4);
+      } else if (this.$route.name === "mcenter-deposit") {
+        if (this.routerTPL === "sg1") {
+          sendUmeng(48);
+        } else {
+          sendUmeng(49);
+        }
+      }
       this.isFirstShow = false;
       this.togglePopup();
     }

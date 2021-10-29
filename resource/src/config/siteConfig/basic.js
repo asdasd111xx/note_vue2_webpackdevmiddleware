@@ -14,8 +14,9 @@ export const basic = {
   IS_MOBILE: true // 是否為PWA站 手機版
 };
 
+// 統一版本號
 export const getVersion = tpl => {
-  let _tpl = version.find(i => i.site === tpl);
+  let _tpl = version.find(i => i.site === "porn1");
   if (_tpl) {
     return _tpl.version;
   }

@@ -60,14 +60,19 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetLCFSystemConfig"]),
+    ...mapActions(["actionSetGlobalMessage"]),
     toogleAppTips(toogle) {
       this.showApptips = toogle;
 
+      let mobileWrap = document.querySelector("#mobile-wrap"),
+        homeTopBg = document.querySelector("#home-top-bg");
+
       if (toogle) {
-        document.querySelector("#mobile-wrap").style = "overflow: hidden";
+        mobileWrap ? (mobileWrap.style = "overflow: hidden") : "";
+        homeTopBg ? (homeTopBg.style = "top: 60px") : "";
       } else {
-        document.querySelector("#mobile-wrap").style = "";
+        mobileWrap ? (mobileWrap.style = "") : "";
+        homeTopBg ? (homeTopBg.style = "") : "";
       }
     }
   },

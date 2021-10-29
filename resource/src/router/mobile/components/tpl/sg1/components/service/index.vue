@@ -3,7 +3,7 @@
     :has-footer="!hasPrev && !fromlanding"
     :class="$style['container']"
   >
-    <div slot="content" :class="$style['content-wrap']">
+    <div v-if="show" slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
@@ -11,7 +11,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding"
+          v-if="!fromlanding && !isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <div v-if="isIos" :class="$style['add-wrap']">
+        <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
           <span>添加桌面客服，随时享受一对一在线解答</span>
           <span :class="$style['add-bottom']" @click="handleAddClick"
             >立即添加</span
@@ -98,7 +98,7 @@
       </div>
 
       <div
-        v-if="isIos"
+        v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
         :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
@@ -175,17 +175,25 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
-import mobileLinkOpen from "@/lib/mobile_link_open";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
+import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 
 export default {
   components: {
     mobileContainer
   },
+  props: {
+    isStatic: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
+      show: false,
+      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
@@ -203,6 +211,27 @@ export default {
     if (this.$route.query.fromlanding !== undefined) {
       this.fromlanding = this.$route.query.fromlanding === "true";
     }
+
+    if (this.isStatic) {
+      this.actionSetWebDomain().then(res => {
+        this.actionGetMobileInfo();
+        let configInfo = {};
+
+        if (res) {
+          configInfo =
+            siteConfigTest[`site_${res.domain}`] ||
+            siteConfigOfficial[`site_${res.domain}`];
+        }
+
+        this.sourceSiteConfig = configInfo;
+        this.template = `${res.site}Service`;
+        if (configInfo) {
+          this.show = true;
+        }
+      });
+    } else {
+      this.show = true;
+    }
   },
   mounted() {
     if (this.loginStatus && !this.fromlanding) {
@@ -212,23 +241,27 @@ export default {
     }
 
     this.divHeight = document.body.offsetHeight - 60;
-
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
-    }).then(res => {
-      if (res && res.data) {
-        this.linkArray = res.data;
-      }
-    });
+    if (!this.isStatic) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/downloadlink`
+      }).then(res => {
+        if (res && res.data) {
+          this.linkArray = res.data;
+        }
+      });
+    }
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig",
+      systemSiteConfig: "getSiteConfig",
       mobileInfo: "getMobileInfo"
     }),
+    siteConfig() {
+      return this.sourceSiteConfig || this.systemSiteConfig;
+    },
     isIos() {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
@@ -242,7 +275,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionSetWebDomain",
+      "actionSetWebInfo",
+      "actionGetMobileInfo"
+    ]),
     handleBack() {
       const { query } = this.$route;
       let redirect = query.redirect;
@@ -360,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #6aaaf5;
+  color: #be9e7f;
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: #000000;
+    background: linear-gradient(to left, #fe593c, #e61938);
     border-radius: 36px;
     padding: 3px 12px;
   }

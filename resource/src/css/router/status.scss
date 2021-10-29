@@ -35,6 +35,10 @@ body {
   &.sg1 {
     background-image: url("/static/image/sg1/status/maintainbg.png");
   }
+
+  &.sp1 {
+    background-image: url("/static/image/sp1/common/bg.png");
+  }
 }
 
 .logo-header {
@@ -70,10 +74,14 @@ body {
       margin: 10px auto;
     }
   }
+
+  &.sp1 {
+    color: #5e626d;
+  }
 }
 
 .desc {
-  width: 80%;
+  width: 85%;
   line-height: 19px;
   font-size: 12px;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
@@ -92,6 +100,7 @@ body {
 }
 
 .mail-link {
+  display: block;
   color: #6aaaf5;
   border: none;
   outline: none;
@@ -114,10 +123,6 @@ body {
 
   position: absolute;
   bottom: 2.5%;
-
-  &.sg1 {
-    bottom: 25%;
-  }
 
   > span {
     color: #6aaaf5;

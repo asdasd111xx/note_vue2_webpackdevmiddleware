@@ -167,7 +167,6 @@ import EST from "@/lib/EST";
 import gameRecord from "@/components/common/mcenter/gameRecord";
 import table1st from "./table1st";
 import table2nd from "./table2nd";
-import bbosRequest from "@/api/bbosRequest";
 import axios from "axios";
 
 export default {

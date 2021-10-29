@@ -46,12 +46,8 @@ export const actionSetWebview = ({ commit }) => {
 
 // 設定後台資料
 export const actionSetWebInfo = ({ state, commit, dispatch }, domain) => {
-  let platform = "";
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams && urlParams.get("platform")) {
-    platform = urlParams.get("platform");
-  }
-  Vue.cookie.set("platform", platform);
+  // PWA/H5 平台
+  if (Vue.cookie.get("platform") !== "pwa") Vue.cookie.set("platform", "h");
 
   // cache 10分鐘
   const timestamp = Math.floor(Date.parse(new Date()) / 600000);
@@ -584,6 +580,16 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
   commit(types.SETENV, "mem");
 
   return (async () => {
+    await axios({
+      method: "get",
+      url: "/getcid"
+    })
+      .then(res => {
+        // if (getCookie("cid") != res.data.cid) {
+        //   setCookie("cidd", res.data.cid);
+        // }
+      })
+      .catch(res => {});
     // dispatch("actionSetSystemTime");
     // 暫時移除
     // dispatch('actionSetAppDownloadInfo');
@@ -614,8 +620,8 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       dispatch("actionSetRechargeConfig");
     }
     dispatch("actionSetSystemDomain");
-    dispatch("actionSetBBOSDomain");
     dispatch("actionSetDomainConfigV2");
+    dispatch("actionSetVersion");
 
     // dispatch("actionSetPost");
 
@@ -688,7 +694,7 @@ export const actionSetUserdata = (
     memstatus = true;
   }, 1000);
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (hasLogin) {
     axios({
       method: "get",
@@ -867,6 +873,17 @@ export const actionSetUserdata = (
     }
   });
 };
+
+export const actionSetVersion = ({ commit, state }) => {
+  let platform = Vue.cookie.get("platform")
+    ? String(Vue.cookie.get("platform"))
+        .toUpperCase()
+        .charAt(0)
+    : "H";
+  let version = `${state.siteConfig.VERSION} ${platform}`;
+  commit(types.SETVERSION, version);
+};
+
 // 會員端-設定登入狀態
 export const actionIsLogin = ({ commit }, isLogin) => {
   // GA流量統計
@@ -1290,11 +1307,10 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
-  // const status = Vue.cookie.get("newsite") ? "New" : "";
-  const status = "";
+  document.title = configInfo.SITE_NAME;
   let manifest = document.createElement("link");
   manifest.rel = "manifest";
-  manifest.href = `/static/tpl/analytics/${state.webDomain.domain}/manifest.json`;
+  manifest.href = `/static/tpl/analytics/${state.webDomain.site}/manifest.json`;
   manifest.setAttribute("data-name", "manifest");
 
   if (!document.querySelector('script[data-name="manifest"]')) {
@@ -1418,9 +1434,10 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   let domain = new Promise(resolve => {
     goLangApiRequest({
       method: "get",
-      url:
-        configInfo.YABO_GOLANG_API_DOMAIN +
-        "/xbb/Domain/Hostnames/V2?lang=zh-cn",
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/Hostnames/V2",
+      headers: {
+        ...reqHeaders
+      },
       params: {
         // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
         clientType: 6
@@ -1435,36 +1452,19 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   });
 
   let agentCode = new Promise(resolve => {
-    // bbosRequest({
-    //   method: "get",
-    //   url: configInfo.BBOS_DOMIAN + "/Player/Promotion",
-    //   reqHeaders: {
-    //     Vendor: state.memInfo.user.domain,
-    //     ...reqHeaders
-    //   },
-    //   params: {
-    //     lang: "zh-cn",
-    //     clientType: 6
-    //   }
-    // }).then(res => {
-    //   if (res && res.data && res.data.url) {
-    //     commit(types.SET_PROMOTION_LINK, res.data.url);
-    //     return resolve(res.data.code);
-    //   } else {
-    //     return resolve("");
-    //   }
-    // });
-
     goLangApiRequest({
       method: "get",
-      url:
-        configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion?lang=zh-cn",
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Player/Promotion",
+      headers: {
+        ...reqHeaders
+      },
       params: {
         // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
         clientType: 3
       }
     }).then(res => {
       if (res && res.data) {
+        // 縮網址推廣連結
         commit(types.SET_PROMOTION_LINK, res.data.url);
         return resolve(res.data.code);
       } else {
@@ -1488,15 +1488,6 @@ export const actionSetYaboConfig = ({ state, dispatch, commit }, next) => {
       siteConfigOfficial[`site_${state.webDomain.domain}`] ||
       siteConfigOfficial.preset;
   }
-  // return yaboRequest({
-  //   method: 'get',
-  //   url: configInfo.YABO_API_DOMAIN + '/system/switch',
-  // }).then((res) => {
-  //   console.log("api switch test");
-  //   if (res && res.data) {
-  //     commit(types.SET_YABOCONFIG, res.data);
-  //   }
-  // });
 
   return goLangApiRequest({
     method: "get",
@@ -1525,7 +1516,7 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
     return Promise.resolve(null);
   }
 
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return Promise.resolve(null);
   }
@@ -1542,7 +1533,7 @@ export const actionSetRechargeConfig = ({ commit, state }, data) => {
 };
 
 export const actionSetRechargeBonusConfig = ({ commit }, data) => {
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin) {
     return;
   }
@@ -1771,7 +1762,7 @@ export const actionSetUserLevels = ({ commit, dispatch }) => {
 };
 
 export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
-  const hasLogin = Vue.cookie.get("cid");
+  const hasLogin = getCookie("cid");
   if (!hasLogin || window.CHECKV3PLAYERSTATUS) {
     return;
   }
@@ -1931,43 +1922,6 @@ export const actionVerificationFormData = (
   return val;
 };
 
-export const actionSetBBOSDomain = ({ commit, state }, data) => {
-  let configInfo;
-
-  if (state.webDomain) {
-    configInfo =
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial.preset;
-  }
-
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Domain/List",
-    reqHeaders: {
-      Vendor: state.webDomain.domain
-    },
-    params: {
-      lang: "zh-tw"
-    }
-  }).then(res => {
-    if (res && res.data) {
-      let length = res.data.length;
-      let result = "";
-      if (length > 0) {
-        let domainList = res.data.filter(
-          i => !i.replace("https://").includes(":")
-        );
-        result = domainList[Math.floor(Math.random() * domainList.length)];
-        commit(types.SET_BBOSDOMAIN, result);
-      } else {
-        commit(types.SET_BBOSDOMAIN, res.data[0]);
-      }
-    }
-  });
-};
-
 export const actionSetSystemDomain = ({ commit, state }, data) => {
   let configInfo;
 
@@ -1985,7 +1939,13 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   const getV2Token = uri => {
     let bodyFormData = new FormData();
-    bodyFormData.append("spaceId", configInfo.PORN_CONFIG.ID.SPACE);
+    let spaceID =
+      (configInfo.PORN_CONFIG &&
+        configInfo.PORN_CONFIG.ID &&
+        configInfo.PORN_CONFIG.ID.SPACE) ||
+      "";
+
+    bodyFormData.append("spaceId", spaceID);
     bodyFormData.append(
       "secretKey",
       "4dqDdQMC@Kab7bNs%Hs+kZB5F?t#zmzftbgk4PUzN+6@hb8GC?qK?k$AyhYNSXf2"
@@ -2097,7 +2057,7 @@ export const actionSetWebDomain = ({ commit }) => {
         "background: #222; color: yellow; font-size:14px",
         {
           ...res.data,
-          version: version.find(i => i.site === res.data.site).version
+          version: version.find(i => i.site === "porn1").version
         }
       );
       const site = (res && res.data && String(res.data.site)) || "";
@@ -2109,6 +2069,7 @@ export const actionSetWebDomain = ({ commit }) => {
       result["site"] = site;
       result["domain"] = domain;
       commit(types.SET_WEB_DOMAIN, result);
+      return result;
     })
     .catch(res => {
       console.log("[conf/domain]:", res);
@@ -2118,62 +2079,64 @@ export const actionSetWebDomain = ({ commit }) => {
 
 // SWAG設定
 export const actionSetSwagConfig = ({ commit, state, dispatch }, data) => {
-  let configInfo;
-  if (state.webDomain) {
-    configInfo =
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial.preset;
-  }
+  return;
 
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
-    reqHeaders: {
-      Vendor: state.webDomain.domain
-    },
-    params: {
-      lang: "zh-cn"
-    }
-  }).then(res => {
-    if (res.errorCode !== "00" || res.status !== "000") {
-      return res;
-    }
-    commit(types.SET_SWAG_CONFIG, res.data);
-  });
+  // let configInfo;
+  // if (state.webDomain) {
+  //   configInfo =
+  //     siteConfigTest[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial.preset;
+  // }
+
+  // return bbosRequest({
+  //   method: "get",
+  //   url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Domain/Config",
+  //   reqHeaders: {
+  //     Vendor: state.webDomain.domain
+  //   },
+  //   params: {
+  //     lang: "zh-cn"
+  //   }
+  // }).then(res => {
+  //   if (res.errorCode !== "00" || res.status !== "000") {
+  //     return res;
+  //   }
+  //   commit(types.SET_SWAG_CONFIG, res.data);
+  // });
 };
 
 export const actionSetSwagBalance = ({ commit, state }, data) => {
   return;
 
-  const hasLogin = Vue.cookie.get("cid");
-  if (!hasLogin) {
-    return;
-  }
+  // const hasLogin = getCookie("cid");
+  // if (!hasLogin) {
+  //   return;
+  // }
 
-  let configInfo = {};
-  if (state.webDomain) {
-    configInfo =
-      siteConfigTest[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-      siteConfigOfficial.preset;
-  }
+  // let configInfo = {};
+  // if (state.webDomain) {
+  //   configInfo =
+  //     siteConfigTest[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+  //     siteConfigOfficial.preset;
+  // }
 
-  return bbosRequest({
-    method: "get",
-    url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
-    reqHeaders: {
-      Vendor: state.webDomain.domain
-    },
-    params: {
-      lang: "zh-cn"
-    }
-  }).then(res => {
-    if (res.errorCode !== "00" || res.status !== "000") {
-      return;
-    }
-    commit(types.SET_SWAG_BALANCE, res.data);
-  });
+  // return bbosRequest({
+  //   method: "get",
+  //   url: configInfo.BBOS_DOMIAN + "/Ext/Swag/Vendor/Quota",
+  //   reqHeaders: {
+  //     Vendor: state.webDomain.domain
+  //   },
+  //   params: {
+  //     lang: "zh-cn"
+  //   }
+  // }).then(res => {
+  //   if (res.errorCode !== "00" || res.status !== "000") {
+  //     return;
+  //   }
+  //   commit(types.SET_SWAG_BALANCE, res.data);
+  // });
 };
 
 /**
@@ -2420,6 +2383,10 @@ export const actionGetToManyRequestMsg = ({ state }, response) => {
 
 // 取得廳設定 C02.233
 export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
+  if (!state.loginStatus) {
+    return;
+  }
+
   return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Config/V2`
@@ -2430,41 +2397,35 @@ export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
   });
 };
 
-// 友盟事件
-export const actionSendYM = ({ state }, eventCode) => {
-  let category = "";
-  let action = "";
-  let label = "";
+export const actionGetLayeredURL = ({ state }, eventCode) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostnames/V2`,
+    params: {
+      // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+      clientType: 0,
+      withLevelHostname: true
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
 
-  if (eventCode < 24) {
-    category = "首页";
-  }
-  switch (eventCode) {
-    case 1:
-      action = "进入";
-      break;
-    default:
-      action = "点击";
-  }
-  switch (eventCode) {
-    case 3:
-      label = "登录";
-      break;
-    default:
-      label = "";
-      break;
-  }
-  const { aplus_queue } = window;
-  aplus_queue.push({
-    action: "aplus.record",
-    arguments: [
-      eventCode.toString(),
-      "CLK",
-      { category: category, action: action, label: label }
-    ]
-  });
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg
+        });
+        return Promise.resolve(false);
+      }
+
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg
+      });
+    });
 };
-
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (
   { state, dispatch, commit },

@@ -49,10 +49,6 @@ export default {
     }
   },
   created() {
-    // 版本&平台
-    let platform = this.$route.query.platform || getCookie("platform") || "";
-    setCookie("platform", platform);
-
     // 設置隱藏屬性和改變可見屬性的事件的名稱
     let visibilityChange;
     if (typeof document.hidden !== "undefined") {

@@ -95,20 +95,6 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <template v-if="['porn1', 'sg1'].includes(routerTPL)">
-              <div>
-                {{
-                  `${
-                    currentLevelData.monthly_gift == ""
-                      ? "--"
-                      : formatThousandsCurrency(currentLevelData.monthly_gift) +
-                        "/" +
-                        formatThousandsCurrency(currentLevelData.monthly_gift)
-                  }`
-                }}
-              </div>
-              <div>每月红包</div>
-            </template>
             <template v-if="['aobo1'].includes(routerTPL)">
               <div>
                 {{
@@ -127,16 +113,30 @@
               </div>
             </template>
 
-            <template v-if="['ey1'].includes(themeTPL)">
+            <template v-else-if="['ey1'].includes(themeTPL)">
               <div>
                 {{ formatThousandsCurrency(currentLevelData.weekly_gift) }}
               </div>
               <div>每周红包(周一自动派发)</div>
             </template>
+            <template v-else>
+              <div>
+                {{
+                  `${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : formatThousandsCurrency(currentLevelData.monthly_gift) +
+                        "/" +
+                        formatThousandsCurrency(currentLevelData.monthly_gift)
+                  }`
+                }}
+              </div>
+              <div>每月红包</div>
+            </template>
           </div>
 
           <div
-            v-if="['porn1', 'sg1'].includes(routerTPL)"
+            v-if="!['aobo1', 'ey1'].includes(routerTPL)"
             :class="$style['special-cell']"
           >
             (第1、3个周四派发奖金)

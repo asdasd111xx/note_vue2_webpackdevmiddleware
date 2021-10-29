@@ -128,7 +128,6 @@ export default {
       loginStatus: "getLoginStatus",
       curLang: "getCurLang",
       siteConfig: "getSiteConfig",
-      BBOSDomain: "getBBOSDomain",
       withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     themeTPL() {
@@ -191,35 +190,6 @@ export default {
      * @returns {object} 圖片路徑
      */
     getImg() {
-      const imgConverter = {
-        3: "casino",
-        5: "card",
-        6: "mahjong"
-      };
-      // cdn 機制
-      // let resultUrl = this.$getCdnPath(`${this.cdnDomain}/image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`);
-
-      // cdn 未完善先調整至同APP
-      //  let resultUrl = `/static/cdn-image/${imgConverter[this.gameInfo.kind]}/${this.gameInfo.vendor}/Game_${this.gameInfo.code}.png`;
-
-      let type = "";
-      switch (Number(this.gameInfo.kind)) {
-        case 3:
-          type = "casino";
-          break;
-        case 6:
-          type = "mahjong";
-          break;
-        default:
-          type = "card";
-          break;
-      }
-      let resultUrl = `${this.BBOSDomain}/elibom/gameIcon/${type}/Game_${this.gameInfo.code}.png`;
-
-      if (!this.gameInfo.code && this.gameInfo.status > 1) {
-        resultUrl = this.$getCdnPath("/static/image/casino/event_icon.png");
-      }
-
       const ey1_default_img = "/static/image/ey1/default/bg_gamecard_d.png";
 
       return {

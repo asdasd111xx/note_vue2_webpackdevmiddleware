@@ -307,7 +307,6 @@
 <script>
 import { mapGetters } from "vuex";
 import friendsStatistics from "@/mixins/mcenter/management/friendsStatistics";
-import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { API_COMMISSION_SUMMARY } from "@/config/api";
 import ajax from "@/lib/ajax";
@@ -577,7 +576,13 @@ export default {
       const { name, url } = item;
       // console.log(url);
       localStorage.setItem("iframe-third-url-title", name) || "";
-      localStorage.setItem("iframe-third-url", url) || "";
+      let thirdUrl = "";
+      if (!url.includes("http")) {
+        thirdUrl = `https://${url}`;
+      } else {
+        thirdUrl = url;
+      }
+      localStorage.setItem("iframe-third-url", thirdUrl) || "";
 
       this.$router.push(`/mobile/iframe/tcenterLobby?func=false&title=${name}`);
     }

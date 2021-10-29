@@ -10,6 +10,7 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
+import { sendUmeng } from "@/lib/sendUmeng";
 import swag from "@/mixins/mcenter/swag/swag";
 
 export default {
@@ -35,9 +36,10 @@ export default {
       isLoading: false,
       isCheckWithdraw: false,
       RedEnvelopeTouchType: true,
+      showRedirectJump: false,
       mcenterList: [
         { name: "deposit", text: "充值", path: "deposit" },
-        { name: "myWallet", text: "钱包", path: "wallet?redirect=home" },
+        { name: "myWallet", text: "钱包", path: "wallet" },
         { name: "withdraw", text: "提现", path: "withdraw" },
         { name: "creditTrans", text: "转让", path: "creditTrans" },
         { name: "grade", text: "等级", path: "accountVip" }
@@ -102,7 +104,6 @@ export default {
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      hasBank: "getHasBank",
       membalance: "getMemBalance",
       yaboConfig: "getYaboConfig",
       noticeData: "getNoticeData",
@@ -208,51 +209,59 @@ export default {
     },
     vipLevel() {
       return this.currentLevel <= 10 ? this.currentLevel : "max";
+    },
+    siteName() {
+      return this.siteConfig.SITE_NAME;
     }
   },
   created() {
-    localStorage.removeItem("is-open-game");
-    localStorage.removeItem("iframe-third-url");
-    localStorage.removeItem("enable-swag");
-
-    // 先顯示彈跳公告關閉後再顯示一般公告
-    // 顯示過公告 localStorage.getItem('is-shown-announcement')
-    // 不在提示 localStorage.getItem('do-not-show-home-post')
-    if (this.loginStatus) {
-      localStorage.setItem("is-shown-announcement", true);
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/popup-announcement"
-      }).then(res => {
-        if (res.data) {
-          if (res.data.ret && res.data.ret.length > 0) {
-            // 顯示彈跳公告
-            this.sitePostList = res.data.ret;
-            this.isShowPop = true;
-          } else {
-            // 顯示一般公吿
-            this.closePop(true);
-          }
-        }
-      });
+    sendUmeng(1);
+    if (localStorage.getItem("redirect_url")) {
+      this.showRedirectJump = true;
     } else {
-      // 顯示一般公吿
-      // 登入前公告
-      this.closePop(true);
-    }
+      localStorage.removeItem("is-open-game");
+      localStorage.removeItem("iframe-third-url");
+      localStorage.removeItem("enable-swag");
 
-    this.showPromotion = this.loginStatus
-      ? this.memInfo.user.show_promotion
-      : true;
-    this.getMaintainList();
-    if (
-      this.siteConfig.ROUTER_TPL === "porn1" ||
-      this.siteConfig.ROUTER_TPL === "sg1" ||
-      this.siteConfig.ROUTER_TPL === "aobo1"
-    ) {
-      // this.initSWAGConfig(true);
+      // 先顯示彈跳公告關閉後再顯示一般公告
+      // 顯示過公告 localStorage.getItem('is-shown-announcement')
+      // 不在提示 localStorage.getItem('do-not-show-home-post')
       if (this.loginStatus) {
-        this.getTaskCheck();
+        localStorage.setItem("is-shown-announcement", true);
+        axios({
+          method: "get",
+          url: "/api/v1/c/player/popup-announcement"
+        }).then(res => {
+          if (res.data) {
+            if (res.data.ret && res.data.ret.length > 0) {
+              // 顯示彈跳公告
+              this.sitePostList = res.data.ret;
+              this.isShowPop = true;
+            } else {
+              // 顯示一般公吿
+              this.closePop(true);
+            }
+          }
+        });
+      } else {
+        // 顯示一般公吿
+        // 登入前公告
+        this.closePop(true);
+      }
+
+      this.showPromotion = this.loginStatus
+        ? this.memInfo.user.show_promotion
+        : true;
+      this.getMaintainList();
+      if (
+        this.siteConfig.ROUTER_TPL === "porn1" ||
+        this.siteConfig.ROUTER_TPL === "sg1" ||
+        this.siteConfig.ROUTER_TPL === "aobo1"
+      ) {
+        // this.initSWAGConfig(true);
+        if (this.loginStatus) {
+          this.getTaskCheck();
+        }
       }
     }
   },
@@ -552,7 +561,6 @@ export default {
       if (index === this.selectedIndex) {
         return;
       }
-
       let offsetTop = 0;
       if (type === "anchor") {
         let anchor = document.querySelectorAll(`div[data-id="${index}"]`);
@@ -563,6 +571,57 @@ export default {
       } else {
         offsetTop = index * 63;
         this.selectedIndex = index;
+      }
+      switch (this.typeList[this.selectedIndex].name) {
+        case "体育":
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(15);
+          } else {
+            sendUmeng(10);
+          }
+          break;
+        case "福利":
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(10);
+          } else {
+            sendUmeng(11);
+          }
+          break;
+        case "真人":
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(16);
+          } else {
+            sendUmeng(12);
+          }
+          break;
+        case "捕鱼":
+          sendUmeng(13);
+          break;
+        case "牛牛":
+          sendUmeng(14);
+          break;
+        case "电子":
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(12);
+          } else {
+            sendUmeng(15);
+          }
+          break;
+        case "棋牌":
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            sendUmeng(11);
+          } else {
+            sendUmeng(16);
+          }
+          break;
+        case "彩票":
+          sendUmeng(17);
+          break;
+        case "代理":
+          sendUmeng(18);
+          break;
+        default:
+          break;
       }
 
       this.isSliding = true;
@@ -603,9 +662,9 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
-
       switch (path) {
         case "deposit":
+          sendUmeng(5);
           this.$router.push(`/mobile/mcenter/deposit`);
           //   0706 統一RD5判斷銀行卡
           // yaboRequest({
@@ -626,6 +685,7 @@ export default {
           return;
 
         case "creditTrans":
+          sendUmeng(8);
           this.actionGetMemInfoV3().then(() => {
             this.actionGetRechargeStatus("home");
           });
@@ -642,6 +702,7 @@ export default {
         // 如之後點擊轉帳時需檢查 withdrawcheck，使用 lib_useLocalWithdrawCheck(path , routerPush)
 
         case "withdraw":
+          sendUmeng(7);
           const routerPush = "/mobile/mcenter/withdraw";
 
           if (this.siteConfig.ROUTER_TPL === "ey1") {
@@ -656,6 +717,14 @@ export default {
           this.$router.push("/mobile/mcenter/tcenterLobby");
           return;
 
+        case "wallet":
+          sendUmeng(6);
+          this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
+          return;
+        case "accountVip":
+          sendUmeng(9);
+          this.$router.push(`/mobile/mcenter/accountVip`);
+          return;
         default:
           this.$router.push(`/mobile/mcenter/${path}`);
           return;
@@ -668,6 +737,94 @@ export default {
       }
 
       localStorage.setItem("iframe-third-url-title", game.name);
+
+      if (this.routerTPL === "sg1") {
+        switch (game.vendor) {
+          //丝瓜直播
+          case "sigua_ly":
+            sendUmeng(55);
+            break;
+          // 丝瓜;
+          case "LF":
+            sendUmeng(56);
+            break;
+          // 鸭脖视频;
+          case "YV":
+            sendUmeng(57);
+            break;
+          // 向日葵;
+          case "SF":
+            sendUmeng(58);
+            break;
+          // 小猪视频;
+          case "PIG":
+            sendUmeng(59);
+            break;
+          // 丝瓜小说;
+          case "DZ":
+            sendUmeng(60);
+            break;
+          // 芭乐;
+          case "BALE":
+            sendUmeng(61);
+            break;
+          // 草莓;
+          case "STB":
+            sendUmeng(62);
+            break;
+          // SWAG小说;
+          case "LQ":
+            sendUmeng(63);
+            break;
+          // 鸭脖影视;
+          case "PPV":
+            sendUmeng(64);
+            break;
+        }
+      } else {
+        switch (game.vendor) {
+          //丝瓜直播
+          // case "sigua_ly":
+          //   sendUmeng(55);
+          //   break;
+          // 鸭脖视频;
+          case "YV":
+            sendUmeng(56);
+            break;
+          // 丝瓜;
+          case "LF":
+            sendUmeng(57);
+            break;
+          // 向日葵;
+          case "SF":
+            sendUmeng(58);
+            break;
+          // 丝瓜小说;
+          case "DZ":
+            sendUmeng(59);
+            break;
+          // 小猪视频;
+          case "PIG":
+            sendUmeng(60);
+            break;
+          // 草莓;
+          case "STB":
+            sendUmeng(61);
+            break;
+          // 芭乐;
+          case "BALE":
+            sendUmeng(62);
+            break;
+          // SWAG小说;
+          case "LQ":
+            sendUmeng(63);
+            break;
+          // 鸭脖影视;
+          case "PPV":
+            sendUmeng(64);
+            break;
+        }
+      }
 
       switch (game.type) {
         case "strong_activity":
@@ -986,6 +1143,11 @@ export default {
             return;
           }
           return;
+        case "external":
+          console.log("外開？");
+          let newWindow = "";
+          newWindow = window.open(`${game.memo}`, "_blank");
+          return;
         // 開啟遊戲
         case "game":
         default:
@@ -1166,6 +1328,22 @@ export default {
         if (res.errorCode === "00" && res.status === "000") {
         }
       });
+    },
+    closeRedirect_url() {
+      if (localStorage.getItem("redirect_url").includes("http")) {
+        // window.location.replace(localStorage.getItem("redirect_url"));
+        // window.location.replace(window.location.href);
+        window.location.href = localStorage.getItem("redirect_url");
+        // setTimeout(() => {
+        //   window.location.replace(window.location.href);
+        // }, 1000);
+      } else {
+        window.location.href = `https://${localStorage.getItem(
+          "redirect_url"
+        )}`;
+      }
+
+      localStorage.removeItem("redirect_url");
     }
   }
 };
