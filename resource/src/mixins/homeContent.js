@@ -38,11 +38,12 @@ export default {
       RedEnvelopeTouchType: true,
       showRedirectJump: false,
       mcenterList: [
-        { name: "deposit", text: "充值", path: "deposit" },
+        // { name: "deposit", text: "充值", path: "deposit" },
         { name: "myWallet", text: "钱包", path: "wallet" },
         { name: "withdraw", text: "提现", path: "withdraw" },
         { name: "creditTrans", text: "转让", path: "creditTrans" },
-        { name: "grade", text: "等级", path: "accountVip" }
+        { name: "grade", text: "等级", path: "accountVip" },
+        { name: "promotion", text: "优惠", path: "promotion" }
       ],
       mcenterEy1List: [
         { name: "deposit", text: "充值", path: "deposit" },
@@ -716,7 +717,9 @@ export default {
         case "tcenterLobby":
           this.$router.push("/mobile/mcenter/tcenterLobby");
           return;
-
+        case "promotion":
+          this.$router.push("/mobile/promotion");
+          return;
         case "wallet":
           sendUmeng(6);
           this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
