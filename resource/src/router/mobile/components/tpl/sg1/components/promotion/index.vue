@@ -382,8 +382,8 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #222222;
-  background: #ffefdd;
+  color: #e53266;
+  background: #ededed;
   border-radius: 32px;
   &.right {
     right: 14px;
