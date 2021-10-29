@@ -198,6 +198,11 @@ export default {
       if (!this.downloadConfigData.show) {
         return;
       }
+      const promotionCode = localStorage.getItem("promotionCode");
+      if (promotionCode && promotionCode != "" && !this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
       sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
