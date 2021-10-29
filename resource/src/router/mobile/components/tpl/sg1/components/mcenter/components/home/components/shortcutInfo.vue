@@ -61,12 +61,12 @@
         :class="$style['sec-1']"
         @click="
           loginStatus
-            ? $router.push('/mobile/live/iframe/shop')
+            ? $router.push('/mobile/mcenter/live/shop')
             : $router.push('/mobile/login')
         "
       >
         <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_mall.png')" />
-        <div @click="$router.push('/mobile/live/iframe/shop')">
+        <div>
           <div>商城</div>
           <!-- <div :class="$style['sub-text']">VIP PRIVILEGE</div> -->
         </div>
