@@ -78,8 +78,7 @@ export default {
       isShowPromotion: false,
       src: "",
       // 舊版推廣賺錢
-      showOldVersion: false,
-      contentTitle: "推广赚钱"
+      showOldVersion: false
     };
   },
   created() {
