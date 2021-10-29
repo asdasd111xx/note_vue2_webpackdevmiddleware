@@ -43,7 +43,7 @@ body {
 
 .logo-header {
   width: 100%;
-  height: 60px;
+  height: 70px;
   text-align: center;
 
   > img {
@@ -55,14 +55,14 @@ body {
   margin-top: 20px;
   width: 100%;
   height: 40px;
-  font-size: 28px;
+  font-size: 30px;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
   color: #b1977f;
 
   &.sg1 {
-    color: #fdbe2d;
+    color: #4e5159;
     p {
       width: 70%;
       background-color: #fff;
@@ -152,6 +152,7 @@ body {
   font-weight: 400;
   text-align: center;
   margin-bottom: 15px;
+  color: #ff7171;
 
   > div:first-child {
     width: 100%;
@@ -164,7 +165,7 @@ body {
   }
 
   span {
-    color: #ff7700;
+    color: #ff7171;
   }
 }
 
