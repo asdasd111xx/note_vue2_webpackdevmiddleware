@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['']">
-      buyDiamond
+      <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
 </template>
@@ -20,7 +20,12 @@ export default {
     mobileContainer
   },
   data() {
-    return {};
+    return {
+      isLoading: true,
+      diamondTotal: {},
+      diamondRemind: {},
+      exchangeRateList: {}
+    };
   },
   computed: {
     ...mapGetters({
@@ -33,15 +38,39 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: "buyDiamond"
+        title: this.$text("S_BUY_DIAMOND")
       };
     }
   },
-  created() {},
+  created() {
+    this.init();
+  },
   mounted() {},
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
-    click() {}
+    ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
+    init() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/diamond-total",
+        method: "get"
+      }).then(data => {
+        this.diamondTotal = data.result;
+      });
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/diamond/remind",
+        method: "get"
+      }).then(data => {
+        this.diamondRemind = data.result;
+      });
+
+      this.actionGetExtRedirect({
+        api_uri: " /api/platform/v1/diamond/exchange-rate",
+        method: "get"
+      }).then(data => {
+        this.isLoading = false;
+        this.exchangeRateList = data.result;
+      });
+    }
   }
 };
 </script>
