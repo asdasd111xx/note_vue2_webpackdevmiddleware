@@ -135,13 +135,10 @@ export default {
 
       if (this.themeTPL === "sg1") {
         return "cs@paocs.co";
-<<<<<<< HEAD
-=======
       }
 
       if (this.themeTPL === "sp1") {
         return "senghout5151@gmail.com";
->>>>>>> feature/1110_paopao
       }
     }
   },

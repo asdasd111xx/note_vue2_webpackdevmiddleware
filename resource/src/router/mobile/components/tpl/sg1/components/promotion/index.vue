@@ -299,10 +299,6 @@ $fixed_spacing_height: 43px;
   flex: 1;
   height: 43px;
   line-height: 43px;
-<<<<<<< HEAD
-  font-weight: 400;
-=======
->>>>>>> feature/1110_paopao
   font-size: 14px;
   text-align: center;
   color: #000000;
@@ -386,14 +382,9 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
-  color: #e53266;
-  background-color: #ededed;
-=======
   color: #222222;
   background: #ffefdd;
   border-radius: 32px;
->>>>>>> feature/1110_paopao
   &.right {
     right: 14px;
   }

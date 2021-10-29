@@ -404,11 +404,7 @@ div.container {
 
   .add-bottom {
     color: #fff;
-<<<<<<< HEAD
-    background: #000000;
-=======
     background: linear-gradient(to left, #fe593c, #e61938);
->>>>>>> feature/1110_paopao
     border-radius: 36px;
     padding: 3px 12px;
   }
