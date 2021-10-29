@@ -2,7 +2,11 @@
   <div :class="['news-container', `${themeTPL}`]">
     <div
       class="news-wrap"
-      :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
+      :class="[
+        `${
+          ['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''
+        }-wrap ,${themeTPL}`
+      ]"
     >
       <div class="news-icon">
         <img
@@ -248,6 +252,9 @@ export default {
 
   &.sg1 {
     color: #b7b7b7;
+    &.notHome {
+      color: #b1b1b1;
+    }
   }
 
   &.notHome {

@@ -300,8 +300,8 @@ export default {
       isShowPromotion: localStorage.getItem("is-show-promotion")
         ? localStorage.getItem("is-show-promotion") === "true"
         : true,
-      centerWallet: 10000,
-      diamond: 1000000000
+      centerWallet: 0,
+      diamond: 0
     };
   },
   computed: {
