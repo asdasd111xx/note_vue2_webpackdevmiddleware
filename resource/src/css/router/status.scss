@@ -46,7 +46,7 @@ body {
   height: 60px;
   text-align: center;
 
-  >img {
+  > img {
     height: 60px;
   }
 }
@@ -59,7 +59,7 @@ body {
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
-  color: #b1977f;
+  color: $main_text_color4;
 
   &.sg1 {
     color: #4e5159;
@@ -84,7 +84,7 @@ body {
     margin-bottom: 0;
   }
 
-  >span {
+  > span {
     color: #6aaaf5;
   }
 }
@@ -114,7 +114,7 @@ body {
   position: absolute;
   bottom: 2.5%;
 
-  >span {
+  > span {
     color: #6aaaf5;
 
     &.sg1 {
@@ -128,7 +128,7 @@ body {
   height: 360px;
   text-align: center;
 
-  >img {
+  > img {
     height: 100%;
   }
 }
@@ -143,13 +143,13 @@ body {
   text-align: center;
   margin-bottom: 15px;
 
-  >div:first-child {
+  > div:first-child {
     width: 100%;
     color: #9ca3bf;
     text-align: center;
   }
 
-  >div:last-child {
+  > div:last-child {
     margin-top: 8px;
   }
 

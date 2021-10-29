@@ -5,8 +5,8 @@ const outputDirName = process.env.CDN_HOST
   ? process.env.CDN_HOST.split("://")[1]
   : "www";
 
-// 鸭博娱乐 500015
-// const domain = "https://yb01.66boxing.com/";
+// 币发BIFA 500015
+const domain = "https://yb01.66boxing.com/";
 // Demo 69
 // const domain = 'https://yb0t.66relish.com/';
 // Prod 67
@@ -30,7 +30,7 @@ const outputDirName = process.env.CDN_HOST
 // const domain = 'https://eyd.66apples.com/';
 
 // 丝瓜 500035
-const domain = "https://sgqa1.yaslbox.com/";
+// const domain = "https://sgqa1.yaslbox.com/";
 // const domain = "https://sgqa1-io.yaslbox.com/";
 // Demo 81
 // const domain = 'https://sgt.66relish.com/';

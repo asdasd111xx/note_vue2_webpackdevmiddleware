@@ -748,7 +748,7 @@ export default {
           case "LF":
             sendUmeng(56);
             break;
-          // 鸭脖视频;
+          // 币发视频;
           case "YV":
             sendUmeng(57);
             break;
@@ -776,7 +776,7 @@ export default {
           case "LQ":
             sendUmeng(63);
             break;
-          // 鸭脖影视;
+          // 币发影视;
           case "PPV":
             sendUmeng(64);
             break;
@@ -787,7 +787,7 @@ export default {
           // case "sigua_ly":
           //   sendUmeng(55);
           //   break;
-          // 鸭脖视频;
+          // 币发视频;
           case "YV":
             sendUmeng(56);
             break;
@@ -819,7 +819,7 @@ export default {
           case "LQ":
             sendUmeng(63);
             break;
-          // 鸭脖影视;
+          // 币发影视;
           case "PPV":
             sendUmeng(64);
             break;

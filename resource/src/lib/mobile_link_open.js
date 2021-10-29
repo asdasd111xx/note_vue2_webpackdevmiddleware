@@ -39,7 +39,7 @@ export default target => {
     case "porn1":
     case "ey1":
     case "sg1":
-      // linkTitle = '鸭博娱乐';
+      // linkTitle = '币发BIFA';
       // linkTitle = '亿元娱乐';
       // linkTitle = '丝瓜直播';
       linkTitle = "优惠活动";

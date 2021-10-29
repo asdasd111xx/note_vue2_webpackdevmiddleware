@@ -126,7 +126,7 @@ export default {
   computed: {
     mailURL() {
       if (this.themeTPL === "porn1") {
-        return "cs2@yaboxxx.net";
+        return "cs@bifa8.co";
       }
 
       if (this.themeTPL === "aobo1") {

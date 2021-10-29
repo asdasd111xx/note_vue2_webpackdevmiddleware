@@ -326,7 +326,7 @@ export default {
 
     > .download-btn {
       align-items: center;
-      background: #b1977f;
+      background: $main_button_color;
       border-radius: 13.5px;
       display: flex;
       height: 27px;
@@ -335,7 +335,7 @@ export default {
       width: 100%;
 
       span {
-        color: #ffffff;
+        color: $main_button_text_color;
         font-size: 12px;
         font-weight: 700;
         text-align: center;
@@ -348,7 +348,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: #b1977f;
+    color: $main_button_color;
     height: 20px;
   }
 

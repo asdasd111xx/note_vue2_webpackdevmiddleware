@@ -700,8 +700,8 @@ div.container {
   padding: 0 5px;
   margin: 0 auto;
   font-size: 8px;
-  color: #fff;
-  background: #be9e7f;
+  color: $main_button_text_color;
+  background: $main_button_color;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
 

@@ -552,7 +552,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: #fb7126;
+    color: #be9e7f;
     margin: 0;
     padding: 0;
 
@@ -832,7 +832,7 @@ export default {
   position: absolute;
   right: 17px;
   top: 0;
-  color: #5e626d;
+  color: $main_title_color1;
 
   > span {
     display: inline-block;
