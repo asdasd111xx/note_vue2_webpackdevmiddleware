@@ -1,11 +1,17 @@
 @import "./porn1.index.scss";
+
 .balance-wrap {
   .balance-total-item {
     .balance-item-money {
       color: #e53266;
     }
   }
+
   .recycle-btn {
-    color: #e53266;
+    color: #000;
+  }
+
+  .credit-trans-link {
+    color: #000;
   }
 }

@@ -19,6 +19,15 @@
     }
   }
 }
+.balance-redjackpot-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background: url("/static/image/sg1/common/ic_event.png") center center / 100%
+    100%;
+}
 
 .balance-transfer-list {
   &::after {
@@ -26,13 +35,16 @@
   }
 }
 
-.balance-item-money {
-  color: #a2a2a2;
+.balance-item-vendor {
+  &.balance-redjackpot-text {
+    color: #414655;
+  }
 }
 
-.balance-redjackpot-text {
-  color: #be9e7f;
-  word-break: break-word;
+.balance-item-money {
+  &.balance-redjackpot-text {
+    color: #e53266;
+  }
 }
 
 .transfer-money-input {
@@ -69,7 +81,7 @@
   }
 
   &.active {
-    background-color: #e61938;
+    background-color: #000;
 
     > span {
       margin: 2px;

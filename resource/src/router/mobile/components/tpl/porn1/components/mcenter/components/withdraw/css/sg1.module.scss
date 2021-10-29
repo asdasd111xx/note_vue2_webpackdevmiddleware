@@ -1,14 +1,36 @@
 @import "./index.module.scss";
 $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
+.balance-redjackpot-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background: url("/static/image/sg1/common/ic_event.png") center center / 100%
+    100%;
+}
+
+.balance-item-vendor {
+  &.balance-redjackpot-text {
+    color: #414655;
+  }
+}
+
+.balance-item-money {
+  &.balance-redjackpot-text {
+    color: #e53266;
+  }
+}
+
 .add-bank-card {
   color: #414655;
 }
 
 .bank-card-cell {
-  >.check-box {
+  > .check-box {
     &.checked {
-      background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
+      background: url("/static/image/sg1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
     }
   }
@@ -27,32 +49,32 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
       background: #a2a2a2;
 
       &.submit {
-        background: $bg_linear_gradient;
+        background: #000;
       }
     }
   }
 }
 
 .withdraw-max {
-  >span {
-    background: $bg_linear_gradient;
+  > span {
+    background: #000;
   }
 }
 
 .submit-btn {
-  >div {
-    background: $bg_linear_gradient;
+  > div {
+    background: #000;
   }
 
   &.disabled {
     div {
-      background: linear-gradient(to left, #fed3cb, #ffc5ce);
+      background: #d2d2d2;
     }
   }
 }
 
 .withdraw-input {
-  >input {
+  > input {
     &::placeholder {
       color: #a2a2a2;
     }
