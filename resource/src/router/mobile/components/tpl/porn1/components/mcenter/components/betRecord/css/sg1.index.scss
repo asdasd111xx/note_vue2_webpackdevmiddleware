@@ -154,9 +154,7 @@
     &.active {
       line-height: 33px;
       color: #fff;
-      background: #e61938;
-      background-image: -webkit-linear-gradient(right, #fe593c, #e61938);
-      background-image: linear-gradient(right, #fe593c, #e61938);
+      background: #000;
       border: none;
     }
 
@@ -231,9 +229,7 @@
 
 .time-confirm {
   color: #ffffff;
-  background: #fe593c;
-  background-image: -webkit-linear-gradient(right, #fe593c, #e61938);
-  background-image: linear-gradient(right, #fe593c, #e61938);
+  background: #000;
 }
 
 .data-wrap {
