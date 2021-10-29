@@ -3,7 +3,11 @@
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
         <div
-          :class="[$style['promotion-gift'], $style['right']]"
+          :class="[
+            $style['promotion-gift'],
+            $style['right'],
+            $style[routerTPL]
+          ]"
           @click="onGiftClick(giftList[0])"
         >
           <span>{{ giftList[0].name }}</span>
@@ -11,7 +15,7 @@
         </div>
 
         <div
-          :class="[$style['promotion-gift'], $style['left']]"
+          :class="[$style['promotion-gift'], $style['left'], $style[routerTPL]]"
           @click="onGiftClick(giftList[1])"
         >
           <span>{{ giftList[1].name }}</span>
@@ -67,9 +71,9 @@ import ajax from "@/lib/ajax";
 import { API_PROMOTION_LIST } from "@/config/api";
 import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
-import bbosRequest from "@/api/bbosRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -87,6 +91,13 @@ export default {
       isShowPop: false
     };
   },
+  created() {
+    if (this.routerTPL === "sg1") {
+      sendUmeng(51);
+    } else {
+      sendUmeng(52);
+    }
+  },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
@@ -100,15 +111,9 @@ export default {
     }
 
     if (this.loginStatus) {
-      bbosRequest({
+      goLangApiRequest({
         method: "get",
-        url: this.siteConfig.BBOS_DOMIAN + "/Ext/Promotion/User/Collect/Count",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
-        params: {
-          // tabId: "",
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/User/Collect/Count`
       }).then(res => {
         if (res && res.data) {
           this.hasNewGift = res.data.count > 0;
@@ -123,6 +128,9 @@ export default {
       siteConfig: "getSiteConfig",
       post: "getPost"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     giftList() {
       return [
         {
@@ -169,6 +177,24 @@ export default {
       });
     },
     onGiftClick(target) {
+      switch (target) {
+        case "审核查询":
+          if (this.routerTPL === "sg1") {
+            sendUmeng(52);
+          } else {
+            sendUmeng(53);
+          }
+          break;
+        case "自领优惠":
+          if (this.routerTPL === "sg1") {
+            sendUmeng(53);
+          } else {
+            sendUmeng(54);
+          }
+          break;
+        default:
+          break;
+      }
       let url = "";
       localStorage.setItem("iframe-third-url-title", target.name);
       this.$router.push(
@@ -400,6 +426,12 @@ $fixed_spacing_height: 43px;
 
   &.left {
     left: 14px;
+  }
+
+  &.sp1 {
+    color: #222222;
+    background: #ffbb00;
+    border-radius: 10px;
   }
 
   > .red-dot {

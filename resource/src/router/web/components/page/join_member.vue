@@ -282,9 +282,13 @@
         page-status="register"
       />
 
-      <div v-else :class="$style['join-btn-wrap']">
+      <div v-else :class="[$style['join-btn-wrap']]">
         <div
-          :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
+          :class="[
+            $style['join-btn'],
+            { [$style.disabled]: isLoading },
+            $style[this.siteConfig.ROUTER_TPL]
+          ]"
           @click="joinSubmit()"
         >
           {{ $text("S_REGISTER", "注册") }}
@@ -334,6 +338,27 @@
       <slot name="bottom-content" />
     </div>
     <page-loading :is-show="isLoading" />
+    <div v-if="showRedirectJump">
+      <div :class="$style['mask']" />
+
+      <div :class="$style['modal-wrap']">
+        <div :class="$style['modal-content']">
+          {{
+            `尊敬的会员您好，${siteConfig.SITE_NAME}为进行线路与安全分流，将为您导至${siteConfig.SITE_NAME}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
+          }}
+        </div>
+
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closeRedirect_url()"
+        >
+          确定
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -342,7 +367,6 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
 import appEvent from "@/lib/appEvent";
-import bbosRequest from "@/api/bbosRequest";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
@@ -378,7 +402,6 @@ export default {
   },
   data() {
     return {
-      version: "",
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
@@ -469,7 +492,9 @@ export default {
         }
       },
       isGetCaptcha: false,
-      isLoading: false
+      isLoading: false,
+      showRedirectJump: false,
+      redirect_url: ""
     };
   },
   computed: {
@@ -477,7 +502,8 @@ export default {
       isWebview: "getIsWebview",
       webInfo: "getWebInfo",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     fieldsData() {
       return this.registerData.filter(
@@ -545,7 +571,6 @@ export default {
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
     const username = {
       key: "username",
       content: {
@@ -1016,111 +1041,86 @@ export default {
       const self = this;
       const platform = getCookie("platform");
 
-      let registFn;
-      if (this.themeTPL === "ey1") {
-        //一般註冊
-        registFn = bbosRequest({
-          method: "post",
-          url: `${this.siteConfig.BBOS_DOMIAN}/Player/Add`,
-          reqHeaders: {
-            Vendor: this.memInfo.user.domain,
-            kind: platform === "H" ? "h" : "pwa"
-          },
-          params: {
-            ...params,
-            host: window.location.host,
-            lang: "zh-cn"
-          },
-          fail: error => {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-            if (error && error.status === 429) {
-              this.actionGetToManyRequestMsg(error).then(res => {
-                this.errMsg = res;
-              });
-              return;
-            }
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
+        headers: {
+          Vendor: this.memInfo.user.domain
+        },
+        params: {
+          ...params,
+          host: window.location.host,
+          deviceId: getCookie("uuidAccount"),
+          lang: "zh-cn"
+        },
+        fail: error => {
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+          if (error && error.status === 429) {
+            this.actionGetToManyRequestMsg(error).then(res => {
+              this.errMsg = res;
+            });
+            return;
           }
-        });
-      } else {
-        //訪客註冊
-        registFn = goLangApiRequest({
-          method: "put",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
-          headers: {
-            Vendor: this.memInfo.user.domain,
-            kind: platform === "H" ? "h" : "pwa"
-          },
-          params: {
-            ...params,
-            host: window.location.host,
-            deviceId: getCookie("uuidAccount"),
-            lang: "zh-cn"
-          },
-          fail: error => {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 1000);
-            if (error && error.status === 429) {
-              this.actionGetToManyRequestMsg(error).then(res => {
-                this.errMsg = res;
-              });
-              return;
-            }
-          }
-        });
-      }
-
-      registFn.then(res => {
+        }
+      }).then(res => {
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-
         let cookieData;
         if (res.data) {
-          cookieData = this.themeTPL === "ey1" ? res.data : res.data.ret;
+          cookieData = res.data.ret;
         }
         if (cookieData && res.data && cookieData.cookie) {
-          try {
-            const { cookie } = res.data;
-            for (const [key, value] of Object.entries(cookie)) {
-              setCookie(key, value);
+          if (
+            cookieData.redirect &&
+            cookieData.redirect_url &&
+            getCookie("platform") === "h"
+          ) {
+            this.redirect_url = cookieData.redirect_url;
+            this.showRedirectJump = true;
+          } else {
+            try {
+              const { cookie } = res.data;
+              for (const [key, value] of Object.entries(cookie)) {
+                setCookie(key, value);
+              }
+            } catch (e) {
+              setCookie("cid", cookieData.cookie.cid);
             }
-          } catch (e) {
-            setCookie("cid", cookieData.cookie.cid);
-          }
-          // GA流量統計
-          window.dataLayer.push({
-            dep: 2,
-            event: "ga_click",
-            eventCategory: "sign_up",
-            eventAction: "sign_up",
-            eventLabel: "sign_up",
-            ga_hall_id: 3820325,
-            ga_domain_id: this.memInfo.user.domain
-          });
-          if (this.isWebview) {
-            appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+            // GA流量統計
+            window.dataLayer.push({
+              dep: 2,
+              event: "ga_click",
+              eventCategory: "sign_up",
+              eventAction: "sign_up",
+              eventLabel: "sign_up",
+              ga_hall_id: 3820325,
+              ga_domain_id: this.memInfo.user.domain
+            });
+            if (this.isWebview) {
+              appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+              return;
+            }
+            self.actionSetUserdata(true);
+            this.actionSetGlobalMessage({
+              msg: "注册成功",
+              cb: () => {
+                if (localStorage.getItem("rememberPwd")) {
+                  localStorage.setItem("username", this.allValue.username);
+                  localStorage.setItem("password", this.allValue.password);
+                } else {
+                  localStorage.removeItem("username");
+                  localStorage.removeItem("password");
+                }
+                window.RESET_LOCAL_SETTING(true);
+                window.RESET_MEM_SETTING();
+              }
+            });
             return;
           }
-          self.actionSetUserdata(true);
-          this.actionSetGlobalMessage({
-            msg: "注册成功",
-            cb: () => {
-              if (localStorage.getItem("rememberPwd")) {
-                localStorage.setItem("username", this.allValue.username);
-                localStorage.setItem("password", this.allValue.password);
-              } else {
-                localStorage.removeItem("username");
-                localStorage.removeItem("password");
-              }
-              window.RESET_LOCAL_SETTING(true);
-              window.RESET_MEM_SETTING();
-            }
-          });
-          return;
         }
         if (captchaInfo && captchaInfo.slideFuc) {
           captchaInfo.slideFuc.reset();
@@ -1210,6 +1210,14 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+
+    closeRedirect_url() {
+      if (this.redirect_url.includes("http")) {
+        window.location.href = this.redirect_url;
+      } else {
+        window.location.href = `https://${this.redirect_url}`;
+      }
     }
   }
 };

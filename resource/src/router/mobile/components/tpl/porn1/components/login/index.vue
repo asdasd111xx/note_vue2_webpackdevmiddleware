@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
-        <div class="login-wrap clearfix">
+        <div :class="['login-wrap', this.siteConfig.ROUTER_TPL]">
           <div class="login-logo">
             <img :src="`/static/image/${routerTPL}/common/logo_b.png`" />
           </div>
@@ -152,7 +152,11 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  class="login-button login-submit"
+                  :class="[
+                    'login-button',
+                    'login-submit',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -162,13 +166,23 @@
               </div>
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
-                <div class="link-button link-join-mem">
-                  <span @click="linktoJoin()">
+                <div
+                  :class="[
+                    'link-button',
+                    'link-join-mem',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
+                >
+                  <span @click="checkLayeredURL">
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
                 <div
-                  class="link-button link-submit"
+                  :class="[
+                    'link-button',
+                    'link-submit',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
                   @click="$router.push('/mobile/service')"
                 >
                   {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
@@ -192,7 +206,7 @@
   </mobile-container>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import loginForm from "@/mixins/loginForm";
 import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/components/thirdyVerification";
@@ -293,11 +307,27 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionGetLayeredURL"]),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+    },
+    checkLayeredURL() {
+      if (getCookie("platform") === "h") {
+        this.actionGetLayeredURL().then(res => {
+          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+            this.linktoJoin();
+          } else {
+            window.location.replace(
+              `https://${res[0]}/mobile/joinmember?login=1`
+            );
+          }
+        });
+      } else {
+        this.linktoJoin();
+      }
     }
   }
 };

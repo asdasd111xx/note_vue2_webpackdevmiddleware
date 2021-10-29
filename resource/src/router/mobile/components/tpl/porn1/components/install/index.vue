@@ -57,7 +57,7 @@ export default {
         this.siteConfig.YABO_GOLANG_API_DOMAIN
       );
 
-      return `/static/tpl/install/index.htm?title=${SITE_NAME}&vendor=${this.memInfo.user.domain}`;
+      return `/static/tpl/install/index.htm?title=${SITE_NAME}&vendor=${this.memInfo.user.domain}&site=${this.siteConfig.ROUTER_TPL}`;
       // return `/static/tpl/install/${ROUTER_TPL}/index.htm?title=${SITE_NAME}&vendor=${this.memInfo.user.domain}`;
     }
   },

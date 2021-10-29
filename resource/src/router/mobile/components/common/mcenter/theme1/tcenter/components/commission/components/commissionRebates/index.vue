@@ -245,7 +245,6 @@
 import Vue from "vue";
 import mcenter from "@/api/mcenter";
 import { format } from "date-fns";
-import bbosRequest from "@/api/bbosRequest";
 import { mapActions, mapGetters } from "vuex";
 import popup from "./components/popup";
 import detail from "./components/detail";
@@ -422,18 +421,18 @@ export default {
 
             // 測試資料
             // this.immediateData = [
-            //     {
-            //         period: "20200421",
-            //         start_at: "2020-04-21T12:00:00+0800",
-            //         end_at: "2020-04-21T07:15:18+0800",
-            //         sub_valid_bet: "14875039.6179",
-            //         sub_profit: "0.00",
-            //         state: 1,
-            //         self_times: 10,
-            //         self_min_limit: "10",
-            //         type: 1,
-            //         amount: "200.00"
-            //     }
+            //   {
+            //     period: "20200421",
+            //     start_at: "2020-04-21T12:00:00+0800",
+            //     end_at: "2020-04-21T07:15:18+0800",
+            //     sub_valid_bet: "14875039.6179",
+            //     sub_profit: "0.00",
+            //     state: 1,
+            //     self_times: 10,
+            //     self_min_limit: "10",
+            //     type: 1,
+            //     amount: "200.00"
+            //   }
             // ];
             return;
           }
@@ -446,18 +445,17 @@ export default {
         });
     },
     handleRebateProcess(type) {
-      bbosRequest({
+      goLangApiRequest({
         method: "put",
-        url: this.siteConfig.BBOS_DOMIAN + "/Wage/SelfDispatch",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/SelfDispatch`,
         params: { lang: "zh-cn", type }
       }).then(response => {
         this.isShowPopup = true;
         this.immediateData = [];
         if (response.status === "000") {
-          this.amountResult = response.data.dispatched_amount;
+          this.amountResult = this.formatThousandsCurrency(
+            response.data.ret.dispatched_amount
+          );
         }
       });
     },

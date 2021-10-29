@@ -465,7 +465,6 @@ import { ModelSelect } from "vue-search-select";
 import ajax from "@/lib/ajax";
 import mcenter from "@/api/mcenter";
 import message from "@/router/mobile/components/common/message";
-import yaboRequest from "@/api/yaboRequest";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
@@ -531,6 +530,11 @@ export default {
     showRedEnvelope() {
       this.needShowRedEnvelope = true;
       this.redEnvelopeData = this.showRedEnvelope;
+    },
+    isShowTransOutSelect() {
+      if (this.isShowTransOutSelect) {
+        this.setTranOutList(true);
+      }
     }
   },
   computed: {

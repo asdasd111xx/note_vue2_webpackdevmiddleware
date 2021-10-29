@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters, mapActions } from "vuex";
 

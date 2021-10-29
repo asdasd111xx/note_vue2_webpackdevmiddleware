@@ -1,29 +1,22 @@
 <template>
   <div class="clearfix">
-    <div
-      v-if="['aobo1'].includes(routerTPL)"
-      :class="$style[`discount-wrap-${routerTPL}`]"
-    >
-      <iframe
-        v-if="src"
-        :src="src"
-        :class="$style[`discount-item-${routerTPL}`]"
-      />
+    <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
+      <div
+        v-for="(item, index) in imgList"
+        :class="$style['discount-item']"
+        :key="`key-${index}`"
+      >
+        <img :src="item" :key="index" />
+      </div>
     </div>
-    <div
-      v-else
-      v-for="(item, index) in imgList"
-      :class="$style['discount-item']"
-      :key="`key-${index}`"
-    >
-      <img :src="item" :key="index" />
+    <div v-else :class="$style[`discount-wrap-embedded`]">
+      <iframe v-if="src" :src="src" :class="$style[`discount-item-embedded`]" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import template1 from "../../../../../../../../../web/components/common/securityCheck/components/template1.vue";
 
@@ -48,19 +41,18 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     routerTPL() {
-      //先用ROUTER_TPL判斷aobo
       return this.siteConfig.ROUTER_TPL;
     }
   },
   mounted() {
-    // yaboRequest({
-    //   method: 'get',
-    //   url: this.siteConfig.YABO_API_DOMAIN + '/System/quotaad',
-    // }).then((res) => {
-    //   this.imgList = res.data;
-    // });
-
-    if (this.routerTPL === "aobo1") {
+    if (["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
+      goLangApiRequest({
+        method: "get",
+        url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
+      }).then(res => {
+        this.imgList = res.data;
+      });
+    } else {
       let target = "quota_transfer";
       goLangApiRequest({
         method: "get",
@@ -81,13 +73,6 @@ export default {
           this.actionSetGlobalMessage({ msg: res.msg });
           return;
         }
-      });
-    } else {
-      goLangApiRequest({
-        method: "get",
-        url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
-      }).then(res => {
-        this.imgList = res.data;
       });
     }
   },

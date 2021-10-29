@@ -329,12 +329,12 @@ import balanceTran from "@/components/mcenter/components/balanceTran";
 import EST from "@/lib/EST";
 import message from "@/router/mobile/components/common/message";
 import Vue from "vue";
-import yaboRequest from "@/api/yaboRequest";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -368,7 +368,6 @@ export default {
       memInfo: "getMemInfo",
       gameData: "getGameData",
       siteConfig: "getSiteConfig",
-      hasBank: "getHasBank",
       rechargeConfig: "getRechargeConfig",
       // swagConfig: "getSwagConfig",
       // swagBalance: "getSwagBalance",
@@ -456,6 +455,12 @@ export default {
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_tranfer.png`,
           imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_tranfer.png`,
           onClick: () => {
+            if (this.routerTPL === "sg1") {
+              sendUmeng(39);
+            } else {
+              sendUmeng(40);
+            }
+
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
@@ -474,6 +479,12 @@ export default {
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
           imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_withdraw.png`,
           onClick: () => {
+            if (this.routerTPL === "sg1") {
+              sendUmeng(40);
+            } else {
+              sendUmeng(41);
+            }
+
             const routerPush = "/mobile/mcenter/withdraw";
 
             if (this.themeTPL === "ey1") {
@@ -492,6 +503,12 @@ export default {
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallet_trans.png`,
           imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallet_trans.png`,
           onClick: () => {
+            if (this.routerTPL === "sg1") {
+              sendUmeng(41);
+            } else {
+              sendUmeng(42);
+            }
+
             this.actionGetMemInfoV3().then(() => {
               this.actionGetRechargeStatus("wallet");
             });
@@ -504,6 +521,12 @@ export default {
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
           imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_manage.png`,
           onClick: () => {
+            if (this.routerTPL === "sg1") {
+              sendUmeng(42);
+            } else {
+              sendUmeng(43);
+            }
+
             const routerPush = "/mobile/mcenter/bankCard";
 
             if (this.themeTPL === "ey1") {
@@ -596,6 +619,11 @@ export default {
       return this.actionSetGlobalMessage({ msg: msg });
     },
     handleDeposit() {
+      if (this.routerTPL === "sg1") {
+        sendUmeng(38);
+      } else {
+        sendUmeng(39);
+      }
       this.$router.push(`/mobile/mcenter/deposit`);
       //   0706 統一RD5判斷銀行卡
       //   yaboRequest({
@@ -622,6 +650,12 @@ export default {
       this.$router.push(path);
     },
     onClickInvite() {
+      if (this.routerTPL === "sg1") {
+        sendUmeng(43);
+      } else {
+        sendUmeng(44);
+      }
+
       this.$router.push("/mobile/mcenter/makeMoney");
     },
     toggleTrans() {

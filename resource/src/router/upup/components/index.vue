@@ -1,78 +1,11 @@
 <template>
-  <!-- 泡泡 -->
-  <div
-    v-if="themeTPL == 'sg1'"
-    :class="[
-      $style['content'],
-      {
-        [$style['sg1']]: themeTPL === 'sg1'
-      }
-    ]"
-  >
+  <div v-if="themeTPL" :class="[$style['content'], $style[`${themeTPL}`]]">
     <div :class="$style['logo-header']">
       <img
         :src="$getCdnPath(`/static/image/${themeTPL}/status/logo_maintain.png`)"
       />
     </div>
-    <!-- <div :class="$style['main-img']">
-      <img
-        :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_maintain.png`)"
-      />
-    </div> -->
-
-    <div
-      :class="[
-        $style.tips,
-        {
-          [$style['sg1']]: themeTPL === 'sg1'
-        }
-      ]"
-    >
-      <div
-        :class="[
-          $style['title'],
-          {
-            [$style['sg1']]: themeTPL === 'sg1'
-          }
-        ]"
-      >
-        {{ $t("ROUTER_UPUP_TITLE") }}
-        <p>PAOPAO直播 24小時大尺度開播</p>
-      </div>
-
-      <div :class="[$style['desc'], $style['has-time']]">
-        {{ $t("ROUTER_UPUP_TEXT_1") }}
-      </div>
-      <template v-if="start && end">
-        <div :class="$style['time']">
-          <div>{{ $text("S_LOCAL_TIME", "当地时间") }} ({{ localGMT }})</div>
-          <div>
-            <span>{{ start }}</span> ~ <span>{{ end }}</span>
-          </div>
-        </div>
-      </template>
-      如需帮助，请
-      <span @click="linkToService">&nbsp;联系客服</span>
-    </div>
-
-    <div style="display:none" id="version">{{ version }}</div>
-  </div>
-  <!-- 鴨博 億元 澳博 -->
-  <div
-    v-else
-    :class="[
-      $style['content'],
-      {
-        [$style['ey1']]: themeTPL === 'ey1'
-      }
-    ]"
-  >
-    <div :class="$style['logo-header']">
-      <img
-        :src="$getCdnPath(`/static/image/${themeTPL}/status/logo_maintain.png`)"
-      />
-    </div>
-    <div :class="[$style['title']]">
+    <div :class="[$style['title'], $style[`${themeTPL}`]]">
       {{ $t("ROUTER_UPUP_TITLE") }}
     </div>
     <div :class="$style['main-img']">

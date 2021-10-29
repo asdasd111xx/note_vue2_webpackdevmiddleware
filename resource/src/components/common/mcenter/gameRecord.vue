@@ -293,15 +293,9 @@ export default {
           kind: this.currentKind
         };
       }
-
-      bbosRequest({
+      goLangApiRequest({
         method: "get",
-        url:
-          this.siteConfig.BBOS_DOMIAN +
-          "/Stats/Player/Friends/WagerReport/ByDayGame",
-        reqHeaders: {
-          Vendor: this.memInfo.user.domain
-        },
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/Friends/WagerReport/ByDayGame`,
         params: {
           lang: "zh-cn",
           username: this.selectedUser,

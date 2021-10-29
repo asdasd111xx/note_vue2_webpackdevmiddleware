@@ -36,7 +36,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import yaboRequest from "@/api/yaboRequest";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -179,7 +178,7 @@ export default {
 
   .qrcode-wrap {
     position: absolute;
-    bottom: 9%;
+    bottom: 7%;
     left: 50%;
     transform: translateX(-50%);
   }

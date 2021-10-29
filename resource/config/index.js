@@ -51,7 +51,7 @@ const domain = "https://sgqa1.yaslbox.com/";
 // Prod 92
 // const domain = "https://aupr1.688lg.com/";
 
-// 51体育 QA 9999905
+// 51国际 QA 9999905
 // const domain = "https://spqa1.66boxing.com/";
 // Demo 95
 // const domain = "https://spde1.688lg.com/";

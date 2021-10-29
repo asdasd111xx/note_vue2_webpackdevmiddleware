@@ -9,7 +9,6 @@ export const preset = {
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2/cxbb/",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://yaboapi.bbin-asia.com/wsn/promosocket?"
 };
@@ -90,18 +89,18 @@ export const site_9999894 = {
 };
 
 /**
- * 51体育 測試站
+ * 51国际 測試站
  */
 export const site_9999905 = {
   ...preset,
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51体育"
-  // PORN_CONFIG: {
-  //   ID: {
-  //     SPACE: "119",
-  //     YB: "120"
-  //   }
-  // }
+  SITE_NAME: "51国际",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "1",
+      YB: "9"
+    }
+  }
 };

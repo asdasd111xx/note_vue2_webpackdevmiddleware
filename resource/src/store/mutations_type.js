@@ -10,6 +10,7 @@ export const SETPREVIEW = "SETPREVIEW";
 export const SETCDNROOT = "SETCDNROOT";
 // 遊戲資料
 export const SETGAMEDATA = "SETGAMEDATA";
+export const SETVERSION = "SETVERSION";
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     客端 page

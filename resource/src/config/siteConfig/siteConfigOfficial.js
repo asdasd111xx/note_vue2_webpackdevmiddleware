@@ -88,7 +88,6 @@ export const site_100003 = {
   SITE_NAME: "鸭博娱乐",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
-  // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
@@ -153,8 +152,6 @@ export const site_100004 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://eybe2.77num.com/api",
   YABO_GOLANG_API_DOMAIN: "https://eybe2.77num.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://eybe2.77num.com/api-v2/cxbb",
-  // BBOS_DOMIAN: 'https://api.bbin-staging.com/elibomApi/WebService',
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://eybe2.77num.com/wsn/promosocket?"
 };
@@ -209,7 +206,7 @@ export const site_81 = {
 };
 
 /**
- * 丝瓜 Beta環境
+ * 泡泡直播 Beta環境
  */
 export const site_100009 = {
   ...preset,
@@ -276,14 +273,14 @@ export const site_93 = {
 };
 
 /**
- * 51体育 正式站正式環境
+ * 51国际 正式站正式環境
  */
 export const site_94 = {
   ...preset,
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51体育",
+  SITE_NAME: "51国际",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   // PORN_CONFIG: {
@@ -296,14 +293,14 @@ export const site_94 = {
 };
 
 /**
- * 51体育 Demo環境
+ * 51国际 Demo環境
  */
 export const site_95 = {
   ...preset,
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51体育",
+  SITE_NAME: "51国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:

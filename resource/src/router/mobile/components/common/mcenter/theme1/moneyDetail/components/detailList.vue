@@ -54,7 +54,7 @@
     <div
       v-if="currentCategory.key === 'deposit'"
       :class="$style['btn-deposit']"
-      @click="$router.push('/mobile/mcenter/deposit')"
+      @click="onDeposit"
     >
       立即充值
     </div>
@@ -65,6 +65,7 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   data() {
@@ -86,6 +87,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     $style() {
       const style =
@@ -156,6 +160,14 @@ export default {
       ) {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
+    },
+    onDeposit() {
+      if (this.routerTPL === "sg1") {
+        sendUmeng(45);
+      } else {
+        sendUmeng(46);
+      }
+      this.$router.push("/mobile/mcenter/deposit");
     }
   }
 };

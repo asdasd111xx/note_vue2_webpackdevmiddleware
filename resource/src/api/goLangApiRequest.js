@@ -27,13 +27,10 @@ export default ({
   let _headers = {
     ...headers,
     cid: getCookie("cid") || "",
-    kind: "pwa",
+    kind: getCookie("platform") || "h",
+    // kind: window.navigator.standalone ? "pwa" : "h",
     "x-domain": store.state.webDomain.domain
   };
-
-  if (!url.includes("GetAuthorizationToken")) {
-    _headers["AuthToken"] = getCookie("y_token");
-  }
 
   const obj = {
     method,

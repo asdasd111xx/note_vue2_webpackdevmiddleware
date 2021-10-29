@@ -88,13 +88,17 @@
     <template v-if="headerConfig.hasMemInfo">
       <div
         v-if="loginStatus"
-        :class="$style['balance-wrap']"
+        :class="[$style['balance-wrap'], $style[siteConfig.ROUTER_TPL]]"
         @click="setMenuState('balance')"
       >
         <span> {{ `${formatThousandsCurrency(getLoginMoney)} 元` }} </span>
         <div>
           <img
-            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+              )
+            "
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
@@ -106,35 +110,36 @@
         v-else
         :class="[
           $style['login-wrap'],
+          $style[siteConfig.ROUTER_TPL],
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <span
-          :class="$style['visitor-title']"
-          @click="$router.push('/mobile/joinmember')"
+        <span :class="$style['visitor-title']" @click="checkLayeredURL"
           >访客彩金</span
         >
         <span
           :class="[$style['visitor-money'], $style['just-money']]"
-          @click="$router.push('/mobile/joinmember')"
+          @click="checkLayeredURL"
           >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
-        <span
-          :class="$style['visitor-money']"
-          @click="$router.push('/mobile/joinmember')"
+        <span :class="$style['visitor-money']" @click="checkLayeredURL"
           >领取</span
         >
         <span
           @click="
             () => {
-              actionSendYM(3);
+              sendUmengEvent(3);
               $router.push('/mobile/login');
             }
           "
           >{{ $text("S_LOGON", "登录") }}</span
         >
         <img
-          :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+            )
+          "
           @click="handleClickAsk"
         />
       </div>
@@ -148,7 +153,11 @@
         />
         <div>
           <img
-            :src="$getCdnPath('/static/image/porn1/common/icon_ask.png')"
+            :src="
+              $getCdnPath(
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
+              )
+            "
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
@@ -198,6 +207,7 @@ import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -239,6 +249,9 @@ export default {
     }),
     mainClass() {
       const style = this.$style;
+      let disableBackgroundColor = !!["sp1"].includes(
+        this.siteConfig.ROUTER_TPL
+      );
 
       return {
         [style.header]: true,
@@ -249,6 +262,8 @@ export default {
           ? true
           : false,
         [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
+        [style["disable-bgcolor"]]: disableBackgroundColor,
+        [style[this.siteConfig.ROUTER_TPL]]: true,
         clearfix: true
       };
     },
@@ -274,7 +289,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSendYM"]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
@@ -283,6 +298,17 @@ export default {
     handleHelpLinkTo() {
       if (this.headerConfig.hasHelp && this.headerConfig.hasHelp.func) {
         this.headerConfig.hasHelp.func();
+      }
+      switch (this.headerConfig.hasHelp.type) {
+        case "deposit":
+          if (this.routerTPL === "sg1") {
+            sendUmeng(47);
+          } else {
+            sendUmeng(48);
+          }
+          break;
+        default:
+          break;
       }
 
       this.$router.push(this.headerConfig.hasHelp.url);
@@ -354,6 +380,23 @@ export default {
           }
         }
       });
+    },
+    checkLayeredURL() {
+      sendUmeng(2);
+      if (getCookie("platform") === "h") {
+        this.actionGetLayeredURL().then(res => {
+          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+            this.$router.push(`/mobile/joinmember`);
+          } else {
+            window.location.replace(`https://${res[0]}/mobile/joinmember`);
+          }
+        });
+      } else {
+        this.$router.push(`/mobile/joinmember`);
+      }
+    },
+    sendUmengEvent(key) {
+      sendUmeng(key);
     }
   }
 };
@@ -403,6 +446,11 @@ export default {
 
   &.is-home {
     border-bottom: none;
+  }
+
+  &.disable-bgcolor {
+    background: unset;
+    background-color: unset;
   }
 }
 
@@ -526,6 +574,18 @@ export default {
   }
 }
 
+.login-wrap {
+  &.sp1 {
+    .visitor-money {
+      color: #ffffff;
+    }
+
+    > span {
+      color: $sp1_main_color1;
+    }
+  }
+}
+
 .mcenter-wrap {
   position: absolute;
   right: 10px;
@@ -578,7 +638,7 @@ export default {
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
-
+  background: #fff;
   &.les,
   &.gay {
     color: #fff;
@@ -793,6 +853,10 @@ export default {
     display: inline-block;
     height: 100%;
     vertical-align: middle;
+  }
+
+  &.sp1 {
+    color: #ffffff;
   }
 }
 

@@ -98,7 +98,10 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['red-dot']" />
+            <div :class="$style['red-dot']">
+              <!-- <div :class="$style['information-dot']"> -->
+              <!-- <span>{{ unreadMessageCount }}</span> -->
+            </div>
           </div>
         </div>
       </div>
@@ -109,19 +112,15 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <span
-          :class="$style['visitor-title']"
-          @click="$router.push('/mobile/joinmember')"
+        <span :class="$style['visitor-title']" @click="checkLayeredURL"
           >访客彩金</span
         >
         <span
           :class="[$style['visitor-money'], $style['just-money']]"
-          @click="$router.push('/mobile/joinmember')"
+          @click="checkLayeredURL"
           >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
         >
-        <span
-          :class="$style['visitor-money']"
-          @click="$router.push('/mobile/joinmember')"
+        <span :class="$style['visitor-money']" @click="checkLayeredURL"
           >领取</span
         >
         <span @click="$router.push('/mobile/login')">{{
@@ -145,7 +144,12 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask_my.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['red-dot']">
+              <!-- <div :class="$style['information-dot']"> -->
+              <!-- <span>{{ unreadMessageCount }}</span> -->
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -211,6 +215,10 @@ export default {
       type: Boolean,
       default: false
     },
+    unreadMessageCount: {
+      type: Number,
+      default: 0
+    },
     hasAppTips: {
       type: Boolean,
       default: false
@@ -268,7 +276,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
@@ -354,6 +362,19 @@ export default {
           }
         }
       });
+    },
+    checkLayeredURL() {
+      if (getCookie("platform") === "h") {
+        this.actionGetLayeredURL().then(res => {
+          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+            this.$router.push(`/mobile/joinmember`);
+          } else {
+            window.location.replace(`https://${res[0]}/mobile/joinmember`);
+          }
+        });
+      } else {
+        this.$router.push(`/mobile/joinmember`);
+      }
     }
   }
 };
@@ -794,6 +815,24 @@ export default {
   width: 7px;
   height: 7px;
   top: -2px;
+}
+
+.information-dot {
+  position: absolute;
+  left: 10px;
+  background: #fecb2f;
+  border-radius: 20px;
+  border: 1px solid #f9e8b4;
+  width: 20px;
+  height: 12px;
+  line-height: 8px;
+  top: -5px;
+  padding: 0.5px 2px;
+  span {
+    color: #731c25;
+    font-size: 7px;
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: $pad) {

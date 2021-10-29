@@ -63,7 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      hasBank: "getHasBank"
     })
   },
   data() {

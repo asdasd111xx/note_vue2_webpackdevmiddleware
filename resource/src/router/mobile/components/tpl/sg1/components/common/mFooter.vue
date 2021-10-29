@@ -132,11 +132,11 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: $main_footer_color2;
+  color: #731c25;
   position: relative;
 
   &.active {
-    color: $main_footer_active_color2;
+    color: #fe593c;
   }
 
   > div {

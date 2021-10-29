@@ -57,7 +57,6 @@ export default {
       isBackEnd: "getIsBackEnd",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      BBOSDomain: "getBBOSDomain",
       withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
@@ -66,7 +65,7 @@ export default {
       return style;
     },
     getImg() {
-      let resultUrl = `${this.BBOSDomain}/elibom/gameIcon/${this.lobbyInfo.alias}/Game_${this.gameData.code}.png`;
+      let resultUrl = ``;
 
       return {
         src: `${resultUrl}?v=${Date.now().toString()}`,

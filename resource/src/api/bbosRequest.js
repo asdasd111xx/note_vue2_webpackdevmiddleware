@@ -14,7 +14,8 @@ export default ({
   const bbosHeader = {
     Useragent: navigator.userAgent,
     Ekey: "sobb",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    kind: getCookie("platform") || "h"
   };
 
   if (reqHeaders && reqHeaders.cid) {

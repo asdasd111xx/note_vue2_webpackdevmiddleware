@@ -1,9 +1,6 @@
 <template>
   <div
-    v-if="
-      themeTPL &&
-        (themeTPL === 'porn1' || themeTPL === 'sg1' || themeTPL === 'aobo1')
-    "
+    v-if="themeTPL && !['ey1'].includes(themeTPL)"
     :class="[$style['content'], $style[themeTPL]]"
   >
     <div :class="$style['logo-header']">
@@ -33,7 +30,10 @@
         {{ $t("ROUTER_NO_SERVICE_TEXTSG") }}
       </template>
 
-      <a
+      <template v-if="themeTPL === 'sp1'">
+        {{ $t("ROUTER_NO_SERVICE_TEXTSP") }}
+      </template>
+      <div
         :class="[
           $style['mail-link'],
           {
@@ -43,7 +43,7 @@
         @click="mailTo()"
       >
         <span>{{ mailURL }}</span>
-      </a>
+      </div>
 
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
     </div>
@@ -64,7 +64,7 @@
   </div>
 
   <div
-    v-else-if="themeTPL && themeTPL === 'ey1'"
+    v-else-if="['ey1'].includes(themeTPL)"
     :class="[$style['content'], $style['ey1']]"
   >
     <div :class="$style['logo-header']">
@@ -80,11 +80,9 @@
     </div>
     <div :class="$style['desc']">
       尊敬的用户，由于相关法规限制，您所在的地区无法使用亿元产品，如有任何疑问，请通过在线客服，或发邮件至
-      <br />
       <a :class="$style['mail-link']" @click="mailTo('ey888@ur188.net')">
         <span>ey888@ur188.net</span>
       </a>
-      <br />
       我们将第一时间给您回复，对您造成的不便，我们深表歉意，感谢您的理解与支持！
     </div>
     <div :class="$style.tips">
@@ -137,6 +135,13 @@ export default {
 
       if (this.themeTPL === "sg1") {
         return "cs@paocs.co";
+<<<<<<< HEAD
+=======
+      }
+
+      if (this.themeTPL === "sp1") {
+        return "senghout5151@gmail.com";
+>>>>>>> feature/1110_paopao
       }
     }
   },

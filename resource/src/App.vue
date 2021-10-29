@@ -72,7 +72,6 @@ export default {
       this.setGoogleAnalytics();
       this.memInfoLoad = this.memInfo && this.memInfo.user;
       if (this.memInfoLoad && this.siteConfigLoad) {
-        if (!this.yToken) this.getYABOAPIToken();
         if (this.RSAPublicKey === "" || this.RSAPrivateKey === "") {
           const params = [this.getRsaKeys()];
           Promise.all(params).then(() => {
@@ -86,7 +85,6 @@ export default {
       this.siteConfigLoad =
         this.siteConfig && this.siteConfig.ACTIVES_BOUNS_WEBSOCKET;
       if (this.memInfoLoad && this.siteConfigLoad) {
-        if (!this.yToken) this.getYABOAPIToken();
         if (this.RSAPublicKey === "" || this.RSAPrivateKey === "") {
           const params = [this.getRsaKeys()];
           Promise.all(params).then(() => {
@@ -312,25 +310,12 @@ export default {
       setTimeout(() => {
         analytics({
           domain: this.memInfo.user.domain,
+          site: this.siteConfig.ROUTER_TPL,
           result: html => {
             $("head").append(html);
           }
         });
       }, 3000);
-    },
-    getYABOAPIToken() {
-      let cid = getCookie("cid") || "";
-      if (!cid) return;
-      yaboRequest({
-        method: "get",
-        url: this.siteConfig.YABO_API_DOMAIN + "/Account/GetAuthorizationToken"
-      }).then(res => {
-        if (res.data) {
-          this.yToken = res.data;
-          setCookie("y_token", res.data);
-          return;
-        }
-      });
     },
     getWsV2RSA() {
       return yaboRequest({

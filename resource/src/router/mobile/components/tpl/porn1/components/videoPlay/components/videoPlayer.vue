@@ -37,7 +37,6 @@ import videojs from "video.js";
 import bonunsDialog from "../bouns/compontents/bonunsDialog";
 import bonunsProcess from "../bouns/compontents/bonunsProcess";
 import { getCookie } from "@/lib/cookie";
-import yaboRequest from "@/api/yaboRequest";
 
 export default {
   components: {

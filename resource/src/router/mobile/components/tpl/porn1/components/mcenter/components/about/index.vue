@@ -98,9 +98,7 @@ import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
-    return {
-      version: ""
-    };
+    return {};
   },
   components: {
     mobileContainer
@@ -108,7 +106,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
@@ -122,9 +121,6 @@ export default {
         title: `关于${this.siteConfig.SITE_NAME}`
       };
     }
-  },
-  created() {
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
   },
   methods: {}
 };

@@ -96,9 +96,7 @@ import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
-    return {
-      version: ""
-    };
+    return {};
   },
   components: {
     mobileContainer
@@ -106,7 +104,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      version: "getVersion"
     }),
     headerConfig() {
       return {
@@ -118,9 +117,7 @@ export default {
       };
     }
   },
-  created() {
-    this.version = `${this.siteConfig.VERSION}${getCookie("platform") || ""}`;
-  },
+  created() {},
   methods: {}
 };
 </script>

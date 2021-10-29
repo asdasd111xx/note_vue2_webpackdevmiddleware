@@ -72,7 +72,6 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       rechargeConfig: "getRechargeConfig",
-      hasBank: "getHasBank",
       siteConfig: "getSiteConfig"
     }),
     $style() {

@@ -22,13 +22,20 @@
             $style['type-swiper'],
             { [$style.active]: typeList[selectedIndex].icon === type.icon }
           ]"
+          :style="{
+            'background-image': `url(${$getCdnPath(
+              `/static/image/${siteConfig.ROUTER_TPL}/platform/icon/icon_bg_${
+                typeList[selectedIndex].icon === type.icon ? 'h' : 'n'
+              }.png`
+            )}`
+          }"
           @click="onChangeSelectIndex(index)"
         >
           <img
             v-if="typeList[selectedIndex].icon === type.icon"
             :src="
               $getCdnPath(
-                `/static/image/porn1/platform/icon/icon_${type.icon}_h.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/platform/icon/icon_${type.icon}_h.png`
               )
             "
           />
@@ -36,13 +43,14 @@
             v-else
             :src="
               $getCdnPath(
-                `/static/image/porn1/platform/icon/icon_${type.icon}_n.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/platform/icon/icon_${type.icon}_n.png`
               )
             "
           />
           <div
             :class="[
               $style['type-title'],
+              $style[siteConfig.ROUTER_TPL],
               { [$style.active]: typeList[selectedIndex].icon === type.icon }
             ]"
           >
@@ -66,17 +74,21 @@
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/level/icon_level_${vipLevel}.png`
+                      `/static/image/${
+                        siteConfig.ROUTER_TPL
+                      }/level/icon_level_${
+                        vipLevel === 'max' ? 'max' : vipLevel
+                      }.png`
                     )
                   "
                 />
-                <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
+                <div>{{ +vipLevel > 9 ? vipLevel : info.text }}</div>
               </template>
               <template v-else>
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/_new/wallet/icon_wallet_${info.name}.png`
+                      `/static/image/${siteConfig.ROUTER_TPL}/wallet/icon_wallet_${info.name}.png`
                     )
                   "
                 />
@@ -239,6 +251,27 @@
       </div>
       <page-loading :isShow="isLoading" />
     </div>
+    <div v-if="showRedirectJump">
+      <div :class="$style['mask']" />
+
+      <div :class="$style['modal-wrap']">
+        <div :class="$style['modal-content']">
+          {{
+            `尊敬的会员您好，${siteName}为进行线路与安全分流，将为您导至${siteName}子网址，并请您以后利用此网址登入，如有疑虑，欢迎洽询线上客服!`
+          }}
+        </div>
+
+        <div
+          :class="[
+            $style['modal-button-center'],
+            $style[siteConfig.MOBILE_WEB_TPL]
+          ]"
+          @click="closeRedirect_url()"
+        >
+          确定
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -289,7 +322,7 @@ export default {
   position: relative;
   width: 63px;
   height: 63px;
-  background-image: url("/static/image/porn1/platform/icon/icon_bg_n.png");
+  // background-image: url("/static/image/porn1/platform/icon/icon_bg_n.png");
   background-position: 0 0;
   background-size: 63px 63px;
   background-repeat: no-repeat;
@@ -306,7 +339,7 @@ export default {
   }
 
   &.active {
-    background-image: url("/static/image/porn1/platform/icon/icon_bg_h.png");
+    // background-image: url("/static/image/porn1/platform/icon/icon_bg_h.png");
   }
 }
 
@@ -323,6 +356,9 @@ export default {
 
   &.active {
     color: #fff;
+  }
+  &.sp1 {
+    color: #353541;
   }
 }
 
@@ -630,5 +666,52 @@ export default {
   position: relative;
   float: left;
   box-sizing: border-box;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.modal-wrap {
+  width: 270px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+}
+
+.modal-content {
+  padding: 15px 15px 10px 15px;
+  // border-bottom: 1px solid #eee;
+}
+
+.modal-button-center {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 18px;
+
+  &:last-child {
+    color: #d2b79c;
+  }
+
+  &.ey1:last-child {
+    color: #e42a30;
+  }
+
+  &.porn1:last-child {
+    color: #d2b79c;
+  }
 }
 </style>
