@@ -8,16 +8,22 @@
     <div :class="[$style['title'], $style[`${themeTPL}`]]">
       {{ $t("ROUTER_UPUP_TITLE") }}
     </div>
-    <div :class="$style['main-img']">
+    <div :class="$style['main-img']" v-if="themeTPL != 'sg1'">
       <img
         :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_maintain.png`)"
       />
     </div>
-    <div :class="[$style['desc'], $style['has-time']]">
+    <div
+      v-if="themeTPL == 'sg1'"
+      :class="[$style['sub-title'], $style[`${themeTPL}`]]"
+    >
+      PAOPAO直播 24小時大尺度開播
+    </div>
+    <div :class="[$style['desc'], $style[`${themeTPL}`], $style['has-time']]">
       {{ $t("ROUTER_UPUP_TEXT_1") }}
     </div>
     <template v-if="start && end">
-      <div :class="$style['time']">
+      <div :class="[$style['time'], $style[`${themeTPL}`]]">
         <div>{{ $text("S_LOCAL_TIME", "当地时间") }} ({{ localGMT }})</div>
         <div>
           <span>{{ start }}</span> ~ <span>{{ end }}</span>
