@@ -136,11 +136,14 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: #731c25;
+  color: #424142;
   position: relative;
+  font-weight: 400;
+  font-size: 15px;
 
   &.active {
-    color: #fe593c;
+    color: #424142;
+    font-weight: 700;
   }
 
   > div {
