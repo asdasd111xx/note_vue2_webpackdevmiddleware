@@ -2426,6 +2426,7 @@ export const actionGetLayeredURL = ({ state }, eventCode) => {
       });
     });
 };
+
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (
   { state, dispatch, commit },
@@ -2437,6 +2438,25 @@ export const actionSetLCFSystemConfig = (
   }).then(res => {
     if (res && res.data) {
       commit(types.SET_LCFSYSTEMCONFIG, res.data);
+    }
+  });
+};
+
+//  轉導第三方服務(不提供回傳資料客製化)C04.48
+export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
+  const { externalID = "paolive", api_uri = "", method = "get" } = params;
+
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/${externalID}`,
+    params: {
+      externalID,
+      api_uri,
+      method
+    }
+  }).then(res => {
+    if (res && res.data) {
+      return res.data;
     }
   });
 };

@@ -33,13 +33,17 @@ export default {
       };
     }
   },
-  created() {
-    console.log(this.$route.params);
+  created() {},
+  mounted() {
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/view-path",
+      method: "get"
+    }).then(result => {
+      console.log(result);
+    });
   },
-  mounted() {},
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
-    openLiveStream() {}
+    ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"])
   }
 };
 </script>

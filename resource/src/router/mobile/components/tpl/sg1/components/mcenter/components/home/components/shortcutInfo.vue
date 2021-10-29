@@ -281,11 +281,17 @@
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import mcenter from "@/api/mcenter";
 import member from "@/api/member";
 
 export default {
-  components: {},
+  props: {
+    paopaoUserInfo: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
   data() {
     return {
       list: [

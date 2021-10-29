@@ -34,10 +34,16 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/view-path",
+      method: "get"
+    }).then(result => {
+      console.log(result);
+    });
+  },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
-    openLiveStream() {}
+    ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"])
   }
 };
 </script>

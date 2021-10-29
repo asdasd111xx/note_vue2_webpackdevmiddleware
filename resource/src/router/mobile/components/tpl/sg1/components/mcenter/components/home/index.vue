@@ -2,8 +2,8 @@
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
       <app-tip @close="showTip = false" />
-      <avatar-info />
-      <shortcut-info />
+      <avatar-info :paopao-user-info="paopaoUserInfo" />
+      <shortcut-info :paopao-user-info="paopaoUserInfo" />
       <mem-list />
     </div>
   </mobile-container>
@@ -26,7 +26,8 @@ export default {
   },
   data() {
     return {
-      isShowAppTip: true
+      isShowAppTip: true,
+      paopaoUserInfo: {}
     };
   },
   computed: {
@@ -40,15 +41,16 @@ export default {
       };
     }
   },
-  created() {},
+  created() {
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/user/front-page",
+      method: "get"
+    }).then(data => {
+      this.paopaoUserInfo = data.result;
+    });
+  },
   methods: {
-    goMessage() {
-      if (!this.loginStatus) {
-        this.$router.push("/mobile/login");
-        return;
-      }
-      this.$router.push("/mobile/mcenter/information/message");
-    }
+    ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"])
   }
 };
 </script>
