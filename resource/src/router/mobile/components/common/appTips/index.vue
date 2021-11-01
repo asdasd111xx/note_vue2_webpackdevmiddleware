@@ -67,7 +67,7 @@ export default {
   },
   created() {
     if (
-      ["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL) &&
+      ["porn1", "sg1", "sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
       !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
@@ -171,10 +171,15 @@ export default {
 
       switch (this.siteConfig.ROUTER_TPL) {
         case "porn1":
-          site = "YABO";
+          site = "Bifa";
           break;
         case "sg1":
-          site = "SG";
+          site = "Paopao";
+          break;
+        case "sp1":
+          site = "SP";
+        case "aobo1":
+          site = "AOBO";
           break;
       }
 
@@ -196,6 +201,11 @@ export default {
     },
     handleClickToLanding() {
       if (!this.downloadConfigData.show) {
+        return;
+      }
+      const promotionCode = localStorage.getItem("promotionCode");
+      if (promotionCode && promotionCode != "" && !this.loginStatus) {
+        this.$router.push("/mobile/login");
         return;
       }
       sendUmeng(105);

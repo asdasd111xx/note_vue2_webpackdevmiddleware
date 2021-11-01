@@ -401,6 +401,7 @@ export default {
 
         case "GIFT":
         case "VIPINFO":
+          this.showBack = false;
         case "PROMOTION":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";

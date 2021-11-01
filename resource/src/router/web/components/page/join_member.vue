@@ -995,7 +995,8 @@ export default {
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || "",
-        speedy: true
+        speedy: true,
+        code: localStorage.getItem("promotionCode") || ""
       };
 
       const self = this;
@@ -1075,6 +1076,7 @@ export default {
                   localStorage.removeItem("username");
                   localStorage.removeItem("password");
                 }
+
                 window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
               }
@@ -1110,6 +1112,11 @@ export default {
                 item === "captcha_text"
               ) {
                 this.allTip["confirm_password"] = res.errors[item];
+              }
+
+              //msg: "无此介绍人"
+              if (item === "introducer") {
+                this.errMsg = res.errors[item];
               }
             });
             return;

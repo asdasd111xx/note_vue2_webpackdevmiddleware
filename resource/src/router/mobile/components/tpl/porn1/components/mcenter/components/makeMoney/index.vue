@@ -79,7 +79,7 @@ export default {
       src: "",
       // 舊版推廣賺錢
       showOldVersion: false,
-      contentTitle: "推广赚钱"
+      contentTitle: ""
     };
   },
   created() {
@@ -271,7 +271,6 @@ export default {
             let promotionId = this.src.split("?")[0].split("/")[
               this.src.split("?")[0].split("/").length - 1
             ];
-
             res.data.ret.forEach(promo => {
               if (promo.link.includes(promotionId)) {
                 this.contentTitle = promo.name;
