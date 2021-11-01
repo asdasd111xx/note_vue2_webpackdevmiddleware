@@ -2444,7 +2444,11 @@ export const actionSetLCFSystemConfig = (
 
 //  轉導第三方服務(不提供回傳資料客製化)C04.48
 export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
-  const { externalID = "paolive", api_uri = "", method = "get" } = params;
+  const {
+    externalID = "cubechat_master",
+    api_uri = "",
+    method = "get"
+  } = params;
 
   return goLangApiRequest({
     method: "get",
