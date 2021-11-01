@@ -146,14 +146,19 @@ div.container {
 }
 
 .top-bg {
-  // background: url("/static/image/sp1/common/pic_top.png");
+  background: url("/static/image/sp1/common/pic_top.png");
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
   height: 120px;
   width: 100%;
-  max-width: 768px;
+  max-width: $mobile_max_width;
   top: 0;
   z-index: 0;
   position: absolute;
+}
+@media (orientation: landscape) {
+  .top-bg {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 </style>
