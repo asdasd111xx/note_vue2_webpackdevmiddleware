@@ -4,10 +4,9 @@
       <div :class="$style['account-wrap']">
         <img :src="$getCdnPath(`/static/image/sg1/live/icon_gold.png`)" />
       </div>
+
+      <!-- 鑽石列表 -->
       <div :class="$style['buy-diamond-wrap']">
-        <div :class="$style['title']">
-          兑换钻石数量
-        </div>
         <div :class="$style['price-wrap']">
           <div
             v-for="(item, key) in exchangeRateList"
@@ -19,24 +18,22 @@
             :key="key"
           >
             <template v-if="!item.loading">
-              <div :class="$style['price']">{{ `¥ ${item.amount}` }}</div>
-              <div :class="$style['num']">
+              <div :class="$style['icon']">
                 <img
-                  :src="
-                    $getCdnPath(
-                      `/static/image/sg1/mcenter/live/ic_diamond_s.png`
-                    )
-                  "
+                  :src="$getCdnPath(`/static/image/sg1/live/ic_diamond_s.png`)"
                 />
-                <div>
-                  {{ `${item.diamond}` }}
-                </div>
               </div>
-              <img
+              <div :class="$style['num']" :alt="item.diamond_amount">
+                {{ `${item.diamond_amount}钻` }}
+              </div>
+              <div :class="$style['price']">
+                {{ `${formatThousandsCurrency(item.cash_amount)}元` }}
+              </div>
+              <!-- <img
                 v-if="item.amount === currentSelRate.amount"
                 :class="$style['amount-active']"
                 :src="$getCdnPath(`/static/image/common/select_active.png`)"
-              />
+              /> -->
             </template>
             <template v-else>
               <div :class="$style['loading']" />
@@ -46,6 +43,21 @@
         </div>
       </div>
 
+      <div :class="[$style['submit-wrap']]">
+        <div
+          :class="[
+            $style['submit-btn'],
+            {
+              [$style['disabled']]: lockedSubmit
+            }
+          ]"
+          @click="submitCheck"
+        >
+          立即兑换
+        </div>
+      </div>
+
+      <tipsDiamond />
       <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
@@ -55,9 +67,11 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
-
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import tipsDiamond from "./tipsDiamond.vue";
 export default {
   components: {
+    tipsDiamond,
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
@@ -69,8 +83,9 @@ export default {
       isLoading: true,
       diamondTotal: {},
       diamondRemind: {},
-      exchangeRateList: {},
-      currentSelRate: {}
+      exchangeRateList: [],
+      currentSelRate: {},
+      lockedSubmit: true
     };
   },
   computed: {
@@ -115,7 +130,21 @@ export default {
       }).then(data => {
         this.isLoading = false;
         this.exchangeRateList = data.result;
+        this.exchangeRateList = [
+          { diamond_amount: 1, cash_amount: 10 },
+          { diamond_amount: 10, cash_amount: 1012350 },
+          { diamond_amount: 12, cash_amount: 12456 },
+          { diamond_amount: 1512341231236, cash_amount: 11231232223 },
+          { diamond_amount: 4561, cash_amount: 10111 }
+        ];
       });
+    },
+    submitCheck() {},
+    selectedRate(target) {
+      this.currentSelRate = target;
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };
@@ -145,54 +174,77 @@ export default {
 }
 
 .price-cell {
+  background: #ffffff;
+  border-radius: 3px;
+  border: 1px solid #b1b1b1;
+  display: inline-block;
   font-family: Arial, Arial-Regular;
   font-weight: 400;
-  text-align: center;
+  height: 64px;
   position: relative;
-  display: inline-block;
-  height: 40px;
-  background: #ffffff;
-  border: 1px solid #eeeeee;
-  border-radius: 3px;
+  margin-bottom: 17px;
+  text-align: center;
   width: calc(25% - 6px);
 
   &:not(:nth-child(4n + 1)) {
     margin-left: 6px;
   }
 
-  &.selected {
-    border: 1px solid #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 10px, rgba(255, 255, 255, 0) 0);
+  // &.selected {
+  //   // border: 1px solid #d1b79c;
+  //   // background: linear-gradient(-45deg, #d1b79c 10px, rgba(255, 255, 255, 0) 0);
 
-    .price {
-      color: #d1b79c;
-    }
+  //   .price {
+  //     color: #333333;
+  //   }
 
-    .num {
-      color: #36e6d2;
-    }
+  //   .num {
+  //     color: #e53266;
+  //   }
 
-    .amount-active {
-      display: block;
-      width: 7px;
-      height: 5px;
-      position: absolute;
-      right: 1px;
-      bottom: 3px;
+  //   .amount-active {
+  //     display: block;
+  //     width: 7px;
+  //     height: 5px;
+  //     position: absolute;
+  //     right: 1px;
+  //     bottom: 3px;
+  //   }
+  // }
+
+  .icon {
+    width: 100%;
+    height: 15px;
+    margin: 0 auto;
+    background: #ededed;
+    border-radius: 3px 3px 0 0;
+
+    > img {
+      width: 15px;
+      height: 15px;
     }
   }
 
   .price {
-    color: #2d1212;
-    font-size: 13px;
+    color: #333333;
+    font-size: 12px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .num {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #aaaaaa;
+    background: #ededed;
+    color: #e53266;
     font-size: 12px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
 
     > img {
       width: 12px;
@@ -205,6 +257,24 @@ export default {
     margin: 6px 11px;
     background: #eeeeee;
     height: calc(50% - 9px);
+  }
+}
+
+.submit-wrap {
+  padding: 0 17px;
+
+  .submit-btn {
+    text-align: center;
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+    color: #ffffff;
+    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    border-radius: 3px;
+
+    &.disabled {
+      background: linear-gradient(to right, #e9dacb, #eee5db);
+    }
   }
 }
 </style>
