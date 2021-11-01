@@ -43,6 +43,11 @@ export default new Router({
           return;
         }
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+
+        localStorage.setItem("promotionCode", code || "");
+
         next("/mobile");
         return;
       }

@@ -639,6 +639,11 @@ export default {
   font-weight: 500;
   margin: 0 auto;
   background: #fff;
+  max-width: 66%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   &.les,
   &.gay {
     color: #fff;
