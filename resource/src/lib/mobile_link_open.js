@@ -172,7 +172,7 @@ export default target => {
           router.push(`/mobile/joinmember`);
         }
         return;
-
+      case "discount":
       case "promotion":
         router.push("/mobile/promotion");
         return;
@@ -195,6 +195,14 @@ export default target => {
         }
 
         router.push(`/mobile/mcenter/${linkTo.replace("-", "")}`);
+        return;
+
+      case "wallet":
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+        this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
         return;
 
       case "cgPay":
