@@ -378,7 +378,11 @@ export default {
         case "iframe":
           let path = localStorage.getItem("bank-card-back-redirect");
           localStorage.removeItem("bank-card-back-redirect");
-          this.$router.push(path);
+          if (path) {
+            this.$router.push(path);
+          } else {
+            this.$router.back();
+          }
           break;
         default:
           break;
