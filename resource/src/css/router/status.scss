@@ -36,6 +36,15 @@ body {
     display: flex;
     justify-content: center;
     background-image: url("/static/image/sg1/status/maintainbg.png");
+
+    &.page404 {
+      display: block;
+      background-image: url("/static/image/sg1/common/bg.png");
+    }
+    &.page403 {
+      display: block;
+      background-image: url("/static/image/sg1/common/bg.png");
+    }
   }
 
   &.sp1 {
@@ -67,6 +76,15 @@ body {
     color: #fdbe2d;
     position: absolute;
     bottom: 26%;
+
+    &.page404 {
+      color: #4e5159;
+      position: relative;
+    }
+    &.page403 {
+      color: #4e5159;
+      position: relative;
+    }
   }
   p {
     width: 70%;

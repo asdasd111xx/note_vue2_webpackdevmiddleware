@@ -1,12 +1,12 @@
 <template>
   <div
     v-if="themeTPL && !['ey1'].includes(themeTPL)"
-    :class="[$style['content'], $style[themeTPL]]"
+    :class="[$style['content'], $style['page403'], $style[themeTPL]]"
   >
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
-    <div :class="[$style['title'], $style[themeTPL]]">
+    <div :class="[$style['title'], $style['page403'], $style[themeTPL]]">
       {{ $t("ROUTER_NO_SERVICE_TITLE") }}
     </div>
     <div :class="$style['text']">

@@ -1,9 +1,12 @@
 <template>
-  <div v-if="themeTPL" :class="[$style['content'], $style[`${themeTPL}`]]">
+  <div
+    v-if="themeTPL"
+    :class="[$style['content'], $style['page404'], $style[`${themeTPL}`]]"
+  >
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
-    <div :class="[$style['title'], $style[`${themeTPL}`]]">
+    <div :class="[$style['title'], $style['page404'], $style[`${themeTPL}`]]">
       {{ $t("ROUTER_404_TITLE") }}
     </div>
     <div :class="$style['main-img']">
