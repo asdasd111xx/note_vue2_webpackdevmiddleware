@@ -38,6 +38,7 @@ export default {
           case "wallet":
           case "hotLobby":
           case "recharge":
+          case "iframe":
             return true;
         }
       }
