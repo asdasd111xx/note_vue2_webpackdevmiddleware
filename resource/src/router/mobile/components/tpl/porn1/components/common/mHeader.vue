@@ -552,7 +552,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: #be9e7f;
+    color: $share_text_color4;
     margin: 0;
     padding: 0;
 
@@ -582,6 +582,14 @@ export default {
 
     > span {
       color: $sp1_main_color1;
+    }
+  }
+}
+
+.login-wrap {
+  &.porn1 {
+    .visitor-money {
+      color: #be9e7f;
     }
   }
 }

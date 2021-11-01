@@ -247,14 +247,14 @@ export default {
   display: block;
   line-height: 12px;
   margin-left: 6px;
-  color: $main_text_color7;
+  color: $main_text_color1;
   font-size: 12px;
   overflow: hidden;
   min-width: calc(100vw - 51px);
   -webkit-tap-highlight-color: transparent;
 
   &.porn1 {
-    color: $main_text_color7;
+    color: $main_text_color1;
   }
 
   &.ey1 {
