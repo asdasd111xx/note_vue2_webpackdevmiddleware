@@ -490,4 +490,22 @@ export default {
     }
   }
 }
+
+.apptips-wrap {
+  &.sp1 {
+    .title {
+      color: $sp1_main_color1;
+    }
+
+    .download-wrap {
+      > .download-btn {
+        background: $sp1_main_color1;
+
+        span {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
 </style>

@@ -70,6 +70,8 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("do-not-show-home-post");
   localStorage.removeItem("do-not-show-deposit-post");
   localStorage.removeItem("do-not-show-withdraw-post");
+  // 浮動推廣
+  localStorage.removeItem("do-not-show-float-list");
 
   if (reload) {
     window.location.reload();

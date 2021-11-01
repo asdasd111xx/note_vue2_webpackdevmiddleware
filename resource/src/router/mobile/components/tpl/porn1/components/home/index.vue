@@ -13,6 +13,9 @@
       <home-slider />
       <home-new />
       <home-content />
+      <template v-for="(item, idx) in floatData">
+        <home-draggable v-bind:key="idx" :floatData="item" :listIndex="idx" />
+      </template>
       <envelope
         v-if="needShowRedEnvelope"
         @closeEvelope="closeEvelope"
@@ -28,13 +31,16 @@ import { mapGetters, mapActions } from "vuex";
 import homeContent from "./components/homeContent";
 import homeNew from "@/router/mobile/components/common/home/homeNew";
 import homeSlider from "@/router/mobile/components/common/home/homeSlider";
+import homeDraggable from "@/router/mobile/components/common/home/homeDraggable";
 import mobileContainer from "../common/mobileContainer";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
     mobileContainer,
     homeSlider,
     homeNew,
+    homeDraggable,
     homeContent,
     envelope: () =>
       import(
@@ -45,7 +51,8 @@ export default {
     return {
       updateBalance: null,
       needShowRedEnvelope: false,
-      redEnvelopeData: {}
+      redEnvelopeData: {},
+      floatData: {}
     };
   },
   computed: {
@@ -84,6 +91,8 @@ export default {
         this.actionSetUserBalance();
       }
     }, 30000);
+
+    this.getFloatList();
   },
   beforeDestroy() {
     clearInterval(this.updateBalance);
@@ -105,6 +114,25 @@ export default {
       this.actionSetGlobalMessage({
         msg: "红包派发中，到帐后即可畅玩游戏"
       });
+    },
+    getFloatList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Float/Image/List`
+      }).then(res => {
+        // console.log(res);
+        if (res.status === "000") {
+          if (!localStorage.getItem("do-not-show-float-list")) {
+            localStorage.setItem("do-not-show-float-list", JSON.stringify([]));
+          }
+          let notShowList = JSON.parse(
+            localStorage.getItem("do-not-show-float-list")
+          );
+          this.floatData = res.data.filter(data => {
+            return !notShowList.includes(data.id);
+          });
+        }
+      });
     }
   }
 };
@@ -118,14 +146,19 @@ div.container {
 }
 
 .top-bg {
-  // background: url("/static/image/sp1/common/pic_top.png");
+  background: url("/static/image/sp1/common/pic_top.png");
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
   height: 120px;
   width: 100%;
-  max-width: 768px;
+  max-width: $mobile_max_width;
   top: 0;
   z-index: 0;
   position: absolute;
+}
+@media (orientation: landscape) {
+  .top-bg {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 </style>
