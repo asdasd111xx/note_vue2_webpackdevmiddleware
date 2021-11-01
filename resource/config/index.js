@@ -5,7 +5,7 @@ const outputDirName = process.env.CDN_HOST
   ? process.env.CDN_HOST.split("://")[1]
   : "www";
 
-// 鸭博娱乐 500015
+// 币发BIFA 500015
 const domain = "https://yb01.66boxing.com/";
 // Demo 69
 // const domain = 'https://yb0t.66relish.com/';

@@ -41,27 +41,6 @@ steps:
   depends_on:
   - push2GCR-QA
 
-- name: yaboGKE-beta(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
-
 - name: yiyuanGKE-qa(istio)
   image: nytimes/drone-gke
   settings:
@@ -83,27 +62,6 @@ steps:
   depends_on:
   - push2GCR-QA
 
-- name: yiyuanGKE-beta(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
-
 - name: siguaGKE-qa(istio)
   image: nytimes/drone-gke
   settings:
@@ -118,27 +76,6 @@ steps:
       k8sNginxSSL: ""
       nfs: 10.27.1.142
       nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
-
-- name: siguaGKE-beta(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -196,6 +133,97 @@ trigger:
 
 ---
 kind: pipeline
+name: AllPipeline(Beta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: push2GCR-Beta
+  image: plugins/gcr
+  settings:
+    json_key:
+      from_secret: GOOGLE_CREDENTIALS
+    repo: gcr.io/rd7-project/yaboxxx-web
+    tags:
+    - latest
+    - ${DRONE_COMMIT}
+    - ${DRONE_TAG}
+  depends_on:
+  - clone
+
+- name: yaboGKE-beta(istio)
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/yabo/.istio-kube.yml
+    vars:
+      deployName: yabo-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: ""
+      nfs: 10.17.0.128
+      nodePoolName: udm16-32
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+  depends_on:
+  - push2GCR-Beta
+
+- name: yiyuanGKE-beta(istio)
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/yiyuan/.istio-kube.yml
+    vars:
+      deployName: yiyuan-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: ""
+      nfs: 10.17.0.128
+      nodePoolName: udm16-32
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+  depends_on:
+  - push2GCR-Beta
+
+- name: siguaGKE-beta(istio)
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/sigua/.istio-kube.yml
+    vars:
+      deployName: sigua-frontend-proxy-beta
+      env: beta
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
+      k8sNginxSSL: ""
+      nfs: 10.17.0.128
+      nodePoolName: udm16-32
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+  depends_on:
+  - push2GCR-Beta
+
+trigger:
+  event:
+  - tag
+  ref:
+  - refs/tags/allBeta-*
+
+---
+kind: pipeline
 name: AllPipeline(Prod)
 
 platform:
@@ -229,7 +257,7 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -250,7 +278,7 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -271,7 +299,7 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -292,7 +320,7 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -313,7 +341,7 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -334,7 +362,7 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -355,7 +383,7 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -376,7 +404,7 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -397,7 +425,7 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -418,7 +446,7 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -518,7 +546,7 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -539,7 +567,7 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -639,7 +667,7 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -660,7 +688,7 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -729,7 +757,7 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.0.128
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -777,7 +805,7 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
       k8sNginxSSL: nginx-ssl-qa
       nfs: 10.17.0.128
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -848,7 +876,7 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -917,7 +945,7 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.0.128
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -965,7 +993,7 @@ steps:
       k8sNginxConfigMap: sgsp-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.0.128
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1036,7 +1064,7 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1105,7 +1133,7 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.0.128
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1153,7 +1181,7 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.0.128
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1224,7 +1252,7 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.0.181
-      nodePoolName: e2-16
+      nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
     TOKEN:

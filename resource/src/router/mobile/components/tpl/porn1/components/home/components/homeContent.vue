@@ -67,7 +67,7 @@
             <div
               v-for="(info, index) in mcenterList"
               :key="`mcenter-${index}`"
-              :class="$style['mcenter-wrap']"
+              :class="[$style['mcenter-wrap'], $style[siteConfig.ROUTER_TPL]]"
               @click="onGoToMcenter(info.path)"
             >
               <template v-if="info.name === 'grade'">
@@ -300,6 +300,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .home-wrap {
   overflow: hidden;
   position: relative;
@@ -351,7 +352,7 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #a6a9b2;
+  color: $share_text_color6;
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
@@ -362,6 +363,12 @@ export default {
   }
   &.sp1 {
     color: #353541;
+  }
+  &.porn1 {
+    color: #323943;
+    &.active {
+      color: #fff;
+    }
   }
 }
 
@@ -416,7 +423,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ad9982;
+    color: $share_text_color1;
     font-size: 12px;
     text-align: center;
   }
@@ -427,6 +434,12 @@ export default {
     position: absolute;
     font-weight: 700;
     color: #906246;
+  }
+
+  &.porn1 {
+    > div {
+      color: #707994;
+    }
   }
 }
 
