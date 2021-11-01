@@ -388,6 +388,16 @@ export default {
             this.$router.push("/mobile/liveStream");
             break;
 
+          case "iframe":
+            let path = localStorage.getItem("bank-card-back-redirect");
+            localStorage.removeItem("bank-card-back-redirect");
+            if (path) {
+              this.$router.push(path);
+            } else {
+              this.$router.back();
+            }
+            break;
+
           default:
             this.$router.back();
             // this.$router.push(`/mobile/mcenter/${redirect}`);
