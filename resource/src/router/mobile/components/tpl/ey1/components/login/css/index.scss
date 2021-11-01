@@ -1,7 +1,7 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .container {
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .login-wrap {
@@ -29,12 +29,10 @@
 }
 
 @media screen and (min-height: 811px) {
-
   .login-logo {
     height: 180px;
   }
 }
-
 
 .login-name {
   font-size: 21px;
@@ -77,7 +75,7 @@
       justify-content: center;
       border-right: 1px solid rgba(128, 128, 128, 0.26);
 
-      >img {
+      > img {
         width: 18px;
         height: 18px;
       }
@@ -106,7 +104,7 @@
       top: calc(50% - 10px);
       margin: 0px 5px;
 
-      >img {
+      > img {
         width: 20px;
         height: 20px;
       }
@@ -136,7 +134,7 @@
     .login-unit-link {
       float: right;
       position: relative;
-      color: #5E626D;
+      color: #5e626d;
     }
   }
 
@@ -146,7 +144,7 @@
     justify-content: center;
     align-items: center;
 
-    >div {
+    > div {
       color: white;
       text-align: center;
       line-height: 50px;
@@ -172,7 +170,7 @@
     margin: 0 10px;
 
     &.link-submit {
-      color: #FF8400;
+      color: #ff8400;
     }
   }
 }
@@ -186,6 +184,8 @@
 }
 
 .err-msg {
+  max-width: 375px;
+  margin: 0 auto;
   color: $main_error_color1;
   min-height: 26px;
   line-height: 26px;
@@ -200,7 +200,7 @@
   right: 10px;
   top: 0;
 
-  >img {
+  > img {
     width: 18px;
     height: 18px;
   }
@@ -215,7 +215,7 @@
   right: 10px;
   top: 0;
 
-  >img {
+  > img {
     width: 12px;
     height: 12px;
   }

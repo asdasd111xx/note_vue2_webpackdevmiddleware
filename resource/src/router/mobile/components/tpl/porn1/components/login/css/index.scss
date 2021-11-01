@@ -211,6 +211,8 @@
 }
 
 .err-msg {
+  max-width: 375px;
+  margin: 0 auto;
   color: $main_error_color1;
   min-height: 26px;
   line-height: 26px;
