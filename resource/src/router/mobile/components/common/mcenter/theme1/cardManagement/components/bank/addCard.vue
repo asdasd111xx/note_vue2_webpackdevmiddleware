@@ -374,6 +374,12 @@ export default {
         case "home":
           this.$router.replace(`/mobile/${redirect}`);
           return;
+
+        case "iframe":
+          let path = localStorage.getItem("bank-card-back-redirect");
+          localStorage.removeItem("bank-card-back-redirect");
+          this.$router.push(path);
+          break;
         default:
           break;
       }
