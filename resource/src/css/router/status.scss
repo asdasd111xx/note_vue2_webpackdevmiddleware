@@ -59,8 +59,11 @@ body {
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
-  color: $main_text_color4;
+  color: $share_text_color5;
 
+  &.porn1 {
+    color: $main_text_color4;
+  }
   &.sg1 {
     color: #4e5159;
   }

@@ -323,7 +323,7 @@ export default {
 
     > .download-btn {
       align-items: center;
-      background: $main_button_color;
+      background: $share_main_button_color;
       border-radius: 13.5px;
       display: flex;
       height: 27px;
@@ -332,7 +332,7 @@ export default {
       width: 100%;
 
       span {
-        color: $main_button_text_color;
+        color: $share_main_button_text_color;
         font-size: 12px;
         font-weight: 700;
         text-align: center;
@@ -345,7 +345,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: $main_button_color;
+    color: $share_main_button_color;
     height: 20px;
   }
 
@@ -451,6 +451,24 @@ export default {
     .download-wrap {
       > .download-btn {
         background: #e61938;
+
+        span {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.apptips-wrap {
+  &.porn1 {
+    .title {
+      color: $befa_main_color;
+    }
+
+    .download-wrap {
+      > .download-btn {
+        background: $befa_main_color;
 
         span {
           color: #ffffff;

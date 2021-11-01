@@ -154,7 +154,7 @@
     align-items: center;
 
     > div {
-      color: $main_button_text_color;
+      color: $share_main_button_text_color;
       text-align: center;
       line-height: 50px;
       background: $share_main_button_color;
@@ -166,7 +166,8 @@
     }
     &.porn1 {
       > div {
-        background: #3354ad;
+        color: #ffffff;
+        background: $befa_main_color;
       }
     }
 
@@ -200,7 +201,7 @@
       }
 
       &.link-submit {
-        color: $main_button_color;
+        color: $befa_main_color;
       }
     }
 

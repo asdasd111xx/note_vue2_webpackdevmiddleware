@@ -8,6 +8,7 @@
       v-for="info in list"
       :key="info.key"
       :class="[
+        $style[siteConfig.ROUTER_TPL],
         $style['footer-item'],
         $style[`${info.key}`],
         {
@@ -21,7 +22,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/_new/common/footer/icon_${info.key}_h.png`
+              `/static/image/${imagePath}/common/footer/icon_${info.key}_h.png`
             )
           "
         />
@@ -29,7 +30,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/_new/common/footer/icon_${info.key}_n.png`
+              `/static/image/${imagePath}/common/footer/icon_${info.key}_n.png`
             )
           "
         />
@@ -62,7 +63,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/_new/common/footer/icon_${info.key}_h.png`
+              `/static/image/${imagePath}/common/footer/icon_${info.key}_h.png`
             )
           "
         />
@@ -70,7 +71,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/_new/common/footer/icon_${info.key}_n.png`
+              `/static/image/${imagePath}/common/footer/icon_${info.key}_n.png`
             )
           "
         />
@@ -104,7 +105,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/sp1/common/footer/icon_${info.key}_h.png`
+              `/static/image/${imagePath}/common/footer/icon_${info.key}_h.png`
             )
           "
         />
@@ -112,7 +113,7 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/sp1/common/footer/icon_${info.key}_n.png`
+              `/static/image/${imagePath}/common/footer/icon_${info.key}_n.png`
             )
           "
         />
@@ -144,6 +145,16 @@ export default {
     }),
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    imagePath() {
+      switch (this.routerTPL) {
+        default:
+          return "_new";
+        case "sp1":
+          return "sp1";
+        case "porn1":
+          return "porn1";
+      }
     },
     list() {
       return [
@@ -304,9 +315,9 @@ export default {
   }
 
   &.porn1 {
-    color: $main_footer_color1;
+    color: #707994;
     &.active {
-      color: $main_footer_active_color1;
+      color: #323943;
     }
   }
 
