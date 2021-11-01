@@ -271,6 +271,12 @@ export default {
             let promotionId = this.src.split("?")[0].split("/")[
               this.src.split("?")[0].split("/").length - 1
             ];
+
+            if (!promotionId) {
+              this.contentTitle = "";
+              return;
+            }
+
             res.data.ret.forEach(promo => {
               if (promo.link.includes(promotionId)) {
                 this.contentTitle = promo.name;
