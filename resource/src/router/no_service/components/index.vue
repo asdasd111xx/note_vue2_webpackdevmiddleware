@@ -42,7 +42,11 @@
         ]"
         @click="mailTo()"
       >
-        <span>{{ mailURL }}</span>
+        <div v-if="themeTPL == 'sg1'">
+          <span>paopao 客服邮箱 {{ mailURL }}</span> <br />
+          <span>paopao 主播邮箱 {{ liverMailURL }}</span>
+        </div>
+        <span v-else>{{ mailURL }}</span>
       </div>
 
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
@@ -139,6 +143,11 @@ export default {
 
       if (this.themeTPL === "sp1") {
         return "senghout5151@gmail.com";
+      }
+    },
+    liverMailURL() {
+      if (this.themeTPL === "sg1") {
+        return "cs2@paocs.co";
       }
     }
   },
