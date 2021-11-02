@@ -116,7 +116,7 @@
       <div v-if="statusList.editDetail" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
-          <template v-if="['ey1'].includes(themeTPL)">
+          <template>
             <div
               v-if="
                 (userLevelObj.virtual_bank_single ||
@@ -124,18 +124,18 @@
                   hasSameTypeCard
               "
               :class="$style['edit-option-item']"
-              @click="moveCard"
+              @click="moveCard(true)"
             >
               停用
             </div>
 
             <div
               v-if="
-                !userLevelObj.virtual_bank_single ||
+                !userLevelObj.virtual_bank_single &&
                   userLevelObj.virtual_bank_max > 1
               "
               :class="$style['edit-option-item']"
-              @click="moveCard"
+              @click="moveCard(false)"
             >
               {{ isCommon ? "移至历史帐号" : "移至我的电子钱包" }}
             </div>

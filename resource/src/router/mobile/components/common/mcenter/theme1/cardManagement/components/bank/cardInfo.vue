@@ -50,7 +50,7 @@
       <template>
         <div
           v-if="
-            isRevice && isCommon && bank_card.length <= userLevelObj.bank_max
+            isRevice && isCommon && bank_card.length < userLevelObj.bank_max
           "
           :class="$style['add-wrap']"
         >

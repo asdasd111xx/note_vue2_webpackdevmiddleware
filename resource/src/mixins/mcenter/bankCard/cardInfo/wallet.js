@@ -63,7 +63,7 @@ export default {
       //   case "ey1":
       return (
         (!this.userLevelObj.virtual_bank_single &&
-          this.wallet_card.length <= this.userLevelObj.virtual_bank_max) ||
+          this.wallet_card.length < this.userLevelObj.virtual_bank_max) ||
         (this.userLevelObj.virtual_bank_single && !this.isBindNowOpenAllWallets)
       );
       // }
@@ -173,7 +173,7 @@ export default {
         return;
       }
     },
-    moveCard() {
+    moveCard(isStop) {
       const { address, virtual_bank_id } = this.wallet_cardDetail;
 
       // 編輯會員電子錢包 C02.240 (取代C02.145)
@@ -195,8 +195,13 @@ export default {
           }
 
           this.actionSetGlobalMessage({
-            msg: this.isCommon ? "移至历史帐号 成功" : "移至我的电子钱包 成功"
+            msg: isStop
+              ? "停用成功"
+              : this.isCommon
+              ? "移至历史帐号 成功"
+              : "移至我的电子钱包 成功"
           });
+
           this.getUserWalletList().then(() => {
             // 切換當前頁面狀態
             this.$emit("update:statusList", {
