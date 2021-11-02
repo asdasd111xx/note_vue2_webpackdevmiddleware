@@ -1,21 +1,14 @@
 <template>
   <div :class="$style['mcenter-avatar-info-wrap']">
     <!-- 大頭照 -->
-    <div
-      :class="$style['avatar-wrap']"
-      @click="
-        loginStatus
-          ? $router.push('/mobile/mcenter/memberCard')
-          : $router.push('/mobile/login')
-      "
-    >
+    <div :class="$style['avatar-wrap']">
       <img :class="$style['avatar-pic']" :src="avatarSrc" />
-      <img
+      <!-- <img
         v-if="loginStatus"
         :class="$style['avatar-circle']"
         :src="$getCdnPath(`/static/image/sg1/mcenter/avatar_frame.png`)"
         alt=""
-      />
+      /> -->
     </div>
 
     <!-- 姓名/註冊 -->
@@ -58,21 +51,83 @@
         <span v-else>- -</span>
         追踪人数
       </div>
-      <div :class="$style['favorite']">
-        <span v-if="favorite > 0">{{ favorite }}</span>
+      <div :class="$style['tool']">
+        <span v-if="tool > 0">{{ tool }}</span>
         <span v-else>- -</span>
-        我的最爱
+        道具
       </div>
-      <div :class="$style['bubbles']">
-        <span v-if="bubbles > 0">{{ bubbles }}</span>
-        <span v-else>- -</span>
-        送出泡泡
+    </div>
+    <div :class="$style['data-content']">
+      <p :class="$style['motto']">
+        {{ motto }}
+      </p>
+    </div>
+    <div :class="$style['about']">
+      <h3>个人信息</h3>
+
+      <li>
+        <i
+          ><img
+            src="/static/image/sg1/mcenter/memberCard/ic_member.png"
+            alt=""/></i
+        >会员帐号 <span style="margin-left: 35px;">33*******14</span>
+      </li>
+      <li>
+        <i
+          ><img
+            src="/static/image/sg1/mcenter/memberCard/ic_birthday.png"
+            alt=""/></i
+        >生日<span>2017-08-09</span>
+      </li>
+      <li>
+        <i
+          ><img
+            src="/static/image/sg1/mcenter/memberCard/ic_location.png"
+            alt=""/></i
+        >地区 <span>北京</span>
+      </li>
+      <li>
+        <i
+          ><img
+            src="/static/image/sg1/mcenter/memberCard/ic_love.png"
+            alt=""/></i
+        >感情 <span>单身</span>
+      </li>
+    </div>
+    <div :class="$style['recommand-wrap']">
+      <div v-if="getAgentLink" :class="$style['qrcode-wrap']">
+        <qrcode
+          :value="getAgentLink"
+          :options="{ width: 105, margin: 1 }"
+          tag="img"
+        />
       </div>
+      <div v-else :class="$style['empty-qrcode-wrap']"></div>
+      <div :class="$style['button-wrap']">
+        <div @click="onQrcodeOpen">
+          <span :class="$style['button-text-1']">{{
+            $text("S_DOWNLOAD_QRCODE", "下载二维码")
+          }}</span>
+        </div>
+        <div @click="onCopy('LINK')">
+          <span :class="$style['button-text-2']">{{
+            $text("S_COPY_PROMOTION_LINK", "复制推广连结")
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <div
+      :class="$style['go-edit']"
+      @click="$router.push('/mobile/mcenter/accountData')"
+    >
+      编辑资料
     </div>
   </div>
 </template>
 
 <script>
+import friendsRecommend from "@/mixins/mcenter/management/friendsRecommend";
+import promoteFunction from "@/mixins/mcenter/management/promoteFunction";
 import { mapGetters, mapActions } from "vuex";
 import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -80,15 +135,17 @@ import axios from "axios";
 
 export default {
   components: {},
+  mixins: [friendsRecommend, promoteFunction],
   data() {
     return {
       isShow: false,
       msg: "",
       viplevel: "",
       follower: 0,
-      favorite: 0,
-      bubbles: 0,
-      avatarSrc: `/static/image/common/default/avatar_nologin.png`
+      tool: 0,
+      motto: "渴望追求某种事物的话，整个宇宙都会联合起来帮你完成",
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`,
+      landingLink: ""
     };
   },
   computed: {
@@ -97,15 +154,32 @@ export default {
       memInfo: "getMemInfo",
       memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
-      siteConfig: "getSiteConfig"
-    })
+      agentLink: "getAgentLink",
+      siteConfig: "getSiteConfig",
+      promotionLink: "getPromotionLink"
+    }),
+    getAgentLink() {
+      if (this.promotionLink) {
+        return this.promotionLink;
+      }
+
+      if (!this.agentLink.domain || !this.agentLink.agentCode) {
+        return "";
+      }
+
+      return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    }
   },
   mounted() {
     this.getUserViplevel();
     this.getAvatarSrc();
+    if (this.loginStatus) {
+      // 已登入：註冊頁
+      this.actionSetAgentLink();
+    }
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetAgentLink"]),
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
@@ -164,21 +238,17 @@ export default {
 @import "~@/css/variable.scss";
 .mcenter-avatar-info-wrap {
   width: 100%;
-  height: 310px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border-radius: 0px 0px 10px 10px;
-  box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.08);
-  margin: 0 0 10px 0;
-  padding: 10px;
   background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
       no-repeat,
     #fff;
 
   @media screen and (min-width: 800px) {
-    background-size: 95% 45%;
+    background-size: 95% 15%;
   }
 }
 
@@ -231,7 +301,7 @@ export default {
 }
 
 .data-content {
-  margin-top: 15px;
+  margin-top: 8px;
   border-top: 1px solid #eeeeee;
   width: 100%;
   display: flex;
@@ -243,5 +313,84 @@ export default {
     display: block;
     font-size: 16px;
   }
+
+  .motto {
+    margin: 5px 0;
+    background-color: #ededed;
+    color: #939393;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+}
+
+.about {
+  text-align: left;
+  margin-right: auto;
+  padding: 0px 15px;
+  h3 {
+    font-size: 14px;
+  }
+
+  li {
+    list-style: none;
+    color: #939393;
+    font-size: 12px;
+    i {
+      margin-right: 5px;
+    }
+    span {
+      margin-left: 60px;
+    }
+  }
+}
+
+.empty-qrcode-wrap {
+  width: 105px;
+  height: 105px;
+  background-color: #ededed;
+  opacity: 0.3;
+}
+.recommand-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+
+  .button-wrap {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: 15px;
+
+    .button-text-1 {
+      padding: 5px 25px;
+      border-radius: 15px;
+      border: 1px solid #000;
+      background-color: #eee;
+      color: #000;
+    }
+
+    .button-text-2 {
+      padding: 5px 20px;
+      border-radius: 15px;
+      border: 1px solid #000;
+      background-color: #eee;
+      color: #000;
+    }
+  }
+}
+
+.go-edit {
+  background-color: #000;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 23px;
+  width: 90%;
+  margin: 0px auto;
+  text-align: center;
+  padding: 10px 0;
 }
 </style>

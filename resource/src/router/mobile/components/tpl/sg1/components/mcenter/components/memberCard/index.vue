@@ -1,6 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['']">
+      <member-card-info :paopao-user-info="paopaoUserInfo" />
       <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
@@ -10,19 +11,20 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "@/router/mobile/components/tpl/sg1/components/common/mobileContainer";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
-
+import memberCardInfo from "./components/memberCardInfo";
 export default {
   components: {
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
       ),
-    mobileContainer
+    mobileContainer,
+    memberCardInfo
   },
   data() {
     return {
       isLoading: true,
-      personalInfo: {}
+      paopaoUserInfo: {}
     };
   },
   computed: {
@@ -35,7 +37,8 @@ export default {
         prev: true,
         onClick: () => {
           this.$router.back();
-        }
+        },
+        title: ""
       };
     }
   },
