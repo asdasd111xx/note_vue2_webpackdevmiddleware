@@ -188,19 +188,21 @@
               <span v-if="memInfo.user.name" :class="$style['field-text']">
                 {{ memInfo.user.name }}</span
               >
-              <span v-else :class="[$style['field-text'], $style['yet']]"
-                >姓名需与银行持卡人姓名一致，否则无法提现</span
-              >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/name')"
-              >
-                <div :class="$style['btn-next']">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                  />
+              <template v-else>
+                <span :class="[$style['field-text'], $style['yet']]"
+                  >姓名需与银行持卡人姓名一致，否则无法提现</span
+                >
+                <div
+                  :class="$style['feature-btn']"
+                  @click="$router.push('/mobile/mcenter/accountData/name')"
+                >
+                  <div :class="$style['btn-next']">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                    />
+                  </div>
                 </div>
-              </div>
+              </template>
             </div>
           </div>
           <div :class="[$style['account-data-field'], 'clearfix']">
