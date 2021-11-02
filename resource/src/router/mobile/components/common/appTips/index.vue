@@ -27,7 +27,7 @@
 
         <div :class="$style['content-wrap']">
           <div :class="[$style['title']]">
-            {{ siteName }}
+            {{ siteName + "APP" }}
           </div>
           <div :class="$style['desc']">
             {{ getText }}
@@ -150,8 +150,11 @@ export default {
       systemConfig: "getSystemConfig"
     }),
     siteName() {
-      if (this.siteConfig.ROUTER_TPL == "sg1") {
-        return "泡泡APP";
+      switch (this.siteConfig.ROUTER_TPL) {
+        case "sg1":
+          return "泡泡";
+        case "porn1":
+          return "币发";
       }
       return this.siteConfig.SITE_NAME;
     },
