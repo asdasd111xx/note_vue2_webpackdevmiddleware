@@ -2,6 +2,7 @@
   <div
     v-if="showType"
     :class="$style['ys-float-btn']"
+    @touchmove.prevent=""
     :style="{
       width: itemWidth + 'px',
       height: itemHeight + 'px',
@@ -220,6 +221,7 @@ export default {
     height: 70px;
     object-fit: contain;
     margin-top: 15px;
+    position: absolute;
   }
 
   // p {
