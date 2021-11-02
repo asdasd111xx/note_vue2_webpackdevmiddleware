@@ -3,10 +3,11 @@
     <div :class="$style['tips-title']">
       <div :class="$style['hr']"><div /></div>
       <div :class="$style['title-tips']">
-        温馨提示，如需帮助
+        温馨提示
+        <!-- ，如需帮助
         <span :class="$style['link']" @click="$router.push('/mobile/service')">
           请联系客服
-        </span>
+        </span> -->
       </div>
       <div :class="$style['hr']"><div /></div>
     </div>
@@ -22,18 +23,18 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  props: {
+    data: {
+      type: String
+    }
+  },
   data() {
     return {};
   },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    }
+    })
   }
 };
 </script>

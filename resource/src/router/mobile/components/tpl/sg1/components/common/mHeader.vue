@@ -179,11 +179,22 @@
 
     <!-- 幫助中心連結 -->
     <template v-if="headerConfig.hasHelp">
-      <div :class="[$style['btn-help']]" @click="handleHelpLinkTo">
-        <span v-if="headerConfig.hasHelp.type === 'deposit'">
+      <div :class="[$style['btn-help']]">
+        <span
+          v-if="headerConfig.hasHelp.type === 'deposit'"
+          @click="handleHelpLinkTo"
+        >
           教程
         </span>
-        <div :class="$style['btn-icon']">
+        <div
+          v-else-if="headerConfig.hasHelp.type === 'diamond'"
+          :class="$style['btn-icon']"
+          style="margin-right: 12px;"
+          @click="$router.push('/mobile/service')"
+        >
+          <img :src="$getCdnPath('/static/image/sg1/live/icon_service.png')" />
+        </div>
+        <div :class="$style['btn-icon']" @click="handleHelpLinkTo">
           <img :src="$getCdnPath('/static/image/sg1/common/btn_help.png')" />
         </div>
       </div>

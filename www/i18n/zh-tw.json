@@ -935,7 +935,6 @@
   "S_PROMOTIONS_MAIL": "优惠邮箱",
   "S_AGENT_CONTACT": "联系方式",
   "S_LOGIN_VIEW_BTN": "登录查看",
-  "S_LOGIN_WALLET": "中心钱包",
   "S_DEPOSIT_BTN": "充值",
   "S_TRANSFER_BTN": "转帐",
   "S_WITHFRAW_BTN": "提现",
@@ -1760,7 +1759,9 @@
   "S_BONUS": "红利彩金",
   "S_NO_BONUS_ACCOUNT": "暂时没有新的红利帐户",
   "S_BUY_DIAMOND": "购买钻石",
+  "S_EXCHANGE_DIAMOND": "兑换钻石",
   "S_DIAMOND_DISCOUNT": "钻石优惠",
+  "S_MY_DIAMOND": "我的钻石",
   "S_DIAMOND_RECOARD": "钻石记录",
   "S_TO_BUY": "如何购买",
   "S_INSTRUSTIONS": "使用方法",
@@ -1776,5 +1777,6 @@
   "PLEASE_TRY_AGAIN_AFTER_24_HOURS.": "请等待24小时后操作尝试",
   "PLEASE_TRY_AGAIN_AFTER_30_MINUTES.": "请稍等30分钟后尝试",
   "S_EXCHANGE": "兑换",
-  "S_SHOP": "商城"
+  "S_SHOP": "商城",
+  "S_GO_DEPOSIT": "去充值"
 }
