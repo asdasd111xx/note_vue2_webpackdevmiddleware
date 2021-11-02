@@ -26,8 +26,8 @@
                   memInfo.user.show_alias
                     ? memInfo.user.alias
                     : memInfo.user.username
-                }}</span
-              >
+                }}
+              </span>
             </div>
           </div>
           <div :class="[$style['account-data-field'], 'clearfix']">
@@ -105,8 +105,11 @@
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">直播暱稱</span>
             <div :class="$style['field-value']">
-              <span v-if="memInfo.user.alias" :class="$style['field-text']">
-                {{ memInfo.user.alias }}</span
+              <span
+                v-if="paopaoMemberCardInfo.alias"
+                :class="$style['field-text']"
+              >
+                {{ paopaoMemberCardInfo.alias }}</span
               >
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >尚未設定</span
@@ -126,7 +129,11 @@
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">簽名</span>
             <div :class="$style['field-value']">
-              <span v-if="!memInfo" :class="$style['field-text']">empty</span>
+              <span
+                v-if="paopaoMemberCardInfo.intro"
+                :class="$style['field-text']"
+                >{{ paopaoMemberCardInfo.intro }}</span
+              >
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >TA好像忘記簽名了</span
               >
@@ -145,7 +152,9 @@
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">地區</span>
             <div :class="$style['field-value']">
-              <span v-if="!memInfo" :class="$style['field-text']"> empty</span>
+              <span v-if="!memInfo" :class="$style['field-text']">{{
+                paopaoMemberCardInfo.hometown
+              }}</span>
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >請選擇所在地區</span
               >
@@ -164,7 +173,11 @@
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">感情</span>
             <div :class="$style['field-value']">
-              <span v-if="!memInfo" :class="$style['field-text']"> empty</span>
+              <span
+                v-if="paopaoMemberCardInfo.relationship"
+                :class="$style['field-text']"
+                >{{ paopaoMemberCardInfo.relationship }}</span
+              >
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >尚未設定</span
               >
@@ -348,6 +361,7 @@ export default {
       birthdayValue: "",
       showGenderEdit: false,
       selectGenderValue: "",
+      paopaoMemberCardInfo: {},
       addressInfo: {
         id: "",
         is_default: false,
@@ -359,6 +373,13 @@ export default {
   },
   created() {
     this.getAddress();
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/user/personal-info",
+      method: "get"
+    }).then(data => {
+      this.paopaoMemberCardInfo = data.result;
+      console.log("paopaoMemberCardInfo", this.paopaoMemberCardInfo);
+    });
   },
   computed: {
     ...mapGetters({
@@ -381,7 +402,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetSystemTime",
-      "actionSetGlobalMessage"
+      "actionSetGlobalMessage",
+      "actionGetExtRedirect"
     ]),
     openGenderEdit() {
       this.showGenderEdit = true;
