@@ -620,6 +620,12 @@ export default {
         case "代理":
           sendUmeng(18);
           break;
+        case "爆分":
+          sendUmeng(66);
+          break;
+        case "虚拟币":
+          sendUmeng(67);
+          break;
         default:
           break;
       }
@@ -784,9 +790,9 @@ export default {
       } else {
         switch (game.vendor) {
           //丝瓜直播
-          // case "sigua_ly":
-          //   sendUmeng(55);
-          //   break;
+          case "sigua_ly":
+            sendUmeng(65);
+            break;
           // 币发视频;
           case "YV":
             sendUmeng(56);
