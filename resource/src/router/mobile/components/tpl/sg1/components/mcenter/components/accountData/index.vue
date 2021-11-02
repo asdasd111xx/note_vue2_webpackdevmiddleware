@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import account from '@/router/mobile/components/tpl/porn1/components/mcenter/components/accountData/components/index';
+import { mapGetters, mapActions } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import account from "./components/index";
 
 export default {
   components: {
@@ -21,20 +21,21 @@ export default {
     account
   },
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     headerConfig() {
       return {
         prev: true,
-        onClick: () => { this.$router.push('/mobile/mcenter/home'); },
-        title: this.$text("S_PERSON_INFO", "个人资料"),
+        onClick: () => {
+          this.$router.push("/mobile/mcenter/home");
+        },
+        title: this.$text("S_PERSON_INFO", "个人资料")
       };
-    },
+    }
   }
 };
 </script>
