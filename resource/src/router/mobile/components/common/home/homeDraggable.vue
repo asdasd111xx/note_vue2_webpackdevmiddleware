@@ -28,6 +28,7 @@
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import openGame from "@/lib/open_game";
 import { mapActions, mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   name: "FloatImgBtn",
   data() {
@@ -36,12 +37,14 @@ export default {
       currentTop: 0,
       clientWidth: 0,
       clientHeight: 0,
-      itemWidth: 70,
-      itemHeight: 90,
+      itemWidth: 90,
+      itemHeight: 110,
       gapWidth: 10,
-      coefficientHeight: 0.8,
+      coefficientHeight: 0.79,
       left: 0,
-      top: 0
+      top: 0,
+      trialList: [],
+      promotionId: 0
     };
   },
   props: {
@@ -52,15 +55,26 @@ export default {
     listIndex: {
       type: Number,
       default: 0
+    },
+    totalCount: {
+      type: Number,
+      default: 0
     }
   },
   created() {
     this.clientWidth = document.documentElement.clientWidth;
     this.clientHeight = document.documentElement.clientHeight;
     this.left = this.clientWidth - this.itemWidth - this.gapWidth;
-    this.top = this.clientHeight * this.coefficientHeight - 90 * this.listIndex;
+    this.top =
+      this.clientHeight * this.coefficientHeight -
+      this.itemHeight * (this.totalCount - this.listIndex - 1);
     // console.log(this.floatData);
     // console.log(this.listIndex);
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
   },
   mounted() {
     window.addEventListener("scroll", this.handleScrollStart);
@@ -112,7 +126,6 @@ export default {
       promotion->優小秘(linkDetail會有值)
       external->外部連結(linkDetail會有值)
       */
-      console.log("link to somewhere");
 
       switch (this.floatData.linkType) {
         case "internal":
@@ -122,42 +135,53 @@ export default {
           });
           break;
         case "game":
-          const openGameSuccessFunc = res => {};
+          let gameLinkType = 0;
+          switch (this.floatData.kind) {
+            case 1:
+              gameLinkType = "sport";
+              break;
 
-          const openGameFailFunc = res => {
-            if (res && res.data) {
-              let data = res.data;
-              this.actionSetGlobalMessage({
-                msg: data.msg,
-                code: data.code,
-                origin: "home"
-              });
-            }
-          };
+            case 2:
+              gameLinkType = "live";
+              break;
 
-          openGame(
-            {
-              kind: this.floatData.kind,
-              vendor: this.floatData.vendor,
-              code: this.floatData.code,
-              getGames: true
-            },
-            openGameSuccessFunc,
-            openGameFailFunc
-          );
+            case 3:
+              gameLinkType = "casino";
+              break;
+
+            case 4:
+              gameLinkType = "lottery";
+              break;
+
+            case 5:
+              gameLinkType = "card";
+              break;
+
+            case 6:
+              gameLinkType = "mahjong";
+              break;
+
+            default:
+              break;
+          }
+          this.mobileLinkOpen({
+            linkType: gameLinkType,
+            linkTo: this.floatData.vendor,
+            linkItem: { "zh-cn": this.floatData.code }
+          });
           break;
         case "promotion":
-          this.mobileLinkOpen({
-            linkType: "mi",
-            linkTo: this.floatData.linkDetail
-          });
+          this.getPromotionList(this.floatData.linkDetail);
+          break;
         case "external":
           // let newWindow;
           // newWindow = window.open(`${this.floatData.linkDetail}`, "_blank");
-          this.mobileLinkOpen({
-            linkType: this.floatData.linkType,
-            linkTo: this.floatData.linkDetail
-          });
+          // this.mobileLinkOpen({
+          //   linkType: this.floatData.linkType,
+          //   linkTo: this.floatData.linkDetail
+          // });
+          localStorage.setItem("iframe-third-url", this.floatData.linkDetail);
+          this.$router.push(`/mobile/iframe/home`);
           break;
         default:
           break;
@@ -187,6 +211,28 @@ export default {
         }
         clearTimeout(this.timer);
       }
+    },
+    getPromotionList(id) {
+      this.promotionId = id;
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+        params: {
+          tabId: 0
+        }
+      }).then(res => {
+        if (res && res.data) {
+          this.mobileLinkOpen({
+            linkType: "mi",
+            linkTitle: res.data.ret.find(data => {
+              return data.id === this.promotionId;
+            }).name,
+            linkTo: res.data.ret.find(data => {
+              return data.id === this.promotionId;
+            }).link
+          });
+        }
+      });
     }
   }
 };
@@ -217,8 +263,8 @@ export default {
   }
 
   .data-image {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
     margin-top: 15px;
     position: absolute;

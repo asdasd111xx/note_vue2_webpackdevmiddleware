@@ -14,7 +14,12 @@
       <home-new />
       <home-content />
       <template v-for="(item, idx) in floatData">
-        <home-draggable v-bind:key="idx" :floatData="item" :listIndex="idx" />
+        <home-draggable
+          v-bind:key="idx"
+          :floatData="item"
+          :listIndex="idx"
+          :totalCount="floatData.length"
+        />
       </template>
       <envelope
         v-if="needShowRedEnvelope"
