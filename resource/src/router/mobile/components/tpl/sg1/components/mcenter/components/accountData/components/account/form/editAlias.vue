@@ -1,5 +1,21 @@
 <template>
   <div slot="content" :class="$style['content-wrap']">
+    <!-- 暱稱變更阻擋提示 -->
+    <transition name="fade">
+      <div v-show="cantEditAlias" :class="$style['alert-dialog-masker']">
+        <div :class="$style['alert-dialog-wrap']">
+          <h3>提示</h3>
+          <p>修改次数不足，请购买更名卡后 再重新操作</p>
+          <div :class="$style['btn-wrap']">
+            <span @click="cantEditAlias = false">取消</span>
+            <span @click="$router.push('/mobile/live/iframe/tool')"
+              >去购买</span
+            >
+          </div>
+        </div>
+      </div>
+    </transition>
+
     <account-header :header-config="headerConfig" />
     <div :class="[$style.wrap, 'clearfix']">
       <!-- 錯誤訊息 -->
@@ -29,7 +45,7 @@
         </div>
       </div>
     </div>
-    <service-tips :edit="edit" :type="'alias'" />
+    <!-- <service-tips :edit="edit" :type="'alias'" /> -->
   </div>
 </template>
 
@@ -53,7 +69,8 @@ export default {
     return {
       value: "",
       tipMsg: "",
-      showNickname: false
+      showNickname: false,
+      cantEditAlias: false
     };
   },
   mounted() {
@@ -79,6 +96,7 @@ export default {
     }
   },
   created() {
+    this.checkAliasEdit();
     //  是否顯示暱稱 尚未實作
     this.showNickname = this.memInfo.user.show_alias;
     this.value = this.memInfo.user.alias;
@@ -87,7 +105,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionGetExtRedirect"
     ]),
     onInput(e) {
       this.actionVerificationFormData({
@@ -97,6 +116,16 @@ export default {
         this.value = val;
       });
     },
+    checkAliasEdit() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/alias-update-status",
+        method: "get"
+      }).then(data => {
+        if (data.result.allow_update == false) {
+          this.cantEditAlias = true;
+        }
+      });
+    },
     handleSubmit() {
       // 驗證失敗
       //   if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
@@ -104,22 +133,30 @@ export default {
       //     return Promise.resolve(result);
       //   }
 
-      const setNickname = mcenter.accountDataSet({
-        params: {
-          alias: this.value.substring(0, 20)
-        }
-      });
+      // const setNickname = mcenter.accountDataSet({
+      //   params: {
+      //     alias: this.value.substring(0, 20)
+      //   }
+      // });
 
-      const setShowNickname = ajax({
+      // const setShowNickname = ajax({
+      //   method: "put",
+      //   url: this.showNickname
+      //     ? API_MCENTER_ENABLE_ALIAS
+      //     : API_MCENTER_DISABLE_ALIAS,
+      //   errorAlert: false
+      // });
+
+      this.checkAliasEdit();
+
+      const setNickname = this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/update-alias",
         method: "put",
-        url: this.showNickname
-          ? API_MCENTER_ENABLE_ALIAS
-          : API_MCENTER_DISABLE_ALIAS,
-        errorAlert: false
+        data: { alias: this.value.substring(0, 20) }
       });
 
-      return Promise.all([setNickname, setShowNickname]).then(response => {
-        if (response.every(res => res.result === "ok")) {
+      return Promise.all([setNickname]).then(response => {
+        if (response.every(res => res.result === "success")) {
           localStorage.setItem("set-account-success", true);
           this.$router.push("/mobile/mcenter/accountData");
         }

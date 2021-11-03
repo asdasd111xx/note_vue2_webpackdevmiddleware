@@ -144,59 +144,59 @@ export default {
       ),
     accountDataAliasSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataAliasSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editAlias"
+        /* webpackChunkName: 'accountDataAliasSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editAlias"
       ),
     accountDataNameSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataNameSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editName"
+        /* webpackChunkName: 'accountDataNameSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editName"
       ),
     accountDataPhoneSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataPhoneSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editPhone"
+        /* webpackChunkName: 'accountDataPhoneSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editPhone"
       ),
     accountDataEmailSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataEmailSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editEmail"
+        /* webpackChunkName: 'accountDataEmailSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editEmail"
       ),
     accountDataQqSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataQqSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editQq"
+        /* webpackChunkName: 'accountDataQqSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editQq"
       ),
     accountDataLineSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataLineSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editLine"
+        /* webpackChunkName: 'accountDataLineSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editLine"
       ),
     accountDataWeixinSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataWeixinSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWeixin"
+        /* webpackChunkName: 'accountDataWeixinSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editWeixin"
       ),
     accountDataBirthdaySg1: () =>
       import(
-        /* webpackChunkName: 'accountDataBirthdaySg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editBirthday"
+        /* webpackChunkName: 'accountDataBirthdaySg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editBirthday"
       ),
     accountDataWithdrawpwdSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataWithdrawpwdSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
+        /* webpackChunkName: 'accountDataWithdrawpwdSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"
       ),
     accountDataSkypeSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataSkypeSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editSkype"
+        /* webpackChunkName: 'accountDataSkypeSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editSkype"
       ),
     accountDataTelegramSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataTelegramSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editTelegram"
+        /* webpackChunkName: 'accountDataTelegramSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editTelegram"
       ),
     accountDataKakaotalkSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataKakaotalkSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
+        /* webpackChunkName: 'accountDataKakaotalkSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editKakaotalk"
       ),
     accountDataReceiptAddressSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataReceiptAddressSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/editReceiptAddress"
+        /* webpackChunkName: 'accountDataReceiptAddressSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editReceiptAddress"
       ),
     accountDataAddAddressSg1: () =>
       import(
-        /* webpackChunkName: 'accountDataAddAddressSg1' */ "../../tpl/porn1/components/mcenter/components/accountData/components/account/form/addReceiptAddress"
+        /* webpackChunkName: 'accountDataAddAddressSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/addReceiptAddress"
       ),
     makeMoneySg1: () =>
       import(

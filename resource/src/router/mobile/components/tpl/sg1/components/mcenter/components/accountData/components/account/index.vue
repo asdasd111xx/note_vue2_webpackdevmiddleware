@@ -15,22 +15,6 @@
       </div>
     </transition>
 
-    <!-- 暱稱變更阻擋提示 -->
-    <transition name="fade">
-      <div v-show="cantEditAlias" :class="$style['alert-dialog-masker']">
-        <div :class="$style['alert-dialog-wrap']">
-          <h3>提示</h3>
-          <p>修改次数不足，请购买更名卡后 再重新操作</p>
-          <div :class="$style['btn-wrap']">
-            <span @click="cantEditAlias = false">取消</span>
-            <span @click="$router.push('/mobile/live/iframe/tool')"
-              >去购买</span
-            >
-          </div>
-        </div>
-      </div>
-    </transition>
-
     <account-wrap>
       <template>
         <template>
@@ -132,7 +116,10 @@
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >尚未設定</span
               >
-              <div :class="$style['feature-btn']" @click="checkAliasEdit()">
+              <div
+                :class="$style['feature-btn']"
+                @click="$router.push('/mobile/mcenter/accountData/alias')"
+              >
                 <div :class="$style['btn-next']">
                   <img
                     :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -371,7 +358,6 @@ export default {
       currentTab: 0,
       currentEdit: "",
       showSuccess: false,
-      cantEditAlias: false,
       birthdayValue: "",
       showGenderEdit: false,
       selectGenderValue: "",
@@ -392,7 +378,6 @@ export default {
       method: "get"
     }).then(data => {
       this.paopaoMemberCardInfo = data.result;
-      // console.log("paopaoMemberCardInfo", this.paopaoMemberCardInfo);
     });
   },
   computed: {
@@ -424,18 +409,6 @@ export default {
     },
     cancelGenderEdit() {
       this.selectGenderValue = "";
-    },
-    checkAliasEdit() {
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/alias-update-status",
-        method: "get"
-      }).then(data => {
-        if (data.result.allow_update == true) {
-          this.$router.push("/mobile/mcenter/accountData/alias");
-        } else {
-          this.cantEditAlias = true;
-        }
-      });
     },
     handleGenderSubmit() {
       // 空值驗證

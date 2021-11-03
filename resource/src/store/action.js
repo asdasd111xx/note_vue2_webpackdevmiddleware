@@ -2447,16 +2447,18 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
   const {
     externalID = "cubechat_master",
     api_uri = "",
-    method = "get"
+    method = "get",
+    data = {}
   } = params;
 
   return goLangApiRequest({
-    method: "get",
+    method: "post",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/${externalID}`,
     params: {
       externalID,
       api_uri,
-      method
+      method,
+      ...data
     }
   }).then(res => {
     if (res && res.data) {
