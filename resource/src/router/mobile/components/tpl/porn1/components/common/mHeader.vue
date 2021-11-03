@@ -634,9 +634,10 @@ export default {
 
 .wrap {
   position: absolute;
-  top: 0;
+  top: -1px;
   left: 0;
   width: 100%;
+  background-color: #fff;
 }
 
 .title {
@@ -646,7 +647,7 @@ export default {
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
-  background: #fff;
+  background: transparent;
   max-width: 66%;
   overflow: hidden;
   text-overflow: ellipsis;
