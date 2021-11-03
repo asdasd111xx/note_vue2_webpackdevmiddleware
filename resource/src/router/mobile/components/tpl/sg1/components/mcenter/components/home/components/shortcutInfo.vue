@@ -76,7 +76,7 @@
         :class="$style['sec-1']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/makeMoney')
+            ? $router.push('/mobile/live/iframe/icon_guard')
             : $router.push('/mobile/login')
         "
       >

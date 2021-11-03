@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      src: "https://client-dev.cubechat.asia/"
+      src: ""
     };
   },
   computed: {
@@ -59,7 +59,8 @@ export default {
       "style",
       "contribute",
       "experince",
-      "rank"
+      "rank",
+      "guard"
     ];
 
     if (!livePagelist.includes(this.pageType)) {
@@ -67,11 +68,26 @@ export default {
     }
   },
   mounted() {
-    this.actionGetExtRedirect({
-      api_uri: "/api/platform/v1/view-path",
-      method: "get"
-    }).then(result => {
-      console.log(result);
+    if (this.loginStatus) {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/view-path",
+        method: "get"
+      }).then(result => {
+        console.log(result);
+      });
+    }
+
+    goLangApiRequest({
+      method: "post",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+      params: {
+        code: "cubechat_master",
+        clientUri: "https://client-dev.cubechat.asia/"
+      }
+    }).then(res => {
+      if (res && res.data && res.data.uri) {
+        this.src = res.data.uri;
+      }
     });
   },
   methods: {

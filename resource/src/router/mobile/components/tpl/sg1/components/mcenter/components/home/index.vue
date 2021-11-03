@@ -42,12 +42,14 @@ export default {
     }
   },
   created() {
-    this.actionGetExtRedirect({
-      api_uri: "/api/platform/v1/user/front-page",
-      method: "get"
-    }).then(data => {
-      this.paopaoUserInfo = data.result;
-    });
+    if (this.loginStatus) {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/front-page",
+        method: "get"
+      }).then(data => {
+        this.paopaoUserInfo = data.result;
+      });
+    }
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"])
