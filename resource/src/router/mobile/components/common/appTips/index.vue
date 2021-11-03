@@ -150,7 +150,7 @@ export default {
     }),
     siteName() {
       if (this.siteConfig.ROUTER_TPL == "sg1") {
-        return "泡泡APP";
+        return "泡泡直播APP";
       }
       return this.siteConfig.SITE_NAME;
     },
