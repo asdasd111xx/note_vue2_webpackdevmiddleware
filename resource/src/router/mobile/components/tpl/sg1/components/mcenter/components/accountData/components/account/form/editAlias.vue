@@ -69,7 +69,6 @@ export default {
     return {
       value: "",
       tipMsg: "",
-      showNickname: false,
       cantEditAlias: false
     };
   },
@@ -97,9 +96,14 @@ export default {
   },
   created() {
     this.checkAliasEdit();
-    //  是否顯示暱稱 尚未實作
-    this.showNickname = this.memInfo.user.show_alias;
-    this.value = this.memInfo.user.alias;
+
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/user/personal-info",
+      method: "get"
+    }).then(data => {
+      this.paopaoMemberCardInfo = data.result;
+      this.value = this.paopaoMemberCardInfo.alias;
+    });
   },
   methods: {
     ...mapActions([
@@ -132,20 +136,6 @@ export default {
       //     this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
       //     return Promise.resolve(result);
       //   }
-
-      // const setNickname = mcenter.accountDataSet({
-      //   params: {
-      //     alias: this.value.substring(0, 20)
-      //   }
-      // });
-
-      // const setShowNickname = ajax({
-      //   method: "put",
-      //   url: this.showNickname
-      //     ? API_MCENTER_ENABLE_ALIAS
-      //     : API_MCENTER_DISABLE_ALIAS,
-      //   errorAlert: false
-      // });
 
       this.checkAliasEdit();
 
