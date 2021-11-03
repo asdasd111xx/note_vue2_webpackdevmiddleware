@@ -491,6 +491,13 @@ export default {
             if (!url.includes("v=m")) {
               url = `${url}&v=m`;
             }
+
+            const isH5 = !window.navigator.standalone;
+            if (!url.includes("platform=h5") && isH5) {
+              url = `${url}&platform=h5`;
+            }
+
+            this.contentTitle = localStorage.getItem("iframe-third-url-title");
             this.src = url;
             return;
           }
