@@ -234,7 +234,13 @@ export default {
         this.selectedBank = value;
 
         if (this.curModeGroup.channel_display) {
-          this.getPayPass();
+          //代客充值 payment_method_id = 20
+          //因未充值過的會員一進去充值畫面剛好是代客充值的欄位 直接call getPayPass api會報錯
+          if (this.curPayInfo.payment_method_id === 20) {
+            this.getVendorCryptoOuterUserAddressList();
+          } else {
+            this.getPayPass();
+          }
         }
       }
     },
