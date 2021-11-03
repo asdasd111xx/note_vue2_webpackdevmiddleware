@@ -152,9 +152,9 @@ export default {
     siteName() {
       switch (this.siteConfig.ROUTER_TPL) {
         case "sg1":
-          return "泡泡";
+          return "泡泡直播";
         case "porn1":
-          return "币发";
+          return "币发BIFA ";
       }
       return this.siteConfig.SITE_NAME;
     },
