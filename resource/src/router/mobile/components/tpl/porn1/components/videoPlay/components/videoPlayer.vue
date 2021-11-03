@@ -342,7 +342,7 @@ export default {
       bonunsProcess.processType = "loading";
     },
     checkTPL() {
-      if (!["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL)) {
+      if (!["porn1", "sg1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
         this.isInit = true;
         this.isActiveBouns = false;
         if (!this.loginStatus) {
