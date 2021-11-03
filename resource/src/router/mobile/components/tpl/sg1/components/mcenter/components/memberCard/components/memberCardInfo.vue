@@ -47,7 +47,9 @@
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']">
-        <span v-if="follower > 0">{{ follower }}</span>
+        <span v-if="cardInfoTop.track_toatl > 0">{{
+          cardInfoTop.track_toatl
+        }}</span>
         <span v-else>- -</span>
         追踪人数
       </div>
@@ -59,7 +61,7 @@
     </div>
     <div :class="$style['data-content']">
       <p :class="$style['motto']">
-        {{ motto }}
+        {{ cardInfo.intro }}
       </p>
     </div>
     <div :class="$style['about']">
@@ -70,28 +72,28 @@
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_member.png"
             alt=""/></i
-        >会员帐号 <span style="margin-left: 35px;">33*******14</span>
+        >会员帐号 <span style="margin-left: 35px;">{{ cardInfo.alias }}</span>
       </li>
       <li>
         <i
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_birthday.png"
             alt=""/></i
-        >生日<span>2017-08-09</span>
+        >生日<span>{{ memInfo.user.birthday }}</span>
       </li>
       <li>
         <i
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_location.png"
             alt=""/></i
-        >地区 <span>北京</span>
+        >地区 <span>{{ cardInfo.hometown }}</span>
       </li>
       <li>
         <i
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_love.png"
             alt=""/></i
-        >感情 <span>单身</span>
+        >感情 <span>{{ cardInfo.relationship }}</span>
       </li>
     </div>
     <div :class="$style['recommand-wrap']">
@@ -116,6 +118,15 @@
         </div>
       </div>
     </div>
+
+    <!-- 連結複製提示與 QR Code -->
+    <popup
+      v-if="isPopup"
+      :type="popupType"
+      :link="getAgentLink"
+      @close="onPopupClose"
+    />
+
     <div
       :class="$style['go-edit']"
       @click="$router.push('/mobile/mcenter/accountData')"
@@ -134,14 +145,27 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 
 export default {
-  components: {},
+  components: {
+    popup: () => import(/* webpackChunkName: 'popup' */ "./popup/index")
+  },
   mixins: [friendsRecommend, promoteFunction],
+  props: {
+    //名片上方追蹤人數
+    cardInfoTop: {
+      type: Object,
+      default: {}
+    },
+    //個人信息
+    cardInfo: {
+      type: Object,
+      default: {}
+    }
+  },
   data() {
     return {
       isShow: false,
       msg: "",
       viplevel: "",
-      follower: 0,
       tool: 0,
       motto: "渴望追求某种事物的话，整个宇宙都会联合起来帮你完成",
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,

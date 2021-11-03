@@ -1,7 +1,10 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['']">
-      <member-card-info :paopao-user-info="paopaoUserInfo" />
+      <member-card-info
+        :card-info="paopaoMemberCardInfo"
+        :card-info-top="paopaoMemberCardInfoTop"
+      />
       <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
@@ -24,7 +27,8 @@ export default {
   data() {
     return {
       isLoading: true,
-      paopaoUserInfo: {}
+      paopaoMemberCardInfo: {},
+      paopaoMemberCardInfoTop: {}
     };
   },
   computed: {
@@ -49,12 +53,26 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
     init() {
+      //取得個人信息資料 暱稱,地區,感情
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/personal-info",
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        this.personalInfo = data.result;
+        if (data.result) {
+          this.paopaoMemberCardInfo = data.result;
+        }
+      });
+
+      //取得追蹤人數
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/front-page",
+        method: "get"
+      }).then(data => {
+        this.isLoading = false;
+        if (data.result) {
+          this.paopaoMemberCardInfoTop = data.result;
+        }
       });
     }
   }

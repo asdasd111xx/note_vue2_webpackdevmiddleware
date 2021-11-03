@@ -23,11 +23,7 @@
       <div>
         <template v-if="loginStatus">
           <span :class="$style['info-name']">
-            {{
-              memInfo.user.show_alias
-                ? memInfo.user.alias
-                : memInfo.user.username
-            }}
+            {{ paopaoUserInfo.alias }}
           </span>
         </template>
         <template v-else>
@@ -54,17 +50,23 @@
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']">
-        <span v-if="follower > 0">{{ follower }}</span>
+        <span v-if="paopaoUserInfo.track_total > 0">{{
+          paopaoUserInfo.track_total
+        }}</span>
         <span v-else>- -</span>
         追踪人数
       </div>
       <div :class="$style['favorite']">
-        <span v-if="favorite > 0">{{ favorite }}</span>
+        <span v-if="paopaoUserInfo.favorite_total > 0">{{
+          paopaoUserInfo.favorite_total
+        }}</span>
         <span v-else>- -</span>
         我的最爱
       </div>
       <div :class="$style['bubbles']">
-        <span v-if="bubbles > 0">{{ bubbles }}</span>
+        <span v-if="paopaoUserInfo.paopao_total > 0">{{
+          paopaoUserInfo.paopao_total
+        }}</span>
         <span v-else>- -</span>
         送出泡泡
       </div>
@@ -80,14 +82,17 @@ import axios from "axios";
 
 export default {
   components: {},
+  props: {
+    paopaoUserInfo: {
+      type: Object,
+      default: {}
+    }
+  },
   data() {
     return {
       isShow: false,
       msg: "",
       viplevel: "",
-      follower: 0,
-      favorite: 0,
-      bubbles: 0,
       avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
