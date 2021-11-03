@@ -124,7 +124,8 @@ export default {
       isFullScreen: false,
       src: "",
       showBack: true,
-      contentTitle: ""
+      contentTitle: "",
+      exitCheck: false
     };
   },
   components: {
