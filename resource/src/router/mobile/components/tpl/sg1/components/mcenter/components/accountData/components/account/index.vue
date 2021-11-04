@@ -69,7 +69,10 @@
                 <span :class="[$style['field-text'], $style['yet']]"
                   >未選擇</span
                 >
-                <div :class="$style['feature-btn']" @click="openGenderEdit()">
+                <div
+                  :class="$style['feature-btn']"
+                  @click="showGenderEdit = true"
+                >
                   <div :class="$style['btn-next']">
                     <img
                       :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -79,8 +82,8 @@
               </template>
             </div>
             <!-- 性別編輯/修改 -->
-            <template v-if="showGenderEdit">
-              <div :class="$style['gender-input-wrap']">
+            <template>
+              <div v-if="showGenderEdit" :class="$style['gender-input-wrap']">
                 <select v-model="selectGenderValue">
                   <option value="1">{{ $t("S_MALE") }}</option>
                   <option value="2">{{ $t("S_FEMALE") }}</option>
@@ -154,15 +157,17 @@
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">地區</span>
             <div :class="$style['field-value']">
-              <span v-if="!memInfo" :class="$style['field-text']">{{
-                paopaoMemberCardInfo.hometown
-              }}</span>
+              <span
+                v-if="paopaoMemberCardInfo.hometown"
+                :class="$style['field-text']"
+                >{{ paopaoMemberCardInfo.hometown }}
+              </span>
               <span v-else :class="[$style['field-text'], $style['yet']]"
-                >請選擇所在地區</span
-              >
+                >請選擇所在地區
+              </span>
               <div
                 :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData')"
+                @click="showHometownEdit = true"
               >
                 <div :class="$style['btn-next']">
                   <img
@@ -171,6 +176,86 @@
                 </div>
               </div>
             </div>
+            <!-- 修改地區 -->
+            <template v-if="showHometownEdit">
+              <div :class="$style['more-method-wrap']">
+                <div :class="$style['more-method-container']">
+                  <div :class="$style['more-method-header']">
+                    <div
+                      :class="$style['prev']"
+                      @click="showHometownEdit = false"
+                    >
+                      {{ $text("S_CANCEL", "取消") }}
+                    </div>
+                    <div :class="$style['confirm']" @click="submitHometown">
+                      {{ $text("S_CONFIRM_2", "确定") }}
+                    </div>
+                    <div :class="$style['title']">
+                      地區
+                    </div>
+                  </div>
+
+                  <div :class="$style['more-method-content']">
+                    <div :class="$style['city']">
+                      <div
+                        v-for="(item, index) in cityList"
+                        :key="index"
+                        :class="$style['cell']"
+                      >
+                        <button :key="index" @mouseup="getSelectedCity(item)">
+                          {{ item.title }}
+                        </button>
+                      </div>
+                    </div>
+                    <div :class="$style['district']">
+                      <div
+                        v-for="(item, index) in districtList"
+                        :key="index"
+                        :class="$style['cell']"
+                      >
+                        <button
+                          :key="index"
+                          @mouseup="getSelectedDistrict(item)"
+                        >
+                          {{ item.title }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div :class="$style['more-method-content']">
+                    <select
+                      :class="$style['city']"
+                      v-model="selectedCity"
+                      id="selectcity"
+                      autofocus
+                    >
+                      <option
+                        v-for="(item, index) in cityList"
+                        :key="index"
+                        :class="$style['cell']"
+                      >
+                        {{ item.title }}
+                      </option>
+                    </select>
+                    <select
+                      :class="$style['district']"
+                      v-model="selectedDistrict"
+                      id="selectdistrict"
+                      autofocus
+                    >
+                      <option
+                        v-for="(item, index) in districtList"
+                        :key="index"
+                        :class="$style['cell']"
+                      >
+                        {{ item.title }}
+                      </option>
+                    </select>
+                  </div> -->
+                </div>
+              </div>
+            </template>
           </div>
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">感情</span>
@@ -360,8 +445,57 @@ export default {
       showSuccess: false,
       birthdayValue: "",
       showGenderEdit: false,
+      showHometownEdit: false,
       selectGenderValue: "",
       paopaoMemberCardInfo: {},
+      selectedCity: "",
+      selectedDistrict: "",
+      cityList: [
+        {
+          title: "天津市"
+        },
+        {
+          title: "上海市"
+        },
+        {
+          title: "重慶市"
+        },
+        {
+          title: "河北省"
+        },
+        {
+          title: "山西省"
+        },
+        {
+          title: "湖南省"
+        },
+        {
+          title: "安徽省"
+        }
+      ],
+      districtList: [
+        {
+          title: "合川区"
+        },
+        {
+          title: "江津区"
+        },
+        {
+          title: "永川区"
+        },
+        {
+          title: "长寿区"
+        },
+        {
+          title: "涪陵区"
+        },
+        {
+          title: "xx区"
+        },
+        {
+          title: "oo区"
+        }
+      ],
       addressInfo: {
         id: "",
         is_default: false,
@@ -373,12 +507,7 @@ export default {
   },
   created() {
     this.getAddress();
-    this.actionGetExtRedirect({
-      api_uri: "/api/platform/v1/user/personal-info",
-      method: "get"
-    }).then(data => {
-      this.paopaoMemberCardInfo = data.result;
-    });
+    this.getPaopaoMemberData();
   },
   computed: {
     ...mapGetters({
@@ -404,11 +533,36 @@ export default {
       "actionSetGlobalMessage",
       "actionGetExtRedirect"
     ]),
-    openGenderEdit() {
-      this.showGenderEdit = true;
+    getPaopaoMemberData() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/personal-info",
+        method: "get"
+      }).then(data => {
+        this.paopaoMemberCardInfo = data.result;
+      });
     },
     cancelGenderEdit() {
       this.selectGenderValue = "";
+      this.showGenderEdit = false;
+    },
+    getSelectedCity(item) {
+      this.selectedCity = item.title;
+    },
+    getSelectedDistrict(item) {
+      this.selectedDistrict = item.title;
+    },
+    submitHometown() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/update-hometown",
+        method: "put",
+        data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
+      }).then(res => {
+        if (res) {
+          this.editedSuccess();
+          this.getPaopaoMemberData();
+          this.showHometownEdit = false;
+        }
+      });
     },
     handleGenderSubmit() {
       // 空值驗證

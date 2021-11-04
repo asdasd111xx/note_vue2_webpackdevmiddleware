@@ -890,3 +890,130 @@ input {
     right: 0;
   }
 }
+
+.more-method-wrap {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: $main_text_color3;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.more-method-container {
+  width: 100%;
+  height: 212px;
+  background-color: #f8f8f7;
+  border-radius: 20px 20px 0px 0px;
+  position: fixed;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.more-method-header {
+  background-color: #ffffff;
+  color: #414655;
+  font-size: 17px;
+  height: 60px;
+  line-height: 60px;
+
+  .prev {
+    left: 14px;
+    position: absolute;
+    text-align: center;
+    width: 40px;
+    color: #000;
+  }
+
+  .confirm {
+    right: 14px;
+    position: absolute;
+    text-align: center;
+    width: 40px;
+    color: #000;
+  }
+
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.more-method-content {
+  background-color: #f8f8f7;
+  margin-top: 10px;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  // &::after {
+  //   content: "";
+  //   position: absolute;
+  //   top: 60px;
+  //   left: 0;
+  //   display: block;
+  //   width: 100%;
+  //   height: 25px;
+  //   border-top: 1px solid #aaaaaa;
+  //   border-bottom: 1px solid #aaaaaa;
+  // }
+  .city {
+    display: flex;
+    flex-direction: column;
+    height: 133px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .cell {
+      font-size: 14px;
+      background-color: #ffffff;
+      width: 50vw;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      button {
+        background-color: #fff;
+        color: #aaaaaa;
+        &:hover {
+          color: #000;
+        }
+        &.active {
+          color: #000;
+        }
+      }
+    }
+  }
+  .district {
+    display: flex;
+    flex-direction: column;
+    height: 133px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cell {
+      font-size: 14px;
+      background-color: #ffffff;
+      width: 50vw;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      button {
+        background-color: #fff;
+        color: #aaaaaa;
+        &:hover {
+          color: #000;
+        }
+        &.active {
+          color: #000;
+        }
+      }
+    }
+  }
+}
