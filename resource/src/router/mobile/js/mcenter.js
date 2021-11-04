@@ -78,6 +78,11 @@ export default {
           component
         },
         {
+          path: "intro",
+          name: "mcenter-accountData-intro",
+          component
+        },
+        {
           path: "skype",
           name: "mcenter-accountData-skype",
           component

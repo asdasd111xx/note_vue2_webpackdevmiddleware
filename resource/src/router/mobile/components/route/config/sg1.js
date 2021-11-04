@@ -146,6 +146,10 @@ export default {
       import(
         /* webpackChunkName: 'accountDataAliasSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editAlias"
       ),
+    accountDataIntroSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataIntroSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editIntro"
+      ),
     accountDataNameSg1: () =>
       import(
         /* webpackChunkName: 'accountDataNameSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editName"

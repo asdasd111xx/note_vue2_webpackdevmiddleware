@@ -45,6 +45,16 @@ export default {
               isShow: true,
               popTitle: "S_MODIFY_NICKNAME"
             },
+            intro: {
+              key: "intro",
+              text: "intro",
+              status: "",
+              value: "",
+              btnShow: true,
+              type: "intro",
+              isShow: true,
+              popTitle: "未設定"
+            },
             gender: {
               key: "gender",
               text: "S_GENDER",

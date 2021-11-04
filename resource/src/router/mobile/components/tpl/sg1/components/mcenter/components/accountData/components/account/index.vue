@@ -144,7 +144,7 @@
               >
               <div
                 :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData')"
+                @click="$router.push('/mobile/mcenter/accountData/intro')"
               >
                 <div :class="$style['btn-next']">
                   <img
@@ -427,6 +427,8 @@ export default {
       import(/* webpackChunkName: 'editName' */ "./form/editName"),
     editAlias: () =>
       import(/* webpackChunkName: 'editAlias' */ "./form/editAlias"),
+    editIntro: () =>
+      import(/* webpackChunkName: 'editIntro' */ "./form/editIntro"),
     editEmail: () =>
       import(/* webpackChunkName: 'editEmail' */ "./form/editEmail"),
     editPhone: () =>
