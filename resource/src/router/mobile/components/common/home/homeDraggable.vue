@@ -40,7 +40,7 @@ export default {
       itemWidth: 90,
       itemHeight: 110,
       gapWidth: 10,
-      coefficientHeight: 0.79,
+      coefficientHeight: 0.75,
       left: 0,
       top: 0,
       trialList: [],
@@ -222,15 +222,20 @@ export default {
         }
       }).then(res => {
         if (res && res.data) {
-          this.mobileLinkOpen({
-            linkType: "mi",
-            linkTitle: res.data.ret.find(data => {
-              return data.id === this.promotionId;
-            }).name,
-            linkTo: res.data.ret.find(data => {
-              return data.id === this.promotionId;
-            }).link
+          let linkData = res.data.ret.find(data => {
+            return data.id === this.promotionId;
           });
+          if (linkData) {
+            this.mobileLinkOpen({
+              linkType: "mi",
+              linkTitle: linkData.name,
+              linkTo: linkData.link
+            });
+          } else {
+            this.actionSetGlobalMessage({
+              msg: "抱歉，此活动不存在"
+            });
+          }
         }
       });
     }
