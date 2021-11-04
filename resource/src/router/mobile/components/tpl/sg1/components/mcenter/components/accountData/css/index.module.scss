@@ -928,6 +928,13 @@ input {
     color: #000;
   }
 
+  .notconfirm {
+    right: 14px;
+    position: absolute;
+    text-align: center;
+    width: 40px;
+    color: #aaa;
+  }
   .confirm {
     right: 14px;
     position: absolute;
@@ -982,7 +989,7 @@ input {
         &:hover {
           color: #000;
         }
-        &.active {
+        .active {
           color: #000;
         }
       }
@@ -1010,7 +1017,7 @@ input {
         &:hover {
           color: #000;
         }
-        &.active {
+        .active {
           color: #000;
         }
       }

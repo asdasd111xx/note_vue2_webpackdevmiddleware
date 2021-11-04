@@ -187,7 +187,14 @@
                     >
                       {{ $text("S_CANCEL", "取消") }}
                     </div>
-                    <div :class="$style['confirm']" @click="submitHometown">
+                    <div
+                      :class="[
+                        selectedCity == '' && selectedDistrict == ''
+                          ? $style['notconfirm']
+                          : $style['confirm']
+                      ]"
+                      @click="submitHometown"
+                    >
                       {{ $text("S_CONFIRM_2", "确定") }}
                     </div>
                     <div :class="$style['title']">
@@ -203,7 +210,12 @@
                         :class="$style['cell']"
                       >
                         <button :key="index" @mouseup="getSelectedCity(item)">
-                          {{ item.title }}
+                          <span
+                            :class="[
+                              selectedCity == item.title ? $style['active'] : ''
+                            ]"
+                            >{{ item.title }}</span
+                          >
                         </button>
                       </div>
                     </div>
@@ -217,7 +229,14 @@
                           :key="index"
                           @mouseup="getSelectedDistrict(item)"
                         >
-                          {{ item.title }}
+                          <span
+                            :class="[
+                              selectedDistrict == item.title
+                                ? $style['active']
+                                : ''
+                            ]"
+                            >{{ item.title }}</span
+                          >
                         </button>
                       </div>
                     </div>
@@ -538,7 +557,7 @@ export default {
         api_uri: "/api/platform/v1/user/personal-info",
         method: "get"
       }).then(data => {
-        this.paopaoMemberCardInfo = data.result;
+        this.paopaoMemberCardInfo = data.result || null;
       });
     },
     cancelGenderEdit() {
@@ -552,19 +571,23 @@ export default {
       this.selectedDistrict = item.title;
     },
     submitHometown() {
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/update-hometown",
-        method: "put",
-        data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
-      }).then(res => {
-        if (res.result === "success") {
-          this.editedSuccess();
-          this.getPaopaoMemberData();
-          this.showHometownEdit = false;
-        } else {
-          this.actionSetGlobalMessage({ msg: `${res.error_text}` });
-        }
-      });
+      if (this.selectedCity && this.selectedDistrict) {
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/update-hometown",
+          method: "put",
+          data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
+        }).then(res => {
+          if (res.result === "success") {
+            this.editedSuccess();
+            this.getPaopaoMemberData();
+            this.showHometownEdit = false;
+          } else {
+            this.actionSetGlobalMessage({ msg: `${res.error_text}` });
+          }
+        });
+      } else {
+        return;
+      }
     },
     handleGenderSubmit() {
       // 空值驗證
