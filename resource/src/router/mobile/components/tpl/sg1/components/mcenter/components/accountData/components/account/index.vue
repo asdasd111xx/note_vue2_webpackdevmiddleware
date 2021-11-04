@@ -557,10 +557,12 @@ export default {
         method: "put",
         data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
       }).then(res => {
-        if (res) {
+        if (res.result === "success") {
           this.editedSuccess();
           this.getPaopaoMemberData();
           this.showHometownEdit = false;
+        } else {
+          this.actionSetGlobalMessage({ msg: `${res.error_text}` });
         }
       });
     },
