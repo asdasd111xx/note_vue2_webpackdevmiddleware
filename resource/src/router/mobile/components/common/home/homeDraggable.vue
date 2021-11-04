@@ -213,7 +213,7 @@ export default {
       }
     },
     getPromotionList(id) {
-      this.promotionId = id;
+      this.promotionId = +id;
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
