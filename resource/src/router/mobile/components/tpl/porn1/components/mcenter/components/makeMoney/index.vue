@@ -56,7 +56,12 @@
         </div>
       </div>
       <div v-else :class="$style['iframe-wrap']">
-        <iframe v-if="src" :src="src" :class="$style['iframe-item']" />
+        <iframe
+          v-if="src"
+          :src="src"
+          :class="$style['iframe-item']"
+          @load="onLoadiframe"
+        />
       </div>
     </div>
   </mobile-container>
@@ -189,8 +194,8 @@ export default {
         customLinkTitle:
           this.$route.query.check || !hasRecommendGift ? "" : "礼金明细",
         customLinkAction: () => {
-          this.$router.replace(
-            "/mobile/mcenter/tcenterManageRebate/recommendGift/today?giftDetail=1"
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageRebate/recommendGift/today?giftDetail=1&redirect=mobile/mcenter/home"
           );
         },
         onClick: () => {
@@ -220,6 +225,9 @@ export default {
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
     }
   },
+  beforeDestroy() {
+    window.removeEventListener("message", this.onListener);
+  },
   beforeCreate() {
     if (this.$route.query && this.$route.query.refresh) {
       window.location.replace("/mobile/mcenter/makeMoney");
@@ -232,6 +240,23 @@ export default {
       "actionSetAgentLink",
       "actionSetUserdata"
     ]),
+    onListener(e) {
+      if (e && e.data && e.data.event) {
+        const event = e.data.event;
+        switch (event) {
+          case "EVENT_THIRDPARTY_CLOSE":
+            this.$router.back();
+            return;
+        }
+      }
+    },
+    onLoadiframe(event) {
+      try {
+        window.addEventListener("message", this.onListener);
+      } catch (e) {
+        console.log("onbeforeunload Catch:", e);
+      }
+    },
     copyCode() {
       this.$copyText(this.getAgentLink).then(() => {
         this.actionSetGlobalMessage({ msg: "复制成功" });
