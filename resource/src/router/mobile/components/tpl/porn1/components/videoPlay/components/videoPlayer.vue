@@ -351,6 +351,10 @@ export default {
 
         return false;
       }
+      //澳博支援未登入觀影 但不顯示彩金icon fb528918
+      if (["aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
+        this.isActiveBouns = false;
+      }
       return true;
     },
     onMessage(e) {

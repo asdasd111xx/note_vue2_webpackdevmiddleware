@@ -880,6 +880,7 @@ export default {
             // 屌絲漫畫 → DSC
             // SWAG小說 → LQ
             // 絲瓜小說 → DZ
+            // 澳博影視→ AV
             default:
               localStorage.setItem("is-open-game", true);
               if (
@@ -1059,6 +1060,7 @@ export default {
               newWindow = window.open(`${game.memo}`, "_blank");
               return;
 
+            case "AV":
             case "YV":
               this.$router.push({
                 name: "videoList",
