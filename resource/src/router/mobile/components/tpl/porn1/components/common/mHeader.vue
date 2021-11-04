@@ -283,13 +283,7 @@ export default {
   },
   created() {
     if (!this.loginStatus) {
-      if (getCookie("uuidAccount") && getCookie("guestCid")) {
-        this.getGuestBalance();
-      } else {
-        (async () => {
-          await this.actionSetUserdata(true);
-        })();
-      }
+      this.getGuestBalance();
     } else {
       this.getRedJackpot();
     }
