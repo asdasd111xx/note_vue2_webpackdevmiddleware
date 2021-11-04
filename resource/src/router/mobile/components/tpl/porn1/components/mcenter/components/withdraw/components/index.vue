@@ -289,7 +289,6 @@
       </div>
 
       <!-- 更多提现方式 -->
-      <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
         v-if="moreMethodStatus.bankCard || moreMethodStatus.wallet"
@@ -1032,8 +1031,7 @@ export default {
 
       // 未開啟限綁一組開關
       if (
-        !this.userLevelObj.virtual_bank_single &&
-        this.userLevelObj.virtual_bank_max > 1
+        !this.userLevelObj.virtual_bank_single 
       ) {
         // 已開啟電子錢包開關 & 未開啟限綁一組開關
         let noSingleLimit =
@@ -1045,8 +1043,7 @@ export default {
 
       // 開啟限綁一組開關
       if (
-        this.userLevelObj.virtual_bank_single ||
-        this.userLevelObj.virtual_bank_max === 1
+        this.userLevelObj.virtual_bank_single 
       ) {
         let nowBindWalletCount = 0;
 

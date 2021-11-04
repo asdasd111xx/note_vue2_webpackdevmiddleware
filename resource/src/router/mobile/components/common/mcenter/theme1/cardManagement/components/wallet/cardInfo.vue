@@ -119,9 +119,8 @@
           <template>
             <div
               v-if="
-                (userLevelObj.virtual_bank_single ||
-                  userLevelObj.virtual_bank_max === 1) &&
-                  hasSameTypeCard
+                userLevelObj.virtual_bank_single ||
+                  userLevelObj.virtual_bank_max === 1
               "
               :class="$style['edit-option-item']"
               @click="moveCard(true)"

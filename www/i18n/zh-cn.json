@@ -1650,7 +1650,7 @@
   "S_ADD_VIRTUAL_BANKCARD": "添加电子钱包",
   "S_ADD_DIGITAL_CURRENCY": "添加数字货币",
   "S_BANKCARD_LIMIT": "最多支持添加%s张银行卡",
-  "S_VIRTUAL_BANKCARD_LIMIT": "最多支持添加%s个钱包",
+  "S_VIRTUAL_BANKCARD_LIMIT": "最多支持添加%s张电子钱包",
   "S_VIRTUAL_BANKCARD_TYPE_LIMIT": "最多添加%s张不同类型电子钱包",
   "S_DIGITAL_CURRENCY_LIMIT": "每个货币支持添加%s个钱包",
   "S_BANKCARD": "银行卡",
