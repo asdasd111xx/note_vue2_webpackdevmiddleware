@@ -8,6 +8,7 @@ import { mapActions, mapGetters } from "vuex";
 import ajax from "@/lib/ajax";
 import axios from "axios";
 import isMobile from "@/lib/is_mobile";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   data() {
@@ -38,7 +39,9 @@ export default {
       thirdUrl: "",
       showAccount: false, // 帳戶資料檢查
       userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
-      nowOpenWallet: []
+      nowOpenWallet: [],
+      bank_card: [],
+      wallet_card: []
     };
   },
   computed: {
@@ -46,7 +49,8 @@ export default {
       mobileCheck: "getMobileCheck",
       memInfo: "getMemInfo",
       noticeData: "getNoticeData",
-      webInfo: "getWebInfo"
+      webInfo: "getWebInfo",
+      siteConfig: "getSiteConfig"
     }),
     /**
      * 使用者所有取款帳戶
@@ -501,30 +505,90 @@ export default {
      * @method getNowOpenWallet
      */
     getNowOpenWallet() {
-      // Get 錢包類型
-      axios({
-        method: "get",
-        url: "/api/payment/v1/c/virtual/bank/list"
-      })
-        .then(res => {
-          const { ret, result, msg, code } = res.data;
+      this.isRevice = false;
 
-          if (!res || result !== "ok") {
-            this.actionSetGlobalMessage({
-              msg,
-              code
-            });
+      // C02.141 取得廳主支援的電子錢包列表
+      // Get 錢包類型
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/VirtualBank/List`,
+        params: {
+          lang: "zh-cn"
+        }
+      })
+        .then(response => {
+          this.isRevice = true;
+          const { data, status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
             return;
           }
 
-          this.nowOpenWallet = ret;
+          this.nowOpenWallet = data;
         })
         .catch(error => {
-          const { msg, code } = error.response.data;
-          this.actionSetGlobalMessage({
-            msg,
-            code
-          });
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
+    },
+    /*************************
+     * 目前 User 擁有的卡片     *
+     *************************/
+    getUserBankList() {
+      this.isRevice = false;
+
+      // C02.221 回傳銀行卡清單與狀態/查詢會員出款銀行
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`,
+        params: {
+          lang: "zh-cn",
+          common: true
+        }
+      })
+        .then(response => {
+          this.isRevice = true;
+          const { data, status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
+            return;
+          }
+
+          this.bank_card = data;
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
+    },
+    /*************************
+     * 目前 User 擁有的錢包     *
+     *************************/
+    getUserWalletList() {
+      this.isRevice = false;
+
+      //  C02.241 查詢會員電子錢包
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
+        params: {
+          lang: "zh-cn",
+          common: true
+        }
+      })
+        .then(response => {
+          this.isRevice = true;
+          const { data, status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
+            return;
+          }
+
+          this.wallet_card = data.filter((item, index) => index < 15);
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
         });
     }
   }

@@ -286,8 +286,6 @@ export default {
             // msg: "验证码错误"
             if (res.code === "C00024") {
               this.$refs.captcha.focus();
-            } else if (res.code === "C10000") {
-              this.errMsg = "登入网址错误，请洽客服人员!";
             }
             return;
           }

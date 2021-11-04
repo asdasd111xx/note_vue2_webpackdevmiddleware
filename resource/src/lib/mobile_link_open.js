@@ -34,19 +34,19 @@ export default target => {
     return;
   }
 
-  let linkTitle = "";
-  switch (store.state.webDomain.site) {
-    case "porn1":
-    case "ey1":
-    case "sg1":
-      // linkTitle = '币发BIFA';
-      // linkTitle = '亿元娱乐';
-      // linkTitle = '丝瓜直播';
-      linkTitle = "优惠活动";
-      break;
-    default:
-      break;
-  }
+  let linkTitle = target?.linkTitle ? target?.linkTitle : "优惠活动";
+  // switch (store.state.webDomain.site) {
+  //   case "porn1":
+  //   case "ey1":
+  //   case "sg1":
+  //     // linkTitle = '币发BIFA';
+  //     // linkTitle = '亿元娱乐';
+  //     // linkTitle = '丝瓜直播';
+  //     linkTitle = "优惠活动";
+  //     break;
+  //   default:
+  //     break;
+  // }
 
   let newWindow;
 
@@ -202,7 +202,7 @@ export default target => {
           router.push("/mobile/login");
           return;
         }
-        this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
+        router.push(`/mobile/mcenter/wallet?redirect=home`);
         return;
 
       case "cgPay":
