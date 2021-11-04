@@ -626,6 +626,9 @@ export default {
         case "虚拟币":
           sendUmeng(67);
           break;
+        case "直播":
+          sendUmeng(68);
+          break;
         default:
           break;
       }
