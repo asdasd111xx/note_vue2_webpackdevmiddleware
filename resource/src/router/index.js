@@ -12,6 +12,7 @@ import popControl from "./popcontrol";
 import staticService from "./static/";
 import timeout from "./timeout";
 import upup from "./upup";
+import { getCookie, setCookie } from "@/lib/cookie";
 // prevent NavigationDuplicated error see: https://github.com/vuejs/vue-router/issues/2881
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location, onResolve, onReject) {
@@ -45,7 +46,12 @@ export default new Router({
 
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
-
+        if (code) {
+          setCookie("cid", "");
+          setCookie("aid", "");
+          window.RESET_LOCAL_SETTING();
+          window.RESET_MEM_SETTING();
+        }
         localStorage.setItem("promotionCode", code || "");
 
         next("/mobile");
