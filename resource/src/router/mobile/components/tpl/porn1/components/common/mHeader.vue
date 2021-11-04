@@ -295,7 +295,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionGetLayeredURL",
+      "actionSetUserdata"
+    ]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
