@@ -562,7 +562,7 @@ export default {
             return;
           }
 
-          this.userBindWalletList = data.filter((item, index) => index < 15);
+          this.userBindWalletList = data;
         })
         .catch(error => {
           const { msg, code } = error.response.data;
@@ -584,7 +584,7 @@ export default {
           if (errorCode !== "00" || status !== "000") {
             return;
           }
-
+          console.log(this.userBindWalletList);
           // 預設錢包
           this.walletList = data;
 
