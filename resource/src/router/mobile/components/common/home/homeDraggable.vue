@@ -240,18 +240,7 @@ export default {
 
 <style lang="scss" module>
 .ys-float-btn {
-  // background: rgb(255, 255, 255);
-  // box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-  // border-radius: 50%;
-  // color: #666666;
   z-index: 20;
-  // transition: all 0.3s;
-
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
-
   position: fixed;
   bottom: 20vw;
 
@@ -265,13 +254,9 @@ export default {
   .data-image {
     width: 90px;
     height: 90px;
-    object-fit: contain;
-    margin-top: 15px;
+    // object-fit: contain;
+    margin-top: 20px;
     position: absolute;
   }
-
-  // p {
-  //   font-size: 7px;
-  // }
 }
 </style>

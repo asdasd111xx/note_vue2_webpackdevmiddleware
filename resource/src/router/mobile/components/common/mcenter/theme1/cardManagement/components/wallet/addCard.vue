@@ -777,7 +777,7 @@ export default {
     },
     clearMsgCallback(_redirect = null) {
       const { query } = this.$route;
-
+      localStorage.removeItem("selectTarget");
       let redirect = _redirect || query?.redirect;
 
       if (!redirect) {
