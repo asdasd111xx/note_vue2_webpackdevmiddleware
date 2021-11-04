@@ -289,11 +289,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "actionSetGlobalMessage",
-      "actionGetLayeredURL",
-      "actionSetUserdata"
-    ]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
