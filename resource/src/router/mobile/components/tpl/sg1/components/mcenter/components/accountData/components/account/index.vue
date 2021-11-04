@@ -209,7 +209,7 @@
                         :key="index"
                         :class="$style['cell']"
                       >
-                        <button :key="index" @mouseup="getSelectedCity(item)">
+                        <button :key="index" @click="getSelectedCity(item)">
                           <span
                             :class="[
                               selectedCity == item.title ? $style['active'] : ''
@@ -225,10 +225,7 @@
                         :key="index"
                         :class="$style['cell']"
                       >
-                        <button
-                          :key="index"
-                          @mouseup="getSelectedDistrict(item)"
-                        >
+                        <button :key="index" @click="getSelectedDistrict(item)">
                           <span
                             :class="[
                               selectedDistrict == item.title
