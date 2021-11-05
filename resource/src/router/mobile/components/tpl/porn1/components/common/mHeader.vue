@@ -249,7 +249,9 @@ export default {
     }),
     mainClass() {
       const style = this.$style;
-
+      let disableBackgroundColor = !!["sp1"].includes(
+        this.siteConfig.ROUTER_TPL
+      );
       return {
         [style.header]: true,
         [style.agent]: this.path[1] === "agcenter",
@@ -259,6 +261,8 @@ export default {
           ? true
           : false,
         [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
+        [style["disable-bgcolor"]]:
+          disableBackgroundColor && this.$route.name === "home",
         [style[this.siteConfig.ROUTER_TPL]]: true,
         clearfix: true
       };
@@ -642,6 +646,7 @@ export default {
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
+  background: #fff;
   max-width: 66%;
   overflow: hidden;
   text-overflow: ellipsis;
