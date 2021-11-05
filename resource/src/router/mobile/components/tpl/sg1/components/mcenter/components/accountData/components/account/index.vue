@@ -209,12 +209,15 @@
                         :key="index"
                         :class="$style['cell']"
                       >
-                        <button :key="index" @click="getSelectedCity(item)">
+                        <button
+                          :key="index"
+                          @click="getSelectedCity(item.city, index)"
+                        >
                           <span
                             :class="[
-                              selectedCity == item.title ? $style['active'] : ''
+                              selectedCity == item.city ? $style['active'] : ''
                             ]"
-                            >{{ item.title }}</span
+                            >{{ item.city }}</span
                           >
                         </button>
                       </div>
@@ -228,11 +231,9 @@
                         <button :key="index" @click="getSelectedDistrict(item)">
                           <span
                             :class="[
-                              selectedDistrict == item.title
-                                ? $style['active']
-                                : ''
+                              selectedDistrict == item ? $style['active'] : ''
                             ]"
-                            >{{ item.title }}</span
+                            >{{ item }}</span
                           >
                         </button>
                       </div>
@@ -468,52 +469,8 @@ export default {
       paopaoMemberCardInfo: {},
       selectedCity: "",
       selectedDistrict: "",
-      cityList: [
-        {
-          title: "天津市"
-        },
-        {
-          title: "上海市"
-        },
-        {
-          title: "重慶市"
-        },
-        {
-          title: "河北省"
-        },
-        {
-          title: "山西省"
-        },
-        {
-          title: "湖南省"
-        },
-        {
-          title: "安徽省"
-        }
-      ],
-      districtList: [
-        {
-          title: "合川区"
-        },
-        {
-          title: "江津区"
-        },
-        {
-          title: "永川区"
-        },
-        {
-          title: "长寿区"
-        },
-        {
-          title: "涪陵区"
-        },
-        {
-          title: "xx区"
-        },
-        {
-          title: "oo区"
-        }
-      ],
+      cityList: [],
+      districtList: [],
       addressInfo: {
         id: "",
         is_default: false,
@@ -526,6 +483,7 @@ export default {
   created() {
     this.getAddress();
     this.getPaopaoMemberData();
+    this.getHometownListData();
   },
   computed: {
     ...mapGetters({
@@ -559,15 +517,26 @@ export default {
         this.paopaoMemberCardInfo = data.result || null;
       });
     },
-    cancelGenderEdit() {
-      this.selectGenderValue = "";
-      this.showGenderEdit = false;
+    getHometownListData() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/info/hometown-list",
+        method: "get"
+      }).then(data => {
+        this.cityList = data.result || null;
+      });
     },
-    getSelectedCity(item) {
-      this.selectedCity = item.title;
+    getDistrict(index) {
+      if (this.selectedCity == this.cityList[index].city) {
+        this.districtList = this.cityList[index].district;
+      }
+      return this.districtList;
+    },
+    getSelectedCity(item, index) {
+      this.selectedCity = item;
+      this.getDistrict(index);
     },
     getSelectedDistrict(item) {
-      this.selectedDistrict = item.title;
+      this.selectedDistrict = item;
     },
     submitHometown() {
       if (this.selectedCity && this.selectedDistrict) {
@@ -587,6 +556,10 @@ export default {
       } else {
         return;
       }
+    },
+    cancelGenderEdit() {
+      this.selectGenderValue = "";
+      this.showGenderEdit = false;
     },
     handleGenderSubmit() {
       // 空值驗證
