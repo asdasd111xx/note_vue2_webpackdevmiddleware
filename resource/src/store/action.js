@@ -753,12 +753,8 @@ export const actionSetUserdata = (
             if (res.status === "000") {
               let guestCid = res.data.cid;
               let guestUserid = res.data.userid;
-              (async () => {
-                await setCookie("guestCid", guestCid);
-                await setCookie("guestUserid", guestUserid);
-              })();
-              console.log("guestCid=" + guestCid);
-              console.log("guestUserid=" + guestUserid);
+              setCookie("guestCid", guestCid);
+              setCookie("guestUserid", guestUserid);
             } else {
               dispatch("actionSetGlobalMessage", {
                 msg: res.msg,
