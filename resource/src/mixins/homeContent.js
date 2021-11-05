@@ -851,7 +851,7 @@ export default {
             userId = this.memInfo.user.id;
           }
           if (!this.loginStatus) {
-            userId = getCookie("guestUserid");
+            userId = localStorage.getItem("guestUserid");
           }
           this.isLoading = true;
 
@@ -930,7 +930,7 @@ export default {
                         // })
                         // return;
                         let cid = !this.loginStatus
-                          ? getCookie("guestCid")
+                          ? localStorage.getItem("guestCid")
                           : getCookie("cid");
 
                         const getThridUrl = () =>
@@ -1008,7 +1008,7 @@ export default {
                   // })
                   // return;
                   let cid = !this.loginStatus
-                    ? getCookie("guestCid")
+                    ? localStorage.getItem("guestCid")
                     : getCookie("cid");
 
                   const getThridUrl = () =>

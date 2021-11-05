@@ -221,8 +221,8 @@ export default {
         let cid = getCookie("cid") || "";
         let uri = "";
         if (!cid) {
-          let guestCid = getCookie("guestCid");
-          let guestUserid = getCookie("guestUserid");
+          let guestCid = localStorage.getItem("guestCid");
+          let guestUserid = localStorage.getItem("guestUserid");
           uri =
             this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
             `?cid=${guestCid}&domain=${

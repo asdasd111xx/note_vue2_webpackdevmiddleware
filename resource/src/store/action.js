@@ -716,13 +716,11 @@ export const actionSetUserdata = (
   }
   //判斷uuid
   let uuidAccount = "";
-  let getUuidAccountCookie =
-    getCookie("uuidAccount") || localStorage.getItem("uuidAccount");
+  let getUuidAccountCookie = localStorage.getItem("uuidAccount");
   if (getUuidAccountCookie) {
     uuidAccount = getUuidAccountCookie;
   } else {
     uuidAccount = uuidv4();
-    setCookie("uuidAccount", uuidAccount);
     localStorage.setItem("uuidAccount", uuidAccount);
   }
 
@@ -756,8 +754,6 @@ export const actionSetUserdata = (
             if (res.status === "000") {
               let guestCid = res.data.cid;
               let guestUserid = res.data.userid;
-              setCookie("guestCid", guestCid);
-              setCookie("guestUserid", guestUserid);
               localStorage.setItem("guestCid", guestCid);
               localStorage.setItem("guestUserid", guestUserid);
             } else {
