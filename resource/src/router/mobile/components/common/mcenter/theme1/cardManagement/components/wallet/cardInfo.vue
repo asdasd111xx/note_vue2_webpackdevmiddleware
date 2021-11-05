@@ -116,7 +116,7 @@
       <div v-if="statusList.editDetail" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
-          <template>
+          <template v-if="['ey1'].includes(themeTPL)">
             <div
               v-if="
                 userLevelObj.virtual_bank_single ||
