@@ -49,6 +49,7 @@ export default new Router({
         if (code) {
           setCookie("cid", "");
           setCookie("aid", "");
+          localStorage.removeItem("aid");
           window.RESET_LOCAL_SETTING();
           window.RESET_MEM_SETTING();
         }

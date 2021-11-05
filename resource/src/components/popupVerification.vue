@@ -156,6 +156,8 @@ export default {
           }, 800);
 
           setCookie("aid", res.data.cookie.aid);
+          localStorage.setItem("aid", res.data.cookie.aid);
+
           this.captchaImg = res.data.data;
         }
       });

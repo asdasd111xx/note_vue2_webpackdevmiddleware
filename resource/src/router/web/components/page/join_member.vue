@@ -712,6 +712,7 @@ export default {
             this.isGetCaptcha = false;
           }, 800);
 
+          localStorage.setItem("aid", res.data.cookie.aid);
           setCookie("aid", res.data.cookie.aid);
           this.captchaImg = res.data.data;
         }
@@ -994,7 +995,7 @@ export default {
         captchaText: this.allValue.captcha_text,
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
-        aid: this.aid || getCookie("aid") || "",
+        aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: true,
         code: localStorage.getItem("promotionCode") || ""
       };

@@ -534,7 +534,7 @@ export default {
           params: {
             lang: "zh-cn",
             ...params,
-            aid: getCookie("aid") || ""
+            aid: getCookie("aid") || localStorage.getItem("aid") || ""
           }
         })
           .then(res => {
