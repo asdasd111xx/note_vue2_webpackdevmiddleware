@@ -1137,18 +1137,13 @@ export default {
 
     // 取得訪客餘額
     getGuestBalance() {
-      let uuidAccount =
-        getCookie("uuidAccount") || localStorage.getItem("uuidAccount");
-      let guestCid = getCookie("guestCid") || localStorage.getItem("guestCid");
-
-      console.log("join_member_uuidAccount=" + uuidAccount);
-      console.log("join_member_guestCid=" + guestCid);
       return goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
         params: {
-          account: getCookie("uuidAccount"),
-          cid: getCookie("guestCid")
+          account:
+            getCookie("uuidAccount") || localStorage.getItem("uuidAccount"),
+          cid: getCookie("guestCid") || localStorage.getItem("guestCid")
         }
       }).then(res => {
         if (res.status === "000") {
