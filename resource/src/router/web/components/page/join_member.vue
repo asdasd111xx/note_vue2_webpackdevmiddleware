@@ -1147,8 +1147,8 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
         params: {
-          account: uuidAccount,
-          cid: guestCid
+          account: getCookie("uuidAccount"),
+          cid: getCookie("guestCid")
         }
       }).then(res => {
         if (res.status === "000") {

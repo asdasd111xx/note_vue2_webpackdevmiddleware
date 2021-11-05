@@ -716,19 +716,11 @@ export const actionSetUserdata = (
   }
   //判斷uuid
   let uuidAccount = "";
-  let getUuidAccountCookie =
-    getCookie("uuidAccount") || localStorage.getItem("uuidAccount");
-  if (getUuidAccountCookie) {
-    uuidAccount = getUuidAccountCookie;
-    console.log("uuidAccount1=" + uuidAccount);
+  if (getCookie("uuidAccount")) {
+    uuidAccount = getCookie("uuidAccount");
   } else {
     uuidAccount = uuidv4();
     setCookie("uuidAccount", uuidAccount);
-    localStorage.setItem("uuidAccount", uuidAccount);
-
-    console.log(
-      "uuidAccount2=" + localStorage.setItem("uuidAccount", uuidAccount)
-    );
   }
 
   if (!document.querySelector('script[data-name="esabgnixob"]')) {
@@ -763,11 +755,6 @@ export const actionSetUserdata = (
               let guestUserid = res.data.userid;
               setCookie("guestCid", guestCid);
               setCookie("guestUserid", guestUserid);
-              localStorage.setItem("guestCid", guestCid);
-              localStorage.setItem("guestUserid", guestUserid);
-
-              console.log("guestCid=" + guestCid);
-              console.log("guestUserid=" + guestUserid);
             } else {
               dispatch("actionSetGlobalMessage", {
                 msg: res.msg,
