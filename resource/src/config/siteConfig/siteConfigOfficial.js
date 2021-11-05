@@ -245,7 +245,7 @@ export const site_92 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
-      YB: "17"
+      AV: "17"
     }
   },
   CDN_HEADER: "x-cdn-ab"

@@ -112,9 +112,12 @@ export default {
           siteId: 4
         };
         break;
-
+      case "av":
       case "yabo":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+        );
         this.currentLayout = {
           searchHome: "yaboSearchHome",
           searchInfo: "yaboSearchInfo",
