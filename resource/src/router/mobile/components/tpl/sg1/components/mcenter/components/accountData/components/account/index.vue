@@ -276,7 +276,7 @@
           </div>
           <div :class="[$style['account-data-field'], 'clearfix']">
             <span :class="$style['field-title']">感情</span>
-            <div :class="$style['field-value']">
+            <div :class="$style['field-value']" v-if="!showRelationshipEdit">
               <span
                 v-if="paopaoMemberCardInfo.relationship"
                 :class="$style['field-text']"
@@ -287,7 +287,7 @@
               >
               <div
                 :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData')"
+                @click="showRelationshipEdit = true"
               >
                 <div :class="$style['btn-next']">
                   <img
@@ -296,6 +296,34 @@
                 </div>
               </div>
             </div>
+
+            <!-- 感情編輯/修改 -->
+            <template>
+              <div
+                v-if="showRelationshipEdit"
+                :class="$style['relationship-input-wrap']"
+              >
+                <select v-model="selectRelationshipValue">
+                  <option value="0">--</option>
+                  <option value="1">恋爱</option>
+                  <option value="2">暧昧中</option>
+                </select>
+                <div :class="$style['btn-wrap']">
+                  <span
+                    :class="$style['btn-cancel']"
+                    @click.stop="cancelRelationshipEdit"
+                  >
+                    {{ $text("S_CANCEL", "取消") }}
+                  </span>
+                  <span
+                    :class="$style['btn-confirm']"
+                    @click="handleRelationshipSubmit"
+                  >
+                    {{ $text("S_CONFIRM", "確認") }}
+                  </span>
+                </div>
+              </div>
+            </template>
           </div>
 
           <!-- 平台資料  -->
@@ -479,18 +507,20 @@ export default {
   },
   data() {
     return {
+      paopaoMemberCardInfo: {},
       currentTab: 0,
       currentEdit: "",
       showSuccess: false,
       birthdayValue: "",
       showGenderEdit: false,
-      showHometownEdit: false,
       selectGenderValue: "",
-      paopaoMemberCardInfo: {},
-      selectedCity: "",
-      selectedDistrict: "",
+      showRelationshipEdit: false,
+      selectRelationshipValue: "",
       cityList: [],
       districtList: [],
+      showHometownEdit: false,
+      selectedCity: "",
+      selectedDistrict: "",
       addressInfo: {
         id: "",
         is_default: false,
@@ -576,6 +606,31 @@ export default {
       } else {
         return;
       }
+    },
+    cancelRelationshipEdit() {
+      this.selectRelationshipValue = "";
+      this.showRelationshipEdit = false;
+    },
+    handleRelationshipSubmit() {
+      // 空值驗證
+      if (this.selectRelationshipValue === "") {
+        this.$emit("msg", this.$text("S_CR_NUT_NULL"));
+        return Promise.resolve("error");
+      }
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/update-relationship",
+        method: "put",
+        data: { relationship: `${this.selectRelationshipValue}` }
+      }).then(res => {
+        if (res.result === "success") {
+          this.editedSuccess();
+          this.getPaopaoMemberData();
+          this.showRelationshipEdit = false;
+        } else {
+          this.actionSetGlobalMessage({ msg: `${res.error_text}` });
+        }
+      });
     },
     cancelGenderEdit() {
       this.selectGenderValue = "";
