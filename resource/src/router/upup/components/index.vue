@@ -44,8 +44,8 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      start: "1111",
-      end: "111",
+      start: "",
+      end: "",
       username: ""
     };
   },
