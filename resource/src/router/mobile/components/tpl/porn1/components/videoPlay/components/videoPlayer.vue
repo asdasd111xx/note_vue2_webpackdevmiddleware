@@ -631,7 +631,9 @@ export default {
 
         // 訪客模式/一般模式
         this.isUnloginMode = noLoginVideoSwitch === "false";
-        this.$refs.bonunsProcess.processType = "process";
+        if (this.isActiveBouns) {
+          this.$refs.bonunsProcess.processType = "process";
+        }
 
         // this.$nextTick(() => {
         //   if (!this.loginStatus && !this.isUnloginMode) {
