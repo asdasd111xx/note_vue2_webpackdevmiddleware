@@ -51,60 +51,64 @@ export default {
       // };
     }
   },
-  created() {
-    this.$route.params.page;
-    let livePagelist = [
-      "home",
-      "tool",
-      "style",
-      "contribute",
-      "experince",
-      "rank",
-      "guard"
-    ];
-
-    if (!livePagelist.includes(this.pageType)) {
-      this.$router.back();
+  watch: {
+    "$route.params.page"() {
+      this.initPage();
     }
   },
+  created() {},
   mounted() {
-    if (this.loginStatus) {
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/view-path",
-        method: "get"
-      }).then(result => {
-        console.log(result);
-      });
-    }
-
-    goLangApiRequest({
-      method: "post",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-      params: {
-        code: "cubechat_master",
-        clientUri: "https://client-dev.cubechat.asia/"
-      }
-    }).then(res => {
-      if (res && res.data && res.data.uri) {
-        this.src = res.data.uri;
-      }
-    });
+    this.initPage();
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
+    initPage() {
+      this.isLoading = true;
+      if (this.loginStatus) {
+        let clientUri = "";
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/view-path",
+          method: "get"
+        }).then(res => {
+          const list = res.result;
+          if (res && res.result) {
+            Object.keys(list).some(key => {
+              if (key === this.pageType) {
+                clientUri = list[key];
+                return;
+              }
+            });
+
+            goLangApiRequest({
+              method: "post",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+              params: {
+                code: "cubechat_master",
+                clientUri: clientUri
+                // clientUri: "https://client-dev.cubechat.asia/"
+              }
+            }).then(res => {
+              if (res && res.data && res.data.uri) {
+                this.src = res.data.uri;
+              }
+              this.isLoading = false;
+            });
+          } else {
+            this.isLoading = false;
+          }
+        });
+      }
+    },
     onListener(e) {
       console.log(e);
     },
     onLoadiframe() {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 310);
-
       window.addEventListener("message", this.onListener);
-
+    },
+    onSendMessage() {
       const iframe = this.$refs["iframe"];
-      iframe.contentWindow.postMessage("test message", "*");
-      iframe.contentWindow.postMessage({ data: "data" }, "*");
+      // iframe.contentWindow.postMessage("test message", "*");
+      // iframe.contentWindow.postMessage({ data: "data" }, "*");
     }
   }
 };

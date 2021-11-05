@@ -3,7 +3,7 @@
     <div :class="$style['tool-wrap']">
       <div
         :class="$style['myTool']"
-        @click="$router.push('/mobile/live/iframe/tool')"
+        @click="$router.push('/mobile/live/iframe/my_props')"
       >
         <i
           ><img
@@ -12,7 +12,7 @@
       </div>
       <div
         :class="$style['myStyle']"
-        @click="$router.push('/mobile/live/iframe/style')"
+        @click="$router.push('/mobile/live/iframe/my_style')"
       >
         <i
           ><img
@@ -21,7 +21,7 @@
       </div>
       <div
         :class="$style['myContribute']"
-        @click="$router.push('/mobile/live/iframe/contribute')"
+        @click="$router.push('/mobile/live/iframe/my_contribute')"
       >
         <i
           ><img
@@ -76,7 +76,7 @@
         :class="$style['sec-1']"
         @click="
           loginStatus
-            ? $router.push('/mobile/live/iframe/icon_guard')
+            ? $router.push('/mobile/live/iframe/my_guard')
             : $router.push('/mobile/login')
         "
       >
@@ -123,7 +123,7 @@
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/mcenter/live/mission')
+              ? $router.push('/mobile/live/iframe/task_wall')
               : $router.push('/mobile/login')
           "
         >
