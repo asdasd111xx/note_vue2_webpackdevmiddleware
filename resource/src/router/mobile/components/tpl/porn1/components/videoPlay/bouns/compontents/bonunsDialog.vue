@@ -383,16 +383,20 @@ export default {
       }, 300);
     },
     toJoin() {
-      if (getCookie("platform") === "h") {
-        this.actionGetLayeredURL().then(res => {
-          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-            this.$router.push(`/mobile/joinmember`);
-          } else {
-            window.location.replace(`https://${res[0]}/mobile/joinmember`);
-          }
-        });
+      if (this.routerTPL == "aobo1") {
+        this.$router.push(`/mobile/login`);
       } else {
-        this.$router.push(`/mobile/joinmember`);
+        if (getCookie("platform") === "h") {
+          this.actionGetLayeredURL().then(res => {
+            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+              this.$router.push(`/mobile/joinmember`);
+            } else {
+              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+            }
+          });
+        } else {
+          this.$router.push(`/mobile/joinmember`);
+        }
       }
     }
   }
