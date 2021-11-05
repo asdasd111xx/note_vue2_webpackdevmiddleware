@@ -920,10 +920,12 @@ input {
   top: 0;
   left: 0;
   z-index: 10;
+  display: flex;
+  justify-content: center;
 }
 
 .more-method-container {
-  width: 100%;
+  max-width: 768px;
   height: 212px;
   background-color: #f8f8f7;
   border-radius: 20px 20px 0px 0px;
