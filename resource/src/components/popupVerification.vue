@@ -230,6 +230,10 @@ export default {
     color: #e42a30;
   }
 
+  &.sg1 {
+    color: #000;
+  }
+
   &.is-captcha-image {
     color: #414655;
     display: inline-block;

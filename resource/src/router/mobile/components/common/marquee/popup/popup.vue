@@ -238,7 +238,7 @@ export default {
   }
 
   &.sg1 {
-    color: #bf8646;
+    color: #000;
   }
 }
 </style>

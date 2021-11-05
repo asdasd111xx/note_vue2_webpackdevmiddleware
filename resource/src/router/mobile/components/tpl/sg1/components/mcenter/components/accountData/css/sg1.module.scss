@@ -1,19 +1,13 @@
 @import "./index.module.scss";
 
 .btn-send {
-  background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
-  background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
-  background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
-  background: linear-gradient(to left, #fed3cb, #ffc5ce);
+  background: #e0e0e0;
   width: 110px;
-
+  border-radius: 23px;
+  font-size: 14px;
   &.active {
     color: #ffffff;
-
-    background: -webkit-linear-gradient(right, #fe593c, #e61938);
-    background: -o-linear-gradient(left, #fe593c, #e61938);
-    background: -moz-linear-gradient(left, #fe593c, #e61938);
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: #000;
   }
 }
 

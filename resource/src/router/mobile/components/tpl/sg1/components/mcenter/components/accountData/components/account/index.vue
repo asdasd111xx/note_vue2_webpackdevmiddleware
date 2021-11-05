@@ -59,7 +59,10 @@
               </template>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="memInfo.user.gender ? '' : (showGenderEdit = true)"
+          >
             <span :class="$style['field-title']">性別</span>
             <div :class="$style['field-value']" v-if="!showGenderEdit">
               <span v-if="memInfo.user.gender" :class="$style['field-text']">
@@ -69,10 +72,7 @@
                 <span :class="[$style['field-text'], $style['yet']]"
                   >未選擇</span
                 >
-                <div
-                  :class="$style['feature-btn']"
-                  @click="showGenderEdit = true"
-                >
+                <div :class="$style['feature-btn']">
                   <div :class="$style['btn-next']">
                     <img
                       :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -91,13 +91,13 @@
                 <div :class="$style['btn-wrap']">
                   <span
                     :class="$style['btn-cancel']"
-                    @click="cancelGenderEdit()"
+                    @click.stop="cancelGenderEdit"
                   >
                     {{ $text("S_CANCEL", "取消") }}
                   </span>
                   <span
                     :class="$style['btn-confirm']"
-                    @click="handleGenderSubmit()"
+                    @click="handleGenderSubmit"
                   >
                     {{ $text("S_CONFIRM", "確認") }}
                   </span>
@@ -107,7 +107,10 @@
           </div>
 
           <!-- 直播資料  -->
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="$router.push('/mobile/mcenter/accountData/alias')"
+          >
             <span :class="$style['field-title']">直播暱稱</span>
             <div :class="$style['field-value']">
               <span
@@ -119,10 +122,7 @@
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >尚未設定</span
               >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/alias')"
-              >
+              <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
                   <img
                     :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -131,7 +131,10 @@
               </div>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="$router.push('/mobile/mcenter/accountData/intro')"
+          >
             <span :class="$style['field-title']">簽名</span>
             <div :class="$style['field-value']">
               <span
@@ -142,10 +145,7 @@
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >TA好像忘記簽名了</span
               >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/intro')"
-              >
+              <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
                   <img
                     :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -154,7 +154,10 @@
               </div>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="showHometownEdit = true"
+          >
             <span :class="$style['field-title']">地區</span>
             <div :class="$style['field-value']">
               <span
@@ -165,10 +168,7 @@
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >請選擇所在地區
               </span>
-              <div
-                :class="$style['feature-btn']"
-                @click="showHometownEdit = true"
-              >
+              <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
                   <img
                     :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
@@ -183,7 +183,7 @@
                   <div :class="$style['more-method-header']">
                     <div
                       :class="$style['prev']"
-                      @click="showHometownEdit = false"
+                      @click.stop="showHometownEdit = false"
                     >
                       {{ $text("S_CANCEL", "取消") }}
                     </div>
@@ -322,88 +322,108 @@
               </template>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="
+              memInfo.user.phone
+                ? ''
+                : $router.push('/mobile/mcenter/accountData/phone')
+            "
+          >
             <span :class="$style['field-title']">手機號碼</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.phone" :class="$style['field-text']">{{
                 memInfo.user.phone
               }}</span>
-              <span v-else :class="[$style['field-text'], $style['yet']]"
-                >绑定手机保护帐号安全</span
-              >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/phone')"
-              >
-                <div :class="$style['btn-next']">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                  />
+              <template v-else>
+                <span :class="[$style['field-text'], $style['yet']]"
+                  >绑定手机保护帐号安全</span
+                >
+                <div :class="$style['feature-btn']">
+                  <div :class="$style['btn-next']">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                    />
+                  </div>
                 </div>
-              </div>
+              </template>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="$router.push('/mobile/mcenter/accountData/email')"
+          >
             <span :class="$style['field-title']">電子郵箱</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.email" :class="$style['field-text']">
                 {{ memInfo.user.email }}</span
               >
-              <span v-else :class="[$style['field-text'], $style['yet']]"
-                >绑定邮箱保护帐号安全</span
-              >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/email')"
-              >
-                <div :class="$style['btn-next']">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                  />
+              <template v-else>
+                <span :class="[$style['field-text'], $style['yet']]"
+                  >绑定邮箱保护帐号安全</span
+                >
+                <div :class="$style['feature-btn']">
+                  <div :class="$style['btn-next']">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                    />
+                  </div>
                 </div>
-              </div>
+              </template>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="
+              memInfo.user.qq_num
+                ? ''
+                : $router.push('/mobile/mcenter/accountData/qq')
+            "
+          >
             <span :class="$style['field-title']">QQ</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.qq_num" :class="$style['field-text']">{{
                 memInfo.user.qq_num
               }}</span>
-              <span v-else :class="[$style['field-text'], $style['yet']]"
-                >尚未設定</span
-              >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/qq')"
-              >
-                <div :class="$style['btn-next']">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                  />
+              <template v-else>
+                <span :class="[$style['field-text'], $style['yet']]"
+                  >尚未設定</span
+                >
+                <div :class="$style['feature-btn']">
+                  <div :class="$style['btn-next']">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                    />
+                  </div>
                 </div>
-              </div>
+              </template>
             </div>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="
+              memInfo.user.weixin
+                ? ''
+                : $router.push('/mobile/mcenter/accountData/weixin')
+            "
+          >
             <span :class="$style['field-title']">微信</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.weixin" :class="$style['field-text']">{{
                 memInfo.user.weixin
               }}</span>
-              <span v-else :class="[$style['field-text'], $style['yet']]"
-                >尚未設定</span
-              >
-              <div
-                :class="$style['feature-btn']"
-                @click="$router.push('/mobile/mcenter/accountData/weixin')"
-              >
-                <div :class="$style['btn-next']">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                  />
+              <template v-else>
+                <span :class="[$style['field-text'], $style['yet']]"
+                  >尚未設定</span
+                >
+                <div :class="$style['feature-btn']">
+                  <div :class="$style['btn-next']">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                    />
+                  </div>
                 </div>
-              </div>
+              </template>
             </div>
           </div>
         </template>
