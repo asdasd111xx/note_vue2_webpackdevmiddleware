@@ -274,7 +274,10 @@
               </div>
             </template>
           </div>
-          <div :class="[$style['account-data-field'], 'clearfix']">
+          <div
+            :class="[$style['account-data-field'], 'clearfix']"
+            @click="showRelationshipEdit = true"
+          >
             <span :class="$style['field-title']">感情</span>
             <div :class="$style['field-value']" v-if="!showRelationshipEdit">
               <span
@@ -285,10 +288,7 @@
               <span v-else :class="[$style['field-text'], $style['yet']]"
                 >尚未設定</span
               >
-              <div
-                :class="$style['feature-btn']"
-                @click="showRelationshipEdit = true"
-              >
+              <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
                   <img
                     :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
