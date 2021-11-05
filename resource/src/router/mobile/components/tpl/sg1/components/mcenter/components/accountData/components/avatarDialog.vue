@@ -75,7 +75,13 @@ export default {
         { url: "/static/image/common/mcenter/default/avatar_4.png" },
         { url: "/static/image/common/mcenter/default/avatar_5.png" },
         { url: "/static/image/common/mcenter/default/avatar_6.png" },
-        { url: "/static/image/common/mcenter/default/avatar_7.png" }
+        { url: "/static/image/common/mcenter/default/avatar_7.png" },
+        { url: "/static/image/common/mcenter/default/avatar_8.png" },
+        { url: "/static/image/common/mcenter/default/avatar_9.png" },
+        { url: "/static/image/common/mcenter/default/avatar_10.png" },
+        { url: "/static/image/common/mcenter/default/avatar_11.png" },
+        { url: "/static/image/common/mcenter/default/avatar_12.png" },
+        { url: "/static/image/common/mcenter/default/avatar_13.png" }
       ],
       isPageLoading: false
     };

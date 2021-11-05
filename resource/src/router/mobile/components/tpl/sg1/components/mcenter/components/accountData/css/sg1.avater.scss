@@ -1,12 +1,11 @@
-@import './porn1.avater.scss';
+@import "./porn1.avater.scss";
 
 .dialog-wrap {
   .avatar-cell {
-
     img {
       &.active {
         border: 2px solid transparent;
-        border-color: #E42A30;
+        border-color: #e42a30;
       }
     }
 
@@ -26,29 +25,25 @@
 }
 
 .choose-btn {
-  background: -webkit-linear-gradient(right, #fe593c, #e61938);
-  background: -o-linear-gradient(left, #fe593c, #e61938);
-  background: -moz-linear-gradient(left, #fe593c, #e61938);
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: #000;
   color: #ffffff;
+  border-radius: 23px;
 }
 
 .cancel-btn {
-  background: #CCCCCC;
-  color: #ffffff;
+  background: #ededed;
+  color: #000;
+  border: 1px solid #000;
 }
 
 .submit-btn {
-  background: -webkit-linear-gradient(right, #fe593c, #e61938);
-  background: -o-linear-gradient(left, #fe593c, #e61938);
-  background: -moz-linear-gradient(left, #fe593c, #e61938);
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: #000;
   color: #ffffff;
 }
 
 .btn-prev {
-  >div {
-    background-image: url('/static/image/common/btn_back_black.png');
+  > div {
+    background-image: url("/static/image/common/btn_back_black.png");
     background-size: cover;
     background-position: center;
   }
