@@ -658,7 +658,6 @@ export default {
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
-  background: #fff;
   max-width: 66%;
   overflow: hidden;
   text-overflow: ellipsis;
