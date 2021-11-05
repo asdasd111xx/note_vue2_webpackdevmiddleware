@@ -712,6 +712,7 @@ export default {
             this.isGetCaptcha = false;
           }, 800);
 
+          localStorage.setItem("aid", res.data.cookie.aid);
           setCookie("aid", res.data.cookie.aid);
           this.captchaImg = res.data.data;
         }
@@ -994,7 +995,7 @@ export default {
         captchaText: this.allValue.captcha_text,
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
-        aid: this.aid || getCookie("aid") || "",
+        aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: true,
         code: localStorage.getItem("promotionCode") || ""
       };
@@ -1011,7 +1012,7 @@ export default {
         params: {
           ...params,
           host: window.location.host,
-          deviceId: getCookie("uuidAccount"),
+          deviceId: localStorage.getItem("uuidAccount"),
           lang: "zh-cn"
         },
         fail: error => {
@@ -1141,8 +1142,8 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
         params: {
-          account: getCookie("uuidAccount"),
-          cid: getCookie("guestCid")
+          account: localStorage.getItem("uuidAccount"),
+          cid: localStorage.getItem("guestCid")
         }
       }).then(res => {
         if (res.status === "000") {

@@ -193,6 +193,8 @@ export default {
             setCookie("cid", "");
             setCookie("y_token", "");
             setCookie("aid", "");
+            localStorage.removeItem("aid");
+
             this.$router.push("/mobile/login");
             break;
 

@@ -78,6 +78,7 @@ export default ({
           setCookie("cid", "");
           setCookie("y_token", "");
           setCookie("aid", "");
+          localStorage.removeItem("aid");
 
           window.location.reload();
           window.location.href = "/mobile/login";
