@@ -427,15 +427,23 @@ export default {
 
         // 針對 Qrcode 掃碼，因不會跳轉至其它 App 或 Web，仍停留在目前 App 時才進行推播流程
         // 故已排除在開啟外部 App or Web 時，如收到推播成功，則不會進行任何動作
-        if (
-          data.event === "trade_bind_wallet" &&
-          data.result === "ok" &&
-          !document.hidden
-        ) {
-          this.actionSetGlobalMessage({
-            msg: "绑定成功",
-            cb: this.clearMsgCallback
-          });
+        if (data.event === "trade_bind_wallet") {
+          if (data.result === "ok" && !document.hidden) {
+            this.actionSetGlobalMessage({
+              msg: "绑定成功",
+              cb: this.clearMsgCallback
+            });
+          } else if (data.code === "1500180017") {
+            this.actionSetGlobalMessage({
+              msg: "电子钱包已达绑定上限",
+              cb: this.clearMsgCallback
+            });
+          } else {
+            this.actionSetGlobalMessage({
+              msg: data.msg,
+              cb: this.clearMsgCallback
+            });
+          }
         }
       }
     },
@@ -584,7 +592,7 @@ export default {
           if (errorCode !== "00" || status !== "000") {
             return;
           }
-          console.log(this.userBindWalletList);
+          // console.log(this.userBindWalletList);
           // 預設錢包
           this.walletList = data;
 
