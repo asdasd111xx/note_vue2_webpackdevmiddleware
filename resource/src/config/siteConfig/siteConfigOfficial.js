@@ -10,7 +10,7 @@ export const preset = {
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
 
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
@@ -65,7 +65,7 @@ export const site_69 = {
   SITE_NAME: "鸭博娱乐",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
@@ -90,7 +90,7 @@ export const site_100003 = {
   SITE_NAME: "鸭博娱乐",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
@@ -194,7 +194,7 @@ export const site_81 = {
   SITE_NAME: "丝瓜直播",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
@@ -221,7 +221,7 @@ export const site_100009 = {
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
   PORN_CONFIG: {
@@ -266,7 +266,7 @@ export const site_93 = {
   SITE_NAME: "澳博国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
@@ -288,6 +288,7 @@ export const site_94 = {
   SITE_NAME: "51国际",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   // PORN_CONFIG: {
   //   ID: {
   //     SPACE: "16",
@@ -308,7 +309,7 @@ export const site_95 = {
   SITE_NAME: "51国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
   // PORN_CONFIG: {
