@@ -25,9 +25,12 @@ local conditionTrigger(env="qa",product="yb")=
     }else if env=="Beta" then {
         ref: ["refs/tags/"+ product +"Beta-*"],
         event: ["tag"],
-    }else if env=="Prod" || env== "Demo" then  {
+    }else if env=="Prod"  then  {
         ref: ["refs/tags/"+ product +"Prod-*"],
         event: ["tag"],
+    }else if env== "Demo" then {
+          ref: ["refs/tags/"+ product +"Demo-*"],
+        event: ["tag"],  
     }
 );
 
@@ -356,6 +359,10 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
     ,"yaboxxx-web","10.27.1.142","aubo","istio","ab","n2-8"),
+
+   Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
+    ,"yaboxxx-web","10.17.0.181","aubo","istio","ab","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
