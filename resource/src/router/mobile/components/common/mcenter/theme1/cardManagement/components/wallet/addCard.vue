@@ -693,7 +693,8 @@ export default {
         }
       })
         .then(response => {
-          const { result, msg, code } = response.data;
+          // const { result, msg, code } = response.data;
+          const { result, msg, code } = response;
           this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
