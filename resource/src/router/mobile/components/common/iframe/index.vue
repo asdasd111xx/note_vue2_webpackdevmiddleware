@@ -728,6 +728,7 @@ export default {
         console.log("[DATA]:", data.data);
 
         switch (data.event) {
+          case "EVENT_GET_GAME_URL":
           case "EVENT_THIRDPARTY_SWITCH_GAME":
             if (this.loginStatus) {
               this.linkToGame(data.data);

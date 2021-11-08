@@ -22,8 +22,10 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../common/mobileContainer";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import iframeEvent from "@/mixins/iframeEvent";
 
 export default {
+  mixins: [iframeEvent],
   components: {
     pageLoading: () =>
       import(
@@ -99,16 +101,8 @@ export default {
         });
       }
     },
-    onListener(e) {
-      console.log(e);
-    },
-    onLoadiframe() {
-      window.addEventListener("message", this.onListener);
-    },
     onSendMessage() {
-      const iframe = this.$refs["iframe"];
-      // iframe.contentWindow.postMessage("test message", "*");
-      // iframe.contentWindow.postMessage({ data: "data" }, "*");
+      this.iframeOnSendMessage(e);
     }
   }
 };
