@@ -309,7 +309,7 @@ export const site_95 = {
   SITE_NAME: "51国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"
   // PORN_CONFIG: {
