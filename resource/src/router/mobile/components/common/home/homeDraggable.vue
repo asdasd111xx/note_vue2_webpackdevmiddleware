@@ -40,7 +40,7 @@ export default {
       itemWidth: 90,
       itemHeight: 110,
       gapWidth: 10,
-      coefficientHeight: 0.75,
+      coefficientHeight: 190,
       left: 0,
       top: 0,
       trialList: [],
@@ -66,7 +66,8 @@ export default {
     this.clientHeight = document.documentElement.clientHeight;
     this.left = this.clientWidth - this.itemWidth - this.gapWidth;
     this.top =
-      this.clientHeight * this.coefficientHeight -
+      this.clientHeight -
+      this.coefficientHeight -
       this.itemHeight * (this.totalCount - this.listIndex - 1);
     // console.log(this.floatData);
     // console.log(this.listIndex);
