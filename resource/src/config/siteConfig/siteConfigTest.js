@@ -83,6 +83,7 @@ export const site_9999894 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "119",
+      YB: "9",
       AV: "120"
     }
   }

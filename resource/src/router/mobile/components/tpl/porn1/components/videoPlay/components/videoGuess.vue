@@ -78,7 +78,9 @@ export default {
     img() {
       return this.$getCdnPath(
         `/static/image/${this.themeTPL}/default/${
-          this.source === "yabo" ? "bg_video03_d" : "bg_video03_1_d@3x"
+          this.source === "yabo" || this.source === "av"
+            ? "bg_video03_d"
+            : "bg_video03_1_d@3x"
         }.png`
       );
     },

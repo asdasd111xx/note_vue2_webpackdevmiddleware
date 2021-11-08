@@ -249,6 +249,7 @@ export const site_92 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
+      YB: "9",
       AV: "17"
     }
   },
@@ -272,6 +273,7 @@ export const site_93 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
+      YB: "9",
       YB: "17"
     }
   }
