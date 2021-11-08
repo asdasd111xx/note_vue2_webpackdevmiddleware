@@ -288,6 +288,7 @@ export const site_94 = {
   SITE_NAME: "51国际",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   // PORN_CONFIG: {
   //   ID: {
   //     SPACE: "16",
