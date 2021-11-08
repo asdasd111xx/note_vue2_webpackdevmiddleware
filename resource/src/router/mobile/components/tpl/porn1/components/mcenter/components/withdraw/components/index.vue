@@ -768,7 +768,11 @@ export default {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
       }
-
+      
+      if(this.currencyList.length > 0){
+        this.setWithdrawCurrency(this.currencyList[0])
+      }
+      
       // this.actionSetIsLoading(false);
       this.isLoading = false;
     },
@@ -1009,9 +1013,9 @@ export default {
     moreMethodStatus() {
       let obj = {};
       // 直到 Check wallet 的部份，再 return 整個 obj
-      console.log(123);
-      console.log(this.bank_card);
-      console.log(this.wallet_card);
+      // console.log(123);
+      // console.log(this.bank_card);
+      // console.log(this.wallet_card);
       // Bank
       if (
         this.userLevelObj.bank &&
