@@ -266,17 +266,17 @@ export default {
       if (this.allWithdrawAccount && this.allWithdrawAccount.length > 0) {
         target = this.allWithdrawAccount.find(item => {
           return item.bank_id === 2009;
-        })["currency"];
-
-        // 新增 alias : 選單顯示用
-        list = target.map(item => {
-          return {
-            ...item,
-            currency_alias: item.currency_name
-          };
         });
+        if (target) {
+          // 新增 alias : 選單顯示用
+          list = target.currency.map(item => {
+            return {
+              ...item,
+              currency_alias: item.currency_name
+            };
+          });
+        }
       }
-
       return list;
     }
   },
