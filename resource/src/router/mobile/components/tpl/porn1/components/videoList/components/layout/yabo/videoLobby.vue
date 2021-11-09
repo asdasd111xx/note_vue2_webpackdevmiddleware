@@ -173,7 +173,7 @@ export default {
       };
     },
     defaultImg() {
-      const isYabo = this.source === "yabo";
+      const isYabo = this.source === "yabo" || this.source === "av";
       return this.$getCdnPath(
         `/static/image/${this.themeTPL}/default/${
           isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
@@ -212,8 +212,12 @@ export default {
   },
   created() {
     switch (this.source) {
+      case "av":
       case "yabo":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+        );
         this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
         break;
 
@@ -288,7 +292,7 @@ export default {
       });
     },
     getImg(img) {
-      const isYabo = this.source === "yabo";
+      const isYabo = this.source === "yabo" || this.source === "av";
       return {
         src: img,
         error: this.$getCdnPath(

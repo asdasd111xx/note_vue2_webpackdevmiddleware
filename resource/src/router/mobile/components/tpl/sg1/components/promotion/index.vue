@@ -141,23 +141,23 @@ export default {
     },
     getPromotionList(id) {
       this.tabId = +id;
-      // this.$nextTick(() => {
-      //   this.$router.replace({ query: { tab: id } });
-      // })
-      ajax({
+      goLangApiRequest({
         method: "get",
-        url: API_PROMOTION_LIST,
-        params: { api_uri: "/api/promotion/list", tab_id: id },
-        errorAlert: false
-      }).then(response => {
-        this.promotionList = response.ret;
-        if (this.tabList.length) {
-          return;
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+        params: {
+          tabId: id
         }
-        this.tabList = response.tab_list;
-
-        // 原為全部優惠
-        this.tabList[0].name = "全部";
+      }).then(res => {
+        if (res && res.data) {
+          this.promotionList = res.data.ret;
+          if (this.tabList.length) {
+            return;
+          }
+          this.tabList = res.data.tab_list;
+          this.tabList[0].name = "全部";
+        } else {
+          this.tabList = [];
+        }
       });
     },
     onGiftClick(target) {
@@ -168,30 +168,24 @@ export default {
       );
     },
     onClick(target) {
-      axios({
-        method: "get",
-        url: "/api/v1/c/link/customize",
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
         params: {
           code: "promotion",
-          client_uri: target.link
+          clientUri: target.link
         }
-      })
-        .then(res => {
-          if (res && res.data && res.data.ret && res.data.ret.uri) {
-            localStorage.setItem("iframe-third-url", res.data.ret.uri);
-            localStorage.setItem("iframe-third-url-title", target.name);
-            localStorage.setItem(
-              "iframe-third-origin",
-              `promotion?tab=${this.tabId}`
-            );
-            this.$router.push(`/mobile/iframe/promotion`);
-          }
-        })
-        .catch(error => {
-          if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
-        });
+      }).then(res => {
+        if (res && res.data && res.data.uri) {
+          localStorage.setItem("iframe-third-url", res.data.uri);
+          localStorage.setItem("iframe-third-url-title", target.name);
+          localStorage.setItem(
+            "iframe-third-origin",
+            `promotion?tab=${this.tabId}`
+          );
+          this.$router.push(`/mobile/iframe/promotion`);
+        }
+      });
 
       //   let newWindow = '';
       //   // 辨別裝置是否為ios寰宇瀏覽器
@@ -299,7 +293,6 @@ $fixed_spacing_height: 43px;
   flex: 1;
   height: 43px;
   line-height: 43px;
-  font-weight: 500;
   font-size: 14px;
   text-align: center;
   color: $main_text_color2;
@@ -355,7 +348,7 @@ $fixed_spacing_height: 43px;
 
 @media screen and (min-width: $phone) {
   .type-btn {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .time {
@@ -383,8 +376,9 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #731c25;
-  background: linear-gradient(to left, #f4b22e 0%, #f9d388 100%);
+  color: #222222;
+  background: #ffefdd;
+  border-radius: 32px;
   &.right {
     right: 14px;
   }

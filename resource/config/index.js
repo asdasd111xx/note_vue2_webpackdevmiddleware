@@ -5,15 +5,15 @@ const outputDirName = process.env.CDN_HOST
   ? process.env.CDN_HOST.split("://")[1]
   : "www";
 
-// 鸭博娱乐 500015
-const domain = "https://yb01.66boxing.com/";
+// 币发BIFA 500015
+// const domain = "https://yb01.66boxing.com/";
 // Demo 69
 // const domain = 'https://yb0t.66relish.com/';
 // Prod 67
 // const domain = "https://yaboxxxapp01.com/";
 // const domain = "https://yaboxxxapp02.com/";
 // Beta 100003
-// const domain = 'https://ybbe1.qghco.com/';
+const domain = "https://ybbe1.qghco.com/";
 // const domain = 'https://yb0t.66apples.com/';
 
 // 亿元 500023

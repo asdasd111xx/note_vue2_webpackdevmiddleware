@@ -1622,10 +1622,8 @@ export default {
       if (!this.entryBlockStatusData) return;
       switch (this.entryBlockStatusData.status) {
         case 1:
-          return `您已多次提单未完成支付，请尝试其他充值通道，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
-
         case 2:
-          return `您有提单未完成支付，请尝试其它充值通道。若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
+          return `您有提单未完成支付，若多次提单不充值，帐号可能会被暂停充值。祝您游戏愉快!`;
 
         case 3:
         case 5:

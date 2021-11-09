@@ -247,7 +247,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/ByUpper`,
         params: {
           ...this.allValue,
-          aid: getCookie("aid") || "",
+          aid: getCookie("aid") || localStorage.getItem("aid") || "",
           confirmPassword: this.allValue["confirm_password"],
           captchaText: this.allValue["captcha_text"],
           code: this.agentCode,
@@ -329,6 +329,7 @@ export default {
           this.captchaImg = res.data.data;
           this.aid = res.data.cookie.aid;
           setCookie("aid", res.data.cookie.aid);
+          localStorage.setItem("aid", res.data.cookie.aid);
         }
       });
     },

@@ -7,192 +7,220 @@ platform:
   arch: amd64
 
 steps:
-- name: push2GCR-QA
-  image: plugins/gcr
-  settings:
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - ${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-QA
+    image: plugins/gcr
+    settings:
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - ${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: yaboGKE-qa(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
+  - name: yaboGKE-qa(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-QA
 
-- name: yaboGKE-beta(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
+  - name: yiyuanGKE-qa(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-QA
 
-- name: yiyuanGKE-qa(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
+  - name: siguaGKE-qa(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-QA
 
-- name: yiyuanGKE-beta(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
+  - name: auboGKE-qa(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-QA
 
-- name: siguaGKE-qa(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
-
-- name: siguaGKE-beta(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
-
-- name: auboGKE-qa(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
-
-- name: sp51GKE-qa(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/sp51/.istio-kube.yml
-    vars:
-      deployName: sp51-frontend-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sp51-frontend-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-QA
+  - name: sp51GKE-qa(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-QA
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/allQA-*
+    - refs/tags/allQA-*
+
+---
+kind: pipeline
+name: AllPipeline(Beta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: push2GCR-Beta
+    image: plugins/gcr
+    settings:
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - ${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
+
+  - name: yaboGKE-beta(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
+        k8sNginxSSL: ""
+        nfs: 10.17.3.48
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Beta
+
+  - name: yiyuanGKE-beta(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
+        k8sNginxSSL: ""
+        nfs: 10.17.3.48
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Beta
+
+  - name: siguaGKE-beta(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
+        k8sNginxSSL: ""
+        nfs: 10.17.3.48
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Beta
+
+trigger:
+  event:
+    - tag
+  ref:
+    - refs/tags/allBeta-*
 
 ---
 kind: pipeline
@@ -203,1091 +231,1240 @@ platform:
   arch: amd64
 
 steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - ${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-Prod
+    image: plugins/gcr
+    settings:
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - ${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: yaboGKE-demo(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: yaboGKE-demo(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: yaboGKE-prod(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: yaboGKE-prod(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: yiyuanGKE-demo(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: yiyuanGKE-demo(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: yiyuanGKE-prod(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: yiyuanGKE-prod(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: siguaGKE-demo(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: siguaGKE-demo(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: siguaGKE-prod(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: siguaGKE-prod(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: auboGKE-demo(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: auboGKE-demo(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: auboGKE-prod(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: auboGKE-prod(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: sp51GKE-demo(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sp51/.istio-kube.yml
-    vars:
-      deployName: sp51-frontend-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sp51-frontend-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: sp51GKE-demo(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: sp51GKE-prod(istio)
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sp51/.istio-kube.yml
-    vars:
-      deployName: sp51-frontend-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sp51-frontend-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: sp51GKE-prod(istio)
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/allProd-*
+    - refs/tags/allProd-*
 
 ---
 kind: pipeline
-name: sp51Pipeline(istioQA)
+name: Pipelinesp51Pipeline(istioQA)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-QA
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=qa
-    - product=sp51
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - qa-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-QA
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=qa
+        - product=sp51
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - qa-${DRONE_COMMIT}
+        - ${DRONE_TAG}
 
-- name: deploy2GKE-QA
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/sp51/.istio-kube.yml
-    vars:
-      deployName: sp51-frontend-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sp51-frontend-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-QA
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/spQA-*
+    - refs/tags/spQA-*
 
 ---
 kind: pipeline
-name: sp51Pipeline(istioProd)
+name: Pipelinesp51Pipeline(istioDemo)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=sp51
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-Demo
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=sp51
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sp51/.istio-kube.yml
-    vars:
-      deployName: sp51-frontend-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sp51-frontend-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
-
-- name: deploy2GKE-prod
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sp51/.istio-kube.yml
-    vars:
-      deployName: sp51-frontend-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sp51-frontend-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: deploy2GKE-Demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Demo
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/spProd-*
+    - refs/tags/spDemo-*
 
 ---
 kind: pipeline
-name: auboPipeline(istioQA)
+name: Buildsp51Pipeline(istioProd)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-QA
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=qa
-    - product=aubo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - qa-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-Prod
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=sp51
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-QA
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
+
+  - name: deploy2GKE-prod
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sp51/.istio-kube.yml
+      vars:
+        deployName: sp51-frontend-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sp51-frontend-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/abQA-*
+    - refs/tags/spProd-*
 
 ---
 kind: pipeline
-name: auboPipeline(istioDemo)
+name: PipelineauboPipeline(istioQA)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Demo
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=aubo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-QA
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=qa
+        - product=aubo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - qa-${DRONE_COMMIT}
+        - ${DRONE_TAG}
 
-- name: deploy2GKE-Demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: udm16-32
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Demo
+  - name: deploy2GKE-QA
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/abDemo-*
+    - refs/tags/abQA-*
 
 ---
 kind: pipeline
-name: auboPipeline(istioProd)
+name: PipelineauboPipeline(istioDemo)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=aubo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-Demo
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=aubo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
-
-- name: deploy2GKE-prod
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/aubo/.istio-kube.yml
-    vars:
-      deployName: aubo-frontend-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: aubo-frontend-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: deploy2GKE-Demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Demo
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/abProd-*
+    - refs/tags/abDemo-*
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioQA)
+name: BuildauboPipeline(istioProd)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-QA
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=qa
-    - product=yiyuan
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - qa-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-Prod
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=aubo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-qa
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: deploy2GKE-beta
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-prod
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/aubo/.istio-kube.yml
+      vars:
+        deployName: aubo-frontend-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: aubo-frontend-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/eyQA-*
+    - refs/tags/abProd-*
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioBeta)
+name: PipelineyiyuanPipeline(istioQA)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Beta
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=beta
-    - product=yiyuan
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - beta-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-QA
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=qa
+        - product=yiyuan
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - qa-${DRONE_COMMIT}
+        - ${DRONE_TAG}
 
-- name: deploy2GKE-Beta
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: nginx-ssl-qa
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-QA
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/eyBeta-*
+    - refs/tags/eyQA-*
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioProd)
+name: PipelineyiyuanPipeline(istioBeta)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=yiyuan
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-Beta
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=beta
+        - product=yiyuan
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - beta-${DRONE_COMMIT}
+        - ${DRONE_TAG}
 
-- name: deploy2GKE-demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
-
-- name: deploy2GKE-prod
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yiyuan/.istio-kube.yml
-    vars:
-      deployName: yiyuan-frontend-proxy-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: deploy2GKE-Beta
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
+        k8sNginxSSL: nginx-ssl-qa
+        nfs: 10.17.3.48
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/eyProd-*
+    - refs/tags/eyBeta-*
 
 ---
 kind: pipeline
-name: siguaPipeline(istioQA)
+name: PipelineyiyuanPipeline(istioDemo)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-QA
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=qa
-    - product=sigua
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - qa-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-Demo
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=yiyuan
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-qa
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-
-- name: deploy2GKE-beta
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-Demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Demo
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/sgQA-*
+    - refs/tags/eyDemo-*
 
 ---
 kind: pipeline
-name: siguaPipeline(istioBeta)
+name: BuildyiyuanPipeline(istioProd)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Beta
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=beta
-    - product=sigua
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - beta-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-Prod
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=yiyuan
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-Beta
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sgsp-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
+
+  - name: deploy2GKE-prod
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yiyuan/.istio-kube.yml
+      vars:
+        deployName: yiyuan-frontend-proxy-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/sgBeta-*
+    - refs/tags/eyProd-*
 
 ---
 kind: pipeline
-name: siguaPipeline(istioProd)
+name: PipelinesiguaPipeline(istioQA)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=sigua
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-QA
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=beta
+        - product=sigua
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - beta-${DRONE_COMMIT}
+        - ${DRONE_TAG}
 
-- name: deploy2GKE-demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
-
-- name: deploy2GKE-prod
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/sigua/.istio-kube.yml
-    vars:
-      deployName: sigua-frontend-proxy-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: deploy2GKE-QA
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/sgProd-*
+    - refs/tags/sgQA-*
 
 ---
 kind: pipeline
-name: yaboPipeline(istioQA)
+name: PipelinesiguaPipeline(istioBeta)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-QA
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=qa
-    - product=yabo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - qa-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-Beta
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=beta
+        - product=sigua
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - beta-${DRONE_COMMIT}
+        - ${DRONE_TAG}
 
-- name: deploy2GKE-qa
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-test
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-qa
-      env: qa
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
-      k8sNginxSSL: ""
-      nfs: 10.27.1.142
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-
-- name: deploy2GKE-beta
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-Beta
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
+        k8sNginxSSL: ""
+        nfs: 10.17.3.48
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/ybQA-*
+    - refs/tags/sgBeta-*
 
 ---
 kind: pipeline
-name: yaboPipeline(istioBeta)
+name: PipelinesiguaPipeline(istioDemo)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Beta
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=beta
-    - product=yabo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - beta-${DRONE_COMMIT}
-    - ${DRONE_TAG}
+  - name: push2GCR-Demo
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=sigua
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-Beta
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-beta
-      env: beta
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
-      k8sNginxSSL: ""
-      nfs: 10.17.0.128
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
+  - name: deploy2GKE-Demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Demo
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/ybBeta-*
+    - refs/tags/sgDemo-*
 
 ---
 kind: pipeline
-name: yaboPipeline(istioProd)
+name: BuildsiguaPipeline(istioProd)
 
 platform:
   os: linux
   arch: amd64
 
 steps:
-- name: push2GCR-Prod
-  image: plugins/gcr
-  settings:
-    build_args:
-    - website=demo
-    - product=yabo
-    json_key:
-      from_secret: GOOGLE_CREDENTIALS
-    repo: gcr.io/rd7-project/yaboxxx-web
-    tags:
-    - latest
-    - demo-${DRONE_COMMIT}
-    - ${DRONE_TAG}
-  depends_on:
-  - clone
+  - name: push2GCR-Prod
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=sigua
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
 
-- name: deploy2GKE-demo
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-demo
-      env: demo
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: n2-8
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: deploy2GKE-demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
-- name: deploy2GKE-prod
-  image: nytimes/drone-gke
-  settings:
-    cluster: yaboxxx-prod
-    project: rd7-project
-    template: configs/yabo/.istio-kube.yml
-    vars:
-      deployName: yabo-frontend-proxy-prod
-      env: prod
-      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
-      k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
-      k8sNginxSSL: ""
-      nfs: 10.17.0.181
-      nodePoolName: e2-16
-    zone: asia-east1-b
-  environment:
-    TOKEN:
-      from_secret: GOOGLE_CREDENTIALS
-  depends_on:
-  - push2GCR-Prod
+  - name: deploy2GKE-prod
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/sigua/.istio-kube.yml
+      vars:
+        deployName: sigua-frontend-proxy-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
 
 trigger:
   event:
-  - tag
+    - tag
   ref:
-  - refs/tags/ybProd-*
+    - refs/tags/sgProd-*
 
-...
+---
+kind: pipeline
+name: PipelineyaboPipeline(istioQA)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: push2GCR-QA
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=qa
+        - product=yabo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - qa-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+
+  - name: deploy2GKE-QA
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-test
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-qa
+        env: qa
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
+        k8sNginxSSL: ""
+        nfs: 10.27.1.218
+        nodePoolName: n2-8
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+    - tag
+  ref:
+    - refs/tags/ybQA-*
+
+---
+kind: pipeline
+name: PipelineyaboPipeline(istioBeta)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: push2GCR-Beta
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=beta
+        - product=yabo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - beta-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+
+  - name: deploy2GKE-Beta
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-beta
+        env: beta
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
+        k8sNginxSSL: ""
+        nfs: 10.17.3.48
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+    - tag
+  ref:
+    - refs/tags/ybBeta-*
+
+---
+kind: pipeline
+name: PipelineyaboPipeline(istioDemo)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: push2GCR-Demo
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=yabo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
+
+  - name: deploy2GKE-Demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Demo
+
+trigger:
+  event:
+    - tag
+  ref:
+    - refs/tags/ybDemo-*
+
+---
+kind: pipeline
+name: BuildyaboPipeline(istioProd)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: push2GCR-Prod
+    image: plugins/gcr
+    settings:
+      build_args:
+        - website=demo
+        - product=yabo
+      json_key:
+        from_secret: GOOGLE_CREDENTIALS
+      repo: gcr.io/rd7-project/yaboxxx-web
+      tags:
+        - latest
+        - demo-${DRONE_COMMIT}
+        - ${DRONE_TAG}
+    depends_on:
+      - clone
+
+  - name: deploy2GKE-demo
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-demo
+        env: demo
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
+
+  - name: deploy2GKE-prod
+    image: nytimes/drone-gke
+    settings:
+      cluster: yaboxxx-prod
+      project: rd7-project
+      template: configs/yabo/.istio-kube.yml
+      vars:
+        deployName: yabo-frontend-proxy-prod
+        env: prod
+        imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+        k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
+        k8sNginxSSL: ""
+        nfs: 10.17.1.94
+        nodePoolName: udm16-32
+      zone: asia-east1-b
+    environment:
+      TOKEN:
+        from_secret: GOOGLE_CREDENTIALS
+    depends_on:
+      - push2GCR-Prod
+
+trigger:
+  event:
+    - tag
+  ref:
+    - refs/tags/ybProd-*

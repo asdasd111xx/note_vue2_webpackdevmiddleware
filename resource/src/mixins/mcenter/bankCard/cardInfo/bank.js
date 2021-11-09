@@ -52,7 +52,7 @@ export default {
             return;
           }
 
-          this.bank_card = data.filter((item, index) => index < 3);
+          this.bank_card = data;
         })
         .catch(error => {
           const { msg } = error.response.data;

@@ -98,7 +98,10 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['red-dot']" />
+            <div :class="$style['red-dot']">
+              <!-- <div :class="$style['information-dot']"> -->
+              <!-- <span>{{ unreadMessageCount }}</span> -->
+            </div>
           </div>
         </div>
       </div>
@@ -141,7 +144,12 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask_my.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['red-dot']">
+              <!-- <div :class="$style['information-dot']"> -->
+              <!-- <span>{{ unreadMessageCount }}</span> -->
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -206,6 +214,10 @@ export default {
     hasUnreadMessage: {
       type: Boolean,
       default: false
+    },
+    unreadMessageCount: {
+      type: Number,
+      default: 0
     },
     hasAppTips: {
       type: Boolean,
@@ -318,8 +330,8 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
         params: {
-          account: getCookie("uuidAccount"),
-          cid: getCookie("guestCid")
+          account: localStorage.getItem("uuidAccount"),
+          cid: localStorage.getItem("guestCid")
         }
       }).then(res => {
         if (res.status === "000") {
@@ -803,6 +815,24 @@ export default {
   width: 7px;
   height: 7px;
   top: -2px;
+}
+
+.information-dot {
+  position: absolute;
+  left: 10px;
+  background: #fecb2f;
+  border-radius: 20px;
+  border: 1px solid #f9e8b4;
+  width: 20px;
+  height: 12px;
+  line-height: 8px;
+  top: -5px;
+  padding: 0.5px 2px;
+  span {
+    color: #731c25;
+    font-size: 7px;
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: $pad) {

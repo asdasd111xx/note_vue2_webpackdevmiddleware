@@ -126,7 +126,7 @@ export default {
   computed: {
     mailURL() {
       if (this.themeTPL === "porn1") {
-        return "cs2@yaboxxx.net";
+        return "cs@bifa8.co";
       }
 
       if (this.themeTPL === "aobo1") {
@@ -134,7 +134,7 @@ export default {
       }
 
       if (this.themeTPL === "sg1") {
-        return "cs1@siguacs.net";
+        return "cs@paocs.co";
       }
 
       if (this.themeTPL === "sp1") {

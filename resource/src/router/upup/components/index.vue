@@ -15,7 +15,7 @@
       {{ $t("ROUTER_UPUP_TEXT_1") }}
     </div>
     <template v-if="start && end">
-      <div :class="$style['time']">
+      <div :class="[$style['time'], $style[`${themeTPL}`]]">
         <div>{{ $text("S_LOCAL_TIME", "当地时间") }} ({{ localGMT }})</div>
         <div>
           <span>{{ start }}</span> ~ <span>{{ end }}</span>

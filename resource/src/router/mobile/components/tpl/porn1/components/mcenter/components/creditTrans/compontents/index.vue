@@ -114,9 +114,9 @@ export default {
       switch (index) {
         default:
         case 0:
+          // this.$router.push("/mobile/iframe/promotion?alias=quota_transfer");
           this.currentTemplate = "promotion-credit-trans";
           this.currentTab = index;
-          // this.$router.push({ query: { 'tab': index } });
           break;
 
         case 1:
@@ -127,7 +127,6 @@ export default {
               if (res === "ok") {
                 self.currentTemplate = "transfer-credit-trans";
                 self.currentTab = index;
-                // this.$router.push({ query: { 'tab': index } });
               }
             });
           });
@@ -136,7 +135,6 @@ export default {
         case 2:
           this.currentTemplate = "recoard-recharge";
           this.currentTab = index;
-          // this.$router.push({ query: { 'tab': index } });
           break;
       }
     },

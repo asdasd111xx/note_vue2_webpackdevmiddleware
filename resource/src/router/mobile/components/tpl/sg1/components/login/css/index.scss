@@ -1,7 +1,7 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .container {
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .title {
@@ -71,7 +71,7 @@
       justify-content: center;
       border-right: 1px solid rgba(128, 128, 128, 0.26);
 
-      >img {
+      > img {
         width: 18px;
         height: 18px;
       }
@@ -100,7 +100,7 @@
       top: calc(50% - 10px);
       margin: 0px 5px;
 
-      >img {
+      > img {
         width: 20px;
         height: 20px;
       }
@@ -130,7 +130,7 @@
     .login-unit-link {
       float: right;
       position: relative;
-      color: #5E626D;
+      color: #5e626d;
     }
   }
 
@@ -140,11 +140,11 @@
     justify-content: center;
     align-items: center;
 
-    >div {
+    > div {
       color: white;
       text-align: center;
       line-height: 50px;
-      background: linear-gradient(to left, #FE593C 0%, #E61938 100%);
+      background: linear-gradient(to left, #fe593c 0%, #e61938 100%);
       border-radius: 3px;
       font-size: 13px;
       font-weight: 700;
@@ -166,11 +166,11 @@
     margin: 0 10px;
 
     &.link-submit {
-      color: #6AAAF5;
+      color: #6aaaf5;
     }
 
     a {
-      color: #5E626D;
+      color: #5e626d;
     }
   }
 }
@@ -184,6 +184,8 @@
 }
 
 .err-msg {
+  max-width: 375px;
+  margin: 0 auto;
   color: $main_error_color1;
   min-height: 26px;
   line-height: 26px;
@@ -198,7 +200,7 @@
   right: 10px;
   top: 0;
 
-  >img {
+  > img {
     width: 18px;
     height: 18px;
   }
@@ -213,7 +215,7 @@
   right: 10px;
   top: 0;
 
-  >img {
+  > img {
     width: 12px;
     height: 12px;
   }

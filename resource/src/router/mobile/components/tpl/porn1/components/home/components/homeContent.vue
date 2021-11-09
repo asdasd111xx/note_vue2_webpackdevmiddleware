@@ -11,6 +11,7 @@
         v-show="isShow"
         ref="type-wrap"
         :class="$style['type-wrap']"
+        :style="isNotLoopTypeList ? { height: `${wrapHeight}px` } : {}"
         @touchstart="onTypeTouchStart"
         @touchmove="onTypeTouchMove"
       >
@@ -67,7 +68,7 @@
             <div
               v-for="(info, index) in mcenterList"
               :key="`mcenter-${index}`"
-              :class="$style['mcenter-wrap']"
+              :class="[$style['mcenter-wrap'], $style[siteConfig.ROUTER_TPL]]"
               @click="onGoToMcenter(info.path)"
             >
               <template v-if="info.name === 'grade'">
@@ -77,12 +78,15 @@
                       `/static/image/${
                         siteConfig.ROUTER_TPL
                       }/level/icon_level_${
-                        vipLevel === 'max' ? 'max' : vipLevel
+                        currentLevel > 10 ? 'max' : currentLevel
                       }.png`
                     )
                   "
                 />
-                <div>{{ +vipLevel > 9 ? vipLevel : info.text }}</div>
+                <div v-if="+currentLevel > 10" :class="$style['level-text']">
+                  {{ currentLevel }}
+                </div>
+                <div>{{ info.text }}</div>
               </template>
               <template v-else>
                 <img
@@ -297,6 +301,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .home-wrap {
   overflow: hidden;
   position: relative;
@@ -348,7 +353,7 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #a6a9b2;
+  color: $share_text_color6;
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
@@ -359,6 +364,12 @@ export default {
   }
   &.sp1 {
     color: #353541;
+  }
+  &.porn1 {
+    color: #323943;
+    &.active {
+      color: #fff;
+    }
   }
 }
 
@@ -401,6 +412,7 @@ export default {
 .mcenter-wrap {
   float: left;
   width: 20%;
+  position: relative;
 
   > img {
     display: block;
@@ -412,9 +424,23 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ad9982;
+    color: $share_text_color1;
     font-size: 12px;
     text-align: center;
+  }
+
+  .level-text {
+    top: 10px;
+    left: 37%;
+    position: absolute;
+    font-weight: 700;
+    color: #906246;
+  }
+
+  &.porn1 {
+    > div {
+      color: #707994;
+    }
   }
 }
 

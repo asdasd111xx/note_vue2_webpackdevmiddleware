@@ -402,7 +402,7 @@ export default {
           lang: "zh-cn",
           phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
           ...captchaParams,
-          aid: getCookie("aid") || ""
+          aid: getCookie("aid") || localStorage.getItem("aid") || ""
         }
       })
         .then(res => {

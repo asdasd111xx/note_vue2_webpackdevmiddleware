@@ -5,7 +5,7 @@
     :class="$style.container"
   >
     <div slot="content">
-      <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
+      <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL) && showOldVersion">
         <div :class="$style['img-wrap']">
           <img
             :class="$style['img-wrap']"
@@ -56,7 +56,12 @@
         </div>
       </div>
       <div v-else :class="$style['iframe-wrap']">
-        <iframe v-if="src" :src="src" :class="$style['iframe-item']" />
+        <iframe
+          v-if="src"
+          :src="src"
+          :class="$style['iframe-item']"
+          @load="onLoadiframe"
+        />
       </div>
     </div>
   </mobile-container>
@@ -76,7 +81,10 @@ export default {
   data() {
     return {
       isShowPromotion: false,
-      src: ""
+      src: "",
+      // 舊版推廣賺錢
+      showOldVersion: false,
+      contentTitle: ""
     };
   },
   created() {
@@ -151,18 +159,11 @@ export default {
         });
     } else {
       if (this.loginStatus) {
-        // this.isShowPromotion =
-        //   localStorage.getItem("is-show-promotion") === "true";
-
         this.actionSetUserdata(true).then(() => {
           // 我的推廣開關 && 禮金開關需同時開啟，才顯示禮金明細
           this.isShowPromotion =
             this.memInfo.user.show_promotion && this.memInfo.config.festival;
           localStorage.setItem("is-show-promotion", this.isShowPromotion);
-          // localStorage.setItem(
-          //   "is-show-promotion",
-          //   this.memInfo.user.show_promotion
-          // );
         });
       } else {
         this.isShowPromotion = true;
@@ -172,9 +173,7 @@ export default {
   },
   mounted() {
     document.getElementById("mobile-wrap").scrollTo(0, 0);
-    if (!["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
-      this.embeddedLink();
-    }
+    this.embeddedLink();
   },
   computed: {
     ...mapGetters({
@@ -191,12 +190,12 @@ export default {
       let hasRecommendGift = this.isShowPromotion;
       return {
         prev: true,
-        title: "推广赚钱",
+        title: this.contentTitle,
         customLinkTitle:
           this.$route.query.check || !hasRecommendGift ? "" : "礼金明细",
         customLinkAction: () => {
-          this.$router.replace(
-            "/mobile/mcenter/tcenterManageRebate/recommendGift/today?giftDetail=1"
+          this.$router.push(
+            "/mobile/mcenter/tcenterManageRebate/recommendGift/today?giftDetail=1&redirect=mobile/mcenter/home"
           );
         },
         onClick: () => {
@@ -226,6 +225,9 @@ export default {
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
     }
   },
+  beforeDestroy() {
+    window.removeEventListener("message", this.onListener);
+  },
   beforeCreate() {
     if (this.$route.query && this.$route.query.refresh) {
       window.location.replace("/mobile/mcenter/makeMoney");
@@ -238,6 +240,23 @@ export default {
       "actionSetAgentLink",
       "actionSetUserdata"
     ]),
+    onListener(e) {
+      if (e && e.data && e.data.event) {
+        const event = e.data.event;
+        switch (event) {
+          case "EVENT_THIRDPARTY_CLOSE":
+            this.$router.back();
+            return;
+        }
+      }
+    },
+    onLoadiframe(event) {
+      try {
+        window.addEventListener("message", this.onListener);
+      } catch (e) {
+        console.log("onbeforeunload Catch:", e);
+      }
+    },
     copyCode() {
       this.$copyText(this.getAgentLink).then(() => {
         this.actionSetGlobalMessage({ msg: "复制成功" });
@@ -264,6 +283,32 @@ export default {
           this.actionSetGlobalMessage({ msg: res.msg });
           return;
         }
+
+        // 標題
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          if (res.status === "000") {
+            let promotionId = this.src.split("?")[0].split("/")[
+              this.src.split("?")[0].split("/").length - 1
+            ];
+
+            if (!promotionId) {
+              this.contentTitle = "";
+              return;
+            }
+
+            res.data.ret.forEach(promo => {
+              if (promo.link.includes(promotionId)) {
+                this.contentTitle = promo.name;
+              }
+            });
+          }
+        });
       });
     }
   }

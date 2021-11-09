@@ -529,7 +529,7 @@ export default {
         params: {
           username: this.username,
           captchaText: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : "",
-          aid: getCookie("aid"),
+          aid: getCookie("aid") || localStorage.getItem("aid"),
           lang: "zh-cn"
         }
       }).then(res => {

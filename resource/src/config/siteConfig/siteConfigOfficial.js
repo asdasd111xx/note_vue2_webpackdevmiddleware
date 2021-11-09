@@ -9,8 +9,8 @@ export const preset = {
   BBOS_DOMIAN: "https://bbos.canarycherrytart.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
 
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
+  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
@@ -32,16 +32,17 @@ export const preset = {
 // yaboapi.iguanagingercake.com
 
 /**
- * 鸭博娱乐 正式站正式環境
+ * 币发BIFA 正式站正式環境
  */
 export const site_67 = {
   ...preset,
   ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("porn1"),
-  SITE_NAME: "鸭博娱乐",
+  SITE_NAME: "币发BIFA",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -55,16 +56,15 @@ export const site_67 = {
 };
 
 /**
- * 鸭博娱乐 正式站Demo環境
+ * 币发BIFA 正式站Demo環境
  */
 export const site_69 = {
   ...preset,
   ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
-  SITE_NAME: "鸭博娱乐",
+  SITE_NAME: "币发BIFA",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
@@ -80,17 +80,16 @@ export const site_69 = {
 };
 
 /**
- * 鸭博娱乐 Beta環境
+ * 币发BIFA Beta環境
  */
 export const site_100003 = {
   ...preset,
   ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
-  SITE_NAME: "鸭博娱乐",
+  SITE_NAME: "币发BIFA",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
@@ -161,16 +160,17 @@ export const site_100004 = {
 /* eslint-enable camelcase */
 
 /**
- * 丝瓜直播 正式站正式環境
+ * 泡泡直播 正式站正式環境
  */
 export const site_80 = {
   ...preset,
   ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1", // 手機網頁版模版
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜直播",
+  SITE_NAME: "泡泡直播",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
@@ -184,16 +184,15 @@ export const site_80 = {
 };
 
 /**
- * 丝瓜直播 正式站Demo環境
+ * 泡泡直播 正式站Demo環境
  */
 export const site_81 = {
   ...preset,
   ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜直播",
+  SITE_NAME: "泡泡直播",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
@@ -209,19 +208,18 @@ export const site_81 = {
 };
 
 /**
- * 丝瓜 Beta環境
+ * 泡泡直播 Beta環境
  */
 export const site_100009 = {
   ...preset,
   ROUTER_TPL: "sg1",
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
-  SITE_NAME: "丝瓜直播",
+  SITE_NAME: "泡泡直播",
   // todo待beta domain完成
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com/ws/promosocket",
   ACTIVES_BOUNS_WEBSOCKETV2: "wss://ybbe2.qghco.com/wsn/promosocket?",
   PORN_CONFIG: {
@@ -246,10 +244,12 @@ export const site_92 = {
   SITE_NAME: "澳博国际",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
-      YB: "17"
+      YB: "9",
+      AV: "17"
     }
   },
   CDN_HEADER: "x-cdn-ab"
@@ -272,6 +272,7 @@ export const site_93 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
+      YB: "9",
       YB: "17"
     }
   }
@@ -308,7 +309,6 @@ export const site_95 = {
   VERSION: getVersion("sp1"),
   SITE_NAME: "51国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?"

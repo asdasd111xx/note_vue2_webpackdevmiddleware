@@ -10,6 +10,44 @@
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
     style="overflow-y:scroll; -webkit-overflow-scrolling: touch;"
   >
+    <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
+    <transition name="fade">
+      <div v-if="exitCheck" :class="$style['pop-wrap']">
+        <div :class="$style['pop-mask']" />
+        <div :class="$style['pop-block']">
+          <div :class="$style['title']">
+            温馨提示
+          </div>
+
+          <div :class="$style['content-wrap']">
+            <div :class="$style['content']">
+              <span>
+                您确定返回到大厅吗?
+              </span>
+
+              <template>
+                <div :class="$style['button-wrap']">
+                  <div
+                    :class="[$style['button-item'], $style['close']]"
+                    @click="closePop"
+                  >
+                    取消
+                  </div>
+
+                  <div
+                    :class="[$style['button-item'], $style['confirm']]"
+                    @click="$router.push('/mobile')"
+                  >
+                    确定
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <!-- 泡泡真人視訊離開防呆提示 ⬆️ -->
     <div
       v-if="headerConfig.hasHeader"
       id="header"
@@ -46,7 +84,7 @@
             )
           "
         />
-        <div v-if="showText">返回</div>
+        <div v-if="showBack">{{ $text("S_GO_BACK") }}</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
         {{ contentTitle || headerConfig.title }}
@@ -85,8 +123,9 @@ export default {
       isLoading: true,
       isFullScreen: false,
       src: "",
-      showText: true,
-      contentTitle: ""
+      showBack: true,
+      contentTitle: "",
+      exitCheck: false
     };
   },
   components: {
@@ -189,7 +228,6 @@ export default {
           ""
       };
 
-      localStorage.removeItem("iframe-third-url-title");
       // SWAG 固定
       switch (origin) {
         case "SWAG":
@@ -204,6 +242,10 @@ export default {
         ...baseConfig,
         onClick: () => {
           const iframeThirdOrigin = localStorage.getItem("iframe-third-origin");
+          if (this.$route.query.vendor === "lg_live") {
+            this.exitCheck = true;
+            return;
+          }
           if (
             this.$route.params.page.toUpperCase() === "GAME" &&
             iframeThirdOrigin &&
@@ -234,6 +276,10 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    closePop() {
+      this.exitCheck = false;
+      return;
+    },
     initIframe() {
       let container = document.getElementById("mobile-container");
       if (container && container.style) {
@@ -332,28 +378,7 @@ export default {
           switch (type) {
             case "fengniao":
               if (query.alias) {
-                goLangApiRequest({
-                  method: "get",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-                  params: {
-                    urlName: query.alias,
-                    lang: "zh-cn",
-                    needToken: "true",
-                    externalCode: "fengniao"
-                  }
-                }).then(res => {
-                  this.isLoading = false;
-
-                  if (res && res.data && res.data.uri) {
-                    this.src = res.data.uri + "&cors=embed";
-                    return;
-                  }
-
-                  if (res && res.msg) {
-                    this.actionSetGlobalMessage({ msg: res.msg });
-                    return;
-                  }
-                });
+                this.getExternalUrl(type);
                 return;
               }
 
@@ -422,68 +447,8 @@ export default {
           break;
 
         case "GIFT":
-          this.showText = false;
-          // 優小秘
-          let giftUrl = localStorage.getItem("iframe-third-url") || "";
-          if (giftUrl) {
-            if (!giftUrl.includes("v=m")) {
-              giftUrl = `${giftUrl}&v=m`;
-            }
-            this.src = giftUrl;
-            return;
-          }
-
-          if (query.alias) {
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-              params: {
-                urlName: query.alias,
-                lang: "zh-cn",
-                needToken: "true",
-                externalCode: "promotion"
-              }
-            }).then(res => {
-              this.isLoading = false;
-              if (res && res.data && res.data.uri) {
-                url = res.data.uri;
-
-                if (!url.includes("v=m")) {
-                  url = `${url}&v=m`;
-                }
-
-                this.src = url;
-
-                //取得優小祕優惠頁面標題
-                goLangApiRequest({
-                  method: "get",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-                  params: {
-                    lang: "zh-cn"
-                  }
-                }).then(res => {
-                  if (res.status === "000") {
-                    let promotionId = this.src.split("?")[0].split("/")[
-                      this.src.split("?")[0].split("/").length - 1
-                    ];
-
-                    res.data.ret.forEach(promo => {
-                      if (promo.link.includes(promotionId)) {
-                        this.contentTitle = promo.name;
-                      }
-                    });
-                  }
-                });
-              }
-
-              if (res && res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
-                return;
-              }
-            });
-          }
-          break;
-
+        case "VIPINFO":
+          this.showBack = false;
         case "PROMOTION":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
@@ -491,6 +456,13 @@ export default {
             if (!url.includes("v=m")) {
               url = `${url}&v=m`;
             }
+
+            const isH5 = !window.navigator.standalone;
+            if (!url.includes("platform=h5") && isH5) {
+              url = `${url}&platform=h5`;
+            }
+
+            this.contentTitle = localStorage.getItem("iframe-third-url-title");
             this.src = url;
             return;
           }
@@ -529,7 +501,6 @@ export default {
                   }
                 }).then(res => {
                   if (res && res.data && res.data.uri) {
-                    console.log(res.data.uri);
                     this.src = res.data.uri;
                   }
                 });
@@ -540,86 +511,75 @@ export default {
               });
               return;
             default:
+              this.getExternalUrl("promotion");
               break;
           }
-
-          if (query.alias) {
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-              params: {
-                urlName: query.alias,
-                lang: "zh-cn",
-                needToken: "true",
-                externalCode: "promotion"
-              }
-            }).then(res => {
-              this.isLoading = false;
-              if (res && res.data && res.data.uri) {
-                url = res.data.uri;
-                // 由API提供
-                // if (!url.includes("v=m")) {
-                //   url = `${url}&v=m`;
-                // }
-                this.src = url;
-              }
-
-              if (res && res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
-                return;
-              }
-            });
-          }
           break;
 
-        case "VIPINFO":
-          this.showText = false;
-          // 優小秘
-          let vipurl = localStorage.getItem("iframe-third-url") || "";
-          if (vipurl) {
-            if (!vipurl.includes("v=m")) {
-              vipurl = `${vipurl}&v=m`;
-            }
-            this.src = vipurl;
-            return;
-          }
-
-          if (query.alias) {
-            goLangApiRequest({
-              method: "get",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-              params: {
-                urlName: query.alias,
-                lang: "zh-cn",
-                needToken: "true",
-                externalCode: "promotion"
-              }
-            }).then(res => {
-              this.isLoading = false;
-              if (res && res.data && res.data.uri) {
-                url = res.data.uri;
-                // 由API提供
-                // if (!url.includes("v=m")) {
-                //   url = `${url}&v=m`;
-                // }
-                this.src = url;
-              }
-
-              if (res && res.msg) {
-                this.actionSetGlobalMessage({ msg: res.msg });
-                return;
-              }
-            });
-          }
-          break;
         case "TCENTERLOBBY":
-          this.showText = false;
+          this.showBack = false;
           this.src = localStorage.getItem("iframe-third-url");
           break;
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
       }
+    },
+    getExternalUrl(externalCode = "promotion") {
+      this.isLoading = true;
+
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: this.$route.query.alias || "",
+          lang: "zh-cn",
+          needToken: "true",
+          externalCode: externalCode
+        }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.data && res.data.uri) {
+          let url = res.data.uri;
+
+          if (externalCode === "fengniao") {
+            url = res.data.uri + "&cors=embed";
+          }
+
+          this.src = url;
+        }
+
+        if (res && res.msg) {
+          this.actionSetGlobalMessage({ msg: res.msg });
+          return;
+        }
+
+        // 標題
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          if (res.status === "000") {
+            let promotionId = this.src.split("?")[0].split("/")[
+              this.src.split("?")[0].split("/").length - 1
+            ];
+
+            if (!promotionId) {
+              this.contentTitle = "";
+              return;
+            }
+
+            res.data.ret.forEach(promo => {
+              if (promo.link.includes(promotionId)) {
+                this.contentTitle = promo.name;
+              }
+            });
+          }
+        });
+      });
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
@@ -772,8 +732,12 @@ export default {
 
           // 绑定银行卡
           case "EVENT_THIRDPARTY_BANKCARD":
+            localStorage.setItem(
+              "bank-card-back-redirect",
+              location.pathname + location.search
+            );
             this.$router.push(
-              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+              `/mobile/mcenter/bankCard?redirect=iframe&type=bankCard`
             );
             return;
 
@@ -1077,5 +1041,64 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
+}
+
+// Popup Style
+.pop-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.pop-block {
+  position: absolute;
+  width: 65%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $main_white_color1;
+  border-radius: 8px;
+  text-align: center;
+  color: #a6a9b2;
+  font-size: 14px;
+  .title {
+    color: #414655;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.button-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid #f7f8fb;
+  margin-top: 20px;
+
+  .button-item {
+    font-size: 18px;
+    width: 50%;
+    padding: 10px 0;
+    &.close {
+      color: #414655;
+      border-right: 1px solid #f7f8fb;
+    }
+    &.confirm {
+      color: #bf8646;
+    }
+  }
 }
 </style>

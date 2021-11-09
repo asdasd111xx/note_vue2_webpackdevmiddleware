@@ -68,8 +68,12 @@ export default {
   },
   created() {
     switch (this.source) {
+      case "av":
       case "yabo":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+        );
         this.currentLayout = {
           siteId: 1,
           videoLobby: "yaboVideoLobby",
