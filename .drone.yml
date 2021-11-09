@@ -32,7 +32,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -53,7 +53,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -74,7 +74,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -95,7 +95,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -116,7 +116,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -165,7 +165,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
-      nfs: 10.17.0.128
+      nfs: 10.17.3.48
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -186,7 +186,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
-      nfs: 10.17.0.128
+      nfs: 10.17.3.48
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -207,7 +207,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
-      nfs: 10.17.0.128
+      nfs: 10.17.3.48
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -256,7 +256,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -277,7 +277,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -298,7 +298,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -319,7 +319,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -340,7 +340,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -361,7 +361,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -382,7 +382,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -403,7 +403,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -424,7 +424,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -445,7 +445,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -495,7 +495,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -545,7 +545,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -597,7 +597,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -618,7 +618,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sp51-frontend-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -668,7 +668,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -718,7 +718,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -770,7 +770,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -791,7 +791,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -841,7 +841,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -889,7 +889,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
       k8sNginxSSL: nginx-ssl-qa
-      nfs: 10.17.0.128
+      nfs: 10.17.3.48
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -939,7 +939,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -991,7 +991,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1012,7 +1012,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1062,7 +1062,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -1110,7 +1110,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
-      nfs: 10.17.0.128
+      nfs: 10.17.3.48
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1160,7 +1160,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1212,7 +1212,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1233,7 +1233,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1283,7 +1283,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-qa
       k8sNginxSSL: ""
-      nfs: 10.27.1.142
+      nfs: 10.27.1.218
       nodePoolName: n2-8
     zone: asia-east1-b
   environment:
@@ -1331,7 +1331,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
-      nfs: 10.17.0.128
+      nfs: 10.17.3.48
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1381,7 +1381,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1433,7 +1433,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:
@@ -1454,7 +1454,7 @@ steps:
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
-      nfs: 10.17.0.181
+      nfs: 10.17.1.94
       nodePoolName: udm16-32
     zone: asia-east1-b
   environment:

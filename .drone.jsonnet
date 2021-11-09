@@ -38,7 +38,7 @@ local conditionTrigger(env="qa",product="yb")=
 
 local Build(name="QA",cluster="xbb-common",zone="asia-east1-a",
 env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
-,imageName="yaboxxx-landingpage",nfs="10.27.1.142",product="yabo",origin="origin",nodePoolName="",
+,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",nodePoolName="",
 env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="",shortProduct="yb",nodePoolName2="")={
     kind: "pipeline",
     name: "Build"+product+"Pipeline("+origin+ name +")",
@@ -122,7 +122,7 @@ env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="",shortPro
 
 local Pipeline(name="QA",cluster="xbb-common",zone="asia-east1-a",
 env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
-,imageName="yaboxxx-landingpage",nfs="10.27.1.142",product="yabo",origin="origin",shortProduct="yb",nodePoolName="") = {
+,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",shortProduct="yb",nodePoolName="") = {
     kind: "pipeline",
     name: "Pipeline"+product+"Pipeline("+origin+ name +")",
     steps:[
@@ -184,7 +184,7 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
 };
 local onlyGKE(name="QA",cluster="xbb-common",zone="asia-east1-a"
 ,env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
-,imageName="yaboxxx-landingpage",nfs="10.27.1.142",product="yabo",origin="istio",nodePoolName="")={
+,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="istio",nodePoolName="")={
 
             name: product + "GKE-"+ env +"(" + origin +")",
             image: "nytimes/drone-gke",
@@ -237,89 +237,89 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
         # yabo
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","yabo","istio","n2-8"),
+            ,"yaboxxx-web","10.27.1.218","yabo","istio","n2-8"),
 
 
         # istio-yiyuan
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","yiyuan","istio","n2-8"),
+            ,"yaboxxx-web","10.27.1.218","yiyuan","istio","n2-8"),
 
 
         # istio-sigua
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","sigua","istio","n2-8"),
+            ,"yaboxxx-web","10.27.1.218","sigua","istio","n2-8"),
 
         
         # istio-aubo
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","aubo","istio","n2-8"),
+            ,"yaboxxx-web","10.27.1.218","aubo","istio","n2-8"),
 
         # istio-sp51
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","sp51-frontend-qa","","sp51-frontend-nginx-config-qa"
-            ,"yaboxxx-web","10.27.1.142","sp51","istio","n2-8"),
+            ,"yaboxxx-web","10.27.1.218","sp51","istio","n2-8"),
         // onlyGKE("QA","yaboxxx-prod","asia-east1-b"
         //     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-        //     ,"yaboxxx-web","10.17.0.128","sigua","istio","udm16-32"),
+        //     ,"yaboxxx-web","10.17.3.48","sigua","istio","udm16-32"),
 
 
     ]else if name=="Beta" then  [
         # yabo
         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
             ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-            ,"yaboxxx-web","10.17.0.128","yabo","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.3.48","yabo","istio","udm16-32"),
         # yiyuan
         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
             ,"beta","yiyuan-frontend-proxy-beta","","yiyuan-frontend-proxy-nginx-config-beta"
-            ,"yaboxxx-web","10.17.0.128","yiyuan","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.3.48","yiyuan","istio","udm16-32"),
         # sigua
         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
             ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-            ,"yaboxxx-web","10.17.0.128","sigua","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.3.48","sigua","istio","udm16-32"),
             
     ]else if name=="Prod" then [
         # yabo
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-            ,"yaboxxx-web","10.17.0.181","yabo","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","yabo","istio","udm16-32"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
-            ,"yaboxxx-web","10.17.0.181","yabo","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","yabo","istio","udm16-32"),
    
         # istio-yiyuan
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
-            ,"yaboxxx-web","10.17.0.181","yiyuan","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","yiyuan","istio","udm16-32"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","yiyuan-frontend-proxy-prod","","yiyuan-frontend-proxy-nginx-config-prod"
-            ,"yaboxxx-web","10.17.0.181","yiyuan","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","yiyuan","istio","udm16-32"),
 
         # istio-sigua
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-            ,"yaboxxx-web","10.17.0.181","sigua","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","sigua","istio","udm16-32"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
-            ,"yaboxxx-web","10.17.0.181","sigua","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","sigua","istio","udm16-32"),
 
         # istio-aubo
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-            ,"yaboxxx-web","10.17.0.181","aubo","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","aubo","istio","udm16-32"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","aubo-frontend-prod","","aubo-frontend-nginx-config-prod"
-            ,"yaboxxx-web","10.17.0.181","aubo","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","aubo","istio","udm16-32"),
 
         # istio-sp51
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
-            ,"yaboxxx-web","10.17.0.181","sp51","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","sp51","istio","udm16-32"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","sp51-frontend-prod","","sp51-frontend-nginx-config-prod"
-            ,"yaboxxx-web","10.17.0.181","sp51","istio","udm16-32"),
+            ,"yaboxxx-web","10.17.1.94","sp51","istio","udm16-32"),
 
  
     ],
@@ -339,264 +339,264 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     # yiyuan
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","cxbb-frontend-proxy-qa","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yiyuan","origin",
+    // ,"yaboxxx-web","10.27.1.218","yiyuan","origin",
     // "beta","yaboxxx-prod","cxbb-frontend-proxy-beta","","cxbb-frontend-proxy-nginx-config-beta"
-    // ,"10.17.0.128"),
+    // ,"10.17.3.48"),
 
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","cxbb-frontend-proxy-demo","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","yiyuan","origin",
+    // ,"yaboxxx-web","10.17.1.94","yiyuan","origin",
     // "prod","yaboxxx-prod","cxbb-frontend-proxy-prod","","cxbb-frontend-proxy-nginx-config-prod"
-    // ,"10.17.0.181"),
+    // ,"10.17.1.94"),
 
     # istio-sp51
 
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","sp51-frontend-qa","","sp51-frontend-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","sp51","istio","sp","n2-8"),
+    ,"yaboxxx-web","10.27.1.218","sp51","istio","sp","n2-8"),
 
     Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sp51","istio","sp","udm16-32"),
+    ,"yaboxxx-web","10.17.1.94","sp51","istio","sp","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sp51","istio","udm16-32",
+    ,"yaboxxx-web","10.17.1.94","sp51","istio","udm16-32",
     "prod","yaboxxx-prod","sp51-frontend-prod","","sp51-frontend-nginx-config-prod"
-    ,"10.17.0.181","sp","udm16-32"),
+    ,"10.17.1.94","sp","udm16-32"),
 
     # istio-aubo
 
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","aubo","istio","ab","n2-8"),
+    ,"yaboxxx-web","10.27.1.218","aubo","istio","ab","n2-8"),
 
    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","aubo","istio","ab","udm16-32"),
+    ,"yaboxxx-web","10.17.1.94","aubo","istio","ab","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","aubo","istio","udm16-32",
+    ,"yaboxxx-web","10.17.1.94","aubo","istio","udm16-32",
     "prod","yaboxxx-prod","aubo-frontend-prod","","aubo-frontend-nginx-config-prod"
-    ,"10.17.0.181","ab","udm16-32"),
+    ,"10.17.1.94","ab","udm16-32"),
 
     # istio-yiyuan
     // 2021/11/08 關閉，因應駭客攻擊，分tag佈署。
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yiyuan","istio","n2-8",
+    // ,"yaboxxx-web","10.27.1.218","yiyuan","istio","n2-8",
     // "beta","yaboxxx-prod","yiyuan-frontend-proxy-beta","","yiyuan-frontend-proxy-nginx-config-beta"
-    // ,"10.17.0.128","ey","udm16-32"),
+    // ,"10.17.3.48","ey","udm16-32"),
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","yiyuan","istio","ey","n2-8"),
+    ,"yaboxxx-web","10.27.1.218","yiyuan","istio","ey","n2-8"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","yiyuan-frontend-proxy-beta","nginx-ssl-qa","yiyuan-frontend-proxy-nginx-config-beta"
-    ,"yaboxxx-web","10.17.0.128","yiyuan","istio","ey","udm16-32"),
+    ,"yaboxxx-web","10.17.3.48","yiyuan","istio","ey","udm16-32"),
 
     Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","yiyuan","istio","ey","udm16-32"),
+    ,"yaboxxx-web","10.17.1.94","yiyuan","istio","ey","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","yiyuan","istio","udm16-32",
+    ,"yaboxxx-web","10.17.1.94","yiyuan","istio","udm16-32",
     "prod","yaboxxx-prod","yiyuan-frontend-proxy-prod","","yiyuan-frontend-proxy-nginx-config-prod"
-    ,"10.17.0.181","ey","udm16-32"),
+    ,"10.17.1.94","ey","udm16-32"),
 
 
     // # sigua
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","sgsp-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","sigua","origin",
+    // ,"yaboxxx-web","10.27.1.218","sigua","origin",
     // "beta","yaboxxx-prod","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-    // ,"10.17.0.128","sg"),
+    // ,"10.17.3.48","sg"),
 
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","sigua","origin","sg"),
+    // ,"yaboxxx-web","10.17.3.48","sigua","origin","sg"),
 
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","sigua","origin",
+    // ,"yaboxxx-web","10.17.1.94","sigua","origin",
     // "prod","yaboxxx-prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
-    // ,"10.17.0.181","sg"),
+    // ,"10.17.1.94","sg"),
 
     # istio-sigua
     
     // 2021/11/08 關閉，因應駭客攻擊，分tag佈署。
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","sigua","istio","n2-8",
+    // ,"yaboxxx-web","10.27.1.218","sigua","istio","n2-8",
     // "beta","yaboxxx-prod","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-    // ,"10.17.0.128","sg","udm16-32"),
+    // ,"10.17.3.48","sg","udm16-32"),
     
     
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","sigua","istio","sg","n2-8"),
+    ,"yaboxxx-web","10.27.1.218","sigua","istio","sg","n2-8"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-    ,"yaboxxx-web","10.17.0.128","sigua","istio","sg","udm16-32"),
+    ,"yaboxxx-web","10.17.3.48","sigua","istio","sg","udm16-32"),
 
 
     Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sigua","istio","sg","udm16-32"),
+    ,"yaboxxx-web","10.17.1.94","sigua","istio","sg","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sigua","istio","udm16-32",
+    ,"yaboxxx-web","10.17.1.94","sigua","istio","udm16-32",
     "prod","yaboxxx-prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
-    ,"10.17.0.181","sg","udm16-32"),
+    ,"10.17.1.94","sg","udm16-32"),
 
     # yabo
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"test","frontend-proxy","frontend-proxy","frontend-proxy-nginx-config"
-    // ,"yaboxxx-web","10.27.1.142","yabo","origin",
+    // ,"yaboxxx-web","10.27.1.218","yabo","origin",
     // "beta","yaboxxx-prod","yabo-beta-frontend-proxy","yabo-frontend-proxy","yabo-beta-frontend-proxy-nginx-config"
-    // ,"10.17.0.128"),
+    // ,"10.17.3.48"),
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","yabo-demo-frontend-proxy","yabo-frontend-proxy","yabo-demo-frontend-proxy-nginx-config"
-    // ,"yaboxxx-web","10.17.0.181","yabo","origin",
+    // ,"yaboxxx-web","10.17.1.94","yabo","origin",
     // "prod","yaboxxx-prod","yabo-prod-frontend-proxy","yabo-frontend-proxy","yabo-prod-frontend-proxy-nginx-config"
-    // ,"10.17.0.181"),
+    // ,"10.17.1.94"),
 
     #istio-yabo
     // 2021/11/08 關閉，因應駭客攻擊，分tag佈署。
     // Build("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yabo","istio","n2-8",
+    // ,"yaboxxx-web","10.27.1.218","yabo","istio","n2-8",
     // "beta","yaboxxx-prod","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-    // ,"10.17.0.128","yb","udm16-32"),
+    // ,"10.17.3.48","yb","udm16-32"),
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","yabo","istio","yb","n2-8"),
+    ,"yaboxxx-web","10.27.1.218","yabo","istio","yb","n2-8"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-    ,"yaboxxx-web","10.17.0.128","yabo","istio","yb","udm16-32"),
+    ,"yaboxxx-web","10.17.3.48","yabo","istio","yb","udm16-32"),
 
     Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","yabo","istio","yb","udm16-32"),
+    ,"yaboxxx-web","10.17.1.94","yabo","istio","yb","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","yabo","istio","udm16-32",
+    ,"yaboxxx-web","10.17.1.94","yabo","istio","udm16-32",
     "prod","yaboxxx-prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
-    ,"10.17.0.181","yb","udm16-32"),
+    ,"10.17.1.94","yb","udm16-32"),
 
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yabo","istio"),
+    // ,"yaboxxx-web","10.27.1.218","yabo","istio"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","yabo","istio"),
+    // ,"yaboxxx-web","10.17.3.48","yabo","istio"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","yabo","istio"),
+    // ,"yaboxxx-web","10.17.1.94","yabo","istio"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","yabo-prod-frontend-proxy","","yabo-frontend-proxy-nginx-config-prod"
-    // ,"yaboxxx-web","10.17.0.181","yabo","istio"),
+    // ,"yaboxxx-web","10.17.1.94","yabo","istio"),
 
 
 //     (name="QA"（環境),cluster="xbb-common"（叢集),zone="asia-east1-a"(區域),
 // env="qa"(GKE的label),deployName="yaboxxx-landing-page-qa"(GKE的名稱),nginxssl="nginx-ssl",nginxConfig="nginx"(GKE的configMap,nginx設定檔名稱),
-// imageName="yaboxxx-landingpage"(GCR映像檔名稱),nfs="10.27.1.142"(nfs-server))
+// imageName="yaboxxx-landingpage"(GCR映像檔名稱),nfs="10.27.1.218"(nfs-server))
     
     // # sigua
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","sgsp-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","sigua","origin"),
+    // ,"yaboxxx-web","10.27.1.218","sigua","origin"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","sgsp-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","sigua","origin"),
+    // ,"yaboxxx-web","10.17.3.48","sigua","origin"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","sgsp-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","sigua","origin"),
+    // ,"yaboxxx-web","10.17.1.94","sigua","origin"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","sgsp-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
-    // ,"yaboxxx-web","10.17.0.181","sigua","origin"),
+    // ,"yaboxxx-web","10.17.1.94","sigua","origin"),
     
     // # istio-sigua
 
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","sigua-frontend-proxy-qa","","sgsp-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","sigua","istio"),
+    // ,"yaboxxx-web","10.27.1.218","sigua","istio"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","sigua-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","sigua","istio"),
+    // ,"yaboxxx-web","10.17.3.48","sigua","istio"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","sigua-frontend-proxy-demo","","sgsp-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","sigua","istio"),
+    // ,"yaboxxx-web","10.17.1.94","sigua","istio"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","sigua-frontend-proxy-prod","","sgsp-frontend-proxy-nginx-config-prod"
-    // ,"yaboxxx-web","10.17.0.181","sigua","istio"),
+    // ,"yaboxxx-web","10.17.1.94","sigua","istio"),
     
 
 
     // # yabo(  nginxssl 屬特例情況，在客端沒在使用，故改用當label)
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"test","frontend-proxy","frontend-proxy","frontend-proxy-nginx-config"
-    // ,"yaboxxx-web","10.27.1.142","yabo","origin"),
+    // ,"yaboxxx-web","10.27.1.218","yabo","origin"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","yabo-beta-frontend-proxy","yabo-frontend-proxy","yabo-beta-frontend-proxy-nginx-config"
-    // ,"yaboxxx-web","10.17.0.128","yabo","origin"),
+    // ,"yaboxxx-web","10.17.3.48","yabo","origin"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","yabo-demo-frontend-proxy","yabo-frontend-proxy","yabo-demo-frontend-proxy-nginx-config"
-    // ,"yaboxxx-web","10.17.0.181","yabo","origin"),
+    // ,"yaboxxx-web","10.17.1.94","yabo","origin"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","yabo-prod-frontend-proxy","yabo-frontend-proxy","yabo-prod-frontend-proxy-nginx-config"
-    // ,"yaboxxx-web","10.17.0.181","yabo","origin"),
+    // ,"yaboxxx-web","10.17.1.94","yabo","origin"),
 
     // # istio-yabo
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yabo","istio"),
+    // ,"yaboxxx-web","10.27.1.218","yabo","istio"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","yabo","istio"),
+    // ,"yaboxxx-web","10.17.3.48","yabo","istio"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","yabo","istio"),
+    // ,"yaboxxx-web","10.17.1.94","yabo","istio"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","yabo-prod-frontend-proxy","","yabo-frontend-proxy-nginx-config-prod"
-    // ,"yaboxxx-web","10.17.0.181","yabo","istio"),
+    // ,"yaboxxx-web","10.17.1.94","yabo","istio"),
 
     // # yiyuan
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","cxbb-frontend-proxy-qa","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yiyuan","origin"),
+    // ,"yaboxxx-web","10.27.1.218","yiyuan","origin"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","cxbb-frontend-proxy-beta","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","yiyuan","origin"),
+    // ,"yaboxxx-web","10.17.3.48","yiyuan","origin"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","cxbb-frontend-proxy-demo","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","yiyuan","origin"),
+    // ,"yaboxxx-web","10.17.1.94","yiyuan","origin"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","cxbb-frontend-proxy-prod","nginx-ssl-qa","cxbb-frontend-proxy-nginx-config-prod"
-    // ,"yaboxxx-web","10.17.0.181","yiyuan","origin"),
+    // ,"yaboxxx-web","10.17.1.94","yiyuan","origin"),
     
     // # istio-yiyuan
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     // ,"qa","yiyuan-frontend-proxy-qa","nginx-ssl-qa","yiyuan-frontend-proxy-nginx-config-qa"
-    // ,"yaboxxx-web","10.27.1.142","yiyuan","istio"),
+    // ,"yaboxxx-web","10.27.1.218","yiyuan","istio"),
     // Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     // ,"beta","yiyuan-frontend-proxy-beta","nginx-ssl-qa","yiyuan-frontend-proxy-nginx-config-beta"
-    // ,"yaboxxx-web","10.17.0.128","yiyuan","istio"),
+    // ,"yaboxxx-web","10.17.3.48","yiyuan","istio"),
     // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     // ,"demo","yiyuan-frontend-proxy-demo","nginx-ssl-qa","yiyuan-frontend-proxy-nginx-config-demo"
-    // ,"yaboxxx-web","10.17.0.181","yiyuan","istio"),
+    // ,"yaboxxx-web","10.17.1.94","yiyuan","istio"),
     // Pipeline("Prod","yaboxxx-prod","asia-east1-b"
     // ,"prod","yiyuan-frontend-proxy-prod","nginx-ssl-qa","yiyuan-frontend-proxy-nginx-config-prod"
-    // ,"yaboxxx-web","10.17.0.181","yiyuan","istio"),
+    // ,"yaboxxx-web","10.17.1.94","yiyuan","istio"),
 
 ]
