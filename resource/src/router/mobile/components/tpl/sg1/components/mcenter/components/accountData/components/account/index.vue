@@ -457,6 +457,22 @@
         </template>
       </template>
     </account-wrap>
+    <!-- <h2>已選取 {{ thecity }} {{ thedistrict }}</h2>
+    <div :class="$style['more-method-content']">
+      <pd-select-box style="position: fixed;bottom: 0;width: 100%;">
+        <pd-select-item
+          ref="thecity"
+          :listData="theCityList"
+          v-model="thecity"
+        ></pd-select-item>
+        <pd-select-item
+          ref="thedistrict"
+          :listData="theDistrictList"
+          type="cycle"
+          v-model="thedistrict"
+        ></pd-select-item>
+      </pd-select-box>
+    </div> -->
   </div>
 </template>
 
@@ -467,9 +483,12 @@ import DatePicker from "vue2-datepicker";
 import Vue from "vue";
 import mcenter from "@/api/mcenter";
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
+import pdSelect from "pd-select";
+Vue.use(pdSelect);
 
 export default {
   components: {
+    pdSelect,
     accountWrap: () =>
       import(/* webpackChunkName: 'accountWrap' */ "./accountWrap"),
     editName: () =>
@@ -507,6 +526,12 @@ export default {
   },
   data() {
     return {
+      //test
+      thecity: "",
+      thedistrict: "",
+      theCityList: [],
+      theDistrictList: [],
+      //test
       paopaoMemberCardInfo: {},
       currentTab: 0,
       currentEdit: "",
@@ -546,7 +571,13 @@ export default {
     }
   },
   mounted() {
-    this.actionSetSystemTime();
+    //test
+    setTimeout(() => {
+      //验证 model 联动
+      this.after();
+    }, 3000),
+      //test
+      this.actionSetSystemTime();
     if (localStorage.getItem("set-account-success")) {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
@@ -559,6 +590,29 @@ export default {
       "actionSetGlobalMessage",
       "actionGetExtRedirect"
     ]),
+    //test
+    after() {
+      this.thecity = "";
+      this.$refs.thecity.init();
+      this.thedistrict = "";
+      this.$refs.thedistrict.init();
+      this.gettheDistrictList();
+    },
+
+    gettheDistrictList() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/info/hometown-list",
+        method: "get"
+      }).then(data => {
+        data.result.map((item, index) => {
+          if (this.thecity == item.city) {
+            this.theDistrictList = item.district || [];
+            // console.log("tetsttetsmonted", this.theDistrictList);
+          }
+        });
+      });
+    },
+    //test
     getPaopaoMemberData() {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/personal-info",
@@ -573,6 +627,11 @@ export default {
         method: "get"
       }).then(data => {
         this.cityList = data.result || null;
+        //test
+        this.theCityList = data.result.map(item => {
+          return item.city || [];
+        });
+        //test
       });
     },
     getDistrict(index) {
