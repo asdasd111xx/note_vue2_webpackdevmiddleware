@@ -225,10 +225,6 @@ export default {
 
       // 歷史錢包
       if (!this.isCommon) {
-        // return (
-        //   this.userLevelObj.bank_single ||
-        //   this.userLevelObj.virtual_bank_single
-        // );
         return this.userLevelObj.virtual_bank_single;
       }
     },
@@ -258,9 +254,6 @@ export default {
     showHistoryButton() {
       const { isCommon, userLevelObj, currentPage } = this;
       const { showDetail } = this.statusList;
-
-      // const bankHistory =
-      //   ["bankCardInfo"].includes(currentPage) && !userLevelObj.bank_single;
 
       const walletHistory =
         ["walletCardInfo"].includes(currentPage) &&
@@ -318,11 +311,6 @@ export default {
 
       // 銀行卡/電子錢包，其中有一方開啟多組開關(在歷史錢包頁面)
       if (!this.isCommon && this.isOneTab) {
-        // if (!this.userLevelObj.bank_single) {
-        //   this.setPageStatus(0, "bankCardInfo", false);
-        //   return;
-        // }
-
         if (!this.userLevelObj.virtual_bank_single) {
           this.setPageStatus(1, "walletCardInfo", false);
           return;
