@@ -25,8 +25,11 @@ local conditionTrigger(env="qa",product="yb")=
     }else if env=="Beta" then {
         ref: ["refs/tags/"+ product +"Beta-*"],
         event: ["tag"],
-    }else if env=="Prod" || env== "Demo" then  {
+    }else if env=="Prod"  then  {
         ref: ["refs/tags/"+ product +"Prod-*"],
+        event: ["tag"],
+    }else if env== "Demo" then {
+        ref: ["refs/tags/"+ product +"Demo-*"],
         event: ["tag"],
     }
 );
@@ -353,6 +356,10 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"qa","sp51-frontend-qa","","sp51-frontend-nginx-config-qa"
     ,"yaboxxx-web","10.27.1.142","sp51","istio","sp","n2-8"),
 
+    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
+    ,"yaboxxx-web","10.17.0.181","sp51","istio","sp","udm16-32"),
+
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
     ,"yaboxxx-web","10.17.0.181","sp51","istio","udm16-32",
@@ -366,6 +373,10 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
     ,"yaboxxx-web","10.27.1.142","aubo","istio","ab","n2-8"),
 
+   Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
+    ,"yaboxxx-web","10.17.0.181","sp51","istio","ab","udm16-32"),
+
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
     ,"yaboxxx-web","10.17.0.181","aubo","istio","udm16-32",
@@ -373,19 +384,28 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"10.17.0.181","ab","udm16-32"),
 
     # istio-yiyuan
-    Build("QA","yaboxxx-test","asia-east1-b"
+    // 2021/11/08 關閉，因應駭客攻擊，分tag佈署。
+    // Build("QA","yaboxxx-test","asia-east1-b"
+    // ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
+    // ,"yaboxxx-web","10.27.1.142","yiyuan","istio","n2-8",
+    // "beta","yaboxxx-prod","yiyuan-frontend-proxy-beta","","yiyuan-frontend-proxy-nginx-config-beta"
+    // ,"10.17.0.128","ey","udm16-32"),
+
+    Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","yiyuan","istio","n2-8",
-    "beta","yaboxxx-prod","yiyuan-frontend-proxy-beta","","yiyuan-frontend-proxy-nginx-config-beta"
-    ,"10.17.0.128","ey","udm16-32"),
+    ,"yaboxxx-web","10.27.1.142","yiyuan","istio","ey","n2-8"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","yiyuan-frontend-proxy-beta","nginx-ssl-qa","yiyuan-frontend-proxy-nginx-config-beta"
     ,"yaboxxx-web","10.17.0.128","yiyuan","istio","ey","udm16-32"),
 
+    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
+    ,"yaboxxx-web","10.17.0.181","yiyuan","istio","ey","udm16-32"),
+
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","yiyuan","istio","n2-8",
+    ,"yaboxxx-web","10.17.0.181","yiyuan","istio","udm16-32",
     "prod","yaboxxx-prod","yiyuan-frontend-proxy-prod","","yiyuan-frontend-proxy-nginx-config-prod"
     ,"10.17.0.181","ey","udm16-32"),
 
@@ -408,19 +428,31 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     // ,"10.17.0.181","sg"),
 
     # istio-sigua
-    Build("QA","yaboxxx-test","asia-east1-b"
-    ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","sigua","istio","n2-8",
-    "beta","yaboxxx-prod","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-    ,"10.17.0.128","sg","udm16-32"),
+    
+    // 2021/11/08 關閉，因應駭客攻擊，分tag佈署。
+    // Build("QA","yaboxxx-test","asia-east1-b"
+    // ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
+    // ,"yaboxxx-web","10.27.1.142","sigua","istio","n2-8",
+    // "beta","yaboxxx-prod","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
+    // ,"10.17.0.128","sg","udm16-32"),
+    
+    
+    Pipeline("QA","yaboxxx-test","asia-east1-b"
+    ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-qa"
+    ,"yaboxxx-web","10.27.1.142","sigua","istio","sg","n2-8"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
-    ,"beta","sigua-frontend-proxy-beta","","sgsp-frontend-proxy-nginx-config-beta"
+    ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
     ,"yaboxxx-web","10.17.0.128","sigua","istio","sg","udm16-32"),
+
+
+    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+    ,"yaboxxx-web","10.17.0.181","sigua","istio","sg","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sigua","istio","n2-8",
+    ,"yaboxxx-web","10.17.0.181","sigua","istio","udm16-32",
     "prod","yaboxxx-prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
     ,"10.17.0.181","sg","udm16-32"),
 
@@ -437,20 +469,28 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     // ,"10.17.0.181"),
 
     #istio-yabo
-    Build("QA","yaboxxx-test","asia-east1-b"
-    ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.142","yabo","istio","n2-8",
-    "beta","yaboxxx-prod","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-    ,"10.17.0.128","yb","udm16-32"),
+    // 2021/11/08 關閉，因應駭客攻擊，分tag佈署。
+    // Build("QA","yaboxxx-test","asia-east1-b"
+    // ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
+    // ,"yaboxxx-web","10.27.1.142","yabo","istio","n2-8",
+    // "beta","yaboxxx-prod","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
+    // ,"10.17.0.128","yb","udm16-32"),
 
+    Pipeline("QA","yaboxxx-test","asia-east1-b"
+    ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
+    ,"yaboxxx-web","10.27.1.142","yabo","istio","yb","n2-8"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
     ,"yaboxxx-web","10.17.0.128","yabo","istio","yb","udm16-32"),
 
+    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
+    ,"yaboxxx-web","10.17.0.181","yabo","istio","yb","udm16-32"),
+
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","yabo","istio","n2-8",
+    ,"yaboxxx-web","10.17.0.181","yabo","istio","udm16-32",
     "prod","yaboxxx-prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
     ,"10.17.0.181","yb","udm16-32"),
 
