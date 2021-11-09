@@ -683,7 +683,7 @@ trigger:
 
 ---
 kind: pipeline
-name: Pipelinesp51Pipeline(istioDemo)
+name: PipelineauboPipeline(istioDemo)
 
 platform:
   os: linux
@@ -695,7 +695,7 @@ steps:
   settings:
     build_args:
     - website=demo
-    - product=sp51
+    - product=aubo
     json_key:
       from_secret: GOOGLE_CREDENTIALS
     repo: gcr.io/rd7-project/yaboxxx-web
@@ -711,7 +711,7 @@ steps:
   settings:
     cluster: yaboxxx-prod
     project: rd7-project
-    template: configs/sp51/.istio-kube.yml
+    template: configs/aubo/.istio-kube.yml
     vars:
       deployName: aubo-frontend-demo
       env: demo
