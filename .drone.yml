@@ -462,7 +462,7 @@ trigger:
 
 ---
 kind: pipeline
-name: sp51Pipeline(istioQA)
+name: Pipelinesp51Pipeline(istioQA)
 
 platform:
   os: linux
@@ -510,7 +510,7 @@ trigger:
 
 ---
 kind: pipeline
-name: sp51Pipeline(istioDemo)
+name: Pipelinesp51Pipeline(istioDemo)
 
 platform:
   os: linux
@@ -562,7 +562,7 @@ trigger:
 
 ---
 kind: pipeline
-name: sp51Pipeline(istioProd)
+name: Buildsp51Pipeline(istioProd)
 
 platform:
   os: linux
@@ -635,7 +635,7 @@ trigger:
 
 ---
 kind: pipeline
-name: auboPipeline(istioQA)
+name: PipelineauboPipeline(istioQA)
 
 platform:
   os: linux
@@ -683,7 +683,7 @@ trigger:
 
 ---
 kind: pipeline
-name: sp51Pipeline(istioDemo)
+name: Pipelinesp51Pipeline(istioDemo)
 
 platform:
   os: linux
@@ -735,7 +735,7 @@ trigger:
 
 ---
 kind: pipeline
-name: auboPipeline(istioProd)
+name: BuildauboPipeline(istioProd)
 
 platform:
   os: linux
@@ -808,7 +808,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioQA)
+name: PipelineyiyuanPipeline(istioQA)
 
 platform:
   os: linux
@@ -856,7 +856,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioBeta)
+name: PipelineyiyuanPipeline(istioBeta)
 
 platform:
   os: linux
@@ -904,7 +904,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioDemo)
+name: PipelineyiyuanPipeline(istioDemo)
 
 platform:
   os: linux
@@ -956,7 +956,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yiyuanPipeline(istioProd)
+name: BuildyiyuanPipeline(istioProd)
 
 platform:
   os: linux
@@ -1029,7 +1029,7 @@ trigger:
 
 ---
 kind: pipeline
-name: siguaPipeline(istioQA)
+name: PipelinesiguaPipeline(istioQA)
 
 platform:
   os: linux
@@ -1077,7 +1077,7 @@ trigger:
 
 ---
 kind: pipeline
-name: siguaPipeline(istioBeta)
+name: PipelinesiguaPipeline(istioBeta)
 
 platform:
   os: linux
@@ -1125,7 +1125,7 @@ trigger:
 
 ---
 kind: pipeline
-name: siguaPipeline(istioDemo)
+name: PipelinesiguaPipeline(istioDemo)
 
 platform:
   os: linux
@@ -1177,7 +1177,7 @@ trigger:
 
 ---
 kind: pipeline
-name: siguaPipeline(istioProd)
+name: BuildsiguaPipeline(istioProd)
 
 platform:
   os: linux
@@ -1250,7 +1250,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yaboPipeline(istioQA)
+name: PipelineyaboPipeline(istioQA)
 
 platform:
   os: linux
@@ -1298,7 +1298,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yaboPipeline(istioBeta)
+name: PipelineyaboPipeline(istioBeta)
 
 platform:
   os: linux
@@ -1346,7 +1346,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yaboPipeline(istioDemo)
+name: PipelineyaboPipeline(istioDemo)
 
 platform:
   os: linux
@@ -1398,7 +1398,7 @@ trigger:
 
 ---
 kind: pipeline
-name: yaboPipeline(istioProd)
+name: BuildyaboPipeline(istioProd)
 
 platform:
   os: linux
