@@ -41,7 +41,7 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.142",product="yabo",origin="origin",nodePoolName="",
 env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="",shortProduct="yb",nodePoolName2="")={
     kind: "pipeline",
-    name: product+"Pipeline("+origin+ name +")",
+    name: "Build"+product+"Pipeline("+origin+ name +")",
     steps:[
         {
 
@@ -124,7 +124,7 @@ local Pipeline(name="QA",cluster="xbb-common",zone="asia-east1-a",
 env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.142",product="yabo",origin="origin",shortProduct="yb",nodePoolName="") = {
     kind: "pipeline",
-    name: product+"Pipeline("+origin+ name +")",
+    name: "Pipeline"+product+"Pipeline("+origin+ name +")",
     steps:[
         {
 
@@ -375,7 +375,7 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 
    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","sp51","istio","ab","udm16-32"),
+    ,"yaboxxx-web","10.17.0.181","aubo","istio","ab","udm16-32"),
 
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
