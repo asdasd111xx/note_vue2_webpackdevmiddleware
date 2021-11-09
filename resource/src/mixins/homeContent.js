@@ -300,9 +300,7 @@ export default {
               ? defaultIndex
               : this.typeList.length / 3 + defaultIndex;
           } else {
-            selectIndex = this.isNotLoopTypeList
-              ? defaultIndex
-              : this.typeList.length / 3;
+            selectIndex = 0;
           }
           this.onChangeSelectIndex(selectIndex);
           this.isShow = true;
