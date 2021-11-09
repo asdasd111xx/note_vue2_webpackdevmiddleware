@@ -66,40 +66,38 @@ export default {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
     initPage() {
       this.isLoading = true;
-      if (this.loginStatus) {
-        let clientUri = "";
-        this.actionGetExtRedirect({
-          api_uri: "/api/platform/v1/view-path",
-          method: "get"
-        }).then(res => {
-          const list = res.result;
-          if (res && res.result) {
-            Object.keys(list).some(key => {
-              if (key === this.pageType) {
-                clientUri = list[key];
-                return;
-              }
-            });
+      let clientUri = "";
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/view-path",
+        method: "get"
+      }).then(res => {
+        const list = res.result;
+        if (res && res.result) {
+          Object.keys(list).some(key => {
+            if (key === this.pageType) {
+              clientUri = list[key];
+              return;
+            }
+          });
 
-            goLangApiRequest({
-              method: "post",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-              params: {
-                code: "cubechat_master",
-                clientUri: clientUri
-                // clientUri: "https://client-dev.cubechat.asia/"
-              }
-            }).then(res => {
-              if (res && res.data && res.data.uri) {
-                this.src = res.data.uri;
-              }
-              this.isLoading = false;
-            });
-          } else {
+          goLangApiRequest({
+            method: "post",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+            params: {
+              code: "cubechat_master",
+              clientUri: clientUri
+              // clientUri: "https://client-dev.cubechat.asia/"
+            }
+          }).then(res => {
+            if (res && res.data && res.data.uri) {
+              this.src = res.data.uri;
+            }
             this.isLoading = false;
-          }
-        });
-      }
+          });
+        } else {
+          this.isLoading = false;
+        }
+      });
     },
     onSendMessage() {
       this.iframeOnSendMessage(e);

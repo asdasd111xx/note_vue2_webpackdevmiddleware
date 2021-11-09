@@ -135,13 +135,13 @@
               [$style['disabled']]: lockedSubmit
             }
           ]"
-          @click="submitCheck"
+          @click="submit"
         >
           立即兑换
         </div>
       </div>
 
-      <tipsDiamond :data="''" />
+      <tipsDiamond :data="diamondRemind" />
       <page-loading :is-show="isLoading" />
     </div>
   </mobile-container>
@@ -166,12 +166,11 @@ export default {
     return {
       isLoading: true,
       diamondTotal: {},
-      diamondRemind: {},
+      diamondRemind: "",
       exchangeRateList: [],
       currentSelRate: {},
       lockedSubmit: true,
       currentTab: 0,
-      balanceBackLock: false,
       updateBalanceTimer: null
     };
   },
@@ -262,18 +261,15 @@ export default {
       });
 
       this.actionGetExtRedirect({
-        api_uri: " /api/platform/v1/diamond/exchange-rate",
+        api_uri: "/api/platform/v1/diamond/exchange-rate",
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        this.exchangeRateList = data.result;
-        this.exchangeRateList = [
-          { diamond_amount: 1, cash_amount: 10 },
-          { diamond_amount: 10, cash_amount: 1012350 },
-          { diamond_amount: 12, cash_amount: 12456 },
-          { diamond_amount: 1512341231236, cash_amount: 11231232223 },
-          { diamond_amount: 4561, cash_amount: 10111 }
-        ];
+        if (data.result && data.result.exchange_rate_list) {
+          this.exchangeRateList = data.result.exchange_rate_list;
+        } else {
+          this.exchangeRateList = [];
+        }
       });
     },
     setCurrentTab(index) {
@@ -290,7 +286,47 @@ export default {
           break;
       }
     },
-    submitCheck() {},
+    submitCheck() {
+      if (true) {
+      }
+    },
+    submit() {
+      if (this.isLoading) {
+        return;
+      }
+
+      this.isLoading = true;
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/diamond/buy/user",
+        method: "post",
+        data: {
+          ...this.currentSelRate
+        }
+      }).then(data => {
+        if (data && data.error_text) {
+          this.actionSetGlobalMessage({
+            msg: error_text,
+            code: error_code
+          });
+        }
+
+        if (data.result && data.result.result !== "ok") {
+          this.actionSetGlobalMessage({
+            msg: data.msg
+          });
+        }
+
+        if (data.result && data.result.result === "success") {
+          this.actionSetGlobalMessage({
+            msg: "success"
+          });
+
+          this.currentSelRate = {};
+        }
+
+        this.isLoading = false;
+      });
+    },
     selectedRate(target) {
       this.currentSelRate = target;
       this.saveCurrentValue();
@@ -306,8 +342,8 @@ export default {
       return thousandsCurrency(value);
     },
     balanceBack() {
-      if (!this.balanceBackLock) {
-        this.balanceBackLock = true;
+      if (!this.isLoading) {
+        this.isLoading = true;
 
         goLangApiRequest({
           method: "put",
@@ -319,7 +355,7 @@ export default {
             });
 
             setTimeout(() => {
-              this.balanceBackLock = false;
+              this.isLoading = false;
             }, 1500);
           }
 

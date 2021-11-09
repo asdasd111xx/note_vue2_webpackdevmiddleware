@@ -36,10 +36,10 @@ export default {
         console.log("[DATA]:", data.data);
 
         switch (data.event) {
-          case "EVENT_GET_GAME_URL":
+          case "EVENT_GET_GAME_URL_TOKEN":
           case "EVENT_THIRDPARTY_SWITCH_GAME":
             if (this.loginStatus) {
-              this.linkToGame(data.data);
+              this.linkToGame(data.data, data.event);
             } else {
               this.actionSetGlobalMessage({
                 msg: "请重新登入",
@@ -132,8 +132,25 @@ export default {
             );
             return;
 
-          case "EVENT_PAO_EXCHANGE_DIAMOND":
+          case "EVENT_PAO_DEPOSIT":
             this.$router.push(`/mobile/live/iframe/exchange_diamond`);
+            return;
+
+          case "EVENT_PAO_EXCHANGE_DIAMOND":
+            this.$router.push(`/mobile/mcenter/live/diamond`);
+            return;
+
+          case "EVENT_SWITCH_CUSTOMER_SERVICE":
+            this.$router.push(`/mobile/mcenter/service`);
+            return;
+
+          case "EVENT_USER_SESSION_ERROR":
+            this.actionSetGlobalMessage({
+              msg: "请重新登入",
+              cb: () => {
+                this.$router.push("/mobile/login");
+              }
+            });
             return;
 
           default:
@@ -141,7 +158,7 @@ export default {
         }
       }
     },
-    linkToGame(data) {
+    linkToGame(data, event) {
       if (this.isLoading) {
         return;
       }
