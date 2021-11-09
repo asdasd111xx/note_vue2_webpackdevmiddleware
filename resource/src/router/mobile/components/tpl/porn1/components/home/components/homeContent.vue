@@ -11,6 +11,7 @@
         v-show="isShow"
         ref="type-wrap"
         :class="$style['type-wrap']"
+        :style="isNotLoopTypeList ? { height: `${wrapHeight}px` } : {}"
         @touchstart="onTypeTouchStart"
         @touchmove="onTypeTouchMove"
       >

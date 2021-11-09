@@ -53,7 +53,8 @@ export default {
       timer: null,
       isShowPop: false,
       sitePostList: null,
-      trialList: []
+      trialList: [],
+      isNotLoopTypeList: false
     };
   },
   watch: {
@@ -133,7 +134,12 @@ export default {
             return this.isAdult ? type : type.icon.toLowerCase() !== "welfare";
           });
 
-        return [...typeList, ...typeList, ...typeList];
+        if (typeList && typeList.length > 7) {
+          this.isNotLoopTypeList = true;
+          return [...typeList];
+        } else {
+          return [...typeList, ...typeList, ...typeList];
+        }
       }
     },
     options() {
@@ -203,7 +209,9 @@ export default {
       return gameList;
     },
     currentGame() {
-      const length = this.typeList.length / 3;
+      const length = this.isNotLoopTypeList
+        ? this.typeList.length
+        : this.typeList.length / 3;
       const index = this.selectedIndex % length;
       return { ...this.allGameList[index] };
     },
@@ -288,9 +296,13 @@ export default {
 
             defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
 
-            selectIndex = this.typeList.length / 3 + defaultIndex;
+            selectIndex = this.isNotLoopTypeList
+              ? defaultIndex
+              : this.typeList.length / 3 + defaultIndex;
           } else {
-            selectIndex = this.typeList.length / 3;
+            selectIndex = this.isNotLoopTypeList
+              ? defaultIndex
+              : this.typeList.length / 3;
           }
           this.onChangeSelectIndex(selectIndex);
           this.isShow = true;
