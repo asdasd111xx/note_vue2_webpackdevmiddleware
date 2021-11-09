@@ -377,10 +377,6 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
     ,"yaboxxx-web","10.17.1.94","aubo","istio","ab","udm16-32"),
 
-   Pipeline("Demo","yaboxxx-prod","asia-east1-b"
-    ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.0.181","aubo","istio","ab","udm16-32"),
-
     Build("Prod","yaboxxx-prod","asia-east1-b"
     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
     ,"yaboxxx-web","10.17.1.94","aubo","istio","udm16-32",
