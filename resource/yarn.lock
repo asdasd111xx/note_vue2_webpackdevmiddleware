@@ -6723,6 +6723,13 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+pd-select@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/pd-select/-/pd-select-2.0.4.tgz#20065a7cc3d4dbfaba174979fd70577437cb26bc"
+  integrity sha512-HTyg9H2wwXbnZsj59TEyiihrFjQzI2xNe7cvYChBTYP1CZ1RgWqMpvuZk1yQFOyDnV4E4I/5eRqJhdNvwNkrGA==
+  dependencies:
+    vue "^2.5.2"
+
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
@@ -9324,7 +9331,7 @@ vue@^2.5.13:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
 
-vue@^2.5.21:
+vue@^2.5.2, vue@^2.5.21:
   version "2.6.14"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
