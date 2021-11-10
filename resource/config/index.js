@@ -6,14 +6,14 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 币发BIFA 500015
-// const domain = "https://yb01.66boxing.com/";
+const domain = "https://yb01.66boxing.com/";
 // Demo 69
 // const domain = 'https://yb0t.66relish.com/';
 // Prod 67
-// const domain = "https://yaboxxxapp01.com/";
+// const domain = "https://bf0168q.com/";
 // const domain = "https://yaboxxxapp02.com/";
 // Beta 100003
-const domain = "https://ybbe1.qghco.com/";
+// const domain = "https://ybbe1.qghco.com/";
 // const domain = 'https://yb0t.66apples.com/';
 
 // 亿元 500023
