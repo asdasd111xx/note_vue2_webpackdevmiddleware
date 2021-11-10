@@ -6,17 +6,30 @@ import openGame from "@/lib/open_game";
 
 export default {
   data() {
-    return {};
+    return {
+      originData: ""
+    };
   },
   beforeDestroy() {
     window.removeEventListener("message", this.iframeOnListener);
     localStorage.removeItem("iframe-third-url-title");
     localStorage.removeItem("iframe-third-url");
   },
+  created() {
+    // setTimeout(() => {
+    //   this.iframeOnListener({
+    //     data: {
+    //       event: "EVENT_GET_GAME_URL_TOKEN",
+    //       data: "game-pao_ly-4"
+    //     }
+    //   });
+    // }, 3000);
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      withdrawCheckStatus: "getWithdrawCheckStatus"
     })
   },
   methods: {
@@ -170,6 +183,7 @@ export default {
       }
 
       let target = data.split("-");
+      this.originData = data;
 
       switch (target[0]) {
         case "lobby":
@@ -195,6 +209,11 @@ export default {
             default:
               const openGameSuccessFunc = res => {
                 this.isLoading = false;
+
+                if (event === "EVENT_GET_GAME_URL_TOKEN") {
+                  this.iframeOnSendMessage(event, res);
+                }
+
                 if (this.$route.query.vendor === "sigua_ly") {
                   this.$router.push("/mobile");
                 }
@@ -202,6 +221,10 @@ export default {
 
               const openGameFailFunc = res => {
                 this.isLoading = false;
+
+                if (event === "EVENT_GET_GAME_URL_TOKEN") {
+                  this.iframeOnSendMessage(event, res);
+                }
 
                 if (res && res.data) {
                   let data = res.data;
@@ -224,7 +247,8 @@ export default {
                   kind: kind,
                   vendor: vendor,
                   code: code,
-                  getGames: true
+                  getGames: true,
+                  gameType: event === "EVENT_GET_GAME_URL_TOKEN" ? "event" : ""
                 },
                 openGameSuccessFunc,
                 openGameFailFunc
@@ -237,10 +261,19 @@ export default {
           return;
       }
     },
-    iframeOnSendMessage(event) {
+    iframeOnSendMessage(event, response) {
       const iframe = this.$refs["iframe"];
-      // iframe.contentWindow.postMessage("test message", "*");
-      // iframe.contentWindow.postMessage({ data: "data" }, "*");
+      if (event === "EVENT_GET_GAME_URL_TOKEN") {
+        iframe.contentWindow.postMessage(
+          {
+            event: "EVENT_GAME_URI",
+            data: response,
+            title: localStorage.getItem("iframe-third-url-title"),
+            origin: this.originData
+          },
+          "*"
+        );
+      }
     }
   }
 };
