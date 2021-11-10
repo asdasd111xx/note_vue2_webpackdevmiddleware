@@ -273,7 +273,7 @@ export const site_93 = {
     ID: {
       SPACE: "16",
       YB: "9",
-      YB: "17"
+      AV: "17"
     }
   }
 };
