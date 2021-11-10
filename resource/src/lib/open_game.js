@@ -81,9 +81,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   };
 
   // 泡泡直播固定標題
-  if (vendor === "sigua_ly") {
-    gameTitle = "絲瓜直播";
-  }
+  // if (vendor === "sigua_ly") {
+  //   gameTitle = "絲瓜直播";
+  // }
 
   if (vendor === "lg_live") {
     gameTitle = "泡泡直播真人视讯80桌";
