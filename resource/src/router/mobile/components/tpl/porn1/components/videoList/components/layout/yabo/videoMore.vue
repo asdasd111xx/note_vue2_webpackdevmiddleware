@@ -326,10 +326,7 @@ export default {
   position: fixed;
   top: 43px;
   z-index: 2;
-
-  &.yabo {
-    background: $main_white_color1;
-  }
+  background: $main_white_color1;
 
   &.gay {
     background: #3e81ac;
@@ -426,6 +423,7 @@ export default {
   margin: 5px auto 0;
   overflow-y: scroll;
   height: calc(100vh - 60px);
+  background-color: #fff;
 }
 
 .video-cell {
