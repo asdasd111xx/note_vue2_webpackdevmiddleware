@@ -349,14 +349,11 @@ export default {
 .item {
   width: auto;
   line-height: 44px;
+  color: #bcbdc1;
 
-  &.yabo {
-    color: #bcbdc1;
-
-    // 亞博點擊的文字color
-    &.active {
-      color: $main_text_color4;
-    }
+  // 亞博點擊的文字color
+  &.active {
+    color: $main_text_color4;
   }
 
   &.gay {
@@ -392,6 +389,10 @@ export default {
   }
 
   &.yabo.active .line {
+    background-color: #be9e7f;
+  }
+
+  &.av.active .line {
     background-color: #be9e7f;
   }
 }
