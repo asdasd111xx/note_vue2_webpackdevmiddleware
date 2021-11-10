@@ -546,6 +546,10 @@ export default {
             url = res.data.uri + "&cors=embed";
           }
 
+          if (!url.includes("v=m")) {
+            url = `${url}&v=m`;
+          }
+
           this.src = url;
         }
 
