@@ -134,11 +134,11 @@ export default {
             return this.isAdult ? type : type.icon.toLowerCase() !== "welfare";
           });
 
-        if (typeList && typeList.length > 7) {
+        if (typeList.length > 7) {
+          return [...typeList, ...typeList, ...typeList];
+        } else {
           this.isNotLoopTypeList = true;
           return [...typeList];
-        } else {
-          return [...typeList, ...typeList, ...typeList];
         }
       }
     },
