@@ -85,8 +85,12 @@ export default (params, success = () => {}, fail = () => {}) => {
   //   gameTitle = "絲瓜直播";
   // }
 
+  if (vendor === "lg_live") {
+    gameTitle = "泡泡直播真人视讯80桌";
+  }
+
   // 是否強制取得遊戲標題
-  if (getGames) {
+  else if (getGames) {
     reqs.push(getGameName());
   }
 
