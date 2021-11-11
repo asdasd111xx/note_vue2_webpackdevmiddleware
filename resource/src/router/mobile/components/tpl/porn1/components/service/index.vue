@@ -156,7 +156,7 @@
               />
             </div>
             <span>{{
-              `尊敬的${siteName}会员，当iOS用户的${siteName}App掉签无法打开时，可以通过以下方法继续游戏`
+              `尊敬的${siteName}会员，当iOS用户的${siteName} APP掉签无法打开时，可以通过以下方法继续游戏`
             }}</span>
           </div>
 
