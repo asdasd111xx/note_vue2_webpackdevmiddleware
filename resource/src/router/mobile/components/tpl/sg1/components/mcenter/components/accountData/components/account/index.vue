@@ -467,7 +467,7 @@
         ></pd-select-item>
         <pd-select-item
           ref="thedistrict"
-          :listData="theDistrictList"
+          :listData="filtertheDistrictList"
           type="cycle"
           v-model="thedistrict"
         ></pd-select-item>
@@ -568,14 +568,30 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    //test
+    filtertheDistrictList() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/info/hometown-list",
+        method: "get"
+      }).then(data => {
+        data.result.map(item => {
+          if (this.thecity == item.city) {
+            this.theDistrictList = item.district || [];
+            this.$refs.thedistrict.init();
+          }
+        });
+      });
+      return this.theDistrictList;
     }
+    //test
   },
   mounted() {
     //test
     setTimeout(() => {
       //验证 model 联动
       this.after();
-    }, 3000),
+    }, 500),
       //test
       this.actionSetSystemTime();
     if (localStorage.getItem("set-account-success")) {

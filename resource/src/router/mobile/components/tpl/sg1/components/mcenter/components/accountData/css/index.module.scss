@@ -1048,14 +1048,4 @@ input {
       }
     }
   }
-  div.pd-select-item {
-    div.pd-select-line {
-      &::after {
-        background: #000 !important;
-      }
-      &::before {
-        background: #000 !important;
-      }
-    }
-  }
 }
