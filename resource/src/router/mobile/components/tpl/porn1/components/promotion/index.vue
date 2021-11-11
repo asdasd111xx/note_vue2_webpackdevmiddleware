@@ -432,6 +432,7 @@ $fixed_spacing_height: 43px;
   &.porn1 {
     color: #222222;
     background: #ffefdd;
+    border-radius: 32px;
   }
 
   &.sp1 {
