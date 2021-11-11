@@ -222,6 +222,9 @@ export default {
     this.updateBalanceTimer = null;
   },
   created() {
+    if (!this.loginStatus) {
+      this.$router.push("/mobile/login");
+    }
     this.init();
   },
   mounted() {
