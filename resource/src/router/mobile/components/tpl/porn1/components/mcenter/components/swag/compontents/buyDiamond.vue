@@ -134,7 +134,7 @@
         立即兑换
       </div>
     </div>
-    <tipsDiamond />
+    <tips />
     <page-loading :is-show="isLoading" />
     <swag-tips-popup v-if="showTips" />
     <maintain-block
@@ -149,7 +149,7 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import mixin from "@/mixins/mcenter/swag/swag";
-import tipsDiamond from "./tipsDiamond";
+import tips from "./tips";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import swagTipsPopup from "./swagTipsPopup";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
@@ -163,7 +163,7 @@ export default {
       ),
     Swiper,
     SwiperSlide,
-    tipsDiamond,
+    tips,
     swagTipsPopup,
     maintainBlock
   },

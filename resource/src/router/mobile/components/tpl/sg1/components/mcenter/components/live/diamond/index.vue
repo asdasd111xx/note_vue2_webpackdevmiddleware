@@ -22,127 +22,138 @@
         />
       </div>
 
-      <div :class="$style['account-wrap']">
-        <div>
-          <div :class="$style['account-item']">
-            <div :class="$style['account-img']">
-              <img
-                :src="$getCdnPath(`/static/image/sg1/live/ic_diamond_s.png`)"
-              />
-            </div>
-            <div :class="$style['account-title']">
-              {{ $text("S_MY_DIAMOND") }}
-            </div>
-            <div
-              :class="$style['account-num']"
-              :style="
-                diamondTotal && diamondTotal.length > 9
-                  ? { 'font-size': '12px' }
-                  : {}
-              "
-            >
-              {{ diamondTotal }}
-            </div>
-            <div :class="$style['account-hr']" />
-          </div>
-
-          <div :class="$style['account-item']">
-            <div :class="$style['account-img']">
-              <img :src="$getCdnPath(`/static/image/sg1/live/icon_gold.png`)" />
-            </div>
-            <div :class="$style['account-title']">
-              {{ $text("S_MCENTER_WALLET") }}
-            </div>
-            <div
-              :class="$style['account-num']"
-              :style="
-                memAmount && memAmount.length > 9 ? { 'font-size': '12px' } : {}
-              "
-            >
-              {{ memAmount }}
-            </div>
-            <div :class="$style['account-hr']" />
-          </div>
-
-          <div :class="[$style['account-item'], $style['account-btn-wrap']]">
-            <div :class="$style['account-btn']">
-              <div @click="balanceBack">
-                {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
-              </div>
-            </div>
-
-            <div :class="$style['account-btn']">
-              <div @click="$router.push('/mobile/mcenter/deposit')">
-                {{ $text("S_GO_DEPOSIT") }}
-              </div>
-            </div>
-
-            <div :class="[$style['account-btn'], $style['serial']]">
-              <div>
-                {{ $text("S_SERIAL_DETIAL") }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 鑽石列表 -->
-      <div :class="$style['buy-diamond-wrap']">
-        <div :class="$style['price-wrap']">
-          <div
-            v-for="(item, key) in exchangeRateList"
-            :class="[
-              $style['price-cell'],
-              {
-                [$style['selected']]:
-                  item.diamond_amount === currentSelRate.diamond_amount
-              }
-            ]"
-            @click="!item.loading ? selectedRate(item) : {}"
-            :key="key"
-          >
-            <template v-if="!item.loading">
-              <div :class="$style['icon']">
+      <template v-if="currentTab == 0">
+        <div :class="$style['account-wrap']">
+          <div>
+            <div :class="$style['account-item']">
+              <div :class="$style['account-img']">
                 <img
                   :src="$getCdnPath(`/static/image/sg1/live/ic_diamond_s.png`)"
                 />
               </div>
-              <div :class="$style['num']" :alt="item.diamond_amount">
-                {{ `${item.diamond_amount}钻` }}
+              <div :class="$style['account-title']">
+                {{ $text("S_MY_DIAMOND") }}
               </div>
-              <div :class="$style['price']">
-                {{ `${formatThousandsCurrency(item.cash_amount)}元` }}
+              <div
+                :class="$style['account-num']"
+                :style="
+                  diamondTotal && diamondTotal.length > 9
+                    ? { 'font-size': '12px' }
+                    : {}
+                "
+              >
+                {{ diamondTotal }}
               </div>
-              <!-- <img
+              <div :class="$style['account-hr']" />
+            </div>
+
+            <div :class="$style['account-item']">
+              <div :class="$style['account-img']">
+                <img
+                  :src="$getCdnPath(`/static/image/sg1/live/icon_gold.png`)"
+                />
+              </div>
+              <div :class="$style['account-title']">
+                {{ $text("S_MCENTER_WALLET") }}
+              </div>
+              <div
+                :class="$style['account-num']"
+                :style="
+                  memAmount && memAmount.length > 9
+                    ? { 'font-size': '12px' }
+                    : {}
+                "
+              >
+                {{ memAmount }}
+              </div>
+              <div :class="$style['account-hr']" />
+            </div>
+
+            <div :class="[$style['account-item'], $style['account-btn-wrap']]">
+              <div :class="$style['account-btn']">
+                <div @click="balanceBack">
+                  {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
+                </div>
+              </div>
+
+              <div :class="$style['account-btn']">
+                <div @click="$router.push('/mobile/mcenter/deposit')">
+                  {{ $text("S_GO_DEPOSIT") }}
+                </div>
+              </div>
+
+              <div :class="[$style['account-btn'], $style['serial']]">
+                <div>
+                  {{ $text("S_SERIAL_DETIAL") }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 鑽石列表 -->
+        <div :class="$style['buy-diamond-wrap']">
+          <div :class="$style['price-wrap']">
+            <div
+              v-for="(item, key) in exchangeRateList"
+              :class="[
+                $style['price-cell'],
+                {
+                  [$style['selected']]:
+                    item.diamond_amount === currentSelRate.diamond_amount
+                }
+              ]"
+              @click="!item.loading ? selectedRate(item) : {}"
+              :key="key"
+            >
+              <template v-if="!item.loading">
+                <div :class="$style['icon']">
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/sg1/live/ic_diamond_s.png`)
+                    "
+                  />
+                </div>
+                <div :class="$style['num']" :alt="item.diamond_amount">
+                  {{ `${item.diamond_amount}钻` }}
+                </div>
+                <div :class="$style['price']">
+                  {{ `${formatThousandsCurrency(item.cash_amount)}元` }}
+                </div>
+                <!-- <img
                 v-if="item.diamond_amount === currentSelRate.diamond_amount"
                 :class="$style['amount-active']"
                 :src="$getCdnPath(`/static/image/common/select_active.png`)"
               /> -->
-            </template>
-            <template v-else>
-              <div :class="$style['loading']" />
-              <div :class="$style['loading']" />
-            </template>
+              </template>
+              <template v-else>
+                <div :class="$style['loading']" />
+                <div :class="$style['loading']" />
+              </template>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div :class="[$style['submit-wrap']]">
-        <div
-          :class="[
-            $style['submit-btn'],
-            {
-              [$style['disabled']]: lockedSubmit
-            }
-          ]"
-          @click="submit"
-        >
-          立即兑换
+        <div :class="[$style['submit-wrap']]">
+          <div
+            :class="[
+              $style['submit-btn'],
+              {
+                [$style['disabled']]: lockedSubmit
+              }
+            ]"
+            @click="submit"
+          >
+            立即兑换
+          </div>
         </div>
-      </div>
 
-      <tipsDiamond :data="diamondRemind" />
-      <page-loading :is-show="isLoading" />
+        <tips :data="diamondRemind" />
+        <page-loading :is-show="isLoading" />
+      </template>
+      <template v-else>
+        <recoard />
+      </template>
     </div>
   </mobile-container>
 </template>
@@ -152,10 +163,12 @@ import mobileContainer from "../../../../common/mobileContainer";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-import tipsDiamond from "./tipsDiamond.vue";
+import tips from "./tips.vue";
+import recoard from "./recoard.vue";
 export default {
   components: {
-    tipsDiamond,
+    tips,
+    recoard,
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
