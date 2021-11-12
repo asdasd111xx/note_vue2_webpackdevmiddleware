@@ -9,8 +9,7 @@ export const preset = {
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com/ws/promosocket",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://yaboapi.bbin-asia.com/wsn/promosocket?"
+  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com"
 };
 
 /* ---------- ↓ 測試站 ---------- */
@@ -46,8 +45,7 @@ export const site_500023 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.bbin-asia.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2/cxbb",
-  YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://cxbb.bbin-asia.com/wsn/promosocket?"
+  YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2"
 };
 /* eslint-enable camelcase */
 

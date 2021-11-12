@@ -613,6 +613,44 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         siteConfigOfficial.preset;
     }
 
+    console.log(123);
+    let allDomainList = [];
+    await goLangApiRequest({
+      method: "get",
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/List"
+    }).then(res => {
+      if (res.status === "000") {
+        // console.log(res.data);
+        allDomainList = res.data;
+      }
+    });
+    // console.log(allDomainList);
+    let domainNotSucess = true;
+    let domainIdx = 0;
+    while (domainNotSucess && domainIdx < allDomainList.length) {
+      await goLangApiRequest({
+        method: "post",
+        url: `${allDomainList[domainIdx]}/api-v2/xbb/Captcha`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.data) {
+          // console.log("Balance sucess");
+          // console.log(allDomainList[domainIdx]);
+          configInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[domainIdx]}/api-v2`;
+          configInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
+            domainIdx
+          ].replace("https", "wss")}`;
+          domainIdx += 1;
+          domainNotSucess = false;
+        } else {
+          // console.log("Balance fail");
+          // console.log(allDomainList[domainIdx]);
+          domainIdx += 1;
+        }
+      });
+    }
     dispatch("actionSetSiteConfig", configInfo);
     dispatch("actionSetNews");
 
