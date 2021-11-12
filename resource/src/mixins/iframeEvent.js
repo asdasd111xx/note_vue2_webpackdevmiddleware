@@ -190,7 +190,7 @@ export default {
       this.originData = data;
 
       if (target[0]) {
-        target[0] = target[0].toUpperCase();
+        target[0] = target[0].toLowerCase();
       }
 
       switch (target[0]) {
