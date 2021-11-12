@@ -82,10 +82,10 @@ export const site_100003 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "币发BIFA",
-  YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
+  YABO_API_DOMAIN: "https://ybbe2.777vendor.com/api",
+  YABO_GOLANG_API_DOMAIN: "https://ybbe2.777vendor.com/api-v2",
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com",
+  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.777vendor.com",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -204,9 +204,9 @@ export const site_100009 = {
   SITE_NAME: "泡泡直播",
   // todo待beta domain完成
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
-  YABO_API_DOMAIN: "https://ybbe2.qghco.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://ybbe2.qghco.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.qghco.com",
+  YABO_API_DOMAIN: "https://ybbe2.777vendor.com/api",
+  YABO_GOLANG_API_DOMAIN: "https://ybbe2.777vendor.com/api-v2",
+  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.777vendor.com",
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
