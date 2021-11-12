@@ -180,7 +180,48 @@
             <template v-if="showHometownEdit">
               <div :class="$style['more-method-wrap']">
                 <div :class="$style['more-method-container']">
-                  <div :class="$style['more-method-header']">
+                  <div
+                    :class="$style['more-method-header']"
+                    style="position: fixed;bottom: 220px;width: 100%; left:0; borderRadius: 20px 20px 0 0;"
+                  >
+                    <div
+                      :class="$style['prev']"
+                      @click.stop="showHometownEdit = false"
+                    >
+                      {{ $text("S_CANCEL", "取消") }}
+                    </div>
+                    <div :class="$style['confirm']" @click="submitHometown">
+                      {{ $text("S_CONFIRM_2", "确定") }}
+                    </div>
+                    <div :class="$style['title']">
+                      地區
+                    </div>
+                  </div>
+                  <div :class="$style['more-method-content']">
+                    <pd-select-box
+                      style="position: fixed;bottom: 0;width: 100%;"
+                    >
+                      <!-- <keep-alive> -->
+                      <pd-select-item
+                        ref="thecity"
+                        :listData="theCityList"
+                        v-model="thecity"
+                      ></pd-select-item>
+                      <!-- </keep-alive> -->
+                      <!-- <keep-alive> -->
+                      <pd-select-item
+                        ref="thedistrict"
+                        :listData="filtertheDistrictList"
+                        type="cycle"
+                        v-model="thedistrict"
+                      ></pd-select-item>
+                      <!-- </keep-alive> -->
+                    </pd-select-box>
+                  </div>
+                  <!-- <div :class="$style['more-method-content']">
+                    <div
+                    :class="$style['more-method-header']"
+                  >
                     <div
                       :class="$style['prev']"
                       @click.stop="showHometownEdit = false"
@@ -195,14 +236,6 @@
                       ]"
                       @click="submitHometown"
                     >
-                      {{ $text("S_CONFIRM_2", "确定") }}
-                    </div>
-                    <div :class="$style['title']">
-                      地區
-                    </div>
-                  </div>
-
-                  <div :class="$style['more-method-content']">
                     <div :class="$style['city']">
                       <div
                         v-for="(item, index) in cityList"
@@ -238,37 +271,6 @@
                         </button>
                       </div>
                     </div>
-                  </div>
-
-                  <!-- <div :class="$style['more-method-content']">
-                    <select
-                      :class="$style['city']"
-                      v-model="selectedCity"
-                      id="selectcity"
-                      autofocus
-                    >
-                      <option
-                        v-for="(item, index) in cityList"
-                        :key="index"
-                        :class="$style['cell']"
-                      >
-                        {{ item.title }}
-                      </option>
-                    </select>
-                    <select
-                      :class="$style['district']"
-                      v-model="selectedDistrict"
-                      id="selectdistrict"
-                      autofocus
-                    >
-                      <option
-                        v-for="(item, index) in districtList"
-                        :key="index"
-                        :class="$style['cell']"
-                      >
-                        {{ item.title }}
-                      </option>
-                    </select>
                   </div> -->
                 </div>
               </div>
@@ -457,22 +459,6 @@
         </template>
       </template>
     </account-wrap>
-    <!-- <h2>已選取 {{ thecity }} {{ thedistrict }}</h2>
-    <div :class="$style['more-method-content']">
-      <pd-select-box style="position: fixed;bottom: 0;width: 100%;">
-        <pd-select-item
-          ref="thecity"
-          :listData="theCityList"
-          v-model="thecity"
-        ></pd-select-item>
-        <pd-select-item
-          ref="thedistrict"
-          :listData="filtertheDistrictList"
-          type="cycle"
-          v-model="thedistrict"
-        ></pd-select-item>
-      </pd-select-box>
-    </div> -->
   </div>
 </template>
 
@@ -541,11 +527,11 @@ export default {
       selectGenderValue: "",
       showRelationshipEdit: false,
       selectRelationshipValue: "",
-      cityList: [],
-      districtList: [],
       showHometownEdit: false,
-      selectedCity: "",
-      selectedDistrict: "",
+      // cityList: [],
+      // districtList: [],
+      // selectedCity: "",
+      // selectedDistrict: "",
       addressInfo: {
         id: "",
         is_default: false,
@@ -571,17 +557,19 @@ export default {
     },
     //test
     filtertheDistrictList() {
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/info/hometown-list",
-        method: "get"
-      }).then(data => {
-        data.result.map(item => {
-          if (this.thecity == item.city) {
-            this.theDistrictList = item.district || [];
-            this.$refs.thedistrict.init();
-          }
+      if (this.thecity) {
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/info/hometown-list",
+          method: "get"
+        }).then(data => {
+          data.result.map(item => {
+            if (this.thecity == item.city) {
+              this.theDistrictList = item.district || [];
+            }
+          });
         });
-      });
+      }
+
       return this.theDistrictList;
     }
     //test
@@ -591,13 +579,14 @@ export default {
     setTimeout(() => {
       //验证 model 联动
       this.after();
-    }, 500),
+    }, 3000),
       //test
       this.actionSetSystemTime();
     if (localStorage.getItem("set-account-success")) {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
     }
+    this.gettheDistrictList();
   },
   methods: {
     ...mapActions([
@@ -608,13 +597,9 @@ export default {
     ]),
     //test
     after() {
-      this.thecity = "";
+      this.thecity = "这是TA的秘密";
       this.$refs.thecity.init();
-      this.thedistrict = "";
-      this.$refs.thedistrict.init();
-      this.gettheDistrictList();
     },
-
     gettheDistrictList() {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/info/hometown-list",
@@ -650,31 +635,39 @@ export default {
         //test
       });
     },
-    getDistrict(index) {
-      if (this.selectedCity == this.cityList[index].city) {
-        this.districtList = this.cityList[index].district;
-      }
-      return this.districtList;
-    },
-    getSelectedCity(item, index) {
-      this.selectedCity = item;
-      this.getDistrict(index);
-    },
-    getSelectedDistrict(item) {
-      this.selectedDistrict = item;
-    },
+    // getDistrict(index) {
+    //   if (this.selectedCity == this.cityList[index].city) {
+    //     this.districtList = this.cityList[index].district;
+    //   }
+    //   return this.districtList;
+    // },
+    // getSelectedCity(item, index) {
+    //   this.selectedCity = item;
+    //   this.getDistrict(index);
+    // },
+    // getSelectedDistrict(item) {
+    //   this.selectedDistrict = item;
+    // },
     submitHometown() {
-      if (this.selectedCity && this.selectedDistrict) {
+      // if (this.selectedCity && this.selectedDistrict) {
+      if (this.thecity) {
         this.actionGetExtRedirect({
           api_uri: "/api/platform/v1/user/update-hometown",
           method: "put",
-          data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
+          data: {
+            hometown:
+              this.thedistrict == ""
+                ? `${this.thecity}`
+                : `${this.thecity}-${this.thedistrict}`
+          }
+          // data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
         }).then(res => {
           if (res.result === "success") {
             this.editedSuccess();
             this.getPaopaoMemberData();
             this.showHometownEdit = false;
           } else {
+            console.log("hometownSubmitError", res);
             this.actionSetGlobalMessage({ msg: `${res.error_text}` });
           }
         });
