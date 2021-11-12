@@ -182,8 +182,16 @@ export default {
         return;
       }
 
+      if (!data || !data.split) {
+        return;
+      }
+
       let target = data.split("-");
       this.originData = data;
+
+      if (target[0]) {
+        target[0] = target[0].toUpperCase();
+      }
 
       switch (target[0]) {
         case "lobby":
