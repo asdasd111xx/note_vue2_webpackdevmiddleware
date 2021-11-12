@@ -36,19 +36,24 @@
             :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
           />中心钱包
         </p>
-        <span v-if="centerWallet > 0"
-          >{{ centerWallet | thousandFormat }}
-        </span>
+        <span v-if="memAmount">{{ memAmount }} </span>
         <span v-else style="color: #939393"> - - </span>
         <button>充值</button>
       </div>
       <div :class="$style['myDiamond']">
         <p>
-          <img
-            :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)"
-          />我的钻石
+          <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)" />
+          {{ $text("S_MY_DIAMOND") }}
         </p>
-        <span v-if="diamond > 0">{{ diamond | thousandFormat }}</span>
+        <span
+          v-if="diamondTotal && +diamondTotal > 0"
+          :style="
+            diamondTotal && diamondTotal.length > 9
+              ? { 'font-size': '12px' }
+              : {}
+          "
+          >{{ formatThousandsCurrency(diamondTotal) }}</span
+        >
         <span v-else style="color: #939393"> - - </span>
         <button @click="$router.push('/mobile/mcenter/live/diamond')">
           兌換
@@ -282,6 +287,7 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import member from "@/api/member";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   props: {
@@ -306,7 +312,7 @@ export default {
         ? localStorage.getItem("is-show-promotion") === "true"
         : true,
       centerWallet: 0,
-      diamond: 0
+      diamondTotal: 0
     };
   },
   computed: {
@@ -316,12 +322,31 @@ export default {
       memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
       siteConfig: "getSiteConfig"
-    })
+    }),
+    memAmount() {
+      return (
+        (this.membalance &&
+          this.membalance.vendor.default &&
+          this.membalance.vendor.default.amount) ||
+        "0.00"
+      );
+    }
   },
   created() {
     member.data({
       success: res => {
         this.countDays(res.ret.user.created_at);
+      }
+    });
+
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/user/diamond-total",
+      method: "get"
+    }).then(data => {
+      if (data.result && data.result.diamond_total) {
+        this.diamondTotal = data.result.diamond_total;
+      } else {
+        this.diamondTotal = 0;
       }
     });
   },
@@ -334,7 +359,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionGetExtRedirect"
+    ]),
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
+    },
     onListClick(listIndex) {
       const item = this.list[listIndex];
 

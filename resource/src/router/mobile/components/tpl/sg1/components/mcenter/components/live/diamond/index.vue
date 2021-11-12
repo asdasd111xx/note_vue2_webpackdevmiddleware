@@ -178,7 +178,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      diamondTotal: {},
+      diamondTotal: "",
       diamondRemind: "",
       exchangeRateList: [],
       currentSelRate: {},
