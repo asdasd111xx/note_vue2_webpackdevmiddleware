@@ -201,77 +201,19 @@
                     <pd-select-box
                       style="position: fixed;bottom: 0;width: 100%;"
                     >
-                      <!-- <keep-alive> -->
                       <pd-select-item
                         ref="thecity"
                         :listData="theCityList"
                         v-model="thecity"
                       ></pd-select-item>
-                      <!-- </keep-alive> -->
-                      <!-- <keep-alive> -->
                       <pd-select-item
                         ref="thedistrict"
                         :listData="filtertheDistrictList"
                         type="cycle"
                         v-model="thedistrict"
                       ></pd-select-item>
-                      <!-- </keep-alive> -->
                     </pd-select-box>
                   </div>
-                  <!-- <div :class="$style['more-method-content']">
-                    <div
-                    :class="$style['more-method-header']"
-                  >
-                    <div
-                      :class="$style['prev']"
-                      @click.stop="showHometownEdit = false"
-                    >
-                      {{ $text("S_CANCEL", "取消") }}
-                    </div>
-                    <div
-                      :class="[
-                        selectedCity == '' && selectedDistrict == ''
-                          ? $style['notconfirm']
-                          : $style['confirm']
-                      ]"
-                      @click="submitHometown"
-                    >
-                    <div :class="$style['city']">
-                      <div
-                        v-for="(item, index) in cityList"
-                        :key="index"
-                        :class="$style['cell']"
-                      >
-                        <button
-                          :key="index"
-                          @click="getSelectedCity(item.city, index)"
-                        >
-                          <span
-                            :class="[
-                              selectedCity == item.city ? $style['active'] : ''
-                            ]"
-                            >{{ item.city }}</span
-                          >
-                        </button>
-                      </div>
-                    </div>
-                    <div :class="$style['district']">
-                      <div
-                        v-for="(item, index) in districtList"
-                        :key="index"
-                        :class="$style['cell']"
-                      >
-                        <button :key="index" @click="getSelectedDistrict(item)">
-                          <span
-                            :class="[
-                              selectedDistrict == item ? $style['active'] : ''
-                            ]"
-                            >{{ item }}</span
-                          >
-                        </button>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </template>
@@ -469,6 +411,7 @@ import DatePicker from "vue2-datepicker";
 import Vue from "vue";
 import mcenter from "@/api/mcenter";
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
+//https://github.com/k186/pd-select/
 import pdSelect from "pd-select";
 Vue.use(pdSelect);
 
@@ -512,12 +455,10 @@ export default {
   },
   data() {
     return {
-      //test
       thecity: "",
       thedistrict: "",
       theCityList: [],
       theDistrictList: [],
-      //test
       paopaoMemberCardInfo: {},
       currentTab: 0,
       currentEdit: "",
@@ -528,10 +469,6 @@ export default {
       showRelationshipEdit: false,
       selectRelationshipValue: "",
       showHometownEdit: false,
-      // cityList: [],
-      // districtList: [],
-      // selectedCity: "",
-      // selectedDistrict: "",
       addressInfo: {
         id: "",
         is_default: false,
@@ -542,7 +479,6 @@ export default {
     };
   },
   created() {
-    this.getAddress();
     this.getPaopaoMemberData();
     this.getHometownListData();
   },
@@ -555,7 +491,6 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    //test
     filtertheDistrictList() {
       if (this.thecity) {
         this.actionGetExtRedirect({
@@ -572,21 +507,14 @@ export default {
 
       return this.theDistrictList;
     }
-    //test
   },
   mounted() {
-    //test
-    setTimeout(() => {
-      //验证 model 联动
-      this.after();
-    }, 3000),
-      //test
-      this.actionSetSystemTime();
+    this.gettheDistrictList();
+    this.actionSetSystemTime();
     if (localStorage.getItem("set-account-success")) {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
     }
-    this.gettheDistrictList();
   },
   methods: {
     ...mapActions([
@@ -595,25 +523,20 @@ export default {
       "actionSetGlobalMessage",
       "actionGetExtRedirect"
     ]),
-    //test
-    after() {
-      this.thecity = "这是TA的秘密";
-      this.$refs.thecity.init();
-    },
     gettheDistrictList() {
+      this.thecity = "这是TA的秘密";
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/info/hometown-list",
         method: "get"
       }).then(data => {
-        data.result.map((item, index) => {
+        data.result.map(item => {
           if (this.thecity == item.city) {
             this.theDistrictList = item.district || [];
-            // console.log("tetsttetsmonted", this.theDistrictList);
           }
         });
       });
     },
-    //test
+
     getPaopaoMemberData() {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/personal-info",
@@ -627,29 +550,12 @@ export default {
         api_uri: "/api/platform/v1/info/hometown-list",
         method: "get"
       }).then(data => {
-        this.cityList = data.result || null;
-        //test
         this.theCityList = data.result.map(item => {
           return item.city || [];
         });
-        //test
       });
     },
-    // getDistrict(index) {
-    //   if (this.selectedCity == this.cityList[index].city) {
-    //     this.districtList = this.cityList[index].district;
-    //   }
-    //   return this.districtList;
-    // },
-    // getSelectedCity(item, index) {
-    //   this.selectedCity = item;
-    //   this.getDistrict(index);
-    // },
-    // getSelectedDistrict(item) {
-    //   this.selectedDistrict = item;
-    // },
     submitHometown() {
-      // if (this.selectedCity && this.selectedDistrict) {
       if (this.thecity) {
         this.actionGetExtRedirect({
           api_uri: "/api/platform/v1/user/update-hometown",
@@ -660,7 +566,6 @@ export default {
                 ? `${this.thecity}`
                 : `${this.thecity}-${this.thedistrict}`
           }
-          // data: { hometown: `${this.selectedCity} ${this.selectedDistrict}` }
         }).then(res => {
           if (res.result === "success") {
             this.editedSuccess();
@@ -726,70 +631,6 @@ export default {
         }
       });
     },
-
-    handleClick(field) {
-      if (field.key === "phone" || field.key === "email") {
-        //   手機未驗證能設定
-        if (field.btnShow) {
-          this.$router.push({
-            path: `/mobile/mcenter/accountData/${field.key}`
-          });
-        }
-        // 只能設定一次
-        // if (this.memInfo.user.phone && !this.memInfo.config.user_edit_phone) {
-        //   return;
-        // }
-      }
-
-      if (field.key === "birthday") {
-        return;
-      }
-
-      if (!field.btnShow) {
-        return;
-      }
-
-      if (
-        [
-          "alias",
-          "name",
-          "phone",
-          "qq",
-          "weixin",
-          "line",
-          "withdrawPwd",
-          "skype",
-          "telegram",
-          "kakaotalk"
-        ].includes(field.key)
-      ) {
-        this.$router.push({
-          path: `/mobile/mcenter/accountData/${field.key}`
-        });
-        return;
-      } else if (field.key === "receiptAddress") {
-        // if (this.addressInfo.id === '') {
-        //   this.$router.push({
-        //     path: `/mobile/mcenter/accountData/addAddress`
-        //   });
-        // } else {
-        //   localStorage.setItem('set-address-data-empty', this.addressInfo.id === '');
-        //   this.$router.push({
-        //     path: `/mobile/mcenter/accountData/${field.key}`
-        //   });
-        // }
-        localStorage.setItem(
-          "set-address-data-empty",
-          this.addressInfo.id === ""
-        );
-        this.$router.push({
-          path: `/mobile/mcenter/accountData/${field.key}`
-        });
-
-        return;
-      }
-      this.currentEdit = field.key;
-    },
     editedSuccess(msg) {
       this.actionSetUserdata(true);
       this.currentEdit = "";
@@ -799,39 +640,12 @@ export default {
         this.showSuccess = false;
       }, 3000);
     },
-    getAddress() {
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/address"
-      })
-        .then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            if (res.data.ret.length > 0) {
-              this.addressInfo = res.data.ret.find(data => data.is_default);
-              if (localStorage.getItem("set-address-default")) {
-                if (
-                  this.addressInfo.is_default !=
-                  res.data.ret[
-                    parseInt(localStorage.getItem("set-address-default"))
-                  ].is_default
-                ) {
-                  this.getAddress();
-                } else {
-                  localStorage.removeItem("set-address-default");
-                }
-              }
-            }
-          }
-        })
-        .catch(error => {});
-    },
     onInputBirthday(e) {
       this.tipMsg = "";
       this.birthdayValue = e;
       if (this.value === "") {
         this.tipMsg = this.$text("S_CR_NUT_NULL");
       }
-
       const valueDate = new Date(this.birthdayValue);
       const limit = new Date(Vue.moment(this.systemTime).add(-18, "year"));
       if (valueDate > limit) {

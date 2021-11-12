@@ -262,7 +262,7 @@ export default {
 @import "~@/css/variable.scss";
 .mcenter-avatar-info-wrap {
   width: 100%;
-  height: 100vh;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
