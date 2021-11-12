@@ -50,24 +50,15 @@
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']">
-        <span v-if="paopaoUserInfo.track_total > 0">{{
-          paopaoUserInfo.track_total
-        }}</span>
-        <span v-else>- -</span>
+        <span>{{ paopaoUserInfo.track_total }}</span>
         追踪人数
       </div>
       <div :class="$style['favorite']">
-        <span v-if="paopaoUserInfo.favorite_total > 0">{{
-          paopaoUserInfo.favorite_total
-        }}</span>
-        <span v-else>- -</span>
+        <span>{{ paopaoUserInfo.favorite_total }}</span>
         我的最爱
       </div>
       <div :class="$style['bubbles']">
-        <span v-if="paopaoUserInfo.paopao_total > 0">{{
-          paopaoUserInfo.paopao_total
-        }}</span>
-        <span v-else>- -</span>
+        <span>{{ paopaoUserInfo.paopao_total }}</span>
         送出泡泡
       </div>
     </div>
@@ -85,7 +76,17 @@ export default {
   props: {
     paopaoUserInfo: {
       type: Object,
-      default: {}
+      default: {
+        alias: "",
+        background: "",
+        badges: "",
+        diamond_total: "",
+        favorite_total: "",
+        head_frame: "",
+        level: "",
+        paopao_total: "--",
+        track_total: "--"
+      }
     }
   },
   data() {
@@ -104,6 +105,11 @@ export default {
       memBalance: "getMemBalance",
       siteConfig: "getSiteConfig"
     })
+  },
+  watch: {
+    paopaoUserInfo() {
+      console.log(this.paopaoUserInfo);
+    }
   },
   mounted() {
     this.getUserViplevel();

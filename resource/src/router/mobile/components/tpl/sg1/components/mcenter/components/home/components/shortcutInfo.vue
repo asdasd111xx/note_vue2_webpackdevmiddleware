@@ -36,8 +36,9 @@
             :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
           />中心钱包
         </p>
-        <span v-if="memAmount">{{ memAmount }} </span>
-        <span v-else style="color: #939393"> - - </span>
+        <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
+          >{{ memAmount }}
+        </span>
         <button>充值</button>
       </div>
       <div :class="$style['myDiamond']">
@@ -319,7 +320,6 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
       siteConfig: "getSiteConfig"
     }),
@@ -328,27 +328,41 @@ export default {
         (this.membalance &&
           this.membalance.vendor.default &&
           this.membalance.vendor.default.amount) ||
-        "0.00"
+        "--"
       );
     }
   },
+  mounted() {
+    if (this.loginStatus) {
+      this.updateBalanceTimer = setInterval(() => {
+        this.actionSetUserBalance();
+      }, 40000);
+    }
+  },
+  beforeDestroy() {
+    clearInterval(this.updateBalanceTimer);
+    this.updateBalanceTimer = null;
+  },
   created() {
+    this.actionSetUserBalance();
     member.data({
       success: res => {
         this.countDays(res.ret.user.created_at);
       }
     });
 
-    this.actionGetExtRedirect({
-      api_uri: "/api/platform/v1/user/diamond-total",
-      method: "get"
-    }).then(data => {
-      if (data.result && data.result.diamond_total) {
-        this.diamondTotal = data.result.diamond_total;
-      } else {
-        this.diamondTotal = 0;
-      }
-    });
+    if (this.loginStatus) {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/diamond-total",
+        method: "get"
+      }).then(data => {
+        if (data.result && data.result.diamond_total) {
+          this.diamondTotal = data.result.diamond_total;
+        } else {
+          this.diamondTotal = 0;
+        }
+      });
+    }
   },
   filters: {
     thousandFormat(val) {
@@ -362,7 +376,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionGetExtRedirect"
+      "actionGetExtRedirect",
+      "actionSetUserBalance"
     ]),
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
