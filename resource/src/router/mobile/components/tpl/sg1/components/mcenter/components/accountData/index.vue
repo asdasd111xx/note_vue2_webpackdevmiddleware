@@ -31,7 +31,7 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.push("/mobile/mcenter/home");
+          this.$router.push("/mobile/mcenter/memberCard");
         },
         title: this.$text("S_PERSON_INFO", "个人资料")
       };

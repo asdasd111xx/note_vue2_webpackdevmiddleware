@@ -40,7 +40,7 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.back();
+          this.$router.push("/mobile/mcenter/home");
         },
         title: ""
       };
