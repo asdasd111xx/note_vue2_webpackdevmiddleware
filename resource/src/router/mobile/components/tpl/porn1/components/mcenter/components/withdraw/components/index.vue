@@ -768,11 +768,11 @@ export default {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
       }
-      
-      if(this.currencyList.length > 0){
-        this.setWithdrawCurrency(this.currencyList[0])
+      if(!localStorage.getItem("tmp_w_selectedCard")){
+        if(this.currencyList.length > 0){
+          this.setWithdrawCurrency(this.currencyList[0])
+        }
       }
-      
       // this.actionSetIsLoading(false);
       this.isLoading = false;
     },
@@ -1595,7 +1595,6 @@ export default {
       } else {
         methonId = "";
       }
-
       if (this.memInfo.config.withdraw === "迅付") {
         _params = {
           ..._params,
@@ -1879,6 +1878,8 @@ export default {
         });
     },
     setWithdrawCurrency(item) {
+      // console.log("setWithdrawCurrency");
+      // console.log(item);
       this.withdrawCurrency.method_id = item.method_id;
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
@@ -2001,7 +2002,6 @@ export default {
       const defaultCard = this.allWithdrawAccount?.find(item => {
         return item.allow;
       });
-
       // 卡片資料
       this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
         ? {
