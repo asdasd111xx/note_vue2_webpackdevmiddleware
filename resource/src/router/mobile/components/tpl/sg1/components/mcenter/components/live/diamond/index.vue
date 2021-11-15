@@ -42,7 +42,17 @@
                     : {}
                 "
               >
-                {{ diamondTotal }}
+                <template v-if="!isMaintain">
+                  {{ `${formatThousandsCurrency(diamondTotal)}元` }}
+                </template>
+                <template v-else>
+                  <span :class="$style['maintain-tip-text']">维护中</span>
+                  <img
+                    @click="showMaintainInfo"
+                    :class="$style['maintain-tip-img']"
+                    :src="$getCdnPath('/static/image/sg1/live/ic_tips.png')"
+                  />
+                </template>
               </div>
               <div :class="$style['account-hr']" />
             </div>
@@ -150,6 +160,11 @@
 
         <tips :data="diamondRemind" />
         <page-loading :is-show="isLoading" />
+        <maintain-block
+          v-if="isShowMaintainInfo"
+          :content="maintainInfo"
+          @close="handleCloseMaintainInfo"
+        />
       </template>
       <template v-else>
         <recoard />
@@ -159,16 +174,19 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mobileContainer from "../../../../common/mobileContainer";
-import openGame from "@/lib/open_game";
-import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-import tips from "./tips.vue";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import maintainBlock from "@/router/mobile/components/common/maintainBlock";
+import mobileContainer from "../../../../common/mobileContainer";
 import recoard from "./recoard.vue";
+import tips from "./tips.vue";
+import moment from "moment";
+
 export default {
   components: {
     tips,
     recoard,
+    maintainBlock,
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
@@ -178,13 +196,16 @@ export default {
   data() {
     return {
       isLoading: true,
+      isMaintain: false,
       diamondTotal: "",
       diamondRemind: "",
       exchangeRateList: [],
       currentSelRate: {},
       lockedSubmit: true,
       currentTab: 0,
-      updateBalanceTimer: null
+      updateBalanceTimer: null,
+      isShowMaintainInfo: false,
+      maintainInfo: {}
     };
   },
   computed: {
@@ -243,7 +264,7 @@ export default {
   mounted() {
     if (this.loginStatus) {
       this.updateBalanceTimer = setInterval(() => {
-        this.actionSetUserBalance();
+        this.getBalance();
       }, 40000);
     }
   },
@@ -253,18 +274,35 @@ export default {
       "actionGetExtRedirect",
       "actionSetUserBalance"
     ]),
-    init() {
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/diamond-total",
-        method: "get"
-      }).then(data => {
-        if (data.result && data.result.diamond_total) {
-          this.diamondTotal = data.result.diamond_total;
-        } else {
-          this.diamondTotal = 0;
-        }
-      });
+    showMaintainInfo() {
+      this.isShowMaintainInfo = true;
 
+      // 缺時間
+      const start = moment()
+        .add(-12, "hours")
+        .format("YYYY-MM-DD HH:mm:ss");
+      const end = moment()
+        .add(-12, "hours")
+        .format("YYYY-MM-DD HH:mm:ss");
+
+      this.maintainInfo = [
+        {
+          title: "-美东时间-",
+          startAt: start,
+          endAt: end
+        },
+        {
+          title: "-北京时间-",
+          startAt: moment(),
+          endAt: moment()
+        }
+      ];
+    },
+    handleCloseMaintainInfo() {
+      this.isShowMaintainInfo = false;
+      this.maintainInfo = null;
+    },
+    init() {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/diamond/remind",
         method: "get"
@@ -285,6 +323,20 @@ export default {
           this.exchangeRateList = data.result.exchange_rate_list;
         } else {
           this.exchangeRateList = [];
+        }
+      });
+    },
+    getBalance() {
+      this.actionSetUserBalance();
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/diamond-total",
+        method: "get"
+      }).then(data => {
+        if (data.result && data.result.diamond_total) {
+          this.diamondTotal = data.result.diamond_total;
+        } else {
+          this.diamondTotal = 0;
         }
       });
     },
@@ -341,6 +393,7 @@ export default {
         }
 
         this.isLoading = false;
+        this.getBalance();
       });
     },
     selectedRate(target) {
@@ -595,13 +648,16 @@ export default {
     }
 
     > .account-num {
+      align-items: center;
+      color: #e53266;
+      display: flex;
+      font-family: microsoft jhenghei, microsoft jhenghei-bold;
+      font-size: 16px;
+      font-weight: 700;
       height: 24px;
+      justify-content: center;
       line-height: 24px;
       opacity: 1;
-      font-size: 16px;
-      font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
-      font-weight: 700;
-      color: #e53266;
     }
   }
 
@@ -649,5 +705,19 @@ export default {
     &:not(:nth-child(1)) {
     }
   }
+}
+
+.maintain-tip-text {
+  color: #db6372;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.maintain-tip-img {
+  height: 12px;
+  margin-left: 2px;
+  width: 12px;
 }
 </style>
