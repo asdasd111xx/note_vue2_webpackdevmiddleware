@@ -67,7 +67,7 @@
         :class="$style['sec-1']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/live/iframe/mall')
+            ? $router.push('/mobile/live/iframe/mall')
             : $router.push('/mobile/login')
         "
       >
@@ -114,7 +114,7 @@
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/live/iframe/rank')
+              ? $router.push('/mobile/live/iframe/my_contribute')
               : $router.push('/mobile/login')
           "
         >
@@ -144,7 +144,7 @@
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/mcenter/bankRebate')
+              ? $router.push('/mobile/mcenter/home')
               : $router.push('/mobile/login')
           "
         >
@@ -164,7 +164,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/wallet')
+            ? $router.push('/mobile/live/iframe/my_vip')
             : $router.push('/mobile/login')
         "
       >
@@ -238,7 +238,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/betRecord')
+            ? $router.push('/mobile/mcenter/tcenterLobby')
             : $router.push('/mobile/login')
         "
       >
@@ -253,7 +253,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/moneyDetail')
+            ? $router.push('/mobile/mcenter/makeMoney')
             : $router.push('/mobile/login')
         "
       >
@@ -268,7 +268,7 @@
         :class="$style['cell']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/bankRebate')
+            ? $router.push('/mobile/mcenter/creditTrans?tab=1')
             : $router.push('/mobile/login')
         "
       >
