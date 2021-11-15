@@ -3,8 +3,8 @@
     <template v-if="type === 1">
       <div v-show="isShow && content && content.length > 0" class="dialog">
         <div class="wrap">
-          <div class="maintain-title">SWAG 维护中</div>
-          <div v-for="item in content" class="cell">
+          <div class="maintain-title">直播维护中</div>
+          <div v-for="(item, index) in content" class="cell" :key="index">
             <div class="time-title">
               {{ item.title }}
             </div>
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import moment from 'moment';
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
 
 export default {
   props: {
@@ -57,16 +57,14 @@ export default {
 
       list: [
         {
-          title: '-美东时间-',
-          startAt: '',
-          endAt: ''
+          title: "-美东时间-",
+          startAt: "",
+          endAt: ""
         }
       ]
     };
   },
-  computed: {
-
-  },
+  computed: {},
   created() {
     this.isShow = true;
     this.timer = setTimeout(() => {
@@ -78,18 +76,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: 'getSiteConfig',
-    }),
+      siteConfig: "getSiteConfig"
+    })
   },
   beforeDestroy() {
     clearTimeout(this.timer);
     this.actionSetGlobalMessage(null);
-    this.$emit('close');
+    this.$emit("close");
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     getDate(date) {
       return moment(date).format("YYYY-MM-DD");
     },
@@ -97,9 +93,9 @@ export default {
       return moment(date).format("HH:mm:ss");
     },
     clearMsg() {
-      this.$emit('close');
+      this.$emit("close");
     }
-  },
+  }
 };
 </script>
 
@@ -129,7 +125,7 @@ export default {
 }
 
 .dialog > div:first-child {
-  background-color: rgba($color: #5e626d, $alpha: 0.75);
+  background-color: rgba($color: #333333, $alpha: 0.9);
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
@@ -147,7 +143,7 @@ export default {
 }
 
 .maintain-title {
-  height: 45px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
