@@ -676,3 +676,16 @@ export default {
 };
 </script>
 <style lang="scss" src="../../css/index.module.scss" module></style>
+
+<style>
+.pd-select-line::before {
+  background: #ddd !important;
+}
+.pd-select-line::after {
+  background: #ddd !important;
+}
+
+.pd-select-wheel .pd-select-wheel-item {
+  -webkit-backface-visibility: hidden !important;
+}
+</style>
