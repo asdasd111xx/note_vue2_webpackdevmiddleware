@@ -459,6 +459,7 @@ export default {
       thedistrict: "",
       theCityList: [],
       theDistrictList: [],
+      hometownList: [],
       paopaoMemberCardInfo: {},
       currentTab: 0,
       currentEdit: "",
@@ -492,18 +493,12 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     filtertheDistrictList() {
-      if (this.thecity) {
-        this.actionGetExtRedirect({
-          api_uri: "/api/platform/v1/info/hometown-list",
-          method: "get"
-        }).then(data => {
-          data.result.map(item => {
-            if (this.thecity == item.city) {
-              this.theDistrictList = item.district || [];
-            }
-          });
-        });
-      }
+      this.hometownList.map(item => {
+        if (this.thecity == item.city) {
+          this.theDistrictList = item.district || [];
+          // console.log("disdisdisdis", this.thecity, this.thedistrict);
+        }
+      });
 
       return this.theDistrictList;
     }
@@ -515,7 +510,12 @@ export default {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
     }
+    setTimeout(() => {
+      //验证 model 联动
+      this.after();
+    }, 800);
   },
+
   methods: {
     ...mapActions([
       "actionSetUserdata",
@@ -523,17 +523,17 @@ export default {
       "actionSetGlobalMessage",
       "actionGetExtRedirect"
     ]),
-    gettheDistrictList() {
+    after() {
       this.thecity = "这是TA的秘密";
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/info/hometown-list",
-        method: "get"
-      }).then(data => {
-        data.result.map(item => {
-          if (this.thecity == item.city) {
-            this.theDistrictList = item.district || [];
-          }
-        });
+      this.thedistrict = "";
+      this.$refs.thecity.init();
+      this.$refs.thedistrict.init();
+    },
+    gettheDistrictList() {
+      this.hometownList.map(item => {
+        if (this.thecity == item.city) {
+          this.theDistrictList = item.district || [];
+        }
       });
     },
 
@@ -550,6 +550,7 @@ export default {
         api_uri: "/api/platform/v1/info/hometown-list",
         method: "get"
       }).then(data => {
+        this.hometownList = data.result;
         this.theCityList = data.result.map(item => {
           return item.city || [];
         });
@@ -562,7 +563,7 @@ export default {
           method: "put",
           data: {
             hometown:
-              this.thedistrict == ""
+              this.thecity == "这是TA的秘密" || this.thecity == "火星"
                 ? `${this.thecity}`
                 : `${this.thecity}-${this.thedistrict}`
           }
