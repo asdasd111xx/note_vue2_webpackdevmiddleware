@@ -99,7 +99,7 @@
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/live/iframe/experince')
+              ? $router.push('/mobile/live/iframe/exchange_diamond')
               : $router.push('/mobile/login')
           "
         >
