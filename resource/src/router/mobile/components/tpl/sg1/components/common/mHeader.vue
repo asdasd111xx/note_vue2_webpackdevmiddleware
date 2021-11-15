@@ -136,8 +136,8 @@
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
         <img
-          :src="$getCdnPath('/static/image/sg1/common/btn_setting.png')"
-          @click="handleClickSetting"
+          :src="$getCdnPath('/static/image/sg1/common/icon_service.png')"
+          @click="handleClickService"
         />
         <div>
           <img
@@ -151,6 +151,10 @@
             </div>
           </div>
         </div>
+        <img
+          :src="$getCdnPath('/static/image/sg1/common/btn_setting.png')"
+          @click="handleClickSetting"
+        />
       </div>
     </template>
 
@@ -309,6 +313,13 @@ export default {
     // 設定選單狀態
     setMenuState(value) {
       this.currentMenu = this.currentMenu === value ? "" : value;
+    },
+    handleClickService() {
+      if (this.loginStatus) {
+        this.$router.push("/mobile/service");
+      } else {
+        this.$router.push("/mobile/login");
+      }
     },
     handleClickAsk() {
       if (this.loginStatus) {
