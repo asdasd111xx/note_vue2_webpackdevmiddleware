@@ -10,7 +10,7 @@
       </div>
       <div :class="$style['version']">版本号 {{ version }}</div>
       <div :class="$style['officel']">
-        <div>官方认证</div>
+        <!-- <div>官方认证</div>
         <div :class="$style['content']">
           <div :class="$style['cell']">
             <img :src="$getCdnPath(`/static/image/_new/about/img01.png`)" />
@@ -28,11 +28,11 @@
             <img :src="$getCdnPath(`/static/image/_new/about/img04.png`)" />
             <div>菲律宾(PAGCOR)<br />监督博彩牌照</div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div :class="[$style['sponsor'], $style['partner']]">
-        <div>联盟伙伴</div>
+        <!-- <div>联盟伙伴</div>
         <div :class="$style['content']">
           <div :class="$style['cell']">
             <img :src="$getCdnPath(`/static/image/_new/about/logo_jdb.png`)" />
@@ -56,11 +56,11 @@
             />
             <div>AG视讯</div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div :class="[$style['sponsor'], $style['partner']]">
-        <div :class="$style['content']">
+        <!-- <div :class="$style['content']">
           <div :class="$style['cell']">
             <img
               :src="$getCdnPath(`/static/image/_new/about/logo_suncity.png`)"
@@ -83,7 +83,7 @@
             />
             <div>开元棋牌</div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </mobile-container>
@@ -130,10 +130,11 @@ export default {
   background-color: white;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("/static/image/_new/about/bg.png");
+  background-image: url("/static/image/sg1/about/bg.png");
 }
 
 .content-wrap {
+  height: 100vh;
   overflow-y: auto;
   padding: 25px 0;
 }
