@@ -1,285 +1,296 @@
 <template>
-  <div :class="$style['mcenter-vip-wrap']">
-    <div :class="$style['tool-wrap']">
-      <div
-        :class="$style['myTool']"
-        @click="$router.push('/mobile/live/iframe/my_props')"
-      >
-        <i
-          ><img
-            :src="$getCdnPath(`/static/image/sg1/mcenter/icon_props.png`)"/></i
-        >道具
-      </div>
-      <div
-        :class="$style['myStyle']"
-        @click="$router.push('/mobile/live/iframe/my_style')"
-      >
-        <i
-          ><img
-            :src="$getCdnPath(`/static/image/sg1/mcenter/icon_style.png`)"/></i
-        >我的风格
-      </div>
-      <div
-        :class="$style['myContribute']"
-        @click="$router.push('/mobile/live/iframe/my_contribute')"
-      >
-        <i
-          ><img
-            :src="
-              $getCdnPath(`/static/image/sg1/mcenter/icon_contribution.png`)
-            "/></i
-        >贡献榜
-      </div>
-      <div :class="$style['myCenterWallet']">
-        <p>
-          <img
-            :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
-          />中心钱包
-        </p>
-        <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
-          >{{ memAmount }}
-        </span>
-        <button>充值</button>
-      </div>
-      <div :class="$style['myDiamond']">
-        <p>
-          <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)" />
-          {{ $text("S_MY_DIAMOND") }}
-        </p>
-        <span
-          v-if="diamondTotal && +diamondTotal > 0"
-          :style="
-            diamondTotal && diamondTotal.length > 9
-              ? { 'font-size': '12px' }
-              : {}
-          "
-          >{{ formatThousandsCurrency(diamondTotal) }}</span
+  <div>
+    <div :class="$style['mcenter-vip-wrap']">
+      <div :class="$style['tool-wrap']">
+        <div
+          :class="$style['myTool']"
+          @click="$router.push('/mobile/live/iframe/my_props')"
         >
-        <span v-else style="color: #939393"> - - </span>
-        <button @click="$router.push('/mobile/mcenter/live/diamond')">
-          兌換
-        </button>
-      </div>
-    </div>
-    <!-- VIP 推廣 -->
-    <div :class="$style['vip-promotion-wrap']">
-      <div
-        :class="$style['sec-1']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/mall')
-            : $router.push('/mobile/login')
-        "
-      >
-        <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_mall.png')" />
-        <div>
-          <div>商城</div>
-          <!-- <div :class="$style['sub-text']">VIP PRIVILEGE</div> -->
+          <i
+            ><img
+              :src="
+                $getCdnPath(`/static/image/sg1/mcenter/icon_props.png`)
+              "/></i
+          >道具
+        </div>
+        <div
+          :class="$style['myStyle']"
+          @click="$router.push('/mobile/live/iframe/my_style')"
+        >
+          <i
+            ><img
+              :src="
+                $getCdnPath(`/static/image/sg1/mcenter/icon_style.png`)
+              "/></i
+          >我的风格
+        </div>
+        <div
+          :class="$style['myContribute']"
+          @click="$router.push('/mobile/live/iframe/my_contribute')"
+        >
+          <i
+            ><img
+              :src="
+                $getCdnPath(`/static/image/sg1/mcenter/icon_contribution.png`)
+              "/></i
+          >贡献榜
+        </div>
+        <div :class="$style['myCenterWallet']">
+          <p>
+            <img
+              :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
+            />中心钱包
+          </p>
+          <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
+            >{{ memAmount }}
+          </span>
+          <button>充值</button>
+        </div>
+        <div :class="$style['myDiamond']">
+          <p>
+            <img
+              :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)"
+            />
+            {{ $text("S_MY_DIAMOND") }}
+          </p>
+          <span
+            v-if="diamondTotal && +diamondTotal > 0"
+            :style="
+              diamondTotal && diamondTotal.length > 9
+                ? { 'font-size': '12px' }
+                : {}
+            "
+            >{{ formatThousandsCurrency(diamondTotal) }}</span
+          >
+          <span v-else style="color: #939393"> - - </span>
+          <button @click="$router.push('/mobile/mcenter/live/diamond')">
+            兌換
+          </button>
         </div>
       </div>
-      <!-- <div :class="$style['v-line']" /> -->
-      <div
-        :class="$style['sec-1']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/my_guard')
-            : $router.push('/mobile/login')
-        "
-      >
-        <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_guard.png')" />
-        <div>
-          <div>守护</div>
-          <!-- <div :class="$style['sub-text']">PROMOTION</div> -->
+      <!-- VIP 推廣 -->
+      <div :class="$style['vip-promotion-wrap']">
+        <div
+          :class="$style['sec-1']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/live/iframe/mall')
+              : $router.push('/mobile/login')
+          "
+        >
+          <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_mall.png')" />
+          <div>
+            <div>商城</div>
+            <!-- <div :class="$style['sub-text']">VIP PRIVILEGE</div> -->
+          </div>
+        </div>
+        <!-- <div :class="$style['v-line']" /> -->
+        <div
+          :class="$style['sec-1']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/live/iframe/my_guard')
+              : $router.push('/mobile/login')
+          "
+        >
+          <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_guard.png')" />
+          <div>
+            <div>守护</div>
+            <!-- <div :class="$style['sub-text']">PROMOTION</div> -->
+          </div>
+        </div>
+
+        <!-- 快捷功能4 -->
+        <div :class="$style['mcenter-func-four']">
+          <div
+            :class="$style['cell']"
+            @click="
+              loginStatus
+                ? $router.push('/mobile/live/iframe/exchange_diamond')
+                : $router.push('/mobile/login')
+            "
+          >
+            <div>
+              <img
+                :src="
+                  $getCdnPath('/static/image/sg1/mcenter/icon_experince.png')
+                "
+              />
+            </div>
+            <div>经验值</div>
+          </div>
+          <div
+            :class="$style['cell']"
+            @click="
+              loginStatus
+                ? $router.push('/mobile/live/iframe/my_contribute')
+                : $router.push('/mobile/login')
+            "
+          >
+            <div>
+              <img
+                :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"
+              />
+            </div>
+            <div>排行榜</div>
+          </div>
+          <div
+            :class="$style['cell']"
+            @click="
+              loginStatus
+                ? $router.push('/mobile/live/iframe/task_wall')
+                : $router.push('/mobile/login')
+            "
+          >
+            <div>
+              <img
+                :src="$getCdnPath('/static/image/sg1/mcenter/icon_mission.png')"
+              />
+            </div>
+            <div>任务</div>
+          </div>
+          <div :class="$style['cell']" @click="isShowShare = !isShowShare">
+            <div>
+              <img
+                :src="$getCdnPath('/static/image/sg1/mcenter/icon_share.png')"
+              />
+            </div>
+            <div>分享APP</div>
+          </div>
         </div>
       </div>
 
-      <!-- 快捷功能4 -->
-      <div :class="$style['mcenter-func-four']">
+      <!-- 快捷功能8 -->
+      <div :class="$style['mcenter-func-eight']">
         <div
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/live/iframe/exchange_diamond')
+              ? $router.push('/mobile/live/iframe/my_vip')
               : $router.push('/mobile/login')
           "
         >
           <div>
-            <img
-              :src="$getCdnPath('/static/image/sg1/mcenter/icon_experince.png')"
-            />
+            <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_vip.png')" />
           </div>
-          <div>经验值</div>
+          <div>娱乐城VIP</div>
         </div>
         <div
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/live/iframe/my_contribute')
+              ? $router.push('/mobile/mcenter/wallet')
               : $router.push('/mobile/login')
           "
         >
           <div>
             <img
-              :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"
+              :src="$getCdnPath('/static/image/sg1/mcenter/ic_mywallet.png')"
             />
           </div>
-          <div>排行榜</div>
+          <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
         </div>
         <div
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/live/iframe/task_wall')
+              ? $router.push('/mobile/mcenter/betRecord')
               : $router.push('/mobile/login')
           "
         >
           <div>
             <img
-              :src="$getCdnPath('/static/image/sg1/mcenter/icon_mission.png')"
+              :src="
+                $getCdnPath('/static/image/sg1/mcenter/icon_bethistory.png')
+              "
             />
           </div>
-          <div>任务</div>
+          <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
         </div>
         <div
           :class="$style['cell']"
           @click="
             loginStatus
-              ? $router.push('/mobile/mcenter/home')
+              ? $router.push('/mobile/mcenter/moneyDetail')
               : $router.push('/mobile/login')
           "
         >
           <div>
             <img
-              :src="$getCdnPath('/static/image/sg1/mcenter/icon_share.png')"
+              :src="
+                $getCdnPath('/static/image/sg1/mcenter/icon_transaction.png')
+              "
             />
           </div>
-          <div>分享APP</div>
+          <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
+        </div>
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/mcenter/bankRebate')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_rebate.png')"
+            />
+          </div>
+          <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
+        </div>
+
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/mcenter/tcenterLobby')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="
+                $getCdnPath('/static/image/sg1/mcenter/icon_userprocess.png')
+              "
+            />
+          </div>
+          <div>我的推广</div>
+        </div>
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/mcenter/makeMoney')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_process.png')"
+            />
+          </div>
+          <div>推广赚钱</div>
+        </div>
+        <div
+          :class="$style['cell']"
+          @click="
+            loginStatus
+              ? $router.push('/mobile/mcenter/creditTrans?tab=1')
+              : $router.push('/mobile/login')
+          "
+        >
+          <div>
+            <img
+              :src="$getCdnPath('/static/image/sg1/mcenter/icon_transfer.png')"
+            />
+          </div>
+          <div>额度转让</div>
         </div>
       </div>
     </div>
 
-    <!-- 快捷功能8 -->
-    <div :class="$style['mcenter-func-eight']">
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/my_vip')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_vip.png')" />
-        </div>
-        <div>娱乐城VIP</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/wallet')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/ic_mywallet.png')"
-          />
-        </div>
-        <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/betRecord')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_bethistory.png')"
-          />
-        </div>
-        <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/moneyDetail')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_transaction.png')"
-          />
-        </div>
-        <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_rebate.png')"
-          />
-        </div>
-        <div>{{ $text("S_REAL_TIME_REBATE", "实时返水") }}</div>
-      </div>
-
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/tcenterLobby')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_userprocess.png')"
-          />
-        </div>
-        <div>我的推广</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/makeMoney')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_process.png')"
-          />
-        </div>
-        <div>推广赚钱</div>
-      </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/creditTrans?tab=1')
-            : $router.push('/mobile/login')
-        "
-      >
-        <div>
-          <img
-            :src="$getCdnPath('/static/image/sg1/mcenter/icon_transfer.png')"
-          />
-        </div>
-        <div>额度转让</div>
-      </div>
-    </div>
+    <share v-if="isShowShare" :is-show-share.sync="isShowShare" />
   </div>
 </template>
 
@@ -289,7 +300,7 @@ import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import member from "@/api/member";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-
+import share from "./share";
 export default {
   props: {
     paopaoUserInfo: {
@@ -298,6 +309,9 @@ export default {
         return {};
       }
     }
+  },
+  components: {
+    share
   },
   data() {
     return {
@@ -313,7 +327,8 @@ export default {
         ? localStorage.getItem("is-show-promotion") === "true"
         : true,
       centerWallet: 0,
-      diamondTotal: 0
+      diamondTotal: 0,
+      isShowShare: false
     };
   },
   computed: {
