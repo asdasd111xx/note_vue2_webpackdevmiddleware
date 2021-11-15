@@ -67,7 +67,7 @@
         :class="$style['sec-1']"
         @click="
           loginStatus
-            ? $router.push('/mobile/mcenter/live/shop')
+            ? $router.push('/mobile/mcenter/live/iframe/mall')
             : $router.push('/mobile/login')
         "
       >
