@@ -247,7 +247,7 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      memBalance: "getMemBalance",
+      membalance: "getMemBalance",
       siteConfig: "getSiteConfig"
     }),
     memAmount() {
