@@ -20,7 +20,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../common/mobileContainer";
-import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import iframeEvent from "@/mixins/iframeEvent";
 
@@ -73,7 +72,6 @@ export default {
       }).then(res => {
         const list = res.result;
         if (res && res.result) {
-          console.log("1111", res.result);
           Object.keys(list).some(key => {
             if (key === this.pageType) {
               clientUri = list[key];

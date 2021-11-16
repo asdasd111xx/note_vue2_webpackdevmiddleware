@@ -3,11 +3,7 @@
     <!-- 大頭照 -->
     <div
       :class="$style['avatar-wrap']"
-      @click="
-        loginStatus
-          ? $router.push('/mobile/mcenter/memberCard')
-          : $router.push('/mobile/login')
-      "
+      @click="onListClick('memberCard', false)"
     >
       <img :class="$style['avatar-pic']" :src="avatarSrc" />
       <img
@@ -35,11 +31,7 @@
     </div>
     <div
       :class="$style['level-wrap']"
-      @click="
-        loginStatus
-          ? $router.push('/mobile/mcenter/accountVip')
-          : $router.push('/mobile/login')
-      "
+      @click="onListClick('accountVip', false)"
     >
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
@@ -49,36 +41,15 @@
     </div>
 
     <div :class="$style['data-content']">
-      <div
-        :class="$style['follower']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/my_track')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['follower']" @click="onListClick('my_track')">
         <span>{{ paopaoUserInfo.track_total }}</span>
         追踪人数
       </div>
-      <div
-        :class="$style['favorite']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/my_favorite')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['favorite']" @click="onListClick('my_favorite')">
         <span>{{ paopaoUserInfo.favorite_total }}</span>
         我的最爱
       </div>
-      <div
-        :class="$style['bubbles']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/mall')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['bubbles']" @click="onListClick('mall')">
         <span>{{ paopaoUserInfo.paopao_total }}</span>
         送出泡泡
       </div>
@@ -138,6 +109,18 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),
+    onListClick(target, isLive = true) {
+      if (!this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+
+      if (isLive) {
+        this.$router.push(`/mobile/live/iframe/${target}`);
+      } else {
+        this.$router.push(`/mobile/mcenter/${target}`);
+      }
+    },
     getAvatarSrc() {
       if (!this.loginStatus) return;
 

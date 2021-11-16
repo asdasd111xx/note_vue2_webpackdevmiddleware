@@ -2,10 +2,7 @@
   <div>
     <div :class="$style['mcenter-vip-wrap']">
       <div :class="$style['tool-wrap']">
-        <div
-          :class="$style['myTool']"
-          @click="$router.push('/mobile/live/iframe/my_props')"
-        >
+        <div :class="$style['myTool']" @click="onListClick('my_props')">
           <i
             ><img
               :src="
@@ -13,10 +10,7 @@
               "/></i
           >道具
         </div>
-        <div
-          :class="$style['myStyle']"
-          @click="$router.push('/mobile/live/iframe/my_style')"
-        >
+        <div :class="$style['myStyle']" @click="onListClick('my_style')">
           <i
             ><img
               :src="
@@ -26,7 +20,7 @@
         </div>
         <div
           :class="$style['myContribute']"
-          @click="$router.push('/mobile/live/iframe/my_contribute')"
+          @click="onListClick('my_contribute')"
         >
           <i
             ><img
@@ -44,7 +38,7 @@
           <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
             >{{ memAmount }}
           </span>
-          <button @click="$router.push('/mobile/mcenter/deposit')">
+          <button @click="onListClick('deposit', false)">
             充值
           </button>
         </div>
@@ -65,21 +59,15 @@
             >{{ formatThousandsCurrency(diamondTotal) }}</span
           >
           <span v-else style="color: #939393"> - - </span>
-          <button @click="$router.push('/mobile/mcenter/live/diamond')">
+
+          <button @click="onListClick('diamond')">
             兌換
           </button>
         </div>
       </div>
       <!-- VIP 推廣 -->
       <div :class="$style['vip-promotion-wrap']">
-        <div
-          :class="$style['sec-1']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/live/iframe/mall')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['sec-1']" @click="onListClick('mall')">
           <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_mall.png')" />
           <div>
             <div>商城</div>
@@ -87,14 +75,7 @@
           </div>
         </div>
         <!-- <div :class="$style['v-line']" /> -->
-        <div
-          :class="$style['sec-1']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/live/iframe/my_guard')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['sec-1']" @click="onListClick('my_guard')">
           <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_guard.png')" />
           <div>
             <div>守护</div>
@@ -104,14 +85,7 @@
 
         <!-- 快捷功能4 -->
         <div :class="$style['mcenter-func-four']">
-          <div
-            :class="$style['cell']"
-            @click="
-              loginStatus
-                ? $router.push('/mobile/live/iframe/exchange_diamond')
-                : $router.push('/mobile/login')
-            "
-          >
+          <div :class="$style['cell']" @click="onListClick('exchange_diamond')">
             <div>
               <img
                 :src="
@@ -121,14 +95,7 @@
             </div>
             <div>经验值</div>
           </div>
-          <div
-            :class="$style['cell']"
-            @click="
-              loginStatus
-                ? $router.push('/mobile/live/iframe/my_contribute')
-                : $router.push('/mobile/login')
-            "
-          >
+          <div :class="$style['cell']" @click="onListClick('my_contribute')">
             <div>
               <img
                 :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"
@@ -136,14 +103,7 @@
             </div>
             <div>排行榜</div>
           </div>
-          <div
-            :class="$style['cell']"
-            @click="
-              loginStatus
-                ? $router.push('/mobile/live/iframe/task_wall')
-                : $router.push('/mobile/login')
-            "
-          >
+          <div :class="$style['cell']" @click="onListClick('task_wall')">
             <div>
               <img
                 :src="$getCdnPath('/static/image/sg1/mcenter/icon_mission.png')"
@@ -164,27 +124,13 @@
 
       <!-- 快捷功能8 -->
       <div :class="$style['mcenter-func-eight']">
-        <div
-          :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/live/iframe/my_vip')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('accountVip', false)">
           <div>
             <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_vip.png')" />
           </div>
           <div>娱乐城VIP</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/wallet')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('wallet', false)">
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/ic_mywallet.png')"
@@ -192,14 +138,7 @@
           </div>
           <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/betRecord')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('betRecord', false)">
           <div>
             <img
               :src="
@@ -209,14 +148,7 @@
           </div>
           <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/moneyDetail')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('moneyDetail', false)">
           <div>
             <img
               :src="
@@ -226,14 +158,7 @@
           </div>
           <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/bankRebate')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('bankRebate', false)">
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_rebate.png')"
@@ -244,11 +169,7 @@
 
         <div
           :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/tcenterLobby')
-              : $router.push('/mobile/login')
-          "
+          @click="onListClick('tcenterLobby', false)"
         >
           <div>
             <img
@@ -259,14 +180,7 @@
           </div>
           <div>我的推广</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/makeMoney')
-              : $router.push('/mobile/login')
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('makeMoney', false)">
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_process.png')"
@@ -276,11 +190,7 @@
         </div>
         <div
           :class="$style['cell']"
-          @click="
-            loginStatus
-              ? $router.push('/mobile/mcenter/creditTrans?tab=1')
-              : $router.push('/mobile/login')
-          "
+          @click="onListClick('creditTrans?tab=1', false)"
         >
           <div>
             <img
@@ -399,23 +309,17 @@ export default {
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
     },
-    onListClick(listIndex) {
-      const item = this.list[listIndex];
-
+    onListClick(target, isLive = true) {
       if (!this.loginStatus) {
         this.$router.push("/mobile/login");
         return;
       }
-      if (item.pageName === "deposit") {
-        this.$depositLink(true);
-        return;
-      }
 
-      mcenterPageAuthControl(item.pageName).then(response => {
-        if (response && response.status) {
-          this.$router.push(item.path);
-        }
-      });
+      if (isLive) {
+        this.$router.push(`/mobile/live/iframe/${target}`);
+      } else {
+        this.$router.push(`/mobile/mcenter/${target}`);
+      }
     },
     countDays(ceatedTime) {
       const startTime = moment(ceatedTime);
