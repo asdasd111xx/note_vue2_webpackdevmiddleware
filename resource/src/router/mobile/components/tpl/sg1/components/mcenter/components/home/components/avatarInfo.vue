@@ -32,10 +32,7 @@
         </template>
       </div>
     </div>
-    <div
-      :class="$style['level-wrap']"
-      @click="onListClick('accountVip', false)"
-    >
+    <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
         LEVEL {{ viplevel }}

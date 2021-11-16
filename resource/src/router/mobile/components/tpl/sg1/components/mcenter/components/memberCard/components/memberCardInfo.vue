@@ -33,14 +33,7 @@
         </template>
       </div>
     </div>
-    <div
-      :class="$style['level-wrap']"
-      @click="
-        loginStatus
-          ? $router.push('/mobile/mcenter/accountVip')
-          : $router.push('/mobile/login')
-      "
-    >
+    <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
         LEVEL {{ viplevel }}
@@ -49,25 +42,11 @@
     </div>
 
     <div :class="$style['data-content']">
-      <div
-        :class="$style['follower']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/my_track')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['follower']" @click="onListClick('my_track')">
         <span>{{ cardInfoTop.track_toatl || 0 }}</span>
         追踪人数
       </div>
-      <div
-        :class="$style['tool']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/live/iframe/my_props')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['tool']" @click="onListClick('my_props')">
         <span>{{ tool || 0 }}</span>
         道具
       </div>
@@ -148,10 +127,7 @@
       @close="onPopupClose"
     />
 
-    <div
-      :class="$style['go-edit']"
-      @click="$router.push('/mobile/mcenter/accountData')"
-    >
+    <div :class="$style['go-edit']" @click="onListClick('accountData', false)">
       编辑资料
     </div>
   </div>
@@ -228,6 +204,18 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetAgentLink"]),
+    onListClick(target, isLive = true) {
+      if (!this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+
+      if (isLive) {
+        this.$router.push(`/mobile/live/iframe/${target}`);
+      } else {
+        this.$router.push(`/mobile/mcenter/${target}`);
+      }
+    },
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
