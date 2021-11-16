@@ -26,6 +26,12 @@
         :is-unlogin-mode="isUnloginMode"
         @click="handleClickProcess"
       />
+      <ad-dialog
+        v-if="isAdDialog && ['porn1', 'sg1'].includes(routerTPL)"
+        ref="adDialog"
+        :adData="adShowData"
+        @close="handleCloseAdDialog"
+      />
     </div>
   </div>
 </template>
@@ -34,15 +40,14 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import videojs from "video.js";
+import adDialog from "../bouns/compontents/adDialog";
 import bonunsDialog from "../bouns/compontents/bonunsDialog";
 import bonunsProcess from "../bouns/compontents/bonunsProcess";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
 
 export default {
-  components: {
-    bonunsDialog,
-    bonunsProcess
-  },
+  components: { adDialog, bonunsDialog, bonunsProcess },
   props: {
     videoInfo: {
       type: Object,
@@ -69,7 +74,11 @@ export default {
       isUnloginMode: false,
       breakwaitCallback: () => {},
       isInit: false,
-      disableVideo: false //未登入不得觀看
+      disableVideo: false, //未登入不得觀看
+      adSwitch: true, //廣告開關
+      adFirstShow: true, //進入首次播放跳廣告
+      adShowData: null,
+      isAdDialog: false
     };
   },
   computed: {
@@ -87,6 +96,9 @@ export default {
         process.env.NODE_ENV === "development" ||
         (this.$route.query && this.$route.query.testmode)
       );
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   mounted() {
@@ -151,11 +163,20 @@ export default {
         this.breakwaitCallback();
       }
     },
+    handleCloseAdDialog() {
+      this.isAdDialog = false;
+    },
     initPlayerEvent() {
       //活動開關
       if (this.isActiveBouns) {
         this.player.on("playing", () => {
-          this.firstPlay = true;
+          if (this.adSwitch && !this.firstPlay) {
+            this.firstPlay = true;
+            this.playerPause();
+            console.log("播放first AD");
+            this.onSend("AD");
+            return;
+          }
           // 不得訪客觀影
           if (this.disableVideo) {
             this.handleDisableVideoMode();
@@ -168,12 +189,16 @@ export default {
             this.dialogType === "tips-wait" ||
             !this.isActiveBouns
           ) {
+            if (this.adSwitch) {
+              this.onSend("ADSTART");
+            }
             return;
           }
 
           // 任務彈窗關閉後繼續播放
           if (window.YABO_SOCKET && !this.keepPlay) {
             this.onSend("PLAY");
+            console.log("播放");
           }
           this.keepPlay = false;
 
@@ -199,6 +224,7 @@ export default {
       this.player.on("seeked", () => {});
 
       this.player.on("pause", () => {
+        console.log("暫停");
         if (this.disableVideo) {
           this.handleDisableVideoMode();
           return;
@@ -206,6 +232,9 @@ export default {
 
         if (this.player.seeking()) return;
         if (window.YABO_SOCKET && !this.keepPlay) {
+          if (this.adSwitch) {
+            this.onSend("ADSTOP");
+          }
           this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
         }
@@ -223,6 +252,7 @@ export default {
 
       this.player.on("play", () => {
         this.handleClickVideo();
+        console.log("播放?");
       });
 
       // setTimeout(() => {
@@ -515,6 +545,18 @@ export default {
               case "CLOSE":
                 this.onSend("STOP");
                 break;
+              case "AD":
+                // this.onSend("AD");
+                console.log(data);
+                this.adShowData = data.Ad;
+                this.isAdDialog = true;
+                break;
+              case "ADSTART":
+                // this.onSend("ADSTART");
+                break;
+              case "ADSTOP":
+                // this.onSend("ADSTOP");
+                break;
               default:
                 break;
             }
@@ -641,6 +683,19 @@ export default {
         //     this.dialogType = "tips";
         //   }
         // });
+      }
+    });
+
+    //取得廣告開啟開關
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/System/config/ad`
+    }).then(res => {
+      if (res.data && res.status === "000") {
+        let openSwitch = res.data.find(data => {
+          return data.name === "switch";
+        });
+        this.adSwitch = openSwitch ? openSwitch.value === "1" : false;
       }
     });
 
