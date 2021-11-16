@@ -75,7 +75,7 @@
     </div>
     <div :class="$style['data-content']">
       <p :class="$style['motto']">
-        {{ cardInfo.intro }}
+        {{ cardInfo.intro == "" ? "TA好像忘记签名了" : cardInfo.intro }}
       </p>
     </div>
     <div :class="$style['about']">
