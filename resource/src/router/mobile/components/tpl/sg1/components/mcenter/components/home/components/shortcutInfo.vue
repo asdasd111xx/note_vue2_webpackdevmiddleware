@@ -59,7 +59,7 @@
             >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
           >
 
-          <button @click="onListClick('diamond')">
+          <button @click="onListClick('diamond_total')">
             兌換
           </button>
         </div>
