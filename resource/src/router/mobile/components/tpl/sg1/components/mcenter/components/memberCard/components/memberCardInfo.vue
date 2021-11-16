@@ -46,14 +46,28 @@
     </div>
 
     <div :class="$style['data-content']">
-      <div :class="$style['follower']">
+      <div
+        :class="$style['follower']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/live/iframe/my_track')
+            : $router.push('/mobile/login')
+        "
+      >
         <span v-if="cardInfoTop.track_toatl > 0">{{
           cardInfoTop.track_toatl
         }}</span>
         <span v-else>- -</span>
         追踪人数
       </div>
-      <div :class="$style['tool']">
+      <div
+        :class="$style['tool']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/live/iframe/my_props')
+            : $router.push('/mobile/login')
+        "
+      >
         <span v-if="tool > 0">{{ tool }}</span>
         <span v-else>- -</span>
         道具

@@ -49,15 +49,36 @@
     </div>
 
     <div :class="$style['data-content']">
-      <div :class="$style['follower']">
+      <div
+        :class="$style['follower']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/live/iframe/my_track')
+            : $router.push('/mobile/login')
+        "
+      >
         <span>{{ paopaoUserInfo.track_total }}</span>
         追踪人数
       </div>
-      <div :class="$style['favorite']">
+      <div
+        :class="$style['favorite']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/live/iframe/my_favorite')
+            : $router.push('/mobile/login')
+        "
+      >
         <span>{{ paopaoUserInfo.favorite_total }}</span>
         我的最爱
       </div>
-      <div :class="$style['bubbles']">
+      <div
+        :class="$style['bubbles']"
+        @click="
+          loginStatus
+            ? $router.push('/mobile/live/iframe/mall')
+            : $router.push('/mobile/login')
+        "
+      >
         <span>{{ paopaoUserInfo.paopao_total }}</span>
         送出泡泡
       </div>

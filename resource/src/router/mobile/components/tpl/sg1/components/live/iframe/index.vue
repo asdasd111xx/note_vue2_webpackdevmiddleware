@@ -73,6 +73,7 @@ export default {
       }).then(res => {
         const list = res.result;
         if (res && res.result) {
+          console.log("1111", res.result);
           Object.keys(list).some(key => {
             if (key === this.pageType) {
               clientUri = list[key];
