@@ -44,7 +44,9 @@
           <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
             >{{ memAmount }}
           </span>
-          <button>充值</button>
+          <button @click="$router.push('/mobile/mcenter/deposit')">
+            充值
+          </button>
         </div>
         <div :class="$style['myDiamond']">
           <p>
