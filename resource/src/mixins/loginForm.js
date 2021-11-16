@@ -258,6 +258,11 @@ export default {
             this.actionIsLogin(true);
             window.RESET_MEM_SETTING();
 
+            if (this.siteConfig.ROUTER_TPL === "sg1") {
+              this.$router.push("/mobile/live/iframe/home");
+              return;
+            }
+
             if (this.redirect) {
               window.location.href = this.redirect;
               return;
