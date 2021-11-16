@@ -15,6 +15,9 @@
     <div :class="$style['info-wrap']">
       <div>
         <template v-if="loginStatus">
+          <span v-for="(item, index) in badgesList" :key="index">
+            <img :class="$style['badge']" :src="item" />
+          </span>
           <span :class="$style['info-name']">
             {{
               memInfo.user.show_alias
@@ -54,10 +57,7 @@
             : $router.push('/mobile/login')
         "
       >
-        <span v-if="cardInfoTop.track_toatl > 0">{{
-          cardInfoTop.track_toatl
-        }}</span>
-        <span v-else>- -</span>
+        <span>{{ cardInfoTop.track_toatl || 0 }}</span>
         追踪人数
       </div>
       <div
@@ -68,8 +68,7 @@
             : $router.push('/mobile/login')
         "
       >
-        <span v-if="tool > 0">{{ tool }}</span>
-        <span v-else>- -</span>
+        <span>{{ tool || 0 }}</span>
         道具
       </div>
     </div>
@@ -214,6 +213,9 @@ export default {
       }
 
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    },
+    badgesList() {
+      return this.cardInfoTop.badges;
     }
   },
   mounted() {

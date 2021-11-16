@@ -16,8 +16,11 @@
 
     <!-- 姓名/註冊 -->
     <div :class="$style['info-wrap']">
-      <div>
+      <div @click.stop="onListClick('my_style')">
         <template v-if="loginStatus">
+          <span v-for="(item, index) in badgesList" :key="index">
+            <img :class="$style['badge']" :src="item" />
+          </span>
           <span :class="$style['info-name']">
             {{ paopaoUserInfo.alias }}
           </span>
@@ -71,13 +74,13 @@ export default {
       default: {
         alias: "",
         background: "",
-        badges: "",
+        badges: [],
         diamond_total: "",
         favorite_total: "",
         head_frame: "",
         level: "",
-        paopao_total: "--",
-        track_total: "--"
+        paopao_total: "",
+        track_total: ""
       }
     }
   },
@@ -96,7 +99,13 @@ export default {
       memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
       siteConfig: "getSiteConfig"
-    })
+    }),
+    badgesList() {
+      if (this.paopaoUserInfo.badges && this.paopaoUserInfo.badges.length > 0) {
+        return this.paopaoUserInfo.badges;
+      }
+      return [];
+    }
   },
   watch: {
     paopaoUserInfo() {
@@ -195,6 +204,11 @@ export default {
   @media screen and (min-width: 800px) {
     background-size: 95% 45%;
   }
+}
+
+.badge {
+  width: 20px;
+  height: 20px;
 }
 
 .avatar-wrap {
