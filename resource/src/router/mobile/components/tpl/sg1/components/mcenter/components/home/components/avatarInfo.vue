@@ -32,10 +32,7 @@
         </template>
       </div>
     </div>
-    <div
-      :class="$style['level-wrap']"
-      @click="onListClick('accountVip', false)"
-    >
+    <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
         LEVEL {{ viplevel }}
@@ -45,15 +42,15 @@
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']" @click="onListClick('my_track')">
-        <span>{{ paopaoUserInfo.track_total }}</span>
+        <span>{{ unloginString || paopaoUserInfo.track_total }}</span>
         追踪人数
       </div>
       <div :class="$style['favorite']" @click="onListClick('my_favorite')">
-        <span>{{ paopaoUserInfo.favorite_total }}</span>
+        <span>{{ unloginString || paopaoUserInfo.favorite_total }}</span>
         我的最爱
       </div>
       <div :class="$style['bubbles']" @click="onListClick('mall')">
-        <span>{{ paopaoUserInfo.paopao_total }}</span>
+        <span>{{ unloginString || paopaoUserInfo.paopao_total }}</span>
         送出泡泡
       </div>
     </div>
@@ -105,6 +102,13 @@ export default {
         return this.paopaoUserInfo.badges;
       }
       return [];
+    },
+    unloginString() {
+      if (!this.loginStatus) {
+        return "--";
+      } else {
+        return;
+      }
     }
   },
   watch: {
