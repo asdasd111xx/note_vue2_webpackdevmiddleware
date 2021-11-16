@@ -1,17 +1,18 @@
 @import "./porn1.addCard.module.scss";
 .submit {
-  background: linear-gradient(#fe593c, #e61938);
+  background: #000;
+  border-radius: 23px;
 
   &.disabled {
-    background: linear-gradient(#fed3cb, #ffc5ce);
+    background: #d2d2d2;
   }
 }
 
 .send-keyring {
-  background: linear-gradient(#fe593c, #e61938);
+  background: #000;
 
   &.disabled {
-    background: linear-gradient(#fed3cb, #ffc5ce);
+    background: #d2d2d2;
   }
 }
 
@@ -19,4 +20,15 @@
   border: 0px;
   background-color: #ffffff;
   margin-right: 10px;
+}
+
+.wallet-list {
+  .wallet-item {
+    border-radius: 3px;
+    &.is-current {
+      border: 1.5px solid #e53266;
+      color: #e53266;
+      background: linear-gradient(-45deg, #e53266 10px, hsla(0, 0%, 100%, 0) 0);
+    }
+  }
 }
