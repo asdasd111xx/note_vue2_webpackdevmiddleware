@@ -266,7 +266,7 @@ export const site_93 = {
   SITE_NAME: "澳博国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.pcxgqij.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.bjspzc.cn:9443/api-v2",
   ACTIVES_BOUNS_WEBSOCKETV2:
     "wss://yaboapi.iguanagingercake.com/wsn/promosocket?",
   PORN_CONFIG: {
