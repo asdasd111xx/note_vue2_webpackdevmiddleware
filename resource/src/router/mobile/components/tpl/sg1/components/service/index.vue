@@ -399,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #be9e7f;
+  color: #6aaaf5;
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: #000;
     border-radius: 36px;
     padding: 3px 12px;
   }
@@ -431,8 +431,8 @@ div.container {
 .info-card,
 .info-card2 {
   color: white;
-  background-image: -webkit-linear-gradient(196deg, #ff726e, #e61f19);
-  background-image: linear-gradient(254deg, #ff726e, #e61f19);
+  background-image: -webkit-linear-gradient(196deg, #fd5183, #e53266);
+  background-image: linear-gradient(254deg, #fd5183, #e53266);
   margin: 15px;
   height: 100px;
   border-radius: 10px;
@@ -474,8 +474,8 @@ div.container {
 
 .info-card2 {
   margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #88dcea, #71c6d4);
-  background-image: linear-gradient(74deg, #88dcea, #71c6d4);
+  background-image: -webkit-linear-gradient(16deg, #61d2eb, #4cbed8);
+  background-image: linear-gradient(74deg, #61d2eb, #4cbed8);
 
   > div:first-child {
     background: url("/static/image/common/service/bg_service02.png");
