@@ -232,10 +232,11 @@ export default {
 
         if (this.player.seeking()) return;
         if (window.YABO_SOCKET && !this.keepPlay) {
-          if (this.adSwitch) {
+          if (this.adSwitch && this.dialogType === "tips-wait") {
             this.onSend("ADSTOP");
+          } else {
+            this.onSend("STOP");
           }
-          this.onSend("STOP");
           this.$refs.bonunsProcess.playCueTime("stop");
         }
         this.keepPlay = false;
