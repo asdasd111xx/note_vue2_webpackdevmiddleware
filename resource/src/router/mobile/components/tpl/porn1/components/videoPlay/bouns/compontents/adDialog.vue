@@ -21,9 +21,7 @@
       />
       <img
         :class="$style['link-to-img']"
-        :src="
-          $getCdnPath(`/static/image/porn1/activesBouns/ic_countdown_5.png`)
-        "
+        :src="adData.AdPic"
         @click="handleLinkTo"
       />
     </div>
@@ -98,7 +96,7 @@ export default {
     handleLinkTo() {
       // localStorage.setItem("iframe-third-url", this.adData.AdUrl);
       // this.$router.push(`/mobile/iframe/home`);
-      this.adData = { AdUrl: "https://yb01.666uxm.com/p/2106250001" };
+      // this.adData = { AdUrl: "https://yb01.666uxm.com/p/2106250001" };
       let urlIdList = this.adData.AdUrl.split("/");
 
       this.getPromotionList(urlIdList[urlIdList.length - 1]);
