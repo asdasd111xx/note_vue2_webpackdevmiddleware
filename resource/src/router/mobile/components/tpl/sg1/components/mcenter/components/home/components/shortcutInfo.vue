@@ -60,7 +60,7 @@
           >
           <span v-else style="color: #939393"> - - </span>
 
-          <button @click="onListClick('diamond')">
+          <button @click="$router.push('/mobile/mcenter/live/diamond')">
             兌換
           </button>
         </div>

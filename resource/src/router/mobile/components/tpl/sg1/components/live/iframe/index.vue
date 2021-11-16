@@ -1,6 +1,40 @@
 <template>
-  <mobile-container :header-config="headerConfig">
-    <div slot="content" :class="$style['iframe-wrap']">
+  <mobile-container :has-footer="hasFooter">
+    <div
+      slot="content"
+      :class="[
+        $style['iframe-wrap'],
+        {
+          [$style['has-header']]: headerConfig.hasHeader
+        },
+        { [$style['fullScreen']]: isFullScreen }
+      ]"
+    >
+      <div
+        v-if="headerConfig.hasHeader"
+        id="header"
+        :class="[$style['header'], { [$style['fullScreen']]: isFullScreen }]"
+      >
+        <div
+          v-show="isFullScreen"
+          :class="$style['close-fullscreen']"
+          @click="toggleFullScreen"
+        >
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+        </div>
+
+        <div :class="[$style['btn-prev']]" @click="headerConfig.onClick">
+          <img :src="$getCdnPath(`/static/image/common/btn_back_black.png`)" />
+        </div>
+        <div v-if="headerConfig.title" :class="[$style.title]">
+          {{ contentTitle || headerConfig.title }}
+        </div>
+        <div v-if="headerConfig.hasFunc" :class="[$style.func]">
+          <div @click="toggleFullScreen">全屏</div>
+          <!-- <div @click="reload">刷新</div> -->
+        </div>
+      </div>
+
       <iframe
         ref="iframe"
         id="iframe"
@@ -35,7 +69,8 @@ export default {
   data() {
     return {
       isLoading: true,
-      src: ""
+      src: "",
+      isFullScreen: true
     };
   },
   computed: {
@@ -43,13 +78,39 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
+    hasFooter() {
+      const query = this.$route.query;
+      return query.hasFooter === undefined ? false : query.hasFooter === "true";
+    },
     pageType() {
       return this.$route.params.page;
     },
     headerConfig() {
-      // return {
-      //   title: this.$route.params.page
-      // };
+      const query = this.$route.query;
+
+      this.isFullScreen =
+        query.fullscreen === undefined ? true : query.fullscreen === "true";
+
+      let baseConfig = {
+        hasHeader:
+          query.hasHeader === undefined ? true : query.hasHeader === "true",
+        hasFooter:
+          query.hasFooter === undefined ? false : query.hasFooter === "true",
+        prev: query.prev === undefined ? true : query.prev,
+        hasFunc: query.func === undefined ? true : query.func === "true",
+        title:
+          this.contentTitle ||
+          query.title ||
+          localStorage.getItem("iframe-third-url-title") ||
+          ""
+      };
+
+      return {
+        ...baseConfig,
+        onClick: () => {
+          this.$router.back();
+        }
+      };
     }
   },
   watch: {
@@ -60,6 +121,7 @@ export default {
   created() {},
   mounted() {
     this.initPage();
+    window.scrollTo(0, 0);
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
@@ -98,6 +160,9 @@ export default {
         }
       });
     },
+    toggleFullScreen() {
+      this.isFullScreen = !this.isFullScreen;
+    },
     onSendMessage() {
       this.iframeOnSendMessage(e);
     }
@@ -112,6 +177,15 @@ export default {
   width: 100%;
   background-color: #fff;
   transition: margin 0.31s, height 0.31s;
+
+  &.fullScreen {
+    margin-top: unset !important;
+    height: 100vh !important;
+  }
+
+  &.has-header {
+    margin-top: 43px;
+  }
 }
 
 .iframe {
@@ -123,5 +197,116 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
+}
+
+.header {
+  margin: 0 auto;
+  max-width: $mobile_max_width;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  background: white;
+  color: #ffffff;
+  text-align: center;
+  animation: slide-down 0.31s forwards;
+
+  &.fullScreen {
+    animation: slide-up 0.31s forwards;
+    top: -43px;
+  }
+}
+
+@media (orientation: landscape) {
+  .header,
+  .iframe {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  z-index: 2;
+  color: black;
+
+  > img {
+    display: block;
+    width: 100%;
+  }
+
+  > div {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 40px;
+    left: 20px;
+  }
+}
+
+.wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.title {
+  color: black;
+  font-size: 17px;
+  font-weight: 500;
+  height: 43px;
+  line-height: 43px;
+  margin: 0 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
+}
+
+.close-fullscreen {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  margin: 0 auto;
+  height: 19px;
+  margin: 0 auto;
+  left: calc(50% - 15px);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0 0 5px 5px;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  > img {
+    height: 15px;
+    transform: rotate(90deg);
+  }
+}
+
+.func {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  font-size: 14px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+
+  > div {
+    padding: 0 3px;
+    height: 43px;
+    line-height: 43px;
+  }
 }
 </style>
