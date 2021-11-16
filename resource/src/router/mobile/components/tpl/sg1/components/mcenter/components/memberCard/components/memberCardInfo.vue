@@ -93,21 +93,29 @@
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_birthday.png"
             alt=""/></i
-        >生日<span>{{ memInfo.user.birthday }}</span>
+        >生日<span>{{
+          memInfo.user.birthday == "" ? "尚未設定" : memInfo.user.birthday
+        }}</span>
       </li>
       <li>
         <i
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_location.png"
             alt=""/></i
-        >地区 <span>{{ cardInfo.hometown }}</span>
+        >地区
+        <span>{{
+          cardInfo.hometown == "" ? "尚未設定" : cardInfo.hometown
+        }}</span>
       </li>
       <li>
         <i
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_love.png"
             alt=""/></i
-        >感情 <span>{{ cardInfo.relationship }}</span>
+        >感情
+        <span>{{
+          cardInfo.relationship == "" ? "尚未設定" : cardInfo.relationship
+        }}</span>
       </li>
     </div>
     <div :class="$style['recommand-wrap']">
