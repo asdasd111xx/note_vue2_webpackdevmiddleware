@@ -202,6 +202,26 @@
   }
 }
 
+.hometown-input-wrap {
+  display: inline-flex;
+  min-height: 20px;
+  width: 80%;
+  position: relative;
+
+  .btn-wrap {
+    padding: 0 5px;
+    width: 75px;
+    position: absolute;
+    top: -25px;
+    right: -48px;
+    color: $main_text_color4;
+
+    > .disable {
+      color: $main_text_color5;
+    }
+  }
+}
+
 .relationship-input-wrap {
   display: inline-flex;
   min-height: 20px;

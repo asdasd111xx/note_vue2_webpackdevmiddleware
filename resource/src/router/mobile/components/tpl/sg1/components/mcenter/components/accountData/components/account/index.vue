@@ -159,7 +159,7 @@
             @click="showHometownEdit = true"
           >
             <span :class="$style['field-title']">地區</span>
-            <div :class="$style['field-value']">
+            <div :class="$style['field-value']" v-if="!showHometownEdit">
               <span
                 v-if="paopaoMemberCardInfo.hometown"
                 :class="$style['field-text']"
@@ -177,7 +177,63 @@
               </div>
             </div>
             <!-- 修改地區 -->
-            <template v-if="showHometownEdit">
+
+            <template>
+              <div
+                v-if="showHometownEdit"
+                :class="$style['hometown-input-wrap']"
+              >
+                <select
+                  :class="$style['city']"
+                  v-model="thecity"
+                  id="selectcity"
+                  autofocus
+                >
+                  <option
+                    v-for="(item, index) in theCityList"
+                    :key="index"
+                    :class="$style['cell']"
+                  >
+                    {{ item }}
+                  </option>
+                </select>
+                <select
+                  :class="$style['district']"
+                  v-model="thedistrict"
+                  id="selectdistrict"
+                  :disabled="
+                    thecity == '这是TA的秘密' || thecity == '火星'
+                      ? true
+                      : false
+                  "
+                >
+                  <option
+                    v-for="(item, index) in filtertheDistrictList"
+                    :key="index"
+                    :class="$style['cell']"
+                  >
+                    {{ item }}
+                  </option>
+                </select>
+
+                <div :class="$style['btn-wrap']">
+                  <span
+                    :class="$style['btn-cancel']"
+                    @click.stop="cancelHometownEdit"
+                  >
+                    {{ $text("S_CANCEL", "取消") }}
+                  </span>
+                  <span
+                    :class="$style['btn-confirm']"
+                    @click="handleHometownSubmit"
+                  >
+                    {{ $text("S_CONFIRM", "確認") }}
+                  </span>
+                </div>
+              </div>
+            </template>
+            <!-- 地區選取備用套件pdselect -->
+            <!-- <template v-if="showHometownEdit">
               <div :class="$style['more-method-wrap']">
                 <div :class="$style['more-method-container']">
                   <div
@@ -216,7 +272,7 @@
                   </div>
                 </div>
               </div>
-            </template>
+            </template> -->
           </div>
           <div
             :class="[$style['account-data-field'], 'clearfix']"
@@ -412,12 +468,12 @@ import Vue from "vue";
 import mcenter from "@/api/mcenter";
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
 //https://github.com/k186/pd-select/
-import pdSelect from "pd-select";
-Vue.use(pdSelect);
+// import pdSelect from "pd-select";
+// Vue.use(pdSelect);
 
 export default {
   components: {
-    pdSelect,
+    // pdSelect,
     accountWrap: () =>
       import(/* webpackChunkName: 'accountWrap' */ "./accountWrap"),
     editName: () =>
@@ -496,7 +552,6 @@ export default {
       this.hometownList.map(item => {
         if (this.thecity == item.city) {
           this.theDistrictList = item.district || [];
-          // console.log("disdisdisdis", this.thecity, this.thedistrict);
         }
       });
 
@@ -510,10 +565,10 @@ export default {
       this.editedSuccess();
       this.$router.push({ query: { success: true } });
     }
-    setTimeout(() => {
-      //验证 model 联动
-      this.after();
-    }, 800);
+    // setTimeout(() => {
+    //   //pdselect验证 model 联动
+    //   this.after();
+    // }, 800);
   },
 
   methods: {
@@ -523,12 +578,12 @@ export default {
       "actionSetGlobalMessage",
       "actionGetExtRedirect"
     ]),
-    after() {
-      this.thecity = "这是TA的秘密";
-      this.thedistrict = "";
-      this.$refs.thecity.init();
-      this.$refs.thedistrict.init();
-    },
+    // after() {
+    //   this.thecity = "这是TA的秘密";
+    //   this.thedistrict = "";
+    //   this.$refs.thecity.init();
+    //   this.$refs.thedistrict.init();
+    // },
     gettheDistrictList() {
       this.hometownList.map(item => {
         if (this.thecity == item.city) {
@@ -556,34 +611,30 @@ export default {
         });
       });
     },
-    submitHometown() {
-      if (this.thecity) {
-        this.actionGetExtRedirect({
-          api_uri: "/api/platform/v1/user/update-hometown",
-          method: "put",
-          data: {
-            hometown:
-              this.thecity == "这是TA的秘密" || this.thecity == "火星"
-                ? `${this.thecity}`
-                : `${this.thecity}-${this.thedistrict}`
-          }
-        }).then(res => {
-          if (res.result === "success") {
-            this.editedSuccess();
-            this.getPaopaoMemberData();
-            this.showHometownEdit = false;
-          } else {
-            console.log("hometownSubmitError", res);
-            this.actionSetGlobalMessage({ msg: `${res.error_text}` });
-          }
-        });
-      } else {
-        return;
-      }
-    },
     cancelRelationshipEdit() {
       this.selectRelationshipValue = "";
       this.showRelationshipEdit = false;
+    },
+    handleHometownSubmit() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/update-hometown",
+        method: "put",
+        data: {
+          hometown:
+            this.thecity == "这是TA的秘密" || this.thecity == "火星"
+              ? `${this.thecity}`
+              : `${this.thecity}-${this.thedistrict}`
+        }
+      }).then(res => {
+        if (res.result === "success") {
+          this.editedSuccess();
+          this.getPaopaoMemberData();
+          this.showHometownEdit = false;
+        } else {
+          console.log("hometownSubmitError", res);
+          this.actionSetGlobalMessage({ msg: `${res.error_text}` });
+        }
+      });
     },
     handleRelationshipSubmit() {
       // 空值驗證
@@ -605,6 +656,9 @@ export default {
           this.actionSetGlobalMessage({ msg: `${res.error_text}` });
         }
       });
+    },
+    cancelHometownEdit() {
+      this.showHometownEdit = false;
     },
     cancelGenderEdit() {
       this.selectGenderValue = "";
@@ -678,7 +732,7 @@ export default {
 <style lang="scss" src="../../css/index.module.scss" module></style>
 
 <style>
-.pd-select-line::before {
+/* .pd-select-line::before {
   background: #ddd !important;
 }
 .pd-select-line::after {
@@ -687,5 +741,5 @@ export default {
 
 .pd-select-wheel .pd-select-wheel-item {
   -webkit-backface-visibility: hidden !important;
-}
+} */
 </style>
