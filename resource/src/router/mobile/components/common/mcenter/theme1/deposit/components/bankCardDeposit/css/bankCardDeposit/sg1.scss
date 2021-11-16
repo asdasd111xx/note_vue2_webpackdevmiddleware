@@ -1,13 +1,48 @@
 @import "./porn1.scss";
+
+.swiper-item {
+  &.is-current {
+    span {
+      border-bottom: 2px solid #000;
+    }
+  }
+}
+
 .pay-button {
   background: #000;
   border-radius: 23px;
+  &.disabled {
+    opacity: 0.1;
+  }
+}
+
+.pay-mode-item {
+  &.is-current {
+    border: 1.5px solid #e53266;
+    color: #e53266;
+    background: linear-gradient(-45deg, #e53266 10px, hsla(0, 0%, 100%, 0) 0);
+  }
+}
+
+.current-data {
+  background-color: #fff;
+  color: #e53266;
+  border: 1.5px solid #e53266;
+  background: linear-gradient(-45deg, #e53266 12px, hsla(0, 0%, 100%, 0) 0);
 }
 
 .message-close {
-  color: #bf8646;
+  color: #000;
 }
 
 .entry-message-confirm {
-  color: #bf8646;
+  color: #000;
+}
+
+.feature-tip-title {
+  color: #cbced8;
+
+  &.success {
+    color: #000;
+  }
 }
