@@ -36,7 +36,7 @@
             />中心钱包
           </p>
           <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
-            >{{ memAmount }}
+            >{{ unloginString || memAmount }}
           </span>
           <button @click="onListClick('deposit', false)">
             充值
@@ -50,15 +50,14 @@
             {{ $text("S_MY_DIAMOND") }}
           </p>
           <span
-            v-if="diamondTotal && +diamondTotal > 0"
-            :style="
+            :style="[
               diamondTotal && diamondTotal.length > 9
                 ? { 'font-size': '12px' }
-                : {}
-            "
-            >{{ formatThousandsCurrency(diamondTotal) }}</span
+                : {},
+              memAmount === '--' ? { color: ' #939393' } : {}
+            ]"
+            >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
           >
-          <span v-else style="color: #939393"> - - </span>
 
           <button @click="onListClick('diamond')">
             兌換
@@ -257,6 +256,13 @@ export default {
           this.membalance.vendor.default.amount) ||
         "--"
       );
+    },
+    unloginString() {
+      if (!this.loginStatus) {
+        return "--";
+      } else {
+        return;
+      }
     }
   },
   mounted() {
