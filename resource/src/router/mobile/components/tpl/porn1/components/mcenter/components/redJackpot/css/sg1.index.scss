@@ -1,19 +1,22 @@
 @import "./porn1.index.scss";
 
 .option {
-
-
   .option0 {
     margin-right: 5px;
     padding: 3px 0px;
     line-height: 17px;
     height: 24px;
-    color: #731C25;
+    color: #e53266;
     text-align: center;
     font-weight: bold;
     width: 75px;
-    border-radius: 4px;
-    background: linear-gradient(to right, #F9D388, #F4B22E);
+    border-radius: 11px;
+    background: #ededed;
   }
+}
 
+.menu-wrap {
+  .money-text {
+    color: #e53266;
+  }
 }
