@@ -9,7 +9,7 @@
       <img
         v-if="loginStatus"
         :class="$style['avatar-circle']"
-        :src="$getCdnPath(`/static/image/sg1/mcenter/avatar_frame.png`)"
+        :src="paopaoUserInfo.head_frame"
         alt=""
       />
     </div>
