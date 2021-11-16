@@ -8,7 +8,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/common/vip/pic_vip_1.png`)"
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/img001.png`)
+                  : $getCdnPath(`/static/image/common/vip/pic_vip_1.png`)
+              "
               alt="icon"
             />
           </div>
@@ -32,7 +36,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/common/vip/pic_vip_2.png`)"
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/img002.png`)
+                  : $getCdnPath(`/static/image/common/vip/pic_vip_2.png`)
+              "
               alt="icon"
             />
           </div>
@@ -69,7 +77,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/common/vip/pic_vip_3.png`)"
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/img003.png`)
+                  : $getCdnPath(`/static/image/common/vip/pic_vip_3.png`)
+              "
               alt="icon"
             />
           </div>
@@ -90,7 +102,11 @@
         <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/common/vip/pic_vip_4.png`)"
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/img004.png`)
+                  : $getCdnPath(`/static/image/common/vip/pic_vip_4.png`)
+              "
               alt="icon"
             />
           </div>
@@ -146,7 +162,11 @@
         <div v-if="['porn1', 'sg1'].includes(themeTPL)" :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
-              :src="$getCdnPath(`/static/image/common/vip/pic_vip_5.png`)"
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/img005.png`)
+                  : $getCdnPath(`/static/image/common/vip/pic_vip_5.png`)
+              "
               alt="icon"
             />
           </div>

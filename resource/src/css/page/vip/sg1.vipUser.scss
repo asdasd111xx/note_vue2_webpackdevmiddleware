@@ -4,34 +4,33 @@ $main-color: #e42a30;
 .user-info-block {
   .user-info {
     .name {
-
       // vip text
       span:last-of-type {
-        background: linear-gradient(to right, #febdb2, #ff8093);
+        background: #000;
       }
     }
   }
 }
 
 .user-desc-block {
-  color: #bf8646;
+  color: #000000;
 
   .money {
-    color: #333333;
+    color: #e53266;
   }
 }
 
 .run-level-alias {
-  background: linear-gradient(#fed3cb, #ffc5ce);
+  background: #b1b1b1;
 }
 
 .run-level {
   &.current {
-    background: linear-gradient(to right, #fe593c, #e61938);
+    background: #000;
   }
 
   &.next {
-    background: linear-gradient(to right, #fed3cb, #ffc5ce);
+    background: #b1b1b1;
   }
 }
 

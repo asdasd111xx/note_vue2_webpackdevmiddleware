@@ -39,7 +39,11 @@
         >
           <div :class="$style['card-thumb-cell']">
             <img
-              :src="$getCdnPath(`/static/image/common/vip/vipcard_bg.png`)"
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/vipcard_bg.png`)
+                  : $getCdnPath(`/static/image/common/vip/vipcard_bg.png`)
+              "
               alt="vipcard_bg"
             />
             <div :class="$style['card-level-text']">
