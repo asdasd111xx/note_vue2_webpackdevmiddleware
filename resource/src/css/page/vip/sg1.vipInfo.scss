@@ -2,10 +2,19 @@
 
 .title {
   &::before {
-    background: linear-gradient(#fe593c, #e61938);
+    background: #000;
   }
 }
 
 .vip-detail {
-  color: #bf8646;
+  color: #000;
+}
+
+.cells-block {
+  .cell-text {
+    color: #a2a2a2;
+  }
+  .special-cell {
+    color: #a2a2a2;
+  }
 }
