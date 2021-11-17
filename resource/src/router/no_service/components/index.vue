@@ -131,7 +131,7 @@ export default {
       }
 
       if (this.themeTPL === "aobo1") {
-        return "juzi8872@outlook.com";
+        return "asd1523642@gmail.com";
       }
 
       if (this.themeTPL === "sg1") {
