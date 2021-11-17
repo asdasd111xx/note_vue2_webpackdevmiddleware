@@ -1,21 +1,22 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: #000;
 }
 
 .transfer-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: #000;
+  border-radius: 23px;
 
   &.is-disable {
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    background: #d2d2d2;
   }
 }
 
 .select-container {
   .select-header {
     span {
-      color: #bf8646;
+      color: #000;
     }
   }
 }
