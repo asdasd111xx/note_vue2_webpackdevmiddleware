@@ -288,6 +288,10 @@ export default {
   &.porn1:last-child {
     color: #d2b79c;
   }
+
+  &.sg1:last-child {
+    color: #000;
+  }
 }
 
 .modal-button-center {
