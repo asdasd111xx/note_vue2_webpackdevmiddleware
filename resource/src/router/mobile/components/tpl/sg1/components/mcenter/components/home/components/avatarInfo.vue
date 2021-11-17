@@ -1,5 +1,16 @@
 <template>
-  <div :class="$style['mcenter-avatar-info-wrap']">
+  <div
+    :class="$style['mcenter-avatar-info-wrap']"
+    :style="{
+      background: `url(${
+        paopaoUserInfo.background == ''
+          ? '/static/image/sg1/mcenter/avatar_bg.png'
+          : paopaoUserInfo.background
+      })50% 0 / 86%
+      no-repeat,
+    #fff`
+    }"
+  >
     <!-- 大頭照 -->
     <div
       :class="$style['avatar-wrap']"
@@ -9,7 +20,11 @@
       <img
         v-if="loginStatus"
         :class="$style['avatar-circle']"
-        :src="paopaoUserInfo.head_frame"
+        :src="
+          paopaoUserInfo.head_frame == ''
+            ? '/static/image/sg1/mcenter/avatar_frame.png'
+            : paopaoUserInfo.head_frame
+        "
         alt=""
       />
     </div>
@@ -203,9 +218,9 @@ export default {
   box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.08);
   margin: 0 0 10px 0;
   padding: 10px;
-  background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
-      no-repeat,
-    #fff;
+  // background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
+  //     no-repeat,
+  //   #fff;
 
   @media screen and (min-width: 800px) {
     background-size: 95% 45%;

@@ -1,5 +1,16 @@
 <template>
-  <div :class="$style['mcenter-avatar-info-wrap']">
+  <div
+    :class="$style['mcenter-avatar-info-wrap']"
+    :style="{
+      background: `url(${
+        cardInfoTop.background == ''
+          ? '/static/image/sg1/mcenter/avatar_bg.png'
+          : cardInfoTop.background
+      })50% 0 / 86%
+      no-repeat,
+    #fff`
+    }"
+  >
     <!-- 大頭照 -->
     <div :class="$style['avatar-wrap']">
       <img :class="$style['avatar-pic']" :src="avatarSrc" />
@@ -164,7 +175,7 @@ export default {
       msg: "",
       viplevel: "",
       tool: 0,
-      motto: "渴望追求某种事物的话，整个宇宙都会联合起来帮你完成",
+      motto: "",
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
       landingLink: ""
     };
@@ -279,9 +290,9 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
-      no-repeat,
-    #fff;
+  // background: url("/static/image/sg1/mcenter/avatar_bg.png") 50% 0 / 86%
+  //     no-repeat,
+  //   #fff;
 
   @media screen and (min-width: 800px) {
     background-size: 95% 15%;
