@@ -155,9 +155,11 @@ export default {
             );
           });
       } else {
-        this.avatarSrc = this.$getCdnPath(
-          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-        );
+        this.avatarSrc = imgSrcIndex
+          ? this.$getCdnPath(
+              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
+            )
+          : this.memInfo.user.custom_image;
       }
     },
     getUserViplevel() {
