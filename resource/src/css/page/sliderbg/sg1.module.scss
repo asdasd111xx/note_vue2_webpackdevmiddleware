@@ -8,6 +8,7 @@
         height: initial;
         border-radius: 75px;
         border: 1px solid #aaa;
+        overflow: hidden;
 
         .nc_iconfont {
           left: -1px;
@@ -28,6 +29,7 @@
         .btn_slide {
           border-radius: 50px;
           border: 1px solid #aaa;
+          box-shadow: -12px 0px 0px #000;
         }
       }
     }
