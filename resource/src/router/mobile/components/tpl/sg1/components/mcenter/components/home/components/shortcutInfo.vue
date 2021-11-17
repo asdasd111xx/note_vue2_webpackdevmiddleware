@@ -94,7 +94,7 @@
             </div>
             <div>经验值</div>
           </div>
-          <div :class="$style['cell']" @click="onListClick('my_contribute')">
+          <div :class="$style['cell']" @click="onListClick('leaderboard')">
             <div>
               <img
                 :src="$getCdnPath('/static/image/sg1/mcenter/icon_ranking.png')"

@@ -3,7 +3,7 @@
     :class="$style['mcenter-avatar-info-wrap']"
     :style="{
       background: `url(${
-        paopaoUserInfo.background == ''
+        !loginStatus || paopaoUserInfo.background == ''
           ? '/static/image/sg1/mcenter/avatar_bg.png'
           : paopaoUserInfo.background
       })50% 0 / 86%
@@ -64,7 +64,7 @@
         <span>{{ unloginString || paopaoUserInfo.favorite_total }}</span>
         我的最爱
       </div>
-      <div :class="$style['bubbles']" @click="onListClick('mall')">
+      <div :class="$style['bubbles']" @click="onListClick('my_sent_paopao')">
         <span>{{ unloginString || paopaoUserInfo.paopao_total }}</span>
         送出泡泡
       </div>
