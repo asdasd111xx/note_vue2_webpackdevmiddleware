@@ -304,9 +304,12 @@
                 :class="$style['relationship-input-wrap']"
               >
                 <select v-model="selectRelationshipValue">
-                  <option value="0">--</option>
-                  <option value="1">恋爱</option>
-                  <option value="2">暧昧中</option>
+                  <option
+                    :key="index"
+                    v-for="(item, index) in relationshipList"
+                    :value="item.id"
+                    >{{ item.status }}</option
+                  >
                 </select>
                 <div :class="$style['btn-wrap']">
                   <span
@@ -526,6 +529,7 @@ export default {
       showRelationshipEdit: false,
       selectRelationshipValue: "",
       showHometownEdit: false,
+      relationshipList: [],
       addressInfo: {
         id: "",
         is_default: false,
@@ -559,6 +563,7 @@ export default {
     }
   },
   mounted() {
+    this.getRelationshipData();
     this.gettheDistrictList();
     this.actionSetSystemTime();
     if (localStorage.getItem("set-account-success")) {
@@ -591,7 +596,6 @@ export default {
         }
       });
     },
-
     getPaopaoMemberData() {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/personal-info",
@@ -609,6 +613,15 @@ export default {
         this.theCityList = data.result.map(item => {
           return item.city || [];
         });
+      });
+    },
+    getRelationshipData() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/info/relationship-list",
+        method: "get"
+      }).then(data => {
+        this.relationshipList = data.result || [];
+        console.log("getRelationshipData", this.relationshipList);
       });
     },
     cancelRelationshipEdit() {
