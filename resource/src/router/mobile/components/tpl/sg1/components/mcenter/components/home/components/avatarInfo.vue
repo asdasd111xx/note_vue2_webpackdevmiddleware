@@ -3,7 +3,7 @@
     :class="$style['mcenter-avatar-info-wrap']"
     :style="{
       background: `url(${
-        !loginStatus || paopaoUserInfo.background == ''
+        !loginStatus
           ? '/static/image/sg1/mcenter/avatar_bg.png'
           : paopaoUserInfo.background
       })50% 0 / 86%
@@ -20,11 +20,7 @@
       <img
         v-if="loginStatus"
         :class="$style['avatar-circle']"
-        :src="
-          paopaoUserInfo.head_frame == ''
-            ? '/static/image/sg1/mcenter/avatar_frame.png'
-            : paopaoUserInfo.head_frame
-        "
+        :src="paopaoUserInfo.head_frame"
         alt=""
       />
     </div>
@@ -51,7 +47,7 @@
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
         LEVEL {{ viplevel }}
-        <span style="marginLeft:2px; fontSize:4px ;color:#FFBC24;"> > </span>
+        <span style="marginLeft:2px; fontSize:7px ;color:#FFBC24;"> > </span>
       </span>
     </div>
 
