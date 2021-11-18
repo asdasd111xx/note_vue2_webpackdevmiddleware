@@ -621,7 +621,6 @@ export default {
         method: "get"
       }).then(data => {
         this.relationshipList = data.result || [];
-        console.log("getRelationshipData", this.relationshipList);
       });
     },
     cancelRelationshipEdit() {
@@ -644,7 +643,6 @@ export default {
           this.getPaopaoMemberData();
           this.showHometownEdit = false;
         } else {
-          console.log("hometownSubmitError", res);
           this.actionSetGlobalMessage({ msg: `${res.error_text}` });
         }
       });
