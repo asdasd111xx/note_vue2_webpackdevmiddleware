@@ -20,11 +20,7 @@
       <img
         v-if="loginStatus"
         :class="$style['avatar-circle']"
-        :src="
-          paopaoUserInfo.head_frame == ''
-            ? '/static/image/sg1/mcenter/avatar_frame.png'
-            : paopaoUserInfo.head_frame
-        "
+        :src="paopaoUserInfo.head_frame"
         alt=""
       />
     </div>
