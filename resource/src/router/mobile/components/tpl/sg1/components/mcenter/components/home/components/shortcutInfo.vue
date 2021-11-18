@@ -2,13 +2,7 @@
   <div :class="$style['mcenter-vip-wrap']">
     <!-- VIP 推廣 -->
     <div :class="$style['vip-promotion-wrap']">
-      <div
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/accountVIP')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div @click="onClickEvent('accountVIP')">
         <img
           :src="$getCdnPath('/static/image/_new/mcenter/ic_vipprivicege.png')"
         />
@@ -18,13 +12,7 @@
         </div>
       </div>
       <div :class="$style['v-line']" />
-      <div
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/makeMoney')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div @click="onClickEvent('makeMoney')">
         <img
           :src="$getCdnPath('/static/image/_new/mcenter/ic_promotion.png')"
         />
@@ -36,27 +24,13 @@
     </div>
     <!-- 快捷功能 -->
     <div :class="$style['mcenter-func']">
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/wallet')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['cell']" @click="onClickEvent('wallet')">
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_wallet.png')" />
         </div>
         <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
       </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/betRecord')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['cell']" @click="onClickEvent('betRecord')">
         <div>
           <img
             :src="$getCdnPath('/static/image/_new/mcenter/ic_bethistory.png')"
@@ -64,14 +38,7 @@
         </div>
         <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
       </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/moneyDetail')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['cell']" @click="onClickEvent('moneyDetail')">
         <div>
           <img
             :src="$getCdnPath('/static/image/_new/mcenter/ic_transaction.png')"
@@ -79,14 +46,7 @@
         </div>
         <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
       </div>
-      <div
-        :class="$style['cell']"
-        @click="
-          loginStatus
-            ? $router.push('/mobile/mcenter/bankRebate')
-            : $router.push('/mobile/login')
-        "
-      >
+      <div :class="$style['cell']" @click="onClickEvent('bankRebate')">
         <div>
           <img :src="$getCdnPath('/static/image/_new/mcenter/ic_rebate.png')" />
         </div>
@@ -102,6 +62,7 @@ import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import mcenter from "@/api/mcenter";
 import member from "@/api/member";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {},
@@ -161,6 +122,37 @@ export default {
       const now = moment(new Date());
 
       this.createdTime = now.diff(startTime, "days") + 1;
+    },
+    onClickEvent(type) {
+      if (!this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      } else {
+        switch (type) {
+          case "accountVIP":
+            sendUmeng(26);
+            break;
+          case "makeMoney":
+            sendUmeng(27);
+            break;
+          case "wallet":
+            sendUmeng(28);
+            break;
+          case "betRecord":
+            sendUmeng(29);
+            break;
+          case "moneyDetail":
+            sendUmeng(30);
+            break;
+          case "bankRebate":
+            sendUmeng(31);
+            break;
+
+          default:
+            break;
+        }
+        this.$router.push(`/mobile/mcenter/${type}`);
+      }
     },
     goToRebate() {
       if (this.loginStatus) {

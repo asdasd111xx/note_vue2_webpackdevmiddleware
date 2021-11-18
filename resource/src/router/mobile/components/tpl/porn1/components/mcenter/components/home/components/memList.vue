@@ -303,11 +303,7 @@ export default {
           sendUmeng(35);
           break;
         case "share":
-          if (this.routerTPL === "sg1") {
-            sendUmeng(35);
-          } else {
-            sendUmeng(36);
-          }
+          sendUmeng(36);
           break;
         default:
           break;

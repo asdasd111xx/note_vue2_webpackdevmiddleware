@@ -95,11 +95,7 @@ export default {
     };
   },
   created() {
-    if (this.routerTPL === "sg1") {
-      sendUmeng(51);
-    } else {
-      sendUmeng(52);
-    }
+    sendUmeng(52);
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
