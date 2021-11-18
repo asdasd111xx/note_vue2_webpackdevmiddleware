@@ -221,19 +221,19 @@ export default {
         let cid = getCookie("cid") || "";
         let uri = "";
         if (!cid) {
-          let guestCid = getCookie("guestCid");
-          let guestUserid = getCookie("guestUserid");
+          let guestCid = localStorage.getItem("guestCid");
+          let guestUserid = localStorage.getItem("guestUserid");
           uri =
             this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
-            `?cid=${guestCid}&domain=${
+            `/ws/promosocket?cid=${guestCid}&domain=${
               this.memInfo.user.domain
             }&userid=${guestUserid}&timestamp=${new Date().getTime()}`;
         } else {
           uri =
             this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
-            `?cid=${cid}&domain=${this.memInfo.user.domain}&userid=${
-              this.memInfo.user.id
-            }&timestamp=${new Date().getTime()}`;
+            `/ws/promosocket?cid=${cid}&domain=${
+              this.memInfo.user.domain
+            }&userid=${this.memInfo.user.id}&timestamp=${new Date().getTime()}`;
         }
 
         window.YABO_SOCKET = new WebSocket(uri);
@@ -335,15 +335,17 @@ export default {
         let uri = "";
         if (!cid) {
           uri =
-            this.siteConfig.ACTIVES_BOUNS_WEBSOCKETV2 +
-            `platform=Web&domain=${this.AESencrypt(this.memInfo.user.domain)}
+            this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
+            `/wsn/promosocket?platform=Web&domain=${this.AESencrypt(
+              this.memInfo.user.domain
+            )}
         &userid=${this.AESencrypt(this.memInfo.user.id)}
         &pkey=${this.AESencrypt(this.RSAPublicKey)}
         &akey=${this.RSAencrypt(this.AESKey, this.ServerRSAKey)}`;
         } else {
           uri =
-            this.siteConfig.ACTIVES_BOUNS_WEBSOCKETV2 +
-            `cid=${cid}&platform=Web&domain=${this.AESencrypt(
+            this.siteConfig.ACTIVES_BOUNS_WEBSOCKET +
+            `/wsn/promosocket?cid=${cid}&platform=Web&domain=${this.AESencrypt(
               this.memInfo.user.domain
             )}
         &userid=${this.AESencrypt(this.memInfo.user.id)}

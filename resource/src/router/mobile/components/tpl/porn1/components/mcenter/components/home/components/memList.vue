@@ -121,7 +121,7 @@ export default {
           show: true
         },
         {
-          initName: "关于鸭博娱乐",
+          initName: "关于币发BIFA",
           name:
             this.routerTPL === "porn1"
               ? "S_ABOUT_YABOLIVE"

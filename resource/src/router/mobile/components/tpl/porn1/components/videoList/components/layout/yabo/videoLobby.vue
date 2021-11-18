@@ -30,7 +30,7 @@
         @click.stop="onShowAllTag(!isShowAllTag)"
       >
         <img
-          v-if="source === 'yabo'"
+          v-if="source === 'yabo' || source === 'av'"
           :src="
             $getCdnPath(
               `/static/image/_new/common/icon_more${
@@ -173,7 +173,7 @@ export default {
       };
     },
     defaultImg() {
-      const isYabo = this.source === "yabo";
+      const isYabo = this.source === "yabo" || this.source === "av";
       return this.$getCdnPath(
         `/static/image/${this.themeTPL}/default/${
           isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
@@ -212,8 +212,12 @@ export default {
   },
   created() {
     switch (this.source) {
+      case "av":
       case "yabo":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+        );
         this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
         break;
 
@@ -288,7 +292,7 @@ export default {
       });
     },
     getImg(img) {
-      const isYabo = this.source === "yabo";
+      const isYabo = this.source === "yabo" || this.source === "av";
       return {
         src: img,
         error: this.$getCdnPath(
@@ -464,10 +468,7 @@ export default {
   //display: flex;
   transition-property: transform;
   overflow-x: auto;
-
-  &.yabo {
-    background: $main_white_color1;
-  }
+  background: $main_white_color1;
 
   &.gay {
     background: #3e81ac;
@@ -495,14 +496,11 @@ export default {
   // transition-property: transform;
   width: auto;
   line-height: 42px;
+  color: #bcbdc1;
 
-  &.yabo {
-    color: #bcbdc1;
-
-    // 亞博點擊的文字color
-    &.active {
-      color: $main_text_color4;
-    }
+  // 亞博點擊的文字color
+  &.active {
+    color: $main_text_color4;
   }
 
   &.gay {
@@ -538,6 +536,10 @@ export default {
   }
 
   &.yabo.active .line {
+    background-color: #be9e7f;
+  }
+
+  &.av.active .line {
     background-color: #be9e7f;
   }
 }
@@ -658,9 +660,7 @@ export default {
   color: #fff;
   font-size: 12px;
   text-align: center;
-  &.yabo {
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  }
+  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
 
   &.gay {
     background: #4a8cb8;

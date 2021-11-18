@@ -9,21 +9,20 @@ export const preset = {
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com/ws/promosocket",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://yaboapi.bbin-asia.com/wsn/promosocket?"
+  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com"
 };
 
 /* ---------- ↓ 測試站 ---------- */
 
 /**
- * 鸭博娱乐 測試站
+ * 币发BIFA 測試站
  */
 export const site_500015 = {
   ...preset,
   ROUTER_TPL: "porn1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
-  SITE_NAME: "鸭博娱乐",
+  SITE_NAME: "币发BIFA",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -46,8 +45,7 @@ export const site_500023 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.bbin-asia.com/api",
   // YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2/cxbb",
-  YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKETV2: "wss://cxbb.bbin-asia.com/wsn/promosocket?"
+  YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2"
 };
 /* eslint-enable camelcase */
 
@@ -83,7 +81,8 @@ export const site_9999894 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "119",
-      YB: "120"
+      YB: "9",
+      AV: "120"
     }
   }
 };

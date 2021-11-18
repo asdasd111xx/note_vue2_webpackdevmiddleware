@@ -83,6 +83,7 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 @import "~@/css/page/joinMem.module.scss";
+@import "~@/css/variable.scss";
 
 .join-member-wrap {
   min-height: calc(100vh - 43px);
@@ -102,7 +103,7 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  background: $share_main_button_color;
   border-radius: 30px;
   height: 50px;
   line-height: 50px;
@@ -112,11 +113,16 @@ export default {
   font-family: Segoe UI, Segoe UI-Bold;
   font-weight: 700;
   text-align: center;
-  color: #ffffff;
+  color: $share_main_button_text_color;
 
   &.disable {
     background: linear-gradient(#e9dacb, #eee5db);
     pointer-events: none;
+  }
+
+  &.porn1 {
+    color: #ffffff;
+    background: $befa_main_color;
   }
 
   &.sp1 {

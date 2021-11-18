@@ -60,7 +60,8 @@ export default {
       timer: null,
       isShowPop: false,
       sitePostList: null,
-      trialList: []
+      trialList: [],
+      isNotLoopTypeList: false
     };
   },
   watch: {
@@ -140,7 +141,12 @@ export default {
             return this.isAdult ? type : type.icon.toLowerCase() !== "welfare";
           });
 
-        return [...typeList, ...typeList, ...typeList];
+        if (typeList.length > 7) {
+          return [...typeList, ...typeList, ...typeList];
+        } else {
+          this.isNotLoopTypeList = true;
+          return [...typeList];
+        }
       }
     },
     options() {
@@ -210,7 +216,9 @@ export default {
       return gameList;
     },
     currentGame() {
-      const length = this.typeList.length / 3;
+      const length = this.isNotLoopTypeList
+        ? this.typeList.length
+        : this.typeList.length / 3;
       const index = this.selectedIndex % length;
       return { ...this.allGameList[index] };
     },
@@ -295,9 +303,11 @@ export default {
 
             defaultIndex = defaultIndex >= 0 ? defaultIndex : 0;
 
-            selectIndex = this.typeList.length / 3 + defaultIndex;
+            selectIndex = this.isNotLoopTypeList
+              ? defaultIndex
+              : this.typeList.length / 3 + defaultIndex;
           } else {
-            selectIndex = this.typeList.length / 3;
+            selectIndex = 0;
           }
           this.onChangeSelectIndex(selectIndex);
           this.isShow = true;
@@ -627,6 +637,15 @@ export default {
         case "代理":
           sendUmeng(18);
           break;
+        case "爆分":
+          sendUmeng(66);
+          break;
+        case "虚拟币":
+          sendUmeng(67);
+          break;
+        case "直播":
+          sendUmeng(68);
+          break;
         default:
           break;
       }
@@ -757,7 +776,7 @@ export default {
           case "LF":
             sendUmeng(56);
             break;
-          // 鸭脖视频;
+          // 币发视频;
           case "YV":
             sendUmeng(57);
             break;
@@ -785,7 +804,7 @@ export default {
           case "LQ":
             sendUmeng(63);
             break;
-          // 鸭脖影视;
+          // 币发影视;
           case "PPV":
             sendUmeng(64);
             break;
@@ -793,10 +812,10 @@ export default {
       } else {
         switch (game.vendor) {
           //丝瓜直播
-          // case "sigua_ly":
-          //   sendUmeng(55);
-          //   break;
-          // 鸭脖视频;
+          case "sigua_ly":
+            sendUmeng(65);
+            break;
+          // 币发视频;
           case "YV":
             sendUmeng(56);
             break;
@@ -828,7 +847,7 @@ export default {
           case "LQ":
             sendUmeng(63);
             break;
-          // 鸭脖影视;
+          // 币发影视;
           case "PPV":
             sendUmeng(64);
             break;
@@ -851,7 +870,7 @@ export default {
             userId = this.memInfo.user.id;
           }
           if (!this.loginStatus) {
-            userId = getCookie("guestUserid");
+            userId = localStorage.getItem("guestUserid");
           }
           this.isLoading = true;
 
@@ -880,6 +899,7 @@ export default {
             // 屌絲漫畫 → DSC
             // SWAG小說 → LQ
             // 絲瓜小說 → DZ
+            // 澳博影視→ AV
             default:
               localStorage.setItem("is-open-game", true);
               if (
@@ -929,7 +949,7 @@ export default {
                         // })
                         // return;
                         let cid = !this.loginStatus
-                          ? getCookie("guestCid")
+                          ? localStorage.getItem("guestCid")
                           : getCookie("cid");
 
                         const getThridUrl = () =>
@@ -1007,7 +1027,7 @@ export default {
                   // })
                   // return;
                   let cid = !this.loginStatus
-                    ? getCookie("guestCid")
+                    ? localStorage.getItem("guestCid")
                     : getCookie("cid");
 
                   const getThridUrl = () =>
@@ -1055,23 +1075,15 @@ export default {
         case "link_to":
           switch (game.vendor) {
             case "agent":
-              // if (!this.loginStatus) {
-              //   if (this.siteConfig.ROUTER_TPL === "ey1") {
-              //     this.$router.push("/mobile/login");
-              //   } else {
-              //     this.$router.push("/mobile/joinmember");
-              //   }
-              //   return;
-              // }
               let newWindow = "";
               newWindow = window.open(`${game.memo}`, "_blank");
-              // this.$router.push("/mobile/mcenter/makeMoney");
               return;
 
+            case "AV":
             case "YV":
               this.$router.push({
                 name: "videoList",
-                query: { source: "yabo" }
+                query: { source: game.vendor === "YV" ? "yabo" : "av" }
               });
               return;
 

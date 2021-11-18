@@ -156,7 +156,7 @@
               />
             </div>
             <span>{{
-              `尊敬的${siteName}会员，当iOS用户的${siteName}App掉签无法打开时，可以通过以下方法继续游戏`
+              `尊敬的${siteName}会员，当iOS用户的${siteName} APP掉签无法打开时，可以通过以下方法继续游戏`
             }}</span>
           </div>
 
@@ -700,11 +700,14 @@ div.container {
   padding: 0 5px;
   margin: 0 auto;
   font-size: 8px;
-  color: #fff;
-  background: #be9e7f;
+  color: $share_main_button_text_color;
+  background: $share_main_button_color;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
 
+  &.porn1 {
+    background: $befa_main_color;
+  }
   &.sp1 {
     background: #000;
   }

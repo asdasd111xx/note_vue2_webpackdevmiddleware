@@ -27,7 +27,7 @@
 
         <div :class="$style['content-wrap']">
           <div :class="[$style['title']]">
-            {{ siteName }}
+            {{ siteName + "APP" }}
           </div>
           <div :class="$style['desc']">
             {{ getText }}
@@ -48,6 +48,7 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   data() {
@@ -66,7 +67,7 @@ export default {
   },
   created() {
     if (
-      ["porn1", "sg1"].includes(this.siteConfig.ROUTER_TPL) &&
+      ["porn1", "sg1", "sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
       !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
@@ -149,8 +150,11 @@ export default {
       systemConfig: "getSystemConfig"
     }),
     siteName() {
-      if (this.siteConfig.ROUTER_TPL == "sg1") {
-        return "泡泡直播APP";
+      switch (this.siteConfig.ROUTER_TPL) {
+        case "sg1":
+          return "泡泡直播";
+        case "porn1":
+          return "币发BIFA ";
       }
       return this.siteConfig.SITE_NAME;
     },
@@ -173,10 +177,15 @@ export default {
 
       switch (this.siteConfig.ROUTER_TPL) {
         case "porn1":
-          site = "YABO";
+          site = "Bifa";
           break;
         case "sg1":
-          site = "SG";
+          site = "Paopao";
+          break;
+        case "sp1":
+          site = "SP";
+        case "aobo1":
+          site = "AOBO";
           break;
       }
 
@@ -200,6 +209,12 @@ export default {
       if (!this.downloadConfigData.show) {
         return;
       }
+      const promotionCode = localStorage.getItem("promotionCode");
+      if (promotionCode && promotionCode != "" && !this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+      sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
 
@@ -324,7 +339,7 @@ export default {
 
     > .download-btn {
       align-items: center;
-      background: #b1977f;
+      background: $share_main_button_color;
       border-radius: 13.5px;
       display: flex;
       height: 27px;
@@ -333,7 +348,7 @@ export default {
       width: 100%;
 
       span {
-        color: #ffffff;
+        color: $share_main_button_text_color;
         font-size: 12px;
         font-weight: 700;
         text-align: center;
@@ -346,7 +361,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: #b1977f;
+    color: $share_main_button_color;
     height: 20px;
   }
 
@@ -452,6 +467,42 @@ export default {
     .download-wrap {
       > .download-btn {
         background: #000000;
+
+        span {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.apptips-wrap {
+  &.porn1 {
+    .title {
+      color: $befa_main_color;
+    }
+
+    .download-wrap {
+      > .download-btn {
+        background: $befa_main_color;
+
+        span {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.apptips-wrap {
+  &.sp1 {
+    .title {
+      color: $sp1_main_color1;
+    }
+
+    .download-wrap {
+      > .download-btn {
+        background: $sp1_main_color1;
 
         span {
           color: #ffffff;

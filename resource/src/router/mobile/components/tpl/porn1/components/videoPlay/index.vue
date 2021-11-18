@@ -68,8 +68,12 @@ export default {
     }),
     siteId() {
       switch (this.source) {
+        case "av":
         case "yabo":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+          setCookie(
+            "s_id",
+            this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+          );
           return 1;
 
         case "smallPig":
@@ -130,12 +134,13 @@ export default {
       if (localStorage.getItem("content_rating") !== "1") {
         this.$router.push("/mobile");
       }
-    } else if (
-      !this.memInfo.config.content_rating ||
-      !this.memInfo.user.content_rating
-    ) {
-      this.$router.push("/mobile");
     }
+    // else if (
+    //   !this.memInfo.config.content_rating ||
+    //   !this.memInfo.user.content_rating
+    // ) {
+    //   this.$router.push("/mobile");
+    // }
 
     if (this.$route.query.source === "smallPig") {
       axios({

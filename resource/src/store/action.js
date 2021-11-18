@@ -613,6 +613,37 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         siteConfigOfficial.preset;
     }
 
+    let allDomainList = [];
+    await goLangApiRequest({
+      method: "get",
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/List"
+    }).then(res => {
+      if (res.status === "000") {
+        allDomainList = res.data;
+      }
+    });
+    let domainNotSucess = true;
+    let domainIdx = 0;
+    while (domainNotSucess && domainIdx < allDomainList.length) {
+      await goLangApiRequest({
+        method: "post",
+        url: `${allDomainList[domainIdx]}/api-v2/xbb/Captcha`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.data) {
+          configInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[domainIdx]}/api-v2`;
+          configInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
+            domainIdx
+          ].replace("https", "wss")}`;
+          domainIdx += 1;
+          domainNotSucess = false;
+        } else {
+          domainIdx += 1;
+        }
+      });
+    }
     dispatch("actionSetSiteConfig", configInfo);
     dispatch("actionSetNews");
 
@@ -716,11 +747,12 @@ export const actionSetUserdata = (
   }
   //判斷uuid
   let uuidAccount = "";
-  if (getCookie("uuidAccount")) {
-    uuidAccount = getCookie("uuidAccount");
+  let getUuidAccountCookie = localStorage.getItem("uuidAccount");
+  if (getUuidAccountCookie) {
+    uuidAccount = getUuidAccountCookie;
   } else {
     uuidAccount = uuidv4();
-    setCookie("uuidAccount", uuidAccount);
+    localStorage.setItem("uuidAccount", uuidAccount);
   }
 
   if (!document.querySelector('script[data-name="esabgnixob"]')) {
@@ -753,8 +785,8 @@ export const actionSetUserdata = (
             if (res.status === "000") {
               let guestCid = res.data.cid;
               let guestUserid = res.data.userid;
-              setCookie("guestCid", guestCid);
-              setCookie("guestUserid", guestUserid);
+              localStorage.setItem("guestCid", guestCid);
+              localStorage.setItem("guestUserid", guestUserid);
             } else {
               dispatch("actionSetGlobalMessage", {
                 msg: res.msg,
@@ -923,10 +955,12 @@ export const actionSetUserBalance = ({ commit, dispatch, state }) => {
             }
           });
         } else {
-          dispatch("actionSetGlobalMessage", {
-            msg: data.msg,
-            code: data.code
-          });
+          if (res) {
+            dispatch("actionSetGlobalMessage", {
+              msg: res.msg,
+              code: res.code
+            });
+          }
         }
       }
     })

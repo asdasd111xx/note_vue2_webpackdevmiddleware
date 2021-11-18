@@ -52,6 +52,8 @@ export default {
       setCookie("cid", "");
       setCookie("y_token", "");
       setCookie("aid", "");
+      localStorage.removeItem("aid");
+
       this.$router.replace("/mobile/login");
     }
   },
@@ -171,6 +173,8 @@ export default {
       }).then(res => {
         if (res.data && res.status === "000") {
           setCookie("aid", res.data.cookie.aid);
+          localStorage.setItem("aid", res.data.cookie.aid);
+
           this.captchaImg = res.data.data;
         }
       });
@@ -228,7 +232,7 @@ export default {
       };
 
       if (this.memInfo.config.login_captcha_type === 1) {
-        params["aid"] = getCookie("aid") || "";
+        params["aid"] = getCookie("aid") || localStorage.getItem("aid") || "";
       }
 
       return goLangApiRequest({
@@ -294,7 +298,6 @@ export default {
             }
             return;
           }
-
           this.errMsg = res.status;
         }
 

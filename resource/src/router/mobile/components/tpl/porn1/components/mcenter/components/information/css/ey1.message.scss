@@ -1,31 +1,34 @@
 @import "./porn1.message.scss";
 
-.btn-close {}
+.btn-close {
+  > img {
+    background: none;
+  }
+}
 
 .icon-edit {
-
-    &.active {
-        background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
-        background-size: 18px 18px;
-    }
+  &.active {
+    background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
+    background-size: 18px 18px;
+  }
 }
 
 .delete-cancel {
-    color: #000;
+  color: #000;
 }
 
 .delete-confirm {
-    color: #e42a30;
+  color: #e42a30;
 }
 
 .btn-more {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 
 .message-header {
-    background: linear-gradient(#fe2a2a, #b60303);
+  background: linear-gradient(#fe2a2a, #b60303);
 
-    .message-header-title {
-        color: #ffffff;
-    }
+  .message-header-title {
+    color: #ffffff;
+  }
 }

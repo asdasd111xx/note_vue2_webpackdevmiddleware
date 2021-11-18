@@ -22,9 +22,9 @@
           <div :class="$style['image']">
             <img
               :src="
-                ['sg1'].includes(themeTPL)
-                  ? $getCdnPath(item.imgSrcSg1)
-                  : $getCdnPath(item.imgSrc)
+                $getCdnPath(
+                  `/static/image/${imagePath}/mcenter/wallet/${item.imgSrc}`
+                )
               "
               alt="icon"
             />
@@ -384,6 +384,16 @@ export default {
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
+    imagePath() {
+      switch (this.routerTPL) {
+        default:
+          return "common";
+        case "porn1":
+          return "porn1";
+        case "sg1":
+          return "sg1";
+      }
+    },
     swagIcons() {
       return [
         {
@@ -452,8 +462,7 @@ export default {
           key: "transfer",
           show: true,
           text: this.$text("S_TRANSFER", "转帐"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_tranfer.png`,
-          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_tranfer.png`,
+          imgSrc: `ic_wallter_tranfer.png`,
           onClick: () => {
             if (this.routerTPL === "sg1") {
               sendUmeng(39);
@@ -476,8 +485,7 @@ export default {
           key: "withdraw",
           show: true,
           text: this.$text("S_WITHDRAWAL_TEXT", "提现"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_withdraw.png`,
-          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_withdraw.png`,
+          imgSrc: `ic_wallter_withdraw.png`,
           onClick: () => {
             if (this.routerTPL === "sg1") {
               sendUmeng(40);
@@ -500,8 +508,7 @@ export default {
           key: "recharge",
           show: false,
           text: this.$text("S_CREDIT_TRANSFER", "额度转让"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallet_trans.png`,
-          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallet_trans.png`,
+          imgSrc: `ic_wallet_trans.png`,
           onClick: () => {
             if (this.routerTPL === "sg1") {
               sendUmeng(41);
@@ -518,8 +525,7 @@ export default {
           key: "card",
           show: true,
           text: this.$text("S_MARANGE_CARD", "卡片管理"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_manage.png`,
-          imgSrcSg1: `/static/image/sg1/mcenter/wallet/ic_wallter_manage.png`,
+          imgSrc: `ic_wallter_manage.png`,
           onClick: () => {
             if (this.routerTPL === "sg1") {
               sendUmeng(42);

@@ -18,7 +18,9 @@
       @click="headerConfig.onClick"
     >
       <img
-        v-if="source === 'gay' || source === 'les'"
+        v-if="
+          source === 'gay' || source === 'les' || siteConfig.ROUTER_TPL == 'ey1'
+        "
         :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
@@ -44,7 +46,9 @@
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
-      <div :class="[[$style.title], $style[source]]">
+      <div
+        :class="[[$style.title], $style[source], $style[siteConfig.ROUTER_TPL]]"
+      >
         {{ headerConfig.title }}
       </div>
     </div>
@@ -176,7 +180,10 @@
         ]"
       >
         <div
-          :class="[$style['header-custom-btn']]"
+          :class="[
+            $style['header-custom-btn'],
+            [$style[siteConfig.ROUTER_TPL]]
+          ]"
           @click="
             headerConfig.customLinkAction
               ? headerConfig.customLinkAction()
@@ -252,7 +259,6 @@ export default {
       let disableBackgroundColor = !!["sp1"].includes(
         this.siteConfig.ROUTER_TPL
       );
-
       return {
         [style.header]: true,
         [style.agent]: this.path[1] === "agcenter",
@@ -262,7 +268,8 @@ export default {
           ? true
           : false,
         [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
-        [style["disable-bgcolor"]]: disableBackgroundColor,
+        [style["disable-bgcolor"]]:
+          disableBackgroundColor && this.$route.name === "home",
         [style[this.siteConfig.ROUTER_TPL]]: true,
         clearfix: true
       };
@@ -348,8 +355,8 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
         params: {
-          account: getCookie("uuidAccount"),
-          cid: getCookie("guestCid")
+          account: localStorage.getItem("uuidAccount"),
+          cid: localStorage.getItem("guestCid")
         }
       }).then(res => {
         if (res.status === "000") {
@@ -452,6 +459,11 @@ export default {
     background: unset;
     background-color: unset;
   }
+
+  &.ey1 {
+    background: linear-gradient(#fe2a2a, #b60303);
+    color: #ffffff;
+  }
 }
 
 @media screen and (max-width: 374px) {
@@ -552,7 +564,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: #fb7126;
+    color: $share_text_color4;
     margin: 0;
     padding: 0;
 
@@ -582,6 +594,14 @@ export default {
 
     > span {
       color: $sp1_main_color1;
+    }
+  }
+}
+
+.login-wrap {
+  &.porn1 {
+    .visitor-money {
+      color: #be9e7f;
     }
   }
 }
@@ -638,10 +658,18 @@ export default {
   font-size: 17px;
   font-weight: 500;
   margin: 0 auto;
-  background: #fff;
+  max-width: 66%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   &.les,
   &.gay {
     color: #fff;
+  }
+
+  &.ey1 {
+    color: #ffffff;
   }
 }
 
@@ -731,6 +759,10 @@ export default {
     font-size: 14px;
     font-weight: 500;
     text-align: center;
+
+    &.ey1 {
+      color: #ffffff;
+    }
   }
 }
 
@@ -827,7 +859,7 @@ export default {
   position: absolute;
   right: 17px;
   top: 0;
-  color: #5e626d;
+  color: $main_title_color1;
 
   > span {
     display: inline-block;

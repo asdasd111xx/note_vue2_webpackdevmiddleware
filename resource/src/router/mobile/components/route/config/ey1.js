@@ -219,7 +219,7 @@ export default {
       ),
     makeMoneyEy1: () =>
       import(
-        /* webpackChunkName: 'makeMoneyEy1' */ "../../tpl/ey1/components/mcenter/components/makeMoney"
+        /* webpackChunkName: 'makeMoneyEy1' */ "../../tpl/porn1/components/mcenter/components/makeMoney"
       ),
     bonusEy1: () =>
       import(

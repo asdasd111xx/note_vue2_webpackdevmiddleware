@@ -3,7 +3,7 @@ import { getCookie } from "@/lib/cookie";
 import querystring from "querystring";
 import store from "@/store";
 
-// 鸭博娱乐色站 api domain
+// 币发BIFA色站 api domain
 let localDomain = localStorage.getItem("p-domain")
   ? `${localStorage.getItem("p-domain")}/api/v1`
   : "";

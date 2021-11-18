@@ -289,7 +289,6 @@
       </div>
 
       <!-- 更多提现方式 -->
-      <!-- 銀行卡超過3張 + 所有數字貨幣的錢包都有添加 => 則隱藏按鈕 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
         v-if="moreMethodStatus.bankCard || moreMethodStatus.wallet"
@@ -769,7 +768,11 @@ export default {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
       }
-
+      if(!localStorage.getItem("tmp_w_selectedCard")){
+        if(this.currencyList.length > 0){
+          this.setWithdrawCurrency(this.currencyList[0])
+        }
+      }
       // this.actionSetIsLoading(false);
       this.isLoading = false;
     },
@@ -810,6 +813,8 @@ export default {
           this.getUserLevel();
           this.getUserStat();
           this.getNowOpenWallet();
+          this.getUserBankList();
+          this.getUserWalletList();
           this.getBounsAccount();
           this.actionSetAnnouncementList({ type: 2 });
         });
@@ -1008,13 +1013,13 @@ export default {
     moreMethodStatus() {
       let obj = {};
       // 直到 Check wallet 的部份，再 return 整個 obj
-
+      // console.log(123);
+      // console.log(this.bank_card);
+      // console.log(this.wallet_card);
       // Bank
       if (
         this.userLevelObj.bank &&
-        this.withdrawUserData &&
-        this.withdrawUserData.account &&
-        this.withdrawUserData.account.length < 3
+        this.bank_card.length < this.userLevelObj.bank_max
       ) {
         obj.bankCard = true;
       } else {
@@ -1028,57 +1033,45 @@ export default {
         return obj;
       }
 
-      // 億元 && 未開啟限綁一組開關
+      // 未開啟限綁一組開關
       if (
-        ["ey1"].includes(this.themeTPL) &&
-        !this.userLevelObj.virtual_bank_single
+        !this.userLevelObj.virtual_bank_single 
       ) {
         // 已開啟電子錢包開關 & 未開啟限綁一組開關
         let noSingleLimit =
-          this.withdrawUserData.wallet &&
-          this.withdrawUserData.wallet.length < 15;
+          this.wallet_card.length < this.userLevelObj.virtual_bank_max;
 
         obj.wallet = noSingleLimit ? true : false;
         return obj;
       }
 
-      // Yabo or 億元 && 開啟限綁一組開關
+      // 開啟限綁一組開關
       if (
-        ["porn1", "sg1"].includes(this.themeTPL) ||
-        (["ey1"].includes(this.themeTPL) &&
-          this.userLevelObj.virtual_bank_single)
+        this.userLevelObj.virtual_bank_single 
       ) {
         let nowBindWalletCount = 0;
 
         // 增加判空，否則報 map 錯誤
-        if (
-          this.withdrawData &&
-          this.withdrawData.user_virtual_bank &&
-          this.withdrawData.user_virtual_bank.ret &&
-          this.withdrawData.user_virtual_bank.ret.length > 0
-        ) {
+        if (this.wallet_card.length > 0) {
           // 找目前 user 有綁定過的 wallet
           let idArr = [
             ...new Set(
-              this.withdrawData.user_virtual_bank.ret.map(item => {
-                // 本廳是否支援此電子錢包 & 是否為常用帳戶
-                return item.virtual && item.common
-                  ? item.virtual_bank_id
-                  : null;
+              this.wallet_card.map(item => {
+                return item.virtual_bank_id;
               })
             )
           ];
 
           if (idArr) {
             this.nowOpenWallet.forEach(item => {
-              nowBindWalletCount += idArr.includes(item.id) ? 1 : 0;
+              if (idArr.includes(item.id)) {
+                nowBindWalletCount += 1;
+              }
             });
 
-            // 當使用者已綁定的錢包 >= 目前所有開放的電子錢包時
-            if (nowBindWalletCount >= this.nowOpenWallet.length) {
-              obj.wallet = false;
-              return obj;
-            }
+            obj.wallet =
+              nowBindWalletCount >= this.nowOpenWallet.length ? false : true;
+            return obj;
           }
         }
 
@@ -1602,7 +1595,6 @@ export default {
       } else {
         methonId = "";
       }
-
       if (this.memInfo.config.withdraw === "迅付") {
         _params = {
           ..._params,
@@ -1886,6 +1878,8 @@ export default {
         });
     },
     setWithdrawCurrency(item) {
+      // console.log("setWithdrawCurrency");
+      // console.log(item);
       this.withdrawCurrency.method_id = item.method_id;
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
@@ -2008,7 +2002,6 @@ export default {
       const defaultCard = this.allWithdrawAccount?.find(item => {
         return item.allow;
       });
-
       // 卡片資料
       this.selectedCard = localStorage.getItem("tmp_w_selectedCard")
         ? {

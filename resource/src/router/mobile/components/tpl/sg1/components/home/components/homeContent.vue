@@ -11,6 +11,7 @@
         v-show="isShow"
         ref="type-wrap"
         :class="$style['type-wrap']"
+        :style="isNotLoopTypeList ? { height: `${wrapHeight}px` } : {}"
         @touchstart="onTypeTouchStart"
         @touchmove="onTypeTouchMove"
       >
@@ -58,11 +59,16 @@
                 <img
                   :src="
                     $getCdnPath(
-                      `/static/image/sg1/home/icon_level_${vipLevel}.png`
+                      `/static/image/sg1/home/icon_level_${
+                        currentLevel > 10 ? 'max' : currentLevel
+                      }.png`
                     )
                   "
                 />
-                <div>{{ vipLevel === "max" ? vipLevel : info.text }}</div>
+                <div v-if="+currentLevel > 10" :class="$style['level-text']">
+                  {{ currentLevel }}
+                </div>
+                <div>{{ info.text }}</div>
               </template>
               <template v-else>
                 <img
@@ -377,6 +383,7 @@ export default {
 .mcenter-wrap {
   float: left;
   width: 20%;
+  position: relative;
 
   > img {
     display: block;
@@ -391,6 +398,14 @@ export default {
     color: #ffad0a;
     font-size: 12px;
     text-align: center;
+  }
+
+  .level-text {
+    top: 10px;
+    left: 37%;
+    position: absolute;
+    font-weight: 700;
+    color: #c47500;
   }
 }
 

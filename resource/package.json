@@ -78,7 +78,7 @@
     "vue-waterfall": "1.0.6",
     "vue2-datepicker": "3.1.1",
     "vuebar": "0.0.18",
-    "vuedraggable": "2.23.2",
+    "vuedraggable": "^2.24.3",
     "vuejs-datepicker": "0.9.20",
     "vuejs-paginate": "2.1.0",
     "vuex": "2.3.1"

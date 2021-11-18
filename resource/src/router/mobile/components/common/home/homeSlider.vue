@@ -101,7 +101,6 @@ export default {
       if (list.length === 0) {
         list.push(defaultImage);
       }
-
       this.slider = list;
       let hasLoop = list && list.length > 1;
       this.opts = {

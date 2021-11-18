@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="source === 'yabo'">
+    <template v-if="['yabo', 'av'].includes(source)">
       <component
         v-if="$route.query.key"
         :is="currentLayout.searchInfo"
@@ -112,9 +112,16 @@ export default {
           siteId: 4
         };
         break;
-
+      case "av":
       case "yabo":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YB"]);
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+        );
+
+        console.log(
+          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+        );
         this.currentLayout = {
           searchHome: "yaboSearchHome",
           searchInfo: "yaboSearchInfo",
@@ -160,7 +167,7 @@ export default {
         break;
     }
 
-    if (this.source !== "yabo") {
+    if (this.source !== "yabo" && this.source !== "av") {
       this.$emit("update:headerConfig", this.currentLayout);
     }
 
@@ -178,7 +185,7 @@ export default {
   },
   watch: {
     "$route.query"() {
-      if (this.source === "yabo") {
+      if (["yabo", "av"].includes(this.source)) {
         this.$emit(
           "update:headerConfig",
           this.$route.query.key

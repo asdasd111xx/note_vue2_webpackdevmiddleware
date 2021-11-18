@@ -178,6 +178,10 @@
         </div>
       </div>
     </div>
+    <infinite-loading ref="infiniteLoading" @infinite="infiniteHandler">
+      <span slot="no-more" />
+      <span slot="no-results" />
+    </infinite-loading>
     <serial-detail
       v-if="showDetail"
       :handle-close="() => (showDetail = false)"
@@ -187,6 +191,7 @@
 </template>
 
 <script>
+import InfiniteLoading from "vue-infinite-loading";
 import mixin from "@/mixins/mcenter/withdraw/serialNumber";
 import serialDetail from "./serialDetail";
 import { mapGetters, mapActions } from "vuex";
@@ -195,7 +200,8 @@ import { thousandsCurrency } from "@/lib/thousandsCurrency";
 export default {
   mixins: [mixin],
   components: {
-    serialDetail
+    serialDetail,
+    InfiniteLoading
   },
   data() {
     return {
@@ -217,7 +223,7 @@ export default {
     }
   },
   created() {
-    this.getSerialNumberData(this.swiftCode);
+    //this.getSerialNumberData(this.swiftCode);
   },
   computed: {
     ...mapGetters({
@@ -246,8 +252,7 @@ export default {
             }
           }
         });
-
-        this.serialNumberList = result;
+        this.serialNumberList = this.serialNumberList.concat(result);
       }
     }
   },
@@ -263,6 +268,22 @@ export default {
     handleClickSerial(data) {
       this.selectedSerialDetail = data;
       this.showDetail = true;
+    },
+    infiniteHandler($state) {
+      this.getSerialNumberData(this.swiftCode).then(result => {
+        if (result !== "ok") {
+          return;
+        }
+        if (
+          !this.totalAmount ||
+          this.page + this.pageInterval >= +this.totalAmount
+        ) {
+          $state.complete();
+          return;
+        }
+        $state.loaded();
+        this.page += this.pageInterval;
+      });
     }
   }
 };

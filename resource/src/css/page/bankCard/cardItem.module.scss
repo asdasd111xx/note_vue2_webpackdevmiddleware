@@ -41,17 +41,13 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
 
   @for $i from 0 to 3 {
     &--bg-repeat-gradient-#{$i} {
-      background-image: linear-gradient(
-        top,
-        nth($linear_first_color, $i + 1),
-        nth($linear_end_color, $i + 1)
-      );
+      background-image: linear-gradient(top,
+          nth($linear_first_color, $i + 1),
+          nth($linear_end_color, $i + 1));
 
-      background-image: -webkit-linear-gradient(
-        top,
-        nth($linear_first_color, $i + 1),
-        nth($linear_end_color, $i + 1)
-      );
+      background-image: -webkit-linear-gradient(top,
+          nth($linear_first_color, $i + 1),
+          nth($linear_end_color, $i + 1));
     }
 
     &__type--color-#{$i},
@@ -118,6 +114,30 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     }
 
     &--theme-rectangle {
+      color: #db6372;
+    }
+  }
+
+  // 刪除審核中for ey
+  &__status-audit-ey {
+    position: absolute;
+    font-size: 12px;
+    width: 100%;
+    left: 0;
+    background: #000000;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    height: 40%;
+    bottom: 0;
+    opacity: 0.8;
+    text-align: center;
+    padding-top: 5px;
+
+    &--theme-square-ey {
+      color: #eee;
+    }
+
+    &--theme-rectangle-ey {
       color: #db6372;
     }
   }

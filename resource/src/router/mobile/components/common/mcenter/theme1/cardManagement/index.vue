@@ -225,10 +225,6 @@ export default {
 
       // 歷史錢包
       if (!this.isCommon) {
-        // return (
-        //   this.userLevelObj.bank_single ||
-        //   this.userLevelObj.virtual_bank_single
-        // );
         return this.userLevelObj.virtual_bank_single;
       }
     },
@@ -259,12 +255,10 @@ export default {
       const { isCommon, userLevelObj, currentPage } = this;
       const { showDetail } = this.statusList;
 
-      // const bankHistory =
-      //   ["bankCardInfo"].includes(currentPage) && !userLevelObj.bank_single;
-
       const walletHistory =
         ["walletCardInfo"].includes(currentPage) &&
-        !userLevelObj.virtual_bank_single;
+        !userLevelObj.virtual_bank_single &&
+        userLevelObj.virtual_bank_max > 1;
 
       const showButton = isCommon && !showDetail && walletHistory;
 
@@ -317,11 +311,6 @@ export default {
 
       // 銀行卡/電子錢包，其中有一方開啟多組開關(在歷史錢包頁面)
       if (!this.isCommon && this.isOneTab) {
-        // if (!this.userLevelObj.bank_single) {
-        //   this.setPageStatus(0, "bankCardInfo", false);
-        //   return;
-        // }
-
         if (!this.userLevelObj.virtual_bank_single) {
           this.setPageStatus(1, "walletCardInfo", false);
           return;
@@ -388,9 +377,18 @@ export default {
             this.$router.push("/mobile/liveStream");
             break;
 
+          case "iframe":
+            let path = localStorage.getItem("bank-card-back-redirect");
+            localStorage.removeItem("bank-card-back-redirect");
+            if (path) {
+              this.$router.push(path);
+            } else {
+              this.$router.back();
+            }
+            break;
+
           default:
             this.$router.back();
-            // this.$router.push(`/mobile/mcenter/${redirect}`);
             break;
         }
         return;
@@ -403,7 +401,12 @@ export default {
           // 卡片管理-詳細頁面
           if (this.statusList.showDetail) {
             this.statusList.showDetail = false;
-            this.setPageStatus(this.currentTab, this.currentPage, true);
+
+            this.setPageStatus(
+              this.currentTab,
+              this.currentPage,
+              this.$route.name != "mcenter-historyCard"
+            );
             return;
           }
 

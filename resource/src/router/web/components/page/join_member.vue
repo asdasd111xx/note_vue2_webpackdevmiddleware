@@ -752,6 +752,7 @@ export default {
             this.isGetCaptcha = false;
           }, 800);
 
+          localStorage.setItem("aid", res.data.cookie.aid);
           setCookie("aid", res.data.cookie.aid);
           this.captchaImg = res.data.data;
         }
@@ -1034,8 +1035,9 @@ export default {
         captchaText: this.allValue.captcha_text,
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
-        aid: this.aid || getCookie("aid") || "",
-        speedy: true
+        aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
+        speedy: true,
+        code: localStorage.getItem("promotionCode") || ""
       };
 
       const self = this;
@@ -1050,7 +1052,7 @@ export default {
         params: {
           ...params,
           host: window.location.host,
-          deviceId: getCookie("uuidAccount"),
+          deviceId: localStorage.getItem("uuidAccount"),
           lang: "zh-cn"
         },
         fail: error => {
@@ -1115,6 +1117,11 @@ export default {
                   localStorage.removeItem("username");
                   localStorage.removeItem("password");
                 }
+<<<<<<< HEAD
+=======
+
+                window.RESET_LOCAL_SETTING(true);
+>>>>>>> develop
                 window.RESET_MEM_SETTING();
                 if (this.siteConfig.ROUTER_TPL === "sg1") {
                   this.$router.push("/mobile/live/home");
@@ -1155,6 +1162,11 @@ export default {
               ) {
                 this.allTip["confirm_password"] = res.errors[item];
               }
+
+              //msg: "无此介绍人"
+              if (item === "introducer") {
+                this.errMsg = res.errors[item];
+              }
             });
             return;
           }
@@ -1178,8 +1190,8 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
         params: {
-          account: getCookie("uuidAccount"),
-          cid: getCookie("guestCid")
+          account: localStorage.getItem("uuidAccount"),
+          cid: localStorage.getItem("guestCid")
         }
       }).then(res => {
         if (res.status === "000") {
