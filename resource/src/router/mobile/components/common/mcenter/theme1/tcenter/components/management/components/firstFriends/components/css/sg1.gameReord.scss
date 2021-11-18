@@ -2,6 +2,6 @@
 
 .game-title {
   &::before {
-    background: linear-gradient(#fe593c, #e61938);
+    background: $main_title_color1;
   }
 }

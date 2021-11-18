@@ -9,7 +9,7 @@
       line-height: 35px;
       border: none;
       border-radius: 3px;
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: $main_title_color1;
       color: #fff;
     }
   }
@@ -21,14 +21,14 @@
 }
 
 .time-confirm {
-  background: linear-gradient(90deg, #e61938, #fe593c);
+  background: $main_title_color1;
   color: #ffffff;
 }
 
 .no-data-wrap {
   .btn-money {
-    border-radius: 5px;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    border-radius: 23px;
+    background: $main_title_color1;
     color: #fff;
   }
 }
