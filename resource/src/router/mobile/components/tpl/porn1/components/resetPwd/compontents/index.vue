@@ -572,23 +572,18 @@ input {
   }
 
   &.sg1 {
-    background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
-    background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
-    background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    border-radius: 23px;
+    background: #d2d2d2;
     color: #f3ede7;
 
     &.active {
-      background: -webkit-linear-gradient(right, #fe593c, #e61938);
-      background: -o-linear-gradient(left, #fe593c, #e61938);
-      background: -moz-linear-gradient(left, #fe593c, #e61938);
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: $main_title_color1;
       color: white;
     }
   }
 
   &.ey1 {
-    background: #fdcccc;
+    background: #d2d2d2;
     color: #f3ede7;
 
     &.active {
