@@ -88,6 +88,10 @@ body {
       color: #4e5159;
       position: relative;
     }
+
+    @media screen and (max-width: 325px) {
+      bottom: 32%;
+    }
   }
   p {
     width: 70%;
@@ -114,6 +118,9 @@ body {
     text-align: center;
     position: absolute;
     bottom: 22%;
+    @media screen and (max-width: 325px) {
+      bottom: 28%;
+    }
   }
 }
 .desc {
