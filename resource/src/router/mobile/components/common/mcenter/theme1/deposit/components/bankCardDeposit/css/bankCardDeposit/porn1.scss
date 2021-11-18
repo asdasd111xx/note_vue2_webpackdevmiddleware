@@ -193,6 +193,14 @@
     right: 1px;
     bottom: 3px;
   }
+
+  .pay-mode-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 25px;
+  }
 }
 
 .no-bind-wallet {
@@ -200,7 +208,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -570,6 +578,23 @@
   width: 100%;
 }
 
+
+.pay-mode-tip {
+  float: left;
+  width: 85%;
+  margin-top: 10px;
+  color: #6AAAF5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pay-mode-tip-more {
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px;
+  color: #6AAAF5;
+}
+
 .feature-deposit-wrap {
   float: left;
   width: 100%;
@@ -936,6 +961,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1025,6 +1051,18 @@
   background: #fefffe;
   border-radius: 8px;
   transform: translate(-50%, -50%);
+
+  .close {
+    color: #D1B79C;
+
+    &.sg {
+      color: #bf8646;
+    }
+
+    &.ey {
+      color: #e42a30;
+    }
+  }
 }
 
 .entry-message-content {
@@ -1039,8 +1077,14 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
+  }
+
+  .wrap-line {
+    padding: 14px 14px;
+    color: #A6A9B2;
+    word-break: break-all;
   }
 }
 

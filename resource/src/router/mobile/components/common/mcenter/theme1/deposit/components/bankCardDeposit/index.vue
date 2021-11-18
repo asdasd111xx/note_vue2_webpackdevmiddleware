@@ -268,12 +268,27 @@
                 >
                   {{ data.mainTitle }}
                   <img
+                  v-if="tipTrans[data.display_tag]"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/mcenter/deposit/icon_${tipTrans[data.display_tag]}.png`
+                    )
+                  "
+                  :class="$style['pay-mode-tag']"
+                />
+                  <img
                     v-if="data.id === curPassRoad.id"
                     :class="$style['pay-active']"
                     :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
               </div>
+              <div  v-if="curPassRoad.tip != ''"
+              :class="$style['pay-mode-tip']">
+                {{curPassRoad.tip}}
+              </div>
+              <div v-if="curPassRoad.tip.length > 40" :class="$style['pay-mode-tip-more']"
+                @click="setPopupStatus(true, 'payTip')">more</div>
             </div>
 
             <!-- Yabo -->
@@ -1130,7 +1145,7 @@
     </div>
 
     <!-- 彈窗 -->
-    <template v-if="showPopStatus.isShow">
+    <template >
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1155,6 +1170,25 @@
                 代客充值
               </li>
             </ul>
+          </div>
+        </div>
+      </template>
+      <!-- 通道提示 -->
+      <template v-if="showPopStatus.type === 'payTip'">
+        <div>
+          <div :class="$style['pop-message-mark']" />
+          <div :class="$style['entry-message-container']">
+            <div :class="[$style['entry-message-content'],]">
+              <p>通道提示</p>
+              <div :class="$style['wrap-line']">
+                {{ curPassRoad.tip }}
+              </div>
+            </div>
+            <div :class="[$style['entry-message-confirm'],{ [$style['sg']]: themeTPL === 'sg1' },
+                { [$style['ey']]: themeTPL === 'ey1' }]"
+                @click="setPopupStatus(false, '')">
+                关闭
+              </div>
           </div>
         </div>
       </template>
@@ -1237,6 +1271,7 @@ export default {
       },
       initHeaderSetting: {},
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
+      tipTrans: { "HOT":"recommend","EVENT":"event","FAST":"speed" },
 
       nameCheckFail: false,
 
