@@ -30,11 +30,7 @@
             <img :class="$style['badge']" :src="item" />
           </span>
           <span :class="$style['info-name']">
-            {{
-              memInfo.user.show_alias
-                ? memInfo.user.alias
-                : memInfo.user.username
-            }}
+            {{ cardInfo.alias }}
           </span>
         </template>
         <template v-else>
@@ -47,7 +43,7 @@
     <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
-        LEVEL {{ viplevel }}
+        LEVEL {{ cardInfoTop.level }}
         <span style="marginLeft:2px; fontSize:4px ;color:#FFBC24;"> > </span>
       </span>
     </div>
@@ -58,7 +54,7 @@
         追踪人数
       </div>
       <div :class="$style['tool']" @click="onListClick('my_props')">
-        <span>{{ tool || 0 }}</span>
+        <span>{{ cardInfoTop.prop_num || 0 }}</span>
         道具
       </div>
     </div>
@@ -174,8 +170,6 @@ export default {
       isShow: false,
       msg: "",
       viplevel: "",
-      tool: 0,
-      motto: "",
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
       landingLink: ""
     };

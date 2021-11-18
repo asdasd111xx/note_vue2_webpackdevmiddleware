@@ -64,7 +64,7 @@ export default {
         }
       });
 
-      //取得追蹤人數
+      //取得追蹤人數,道具數量
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/front-page",
         method: "get"
