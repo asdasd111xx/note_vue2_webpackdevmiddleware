@@ -3,9 +3,7 @@
     :class="$style['mcenter-avatar-info-wrap']"
     :style="{
       background: `url(${
-        cardInfoTop.background == ''
-          ? '/static/image/sg1/mcenter/avatar_bg.png'
-          : cardInfoTop.background
+        cardInfoTop.background == '' ? '' : cardInfoTop.background
       })50% 0 / 86%
       no-repeat,
     #fff`
