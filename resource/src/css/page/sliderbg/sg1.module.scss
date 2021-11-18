@@ -32,6 +32,36 @@
           box-shadow: -12px 0px 0px #000;
         }
       }
+
+      // 錯誤訊息
+      .errloading {
+        background-color: #ebebeb;
+        border-radius: 23px;
+        color: #000;
+        border: none;
+        .icon_warn {
+          display: none;
+        }
+        span {
+          &::after {
+            content: "";
+            display: inline-block;
+            position: relative;
+            top: 4px;
+            left: 5px;
+            width: 17px;
+            height: 17px;
+            background: url("/static/image/sg1/common/icon_refresh.png");
+          }
+          a {
+            color: #000;
+          }
+        }
+        .nc-errcode {
+          // color: #000;
+          display: none;
+        }
+      }
     }
   }
 }
