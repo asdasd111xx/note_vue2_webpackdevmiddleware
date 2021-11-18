@@ -266,7 +266,7 @@ export default {
                 return;
             }
           } else {
-            this.$router.push(`/mobile/home`);
+            this.$router.push(`/mobile/live/home`);
           }
         },
         hasClose: true,

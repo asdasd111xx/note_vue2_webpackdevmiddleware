@@ -90,6 +90,10 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
+      if (path === this.$route.path && path == "/mobile/live/iframe/home") {
+        // this.$router.push(`${path}?t=${new Date().toString()}`);
+        return;
+      }
       this.$router.push(path);
     },
     isActive(info) {

@@ -1115,8 +1115,12 @@ export default {
                   localStorage.removeItem("username");
                   localStorage.removeItem("password");
                 }
-                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
+                if (this.siteConfig.ROUTER_TPL === "sg1") {
+                  this.$router.push("/mobile/live/home");
+                } else {
+                  window.RESET_LOCAL_SETTING(true);
+                }
               }
             });
             return;

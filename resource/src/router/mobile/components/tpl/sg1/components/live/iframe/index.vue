@@ -70,7 +70,8 @@ export default {
     return {
       isLoading: true,
       src: "",
-      isFullScreen: true
+      isFullScreen: false,
+      contentTitle: ""
     };
   },
   computed: {
@@ -80,7 +81,7 @@ export default {
     }),
     hasFooter() {
       const query = this.$route.query;
-      return query.hasFooter === undefined ? false : query.hasFooter === "true";
+      return query.hasFooter === undefined ? true : query.hasFooter === "true";
     },
     pageType() {
       return this.$route.params.page;
@@ -93,7 +94,7 @@ export default {
 
       let baseConfig = {
         hasHeader:
-          query.hasHeader === undefined ? true : query.hasHeader === "true",
+          query.hasHeader === undefined ? false : query.hasHeader === "true",
         hasFooter:
           query.hasFooter === undefined ? false : query.hasFooter === "true",
         prev: query.prev === undefined ? true : query.prev,
