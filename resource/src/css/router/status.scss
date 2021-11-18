@@ -171,7 +171,9 @@ body {
   color: #a6a9b2;
   margin: 0 auto;
   position: absolute;
-  bottom: 7%;
+  &.sg1 {
+    bottom: 7%;
+  }
 
   > span {
     color: #6aaaf5;

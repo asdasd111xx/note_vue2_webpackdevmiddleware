@@ -35,7 +35,7 @@
       </div>
     </template>
 
-    <div :class="$style.tips">
+    <div :class="[$style.tips, $style[`${themeTPL}`]]">
       如需帮助，请
       <span @click="linkToService">&nbsp;联系客服</span>
     </div>
