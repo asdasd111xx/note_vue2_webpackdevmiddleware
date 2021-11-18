@@ -47,7 +47,7 @@
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
         LEVEL {{ viplevel }}
-        <span style="marginLeft:2px; fontSize:4px ;color:#FFBC24;"> > </span>
+        <span style="marginLeft:2px; fontSize:7px ;color:#FFBC24;"> > </span>
       </span>
     </div>
 
