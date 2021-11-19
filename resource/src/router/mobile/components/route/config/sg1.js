@@ -88,10 +88,6 @@ export default {
       ),
 
     // 泡泡
-    liveHomeSg1: () =>
-      import(
-        /* webpackChunkName: 'liveHomeSg1' */ "../../tpl/sg1/components/live/home"
-      ),
     liveIframeSg1: () =>
       import(
         /* webpackChunkName: 'liveIframeSg1' */ "../../tpl/sg1/components/live/iframe"

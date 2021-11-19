@@ -36,6 +36,8 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     onLoadiframe() {
       window.addEventListener("message", this.iframeOnListener);
+      window.scrollTo(0, 0);
+      document.body.scrollTo(0, 0);
     },
     iframeOnListener(e) {
       if (e.data) {

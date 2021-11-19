@@ -122,7 +122,6 @@ export default {
   created() {},
   mounted() {
     this.initPage();
-    window.scrollTo(0, 0);
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),

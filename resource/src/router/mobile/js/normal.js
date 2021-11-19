@@ -238,7 +238,7 @@ export default [
   {
     path: "live",
     name: "live",
-    redirect: "/mobile/live/home",
+    redirect: "/mobile/live/iframe/home",
     component,
     children: [
       {
