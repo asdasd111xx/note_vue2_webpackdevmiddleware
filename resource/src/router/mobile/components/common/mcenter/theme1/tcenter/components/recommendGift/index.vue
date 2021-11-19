@@ -468,8 +468,8 @@ export default {
           return "推广赚钱";
         case "ey1":
           return "一键快赚";
-        case "sg1":
-          return "我的推广";
+        // case "sg1":
+        //   return "我的推广";
       }
     },
     cardItemList() {
