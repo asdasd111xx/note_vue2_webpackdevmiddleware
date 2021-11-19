@@ -6,6 +6,7 @@
       :class="[
         $style['click-unit'],
         $style['click-unit-captcha'],
+        $style[themeTPL],
         { [$style['disable']]: ret === 0 }
       ]"
       @click="showCaptcha"
@@ -48,6 +49,14 @@ export default {
   },
   created() {
     this.initCaptcha();
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   }
 };
 </script>
@@ -61,6 +70,10 @@ export default {
   background: #fefefe;
   border: 1px solid rgba(128, 128, 128, 0.26);
   border-radius: 3px;
+
+  &.sg1 {
+    border-radius: 20px;
+  }
 
   &.disable {
     pointer-events: none;
