@@ -16,3 +16,15 @@
     color: #ffffff;
   }
 }
+
+.qrcode-wrap {
+  border: 1px solid #eeeeee;
+}
+
+.button-wrap {
+  > div {
+    border: 1px solid #000000;
+    border-radius: 23px;
+    background-color: #ededed;
+  }
+}
