@@ -3,7 +3,7 @@
     :class="$style['mcenter-avatar-info-wrap']"
     :style="{
       background: `url(${
-        !loginStatus
+        !loginStatus || paopaoUserInfo.background == ''
           ? '/static/image/sg1/mcenter/avatar_bg.png'
           : paopaoUserInfo.background
       })50% 0 / 86%
