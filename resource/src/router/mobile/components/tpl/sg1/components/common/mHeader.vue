@@ -839,17 +839,16 @@ export default {
 
 .information-dot {
   position: absolute;
-  left: 10px;
-  background: #fecb2f;
+  left: 13px;
+  background: red;
   border-radius: 20px;
-  border: 1px solid #f9e8b4;
-  width: 20px;
-  height: 12px;
+  width: 18px;
+  height: 18px;
   line-height: 8px;
-  top: -5px;
-  padding: 0.5px 2px;
+  top: -9px;
+  padding: 5px;
   span {
-    color: #731c25;
+    color: #fff;
     font-size: 7px;
     padding: 0;
   }
