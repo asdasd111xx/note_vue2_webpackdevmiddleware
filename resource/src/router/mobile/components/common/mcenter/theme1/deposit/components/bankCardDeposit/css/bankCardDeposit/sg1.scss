@@ -31,6 +31,15 @@
   background: linear-gradient(-45deg, #e53266 12px, hsla(0, 0%, 100%, 0) 0);
 }
 
+.pay-money-item {
+  &.is-current {
+    background-color: #fff;
+    color: #e53266;
+    border: 1px solid #e53266;
+    background: linear-gradient(-45deg, #e53266 12px, hsla(0, 0%, 100%, 0) 0);
+  }
+}
+
 .message-close {
   color: #000;
 }
