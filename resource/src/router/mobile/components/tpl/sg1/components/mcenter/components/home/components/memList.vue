@@ -109,16 +109,16 @@ export default {
           isPart: true,
           show: true
         },
-        {
-          initName: "成為主播",
-          name: "",
-          path: "",
-          pageName: "host",
-          image: "host",
-          info: "",
-          isPart: false,
-          show: true
-        },
+        // {
+        //   initName: this.$text('S_JOINTOLIVERS'),
+        //   name: "",
+        //   path: "",
+        //   pageName: "host",
+        //   image: "host",
+        //   info: "",
+        //   isPart: false,
+        //   show: true
+        // },
         {
           initName: "帮助中心",
           name: "S_HELP_CENTER",

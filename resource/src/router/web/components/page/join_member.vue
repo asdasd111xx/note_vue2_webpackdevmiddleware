@@ -297,7 +297,7 @@
 
       <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
         <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
-        <span>成为主播</span>
+        <!-- <span>成为主播</span> -->
         <span @click.stop="$router.push('/mobile')">访客进入</span>
       </div>
       <!-- <div
@@ -1121,7 +1121,7 @@ export default {
                 window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
                 if (this.siteConfig.ROUTER_TPL === "sg1") {
-                  this.$router.push("/mobile/live/home");
+                  this.$router.push("/mobile/live/iframe/home");
                 } else {
                   window.RESET_LOCAL_SETTING(true);
                 }

@@ -171,11 +171,11 @@
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
-                <div class="link-button ">
+                <!-- <div class="link-button ">
                   <span @click="$router.push('/mobile/login')">
                     {{ $text("S_JOINTOLIVERS", "成为主播") }}
                   </span>
-                </div>
+                </div> -->
                 <div
                   class="link-button link-submit"
                   @click="$router.push('/mobile/service')"
@@ -266,7 +266,7 @@ export default {
                 return;
             }
           } else {
-            this.$router.push(`/mobile/live/home`);
+            this.$router.push(`/mobile/live/iframe/home`);
           }
         },
         hasClose: true,
