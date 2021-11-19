@@ -107,8 +107,8 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: linear-gradient(to left, #fe593c 0%, #e61938 100%);
-  border-radius: 3px;
+  background: #000;
+  border-radius: 23px;
   height: 50px;
   line-height: 50px;
   width: 100%;
