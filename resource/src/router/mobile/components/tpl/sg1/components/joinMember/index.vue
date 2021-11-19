@@ -97,8 +97,8 @@ export default {
 }
 
 .join-input {
-  background-color: #fff;
-  border: 1px solid #d8d8d8;
+  background-color: unset !important;
+  border: unset;
   border-radius: 75px;
   &::placeholder {
     color: #a5a5a5;
@@ -144,6 +144,45 @@ export default {
 
   span:nth-child(3) {
     color: #6aaaf5;
+  }
+}
+
+.field-wrap {
+  margin-left: 12px;
+  margin-right: 12px;
+  background-color: #fff;
+  border: 1px solid #d8d8d8;
+  border-radius: 75px;
+  margin-bottom: 28px;
+}
+
+.field-right {
+  width: calc(100% - 95px);
+}
+
+.join-tip-show {
+  display: inline-block;
+  position: absolute;
+  bottom: -24px;
+  padding: 0;
+  right: 0;
+}
+
+.join-input:-webkit-autofill {
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
+}
+
+.thirdy-block {
+  margin: 0 12px;
+  max-width: 100%;
+
+  .click-unit {
+    border-radius: 20px;
   }
 }
 </style>
