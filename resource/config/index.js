@@ -6,7 +6,7 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 币发BIFA 500015
-const domain = "https://yb01.66boxing.com/";
+// const domain = "https://yb01.66boxing.com/";
 // Beta 100003
 // const domain = "https://ybbe1.777vendor.com/";
 // Demo 69
@@ -28,7 +28,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://ey.688lg.com/';
 
 // 丝瓜 500035
-// const domain = "https://sgqa1.yaslbox.com/";
+const domain = "https://sgqa1.yaslbox.com/";
 // const domain = "https://sgqa1-io.yaslbox.com/";
 // Beta 100009
 // const domain = "https://sgbe1.grtymart.com/";

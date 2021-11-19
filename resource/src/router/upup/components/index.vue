@@ -2,7 +2,11 @@
   <div v-if="themeTPL" :class="[$style['content'], $style[`${themeTPL}`]]">
     <div :class="$style['logo-header']">
       <img
-        :src="$getCdnPath(`/static/image/${themeTPL}/status/logo_maintain.png`)"
+        :src="
+          `${themeTPL}` == 'sg1'
+            ? $getCdnPath(`/static/image/${themeTPL}/common/logo_w.png`)
+            : $getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)
+        "
       />
     </div>
     <div :class="[$style['title'], $style[`${themeTPL}`]]">
@@ -31,7 +35,7 @@
       </div>
     </template>
 
-    <div :class="$style.tips">
+    <div :class="[$style.tips, $style[`${themeTPL}`]]">
       如需帮助，请
       <span @click="linkToService">&nbsp;联系客服</span>
     </div>
