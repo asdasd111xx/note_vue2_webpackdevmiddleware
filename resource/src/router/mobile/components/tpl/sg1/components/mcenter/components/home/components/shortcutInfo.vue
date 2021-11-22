@@ -126,7 +126,12 @@
 
       <!-- 快捷功能8 -->
       <div :class="$style['mcenter-func-eight']">
-        <div :class="$style['cell']" @click="onListClick('accountVip', false)">
+        <div
+          :class="$style['cell']"
+          @click="
+            [onListClick('accountVip', false), onClickEvent('accountVIP')]
+          "
+        >
           <div>
             <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_vip.png')" />
           </div>
