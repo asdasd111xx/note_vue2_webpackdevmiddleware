@@ -54,12 +54,13 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
-      goMessage() {
+    goMessage() {
       if (!this.loginStatus) {
         this.$router.push("/mobile/login");
         return;
       }
       this.$router.push("/mobile/mcenter/information/message");
+    }
   }
 };
 </script>
