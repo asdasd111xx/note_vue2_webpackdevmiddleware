@@ -207,8 +207,25 @@
         v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
         :class="$style['bank-card-wrap']"
       >
-        <div :class="$style['bank-card-cell']">
-          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
+        <div :class="[$style['bank-card-cell'],$style['bank-card-cell-epoint']]">
+          <div :class="$style['bank-wrap']">
+            <div :class="[$style['bank-type'],{[$style['is-current']]:!epointSelectType}]"
+                  @click="epointSelectType = false">
+              普通提现
+              <img
+                  :class="$style['select']"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                />
+              </div>
+            <div :class="[$style['bank-type'],{[$style['is-current']]:epointSelectType}]" 
+                  @click="epointSelectType = true">
+              e点富
+              <img
+                  :class="$style['select']"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                />
+              </div>
+          </div>
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
             v-if="
@@ -757,7 +774,8 @@ export default {
       redJackpotData: { enable: false },
       marqueeList: [],
 
-      displayWithdrawValue: ""
+      displayWithdrawValue: "",
+      epointSelectType:false
     };
   },
   watch: {
