@@ -47,10 +47,15 @@ export default {
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
       defaultOuterCrypto: "",
+      defaultEpointWallet: "",
       outerCryptoOption: [],
+      userBankOption: [],
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
+      showEpointWalletAddress: false,
       outerCryptoAddress: "",
+      epointBankName: "",
+      epointBankAccount: "",
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
@@ -86,6 +91,10 @@ export default {
     },
     defaultOuterCrypto() {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
+    },
+    defaultEpointWallet() {
+      this.showEpointWalletAddress =
+        this.defaultEpointWallet.bank_name === "其他银行卡";
     }
   },
   computed: {
@@ -819,6 +828,7 @@ export default {
 
       this.checkDepositInput();
       this.getVendorCryptoOuterUserAddressList();
+      this.getUserBankList();
     },
     /**
      * 切換通道
@@ -880,6 +890,7 @@ export default {
       this.nameCheckFail = false;
       this.checkSuccess = false;
       this.showOuterCryptoAddress = false;
+      this.showEpointWalletAddress = false;
 
       this.walletData["CGPay"].password = "";
       this.cryptoMoney = "--";
@@ -1451,6 +1462,30 @@ export default {
           // this.outerCryptoOption = ["1", "2", "3"];
         })
         .catch(error => {});
+    },
+    // 取得使用者銀行卡列表
+    getUserBankList() {
+      // C02.221 回傳銀行卡清單與狀態/查詢會員出款銀行
+      this.userBankOption = [];
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`,
+        params: {
+          lang: "zh-cn",
+          common: this.isCommon
+        }
+      }).then(response => {
+        const { data, status, errorCode } = response;
+
+        if (errorCode !== "00" || status !== "000") {
+          return;
+        }
+        this.userBankOption = data.filter(bank => {
+          return !bank.auditing && bank.enable;
+        });
+        this.userBankOption.push({ bank_name: "其他银行卡" });
+        this.defaultEpointWallet = this.userBankOption[0];
+      });
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);

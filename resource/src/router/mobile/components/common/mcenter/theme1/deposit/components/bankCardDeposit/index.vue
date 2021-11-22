@@ -292,7 +292,7 @@
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) -->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || e点富(34)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -437,6 +437,70 @@
               />
               <div :class="$style['wallet-address-text']">
                 为即时到帐，请务必输入正确的钱包位址
+              </div>
+            </div>
+            <!-- e點富銀行 -->
+            <!-- v-if="
+                isSelectBindWallet(34) &&
+                  this.curPassRoad.is_bind_wallet
+              " -->
+            <div
+              
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <span :class="$style['select-bank-title']">
+                您的银行
+              </span>
+              <select
+                v-model="defaultEpointWallet"
+                :class="$style['outer-crypto-selected']"
+              >
+                <option
+                  v-for="(option, idx) in userBankOption"
+                  :key="idx"
+                  v-bind:value="option"
+                >
+                  {{ option.bank_name }}
+                </option>
+              </select>
+
+              <!-- <div :class="$style['select-bank-item']">
+              {{ curSelectedBank.label }}
+              </div> -->
+            </div>
+
+              <!-- v-if="showEpointWalletAddress" -->
+            <div
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <div :class="$style['other-bank-input-text']">
+                银行名称
+                <input
+                  v-model="epointBankName"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入银行名称'"
+                />
+              </div>
+              <div :class="[$style['other-bank-input-text'],$style['border']]">
+                银行帐号
+                <input
+                  v-model="epointBankAccount"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入银行帐号'"
+                />
+              </div>
+              <div :class="[$style['wallet-address-text'],$style['less']]">
+                为即时到帐，请务必输入正确的银行资讯
               </div>
             </div>
 
@@ -1093,7 +1157,8 @@
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
-                  (showOuterCryptoAddress && outerCryptoAddress === '')
+                  (showOuterCryptoAddress && outerCryptoAddress === '') ||
+                  (showEpointWalletAddress && (epointBankName === '' || epointBankAccount === ''))
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1704,6 +1769,7 @@ export default {
         // 沒有維護則跑原本流程
         const params = [
           this.getPayGroup(),
+          this.getUserBankList(),
           this.checkEntryBlockStatus(),
           this.actionSetRechargeConfig(),
           this.actionSetAnnouncementList({ type: 1 })
@@ -1771,6 +1837,12 @@ export default {
         case 30:
           this.$router.push(
             `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
+          );
+          break;
+          // e点富
+        case 34:
+          this.$router.push(
+            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
           );
           break;
 
@@ -2107,6 +2179,7 @@ export default {
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 30 ||
         this.curPayInfo.payment_method_id === 22 ||
+        this.curPayInfo.payment_method_id === 34 ||
         this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404
       );

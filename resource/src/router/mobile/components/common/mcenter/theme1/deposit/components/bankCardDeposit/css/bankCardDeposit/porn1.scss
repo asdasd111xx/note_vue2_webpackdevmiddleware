@@ -1182,4 +1182,17 @@
   padding-top: 5px;
   font-size: 12px;
   color: #db6372;
+
+  &.less {
+    margin-top: 5px;
+  }
+}
+
+.other-bank-input-text {
+  padding-top: 5px;
+  padding-bottom: 10px;
+
+  &.border {
+    border-top: 1px solid #eee;
+  }
 }
