@@ -29,7 +29,10 @@
               "/></i
           >贡献榜
         </div>
-        <div :class="$style['myCenterWallet']">
+        <div
+          :class="$style['myCenterWallet']"
+          @click="[onListClick('wallet', false), onClickEvent('wallet')]"
+        >
           <p>
             <img
               :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
@@ -137,7 +140,10 @@
           </div>
           <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
         </div>
-        <div :class="$style['cell']" @click="onListClick('betRecord', false)">
+        <div
+          :class="$style['cell']"
+          @click="[onListClick('betRecord', false), onClickEvent('betRecord')]"
+        >
           <div>
             <img
               :src="
@@ -147,7 +153,12 @@
           </div>
           <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
         </div>
-        <div :class="$style['cell']" @click="onListClick('moneyDetail', false)">
+        <div
+          :class="$style['cell']"
+          @click="
+            [onListClick('moneyDetail', false), onClickEvent('moneyDetail')]
+          "
+        >
           <div>
             <img
               :src="
@@ -157,7 +168,12 @@
           </div>
           <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
         </div>
-        <div :class="$style['cell']" @click="onListClick('bankRebate', false)">
+        <div
+          :class="$style['cell']"
+          @click="
+            [onListClick('bankRebate', false), onClickEvent('bankRebate')]
+          "
+        >
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_rebate.png')"
@@ -179,7 +195,10 @@
           </div>
           <div>我的推广</div>
         </div>
-        <div :class="$style['cell']" @click="onListClick('makeMoney', false)">
+        <div
+          :class="$style['cell']"
+          @click="[onListClick('makeMoney', false), onClickEvent('makeMoney')]"
+        >
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_process.png')"
@@ -212,6 +231,7 @@ import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import member from "@/api/member";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import share from "./share";
+import { sendUmeng } from "@/lib/sendUmeng";
 export default {
   props: {
     paopaoUserInfo: {
@@ -332,6 +352,37 @@ export default {
       const now = moment(new Date());
 
       this.createdTime = now.diff(startTime, "days") + 1;
+    },
+    onClickEvent(type) {
+      if (!this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      } else {
+        switch (type) {
+          case "accountVIP":
+            sendUmeng(26);
+            break;
+          case "makeMoney":
+            sendUmeng(27);
+            break;
+          case "wallet":
+            sendUmeng(28);
+            break;
+          case "betRecord":
+            sendUmeng(29);
+            break;
+          case "moneyDetail":
+            sendUmeng(30);
+            break;
+          case "bankRebate":
+            sendUmeng(31);
+            break;
+
+          default:
+            break;
+        }
+        this.$router.push(`/mobile/mcenter/${type}`);
+      }
     },
     goToRebate() {
       if (this.loginStatus) {

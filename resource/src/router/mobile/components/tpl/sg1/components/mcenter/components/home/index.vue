@@ -16,6 +16,7 @@ import shortcutInfo from "./components/shortcutInfo";
 import memList from "./components/memList";
 import avatarInfo from "./components/avatarInfo";
 import appTip from "./components/appTip";
+import { sendUmeng } from "@/lib/sendUmeng";
 export default {
   components: {
     mobileContainer,
@@ -42,6 +43,7 @@ export default {
     }
   },
   created() {
+<<<<<<< HEAD
     if (this.loginStatus) {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/front-page",
@@ -49,6 +51,17 @@ export default {
       }).then(data => {
         this.paopaoUserInfo = data.result;
       });
+=======
+    sendUmeng(24);
+  },
+  methods: {
+    goMessage() {
+      if (!this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+      this.$router.push("/mobile/mcenter/information/message");
+>>>>>>> develop
     }
   },
   methods: {

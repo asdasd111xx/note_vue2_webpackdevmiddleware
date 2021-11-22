@@ -1,6 +1,7 @@
 <template>
   <div
     :class="$style['mcenter-avatar-info-wrap']"
+    @click="clickEvent"
     :style="{
       background: `url(${
         !loginStatus || paopaoUserInfo.background == ''
@@ -78,6 +79,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {},
@@ -199,6 +201,12 @@ export default {
       }).then(res => {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
+    },
+    clickEvent() {
+      sendUmeng(25);
+      this.loginStatus
+        ? this.$router.push("/mobile/mcenter/accountData")
+        : this.$router.push("/mobile/login");
     }
   }
 };

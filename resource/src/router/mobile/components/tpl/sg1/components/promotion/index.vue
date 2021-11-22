@@ -69,6 +69,7 @@ import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -85,6 +86,9 @@ export default {
       hasNewGift: false,
       isShowPop: false
     };
+  },
+  created() {
+    sendUmeng(51);
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
