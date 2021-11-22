@@ -1608,6 +1608,15 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     return;
   }
 
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
+  }
+
   return axios({
     method: "get",
     url: "/api/v1/c/recharge/config"
@@ -1734,6 +1743,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       });
     })
     .catch(error => {
+      console.log(error);
       if (error.response.data.code === "M00001") {
         dispatch("actionSetGlobalMessage", {
           msg: "请先登入",
