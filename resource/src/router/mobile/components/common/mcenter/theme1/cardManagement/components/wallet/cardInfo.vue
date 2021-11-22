@@ -88,10 +88,9 @@
 
             <span v-else>
               {{
-                $t("S_VIRTUAL_BANKCARD_LIMIT").replace(
-                  "%s",
-                  userLevelObj.virtual_bank_max
-                )
+                ["ey1"].includes(themeTPL)
+                  ? `最多支持添加${userLevelObj.virtual_bank_max}张电子钱包`
+                  : `最多支持添加${userLevelObj.virtual_bank_max}张数字货币`
               }}
             </span>
           </template>
