@@ -31,7 +31,7 @@
         </div>
         <div
           :class="$style['myCenterWallet']"
-          @click="[onListClick('wallet', false), onClickEvent('wallet')]"
+          @click="onListClick('wallet', false)"
         >
           <p>
             <img
@@ -126,12 +126,7 @@
 
       <!-- 快捷功能8 -->
       <div :class="$style['mcenter-func-eight']">
-        <div
-          :class="$style['cell']"
-          @click="
-            [onListClick('accountVip', false), onClickEvent('accountVIP')]
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('accountVip', false)">
           <div>
             <img :src="$getCdnPath('/static/image/sg1/mcenter/icon_vip.png')" />
           </div>
@@ -145,10 +140,7 @@
           </div>
           <div>{{ $text("S_MY_PURSE", "我的钱包") }}</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="[onListClick('betRecord', false), onClickEvent('betRecord')]"
-        >
+        <div :class="$style['cell']" @click="onListClick('betRecord', false)">
           <div>
             <img
               :src="
@@ -158,12 +150,7 @@
           </div>
           <div>{{ $text("S_BETHISTORYBTN", "投注记录") }}</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            [onListClick('moneyDetail', false), onClickEvent('moneyDetail')]
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('moneyDetail', false)">
           <div>
             <img
               :src="
@@ -173,12 +160,7 @@
           </div>
           <div>{{ $text("S_TRANSACTION_RECORD", "交易记录") }}</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="
-            [onListClick('bankRebate', false), onClickEvent('bankRebate')]
-          "
-        >
+        <div :class="$style['cell']" @click="onListClick('bankRebate', false)">
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_rebate.png')"
@@ -200,10 +182,7 @@
           </div>
           <div>我的推广</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="[onListClick('makeMoney', false), onClickEvent('makeMoney')]"
-        >
+        <div :class="$style['cell']" @click="onListClick('makeMoney', false)">
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_process.png')"
@@ -345,6 +324,29 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
+      switch (target) {
+        case "accountVIP":
+          sendUmeng(26);
+          break;
+        case "makeMoney":
+          sendUmeng(27);
+          break;
+        case "wallet":
+          sendUmeng(28);
+          break;
+        case "betRecord":
+          sendUmeng(29);
+          break;
+        case "moneyDetail":
+          sendUmeng(30);
+          break;
+        case "bankRebate":
+          sendUmeng(31);
+          break;
+
+        default:
+          break;
+      }
 
       if (isLive) {
         this.$router.push(`/mobile/live/iframe/${target}`);
@@ -358,37 +360,7 @@ export default {
 
       this.createdTime = now.diff(startTime, "days") + 1;
     },
-    onClickEvent(type) {
-      if (!this.loginStatus) {
-        this.$router.push("/mobile/login");
-        return;
-      } else {
-        switch (type) {
-          case "accountVIP":
-            sendUmeng(26);
-            break;
-          case "makeMoney":
-            sendUmeng(27);
-            break;
-          case "wallet":
-            sendUmeng(28);
-            break;
-          case "betRecord":
-            sendUmeng(29);
-            break;
-          case "moneyDetail":
-            sendUmeng(30);
-            break;
-          case "bankRebate":
-            sendUmeng(31);
-            break;
 
-          default:
-            break;
-        }
-        this.$router.push(`/mobile/mcenter/${type}`);
-      }
-    },
     goToRebate() {
       if (this.loginStatus) {
         this.isShowPromotion =

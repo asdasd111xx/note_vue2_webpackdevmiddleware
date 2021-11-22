@@ -1,7 +1,6 @@
 <template>
   <div
     :class="$style['mcenter-avatar-info-wrap']"
-    @click="clickEvent"
     :style="{
       background: `url(${
         !loginStatus || paopaoUserInfo.background == ''
@@ -145,7 +144,7 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
-
+      sendUmeng(25);
       if (isLive) {
         this.$router.push(`/mobile/live/iframe/${target}`);
       } else {
@@ -201,12 +200,6 @@ export default {
       }).then(res => {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
-    },
-    clickEvent() {
-      sendUmeng(25);
-      this.loginStatus
-        ? this.$router.push("/mobile/mcenter/accountData")
-        : this.$router.push("/mobile/login");
     }
   }
 };

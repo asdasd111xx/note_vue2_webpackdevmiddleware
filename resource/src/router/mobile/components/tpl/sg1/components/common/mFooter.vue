@@ -95,6 +95,7 @@ export default {
         // this.$router.push(`${path}?t=${new Date().toString()}`);
         return;
       }
+
       switch (key) {
         case "home":
           sendUmeng(19);
@@ -108,7 +109,7 @@ export default {
         case "iframe":
           sendUmeng(22);
           break;
-        case "mcenter-home":
+        case "my":
           sendUmeng(23);
           break;
       }
