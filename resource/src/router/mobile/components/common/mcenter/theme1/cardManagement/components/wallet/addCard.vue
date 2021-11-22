@@ -200,7 +200,9 @@
         >
           {{
             selectTarget.oneClickBindingMode
-              ? "一键绑定"
+              ? selectTarget.walletId === 48
+                ? "绑定钱包"
+                : "一键绑定"
               : $text("S_CONFIRM", "确认")
           }}
         </div>
@@ -734,6 +736,8 @@ export default {
         id = 2;
       } else if (this.selectTarget.walletId === 21) {
         id = 3;
+      } else {
+        id = 4;
       }
 
       return axios({
@@ -771,7 +775,7 @@ export default {
 
       this.showBindingFormat = localStorage.getItem("oneClickBindingMode");
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
-      if ([21].includes(this.selectTarget.walletId)) {
+      if ([21, 48].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
         if (this.showBindingFormat) {
           this.selectTarget.oneClickBindingMode = false;
@@ -957,6 +961,70 @@ export default {
               },
               text: "立即申请"
             }
+          }
+        ];
+        return;
+      }
+
+      if (id === 48) {
+        this.walletTipInfo = [
+          {
+            key: "epoint",
+            text: ``,
+            hasCallback: true,
+            dataObj: {
+              cb: () => {
+                // lib_newWindowOpen(
+                //   this.getCustomerServiceUrl({
+                //     urlName: "game_wallet",
+                //     needToken: false
+                //   }).then(res => {
+                //     return res.uri;
+                //   })
+                // );
+              },
+              text: "e点富是什么?"
+            }
+          },
+          {
+            key: "epoint",
+            text: ``,
+            hasCallback: true,
+            dataObj: {
+              cb: () => {
+                // lib_newWindowOpen(
+                //   this.getCustomerServiceUrl({
+                //     urlName: "game_wallet",
+                //     needToken: false
+                //   }).then(res => {
+                //     return res.uri;
+                //   })
+                // );
+              },
+              text: "如何使用e点富存款"
+            }
+          },
+          {
+            key: "epoint",
+            text: `没有e点富帐号?`,
+            hasCallback: true,
+            dataObj: {
+              cb: () => {
+                // lib_newWindowOpen(
+                //   this.getCustomerServiceUrl({
+                //     urlName: "game_wallet",
+                //     needToken: false
+                //   }).then(res => {
+                //     return res.uri;
+                //   })
+                // );
+              },
+              text: "立即申请"
+            }
+          },
+          {
+            key: "epoint",
+            text: `建议您e点富户名同网站真实姓名，加速出款审核时间`
           }
         ];
         return;
