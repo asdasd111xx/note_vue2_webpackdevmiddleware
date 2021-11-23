@@ -25,7 +25,7 @@ export default {
       const bundleIDList = {
         67: "yaboxxxapp01.com.mobile.webview",
         69: "yb0t.66relish.com/mobile/webview",
-        100003: "yb0t.66relish.com/mobile/webview",
+        100003: "ybbe1.777vendor.com/mobile/webview",
         500015: "yb01.66boxing.com/mobile/webview",
 
         41: "",
@@ -35,7 +35,7 @@ export default {
 
         80: "siguaxxxapp01.com.mobile.webview",
         81: "sgt.66relish.com.mobile.webview",
-        100009: "sgt.66relish.com.mobile.webview",
+        100009: "sgbe1.grtymart.com/mobile/webview",
         500035: "sgtt.66boxing.com.mobile.webview",
 
         92: "aupr1.688lg.com.mobile.webview",
