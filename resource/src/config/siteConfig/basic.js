@@ -16,7 +16,7 @@ export const basic = {
 
 // 統一版本號
 export const getVersion = tpl => {
-  let _tpl = version.find(i => i.site === "porn1");
+  let _tpl = version.find(i => i.site === "normal");
   if (_tpl) {
     return _tpl.version;
   }
