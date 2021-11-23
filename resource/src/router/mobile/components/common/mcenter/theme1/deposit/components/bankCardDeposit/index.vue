@@ -464,7 +464,7 @@
                   :key="idx"
                   v-bind:value="option"
                 >
-                  {{ option.bank_name }}
+                  {{ option.account }}
                 </option>
               </select>
 
@@ -475,6 +475,7 @@
 
               <!-- v-if="showEpointWalletAddress" -->
             <div
+              v-if="showEpointWalletAddress"
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],

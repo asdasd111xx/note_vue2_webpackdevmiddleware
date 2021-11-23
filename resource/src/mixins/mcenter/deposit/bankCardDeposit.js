@@ -2,6 +2,7 @@ import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_OUTER_WALLET,
+  API_MCENTER_DEPOSIT_BANK,
   API_MCENTER_DEPOSIT_THIRD,
   API_TRADE_RELAY
 } from "@/config/api";
@@ -1465,27 +1466,22 @@ export default {
     },
     // 取得使用者銀行卡列表
     getUserBankList() {
-      // C02.221 回傳銀行卡清單與狀態/查詢會員出款銀行
-      this.userBankOption = [];
-      return goLangApiRequest({
+      console.log("API_MCENTER_DEPOSIT_BANK");
+      return axios({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`,
-        params: {
-          lang: "zh-cn",
-          common: this.isCommon
-        }
-      }).then(response => {
-        const { data, status, errorCode } = response;
-
-        if (errorCode !== "00" || status !== "000") {
-          return;
-        }
-        this.userBankOption = data.filter(bank => {
-          return !bank.auditing && bank.enable;
-        });
-        this.userBankOption.push({ bank_name: "其他银行卡" });
-        this.defaultEpointWallet = this.userBankOption[0];
-      });
+        url: API_MCENTER_DEPOSIT_BANK,
+        params: {}
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            console.log(response);
+            this.userBankOption = [];
+            this.userBankOption = response.data.ret;
+            this.userBankOption.push({ account: "其他银行卡" });
+            this.defaultEpointWallet = this.userBankOption[0];
+          }
+        })
+        .catch(error => {});
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
