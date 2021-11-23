@@ -1647,7 +1647,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
           if (
             res &&
             res.data &&
-            res.data.result === "ok" &&
+            res.data.status === "000" &&
             res.data.length > 0
           ) {
             bank_required_result = {
