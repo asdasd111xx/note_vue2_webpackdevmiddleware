@@ -78,7 +78,8 @@
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_birthday.png"
             alt=""/></i
-        >生日<span>{{
+        >生日
+        <span>{{
           memInfo.user.birthday == "" ? "尚未設定" : memInfo.user.birthday
         }}</span>
       </li>
