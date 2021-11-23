@@ -37,7 +37,7 @@
 
 .balance-wrap {
   .balance-total-item {
-    color: #e53266;
+    color: #000;
 
     .balance-item-money {
       color: #e53266;
@@ -51,7 +51,10 @@
 
 .balance-item-wrap {
   .balance-redjackpot-text {
-    color: #e53266;
+    color: #000;
+    &.balance-item-money {
+      color: #e53266;
+    }
   }
 
   .balance-redjackpot-image {
