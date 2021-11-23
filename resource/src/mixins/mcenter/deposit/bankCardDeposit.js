@@ -1464,7 +1464,7 @@ export default {
         })
         .catch(error => {});
     },
-    // 取得使用者銀行卡列表
+    // 取得使用者銀行卡列表(迅付)
     getUserBankList() {
       console.log("API_MCENTER_DEPOSIT_BANK");
       return axios({

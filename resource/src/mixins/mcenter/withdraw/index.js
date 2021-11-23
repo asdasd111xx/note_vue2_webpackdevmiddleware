@@ -1,7 +1,8 @@
 import {
   API_AGCENTER_USER_LEVELS,
   API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO
+  API_WITHDRAW_INFO,
+  API_MCENTER_DEPOSIT_BANK
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -41,7 +42,10 @@ export default {
       userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
       nowOpenWallet: [],
       bank_card: [],
-      wallet_card: []
+      wallet_card: [],
+      epointWallet: {},
+      userBankOption: [],
+      defaultEpointWallet: ""
     };
   },
   computed: {
@@ -65,8 +69,7 @@ export default {
       ) {
         return [];
       }
-
-      let resulAccount = [
+      let allAccount = [
         ...this.withdrawUserData.account.map(info => ({
           ...info,
           withdrawType: "account_id"
@@ -80,6 +83,16 @@ export default {
           withdrawType: "crypto_id"
         }))
       ];
+      let resulAccount = [];
+
+      // 過濾e點富
+      resulAccount = allAccount.filter(info => {
+        return info.bank_id != 2026;
+      });
+
+      this.epointWallet = allAccount.filter(info => {
+        return info.bank_id === 2026;
+      });
 
       // 目前應該進不來，沒有 isSupportCGPay 的欄位 ?
       if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
@@ -590,6 +603,23 @@ export default {
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
         });
+    },
+    // 取得使用者銀行卡列表(迅付)
+    getUserBankListFast() {
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_BANK,
+        params: {}
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            console.log(response);
+            this.userBankOption = [];
+            this.userBankOption = response.data.ret;
+            this.defaultEpointWallet = this.userBankOption[0];
+          }
+        })
+        .catch(error => {});
     }
   }
 };

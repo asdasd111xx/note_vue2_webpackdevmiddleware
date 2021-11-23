@@ -207,24 +207,36 @@
         v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
         :class="$style['bank-card-wrap']"
       >
-        <div :class="[$style['bank-card-cell'],$style['bank-card-cell-epoint']]">
+        <div
+          :class="[$style['bank-card-cell'], $style['bank-card-cell-epoint']]"
+        >
           <div :class="$style['bank-wrap']">
-            <div :class="[$style['bank-type'],{[$style['is-current']]:!epointSelectType}]"
-                  @click="epointSelectType = false">
+            <div
+              :class="[
+                $style['bank-type'],
+                { [$style['is-current']]: !epointSelectType }
+              ]"
+              @click="epointSelectType = false"
+            >
               普通提现
               <img
-                  :class="$style['select']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
-            <div :class="[$style['bank-type'],{[$style['is-current']]:epointSelectType}]" 
-                  @click="epointSelectType = true">
+                :class="$style['select']"
+                :src="$getCdnPath(`/static/image/common/select_active.png`)"
+              />
+            </div>
+            <div
+              :class="[
+                $style['bank-type'],
+                { [$style['is-current']]: epointSelectType }
+              ]"
+              @click="epointSelectType = true"
+            >
               e点富
               <img
-                  :class="$style['select']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
+                :class="$style['select']"
+                :src="$getCdnPath(`/static/image/common/select_active.png`)"
+              />
+            </div>
           </div>
           <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
@@ -252,65 +264,127 @@
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <!-- disable 的狀態需要與 RD5 請示 -->
         <div
-          v-for="(item, index) in allWithdrawAccount"
-          :key="index + '-' + item.id"
-          :class="[
-            $style['bank-card-cell'],
-            {
-              [$style['disable']]: !item.allow
-            }
-          ]"
-          @click="handleSelectCard(item)"
+          v-if="
+            allWithdrawAccount &&
+              allWithdrawAccount.length > 0 &&
+              !epointSelectType
+          "
         >
           <div
+            v-for="(item, index) in allWithdrawAccount"
+            :key="index + '-' + item.id"
             :class="[
-              $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              $style['bank-card-cell'],
               {
                 [$style['disable']]: !item.allow
               }
             ]"
-          />
-          <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
-          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
-            {{ parseCardName(item.alias, item.withdrawType) }}
-          </span>
-
-          <!-- CGPay USDT -->
-          <template v-if="item.bank_id === 2009">
-            <img
-              :class="$style['transfergo-img']"
-              :src="
-                $getCdnPath(
-                  `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
-                )
-              "
-              alt="ic_transfergo"
-            />
-
+            @click="handleSelectCard(item)"
+          >
             <div
-              :class="$style['currency-text']"
-              @click.stop="
-                () => {
-                  if (item.id !== selectedCard.id) {
-                    handleSelectCard(item);
-                  }
-                  setPopupStatus(true, 'currency');
+              :class="[
+                $style['check-box'],
+                { [$style['checked']]: item.id === selectedCard.id },
+                {
+                  [$style['disable']]: !item.allow
                 }
-              "
+              ]"
+            />
+            <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
+            <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
+              {{ parseCardName(item.alias, item.withdrawType) }}
+            </span>
+
+            <!-- CGPay USDT -->
+            <template v-if="item.bank_id === 2009">
+              <img
+                :class="$style['transfergo-img']"
+                :src="
+                  $getCdnPath(
+                    `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
+                  )
+                "
+                alt="ic_transfergo"
+              />
+
+              <div
+                :class="$style['currency-text']"
+                @click.stop="
+                  () => {
+                    if (item.id !== selectedCard.id) {
+                      handleSelectCard(item);
+                    }
+                    setPopupStatus(true, 'currency');
+                  }
+                "
+              >
+                {{ withdrawCurrency.alias }}
+              </div>
+            </template>
+          </div>
+        </div>
+        <div
+          v-if="
+            epointWallet.length > 0 &&
+              userBankOption.length > 0 &&
+              epointSelectType
+          "
+        >
+          <div :class="[$style['bank-card-cell']]">
+            <div :class="[$style['check-box'], $style['checked']]" />
+            <span :class="[]">
+              {{
+                parseCardName(
+                  epointWallet[0].alias,
+                  epointWallet[0].withdrawType
+                )
+              }}
+            </span>
+          </div>
+          <div :class="[$style['feature-wrap']]">
+            <span :class="$style['select-bank-title']">
+              您的银行
+            </span>
+            <select
+              v-model="defaultEpointWallet"
+              :class="$style['outer-crypto-selected']"
             >
-              {{ withdrawCurrency.alias }}
-            </div>
-          </template>
+              <option
+                v-for="(option, idx) in userBankOption"
+                :key="idx"
+                v-bind:value="option"
+              >
+                {{ option.account }}
+              </option>
+            </select>
+
+            <!-- <div :class="$style['select-bank-item']">
+              {{ curSelectedBank.label }}
+              </div> -->
+          </div>
         </div>
       </div>
 
       <!-- 更多提现方式 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
-        v-if="moreMethodStatus.bankCard || moreMethodStatus.wallet"
+        v-if="
+          (!epointSelectType &&
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)) ||
+            (epointSelectType && epointWallet.length === 0)
+        "
         :class="[$style['add-bank-card']]"
-        @click="setPopupStatus(true, 'moreMethod')"
+        @click="
+          () => {
+            if (epointSelectType) {
+              $router.push(
+                `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`
+              );
+            } else {
+              setPopupStatus(true, 'moreMethod');
+            }
+          }
+        "
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
@@ -423,7 +497,13 @@
     </template>
 
     <!-- 需有卡片時才出現 -->
-    <template v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
+    <template
+      v-if="
+        (!epointSelectType &&
+          allWithdrawAccount && allWithdrawAccount.length > 0) ||
+          (userBankOption && userBankOption.length > 0 && epointSelectType)
+      "
+    >
       <!-- 額度提示訊息 -->
       <div :class="$style['tips']">{{ getWithdrawTips }}</div>
 
@@ -775,7 +855,7 @@ export default {
       marqueeList: [],
 
       displayWithdrawValue: "",
-      epointSelectType:false
+      epointSelectType: false
     };
   },
   watch: {
@@ -786,9 +866,9 @@ export default {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
       }
-      if(!localStorage.getItem("tmp_w_selectedCard")){
-        if(this.currencyList.length > 0){
-          this.setWithdrawCurrency(this.currencyList[0])
+      if (!localStorage.getItem("tmp_w_selectedCard")) {
+        if (this.currencyList.length > 0) {
+          this.setWithdrawCurrency(this.currencyList[0]);
         }
       }
       // this.actionSetIsLoading(false);
@@ -832,6 +912,7 @@ export default {
           this.getUserStat();
           this.getNowOpenWallet();
           this.getUserBankList();
+          this.getUserBankListFast();
           this.getUserWalletList();
           this.getBounsAccount();
           this.actionSetAnnouncementList({ type: 2 });
@@ -896,6 +977,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     $style() {
       return (
@@ -1052,9 +1136,7 @@ export default {
       }
 
       // 未開啟限綁一組開關
-      if (
-        !this.userLevelObj.virtual_bank_single 
-      ) {
+      if (!this.userLevelObj.virtual_bank_single) {
         // 已開啟電子錢包開關 & 未開啟限綁一組開關
         let noSingleLimit =
           this.wallet_card.length < this.userLevelObj.virtual_bank_max;
@@ -1064,9 +1146,7 @@ export default {
       }
 
       // 開啟限綁一組開關
-      if (
-        this.userLevelObj.virtual_bank_single 
-      ) {
+      if (this.userLevelObj.virtual_bank_single) {
         let nowBindWalletCount = 0;
 
         // 增加判空，否則報 map 錯誤
