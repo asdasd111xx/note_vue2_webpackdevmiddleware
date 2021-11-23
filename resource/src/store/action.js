@@ -1644,12 +1644,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
           method: "post",
           url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
         }).then(res => {
-          if (
-            res &&
-            res.data &&
-            res.data.status === "000" &&
-            res.data.length > 0
-          ) {
+          if (res && res.data && res.status === "000" && res.data.length > 0) {
             bank_required_result = {
               status: "ok"
             };
