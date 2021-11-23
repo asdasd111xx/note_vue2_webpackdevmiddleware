@@ -860,12 +860,11 @@ export default {
   border-radius: 20px;
   width: 18px;
   height: 18px;
-  line-height: 8px;
+  line-height: 16px;
   top: -9px;
-  padding: 5px;
   span {
     color: #fff;
-    font-size: 7px;
+    font-size: 12px;
     padding: 0;
   }
 }
