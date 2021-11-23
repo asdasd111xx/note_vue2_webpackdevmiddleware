@@ -16,6 +16,7 @@ import shortcutInfo from "./components/shortcutInfo";
 import memList from "./components/memList";
 import avatarInfo from "./components/avatarInfo";
 import appTip from "./components/appTip";
+import { sendUmeng } from "@/lib/sendUmeng";
 export default {
   components: {
     mobileContainer,
@@ -40,7 +41,9 @@ export default {
       };
     }
   },
-  created() {},
+  created() {
+    sendUmeng(24);
+  },
   methods: {
     goMessage() {
       if (!this.loginStatus) {

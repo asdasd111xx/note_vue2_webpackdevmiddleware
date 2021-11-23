@@ -95,11 +95,7 @@ export default {
     };
   },
   created() {
-    if (this.routerTPL === "sg1") {
-      sendUmeng(51);
-    } else {
-      sendUmeng(52);
-    }
+    sendUmeng(52);
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
@@ -432,6 +428,7 @@ $fixed_spacing_height: 43px;
   &.porn1 {
     color: #222222;
     background: #ffefdd;
+    border-radius: 32px;
   }
 
   &.sp1 {

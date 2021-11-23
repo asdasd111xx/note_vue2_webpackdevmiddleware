@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="$style['mcenter-avatar-info-wrap']"
-    @click="
-      loginStatus
-        ? $router.push('/mobile/mcenter/accountData')
-        : $router.push('/mobile/login')
-    "
-  >
+  <div :class="$style['mcenter-avatar-info-wrap']" @click="clickEvent">
     <!-- 大頭照 -->
     <div :class="$style['avatar-wrap']">
       <img :src="avatarSrc" />
@@ -54,6 +47,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {},
@@ -129,6 +123,12 @@ export default {
       }).then(res => {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
+    },
+    clickEvent() {
+      sendUmeng(25);
+      this.loginStatus
+        ? this.$router.push("/mobile/mcenter/accountData")
+        : this.$router.push("/mobile/login");
     }
   }
 };

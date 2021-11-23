@@ -384,6 +384,8 @@ export default {
           return "common";
         case "porn1":
           return "porn1";
+        case "sg1":
+          return "sg1";
       }
     },
     swagIcons() {

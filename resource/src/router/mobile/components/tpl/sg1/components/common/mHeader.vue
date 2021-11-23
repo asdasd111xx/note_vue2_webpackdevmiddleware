@@ -123,9 +123,13 @@
         <span :class="$style['visitor-money']" @click="checkLayeredURL"
           >领取</span
         >
-        <span @click="$router.push('/mobile/login')">{{
-          $text("S_LOGON", "登录")
-        }}</span>
+        <span
+          @click="
+            sendUmengEvent(3);
+            $router.push('/mobile/login');
+          "
+          >{{ $text("S_LOGON", "登录") }}</span
+        >
         <img
           :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
           @click="handleClickAsk"
@@ -196,6 +200,7 @@ import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -292,6 +297,13 @@ export default {
       //   this.actionSetGlobalMessage({ type: "incoming" });
       //   return;
       // }
+      switch (this.headerConfig.hasHelp.type) {
+        case "deposit":
+          sendUmeng(47);
+          break;
+        default:
+          break;
+      }
 
       this.$router.push(this.headerConfig.hasHelp.url);
     },
@@ -364,6 +376,7 @@ export default {
       });
     },
     checkLayeredURL() {
+      sendUmeng(2);
       if (getCookie("platform") === "h") {
         this.actionGetLayeredURL().then(res => {
           if (res.indexOf(window.location.host) != -1 || res.length < 1) {
@@ -375,6 +388,9 @@ export default {
       } else {
         this.$router.push(`/mobile/joinmember`);
       }
+    },
+    sendUmengEvent(key) {
+      sendUmeng(key);
     }
   }
 };
