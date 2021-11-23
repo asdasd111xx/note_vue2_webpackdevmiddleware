@@ -171,8 +171,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.3.48
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -193,8 +193,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.3.48
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -215,8 +215,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.3.48
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -265,8 +265,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -287,8 +287,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -309,8 +309,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -331,8 +331,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -353,8 +353,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -375,8 +375,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -397,8 +397,8 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -419,8 +419,8 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -441,8 +441,8 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -463,8 +463,8 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -565,8 +565,8 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -618,8 +618,8 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -640,8 +640,8 @@ steps:
       k8sNginxConfigMap: sp51-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -742,8 +742,8 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -795,8 +795,8 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -817,8 +817,8 @@ steps:
       k8sNginxConfigMap: aubo-frontend-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -917,8 +917,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-beta
       k8sNginxSSL: nginx-ssl-qa
       nfs: 10.17.3.48
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -968,8 +968,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1021,8 +1021,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1043,8 +1043,8 @@ steps:
       k8sNginxConfigMap: yiyuan-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1143,8 +1143,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.3.48
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1194,8 +1194,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1247,8 +1247,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1269,8 +1269,8 @@ steps:
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1369,8 +1369,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-beta
       k8sNginxSSL: ""
       nfs: 10.17.3.48
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1420,8 +1420,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1473,8 +1473,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:
@@ -1495,8 +1495,8 @@ steps:
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
       k8sNginxSSL: ""
       nfs: 10.17.1.94
-      nodePool: cloud.google.com/gke-nodepool
-      nodePoolName: udm16-32
+      nodePool: env
+      nodePoolName: prod
     zone: asia-east1-b
   environment:
     TOKEN:

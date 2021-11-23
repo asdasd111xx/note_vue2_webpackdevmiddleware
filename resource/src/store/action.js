@@ -1608,6 +1608,15 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     return;
   }
 
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
+  }
+
   return axios({
     method: "get",
     url: "/api/v1/c/recharge/config"
@@ -1635,12 +1644,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
           method: "post",
           url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
         }).then(res => {
-          if (
-            res &&
-            res.data &&
-            res.data.result === "ok" &&
-            res.data.length > 0
-          ) {
+          if (res && res.data && res.status === "000" && res.data.length > 0) {
             bank_required_result = {
               status: "ok"
             };
@@ -1734,6 +1738,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       });
     })
     .catch(error => {
+      console.log(error);
       if (error.response.data.code === "M00001") {
         dispatch("actionSetGlobalMessage", {
           msg: "请先登入",
@@ -2072,7 +2077,7 @@ export const actionSetWebDomain = ({ commit }) => {
         "background: #222; color: yellow; font-size:14px",
         {
           ...res.data,
-          version: version.find(i => i.site === "porn1").version
+          version: version.find(i => i.site === "normal").version
         }
       );
       const site = (res && res.data && String(res.data.site)) || "";

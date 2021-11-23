@@ -87,11 +87,7 @@
             </span>
 
             <span v-else>
-              {{
-                ["ey1"].includes(themeTPL)
-                  ? `最多支持添加${userLevelObj.virtual_bank_max}张电子钱包`
-                  : `最多支持添加${userLevelObj.virtual_bank_max}张数字货币`
-              }}
+              {{ `最多支持添加${userLevelObj.virtual_bank_max}个钱包` }}
             </span>
           </template>
         </p>
