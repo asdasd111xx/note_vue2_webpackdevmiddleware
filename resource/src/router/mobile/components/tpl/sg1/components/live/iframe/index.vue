@@ -71,7 +71,8 @@ export default {
       isLoading: true,
       src: "",
       isFullScreen: false,
-      contentTitle: ""
+      contentTitle: "",
+      hasFooter: true
     };
   },
   computed: {
@@ -79,10 +80,6 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig"
     }),
-    hasFooter() {
-      const query = this.$route.query;
-      return query.hasFooter === undefined ? true : query.hasFooter === "true";
-    },
     pageType() {
       return this.$route.params.page;
     },
@@ -91,6 +88,9 @@ export default {
 
       this.isFullScreen =
         query.fullscreen === undefined ? true : query.fullscreen === "true";
+
+      this.hasFooter =
+        query.hasFooter === undefined ? true : query.hasFooter === "true";
 
       let baseConfig = {
         hasHeader:
@@ -117,6 +117,11 @@ export default {
   watch: {
     "$route.params.page"() {
       this.initPage();
+    },
+    "$route.query.hasFooter"(value) {
+      this.hasFooter = value === undefined ? true : value === "true";
+
+      console.log(value, this.hasFooter);
     }
   },
   created() {},
@@ -162,6 +167,15 @@ export default {
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
+    },
+    toogleFooter(data) {
+      console.log(data);
+      const enter = data.data === "enter";
+      if (enter) {
+        this.$router.push({ query: { hasFooter: "false" } });
+      } else {
+        this.$router.push({ query: { hasFooter: "true" } });
+      }
     },
     onSendMessage() {
       this.iframeOnSendMessage(e);

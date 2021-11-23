@@ -307,7 +307,7 @@ export default {
         api_uri: "/api/platform/v1/diamond/remind",
         method: "get"
       }).then(data => {
-        if (data.result && data.result.remind) {
+        if (data && data.result && data.result.remind) {
           this.diamondRemind = data.result.remind;
         } else {
           this.diamondRemind = "";
@@ -319,7 +319,7 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.result && data.result.exchange_rate_list) {
+        if (data && data.result && data.result.exchange_rate_list) {
           this.exchangeRateList = data.result.exchange_rate_list;
         } else {
           this.exchangeRateList = [];
@@ -333,7 +333,7 @@ export default {
         api_uri: "/api/platform/v1/user/diamond-total",
         method: "get"
       }).then(data => {
-        if (data.result && data.result.diamond_total) {
+        if (data && data.result && data.result.diamond_total) {
           this.diamondTotal = data.result.diamond_total;
         } else {
           this.diamondTotal = 0;
@@ -378,13 +378,13 @@ export default {
           });
         }
 
-        if (data.result && data.result.result !== "ok") {
+        if (data && data.result && data.result.result !== "ok") {
           this.actionSetGlobalMessage({
             msg: data.msg
           });
         }
 
-        if (data.result && data.result.result === "success") {
+        if (data && data.result && data.result.result === "success") {
           this.actionSetGlobalMessage({
             msg: "success"
           });

@@ -29,11 +29,12 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      withdrawCheckStatus: "getWithdrawCheckStatus"
+      withdrawCheckStatus: "getWithdrawCheckStatus",
+      promotionLink: "getPromotionLink"
     })
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
     onLoadiframe() {
       window.addEventListener("message", this.iframeOnListener);
       window.scrollTo(0, 0);
@@ -168,6 +169,33 @@ export default {
             });
             return;
 
+          case "EVENT_CHATROOM":
+            this.toogleFooter(data);
+            return;
+
+          case "EVENT_REDIRECT_PAGE":
+            return;
+
+          case "EVENT_GET_QRCODE_URL":
+            goLangApiRequest({
+              method: "get",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Promotion`,
+              params: {
+                // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+                clientType: 3
+              }
+            }).then(res => {
+              if (res && res.data) {
+                console.log(res.data.url);
+                // 縮網址推廣連結
+                this.iframeOnSendMessage({
+                  event: "EVENT_GET_QRCODE_URL",
+                  response: res.data.url
+                });
+              }
+            });
+            return;
+
           default:
             return;
         }
@@ -271,15 +299,23 @@ export default {
           return;
       }
     },
-    iframeOnSendMessage(event, response) {
+    iframeOnSendMessage(event, data) {
       const iframe = this.$refs["iframe"];
       if (event === "EVENT_GET_GAME_URL_TOKEN") {
         iframe.contentWindow.postMessage(
           {
             event: "EVENT_GAME_URI",
-            data: response,
+            data: data,
             title: localStorage.getItem("iframe-third-url-title"),
             origin: this.originData
+          },
+          "*"
+        );
+      } else {
+        iframe.contentWindow.postMessage(
+          {
+            event: event,
+            data: data
           },
           "*"
         );

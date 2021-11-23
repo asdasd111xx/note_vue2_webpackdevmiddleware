@@ -293,7 +293,7 @@ export default {
         api_uri: "/api/platform/v1/user/diamond-total",
         method: "get"
       }).then(data => {
-        if (data.result && data.result.diamond_total) {
+        if (data && data.result && data.result.diamond_total) {
           this.diamondTotal = data.result.diamond_total;
         } else {
           this.diamondTotal = 0;

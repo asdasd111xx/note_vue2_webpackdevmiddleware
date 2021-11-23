@@ -125,7 +125,7 @@ export default {
         api_uri: "/api/platform/v1/user/alias-update-status",
         method: "get"
       }).then(data => {
-        if (data.result.allow_update == false) {
+        if (data && data.result.result.allow_update == false) {
           this.cantEditAlias = true;
         }
       });
