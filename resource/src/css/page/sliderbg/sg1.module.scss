@@ -44,12 +44,13 @@
           display: none;
         }
         span {
+          text-align: center;
           &::after {
             content: "";
             display: inline-block;
             position: relative;
             top: 4px;
-            left: 5px;
+            left: 40px;
             width: 17px;
             height: 17px;
             background: url("/static/image/sg1/common/icon_refresh.png");
