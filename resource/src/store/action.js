@@ -739,7 +739,7 @@ export const actionSetUserdata = (
       method: "post",
       url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
     }).then(res => {
-      commit(types.SET_HASBANK, res.data.length > 0);
+      commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
     });
   }
   //判斷uuid

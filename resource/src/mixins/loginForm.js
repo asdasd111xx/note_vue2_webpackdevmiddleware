@@ -105,7 +105,7 @@ export default {
     },
     handleClickLogin() {
       if (!this.username) {
-        this.errMsg = "用户名不得为空";
+        this.errMsg = "帐号不得为空";
         return;
       }
 

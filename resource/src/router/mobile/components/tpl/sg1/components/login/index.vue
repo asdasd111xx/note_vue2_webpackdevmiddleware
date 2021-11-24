@@ -20,9 +20,7 @@
                   ref="username"
                   v-model="username"
                   :title="$text('S_ACCOUNT', '帐号')"
-                  :placeholder="
-                    $text('S_ACCOUNT_PLACEHOLDER', '请输入4-20位字母或数字')
-                  "
+                  :placeholder="$text('S_ACCOUNT', '帐号')"
                   class="login-input"
                   maxlength="20"
                   tabindex="1"
