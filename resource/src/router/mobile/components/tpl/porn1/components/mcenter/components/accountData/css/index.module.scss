@@ -19,12 +19,12 @@
     border-bottom: none;
   }
 
-  >.field-title {
+  > .field-title {
     height: 22px;
     line-height: 22px;
   }
 
-  >.field-value {
+  > .field-value {
     // height: 22px;
     line-height: 22px;
 
@@ -55,9 +55,9 @@
           padding-right: 3pt;
           border-style: solid;
           border-width: 1pt;
-          border-color: #E42A30;
+          border-color: #e42a30;
           border-radius: 9pt;
-          color: #E42A30;
+          color: #e42a30;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -122,7 +122,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     height: 14px;
     width: 14px;
   }
@@ -134,12 +134,12 @@
   font-size: 14px;
   background-color: white;
 
-  >.block:first-child {
+  > .block:first-child {
     margin-top: 35px;
     margin-bottom: 15px;
   }
 
-  >.field-title {
+  > .field-title {
     height: 20px;
   }
 
@@ -147,7 +147,7 @@
     width: 80%;
     height: 20px;
 
-    >input {
+    > input {
       height: 20px;
     }
 
@@ -176,7 +176,7 @@
       right: 14px;
       color: $main_text_color4;
 
-      >.disable {
+      > .disable {
         color: $main_text_color5;
       }
     }
@@ -194,7 +194,7 @@
   position: relative;
   margin-bottom: 14px;
 
-  >div {
+  > div {
     height: 30px;
     display: inline-flex;
     line-height: 30px;
@@ -202,16 +202,16 @@
   }
 
   &.withdraw-password {
-    >div {
+    > div {
       height: 100%;
     }
   }
 
-  >.title {
+  > .title {
     color: $main_text_color3;
   }
 
-  >.input-wrap input:not(.withdraw-pwd-input) {
+  > .input-wrap input:not(.withdraw-pwd-input) {
     padding-right: 18px;
   }
 }
@@ -251,7 +251,6 @@ input {
     background-color: #d1b79c;
   }
 }
-
 
 .top-tips {
   background: $main_white_color1;
@@ -350,7 +349,7 @@ input {
   height: 100px;
   line-height: 21px;
 
-  >span {
+  > span {
     color: #6aaaf5;
   }
 }
@@ -361,7 +360,7 @@ input {
   height: 100%;
   width: 12px;
 
-  >img {
+  > img {
     height: 12px;
     width: 12px;
   }
@@ -373,7 +372,7 @@ input {
   height: 100%;
   width: 12px;
 
-  >img {
+  > img {
     height: 12px;
     width: 12px;
   }
@@ -391,10 +390,10 @@ input {
   z-index: 500;
 
   .success-dialog-wrap {
-    background: #5E626D;
+    background: #5e626d;
     border-radius: 5px;
     border: 5px;
-    color: #FFFFFF;
+    color: #ffffff;
     height: 110px;
     left: 0;
     margin: 0 auto;
@@ -412,7 +411,7 @@ input {
   flex-direction: row;
   padding-top: 10pt;
   padding-bottom: 10pt;
-  border-bottom: 1px solid #F8F8F7;
+  border-bottom: 1px solid #f8f8f7;
 
   .is-default {
     width: 10%;
@@ -430,7 +429,6 @@ input {
         background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
         background-size: 18px 18px;
       }
-
     }
   }
 
@@ -457,9 +455,9 @@ input {
         padding-right: 3pt;
         border-style: solid;
         border-width: 1pt;
-        border-color: #E42A30;
+        border-color: #e42a30;
         border-radius: 9pt;
-        color: #E42A30;
+        color: #e42a30;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -557,7 +555,7 @@ input {
 .tips-button {
   border-top: 1px solid #f7f7f7;
 
-  >div {
+  > div {
     float: left;
     width: 50%;
     height: 50px;
@@ -572,13 +570,13 @@ input {
 }
 
 .delete-confirm {
-  color: #E42A30;
+  color: #e42a30;
 }
 
 .add-wrap {
   padding: 14px 0 0 14px;
   background: #fff;
-  border-bottom: 1px solid #F8F8F7;
+  border-bottom: 1px solid #f8f8f7;
   position: relative;
 }
 
@@ -661,12 +659,11 @@ input {
   justify-content: space-between;
 }
 
-
 .address-save {
   height: 30pt;
   width: 40%;
   border-radius: 5pt;
-  background: #E42A30;
+  background: #e42a30;
   color: white;
   position: relative;
   margin-left: 15pt;
@@ -700,7 +697,6 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .checkbox-mask {
@@ -720,40 +716,39 @@ input {
     }
   }
 
-
   /* Focus */
-  .ui.toggle.checkbox input:focus~.box:before,
-  .ui.toggle.checkbox input:focus~label:before {
+  .ui.toggle.checkbox input:focus ~ .box:before,
+  .ui.toggle.checkbox input:focus ~ label:before {
     background-color: rgba(0, 0, 0, 0.05) !important;
   }
 
   /* Active */
-  .ui.toggle.checkbox input:checked~.box:before,
-  .ui.toggle.checkbox input:checked~label:before {
-    background-color: #7D87A3 !important;
+  .ui.toggle.checkbox input:checked ~ .box:before,
+  .ui.toggle.checkbox input:checked ~ label:before {
+    background-color: #7d87a3 !important;
   }
 
   /* Active Focus */
-  .ui.toggle.checkbox input:focus:checked~.box:before,
-  .ui.toggle.checkbox input:focus:checked~label:before {
-    background-color: #7D87A3 !important;
+  .ui.toggle.checkbox input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox input:focus:checked ~ label:before {
+    background-color: #7d87a3 !important;
   }
 
   /* only for ey */
   .ui.toggle.checkbox.field-checkbox.ey1 input {
     width: 48px;
-    height: 29px
+    height: 29px;
   }
 
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~.box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~label:after {
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:after,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:after {
     left: 20px;
     top: 1px;
-    box-shadow: none
+    box-shadow: none;
   }
 
-  .ui.toggle.checkbox.field-checkbox.ey1 input~.box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input~label:after {
+  .ui.toggle.checkbox.field-checkbox.ey1 input ~ .box:after,
+  .ui.toggle.checkbox.field-checkbox.ey1 input ~ label:after {
     left: 1px;
     top: 1px;
     box-shadow: none;
@@ -762,7 +757,7 @@ input {
   .ui.toggle.checkbox.field-checkbox.ey1 .box:before,
   .ui.toggle.checkbox.field-checkbox.ey1 label:before {
     width: 48px;
-    height: 29px
+    height: 29px;
   }
 
   .ui.toggle.checkbox.field-checkbox.ey1 .box:after,
@@ -772,14 +767,12 @@ input {
   }
 
   .ui.toggle.checkbox.field-checkbox.ey1 .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~.box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~label:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked~.box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked~label:before {
-    background-color: #6AAAF5 !important;
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ label:before {
+    background-color: #6aaaf5 !important;
   }
-
-
 }
 
 // 日期套件
@@ -824,5 +817,74 @@ input {
 
   .mx-icon-clear {
     right: 0;
+  }
+}
+
+// Popup Style
+.pop-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.pop-block {
+  position: absolute;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: $main_white_color1;
+  border-radius: 8px;
+}
+
+.content {
+  padding: 17px 18px;
+  color: $main_text_color2;
+  text-align: center;
+
+  .title {
+    color: $main_text_color3;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+}
+
+.button-block {
+  position: relative;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  border-top: 1px solid #f7f8fb;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f7f8fb;
+  }
+
+  span {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+
+    &:nth-child(2) {
+      color: #d1b79c;
+    }
   }
 }
