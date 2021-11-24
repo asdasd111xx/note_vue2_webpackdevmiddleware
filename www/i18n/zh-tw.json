@@ -1593,7 +1593,7 @@
   "S_SUBMIT_ORDER_SYSTEM_AUO_ALLOCATES": "提交订单时，系统自动调配最佳充值金额",
   "S_AGENT_GROUP_DOMESTIC": "国内代理群",
   "S_COOPERATION_GROUP_FOREIGN": "国外合作群",
-  "S_SLIDE_REGISTER": "向右滑动即注册",
+  "S_SLIDE_REGISTER": "输入完毕后滑动注册",
   "S_SLIDE_VERIFY": "向右滑动验证",
   "S_SLIDE_LOGIN": "向右滑动即登入",
   "S_SLIDE_ERROR": "哎呀，出错了，点击刷新试试",
