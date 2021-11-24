@@ -84,12 +84,7 @@ export default {
             return;
 
           case "EVENT_THIRDPARTY_LOGIN":
-            if (this.loginStatus) {
-              return;
-            } else {
-              this.$router.push("/mobile/login");
-            }
-
+            this.$router.push("/mobile/login");
             return;
 
           case "EVENT_THIRDPARTY_JOINMEMBER":
@@ -148,14 +143,6 @@ export default {
             );
             return;
 
-          case "EVENT_PAO_DEPOSIT":
-            this.$router.push(`/mobile/live/iframe/exchange_diamond`);
-            return;
-
-          case "EVENT_PAO_EXCHANGE_DIAMOND":
-            this.$router.push(`/mobile/mcenter/live/diamond`);
-            return;
-
           case "EVENT_SWITCH_CUSTOMER_SERVICE":
             this.$router.push(`/mobile/mcenter/service`);
             return;
@@ -174,6 +161,20 @@ export default {
             return;
 
           case "EVENT_REDIRECT_PAGE":
+            switch (data) {
+              case "exchangeDiamond":
+                this.$router.push(`/mobile/live/iframe/exchange_diamond`);
+                return;
+              case "customerService":
+                this.$router.push(`/mobile/mcenter/service`);
+                return;
+              case "mCenterHome":
+                this.$router.push(`/mobile/mcenter/`);
+                return;
+              case "editProfile":
+                this.$router.push(`/mobile/mcenter/`);
+                return;
+            }
             return;
 
           case "EVENT_GET_QRCODE_URL":
