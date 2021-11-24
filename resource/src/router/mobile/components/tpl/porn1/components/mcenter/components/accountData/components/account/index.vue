@@ -33,9 +33,7 @@
             :key="index"
             :class="[$style['account-data-field'], 'clearfix']"
           >
-            <span :class="$style['field-title']">{{
-              $text("S_USER_NAME", "用户名")
-            }}</span>
+            <span :class="$style['field-title']">{{ $text("S_ACCOUNT") }}</span>
             <div :class="$style['field-value']">
               <span>
                 {{

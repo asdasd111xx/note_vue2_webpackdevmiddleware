@@ -20,7 +20,7 @@
                   ref="username"
                   v-model="username"
                   :title="$text('S_ACCOUNT', '帐号')"
-                  :placeholder="$text('S_USER_NAME', '用户名')"
+                  :placeholder="$text('S_ACCOUNT', '帐号')"
                   class="login-input"
                   maxlength="20"
                   tabindex="1"
