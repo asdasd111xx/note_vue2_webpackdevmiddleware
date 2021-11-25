@@ -55,7 +55,7 @@ export default {
           });
         } else {
           this.paopaoUserInfo = data.result;
-          console.log("datadata", data.result);
+          // console.log("datadata", data.result);
         }
       });
     }
