@@ -9,7 +9,7 @@
         border-radius: 75px;
         border: 1px solid #aaa;
         overflow: hidden;
-
+        z-index: 0;
         .nc_iconfont {
           left: -1px;
           top: -1px;
@@ -30,7 +30,6 @@
           border-radius: 50px;
           border: 1px solid #aaa;
           box-shadow: -12px 0px 0px #000;
-          z-index: 0;
         }
       }
 
@@ -40,17 +39,17 @@
         border-radius: 23px;
         color: #000;
         border: none;
+        text-align: center;
         .icon_warn {
           display: none;
         }
         span {
-          text-align: center;
           &::after {
             content: "";
             display: inline-block;
             position: relative;
             top: 4px;
-            left: 40px;
+            left: 20px;
             width: 17px;
             height: 17px;
             background: url("/static/image/sg1/common/icon_refresh.png");
