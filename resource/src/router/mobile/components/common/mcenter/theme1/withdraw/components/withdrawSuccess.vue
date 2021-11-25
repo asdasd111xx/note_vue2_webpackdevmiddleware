@@ -53,8 +53,8 @@
           <hr style="background-color:#ddd; height:0.5px; border:none;" />
           <div
             :class="[
-              ['ey1'].includes(themeTPL)
-                ? $style['confirm-btn-ey1']
+              ['ey1', 'sg1'].includes(themeTPL)
+                ? $style[`confirm-btn-${themeTPL}`]
                 : $style['confirm-btn']
             ]"
             @click="closeFuc(false)"
