@@ -48,7 +48,14 @@ export default {
         api_uri: "/api/platform/v1/user/front-page",
         method: "get"
       }).then(data => {
-        this.paopaoUserInfo = data.result;
+        if (data.error_code) {
+          this.actionSetGlobalMessage({
+            msg: data.error_text,
+            code: data.error_code
+          });
+        } else {
+          this.paopaoUserInfo = data.result;
+        }
       });
     }
   },

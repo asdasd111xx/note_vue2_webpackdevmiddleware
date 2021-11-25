@@ -29,11 +29,8 @@
               "/></i
           >贡献榜
         </div>
-        <div
-          :class="$style['myCenterWallet']"
-          @click="onListClick('wallet', false)"
-        >
-          <p>
+        <div :class="$style['myCenterWallet']">
+          <p @click="onListClick('wallet', false)">
             <img
               :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
             />中心钱包

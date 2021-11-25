@@ -59,7 +59,12 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.result) {
+        if (data.error_code) {
+          this.actionSetGlobalMessage({
+            msg: data.error_text,
+            code: data.error_code
+          });
+        } else if (data.result) {
           this.paopaoMemberCardInfo = data.result;
         }
       });
@@ -70,7 +75,12 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.result) {
+        if (data.error_code) {
+          this.actionSetGlobalMessage({
+            msg: data.error_text,
+            code: data.error_code
+          });
+        } else {
           this.paopaoMemberCardInfoTop = data.result;
         }
       });
