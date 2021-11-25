@@ -1118,8 +1118,8 @@ export default {
                   localStorage.removeItem("password");
                 }
 
-                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
+                window.RESET_LOCAL_SETTING();
                 if (this.siteConfig.ROUTER_TPL === "sg1") {
                   this.$router.push("/mobile/live/iframe/home");
                 } else {
