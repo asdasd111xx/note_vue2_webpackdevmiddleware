@@ -7,7 +7,11 @@
         <div :class="$style['more-method-wrap']">
           <div :class="$style['more-method-container']">
             <div :class="$style['more-method-header']">
-              <div @click="closePopup" :class="$style['prev']">
+              <div
+                @click="closePopup"
+                :class="$style['prev']"
+                :style="{ color: themeTPL == 'sg1' ? '#000' : '' }"
+              >
                 {{ $text("S_CANCEL", "取消") }}
               </div>
 
