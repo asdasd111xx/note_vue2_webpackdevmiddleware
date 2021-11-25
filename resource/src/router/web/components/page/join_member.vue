@@ -185,7 +185,7 @@
                   v-model="allValue['phone']"
                   :class="[$style['join-input'], field.key]"
                   :name="field.key"
-                  :placeholder="field.content.note1"
+                  :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
@@ -201,7 +201,7 @@
                   :open-date="ageLimit"
                   :clear-button="true"
                   :monday-first="true"
-                  :placeholder="field.content.note1"
+                  :placeholder="placeholderKeyValue('birthday', 'tip')"
                   :input-class="$style['join-input-birthday']"
                   name="birthday"
                   format="yyyy/MM/dd"
@@ -227,19 +227,35 @@
                     type="tel"
                   />
                 </div>
+                <div
+                  :class="
+                    placeholderKeyValue('withdraw_password', 'help')
+                      ? $style['join-withdraw-password-help-show']
+                      : $style['join-withdraw-password-help']
+                  "
+                  v-html="placeholderKeyValue('withdraw_password', 'help')"
+                />
               </template>
-
-              <input
-                v-else
-                :ref="field.key"
-                v-model="allValue[field.key]"
-                :class="[$style['join-input'], field.key]"
-                :name="field.key"
-                :placeholder="field.content.note1"
-                type="text"
-                @blur="verification(field.key)"
-                @keydown.13="keyDownSubmit()"
-              />
+              <template v-else>
+                <input
+                  :ref="field.key"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="placeholderKeyValue(field.key, 'tip')"
+                  type="text"
+                  @blur="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                />
+                <div
+                  :class="
+                    placeholderKeyValue(field.key, 'help')
+                      ? $style['join-help-show']
+                      : $style['join-help']
+                  "
+                  v-html="placeholderKeyValue(field.key, 'help')"
+                />
+              </template>
             </div>
             <!-- eslint-disable vue/no-v-html -->
             <div
@@ -494,7 +510,8 @@ export default {
       isGetCaptcha: false,
       isLoading: false,
       showRedirectJump: false,
-      redirect_url: ""
+      redirect_url: "",
+      placeholderResult: []
     };
   },
   computed: {
@@ -708,6 +725,7 @@ export default {
     if (!this.loginStatus) {
       this.getGuestBalance();
     }
+    this.getPlaceholderList();
   },
   methods: {
     ...mapActions([
@@ -1231,6 +1249,37 @@ export default {
       } else {
         window.location.href = `https://${this.redirect_url}`;
       }
+    },
+    getPlaceholderList() {
+      //取得 [前台設置/網站建置平台] 的 [會員/代理] 註冊提示語 C02.329
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Platform/Placeholder`
+      })
+        .then(response => {
+          if (response.status === "000") {
+            this.placeholderResult = [];
+            this.placeholderResult = response.data.JOINMEMBER.data || [];
+          }
+          return;
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
+    },
+    placeholderKeyValue(key, option) {
+      let result = this.placeholderResult.find(item => item.key === key);
+      if (result) {
+        //tip：代表欄位placeholder ,help：代表欄位提示
+        switch (option) {
+          case "tip":
+            return result.tip["zh-cn"] || "";
+          case "help":
+            return result.help["zh-cn"] || "";
+        }
+      }
+      return;
     }
   }
 };

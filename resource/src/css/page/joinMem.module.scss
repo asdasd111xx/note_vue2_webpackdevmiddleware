@@ -254,6 +254,31 @@
   display: inline-block;
 }
 
+.join-help {
+  display: none;
+  width: 100%;
+  padding: 5px 0px 5px 3px;
+  text-align: left;
+  color: #a5a5a5;
+}
+
+.join-help-show {
+  composes: join-help;
+  display: inline-block;
+}
+
+.join-withdraw-password-help {
+  display: none;
+  width: 100%;
+  padding: 5px 126px 5px 0px;
+  text-align: end;
+  color: #a5a5a5;
+}
+.join-withdraw-password-help-show {
+  composes: join-withdraw-password-help;
+  display: inline-block;
+}
+
 .join-msg {
   margin-top: 5px;
   color: #668691;
