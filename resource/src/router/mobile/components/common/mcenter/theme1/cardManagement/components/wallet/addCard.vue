@@ -725,19 +725,24 @@ export default {
       if (this.isReceive) {
         return Promise.resolve(false);
       }
-
       this.isReceive = true;
 
       // walletGatewayId = 3 -> CGPay
       // walletGatewayId = 2 -> 購寶
       let id = null;
 
-      if (this.selectTarget.walletId === 37) {
-        id = 2;
-      } else if (this.selectTarget.walletId === 21) {
-        id = 3;
-      } else {
-        id = 4;
+      switch (this.selectTarget.walletId) {
+        case 37:
+          id = 2;
+          break;
+        case 21:
+          id = 3;
+          break;
+        case 48:
+          id = 5;
+          break;
+        default:
+          return;
       }
 
       return axios({
