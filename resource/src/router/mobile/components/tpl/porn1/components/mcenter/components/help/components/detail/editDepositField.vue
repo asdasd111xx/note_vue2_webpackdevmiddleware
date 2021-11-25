@@ -1,6 +1,6 @@
 <template>
   <transition :name="'fade'">
-    <div :class="$style['detail-alert-wrap']">
+    <div :class="[$style['detail-alert-wrap'], $style[themeTPL]]">
       <div :class="[$style['alert-wrap'], $style['deposit']]">
         <div :class="$style['alert-title']">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
@@ -111,8 +111,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
     resultSpeedField: {
       get() {
         return this.speedField;
