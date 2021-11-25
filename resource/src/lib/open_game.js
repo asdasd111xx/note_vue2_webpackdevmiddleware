@@ -184,13 +184,6 @@ export default (params, success = () => {}, fail = () => {}) => {
             }
 
             success(response);
-            let hasFooter = false;
-            if (
-              store.state.siteConfig.ROUTER_TPL === "sg1" &&
-              vendor === "lg_sport"
-            ) {
-              hasFooter = true;
-            }
 
             if (
               embedGame &&
@@ -198,7 +191,7 @@ export default (params, success = () => {}, fail = () => {}) => {
               gameType !== "event"
             ) {
               router.push(
-                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}&hasFooter=${hasFooter}`
+                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
               );
               return;
             }

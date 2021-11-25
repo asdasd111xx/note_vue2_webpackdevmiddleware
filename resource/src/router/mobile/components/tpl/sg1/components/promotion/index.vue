@@ -1,8 +1,13 @@
 <template>
   <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['promotion-wrap']">
-      <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
+      <div :class="$style['promotion-gift-wrap']">
+        <div :class="$style['btn-prev']" @click="$router.back()">
+          <img :src="$getCdnPath(`/static/image/common/btn_back_black.png`)" />
+        </div>
+
         <div
+          v-if="loginStatus"
           :class="[$style['promotion-gift'], $style['right']]"
           @click="onGiftClick(giftList[0])"
         >
@@ -11,6 +16,7 @@
         </div>
 
         <div
+          v-if="loginStatus"
           :class="[$style['promotion-gift'], $style['left']]"
           @click="onGiftClick(giftList[1])"
         >
@@ -388,7 +394,7 @@ $fixed_spacing_height: 43px;
   }
 
   &.left {
-    left: 14px;
+    left: 32px;
   }
 
   > .red-dot {
@@ -400,6 +406,24 @@ $fixed_spacing_height: 43px;
     height: 9px;
     top: 0;
     border: 1px solid #ffffff;
+  }
+}
+
+.btn-prev {
+  bottom: 0;
+  height: 43px;
+  left: 12px;
+  margin: auto;
+  top: 0;
+  width: 20px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > img {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

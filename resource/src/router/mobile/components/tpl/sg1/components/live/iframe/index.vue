@@ -169,7 +169,6 @@ export default {
       this.isFullScreen = !this.isFullScreen;
     },
     toogleFooter(data) {
-      console.log(data);
       const enter = data.data === "enter";
       if (enter) {
         this.$router.push({ query: { hasFooter: "false" } });
