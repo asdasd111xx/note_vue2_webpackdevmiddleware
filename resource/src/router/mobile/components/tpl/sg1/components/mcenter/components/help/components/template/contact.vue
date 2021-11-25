@@ -138,9 +138,9 @@ export default {
       width: 120px;
       text-align: center;
       background-color: #ededed;
+      border-radius: 14px;
+      border: 1px solid #000000;
       > div {
-        border-radius: 14px;
-        border: 1px solid #000000;
         color: #000000;
         padding: 2.5px 5px;
       }
