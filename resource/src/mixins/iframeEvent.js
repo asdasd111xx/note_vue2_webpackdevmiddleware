@@ -161,17 +161,18 @@ export default {
             return;
 
           case "EVENT_REDIRECT_PAGE":
-            switch (data) {
-              case "exchangeDiamond":
+            const _data = data.data.toUpperCase();
+            switch (_data) {
+              case "EXCHANGEDIAMOND":
                 this.$router.push(`/mobile/live/iframe/exchange_diamond`);
                 return;
-              case "customerService":
+              case "CUSTOMERSERVICE":
                 this.$router.push(`/mobile/mcenter/service`);
                 return;
-              case "mCenterHome":
+              case "MCENTERHOME":
                 this.$router.push(`/mobile/mcenter/`);
                 return;
-              case "editProfile":
+              case "EDITPROFILE":
                 this.$router.push(`/mobile/mcenter/`);
                 return;
             }
