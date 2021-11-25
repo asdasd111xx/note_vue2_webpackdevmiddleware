@@ -48,13 +48,14 @@ export default {
         api_uri: "/api/platform/v1/user/front-page",
         method: "get"
       }).then(data => {
-        if (data.error_code) {
+        if (data.error_code !== "0") {
           this.actionSetGlobalMessage({
             msg: data.error_text,
             code: data.error_code
           });
         } else {
           this.paopaoUserInfo = data.result;
+          console.log("datadata", data.result);
         }
       });
     }

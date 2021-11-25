@@ -294,6 +294,11 @@ export default {
   }
 }
 
+.badge {
+  width: 20px;
+  height: 20px;
+}
+
 .avatar-wrap {
   margin: 65px 0 20px 0;
   height: 82px;

@@ -59,7 +59,7 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.error_code) {
+        if (data.error_code !== "0") {
           this.actionSetGlobalMessage({
             msg: data.error_text,
             code: data.error_code
@@ -75,7 +75,7 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.error_code) {
+        if (data.error_code !== "0") {
           this.actionSetGlobalMessage({
             msg: data.error_text,
             code: data.error_code
