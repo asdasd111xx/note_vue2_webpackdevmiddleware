@@ -369,7 +369,7 @@ export default target => {
     }
   }
 
-  if (!store.state.loginStatus) {
+  if (!store.state.loginStatus && vendor != "sigua_ly") {
     router.push("/mobile/login");
     return;
   }
@@ -399,17 +399,17 @@ export default target => {
       default:
         break;
     }
+    if (vendor != "sigua_ly") {
+      let notVipGame = JSON.parse(
+        localStorage.getItem("needFilterGameData")
+      ).find(filterData => {
+        return filterData.gameCode === code;
+      });
 
-    let notVipGame = JSON.parse(
-      localStorage.getItem("needFilterGameData")
-    ).find(filterData => {
-      return filterData.gameCode === code;
-    });
-    // console.log(notVipGame);
-
-    if (linkTo === "lg_yb_card" && notVipGame) {
-      store.dispatch("actionSetGlobalMessage", { msg: "VIP等级不足" });
-      return;
+      if (linkTo === "lg_yb_card" && notVipGame) {
+        store.dispatch("actionSetGlobalMessage", { msg: "VIP等级不足" });
+        return;
+      }
     }
 
     const gameData = store.state.gameData["_allGame"];
