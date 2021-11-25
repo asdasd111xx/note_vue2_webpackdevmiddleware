@@ -369,7 +369,7 @@ export default target => {
     }
   }
 
-  if (!store.state.loginStatus) {
+  if (!store.state.loginStatus && vendor != "sigua_ly") {
     router.push("/mobile/login");
     return;
   }
