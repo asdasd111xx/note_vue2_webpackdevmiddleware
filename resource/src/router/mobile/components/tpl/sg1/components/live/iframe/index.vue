@@ -87,10 +87,10 @@ export default {
       const query = this.$route.query;
 
       this.isFullScreen =
-        query.fullscreen === undefined ? true : query.fullscreen === "true";
+        query.fullscreen === undefined ? false : query.fullscreen === "true";
 
       this.hasFooter =
-        query.hasFooter === undefined ? true : query.hasFooter === "true";
+        query.hasFooter === undefined ? false : query.hasFooter === "true";
 
       let baseConfig = {
         hasHeader:

@@ -54,7 +54,7 @@ export default {
           key: "home",
           routeName: "liveHome",
           name: this.$text("S_HOME", "首页"),
-          path: "/mobile/live/iframe/home"
+          path: "/mobile/live/iframe/home?hasFooter=true"
         },
         {
           // 泡泡直播體育開啟BB體育
