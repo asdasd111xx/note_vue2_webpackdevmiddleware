@@ -340,6 +340,17 @@
                 )
               }}
             </span>
+            <span
+              :class="$style['rubbing-btn']"
+              @click="
+                $router.push(
+                  `/mobile/mcenter/help/detail?type=withdraw${
+                    isApp ? '&app=true' : ''
+                  }`
+                )
+              "
+              >搓合查询</span
+            >
           </div>
           <div :class="[$style['feature-wrap']]">
             <span :class="$style['select-bank-title']">
@@ -500,8 +511,11 @@
     <template
       v-if="
         (!epointSelectType &&
-          allWithdrawAccount && allWithdrawAccount.length > 0) ||
-          (userBankOption && userBankOption.length > 0 && epointSelectType)
+          allWithdrawAccount &&
+          allWithdrawAccount.length > 0) ||
+          (epointWallet.length > 0 &&
+            userBankOption.length > 0 &&
+            epointSelectType)
       "
     >
       <!-- 額度提示訊息 -->
@@ -560,16 +574,13 @@
         ]"
       >
         <span :class="$style['money-currency']">
-          {{
-            `${
-              selectedCard.name && !isSelectedUSDT
-                ? `${selectedCard.name}到帐`
-                : "实际提现金额"
-            }`
-          }}
+          {{ `${realWidthdrawText}` }}
         </span>
         <span
-          v-if="selectedCard.name != 'CGPay' || withdrawCurrency.name != 'CGP'"
+          v-if="
+            (selectedCard.name != 'CGPay' || withdrawCurrency.name != 'CGP') &&
+              !epointSelectType
+          "
           :class="$style['money-currency']"
           >¥</span
         >
@@ -577,6 +588,7 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
+        <span v-else-if="epointSelectType">e点</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -654,11 +666,27 @@
     <!-- Tips -->
     <div :class="$style['tips']">
       <!-- 已綁定 + 尚未被禁用 + 允許支付(allow 為 true) -->
-      <div v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
+      <div
+        v-if="
+          allWithdrawAccount &&
+            allWithdrawAccount.length > 0 &&
+            !epointSelectType
+        "
+      >
         为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
         <br />可提现金额会扣除未兑现红利总计
       </div>
-
+      <div
+        v-else-if="
+          !(
+            epointWallet.length > 0 &&
+            userBankOption.length > 0 &&
+            epointSelectType
+          )
+        "
+      >
+        请先绑定钱包，用于收款
+      </div>
       <div v-else>
         {{ hasBindingBankCard ? "" : "请先绑定一张银行卡，用于收款" }}
       </div>
@@ -986,6 +1014,13 @@ export default {
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
       );
     },
+    isApp() {
+      let isApp = !!(
+        (this.$route.query && this.$route.query.app) ||
+        (this.$route.query && this.$route.query.APP)
+      );
+      return isApp;
+    },
     valuePlaceholder() {
       if (
         this.withdrawData &&
@@ -1194,6 +1229,16 @@ export default {
         };
       });
       return arr;
+    },
+
+    realWidthdrawText() {
+      if (this.selectedCard.name && !this.isSelectedUSDT) {
+        return `${this.selectedCard.name}到帐`;
+      } else if (this.epointSelectType) {
+        return "e点富到帐";
+      } else {
+        return "实际提现金额";
+      }
     }
   },
 
@@ -1705,6 +1750,17 @@ export default {
         };
       }
 
+      if (this.epointSelectType) {
+        this.selectedCard = {
+          id: this.epointWallet[0].id,
+          withdrawType: this.epointWallet[0].withdrawType,
+          bank_id: this.epointWallet[0].bank_id,
+          swift_code: this.epointWallet[0].swift_code,
+          offer_percent: this.epointWallet[0].offer_percent,
+          offer_limit: this.epointWallet[0].offer_limit
+        };
+      }
+
       // console.log(_params);
       //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232
       //未來有其他第三方再使用/xbb/Withdraw/ext/{extID} C02.321
@@ -1728,7 +1784,8 @@ export default {
           keyring: localStorage.getItem("tmp_w_1")
             ? localStorage.getItem("tmp_w_1")
             : "",
-          methodId: methonId.toString()
+          methodId: methonId.toString(),
+          bankCardId: this.epointSelectType ? this.defaultEpointWallet.id : ""
         }
       })
         .then(response => {

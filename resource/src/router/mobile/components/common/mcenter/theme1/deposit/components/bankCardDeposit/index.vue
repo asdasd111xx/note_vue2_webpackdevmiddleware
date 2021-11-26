@@ -284,8 +284,8 @@
                 </div>
               </div>
               <div  v-if="curPassRoad.tip != ''"
-              :class="$style['pay-mode-tip']">
-                {{curPassRoad.tip}}
+                    :class="$style['pay-mode-tip']">
+                      {{curPassRoad.tip}}
               </div>
               <div v-if="curPassRoad.tip.length > 40" :class="$style['pay-mode-tip-more']"
                 @click="setPopupStatus(true, 'payTip')">more</div>
@@ -445,7 +445,10 @@
                   this.curPassRoad.is_bind_wallet
               " -->
             <div
-              
+              v-if="
+                isSelectBindWallet(34) &&
+                  this.curPassRoad.is_bind_wallet
+              "
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
@@ -1246,9 +1249,7 @@
           <div :class="$style['entry-message-container']">
             <div :class="[$style['entry-message-content'],]">
               <p>通道提示</p>
-              <div :class="$style['wrap-line']">
-                {{ curPassRoad.tip }}
-              </div>
+              <div :class="$style['wrap-line']" v-html="curPassRoad.tip"/>
             </div>
             <div :class="[$style['entry-message-confirm'],{ [$style['sg']]: themeTPL === 'sg1' },
                 { [$style['ey']]: themeTPL === 'ey1' }]"

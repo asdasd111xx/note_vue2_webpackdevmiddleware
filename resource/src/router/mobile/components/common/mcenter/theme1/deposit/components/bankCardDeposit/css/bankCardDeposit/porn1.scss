@@ -208,7 +208,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -578,21 +578,21 @@
   width: 100%;
 }
 
-
 .pay-mode-tip {
   float: left;
   width: 85%;
   margin-top: 10px;
-  color: #6AAAF5;
+  color: #6aaaf5;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pay-mode-tip-more {
   float: right;
   margin-top: 10px;
   margin-right: 10px;
-  color: #6AAAF5;
+  color: #6aaaf5;
 }
 
 .feature-deposit-wrap {
@@ -961,7 +961,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1053,7 +1052,7 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: #D1B79C;
+    color: #d1b79c;
 
     &.sg {
       color: #bf8646;
@@ -1077,14 +1076,15 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 
   .wrap-line {
     padding: 14px 14px;
-    color: #A6A9B2;
+    color: #a6a9b2;
     word-break: break-all;
+    white-space: pre-wrap;
   }
 }
 

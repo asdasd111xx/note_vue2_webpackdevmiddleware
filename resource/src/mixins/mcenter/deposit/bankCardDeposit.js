@@ -95,7 +95,7 @@ export default {
     },
     defaultEpointWallet() {
       this.showEpointWalletAddress =
-        this.defaultEpointWallet.bank_name === "其他银行卡";
+        this.defaultEpointWallet.account === "其他银行卡";
     }
   },
   computed: {
@@ -952,7 +952,7 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-
+      console.log(123);
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
@@ -1001,6 +1001,21 @@ export default {
           paramsData = {
             ...paramsData,
             user_address: this.defaultOuterCrypto
+          };
+        }
+      }
+      //e點富
+      if (this.curPayInfo.payment_method_id === 34) {
+        if (this.showEpointWalletAddress) {
+          paramsData = {
+            ...paramsData,
+            pay_account: this.epointBankAccount,
+            pay_bank_name: this.epointBankName
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            pay_account_id: this.defaultEpointWallet.id
           };
         }
       }
