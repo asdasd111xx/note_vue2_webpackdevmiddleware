@@ -211,9 +211,6 @@ export default {
         case "bbin":
         case "gns":
         case "isb":
-        case "ag":
-        case "ag_casino":
-        case "sg":
         case "fg":
         case "mg":
         case "mg2":
@@ -222,6 +219,8 @@ export default {
         case "pt":
         case "hb":
         case "wm":
+        case "ag":
+        case "ag_casino":
           return src + "ic_jackpot.png";
         default:
           return;

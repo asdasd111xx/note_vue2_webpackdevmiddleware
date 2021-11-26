@@ -2,7 +2,7 @@
   <div :class="$style['my-card']">
     <!-- 卡片管理列表 -->
     <template v-if="!statusList.showDetail">
-      <div v-if="isRevice && wallet_card.length > 0">
+      <div v-if="isRevice">
         <div
           :class="[$style['card-count'], 'clearfix']"
           :style="isShowTab ? {} : { top: '43px' }"
@@ -80,19 +80,14 @@
           </div>
         </div>
 
-        <p :class="$style['remind']">
+        <p v-if="isCommon" :class="$style['remind']">
           <template>
             <span v-if="userLevelObj.virtual_bank_single">
               每个货币支持添加1个钱包
             </span>
 
             <span v-else>
-              {{
-                $t("S_VIRTUAL_BANKCARD_LIMIT").replace(
-                  "%s",
-                  userLevelObj.virtual_bank_max
-                )
-              }}
+              {{ `最多支持添加${userLevelObj.virtual_bank_max}个钱包` }}
             </span>
           </template>
         </p>

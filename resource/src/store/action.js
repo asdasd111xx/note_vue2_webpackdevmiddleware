@@ -725,25 +725,22 @@ export const actionSetUserdata = (
     memstatus = true;
   }, 1000);
 
+  let configInfo = {};
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
+  }
+
   const hasLogin = getCookie("cid");
   if (hasLogin) {
-    axios({
-      method: "get",
-      url: "/api/v1/c/player/user_bank/list"
-    })
-      .then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          commit(types.SET_HASBANK, res.data.ret.length > 0);
-        }
-      })
-      .catch(error => {
-        if (error.response && error.response.data.code === "M00001") {
-          dispatch("actionSetGlobalMessage", {
-            msg: error.response.data.msg,
-            code: error.response.data.code
-          });
-        }
-      });
+    goLangApiRequest({
+      method: "post",
+      url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
+    }).then(res => {
+      commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
+    });
   }
   //判斷uuid
   let uuidAccount = "";
@@ -761,14 +758,6 @@ export const actionSetUserdata = (
     script.setAttribute("data-name", "esabgnixob");
     script.onload = e => {
       //訪客註冊
-      let configInfo = {};
-      if (state.webDomain) {
-        configInfo =
-          siteConfigTest[`site_${state.webDomain.domain}`] ||
-          siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-          siteConfigOfficial.preset;
-      }
-
       if (state.webDomain.site === "ey1" && hasLogin) {
         dispatch("actionSetUserWithdrawCheck");
       }
@@ -1619,6 +1608,15 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     return;
   }
 
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
+  }
+
   return axios({
     method: "get",
     url: "/api/v1/c/recharge/config"
@@ -1642,35 +1640,22 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       let withdraw_result = {};
 
       if (bank_required) {
-        const user_bank = axios({
-          method: "get",
-          url: "/api/v1/c/player/user_bank/list"
-        })
-          .then(res => {
-            if (
-              res &&
-              res.data &&
-              res.data.result === "ok" &&
-              res.data.ret.length > 0
-            ) {
-              bank_required_result = {
-                status: "ok"
-              };
-            } else {
-              bank_required_result = {
-                status: "bindcard",
-                code: "C50099",
-                type: "bindcard"
-              };
-            }
-          })
-          .catch(error => {
+        const user_bank = goLangApiRequest({
+          method: "post",
+          url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
+        }).then(res => {
+          if (res && res.data && res.status === "000" && res.data.length > 0) {
+            bank_required_result = {
+              status: "ok"
+            };
+          } else {
             bank_required_result = {
               status: "bindcard",
               code: "C50099",
               type: "bindcard"
             };
-          });
+          }
+        });
 
         params.push(user_bank);
       }
@@ -1753,6 +1738,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       });
     })
     .catch(error => {
+      console.log(error);
       if (error.response.data.code === "M00001") {
         dispatch("actionSetGlobalMessage", {
           msg: "请先登入",
@@ -2091,7 +2077,7 @@ export const actionSetWebDomain = ({ commit }) => {
         "background: #222; color: yellow; font-size:14px",
         {
           ...res.data,
-          version: version.find(i => i.site === "porn1").version
+          version: version.find(i => i.site === "normal").version
         }
       );
       const site = (res && res.data && String(res.data.site)) || "";
