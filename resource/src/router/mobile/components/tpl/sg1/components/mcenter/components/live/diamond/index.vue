@@ -272,6 +272,8 @@ export default {
     this.init();
   },
   mounted() {
+    this.getBalance();
+
     if (this.loginStatus) {
       this.updateBalanceTimer = setInterval(() => {
         this.getBalance();
@@ -340,8 +342,6 @@ export default {
       });
     },
     getBalance() {
-      this.actionSetUserBalance();
-
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/diamond-total",
         method: "get"
@@ -352,6 +352,8 @@ export default {
           this.diamondTotal = 0;
         }
       });
+
+      this.actionSetUserBalance();
     },
     setCurrentTab(index) {
       switch (index) {
