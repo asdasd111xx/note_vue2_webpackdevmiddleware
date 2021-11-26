@@ -90,8 +90,74 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
+
+  form {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
+.field-wrap {
+  &.aobo1 {
+    width: 80vw;
+    background: transparent;
+    position: relative;
+    z-index: 0;
+    &::after {
+      position: absolute;
+      top: 0px;
+      width: 80vw;
+      height: 40px;
+      background: #fff;
+      border: 1px solid #e3e3e3;
+      z-index: -1;
+    }
+
+    .join-tip-show {
+      width: 320px;
+      text-align: end;
+      font-size: 12px;
+    }
+    .join-help-show {
+      width: 300px;
+      text-align: start;
+      position: relative;
+      left: -95px;
+      font-size: 12px;
+    }
+    .field-text {
+      text-align: start;
+      color: #5e626d;
+      font-size: 14px;
+    }
+    .field-username {
+      span {
+        &::before {
+          content: "*";
+          color: red;
+        }
+      }
+    }
+    .field-password {
+      span {
+        &::before {
+          content: "*";
+          color: red;
+        }
+      }
+    }
+    .field-confirm_password {
+      span {
+        &::before {
+          content: "*";
+          color: red;
+        }
+      }
+    }
+  }
+}
 .join-input {
   background-color: #fff;
   border: 1px solid #d8d8d8;
@@ -99,6 +165,41 @@ export default {
   &::placeholder {
     color: #a5a5a5;
   }
+  &.aobo1 {
+    border: 1px solid transparent;
+    background-color: transparent;
+  }
+}
+
+.join-input-birthday {
+  &.aobo1 {
+    border: 1px solid transparent;
+  }
+}
+
+.join-input-gender {
+  &.aobo1 {
+    border: 1px solid transparent;
+  }
+}
+
+.select-gender {
+  &.aobo1 {
+    background-color: #fff;
+    color: #5e626d;
+    width: 180px;
+    position: relative;
+    top: 10px;
+    right: 5px;
+  }
+}
+
+.join-withdraw-password-help-show {
+  width: 300px;
+  font-size: 12px;
+  text-align: start;
+  position: relative;
+  left: -90px;
 }
 
 .join-btn {
@@ -132,6 +233,13 @@ export default {
     &.disable {
       opacity: 0.5;
     }
+  }
+}
+
+.thirdy-block {
+  &.aobo1 {
+    max-width: 90%;
+    margin: 10px auto;
   }
 }
 
