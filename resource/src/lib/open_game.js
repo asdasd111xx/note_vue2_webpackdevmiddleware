@@ -190,6 +190,16 @@ export default (params, success = () => {}, fail = () => {}) => {
               !localStorage.getItem("reload-game") &&
               gameType !== "event"
             ) {
+              if (
+                store.state.siteConfig.ROUTER_TPL === "sg1" &&
+                vendor === "lg_sport"
+              ) {
+                router.push(
+                  `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}&hasFooter=true&hasHeader=false`
+                );
+                return;
+              }
+
               router.push(
                 `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
               );
