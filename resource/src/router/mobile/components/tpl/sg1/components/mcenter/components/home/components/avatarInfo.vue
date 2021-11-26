@@ -16,7 +16,22 @@
       :class="$style['avatar-wrap']"
       @click="onListClick('memberCard', false)"
     >
-      <img :class="$style['avatar-pic']" :src="avatarSrc" />
+      <img
+        v-if="loginStatus"
+        :class="$style['avatar-pic']"
+        :src="
+          memInfo.user.custom
+            ? avatarSrc
+            : $getCdnPath(
+                `/static/image/common/mcenter/default/avatar_${memInfo.user.image}.png`
+              )
+        "
+      />
+      <img
+        v-else
+        :class="$style['avatar-pic']"
+        :src="$getCdnPath(`/static/image/common/default/avatar_nologin.png`)"
+      />
       <img
         v-if="loginStatus"
         :class="$style['avatar-circle']"
@@ -126,6 +141,15 @@ export default {
       } else {
         return;
       }
+    },
+    siteAvatar() {
+      if (memInfo) {
+        return $getCdnPath(
+          `/static/image/common/mcenter/default/avatar_${memInfo.user.image}.png`
+        );
+      } else {
+        return $getCdnPath(`/static/image/common/default/avatar_nologin.png`);
+      }
     }
   },
   watch: {
@@ -133,9 +157,24 @@ export default {
       console.log(this.paopaoUserInfo);
     }
   },
+  created() {
+    setTimeout(() => {
+      axios({
+        method: "get",
+        url: this.memInfo.user.custom_image
+      })
+        .then(res => {
+          if (res && res.data) {
+            this.avatarSrc = res.data.ret;
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({ msg: error.response.data.msg });
+        });
+    }, 500);
+  },
   mounted() {
     this.getUserViplevel();
-    this.getAvatarSrc();
   },
   methods: {
     ...mapActions(["actionSetUserdata"]),
@@ -149,32 +188,6 @@ export default {
         this.$router.push(`/mobile/live/iframe/${target}`);
       } else {
         this.$router.push(`/mobile/mcenter/${target}`);
-      }
-    },
-    getAvatarSrc() {
-      if (!this.loginStatus) return;
-
-      const imgSrcIndex = this.memInfo.user.image;
-      if (this.memInfo.user && this.memInfo.user.custom) {
-        axios({
-          method: "get",
-          url: this.memInfo.user.custom_image
-        })
-          .then(res => {
-            if (res && res.data && res.data.result === "ok") {
-              this.avatarSrc = res.data.ret;
-            }
-          })
-          .catch(error => {
-            this.actionSetGlobalMessage({ msg: error.response.data.msg });
-            this.avatarSrc = this.$getCdnPath(
-              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-            );
-          });
-      } else {
-        this.avatarSrc = this.$getCdnPath(
-          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-        );
       }
     },
     getUserViplevel() {
