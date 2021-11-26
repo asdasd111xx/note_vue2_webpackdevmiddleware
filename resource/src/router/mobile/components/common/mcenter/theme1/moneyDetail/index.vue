@@ -3,7 +3,7 @@
     <template
       v-if="
         pageType !== 'ingroup_transfer' &&
-          pageType !== 'swag' &&
+          pageType !== 'paopao' &&
           pageType !== 'internal_memo'
       "
     >
@@ -124,7 +124,7 @@
         $route.params.page === 'detail' &&
           detailInfo &&
           pageType !== 'ingroup_transfer' &&
-          pageType !== 'swag' &&
+          pageType !== 'paopao' &&
           pageType !== 'internal_memo'
       "
       :current-category="currentCategory"
@@ -144,7 +144,7 @@
       v-if="
         showInfinite &&
           pageType !== 'ingroup_transfer' &&
-          pageType !== 'swag' &&
+          pageType !== 'paopao' &&
           pageType !== 'internal_memo'
       "
       ref="infiniteLoading"
@@ -196,7 +196,7 @@ export default {
     detailInfo(val) {
       if (
         this.pageType === "ingroup_transfer" ||
-        this.pageType === "swag" ||
+        this.pageType === "paopao" ||
         this.pageType === "internal_memo"
       ) {
         this.$emit("showDetail", val);
@@ -259,7 +259,7 @@ export default {
         { key: "manual", text: "人工" },
         { key: "wage", text: "返利" },
         { key: "ingroup_transfer", text: "转让" }
-        // { key: "outer", text: "SWAG" }
+        // { key: "outer", text: "PAOPAO" }
       ];
     },
     dateOptions() {
@@ -313,9 +313,9 @@ export default {
       this.setDefaultCreditTrans();
     }
 
-    // 共用SWAG紀錄
-    if (this.pageType === "swag") {
-      this.setDefaultSWAG();
+    // 共用PAOPAO紀錄
+    if (this.pageType === "paopao") {
+      this.setDefaultPAOPAO();
     }
 
     // 共用红包紀錄
@@ -345,7 +345,7 @@ export default {
             "YYYY-MM-DD 00:00:00-04:00"
           ),
           end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
-          category: this.pageType === "swag" ? "outer" : this.type,
+          category: this.pageType === "paopao" ? "outer" : this.type,
           order: this.sort,
           first_result: this.firstResult,
           max_results: this.maxResults
@@ -369,7 +369,7 @@ export default {
         params["opcode"] = ["5028"];
       }
 
-      if (this.type.find(i => i === "outer") && this.pageType === "swag") {
+      if (this.type.find(i => i === "outer") && this.pageType === "paopao") {
         params["opcode"] = ["9001"];
       }
 
@@ -434,11 +434,11 @@ export default {
       this.endTime = new Date(Vue.moment(this.estToday));
       this.setCategory({ key: "ingroup_transfer", text: "转让" });
     },
-    setDefaultSWAG() {
+    setDefaultPAOPAO() {
       this.type = ["outer"];
       this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: "outer", text: "SWAG" });
+      this.setCategory({ key: "outer", text: this.siteConfig.SITE_NAME });
     },
     setDefaultRedJackpot() {
       this.type = ["internal_memo"];
@@ -460,7 +460,7 @@ export default {
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.pageType === "ingroup_transfer" ||
-        this.pageType === "swag" ||
+        this.pageType === "paopao" ||
         this.pageType === "internal_memo"
       ) {
         this.getData();
@@ -506,7 +506,7 @@ export default {
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.pageType === "ingroup_transfer" ||
-        this.pageType === "swag"
+        this.pageType === "paopao"
       ) {
         this.getData();
       }
@@ -553,7 +553,7 @@ export default {
       // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
       if (
         this.isReceive &&
-        (this.pageType === "ingroup_transfer" || this.pageType === "swag")
+        (this.pageType === "ingroup_transfer" || this.pageType === "paopao")
       ) {
         return;
       }

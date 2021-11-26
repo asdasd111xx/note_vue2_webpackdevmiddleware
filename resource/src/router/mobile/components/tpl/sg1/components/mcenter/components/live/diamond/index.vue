@@ -93,7 +93,7 @@
               </div>
 
               <div :class="[$style['account-btn'], $style['serial']]">
-                <div>
+                <div @click="toggleSerial">
                   {{ $text("S_SERIAL_DETIAL") }}
                 </div>
               </div>
@@ -165,6 +165,13 @@
           :content="maintainInfo"
           @close="handleCloseMaintainInfo"
         />
+
+        <!-- 流水檢查 -->
+        <serial-number
+          v-if="isSerial"
+          ref="serialNumber"
+          :handle-close="toggleSerial"
+        />
       </template>
       <template v-else>
         <recoard />
@@ -181,11 +188,13 @@ import mobileContainer from "../../../../common/mobileContainer";
 import recoard from "./recoard.vue";
 import tips from "./tips.vue";
 import moment from "moment";
+import serialNumber from "@/router/mobile/components/tpl/porn1/components/mcenter/components/withdraw/components/serialNumber";
 
 export default {
   components: {
     tips,
     recoard,
+    serialNumber,
     maintainBlock,
     pageLoading: () =>
       import(
@@ -205,7 +214,8 @@ export default {
       currentTab: 0,
       updateBalanceTimer: null,
       isShowMaintainInfo: false,
-      maintainInfo: {}
+      maintainInfo: {},
+      isSerial: false
     };
   },
   computed: {
@@ -274,6 +284,9 @@ export default {
       "actionGetExtRedirect",
       "actionSetUserBalance"
     ]),
+    toggleSerial() {
+      this.isSerial = !this.isSerial;
+    },
     showMaintainInfo() {
       this.isShowMaintainInfo = true;
 

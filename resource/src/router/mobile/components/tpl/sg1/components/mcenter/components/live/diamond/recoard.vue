@@ -1,6 +1,6 @@
 <template>
   <div>
-    <money-detail :pageType="'swag'" @showDetail="showDetail" />
+    <money-detail :pageType="'paopao'" @showDetail="showDetail" />
     <recoard-detail-slider
       v-if="detailInfo"
       :detail-type="{ text: '转让' }"
