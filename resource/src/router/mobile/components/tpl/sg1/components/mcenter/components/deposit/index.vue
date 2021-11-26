@@ -1,7 +1,7 @@
 <template>
   <mobile-container
     :header-config="headerConfig"
-    :has-footer="false"
+    :has-footer="hasFooter"
     :class="$style.container"
   >
     <div slot="content" class="content-wrap">
@@ -23,9 +23,14 @@ export default {
     depsoit
   },
   computed: {
+    hasFooter() {
+      return this.$route.query.hasFooter
+        ? this.$route.query.hasFooter === "true"
+        : false;
+    },
     headerConfig() {
       return {
-        prev: true,
+        prev: !this.hasFooter,
         title: "充值",
         hasHelp: {
           type: "deposit",

@@ -74,7 +74,7 @@ export default {
           key: "deposit",
           routeName: "deposit",
           name: this.$text("S_DEPOSIT_BTN", "充值"),
-          path: "/mobile/mcenter/deposit?prev=false"
+          path: "/mobile/mcenter/deposit?prev=false&hasFooter=true"
         },
         {
           key: "my",
