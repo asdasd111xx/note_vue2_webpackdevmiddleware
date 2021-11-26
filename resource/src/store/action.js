@@ -2385,20 +2385,13 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 };
 
 // 取得429發送太頻繁字串
-export const actionGetToManyRequestMsg = ({ state }, response) => {
-  if (response && Number(response.status) === 429) {
-    if (response.data && response.data.message) {
-      console.log(response.data.message);
-      return i18n.t(
-        response.data.message
-          .toString()
-          .toUpperCase()
-          .replace(/ /g, "_")
-      );
-    } else {
-      return response;
-    }
-  }
+export const actionGetToManyRequestMsg = ({ state }, message) => {
+  return i18n.t(
+    message
+      .toString()
+      .toUpperCase()
+      .replace(/ /g, "_")
+  );
 };
 
 // 取得廳設定 C02.233

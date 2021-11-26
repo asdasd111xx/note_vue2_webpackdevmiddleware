@@ -1032,17 +1032,6 @@ export default {
           host: window.location.host,
           deviceId: localStorage.getItem("uuidAccount"),
           lang: "zh-cn"
-        },
-        fail: error => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1000);
-          if (error && error.status === 429) {
-            this.actionGetToManyRequestMsg(error).then(res => {
-              this.errMsg = res;
-            });
-            return;
-          }
         }
       }).then(res => {
         setTimeout(() => {
@@ -1107,8 +1096,8 @@ export default {
           captchaInfo.slideFuc.reset();
         }
         this.allValue.captcha_text = "";
-        if (res.response && res.response.status === 429) {
-          this.actionGetToManyRequestMsg(res.response).then(res => {
+        if (res.response && res.status === "506") {
+          this.actionGetToManyRequestMsg(res.msg).then(res => {
             this.errMsg = res;
           });
           return;

@@ -461,11 +461,10 @@ export default {
         } else {
           this.isSendKeyring = false;
 
-          if (res && Number(res.status) === 429) {
-            this.actionGetToManyRequestMsg(res).then(res => {
+          if (res && res.status === "506") {
+            this.actionGetToManyRequestMsg(res.msg).then(res => {
               this.errorMsg = res;
             });
-            return;
           }
 
           // 「请填写正确的用户名」(A-9340)
@@ -555,11 +554,10 @@ export default {
         } else {
           this.isSendKeyring = false;
 
-          if (res && Number(res.status) === 429) {
-            this.actionGetToManyRequestMsg(res).then(res => {
+          if (res && res.status === "506") {
+            this.actionGetToManyRequestMsg(res.msg).then(res => {
               this.errorMsg = res;
             });
-            return;
           }
 
           // 「请填写正确的用户名」(A-9340)
@@ -602,7 +600,7 @@ export default {
           this.allTip.keyring = "";
 
           if (res && res.status === 429) {
-            this.actionGetToManyRequestMsg(res).then(result => {
+            this.actionGetToManyRequestMsg(res.message).then(result => {
               this.errorMsg = result;
             });
             return;
@@ -651,7 +649,7 @@ export default {
         },
         fail: res => {
           if (res && res.status === 429) {
-            this.actionGetToManyRequestMsg(res).then(result => {
+            this.actionGetToManyRequestMsg(res.message).then(result => {
               this.errorMsg = result;
             });
             return;
