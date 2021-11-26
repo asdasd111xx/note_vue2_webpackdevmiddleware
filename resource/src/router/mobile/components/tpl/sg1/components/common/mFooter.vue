@@ -61,7 +61,7 @@ export default {
           key: "sport",
           routeName: "live-sport",
           name: this.$text("S_SPORTS_SHORT", "体育"),
-          path: `/mobile/iframe/game?kind=1&vendor=lg_sport&hasFooter=false`
+          path: `/mobile/iframe/game?kind=1&vendor=lg_sport`
         },
         {
           // 泡泡直播娛樂城
