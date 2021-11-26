@@ -87,6 +87,7 @@ export default {
             this.$router.push("/mobile/login");
             return;
 
+          case "EVENT_GUEST_REGISTER":
           case "EVENT_THIRDPARTY_JOINMEMBER":
             if (this.loginStatus) {
               return;
