@@ -198,7 +198,7 @@ export default {
       isLoading: true,
       isMaintain: false,
       diamondTotal: "",
-      diamondRemind: "",
+      diamondRemind: [],
       exchangeRateList: [],
       currentSelRate: {},
       lockedSubmit: true,

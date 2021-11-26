@@ -12,7 +12,9 @@
       <div :class="$style['hr']"><div /></div>
     </div>
     <div :class="$style['tips-content']">
-      {{ data }}
+      <div v-for="(text, key) in data" :key="key">
+        {{ `●${text}` }}
+      </div>
       <!-- <template v-if="swagConfig && swagConfig.remind">
         <div v-html="swagConfig.remind.replace(/\n/g, '<br/>')" />
       </template> -->
@@ -26,7 +28,8 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     data: {
-      type: String
+      type: Array,
+      default: () => []
     }
   },
   data() {
