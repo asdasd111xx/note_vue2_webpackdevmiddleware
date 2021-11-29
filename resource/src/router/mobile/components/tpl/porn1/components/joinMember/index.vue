@@ -100,6 +100,7 @@ export default {
 }
 
 .field-wrap {
+  width: 100%;
   &.aobo1 {
     width: 80vw;
     background: transparent;
@@ -116,13 +117,13 @@ export default {
     }
 
     .field-right {
-      width: 62%;
+      width: 65%;
     }
     .field-title {
       width: 83px;
     }
     .join-tip-show {
-      width: 320px;
+      width: 300px;
       text-align: end;
       font-size: 12px;
     }
