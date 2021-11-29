@@ -458,7 +458,7 @@
               <span :class="$style['select-bank-title']">
                 您的银行
               </span>
-              <select
+              <!-- <select
                 v-model="defaultEpointWallet"
                 :class="$style['outer-crypto-selected']"
               >
@@ -469,11 +469,13 @@
                 >
                   {{ option.account }}
                 </option>
-              </select>
+              </select> -->
 
-              <!-- <div :class="$style['select-bank-item']">
-              {{ curSelectedBank.label }}
-              </div> -->
+              <div :class="$style['select-epoint-bank-item']"
+                    @click="setPopupStatus(true, 'epointBank')">
+                {{ defaultEpointWallet.account }}
+                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+              </div>
             </div>
 
               <!-- v-if="showEpointWalletAddress" -->
@@ -1282,6 +1284,12 @@
           @close="closePopup"
         />
       </template>
+      <template v-if="showPopStatus.type === 'epointBank'">
+        <epoint-bank-popup
+        :bank-list="userBankOption"
+        :item-func="setEpointBank"
+        @close="closePopup"/>
+      </template>
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
@@ -1297,6 +1305,7 @@ import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
+import epointBankPopup from "@/router/mobile/components/tpl/porn1/components/common/epointBankPopup";
 import DatePicker from "vue2-datepicker";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
@@ -1318,6 +1327,7 @@ export default {
     DatePicker,
     blockListTips,
     bindWalletPopup,
+    epointBankPopup,
     popupQrcode,
     confirmOneBtn,
     marquee
@@ -2266,7 +2276,10 @@ export default {
         sendUmeng(51);
       }
       this.$router.push('/mobile/service')
-    }
+    },
+    setEpointBank(item){
+      this.defaultEpointWallet = item
+    },
   }
 };
 </script>

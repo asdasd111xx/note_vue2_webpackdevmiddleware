@@ -208,7 +208,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -490,6 +490,18 @@
   height: 23px;
   margin-left: 50px;
   font-size: 14px;
+}
+
+.select-epoint-bank-item {
+  height: 23px;
+  margin-left: 80px;
+  font-size: 14px;
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
 }
 
 .select-bank-icon {
@@ -961,6 +973,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1076,7 +1089,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 

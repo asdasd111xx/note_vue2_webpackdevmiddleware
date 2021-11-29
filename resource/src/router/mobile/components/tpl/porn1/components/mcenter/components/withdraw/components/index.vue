@@ -356,22 +356,11 @@
             <span :class="$style['select-bank-title']">
               您的银行
             </span>
-            <select
-              v-model="defaultEpointWallet"
-              :class="$style['outer-crypto-selected']"
-            >
-              <option
-                v-for="(option, idx) in userBankOption"
-                :key="idx"
-                v-bind:value="option"
-              >
-                {{ option.account }}
-              </option>
-            </select>
-
-            <!-- <div :class="$style['select-bank-item']">
-              {{ curSelectedBank.label }}
-              </div> -->
+              <div :class="$style['select-epoint-bank-item']"
+                    @click="setPopupStatus(true, 'epointBank')">
+                {{ defaultEpointWallet.account }}
+                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+              </div>
           </div>
         </div>
       </div>
@@ -758,6 +747,14 @@
         />
       </template>
 
+      <template>
+        <epoint-bank-popup
+          :bank-list="userBankOption"
+          :item-func="setEpointBank"
+          @close="closePopup"
+        />
+      </template>
+
       <!-- 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
@@ -786,6 +783,7 @@ import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/withdraw";
 import serialNumber from "./serialNumber";
 import withdrawCurrency from "@/router/mobile/components/common/pickerView/pickerView";
+import epointBankPopup from "@/router/mobile/components/tpl/porn1/components/common/epointBankPopup";
 import widthdrawTips from "./widthdrawTips";
 import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
 import withdrawMoreMethod from "./withdrawMoreMethod";
@@ -817,6 +815,7 @@ export default {
     widthdrawTips,
     blockListTips,
     withdrawCurrency,
+    epointBankPopup,
     withdrawMoreMethod,
     withdrawAccount,
     marquee,
@@ -1590,7 +1589,10 @@ export default {
         localStorage.setItem("tmp_w_rule", "1");
       }
       localStorage.setItem("tmp_w_epointSelectType", this.epointSelectType);
-      localStorage.setItem("tmp_w_epointWallet", JSON.stringify(this.defaultEpointWallet));
+      localStorage.setItem(
+        "tmp_w_epointWallet",
+        JSON.stringify(this.defaultEpointWallet)
+      );
     },
     removeCurrentValue(needDeleteRule) {
       localStorage.removeItem("tmp_w_selectedCard");
@@ -2053,6 +2055,9 @@ export default {
       this.cryptoMoney = "--";
       this.closePopup();
     },
+    setEpointBank(item) {
+      this.defaultEpointWallet = item
+    },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
         isShow,
@@ -2225,7 +2230,9 @@ export default {
         this.withdrawCurrency;
 
       this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType");
-      this.defaultEpointWallet = JSON.parse(localStorage.getItem("tmp_w_epointWallet"));
+      this.defaultEpointWallet = JSON.parse(
+        localStorage.getItem("tmp_w_epointWallet")
+      );
 
       setTimeout(() => {
         this.removeCurrentValue();
