@@ -27,8 +27,8 @@ const outputDirName = process.env.CDN_HOST
 // const domain = 'https://ey8866.com/';
 // const domain = 'https://ey.688lg.com/';
 
-// 丝瓜 500035
-const domain = "https://sgtt.66boxing.com/";
+// 泡泡 500035
+// const domain = "https://sgtt.66boxing.com/";
 
 // Beta 100009
 // const domain = "https://sgbe1.grtymart.com/";

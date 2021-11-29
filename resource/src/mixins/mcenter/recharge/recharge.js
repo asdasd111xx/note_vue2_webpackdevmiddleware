@@ -411,7 +411,7 @@ export default {
           }, 1000);
 
           if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestMsg(error.response).then(res => {
+            this.actionGetToManyRequestMsg(error.response.message).then(res => {
               this.errorMessage.phone = res;
             });
             return;

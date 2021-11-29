@@ -434,38 +434,32 @@ export default {
                     this.time -= 1;
                   }, 1500);
                 } else {
-                  if (res.msg) {
+                  if (res && res.status === "506") {
+                    this.actionGetToManyRequestMsg(res.msg).then(res => {
+                      this.errorMsg = res;
+                    });
+                  } else if (res.msg) {
                     this.errorMsg = res.msg;
                   }
                 }
               })
               .catch(error => {
-                if (error && error.status === 429) {
-                  this.actionGetToManyRequestMsg(error.response).then(res => {
-                    this.errorMsg = res;
-                  });
-                  return;
-                }
-
                 if (error.status) {
                   this.errorMsg = `${error.msg}`;
                   return;
                 }
               });
           } else {
-            if (res.msg) {
+            if (res && res.status === "506") {
+              this.actionGetToManyRequestMsg(res.msg).then(res => {
+                this.errorMsg = res;
+              });
+            } else if (res.msg) {
               this.errorMsg = res.msg;
             }
           }
         })
         .catch(error => {
-          if (error && error.status === 429) {
-            this.actionGetToManyRequestMsg(error.response).then(res => {
-              this.errorMsg = res;
-            });
-            return;
-          }
-
           this.lockStatus = false;
 
           if (error.response.data && error.response.data.msg) {

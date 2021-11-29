@@ -40,7 +40,11 @@
           <div
             v-for="field in fieldsData"
             :key="field.key"
-            :class="[$style['field-wrap'], 'clearfix']"
+            :class="[
+              $style['field-wrap'],
+              $style[siteConfig.ROUTER_TPL],
+              'clearfix'
+            ]"
           >
             <label
               :for="field.key"
@@ -67,7 +71,11 @@
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input-captcha'], field.key]"
+                  :class="[
+                    $style['join-input-captcha'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -93,7 +101,11 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -120,7 +132,11 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -147,7 +163,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -164,13 +184,30 @@
               </template>
 
               <template v-else-if="field.key === 'gender'">
-                <v-select
+                <!-- <v-select
                   v-model="selectData['gender'].selected"
                   :options="selectData['gender'].options"
                   :searchable="false"
-                  :class="$style['join-input-gender']"
+                  :class="[
+                    $style['join-input-gender'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @input="changSelect(field.key)"
-                />
+                /> -->
+                <select
+                  :class="[
+                    $style['select-gender'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
+                  v-model="selectData['gender'].selected"
+                  @input="changSelect(field.key)"
+                  ><option
+                    v-for="(item, index) in selectData['gender'].options"
+                    :value="item.value"
+                    :key="index"
+                    >{{ item.label }}</option
+                  ></select
+                >
               </template>
 
               <template v-else-if="field.key === 'phone'">
@@ -183,7 +220,11 @@
               /> -->
                 <input
                   v-model="allValue['phone']"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
@@ -202,7 +243,10 @@
                   :clear-button="true"
                   :monday-first="true"
                   :placeholder="placeholderKeyValue('birthday', 'tip')"
-                  :input-class="$style['join-input-birthday']"
+                  :input-class="[
+                    $style['join-input-birthday'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   name="birthday"
                   format="yyyy/MM/dd"
                   initial-view="year"
@@ -240,7 +284,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue(field.key, 'tip')"
                   type="text"
@@ -274,7 +322,7 @@
           <thirdy-verification
             ref="thirdyCaptchaObj"
             @set-captcha="setCaptcha"
-            :class="$style['thirdy-block']"
+            :class="[$style['thirdy-block'], $style[siteConfig.ROUTER_TPL]]"
             :page-type="'register'"
           />
 
@@ -504,7 +552,7 @@ export default {
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
           ],
-          selected: { label: this.$i18n.t("S_SELECTED"), value: "" }
+          selected: { label: this.$i18n.t("S_SELECTED"), value: "0" }
         }
       },
       isGetCaptcha: false,
@@ -1072,17 +1120,6 @@ export default {
           host: window.location.host,
           deviceId: localStorage.getItem("uuidAccount"),
           lang: "zh-cn"
-        },
-        fail: error => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1000);
-          if (error && error.status === 429) {
-            this.actionGetToManyRequestMsg(error).then(res => {
-              this.errMsg = res;
-            });
-            return;
-          }
         }
       }).then(res => {
         setTimeout(() => {
@@ -1152,8 +1189,8 @@ export default {
           captchaInfo.slideFuc.reset();
         }
         this.allValue.captcha_text = "";
-        if (res.response && res.response.status === 429) {
-          this.actionGetToManyRequestMsg(res.response).then(res => {
+        if (res.response && res.status === "506") {
+          this.actionGetToManyRequestMsg(res.msg).then(res => {
             this.errMsg = res;
           });
           return;
