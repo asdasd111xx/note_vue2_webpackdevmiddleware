@@ -123,15 +123,16 @@ export default {
       width: 83px;
     }
     .join-tip-show {
-      width: 300px;
+      width: 100%;
+      padding-right: 0;
       text-align: end;
       font-size: 12px;
     }
     .join-help-show {
-      width: 300px;
+      width: 160%;
       text-align: start;
       position: relative;
-      left: -95px;
+      left: -90px;
       font-size: 12px;
     }
     .field-text {
