@@ -115,6 +115,12 @@ export default {
       z-index: -1;
     }
 
+    .field-right {
+      width: 62%;
+    }
+    .field-title {
+      width: 83px;
+    }
     .join-tip-show {
       width: 320px;
       text-align: end;
@@ -187,7 +193,7 @@ export default {
   &.aobo1 {
     background-color: #fff;
     color: #5e626d;
-    width: 180px;
+    width: 170px;
     position: relative;
     top: 10px;
     right: 5px;
@@ -195,7 +201,7 @@ export default {
 }
 
 .join-withdraw-password-help-show {
-  width: 300px;
+  width: 290px;
   font-size: 12px;
   text-align: start;
   position: relative;

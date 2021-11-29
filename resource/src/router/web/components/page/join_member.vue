@@ -202,9 +202,9 @@
                   v-model="selectData['gender'].selected"
                   @input="changSelect(field.key)"
                   ><option
-                    v-for="item in selectData['gender'].options"
+                    v-for="(item, index) in selectData['gender'].options"
                     :value="item.value"
-                    :key="item"
+                    :key="index"
                     >{{ item.label }}</option
                   ></select
                 >
