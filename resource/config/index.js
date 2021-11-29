@@ -28,8 +28,8 @@ const outputDirName = process.env.CDN_HOST
 // const domain = 'https://ey.688lg.com/';
 
 // 丝瓜 500035
-const domain = "https://sgqa1.yaslbox.com/";
-// const domain = "https://sgqa1-io.yaslbox.com/";
+const domain = "https://sgtt.66boxing.com/";
+
 // Beta 100009
 // const domain = "https://sgbe1.grtymart.com/";
 // Demo 81
