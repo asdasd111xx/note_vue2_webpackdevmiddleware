@@ -203,6 +203,7 @@
                   @input="changSelect(field.key)"
                   ><option
                     v-for="item in selectData['gender'].options"
+                    :value="item.value"
                     :key="item"
                     >{{ item.label }}</option
                   ></select
@@ -551,7 +552,7 @@ export default {
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
           ],
-          selected: { label: this.$i18n.t("S_SELECTED"), value: "" }
+          selected: { label: this.$i18n.t("S_SELECTED"), value: "0" }
         }
       },
       isGetCaptcha: false,
