@@ -13,11 +13,21 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
+        <div
+          v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
+          style="margin-top: 40px;"
+        >
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
+        </div>
+
+        <div v-if="themeTPL == 'sg1'" style="margin-top: 20px; ">
+          <div :class="$style['visitor-get-sg']">
+            {{ `访客彩金：${formatThousandsCurrency(guestAmount)}元` }}
+          </div>
+          <div :class="$style['visitor-get-sg']">{{ "注册即送 58.00 钻" }}</div>
         </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
@@ -30,7 +40,11 @@
           <div
             v-for="field in fieldsData"
             :key="field.key"
-            :class="[$style['field-wrap'], 'clearfix']"
+            :class="[
+              $style['field-wrap'],
+              $style[siteConfig.ROUTER_TPL],
+              'clearfix'
+            ]"
           >
             <label
               :for="field.key"
@@ -57,7 +71,11 @@
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input-captcha'], field.key]"
+                  :class="[
+                    $style['join-input-captcha'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -83,7 +101,11 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -110,7 +132,11 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -137,7 +163,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -154,13 +184,29 @@
               </template>
 
               <template v-else-if="field.key === 'gender'">
-                <v-select
+                <!-- <v-select
                   v-model="selectData['gender'].selected"
                   :options="selectData['gender'].options"
                   :searchable="false"
-                  :class="$style['join-input-gender']"
+                  :class="[
+                    $style['join-input-gender'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @input="changSelect(field.key)"
-                />
+                /> -->
+                <select
+                  :class="[
+                    $style['select-gender'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
+                  v-model="selectData['gender'].selected"
+                  @input="changSelect(field.key)"
+                  ><option
+                    v-for="item in selectData['gender'].options"
+                    :key="item"
+                    >{{ item.label }}</option
+                  ></select
+                >
               </template>
 
               <template v-else-if="field.key === 'phone'">
@@ -173,7 +219,11 @@
               /> -->
                 <input
                   v-model="allValue['phone']"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
@@ -192,7 +242,10 @@
                   :clear-button="true"
                   :monday-first="true"
                   :placeholder="placeholderKeyValue('birthday', 'tip')"
-                  :input-class="$style['join-input-birthday']"
+                  :input-class="[
+                    $style['join-input-birthday'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   name="birthday"
                   format="yyyy/MM/dd"
                   initial-view="year"
@@ -230,7 +283,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    field.key,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue(field.key, 'tip')"
                   type="text"
@@ -264,7 +321,7 @@
           <thirdy-verification
             ref="thirdyCaptchaObj"
             @set-captcha="setCaptcha"
-            :class="$style['thirdy-block']"
+            :class="[$style['thirdy-block'], $style[siteConfig.ROUTER_TPL]]"
             :page-type="'register'"
           />
 
@@ -301,13 +358,43 @@
         </div>
       </div>
 
+      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
+        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
+        <!-- <span>成为主播</span> -->
+        <span @click.stop="$router.push('/mobile')">访客进入</span>
+      </div>
+      <!-- <div
+        v-if="themeTPL == 'sg1'"
+        class="login-link-wrap"
+        style="display:flex"
+      >
+       
+        <div class="link-button link-join-mem">
+          <span @click="linktoJoin()">
+            {{ $text("S_FREE_REGISTER", "免费注册") }}
+          </span>
+        </div>
+        <div class="link-button ">
+          <span @click="$router.push('/mobile/login')">
+            {{ $text("S_JOINTOLIVERS", "成为主播") }}
+          </span>
+        </div>
+        <div
+          class="link-button link-submit"
+          @click="$router.push('/mobile/service')"
+        >
+          {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+        </div>
+      </div> -->
+
       <div
-        v-if="themeTPL != 'ey1'"
+        v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
         已有会员帐号
       </div>
+
       <div :class="$style['version']">
         {{ version }}
       </div>
@@ -1032,17 +1119,6 @@ export default {
           host: window.location.host,
           deviceId: localStorage.getItem("uuidAccount"),
           lang: "zh-cn"
-        },
-        fail: error => {
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1000);
-          if (error && error.status === 429) {
-            this.actionGetToManyRequestMsg(error).then(res => {
-              this.errMsg = res;
-            });
-            return;
-          }
         }
       }).then(res => {
         setTimeout(() => {
@@ -1096,8 +1172,13 @@ export default {
                   localStorage.removeItem("password");
                 }
 
-                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
+                window.RESET_LOCAL_SETTING();
+                if (this.siteConfig.ROUTER_TPL === "sg1") {
+                  this.$router.push("/mobile/live/iframe/home");
+                } else {
+                  window.RESET_LOCAL_SETTING(true);
+                }
               }
             });
             return;
@@ -1107,8 +1188,8 @@ export default {
           captchaInfo.slideFuc.reset();
         }
         this.allValue.captcha_text = "";
-        if (res.response && res.response.status === 429) {
-          this.actionGetToManyRequestMsg(res.response).then(res => {
+        if (res.response && res.status === "506") {
+          this.actionGetToManyRequestMsg(res.msg).then(res => {
             this.errMsg = res;
           });
           return;
