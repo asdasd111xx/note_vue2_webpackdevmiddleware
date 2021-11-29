@@ -189,6 +189,8 @@ export default {
           return "/mobile/mcenter/tcenterLobby";
         case "VIPINFO":
           return "/mobile/mcenter/accountVIP";
+        case "EPOINT":
+          return `/mobile/mcenter/bankCard?redirect=epoint&type=wallet&wallet=epoint`;
         default:
           return "/mobile";
       }
@@ -263,6 +265,7 @@ export default {
             window.history.back();
             return;
           }
+
           this.$router.replace(this.originUrl);
           return;
         }

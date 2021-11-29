@@ -181,14 +181,17 @@
             </li>
           </ul>
         </template>
-
+        <div v-if="epointTimeCount > 0" :class="$style['epoint-time']">
+          {{ `请于 ${epointTimeCount} 秒内绑定帐号` }}
+        </div>
         <!-- 確認鈕 -->
         <div
           :class="[
             $style['submit'],
             {
               [$style['disabled']]:
-                lockStatus && !selectTarget.oneClickBindingMode
+                (lockStatus && !selectTarget.oneClickBindingMode) ||
+                epointTimeCount > 0
             },
             {
               [$style['hidden']]:
@@ -348,7 +351,10 @@ export default {
       isBackFromService: "",
 
       //紀錄是否開啟卡片欄位
-      showBindingFormat: ""
+      showBindingFormat: "",
+
+      epointTimeCount: 0,
+      epointTimeStamp: null
     };
   },
   mounted() {
@@ -970,7 +976,7 @@ export default {
         ];
         return;
       }
-
+      //e點富
       if (id === 48) {
         this.walletTipInfo = [
           {
@@ -981,12 +987,19 @@ export default {
               cb: () => {
                 // lib_newWindowOpen(
                 //   this.getCustomerServiceUrl({
-                //     urlName: "game_wallet",
+                //     urlName: "what_is_Epoint",
                 //     needToken: false
                 //   }).then(res => {
                 //     return res.uri;
                 //   })
                 // );
+                this.getCustomerServiceUrl({
+                  urlName: "what_is_Epoint",
+                  needToken: false
+                }).then(res => {
+                  localStorage.setItem("iframe-third-url", res.uri);
+                  this.$router.push(`/mobile/iframe/epoint`);
+                });
               },
               text: "e点富是什么?"
             }
@@ -1070,7 +1083,16 @@ export default {
             console.log(uri);
           }
         };
-
+        if (this.selectTarget.walletId === 48) {
+          this.epointTimeCount = 60;
+          this.epointTimeStamp = setInterval(() => {
+            if (this.epointTimeCount === 0) {
+              clearInterval(this.epointTimeStamp);
+              this.epointTimeStamp = null;
+            }
+            this.epointTimeCount -= 1;
+          }, 1000);
+        }
         this.getBindWalletInfo().then(url => {
           if (url) {
             newWindowHref(url);

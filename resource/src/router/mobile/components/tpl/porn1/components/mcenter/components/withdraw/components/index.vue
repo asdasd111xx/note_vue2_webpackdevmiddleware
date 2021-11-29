@@ -1589,6 +1589,8 @@ export default {
       if (fromRule) {
         localStorage.setItem("tmp_w_rule", "1");
       }
+      localStorage.setItem("tmp_w_epointSelectType", this.epointSelectType);
+      localStorage.setItem("tmp_w_epointWallet", JSON.stringify(this.defaultEpointWallet));
     },
     removeCurrentValue(needDeleteRule) {
       localStorage.removeItem("tmp_w_selectedCard");
@@ -1596,6 +1598,8 @@ export default {
       localStorage.removeItem("tmp_w_amount");
       localStorage.removeItem("tmp_w_actualAmount");
       localStorage.removeItem("tmp_w_withdrawPwd");
+      localStorage.removeItem("tmp_w_epointSelectType");
+      localStorage.removeItem("tmp_w_epointWalletId");
 
       if (needDeleteRule) {
         localStorage.removeItem("tmp_w_1");
@@ -2219,6 +2223,9 @@ export default {
       this.withdrawCurrency =
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
         this.withdrawCurrency;
+
+      this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType");
+      this.defaultEpointWallet = JSON.parse(localStorage.getItem("tmp_w_epointWallet"));
 
       setTimeout(() => {
         this.removeCurrentValue();

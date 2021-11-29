@@ -386,7 +386,10 @@ export default {
               this.$router.back();
             }
             break;
-
+          case "epoint":
+            this.$router.replace("/mobile/mcenter/bankCard");
+            this.setPageStatus(1, "walletCardInfo", true);
+            break;
           default:
             this.$router.back();
             break;
