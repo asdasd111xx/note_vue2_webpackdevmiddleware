@@ -91,25 +91,25 @@ export default {
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
 
-  form {
-    width: 90vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  // form {
+  //   width: 90vw;
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  // }
 }
 
 .field-wrap {
   width: 100%;
+  margin: 10px auto;
   &.aobo1 {
-    width: 80vw;
     background: transparent;
     position: relative;
     z-index: 0;
     &::after {
       position: absolute;
       top: 0px;
-      width: 80vw;
+      width: 100%;
       height: 40px;
       background: #fff;
       border: 1px solid #e3e3e3;
@@ -117,7 +117,7 @@ export default {
     }
 
     .field-right {
-      width: 65%;
+      width: 68%;
     }
     .field-title {
       width: 83px;
