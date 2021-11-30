@@ -244,8 +244,11 @@ export default {
         .then(res => {
           console.log(res);
           if (res && res.data && res.data.result === "ok") {
-            let newWindow;
-            newWindow = window.open(`${res.data.ret}`, "_blank");
+            // let newWindow;
+            // newWindow = window.open(`${res.data.ret}`, "_blank");
+            localStorage.setItem("iframe-third-url", res.data.ret);
+            localStorage.setItem("iframe-third-url-title", "搓合查询");
+            this.$router.push(`/mobile/iframe/history`);
           }
         })
         .catch(error => {

@@ -259,7 +259,8 @@ export default {
             return;
           }
           if (
-            this.$route.params.page.toUpperCase() === "GIFT" &&
+            (this.$route.params.page.toUpperCase() === "GIFT" ||
+              this.$route.params.page.toUpperCase() === "HISTORY") &&
             !iframeThirdOrigin
           ) {
             window.history.back();
