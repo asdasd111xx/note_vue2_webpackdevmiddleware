@@ -1,16 +1,5 @@
 <template>
-  <div
-    :class="$style['mcenter-avatar-info-wrap']"
-    :style="{
-      background: `url(${
-        cardInfoTop.background == ''
-          ? '/static/image/sg1/mcenter/avatar_bg.png'
-          : cardInfoTop.background
-      })50% 0 / 86%
-      no-repeat,
-    #fff`
-    }"
-  >
+  <div :class="$style['mcenter-avatar-info-wrap']">
     <!-- 大頭照 -->
     <div :class="$style['avatar-wrap']">
       <img :class="$style['avatar-pic']" :src="avatarSrc" />
@@ -22,6 +11,18 @@
       /> -->
     </div>
 
+    <!-- 背景 -->
+    <div
+      :class="$style['bg-wrap']"
+      :style="{
+        background: `url(${
+          cardInfoTop.background == ''
+            ? '/static/image/sg1/mcenter/avatar_bg.png'
+            : cardInfoTop.background
+        })
+      no-repeat`
+      }"
+    ></div>
     <!-- 姓名/註冊 -->
     <div :class="$style['info-wrap']">
       <div>
@@ -279,6 +280,7 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .mcenter-avatar-info-wrap {
+  position: relative;
   width: 100%;
   padding-bottom: 20px;
   display: flex;
@@ -304,6 +306,7 @@ export default {
   height: 82px;
   width: 82px;
   position: relative;
+  z-index: 1;
   .avatar-pic {
     height: 100%;
     border-radius: 50%;
@@ -316,6 +319,16 @@ export default {
     left: -28px;
     top: -28px;
   }
+}
+
+.bg-wrap {
+  width: 90%;
+  height: 18%;
+  background: #000;
+  position: absolute;
+  top: 0;
+  border-radius: 20px;
+  z-index: 0;
 }
 
 .info-wrap {
