@@ -222,15 +222,17 @@
   width: 65%;
   text-align: right;
   vertical-align: middle;
-
   :global(.vdp-datepicker) {
     width: 100%;
 
     :global(.vdp-datepicker__calendar) {
-      top: 35px;
-      right: 0;
+      position: relative;
+      max-width: 100%;
+      top: 10px;
+      right: 10px;
       color: #000;
       text-align: left;
+      margin-bottom: 10px;
     }
 
     :global(.vdp-datepicker__clear-button) {
@@ -464,13 +466,15 @@
   background: #ffffff;
   border: 2px solid #cecece;
   display: inline-block;
-  height: 40px;
+  height: 38px;
   text-align: center;
-  width: 40px;
+  width: 38px;
+  line-height: 40px;
 }
 
 .withdraw-pwd-input:not(:first-of-type) {
-  margin-left: 7.5px;
+  margin-top: 1px;
+  margin-left: 2px;
 }
 
 .version {
