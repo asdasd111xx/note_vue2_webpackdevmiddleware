@@ -50,6 +50,15 @@
 .field-wrap {
   position: relative;
   margin-bottom: 15px;
+  font-size: 0;
+  .show-red-star {
+    span {
+      &::before {
+        content: "*";
+        color: red;
+      }
+    }
+  }
 }
 
 .captcha-img {
@@ -63,8 +72,9 @@
 }
 
 .field-text {
+  font-size: 14px;
   float: left;
-  width: 88%;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -79,15 +89,27 @@
 }
 
 .join-input {
-  background-color: #303030;
+  outline: none;
   padding: 10px 3.5%;
   width: 100%;
   height: 40px;
-  border: 1px solid #595959;
-  border-radius: 5px;
   font-size: 14px;
   outline: 0;
   display: block;
+
+  &.phone {
+    border: 1px solid #e3e3e3;
+    margin: 0 8px;
+  }
+}
+
+.join-input:-webkit-autofill {
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
 }
 
 .join-input-email {
@@ -139,6 +161,8 @@
 }
 
 .join-select-phone {
+  border: 1px solid #e3e3e3;
+
   composes: join-input-select;
   float: left;
   width: 30%;
@@ -171,9 +195,27 @@
   }
 }
 
+.join-select-withdraw {
+  composes: join-input-select;
+
+  :global(.selected-tag) {
+    display: block;
+    float: none;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 38px;
+    line-height: 36px;
+    margin: 0;
+    padding: 0 12px;
+    border-width: 0;
+    text-align: center;
+  }
+}
+
 .join-input-withdraw {
   composes: join-input-select;
-  position: relative;
+
   float: left;
   width: 22%;
   margin-right: 4%;
@@ -204,27 +246,42 @@
 
 .field-title {
   display: inline-block;
-  padding-left: 10px;
+  padding-left: 17px;
   width: 90px;
   z-index: 1;
   overflow: hidden;
-  text-align: right;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
+  background-color: #ffffff;
+  border: 1px solid #e3e3e3;
+  border-right: none;
+  &.field-username {
+    color: red;
+  }
+  &.field-withdraw_password,
+  &.field-phone {
+    background-color: transparent;
+    border: none;
+    padding-left: 2px;
+  }
 }
 
 .field-right {
   position: relative;
   display: inline-block;
-  width: 65%;
+  width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
+  border: 1px solid #e3e3e3;
+  border-left: none;
+
   :global(.vdp-datepicker) {
     width: 100%;
-
+    font-size: 14px;
     :global(.vdp-datepicker__calendar) {
       position: relative;
       max-width: 100%;
@@ -241,6 +298,29 @@
       right: 10px;
     }
   }
+
+  &.phone {
+    display: flex;
+    border: none;
+    width: 100%;
+  }
+
+  &.withdraw-password {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: none;
+    .join-select-withdraw {
+      float: none;
+      display: inline-block;
+      width: calc(100% / 5);
+      margin: 0 8px;
+      background: #ffffff;
+      border: 1px solid #cecece;
+      height: 40px;
+      vertical-align: middle;
+    }
+  }
 }
 
 .join-tip {
@@ -254,30 +334,20 @@
 .join-tip-show {
   composes: join-tip;
   display: inline-block;
+  font-size: 14px;
 }
 
 .join-help {
   display: none;
   width: 100%;
-  padding: 5px 0px 5px 3px;
+  padding: 5px 0px 5px 2px;
   text-align: left;
   color: #a5a5a5;
+  font-size: 14px;
 }
 
 .join-help-show {
   composes: join-help;
-  display: inline-block;
-}
-
-.join-withdraw-password-help {
-  display: none;
-  width: 100%;
-  padding: 5px 126px 5px 0px;
-  text-align: end;
-  color: #a5a5a5;
-}
-.join-withdraw-password-help-show {
-  composes: join-withdraw-password-help;
   display: inline-block;
 }
 
@@ -369,9 +439,12 @@
 }
 
 .thirdy-block {
-  margin: 0 0 0 95px;
+  margin: 0 12px;
+  max-width: 100%;
   border-radius: 5px;
-  max-width: 65%;
+  .click-unit {
+    border-radius: 20px;
+  }
 }
 
 .clear {
