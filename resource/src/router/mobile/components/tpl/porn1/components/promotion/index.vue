@@ -176,20 +176,12 @@ export default {
       });
     },
     onGiftClick(target) {
-      switch (target) {
+      switch (target.name) {
         case "审核查询":
-          if (this.routerTPL === "sg1") {
-            sendUmeng(52);
-          } else {
-            sendUmeng(53);
-          }
+          sendUmeng(53);
           break;
         case "自领优惠":
-          if (this.routerTPL === "sg1") {
-            sendUmeng(53);
-          } else {
-            sendUmeng(54);
-          }
+          sendUmeng(54);
           break;
         default:
           break;
