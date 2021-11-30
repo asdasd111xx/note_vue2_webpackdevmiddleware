@@ -173,7 +173,7 @@
   height: 40px;
   line-height: 40px;
   font-size: 12px;
-  margin-right: 6px;
+  margin: 5px 6px 5px 0;
   color: #000;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -208,7 +208,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -588,6 +588,7 @@
 .bank-feature-wrap {
   float: left;
   width: 100%;
+  z-index: 2;
 }
 
 .pay-mode-tip {
@@ -598,6 +599,42 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.pay-mode-tip-show {
+  z-index: 1;
+  float: left;
+  animation: fade-in 0.5s;
+}
+
+.pay-mode-tip-close {
+  z-index: 1;
+  float: left;
+  animation: fade-out 0.5s;
+}
+
+@keyframes fade-in {
+  0% {
+    margin-top: -35px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-top: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    margin-top: 0px;
+    opacity: 1;
+  }
+
+  100% {
+    margin-top: -35px;
+    opacity: 0;
+  }
 }
 
 .pay-mode-tip-more {
@@ -973,7 +1010,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1089,7 +1125,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 

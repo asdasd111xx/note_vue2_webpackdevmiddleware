@@ -283,12 +283,13 @@
                   />
                 </div>
               </div>
-              <div  v-if="curPassRoad.tip != ''"
-                    :class="$style['pay-mode-tip']">
-                      {{curPassRoad.tip}}
+              <div :class="[curPassRoad.tip != '' ? [$style['pay-mode-tip-show']]:[$style['pay-mode-tip-close']]]">
+                <div :class="$style['pay-mode-tip']">
+                        {{curPassRoadTipText}}
+                </div>
+                <div v-if="curPassRoad.tip.length > 40" :class="$style['pay-mode-tip-more']"
+                  @click="setPopupStatus(true, 'payTip')">more</div>
               </div>
-              <div v-if="curPassRoad.tip.length > 40" :class="$style['pay-mode-tip-more']"
-                @click="setPopupStatus(true, 'payTip')">more</div>
             </div>
 
             <!-- Yabo -->
@@ -1392,6 +1393,13 @@ export default {
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
+      if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
+        setTimeout(()=>{
+          this.curPassRoadTipText = this.curPassRoad.tip
+        },500)
+      }else {
+        this.curPassRoadTipText = this.curPassRoad.tip
+      }
     },
     getPassRoadOrAi() {
       if (
