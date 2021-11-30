@@ -28,7 +28,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://ey.688lg.com/';
 
 // 泡泡 500035
-const domain = "https://sgtt.66boxing.com/";
+// const domain = "https://sgtt.66boxing.com/";
 
 // Beta 100009
 // const domain = "https://sgbe1.grtymart.com/";
