@@ -1139,7 +1139,7 @@ export default {
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28;
 
-      return withdrawType || cgpayCurrencyUSDT;
+      return (withdrawType || cgpayCurrencyUSDT) && !this.epointSelectType;
     },
     // 強制出款狀態
     forceStatus() {
@@ -1231,10 +1231,10 @@ export default {
     },
 
     realWidthdrawText() {
-      if (this.selectedCard.name && !this.isSelectedUSDT) {
-        return `${this.selectedCard.name}到帐`;
-      } else if (this.epointSelectType) {
+      if (this.epointSelectType) {
         return "e点富到帐";
+      } else if (this.selectedCard.name && !this.isSelectedUSDT) {
+        return `${this.selectedCard.name}到帐`;
       } else {
         return "实际提现金额";
       }
