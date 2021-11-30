@@ -37,9 +37,11 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 }
 
 .check-container {
+  border-radius: 20px;
   .check-header {
     background: #ffff;
     color: #000;
+    border-radius: 20px 20px 0 0;
   }
 
   .check-button-wrap {
