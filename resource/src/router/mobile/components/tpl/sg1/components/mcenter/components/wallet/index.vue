@@ -13,6 +13,7 @@
 <script>
 import mobileContainer from "../../../common/mobileContainer";
 import wallet from "@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/index";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -43,10 +44,14 @@ export default {
         title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
         customLinkAction: () => {
+          sendUmeng(37);
           this.$router.push("/mobile/mcenter/moneyDetail");
         }
       };
     }
+  },
+  created() {
+    sendUmeng(36);
   }
 };
 </script>
