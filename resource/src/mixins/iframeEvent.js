@@ -2,6 +2,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import mobileLinkOpen from "@/lib/mobile_link_open";
 import openGame from "@/lib/open_game";
 
 export default {
@@ -162,10 +163,10 @@ export default {
             return;
 
           case "EVENT_REDIRECT_PAGE":
-            const _data = data.data.toUpperCase();
+            let _data = data.data.toUpperCase();
             switch (_data) {
               case "EXCHANGEDIAMOND":
-                this.$router.push(`/mobile/live/iframe/exchange_diamond`);
+                this.$router.push(`/mobile/mcenter/live/diamond`);
                 return;
               case "CUSTOMERSERVICE":
                 this.$router.push(`/mobile/mcenter/service`);
@@ -198,24 +199,95 @@ export default {
               }
             });
             return;
+          case "EVENT_OPEN_GAME":
+            this.linkToGame(null, "", data.data);
+            return;
+          case "EVENT_QUEST":
+            switch (data.data.toUpperCase()) {
+              case "FIRSTBUYDIAMOND":
+                this.$router.push(`/mobile/mcenter/live/diamond`);
+                return;
+              case "CUMULATIVEDONATE":
+              case "CHATSTREAM":
+              case "VIEWSTREAM":
+              case "FIRSTDONATE":
+              case "FIRSTGUARDIAN":
+                this.redirectLive("home");
+                console.log(this.$refs["iframe"].contentWindow.history);
+                return;
+            }
 
+          case "EVENT_SWIPER_LINK":
+            mobileLinkOpen({
+              ...data.data,
+              site: this.siteConfig.ROUTER_TPL
+            });
+            return;
           default:
             return;
         }
       }
     },
-    linkToGame(data, event) {
+    linkToGame(data, event, params = null) {
       if (this.isLoading) {
         return;
       }
 
       this.isLoading = true;
+      let vendor = "";
+      let kind = "";
+      let code = "";
 
-      if (!data) {
+      if ((!data || (data && !data.split)) && !params) {
         return;
       }
 
-      if (!data || !data.split) {
+      const openGameSuccessFunc = res => {
+        this.isLoading = false;
+
+        if (event === "EVENT_GET_GAME_URL_TOKEN") {
+          this.iframeOnSendMessage(event, res);
+        }
+
+        if (this.$route.query.vendor === "sigua_ly") {
+          this.$router.push("/mobile");
+        }
+      };
+
+      const openGameFailFunc = res => {
+        this.isLoading = false;
+
+        if (event === "EVENT_GET_GAME_URL_TOKEN") {
+          this.iframeOnSendMessage(event, res);
+        }
+
+        if (res && res.data) {
+          let data = res.data;
+          this.actionSetGlobalMessage({
+            msg: data.msg,
+            code: data.code,
+            origin: "home"
+          });
+        }
+      };
+
+      if (params) {
+        // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
+        if (!this.withdrawCheckStatus.account) {
+          lib_useGlobalWithdrawCheck("home");
+          return;
+        }
+
+        openGame(
+          {
+            kind: params.kind,
+            vendor: params.vendor_name,
+            code: params.code,
+            getGames: true
+          },
+          openGameSuccessFunc,
+          openGameFailFunc
+        );
         return;
       }
 
@@ -242,41 +314,12 @@ export default {
           break;
 
         case "game":
-          const vendor = target[1] || "";
-          const kind = target[2] || "";
-          const code = target[3] || "";
+          vendor = target[1] || "";
+          kind = target[2] || "";
+          code = target[3] || "";
 
           switch (vendor) {
             default:
-              const openGameSuccessFunc = res => {
-                this.isLoading = false;
-
-                if (event === "EVENT_GET_GAME_URL_TOKEN") {
-                  this.iframeOnSendMessage(event, res);
-                }
-
-                if (this.$route.query.vendor === "sigua_ly") {
-                  this.$router.push("/mobile");
-                }
-              };
-
-              const openGameFailFunc = res => {
-                this.isLoading = false;
-
-                if (event === "EVENT_GET_GAME_URL_TOKEN") {
-                  this.iframeOnSendMessage(event, res);
-                }
-
-                if (res && res.data) {
-                  let data = res.data;
-                  this.actionSetGlobalMessage({
-                    msg: data.msg,
-                    code: data.code,
-                    origin: "home"
-                  });
-                }
-              };
-
               // 0421 進入遊戲前檢查withdrawcheck(維護時除外)
               if (!this.withdrawCheckStatus.account) {
                 lib_useGlobalWithdrawCheck("home");

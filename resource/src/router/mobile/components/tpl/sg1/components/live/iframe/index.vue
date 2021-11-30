@@ -120,8 +120,6 @@ export default {
     },
     "$route.query.hasFooter"(value) {
       this.hasFooter = value === undefined ? true : value === "true";
-
-      console.log(value, this.hasFooter);
     }
   },
   created() {},
@@ -141,6 +139,7 @@ export default {
         if (res && res.result) {
           Object.keys(list).some(key => {
             if (key === this.pageType) {
+              this.liveHomeSrc = list["home"];
               clientUri = list[key];
               return;
             }
@@ -168,12 +167,35 @@ export default {
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
-    toogleFooter(data) {
+    toogleFooter(data = {}) {
       const enter = data.data === "enter";
       if (enter) {
         this.$router.push({ query: { hasFooter: "false" } });
       } else {
         this.$router.push({ query: { hasFooter: "true" } });
+      }
+    },
+    redirectLive(target = "home") {
+      this.$router.push(`/mobile/live/iframe/${target}?hasFooter=true`);
+
+      switch (target) {
+        case "home":
+          this.isLoading = true;
+          goLangApiRequest({
+            method: "post",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+            params: {
+              code: "cubechat_master",
+              clientUri: this.liveHomeSrc
+              // clientUri: "https://client-dev.cubechat.asia/"
+            }
+          }).then(res => {
+            if (res && res.data && res.data.uri) {
+              this.src = res.data.uri;
+            }
+            this.isLoading = false;
+          });
+          return;
       }
     },
     onSendMessage() {
