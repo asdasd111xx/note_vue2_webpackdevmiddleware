@@ -190,7 +190,6 @@ export default {
               }
             }).then(res => {
               if (res && res.data) {
-                console.log(res.data.url);
                 // 縮網址推廣連結
                 this.iframeOnSendMessage({
                   event: "EVENT_GET_QRCODE_URL",
@@ -199,9 +198,11 @@ export default {
               }
             });
             return;
+
           case "EVENT_OPEN_GAME":
             this.linkToGame(null, "", data.data);
             return;
+
           case "EVENT_QUEST":
             switch (data.data.toUpperCase()) {
               case "FIRSTBUYDIAMOND":
@@ -212,6 +213,7 @@ export default {
               case "VIEWSTREAM":
               case "FIRSTDONATE":
               case "FIRSTGUARDIAN":
+              case "STREAMHOME":
                 this.redirectLive("home");
                 console.log(this.$refs["iframe"].contentWindow.history);
                 return;
