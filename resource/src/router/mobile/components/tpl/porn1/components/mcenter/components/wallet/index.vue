@@ -48,22 +48,14 @@ export default {
         title: this.$text("S_WALLET2", "钱包"),
         customLinkTitle: this.$text("S_TRANSACTION_RECORD", "交易记录"),
         customLinkAction: () => {
-          if (this.routerTPL === "sg1") {
-            sendUmeng(37);
-          } else {
-            sendUmeng(38);
-          }
+          sendUmeng(38);
           this.$router.push("/mobile/mcenter/moneyDetail");
         }
       };
     }
   },
   created() {
-    if (this.routerTPL === "sg1") {
-      sendUmeng(36);
-    } else {
-      sendUmeng(37);
-    }
+    sendUmeng(37);
   }
 };
 </script>

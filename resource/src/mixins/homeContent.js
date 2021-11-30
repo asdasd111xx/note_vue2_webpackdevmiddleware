@@ -220,6 +220,9 @@ export default {
     },
     siteName() {
       return this.siteConfig.SITE_NAME;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {

@@ -165,6 +165,16 @@ export default {
       });
     },
     onGiftClick(target) {
+      switch (target.name) {
+        case "审核查询":
+          sendUmeng(52);
+          break;
+        case "自领优惠":
+          sendUmeng(53);
+          break;
+        default:
+          break;
+      }
       let url = "";
       localStorage.setItem("iframe-third-url-title", target.name);
       this.$router.push(
