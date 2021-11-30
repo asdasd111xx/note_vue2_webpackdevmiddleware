@@ -383,7 +383,7 @@ export default {
               title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
               value: this.curPassRoad.bank_account_name,
               isFontBold: false,
-              copyShow: false
+              copyShow: true
             },
             {
               objKey: "withdrawDeliver",

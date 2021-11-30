@@ -588,27 +588,29 @@
 .bank-feature-wrap {
   float: left;
   width: 100%;
-  z-index: 2;
 }
 
 .pay-mode-tip {
   float: left;
   width: 85%;
+  height: 20px;
   margin-top: 10px;
   color: #6aaaf5;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: break-spaces;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
 .pay-mode-tip-show {
-  z-index: 1;
+  width: 100%;
   float: left;
   animation: fade-in 0.5s;
 }
 
 .pay-mode-tip-close {
-  z-index: 1;
   float: left;
   animation: fade-out 0.5s;
 }

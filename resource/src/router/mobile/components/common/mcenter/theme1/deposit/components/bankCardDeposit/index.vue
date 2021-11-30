@@ -244,7 +244,60 @@
                 为即时到帐，请务必输入正确的汇款人姓名
               </div>
             </div>
+            <!-- e點富銀行 -->
+            <div
+              v-if="
+                isSelectBindWallet(34) &&
+                  this.curPassRoad.is_bind_wallet
+              "
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <span :class="$style['select-bank-title']">
+                您的银行
+              </span>
+              <div :class="$style['select-epoint-bank-item']"
+                    @click="setPopupStatus(true, 'epointBank')">
+                {{ defaultEpointWallet.account }}
+                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+              </div>
+            </div>
 
+              <!-- v-if="showEpointWalletAddress" -->
+            <div
+              v-if="isSelectBindWallet(34) &&
+                  this.curPassRoad.is_bind_wallet && showEpointWalletAddress"
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <div :class="$style['other-bank-input-text']">
+                银行名称
+                <input
+                  v-model="epointBankName"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入银行名称'"
+                />
+              </div>
+              <div :class="[$style['other-bank-input-text'],$style['border']]">
+                银行帐号
+                <input
+                  v-model="epointBankAccount"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入银行帐号'"
+                />
+              </div>
+              <div :class="[$style['wallet-address-text'],$style['less']]">
+                为即时到帐，请务必输入正确的银行资讯
+              </div>
+            </div>
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
@@ -284,8 +337,7 @@
                 </div>
               </div>
               <div :class="[curPassRoad.tip != '' ? [$style['pay-mode-tip-show']]:[$style['pay-mode-tip-close']]]">
-                <div :class="$style['pay-mode-tip']">
-                        {{curPassRoadTipText}}
+                <div :class="$style['pay-mode-tip']" v-html="curPassRoadTipText">
                 </div>
                 <div v-if="curPassRoad.tip.length > 40" :class="$style['pay-mode-tip-more']"
                   @click="setPopupStatus(true, 'payTip')">more</div>
@@ -438,76 +490,6 @@
               />
               <div :class="$style['wallet-address-text']">
                 为即时到帐，请务必输入正确的钱包位址
-              </div>
-            </div>
-            <!-- e點富銀行 -->
-            <!-- v-if="
-                isSelectBindWallet(34) &&
-                  this.curPassRoad.is_bind_wallet
-              " -->
-            <div
-              v-if="
-                isSelectBindWallet(34) &&
-                  this.curPassRoad.is_bind_wallet
-              "
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-            >
-              <span :class="$style['select-bank-title']">
-                您的银行
-              </span>
-              <!-- <select
-                v-model="defaultEpointWallet"
-                :class="$style['outer-crypto-selected']"
-              >
-                <option
-                  v-for="(option, idx) in userBankOption"
-                  :key="idx"
-                  v-bind:value="option"
-                >
-                  {{ option.account }}
-                </option>
-              </select> -->
-
-              <div :class="$style['select-epoint-bank-item']"
-                    @click="setPopupStatus(true, 'epointBank')">
-                {{ defaultEpointWallet.account }}
-                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
-              </div>
-            </div>
-
-              <!-- v-if="showEpointWalletAddress" -->
-            <div
-              v-if="showEpointWalletAddress"
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-            >
-              <div :class="$style['other-bank-input-text']">
-                银行名称
-                <input
-                  v-model="epointBankName"
-                  :class="$style['input-cgpay-address']"
-                  type="text"
-                  :placeholder="'请输入银行名称'"
-                />
-              </div>
-              <div :class="[$style['other-bank-input-text'],$style['border']]">
-                银行帐号
-                <input
-                  v-model="epointBankAccount"
-                  :class="$style['input-cgpay-address']"
-                  type="text"
-                  :placeholder="'请输入银行帐号'"
-                />
-              </div>
-              <div :class="[$style['wallet-address-text'],$style['less']]">
-                为即时到帐，请务必输入正确的银行资讯
               </div>
             </div>
 
@@ -1395,7 +1377,7 @@ export default {
       console.log("passRoad", this.curPassRoad);
       if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
         setTimeout(()=>{
-          this.curPassRoadTipText = this.curPassRoad.tip
+          this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
         },500)
       }else {
         this.curPassRoadTipText = this.curPassRoad.tip
