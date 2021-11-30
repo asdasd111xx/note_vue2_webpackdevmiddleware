@@ -20,7 +20,7 @@
             ? '/static/image/sg1/mcenter/avatar_bg.png'
             : cardInfoTop.background
         })
-      no-repeat`
+      no-repeat center center / cover`
       }"
     ></div>
     <!-- 姓名/註冊 -->
