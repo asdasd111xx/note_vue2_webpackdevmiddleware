@@ -52,6 +52,9 @@
               :class="[
                 $style['field-title'],
                 $style[`field-${field.key}`],
+                {
+                  [$style['show-red-star']]: redStar[field.key]
+                },
                 'clearfix'
               ]"
               @click="
@@ -60,11 +63,23 @@
                 }
               "
             >
-              <span :class="$style['field-text']">{{
-                $t(joinMemInfo[field.key].text)
-              }}</span>
+              <span :class="$style['field-text']">
+                {{ $t(joinMemInfo[field.key].text) }}</span
+              >
             </label>
-            <div :class="[$style['field-right'], 'clearfix']">
+            <div
+              :class="[
+                $style['field-right'],
+                {
+                  [$style['withdraw-password']]:
+                    field.key === 'withdraw_password'
+                },
+                {
+                  [$style['phone']]: field.key === 'phone'
+                },
+                'clearfix'
+              ]"
+            >
               <div
                 v-if="field.key === 'captcha_text'"
                 :class="$style['captchaText-wrap']"
@@ -184,7 +199,7 @@
               </template>
 
               <template v-else-if="field.key === 'gender'">
-                <!-- <v-select
+                <v-select
                   v-model="selectData['gender'].selected"
                   :options="selectData['gender'].options"
                   :searchable="false"
@@ -193,8 +208,8 @@
                     $style[siteConfig.ROUTER_TPL]
                   ]"
                   @input="changSelect(field.key)"
-                /> -->
-                <select
+                />
+                <!-- <select
                   :class="[
                     $style['select-gender'],
                     $style[siteConfig.ROUTER_TPL]
@@ -207,24 +222,20 @@
                     :key="index"
                     >{{ item.label }}</option
                   ></select
-                >
+                > -->
               </template>
 
               <template v-else-if="field.key === 'phone'">
-                <!-- <v-select
-                v-model="selectData[field.key].selected"
-                :options="selectData[field.key].options"
-                :searchable="false"
-                :class="$style['join-select-phone']"
-                @input="changSelect(field.key)"
-              /> -->
+                <v-select
+                  v-model="selectData[field.key].selected"
+                  :options="selectData[field.key].options"
+                  :searchable="false"
+                  :class="$style['join-select-phone']"
+                  @input="changSelect(field.key)"
+                />
                 <input
-                  v-model="allValue['phone']"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], $style[field.key]]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
@@ -243,7 +254,7 @@
                   :clear-button="true"
                   :monday-first="true"
                   :placeholder="placeholderKeyValue('birthday', 'tip')"
-                  :input-class="[
+                  :class="[
                     $style['join-input-birthday'],
                     $style[siteConfig.ROUTER_TPL]
                   ]"
@@ -255,56 +266,55 @@
                 />
               </template>
 
-              <template v-else-if="field.key === 'withdraw_password'">
-                <div :class="$style['withdraw-password-wrap']">
-                  <input
-                    v-for="(item, index) in allValue['withdraw_password'].value"
-                    v-model="allValue['withdraw_password'].value[index]"
-                    :key="`widthdrawPwd-${index}`"
-                    @input="verification('withdraw_password', index)"
-                    @blur="verification('withdraw_password', index)"
-                    :data-key="`withdraw_password_${index}`"
-                    :class="$style['withdraw-pwd-input']"
-                    :maxlength="1"
-                    :minlength="1"
-                    :placeholder="allValue['withdraw_password'].placeholder"
-                    type="tel"
-                  />
-                </div>
-                <div
-                  :class="
-                    placeholderKeyValue('withdraw_password', 'help')
-                      ? $style['join-withdraw-password-help-show']
-                      : $style['join-withdraw-password-help']
-                  "
-                  v-html="placeholderKeyValue('withdraw_password', 'help')"
-                />
+              <template
+                v-else-if="field.key === 'withdraw_password'"
+                :class="$style['join-select-withdraw-wrap']"
+              >
+                <v-select
+                  v-for="(item, index) in allValue.withdraw_password.value"
+                  :key="`widthdrawPwd-${index}`"
+                  v-model="selectData['withdraw_password'].selected[index]"
+                  :options="selectData['withdraw_password'].options"
+                  :clearable="false"
+                  :searchable="false"
+                  :class="$style['join-select-withdraw']"
+                  @input="changSelect('withdraw_password', index)"
+                ></v-select>
+                <!-- <input
+                  v-for="(item, index) in allValue['withdraw_password'].value"
+                  v-model="allValue['withdraw_password'].value[index]"
+                  :key="`widthdrawPwd-${index}`"
+                  @input="verification('withdraw_password', index)"
+                  @blur="verification('withdraw_password', index)"
+                  :data-key="`withdraw_password_${index}`"
+                  :class="$style['withdraw-pwd-input']"
+                  :maxlength="1"
+                  :minlength="1"
+                  :placeholder="allValue['withdraw_password'].placeholder"
+                  type="tel"
+                /> -->
               </template>
-              <template v-else>
-                <input
-                  :ref="field.key"
-                  v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
-                  :name="field.key"
-                  :placeholder="placeholderKeyValue(field.key, 'tip')"
-                  type="text"
-                  @blur="verification(field.key)"
-                  @keydown.13="keyDownSubmit()"
-                />
-                <div
-                  :class="
-                    placeholderKeyValue(field.key, 'help')
-                      ? $style['join-help-show']
-                      : $style['join-help']
-                  "
-                  v-html="placeholderKeyValue(field.key, 'help')"
-                />
-              </template>
+              <input
+                v-else
+                :ref="field.key"
+                v-model="allValue[field.key]"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="placeholderKeyValue(field.key, 'tip')"
+                type="text"
+                @blur="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+              />
             </div>
+            <!-- </div> -->
+            <div
+              :class="
+                placeholderKeyValue(field.key, 'help')
+                  ? $style['join-help-show']
+                  : $style['join-help']
+              "
+              v-html="placeholderKeyValue(field.key, 'help')"
+            />
             <!-- eslint-disable vue/no-v-html -->
             <div
               :class="
@@ -521,6 +531,28 @@ export default {
         withdraw_password: "",
         captcha_text: ""
       },
+      redStar: {
+        username: true,
+        password: true,
+        confirm_password: true,
+        introducer: "",
+        name: "",
+        email: "",
+        phone: "",
+        alias: "",
+        birthday: "",
+        gender: "",
+        qq_num: "",
+        telegram: "",
+        kakaotalk: "",
+        weixin: "",
+        line: "",
+        facebook: "",
+        skype: "",
+        zalo: "",
+        withdraw_password: "",
+        captcha_text: ""
+      },
       checkFail: false,
       registerData: [],
       withdraw_passwordStatus: false,
@@ -548,11 +580,35 @@ export default {
         },
         gender: {
           options: [
-            { label: this.$i18n.t("S_SELECTED"), value: "0" },
+            {
+              label: this.$i18n.t("S_SELECTED"),
+              value: "0"
+            },
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
           ],
-          selected: { label: this.$i18n.t("S_SELECTED"), value: "0" }
+          selected: { label: this.$i18n.t("S_SELECTED"), value: "" }
+        },
+        withdraw_password: {
+          options: [
+            { label: "-", value: "" },
+            { label: "0", value: "0" },
+            { label: "1", value: "1" },
+            { label: "2", value: "2" },
+            { label: "3", value: "3" },
+            { label: "4", value: "4" },
+            { label: "5", value: "5" },
+            { label: "6", value: "6" },
+            { label: "7", value: "7" },
+            { label: "8", value: "8" },
+            { label: "9", value: "9" }
+          ],
+          selected: [
+            { label: "-", value: "" },
+            { label: "-", value: "" },
+            { label: "-", value: "" },
+            { label: "-", value: "" }
+          ]
         }
       },
       isGetCaptcha: false,
@@ -573,6 +629,12 @@ export default {
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
+      );
+    },
+    requireTrueData() {
+      return this.registerData.filter(
+        field =>
+          this.joinMemInfo[field.key] && this.joinMemInfo[field.key].required
       );
     },
     $style() {
@@ -619,9 +681,9 @@ export default {
               return this.allValue.withdraw_password.length === 4;
             }
 
-            // if (field.key === 'phone') {
-            //   return this.joinMemInfo[field.key].hasVerify && this.countryCode;
-            // }
+            if (field.key === "phone") {
+              return this.joinMemInfo[field.key].hasVerify && this.countryCode;
+            }
 
             return this.allValue[field.key];
           }
@@ -684,7 +746,7 @@ export default {
             if (!ret[key]) {
               return;
             }
-
+            this.redStar[key] = ret[key].required;
             if (key === "introducer" && this.$cookie.get("a")) {
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
@@ -695,14 +757,28 @@ export default {
               return;
             }
 
-            //   if (key === 'phone') {
-            //     this.selectData.phone.options = [
-            //       ...this.selectData.phone.options,
-            //       ...ret[key].country_codes.map((label) => ({ label, value: label }))
-            //     ];
+            if (key === "gender") {
+              this.selectData.gender.options[0].label = this.placeholderKeyValue(
+                "gender",
+                "tip"
+              );
+              this.selectData.gender.selected.label = this.placeholderKeyValue(
+                "gender",
+                "tip"
+              );
+            }
 
-            //     [this.selectData.phone.selected] = this.selectData.phone.options;
-            //   }
+            if (key === "phone") {
+              this.selectData.phone.options = [
+                ...this.selectData.phone.options,
+                ...ret[key].country_codes.map(label => ({
+                  label,
+                  value: label
+                }))
+              ];
+
+              [this.selectData.phone.selected] = this.selectData.phone.options;
+            }
 
             this.joinMemInfo[key] = {
               ...this.joinMemInfo[key],
@@ -936,32 +1012,34 @@ export default {
             return;
           }
         } else {
-          let target = this.allValue.withdraw_password;
-          let correct_value = target.value[index]
-            .replace(" ", "")
-            .trim()
-            .replace(/[^\d+]$/g, "");
+          if (index) {
+            let target = this.allValue.withdraw_password;
+            let correct_value = target.value[index]
+              .replace(" ", "")
+              .trim()
+              .replace(/[^\d+]$/g, "");
 
-          if (target.value[index] === correct_value && correct_value !== "") {
-            if (index < 3) {
-              document
-                .querySelector(
-                  `input[data-key="withdraw_password_${index + 1}"]`
-                )
-                .focus();
+            if (target.value[index] === correct_value && correct_value !== "") {
+              if (index < 3) {
+                document
+                  .querySelector(
+                    `v-select[data-key="withdraw_password_${index + 1}"]`
+                  )
+                  .focus();
+              }
             }
-          }
 
-          target.value[index] = correct_value;
+            target.value[index] = correct_value;
 
-          if (target.value[index].length > 1) {
-            target.value[index] = target.value[index].substring(0, 1);
-          }
+            if (target.value[index].length > 1) {
+              target.value[index] = target.value[index].substring(0, 1);
+            }
 
-          for (let i = 0; i < 4; i++) {
-            if (!this.allValue.withdraw_password.value[i]) {
-              this.checkFormData = false;
-              return;
+            for (let i = 0; i < 4; i++) {
+              if (!this.allValue.withdraw_password.value[i]) {
+                this.checkFormData = false;
+                return;
+              }
             }
           }
         }
@@ -988,33 +1066,52 @@ export default {
         );
       }
 
+      if (key === "phone") {
+        this.allValue[key] = `${this.countryCode.replace("+", "")}-${
+          this.allValue[key]
+        }`;
+      }
+
       this.allTip[key] = "";
     },
-    changSelect(key) {
-      //   if (key === 'phone') {
-      //     if (!this.selectData[key].selected) {
-      //       this.selectData[key].selected = {
-      //         label: this.countryCode,
-      //         value: this.countryCode
-      //       };
-      //       return;
-      //     }
+    changSelect(key, index) {
+      if (key === "phone") {
+        if (!this.selectData[key].selected) {
+          this.selectData[key].selected = {
+            label: this.countryCode,
+            value: this.countryCode
+          };
+          return;
+        }
 
-      //     this.countryCode = this.selectData[key].selected.value;
-      //     return;
-      //   }
-
-      if (
-        this.selectData[key].selected &&
-        !this.selectData[key].selected.value
-      ) {
-        this.allValue[key] = "0";
+        this.countryCode = this.selectData[key].selected.value;
         return;
       }
 
-      this.allValue[key] = this.selectData[key].selected
-        ? this.selectData[key].selected.value
-        : "0";
+      if (key === "withdraw_password") {
+        if (
+          this.selectData[key].selected[index].value &&
+          !this.selectData[key].selected[index].value
+        ) {
+          this.allValue[key].value[index] = "";
+          return;
+        }
+        this.allValue[key].value[index] = this.selectData[key].selected[index]
+          ? this.selectData[key].selected[index].value
+          : "";
+      } else {
+        if (
+          this.selectData[key].selected &&
+          !this.selectData[key].selected.value
+        ) {
+          this.allValue[key] = "0";
+          return;
+        }
+
+        this.allValue[key] = this.selectData[key].selected
+          ? this.selectData[key].selected.value
+          : "0";
+      }
       this.verification(key);
     },
     checkField() {
@@ -1054,13 +1151,13 @@ export default {
     },
     joinSubmit(captchaInfo) {
       this.isLoading = true;
-      // Object.keys(this.allValue).forEach(item => {
-      //   if (item === "withdraw_password") {
-      //     this.verification("withdraw_password", "all");
-      //   } else {
-      //     this.verification(item);
-      //   }
-      // });
+      Object.keys(this.allValue).forEach(item => {
+        if (item === "withdraw_password") {
+          this.verification("withdraw_password", "all");
+        } else {
+          this.verification(item);
+        }
+      });
 
       if (this.memInfo.config.register_captcha_type === 0) {
       }
@@ -1307,13 +1404,17 @@ export default {
     },
     placeholderKeyValue(key, option) {
       let result = this.placeholderResult.find(item => item.key === key);
+      //tip：代表欄位placeholder ,help：代表欄位提示
       if (result) {
-        //tip：代表欄位placeholder ,help：代表欄位提示
         switch (option) {
           case "tip":
-            return result.tip["zh-cn"] || "";
+            if (result.tip) {
+              return result.tip["zh-cn"] || "";
+            }
           case "help":
-            return result.help["zh-cn"] || "";
+            if (result.help) {
+              return result.help["zh-cn"] || "";
+            }
         }
       }
       return;
