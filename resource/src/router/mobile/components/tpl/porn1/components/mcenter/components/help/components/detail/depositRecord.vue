@@ -18,7 +18,15 @@
             {{ $text("S_STATUS", "状态") }}
           </div>
 
-          <div :class="$style['value']">
+          <div
+            :class="[
+              $style['value'],
+              {
+                [$style['match']]:
+                  item.method_id === 34 && item.status === 'process'
+              }
+            ]"
+          >
             <div
               v-if="item.status === 'submit_data'"
               :class="$style['edit']"
@@ -26,7 +34,12 @@
             >
               提交资料
             </div>
-
+            <div
+              v-else-if="item.method_id === 34 && item.status === 'process'"
+              @click="openMatchLink(item)"
+            >
+              搓合查询
+            </div>
             <div
               v-else
               @click="
@@ -39,9 +52,7 @@
                     : '';
                 }
               "
-              :class="[
-                { [$style['processing']]: item.status === 'processing' }
-              ]"
+              :class="[{ [$style['processing']]: item.status === 'process' }]"
             >
               {{ getStatus(item.status) }}
             </div>
@@ -219,6 +230,30 @@ export default {
       // this.editOpen = true;
       this.getSingleInfo(info.order_number);
       this.getData();
+    },
+    openMatchLink(item) {
+      axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/match/url",
+        errorAlert: false,
+        params: {
+          entry_id: item.order_number,
+          type: "deposit"
+        }
+      })
+        .then(res => {
+          console.log(res);
+          if (res && res.data && res.data.result === "ok") {
+            let newWindow;
+            newWindow = window.open(`${res.data.ret}`, "_blank");
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
     }
   }
 };
