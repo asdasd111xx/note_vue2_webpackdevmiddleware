@@ -450,7 +450,7 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"yaboxxx-web","10.17.3.48","sigua","istio","sg","env","prod"),
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
-    ,"qa","sigua-frontend-proxy-qa2","","sigua-frontend-proxy-nginx-config-qa2"
+    ,"qa2","sigua-frontend-proxy-qa2","","sigua-frontend-proxy-nginx-config-qa2"
     ,"yaboxxx-web","10.27.1.218","sigua","istio","sg2","env","qa"),
 
     Pipeline("Demo","yaboxxx-prod","asia-east1-b"

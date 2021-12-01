@@ -1169,14 +1169,14 @@ steps:
   image: plugins/gcr
   settings:
     build_args:
-    - website=qa
+    - website=qa2
     - product=sigua
     json_key:
       from_secret: GOOGLE_CREDENTIALS
     repo: gcr.io/rd7-project/yaboxxx-web
     tags:
     - latest
-    - qa-${DRONE_COMMIT}
+    - qa2-${DRONE_COMMIT}
     - ${DRONE_TAG}
 
 - name: deploy2GKE-QA
@@ -1187,7 +1187,7 @@ steps:
     template: configs/sigua/.istio-kube.yml
     vars:
       deployName: sigua-frontend-proxy-qa2
-      env: qa
+      env: qa2
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa2
       k8sNginxSSL: ""
