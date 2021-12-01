@@ -2227,10 +2227,9 @@ export default {
         this.withdrawCurrency;
 
       this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType");
-      this.defaultEpointWallet = JSON.parse(
-        localStorage.getItem("tmp_w_epointWallet")
-      );
-
+      if(localStorage.getItem("tmp_w_epointWallet")){
+        this.defaultEpointWallet = JSON.parse(localStorage.getItem("tmp_w_epointWallet"))
+      }
       setTimeout(() => {
         this.removeCurrentValue();
 
