@@ -59,11 +59,15 @@
                 placeholder="请輸入验证码"
               />
             </div>
-            <p v-if="VerifybtnSubmit" style="color:#5E626D">
+            <p
+              v-if="phoneSubmitSuccess && phoneSubmitFail == 'false'"
+              style="color:#5E626D"
+            >
               验证码已发送，有效时间为
-              <span style="color: red">{{ ttlCount }}</span>
-              秒钟，若没收到信件请尝试至垃圾箱寻找
+              <span style="color: red">10</span>
+              分钟，若没收到信件请尝试至垃圾箱寻找
             </p>
+            <p v-if="phoneSubmitFail">{{ phoneSubmitFailMsg }}</p>
             <button>确认送出</button>
           </div>
         </div>
@@ -460,6 +464,9 @@ export default {
       isShowPwd: false,
       VerifybtnActive: false,
       VerifybtnSubmit: false,
+      phoneSubmitSuccess: false,
+      phoneSubmitFail: false,
+      phoneSubmitFailMsg: "",
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -1414,12 +1421,13 @@ export default {
       //取得驗證碼倒數秒數
       axios({
         method: "get",
-        url: "/api/v1/c/agent/register/phone/ttl"
+        url: "/api/v1/c/player/register/phone/ttl"
       }).then(res => {
         // console.log("phonettl", res);
         if (res && res.data.result == "ok") {
           this.VerifybtnSubmit = true;
-          this.ttlCount = res.data.ret + 10;
+          this.phoneSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
           this.timer = setInterval(() => {
             if (this.ttlCount <= 1) {
               this.ttlCount = 0;
@@ -1430,8 +1438,35 @@ export default {
             }
             this.ttlCount -= 1;
           }, 1500);
+        } else {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg = res.data.result + "" + res.msg;
         }
       });
+
+      //寄出會員註冊驗證簡訊
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/register/phone",
+        data: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+        }
+      })
+        .then(res => {
+          console.log("簡訊驗證res", res);
+          if (res && res.data.result === "ok") {
+            console.log("簡訊驗證ok", res);
+          } else {
+            console.log("簡訊驗證okelse", res);
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg = res.data.result + "" + res.msg;
+          }
+        })
+        .catch(error => {
+          console.log("簡訊驗證error", error);
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg = error.msg || "error";
+        });
     }
   }
 };
