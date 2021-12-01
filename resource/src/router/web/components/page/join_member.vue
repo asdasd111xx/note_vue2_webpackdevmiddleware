@@ -67,7 +67,12 @@
               <span style="color: red">10</span>
               分钟，若没收到信件请尝试至垃圾箱寻找
             </p>
-            <p v-if="phoneSubmitFail">{{ phoneSubmitFailMsg }}</p>
+            <p
+              v-if="phoneSubmitFail"
+              style="color: red;margin-right: auto;padding: 0 10px;"
+            >
+              {{ phoneSubmitFailMsg }}
+            </p>
             <button>确认送出</button>
           </div>
         </div>
@@ -1476,7 +1481,8 @@ export default {
           }, 1500);
         } else {
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg = res.data.result + "" + res.msg;
+          this.phoneSubmitFailMsg =
+            res.data.result + "" + res.msg || "ttl error";
         }
       });
 
@@ -1495,13 +1501,14 @@ export default {
           } else {
             console.log("簡訊驗證okelse", res);
             this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg = res.data.result + "" + res.msg;
+            this.phoneSubmitFailMsg =
+              res.data.result + "" + res.msg || "phone error";
           }
         })
         .catch(error => {
           console.log("簡訊驗證error", error);
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg = error.msg || "error";
+          this.phoneSubmitFailMsg = error.response.data.msg || "phone error";
         });
     }
   }
