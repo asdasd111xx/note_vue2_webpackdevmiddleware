@@ -1535,8 +1535,7 @@ export default {
             alert("submit ok");
           } else {
             this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg =
-              error.response.data.msg || "phoneverify error1";
+            this.phoneSubmitFailMsg = res.data.msg || "phoneverify error1";
           }
         })
         .catch(error => {
