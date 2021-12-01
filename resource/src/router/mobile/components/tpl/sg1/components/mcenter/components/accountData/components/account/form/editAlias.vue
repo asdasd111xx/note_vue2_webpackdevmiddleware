@@ -50,14 +50,8 @@
 </template>
 
 <script>
-import {
-  API_MCENTER_ENABLE_ALIAS,
-  API_MCENTER_DISABLE_ALIAS
-} from "@/config/api";
 import { mapGetters, mapActions } from "vuex";
 import accountHeader from "../../accountHeader";
-import ajax from "@/lib/ajax";
-import mcenter from "@/api/mcenter";
 import serviceTips from "../../serviceTips";
 
 export default {
@@ -121,35 +115,39 @@ export default {
       });
     },
     checkAliasEdit() {
-      this.actionGetExtRedirect({
+      return this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/alias-update-status",
         method: "get"
       }).then(data => {
-        if (data && data.result.result.allow_update == false) {
+        if (data && data.result && data.result.allow_update === false) {
           this.cantEditAlias = true;
         }
       });
     },
     handleSubmit() {
-      // 驗證失敗
+      // 驗證失敗d
       //   if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
       //     this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
       //     return Promise.resolve(result);
       //   }
 
-      this.checkAliasEdit();
-
-      const setNickname = this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/update-alias",
-        method: "put",
-        data: { alias: this.value.substring(0, 20) }
-      });
-
-      return Promise.all([setNickname]).then(response => {
-        if (response.every(res => res.result === "success")) {
-          localStorage.setItem("set-account-success", true);
-          this.$router.push("/mobile/mcenter/accountData");
+      this.checkAliasEdit().then(() => {
+        if (this.cantEditAlias) {
+          return;
         }
+
+        const setNickname = this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/update-alias",
+          method: "put",
+          data: { alias: this.value.substring(0, 20) }
+        });
+
+        return Promise.all([setNickname]).then(response => {
+          if (response.every(res => res.result === "success")) {
+            localStorage.setItem("set-account-success", true);
+            this.$router.push("/mobile/mcenter/accountData");
+          }
+        });
       });
     }
   }
