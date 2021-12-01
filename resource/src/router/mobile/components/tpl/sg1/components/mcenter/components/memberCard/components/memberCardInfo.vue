@@ -51,7 +51,7 @@
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']" @click="onListClick('my_track')">
-        <span>{{ cardInfoTop.track_toatl || 0 }}</span>
+        <span>{{ cardInfoTop.track_total || 0 }}</span>
         追踪人数
       </div>
       <div :class="$style['tool']" @click="onListClick('my_props')">

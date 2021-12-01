@@ -59,13 +59,13 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.error_code !== "0") {
-          this.actionSetGlobalMessage({
-            msg: data.error_text,
-            code: data.error_code
-          });
-        } else if (data.result) {
+        if (data && data.error_code === "0") {
           this.paopaoMemberCardInfo = data.result;
+        } else {
+          this.actionSetGlobalMessage({
+            msg: data && data.error_text,
+            code: data && data.error_code
+          });
         }
       });
 
@@ -75,13 +75,13 @@ export default {
         method: "get"
       }).then(data => {
         this.isLoading = false;
-        if (data.error_code !== "0") {
-          this.actionSetGlobalMessage({
-            msg: data.error_text,
-            code: data.error_code
-          });
-        } else {
+        if (data && data.result && data.error_code === "0") {
           this.paopaoMemberCardInfoTop = data.result;
+        } else {
+          this.actionSetGlobalMessage({
+            msg: data && data.error_text,
+            code: data && data.error_code
+          });
         }
       });
     }

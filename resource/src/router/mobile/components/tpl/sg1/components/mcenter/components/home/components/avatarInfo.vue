@@ -151,11 +151,6 @@ export default {
       }
     }
   },
-  watch: {
-    paopaoUserInfo() {
-      console.log(this.paopaoUserInfo);
-    }
-  },
   created() {
     setTimeout(() => {
       axios({
@@ -176,7 +171,7 @@ export default {
     this.getUserViplevel();
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onListClick(target, isLive = true) {
       if (!this.loginStatus) {
         this.$router.push("/mobile/login");

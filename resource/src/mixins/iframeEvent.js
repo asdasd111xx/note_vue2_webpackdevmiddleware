@@ -216,10 +216,15 @@ export default {
               case "FIRSTGUARDIAN":
               case "STREAMHOME":
                 this.redirectLive("home");
-                console.log(this.$refs["iframe"].contentWindow.history);
+                // console.log(this.$refs["iframe"].contentWindow.history);
+                return;
+
+              case "SHARESTREAM":
+                this.$router.push(`/mobile/mcenter/memberCard`);
                 return;
             }
 
+            return;
           case "EVENT_SWIPER_LINK":
             mobileLinkOpen({
               ...data.data,
