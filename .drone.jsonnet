@@ -126,7 +126,7 @@ local Pipeline(name="QA",cluster="xbb-common",zone="asia-east1-a",
 env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",shortProduct="yb",nodePool="",nodePoolName="") = {
     kind: "pipeline",
-    name: "Pipeline"+product+"Pipeline("+origin+ name +")",
+    name: deployName+"Pipeline("+origin+ name +")",
     steps:[
         {
 
@@ -449,6 +449,9 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
     ,"yaboxxx-web","10.17.3.48","sigua","istio","sg","env","prod"),
 
+    Pipeline("QA","yaboxxx-test","asia-east1-b"
+    ,"qa","sigua-frontend-proxy-qa2","","sigua-frontend-proxy-nginx-config-qa2"
+    ,"yaboxxx-web","10.27.1.218","sigua","istio","sg2","env","qa"),
 
     Pipeline("Demo","yaboxxx-prod","asia-east1-b"
     ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"

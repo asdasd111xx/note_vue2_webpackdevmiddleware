@@ -480,7 +480,7 @@ trigger:
 
 ---
 kind: pipeline
-name: Pipelinesp51Pipeline(istioQA)
+name: sp51-frontend-qaPipeline(istioQA)
 
 platform:
   os: linux
@@ -529,7 +529,7 @@ trigger:
 
 ---
 kind: pipeline
-name: Pipelinesp51Pipeline(istioDemo)
+name: sp51-frontend-demoPipeline(istioDemo)
 
 platform:
   os: linux
@@ -657,7 +657,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineauboPipeline(istioQA)
+name: aubo-frontend-qaPipeline(istioQA)
 
 platform:
   os: linux
@@ -706,7 +706,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineauboPipeline(istioDemo)
+name: aubo-frontend-demoPipeline(istioDemo)
 
 platform:
   os: linux
@@ -834,7 +834,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineyiyuanPipeline(istioQA)
+name: yiyuan-frontend-proxy-qaPipeline(istioQA)
 
 platform:
   os: linux
@@ -883,7 +883,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineyiyuanPipeline(istioBeta)
+name: yiyuan-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
   os: linux
@@ -932,7 +932,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineyiyuanPipeline(istioDemo)
+name: yiyuan-frontend-proxy-demoPipeline(istioDemo)
 
 platform:
   os: linux
@@ -1060,7 +1060,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelinesiguaPipeline(istioQA)
+name: sigua-frontend-proxy-qaPipeline(istioQA)
 
 platform:
   os: linux
@@ -1109,7 +1109,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelinesiguaPipeline(istioBeta)
+name: sigua-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
   os: linux
@@ -1158,7 +1158,56 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelinesiguaPipeline(istioDemo)
+name: sigua-frontend-proxy-qa2Pipeline(istioQA)
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: push2GCR-QA
+  image: plugins/gcr
+  settings:
+    build_args:
+    - website=qa
+    - product=sigua
+    json_key:
+      from_secret: GOOGLE_CREDENTIALS
+    repo: gcr.io/rd7-project/yaboxxx-web
+    tags:
+    - latest
+    - qa-${DRONE_COMMIT}
+    - ${DRONE_TAG}
+
+- name: deploy2GKE-QA
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-test
+    project: rd7-project
+    template: configs/sigua/.istio-kube.yml
+    vars:
+      deployName: sigua-frontend-proxy-qa2
+      env: qa
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-qa2
+      k8sNginxSSL: ""
+      nfs: 10.27.1.218
+      nodePool: env
+      nodePoolName: qa
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+
+trigger:
+  event:
+  - tag
+  ref:
+  - refs/tags/sg2QA-*
+
+---
+kind: pipeline
+name: sigua-frontend-proxy-demoPipeline(istioDemo)
 
 platform:
   os: linux
@@ -1286,7 +1335,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineyaboPipeline(istioQA)
+name: yabo-frontend-proxy-qaPipeline(istioQA)
 
 platform:
   os: linux
@@ -1335,7 +1384,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineyaboPipeline(istioBeta)
+name: yabo-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
   os: linux
@@ -1384,7 +1433,7 @@ trigger:
 
 ---
 kind: pipeline
-name: PipelineyaboPipeline(istioDemo)
+name: yabo-frontend-proxy-demoPipeline(istioDemo)
 
 platform:
   os: linux
