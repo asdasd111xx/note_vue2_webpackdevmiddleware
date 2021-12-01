@@ -183,7 +183,7 @@
                   @keydown.13="keyDownSubmit()"
                   @input="verification(field.key)"
                 />
-                <div :class="$style['clear']" v-if="allValue[field.key]">
+                <div :class="$style['clear']" v-if="field.key === 'username'">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                     @click="allValue[field.key] = ''"
@@ -293,6 +293,18 @@
                 @blur="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
               />
+              <div
+                :class="$style['clear']"
+                v-if="
+                  !noCancelButton.includes(field.key) &&
+                    allValue[field.key].length > 1
+                "
+              >
+                <img
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                  @click="allValue[field.key] = ''"
+                />
+              </div>
             </div>
             <!-- </div> -->
             <div
@@ -542,6 +554,15 @@ export default {
         withdraw_password: "",
         captcha_text: ""
       },
+      noCancelButton: [
+        "password",
+        "confirm_password",
+        "email",
+        "phone",
+        "birthday",
+        "gender",
+        "withdraw_password"
+      ],
       checkFail: false,
       registerData: [],
       withdraw_passwordStatus: false,
@@ -923,6 +944,10 @@ export default {
         case "qq_num":
         case "telegram":
         case "kakaotalk":
+        case "line":
+        case "facebook":
+        case "skype":
+        case "zalo":
         case "confirm_password":
         case "name":
           this.allTip[key] = "";
@@ -988,16 +1013,11 @@ export default {
           break;
       }
 
-      //  非必填欄位，空值不做驗證
-      if (!data.isRequired && this.allValue[key] === "") {
-        this.allTip[key] = "";
-        return;
-      }
-
       if (key == "withdraw_password") {
         if (index === "all") {
           if (this.allValue.withdraw_password.value.join("").length < 4) {
-            this.allTip["withdraw_password"] = "请输入提现密码";
+            this.allTip["withdraw_password"] = "请填写完整";
+
             return;
           }
         } else {
@@ -1067,6 +1087,13 @@ export default {
       }
 
       this.allTip[key] = "";
+
+      //  非必填欄位，空值不做驗證
+      if (!data.isRequired && this.allValue[key] === "") {
+        this.allTip[key] = "";
+        return;
+      } else {
+      }
     },
     changSelect(key, index) {
       if (key === "phone") {
@@ -1109,24 +1136,30 @@ export default {
       this.verification(key);
     },
     checkField() {
-      if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
+      if (!this.redStar["password"] && this.allValue["password"] != "") {
+        if (this.allValue["password"] !== this.allValue["confirm_password"]) {
+          this.allTip["confirm_password"] = this.$text(
+            "S_PASSWD_CONFIRM_ERROR"
+          );
+        }
+
+        if (
+          !this.allValue["password"].match(
+            new RegExp(joinMemInfo["password"].regExp)
+          )
+        ) {
+          this.allTip["password"] = joinMemInfo["password"].errorMsg;
+        }
       }
 
-      if (
-        !this.allValue["password"].match(
-          new RegExp(joinMemInfo["password"].regExp)
-        )
-      ) {
-        this.allTip["password"] = joinMemInfo["password"].errorMsg;
-      }
-
-      if (
-        !this.allValue["username"].match(
-          new RegExp(joinMemInfo["username"].regExp)
-        )
-      ) {
-        this.allTip["username"] = joinMemInfo["username"].errorMsg;
+      if (!this.redStar["username"] && this.allValue["username"] != "") {
+        if (
+          !this.allValue["username"].match(
+            new RegExp(joinMemInfo["username"].regExp)
+          )
+        ) {
+          this.allTip["username"] = joinMemInfo["username"].errorMsg;
+        }
       }
 
       let hasError = false;
@@ -1146,10 +1179,19 @@ export default {
     joinSubmit(captchaInfo) {
       this.isLoading = true;
       Object.keys(this.allValue).forEach(item => {
-        if (item === "withdraw_password") {
-          this.verification("withdraw_password", "all");
+        if (this.redStar[item]) {
+          if (
+            this.allValue[item] === "" ||
+            this.allValue.withdraw_password.value.join("").length === 0
+          ) {
+            this.allTip[item] = this.$text("S_JM_FIELD_REQUIRE");
+          }
         } else {
-          this.verification(item);
+          if (this.allValue.withdraw_password.value.join("").length > 0) {
+            this.verification("withdraw_password", "all");
+          } else if (this.allValue[item] !== "") {
+            this.verification(item);
+          }
         }
       });
 
