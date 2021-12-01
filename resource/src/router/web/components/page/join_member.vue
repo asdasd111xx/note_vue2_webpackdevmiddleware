@@ -252,6 +252,7 @@
                   @keydown.13="joinSubmit()"
                 />
                 <div
+                  v-if="NeedCode"
                   :class="[
                     $style['get-verify-btn'],
                     { [$style.active]: VerifybtnActive == true }
@@ -482,6 +483,7 @@ export default {
       isShowPwd: false,
       VerifybtnActive: false,
       VerifybtnSubmit: false,
+      NeedCode: true,
       phoneSubmitSuccess: false,
       phoneSubmitFail: false,
       phoneSubmitFailMsg: "",
@@ -730,7 +732,12 @@ export default {
           if (result !== "ok") {
             return;
           }
-
+          //是否顯示手機驗證按鈕
+          if (ret.phone.code_register == true) {
+            this.NeedCode = true;
+          } else {
+            this.NeedCode = false;
+          }
           Object.keys(this.joinMemInfo).forEach(key => {
             if (
               key === "captcha_text" &&
