@@ -13,21 +13,11 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div
-          v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
-          style="margin-top: 40px;"
-        >
+        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
-        </div>
-
-        <div v-if="themeTPL == 'sg1'" style="margin-top: 20px; ">
-          <div :class="$style['visitor-get-sg']">
-            {{ `访客彩金：${formatThousandsCurrency(guestAmount)}元` }}
-          </div>
-          <div :class="$style['visitor-get-sg']">{{ "注册即送 58.00 钻" }}</div>
         </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
@@ -36,21 +26,59 @@
           </div>
         </div>
 
+        <!-- 驗證手機 -->
+        <div
+          v-if="phoneVerifyModalShow"
+          :class="$style['modal-dark-bg']"
+          @click.self="phoneVerifyModalShow = false"
+        >
+          <div :class="$style['verify-modal-wrap']">
+            <h1>手机号码</h1>
+            <div :class="$style['phonenum-wrap']">
+              <input
+                disabled
+                v-model="countryCode"
+                :class="$style['phone-number-countrycode']"
+              />
+              <input
+                disabled
+                v-model="allValue.phone"
+                :class="$style['phone-number']"
+              />
+              <button
+                :class="[
+                  $style['get-verify'],
+                  { [$style.submit]: VerifybtnSubmit == true }
+                ]"
+                @click="getVerifyCode"
+              >
+                {{ VerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+              </button>
+              <input
+                :class="$style['verifycode-input']"
+                placeholder="请輸入验证码"
+              />
+            </div>
+            <p v-if="VerifybtnSubmit" style="color:#5E626D">
+              验证码已发送，有效时间为
+              <span style="color: red">{{ ttlCount }}</span>
+              秒钟，若没收到信件请尝试至垃圾箱寻找
+            </p>
+            <button>确认送出</button>
+          </div>
+        </div>
         <form>
           <div
             v-for="field in fieldsData"
             :key="field.key"
-            :class="[
-              $style['field-wrap'],
-              $style[siteConfig.ROUTER_TPL],
-              'clearfix'
-            ]"
+            :class="[$style['field-wrap'], 'clearfix']"
           >
             <label
               :for="field.key"
               :title="$t(joinMemInfo[field.key].text)"
               :class="[
                 $style['field-title'],
+                $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
                 {
                   [$style['show-red-star']]: redStar[field.key]
@@ -70,6 +98,7 @@
             <div
               :class="[
                 $style['field-right'],
+                $style[siteConfig.ROUTER_TPL],
                 {
                   [$style['withdraw-password']]:
                     field.key === 'withdraw_password'
@@ -86,11 +115,7 @@
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input-captcha'],
-                    $style[siteConfig.ROUTER_TPL],
-                    field.key
-                  ]"
+                  :class="[$style['join-input-captcha'], field.key]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -116,11 +141,7 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -147,11 +168,7 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -178,11 +195,7 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -209,20 +222,6 @@
                   ]"
                   @input="changSelect(field.key)"
                 />
-                <!-- <select
-                  :class="[
-                    $style['select-gender'],
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
-                  v-model="selectData['gender'].selected"
-                  @input="changSelect(field.key)"
-                  ><option
-                    v-for="(item, index) in selectData['gender'].options"
-                    :value="item.value"
-                    :key="index"
-                    >{{ item.label }}</option
-                  ></select
-                > -->
               </template>
 
               <template v-else-if="field.key === 'phone'">
@@ -242,6 +241,15 @@
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
+                <div
+                  :class="[
+                    $style['get-verify-btn'],
+                    { [$style.active]: VerifybtnActive == true }
+                  ]"
+                  @click="openPhoneVerifyModal"
+                >
+                  {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
               </template>
 
               <template v-else-if="field.key === 'birthday'">
@@ -332,7 +340,7 @@
           <thirdy-verification
             ref="thirdyCaptchaObj"
             @set-captcha="setCaptcha"
-            :class="[$style['thirdy-block'], $style[siteConfig.ROUTER_TPL]]"
+            :class="$style['thirdy-block']"
             :page-type="'register'"
           />
 
@@ -369,43 +377,13 @@
         </div>
       </div>
 
-      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
-        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
-        <!-- <span>成为主播</span> -->
-        <span @click.stop="$router.push('/mobile')">访客进入</span>
-      </div>
-      <!-- <div
-        v-if="themeTPL == 'sg1'"
-        class="login-link-wrap"
-        style="display:flex"
-      >
-       
-        <div class="link-button link-join-mem">
-          <span @click="linktoJoin()">
-            {{ $text("S_FREE_REGISTER", "免费注册") }}
-          </span>
-        </div>
-        <div class="link-button ">
-          <span @click="$router.push('/mobile/login')">
-            {{ $text("S_JOINTOLIVERS", "成为主播") }}
-          </span>
-        </div>
-        <div
-          class="link-button link-submit"
-          @click="$router.push('/mobile/service')"
-        >
-          {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
-        </div>
-      </div> -->
-
       <div
-        v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
+        v-if="themeTPL != 'ey1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
         已有会员帐号
       </div>
-
       <div :class="$style['version']">
         {{ version }}
       </div>
@@ -440,6 +418,7 @@
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
+import axios from "axios";
 import appEvent from "@/lib/appEvent";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
@@ -479,6 +458,8 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
+      VerifybtnActive: false,
+      VerifybtnSubmit: false,
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -569,6 +550,9 @@ export default {
         phone: ""
       },
       countryCode: "",
+      phoneVerifyModalShow: false,
+      ttlCount: 10,
+      timer: null,
       verifyTips: "",
       lock: false,
       thirdyCaptchaObj: null,
@@ -1070,6 +1054,11 @@ export default {
         this.allValue[key] = `${this.countryCode.replace("+", "")}-${
           this.allValue[key]
         }`;
+        if (this.allValue[key].length > 13) {
+          this.VerifybtnActive = true;
+        } else {
+          this.VerifybtnActive = false;
+        }
       }
 
       this.allTip[key] = "";
@@ -1270,13 +1259,8 @@ export default {
                   localStorage.removeItem("password");
                 }
 
+                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
-                window.RESET_LOCAL_SETTING();
-                if (this.siteConfig.ROUTER_TPL === "sg1") {
-                  this.$router.push("/mobile/live/iframe/home");
-                } else {
-                  window.RESET_LOCAL_SETTING(true);
-                }
               }
             });
             return;
@@ -1418,6 +1402,36 @@ export default {
         }
       }
       return;
+    },
+    openPhoneVerifyModal() {
+      if (this.VerifybtnActive == true) {
+        this.phoneVerifyModalShow = true;
+      } else {
+        return;
+      }
+    },
+    getVerifyCode() {
+      //取得驗證碼倒數秒數
+      axios({
+        method: "get",
+        url: "/api/v1/c/agent/register/phone/ttl"
+      }).then(res => {
+        // console.log("phonettl", res);
+        if (res && res.data.result == "ok") {
+          this.VerifybtnSubmit = true;
+          this.ttlCount = res.data.ret + 10;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.VerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        }
+      });
     }
   }
 };

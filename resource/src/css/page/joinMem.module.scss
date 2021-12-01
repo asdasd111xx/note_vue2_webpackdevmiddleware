@@ -162,7 +162,7 @@
 
 .join-select-phone {
   border: 1px solid #e3e3e3;
-
+  position: relative;
   composes: join-input-select;
   float: left;
   width: 30%;
@@ -172,6 +172,109 @@
     top: 0;
     left: 0;
     width: 100%;
+  }
+}
+.get-verify-btn {
+  position: absolute;
+  top: 5px;
+  right: 26px;
+  width: 68px;
+  height: 30px;
+  background: #cccccc;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 0;
+
+  &.active {
+    background: #6aaaf5;
+  }
+}
+
+.modal-dark-bg {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+//手機驗證彈窗
+.verify-modal-wrap {
+  width: 270px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 10px;
+  h1 {
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+    margin: 10px 0;
+  }
+  .phonenum-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 240px;
+    height: 100%;
+    margin: 10px 0;
+    & input {
+      background: #e3e3e3;
+      outline: none;
+      border-radius: 3px;
+      margin: 5px 0;
+      padding: 0 10px;
+      &.phone-number-countrycode {
+        width: 70px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.phone-number {
+        width: 154px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.verifycode-input {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #e3e3e3;
+        color: #5e626d;
+      }
+    }
+
+    button.get-verify {
+      position: relative;
+      right: -125px;
+      width: 115px;
+      height: 40px;
+      background: #6aaaf5;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 3px;
+      &.submit {
+        background: grey;
+      }
+    }
+  }
+  button {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    color: #6aaaf5;
+    font-size: 18px;
   }
 }
 
@@ -256,9 +359,14 @@
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
-  background-color: #ffffff;
-  border: 1px solid #e3e3e3;
-  border-right: none;
+  &.aobo1,
+  &.porn1,
+  &.sp1,
+  &.ey1 {
+    background-color: #ffffff;
+    border: 1px solid #e3e3e3;
+    border-right: none;
+  }
   &.field-username {
     color: red;
   }
@@ -276,9 +384,13 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
-  border: 1px solid #e3e3e3;
-  border-left: none;
-
+  &.aobo1,
+  &.porn1,
+  &.sp1,
+  &.ey1 {
+    border: 1px solid #e3e3e3;
+    border-left: none;
+  }
   :global(.vdp-datepicker) {
     width: 100%;
     font-size: 14px;
