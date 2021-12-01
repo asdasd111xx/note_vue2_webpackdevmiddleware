@@ -52,7 +52,7 @@
                 ]"
                 @click="getVerifyCode"
               >
-                {{ VerifybtnSubmit ? ttlCount : "获取验证码" }}
+                {{ VerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
               </button>
               <input
                 :class="$style['verifycode-input']"
@@ -62,7 +62,7 @@
             <p v-if="VerifybtnSubmit" style="color:#5E626D">
               验证码已发送，有效时间为
               <span style="color: red">{{ ttlCount }}</span>
-              分钟，若没收到信件请尝试至垃圾箱寻找
+              秒钟，若没收到信件请尝试至垃圾箱寻找
             </p>
             <button>确认送出</button>
           </div>
@@ -418,6 +418,7 @@
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
+import axios from "axios";
 import appEvent from "@/lib/appEvent";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
@@ -550,7 +551,8 @@ export default {
       },
       countryCode: "",
       phoneVerifyModalShow: false,
-      ttlCount: "10",
+      ttlCount: 10,
+      timer: null,
       verifyTips: "",
       lock: false,
       thirdyCaptchaObj: null,
@@ -1409,7 +1411,27 @@ export default {
       }
     },
     getVerifyCode() {
-      this.VerifybtnSubmit = true;
+      //取得驗證碼倒數秒數
+      axios({
+        method: "get",
+        url: "/api/v1/c/agent/register/phone/ttl"
+      }).then(res => {
+        // console.log("phonettl", res);
+        if (res && res.data.result == "ok") {
+          this.VerifybtnSubmit = true;
+          this.ttlCount = res.data.ret + 10;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.VerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        }
+      });
     }
   }
 };
