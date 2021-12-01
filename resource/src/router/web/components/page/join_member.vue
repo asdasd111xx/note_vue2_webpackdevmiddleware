@@ -19,7 +19,6 @@
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
         </div>
-
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <div v-show="errMsg">
@@ -31,11 +30,7 @@
           <div
             v-for="field in fieldsData"
             :key="field.key"
-            :class="[
-              $style['field-wrap'],
-              $style[siteConfig.ROUTER_TPL],
-              'clearfix'
-            ]"
+            :class="[$style['field-wrap'], 'clearfix']"
           >
             <label
               :for="field.key"
@@ -79,11 +74,7 @@
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input-captcha'],
-                    $style[siteConfig.ROUTER_TPL],
-                    field.key
-                  ]"
+                  :class="[$style['join-input-captcha'], field.key]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -109,11 +100,7 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -140,11 +127,7 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -171,11 +154,7 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -320,7 +299,7 @@
           <thirdy-verification
             ref="thirdyCaptchaObj"
             @set-captcha="setCaptcha"
-            :class="[$style['thirdy-block'], $style[siteConfig.ROUTER_TPL]]"
+            :class="$style['thirdy-block']"
             :page-type="'register'"
           />
 
@@ -357,43 +336,13 @@
         </div>
       </div>
 
-      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
-        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
-        <!-- <span>成为主播</span> -->
-        <span @click.stop="$router.push('/mobile')">访客进入</span>
-      </div>
-      <!-- <div
-        v-if="themeTPL == 'sg1'"
-        class="login-link-wrap"
-        style="display:flex"
-      >
-       
-        <div class="link-button link-join-mem">
-          <span @click="linktoJoin()">
-            {{ $text("S_FREE_REGISTER", "免费注册") }}
-          </span>
-        </div>
-        <div class="link-button ">
-          <span @click="$router.push('/mobile/login')">
-            {{ $text("S_JOINTOLIVERS", "成为主播") }}
-          </span>
-        </div>
-        <div
-          class="link-button link-submit"
-          @click="$router.push('/mobile/service')"
-        >
-          {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
-        </div>
-      </div> -->
-
       <div
-        v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
+        v-if="themeTPL != 'ey1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
         已有会员帐号
       </div>
-
       <div :class="$style['version']">
         {{ version }}
       </div>
@@ -1264,13 +1213,8 @@ export default {
                   localStorage.removeItem("password");
                 }
 
+                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
-                window.RESET_LOCAL_SETTING();
-                if (this.siteConfig.ROUTER_TPL === "sg1") {
-                  this.$router.push("/mobile/live/iframe/home");
-                } else {
-                  window.RESET_LOCAL_SETTING(true);
-                }
               }
             });
             return;
