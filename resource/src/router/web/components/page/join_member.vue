@@ -81,7 +81,7 @@
                 $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
                 {
-                  [$style['show-red-star']]: redStar[field.key]
+                  [$style['show-red-star']]: joinMemInfo[field.key].isRequired
                 },
                 'clearfix'
               ]"
@@ -524,28 +524,6 @@ export default {
         withdraw_password: "",
         captcha_text: ""
       },
-      redStar: {
-        username: true,
-        password: true,
-        confirm_password: true,
-        introducer: "",
-        name: "",
-        email: "",
-        phone: "",
-        alias: "",
-        birthday: "",
-        gender: "",
-        qq_num: "",
-        telegram: "",
-        kakaotalk: "",
-        weixin: "",
-        line: "",
-        facebook: "",
-        skype: "",
-        zalo: "",
-        withdraw_password: "",
-        captcha_text: ""
-      },
       noCancelButton: [
         "password",
         "confirm_password",
@@ -751,7 +729,7 @@ export default {
             if (!ret[key]) {
               return;
             }
-            this.redStar[key] = ret[key].required;
+
             if (key === "introducer" && this.$cookie.get("a")) {
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
@@ -932,7 +910,7 @@ export default {
         return;
       }
 
-      if (this.redStar[key] && this.allValue[key] === "") {
+      if (this.joinMemInfo[key].isRequired && this.allValue[key] === "") {
         //必填 欄位為空
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else {
@@ -1143,7 +1121,10 @@ export default {
       this.verification(key);
     },
     checkField() {
-      if (!this.redStar["password"] && this.allValue["password"] != "") {
+      if (
+        !this.joinMemInfo["password"].isRequired &&
+        this.allValue["password"] != ""
+      ) {
         if (this.allValue["password"] !== this.allValue["confirm_password"]) {
           this.allTip["confirm_password"] = this.$text(
             "S_PASSWD_CONFIRM_ERROR"
@@ -1159,7 +1140,10 @@ export default {
         }
       }
 
-      if (!this.redStar["username"] && this.allValue["username"] != "") {
+      if (
+        !this.joinMemInfo["username"].isRequired &&
+        this.allValue["username"] != ""
+      ) {
         if (
           !this.allValue["username"].match(
             new RegExp(joinMemInfo["username"].regExp)
@@ -1189,7 +1173,7 @@ export default {
       Object.keys(this.allValue).forEach(item => {
         if (item === "withdraw_password") {
           if (
-            this.redStar["withdraw_password"] &&
+            this.joinMemInfo["withdraw_password"].isRequired &&
             this.allValue.withdraw_password.value.join("").length === 0
           ) {
             this.allTip[item] = this.$text("S_JM_FIELD_REQUIRE");
