@@ -55,12 +55,13 @@
                 {{ VerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
               </button>
               <input
+                v-model="phoneVerifyCode"
                 :class="$style['verifycode-input']"
                 placeholder="请輸入验证码"
               />
             </div>
             <p
-              v-if="phoneSubmitSuccess && phoneSubmitFail == 'false'"
+              v-if="phoneSubmitSuccess && phoneSubmitFail == false"
               style="color:#5E626D"
             >
               验证码已发送，有效时间为
@@ -73,7 +74,7 @@
             >
               {{ phoneSubmitFailMsg }}
             </p>
-            <button>确认送出</button>
+            <button @click="submitPhoneVerify">确认送出</button>
           </div>
         </div>
         <form>
@@ -484,6 +485,7 @@ export default {
       phoneSubmitSuccess: false,
       phoneSubmitFail: false,
       phoneSubmitFailMsg: "",
+      phoneVerifyCode: "",
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -1509,6 +1511,31 @@ export default {
           console.log("簡訊驗證error", error);
           this.phoneSubmitFail = true;
           this.phoneSubmitFailMsg = error.response.data.msg || "phone error";
+        });
+    },
+    submitPhoneVerify() {
+      //會員註冊手機簡訊驗證
+      axios({
+        method: "put",
+        url: "/api/v1/c/player/register/phone/verify",
+        data: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
+          keyring: this.phoneVerifyCode
+        }
+      })
+        .then(res => {
+          if (res && res.data.result == "ok") {
+            alert("submit ok");
+          } else {
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg =
+              error.response.data.msg || "phoneverify error1";
+          }
+        })
+        .catch(error => {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            error.response.data.msg || "phoneverify error2";
         });
     }
   }
