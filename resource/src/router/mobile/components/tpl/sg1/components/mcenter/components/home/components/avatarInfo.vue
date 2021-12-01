@@ -60,7 +60,7 @@
     <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
-        LEVEL {{ viplevel }}
+        LEVEL {{ this.paopaoUserInfo.level }}
         <span
           v-if="loginStatus"
           style="marginLeft:2px; fontSize:7px ;color:#FFBC24;"
@@ -167,9 +167,6 @@ export default {
         });
     }, 500);
   },
-  mounted() {
-    this.getUserViplevel();
-  },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onListClick(target, isLive = true) {
@@ -183,30 +180,6 @@ export default {
       } else {
         this.$router.push(`/mobile/mcenter/${target}`);
       }
-    },
-    getUserViplevel() {
-      let cid = getCookie("cid");
-      if (!cid) {
-        return;
-      }
-      // yaboRequest({
-      //   method: "get",
-      //   url: `${
-      //     this.siteConfig.YABO_API_DOMAIN
-      //     }/player/vipinfo/${cid}`,
-      //   headers: { "x-domain": this.memInfo.user.domain }
-      // }).then(res => {
-      //   this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
-      // });
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Player/vipinfo`,
-        headers: {
-          cid: cid
-        }
-      }).then(res => {
-        this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
-      });
     }
   }
 };
