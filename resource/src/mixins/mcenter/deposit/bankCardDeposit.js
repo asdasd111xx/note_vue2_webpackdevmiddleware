@@ -1086,8 +1086,14 @@ export default {
             window.open(ret.deposit.url, "third");
             return { status: "third" };
           }
-
           if (ret.wallet.url) {
+            if (this.curPayInfo.payment_method_id === 34) {
+              localStorage.setItem("iframe-third-url", ret.wallet.url);
+              // localStorage.setItem("iframe-third-url-title", "搓合查询");
+              this.$router.push(`/mobile/iframe/deposit`);
+              newWindow.close();
+              return;
+            }
             if (_isWebview) {
               this.webviewOpenUrl = ret.wallet.url;
               // setTimeout(function () { document.location.href = ret.wallet.url; }, 250);

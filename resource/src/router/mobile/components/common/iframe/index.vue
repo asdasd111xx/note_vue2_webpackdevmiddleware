@@ -297,7 +297,6 @@ export default {
         this.src = localStorage.getItem("iframe-third-url");
         return;
       }
-
       switch (params.page.toUpperCase()) {
         case "THIRDPARTY":
         case "SWAG":

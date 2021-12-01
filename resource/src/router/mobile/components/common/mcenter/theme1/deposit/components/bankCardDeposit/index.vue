@@ -290,7 +290,7 @@
                 <input
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
-                  type="text"
+                  type="number"
                   :placeholder="'请输入银行帐号'"
                 />
               </div>
@@ -1967,7 +1967,6 @@ export default {
           return;
         }
       }
-
       this.submitList().then(response => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
