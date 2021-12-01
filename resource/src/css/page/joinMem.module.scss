@@ -202,6 +202,7 @@
   z-index: 10;
 }
 
+//手機驗證彈窗
 .verify-modal-wrap {
   width: 270px;
   border-radius: 10px;
@@ -254,7 +255,7 @@
       }
     }
 
-    button {
+    button.get-verify {
       position: relative;
       right: -125px;
       width: 115px;
@@ -263,6 +264,9 @@
       color: #fff;
       font-size: 12px;
       border-radius: 3px;
+      &.submit {
+        background: grey;
+      }
     }
   }
   button {

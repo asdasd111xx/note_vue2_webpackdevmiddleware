@@ -45,15 +45,21 @@
                 v-model="allValue.phone"
                 :class="$style['phone-number']"
               />
-              <button :class="$style['get-verify']" @click="getVerifyCode">
-                获取验证码
+              <button
+                :class="[
+                  $style['get-verify'],
+                  { [$style.submit]: VerifybtnSubmit == true }
+                ]"
+                @click="getVerifyCode"
+              >
+                {{ VerifybtnSubmit ? ttlCount : "获取验证码" }}
               </button>
               <input
                 :class="$style['verifycode-input']"
                 placeholder="请輸入验证码"
               />
             </div>
-            <p v-if="submitBtnSuccess" style="color:#5E626D">
+            <p v-if="VerifybtnSubmit" style="color:#5E626D">
               验证码已发送，有效时间为
               <span style="color: red">{{ ttlCount }}</span>
               分钟，若没收到信件请尝试至垃圾箱寻找
@@ -452,6 +458,7 @@ export default {
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
       VerifybtnActive: false,
+      VerifybtnSubmit: false,
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -544,7 +551,6 @@ export default {
       countryCode: "",
       phoneVerifyModalShow: false,
       ttlCount: "10",
-      submitBtnSuccess: false,
       verifyTips: "",
       lock: false,
       thirdyCaptchaObj: null,
@@ -1401,6 +1407,9 @@ export default {
       } else {
         return;
       }
+    },
+    getVerifyCode() {
+      this.VerifybtnSubmit = true;
     }
   }
 };
