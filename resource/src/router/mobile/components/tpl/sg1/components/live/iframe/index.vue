@@ -145,6 +145,11 @@ export default {
             }
           });
 
+          if (localStorage.getItem("live-iframe-event-from")) {
+            clientUri = localStorage.getItem("live-iframe-event-from");
+            localStorage.removeItem("live-iframe-event-from");
+          }
+
           goLangApiRequest({
             method: "post",
             url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,

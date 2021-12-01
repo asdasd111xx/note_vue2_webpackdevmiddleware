@@ -166,6 +166,7 @@ export default {
             let _data = data.data.toUpperCase();
             switch (_data) {
               case "EXCHANGEDIAMOND":
+                localStorage.setItem("live-iframe-event-from", data.from);
                 this.$router.push(`/mobile/mcenter/live/diamond`);
                 return;
               case "CUSTOMERSERVICE":
