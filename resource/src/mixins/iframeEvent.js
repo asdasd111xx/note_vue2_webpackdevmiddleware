@@ -178,6 +178,9 @@ export default {
               case "EDITPROFILE":
                 this.$router.push(`/mobile/mcenter/`);
                 return;
+              case "STREAMHOME":
+                this.$router.push(`/mobile/live/iframe?hasFooter=true`);
+                return;
             }
             return;
 
