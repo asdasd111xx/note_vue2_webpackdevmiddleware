@@ -398,8 +398,8 @@ export default {
           if (res.data.enable) {
             if (this.loginStatus) {
               let total =
-                this.membalance && this.membalance.total
-                  ? +this.membalance.total
+                this.membalance && this.membalance.vendor.default.balance
+                  ? +this.membalance.vendor.default.balance
                   : 0;
               let remain_bonus =
                 res.data.remain_bonus && res.data.remain_bonus
@@ -410,16 +410,20 @@ export default {
               )}`;
             }
           } else {
-            if (this.membalance && this.membalance.total) {
-              this.loginMoney = `${thousandsCurrency(this.membalance.total)}`;
+            if (this.membalance && this.membalance.vendor.default.balance) {
+              this.loginMoney = `${thousandsCurrency(
+                this.membalance.vendor.default.balance
+              )}`;
             } else {
               this.loginMoney = "--";
             }
           }
         } else {
           this.redJackpotData = null;
-          if (this.membalance && this.membalance.total) {
-            this.loginMoney = `${thousandsCurrency(this.membalance.total)}`;
+          if (this.membalance && this.membalance.vendor.default.balance) {
+            this.loginMoney = `${thousandsCurrency(
+              this.membalance.vendor.default.balance
+            )}`;
           } else {
             this.loginMoney = "--";
           }
