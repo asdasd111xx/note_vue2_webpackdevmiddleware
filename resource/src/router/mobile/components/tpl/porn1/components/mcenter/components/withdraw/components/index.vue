@@ -203,14 +203,7 @@
     <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <!-- 銀行卡 -->
-      <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
-        :class="$style['bank-card-wrap']"
-      >
-        <div
-          :class="[$style['bank-card-cell'], $style['bank-card-cell-epoint']]"
-        >
-          <div :class="$style['bank-wrap']">
+      <div :class="$style['bank-wrap']">
             <div
               :class="[
                 $style['bank-type'],
@@ -237,10 +230,10 @@
                 :src="$getCdnPath(`/static/image/common/select_active.png`)"
               />
             </div>
-          </div>
-          <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
+
+            <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
           <span
-            v-if="
+            v-if="allWithdrawAccount && allWithdrawAccount.length > 0 &&
               forceStatus === 1 &&
                 userWithdrawCount === 0 &&
                 isFirstWithdraw &&
@@ -254,11 +247,16 @@
 
           <!-- 非首次出款 + 強制使用 CGPay 出款 -->
           <span
-            v-else-if="forceStatus === 2"
+            v-else-if="allWithdrawAccount && allWithdrawAccount.length > 0 &&forceStatus === 2"
             :class="$style['withdraw-status-tip']"
             >仅限使用 CGPay 出款</span
           >
-        </div>
+          </div>
+      <div
+        v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
+        :class="$style['bank-card-wrap']"
+      >
+
 
         <!-- 列出所有帐号 -->
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
@@ -669,9 +667,8 @@
         v-else-if="
           !(
             epointWallet.length > 0 &&
-            userBankOption.length > 0 &&
-            epointSelectType
-          )
+            userBankOption.length > 0 
+          ) && epointSelectType
         "
       >
         请先绑定钱包，用于收款

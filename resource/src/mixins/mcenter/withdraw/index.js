@@ -45,7 +45,10 @@ export default {
       wallet_card: [],
       epointWallet: {},
       userBankOption: [],
-      defaultEpointWallet: ""
+      defaultEpointWallet: {
+        id: "",
+        account: ""
+      }
     };
   },
   computed: {

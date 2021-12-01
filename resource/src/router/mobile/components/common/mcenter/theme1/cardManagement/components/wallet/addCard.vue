@@ -834,7 +834,6 @@ export default {
         case "home":
           this.$router.replace(`/mobile/${redirect}`);
           return;
-
         default:
           break;
       }
