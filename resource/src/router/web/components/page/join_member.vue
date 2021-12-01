@@ -26,6 +26,41 @@
           </div>
         </div>
 
+        <!-- 驗證手機 -->
+        <div
+          v-if="phoneVerifyModalShow"
+          :class="$style['modal-dark-bg']"
+          @click.self="phoneVerifyModalShow = false"
+        >
+          <div :class="$style['verify-modal-wrap']">
+            <h1>手机号码</h1>
+            <div :class="$style['phonenum-wrap']">
+              <input
+                disabled
+                v-model="countryCode"
+                :class="$style['phone-number-countrycode']"
+              />
+              <input
+                disabled
+                v-model="allValue.phone"
+                :class="$style['phone-number']"
+              />
+              <button :class="$style['get-verify']" @click="getVerifyCode">
+                获取验证码
+              </button>
+              <input
+                :class="$style['verifycode-input']"
+                placeholder="请輸入验证码"
+              />
+            </div>
+            <p v-if="submitBtnSuccess" style="color:#5E626D">
+              验证码已发送，有效时间为
+              <span style="color: red">{{ ttlCount }}</span>
+              分钟，若没收到信件请尝试至垃圾箱寻找
+            </p>
+            <button>确认送出</button>
+          </div>
+        </div>
         <form>
           <div
             v-for="field in fieldsData"
@@ -205,7 +240,7 @@
                     $style['get-verify-btn'],
                     { [$style.active]: VerifybtnActive == true }
                   ]"
-                  @click="getVerifyCode(field.key)"
+                  @click="openPhoneVerifyModal"
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
@@ -507,6 +542,9 @@ export default {
         phone: ""
       },
       countryCode: "",
+      phoneVerifyModalShow: false,
+      ttlCount: "10",
+      submitBtnSuccess: false,
       verifyTips: "",
       lock: false,
       thirdyCaptchaObj: null,
@@ -1357,36 +1395,9 @@ export default {
       }
       return;
     },
-    getVerifyCode(value) {
+    openPhoneVerifyModal() {
       if (this.VerifybtnActive == true) {
-        alert("送出按鈕");
-        goLangApiRequest({
-          method: "post",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
-          params: {
-            lang: "zh-cn",
-            phone: `${this.countryCode.replace("+", "")}-${
-              this.allValue[value]
-            }`
-            // aid: getCookie("aid") || localStorage.getItem("aid") || ""
-          }
-        })
-          .then(res => {
-            console.log("phone test", res);
-            if (res && res.status === "000") {
-              this.ttl = res.data;
-            } else {
-              if (res.msg) {
-                this.errorMsg = res.msg;
-              }
-            }
-          })
-          .catch(error => {
-            if (error.status) {
-              this.tipMsg = `${error.msg}`;
-              return;
-            }
-          });
+        this.phoneVerifyModalShow = true;
       } else {
         return;
       }
