@@ -13,22 +13,13 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div
-          v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
-          style="margin-top: 40px;"
-        >
+        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
         </div>
 
-        <div v-if="themeTPL == 'sg1'" style="margin-top: 20px; ">
-          <div :class="$style['visitor-get-sg']">
-            {{ `访客彩金：${formatThousandsCurrency(guestAmount)}元` }}
-          </div>
-          <div :class="$style['visitor-get-sg']">{{ "注册即送 58.00 钻" }}</div>
-        </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <div v-show="errMsg">
@@ -51,6 +42,7 @@
               :title="$t(joinMemInfo[field.key].text)"
               :class="[
                 $style['field-title'],
+                $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
                 {
                   [$style['show-red-star']]: redStar[field.key]
@@ -70,6 +62,7 @@
             <div
               :class="[
                 $style['field-right'],
+                $style[siteConfig.ROUTER_TPL],
                 {
                   [$style['withdraw-password']]:
                     field.key === 'withdraw_password'
@@ -209,20 +202,6 @@
                   ]"
                   @input="changSelect(field.key)"
                 />
-                <!-- <select
-                  :class="[
-                    $style['select-gender'],
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
-                  v-model="selectData['gender'].selected"
-                  @input="changSelect(field.key)"
-                  ><option
-                    v-for="(item, index) in selectData['gender'].options"
-                    :value="item.value"
-                    :key="index"
-                    >{{ item.label }}</option
-                  ></select
-                > -->
               </template>
 
               <template v-else-if="field.key === 'phone'">
@@ -242,6 +221,15 @@
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
+                <div
+                  :class="[
+                    $style['get-verify-btn'],
+                    { [$style.active]: VerifybtnActive == true }
+                  ]"
+                  @click="getVerifyCode(field.key)"
+                >
+                  {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
               </template>
 
               <template v-else-if="field.key === 'birthday'">
@@ -479,6 +467,7 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
+      VerifybtnActive: false,
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -1070,6 +1059,11 @@ export default {
         this.allValue[key] = `${this.countryCode.replace("+", "")}-${
           this.allValue[key]
         }`;
+        if (this.allValue[key].length > 13) {
+          this.VerifybtnActive = true;
+        } else {
+          this.VerifybtnActive = false;
+        }
       }
 
       this.allTip[key] = "";
@@ -1418,6 +1412,40 @@ export default {
         }
       }
       return;
+    },
+    getVerifyCode(value) {
+      if (this.VerifybtnActive == true) {
+        alert("送出按鈕");
+        goLangApiRequest({
+          method: "post",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
+          params: {
+            lang: "zh-cn",
+            phone: `${this.countryCode.replace("+", "")}-${
+              this.allValue[value]
+            }`
+            // aid: getCookie("aid") || localStorage.getItem("aid") || ""
+          }
+        })
+          .then(res => {
+            console.log("phone test", res);
+            if (res && res.status === "000") {
+              this.ttl = res.data;
+            } else {
+              if (res.msg) {
+                this.errorMsg = res.msg;
+              }
+            }
+          })
+          .catch(error => {
+            if (error.status) {
+              this.tipMsg = `${error.msg}`;
+              return;
+            }
+          });
+      } else {
+        return;
+      }
     }
   }
 };

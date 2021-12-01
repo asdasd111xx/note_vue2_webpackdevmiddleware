@@ -162,7 +162,7 @@
 
 .join-select-phone {
   border: 1px solid #e3e3e3;
-
+  position: relative;
   composes: join-input-select;
   float: left;
   width: 30%;
@@ -172,6 +172,23 @@
     top: 0;
     left: 0;
     width: 100%;
+  }
+}
+.get-verify-btn {
+  position: absolute;
+  top: 5px;
+  right: 26px;
+  width: 68px;
+  height: 30px;
+  background: #cccccc;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 0;
+
+  &.active {
+    background: #000;
   }
 }
 
@@ -256,9 +273,14 @@
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
-  background-color: #ffffff;
-  border: 1px solid #e3e3e3;
-  border-right: none;
+  &.aobo1,
+  &.porn1,
+  &.sp1,
+  &.ey1 {
+    background-color: #ffffff;
+    border: 1px solid #e3e3e3;
+    border-right: none;
+  }
   &.field-username {
     color: red;
   }
@@ -276,9 +298,13 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
-  border: 1px solid #e3e3e3;
-  border-left: none;
-
+  &.aobo1,
+  &.porn1,
+  &.sp1,
+  &.ey1 {
+    border: 1px solid #e3e3e3;
+    border-left: none;
+  }
   :global(.vdp-datepicker) {
     width: 100%;
     font-size: 14px;
