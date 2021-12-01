@@ -565,7 +565,7 @@ export default {
           options: [
             {
               label: this.$i18n.t("S_SELECTED"),
-              value: "0"
+              value: ""
             },
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
@@ -741,14 +741,11 @@ export default {
             }
 
             if (key === "gender") {
-              this.selectData.gender.options[0].label = this.placeholderKeyValue(
-                "gender",
-                "tip"
-              );
-              this.selectData.gender.selected.label = this.placeholderKeyValue(
-                "gender",
-                "tip"
-              );
+              let tip = this.placeholderKeyValue("gender", "tip");
+              if (tip) {
+                this.selectData.gender.options[0].label = tip;
+                this.selectData.gender.selected.label = tip;
+              }
             }
 
             if (key === "phone") {
@@ -1227,7 +1224,7 @@ export default {
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
-        speedy: true,
+        speedy: false, //檢查是否唯一
         code: localStorage.getItem("promotionCode") || ""
       };
 
