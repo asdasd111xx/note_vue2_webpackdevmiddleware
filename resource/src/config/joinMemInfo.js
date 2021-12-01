@@ -29,7 +29,7 @@ const getNameFormat = () => {
 
 // 允许帐号开头为数字(简讯快速注册不适用)
 const enableUserNameDigit = store.state.memInfo.config.username_digit;
-console.log("enableUserNameDigit" + enableUserNameDigit);
+
 // 加入會員 欄位資料
 export default {
   username: {
