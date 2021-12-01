@@ -940,6 +940,7 @@ export default {
             case "zalo":
             case "confirm_password":
             case "name":
+            case "email":
               this.allTip[key] = "";
 
               this.actionVerificationFormData({
@@ -1132,36 +1133,24 @@ export default {
       this.verification(key);
     },
     checkField() {
-      if (
-        !this.joinMemInfo["password"].isRequired &&
-        this.allValue["password"] != ""
-      ) {
-        if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-          this.allTip["confirm_password"] = this.$text(
-            "S_PASSWD_CONFIRM_ERROR"
-          );
-        }
-
-        if (
-          !this.allValue["password"].match(
-            new RegExp(joinMemInfo["password"].regExp)
-          )
-        ) {
-          this.allTip["password"] = joinMemInfo["password"].errorMsg;
-        }
+      if (this.allValue["password"] !== this.allValue["confirm_password"]) {
+        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
       }
 
       if (
-        !this.joinMemInfo["username"].isRequired &&
-        this.allValue["username"] != ""
+        !this.allValue["password"].match(
+          new RegExp(joinMemInfo["password"].regExp)
+        )
       ) {
-        if (
-          !this.allValue["username"].match(
-            new RegExp(joinMemInfo["username"].regExp)
-          )
-        ) {
-          this.allTip["username"] = joinMemInfo["username"].errorMsg;
-        }
+        this.allTip["password"] = joinMemInfo["password"].errorMsg;
+      }
+
+      if (
+        !this.allValue["username"].match(
+          new RegExp(joinMemInfo["username"].regExp)
+        )
+      ) {
+        this.allTip["username"] = joinMemInfo["username"].errorMsg;
       }
 
       let hasError = false;
@@ -1182,6 +1171,7 @@ export default {
       this.isLoading = true;
 
       Object.keys(this.allValue).forEach(item => {
+        this.allTip[item] = "";
         if (item === "withdraw_password") {
           if (
             this.joinMemInfo["withdraw_password"].isRequired &&
@@ -1347,7 +1337,10 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (item === "introducer") {
+              if (
+                item === "introducer" &&
+                localStorage.getItem("promotionCode")
+              ) {
                 this.errMsg = res.errors[item];
               }
             });
