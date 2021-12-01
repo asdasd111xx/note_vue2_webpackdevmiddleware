@@ -85,7 +85,7 @@
                 $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
                 {
-                  [$style['show-red-star']]: redStar[field.key]
+                  [$style['show-red-star']]: joinMemInfo[field.key].isRequired
                 },
                 'clearfix'
               ]"
@@ -207,7 +207,7 @@
                   @keydown.13="keyDownSubmit()"
                   @input="verification(field.key)"
                 />
-                <div :class="$style['clear']" v-if="allValue[field.key]">
+                <div :class="$style['clear']" v-if="field.key === 'username'">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                     @click="allValue[field.key] = ''"
@@ -317,6 +317,18 @@
                 @blur="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
               />
+              <div
+                :class="$style['clear']"
+                v-if="
+                  !noCancelButton.includes(field.key) &&
+                    allValue[field.key].length > 1
+                "
+              >
+                <img
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                  @click="allValue[field.key] = ''"
+                />
+              </div>
             </div>
             <!-- </div> -->
             <div
@@ -519,28 +531,15 @@ export default {
         withdraw_password: "",
         captcha_text: ""
       },
-      redStar: {
-        username: true,
-        password: true,
-        confirm_password: true,
-        introducer: "",
-        name: "",
-        email: "",
-        phone: "",
-        alias: "",
-        birthday: "",
-        gender: "",
-        qq_num: "",
-        telegram: "",
-        kakaotalk: "",
-        weixin: "",
-        line: "",
-        facebook: "",
-        skype: "",
-        zalo: "",
-        withdraw_password: "",
-        captcha_text: ""
-      },
+      noCancelButton: [
+        "password",
+        "confirm_password",
+        "email",
+        "phone",
+        "birthday",
+        "gender",
+        "withdraw_password"
+      ],
       checkFail: false,
       registerData: [],
       withdraw_passwordStatus: false,
@@ -573,7 +572,7 @@ export default {
           options: [
             {
               label: this.$i18n.t("S_SELECTED"),
-              value: "0"
+              value: ""
             },
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
@@ -737,7 +736,7 @@ export default {
             if (!ret[key]) {
               return;
             }
-            this.redStar[key] = ret[key].required;
+
             if (key === "introducer" && this.$cookie.get("a")) {
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
@@ -749,14 +748,11 @@ export default {
             }
 
             if (key === "gender") {
-              this.selectData.gender.options[0].label = this.placeholderKeyValue(
-                "gender",
-                "tip"
-              );
-              this.selectData.gender.selected.label = this.placeholderKeyValue(
-                "gender",
-                "tip"
-              );
+              let tip = this.placeholderKeyValue("gender", "tip");
+              if (tip) {
+                this.selectData.gender.options[0].label = tip;
+                this.selectData.gender.selected.label = tip;
+              }
             }
 
             if (key === "phone") {
@@ -918,157 +914,175 @@ export default {
         return;
       }
 
-      switch (key) {
-        case "password":
-        case "username":
-        case "phone":
-        case "qq_num":
-        case "telegram":
-        case "kakaotalk":
-        case "confirm_password":
-        case "name":
-          this.allTip[key] = "";
-          this.actionVerificationFormData({
-            target: key,
-            value: this.allValue[key]
-          }).then(val => {
-            this.allValue[key] = val;
-            const regex = new RegExp(data.regExp);
-            const msg = data.errorMsg;
+      if (this.joinMemInfo[key].isRequired && this.allValue[key] === "") {
+        //必填 欄位為空
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+      } else {
+        if (this.allValue[key] !== "") {
+          //進入驗證
+          switch (key) {
+            case "password":
+            case "username":
+            case "phone":
+            case "qq_num":
+            case "telegram":
+            case "kakaotalk":
+            case "line":
+            case "facebook":
+            case "skype":
+            case "zalo":
+            case "confirm_password":
+            case "name":
+              this.allTip[key] = "";
 
-            // 1. 密碼只判斷是否符合格式不判斷空
-            // 2. 確認密碼只判斷是否相同
-            switch (key) {
-              case "password":
-                // if (!val) {
-                //   this.allTip[key] = "";
-                //   return;
-                // }
+              this.actionVerificationFormData({
+                target: key,
+                value: this.allValue[key]
+              }).then(val => {
+                this.allValue[key] = val;
+                const regex = new RegExp(data.regExp);
+                const msg = data.errorMsg;
 
-                this.allTip["confirm_password"] = "";
-                if (
-                  this.allValue["password"] !==
-                  this.allValue["confirm_password"]
-                ) {
-                  this.allTip["confirm_password"] = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
-                  );
+                // 1. 密碼只判斷是否符合格式不判斷空
+                // 2. 確認密碼只判斷是否相同
+                switch (key) {
+                  case "password":
+                    // if (!val) {
+                    //   this.allTip[key] = "";
+                    //   return;
+                    // }
+
+                    this.allTip["confirm_password"] = "";
+                    if (
+                      this.allValue["password"] !==
+                      this.allValue["confirm_password"]
+                    ) {
+                      this.allTip["confirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR"
+                      );
+                    }
+
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
+                    }
+                    break;
+
+                  case "confirm_password":
+                    // if (!val) {
+                    //   this.allTip[key] = "";
+                    //   return;
+                    // }
+
+                    this.allTip["confirm_password"] = "";
+                    if (
+                      this.allValue["password"] !==
+                      this.allValue["confirm_password"]
+                    ) {
+                      this.allTip["confirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR"
+                      );
+                    }
+                    break;
+
+                  default:
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
+                    }
+                    break;
                 }
+              });
+              break;
 
-                if (!val.match(regex)) {
-                  this.allTip[key] = msg;
-                }
-                break;
+            case "withdraw_password":
+              break;
+          }
 
-              case "confirm_password":
-                // if (!val) {
-                //   this.allTip[key] = "";
-                //   return;
-                // }
-
-                this.allTip["confirm_password"] = "";
-                if (
-                  this.allValue["password"] !==
-                  this.allValue["confirm_password"]
-                ) {
-                  this.allTip["confirm_password"] = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
-                  );
-                }
-                break;
-
-              default:
-                if (!val.match(regex)) {
-                  this.allTip[key] = msg;
-                }
-                break;
-            }
-          });
-          break;
-
-        case "withdraw_password":
-          break;
-      }
-
-      //  非必填欄位，空值不做驗證
-      if (!data.isRequired && this.allValue[key] === "") {
-        this.allTip[key] = "";
-        return;
-      }
-
-      if (key == "withdraw_password") {
-        if (index === "all") {
-          if (this.allValue.withdraw_password.value.join("").length < 4) {
-            this.allTip["withdraw_password"] = "请输入提现密码";
+          //  非必填欄位，空值不做驗證
+          if (!data.isRequired && this.allValue[key] === "") {
+            this.allTip[key] = "";
             return;
           }
-        } else {
-          if (index) {
-            let target = this.allValue.withdraw_password;
-            let correct_value = target.value[index]
-              .replace(" ", "")
-              .trim()
-              .replace(/[^\d+]$/g, "");
 
-            if (target.value[index] === correct_value && correct_value !== "") {
-              if (index < 3) {
-                document
-                  .querySelector(
-                    `v-select[data-key="withdraw_password_${index + 1}"]`
-                  )
-                  .focus();
-              }
-            }
+          if (key == "withdraw_password") {
+            if (index === "all") {
+              if (this.allValue.withdraw_password.value.join("").length < 4) {
+                this.allTip["withdraw_password"] = "请填写完整";
 
-            target.value[index] = correct_value;
-
-            if (target.value[index].length > 1) {
-              target.value[index] = target.value[index].substring(0, 1);
-            }
-
-            for (let i = 0; i < 4; i++) {
-              if (!this.allValue.withdraw_password.value[i]) {
-                this.checkFormData = false;
                 return;
+              }
+            } else {
+              if (index) {
+                let target = this.allValue.withdraw_password;
+                let correct_value = target.value[index]
+                  .replace(" ", "")
+                  .trim()
+                  .replace(/[^\d+]$/g, "");
+
+                if (
+                  target.value[index] === correct_value &&
+                  correct_value !== ""
+                ) {
+                  if (index < 3) {
+                    document
+                      .querySelector(
+                        `v-select[data-key="withdraw_password_${index + 1}"]`
+                      )
+                      .focus();
+                  }
+                }
+
+                target.value[index] = correct_value;
+
+                if (target.value[index].length > 1) {
+                  target.value[index] = target.value[index].substring(0, 1);
+                }
+
+                for (let i = 0; i < 4; i++) {
+                  if (!this.allValue.withdraw_password.value[i]) {
+                    this.checkFormData = false;
+                    return;
+                  }
+                }
               }
             }
           }
+
+          if (key === "password" || key === "username") {
+            if (
+              this.allValue.username !== "" &&
+              this.allValue.password === this.allValue.username
+            ) {
+              this.allTip[key] = this.$text(
+                "S_USERNAME_CONFIRM_ERROR",
+                "密码不能与帐号相同"
+              );
+              return;
+            }
+          }
+
+          if (key === "captcha_text") {
+            // 圖形驗證格式
+            this.allValue.captcha_text = this.allValue["captcha_text"].replace(
+              /[\W\_]/g,
+              ""
+            );
+          }
+
+          if (key === "phone") {
+            this.allValue[key] = `${this.countryCode.replace("+", "")}-${
+              this.allValue[key]
+            }`;
+            if (this.allValue[key].length > 13) {
+              this.VerifybtnActive = true;
+            } else {
+              this.VerifybtnActive = false;
+            }
+          }
+
+          this.allTip[key] = "";
         }
+        return;
       }
-
-      if (key === "password" || key === "username") {
-        if (
-          this.allValue.username !== "" &&
-          this.allValue.password === this.allValue.username
-        ) {
-          this.allTip[key] = this.$text(
-            "S_USERNAME_CONFIRM_ERROR",
-            "密码不能与帐号相同"
-          );
-          return;
-        }
-      }
-
-      if (key === "captcha_text") {
-        // 圖形驗證格式
-        this.allValue.captcha_text = this.allValue["captcha_text"].replace(
-          /[\W\_]/g,
-          ""
-        );
-      }
-
-      if (key === "phone") {
-        this.allValue[key] = `${this.countryCode.replace("+", "")}-${
-          this.allValue[key]
-        }`;
-        if (this.allValue[key].length > 13) {
-          this.VerifybtnActive = true;
-        } else {
-          this.VerifybtnActive = false;
-        }
-      }
-
-      this.allTip[key] = "";
     },
     changSelect(key, index) {
       if (key === "phone") {
@@ -1111,24 +1125,36 @@ export default {
       this.verification(key);
     },
     checkField() {
-      if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
+      if (
+        !this.joinMemInfo["password"].isRequired &&
+        this.allValue["password"] != ""
+      ) {
+        if (this.allValue["password"] !== this.allValue["confirm_password"]) {
+          this.allTip["confirm_password"] = this.$text(
+            "S_PASSWD_CONFIRM_ERROR"
+          );
+        }
+
+        if (
+          !this.allValue["password"].match(
+            new RegExp(joinMemInfo["password"].regExp)
+          )
+        ) {
+          this.allTip["password"] = joinMemInfo["password"].errorMsg;
+        }
       }
 
       if (
-        !this.allValue["password"].match(
-          new RegExp(joinMemInfo["password"].regExp)
-        )
+        !this.joinMemInfo["username"].isRequired &&
+        this.allValue["username"] != ""
       ) {
-        this.allTip["password"] = joinMemInfo["password"].errorMsg;
-      }
-
-      if (
-        !this.allValue["username"].match(
-          new RegExp(joinMemInfo["username"].regExp)
-        )
-      ) {
-        this.allTip["username"] = joinMemInfo["username"].errorMsg;
+        if (
+          !this.allValue["username"].match(
+            new RegExp(joinMemInfo["username"].regExp)
+          )
+        ) {
+          this.allTip["username"] = joinMemInfo["username"].errorMsg;
+        }
       }
 
       let hasError = false;
@@ -1147,9 +1173,19 @@ export default {
     },
     joinSubmit(captchaInfo) {
       this.isLoading = true;
+
       Object.keys(this.allValue).forEach(item => {
         if (item === "withdraw_password") {
-          this.verification("withdraw_password", "all");
+          if (
+            this.joinMemInfo["withdraw_password"].isRequired &&
+            this.allValue.withdraw_password.value.join("").length === 0
+          ) {
+            this.allTip[item] = this.$text("S_JM_FIELD_REQUIRE");
+          } else if (
+            this.allValue.withdraw_password.value.join("").length > 1
+          ) {
+            this.verification("withdraw_password", "all");
+          }
         } else {
           this.verification(item);
         }
@@ -1195,7 +1231,7 @@ export default {
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
-        speedy: true,
+        speedy: false, //檢查是否唯一
         code: localStorage.getItem("promotionCode") || ""
       };
 
