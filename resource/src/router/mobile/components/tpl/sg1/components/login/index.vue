@@ -169,11 +169,11 @@
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
-                <!-- <div class="link-button ">
-                  <span @click="$router.push('/mobile/login')">
+                <div class="link-button ">
+                  <span @click="handleClick('live')">
                     {{ $text("S_JOINTOLIVERS", "成为主播") }}
                   </span>
-                </div> -->
+                </div>
                 <div
                   class="link-button link-submit"
                   @click="$router.push('/mobile/service')"
@@ -205,6 +205,7 @@ import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 /**
  * 登入共用元件
@@ -299,6 +300,29 @@ export default {
   },
   methods: {
     ...mapActions(["actionGetLayeredURL"]),
+    handleClick(target) {
+      if (target === "live") {
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+          params: {
+            version: "2"
+          }
+        }).then(res => {
+          if (
+            res &&
+            res.data &&
+            res.data.data.case_data &&
+            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+          ) {
+            window.open(
+              res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0]
+                .linkTo["zh-cn"]
+            );
+          }
+        });
+      }
+    },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },

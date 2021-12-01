@@ -192,10 +192,7 @@ export default {
             }).then(res => {
               if (res && res.data) {
                 // 縮網址推廣連結
-                this.iframeOnSendMessage({
-                  event: "EVENT_GET_QRCODE_URL",
-                  response: res.data.url
-                });
+                this.iframeOnSendMessage("EVENT_GET_QRCODE_URL", res.data.url);
               }
             });
             return;

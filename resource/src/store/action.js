@@ -1343,19 +1343,12 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
   return goLangApiRequest({
     method: "get",
     url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Common/Jackfruit/List"
-  })
-    .then(res => {
-      const { result, data } = res.data;
-      if (result === "ok") {
-        commit(types.SETMOBILEINFO, { ...data, alias: state.webDomain });
-      }
-    })
-    .catch(error => {
-      dispatch("actionSetGlobalMessage", {
-        msg: error.response?.data?.msg,
-        code: error.response?.data?.code
-      });
-    });
+  }).then(res => {
+    const { result, data } = res.data;
+    if (result === "ok") {
+      commit(types.SETMOBILEINFO, { ...data, alias: state.webDomain });
+    }
+  });
 };
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
