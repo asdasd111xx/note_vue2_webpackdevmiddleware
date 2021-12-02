@@ -683,6 +683,7 @@
   .v-select {
     .dropdown-toggle {
       border: 0;
+      border: 1px solid transparent !important;
     }
 
     &.open {
