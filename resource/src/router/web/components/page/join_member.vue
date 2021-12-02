@@ -1055,6 +1055,7 @@ export default {
             case "confirm_password":
             case "name":
             case "email":
+            case "weixin":
               this.allTip[key] = "";
 
               this.actionVerificationFormData({
