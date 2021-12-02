@@ -313,7 +313,7 @@ export default {
       "actionSetUserBalance"
     ]),
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      return thousandsCurrency(value.toFixed(2));
     },
     onListClick(target, isLive = true) {
       if (!this.loginStatus) {

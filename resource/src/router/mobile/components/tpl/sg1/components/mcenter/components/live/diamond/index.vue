@@ -43,7 +43,7 @@
                 "
               >
                 <template v-if="!isMaintain">
-                  {{ `${formatThousandsCurrency(diamondTotal)}元` }}
+                  {{ getDiamondTotal }}
                 </template>
                 <template v-else>
                   <span :class="$style['maintain-tip-text']">维护中</span>
@@ -259,6 +259,15 @@ export default {
           text: this.$text("S_DIAMOND_RECOARD", "钻石记录")
         }
       ];
+    },
+    getDiamondTotal() {
+      if (this.diamondTotal) {
+        return `${this.formatThousandsCurrency(
+          this.diamondTotal.toFixed(2)
+        )}元`;
+      } else {
+        return `0.00元`;
+      }
     }
   },
   beforeDestroy() {
