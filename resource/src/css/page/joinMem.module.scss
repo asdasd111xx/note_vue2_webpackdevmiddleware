@@ -50,6 +50,15 @@
 .field-wrap {
   position: relative;
   margin-bottom: 15px;
+  font-size: 0;
+  .show-red-star {
+    span {
+      &::before {
+        content: "*";
+        color: red;
+      }
+    }
+  }
 }
 
 .captcha-img {
@@ -63,8 +72,9 @@
 }
 
 .field-text {
+  font-size: 14px;
   float: left;
-  width: 88%;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -79,7 +89,7 @@
 }
 
 .join-input {
-  background-color: #303030;
+  outline: none;
   padding: 10px 3.5%;
   width: 100%;
   height: 40px;
@@ -88,6 +98,20 @@
   font-size: 12px;
   outline: 0;
   display: block;
+
+  &.phone {
+    border: 1px solid #e3e3e3;
+    margin: 0 8px;
+  }
+}
+
+.join-input:-webkit-autofill {
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
 }
 
 .join-input-email {
@@ -139,6 +163,8 @@
 }
 
 .join-select-phone {
+  border: 1px solid #e3e3e3;
+  position: relative;
   composes: join-input-select;
   float: left;
   width: 30%;
@@ -148,6 +174,184 @@
     top: 0;
     left: 0;
     width: 100%;
+  }
+}
+.get-verify-btn {
+  position: absolute;
+  top: 5px;
+  right: 5%;
+  width: 68px;
+  height: 30px;
+  background: #cccccc;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 0;
+
+  &.active {
+    background: #6aaaf5;
+  }
+}
+
+.modal-dark-bg {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+//手機驗證彈窗
+.verify-error-msg {
+  width: 270px;
+  height: 135px;
+  background: #fff;
+  border-radius: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  z-index: 100;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 10px 0 10px;
+  word-break: break-word;
+
+  button {
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    color: #6aaaf5;
+    background: #fff;
+    font-size: 18px;
+    border-radius: 0 0 20px 20px;
+  }
+}
+
+.verify-modal-wrap {
+  width: 270px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 10px;
+  h1 {
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+    margin: 10px 0;
+  }
+  .phonenum-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 240px;
+    height: 100%;
+    margin: 10px 0;
+    & input {
+      background: #e3e3e3;
+      outline: none;
+      border-radius: 3px;
+      margin: 5px 0;
+      padding: 0 10px;
+      &.phone-number-countrycode {
+        width: 70px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.phone-number {
+        width: 154px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.verifycode-input {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #e3e3e3;
+        color: #5e626d;
+      }
+    }
+
+    button.get-verify {
+      position: relative;
+      right: -125px;
+      width: 115px;
+      height: 40px;
+      background: #6aaaf5;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 3px;
+      &.submit {
+        background: grey;
+      }
+    }
+  }
+
+  .mail-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 240px;
+    height: 100%;
+    margin: 10px 0;
+    & input {
+      background: #e3e3e3;
+      outline: none;
+      border-radius: 3px;
+      margin: 5px 0;
+      padding: 0 10px;
+
+      &.mail {
+        width: 240px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.verifycode-input {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #e3e3e3;
+        color: #5e626d;
+      }
+    }
+
+    button.get-verify {
+      position: relative;
+      right: -125px;
+      width: 115px;
+      height: 40px;
+      background: #6aaaf5;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 3px;
+      &.submit {
+        background: grey;
+      }
+    }
+  }
+  button {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    color: #6aaaf5;
+    font-size: 18px;
   }
 }
 
@@ -171,9 +375,27 @@
   }
 }
 
+.join-select-withdraw {
+  composes: join-input-select;
+
+  :global(.selected-tag) {
+    display: block;
+    float: none;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 38px;
+    line-height: 36px;
+    margin: 0;
+    padding: 0 12px;
+    border-width: 0;
+    text-align: center;
+  }
+}
+
 .join-input-withdraw {
   composes: join-input-select;
-  position: relative;
+
   float: left;
   width: 22%;
   margin-right: 4%;
@@ -204,27 +426,51 @@
 
 .field-title {
   display: inline-block;
-  padding-left: 10px;
+  padding-left: 17px;
   width: 90px;
   z-index: 1;
   overflow: hidden;
-  text-align: right;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
+  &.aobo1,
+  &.porn1,
+  &.sp1,
+  &.ey1 {
+    background-color: #ffffff;
+    border: 1px solid #e3e3e3;
+    border-right: none;
+  }
+  &.field-username {
+    color: red;
+  }
+  &.field-withdraw_password,
+  &.field-phone {
+    background-color: transparent;
+    border: none;
+    padding-left: 2px;
+  }
 }
 
 .field-right {
   position: relative;
   display: inline-block;
-  width: 65%;
+  width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
+  &.aobo1,
+  &.porn1,
+  &.sp1,
+  &.ey1 {
+    border: 1px solid #e3e3e3;
+    border-left: none;
+  }
   :global(.vdp-datepicker) {
     width: 100%;
-
+    font-size: 14px;
     :global(.vdp-datepicker__calendar) {
       position: relative;
       max-width: 100%;
@@ -241,6 +487,27 @@
       right: 10px;
     }
   }
+
+  &.phone {
+    display: flex;
+    border: none;
+    width: 100%;
+  }
+
+  &.withdraw-password {
+    display: flex;
+    width: 100%;
+    border: none;
+    .join-select-withdraw {
+      display: inline-block;
+      min-width: 22%;
+      margin: 0 5px 0 0;
+      background: #ffffff;
+      border: 1px solid #cecece;
+      height: 40px;
+      vertical-align: middle;
+    }
+  }
 }
 
 .join-tip {
@@ -254,30 +521,20 @@
 .join-tip-show {
   composes: join-tip;
   display: inline-block;
+  font-size: 14px;
 }
 
 .join-help {
   display: none;
   width: 100%;
-  padding: 5px 0px 5px 3px;
+  padding: 5px 0px 5px 2px;
   text-align: left;
   color: #a5a5a5;
+  font-size: 14px;
 }
 
 .join-help-show {
   composes: join-help;
-  display: inline-block;
-}
-
-.join-withdraw-password-help {
-  display: none;
-  width: 100%;
-  padding: 5px 126px 5px 0px;
-  text-align: end;
-  color: #a5a5a5;
-}
-.join-withdraw-password-help-show {
-  composes: join-withdraw-password-help;
   display: inline-block;
 }
 
@@ -369,9 +626,12 @@
 }
 
 .thirdy-block {
-  margin: 0 0 0 95px;
+  margin: 0 12px;
+  max-width: 100%;
   border-radius: 5px;
-  max-width: 65%;
+  .click-unit {
+    border-radius: 20px;
+  }
 }
 
 .clear {
