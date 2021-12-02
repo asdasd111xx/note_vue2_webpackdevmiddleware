@@ -33,7 +33,7 @@
           @click.self="mailVerifyModalShow = false"
         >
           <div :class="$style['verify-modal-wrap']">
-            <h1>Email</h1>
+            <h1>电子邮箱</h1>
             <div :class="$style['mail-wrap']">
               <input
                 disabled
