@@ -313,6 +313,16 @@
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
+                <img
+                  v-if="showMailCheckIcon"
+                  style="position: absolute ; top: 12px; right: 10px"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/ic_verification_success.png`
+                    )
+                  "
+                  alt=""
+                />
                 <div
                   v-if="mailNeedCode"
                   :class="[
@@ -340,6 +350,16 @@
                   type="tel"
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
+                />
+                <img
+                  v-if="showPhoneCheckIcon"
+                  style="position: absolute ; top: 12px; right: 15px"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/ic_verification_success.png`
+                    )
+                  "
+                  alt=""
                 />
                 <div
                   v-if="NeedCode"
@@ -579,7 +599,8 @@ export default {
       phoneSubmitFail: false,
       phoneSubmitFailMsg: "",
       phoneVerifyCode: "",
-
+      showMailCheckIcon: false,
+      showPhoneCheckIcon: false,
       mailVerifybtnActive: false,
       mailVerifybtnSubmit: false,
       mailNeedCode: true,
@@ -1647,6 +1668,11 @@ export default {
             this.phoneSubmitFail = true;
             this.phoneSubmitFailMsg =
               res.data.msg + "(" + res.data.code + ")" || "phoneverify error1";
+          } else {
+            // this.mailSubmitFailMsg = "验证OK";
+            this.phoneVerifyModalShow = false;
+            this.showPhoneCheckIcon = true;
+            this.NeedCode = false;
           }
         })
         .catch(error => {
@@ -1662,7 +1688,7 @@ export default {
         method: "get",
         url: "/api/v1/c/player/register/email/ttl",
         data: {
-          mail: this.allValue.mail
+          email: this.allValue.email
         }
       }).then(res => {
         // console.log("mailttl", res);
@@ -1692,7 +1718,7 @@ export default {
         method: "post",
         url: "/api/v1/c/player/register/email",
         data: {
-          mail: this.allValue.mail
+          email: this.allValue.email
         }
       })
         .then(res => {
@@ -1715,7 +1741,7 @@ export default {
         method: "put",
         url: "/api/v1/c/player/register/email/verify",
         data: {
-          mail: this.allValue.mail,
+          email: this.allValue.email,
           keyring: this.mailVerifyCode
         }
       })
@@ -1724,6 +1750,11 @@ export default {
             this.mailSubmitFail = true;
             this.mailSubmitFailMsg =
               res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
+          } else {
+            // this.mailSubmitFailMsg = "验证OK";
+            this.mailVerifyModalShow = false;
+            this.showMailCheckIcon = true;
+            this.mailNeedCode = false;
           }
         })
         .catch(error => {
