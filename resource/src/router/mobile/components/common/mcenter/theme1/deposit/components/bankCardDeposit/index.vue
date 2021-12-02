@@ -339,7 +339,7 @@
               <div :class="[curPassRoad.tip != '' ? [$style['pay-mode-tip-show']]:[$style['pay-mode-tip-close']]]">
                 <div :class="$style['pay-mode-tip']" v-html="curPassRoadTipText">
                 </div>
-                <div v-if="curPassRoad.tip.length > 40" :class="$style['pay-mode-tip-more']"
+                <div v-if="curPassRoad.tip.length > 50" :class="$style['pay-mode-tip-more']"
                   @click="setPopupStatus(true, 'payTip')">more</div>
               </div>
             </div>

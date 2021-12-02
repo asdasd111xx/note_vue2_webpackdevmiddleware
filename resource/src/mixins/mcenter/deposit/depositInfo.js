@@ -151,7 +151,7 @@ export default {
             title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
             value: this.orderData.orderInfo.bank_account_name,
             isFontBold: false,
-            copyShow: false
+            copyShow: true
           },
           {
             objKey: "withdrawDeliver",
@@ -170,7 +170,7 @@ export default {
             ]
           },
           {
-            objKey: "memo",
+            objKey: "memophoto",
             title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
             value: this.orderData.reminder.replace(/\n/gi, "<br/>"),
             isFontBold: false,
