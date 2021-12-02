@@ -1660,7 +1660,7 @@ export default {
       //取得mail驗證碼倒數秒數
       axios({
         method: "get",
-        url: "/api/v1/c/player/register/mail/ttl"
+        url: "/api/v1/c/player/register/email/ttl"
       }).then(res => {
         // console.log("mailttl", res);
         if (res && res.data.result == "ok") {
@@ -1687,7 +1687,7 @@ export default {
       //寄出mail會員註冊驗證碼
       axios({
         method: "post",
-        url: "/api/v1/c/player/register/mail",
+        url: "/api/v1/c/player/register/email",
         data: {
           mail: this.allValue.mail
         }
@@ -1710,7 +1710,7 @@ export default {
       //會員註冊mail驗證
       axios({
         method: "put",
-        url: "/api/v1/c/player/register/mail/verify",
+        url: "/api/v1/c/player/register/email/verify",
         data: {
           mail: this.allValue.mail,
           keyring: this.mailVerifyCode
