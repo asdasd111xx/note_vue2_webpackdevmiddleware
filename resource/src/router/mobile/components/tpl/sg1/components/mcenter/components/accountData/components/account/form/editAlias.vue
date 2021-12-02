@@ -8,7 +8,8 @@
           <p>修改次数不足，请购买更名卡后 再重新操作</p>
           <div :class="$style['btn-wrap']">
             <span @click="cantEditAlias = false">取消</span>
-            <span @click="$router.push('/mobile/live/iframe/tool')"
+            <span
+              @click="$router.push('/mobile/live/iframe/mall?hasFooter=false')"
               >去购买</span
             >
           </div>
