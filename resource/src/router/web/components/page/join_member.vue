@@ -68,13 +68,25 @@
               <span style="color: red">10</span>
               分钟，若没收到信件请尝试至垃圾箱寻找
             </p>
-            <p
+            <!-- <p
               v-if="phoneSubmitFail"
               style="color: red;margin-right: auto;padding: 0 10px;"
             >
               {{ phoneSubmitFailMsg }}
-            </p>
+            </p> -->
             <button @click="submitPhoneVerify">确认送出</button>
+          </div>
+        </div>
+
+        <!-- 驗證錯誤訊息 -->
+        <div
+          v-if="phoneSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="phoneSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ phoneSubmitFailMsg }}
+            <button @click="phoneSubmitFail = false">关闭</button>
           </div>
         </div>
         <form>
@@ -233,7 +245,27 @@
                   @input="changSelect(field.key)"
                 />
               </template>
-
+              <!-- <template v-else-if="field.key === 'email'">
+                <input
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], $style[field.key]]"
+                  :name="field.key"
+                  :placeholder="placeholderKeyValue('email', 'tip')"
+                  type="tel"
+                  @input="verification(field.key)"
+                  @keydown.13="joinSubmit()"
+                />
+                <div
+                  v-if="NeedCode"
+                  :class="[
+                    $style['get-verify-btn'],
+                    { [$style.active]: VerifybtnActive == true }
+                  ]"
+                  @click="openPhoneVerifyModal"
+                >
+                  {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
+              </template> -->
               <template v-else-if="field.key === 'phone'">
                 <v-select
                   v-model="selectData[field.key].selected"
@@ -1484,7 +1516,7 @@ export default {
         } else {
           this.phoneSubmitFail = true;
           this.phoneSubmitFailMsg =
-            res.data.result + "" + res.msg || "ttl error";
+            res.msg + "(" + res.code + ")" || "ttl error";
         }
       });
 
@@ -1497,20 +1529,17 @@ export default {
         }
       })
         .then(res => {
-          console.log("簡訊驗證res", res);
-          if (res && res.data.result === "ok") {
-            console.log("簡訊驗證ok", res);
-          } else {
-            console.log("簡訊驗證okelse", res);
+          if (res && res.data.result !== "ok") {
             this.phoneSubmitFail = true;
             this.phoneSubmitFailMsg =
-              res.data.result + "" + res.msg || "phone error";
+              res.msg + "(" + res.code + ")" || "phone error1";
           }
         })
         .catch(error => {
-          console.log("簡訊驗證error", error);
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg = error.response.data.msg || "phone error";
+          this.phoneSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "phone error2";
         });
     },
     submitPhoneVerify() {
@@ -1524,17 +1553,17 @@ export default {
         }
       })
         .then(res => {
-          if (res && res.data.result == "ok") {
-            alert("submit ok");
-          } else {
+          if (res && res.data.result !== "ok") {
             this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg = res.data.msg || "phoneverify error1";
+            this.phoneSubmitFailMsg =
+              res.data.msg + "(" + res.data.code + ")" || "phoneverify error1";
           }
         })
         .catch(error => {
           this.phoneSubmitFail = true;
           this.phoneSubmitFailMsg =
-            error.response.data.msg || "phoneverify error2";
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "phoneverify error2";
         });
     }
   }
