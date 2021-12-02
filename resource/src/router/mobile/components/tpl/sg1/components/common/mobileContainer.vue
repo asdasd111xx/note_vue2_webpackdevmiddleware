@@ -5,7 +5,7 @@
       $style.container,
       {
         [$style['has-header']]: hasHeader && !isApp,
-        [$style['has-footer']]: hasFooter,
+        [$style['has-footer']]: hasFooter && !isLive,
         [$style['has-appTips']]: showApptips
       }
     ]"
@@ -140,6 +140,9 @@ export default {
       popData: "getPopData",
       loginStatus: "getLoginStatus"
     }),
+    isLive() {
+      return this.$route.name === "liveIframe";
+    },
     hasHeader() {
       return this.headerConfig;
     },
