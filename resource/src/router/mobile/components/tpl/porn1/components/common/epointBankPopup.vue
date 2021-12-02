@@ -52,11 +52,11 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    $style() {
-      return (
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
-      );
-    },
+    // $style() {
+    //   return (
+    //     this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
+    //   );
+    // },
     itemText() {
       switch (this.type) {
         // 目前針對 提現：CGPay-USDT

@@ -209,7 +209,10 @@
                 $style['bank-type'],
                 { [$style['is-current']]: !epointSelectType }
               ]"
-              @click="epointSelectType = false"
+              @click="()=>{
+                handleSelectCard(allWithdrawAccount[0])
+                epointSelectType = false
+                }"
             >
               普通提现
               <img
@@ -218,11 +221,15 @@
               />
             </div>
             <div
+              v-if="epointWallet && epointWallet.length >0"
               :class="[
                 $style['bank-type'],
                 { [$style['is-current']]: epointSelectType }
               ]"
-              @click="epointSelectType = true"
+              @click="()=>{
+                handleSelectCard(epointWallet[0])
+                epointSelectType = true
+              }"
             >
               e点富
               <img
@@ -655,9 +662,9 @@
       <!-- 已綁定 + 尚未被禁用 + 允許支付(allow 為 true) -->
       <div
         v-if="
-          allWithdrawAccount &&
-            allWithdrawAccount.length > 0 &&
-            !epointSelectType
+          (allWithdrawAccount &&
+            allWithdrawAccount.length > 0 && !epointSelectType) ||
+            (epointWallet.length > 0 && epointSelectType)
         "
       >
         为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
@@ -744,7 +751,7 @@
         />
       </template>
 
-      <template>
+      <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
           :bank-list="userBankOption"
           :item-func="setEpointBank"
@@ -1212,7 +1219,8 @@ export default {
       return (
         (this.isSelectedUSDT ||
           this.selectedCard.bank_id == 2009 ||
-          this.selectedCard.bank_id == 2016) &&
+          this.selectedCard.bank_id == 2016||
+          this.selectedCard.bank_id == 2026) &&
         this.selectedCard.offer_percent > 0
       );
     },
@@ -1403,6 +1411,7 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
+      console.log(item);
       this.updateAmount(item.swift_code);
       this.selectedCard = {
         id: item.id,
