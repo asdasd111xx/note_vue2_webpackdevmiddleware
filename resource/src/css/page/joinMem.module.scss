@@ -300,6 +300,50 @@
       }
     }
   }
+
+  .mail-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 240px;
+    height: 100%;
+    margin: 10px 0;
+    & input {
+      background: #e3e3e3;
+      outline: none;
+      border-radius: 3px;
+      margin: 5px 0;
+      padding: 0 10px;
+
+      &.mail {
+        width: 240px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.verifycode-input {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #e3e3e3;
+        color: #5e626d;
+      }
+    }
+
+    button.get-verify {
+      position: relative;
+      right: -125px;
+      width: 115px;
+      height: 40px;
+      background: #6aaaf5;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 3px;
+      &.submit {
+        background: grey;
+      }
+    }
+  }
   button {
     width: 100%;
     height: 50px;
