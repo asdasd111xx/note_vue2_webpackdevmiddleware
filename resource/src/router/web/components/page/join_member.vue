@@ -1660,7 +1660,10 @@ export default {
       //取得mail驗證碼倒數秒數
       axios({
         method: "get",
-        url: "/api/v1/c/player/register/email/ttl"
+        url: "/api/v1/c/player/register/email/ttl",
+        data: {
+          mail: this.allValue.mail
+        }
       }).then(res => {
         // console.log("mailttl", res);
         if (res && res.data.result == "ok") {
