@@ -333,6 +333,15 @@
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
+                <div
+                  :class="[$style['clear']]"
+                  v-else-if="allValue[field.key].length > 1"
+                >
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
+                </div>
               </template>
               <template v-else-if="field.key === 'phone'">
                 <v-select
@@ -370,6 +379,15 @@
                   @click="openPhoneVerifyModal"
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
+                <div
+                  :class="[$style['clear']]"
+                  v-else-if="allValue[field.key].length > 1"
+                >
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
                 </div>
               </template>
 
@@ -1055,8 +1073,9 @@ export default {
       if (!data.show) {
         return;
       }
-
-      if (this.joinMemInfo[key].isRequired && this.allValue[key] === "") {
+      if (data.isRequired && this.allValue["gender"] === "0") {
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+      } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else {
