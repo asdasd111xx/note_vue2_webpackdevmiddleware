@@ -1073,7 +1073,12 @@ export default {
       if (!data.show) {
         return;
       }
-      if (data.isRequired && this.allValue["gender"] === "0") {
+
+      if (
+        key === "gender" &&
+        this.joinMemInfo["gender"].isRequired &&
+        this.allValue["gender"] === "0"
+      ) {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
