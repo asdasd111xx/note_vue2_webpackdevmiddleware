@@ -177,7 +177,7 @@
 .get-verify-btn {
   position: absolute;
   top: 5px;
-  right: 26px;
+  right: 5%;
   width: 68px;
   height: 30px;
   background: #cccccc;
@@ -203,6 +203,37 @@
 }
 
 //手機驗證彈窗
+.verify-error-msg {
+  width: 270px;
+  height: 135px;
+  background: #fff;
+  border-radius: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  z-index: 100;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 10px 0 10px;
+  word-break: break-word;
+
+  button {
+    width: 100%;
+    line-height: 50px;
+    text-align: center;
+    color: #6aaaf5;
+    background: #fff;
+    font-size: 18px;
+    border-radius: 0 0 20px 20px;
+  }
+}
+
 .verify-modal-wrap {
   width: 270px;
   border-radius: 10px;
@@ -242,6 +273,50 @@
       }
       &.phone-number {
         width: 154px;
+        height: 40px;
+        color: #a6a9b2;
+      }
+      &.verifycode-input {
+        width: 100%;
+        height: 40px;
+        background: #fff;
+        border-radius: 3px;
+        border: 1px solid #e3e3e3;
+        color: #5e626d;
+      }
+    }
+
+    button.get-verify {
+      position: relative;
+      right: -125px;
+      width: 115px;
+      height: 40px;
+      background: #6aaaf5;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 3px;
+      &.submit {
+        background: grey;
+      }
+    }
+  }
+
+  .mail-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 240px;
+    height: 100%;
+    margin: 10px 0;
+    & input {
+      background: #e3e3e3;
+      outline: none;
+      border-radius: 3px;
+      margin: 5px 0;
+      padding: 0 10px;
+
+      &.mail {
+        width: 240px;
         height: 40px;
         color: #a6a9b2;
       }

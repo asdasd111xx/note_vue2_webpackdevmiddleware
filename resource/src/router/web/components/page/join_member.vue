@@ -26,7 +26,65 @@
           </div>
         </div>
 
-        <!-- 驗證手機 -->
+        <!-- mail驗證彈窗 -->
+        <div
+          v-if="mailVerifyModalShow"
+          :class="$style['modal-dark-bg']"
+          @click.self="mailVerifyModalShow = false"
+        >
+          <div :class="$style['verify-modal-wrap']">
+            <h1>Email</h1>
+            <div :class="$style['mail-wrap']">
+              <input
+                disabled
+                v-model="allValue.email"
+                :class="$style['mail']"
+              />
+              <button
+                :class="[
+                  $style['get-verify'],
+                  { [$style.submit]: mailVerifybtnSubmit == true }
+                ]"
+                @click="getMailVerifyCode"
+              >
+                {{ mailVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+              </button>
+              <input
+                v-model="mailVerifyCode"
+                :class="$style['verifycode-input']"
+                placeholder="请輸入验证码"
+              />
+            </div>
+            <p
+              v-if="mailSubmitSuccess && mailSubmitFail == false"
+              style="color:#5E626D"
+            >
+              验证码已发送，有效时间为
+              <span style="color: red">10</span>
+              分钟，若没收到信件请尝试至垃圾箱寻找
+            </p>
+            <!-- <p
+              v-if="phoneSubmitFail"
+              style="color: red;margin-right: auto;padding: 0 10px;"
+            >
+              {{ phoneSubmitFailMsg }}
+            </p> -->
+            <button @click="submitMailVerify">确认送出</button>
+          </div>
+        </div>
+
+        <!-- mail驗證錯誤訊息 -->
+        <div
+          v-if="mailSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="mailSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ mailSubmitFailMsg }}
+            <button @click="mailSubmitFail = false">关闭</button>
+          </div>
+        </div>
+        <!-- 手機驗證彈窗 -->
         <div
           v-if="phoneVerifyModalShow"
           :class="$style['modal-dark-bg']"
@@ -48,23 +106,45 @@
               <button
                 :class="[
                   $style['get-verify'],
-                  { [$style.submit]: VerifybtnSubmit == true }
+                  { [$style.submit]: phoneVerifybtnSubmit == true }
                 ]"
-                @click="getVerifyCode"
+                @click="getPhoneVerifyCode"
               >
-                {{ VerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
               </button>
               <input
+                v-model="phoneVerifyCode"
                 :class="$style['verifycode-input']"
                 placeholder="请輸入验证码"
               />
             </div>
-            <p v-if="VerifybtnSubmit" style="color:#5E626D">
+            <p
+              v-if="phoneSubmitSuccess && phoneSubmitFail == false"
+              style="color:#5E626D"
+            >
               验证码已发送，有效时间为
-              <span style="color: red">{{ ttlCount }}</span>
-              秒钟，若没收到信件请尝试至垃圾箱寻找
+              <span style="color: red">10</span>
+              分钟，若没收到信件请尝试至垃圾箱寻找
             </p>
-            <button>确认送出</button>
+            <!-- <p
+              v-if="phoneSubmitFail"
+              style="color: red;margin-right: auto;padding: 0 10px;"
+            >
+              {{ phoneSubmitFailMsg }}
+            </p> -->
+            <button @click="submitPhoneVerify">确认送出</button>
+          </div>
+        </div>
+
+        <!-- 手機驗證錯誤訊息 -->
+        <div
+          v-if="phoneSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="phoneSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ phoneSubmitFailMsg }}
+            <button @click="phoneSubmitFail = false">关闭</button>
           </div>
         </div>
         <form>
@@ -223,7 +303,37 @@
                   @input="changSelect(field.key)"
                 />
               </template>
-
+              <template v-else-if="field.key === 'email'">
+                <input
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], $style[field.key]]"
+                  :name="field.key"
+                  :placeholder="placeholderKeyValue('email', 'tip')"
+                  type="tel"
+                  @input="verification(field.key)"
+                  @keydown.13="joinSubmit()"
+                />
+                <img
+                  v-if="showMailCheckIcon"
+                  style="position: absolute ; top: 12px; right: 10px"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/ic_verification_success.png`
+                    )
+                  "
+                  alt=""
+                />
+                <div
+                  v-if="mailNeedCode"
+                  :class="[
+                    $style['get-verify-btn'],
+                    { [$style.active]: mailVerifybtnActive == true }
+                  ]"
+                  @click="openMailVerifyModal"
+                >
+                  {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
+              </template>
               <template v-else-if="field.key === 'phone'">
                 <v-select
                   v-model="selectData[field.key].selected"
@@ -241,10 +351,21 @@
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
+                <img
+                  v-if="showPhoneCheckIcon"
+                  style="position: absolute ; top: 12px; right: 15px"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/ic_verification_success.png`
+                    )
+                  "
+                  alt=""
+                />
                 <div
+                  v-if="NeedCode"
                   :class="[
                     $style['get-verify-btn'],
-                    { [$style.active]: VerifybtnActive == true }
+                    { [$style.active]: phoneVerifybtnActive == true }
                   ]"
                   @click="openPhoneVerifyModal"
                 >
@@ -470,8 +591,23 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
-      VerifybtnActive: false,
-      VerifybtnSubmit: false,
+
+      phoneVerifybtnActive: false,
+      phoneVerifybtnSubmit: false,
+      NeedCode: true,
+      phoneSubmitSuccess: false,
+      phoneSubmitFail: false,
+      phoneSubmitFailMsg: "",
+      phoneVerifyCode: "",
+      showMailCheckIcon: false,
+      showPhoneCheckIcon: false,
+      mailVerifybtnActive: false,
+      mailVerifybtnSubmit: false,
+      mailNeedCode: true,
+      mailSubmitSuccess: false,
+      mailSubmitFail: false,
+      mailSubmitFailMsg: "",
+      mailVerifyCode: "",
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -550,6 +686,7 @@ export default {
       },
       countryCode: "",
       phoneVerifyModalShow: false,
+      mailVerifyModalShow: false,
       ttlCount: 10,
       timer: null,
       verifyTips: "",
@@ -565,7 +702,7 @@ export default {
           options: [
             {
               label: this.$i18n.t("S_SELECTED"),
-              value: "0"
+              value: ""
             },
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
@@ -716,7 +853,19 @@ export default {
           if (result !== "ok") {
             return;
           }
+          //是否顯示mail驗證按鈕
+          if (ret.email.code_register == true) {
+            this.mailNeedCode = true;
+          } else {
+            this.mailNeedCode = false;
+          }
 
+          //是否顯示手機驗證按鈕
+          if (ret.phone.code_register == true) {
+            this.NeedCode = true;
+          } else {
+            this.NeedCode = false;
+          }
           Object.keys(this.joinMemInfo).forEach(key => {
             if (
               key === "captcha_text" &&
@@ -741,14 +890,11 @@ export default {
             }
 
             if (key === "gender") {
-              this.selectData.gender.options[0].label = this.placeholderKeyValue(
-                "gender",
-                "tip"
-              );
-              this.selectData.gender.selected.label = this.placeholderKeyValue(
-                "gender",
-                "tip"
-              );
+              let tip = this.placeholderKeyValue("gender", "tip");
+              if (tip) {
+                this.selectData.gender.options[0].label = tip;
+                this.selectData.gender.selected.label = tip;
+              }
             }
 
             if (key === "phone") {
@@ -929,6 +1075,8 @@ export default {
             case "zalo":
             case "confirm_password":
             case "name":
+            case "email":
+            case "weixin":
               this.allTip[key] = "";
 
               this.actionVerificationFormData({
@@ -962,6 +1110,13 @@ export default {
                       this.allTip[key] = msg;
                     }
                     break;
+
+                  case "email":
+                    if (val.match(regex)) {
+                      this.mailVerifybtnActive = true;
+                    } else {
+                      this.mailVerifybtnActive = false;
+                    }
 
                   case "confirm_password":
                     // if (!val) {
@@ -1069,9 +1224,9 @@ export default {
               this.allValue[key]
             }`;
             if (this.allValue[key].length > 13) {
-              this.VerifybtnActive = true;
+              this.phoneVerifybtnActive = true;
             } else {
-              this.VerifybtnActive = false;
+              this.phoneVerifybtnActive = false;
             }
           }
 
@@ -1121,36 +1276,24 @@ export default {
       this.verification(key);
     },
     checkField() {
-      if (
-        !this.joinMemInfo["password"].isRequired &&
-        this.allValue["password"] != ""
-      ) {
-        if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-          this.allTip["confirm_password"] = this.$text(
-            "S_PASSWD_CONFIRM_ERROR"
-          );
-        }
-
-        if (
-          !this.allValue["password"].match(
-            new RegExp(joinMemInfo["password"].regExp)
-          )
-        ) {
-          this.allTip["password"] = joinMemInfo["password"].errorMsg;
-        }
+      if (this.allValue["password"] !== this.allValue["confirm_password"]) {
+        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
       }
 
       if (
-        !this.joinMemInfo["username"].isRequired &&
-        this.allValue["username"] != ""
+        !this.allValue["password"].match(
+          new RegExp(joinMemInfo["password"].regExp)
+        )
       ) {
-        if (
-          !this.allValue["username"].match(
-            new RegExp(joinMemInfo["username"].regExp)
-          )
-        ) {
-          this.allTip["username"] = joinMemInfo["username"].errorMsg;
-        }
+        this.allTip["password"] = joinMemInfo["password"].errorMsg;
+      }
+
+      if (
+        !this.allValue["username"].match(
+          new RegExp(joinMemInfo["username"].regExp)
+        )
+      ) {
+        this.allTip["username"] = joinMemInfo["username"].errorMsg;
       }
 
       let hasError = false;
@@ -1171,6 +1314,7 @@ export default {
       this.isLoading = true;
 
       Object.keys(this.allValue).forEach(item => {
+        this.allTip[item] = "";
         if (item === "withdraw_password") {
           if (
             this.joinMemInfo["withdraw_password"].isRequired &&
@@ -1227,7 +1371,7 @@ export default {
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
-        speedy: true,
+        speedy: false, //檢查是否唯一
         code: localStorage.getItem("promotionCode") || ""
       };
 
@@ -1336,7 +1480,10 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (item === "introducer") {
+              if (
+                item === "introducer" &&
+                localStorage.getItem("promotionCode")
+              ) {
                 this.errMsg = res.errors[item];
               }
             });
@@ -1443,34 +1590,179 @@ export default {
       return;
     },
     openPhoneVerifyModal() {
-      if (this.VerifybtnActive == true) {
+      if (this.phoneVerifybtnActive == true) {
         this.phoneVerifyModalShow = true;
       } else {
         return;
       }
     },
-    getVerifyCode() {
+    openMailVerifyModal() {
+      if (this.mailVerifybtnActive == true) {
+        this.mailVerifyModalShow = true;
+      } else {
+        return;
+      }
+    },
+    getPhoneVerifyCode() {
       //取得驗證碼倒數秒數
       axios({
         method: "get",
-        url: "/api/v1/c/agent/register/phone/ttl"
+        url: "/api/v1/c/player/register/phone/ttl"
       }).then(res => {
         // console.log("phonettl", res);
         if (res && res.data.result == "ok") {
-          this.VerifybtnSubmit = true;
-          this.ttlCount = res.data.ret + 10;
+          this.phoneVerifybtnSubmit = true;
+          this.phoneSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
           this.timer = setInterval(() => {
             if (this.ttlCount <= 1) {
               this.ttlCount = 0;
               clearInterval(this.timer);
-              this.VerifybtnSubmit = false;
+              this.phoneVerifybtnSubmit = false;
               this.timer = null;
               return;
             }
             this.ttlCount -= 1;
           }, 1500);
+        } else {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "ttl error";
         }
       });
+
+      //寄出會員註冊驗證簡訊
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/register/phone",
+        data: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg =
+              res.msg + "(" + res.code + ")" || "phone error1";
+          }
+        })
+        .catch(error => {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "phone error2";
+        });
+    },
+    submitPhoneVerify() {
+      //會員註冊手機簡訊驗證
+      axios({
+        method: "put",
+        url: "/api/v1/c/player/register/phone/verify",
+        data: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
+          keyring: this.phoneVerifyCode
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg =
+              res.data.msg + "(" + res.data.code + ")" || "phoneverify error1";
+          } else {
+            // this.mailSubmitFailMsg = "验证OK";
+            this.phoneVerifyModalShow = false;
+            this.showPhoneCheckIcon = true;
+            this.NeedCode = false;
+          }
+        })
+        .catch(error => {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "phoneverify error2";
+        });
+    },
+    getMailVerifyCode() {
+      //取得mail驗證碼倒數秒數
+      axios({
+        method: "get",
+        url: "/api/v1/c/player/register/email/ttl",
+        data: {
+          email: this.allValue.email
+        }
+      }).then(res => {
+        // console.log("mailttl", res);
+        if (res && res.data.result == "ok") {
+          this.mailVerifybtnSubmit = true;
+          this.mailSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.mailVerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        } else {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "ttl error";
+        }
+      });
+
+      //寄出mail會員註冊驗證碼
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/register/email",
+        data: {
+          email: this.allValue.email
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.mailSubmitFail = true;
+            this.mailSubmitFailMsg =
+              res.msg + "(" + res.code + ")" || "mail error1";
+          }
+        })
+        .catch(error => {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "mail error2";
+        });
+    },
+    submitMailVerify() {
+      //會員註冊mail驗證
+      axios({
+        method: "put",
+        url: "/api/v1/c/player/register/email/verify",
+        data: {
+          email: this.allValue.email,
+          keyring: this.mailVerifyCode
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.mailSubmitFail = true;
+            this.mailSubmitFailMsg =
+              res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
+          } else {
+            // this.mailSubmitFailMsg = "验证OK";
+            this.mailVerifyModalShow = false;
+            this.showMailCheckIcon = true;
+            this.mailNeedCode = false;
+          }
+        })
+        .catch(error => {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "mailverify error2";
+        });
     }
   }
 };
