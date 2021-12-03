@@ -22,7 +22,7 @@ const getNameFormat = () => {
   }
 
   return {
-    regex: /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/.\s~\-_']*$/,
+    regex: /^[^0-9，:;！@#$%^&*?<>()+=`|[\]{}\\"/\s~\-_']*$/,
     error: i18n.t("S_NO_SYMBOL_DIGIT_CHEN")
   };
 };
@@ -222,6 +222,16 @@ export default {
     regExp: "",
     errorMsg: ""
   },
+  zalo: {
+    key: "zalo",
+    text: "S_ZALO",
+    type: "text",
+    isRequired: false,
+    hasVerify: false,
+    show: true,
+    regExp: "",
+    errorMsg: ""
+  },
   telegram: {
     key: "telegram",
     text: "S_TELEGRAM",
@@ -241,16 +251,6 @@ export default {
     show: true,
     regExp: /^[A-Za-z0-9_.@]{4,100}$/,
     errorMsg: i18n.t("KAKAOTALK_REGULAR_TEXT")
-  },
-  zalo: {
-    key: "zalo",
-    text: "S_ZALO",
-    type: "text",
-    isRequired: false,
-    hasVerify: false,
-    show: true,
-    regExp: "",
-    errorMsg: ""
   },
   withdraw_password: {
     key: "withdraw_password",

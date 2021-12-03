@@ -13,21 +13,23 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div
-          v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
-          style="margin-top: 40px;"
-        >
-          <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
-          <div :class="$style['visitor-get']">
-            {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
+        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
+          <div
+            :class="$style['visitor-get']"
+            :style="themeTPL == 'sg1' ? 'color:#000' : ''"
+          >
+            {{ themeTPL == "sg1" ? "访客彩金 58.00 元" : "访客加入会员" }}
           </div>
-        </div>
-
-        <div v-if="themeTPL == 'sg1'" style="margin-top: 20px; ">
-          <div :class="$style['visitor-get-sg']">
-            {{ `访客彩金：${formatThousandsCurrency(guestAmount)}元` }}
+          <div
+            :class="$style['visitor-get']"
+            :style="themeTPL == 'sg1' ? 'color:#000' : ''"
+          >
+            {{
+              themeTPL == "sg1"
+                ? "注册即送 58.00 钻"
+                : `领取彩金：${formatThousandsCurrency(guestAmount)}元`
+            }}
           </div>
-          <div :class="$style['visitor-get-sg']">{{ "注册即送 58.00 钻" }}</div>
         </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
@@ -36,22 +38,143 @@
           </div>
         </div>
 
+        <!-- mail驗證彈窗 -->
+        <div
+          v-if="mailVerifyModalShow"
+          :class="$style['modal-dark-bg']"
+          @click.self="mailVerifyModalShow = false"
+        >
+          <div :class="$style['verify-modal-wrap']">
+            <h1>电子邮箱</h1>
+            <div :class="$style['mail-wrap']">
+              <input
+                disabled
+                v-model="allValue.email"
+                :class="$style['mail']"
+              />
+              <button
+                :class="[
+                  $style['get-verify'],
+                  { [$style.submit]: mailVerifybtnSubmit == true }
+                ]"
+                @click="getMailVerifyCode"
+              >
+                {{ mailVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+              </button>
+              <input
+                v-model="mailVerifyCode"
+                :class="$style['verifycode-input']"
+                placeholder="请輸入验证码"
+              />
+            </div>
+            <p
+              v-if="mailSubmitSuccess && mailSubmitFail == false"
+              style="color:#5E626D"
+            >
+              验证码已发送，有效时间为
+              <span style="color: red">10</span>
+              分钟，若没收到信件请尝试至垃圾箱寻找
+            </p>
+            <!-- <p
+              v-if="phoneSubmitFail"
+              style="color: red;margin-right: auto;padding: 0 10px;"
+            >
+              {{ phoneSubmitFailMsg }}
+            </p> -->
+            <button @click="submitMailVerify">确认送出</button>
+          </div>
+        </div>
+
+        <!-- mail驗證錯誤訊息 -->
+        <div
+          v-if="mailSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="mailSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ mailSubmitFailMsg }}
+            <button @click="mailSubmitFail = false">关闭</button>
+          </div>
+        </div>
+        <!-- 手機驗證彈窗 -->
+        <div
+          v-if="phoneVerifyModalShow"
+          :class="$style['modal-dark-bg']"
+          @click.self="phoneVerifyModalShow = false"
+        >
+          <div :class="$style['verify-modal-wrap']">
+            <h1>手机号码</h1>
+            <div :class="$style['phonenum-wrap']">
+              <input
+                disabled
+                v-model="countryCode"
+                :class="$style['phone-number-countrycode']"
+              />
+              <input
+                disabled
+                v-model="allValue.phone"
+                :class="$style['phone-number']"
+              />
+              <button
+                :class="[
+                  $style['get-verify'],
+                  { [$style.submit]: phoneVerifybtnSubmit == true }
+                ]"
+                @click="getPhoneVerifyCode"
+              >
+                {{ phoneVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+              </button>
+              <input
+                v-model="phoneVerifyCode"
+                :class="$style['verifycode-input']"
+                placeholder="请輸入验证码"
+              />
+            </div>
+            <p
+              v-if="phoneSubmitSuccess && phoneSubmitFail == false"
+              style="color:#5E626D"
+            >
+              验证码已发送，有效时间为
+              <span style="color: red">10</span>
+              分钟，若没收到信件请尝试至垃圾箱寻找
+            </p>
+            <!-- <p
+              v-if="phoneSubmitFail"
+              style="color: red;margin-right: auto;padding: 0 10px;"
+            >
+              {{ phoneSubmitFailMsg }}
+            </p> -->
+            <button @click="submitPhoneVerify">确认送出</button>
+          </div>
+        </div>
+
+        <!-- 手機驗證錯誤訊息 -->
+        <div
+          v-if="phoneSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="phoneSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ phoneSubmitFailMsg }}
+            <button @click="phoneSubmitFail = false">关闭</button>
+          </div>
+        </div>
         <form>
           <div
             v-for="field in fieldsData"
             :key="field.key"
-            :class="[
-              $style['field-wrap'],
-              $style[siteConfig.ROUTER_TPL],
-              'clearfix'
-            ]"
+            :class="[$style['field-wrap'], 'clearfix']"
           >
             <label
               :for="field.key"
               :title="$t(joinMemInfo[field.key].text)"
               :class="[
                 $style['field-title'],
+                $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
+                {
+                  [$style['show-red-star']]: joinMemInfo[field.key].isRequired
+                },
                 'clearfix'
               ]"
               @click="
@@ -60,22 +183,31 @@
                 }
               "
             >
-              <span :class="$style['field-text']">{{
-                $t(joinMemInfo[field.key].text)
-              }}</span>
+              <span :class="$style['field-text']">
+                {{ $t(joinMemInfo[field.key].text) }}</span
+              >
             </label>
-            <div :class="[$style['field-right'], 'clearfix']">
+            <div
+              :class="[
+                $style['field-right'],
+                $style[siteConfig.ROUTER_TPL],
+                {
+                  [$style['withdraw-password']]:
+                    field.key === 'withdraw_password'
+                },
+                {
+                  [$style['phone']]: field.key === 'phone'
+                },
+                'clearfix'
+              ]"
+            >
               <div
                 v-if="field.key === 'captcha_text'"
                 :class="$style['captchaText-wrap']"
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input-captcha'],
-                    $style[siteConfig.ROUTER_TPL],
-                    field.key
-                  ]"
+                  :class="[$style['join-input-captcha'], field.key]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -101,11 +233,7 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -132,11 +260,7 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -163,11 +287,7 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
+                  :class="[$style['join-input'], field.key]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -175,7 +295,7 @@
                   @keydown.13="keyDownSubmit()"
                   @input="verification(field.key)"
                 />
-                <div :class="$style['clear']" v-if="allValue[field.key]">
+                <div :class="$style['clear']" v-if="field.key === 'username'">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
                     @click="allValue[field.key] = ''"
@@ -184,7 +304,7 @@
               </template>
 
               <template v-else-if="field.key === 'gender'">
-                <!-- <v-select
+                <v-select
                   v-model="selectData['gender'].selected"
                   :options="selectData['gender'].options"
                   :searchable="false"
@@ -193,44 +313,94 @@
                     $style[siteConfig.ROUTER_TPL]
                   ]"
                   @input="changSelect(field.key)"
-                /> -->
-                <select
-                  :class="[
-                    $style['select-gender'],
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
-                  v-model="selectData['gender'].selected"
-                  @input="changSelect(field.key)"
-                  ><option
-                    v-for="(item, index) in selectData['gender'].options"
-                    :value="item.value"
-                    :key="index"
-                    >{{ item.label }}</option
-                  ></select
-                >
+                />
               </template>
-
-              <template v-else-if="field.key === 'phone'">
-                <!-- <v-select
-                v-model="selectData[field.key].selected"
-                :options="selectData[field.key].options"
-                :searchable="false"
-                :class="$style['join-select-phone']"
-                @input="changSelect(field.key)"
-              /> -->
+              <template v-else-if="field.key === 'email'">
                 <input
-                  v-model="allValue['phone']"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], $style[field.key]]"
+                  :name="field.key"
+                  :placeholder="placeholderKeyValue('email', 'tip')"
+                  type="tel"
+                  @input="verification(field.key)"
+                  @keydown.13="joinSubmit()"
+                />
+                <img
+                  v-if="showMailCheckIcon"
+                  style="position: absolute ; top: 12px; right: 10px"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/ic_verification_success.png`
+                    )
+                  "
+                  alt=""
+                />
+                <div
+                  v-if="mailNeedCode"
                   :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
+                    $style['get-verify-btn'],
+                    { [$style.active]: mailVerifybtnActive == true }
                   ]"
+                  @click="openMailVerifyModal"
+                >
+                  {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
+                <div
+                  :class="[$style['clear']]"
+                  v-else-if="allValue[field.key].length > 1"
+                >
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
+                </div>
+              </template>
+              <template v-else-if="field.key === 'phone'">
+                <v-select
+                  v-model="selectData[field.key].selected"
+                  :options="selectData[field.key].options"
+                  :searchable="false"
+                  :class="$style['join-select-phone']"
+                  @input="changSelect(field.key)"
+                />
+                <input
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], $style[field.key]]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
+                <img
+                  v-if="showPhoneCheckIcon"
+                  style="position: absolute ; top: 12px; right: 15px"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/ic_verification_success.png`
+                    )
+                  "
+                  alt=""
+                />
+                <div
+                  v-if="NeedCode"
+                  :class="[
+                    $style['get-verify-btn'],
+                    { [$style.active]: phoneVerifybtnActive == true }
+                  ]"
+                  @click="openPhoneVerifyModal"
+                >
+                  {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
+                <div
+                  :class="[$style['clear']]"
+                  v-else-if="allValue[field.key].length > 1"
+                >
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
+                </div>
               </template>
 
               <template v-else-if="field.key === 'birthday'">
@@ -243,7 +413,7 @@
                   :clear-button="true"
                   :monday-first="true"
                   :placeholder="placeholderKeyValue('birthday', 'tip')"
-                  :input-class="[
+                  :class="[
                     $style['join-input-birthday'],
                     $style[siteConfig.ROUTER_TPL]
                   ]"
@@ -255,56 +425,67 @@
                 />
               </template>
 
-              <template v-else-if="field.key === 'withdraw_password'">
-                <div :class="$style['withdraw-password-wrap']">
-                  <input
-                    v-for="(item, index) in allValue['withdraw_password'].value"
-                    v-model="allValue['withdraw_password'].value[index]"
-                    :key="`widthdrawPwd-${index}`"
-                    @input="verification('withdraw_password', index)"
-                    @blur="verification('withdraw_password', index)"
-                    :data-key="`withdraw_password_${index}`"
-                    :class="$style['withdraw-pwd-input']"
-                    :maxlength="1"
-                    :minlength="1"
-                    :placeholder="allValue['withdraw_password'].placeholder"
-                    type="tel"
-                  />
-                </div>
-                <div
-                  :class="
-                    placeholderKeyValue('withdraw_password', 'help')
-                      ? $style['join-withdraw-password-help-show']
-                      : $style['join-withdraw-password-help']
-                  "
-                  v-html="placeholderKeyValue('withdraw_password', 'help')"
-                />
+              <template
+                v-else-if="field.key === 'withdraw_password'"
+                :class="$style['join-select-withdraw-wrap']"
+              >
+                <v-select
+                  v-for="(item, index) in allValue.withdraw_password.value"
+                  :key="`widthdrawPwd-${index}`"
+                  v-model="selectData['withdraw_password'].selected[index]"
+                  :options="selectData['withdraw_password'].options"
+                  :clearable="false"
+                  :searchable="false"
+                  :class="$style['join-select-withdraw']"
+                  @input="changSelect('withdraw_password', index)"
+                ></v-select>
+                <!-- <input
+                  v-for="(item, index) in allValue['withdraw_password'].value"
+                  v-model="allValue['withdraw_password'].value[index]"
+                  :key="`widthdrawPwd-${index}`"
+                  @input="verification('withdraw_password', index)"
+                  @blur="verification('withdraw_password', index)"
+                  :data-key="`withdraw_password_${index}`"
+                  :class="$style['withdraw-pwd-input']"
+                  :maxlength="1"
+                  :minlength="1"
+                  :placeholder="allValue['withdraw_password'].placeholder"
+                  type="tel"
+                /> -->
               </template>
-              <template v-else>
-                <input
-                  :ref="field.key"
-                  v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    field.key,
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
-                  :name="field.key"
-                  :placeholder="placeholderKeyValue(field.key, 'tip')"
-                  type="text"
-                  @blur="verification(field.key)"
-                  @keydown.13="keyDownSubmit()"
+              <input
+                v-else
+                :ref="field.key"
+                v-model="allValue[field.key]"
+                :class="[$style['join-input'], field.key]"
+                :name="field.key"
+                :placeholder="placeholderKeyValue(field.key, 'tip')"
+                type="text"
+                @blur="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+              />
+              <div
+                :class="$style['clear']"
+                v-if="
+                  !noCancelButton.includes(field.key) &&
+                    allValue[field.key].length > 1
+                "
+              >
+                <img
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                  @click="allValue[field.key] = ''"
                 />
-                <div
-                  :class="
-                    placeholderKeyValue(field.key, 'help')
-                      ? $style['join-help-show']
-                      : $style['join-help']
-                  "
-                  v-html="placeholderKeyValue(field.key, 'help')"
-                />
-              </template>
+              </div>
             </div>
+            <!-- </div> -->
+            <div
+              :class="
+                placeholderKeyValue(field.key, 'help')
+                  ? $style['join-help-show']
+                  : $style['join-help']
+              "
+              v-html="placeholderKeyValue(field.key, 'help')"
+            />
             <!-- eslint-disable vue/no-v-html -->
             <div
               :class="
@@ -322,7 +503,7 @@
           <thirdy-verification
             ref="thirdyCaptchaObj"
             @set-captcha="setCaptcha"
-            :class="[$style['thirdy-block'], $style[siteConfig.ROUTER_TPL]]"
+            :class="$style['thirdy-block']"
             :page-type="'register'"
           />
 
@@ -359,43 +540,13 @@
         </div>
       </div>
 
-      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
-        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
-        <!-- <span>成为主播</span> -->
-        <span @click.stop="$router.push('/mobile')">访客进入</span>
-      </div>
-      <!-- <div
-        v-if="themeTPL == 'sg1'"
-        class="login-link-wrap"
-        style="display:flex"
-      >
-       
-        <div class="link-button link-join-mem">
-          <span @click="linktoJoin()">
-            {{ $text("S_FREE_REGISTER", "免费注册") }}
-          </span>
-        </div>
-        <div class="link-button ">
-          <span @click="$router.push('/mobile/login')">
-            {{ $text("S_JOINTOLIVERS", "成为主播") }}
-          </span>
-        </div>
-        <div
-          class="link-button link-submit"
-          @click="$router.push('/mobile/service')"
-        >
-          {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
-        </div>
-      </div> -->
-
       <div
-        v-if="themeTPL == 'porn1' || themeTPL == 'aobo1'"
+        v-if="themeTPL != 'ey1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
         已有会员帐号
       </div>
-
       <div :class="$style['version']">
         {{ version }}
       </div>
@@ -430,6 +581,7 @@
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import ajax from "@/lib/ajax";
+import axios from "axios";
 import appEvent from "@/lib/appEvent";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
@@ -469,6 +621,23 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
+
+      phoneVerifybtnActive: false,
+      phoneVerifybtnSubmit: false,
+      NeedCode: true,
+      phoneSubmitSuccess: false,
+      phoneSubmitFail: false,
+      phoneSubmitFailMsg: "",
+      phoneVerifyCode: "",
+      showMailCheckIcon: false,
+      showPhoneCheckIcon: false,
+      mailVerifybtnActive: false,
+      mailVerifybtnSubmit: false,
+      mailNeedCode: true,
+      mailSubmitSuccess: false,
+      mailSubmitFail: false,
+      mailSubmitFailMsg: "",
+      mailVerifyCode: "",
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -521,6 +690,15 @@ export default {
         withdraw_password: "",
         captcha_text: ""
       },
+      noCancelButton: [
+        "password",
+        "confirm_password",
+        "email",
+        "phone",
+        "birthday",
+        "gender",
+        "withdraw_password"
+      ],
       checkFail: false,
       registerData: [],
       withdraw_passwordStatus: false,
@@ -537,6 +715,10 @@ export default {
         phone: ""
       },
       countryCode: "",
+      phoneVerifyModalShow: false,
+      mailVerifyModalShow: false,
+      ttlCount: 10,
+      timer: null,
       verifyTips: "",
       lock: false,
       thirdyCaptchaObj: null,
@@ -548,11 +730,35 @@ export default {
         },
         gender: {
           options: [
-            { label: this.$i18n.t("S_SELECTED"), value: "0" },
+            {
+              label: this.$i18n.t("S_SELECTED"),
+              value: ""
+            },
             { label: this.$i18n.t("S_MALE"), value: "1" },
             { label: this.$i18n.t("S_FEMALE"), value: "2" }
           ],
-          selected: { label: this.$i18n.t("S_SELECTED"), value: "0" }
+          selected: { label: this.$i18n.t("S_SELECTED"), value: "" }
+        },
+        withdraw_password: {
+          options: [
+            { label: "-", value: "" },
+            { label: "0", value: "0" },
+            { label: "1", value: "1" },
+            { label: "2", value: "2" },
+            { label: "3", value: "3" },
+            { label: "4", value: "4" },
+            { label: "5", value: "5" },
+            { label: "6", value: "6" },
+            { label: "7", value: "7" },
+            { label: "8", value: "8" },
+            { label: "9", value: "9" }
+          ],
+          selected: [
+            { label: "-", value: "" },
+            { label: "-", value: "" },
+            { label: "-", value: "" },
+            { label: "-", value: "" }
+          ]
         }
       },
       isGetCaptcha: false,
@@ -573,6 +779,12 @@ export default {
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
+      );
+    },
+    requireTrueData() {
+      return this.registerData.filter(
+        field =>
+          this.joinMemInfo[field.key] && this.joinMemInfo[field.key].required
       );
     },
     $style() {
@@ -619,9 +831,9 @@ export default {
               return this.allValue.withdraw_password.length === 4;
             }
 
-            // if (field.key === 'phone') {
-            //   return this.joinMemInfo[field.key].hasVerify && this.countryCode;
-            // }
+            if (field.key === "phone") {
+              return this.joinMemInfo[field.key].hasVerify && this.countryCode;
+            }
 
             return this.allValue[field.key];
           }
@@ -671,7 +883,19 @@ export default {
           if (result !== "ok") {
             return;
           }
+          //是否顯示mail驗證按鈕
+          if (ret.email.code_register == true) {
+            this.mailNeedCode = true;
+          } else {
+            this.mailNeedCode = false;
+          }
 
+          //是否顯示手機驗證按鈕
+          if (ret.phone.code_register == true) {
+            this.NeedCode = true;
+          } else {
+            this.NeedCode = false;
+          }
           Object.keys(this.joinMemInfo).forEach(key => {
             if (
               key === "captcha_text" &&
@@ -695,14 +919,25 @@ export default {
               return;
             }
 
-            //   if (key === 'phone') {
-            //     this.selectData.phone.options = [
-            //       ...this.selectData.phone.options,
-            //       ...ret[key].country_codes.map((label) => ({ label, value: label }))
-            //     ];
+            if (key === "gender") {
+              let tip = this.placeholderKeyValue("gender", "tip");
+              if (tip) {
+                this.selectData.gender.options[0].label = tip;
+                this.selectData.gender.selected.label = tip;
+              }
+            }
 
-            //     [this.selectData.phone.selected] = this.selectData.phone.options;
-            //   }
+            if (key === "phone") {
+              this.selectData.phone.options = [
+                ...this.selectData.phone.options,
+                ...ret[key].country_codes.map(label => ({
+                  label,
+                  value: label
+                }))
+              ];
+
+              [this.selectData.phone.selected] = this.selectData.phone.options;
+            }
 
             this.joinMemInfo[key] = {
               ...this.joinMemInfo[key],
@@ -851,170 +1086,229 @@ export default {
         return;
       }
 
-      switch (key) {
-        case "password":
-        case "username":
-        case "phone":
-        case "qq_num":
-        case "telegram":
-        case "kakaotalk":
-        case "confirm_password":
-        case "name":
-          this.allTip[key] = "";
-          this.actionVerificationFormData({
-            target: key,
-            value: this.allValue[key]
-          }).then(val => {
-            this.allValue[key] = val;
-            const regex = new RegExp(data.regExp);
-            const msg = data.errorMsg;
+      if (
+        key === "gender" &&
+        this.joinMemInfo["gender"].isRequired &&
+        this.allValue["gender"] === "0"
+      ) {
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+      } else if (data.isRequired && this.allValue[key] === "") {
+        //必填 欄位為空
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+      } else {
+        if (this.allValue[key] !== "") {
+          //進入驗證
+          switch (key) {
+            case "password":
+            case "username":
+            case "phone":
+            case "qq_num":
+            case "telegram":
+            case "kakaotalk":
+            case "line":
+            case "facebook":
+            case "skype":
+            case "zalo":
+            case "confirm_password":
+            case "name":
+            case "email":
+            case "weixin":
+              this.allTip[key] = "";
 
-            // 1. 密碼只判斷是否符合格式不判斷空
-            // 2. 確認密碼只判斷是否相同
-            switch (key) {
-              case "password":
-                // if (!val) {
-                //   this.allTip[key] = "";
-                //   return;
-                // }
+              this.actionVerificationFormData({
+                target: key,
+                value: this.allValue[key]
+              }).then(val => {
+                this.allValue[key] = val;
+                const regex = new RegExp(data.regExp);
+                const msg = data.errorMsg;
 
-                this.allTip["confirm_password"] = "";
-                if (
-                  this.allValue["password"] !==
-                  this.allValue["confirm_password"]
-                ) {
-                  this.allTip["confirm_password"] = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
-                  );
+                // 1. 密碼只判斷是否符合格式不判斷空
+                // 2. 確認密碼只判斷是否相同
+                switch (key) {
+                  case "password":
+                    // if (!val) {
+                    //   this.allTip[key] = "";
+                    //   return;
+                    // }
+
+                    this.allTip["confirm_password"] = "";
+                    if (
+                      this.allValue["password"] !==
+                      this.allValue["confirm_password"]
+                    ) {
+                      this.allTip["confirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR"
+                      );
+                    }
+
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
+                    }
+                    break;
+
+                  case "email":
+                    if (val.match(regex)) {
+                      this.mailVerifybtnActive = true;
+                    } else {
+                      this.mailVerifybtnActive = false;
+                    }
+
+                  case "confirm_password":
+                    // if (!val) {
+                    //   this.allTip[key] = "";
+                    //   return;
+                    // }
+
+                    this.allTip["confirm_password"] = "";
+                    if (
+                      this.allValue["password"] !==
+                      this.allValue["confirm_password"]
+                    ) {
+                      this.allTip["confirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR"
+                      );
+                    }
+                    break;
+
+                  default:
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
+                    }
+                    break;
                 }
+              });
+              break;
 
-                if (!val.match(regex)) {
-                  this.allTip[key] = msg;
-                }
-                break;
+            case "withdraw_password":
+              break;
+          }
 
-              case "confirm_password":
-                // if (!val) {
-                //   this.allTip[key] = "";
-                //   return;
-                // }
-
-                this.allTip["confirm_password"] = "";
-                if (
-                  this.allValue["password"] !==
-                  this.allValue["confirm_password"]
-                ) {
-                  this.allTip["confirm_password"] = this.$text(
-                    "S_PASSWD_CONFIRM_ERROR"
-                  );
-                }
-                break;
-
-              default:
-                if (!val.match(regex)) {
-                  this.allTip[key] = msg;
-                }
-                break;
-            }
-          });
-          break;
-
-        case "withdraw_password":
-          break;
-      }
-
-      //  非必填欄位，空值不做驗證
-      if (!data.isRequired && this.allValue[key] === "") {
-        this.allTip[key] = "";
-        return;
-      }
-
-      if (key == "withdraw_password") {
-        if (index === "all") {
-          if (this.allValue.withdraw_password.value.join("").length < 4) {
-            this.allTip["withdraw_password"] = "请输入提现密码";
+          //  非必填欄位，空值不做驗證
+          if (!data.isRequired && this.allValue[key] === "") {
+            this.allTip[key] = "";
             return;
           }
-        } else {
-          let target = this.allValue.withdraw_password;
-          let correct_value = target.value[index]
-            .replace(" ", "")
-            .trim()
-            .replace(/[^\d+]$/g, "");
 
-          if (target.value[index] === correct_value && correct_value !== "") {
-            if (index < 3) {
-              document
-                .querySelector(
-                  `input[data-key="withdraw_password_${index + 1}"]`
-                )
-                .focus();
+          if (key == "withdraw_password") {
+            if (index === "all") {
+              if (this.allValue.withdraw_password.value.join("").length < 4) {
+                this.allTip["withdraw_password"] = "请填写完整";
+
+                return;
+              }
+            } else {
+              if (index) {
+                let target = this.allValue.withdraw_password;
+                let correct_value = target.value[index]
+                  .replace(" ", "")
+                  .trim()
+                  .replace(/[^\d+]$/g, "");
+
+                if (
+                  target.value[index] === correct_value &&
+                  correct_value !== ""
+                ) {
+                  if (index < 3) {
+                    document
+                      .querySelector(
+                        `v-select[data-key="withdraw_password_${index + 1}"]`
+                      )
+                      .focus();
+                  }
+                }
+
+                target.value[index] = correct_value;
+
+                if (target.value[index].length > 1) {
+                  target.value[index] = target.value[index].substring(0, 1);
+                }
+
+                for (let i = 0; i < 4; i++) {
+                  if (!this.allValue.withdraw_password.value[i]) {
+                    this.checkFormData = false;
+                    return;
+                  }
+                }
+              }
             }
           }
 
-          target.value[index] = correct_value;
-
-          if (target.value[index].length > 1) {
-            target.value[index] = target.value[index].substring(0, 1);
-          }
-
-          for (let i = 0; i < 4; i++) {
-            if (!this.allValue.withdraw_password.value[i]) {
-              this.checkFormData = false;
+          if (key === "password" || key === "username") {
+            if (
+              this.allValue.username !== "" &&
+              this.allValue.password === this.allValue.username
+            ) {
+              this.allTip[key] = this.$text(
+                "S_USERNAME_CONFIRM_ERROR",
+                "密码不能与帐号相同"
+              );
               return;
             }
           }
-        }
-      }
 
-      if (key === "password" || key === "username") {
-        if (
-          this.allValue.username !== "" &&
-          this.allValue.password === this.allValue.username
-        ) {
-          this.allTip[key] = this.$text(
-            "S_USERNAME_CONFIRM_ERROR",
-            "密码不能与帐号相同"
-          );
+          if (key === "captcha_text") {
+            // 圖形驗證格式
+            this.allValue.captcha_text = this.allValue["captcha_text"].replace(
+              /[\W\_]/g,
+              ""
+            );
+          }
+
+          if (key === "phone") {
+            this.allValue[key] = `${this.countryCode.replace("+", "")}-${
+              this.allValue[key]
+            }`;
+            if (this.allValue[key].length > 13) {
+              this.phoneVerifybtnActive = true;
+            } else {
+              this.phoneVerifybtnActive = false;
+            }
+          }
+
+          this.allTip[key] = "";
+        }
+        return;
+      }
+    },
+    changSelect(key, index) {
+      if (key === "phone") {
+        if (!this.selectData[key].selected) {
+          this.selectData[key].selected = {
+            label: this.countryCode,
+            value: this.countryCode
+          };
           return;
         }
-      }
 
-      if (key === "captcha_text") {
-        // 圖形驗證格式
-        this.allValue.captcha_text = this.allValue["captcha_text"].replace(
-          /[\W\_]/g,
-          ""
-        );
-      }
-
-      this.allTip[key] = "";
-    },
-    changSelect(key) {
-      //   if (key === 'phone') {
-      //     if (!this.selectData[key].selected) {
-      //       this.selectData[key].selected = {
-      //         label: this.countryCode,
-      //         value: this.countryCode
-      //       };
-      //       return;
-      //     }
-
-      //     this.countryCode = this.selectData[key].selected.value;
-      //     return;
-      //   }
-
-      if (
-        this.selectData[key].selected &&
-        !this.selectData[key].selected.value
-      ) {
-        this.allValue[key] = "0";
+        this.countryCode = this.selectData[key].selected.value;
         return;
       }
 
-      this.allValue[key] = this.selectData[key].selected
-        ? this.selectData[key].selected.value
-        : "0";
+      if (key === "withdraw_password") {
+        if (
+          this.selectData[key].selected[index].value &&
+          !this.selectData[key].selected[index].value
+        ) {
+          this.allValue[key].value[index] = "";
+          return;
+        }
+        this.allValue[key].value[index] = this.selectData[key].selected[index]
+          ? this.selectData[key].selected[index].value
+          : "";
+      } else {
+        if (
+          this.selectData[key].selected &&
+          !this.selectData[key].selected.value
+        ) {
+          this.allValue[key] = "0";
+          return;
+        }
+
+        this.allValue[key] = this.selectData[key].selected
+          ? this.selectData[key].selected.value
+          : "0";
+      }
       this.verification(key);
     },
     checkField() {
@@ -1054,13 +1348,24 @@ export default {
     },
     joinSubmit(captchaInfo) {
       this.isLoading = true;
-      // Object.keys(this.allValue).forEach(item => {
-      //   if (item === "withdraw_password") {
-      //     this.verification("withdraw_password", "all");
-      //   } else {
-      //     this.verification(item);
-      //   }
-      // });
+
+      Object.keys(this.allValue).forEach(item => {
+        this.allTip[item] = "";
+        if (item === "withdraw_password") {
+          if (
+            this.joinMemInfo["withdraw_password"].isRequired &&
+            this.allValue.withdraw_password.value.join("").length === 0
+          ) {
+            this.allTip[item] = this.$text("S_JM_FIELD_REQUIRE");
+          } else if (
+            this.allValue.withdraw_password.value.join("").length > 1
+          ) {
+            this.verification("withdraw_password", "all");
+          }
+        } else {
+          this.verification(item);
+        }
+      });
 
       if (this.memInfo.config.register_captcha_type === 0) {
       }
@@ -1102,7 +1407,7 @@ export default {
         confirmPassword: this.allValue.confirm_password,
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
-        speedy: true,
+        speedy: false, //檢查是否唯一
         code: localStorage.getItem("promotionCode") || ""
       };
 
@@ -1173,6 +1478,7 @@ export default {
                   localStorage.removeItem("password");
                 }
 
+                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
                 window.RESET_LOCAL_SETTING();
                 if (this.siteConfig.ROUTER_TPL === "sg1") {
@@ -1216,7 +1522,10 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (item === "introducer") {
+              if (
+                item === "introducer" &&
+                localStorage.getItem("promotionCode")
+              ) {
                 this.errMsg = res.errors[item];
               }
             });
@@ -1307,16 +1616,195 @@ export default {
     },
     placeholderKeyValue(key, option) {
       let result = this.placeholderResult.find(item => item.key === key);
+      //tip：代表欄位placeholder ,help：代表欄位提示
       if (result) {
-        //tip：代表欄位placeholder ,help：代表欄位提示
         switch (option) {
           case "tip":
-            return result.tip["zh-cn"] || "";
+            if (result.tip) {
+              return result.tip["zh-cn"] || "";
+            }
           case "help":
-            return result.help["zh-cn"] || "";
+            if (result.help) {
+              return result.help["zh-cn"] || "";
+            }
         }
       }
       return;
+    },
+    openPhoneVerifyModal() {
+      if (this.phoneVerifybtnActive == true) {
+        this.phoneVerifyModalShow = true;
+      } else {
+        return;
+      }
+    },
+    openMailVerifyModal() {
+      if (this.mailVerifybtnActive == true) {
+        this.mailVerifyModalShow = true;
+      } else {
+        return;
+      }
+    },
+    getPhoneVerifyCode() {
+      //取得驗證碼倒數秒數
+      axios({
+        method: "get",
+        url: "/api/v1/c/player/register/phone/ttl"
+      }).then(res => {
+        // console.log("phonettl", res);
+        if (res && res.data.result == "ok") {
+          this.phoneVerifybtnSubmit = true;
+          this.phoneSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.phoneVerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        } else {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "ttl error";
+        }
+      });
+
+      //寄出會員註冊驗證簡訊
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/register/phone",
+        data: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg =
+              res.msg + "(" + res.code + ")" || "phone error1";
+          }
+        })
+        .catch(error => {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "phone error2";
+        });
+    },
+    submitPhoneVerify() {
+      //會員註冊手機簡訊驗證
+      axios({
+        method: "put",
+        url: "/api/v1/c/player/register/phone/verify",
+        data: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
+          keyring: this.phoneVerifyCode
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg =
+              res.data.msg + "(" + res.data.code + ")" || "phoneverify error1";
+          } else {
+            // this.mailSubmitFailMsg = "验证OK";
+            this.phoneVerifyModalShow = false;
+            this.showPhoneCheckIcon = true;
+            this.NeedCode = false;
+          }
+        })
+        .catch(error => {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "phoneverify error2";
+        });
+    },
+    getMailVerifyCode() {
+      //取得mail驗證碼倒數秒數
+      axios({
+        method: "get",
+        url: "/api/v1/c/player/register/email/ttl",
+        data: {
+          email: this.allValue.email
+        }
+      }).then(res => {
+        // console.log("mailttl", res);
+        if (res && res.data.result == "ok") {
+          this.mailVerifybtnSubmit = true;
+          this.mailSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.mailVerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        } else {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "ttl error";
+        }
+      });
+
+      //寄出mail會員註冊驗證碼
+      axios({
+        method: "post",
+        url: "/api/v1/c/player/register/email",
+        data: {
+          email: this.allValue.email
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.mailSubmitFail = true;
+            this.mailSubmitFailMsg =
+              res.msg + "(" + res.code + ")" || "mail error1";
+          }
+        })
+        .catch(error => {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "mail error2";
+        });
+    },
+    submitMailVerify() {
+      //會員註冊mail驗證
+      axios({
+        method: "put",
+        url: "/api/v1/c/player/register/email/verify",
+        data: {
+          email: this.allValue.email,
+          keyring: this.mailVerifyCode
+        }
+      })
+        .then(res => {
+          if (res && res.data.result !== "ok") {
+            this.mailSubmitFail = true;
+            this.mailSubmitFailMsg =
+              res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
+          } else {
+            // this.mailSubmitFailMsg = "验证OK";
+            this.mailVerifyModalShow = false;
+            this.showMailCheckIcon = true;
+            this.mailNeedCode = false;
+          }
+        })
+        .catch(error => {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            error.response.data.msg + "(" + error.response.data.code + ")" ||
+            "mailverify error2";
+        });
     }
   }
 };
