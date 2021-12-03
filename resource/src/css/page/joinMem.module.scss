@@ -100,6 +100,52 @@
   &.phone {
     border: 1px solid #e3e3e3;
     margin: 0 8px;
+    &::-webkit-input-placeholder {
+      /* Edge */
+      white-space: nowrap;
+      width: 154px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      white-space: nowrap;
+      width: 154px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &::placeholder {
+      white-space: nowrap;
+      width: 154px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &.email {
+    &::-webkit-input-placeholder {
+      /* Edge */
+      white-space: nowrap;
+      width: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      white-space: nowrap;
+      width: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &::placeholder {
+      white-space: nowrap;
+      width: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
@@ -178,7 +224,7 @@
 .get-verify-btn {
   position: absolute;
   top: 5px;
-  right: 5%;
+  right: 4.5%;
   width: 68px;
   height: 30px;
   background: #cccccc;
