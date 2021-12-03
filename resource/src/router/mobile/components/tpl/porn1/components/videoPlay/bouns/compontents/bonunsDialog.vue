@@ -258,12 +258,11 @@ export default {
     window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
-<<<<<<< HEAD
-    ...mapActions(["actionGetLayeredURL"]),
-=======
-    ...mapActions(["actionGetLayeredURL", "actionGetActingURL",
-      "actionGetRegisterURL"]),
->>>>>>> 824fba00a... [MOD] 修改註冊分層網址跳轉流程
+    ...mapActions([
+      "actionGetLayeredURL",
+      "actionGetActingURL",
+      "actionGetRegisterURL"
+    ]),
     handleBack() {
       this.$router.back();
     },
@@ -408,13 +407,13 @@ export default {
           //   }
           // });
           this.actionGetRegisterURL().then(res => {
-          console.log(res);
-          if (res.redirect_url) {
-            window.location.replace(res.redirect_url);
-          } else {
-            this.$router.push(`/mobile/joinmember`);
-          }
-        });
+            console.log(res);
+            if (res.redirect_url) {
+              window.location.replace(res.redirect_url + "/mobile/joinmember");
+            } else {
+              this.$router.push(`/mobile/joinmember`);
+            }
+          });
         } else {
           this.$router.push(`/mobile/joinmember`);
         }
