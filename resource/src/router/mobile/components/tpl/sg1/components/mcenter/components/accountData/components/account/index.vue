@@ -43,7 +43,7 @@
                     v-model="birthdayValue"
                     :placeholder="'添加日期，确保您已满18岁'"
                     type="date"
-                    format="YYYY-MM-DD"
+                    format="YYYY/MM/DD"
                     value-type="format"
                     @input="onInputBirthday(birthdayValue)"
                   />
@@ -460,6 +460,29 @@
         </template>
       </template>
     </account-wrap>
+
+    <div v-if="isShowPop" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" />
+      <div :class="$style['pop-block']">
+        <div :class="$style['content']">
+          <div :class="$style['title']">
+            {{ $text("S_TIPS", "温馨提示") }}
+          </div>
+
+          <span>确认生日绑定 {{ birthdayValue }} 吗？</span>
+        </div>
+
+        <div :class="$style['button-block']">
+          <span @click="isShowPop = false">
+            {{ $text("S_CANCEL", "取消") }}
+          </span>
+
+          <span @click="sendBirthday">
+            {{ $text("S_CONFIRM_2", "确定") }}
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -536,7 +559,8 @@ export default {
         name: "",
         phone: "",
         address: ""
-      }
+      },
+      isShowPop: false
     };
   },
   created() {
@@ -712,22 +736,25 @@ export default {
       if (this.value === "") {
         this.tipMsg = this.$text("S_CR_NUT_NULL");
       }
+      this.isShowPop = true;
+    },
+    sendBirthday() {
       const valueDate = new Date(this.birthdayValue);
       const limit = new Date(Vue.moment(this.systemTime).add(-18, "year"));
       if (valueDate > limit) {
         this.actionSetGlobalMessage({ msg: "年龄未满十八岁,无法游戏" });
-        this.birthdayValue = "";
+        this.isShowPop = false;
       } else {
+        this.isShowPop = false;
         mcenter.accountDataSet({
           params: {
             birthday: Vue.moment(this.birthdayValue).format()
           },
           success: () => {
             this.editedSuccess();
-
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 3000);
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           },
           fail: res => {
             if (res && res.data && res.data.msg) {
