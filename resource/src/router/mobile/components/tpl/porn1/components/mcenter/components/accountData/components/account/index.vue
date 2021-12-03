@@ -84,7 +84,7 @@
                         v-model="birthdayValue"
                         :placeholder="'添加日期，确保您已满18岁'"
                         type="date"
-                        format="YYYY-MM-DD"
+                        format="YYYY/MM/DD"
                         value-type="format"
                         @input="onInputBirthday(birthdayValue)"
                       />
