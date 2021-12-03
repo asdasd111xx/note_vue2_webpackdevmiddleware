@@ -137,7 +137,7 @@ export default {
     show: true,
     minimum: 12,
     maximum: 100,
-    regExp: /^[A-Za-z0-9.\-_]+@[A-Za-z0-9.-]+\.[A-Za-z]+$/,
+    regExp: /^[A-Za-z0-9.\-_]+@(?!mail)[A-Za-z0-9.-]+\.[A-Za-z]+$/,
     errorMsg: i18n.t("S_JM_EMAIL_FORMAT_UNAVAILABLE").replace("%s", "<br/>")
   },
   phone: {

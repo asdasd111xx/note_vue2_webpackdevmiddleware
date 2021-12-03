@@ -298,7 +298,9 @@
                 <div :class="$style['clear']" v-if="field.key === 'username'">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -351,7 +353,9 @@
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -398,7 +402,9 @@
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -481,7 +487,7 @@
               >
                 <img
                   :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                  @click="allValue[field.key] = ''"
+                  @click="(allValue[field.key] = ''), (allTip[field.key] = '')"
                 />
               </div>
             </div>
@@ -1173,10 +1179,11 @@ export default {
                     break;
 
                   case "email":
-                    if (val.match(regex)) {
-                      this.mailVerifybtnActive = true;
-                    } else {
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
                       this.mailVerifybtnActive = false;
+                    } else {
+                      this.mailVerifybtnActive = true;
                     }
 
                   case "confirm_password":
