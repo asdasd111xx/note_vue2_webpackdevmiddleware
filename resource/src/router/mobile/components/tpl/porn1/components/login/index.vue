@@ -307,7 +307,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionGetLayeredURL"]),
+    ...mapActions([
+      "actionGetLayeredURL",
+      "actionGetActingURL",
+      "actionGetRegisterURL"
+    ]),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
@@ -316,13 +320,27 @@ export default {
     },
     checkLayeredURL() {
       if (getCookie("platform") === "h") {
-        this.actionGetLayeredURL().then(res => {
-          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-            this.linktoJoin();
+        // this.actionGetActingURL().then(res => {
+        //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {
+        //     this.linktoJoin();
+        //   } else {
+        //     this.actionGetLayeredURL().then(res => {
+        //       if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+        //         this.linktoJoin();
+        //       } else {
+        //         window.location.replace(
+        //           `https://${res[0]}/mobile/joinmember?login=1`
+        //         );
+        //       }
+        //     });
+        //   }
+        // });
+        this.actionGetRegisterURL().then(res => {
+          console.log(res);
+          if (res.redirect_url) {
+            window.location.replace(res.redirect_url);
           } else {
-            window.location.replace(
-              `https://${res[0]}/mobile/joinmember?login=1`
-            );
+            this.linktoJoin();
           }
         });
       } else {
