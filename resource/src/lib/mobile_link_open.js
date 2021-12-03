@@ -161,11 +161,19 @@ export default target => {
           return;
         }
         if (getCookie("platform") === "h") {
-          store.dispatch("actionGetLayeredURL").then(res => {
-            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-              router.push(`/mobile/joinmember`);
+          store.dispatch("actionGetActingURL").then(res => {
+            if (res.length > 0 && res.indexOf(window.location.host) != -1) {
+              this.$router.push(`/mobile/joinmember`);
             } else {
-              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+              store.dispatch("actionGetLayeredURL").then(res => {
+                if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+                  router.push(`/mobile/joinmember`);
+                } else {
+                  window.location.replace(
+                    `https://${res[0]}/mobile/joinmember`
+                  );
+                }
+              });
             }
           });
         } else {

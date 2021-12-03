@@ -290,7 +290,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionGetLayeredURL"]),
+    ...mapActions(["actionGetLayeredURL", "actionGetActingURL"]),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
@@ -299,13 +299,19 @@ export default {
     },
     checkLayeredURL() {
       if (getCookie("platform") === "h") {
-        this.actionGetLayeredURL().then(res => {
-          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+        this.actionGetActingURL().then(res => {
+          if (res.length > 0 && res.indexOf(window.location.host) != -1) {
             this.linktoJoin();
           } else {
-            window.location.replace(
-              `https://${res[0]}/mobile/joinmember?login=1`
-            );
+            this.actionGetLayeredURL().then(res => {
+              if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+                this.linktoJoin();
+              } else {
+                window.location.replace(
+                  `https://${res[0]}/mobile/joinmember?login=1`
+                );
+              }
+            });
           }
         });
       } else {
