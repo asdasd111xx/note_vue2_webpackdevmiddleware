@@ -410,6 +410,14 @@
                   initial-view="year"
                   @cleared="verification(field.key)"
                   @input="verification(field.key)"
+                  ref="thedatepicker"
+                />
+                <img
+                  v-show="!allValue.birthday"
+                  style="position: absolute; top: 10px; right: 10px;"
+                  :src="$getCdnPath(`/static/image/common/btn_calendar.png`)"
+                  @click="toggleDatePick"
+                  alt=""
                 />
               </template>
 
@@ -1017,6 +1025,10 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
+    toggleDatePick() {
+      this.$refs.thedatepicker[0].showYearView = !this.$refs.thedatepicker[0]
+        .showYearView;
+    },
     keyDownSubmit() {
       if (this.memInfo.config.register_captcha_type === 2) {
         return;
