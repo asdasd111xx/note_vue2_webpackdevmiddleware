@@ -36,7 +36,12 @@ export default {
       if (this.sec === 0 && !this.$route.query.test) {
         clearInterval(this.timer);
         this.timer = null;
-        this.$router.push("/mobile");
+
+        if (this.siteConfig.ROUTER_TPL === "sg1") {
+          this.$router.push("/mobile/live/iframe/home?hasFooter=true");
+        } else {
+          this.$router.push("/mobile");
+        }
         return;
       }
       this.sec -= 1;

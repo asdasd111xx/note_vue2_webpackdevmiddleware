@@ -47,7 +47,7 @@
         frameborder="0"
         crossorigin
       />
-      <page-loading :is-show="isLoading" />
+      <!-- <page-loading :is-show="isLoading" /> -->
     </div>
   </mobile-container>
 </template>
@@ -129,7 +129,6 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
     initPage() {
-      this.isLoading = true;
       let clientUri = "";
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/view-path",
@@ -164,8 +163,6 @@ export default {
             }
             this.isLoading = false;
           });
-        } else {
-          this.isLoading = false;
         }
       });
     },
@@ -185,7 +182,6 @@ export default {
 
       switch (target) {
         case "home":
-          this.isLoading = true;
           goLangApiRequest({
             method: "post",
             url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
@@ -198,7 +194,6 @@ export default {
             if (res && res.data && res.data.uri) {
               this.src = res.data.uri;
             }
-            this.isLoading = false;
           });
           return;
       }
