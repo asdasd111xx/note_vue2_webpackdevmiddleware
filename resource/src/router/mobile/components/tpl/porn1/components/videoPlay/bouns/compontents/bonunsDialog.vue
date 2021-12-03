@@ -258,7 +258,11 @@ export default {
     window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
-    ...mapActions(["actionGetLayeredURL"]),
+    ...mapActions([
+      "actionGetLayeredURL",
+      "actionGetActingURL",
+      "actionGetRegisterURL"
+    ]),
     handleBack() {
       this.$router.back();
     },
@@ -387,11 +391,27 @@ export default {
         this.$router.push(`/mobile/login`);
       } else {
         if (getCookie("platform") === "h") {
-          this.actionGetLayeredURL().then(res => {
-            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-              this.$router.push(`/mobile/joinmember`);
+          // this.actionGetActingURL().then(res => {
+          //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {
+          //     this.$router.push(`/mobile/joinmember`);
+          //   } else {
+          //     this.actionGetLayeredURL().then(res => {
+          //       if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+          //         this.$router.push(`/mobile/joinmember`);
+          //       } else {
+          //         window.location.replace(
+          //           `https://${res[0]}/mobile/joinmember`
+          //         );
+          //       }
+          //     });
+          //   }
+          // });
+          this.actionGetRegisterURL().then(res => {
+            console.log(res);
+            if (res.redirect_url) {
+              window.location.replace(res.redirect_url + "/mobile/joinmember");
             } else {
-              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+              this.$router.push(`/mobile/joinmember`);
             }
           });
         } else {
