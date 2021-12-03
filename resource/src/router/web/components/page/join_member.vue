@@ -286,7 +286,9 @@
                 <div :class="$style['clear']" v-if="field.key === 'username'">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -339,7 +341,9 @@
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -386,7 +390,9 @@
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -482,7 +488,7 @@
               >
                 <img
                   :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                  @click="allValue[field.key] = ''"
+                  @click="(allValue[field.key] = ''), (allTip[field.key] = '')"
                 />
               </div>
             </div>
