@@ -290,8 +290,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionGetLayeredURL", "actionGetActingURL"],
-      "actionGetRegisterURL"),
+    ...mapActions(
+      ["actionGetLayeredURL", "actionGetActingURL"],
+      "actionGetRegisterURL"
+    ),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
@@ -318,7 +320,9 @@ export default {
         this.actionGetRegisterURL().then(res => {
           console.log(res);
           if (res.redirect_url) {
-            window.location.replace(res.redirect_url);
+            window.location.replace(
+              res.redirect_url + "/mobile/joinmember?login=1"
+            );
           } else {
             this.linktoJoin();
           }

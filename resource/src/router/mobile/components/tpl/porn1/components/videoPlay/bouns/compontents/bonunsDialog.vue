@@ -258,8 +258,11 @@ export default {
     window.removeEventListener("resize", this.getDialogHeight);
   },
   methods: {
-    ...mapActions(["actionGetLayeredURL", "actionGetActingURL",
-      "actionGetRegisterURL"]),
+    ...mapActions([
+      "actionGetLayeredURL",
+      "actionGetActingURL",
+      "actionGetRegisterURL"
+    ]),
     handleBack() {
       this.$router.back();
     },
@@ -404,13 +407,13 @@ export default {
           //   }
           // });
           this.actionGetRegisterURL().then(res => {
-          console.log(res);
-          if (res.redirect_url) {
-            window.location.replace(res.redirect_url);
-          } else {
-            this.$router.push(`/mobile/joinmember`);
-          }
-        });
+            console.log(res);
+            if (res.redirect_url) {
+              window.location.replace(res.redirect_url + "/mobile/joinmember");
+            } else {
+              this.$router.push(`/mobile/joinmember`);
+            }
+          });
         } else {
           this.$router.push(`/mobile/joinmember`);
         }
