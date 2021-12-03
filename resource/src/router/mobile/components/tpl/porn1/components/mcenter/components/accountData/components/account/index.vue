@@ -84,7 +84,7 @@
                         v-model="birthdayValue"
                         :placeholder="'添加日期，确保您已满18岁'"
                         type="date"
-                        format="YYYY-MM-DD"
+                        format="YYYY/MM/DD"
                         value-type="format"
                         @input="onInputBirthday(birthdayValue)"
                       />
@@ -388,14 +388,6 @@ export default {
         this.tipMsg = this.$text("S_CR_NUT_NULL");
       }
       this.isShowPop = true;
-      // const valueDate = new Date(this.birthdayValue);
-      // const limit = new Date(Vue.moment(this.systemTime).add(-18, "year"));
-      // if (valueDate > limit) {
-      //   this.actionSetGlobalMessage({ msg: "年龄未满十八岁,无法游戏" });
-      //   this.birthdayValue = "";
-      // } else {
-      //   this.isShowPop = true;
-      // }
     },
     sendBirthday() {
       const valueDate = new Date(this.birthdayValue);
