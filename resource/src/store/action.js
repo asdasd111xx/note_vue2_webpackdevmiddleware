@@ -2475,6 +2475,34 @@ export const actionGetActingURL = ({ state }) => {
       });
     });
 };
+
+export const actionGetRegisterURL = ({ state }) => {
+  return axios({
+    method: "get",
+    url: "/api/v1/c/register/bind-url/check"
+  })
+    .then(res => {
+      const { ret, result, msg, code } = res.data;
+      console.log(res);
+      if (!res || result !== "ok") {
+        dispatch("actionSetGlobalMessage", {
+          msg,
+          code
+        });
+        return;
+      } else {
+        return Promise.resolve(ret);
+      }
+    })
+    .catch(error => {
+      const msg = error?.response?.data?.msg;
+      const code = error?.response?.data?.code;
+      dispatch("actionSetGlobalMessage", {
+        msg,
+        code
+      });
+    });
+};
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (
   { state, dispatch, commit },
