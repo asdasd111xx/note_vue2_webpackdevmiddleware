@@ -963,11 +963,23 @@ export default {
                   }
                 };
 
-                if (key === "gender" && joinReminder[key].note1) {
-                  this.selectData.gender.options[0].label =
-                    joinReminder[key].note1;
-                  this.selectData.gender.selected.label =
-                    joinReminder[key].note1;
+                // if (key === "gender" && joinReminder[key].note1) {
+                //   this.selectData.gender.options[0].label =
+                //     joinReminder[key].note1;
+                //   this.selectData.gender.selected.label =
+                //     joinReminder[key].note1;
+                // }
+                if (key === "gender") {
+                  let tip = this.placeholderKeyValue("gender", "tip");
+                  if (tip) {
+                    this.selectData.gender.options[0].label = tip;
+                    this.selectData.gender.selected.label = tip;
+                  } else if (joinReminder[key].note1) {
+                    this.selectData.gender.options[0].label =
+                      joinReminder[key].note1;
+                    this.selectData.gender.selected.label =
+                      joinReminder[key].note1;
+                  }
                 }
               });
             });
