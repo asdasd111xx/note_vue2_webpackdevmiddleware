@@ -493,15 +493,13 @@
   }
 
   &.withdraw-password {
-    display: block;
+    display: flex;
     width: 100%;
-    text-align: center;
     border: none;
     .join-select-withdraw {
-      float: none;
       display: inline-block;
-      width: calc(100% / 5);
-      margin: 0 8px;
+      min-width: 22%;
+      margin: 0 5px 0 0;
       background: #ffffff;
       border: 1px solid #cecece;
       height: 40px;
@@ -685,6 +683,7 @@
   .v-select {
     .dropdown-toggle {
       border: 0;
+      border: 1px solid transparent !important;
     }
 
     &.open {

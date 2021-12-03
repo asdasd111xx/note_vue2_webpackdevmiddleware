@@ -33,7 +33,7 @@
           @click.self="mailVerifyModalShow = false"
         >
           <div :class="$style['verify-modal-wrap']">
-            <h1>Email</h1>
+            <h1>电子邮箱</h1>
             <div :class="$style['mail-wrap']">
               <input
                 disabled
@@ -333,6 +333,15 @@
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
+                <div
+                  :class="[$style['clear']]"
+                  v-else-if="allValue[field.key].length > 1"
+                >
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
+                </div>
               </template>
               <template v-else-if="field.key === 'phone'">
                 <v-select
@@ -370,6 +379,15 @@
                   @click="openPhoneVerifyModal"
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
+                </div>
+                <div
+                  :class="[$style['clear']]"
+                  v-else-if="allValue[field.key].length > 1"
+                >
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="allValue[field.key] = ''"
+                  />
                 </div>
               </template>
 
@@ -821,28 +839,28 @@ export default {
     const username = {
       key: "username",
       content: {
-        note1: this.$text("S_ACCOUNT_PLACEHOLDER"),
+        note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
         note2: ""
       }
     };
     const password = {
       key: "password",
       content: {
-        note1: this.$text("S_PASSWORD_PLACEHOLDER"),
+        note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母及数字"),
         note2: ""
       }
     };
     const confirmPassword = {
       key: "confirm_password",
       content: {
-        note1: "请再次输入设置密码",
+        note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
         note2: ""
       }
     };
     const captchaText = {
       key: "captcha_text",
       content: {
-        note1: "请填写验证码",
+        note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
         note2: ""
       }
     };
@@ -1056,9 +1074,15 @@ export default {
         return;
       }
 
-      if (this.joinMemInfo[key].isRequired && this.allValue[key] === "") {
-        //必填 欄位為空
+      if (
+        key === "gender" &&
+        this.joinMemInfo["gender"].isRequired &&
+        this.allValue["gender"] === "0"
+      ) {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+      } else if (data.isRequired && this.allValue[key] === "") {
+        //必填 欄位為空
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE",'该栏位不得为空');
       } else {
         if (this.allValue[key] !== "") {
           //進入驗證
@@ -1102,7 +1126,7 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
-                        "S_PASSWD_CONFIRM_ERROR"
+                        "S_PASSWD_CONFIRM_ERROR",'确认密码预设要跟密码一致'
                       );
                     }
 
@@ -1130,7 +1154,7 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
-                        "S_PASSWD_CONFIRM_ERROR"
+                        "S_PASSWD_CONFIRM_ERROR",'确认密码预设要跟密码一致'
                       );
                     }
                     break;
@@ -1277,7 +1301,7 @@ export default {
     },
     checkField() {
       if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
+        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR",'确认密码预设要跟密码一致');
       }
 
       if (
