@@ -609,8 +609,8 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 // CGPay || 購寶，只能綁定過一次(不論存放常用 or 歷史)
-                if ([21, 37].includes(item.virtual_bank_id)) {
-                  return [21, 37].includes(item.virtual_bank_id);
+                if ([21, 37,48].includes(item.virtual_bank_id)) {
+                  return [21, 37,48].includes(item.virtual_bank_id);
                 } else if (
                   // 億元沒開限綁一組，則可添加多個同種類錢包，
                   // ["ey1"].includes(this.themeTPL) &&
