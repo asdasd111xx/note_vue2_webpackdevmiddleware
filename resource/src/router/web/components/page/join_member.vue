@@ -1082,7 +1082,7 @@ export default {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
-        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE",'该栏位不得为空');
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE", "该栏位不得为空");
       } else {
         if (this.allValue[key] !== "") {
           //進入驗證
@@ -1126,7 +1126,8 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
-                        "S_PASSWD_CONFIRM_ERROR",'确认密码预设要跟密码一致'
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
                       );
                     }
 
@@ -1154,7 +1155,8 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
-                        "S_PASSWD_CONFIRM_ERROR",'确认密码预设要跟密码一致'
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
                       );
                     }
                     break;
@@ -1301,7 +1303,10 @@ export default {
     },
     checkField() {
       if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR",'确认密码预设要跟密码一致');
+        this.allTip["confirm_password"] = this.$text(
+          "S_PASSWD_CONFIRM_ERROR",
+          "确认密码预设要跟密码一致"
+        );
       }
 
       if (
@@ -1627,13 +1632,11 @@ export default {
         return;
       }
     },
-    getPhoneVerifyCode() {
-      //取得驗證碼倒數秒數
+    getPhoneTTL() {
       axios({
         method: "get",
         url: "/api/v1/c/player/register/phone/ttl"
       }).then(res => {
-        // console.log("phonettl", res);
         if (res && res.data.result == "ok") {
           this.phoneVerifybtnSubmit = true;
           this.phoneSubmitSuccess = true;
@@ -1654,7 +1657,34 @@ export default {
             res.msg + "(" + res.code + ")" || "ttl error";
         }
       });
-
+    },
+    getMailTTL() {
+      axios({
+        method: "get",
+        url: "/api/v1/c/player/register/email/ttl"
+      }).then(res => {
+        if (res && res.data.result == "ok") {
+          this.mailVerifybtnSubmit = true;
+          this.mailSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.mailVerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        } else {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "ttl error";
+        }
+      });
+    },
+    getPhoneVerifyCode() {
       //寄出會員註冊驗證簡訊
       axios({
         method: "post",
@@ -1668,6 +1698,9 @@ export default {
             this.phoneSubmitFail = true;
             this.phoneSubmitFailMsg =
               res.msg + "(" + res.code + ")" || "phone error1";
+          } else {
+            //取得驗證碼倒數秒數
+            this.getPhoneTTL();
           }
         })
         .catch(error => {
@@ -1707,36 +1740,6 @@ export default {
         });
     },
     getMailVerifyCode() {
-      //取得mail驗證碼倒數秒數
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/register/email/ttl",
-        data: {
-          email: this.allValue.email
-        }
-      }).then(res => {
-        // console.log("mailttl", res);
-        if (res && res.data.result == "ok") {
-          this.mailVerifybtnSubmit = true;
-          this.mailSubmitSuccess = true;
-          this.ttlCount = res.data.ret;
-          this.timer = setInterval(() => {
-            if (this.ttlCount <= 1) {
-              this.ttlCount = 0;
-              clearInterval(this.timer);
-              this.mailVerifybtnSubmit = false;
-              this.timer = null;
-              return;
-            }
-            this.ttlCount -= 1;
-          }, 1500);
-        } else {
-          this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "ttl error";
-        }
-      });
-
       //寄出mail會員註冊驗證碼
       axios({
         method: "post",
@@ -1750,6 +1753,9 @@ export default {
             this.mailSubmitFail = true;
             this.mailSubmitFailMsg =
               res.msg + "(" + res.code + ")" || "mail error1";
+          } else {
+            //取得mail驗證碼倒數秒數
+            this.getMailTTL();
           }
         })
         .catch(error => {
