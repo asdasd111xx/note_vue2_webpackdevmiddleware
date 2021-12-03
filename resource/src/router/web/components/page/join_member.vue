@@ -1172,10 +1172,11 @@ export default {
                     break;
 
                   case "email":
-                    if (val.match(regex)) {
-                      this.mailVerifybtnActive = true;
-                    } else {
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
                       this.mailVerifybtnActive = false;
+                    } else {
+                      this.mailVerifybtnActive = true;
                     }
 
                   case "confirm_password":
