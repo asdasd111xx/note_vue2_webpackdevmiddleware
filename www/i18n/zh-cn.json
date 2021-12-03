@@ -26,6 +26,8 @@
   "S_MEMBER_LOGIN": "会员登入",
   "S_ACCOUNT_PLACEHOLDER": "请输入4-20位字母或数字",
   "S_PASSWORD_PLACEHOLDER": "请输入6-12位字母及数字",
+  "S_PLS_PWD": "请再次输入设置密码",
+  "S_PLS_CAPTCHA": "请填写验证码",
   "S_PLEASE_ENTER_ORIGIN_PASSWORD": "请输入原密码",
   "S_PLEASE_ENTER_PASSWORD_AGAIN": "请再次输入密码",
   "S_NEW_PASSWORD_PLACEHOLDER": "请设置新密码(6-12位须含英文大小写及数字)",

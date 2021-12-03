@@ -422,6 +422,14 @@
                   initial-view="year"
                   @cleared="verification(field.key)"
                   @input="verification(field.key)"
+                  ref="thedatepicker"
+                />
+                <img
+                  v-show="!allValue.birthday"
+                  style="position: absolute; top: 10px; right: 10px;"
+                  :src="$getCdnPath(`/static/image/common/btn_calendar.png`)"
+                  @click="toggleDatePick"
+                  alt=""
                 />
               </template>
 
@@ -851,28 +859,28 @@ export default {
     const username = {
       key: "username",
       content: {
-        note1: this.$text("S_ACCOUNT_PLACEHOLDER"),
+        note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
         note2: ""
       }
     };
     const password = {
       key: "password",
       content: {
-        note1: this.$text("S_PASSWORD_PLACEHOLDER"),
+        note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母及数字"),
         note2: ""
       }
     };
     const confirmPassword = {
       key: "confirm_password",
       content: {
-        note1: "请再次输入设置密码",
+        note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
         note2: ""
       }
     };
     const captchaText = {
       key: "captcha_text",
       content: {
-        note1: "请填写验证码",
+        note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
         note2: ""
       }
     };
@@ -975,11 +983,23 @@ export default {
                   }
                 };
 
-                if (key === "gender" && joinReminder[key].note1) {
-                  this.selectData.gender.options[0].label =
-                    joinReminder[key].note1;
-                  this.selectData.gender.selected.label =
-                    joinReminder[key].note1;
+                // if (key === "gender" && joinReminder[key].note1) {
+                //   this.selectData.gender.options[0].label =
+                //     joinReminder[key].note1;
+                //   this.selectData.gender.selected.label =
+                //     joinReminder[key].note1;
+                // }
+                if (key === "gender") {
+                  let tip = this.placeholderKeyValue("gender", "tip");
+                  if (tip) {
+                    this.selectData.gender.options[0].label = tip;
+                    this.selectData.gender.selected.label = tip;
+                  } else if (joinReminder[key].note1) {
+                    this.selectData.gender.options[0].label =
+                      joinReminder[key].note1;
+                    this.selectData.gender.selected.label =
+                      joinReminder[key].note1;
+                  }
                 }
               });
             });
@@ -1017,6 +1037,10 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
+    toggleDatePick() {
+      this.$refs.thedatepicker[0].showYearView = !this.$refs.thedatepicker[0]
+        .showYearView;
+    },
     keyDownSubmit() {
       if (this.memInfo.config.register_captcha_type === 2) {
         return;
@@ -1094,7 +1118,7 @@ export default {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
-        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE", "该栏位不得为空");
       } else {
         if (this.allValue[key] !== "") {
           //進入驗證
@@ -1138,7 +1162,8 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
-                        "S_PASSWD_CONFIRM_ERROR"
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
                       );
                     }
 
@@ -1166,7 +1191,8 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
-                        "S_PASSWD_CONFIRM_ERROR"
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
                       );
                     }
                     break;
@@ -1313,7 +1339,10 @@ export default {
     },
     checkField() {
       if (this.allValue["password"] !== this.allValue["confirm_password"]) {
-        this.allTip["confirm_password"] = this.$text("S_PASSWD_CONFIRM_ERROR");
+        this.allTip["confirm_password"] = this.$text(
+          "S_PASSWD_CONFIRM_ERROR",
+          "确认密码预设要跟密码一致"
+        );
       }
 
       if (
@@ -1645,13 +1674,11 @@ export default {
         return;
       }
     },
-    getPhoneVerifyCode() {
-      //取得驗證碼倒數秒數
+    getPhoneTTL() {
       axios({
         method: "get",
         url: "/api/v1/c/player/register/phone/ttl"
       }).then(res => {
-        // console.log("phonettl", res);
         if (res && res.data.result == "ok") {
           this.phoneVerifybtnSubmit = true;
           this.phoneSubmitSuccess = true;
@@ -1672,7 +1699,34 @@ export default {
             res.msg + "(" + res.code + ")" || "ttl error";
         }
       });
-
+    },
+    getMailTTL() {
+      axios({
+        method: "get",
+        url: "/api/v1/c/player/register/email/ttl"
+      }).then(res => {
+        if (res && res.data.result == "ok") {
+          this.mailVerifybtnSubmit = true;
+          this.mailSubmitSuccess = true;
+          this.ttlCount = res.data.ret;
+          this.timer = setInterval(() => {
+            if (this.ttlCount <= 1) {
+              this.ttlCount = 0;
+              clearInterval(this.timer);
+              this.mailVerifybtnSubmit = false;
+              this.timer = null;
+              return;
+            }
+            this.ttlCount -= 1;
+          }, 1500);
+        } else {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "ttl error";
+        }
+      });
+    },
+    getPhoneVerifyCode() {
       //寄出會員註冊驗證簡訊
       axios({
         method: "post",
@@ -1686,6 +1740,9 @@ export default {
             this.phoneSubmitFail = true;
             this.phoneSubmitFailMsg =
               res.msg + "(" + res.code + ")" || "phone error1";
+          } else {
+            //取得驗證碼倒數秒數
+            this.getPhoneTTL();
           }
         })
         .catch(error => {
@@ -1725,36 +1782,6 @@ export default {
         });
     },
     getMailVerifyCode() {
-      //取得mail驗證碼倒數秒數
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/register/email/ttl",
-        data: {
-          email: this.allValue.email
-        }
-      }).then(res => {
-        // console.log("mailttl", res);
-        if (res && res.data.result == "ok") {
-          this.mailVerifybtnSubmit = true;
-          this.mailSubmitSuccess = true;
-          this.ttlCount = res.data.ret;
-          this.timer = setInterval(() => {
-            if (this.ttlCount <= 1) {
-              this.ttlCount = 0;
-              clearInterval(this.timer);
-              this.mailVerifybtnSubmit = false;
-              this.timer = null;
-              return;
-            }
-            this.ttlCount -= 1;
-          }, 1500);
-        } else {
-          this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "ttl error";
-        }
-      });
-
       //寄出mail會員註冊驗證碼
       axios({
         method: "post",
@@ -1768,6 +1795,9 @@ export default {
             this.mailSubmitFail = true;
             this.mailSubmitFailMsg =
               res.msg + "(" + res.code + ")" || "mail error1";
+          } else {
+            //取得mail驗證碼倒數秒數
+            this.getMailTTL();
           }
         })
         .catch(error => {

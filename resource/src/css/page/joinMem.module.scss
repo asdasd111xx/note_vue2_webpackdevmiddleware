@@ -134,8 +134,9 @@
   composes: join-input;
   margin-left: 0;
   padding: 10px 3%;
-  width: 100%;
+  width: 90%;
   cursor: pointer;
+  position: relative;
 }
 
 .join-input-select {
@@ -426,7 +427,7 @@
 
 .field-title {
   display: inline-block;
-  padding-left: 17px;
+  padding-left: 10px;
   width: 90px;
   z-index: 1;
   overflow: hidden;
@@ -471,6 +472,10 @@
   :global(.vdp-datepicker) {
     width: 100%;
     font-size: 14px;
+
+    input {
+      width: 100%;
+    }
     :global(.vdp-datepicker__calendar) {
       position: relative;
       max-width: 100%;
