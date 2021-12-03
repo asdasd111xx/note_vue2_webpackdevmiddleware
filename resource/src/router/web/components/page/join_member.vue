@@ -335,7 +335,7 @@
                 </div>
                 <div
                   :class="[$style['clear']]"
-                  v-else-if="allValue[field.key].length > 1"
+                  v-else-if="allValue[field.key].length > 0"
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
@@ -441,6 +441,19 @@
                   type="tel"
                 /> -->
               </template>
+              <!-- weixin 需要@input-->
+              <template v-else-if="field.key === 'weixin'">
+                <input
+                  :ref="field.key"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="placeholderKeyValue(field.key, 'tip')"
+                  type="text"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                />
+              </template>
               <input
                 v-else
                 :ref="field.key"
@@ -456,7 +469,7 @@
                 :class="$style['clear']"
                 v-if="
                   !noCancelButton.includes(field.key) &&
-                    allValue[field.key].length > 1
+                    allValue[field.key].length > 0
                 "
               >
                 <img
@@ -1081,7 +1094,7 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
-
+      this.allTip[key] = "";
       if (!data.show) {
         return;
       }
@@ -1113,8 +1126,6 @@ export default {
             case "name":
             case "email":
             case "weixin":
-              this.allTip[key] = "";
-
               this.actionVerificationFormData({
                 target: key,
                 value: this.allValue[key]
