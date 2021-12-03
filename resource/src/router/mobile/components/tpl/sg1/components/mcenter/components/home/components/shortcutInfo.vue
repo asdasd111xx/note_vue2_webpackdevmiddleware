@@ -35,8 +35,8 @@
               :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
             />中心钱包
           </p>
-          <span :style="loginMoney === '--' ? { color: ' #939393' } : {}"
-            >{{ unloginString || loginMoney }}
+          <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
+            >{{ unloginString || memAmount }}
           </span>
           <button @click="onListClick('deposit', false)">
             充值
@@ -54,7 +54,7 @@
               diamondTotal && diamondTotal.length > 9
                 ? { 'font-size': '12px' }
                 : {},
-              loginMoney === '--' ? { color: ' #939393' } : {}
+              +diamondTotal === 0 ? { color: ' #939393' } : {}
             ]"
             >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
           >
@@ -241,9 +241,7 @@ export default {
         : true,
       centerWallet: 0,
       diamondTotal: 0,
-      isShowShare: false,
-      redJackpotData: null,
-      loginMoney: "--"
+      isShowShare: false
     };
   },
   computed: {
@@ -253,9 +251,9 @@ export default {
       membalance: "getMemBalance",
       siteConfig: "getSiteConfig"
     }),
-    // memAmount() {
-    //   return (this.membalance && this.membalance.total) || "--";
-    // },
+    memAmount() {
+      return (this.membalance && this.membalance.vendor.default.amount) || "--";
+    },
     unloginString() {
       if (!this.loginStatus) {
         return "--";
@@ -276,7 +274,6 @@ export default {
     this.updateBalanceTimer = null;
   },
   created() {
-    this.getRedJackpot();
     this.actionSetUserBalance();
     member.data({
       success: res => {
@@ -381,52 +378,6 @@ export default {
           this.$router.push("/mobile/mcenter/tcenter/commission/rebate");
         } else {
           this.$router.push("/mobile/mcenter/tcenter/commission/summary");
-        }
-      });
-    },
-
-    getRedJackpot() {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res.errorCode === "00" && res.status === "000") {
-          this.redJackpotData = res.data;
-          if (res.data.enable) {
-            if (this.loginStatus) {
-              let total =
-                this.membalance && this.membalance.vendor.default.balance
-                  ? +this.membalance.vendor.default.balance
-                  : 0;
-              let remain_bonus =
-                res.data.remain_bonus && res.data.remain_bonus
-                  ? +res.data.remain_bonus
-                  : 0;
-              this.loginMoney = `${thousandsCurrency(
-                (total + remain_bonus).toFixed(2)
-              )}`;
-            }
-          } else {
-            if (this.membalance && this.membalance.vendor.default.balance) {
-              this.loginMoney = `${thousandsCurrency(
-                this.membalance.vendor.default.balance
-              )}`;
-            } else {
-              this.loginMoney = "--";
-            }
-          }
-        } else {
-          this.redJackpotData = null;
-          if (this.membalance && this.membalance.vendor.default.balance) {
-            this.loginMoney = `${thousandsCurrency(
-              this.membalance.vendor.default.balance
-            )}`;
-          } else {
-            this.loginMoney = "--";
-          }
         }
       });
     }
