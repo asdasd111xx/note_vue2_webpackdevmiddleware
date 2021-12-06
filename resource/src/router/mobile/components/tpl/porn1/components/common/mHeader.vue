@@ -296,16 +296,12 @@ export default {
     }
   },
   methods: {
-<<<<<<< HEAD
-    ...mapActions(["actionSetGlobalMessage", "actionGetLayeredURL"]),
-=======
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetLayeredURL",
       "actionGetActingURL",
       "actionGetRegisterURL"
     ]),
->>>>>>> 824fba00a... [MOD] 修改註冊分層網址跳轉流程
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
