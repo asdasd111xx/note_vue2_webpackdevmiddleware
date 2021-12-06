@@ -142,9 +142,9 @@
         }
 
         if (data.site === "sp51" && data.domain === "94") {
-          let gtag = document.setAttribute('script')
-          gtag.attributes('src', 'https://www.googletagmanager.com/gtag/js?id=UA-213963200-1')
-          document.body.append(gtag);
+          let gtagElem = document.createElement('script')
+          gtagElem.attributes('src', 'https://www.googletagmanager.com/gtag/js?id=UA-213963200-1')
+          document.body.append(gtagElem);
 
           window.dataLayer = window.dataLayer || [];
           function gtag() { dataLayer.push(arguments); }
