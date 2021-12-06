@@ -467,7 +467,7 @@
                   type="tel"
                 /> -->
               </template>
-              <!-- weixin 需要@input-->
+              <!-- weixin 需要@input -->
               <template v-else-if="field.key === 'weixin'">
                 <input
                   :ref="field.key"
