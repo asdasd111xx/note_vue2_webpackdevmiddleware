@@ -105,7 +105,7 @@
     padding: 10px 22.5% 10px 3.5%;
   }
   &.email {
-    padding: 10px 35.5% 10px 0.3%;
+    padding: 10px 37.5% 10px 0.3%;
     text-overflow: ellipsis;
   }
 }
@@ -379,6 +379,7 @@
       padding: 0 30px;
       border-width: 0;
       text-align: center;
+      text-overflow: ellipsis;
     }
   }
 }
@@ -481,7 +482,12 @@
     font-size: 14px;
 
     input {
-      width: 100%;
+      width: 90%;
+      text-overflow: ellipsis;
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.4);
+      }
     }
     :global(.vdp-datepicker__calendar) {
       position: relative;

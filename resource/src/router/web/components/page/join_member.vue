@@ -432,7 +432,7 @@
                 />
                 <img
                   v-show="!allValue.birthday"
-                  style="position: absolute; top: 10px; right: 10px;"
+                  style="position: absolute; top: 10px; right: 5px; background:#fff"
                   :src="$getCdnPath(`/static/image/common/btn_calendar.png`)"
                   @click="toggleDatePick"
                   alt=""
@@ -804,6 +804,13 @@ export default {
       siteConfig: "getSiteConfig",
       version: "getVersion"
     }),
+    genderOptions() {
+      selectData.gender.options.forEach(item => {
+        if (item.length > 3) {
+          return item + "...";
+        }
+      });
+    },
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
