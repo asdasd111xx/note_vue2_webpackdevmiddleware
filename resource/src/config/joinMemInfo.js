@@ -239,8 +239,8 @@ export default {
     isRequired: false,
     hasVerify: false,
     show: true,
-    regExp: /^[a-z0-9_、]{5,32}$/,
-    errorMsg: i18n.t("TELEGRAM_REGULAR_TEXT")
+    regExp: "",
+    errorMsg: ""
   },
   kakaotalk: {
     key: "kakaotalk",
@@ -249,8 +249,8 @@ export default {
     isRequired: false,
     hasVerify: false,
     show: true,
-    regExp: /^[A-Za-z0-9_.@]{4,100}$/,
-    errorMsg: i18n.t("KAKAOTALK_REGULAR_TEXT")
+    regExp: "",
+    errorMsg: ""
   },
   withdraw_password: {
     key: "withdraw_password",
