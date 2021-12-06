@@ -244,7 +244,60 @@
                 为即时到帐，请务必输入正确的汇款人姓名
               </div>
             </div>
+            <!-- e點富銀行 -->
+            <div
+              v-if="
+                isSelectBindWallet(34) &&
+                  this.curPassRoad.is_bind_wallet
+              "
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <span :class="$style['select-bank-title']">
+                您的银行
+              </span>
+              <div :class="$style['select-epoint-bank-item']"
+                    @click="setPopupStatus(true, 'epointBank')">
+                {{ defaultEpointWallet.account }}
+                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+              </div>
+            </div>
 
+              <!-- v-if="showEpointWalletAddress" -->
+            <div
+              v-if="isSelectBindWallet(34) &&
+                  this.curPassRoad.is_bind_wallet && showEpointWalletAddress"
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <div :class="$style['other-bank-input-text']">
+                银行名称
+                <input
+                  v-model="epointBankName"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入银行名称'"
+                />
+              </div>
+              <div :class="[$style['other-bank-input-text'],$style['border']]">
+                银行帐号
+                <input
+                  v-model="epointBankAccount"
+                  :class="$style['input-cgpay-address']"
+                  type="tel"
+                  :placeholder="'请输入银行帐号'"
+                />
+              </div>
+              <div :class="[$style['wallet-address-text'],$style['less']]">
+                为即时到帐，请务必输入正确的银行资讯
+              </div>
+            </div>
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
@@ -268,16 +321,31 @@
                 >
                   {{ data.mainTitle }}
                   <img
+                  v-if="tipTrans[data.display_tag]"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/mcenter/deposit/icon_${tipTrans[data.display_tag]}.png`
+                    )
+                  "
+                  :class="$style['pay-mode-tag']"
+                />
+                  <img
                     v-if="data.id === curPassRoad.id"
                     :class="$style['pay-active']"
                     :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
                 </div>
               </div>
+              <div :class="[curPassRoad.tip != '' ? [$style['pay-mode-tip-show']]:[$style['pay-mode-tip-close']]]">
+                <div :class="$style['pay-mode-tip']" v-html="curPassRoadTipText">
+                </div>
+                <div v-if="curPassRoad.tip.length > 45" :class="$style['pay-mode-tip-more']"
+                  @click="setPopupStatus(true, 'payTip')">more</div>
+              </div>
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) -->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || e点富(34)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -1078,7 +1146,8 @@
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
-                  (showOuterCryptoAddress && outerCryptoAddress === '')
+                  (showOuterCryptoAddress && outerCryptoAddress === '') ||
+                  (showEpointWalletAddress && (epointBankName === '' || epointBankAccount === ''))
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1130,7 +1199,7 @@
     </div>
 
     <!-- 彈窗 -->
-    <template v-if="showPopStatus.isShow">
+    <template >
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1158,6 +1227,23 @@
           </div>
         </div>
       </template>
+      <!-- 通道提示 -->
+      <template v-if="showPopStatus.type === 'payTip'">
+        <div>
+          <div :class="$style['pop-message-mark']" />
+          <div :class="$style['entry-message-container']">
+            <div :class="[$style['entry-message-content'],]">
+              <p>通道提示</p>
+              <div :class="$style['wrap-line']" v-html="curPassRoad.tip"/>
+            </div>
+            <div :class="[$style['entry-message-confirm'],{ [$style['sg']]: themeTPL === 'sg1' },
+                { [$style['ey']]: themeTPL === 'ey1' }]"
+                @click="setPopupStatus(false, '')">
+                关闭
+              </div>
+          </div>
+        </div>
+      </template>
 
       <!-- 被列為黑名單提示 -->
       <template v-if="showPopStatus.type === 'blockTips'">
@@ -1181,6 +1267,12 @@
           @close="closePopup"
         />
       </template>
+      <template v-if="showPopStatus.type === 'epointBank'">
+        <epoint-bank-popup
+        :bank-list="userBankOption"
+        :item-func="setEpointBank"
+        @close="closePopup"/>
+      </template>
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
@@ -1196,6 +1288,7 @@ import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
+import epointBankPopup from "@/router/mobile/components/tpl/porn1/components/common/epointBankPopup";
 import DatePicker from "vue2-datepicker";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
@@ -1217,6 +1310,7 @@ export default {
     DatePicker,
     blockListTips,
     bindWalletPopup,
+    epointBankPopup,
     popupQrcode,
     confirmOneBtn,
     marquee
@@ -1237,6 +1331,7 @@ export default {
       },
       initHeaderSetting: {},
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
+      tipTrans: { "HOT":"recommend","EVENT":"event","FAST":"speed" },
 
       nameCheckFail: false,
 
@@ -1280,6 +1375,15 @@ export default {
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
+      if(this.curPassRoad.tip != undefined){
+        if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
+          setTimeout(()=>{
+            this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
+          },500)
+        }else {
+          this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
+        }
+      }
     },
     getPassRoadOrAi() {
       if (
@@ -1669,6 +1773,7 @@ export default {
         // 沒有維護則跑原本流程
         const params = [
           this.getPayGroup(),
+          this.getUserBankList(),
           this.checkEntryBlockStatus(),
           this.actionSetRechargeConfig(),
           this.actionSetAnnouncementList({ type: 1 })
@@ -1736,6 +1841,12 @@ export default {
         case 30:
           this.$router.push(
             `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
+          );
+          break;
+          // e点富
+        case 34:
+          this.$router.push(
+            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
           );
           break;
 
@@ -1858,7 +1969,6 @@ export default {
           return;
         }
       }
-
       this.submitList().then(response => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
@@ -2072,6 +2182,7 @@ export default {
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 30 ||
         this.curPayInfo.payment_method_id === 22 ||
+        this.curPayInfo.payment_method_id === 34 ||
         this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404
       );
@@ -2156,7 +2267,10 @@ export default {
         sendUmeng(51);
       }
       this.$router.push('/mobile/service')
-    }
+    },
+    setEpointBank(item){
+      this.defaultEpointWallet = item
+    },
   }
 };
 </script>

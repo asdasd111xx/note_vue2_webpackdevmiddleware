@@ -39,7 +39,15 @@
             {{ $text("S_STATUS", "状态") }}
           </div>
 
-          <div :class="$style['value']">
+          <div
+            :class="[
+              $style['value'],
+              {
+                [$style['match']]:
+                  item.bank_name === 'e点富' && item.status === 'confirm'
+              }
+            ]"
+          >
             <div
               v-if="!item.locked"
               :class="$style['edit']"
@@ -47,7 +55,14 @@
             >
               {{ $text("S_SUBMIT_WITHDRAW", "重新提交") }}
             </div>
-
+            <div
+              v-else-if="
+                item.bank_name === 'e点富' && item.status === 'confirm'
+              "
+              @click="openMatchLink(item)"
+            >
+              搓合查询
+            </div>
             <div
               v-else
               @click="
@@ -264,6 +279,33 @@ export default {
         return thousandsCurrency(value);
       }
       return value;
+    },
+    openMatchLink(item) {
+      console.log(item);
+      axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/match/url",
+        errorAlert: false,
+        params: {
+          entry_id: item.id,
+          type: "withdraw"
+        }
+      })
+        .then(res => {
+          if (res && res.data && res.data.result === "ok") {
+            // let newWindow;
+            // newWindow = window.open(`${res.data.ret}`, "_blank");
+            localStorage.setItem("iframe-third-url", res.data.ret);
+            localStorage.setItem("iframe-third-url-title", "搓合查询");
+            this.$router.push(`/mobile/iframe/history`);
+          }
+        })
+        .catch(error => {
+          this.actionSetGlobalMessage({
+            msg: error.response.data.msg,
+            code: error.response.data.code
+          });
+        });
     }
   }
 };

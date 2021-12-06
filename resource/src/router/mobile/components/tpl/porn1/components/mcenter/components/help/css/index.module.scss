@@ -228,6 +228,17 @@
     overflow-x: hidden;
     overflow-y: hidden;
     white-space: nowrap;
+
+    &.match {
+      color: white;
+      background-color: #6AAAF5;
+      border: white 0px solid;
+      border-radius: 20px;
+      width: 70px;
+      height: 25px;
+      justify-content: center;
+      margin-top: 5px;
+    }
   }
 
   .edit,
