@@ -1375,7 +1375,7 @@ export default {
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
-      if(this.curPassRoad.tip){
+      if(this.curPassRoad.tip != undefined){
         if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
           setTimeout(()=>{
             this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
