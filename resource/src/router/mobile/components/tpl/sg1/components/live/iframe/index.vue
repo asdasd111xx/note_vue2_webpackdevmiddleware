@@ -170,11 +170,11 @@ export default {
       this.isFullScreen = !this.isFullScreen;
     },
     toogleFooter(data = {}) {
-      const enter = data.data === "enter";
-      if (enter) {
-        this.$router.push({ query: { hasFooter: "false" } });
-      } else {
+      const show = data.data === true || data.data === "true";
+      if (show) {
         this.$router.push({ query: { hasFooter: "true" } });
+      } else {
+        this.$router.push({ query: { hasFooter: "false" } });
       }
     },
     redirectLive(target = "home") {
