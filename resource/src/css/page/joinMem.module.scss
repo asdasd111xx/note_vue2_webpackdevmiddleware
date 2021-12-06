@@ -100,6 +100,52 @@
   &.phone {
     border: 1px solid #e3e3e3;
     margin: 0 8px;
+    &::-webkit-input-placeholder {
+      /* Edge */
+      white-space: nowrap;
+      width: 154px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      white-space: nowrap;
+      width: 154px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &::placeholder {
+      white-space: nowrap;
+      width: 154px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &.email {
+    &::-webkit-input-placeholder {
+      /* Edge */
+      white-space: nowrap;
+      width: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      white-space: nowrap;
+      width: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &::placeholder {
+      white-space: nowrap;
+      width: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
@@ -132,8 +178,9 @@
   composes: join-input;
   margin-left: 0;
   padding: 10px 3%;
-  width: 100%;
+  width: 90%;
   cursor: pointer;
+  position: relative;
 }
 
 .join-input-select {
@@ -177,7 +224,7 @@
 .get-verify-btn {
   position: absolute;
   top: 5px;
-  right: 5%;
+  right: 4.5%;
   width: 68px;
   height: 30px;
   background: #cccccc;
@@ -424,7 +471,7 @@
 
 .field-title {
   display: inline-block;
-  padding-left: 17px;
+  padding-left: 10px;
   width: 90px;
   z-index: 1;
   overflow: hidden;
@@ -469,6 +516,10 @@
   :global(.vdp-datepicker) {
     width: 100%;
     font-size: 14px;
+
+    input {
+      width: 100%;
+    }
     :global(.vdp-datepicker__calendar) {
       position: relative;
       max-width: 100%;
