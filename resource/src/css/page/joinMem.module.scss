@@ -367,10 +367,10 @@
 .join-input-gender {
   composes: join-input-select;
 
-  ul {
-    max-width: 280px !important;
-    overflow: hidden !important;
-  }
+  // ul {
+  //   max-width: 280px !important;
+  //   overflow: hidden !important;
+  // }
   &:global(.open) {
     :global(.selected-tag) {
       display: block;

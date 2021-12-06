@@ -804,13 +804,6 @@ export default {
       siteConfig: "getSiteConfig",
       version: "getVersion"
     }),
-    genderOptions() {
-      selectData.gender.options.forEach(item => {
-        if (item.length > 3) {
-          return item + "...";
-        }
-      });
-    },
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
