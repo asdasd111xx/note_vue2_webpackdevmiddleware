@@ -1006,42 +1006,42 @@ export default {
               text: "e点富是什么?"
             }
           },
-          {
-            key: "epoint",
-            text: ``,
-            hasCallback: true,
-            dataObj: {
-              cb: () => {
-                // lib_newWindowOpen(
-                //   this.getCustomerServiceUrl({
-                //     urlName: "game_wallet",
-                //     needToken: false
-                //   }).then(res => {
-                //     return res.uri;
-                //   })
-                // );
-              },
-              text: "如何使用e点富存款"
-            }
-          },
-          {
-            key: "epoint",
-            text: `没有e点富帐号?`,
-            hasCallback: true,
-            dataObj: {
-              cb: () => {
-                // lib_newWindowOpen(
-                //   this.getCustomerServiceUrl({
-                //     urlName: "game_wallet",
-                //     needToken: false
-                //   }).then(res => {
-                //     return res.uri;
-                //   })
-                // );
-              },
-              text: "立即申请"
-            }
-          },
+          // {
+          //   key: "epoint",
+          //   text: ``,
+          //   hasCallback: true,
+          //   dataObj: {
+          //     cb: () => {
+          //       // lib_newWindowOpen(
+          //       //   this.getCustomerServiceUrl({
+          //       //     urlName: "game_wallet",
+          //       //     needToken: false
+          //       //   }).then(res => {
+          //       //     return res.uri;
+          //       //   })
+          //       // );
+          //     },
+          //     text: "如何使用e点富存款"
+          //   }
+          // },
+          // {
+          //   key: "epoint",
+          //   text: `没有e点富帐号?`,
+          //   hasCallback: true,
+          //   dataObj: {
+          //     cb: () => {
+          //       // lib_newWindowOpen(
+          //       //   this.getCustomerServiceUrl({
+          //       //     urlName: "game_wallet",
+          //       //     needToken: false
+          //       //   }).then(res => {
+          //       //     return res.uri;
+          //       //   })
+          //       // );
+          //     },
+          //     text: "立即申请"
+          //   }
+          // },
           {
             key: "epoint",
             text: `建议您e点富户名同网站真实姓名，加速出款审核时间`
