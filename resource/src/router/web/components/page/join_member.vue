@@ -347,6 +347,7 @@
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
+
                 <div
                   :class="[$style['clear']]"
                   v-else-if="allValue[field.key].length > 0"
@@ -396,9 +397,10 @@
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
+
                 <div
                   :class="[$style['clear']]"
-                  v-else-if="allValue[field.key].length > 1"
+                  v-else-if="allValue[field.key].length > 0"
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
@@ -491,6 +493,7 @@
                 @blur="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
               />
+
               <div
                 :class="$style['clear']"
                 v-if="
