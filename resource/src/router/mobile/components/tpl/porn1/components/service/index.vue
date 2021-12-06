@@ -453,6 +453,7 @@ div.container {
     background: #6aaaf5;
     border-radius: 36px;
     padding: 3px 12px;
+    min-width: 72px;
   }
 }
 
