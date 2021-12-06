@@ -2,7 +2,12 @@
   <div :class="$style['my-card']">
     <!-- 卡片管理列表 -->
     <template v-if="!statusList.showDetail">
-      <div v-if="isRevice">
+      <div
+        v-if="
+          (isRevice && wallet_card.length > 0 && isCommon) ||
+            (isRevice && !isCommon)
+        "
+      >
         <div
           :class="[$style['card-count'], 'clearfix']"
           :style="isShowTab ? {} : { top: '43px' }"

@@ -281,7 +281,7 @@ export default {
     this.actionSetUserLevels().then(() => {
       let type = this.$route.query.type;
       let tempType = localStorage.getItem("bankCardType");
-
+      console.log(this.$route.query.redirect);
       // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
       if (this.hasRedirect || tempType) {
         if ((type && type === "bankCard") || tempType === "bankCard") {
@@ -290,6 +290,9 @@ export default {
 
         if ((type && type === "wallet") || tempType === "wallet") {
           this.setPageStatus(1, "addWalletCard", false);
+          if (this.$route.query.redirect === "epoint") {
+            this.$router.replace("/mobile/mcenter/bankCard");
+          }
         }
 
         localStorage.removeItem("bankCardType");
@@ -386,7 +389,11 @@ export default {
               this.$router.back();
             }
             break;
-
+          case "epoint":
+            // this.$router.replace("/mobile/mcenter/bankCard");
+            // this.setPageStatus(1, "walletCardInfo", true);
+            console.log("epoint back?");
+            break;
           default:
             this.$router.back();
             break;

@@ -21,8 +21,20 @@
         </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
-          <div v-show="errMsg">
+          <!-- <div v-show="errMsg">
             {{ errMsg }}
+          </div> -->
+        </div>
+
+        <!-- 註冊回傳錯誤訊息彈窗 -->
+        <div
+          v-if="registerSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="registerSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ errMsg }}
+            <button @click="registerSubmitFail = false">关闭</button>
           </div>
         </div>
 
@@ -286,7 +298,9 @@
                 <div :class="$style['clear']" v-if="field.key === 'username'">
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -339,7 +353,9 @@
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -386,7 +402,9 @@
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="allValue[field.key] = ''"
+                    @click="
+                      (allValue[field.key] = ''), (allTip[field.key] = '')
+                    "
                   />
                 </div>
               </template>
@@ -414,7 +432,7 @@
                 />
                 <img
                   v-show="!allValue.birthday"
-                  style="position: absolute; top: 10px; right: 10px;"
+                  style="position: absolute; top: 10px; right: 5px; background:#fff"
                   :src="$getCdnPath(`/static/image/common/btn_calendar.png`)"
                   @click="toggleDatePick"
                   alt=""
@@ -449,7 +467,7 @@
                   type="tel"
                 /> -->
               </template>
-              <!-- weixin 需要@input-->
+              <!-- weixin 需要@input -->
               <template v-else-if="field.key === 'weixin'">
                 <input
                   :ref="field.key"
@@ -482,7 +500,7 @@
               >
                 <img
                   :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                  @click="allValue[field.key] = ''"
+                  @click="(allValue[field.key] = ''), (allTip[field.key] = '')"
                 />
               </div>
             </div>
@@ -647,6 +665,7 @@ export default {
       mailSubmitFail: false,
       mailSubmitFailMsg: "",
       mailVerifyCode: "",
+      registerSubmitFail: false,
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -1106,6 +1125,8 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
+
+      //欄位為空不顯示提示訊息
       this.allTip[key] = "";
       if (!data.show) {
         return;
@@ -1172,10 +1193,11 @@ export default {
                     break;
 
                   case "email":
-                    if (val.match(regex)) {
-                      this.mailVerifybtnActive = true;
-                    } else {
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
                       this.mailVerifybtnActive = false;
+                    } else {
+                      this.mailVerifybtnActive = true;
                     }
 
                   case "confirm_password":
@@ -1519,6 +1541,7 @@ export default {
         this.allValue.captcha_text = "";
         if (res.response && res.status === "506") {
           this.actionGetToManyRequestMsg(res.msg).then(res => {
+            this.registerSubmitFail = true;
             this.errMsg = res;
           });
           return;
@@ -1526,6 +1549,9 @@ export default {
 
         if (res.status !== "000") {
           this.getCaptcha();
+
+          this.registerSubmitFail = true;
+          this.errMsg = res.msg;
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
               this.allTip[item] = res.errors[item];
@@ -1553,7 +1579,7 @@ export default {
             });
             return;
           }
-          this.errMsg = res.msg;
+          // this.errMsg = res.msg;
         }
       });
     },

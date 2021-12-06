@@ -189,6 +189,8 @@ export default {
           return "/mobile/mcenter/tcenterLobby";
         case "VIPINFO":
           return "/mobile/mcenter/accountVIP";
+        case "EPOINT":
+          return `/mobile/mcenter/bankCard?redirect=epoint&type=wallet&wallet=epoint`;
         default:
           return "/mobile";
       }
@@ -257,12 +259,14 @@ export default {
             return;
           }
           if (
-            this.$route.params.page.toUpperCase() === "GIFT" &&
+            (this.$route.params.page.toUpperCase() === "GIFT" ||
+              this.$route.params.page.toUpperCase() === "HISTORY") &&
             !iframeThirdOrigin
           ) {
             window.history.back();
             return;
           }
+
           this.$router.replace(this.originUrl);
           return;
         }
@@ -293,7 +297,6 @@ export default {
         this.src = localStorage.getItem("iframe-third-url");
         return;
       }
-
       switch (params.page.toUpperCase()) {
         case "THIRDPARTY":
         case "SWAG":

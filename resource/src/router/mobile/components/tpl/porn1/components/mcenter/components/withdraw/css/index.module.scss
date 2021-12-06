@@ -110,6 +110,19 @@
     &.hasOption {
       width: 60%;
     }
+
+    &.rubbing-btn {
+      font-size: 14px;
+      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      color: white;
+      border-radius: 11px;
+      width: 82px;
+      height: 21px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0px;
+    }
   }
 
   > .check-box {
@@ -153,6 +166,55 @@
       border-color: #cbced8 transparent transparent transparent;
     }
   }
+
+  &.bank-card-cell-epoint {
+    display: block;
+  }
+}
+
+.bank-wrap {
+  display: flex;
+  // height: 60px;
+  margin-top: 10px;
+  background-color: $main_white_color1;
+  padding: 8px 18px;
+  // min-height: 50px;
+  flex-wrap: wrap;
+
+  .bank-type {
+    position: relative;
+    width: 110px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-right: 10px;
+
+    &.is-current {
+      border: 1px solid #d1b79c;
+      color: #d1b79c;
+      background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+    }
+
+    .select {
+      position: absolute;
+      width: 7px;
+      height: 5px;
+      right: 1px;
+      bottom: 2px;
+    }
+  }
+}
+
+.withdraw-status-tip {
+  padding: 0 0 0 10px;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #e42a30;
+  width: fit-content;
 }
 
 .tips {
@@ -182,6 +244,8 @@
     font-size: 16px;
     border-radius: 0;
     line-height: 32px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     &::placeholder {
       color: #cbced8;
@@ -578,4 +642,31 @@
   color: #be9e7f;
   padding: 5px 14px;
   width: 100%;
+}
+
+.feature-wrap {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.select-bank-title {
+  float: left;
+  font-size: 14px;
+  color: #222;
+  margin-left: 7px;
+}
+
+.select-epoint-bank-item {
+  height: 23px;
+  margin-left: 80px;
+  font-size: 14px;
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
 }
