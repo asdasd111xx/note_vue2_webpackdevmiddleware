@@ -166,6 +166,8 @@
     :global(.selected-tag),
     :global(.form-control) {
       color: #a5a5a5;
+      max-width: 180px;
+      overflow: hidden;
     }
   }
 }
@@ -379,7 +381,6 @@
       padding: 0 30px;
       border-width: 0;
       text-align: center;
-      text-overflow: ellipsis;
     }
   }
 }
