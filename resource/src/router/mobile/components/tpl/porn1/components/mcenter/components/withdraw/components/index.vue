@@ -209,10 +209,7 @@
                 $style['bank-type'],
                 { [$style['is-current']]: !epointSelectType }
               ]"
-              @click="()=>{
-                handleSelectCard(allWithdrawAccount[0])
-                epointSelectType = false
-                }"
+              @click="()=>setWithdrawTypeIsNormal(true)"
             >
               普通提现
               <img
@@ -226,10 +223,7 @@
                 $style['bank-type'],
                 { [$style['is-current']]: epointSelectType }
               ]"
-              @click="()=>{
-                handleSelectCard(epointWallet[0])
-                epointSelectType = true
-              }"
+              @click="setWithdrawTypeIsNormal(false)"
             >
               e点富
               <img
@@ -2283,6 +2277,31 @@ export default {
         return thousandsCurrency(Number(value));
       }
       return thousandsCurrency(Number(value).toFixed(2));
+    },
+    //普通提現/e點富
+    setWithdrawTypeIsNormal(type){
+      if(type){
+        if(this.allWithdrawAccount.length >0){
+          this.handleSelectCard(this.allWithdrawAccount[0])
+        } 
+          this.epointSelectType = !type
+      }else{
+        if(this.withdrawUserData.account.length >0){
+          this.handleSelectCard(this.epointWallet[0])
+          this.epointSelectType = !type
+        }else{
+          this.actionSetGlobalMessage({
+            msg: "请先绑定银行卡",
+              cb: () => {
+                {
+                  this.$router.push(
+                    `/mobile/mcenter/bankcard`
+                  );
+                }
+              }
+            });
+        }
+      }
     }
   },
   destroyed() {

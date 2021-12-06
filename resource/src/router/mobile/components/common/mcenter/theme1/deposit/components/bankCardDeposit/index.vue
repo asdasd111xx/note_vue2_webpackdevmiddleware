@@ -290,7 +290,7 @@
                 <input
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
-                  type="number"
+                  type="tel"
                   :placeholder="'请输入银行帐号'"
                 />
               </div>
@@ -339,7 +339,7 @@
               <div :class="[curPassRoad.tip != '' ? [$style['pay-mode-tip-show']]:[$style['pay-mode-tip-close']]]">
                 <div :class="$style['pay-mode-tip']" v-html="curPassRoadTipText">
                 </div>
-                <div v-if="curPassRoad.tip.length > 50" :class="$style['pay-mode-tip-more']"
+                <div v-if="curPassRoad.tip.length > 45" :class="$style['pay-mode-tip-more']"
                   @click="setPopupStatus(true, 'payTip')">more</div>
               </div>
             </div>
@@ -1375,12 +1375,14 @@ export default {
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
-      if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
-        setTimeout(()=>{
+      if(this.curPassRoad.tip){
+        if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
+          setTimeout(()=>{
+            this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
+          },500)
+        }else {
           this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
-        },500)
-      }else {
-        this.curPassRoadTipText = this.curPassRoad.tip
+        }
       }
     },
     getPassRoadOrAi() {
