@@ -407,6 +407,7 @@ div.container {
     background: #000;
     border-radius: 36px;
     padding: 3px 12px;
+    min-width: 72px;
   }
 }
 
