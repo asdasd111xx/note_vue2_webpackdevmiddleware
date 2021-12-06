@@ -95,8 +95,10 @@ export default {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     },
     defaultEpointWallet() {
-      this.showEpointWalletAddress =
-        this.defaultEpointWallet.account === "其他银行卡";
+      if (this.userBankOption.length > 1) {
+        this.showEpointWalletAddress =
+          this.defaultEpointWallet.account === "其他银行卡";
+      }
     }
   },
   computed: {
