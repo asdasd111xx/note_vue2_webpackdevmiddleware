@@ -1132,6 +1132,8 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
+
+      //欄位為空不顯示提示訊息
       this.allTip[key] = "";
       if (!data.show) {
         return;
