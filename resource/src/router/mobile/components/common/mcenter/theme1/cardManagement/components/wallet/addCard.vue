@@ -1000,7 +1000,11 @@ export default {
                   needToken: false
                 }).then(res => {
                   localStorage.setItem("iframe-third-url", res.uri);
-                  this.$router.push(`/mobile/iframe/epoint`);
+                  localStorage.setItem(
+                    "iframe-third-url-title",
+                    "e点富是什么?"
+                  );
+                  this.$router.push(`/mobile/iframe/epoint?func=false`);
                 });
               },
               text: "e点富是什么?"

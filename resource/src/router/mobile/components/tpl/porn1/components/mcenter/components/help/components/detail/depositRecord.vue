@@ -248,7 +248,7 @@ export default {
             // newWindow = window.open(`${res.data.ret}`, "_blank");
             localStorage.setItem("iframe-third-url", res.data.ret);
             localStorage.setItem("iframe-third-url-title", "搓合查询");
-            this.$router.push(`/mobile/iframe/history`);
+            this.$router.push(`/mobile/iframe/history?func=false`);
           }
         })
         .catch(error => {

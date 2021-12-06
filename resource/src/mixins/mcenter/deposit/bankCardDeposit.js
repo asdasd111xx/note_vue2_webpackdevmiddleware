@@ -1090,7 +1090,7 @@ export default {
             if (this.curPayInfo.payment_method_id === 34) {
               localStorage.setItem("iframe-third-url", ret.wallet.url);
               // localStorage.setItem("iframe-third-url-title", "搓合查询");
-              this.$router.push(`/mobile/iframe/deposit`);
+              this.$router.push(`/mobile/iframe/deposit?func=false`);
               newWindow.close();
               return;
             }
