@@ -149,7 +149,6 @@
 .join-input-select {
   composes: join-input;
   padding: 0;
-
   &:global(.v-select) {
     &.show {
       border-color: #c24141;
@@ -368,6 +367,10 @@
 .join-input-gender {
   composes: join-input-select;
 
+  ul {
+    max-width: 280px !important;
+    overflow: hidden !important;
+  }
   &:global(.open) {
     :global(.selected-tag) {
       display: block;
@@ -702,6 +705,9 @@
 
 :global {
   .v-select {
+    .dropdown-menu {
+      min-width: 60px !important;
+    }
     .dropdown-toggle {
       border: 0;
       border: 1px solid transparent !important;
