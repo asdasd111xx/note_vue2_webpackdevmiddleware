@@ -137,7 +137,7 @@ export default {
     show: true,
     minimum: 12,
     maximum: 100,
-    regExp: /^[A-Za-z0-9.\-_]+@(?!mail)[A-Za-z0-9.-]+\.[A-Za-z]+$/,
+    regExp: /^([A-Za-z0-9.\-_]{3,})+@([A-Za-z0-9.-]{4,})+\.[A-Za-z]+$/,
     errorMsg: i18n.t("S_JM_EMAIL_FORMAT_UNAVAILABLE").replace("%s", "<br/>")
   },
   phone: {
@@ -239,8 +239,8 @@ export default {
     isRequired: false,
     hasVerify: false,
     show: true,
-    regExp: /^[a-z0-9_、]{5,32}$/,
-    errorMsg: i18n.t("TELEGRAM_REGULAR_TEXT")
+    regExp: "",
+    errorMsg: ""
   },
   kakaotalk: {
     key: "kakaotalk",
@@ -249,8 +249,8 @@ export default {
     isRequired: false,
     hasVerify: false,
     show: true,
-    regExp: /^[A-Za-z0-9_.@]{4,100}$/,
-    errorMsg: i18n.t("KAKAOTALK_REGULAR_TEXT")
+    regExp: "",
+    errorMsg: ""
   },
   withdraw_password: {
     key: "withdraw_password",

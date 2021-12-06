@@ -90,62 +90,23 @@
 
 .join-input {
   outline: none;
-  padding: 10px 3.5%;
+  padding: 10px 2.5%;
   width: 100%;
   height: 40px;
   font-size: 14px;
   outline: 0;
   display: block;
+  text-overflow: ellipsis;
 
   &.phone {
     border: 1px solid #e3e3e3;
     margin: 0 8px;
-    &::-webkit-input-placeholder {
-      /* Edge */
-      white-space: nowrap;
-      width: 154px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &:-ms-input-placeholder {
-      /* Internet Explorer 10-11 */
-      white-space: nowrap;
-      width: 154px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &::placeholder {
-      white-space: nowrap;
-      width: 154px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    text-overflow: ellipsis;
+    padding: 10px 22.5% 10px 3.5%;
   }
   &.email {
-    &::-webkit-input-placeholder {
-      /* Edge */
-      white-space: nowrap;
-      width: 145px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &:-ms-input-placeholder {
-      /* Internet Explorer 10-11 */
-      white-space: nowrap;
-      width: 145px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &::placeholder {
-      white-space: nowrap;
-      width: 145px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    padding: 10px 37.5% 10px 0.3%;
+    text-overflow: ellipsis;
   }
 }
 
@@ -160,6 +121,7 @@
 
 .join-input-email {
   padding-right: 82px;
+  text-overflow: ellipsis;
 }
 
 .join-input-phone {
@@ -167,6 +129,7 @@
   width: 68%;
   margin-left: 2%;
   padding-right: 82px;
+  text-overflow: ellipsis;
 }
 
 .join-input-captcha {
@@ -186,7 +149,6 @@
 .join-input-select {
   composes: join-input;
   padding: 0;
-
   &:global(.v-select) {
     &.show {
       border-color: #c24141;
@@ -203,6 +165,8 @@
     :global(.selected-tag),
     :global(.form-control) {
       color: #a5a5a5;
+      max-width: 180px;
+      overflow: hidden;
     }
   }
 }
@@ -224,7 +188,7 @@
 .get-verify-btn {
   position: absolute;
   top: 5px;
-  right: 4.5%;
+  right: 3.5%;
   width: 68px;
   height: 30px;
   background: #cccccc;
@@ -403,6 +367,10 @@
 .join-input-gender {
   composes: join-input-select;
 
+  ul {
+    max-width: 280px !important;
+    overflow: hidden !important;
+  }
   &:global(.open) {
     :global(.selected-tag) {
       display: block;
@@ -518,7 +486,12 @@
     font-size: 14px;
 
     input {
-      width: 100%;
+      width: 90%;
+      text-overflow: ellipsis;
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.4);
+      }
     }
     :global(.vdp-datepicker__calendar) {
       position: relative;
@@ -732,6 +705,9 @@
 
 :global {
   .v-select {
+    .dropdown-menu {
+      min-width: 60px !important;
+    }
     .dropdown-toggle {
       border: 0;
       border: 1px solid transparent !important;
