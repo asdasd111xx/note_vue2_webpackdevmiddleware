@@ -1,7 +1,10 @@
 @import "~@/css/variable.scss";
 
 .swiper-wrap {
-  margin-top: 31px;
+  position: fixed;
+  width: 100%;
+  top: 30px;
+  margin-top: 40px;
   background-color: #fff;
 }
 
@@ -31,8 +34,11 @@
 }
 
 .bank-card-wrap {
+  height: 100vh;
   position: relative;
   background: #f8f8f7;
+  overflow-y: scroll;
+  padding-top: 65px;
 }
 
 .feature-wrap {
