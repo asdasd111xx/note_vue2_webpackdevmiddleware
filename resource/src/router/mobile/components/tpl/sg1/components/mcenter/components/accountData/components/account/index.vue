@@ -744,6 +744,7 @@ export default {
       if (valueDate > limit) {
         this.actionSetGlobalMessage({ msg: "年龄未满十八岁,无法游戏" });
         this.isShowPop = false;
+        this.birthdayValue = "";
       } else {
         this.isShowPop = false;
         mcenter.accountDataSet({
