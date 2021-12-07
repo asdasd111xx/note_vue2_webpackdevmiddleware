@@ -323,7 +323,7 @@
                   :class="[$style['join-input'], $style[field.key]]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('email', 'tip')"
-                  type="tel"
+                  type="text"
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
