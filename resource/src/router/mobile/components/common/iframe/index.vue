@@ -146,6 +146,9 @@ export default {
   },
   mounted() {
     this.initIframe();
+    if (this.$route.params.page === "history") {
+      document.title = "搓合查询";
+    }
   },
   watch: {
     "$route.params.page"() {
