@@ -1,11 +1,11 @@
 @import "~@/css/variable.scss";
 
 .swiper-wrap {
-  position: fixed;
-  width: 100%;
-  top: 30px;
-  margin-top: 40px;
+  margin-top: 31px;
   background-color: #fff;
+  ::-webkit-scrollbar {
+    width: initial;
+  }
 }
 
 .swiper-item {
@@ -34,11 +34,21 @@
 }
 
 .bank-card-wrap {
-  height: 100vh;
   position: relative;
   background: #f8f8f7;
-  overflow-y: scroll;
-  padding-top: 35px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: unset;
+    border-radius: unset;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: unset;
+    -webkit-box-shadow: unset;
+  }
 }
 
 .feature-wrap {
