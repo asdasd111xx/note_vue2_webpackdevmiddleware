@@ -17,9 +17,6 @@
       v-if="depositData.length > 1"
       :options="categoryOptions"
       :class="$style['swiper-wrap']"
-      :style="{
-        'margin-top': !marqueeList || marqueeList.length < 1 ? '10px' : ''
-      }"
     >
       <swiper-slide
         v-for="(listItem, index) in depositData"
@@ -43,12 +40,7 @@
       :class="$style['deposit-edit-wrap']"
     >
       <template v-if="Object.keys(curModeGroup).length > 0">
-        <div
-          :class="$style['bank-card-wrap']"
-          :style="{
-            'padding-top': !marqueeList || marqueeList.length < 1 ? '35px' : ''
-          }"
-        >
+        <div :class="$style['bank-card-wrap']">
           <!-- 支付方式 -->
           <div :class="[$style['feature-wrap'], 'clearfix']">
             <div :class="$style['feature-title']">支付方式</div>

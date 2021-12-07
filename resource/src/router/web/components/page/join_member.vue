@@ -1568,11 +1568,11 @@ export default {
           this.getCaptcha();
 
           this.registerSubmitFail = true;
-          this.errMsg = res.msg;
+
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
               this.allTip[item] = res.errors[item];
-              this.errMsg = res.errors[item];
+              this.errMsg = res.msg;
               // msg: "验证码错误"
               if (item === "captcha_text") {
                 if (document.getElementById("captcha")) {
