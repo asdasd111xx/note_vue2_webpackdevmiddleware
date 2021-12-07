@@ -359,10 +359,12 @@
                 <template v-if="cgPromotionMessage">
                   充值前请先绑定钱包
                 </template>
-
+                <template v-else-if="isSelectBindWallet(34)">
+                  充值前请先绑定{{curPayInfo.payment_method_name}}钱包
+                </template>
                 <template v-else>
                   充值前请先绑定{{
-                    isSelectBindWallet(16, 25, 30)
+                    isSelectBindWallet(16, 25,30)
                       ? "CGPay"
                       : curPayInfo.payment_method_name
                   }}帐号

@@ -95,8 +95,10 @@ export default {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     },
     defaultEpointWallet() {
-      this.showEpointWalletAddress =
-        this.defaultEpointWallet.account === "其他银行卡";
+      if (this.userBankOption.length > 1) {
+        this.showEpointWalletAddress =
+          this.defaultEpointWallet.account === "其他银行卡";
+      }
     }
   },
   computed: {
@@ -1090,7 +1092,7 @@ export default {
             if (this.curPayInfo.payment_method_id === 34) {
               localStorage.setItem("iframe-third-url", ret.wallet.url);
               // localStorage.setItem("iframe-third-url-title", "搓合查询");
-              this.$router.push(`/mobile/iframe/deposit`);
+              this.$router.push(`/mobile/iframe/deposit?func=false`);
               newWindow.close();
               return;
             }
