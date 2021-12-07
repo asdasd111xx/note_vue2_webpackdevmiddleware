@@ -892,6 +892,7 @@ export default {
     }
   },
   created() {
+    this.actionSetUserdata();
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
