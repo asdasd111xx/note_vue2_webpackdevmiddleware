@@ -173,7 +173,8 @@
                 $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
                 {
-                  [$style['show-red-star']]: joinMemInfo[field.key].isRequired
+                  [$style[`show-red-star-${siteConfig.ROUTER_TPL}`]]:
+                    joinMemInfo[field.key].isRequired
                 },
                 'clearfix'
               ]"
