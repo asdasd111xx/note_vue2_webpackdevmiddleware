@@ -892,6 +892,7 @@ export default {
     }
   },
   created() {
+    this.actionSetUserdata();
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
@@ -1571,6 +1572,7 @@ export default {
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
               this.allTip[item] = res.errors[item];
+              this.errMsg = res.errors[item];
               // msg: "验证码错误"
               if (item === "captcha_text") {
                 if (document.getElementById("captcha")) {
@@ -1582,6 +1584,7 @@ export default {
                 this.memInfo.config.register_captcha_type === 0 &&
                 item === "captcha_text"
               ) {
+                this.errMsg = res.errors[item];
                 this.allTip["confirm_password"] = res.errors[item];
               }
 
