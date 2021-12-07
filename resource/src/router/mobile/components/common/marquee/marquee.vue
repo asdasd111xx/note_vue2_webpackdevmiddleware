@@ -1,6 +1,7 @@
 <template>
   <div :class="['news-container', `${themeTPL}`]">
     <div
+      v-if="newsTitleList"
       class="news-wrap"
       :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
     >

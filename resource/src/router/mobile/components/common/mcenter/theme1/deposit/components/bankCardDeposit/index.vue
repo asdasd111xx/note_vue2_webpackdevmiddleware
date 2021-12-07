@@ -17,6 +17,9 @@
       v-if="depositData.length > 1"
       :options="categoryOptions"
       :class="$style['swiper-wrap']"
+      :style="
+        !marqueeList || marqueeList.length < 0 ? { 'margin-top': '10px' } : {}
+      "
     >
       <swiper-slide
         v-for="(listItem, index) in depositData"
@@ -40,7 +43,14 @@
       :class="$style['deposit-edit-wrap']"
     >
       <template v-if="Object.keys(curModeGroup).length > 0">
-        <div :class="$style['bank-card-wrap']">
+        <div
+          :class="$style['bank-card-wrap']"
+          :style="
+            !marqueeList || marqueeList.length < 0
+              ? { 'padding-top': '35px' }
+              : {}
+          "
+        >
           <!-- 支付方式 -->
           <div :class="[$style['feature-wrap'], 'clearfix']">
             <div :class="$style['feature-title']">支付方式</div>
@@ -246,10 +256,7 @@
             </div>
             <!-- e點富銀行 -->
             <div
-              v-if="
-                isSelectBindWallet(34) &&
-                  this.curPassRoad.is_bind_wallet
-              "
+              v-if="isSelectBindWallet(34) && this.curPassRoad.is_bind_wallet"
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
@@ -259,17 +266,24 @@
               <span :class="$style['select-bank-title']">
                 您的银行
               </span>
-              <div :class="$style['select-epoint-bank-item']"
-                    @click="setPopupStatus(true, 'epointBank')">
+              <div
+                :class="$style['select-epoint-bank-item']"
+                @click="setPopupStatus(true, 'epointBank')"
+              >
                 {{ defaultEpointWallet.account }}
-                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+                <img
+                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                />
               </div>
             </div>
 
-              <!-- v-if="showEpointWalletAddress" -->
+            <!-- v-if="showEpointWalletAddress" -->
             <div
-              v-if="isSelectBindWallet(34) &&
-                  curPassRoad.is_bind_wallet && showEpointWalletAddress"
+              v-if="
+                isSelectBindWallet(34) &&
+                  curPassRoad.is_bind_wallet &&
+                  showEpointWalletAddress
+              "
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
@@ -285,7 +299,7 @@
                   :placeholder="'请输入银行名称'"
                 />
               </div>
-              <div :class="[$style['other-bank-input-text'],$style['border']]">
+              <div :class="[$style['other-bank-input-text'], $style['border']]">
                 银行帐号
                 <input
                   v-model="epointBankAccount"
@@ -294,7 +308,7 @@
                   :placeholder="'请输入银行帐号'"
                 />
               </div>
-              <div :class="[$style['wallet-address-text'],$style['less']]">
+              <div :class="[$style['wallet-address-text'], $style['less']]">
                 为即时到帐，请务必输入正确的银行资讯
               </div>
             </div>
@@ -321,14 +335,16 @@
                 >
                   {{ data.mainTitle }}
                   <img
-                  v-if="tipTrans[data.display_tag]"
-                  :src="
-                    $getCdnPath(
-                      `/static/image/common/mcenter/deposit/icon_${tipTrans[data.display_tag]}.png`
-                    )
-                  "
-                  :class="$style['pay-mode-tag']"
-                />
+                    v-if="tipTrans[data.display_tag]"
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/mcenter/deposit/icon_${
+                          tipTrans[data.display_tag]
+                        }.png`
+                      )
+                    "
+                    :class="$style['pay-mode-tag']"
+                  />
                   <img
                     v-if="data.id === curPassRoad.id"
                     :class="$style['pay-active']"
@@ -336,11 +352,24 @@
                   />
                 </div>
               </div>
-              <div :class="[curPassRoad.tip != '' ? [$style['pay-mode-tip-show']]:[$style['pay-mode-tip-close']]]">
-                <div :class="$style['pay-mode-tip']" v-html="curPassRoadTipText">
+              <div
+                :class="[
+                  curPassRoad.tip != ''
+                    ? [$style['pay-mode-tip-show']]
+                    : [$style['pay-mode-tip-close']]
+                ]"
+              >
+                <div
+                  :class="$style['pay-mode-tip']"
+                  v-html="curPassRoadTipText"
+                ></div>
+                <div
+                  v-if="curPassRoadTipTextShowMore"
+                  :class="$style['pay-mode-tip-more']"
+                  @click="setPopupStatus(true, 'payTip')"
+                >
+                  more
                 </div>
-                <div v-if="curPassRoadTipTextShowMore" :class="$style['pay-mode-tip-more']"
-                  @click="setPopupStatus(true, 'payTip')">more</div>
               </div>
             </div>
 
@@ -360,11 +389,11 @@
                   充值前请先绑定钱包
                 </template>
                 <template v-else-if="isSelectBindWallet(34)">
-                  充值前请先绑定{{curPayInfo.payment_method_name}}钱包
+                  充值前请先绑定{{ curPayInfo.payment_method_name }}钱包
                 </template>
                 <template v-else>
                   充值前请先绑定{{
-                    isSelectBindWallet(16, 25,30)
+                    isSelectBindWallet(16, 25, 30)
                       ? "CGPay"
                       : curPayInfo.payment_method_name
                   }}帐号
@@ -1149,7 +1178,8 @@
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
                   (showOuterCryptoAddress && outerCryptoAddress === '') ||
-                  (showEpointWalletAddress && (epointBankName === '' || epointBankAccount === ''))
+                  (showEpointWalletAddress &&
+                    (epointBankName === '' || epointBankAccount === ''))
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1201,7 +1231,7 @@
     </div>
 
     <!-- 彈窗 -->
-    <template >
+    <template>
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1234,15 +1264,20 @@
         <div>
           <div :class="$style['pop-message-mark']" />
           <div :class="$style['entry-message-container']">
-            <div :class="[$style['entry-message-content'],]">
+            <div :class="[$style['entry-message-content']]">
               <p>通道提示</p>
-              <div :class="$style['wrap-line']" v-html="curPassRoad.tip"/>
+              <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
             </div>
-            <div :class="[$style['entry-message-confirm'],{ [$style['sg']]: themeTPL === 'sg1' },
-                { [$style['ey']]: themeTPL === 'ey1' }]"
-                @click="setPopupStatus(false, '')">
-                关闭
-              </div>
+            <div
+              :class="[
+                $style['entry-message-confirm'],
+                { [$style['sg']]: themeTPL === 'sg1' },
+                { [$style['ey']]: themeTPL === 'ey1' }
+              ]"
+              @click="setPopupStatus(false, '')"
+            >
+              关闭
+            </div>
           </div>
         </div>
       </template>
@@ -1271,9 +1306,10 @@
       </template>
       <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
-        :bank-list="userBankOption"
-        :item-func="setEpointBank"
-        @close="closePopup"/>
+          :bank-list="userBankOption"
+          :item-func="setEpointBank"
+          @close="closePopup"
+        />
       </template>
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
@@ -1333,7 +1369,7 @@ export default {
       },
       initHeaderSetting: {},
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
-      tipTrans: { "HOT":"recommend","EVENT":"event","FAST":"speed" },
+      tipTrans: { HOT: "recommend", EVENT: "event", FAST: "speed" },
 
       nameCheckFail: false,
 
@@ -1380,15 +1416,23 @@ export default {
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
-      if(this.curPassRoad.tip != undefined){
-        if(this.curPassRoad.tip === "" && this.curPassRoadTipText != ""){//有到無因特效需delay
-          setTimeout(()=>{
-            this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
-            this.curPassRoadTipTextShowMore = (this.curPassRoadTipText.length >45 || this.curPassRoadTipText.indexOf("<br>")!= -1)
-          },500)
-        }else {
-          this.curPassRoadTipText = this.curPassRoad.tip.replace("\n","<br>")
-          this.curPassRoadTipTextShowMore = (this.curPassRoadTipText.length >45 || this.curPassRoadTipText.indexOf("<br>")!= -1)
+      if (this.curPassRoad.tip != undefined) {
+        if (this.curPassRoad.tip === "" && this.curPassRoadTipText != "") {
+          //有到無因特效需delay
+          setTimeout(() => {
+            this.curPassRoadTipText = this.curPassRoad.tip.replace(
+              "\n",
+              "<br>"
+            );
+            this.curPassRoadTipTextShowMore =
+              this.curPassRoadTipText.length > 45 ||
+              this.curPassRoadTipText.indexOf("<br>") != -1;
+          }, 500);
+        } else {
+          this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
+          this.curPassRoadTipTextShowMore =
+            this.curPassRoadTipText.length > 45 ||
+            this.curPassRoadTipText.indexOf("<br>") != -1;
         }
       }
     },
@@ -1850,7 +1894,7 @@ export default {
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
           );
           break;
-          // e点富
+        // e点富
         case 34:
           this.$router.push(
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
@@ -2267,17 +2311,17 @@ export default {
         this.getPayOffer(this.moneyValue);
       }
     },
-    onClickService(){
+    onClickService() {
       if (this.routerTPL === "sg1") {
         sendUmeng(50);
       } else {
         sendUmeng(51);
       }
-      this.$router.push('/mobile/service')
+      this.$router.push("/mobile/service");
     },
-    setEpointBank(item){
-      this.defaultEpointWallet = item
-    },
+    setEpointBank(item) {
+      this.defaultEpointWallet = item;
+    }
   }
 };
 </script>
