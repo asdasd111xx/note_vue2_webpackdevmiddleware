@@ -249,7 +249,7 @@ export default {
         // 缺bundleID
         case "aobo1":
           _vendor = 92;
-          _bundleID = "";
+          _bundleID = "cyiosdev0001.aoboCasino.prod";
           break;
       }
 
