@@ -13,21 +13,21 @@
     </div>
     <div :class="[$style['desc'], $style['has-time']]">
       {{ $t("ROUTER_UPUP_TEXT_1") }}
-    </div>
-    <template v-if="start && end">
-      <div :class="[$style['time'], $style[`${themeTPL}`]]">
-        <div>{{ $text("S_LOCAL_TIME", "当地时间") }} ({{ localGMT }})</div>
-        <div>
-          <span>{{ start }}</span> ~ <span>{{ end }}</span>
+
+      <template v-if="start && end">
+        <div :class="[$style['time'], $style[`${themeTPL}`]]">
+          <div>{{ $text("S_LOCAL_TIME", "当地时间") }} ({{ localGMT }})</div>
+          <div>
+            <span>{{ start }}</span> ~ <span>{{ end }}</span>
+          </div>
         </div>
+      </template>
+
+      <div :class="$style.tips">
+        如需帮助，请
+        <span @click="linkToService">&nbsp;联系客服</span>
       </div>
-    </template>
-
-    <div :class="$style.tips">
-      如需帮助，请
-      <span @click="linkToService">&nbsp;联系客服</span>
     </div>
-
     <div style="display:none" id="version">{{ version }}</div>
   </div>
 </template>
