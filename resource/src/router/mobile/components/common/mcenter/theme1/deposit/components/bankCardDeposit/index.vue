@@ -269,7 +269,7 @@
               <!-- v-if="showEpointWalletAddress" -->
             <div
               v-if="isSelectBindWallet(34) &&
-                  this.curPassRoad.is_bind_wallet && showEpointWalletAddress"
+                  curPassRoad.is_bind_wallet && showEpointWalletAddress"
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
@@ -1374,6 +1374,9 @@ export default {
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
+      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+        ? this.defaultEpointWallet.account === "其他银行卡"
+        : false;
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
@@ -1842,20 +1845,20 @@ export default {
         // CGPay-USDT(TRC20)
         case 30:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
           );
           break;
           // e点富
         case 34:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
           );
           break;
 
         // 購寶
         case 22:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.curPayInfo.swift_code}`
           );
 
           break;
@@ -1864,7 +1867,7 @@ export default {
         case 402:
         case 404:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.curPayInfo.swift_code}`
           );
 
           break;
