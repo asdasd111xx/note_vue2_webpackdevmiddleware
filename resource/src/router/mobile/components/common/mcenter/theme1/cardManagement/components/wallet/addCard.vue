@@ -1004,7 +1004,14 @@ export default {
                     "iframe-third-url-title",
                     "e点富是什么?"
                   );
-                  this.$router.push(`/mobile/iframe/epoint?func=false`);
+                  console.log(this.$route.query);
+                  this.$router.replace(
+                    `/mobile/iframe/${
+                      this.$route.query.redirect === "deposit"
+                        ? "epointfromdeposit"
+                        : "epoint"
+                    }?func=false`
+                  );
                 });
               },
               text: "e点富是什么?"

@@ -23,7 +23,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
-  min-height: 100vh;
+  min-height: 812px;
   padding-top: 30px;
   position: relative;
   overflow-x: hidden;
@@ -46,7 +46,7 @@ body {
   height: 60px;
   text-align: center;
 
-  >img {
+  > img {
     height: 60px;
   }
 }
@@ -82,13 +82,13 @@ body {
   font-weight: 400;
   text-align: center;
   color: #9ca3bf;
-  margin: 15px auto;
+  margin: 115px auto;
 
   &.has-time {
     margin-bottom: 0;
   }
 
-  >span {
+  > span {
     color: #6aaaf5;
   }
 }
@@ -115,10 +115,10 @@ body {
   color: #a6a9b2;
   margin: 0 auto;
 
-  position: absolute;
-  bottom: 2.5%;
+  // position: absolute;
+  // bottom: 2.5%;
 
-  >span {
+  > span {
     color: #6aaaf5;
 
     &.sg1 {
@@ -132,7 +132,7 @@ body {
   // height: 360px;
   text-align: center;
 
-  >img {
+  > img {
     width: 100%;
   }
 }
@@ -151,13 +151,13 @@ body {
     color: #ff7171;
   }
 
-  >div:first-child {
+  > div:first-child {
     width: 100%;
     color: #9ca3bf;
     text-align: center;
   }
 
-  >div:last-child {
+  > div:last-child {
     margin-top: 8px;
   }
 

@@ -93,7 +93,7 @@ export default {
 
 .join-input {
   background-color: #fff;
-  border: 1px solid #d8d8d8;
+  // border: 1px solid #d8d8d8;
 
   &::placeholder {
     color: #a5a5a5;

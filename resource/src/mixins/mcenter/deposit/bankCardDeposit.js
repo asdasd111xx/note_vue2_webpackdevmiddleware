@@ -29,6 +29,7 @@ export default {
       curPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
       curPassRoadTipText: "",
+      curPassRoadTipTextShowMore: false,
       offerInfo: {},
       moneyValue: "",
       isShow: true,
@@ -95,10 +96,9 @@ export default {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     },
     defaultEpointWallet() {
-      if (this.userBankOption.length > 1) {
-        this.showEpointWalletAddress =
-          this.defaultEpointWallet.account === "其他银行卡";
-      }
+      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+        ? this.defaultEpointWallet.account === "其他银行卡"
+        : false;
     }
   },
   computed: {

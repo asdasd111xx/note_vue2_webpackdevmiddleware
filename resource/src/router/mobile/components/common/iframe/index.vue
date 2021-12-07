@@ -146,6 +146,9 @@ export default {
   },
   mounted() {
     this.initIframe();
+    if (this.$route.params.page === "history") {
+      document.title = "搓合查询";
+    }
   },
   watch: {
     "$route.params.page"() {
@@ -191,6 +194,8 @@ export default {
           return "/mobile/mcenter/accountVIP";
         case "EPOINT":
           return `/mobile/mcenter/bankCard?redirect=epoint&type=wallet&wallet=epoint`;
+        case "EPOINTFROMDEPOSIT":
+          return `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`;
         default:
           return "/mobile";
       }
@@ -260,7 +265,8 @@ export default {
           }
           if (
             (this.$route.params.page.toUpperCase() === "GIFT" ||
-              this.$route.params.page.toUpperCase() === "HISTORY") &&
+              this.$route.params.page.toUpperCase() === "HISTORY" ||
+              this.$route.params.page.toUpperCase() === "DEPOSIT") &&
             !iframeThirdOrigin
           ) {
             window.history.back();

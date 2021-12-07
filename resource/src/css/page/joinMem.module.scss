@@ -51,7 +51,16 @@
   position: relative;
   margin-bottom: 15px;
   font-size: 0;
-  .show-red-star {
+
+  .show-red-star-sp1 {
+    span {
+      &::before {
+        content: "*";
+        color: red;
+      }
+    }
+  }
+  .show-red-star-aobo1 {
     span {
       &::before {
         content: "*";
@@ -448,8 +457,13 @@
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
+  &.sg1,
+  &.porn1 {
+    text-align: right;
+    padding-right: 12px;
+  }
+
   &.aobo1,
-  &.porn1,
   &.sp1,
   &.ey1 {
     background-color: #ffffff;
@@ -473,8 +487,13 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
-  &.aobo1,
+
   &.porn1,
+  &.sg1 {
+    border: 1px solid #d8d8d8;
+  }
+
+  &.aobo1,
   &.sp1,
   &.ey1 {
     border: 1px solid #e3e3e3;
