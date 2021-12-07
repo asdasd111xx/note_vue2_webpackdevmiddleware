@@ -865,8 +865,21 @@ export default {
               return false;
             }
 
-            if (field.key === "phone") {
-              return this.joinMemInfo[field.key].hasVerify && this.countryCode;
+            if (
+              field.key === "phone" &&
+              this.NeedCode &&
+              !this.showPhoneCheckIcon &&
+              !this.countryCode
+            ) {
+              return false;
+            }
+
+            if (
+              field.key === "email" &&
+              this.mailNeedCode &&
+              !this.showMailCheckIcon
+            ) {
+              return false;
             }
 
             return this.allValue[field.key];
