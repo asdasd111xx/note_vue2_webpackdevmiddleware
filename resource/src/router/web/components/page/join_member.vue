@@ -1670,13 +1670,19 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Platform/Placeholder`
       })
         .then(response => {
-          if (response.status === "000") {
+          if (
+            response &&
+            response.status === "000" &&
+            response.data &&
+            response.data.JOINMEMBER
+          ) {
             this.placeholderResult = [];
             this.placeholderResult = response.data.JOINMEMBER.data || [];
           }
           return;
         })
         .catch(error => {
+          console.log(error);
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
         });
