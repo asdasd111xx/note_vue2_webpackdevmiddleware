@@ -35,7 +35,7 @@
               :src="$getCdnPath(`/static/image/sg1/mcenter/icon_gold.png`)"
             />中心钱包
           </p>
-          <span :style="memAmount === '--' ? { color: ' #939393' } : {}"
+          <span :style="unloginString ? { color: ' #939393' } : {}"
             >{{ unloginString || memAmount }}
           </span>
           <button @click="onListClick('deposit', false)">
@@ -54,7 +54,7 @@
               diamondTotal && diamondTotal.length > 9
                 ? { 'font-size': '12px' }
                 : {},
-              +diamondTotal === 0 ? { color: ' #939393' } : {}
+              unloginString ? { color: ' #939393' } : {}
             ]"
             >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
           >
