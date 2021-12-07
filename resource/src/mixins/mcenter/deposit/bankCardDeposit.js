@@ -29,6 +29,7 @@ export default {
       curPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
       curPassRoadTipText: "",
+      curPassRoadTipTextShowMore: false,
       offerInfo: {},
       moneyValue: "",
       isShow: true,
