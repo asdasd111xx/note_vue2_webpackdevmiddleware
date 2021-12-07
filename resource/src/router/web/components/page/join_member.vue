@@ -847,19 +847,21 @@ export default {
 
             if (
               this.joinMemInfo[field.key].type !== "select" &&
-              field.key !== "birthday"
+              field.key !== "birthday" &&
+              this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, "") === ""
             ) {
-              return (
-                this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, "") !== ""
-              );
+              return false;
             }
 
-            if (field.key === "gender") {
-              return +this.allValue[field.key] !== 0;
+            if (field.key === "gender" && +this.allValue[field.key] === 0) {
+              return false;
             }
 
-            if (field.key === "withdraw_password") {
-              return this.allValue.withdraw_password.length === 4;
+            if (
+              field.key === "withdraw_password" &&
+              !this.withdraw_passwordStatus
+            ) {
+              return false;
             }
 
             if (field.key === "phone") {
@@ -1336,16 +1338,13 @@ export default {
       }
 
       if (key === "withdraw_password") {
-        if (
-          this.selectData[key].selected[index].value &&
-          !this.selectData[key].selected[index].value
-        ) {
-          this.allValue[key].value[index] = "";
-          return;
-        }
         this.allValue[key].value[index] = this.selectData[key].selected[index]
           ? this.selectData[key].selected[index].value
           : "";
+
+        this.withdraw_passwordStatus =
+          this.allValue.withdraw_password.value &&
+          this.allValue.withdraw_password.value.join("").length === 4;
       } else {
         if (
           this.selectData[key].selected &&
