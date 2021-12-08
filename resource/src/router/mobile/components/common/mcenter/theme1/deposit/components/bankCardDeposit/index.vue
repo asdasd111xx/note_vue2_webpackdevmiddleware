@@ -43,7 +43,7 @@
         <div
           :class="[
             $style['bank-card-wrap'],
-            !depositData || depositData.length < 1 ? $style['no-swiper'] : ''
+            { [$style['no-swiper']]: !depositData || depositData.length < 1 }
           ]"
         >
           <!-- 支付方式 -->
