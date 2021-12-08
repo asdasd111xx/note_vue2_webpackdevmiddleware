@@ -19,7 +19,7 @@
   align-items: center;
   color: white;
   height: 43px;
-  background-image: url("/static/image/porn1/mcenter/tcenter/promote_topbg.png");
+  background-image: url("/static/image/sp1/mcenter/tcenter/promote_topbg.png");
   background-size: 100% 43px;
   max-height: 43px;
 }
@@ -40,7 +40,7 @@
 
 .title-commission {
   position: absolute;
-  color: #f5f8fd;
+  color: #414141;
   background: rgba(#fff, 0.5);
   border-bottom-left-radius: 20px;
   border-top-left-radius: 20px;
@@ -50,8 +50,8 @@
 }
 
 .main {
-  margin-top: 42px;
-  background-image: url("/static/image/porn1/mcenter/tcenter/promote_bg.png");
+  margin-top: 43px;
+  background-image: url("/static/image/sp1/mcenter/tcenter/promote_bg.png");
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -72,7 +72,7 @@
     padding-bottom: 5px;
 
     .list-name {
-      color: #becefd;
+      color: #646874;
       display: flex;
 
       .list-btn {
@@ -82,12 +82,12 @@
         border: 0 solid;
         border-radius: 20px;
         padding: 0 7px;
-        background-color: #adbade;
+        background-color: #ad9982;
       }
     }
 
     .list-value {
-      color: #f5f8fd;
+      color: #414141;
     }
   }
 }
@@ -110,7 +110,7 @@
     .regist-title-bar {
       width: 3px;
       height: 18px;
-      background: linear-gradient(to top, #adbade, #3354ad);
+      background: linear-gradient(to top, #d1b79c, #ad9982);
       border-radius: 1px;
       margin-left: 5px;
       margin-right: 5px;
@@ -172,7 +172,7 @@
         margin: 5px 5px 0 0;
 
         &.deposit {
-          background-color: #3354ad;
+          background-color: #d1b79c;
         }
 
         &.withdraw {
@@ -205,7 +205,7 @@
         height: 10px;
         width: 100px;
         border-radius: 7px;
-        background-color: #3354ad;
+        background-color: #d1b79c;
 
         &.isZero {
           background-color: #ededed;

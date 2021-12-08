@@ -375,8 +375,7 @@ export default {
       return this.specialList.filter(i => i.showType);
     },
     $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      const style = this[`$style_${this.siteConfig.ROUTER_TPL}`];
       return style;
     },
     themeTPL() {
@@ -591,5 +590,7 @@ export default {
 </script>
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/aobo1.module.scss" module="$style_aobo1"></style>
+<style lang="scss" src="./css/sp1.module.scss" module="$style_sp1"></style>
 <style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
 <style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
