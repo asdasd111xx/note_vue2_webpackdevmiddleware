@@ -36,6 +36,10 @@
 .bank-card-wrap {
   position: relative;
   background: #f8f8f7;
+
+  &.no-swiper {
+    padding-top: 40px;
+  }
   &::-webkit-scrollbar {
     display: none;
   }
