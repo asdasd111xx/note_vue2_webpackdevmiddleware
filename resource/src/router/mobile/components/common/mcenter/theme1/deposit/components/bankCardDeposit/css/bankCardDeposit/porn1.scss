@@ -3,6 +3,7 @@
 .swiper-wrap {
   // margin-top: 31px;
   background-color: #fff;
+
   ::-webkit-scrollbar {
     width: initial;
   }
@@ -40,6 +41,7 @@
   &.no-swiper {
     padding-top: 40px;
   }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -228,7 +230,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -870,6 +872,17 @@
   }
 }
 
+.input-wrap {
+  display: flex;
+  align-items: center;
+
+  >img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+}
+
 .speed-field-name {
   padding: 10px 0;
   font-size: 14px;
@@ -1031,6 +1044,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1146,7 +1160,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 

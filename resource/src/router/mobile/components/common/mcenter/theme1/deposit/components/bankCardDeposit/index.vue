@@ -846,16 +846,27 @@
                 </div>
 
                 <!-- CGP 安全防護碼 -->
+                <!-- v-if="walletData['CGPay'].method === 0" -->
                 <div
-                  v-if="walletData['CGPay'].method === 0"
                   :class="$style['input-wrap']"
                 >
                   <input
+                    id="cgp-password"
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type="tel"
+                    type="password"
                     :placeholder="walletData['CGPay'].placeholder"
                     @input="verification('CGPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowCGPPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
                   />
                 </div>
               </div>
@@ -1393,7 +1404,8 @@ export default {
       },
 
       marqueeList: [],
-      displayMoneyValue: ""
+      displayMoneyValue: "",
+      isShowCGPPwd:false,
     };
   },
   watch: {
@@ -2311,7 +2323,16 @@ export default {
     },
     setEpointBank(item) {
       this.defaultEpointWallet = item;
-    }
+    },
+    toggleEye() {
+      if (this.isShowCGPPwd) {
+        document.getElementById("cgp-password").type = "password";
+      } else {
+        document.getElementById("cgp-password").type = "text";
+      }
+
+      this.isShowCGPPwd = !this.isShowCGPPwd;
+    },
   }
 };
 </script>
