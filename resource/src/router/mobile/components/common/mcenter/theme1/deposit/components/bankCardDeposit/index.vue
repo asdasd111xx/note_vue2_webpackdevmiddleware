@@ -40,12 +40,7 @@
       :class="$style['deposit-edit-wrap']"
     >
       <template v-if="Object.keys(curModeGroup).length > 0">
-        <div
-          :class="[
-            $style['bank-card-wrap'],
-            { [$style['no-swiper']]: !depositData || depositData.length < 1 }
-          ]"
-        >
+        <div :class="$style['bank-card-wrap']">
           <!-- 支付方式 -->
           <div :class="[$style['feature-wrap'], 'clearfix']">
             <div :class="$style['feature-title']">支付方式</div>

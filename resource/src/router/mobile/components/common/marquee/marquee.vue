@@ -237,8 +237,8 @@ export default {
 }
 
 .fixed-wrap {
-  position: fixed;
-  top: 43px;
+  // position: fixed;
+  // top: 43px;
   z-index: 2;
   background: #f8f8f7;
   max-width: $mobile_max_width;
