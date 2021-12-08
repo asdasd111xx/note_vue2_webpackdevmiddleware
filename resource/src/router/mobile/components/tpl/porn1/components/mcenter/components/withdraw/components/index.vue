@@ -2238,7 +2238,7 @@ export default {
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
         this.withdrawCurrency;
 
-      this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType");
+      this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType") === 'true';
       if (localStorage.getItem("tmp_w_epointWallet")) {
         this.defaultEpointWallet = JSON.parse(
           localStorage.getItem("tmp_w_epointWallet")
