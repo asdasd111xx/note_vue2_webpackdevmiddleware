@@ -191,6 +191,12 @@ export default {
               case "STREAMHOME":
                 this.$router.push(`/mobile/live/iframe?hasFooter=true`);
                 return;
+              case "GAMECENTER":
+                this.$router.push(`/mobile/home`);
+                return;
+              case "MEMBERCARD":
+                this.$router.push(`/mobile/mcenter/memberCard`);
+                return;
             }
             return;
 
