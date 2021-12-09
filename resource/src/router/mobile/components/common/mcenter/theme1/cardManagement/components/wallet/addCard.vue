@@ -7,7 +7,9 @@
     <div :class="$style['card-info']">
       <!-- Select Wallet Type -->
       <!-- Yabo -->
-      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+      <template
+        v-if="['porn1', 'sg1'].includes(themeTPL) && addBankCardStep === 'one'"
+      >
         <div :class="$style['wallet-block']">
           <p :class="$style['wallet-text']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -38,7 +40,7 @@
       </template>
 
       <!-- 億元 -->
-      <template v-if="['ey1'].includes(themeTPL)">
+      <template v-if="['ey1'].includes(themeTPL) && addBankCardStep === 'one'">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -68,7 +70,9 @@
         </div>
       </template>
 
-      <template v-if="!selectTarget.oneClickBindingMode">
+      <template
+        v-if="!selectTarget.oneClickBindingMode && addBankCardStep === 'one'"
+      >
         <!-- Input -->
         <!-- 錢包地址 -->
         <div v-if="selectTarget.walletName" :class="$style['info-item']">
@@ -132,12 +136,63 @@
         v-if="
           ['ey1'].includes(themeTPL) &&
             !selectTarget.oneClickBindingMode &&
-            selectTarget.walletName
+            selectTarget.walletName &&
+            addBankCardStep === 'one'
         "
       >
         <p :class="$style['wallet-tip']">
           请认真校对钱包地址，地址错误资金将无法到帐
         </p>
+      </template>
+
+      <!-- 手機驗證 -->
+      <template v-if="addBankCardStep === 'two'">
+        <div :class="$style['info-item']">
+          <p :class="$style['input-title']">手机号码</p>
+          <div :class="$style['input-wrap']">
+            <template v-if="['ey1'].includes(themeTPL)">
+              <select v-model="phoneHead" :class="$style['phone-selected']">
+                <option
+                  v-for="option in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="option"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </template>
+            <input
+              v-model="formData.phone"
+              type="text"
+              :placeholder="'请输入手机号码'"
+              :class="$style['phone-input']"
+              maxlength="36"
+              @input="verification('phone')"
+            />
+          </div>
+        </div>
+
+        <div :class="$style['info-item']">
+          <p :class="$style['input-title']">手机验证码</p>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="formData.keyring"
+              type="text"
+              placeholder="请输入手机验证码"
+              id="phone-code"
+              @input="checkData($event.target.value, 'keyring')"
+            />
+            <div
+              :class="[
+                $style['send-keyring'],
+                { [$style.disabled]: smsTimer || !isVerifyPhone }
+              ]"
+              @click="showCaptchaPopup"
+            >
+              {{ time ? `${time}s` : "获取验证码" }}
+            </div>
+          </div>
+        </div>
       </template>
 
       <!-- Confirm Button -->
@@ -188,6 +243,7 @@
           {{ `请于 ${epointTimeCount} 秒内绑定帐号` }}
         </div>
         <!-- 確認鈕 -->
+
         <div
           :class="[
             $style['submit'],
@@ -204,13 +260,18 @@
           ]"
           @click="handleSmbmit"
         >
-          {{
-            selectTarget.oneClickBindingMode
-              ? selectTarget.walletId === 48
-                ? "绑定钱包"
-                : "一键绑定"
-              : $text("S_CONFIRM", "确认")
-          }}
+          <span v-if="addBankCardStep === 'one' && checkPhoneVerification">
+            下一步
+          </span>
+          <span v-else
+            >{{
+              selectTarget.oneClickBindingMode
+                ? selectTarget.walletId === 48
+                  ? "绑定钱包"
+                  : "一键绑定"
+                : $text("S_CONFIRM", "确认")
+            }}
+          </span>
         </div>
       </div>
     </div>
@@ -289,6 +350,7 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 import popupTip from "../popupTip";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import lib_newWindowOpen from "@/lib/newWindowOpen";
+import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
 
 export default {
   components: {
@@ -303,8 +365,13 @@ export default {
     userLevelObj: {
       type: Object,
       default: {}
+    },
+    addBankCardStep: {
+      type: String,
+      required: true
     }
   },
+  mixins: [bankMixin],
   data() {
     return {
       // 卡片有關參數
@@ -1082,6 +1149,12 @@ export default {
       // }
     },
     handleSmbmit() {
+      if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "two");
+        return;
+      }
+
       if (this.selectTarget.oneClickBindingMode) {
         // 呼叫 API 前另需視窗
         let newWindow = "";

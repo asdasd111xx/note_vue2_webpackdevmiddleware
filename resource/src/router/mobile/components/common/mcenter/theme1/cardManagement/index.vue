@@ -360,9 +360,11 @@ export default {
       localStorage.removeItem("isBackFromService");
       localStorage.removeItem("selectTarget");
       // 目前只有銀行卡有分兩階段
+      // 電子錢包分兩階段驗證（測試）
       if (
-        this.currentPage === "addBankCard" &&
-        this.addBankCardStep === "two"
+        (this.currentPage === "addBankCard" &&
+          this.addBankCardStep === "two") ||
+        (this.currentPage === "addWalletCard" && this.addBankCardStep === "two")
       ) {
         this.step = "one";
         return;
