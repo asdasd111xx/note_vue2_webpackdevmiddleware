@@ -199,6 +199,16 @@
         </div>
       </template>
 
+      <div :class="$style['info-confirm']">
+        <div :class="$style['confirm-remind']">
+          <p v-if="addBankCardStep === 'two'">
+            1. 为确保您的资金安全，添加电子钱包需进行简单的数据核实 <br />
+            2. 因手机号码影响各项重要功能，请您务必谨慎填写 <br />
+            3.
+            {{ siteConfig.SITE_NAME }}时刻关心您的资金安全
+          </p>
+        </div>
+      </div>
       <!-- Confirm Button -->
       <div
         :class="$style['info-confirm']"
@@ -276,6 +286,7 @@
           >
             下一步
           </span>
+          <span v-else-if="addBankCardStep === 'two'">提交</span>
           <span v-else
             >{{
               selectTarget.oneClickBindingMode
@@ -1232,6 +1243,9 @@ export default {
         }
         return;
       }
+    },
+    phoneSmbmit() {
+      alert("phone submit");
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
