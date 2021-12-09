@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .menu-wrap {
   width: 100%;
   padding: 8px 17px;
@@ -136,6 +137,15 @@
     }
   }
 
+  &.porn1 {
+    li {
+      &.active {
+        background: $befa_member_main_color1;
+        background-image: $befa_member_main_color1;
+      }
+    }
+  }
+
   li {
     float: left;
     width: calc(25% - 10px);
@@ -151,12 +161,18 @@
     overflow: hidden;
     white-space: nowrap;
 
+    &.porn1 {
+      &.active {
+        background: $befa_member_main_color1;
+        background-image: $befa_member_main_color1;
+      }
+    }
+
     &.active {
       line-height: 33px;
       color: #fff;
-      background: #bd9d7d;
-      background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+      background: $share_member_text_color2;
+      background-image: $share_main_button_color2;
       border: none;
     }
 
@@ -187,7 +203,8 @@
 
 .custom-date {
   padding: 16px 0;
-  background: url("/static/image/common/arrow_next.png") no-repeat right 0 center;
+  background: url("/static/image/common/arrow_next.png") no-repeat right 0
+    center;
   background-size: 15px 15px;
   border-bottom: 1px solid #eee;
 
@@ -223,16 +240,29 @@
   text-align: center;
 }
 
+.time-button-group {
+  &.porn1 {
+    .time-cancel {
+      color: $befa_member_text_color1;
+      background: $befa_member_main_color2;
+    }
+    .time-confirm {
+      background: $befa_member_main_color1;
+      background-image: $befa_member_main_color1;
+      color: $befa_member_text_color1;
+    }
+  }
+}
+
 .time-cancel {
   background: #faf5f0;
-  color: #be9e7f;
+  color: $share_member_text_color5;
 }
 
 .time-confirm {
   color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  background: $share_member_text_color2;
+  background-image: $share_main_button_color2;
 }
 
 .data-wrap {
@@ -351,10 +381,16 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(top, #bd9d7d, #f9ddbd);
+    background: $share_member_text_color5;
+    background-image: $share_main_button_color2;
     content: "";
+  }
+
+  &.porn1 {
+    &:before {
+      background: $befa_member_main_color1;
+      background-image: $befa_member_main_color1;
+    }
   }
 }
 
@@ -366,7 +402,7 @@
   padding-left: 8px;
   color: #414655;
 
-  >div {
+  > div {
     flex: 1;
   }
 
