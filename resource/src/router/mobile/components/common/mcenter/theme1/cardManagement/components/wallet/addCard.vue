@@ -81,12 +81,16 @@
           </p>
 
           <div
+            v-if="!checkWalletPhoneVerification || selectTarget.walletId !== 37"
             :class="[
               $style['input-wrap'],
               { [$style['disable']]: selectTarget.walletId === 37 }
             ]"
           >
             <input
+              v-if="
+                !checkWalletPhoneVerification || selectTarget.walletId !== 37
+              "
               v-model="formData['walletAddress'].value"
               type="text"
               :placeholder="formData['walletAddress'].placeholder"
@@ -98,7 +102,7 @@
           <div
             v-if="
               (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
-                selectTarget.walletId === 37
+                (selectTarget.walletId === 37 && !checkWalletPhoneVerification)
             "
             :class="$style['qrcode']"
             @click="setPopupStatus(true, 'qrcode')"
@@ -207,20 +211,26 @@
         <!-- 上方 Tip 顯示 -->
         <template v-if="selectTarget.walletName && addBankCardStep === 'one'">
           <ul
+            v-if="!checkWalletPhoneVerification"
             :class="[
               {
                 [$style['onTop']]:
-                  !selectTarget.oneClickBindingMode && walletTipInfo.length > 0
+                  !selectTarget.oneClickBindingMode &&
+                  walletTipInfo.length > 0 &&
+                  addBankCardStep === 'one'
               },
               {
                 [$style['onBottom']]:
-                  selectTarget.oneClickBindingMode && walletTipInfo.length > 0
+                  selectTarget.oneClickBindingMode &&
+                  walletTipInfo.length > 0 &&
+                  addBankCardStep === 'one'
               },
               {
                 [$style['no-button']]:
                   !selectTarget.oneClickBindingMode &&
                   walletTipInfo.length > 0 &&
-                  selectTarget.walletId === 37
+                  selectTarget.walletId === 37 &&
+                  addBankCardStep === 'one'
               }
             ]"
           >
@@ -254,6 +264,7 @@
             },
             {
               [$style['hidden']]:
+                !checkWalletPhoneVerification &&
                 selectTarget.walletId === 37 &&
                 !selectTarget.oneClickBindingMode
             }
@@ -345,6 +356,8 @@
 
 <script>
 import axios from "axios";
+import ajax from "@/lib/ajax";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
 import { mapGetters, mapActions } from "vuex";
 import i18n from "@/config/i18n";
 // import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
@@ -376,6 +389,8 @@ export default {
   mixins: [bankMixin],
   data() {
     return {
+      phoneHead: "+86",
+      phoneHeadOption: [],
       // 卡片有關參數
       selectTarget: {
         walletId: "",
@@ -559,6 +574,16 @@ export default {
     }
   },
   created() {
+    // 國碼
+    ajax({
+      method: "get",
+      url: API_MCENTER_USER_CONFIG,
+      errorAlert: false
+    }).then(response => {
+      if (response && response.result === "ok") {
+        this.phoneHeadOption = response.ret.config.phone.country_codes;
+      }
+    });
     Promise.all([this.getUserBindList()]).then(() => {
       this.getWalletList();
     });
@@ -640,7 +665,9 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
-          lang: "zh-cn"
+          lang: "zh-cn",
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(response => {
@@ -728,7 +755,9 @@ export default {
         params: {
           lang: "zh-cn",
           address: this.formData["walletAddress"].value,
-          virtualBankId: String(this.selectTarget.walletId)
+          virtualBankId: String(this.selectTarget.walletId),
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(response => {
@@ -770,7 +799,9 @@ export default {
           // bind_type: "withdraw",
           wallet_gateway_id: 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
-          wallet_token: this.formData["CGPPwd"].value
+          wallet_token: this.formData["CGPPwd"].value,
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(response => {
@@ -828,7 +859,9 @@ export default {
         url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
         params: {
-          wallet_gateway_id: id
+          wallet_gateway_id: id,
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(res => {
