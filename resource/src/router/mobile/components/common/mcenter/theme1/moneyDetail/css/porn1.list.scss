@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .detail-list-wrap {
   padding-top: 50px;
 
@@ -102,11 +103,15 @@
     line-height: 45px;
     margin: 0 auto;
     border-radius: 3px;
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
     color: #fff;
     font-weight: 700;
     font-size: 14px;
     text-align: center;
+
+    &.porn1 {
+      background: $befa_member_main_color1;
+    }
   }
 }
 
