@@ -171,7 +171,7 @@
               :placeholder="'请输入手机号码'"
               :class="$style['phone-input']"
               maxlength="36"
-              @input="verification('phone')"
+              @input="checkData($event.target.value, 'phone')"
             />
           </div>
         </div>
@@ -269,7 +269,9 @@
             $style['submit'],
             {
               [$style['disabled']]:
-                (lockStatus && !selectTarget.oneClickBindingMode) ||
+                (!NextStepStatus &&
+                  lockStatus &&
+                  !selectTarget.oneClickBindingMode) ||
                 epointTimeCount > 0
             },
             {
@@ -376,7 +378,8 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 import popupTip from "../popupTip";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import lib_newWindowOpen from "@/lib/newWindowOpen";
-import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
+// import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
+import walletMixin from "@/mixins/mcenter/bankCard/addCard/wallet";
 
 export default {
   components: {
@@ -397,7 +400,7 @@ export default {
       required: true
     }
   },
-  mixins: [bankMixin],
+  mixins: [walletMixin],
   data() {
     return {
       phoneHead: "+86",
@@ -424,6 +427,8 @@ export default {
 
       // 欄位資料
       formData: {
+        phone: "",
+        keyring: "",
         walletAddress: {
           title: i18n.t("S_WALLET_ADDRESS"),
           value: "",
@@ -635,7 +640,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "getCustomerServiceUrl"
+      "getCustomerServiceUrl",
+      "actionVerificationFormData"
     ]),
     handleClickService() {
       localStorage.setItem("bankCardType", "wallet");
@@ -655,6 +661,19 @@ export default {
           .trim()
           .replace(/[^0-9]/g, "");
       }
+
+      // if (key === "phone") {
+      //   this.actionVerificationFormData({
+      //     target: "phone",
+      //     value: this.formData.phone
+      //   }).then(res => {
+      //     this.formData.phone = res;
+      //   });
+
+      //   if (this.formData.phone === "" || this.formData.keyring === "") {
+      //     lock = true;
+      //   }
+      // }
 
       if (
         !this.selectTarget.walletName ||
