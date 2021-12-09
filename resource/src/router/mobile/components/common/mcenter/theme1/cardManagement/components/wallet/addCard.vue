@@ -205,7 +205,7 @@
         }"
       >
         <!-- 上方 Tip 顯示 -->
-        <template v-if="selectTarget.walletName">
+        <template v-if="selectTarget.walletName && addBankCardStep === 'one'">
           <ul
             :class="[
               {
