@@ -155,7 +155,7 @@
     text-align: center;
     font-size: 12px;
     color: #a6a9b2;
-    border: 1px solid #a6a9b2;
+    border: 1px solid $share_member_text_color6;
     border-radius: 3px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -171,9 +171,8 @@
     &.active {
       line-height: 33px;
       color: #fff;
-      background: $share_member_text_color2;
-      background-image: $share_main_button_color2;
-      border: none;
+      background: $share_member_text_color1;
+      background-image: $share_member_text_color1;
     }
 
     &:nth-child(n + 5) {
@@ -255,14 +254,13 @@
 }
 
 .time-cancel {
-  background: #faf5f0;
-  color: $share_member_text_color5;
+  background: $share_main_button_color1;
+  color: $share_member_text_color3;
 }
 
 .time-confirm {
   color: $share_member_text_color3;
-  background: $share_member_text_color2;
-  background-image: $share_main_button_color2;
+  background: $share_main_button_color2;
 }
 
 .data-wrap {
@@ -382,7 +380,7 @@
     top: 50%;
     transform: translateY(-50%);
     background: $share_member_text_color5;
-    background-image: $share_main_button_color2;
+    background-image: $share_member_text_color1;
     content: "";
   }
 

@@ -77,7 +77,7 @@
   height: 35px;
   line-height: 33px;
   margin: 3px 1%;
-  border: 1px solid #a6a9b2;
+  border: 1px solid $share_member_text_color6;
   border-radius: 5px;
   background-color: #fff;
   color: #a6a9b2;
@@ -94,7 +94,7 @@
     line-height: 35px;
     border: none;
     border-radius: 3px;
-    background: $share_main_button_color2;
+    background: $share_member_text_color1;
     color: #fff;
   }
 }
@@ -162,15 +162,14 @@
 }
 .cancel {
   composes: button;
-  background: #faf5f0;
-  color: $share_member_text_color5;
+  background: $share_main_button_color1;
+  color: $share_member_text_color3;
 }
 
 .confirm {
   composes: button;
   color: $share_member_text_color3;
-  background: $share_member_text_color2;
-  background-image: $share_main_button_color2;
+  background: $share_main_button_color2;
 }
 .date-tip {
   position: absolute;
