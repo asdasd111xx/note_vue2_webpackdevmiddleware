@@ -48,7 +48,12 @@
       <template scope="{ balanceTran , balanceBack}">
         <div>
           <div :class="[$style['balance-wrap'], 'clearfix']">
-            <div :class="$style['balance-total-item']">
+            <div
+              :class="[
+                $style['balance-total-item'],
+                $style[siteConfig.ROUTER_TPL]
+              ]"
+            >
               <img
                 :src="
                   $getCdnPath(
@@ -65,6 +70,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
+                $style[siteConfig.ROUTER_TPL],
                 balanceTran.balanceBackLock ? $style.disable : ''
               ]"
               @click="balanceBack()"
@@ -73,7 +79,13 @@
             </div>
           </div>
 
-          <div :class="[$style['balance-item-wrap'], 'clearfix']">
+          <div
+            :class="[
+              $style['balance-item-wrap'],
+              $style[siteConfig.ROUTER_TPL],
+              'clearfix'
+            ]"
+          >
             <div
               v-if="redJackpotData.enable"
               :class="[$style['balance-item'], $style['item-fix']]"
@@ -107,11 +119,11 @@
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
-                <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+                <template v-if="['porn1', 'sg1'].includes(routerTPL)">
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
 
-                <template v-if="['ey1'].includes(themeTPL)">
+                <template v-if="['ey1'].includes(routerTPL)">
                   {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
                 </template>
               </span>
@@ -202,7 +214,7 @@
       </div>
     </template> -->
 
-    <template v-if="['ey1'].includes(themeTPL)">
+    <template v-if="['ey1'].includes(routerTPL)">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">蜂鸟钱包</div>
         <div :class="$style['icon-block']">
@@ -239,7 +251,10 @@
       </div>
     </template>
 
-    <div :class="$style['invite-wrap']" @click="onClickInvite">
+    <div
+      :class="[$style['invite-wrap'], $style[siteConfig.ROUTER_TPL]]"
+      @click="onClickInvite"
+    >
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
@@ -266,7 +281,7 @@
     </div>
 
     <div :class="$style['wager-wrap']">
-      <div :class="$style['title']">
+      <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
         投注记录
         <span @click="$router.push('/mobile/mcenter/betRecord')">查看更多</span>
       </div>
