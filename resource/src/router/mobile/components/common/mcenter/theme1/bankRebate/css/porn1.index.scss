@@ -26,9 +26,15 @@
       width: 16px;
     }
 
+    &.porn1 {
+      &.active {
+        border-bottom: 2px solid $befa_main_color;
+      }
+    }
+
     &.active {
       color: #5e626d;
-      border-bottom: 2px solid #be9e7f;
+      border-bottom: 2px solid $share_member_text_color1;
     }
 
     &.self {
@@ -68,11 +74,11 @@
       color: #222;
 
       &.week {
-        color: #bf8646;
+        color: $share_member_text_color4;
       }
 
       &.is-current {
-        color: #bf8646;
+        color: $share_member_text_color4;
       }
     }
 
@@ -138,6 +144,12 @@
         border: 0;
         outline: none;
       }
+      &.porn1 {
+        background: $befa_member_main_color1;
+        &.disable {
+          background: $befa_member_main_color2;
+        }
+      }
 
       a {
         display: inline-block;
@@ -145,7 +157,7 @@
         height: 20px;
         line-height: 20px;
         color: #fff;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: $share_main_button_color2;
         border: 0;
         border-radius: 10px;
         outline: none;
@@ -153,7 +165,7 @@
 
         &.disable {
           color: #f3ede7;
-          background: linear-gradient(#e9dacb, #eee5db);
+          background: $share_main_button_color1;
         }
       }
     }
@@ -203,14 +215,21 @@
     min-width: 105px;
     border-radius: 17px;
     height: 33px;
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 
+    &.porn1 {
+      background: $befa_member_main_color1;
+      &.disable {
+        background: $befa_member_main_color2;
+      }
+    }
+
     &.disable {
-      background: linear-gradient(#e9dacb, #eee5db);
+      background: $share_main_button_color1;
       height: 45px;
       border-radius: 3px;
     }
@@ -254,10 +273,17 @@
   text-align: center;
   border-radius: 17px;
   color: #fff;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
+
+  &.porn1 {
+    background: $befa_member_main_color1;
+    &.is-disabled {
+      background: $befa_member_main_color2;
+    }
+  }
 
   &.is-disabled {
-    background: linear-gradient(to left, #e9dacb, #eee5db);
+    background: $share_main_button_color1;
     color: #fff;
     pointer-events: none;
   }
