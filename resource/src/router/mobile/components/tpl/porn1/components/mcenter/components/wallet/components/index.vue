@@ -48,12 +48,7 @@
       <template scope="{ balanceTran , balanceBack}">
         <div>
           <div :class="[$style['balance-wrap'], 'clearfix']">
-            <div
-              :class="[
-                $style['balance-total-item'],
-                $style[siteConfig.ROUTER_TPL]
-              ]"
-            >
+            <div :class="[$style['balance-total-item']]">
               <img
                 :src="
                   $getCdnPath(
@@ -70,7 +65,6 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                $style[siteConfig.ROUTER_TPL],
                 balanceTran.balanceBackLock ? $style.disable : ''
               ]"
               @click="balanceBack()"
@@ -79,13 +73,7 @@
             </div>
           </div>
 
-          <div
-            :class="[
-              $style['balance-item-wrap'],
-              $style[siteConfig.ROUTER_TPL],
-              'clearfix'
-            ]"
-          >
+          <div :class="[$style['balance-item-wrap'], 'clearfix']">
             <div
               v-if="redJackpotData.enable"
               :class="[$style['balance-item'], $style['item-fix']]"
@@ -281,7 +269,7 @@
     </div>
 
     <div :class="$style['wager-wrap']">
-      <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
+      <div :class="[$style['title']]">
         投注记录
         <span @click="$router.push('/mobile/mcenter/betRecord')">查看更多</span>
       </div>

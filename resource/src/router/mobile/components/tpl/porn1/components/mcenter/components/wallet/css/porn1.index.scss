@@ -144,14 +144,7 @@
     flex: 1;
     font-size: 12px;
     font-weight: 700;
-    color: $main_text_color3;
-
-    &.porn1 {
-      color: $befa_member_main_color1;
-      .balance-item-money {
-        color: $befa_member_main_color1;
-      }
-    }
+    color: $main_title_color1;
 
     img {
       width: 13px;
@@ -161,7 +154,7 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: $share_member_text_color1;
+      color: $share_member_text_color4;
     }
   }
 
@@ -169,12 +162,8 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: $share_member_text_color1;
+    color: $share_member_text_color4;
     font-weight: 700;
-
-    &.porn1 {
-      color: $befa_member_main_color1;
-    }
 
     &::before {
       content: "";
@@ -206,15 +195,6 @@
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.65);
 
-  &.porn1 {
-    .balance-redjackpot-text {
-      color: $befa_member_main_color1;
-    }
-
-    .balance-redjackpot-text {
-      color: $befa_member_main_color1;
-    }
-  }
   .balance-item {
     position: relative;
     display: inline-block;
@@ -286,7 +266,7 @@
   }
 
   .balance-redjackpot-text {
-    color: $share_member_text_color1;
+    color: #db6372;
     word-break: break-word;
   }
 
@@ -376,13 +356,7 @@
     height: 14px;
     top: 2.5px;
     left: 0;
-    background: $share_member_main_button_color;
-  }
-
-  &.porn1 {
-    &::before {
-      background: $befa_member_main_color1;
-    }
+    background: $share_member_text_color6;
   }
 
   // 查看更多
