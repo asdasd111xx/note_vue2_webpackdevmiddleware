@@ -260,7 +260,9 @@
           ]"
           @click="handleSmbmit"
         >
-          <span v-if="addBankCardStep === 'one' && checkPhoneVerification">
+          <span
+            v-if="addBankCardStep === 'one' && checkWalletPhoneVerification"
+          >
             下一步
           </span>
           <span v-else
@@ -428,6 +430,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.memInfo);
     this.isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
     if (this.isBackFromService) {
       this.setBank(this.isBackFromService);
@@ -1149,7 +1152,7 @@ export default {
       // }
     },
     handleSmbmit() {
-      if (this.addBankCardStep === "one" && this.checkPhoneVerification) {
+      if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "two");
         return;
