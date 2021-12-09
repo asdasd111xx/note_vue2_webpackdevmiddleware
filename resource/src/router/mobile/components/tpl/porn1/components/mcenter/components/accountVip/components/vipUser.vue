@@ -1,13 +1,16 @@
 <template>
   <div :class="$style['user-info-wrap']">
     <!-- 個人資訊 -->
-    <div :class="$style['user-info-block']">
+    <div :class="[$style['user-info-block']]">
       <div ref="user-info" :class="$style['user-info']">
         <div :class="$style['avatar']">
           <img :src="avatarSrc" alt="avatar" />
         </div>
 
-        <div ref="name" :class="$style['name']">
+        <div
+          ref="name"
+          :class="[$style['name'], $style[siteConfig.ROUTER_TPL]]"
+        >
           <span>{{ memInfo.user.username }}</span>
           <span :style="`display: ${setVipTextDisplay}`">
             {{ userVipInfo.now_level_alias }}
