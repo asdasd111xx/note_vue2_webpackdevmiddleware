@@ -214,7 +214,7 @@ input {
 
   &.disabled {
     color: white;
-    background-color: #e9dacc;
+    background-color: $share_member_text_color7;
     pointer-events: none;
   }
 
@@ -238,10 +238,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: $share_main_button_color2;
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -265,17 +262,14 @@ input::placeholder {
 
   &.disabled {
     > div {
-      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
-      background: linear-gradient(to right, #eee5db, #e9dacb);
+      background: $share_main_button_color1;
       pointer-events: none;
     }
   }
 }
 
 .serial-number-links {
-  color: #6aaaf5;
+  color: $share_member_text_color4;
   position: absolute;
   right: 17px;
 }
