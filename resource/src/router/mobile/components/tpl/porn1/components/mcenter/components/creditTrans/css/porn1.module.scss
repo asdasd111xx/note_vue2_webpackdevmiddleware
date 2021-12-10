@@ -217,6 +217,13 @@ input {
     background-color: #e9dacc;
     pointer-events: none;
   }
+
+  &.porn1 {
+    background-color: $befa_member_main_color1;
+    &.disabled {
+      background-color: $befa_member_main_color2;
+    }
+  }
 }
 
 input::placeholder {
@@ -242,6 +249,18 @@ input::placeholder {
     color: #f3ede7;
     width: 100%;
     height: 100%;
+  }
+
+  &.porn1 {
+    > div {
+      background: $befa_member_main_color1;
+    }
+    &.disabled {
+      > div {
+        opacity: rgba(#fff, 0.5);
+        background: $befa_member_main_color2;
+      }
+    }
   }
 
   &.disabled {
