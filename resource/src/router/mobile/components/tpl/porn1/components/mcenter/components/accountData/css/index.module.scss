@@ -238,8 +238,8 @@ input {
   height: 30px;
   border-radius: 3px;
   line-height: 30px;
-  background-color: #e9dacc;
-  color: white;
+  background-color: $share_member_text_color7;
+  color: $share_member_text_color3;
   pointer-events: none;
   // 取消點擊特效
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -247,8 +247,17 @@ input {
 
   &.active {
     pointer-events: auto;
-    color: #ffffff;
-    background-color: #d1b79c;
+    color: $share_member_text_color3;
+    background-color: $share_member_text_color1;
+  }
+
+  &.porn1 {
+    color: $befa_member_text_color1;
+    background-color: $befa_member_main_color2;
+    &.active {
+      color: $befa_member_text_color1;
+      background-color: $befa_member_main_color1;
+    }
   }
 }
 
