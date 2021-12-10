@@ -73,7 +73,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetDomainConfigV2"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionVerificationFormData",
+      "actionSetGlobalMessage",
+      "actionSetDomainConfigV2",
+      "actionGetToManyRequestMsg"
+    ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
     },
@@ -181,7 +187,7 @@ export default {
         })
         .catch(error => {
           this.lockStatus = false;
-
+          // console.log(error);
           if (error.response.data && error.response.data.msg) {
             this.errorMsg = error.response.data.msg;
           } else {

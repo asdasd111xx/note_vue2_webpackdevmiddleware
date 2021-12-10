@@ -650,7 +650,6 @@ export default {
       "actionVerificationFormData"
     ]),
     goToPhoneCheck() {
-      console.log("goto");
       if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "two");
@@ -1235,7 +1234,9 @@ export default {
         this.$emit("update:addBankCardStep", "two");
         return;
       }
-
+      if (this.selectTarget.walletId === 37) {
+        setPopupStatus(true, "qrcode");
+      }
       if (this.selectTarget.oneClickBindingMode) {
         // 呼叫 API 前另需視窗
         let newWindow = "";
@@ -1278,9 +1279,9 @@ export default {
         return;
       }
 
-      if (this.selectTarget.walletId === 37) {
-        setPopupStatus(true, "qrcode");
-      }
+      // if (this.selectTarget.walletId === 37) {
+      //   setPopupStatus(true, "qrcode");
+      // }
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
