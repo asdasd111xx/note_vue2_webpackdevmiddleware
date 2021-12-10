@@ -660,8 +660,7 @@ export default {
   color: #fff;
   font-size: 12px;
   text-align: center;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-
+  background: $share_main_button_color2;
   &.gay {
     background: #4a8cb8;
   }

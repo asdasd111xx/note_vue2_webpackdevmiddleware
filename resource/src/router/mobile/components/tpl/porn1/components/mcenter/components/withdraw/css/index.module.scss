@@ -113,7 +113,7 @@
 
     &.rubbing-btn {
       font-size: 14px;
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      background: $share_main_button_color2;
       color: white;
       border-radius: 11px;
       width: 82px;
@@ -318,7 +318,7 @@
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
     color: white;
     border-radius: 11px;
     width: 82px;
@@ -350,7 +350,7 @@
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -527,7 +527,7 @@
 
       &.submit {
         color: white;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: $share_main_button_color2;
       }
     }
   }

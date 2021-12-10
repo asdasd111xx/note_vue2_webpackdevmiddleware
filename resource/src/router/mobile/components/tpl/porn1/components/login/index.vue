@@ -424,7 +424,7 @@ export default {
 .submit {
   margin: 0 auto;
   border-radius: 8px;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   width: 80%;
   height: 40px;
   line-height: 40px;

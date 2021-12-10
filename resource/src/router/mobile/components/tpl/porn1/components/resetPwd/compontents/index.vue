@@ -110,7 +110,7 @@
         <div
           :class="[
             $style['submit'],
-            $style[themeTPL],
+            $style[siteConfig.ROUTER_TPL],
             { [$style['active']]: submitActive }
           ]"
           @click="checkField(true)"
@@ -554,20 +554,27 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
+  background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
+  background: -o-linear-gradient(left, #e9dacb, #eee5db);
+  background: -moz-linear-gradient(left, #e9dacb, #eee5db);
+  background: linear-gradient(to left, #e9dacb, #eee5db);
+  color: #f3ede7;
+
+  &.active {
+    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
+    color: white;
+  }
 
   &.porn1 {
-    background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-    background: -o-linear-gradient(left, #e9dacb, #eee5db);
-    background: -moz-linear-gradient(left, #e9dacb, #eee5db);
-    background: linear-gradient(to left, #e9dacb, #eee5db);
-    color: #f3ede7;
+    background: $befa_member_main_color2;
+    color: $befa_member_text_color1;
 
     &.active {
-      background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-      background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-      color: white;
+      background: $befa_member_main_color1;
+      color: $befa_member_text_color1;
     }
   }
 

@@ -441,10 +441,10 @@
   font-size: 14px;
   border-radius: 10px;
   color: #fff;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -webkit-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
+  background: -moz-$share_main_button_color2;
+  background: -webkit-$share_main_button_color2;
+  background: -o-$share_main_button_color2;
 }
 
 .transfer-btn {
@@ -455,10 +455,10 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -webkit-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
+  background: -moz-$share_main_button_color2;
+  background: -webkit-$share_main_button_color2;
+  background: -o-$share_main_button_color2;
 
   &.is-disable {
     background: linear-gradient(to left, #e9dacb, #eee5db);

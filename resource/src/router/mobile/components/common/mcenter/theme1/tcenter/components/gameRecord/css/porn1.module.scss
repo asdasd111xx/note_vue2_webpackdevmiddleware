@@ -95,7 +95,7 @@ $buttonTextColor: #fff;
   border-top: 1px solid #eaeaea;
 
   .btn-search {
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
     margin: 0 auto;
     width: 85%;
     line-height: 45px;

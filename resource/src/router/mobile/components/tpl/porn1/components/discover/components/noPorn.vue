@@ -16,19 +16,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mcenter from '@/api/mcenter';
+import { mapGetters, mapActions } from "vuex";
+import mcenter from "@/api/mcenter";
 
 export default {
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     })
   },
   methods: {
-    ...mapActions([
-      'actionSetUserdata'
-    ]),
+    ...mapActions(["actionSetUserdata"]),
     openPorn() {
       mcenter.accountDataSet({
         params: {
@@ -86,7 +84,7 @@ export default {
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
   background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
 }
 
 @media screen and (min-width: $phone) {

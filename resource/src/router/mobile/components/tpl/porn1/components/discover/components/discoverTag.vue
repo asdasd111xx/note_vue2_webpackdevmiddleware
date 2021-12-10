@@ -47,11 +47,10 @@ import axios from "axios";
 import find from "lodash/find";
 import join from "lodash/join";
 import pornRequest from "@/api/pornRequest";
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       tags: [],
@@ -94,9 +93,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     onClick(id) {
       this.active = id;
       $("#mobile-wrap").animate({ scrollTop: 0 });
@@ -108,7 +105,7 @@ export default {
       }
 
       if (this.selected.length == 5) {
-        this.actionSetGlobalMessage({ msg: '一次最多选5个标签' });
+        this.actionSetGlobalMessage({ msg: "一次最多选5个标签" });
         return;
       }
 
@@ -182,7 +179,7 @@ export default {
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
   }
 }
 
@@ -278,7 +275,7 @@ export default {
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
   background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   font-weight: 700;
   font-size: 18px;
   text-align: center;
