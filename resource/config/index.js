@@ -31,7 +31,8 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = "https://sgtt.66boxing.com/";
 
 // Beta 100009
-// const domain = "https://sgbe1.grtymart.com/";
+// const domain ="https://sg.66apples.com";
+
 // Demo 81
 // const domain = 'https://sgt.66relish.com/';
 // Prod 80

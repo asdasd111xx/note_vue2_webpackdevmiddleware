@@ -283,6 +283,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .home-wrap {
   overflow: hidden;
   position: relative;
@@ -369,7 +370,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      background: $share_main_button_color2;
       color: #fff;
     }
   }
@@ -689,7 +690,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1:last-child {
@@ -697,7 +698,7 @@ export default {
   }
 
   &.porn1:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 }
 </style>

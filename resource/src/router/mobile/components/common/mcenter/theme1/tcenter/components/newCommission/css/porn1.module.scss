@@ -55,7 +55,7 @@ $submitTextColor: #fff;
   white-space: nowrap;
 
   &.active {
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 
@@ -121,7 +121,7 @@ $submitTextColor: #fff;
 }
 
 .submit {
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   margin: 0 auto;
   width: 85%;
   line-height: 45px;
@@ -175,7 +175,7 @@ $submitTextColor: #fff;
           height: 10px;
           width: 10px;
           margin: 0 5px;
-          background-color: #be9e7f;
+          background-color: $share_member_text_color4;
           border: 0px solid white;
           border-radius: 5px;
         }

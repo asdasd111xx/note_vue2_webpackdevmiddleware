@@ -1,6 +1,7 @@
 <template>
   <div :class="['news-container', `${themeTPL}`]">
     <div
+      v-if="newsTitleList"
       class="news-wrap"
       :class="[
         `${
@@ -240,10 +241,11 @@ export default {
 }
 
 .fixed-wrap {
-  position: fixed;
-  top: 43px;
+  // position: fixed;
+  // top: 43px;
   z-index: 2;
   background: #f8f8f7;
+  max-width: $mobile_max_width;
 }
 
 .news-content {
@@ -273,7 +275,7 @@ export default {
   }
 
   &.notHome {
-    color: #be9e7f;
+    color: $share_member_text_color9;
   }
 }
 

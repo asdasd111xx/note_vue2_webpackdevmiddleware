@@ -29,7 +29,7 @@
     line-height: 16px;
 
     .current-num {
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
     .total-num {
       display: flex;
@@ -63,7 +63,7 @@
       height: 6px;
       border-radius: 3px;
       top: 0;
-      background-color: #be9e7f;
+      background-color: $share_member_text_color4;
       z-index: 0;
     }
   }

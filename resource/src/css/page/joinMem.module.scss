@@ -51,7 +51,16 @@
   position: relative;
   margin-bottom: 15px;
   font-size: 0;
-  .show-red-star {
+
+  .show-red-star-sp1 {
+    span {
+      &::before {
+        content: "*";
+        color: red;
+      }
+    }
+  }
+  .show-red-star-aobo1 {
     span {
       &::before {
         content: "*";
@@ -90,7 +99,7 @@
 
 .join-input {
   outline: none;
-  padding: 10px 3.5%;
+  padding: 10px 2.5%;
   width: 100%;
   height: 40px;
   // border: 1px solid #595959;
@@ -98,56 +107,17 @@
   font-size: 12px;
   outline: 0;
   display: block;
+  text-overflow: ellipsis;
 
   &.phone {
     border: 1px solid #e3e3e3;
     margin: 0 8px;
-    &::-webkit-input-placeholder {
-      /* Edge */
-      white-space: nowrap;
-      width: 154px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &:-ms-input-placeholder {
-      /* Internet Explorer 10-11 */
-      white-space: nowrap;
-      width: 154px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &::placeholder {
-      white-space: nowrap;
-      width: 154px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    text-overflow: ellipsis;
+    padding: 10px 22.5% 10px 3.5%;
   }
   &.email {
-    &::-webkit-input-placeholder {
-      /* Edge */
-      white-space: nowrap;
-      width: 145px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &:-ms-input-placeholder {
-      /* Internet Explorer 10-11 */
-      white-space: nowrap;
-      width: 145px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &::placeholder {
-      white-space: nowrap;
-      width: 145px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    padding: 10px 40% 10px 0.3%;
+    text-overflow: ellipsis;
   }
 }
 
@@ -162,6 +132,7 @@
 
 .join-input-email {
   padding-right: 82px;
+  text-overflow: ellipsis;
 }
 
 .join-input-phone {
@@ -169,6 +140,7 @@
   width: 68%;
   margin-left: 2%;
   padding-right: 82px;
+  text-overflow: ellipsis;
 }
 
 .join-input-captcha {
@@ -188,7 +160,6 @@
 .join-input-select {
   composes: join-input;
   padding: 0;
-
   &:global(.v-select) {
     &.show {
       border-color: #c24141;
@@ -205,6 +176,7 @@
     :global(.selected-tag),
     :global(.form-control) {
       color: #a5a5a5;
+      overflow: hidden;
     }
   }
 }
@@ -226,7 +198,7 @@
 .get-verify-btn {
   position: absolute;
   top: 5px;
-  right: 4.5%;
+  right: 3.5%;
   width: 68px;
   height: 30px;
   background: #cccccc;
@@ -404,7 +376,11 @@
 
 .join-input-gender {
   composes: join-input-select;
-
+  padding-right: 20px;
+  // ul {
+  //   max-width: 280px !important;
+  //   overflow: hidden !important;
+  // }
   &:global(.open) {
     :global(.selected-tag) {
       display: block;
@@ -483,8 +459,13 @@
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
+  &.sg1,
+  &.porn1 {
+    text-align: right;
+    padding-right: 12px;
+  }
+
   &.aobo1,
-  &.porn1,
   &.sp1,
   &.ey1 {
     background-color: #ffffff;
@@ -508,8 +489,13 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
-  &.aobo1,
+
   &.porn1,
+  &.sg1 {
+    border: 1px solid #d8d8d8;
+  }
+
+  &.aobo1,
   &.sp1,
   &.ey1 {
     border: 1px solid #e3e3e3;
@@ -520,7 +506,12 @@
     font-size: 14px;
 
     input {
-      width: 100%;
+      width: 90%;
+      text-overflow: ellipsis;
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.4);
+      }
     }
     :global(.vdp-datepicker__calendar) {
       position: relative;
@@ -743,6 +734,9 @@
 
 :global {
   .v-select {
+    .dropdown-menu {
+      min-width: 60px !important;
+    }
     .dropdown-toggle {
       border: 0;
       border: 1px solid transparent !important;
@@ -841,7 +835,7 @@
   font-size: 18px;
 
   &:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1:last-child {
@@ -849,6 +843,6 @@
   }
 
   &.porn1:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 }

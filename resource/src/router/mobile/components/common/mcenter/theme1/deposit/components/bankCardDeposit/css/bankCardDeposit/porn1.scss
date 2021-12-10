@@ -1,8 +1,12 @@
 @import "~@/css/variable.scss";
 
 .swiper-wrap {
-  margin-top: 31px;
+  // margin-top: 31px;
   background-color: #fff;
+
+  ::-webkit-scrollbar {
+    width: initial;
+  }
 }
 
 .swiper-item {
@@ -25,7 +29,7 @@
     color: #5e626d;
 
     span {
-      border-bottom: 2px solid #be9e7f;
+      border-bottom: 2px solid $share_member_text_color4;
     }
   }
 }
@@ -33,6 +37,24 @@
 .bank-card-wrap {
   position: relative;
   background: #f8f8f7;
+
+  &.no-swiper {
+    padding-top: 40px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: unset;
+    border-radius: unset;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: unset;
+    -webkit-box-shadow: unset;
+  }
 }
 
 .feature-wrap {
@@ -74,7 +96,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   transform: translateY(-50%);
 }
 
@@ -110,9 +132,13 @@
   }
 
   &.is-current {
-    border: 1px solid #d1b79c;
-    color: #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 
   .pay-mode-tag {
@@ -173,7 +199,7 @@
   height: 40px;
   line-height: 40px;
   font-size: 12px;
-  margin-right: 6px;
+  margin: 5px 6px 5px 0;
   color: #000;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -192,6 +218,14 @@
     position: absolute;
     right: 1px;
     bottom: 3px;
+  }
+
+  .pay-mode-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 25px;
   }
 }
 
@@ -235,9 +269,13 @@
 
   &.is-current {
     background-color: #fff;
-    color: #d1b79c;
-    border: 1px solid #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+    color: $share_member_text_color4;
+    border: 1px solid $share_member_text_color4;
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 }
 
@@ -334,7 +372,7 @@
   color: $main_text_color2;
 
   .time {
-    color: #be9e7f;
+    color: $share_member_text_color4;
     margin: 0 5px 0 5px;
 
     &.ey {
@@ -368,7 +406,7 @@
     }
 
     .sg {
-      color: #be9e7f;
+      color: $share_member_text_color4;
       font-weight: 500;
     }
   }
@@ -380,8 +418,8 @@
   .conversion-btn {
     display: inline-block;
     margin-left: 10px;
-    border: 1px solid #be9e7f;
-    color: #be9e7f;
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -484,6 +522,18 @@
   font-size: 14px;
 }
 
+.select-epoint-bank-item {
+  height: 23px;
+  margin-left: 80px;
+  font-size: 14px;
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
+}
+
 .select-bank-icon {
   float: right;
   width: 15px;
@@ -533,7 +583,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 
@@ -568,6 +618,61 @@
 .bank-feature-wrap {
   float: left;
   width: 100%;
+}
+
+.pay-mode-tip {
+  float: left;
+  width: 85%;
+  height: 20px;
+  margin-top: 10px;
+  color: #6aaaf5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.pay-mode-tip-show {
+  width: 100%;
+  float: left;
+  animation: fade-in 0.5s;
+}
+
+.pay-mode-tip-close {
+  float: left;
+  animation: fade-out 0.5s;
+}
+
+@keyframes fade-in {
+  0% {
+    margin-top: -35px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-top: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    margin-top: 0px;
+    opacity: 1;
+  }
+
+  100% {
+    margin-top: -35px;
+    opacity: 0;
+  }
+}
+
+.pay-mode-tip-more {
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px;
+  color: #6aaaf5;
 }
 
 .feature-deposit-wrap {
@@ -686,15 +791,19 @@
   color: #cbced8;
 
   &.success {
-    color: #d1b79c;
+    color: $share_member_text_color4;
   }
 }
 
 .current-data {
   background-color: #fff;
-  color: #d1b79c;
-  border: 1px solid #d1b79c;
-  background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+  color: $share_member_text_color4;
+  border: 1px solid $share_member_text_color4;
+  background: linear-gradient(
+    -45deg,
+    $share_member_text_color4 12px,
+    hsla(0, 0%, 100%, 0) 0
+  );
 }
 
 .pop-message-mark {
@@ -743,7 +852,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #d1b79c;
+  color: $share_member_text_color4;
 }
 
 .money-tip-wrap {
@@ -772,6 +881,17 @@
 
   &.hide {
     display: none;
+  }
+}
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+
+  > img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
   }
 }
 
@@ -1025,6 +1145,18 @@
   background: #fefffe;
   border-radius: 8px;
   transform: translate(-50%, -50%);
+
+  .close {
+    color: $share_member_text_color4;
+
+    &.sg {
+      color: #bf8646;
+    }
+
+    &.ey {
+      color: #e42a30;
+    }
+  }
 }
 
 .entry-message-content {
@@ -1042,6 +1174,13 @@
   > div {
     line-height: 22px;
   }
+
+  .wrap-line {
+    padding: 14px 14px;
+    color: #a6a9b2;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
 }
 
 .entry-message-confirm {
@@ -1049,7 +1188,7 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   margin: 0;
   padding: 0;
   height: 40px;
@@ -1068,7 +1207,7 @@
 
 .top-promotion {
   background: #f8f8f7;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1080,7 +1219,7 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1134,4 +1273,17 @@
   padding-top: 5px;
   font-size: 12px;
   color: #db6372;
+
+  &.less {
+    margin-top: 5px;
+  }
+}
+
+.other-bank-input-text {
+  padding-top: 5px;
+  padding-bottom: 10px;
+
+  &.border {
+    border-top: 1px solid #eee;
+  }
 }

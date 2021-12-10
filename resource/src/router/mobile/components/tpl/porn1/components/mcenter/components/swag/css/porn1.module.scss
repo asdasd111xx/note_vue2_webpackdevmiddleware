@@ -7,7 +7,7 @@
 .swag-banner-cell {
   height: 120px;
 
-  >img {
+  > img {
     height: 100%;
     width: 100%;
   }
@@ -29,7 +29,7 @@
   display: inline-block;
   padding: 12px 4px;
 
-  >div {
+  > div {
     display: inline-block;
     padding-top: 3px;
   }
@@ -46,7 +46,7 @@
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,7 +58,7 @@
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: left;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
   }
 }
@@ -101,11 +101,15 @@
   }
 
   &.selected {
-    border: 1px solid #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 10px, rgba(255, 255, 255, 0) 0);
+    border: 1px solid $share_member_text_color4;
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 10px,
+      rgba(255, 255, 255, 0) 0
+    );
 
     .price {
-      color: #d1b79c;
+      color: $share_member_text_color4;
     }
 
     .num {
@@ -134,7 +138,7 @@
     color: #aaaaaa;
     font-size: 12px;
 
-    >img {
+    > img {
       width: 12px;
       height: 12px;
       vertical-align: bottom;
@@ -153,7 +157,7 @@
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-weight: 400;
   text-align: left;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   padding: 12px 17px;
 }
 
@@ -216,7 +220,7 @@
   align-items: center;
   justify-content: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
   }
@@ -247,7 +251,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    background: #be9e7f;
+    background: $share_member_text_color4;
     border-radius: 3px 3px 0 0;
     color: white;
     position: relative;
@@ -293,7 +297,7 @@
 
   .check-button-wrap {
     padding: 10px 11px;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -309,7 +313,7 @@
 
       &.submit {
         color: white;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: $share_main_button_color2;
       }
     }
   }
@@ -333,7 +337,7 @@
   justify-content: center;
   align-items: center;
 
-  >div {
+  > div {
     width: 100%;
     height: 1px;
     background: #dddddd;
@@ -354,7 +358,7 @@
     right: 0;
   }
 
-  >.title-tips {
+  > .title-tips {
     width: 205px;
   }
 }
@@ -366,7 +370,7 @@
   padding: 0 20px;
   text-align: left;
 
-  >div:not(:last-of-type) {
+  > div:not(:last-of-type) {
     margin-bottom: 2.5px;
   }
 }

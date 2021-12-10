@@ -46,9 +46,13 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: $share_text_color1;
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
+
+  &.porn1 {
+    background: $befa_member_text_color1;
+  }
 }
 
 .discount-item {
@@ -97,7 +101,7 @@ input {
   justify-content: space-between;
   align-items: baseline;
   padding: 0px 14px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-size: 12px;
 }
 
@@ -200,7 +204,7 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: #d1b79c;
+  background-color: $share_member_text_color4;
   border-radius: 3px;
   color: white;
   font-weight: 400;
@@ -214,8 +218,15 @@ input {
 
   &.disabled {
     color: white;
-    background-color: #e9dacc;
+    background-color: $share_member_text_color7;
     pointer-events: none;
+  }
+
+  &.porn1 {
+    background-color: $befa_member_main_color1;
+    &.disabled {
+      background-color: $befa_member_main_color2;
+    }
   }
 }
 
@@ -231,10 +242,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: $share_main_button_color2;
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -244,19 +252,28 @@ input::placeholder {
     height: 100%;
   }
 
+  &.porn1 {
+    > div {
+      background: $befa_member_main_color1;
+    }
+    &.disabled {
+      > div {
+        opacity: rgba(#fff, 0.5);
+        background: $befa_member_main_color2;
+      }
+    }
+  }
+
   &.disabled {
     > div {
-      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
-      background: linear-gradient(to right, #eee5db, #e9dacb);
+      background: $share_main_button_color1;
       pointer-events: none;
     }
   }
 }
 
 .serial-number-links {
-  color: #6aaaf5;
+  color: $share_member_text_color4;
   position: absolute;
   right: 17px;
 }

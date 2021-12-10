@@ -62,8 +62,7 @@ export default {
     maintainBlock
   },
   computed: {
-    ...mapGetters({
-    })
+    ...mapGetters({})
   },
   data() {
     return {
@@ -130,7 +129,7 @@ export default {
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     display: flex;
     justify-content: center;
     align-items: center;

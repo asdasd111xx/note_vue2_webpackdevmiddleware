@@ -81,6 +81,7 @@
               <div
                 :class="[
                   $style['send-keyring'],
+                  $style[routerTPL],
                   {
                     [$style.disabled]:
                       isSendKeyring ||
@@ -132,6 +133,7 @@
       <div
         :class="[
           $style['submit-wrap'],
+          $style[routerTPL],
           {
             [$style.disabled]: !isVerifyForm || isSendRecharge
           }
@@ -177,8 +179,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   created() {
     this.getRechargeBalance();

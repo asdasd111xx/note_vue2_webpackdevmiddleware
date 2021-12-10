@@ -33,8 +33,20 @@
         </div>
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
-          <div v-show="errMsg">
+          <!-- <div v-show="errMsg">
             {{ errMsg }}
+          </div> -->
+        </div>
+
+        <!-- 註冊回傳錯誤訊息彈窗 -->
+        <div
+          v-if="registerSubmitFail"
+          :class="$style['modal-dark-bg']"
+          @click.self="registerSubmitFail = false"
+        >
+          <div :class="$style['verify-error-msg']">
+            {{ errMsg }}
+            <button @click="registerSubmitFail = false">关闭</button>
           </div>
         </div>
 
@@ -173,7 +185,8 @@
                 $style[siteConfig.ROUTER_TPL],
                 $style[`field-${field.key}`],
                 {
-                  [$style['show-red-star']]: joinMemInfo[field.key].isRequired
+                  [$style[`show-red-star-${siteConfig.ROUTER_TPL}`]]:
+                    joinMemInfo[field.key].isRequired
                 },
                 'clearfix'
               ]"
@@ -323,7 +336,7 @@
                   :class="[$style['join-input'], $style[field.key]]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('email', 'tip')"
-                  type="tel"
+                  type="text"
                   @input="verification(field.key)"
                   @keydown.13="joinSubmit()"
                 />
@@ -347,6 +360,7 @@
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
+
                 <div
                   :class="[$style['clear']]"
                   v-else-if="allValue[field.key].length > 1"
@@ -396,9 +410,10 @@
                 >
                   {{ $text("S_GET_VERIFICATION_CODE", "获取验证码") }}
                 </div>
+
                 <div
                   :class="[$style['clear']]"
-                  v-else-if="allValue[field.key].length > 1"
+                  v-else-if="allValue[field.key].length > 0"
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
@@ -432,7 +447,7 @@
                 />
                 <img
                   v-show="!allValue.birthday"
-                  style="position: absolute; top: 10px; right: 10px;"
+                  style="position: absolute; top: 10px; right: 5px; background:#fff"
                   :src="$getCdnPath(`/static/image/common/btn_calendar.png`)"
                   @click="toggleDatePick"
                   alt=""
@@ -467,6 +482,19 @@
                   type="tel"
                 /> -->
               </template>
+              <!-- weixin 需要@input -->
+              <template v-else-if="field.key === 'weixin'">
+                <input
+                  :ref="field.key"
+                  v-model="allValue[field.key]"
+                  :class="[$style['join-input'], field.key]"
+                  :name="field.key"
+                  :placeholder="placeholderKeyValue(field.key, 'tip')"
+                  type="text"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                />
+              </template>
               <input
                 v-else
                 :ref="field.key"
@@ -478,6 +506,7 @@
                 @blur="verification(field.key)"
                 @keydown.13="keyDownSubmit()"
               />
+
               <div
                 :class="$style['clear']"
                 v-if="
@@ -652,6 +681,7 @@ export default {
       mailSubmitFail: false,
       mailSubmitFailMsg: "",
       mailVerifyCode: "",
+      registerSubmitFail: false,
       errMsg: "",
       joinMemInfo,
       captchaImg: "",
@@ -830,23 +860,38 @@ export default {
 
             if (
               this.joinMemInfo[field.key].type !== "select" &&
-              field.key !== "birthday"
+              field.key !== "birthday" &&
+              this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, "") === ""
             ) {
-              return (
-                this.allValue[field.key].replace(/(^\s*)|(\s*$)/g, "") !== ""
-              );
+              return false;
             }
 
-            if (field.key === "gender") {
-              return +this.allValue[field.key] !== 0;
+            if (field.key === "gender" && +this.allValue[field.key] === 0) {
+              return false;
             }
 
-            if (field.key === "withdraw_password") {
-              return this.allValue.withdraw_password.length === 4;
+            if (
+              field.key === "withdraw_password" &&
+              !this.withdraw_passwordStatus
+            ) {
+              return false;
             }
 
-            if (field.key === "phone") {
-              return this.joinMemInfo[field.key].hasVerify && this.countryCode;
+            if (
+              field.key === "phone" &&
+              this.NeedCode &&
+              !this.showPhoneCheckIcon &&
+              !this.countryCode
+            ) {
+              return false;
+            }
+
+            if (
+              field.key === "email" &&
+              this.mailNeedCode &&
+              !this.showMailCheckIcon
+            ) {
+              return false;
             }
 
             return this.allValue[field.key];
@@ -859,6 +904,7 @@ export default {
     }
   },
   created() {
+    this.actionSetUserdata();
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
@@ -1112,6 +1158,8 @@ export default {
     verification(key, index) {
       const data = this.joinMemInfo[key];
 
+      //欄位為空不顯示提示訊息
+      this.allTip[key] = "";
       if (!data.show) {
         return;
       }
@@ -1319,16 +1367,13 @@ export default {
       }
 
       if (key === "withdraw_password") {
-        if (
-          this.selectData[key].selected[index].value &&
-          !this.selectData[key].selected[index].value
-        ) {
-          this.allValue[key].value[index] = "";
-          return;
-        }
         this.allValue[key].value[index] = this.selectData[key].selected[index]
           ? this.selectData[key].selected[index].value
           : "";
+
+        this.withdraw_passwordStatus =
+          this.allValue.withdraw_password.value &&
+          this.allValue.withdraw_password.value.join("").length === 4;
       } else {
         if (
           this.selectData[key].selected &&
@@ -1533,6 +1578,7 @@ export default {
         this.allValue.captcha_text = "";
         if (res.response && res.status === "506") {
           this.actionGetToManyRequestMsg(res.msg).then(res => {
+            this.registerSubmitFail = true;
             this.errMsg = res;
           });
           return;
@@ -1540,9 +1586,13 @@ export default {
 
         if (res.status !== "000") {
           this.getCaptcha();
+
+          this.registerSubmitFail = true;
+
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
               this.allTip[item] = res.errors[item];
+              this.errMsg = res.msg;
               // msg: "验证码错误"
               if (item === "captcha_text") {
                 if (document.getElementById("captcha")) {
@@ -1554,6 +1604,7 @@ export default {
                 this.memInfo.config.register_captcha_type === 0 &&
                 item === "captcha_text"
               ) {
+                this.errMsg = res.errors[item];
                 this.allTip["confirm_password"] = res.errors[item];
               }
 
@@ -1639,13 +1690,19 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Platform/Placeholder`
       })
         .then(response => {
-          if (response.status === "000") {
+          if (
+            response &&
+            response.status === "000" &&
+            response.data &&
+            response.data.JOINMEMBER
+          ) {
             this.placeholderResult = [];
             this.placeholderResult = response.data.JOINMEMBER.data || [];
           }
           return;
         })
         .catch(error => {
+          console.log(error);
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
         });

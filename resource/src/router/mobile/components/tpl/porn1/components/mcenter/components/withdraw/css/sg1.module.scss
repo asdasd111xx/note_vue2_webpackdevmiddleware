@@ -34,6 +34,12 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
       background-size: 100%;
     }
   }
+
+  > span {
+    &.rubbing-btn {
+      background: linear-gradient(to left, #fe593c, #e61938);
+    }
+  }
 }
 
 .check-container {

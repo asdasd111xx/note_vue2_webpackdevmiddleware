@@ -3,7 +3,7 @@
     <div :class="$style['option']">
       <div
         v-if="optionType === 0"
-        :class="$style['option0']"
+        :class="[$style['option0'], $style[siteConfig.ROUTER_TPL]]"
         @click="getRedJackpotMoney"
       >
         领取

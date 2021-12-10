@@ -29,6 +29,7 @@
         v-if="selectMenu === 'game'"
         :class="[
           $style['dropdown-wrap'],
+          $style[siteConfig.ROUTER_TPL],
           'clearfix',
           { [$style['game']]: selectMenu === 'game' }
         ]"
@@ -71,7 +72,10 @@
           <li
             v-for="(time, key) in allTotalData"
             :key="`date-${key}`"
-            :class="{ [$style.active]: currentSelectTime === time.text }"
+            :class="[
+              $style[siteConfig.ROUTER_TPL],
+              { [$style.active]: currentSelectTime === time.text }
+            ]"
             @click="getTimeRecord(time)"
           >
             {{ time.text }}
@@ -116,7 +120,13 @@
               :date.sync="setEndTime"
             />
           </div>
-          <div :class="[$style['time-button-group'], 'clearfix']">
+          <div
+            :class="[
+              $style['time-button-group'],
+              $style[siteConfig.ROUTER_TPL],
+              'clearfix'
+            ]"
+          >
             <div :class="$style['time-cancel']" @click="cancelCustomTime">
               {{ $text("S_CANCEL", "取消") }}
             </div>
@@ -203,7 +213,12 @@
                   {{ getVendorName(gameDetail.vendor, gameDetail.kind) }}
                 </div>
                 <div :class="$style['detail-game']">
-                  <div :class="$style['game-name']">
+                  <div
+                    :class="[
+                      $style['game-name'],
+                      $style[siteConfig.ROUTER_TPL]
+                    ]"
+                  >
                     {{ gameDetail.game_name }}
                   </div>
                   <div :class="[$style['game-count'], 'clearfix']">

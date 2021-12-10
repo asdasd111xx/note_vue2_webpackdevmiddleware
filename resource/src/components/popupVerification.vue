@@ -192,6 +192,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .captcha-popup {
   position: fixed;
   top: 0;
@@ -225,7 +226,7 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   border-top: 1px solid #f8f8f7;
 
   &.ey1 {
@@ -249,7 +250,7 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   display: inline-block;
   width: 48%;
   border-top: 1px solid #f8f8f7;
@@ -257,7 +258,7 @@ export default {
 
   &.porn1,
   .sg1 {
-    color: #d1b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1 {

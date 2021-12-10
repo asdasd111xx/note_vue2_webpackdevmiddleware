@@ -7,6 +7,7 @@
         :key="`tab-${item.key}`"
         :class="[
           $style['tab-item'],
+          $style[routerTPL],
           { [$style['is-current']]: tabCurrent === index }
         ]"
         :style="{ width: `${100 / tabItem.length}%` }"
@@ -91,6 +92,10 @@ export default {
     }),
     $style() {
       return this[`$style_${this.themeTPL}`] || this.$style_porn1;
+    },
+    //routerTPL才能區分51＆澳博
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;

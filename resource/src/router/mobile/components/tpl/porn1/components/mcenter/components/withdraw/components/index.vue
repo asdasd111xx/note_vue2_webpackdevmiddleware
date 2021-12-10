@@ -1,5 +1,10 @@
 <template>
-  <div :class="$style['withdraw-wrap']">
+  <div
+    :class="$style['withdraw-wrap']"
+    :style="{
+      'margin-top': !marqueeList || marqueeList.length < 1 ? '0px' : ''
+    }"
+  >
     <!-- 跑馬燈 -->
     <marquee
       v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
@@ -203,97 +208,192 @@
     <!-- Yabo : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <!-- 銀行卡 -->
+      <div :class="$style['bank-wrap']">
+        <div
+          :class="[
+            $style['bank-type'],
+            { [$style['is-current']]: !epointSelectType }
+          ]"
+          @click="() => setWithdrawTypeIsNormal(true)"
+        >
+          普通提现
+          <img
+            :class="$style['select']"
+            :src="$getCdnPath(`/static/image/common/select_active.png`)"
+          />
+        </div>
+        <div
+          v-if="epointWallet && epointWallet.length > 0"
+          :class="[
+            $style['bank-type'],
+            { [$style['is-current']]: epointSelectType }
+          ]"
+          @click="setWithdrawTypeIsNormal(false)"
+        >
+          e点富
+          <img
+            :class="$style['select']"
+            :src="$getCdnPath(`/static/image/common/select_active.png`)"
+          />
+        </div>
+
+        <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
+        <span
+          v-if="
+            allWithdrawAccount &&
+              allWithdrawAccount.length > 0 &&
+              forceStatus === 1 &&
+              userWithdrawCount === 0 &&
+              isFirstWithdraw &&
+              withdrawUserData.wallet.length + withdrawUserData.crypto.length >
+                0
+          "
+          :class="$style['withdraw-status-tip']"
+          >银行卡提现一次，开通数字货币提现功能</span
+        >
+
+        <!-- 非首次出款 + 強制使用 CGPay 出款 -->
+        <span
+          v-else-if="
+            allWithdrawAccount &&
+              allWithdrawAccount.length > 0 &&
+              forceStatus === 2
+          "
+          :class="$style['withdraw-status-tip']"
+          >仅限使用 CGPay 出款</span
+        >
+      </div>
       <div
         v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
         :class="$style['bank-card-wrap']"
       >
-        <div :class="$style['bank-card-cell']">
-          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
-          <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
-          <span
-            v-if="
-              forceStatus === 1 &&
-                userWithdrawCount === 0 &&
-                isFirstWithdraw &&
-                withdrawUserData.wallet.length +
-                  withdrawUserData.crypto.length >
-                  0
-            "
-            :class="$style['withdraw-status-tip']"
-            >银行卡提现一次，开通数字货币提现功能</span
-          >
-
-          <!-- 非首次出款 + 強制使用 CGPay 出款 -->
-          <span
-            v-else-if="forceStatus === 2"
-            :class="$style['withdraw-status-tip']"
-            >仅限使用 CGPay 出款</span
-          >
-        </div>
-
         <!-- 列出所有帐号 -->
         <!-- Question: 如果強制使用銀行卡出款，是否數字貨幣卡片 allow 狀態會為 false ? -->
         <!-- disable 的狀態需要與 RD5 請示 -->
         <div
-          v-for="(item, index) in allWithdrawAccount"
-          :key="index + '-' + item.id"
-          :class="[
-            $style['bank-card-cell'],
-            {
-              [$style['disable']]: !item.allow
-            }
-          ]"
-          @click="handleSelectCard(item)"
+          v-if="
+            allWithdrawAccount &&
+              allWithdrawAccount.length > 0 &&
+              !epointSelectType
+          "
         >
           <div
+            v-for="(item, index) in allWithdrawAccount"
+            :key="index + '-' + item.id"
             :class="[
-              $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id },
+              $style['bank-card-cell'],
               {
                 [$style['disable']]: !item.allow
               }
             ]"
-          />
-          <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
-          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
-            {{ parseCardName(item.alias, item.withdrawType) }}
-          </span>
+            @click="handleSelectCard(item)"
+          >
+            <div
+              :class="[
+                $style['check-box'],
+                { [$style['checked']]: item.id === selectedCard.id },
+                {
+                  [$style['disable']]: !item.allow
+                }
+              ]"
+            />
+            <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
+            <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
+              {{ parseCardName(item.alias, item.withdrawType) }}
+            </span>
 
-          <!-- CGPay USDT -->
-          <template v-if="item.bank_id === 2009">
-            <img
-              :class="$style['transfergo-img']"
-              :src="
-                $getCdnPath(
-                  `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
+            <!-- CGPay USDT -->
+            <template v-if="item.bank_id === 2009">
+              <img
+                :class="$style['transfergo-img']"
+                :src="
+                  $getCdnPath(
+                    `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
+                  )
+                "
+                alt="ic_transfergo"
+              />
+
+              <div
+                :class="$style['currency-text']"
+                @click.stop="
+                  () => {
+                    if (item.id !== selectedCard.id) {
+                      handleSelectCard(item);
+                    }
+                    setPopupStatus(true, 'currency');
+                  }
+                "
+              >
+                {{ withdrawCurrency.alias }}
+              </div>
+            </template>
+          </div>
+        </div>
+        <div
+          v-if="
+            epointWallet.length > 0 &&
+              userBankOption.length > 0 &&
+              epointSelectType
+          "
+        >
+          <div :class="[$style['bank-card-cell']]">
+            <div :class="[$style['check-box'], $style['checked']]" />
+            <span :class="[]">
+              {{
+                parseCardName(
+                  epointWallet[0].alias,
+                  epointWallet[0].withdrawType
+                )
+              }}
+            </span>
+            <span
+              :class="$style['rubbing-btn']"
+              @click="
+                $router.push(
+                  `/mobile/mcenter/help/detail?type=withdraw${
+                    isApp ? '&app=true' : ''
+                  }`
                 )
               "
-              alt="ic_transfergo"
-            />
-
-            <div
-              :class="$style['currency-text']"
-              @click.stop="
-                () => {
-                  if (item.id !== selectedCard.id) {
-                    handleSelectCard(item);
-                  }
-                  setPopupStatus(true, 'currency');
-                }
-              "
+              >搓合查询</span
             >
-              {{ withdrawCurrency.alias }}
+          </div>
+          <div :class="[$style['feature-wrap']]">
+            <span :class="$style['select-bank-title']">
+              您的银行
+            </span>
+            <div
+              :class="$style['select-epoint-bank-item']"
+              @click="setPopupStatus(true, 'epointBank')"
+            >
+              {{ defaultEpointWallet.account }}
+              <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
             </div>
-          </template>
+          </div>
         </div>
       </div>
 
       <!-- 更多提现方式 -->
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
-        v-if="moreMethodStatus.bankCard || moreMethodStatus.wallet"
+        v-if="
+          (!epointSelectType &&
+            (moreMethodStatus.bankCard || moreMethodStatus.wallet)) ||
+            (epointSelectType && epointWallet.length === 0)
+        "
         :class="[$style['add-bank-card']]"
-        @click="setPopupStatus(true, 'moreMethod')"
+        @click="
+          () => {
+            if (epointSelectType) {
+              $router.push(
+                `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`
+              );
+            } else {
+              setPopupStatus(true, 'moreMethod');
+            }
+          }
+        "
       >
         <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
         &nbsp;
@@ -406,7 +506,16 @@
     </template>
 
     <!-- 需有卡片時才出現 -->
-    <template v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
+    <template
+      v-if="
+        (!epointSelectType &&
+          allWithdrawAccount &&
+          allWithdrawAccount.length > 0) ||
+          (epointWallet.length > 0 &&
+            userBankOption.length > 0 &&
+            epointSelectType)
+      "
+    >
       <!-- 額度提示訊息 -->
       <div :class="$style['tips']">{{ getWithdrawTips }}</div>
 
@@ -438,7 +547,7 @@
           :placeholder="valuePlaceholder"
           @keyup="moneyUSDT($event)"
         />
-        <span :class="[$style['withdraw-max']]">
+        <span :class="[$style['withdraw-max'], $style[siteConfig.ROUTER_TPL]]">
           <span @click="handleMaxWithdraw">
             {{ $text("S_WITHRAW_MAX2", "最高提现") }}
           </span>
@@ -463,16 +572,13 @@
         ]"
       >
         <span :class="$style['money-currency']">
-          {{
-            `${
-              selectedCard.name && !isSelectedUSDT
-                ? `${selectedCard.name}到帐`
-                : "实际提现金额"
-            }`
-          }}
+          {{ `${realWidthdrawText}` }}
         </span>
         <span
-          v-if="selectedCard.name != 'CGPay' || withdrawCurrency.name != 'CGP'"
+          v-if="
+            (selectedCard.name != 'CGPay' || withdrawCurrency.name != 'CGP') &&
+              !epointSelectType
+          "
           :class="$style['money-currency']"
           >¥</span
         >
@@ -480,6 +586,7 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
+        <span v-else-if="epointSelectType">e点</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -557,11 +664,25 @@
     <!-- Tips -->
     <div :class="$style['tips']">
       <!-- 已綁定 + 尚未被禁用 + 允許支付(allow 為 true) -->
-      <div v-if="allWithdrawAccount && allWithdrawAccount.length > 0">
+      <div
+        v-if="
+          (allWithdrawAccount &&
+            allWithdrawAccount.length > 0 &&
+            !epointSelectType) ||
+            (epointWallet.length > 0 && epointSelectType)
+        "
+      >
         为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
         <br />可提现金额会扣除未兑现红利总计
       </div>
-
+      <div
+        v-else-if="
+          !(epointWallet.length > 0 && userBankOption.length > 0) &&
+            epointSelectType
+        "
+      >
+        请先绑定钱包，用于收款
+      </div>
       <div v-else>
         {{ hasBindingBankCard ? "" : "请先绑定一张银行卡，用于收款" }}
       </div>
@@ -633,6 +754,14 @@
         />
       </template>
 
+      <template v-if="showPopStatus.type === 'epointBank'">
+        <epoint-bank-popup
+          :bank-list="userBankOption"
+          :item-func="setEpointBank"
+          @close="closePopup"
+        />
+      </template>
+
       <!-- 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
         <confirm-one-btn :data="confirmPopupObj" @close="confirmPopupObj.cb" />
@@ -661,6 +790,7 @@ import EST from "@/lib/EST";
 import mixin from "@/mixins/mcenter/withdraw";
 import serialNumber from "./serialNumber";
 import withdrawCurrency from "@/router/mobile/components/common/pickerView/pickerView";
+import epointBankPopup from "@/router/mobile/components/tpl/porn1/components/common/epointBankPopup";
 import widthdrawTips from "./widthdrawTips";
 import withdrawAccount from "@/router/mobile/components/common/withdrawAccount/withdrawAccount";
 import withdrawMoreMethod from "./withdrawMoreMethod";
@@ -692,6 +822,7 @@ export default {
     widthdrawTips,
     blockListTips,
     withdrawCurrency,
+    epointBankPopup,
     withdrawMoreMethod,
     withdrawAccount,
     marquee,
@@ -757,7 +888,8 @@ export default {
       redJackpotData: { enable: false },
       marqueeList: [],
 
-      displayWithdrawValue: ""
+      displayWithdrawValue: "",
+      epointSelectType: false
     };
   },
   watch: {
@@ -768,9 +900,9 @@ export default {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
       }
-      if(!localStorage.getItem("tmp_w_selectedCard")){
-        if(this.currencyList.length > 0){
-          this.setWithdrawCurrency(this.currencyList[0])
+      if (!localStorage.getItem("tmp_w_selectedCard")) {
+        if (this.currencyList.length > 0) {
+          this.setWithdrawCurrency(this.currencyList[0]);
         }
       }
       // this.actionSetIsLoading(false);
@@ -814,6 +946,7 @@ export default {
           this.getUserStat();
           this.getNowOpenWallet();
           this.getUserBankList();
+          this.getUserBankListFast();
           this.getUserWalletList();
           this.getBounsAccount();
           this.actionSetAnnouncementList({ type: 2 });
@@ -879,10 +1012,20 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       return (
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1
       );
+    },
+    isApp() {
+      let isApp = !!(
+        (this.$route.query && this.$route.query.app) ||
+        (this.$route.query && this.$route.query.APP)
+      );
+      return isApp;
     },
     valuePlaceholder() {
       if (
@@ -1003,7 +1146,7 @@ export default {
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28;
 
-      return withdrawType || cgpayCurrencyUSDT;
+      return (withdrawType || cgpayCurrencyUSDT) && !this.epointSelectType;
     },
     // 強制出款狀態
     forceStatus() {
@@ -1034,9 +1177,7 @@ export default {
       }
 
       // 未開啟限綁一組開關
-      if (
-        !this.userLevelObj.virtual_bank_single 
-      ) {
+      if (!this.userLevelObj.virtual_bank_single) {
         // 已開啟電子錢包開關 & 未開啟限綁一組開關
         let noSingleLimit =
           this.wallet_card.length < this.userLevelObj.virtual_bank_max;
@@ -1046,9 +1187,7 @@ export default {
       }
 
       // 開啟限綁一組開關
-      if (
-        this.userLevelObj.virtual_bank_single 
-      ) {
+      if (this.userLevelObj.virtual_bank_single) {
         let nowBindWalletCount = 0;
 
         // 增加判空，否則報 map 錯誤
@@ -1083,7 +1222,8 @@ export default {
       return (
         (this.isSelectedUSDT ||
           this.selectedCard.bank_id == 2009 ||
-          this.selectedCard.bank_id == 2016) &&
+          this.selectedCard.bank_id == 2016 ||
+          this.selectedCard.bank_id == 2026) &&
         this.selectedCard.offer_percent > 0
       );
     },
@@ -1096,6 +1236,16 @@ export default {
         };
       });
       return arr;
+    },
+
+    realWidthdrawText() {
+      if (this.epointSelectType) {
+        return "e点富到帐";
+      } else if (this.selectedCard.name && !this.isSelectedUSDT) {
+        return `${this.selectedCard.name}到帐`;
+      } else {
+        return "实际提现金额";
+      }
     }
   },
 
@@ -1204,9 +1354,9 @@ export default {
         let _actualMoney =
           +this.withdrawValue - +this.withdrawData.audit.total.total_deduction;
         this.actualMoney = _actualMoney;
-
         // 實際提現金額 < 0
-        if (this.withdrawValue !== "" && _actualMoney <= 0) {
+        if (_actualMoney <= 0) {
+          //http://fb.vir888.com/default.asp?535621#4619033
           this.errTips = "实际提现金额须大于0，请重新输入";
           // 實際提現金額 => 有流水時為 0
           this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
@@ -1264,6 +1414,7 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
+      console.log(item);
       this.updateAmount(item.swift_code);
       this.selectedCard = {
         id: item.id,
@@ -1446,6 +1597,11 @@ export default {
       if (fromRule) {
         localStorage.setItem("tmp_w_rule", "1");
       }
+      localStorage.setItem("tmp_w_epointSelectType", this.epointSelectType);
+      localStorage.setItem(
+        "tmp_w_epointWallet",
+        JSON.stringify(this.defaultEpointWallet)
+      );
     },
     removeCurrentValue(needDeleteRule) {
       localStorage.removeItem("tmp_w_selectedCard");
@@ -1453,6 +1609,8 @@ export default {
       localStorage.removeItem("tmp_w_amount");
       localStorage.removeItem("tmp_w_actualAmount");
       localStorage.removeItem("tmp_w_withdrawPwd");
+      localStorage.removeItem("tmp_w_epointSelectType");
+      localStorage.removeItem("tmp_w_epointWalletId");
 
       if (needDeleteRule) {
         localStorage.removeItem("tmp_w_1");
@@ -1607,6 +1765,17 @@ export default {
         };
       }
 
+      if (this.epointSelectType) {
+        this.selectedCard = {
+          id: this.epointWallet[0].id,
+          withdrawType: this.epointWallet[0].withdrawType,
+          bank_id: this.epointWallet[0].bank_id,
+          swift_code: this.epointWallet[0].swift_code,
+          offer_percent: this.epointWallet[0].offer_percent,
+          offer_limit: this.epointWallet[0].offer_limit
+        };
+      }
+
       // console.log(_params);
       //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232
       //未來有其他第三方再使用/xbb/Withdraw/ext/{extID} C02.321
@@ -1630,7 +1799,8 @@ export default {
           keyring: localStorage.getItem("tmp_w_1")
             ? localStorage.getItem("tmp_w_1")
             : "",
-          methodId: methonId.toString()
+          methodId: methonId.toString(),
+          bankCardId: this.epointSelectType ? this.defaultEpointWallet.id : ""
         }
       })
         .then(response => {
@@ -1894,6 +2064,9 @@ export default {
       this.cryptoMoney = "--";
       this.closePopup();
     },
+    setEpointBank(item) {
+      this.defaultEpointWallet = item;
+    },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
         isShow,
@@ -2065,6 +2238,13 @@ export default {
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
         this.withdrawCurrency;
 
+      this.epointSelectType =
+        localStorage.getItem("tmp_w_epointSelectType") === "true";
+      if (localStorage.getItem("tmp_w_epointWallet")) {
+        this.defaultEpointWallet = JSON.parse(
+          localStorage.getItem("tmp_w_epointWallet")
+        );
+      }
       setTimeout(() => {
         this.removeCurrentValue();
 
@@ -2109,6 +2289,29 @@ export default {
         return thousandsCurrency(Number(value));
       }
       return thousandsCurrency(Number(value).toFixed(2));
+    },
+    //普通提現/e點富
+    setWithdrawTypeIsNormal(type) {
+      if (type) {
+        if (this.allWithdrawAccount.length > 0) {
+          this.handleSelectCard(this.allWithdrawAccount[0]);
+        }
+        this.epointSelectType = !type;
+      } else {
+        if (this.withdrawUserData.account.length > 0) {
+          this.handleSelectCard(this.epointWallet[0]);
+          this.epointSelectType = !type;
+        } else {
+          this.actionSetGlobalMessage({
+            msg: "请先绑定银行卡",
+            cb: () => {
+              {
+                this.$router.push(`/mobile/mcenter/bankcard`);
+              }
+            }
+          });
+        }
+      }
     }
   },
   destroyed() {

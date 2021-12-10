@@ -53,7 +53,7 @@
     <div :class="$style.tips">{{ noDataText }}</div>
     <div
       v-if="currentCategory.key === 'deposit'"
-      :class="$style['btn-deposit']"
+      :class="[$style['btn-deposit'], $style[siteConfig.ROUTER_TPL]]"
       @click="onDeposit"
     >
       立即充值

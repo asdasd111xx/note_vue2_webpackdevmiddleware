@@ -2,6 +2,7 @@ import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_OUTER_WALLET,
+  API_MCENTER_DEPOSIT_BANK,
   API_MCENTER_DEPOSIT_THIRD,
   API_TRADE_RELAY
 } from "@/config/api";
@@ -27,6 +28,8 @@ export default {
       curModeGroup: {},
       curPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
+      curPassRoadTipText: "",
+      curPassRoadTipTextShowMore: false,
       offerInfo: {},
       moneyValue: "",
       isShow: true,
@@ -47,10 +50,15 @@ export default {
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
       defaultOuterCrypto: "",
+      defaultEpointWallet: "",
       outerCryptoOption: [],
+      userBankOption: [],
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
+      showEpointWalletAddress: false,
       outerCryptoAddress: "",
+      epointBankName: "",
+      epointBankAccount: "",
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
@@ -86,6 +94,11 @@ export default {
     },
     defaultOuterCrypto() {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
+    },
+    defaultEpointWallet() {
+      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+        ? this.defaultEpointWallet.account === "其他银行卡"
+        : false;
     }
   },
   computed: {
@@ -372,7 +385,7 @@ export default {
               title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
               value: this.curPassRoad.bank_account_name,
               isFontBold: false,
-              copyShow: false
+              copyShow: true
             },
             {
               objKey: "withdrawDeliver",
@@ -819,6 +832,7 @@ export default {
 
       this.checkDepositInput();
       this.getVendorCryptoOuterUserAddressList();
+      this.getUserBankList();
     },
     /**
      * 切換通道
@@ -880,6 +894,7 @@ export default {
       this.nameCheckFail = false;
       this.checkSuccess = false;
       this.showOuterCryptoAddress = false;
+      this.showEpointWalletAddress = false;
 
       this.walletData["CGPay"].password = "";
       this.cryptoMoney = "--";
@@ -940,7 +955,7 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-
+      console.log(123);
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
@@ -989,6 +1004,21 @@ export default {
           paramsData = {
             ...paramsData,
             user_address: this.defaultOuterCrypto
+          };
+        }
+      }
+      //e點富
+      if (this.curPayInfo.payment_method_id === 34) {
+        if (this.showEpointWalletAddress) {
+          paramsData = {
+            ...paramsData,
+            pay_account: this.epointBankAccount,
+            pay_bank_name: this.epointBankName
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            pay_account_id: this.defaultEpointWallet.id
           };
         }
       }
@@ -1058,8 +1088,14 @@ export default {
             window.open(ret.deposit.url, "third");
             return { status: "third" };
           }
-
           if (ret.wallet.url) {
+            if (this.curPayInfo.payment_method_id === 34) {
+              localStorage.setItem("iframe-third-url", ret.wallet.url);
+              // localStorage.setItem("iframe-third-url-title", "搓合查询");
+              this.$router.push(`/mobile/iframe/deposit?func=false`);
+              newWindow.close();
+              return;
+            }
             if (_isWebview) {
               this.webviewOpenUrl = ret.wallet.url;
               // setTimeout(function () { document.location.href = ret.wallet.url; }, 250);
@@ -1449,6 +1485,25 @@ export default {
           }
 
           // this.outerCryptoOption = ["1", "2", "3"];
+        })
+        .catch(error => {});
+    },
+    // 取得使用者銀行卡列表(迅付)
+    getUserBankList() {
+      console.log("API_MCENTER_DEPOSIT_BANK");
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_BANK,
+        params: {}
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            console.log(response);
+            this.userBankOption = [];
+            this.userBankOption = response.data.ret;
+            this.userBankOption.push({ account: "其他银行卡" });
+            this.defaultEpointWallet = this.userBankOption[0];
+          }
         })
         .catch(error => {});
     },

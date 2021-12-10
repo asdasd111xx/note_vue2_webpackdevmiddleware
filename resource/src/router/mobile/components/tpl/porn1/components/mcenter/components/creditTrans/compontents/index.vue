@@ -18,7 +18,7 @@
         {{ item.text }}
       </div>
       <div
-        :class="$style['active-slider']"
+        :class="[$style['active-slider'], $style[routerTPL]]"
         :style="{
           left: `calc(16.5% + 33% * ${currentTab})`
         }"
@@ -74,6 +74,9 @@ export default {
       rechargeConfig: "getRechargeConfig",
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;

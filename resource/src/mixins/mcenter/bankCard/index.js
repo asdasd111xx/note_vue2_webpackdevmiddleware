@@ -39,6 +39,7 @@ export default {
           case "hotLobby":
           case "recharge":
           case "iframe":
+          case "epoint":
             return true;
         }
       }

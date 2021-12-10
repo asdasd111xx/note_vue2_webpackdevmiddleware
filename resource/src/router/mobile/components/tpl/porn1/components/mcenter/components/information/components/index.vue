@@ -28,7 +28,7 @@
           </div>
         </div>
         <div
-          :class="$style['active-slider']"
+          :class="[$style['active-slider'], $style[siteConfig.ROUTER_TPL]]"
           :style="{
             left: `calc(16.5% + 33% * ${currentTab})`
           }"

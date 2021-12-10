@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .no-feedback {
   width: 180px;
   position: absolute;
@@ -18,12 +19,18 @@
     color: #a6a9b2;
   }
 
+  &.porn1 {
+    button {
+      background: $befa_member_main_color1;
+      background-image: $befa_member_main_color1;
+    }
+  }
+
   button {
     width: 140px;
     height: 40px;
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+    background: $share_member_text_color1;
+    background-image: $share_main_button_color2;
     font-size: 14px;
     color: #fff;
     font-weight: 700;

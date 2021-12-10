@@ -32,28 +32,28 @@
     }
 
     > div:last-child {
-      color: #be9e7f;
+      color: $share_member_text_color4;
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
     font-size: 16px;
   }
 }
 
 .withdraw-wrap {
-  margin-top: 31px;
+  // margin-top: 31px;
   margin-bottom: 16px;
 }
 
 //增加銀行卡
 .add-bank-card {
   background-color: $main_white_color1;
-  color: #be9e7f;
+  color: $share_member_text_color2;
   font-size: 15px;
   height: 50px;
   line-height: 50px;
@@ -110,6 +110,19 @@
     &.hasOption {
       width: 60%;
     }
+
+    &.rubbing-btn {
+      font-size: 14px;
+      background: $share_main_button_color2;
+      color: white;
+      border-radius: 11px;
+      width: 82px;
+      height: 21px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0px;
+    }
   }
 
   > .check-box {
@@ -153,6 +166,59 @@
       border-color: #cbced8 transparent transparent transparent;
     }
   }
+
+  &.bank-card-cell-epoint {
+    display: block;
+  }
+}
+
+.bank-wrap {
+  display: flex;
+  // height: 60px;
+  margin-top: 10px;
+  background-color: $main_white_color1;
+  padding: 8px 18px;
+  // min-height: 50px;
+  flex-wrap: wrap;
+
+  .bank-type {
+    position: relative;
+    width: 110px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin-right: 10px;
+
+    &.is-current {
+      border: 1px solid $share_member_text_color4;
+      color: $share_member_text_color2;
+      background: linear-gradient(
+        -45deg,
+        $share_member_text_color4 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
+    }
+
+    .select {
+      position: absolute;
+      width: 7px;
+      height: 5px;
+      right: 1px;
+      bottom: 2px;
+    }
+  }
+}
+
+.withdraw-status-tip {
+  padding: 0 0 0 10px;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #e42a30;
+  width: fit-content;
 }
 
 .tips {
@@ -182,6 +248,8 @@
     font-size: 16px;
     border-radius: 0;
     line-height: 32px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     &::placeholder {
       color: #cbced8;
@@ -205,7 +273,7 @@
   }
 
   .time {
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 
   .serial {
@@ -216,8 +284,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid #be9e7f;
-    color: #be9e7f;
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -245,13 +313,17 @@
   justify-content: center;
   float: right;
 
+  &.porn1 {
+    > span {
+      background: $befa_member_main_color1;
+      color: $befa_member_text_color1;
+    }
+  }
+
   > span {
     font-size: 14px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: white;
+    background: $share_main_button_color2;
+    color: $share_member_text_color3;
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -279,10 +351,7 @@
   > div {
     margin: 0 auto;
     height: 45px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: $share_main_button_color2;
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -335,7 +404,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    background: #be9e7f;
+    background: $share_member_text_color4;
     border-radius: 3px 3px 0 0;
     color: white;
     position: relative;
@@ -413,7 +482,7 @@
     }
 
     &.custom-color {
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
 
     > span:last-child {
@@ -443,7 +512,7 @@
 
   .check-button-wrap {
     padding: 10px 11px;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -459,7 +528,7 @@
 
       &.submit {
         color: white;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: $share_main_button_color2;
       }
     }
   }
@@ -575,7 +644,34 @@
 .offer {
   height: 30px;
   background-color: $main_white_color1;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   padding: 5px 14px;
   width: 100%;
+}
+
+.feature-wrap {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.select-bank-title {
+  float: left;
+  font-size: 14px;
+  color: #222;
+  margin-left: 7px;
+}
+
+.select-epoint-bank-item {
+  height: 23px;
+  margin-left: 80px;
+  font-size: 14px;
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
 }

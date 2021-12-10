@@ -9,7 +9,7 @@ metadata:
     base: yabo-frontend
   name: {{.deployName}}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: yabo-frontend-proxy-{{.env}}

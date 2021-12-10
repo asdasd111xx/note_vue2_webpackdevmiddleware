@@ -182,7 +182,7 @@
         </div>
 
         <div :class="$style['button-block']">
-          <span @click="isShowPop = false">
+          <span @click="cancelsubmitBirthday">
             {{ $text("S_CANCEL", "取消") }}
           </span>
 
@@ -396,6 +396,10 @@ export default {
       // } else {
       //   this.isShowPop = true;
       // }
+    },
+    cancelsubmitBirthday() {
+      this.isShowPop = false;
+      this.birthdayValue = "";
     },
     sendBirthday() {
       const valueDate = new Date(this.birthdayValue);

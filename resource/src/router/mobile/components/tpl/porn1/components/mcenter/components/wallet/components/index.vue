@@ -48,7 +48,7 @@
       <template scope="{ balanceTran , balanceBack}">
         <div>
           <div :class="[$style['balance-wrap'], 'clearfix']">
-            <div :class="$style['balance-total-item']">
+            <div :class="[$style['balance-total-item']]">
               <img
                 :src="
                   $getCdnPath(
@@ -107,11 +107,11 @@
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
-                <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+                <template v-if="['porn1', 'sg1'].includes(routerTPL)">
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
 
-                <template v-if="['ey1'].includes(themeTPL)">
+                <template v-if="['ey1'].includes(routerTPL)">
                   {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
                 </template>
               </span>
@@ -202,7 +202,7 @@
       </div>
     </template> -->
 
-    <template v-if="['ey1'].includes(themeTPL)">
+    <template v-if="['ey1'].includes(routerTPL)">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">蜂鸟钱包</div>
         <div :class="$style['icon-block']">
@@ -239,14 +239,11 @@
       </div>
     </template>
 
-    <div :class="$style['invite-wrap']" @click="onClickInvite">
-      <template v-if="['porn1'].includes(themeTPL)">
-        <div :class="$style['content']">
-          <div>邀请好友获得现金奖励</div>
-        </div>
-      </template>
-
-      <template v-if="['sg1'].includes(themeTPL)">
+    <div
+      :class="[$style['invite-wrap'], $style[siteConfig.ROUTER_TPL]]"
+      @click="onClickInvite"
+    >
+      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
         </div>
@@ -272,7 +269,7 @@
     </div>
 
     <div :class="$style['wager-wrap']">
-      <div :class="$style['title']">
+      <div :class="[$style['title']]">
         投注记录
         <span @click="$router.push('/mobile/mcenter/betRecord')">查看更多</span>
       </div>

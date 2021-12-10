@@ -10,7 +10,7 @@ metadata:
     version: v1
   name: {{.deployName}}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
         app: sigua-frontend-proxy-{{.env}}

@@ -67,6 +67,7 @@
     <div
       :class="[
         $style['submit'],
+        $style[siteConfig.ROUTER_TPL],
         {
           [$style['disabled']]:
             (contentLenght < 20 && !isSend) || contentLenght > 200
