@@ -102,14 +102,14 @@
     max-width: 375px;
     width: 100%;
     border-radius: 3px;
-    background: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+    background: $share_main_button_color1;
     margin: 0 auto;
   }
 
   &.active {
     > div {
       color: #ffffff;
-      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+      background: $share_main_button_color2;
     }
   }
 }

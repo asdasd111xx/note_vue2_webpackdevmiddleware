@@ -251,7 +251,7 @@
 }
 
 .balance-redjackpot-text {
-  color: $share_member_text_color4;
+  color: $share_member_text_color8;
   word-break: break-word;
 }
 
@@ -439,12 +439,13 @@
   line-height: 20px;
   text-align: center;
   font-size: 14px;
-  border-radius: 10px;
+  border-radius: 3px;
   color: #fff;
   background: $share_main_button_color2;
-  background: -moz-$share_main_button_color2;
-  background: -webkit-$share_main_button_color2;
-  background: -o-$share_main_button_color2;
+
+  &.porn1 {
+    background: $befa_member_main_color1;
+  }
 }
 
 .transfer-btn {
@@ -456,10 +457,15 @@
   border-radius: 3px;
   color: #fff;
   background: $share_main_button_color2;
-  background: -moz-$share_main_button_color2;
-  background: -webkit-$share_main_button_color2;
-  background: -o-$share_main_button_color2;
 
+  &.porn1 {
+    background: $befa_member_main_color1;
+    color: $befa_member_text_color1;
+    &.is-disable {
+      background: $befa_member_main_color2;
+      color: #fff;
+    }
+  }
   &.is-disable {
     background: linear-gradient(to left, #e9dacb, #eee5db);
     background: -moz-linear-gradient(to left, #e9dacb, #eee5db);
