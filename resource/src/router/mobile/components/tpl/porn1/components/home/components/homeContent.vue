@@ -729,7 +729,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1:last-child {
@@ -737,7 +737,7 @@ export default {
   }
 
   &.porn1:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 }
 </style>

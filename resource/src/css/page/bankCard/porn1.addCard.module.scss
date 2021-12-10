@@ -225,18 +225,24 @@
 .submit {
   height: 45px;
   line-height: 45px;
-  background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background: linear-gradient(right, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   font-size: 14px;
-  color: #fff;
+  color: $share_member_text_color3;
   text-align: center;
   border-radius: 3px;
   margin: 20px 0;
 
+  &.porn1 {
+    color: $befa_member_text_color1;
+    background: $befa_member_main_color1;
+    &.disabled {
+      background: $befa_member_main_color2;
+    }
+  }
+
   &.disabled {
     pointer-events: none;
-    background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-    background: linear-gradient(right, #e9dacb, #eee5db);
+    background: $share_main_button_color1;
   }
 
   &.hidden {
@@ -283,7 +289,7 @@
   position: absolute;
   right: 0;
   top: -4px;
-  background: #d2b79c;
+  background: $share_member_text_color1;
   color: #fff;
   border-radius: 3px;
 

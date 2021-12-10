@@ -53,7 +53,7 @@
 //增加銀行卡
 .add-bank-card {
   background-color: $main_white_color1;
-  color: $share_member_text_color4;
+  color: $share_member_text_color2;
   font-size: 15px;
   height: 50px;
   line-height: 50px;
@@ -194,7 +194,7 @@
 
     &.is-current {
       border: 1px solid $share_member_text_color4;
-      color: $share_member_text_color4;
+      color: $share_member_text_color2;
       background: linear-gradient(
         -45deg,
         $share_member_text_color4 10px,
@@ -313,13 +313,17 @@
   justify-content: center;
   float: right;
 
+  &.porn1 {
+    > span {
+      background: $befa_member_main_color1;
+      color: $befa_member_text_color1;
+    }
+  }
+
   > span {
     font-size: 14px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: $share_main_button_color2;
-    color: white;
+    color: $share_member_text_color3;
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -347,9 +351,6 @@
   > div {
     margin: 0 auto;
     height: 45px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: $share_main_button_color2;
     border-radius: 3px;
     width: 100%;

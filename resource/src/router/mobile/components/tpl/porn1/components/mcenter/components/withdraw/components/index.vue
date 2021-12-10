@@ -547,7 +547,7 @@
           :placeholder="valuePlaceholder"
           @keyup="moneyUSDT($event)"
         />
-        <span :class="[$style['withdraw-max']]">
+        <span :class="[$style['withdraw-max'], $style[siteConfig.ROUTER_TPL]]">
           <span @click="handleMaxWithdraw">
             {{ $text("S_WITHRAW_MAX2", "最高提现") }}
           </span>
@@ -1355,7 +1355,8 @@ export default {
           +this.withdrawValue - +this.withdrawData.audit.total.total_deduction;
         this.actualMoney = _actualMoney;
         // 實際提現金額 < 0
-        if ( _actualMoney <= 0) {//http://fb.vir888.com/default.asp?535621#4619033
+        if (_actualMoney <= 0) {
+          //http://fb.vir888.com/default.asp?535621#4619033
           this.errTips = "实际提现金额须大于0，请重新输入";
           // 實際提現金額 => 有流水時為 0
           this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
@@ -2237,7 +2238,8 @@ export default {
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
         this.withdrawCurrency;
 
-      this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType") === 'true';
+      this.epointSelectType =
+        localStorage.getItem("tmp_w_epointSelectType") === "true";
       if (localStorage.getItem("tmp_w_epointWallet")) {
         this.defaultEpointWallet = JSON.parse(
           localStorage.getItem("tmp_w_epointWallet")

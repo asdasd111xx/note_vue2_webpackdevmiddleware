@@ -109,6 +109,10 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: $share_member_text_color4;
+  background: $share_member_text_color1;
   transition: left 0.31s;
+
+  &.porn1 {
+    background: $befa_member_main_color1;
+  }
 }

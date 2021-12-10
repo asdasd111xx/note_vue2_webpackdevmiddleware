@@ -191,6 +191,7 @@
         <div
           :class="[
             $style['submit'],
+            $style[siteConfig.ROUTER_TPL],
             {
               [$style['disabled']]:
                 (lockStatus && !selectTarget.oneClickBindingMode) ||
