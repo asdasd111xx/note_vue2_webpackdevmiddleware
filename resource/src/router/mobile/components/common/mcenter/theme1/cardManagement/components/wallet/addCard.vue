@@ -1223,6 +1223,16 @@ export default {
     },
     handleSmbmit() {
       if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
+        //手機驗證開啟時USDT欄位檢查錢包格式
+        if (
+          this.selectTarget.walletId === 46 ||
+          this.selectTarget.walletId === 39
+        ) {
+          this.submitByNormal();
+          if (this.isReceive) {
+            return;
+          }
+        }
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "two");
         return;
@@ -1230,6 +1240,7 @@ export default {
       if (this.selectTarget.walletId === 37) {
         this.setPopupStatus(true, "qrcode");
       }
+
       if (this.selectTarget.oneClickBindingMode) {
         // 呼叫 API 前另需視窗
         let newWindow = "";
