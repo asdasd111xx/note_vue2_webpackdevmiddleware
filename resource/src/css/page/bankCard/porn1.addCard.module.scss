@@ -54,9 +54,13 @@
     cursor: pointer;
 
     &.is-current {
-      border: 1px solid #d1b79c;
-      color: #d1b79c;
-      background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+      border: 1px solid $share_member_text_color4;
+      color: $share_member_text_color4;
+      background: linear-gradient(
+        -45deg,
+        $share_member_text_color4 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
     }
   }
 
@@ -214,7 +218,7 @@
 
 .epoint-time {
   text-align: center;
-  color: #DB6372;
+  color: #db6372;
   margin: 5px 0;
 }
 
@@ -296,7 +300,7 @@
   width: 12px;
   top: 0;
 
-  >img {
+  > img {
     height: 12px;
     width: 12px;
   }
@@ -383,7 +387,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 
@@ -421,6 +425,6 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   transform: translateY(-50%);
 }

@@ -32,14 +32,14 @@
     }
 
     > div:last-child {
-      color: #be9e7f;
+      color: $share_member_text_color4;
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
     font-size: 16px;
   }
@@ -53,7 +53,7 @@
 //增加銀行卡
 .add-bank-card {
   background-color: $main_white_color1;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-size: 15px;
   height: 50px;
   line-height: 50px;
@@ -193,9 +193,13 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid #d1b79c;
-      color: #d1b79c;
-      background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+      border: 1px solid $share_member_text_color4;
+      color: $share_member_text_color4;
+      background: linear-gradient(
+        -45deg,
+        $share_member_text_color4 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
     }
 
     .select {
@@ -269,7 +273,7 @@
   }
 
   .time {
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 
   .serial {
@@ -280,8 +284,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid #be9e7f;
-    color: #be9e7f;
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -399,7 +403,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    background: #be9e7f;
+    background: $share_member_text_color4;
     border-radius: 3px 3px 0 0;
     color: white;
     position: relative;
@@ -477,7 +481,7 @@
     }
 
     &.custom-color {
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
 
     > span:last-child {
@@ -507,7 +511,7 @@
 
   .check-button-wrap {
     padding: 10px 11px;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -639,7 +643,7 @@
 .offer {
   height: 30px;
   background-color: $main_white_color1;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   padding: 5px 14px;
   width: 100%;
 }

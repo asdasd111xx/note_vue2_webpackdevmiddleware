@@ -28,7 +28,6 @@
 }
 
 @media (orientation: landscape) {
-
   .header,
   .tab-wrap {
     max-width: 768px !important;
@@ -44,7 +43,7 @@
   height: 20px;
   margin: auto;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
@@ -73,7 +72,7 @@
   height: 20px;
   margin: auto;
 
-  >img {
+  > img {
     width: 100%;
   }
 }
@@ -110,6 +109,6 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: $share_member_text_color4;
   transition: left 0.31s;
 }

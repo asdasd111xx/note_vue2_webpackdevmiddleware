@@ -268,7 +268,7 @@ export default {
   }
 
   &.notHome {
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 

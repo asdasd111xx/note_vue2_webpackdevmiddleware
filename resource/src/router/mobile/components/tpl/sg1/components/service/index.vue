@@ -399,7 +399,7 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-weight: bold;
 
   .add-bottom {

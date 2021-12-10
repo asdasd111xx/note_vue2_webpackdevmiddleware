@@ -763,7 +763,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: #be9e7f;
+      background: $share_member_text_color4;
       border-radius: 9px 0 0 9px;
     }
   }

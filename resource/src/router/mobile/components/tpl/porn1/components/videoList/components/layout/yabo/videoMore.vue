@@ -386,11 +386,11 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
   }
 
   &.av.active .line {
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
   }
 }
 

@@ -382,7 +382,7 @@ export default {
 .title {
   margin-bottom: 16px;
   padding: 15px 20%;
-  background: #be9e7f;
+  background: $share_member_text_color4;
   width: 100%;
   font-size: 20px;
   line-height: 20px;

@@ -56,7 +56,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 
@@ -64,7 +64,7 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-weight: 700;
 
   &::before {
@@ -251,7 +251,7 @@
 }
 
 .balance-redjackpot-text {
-  color: #be9e7f;
+  color: $share_member_text_color4;
   word-break: break-word;
 }
 
@@ -360,7 +360,7 @@
     span {
       position: absolute;
       left: 0;
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
   }
 

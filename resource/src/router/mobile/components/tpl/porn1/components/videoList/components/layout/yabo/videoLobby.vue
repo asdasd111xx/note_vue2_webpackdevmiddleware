@@ -536,11 +536,11 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
   }
 
   &.av.active .line {
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
   }
 }
 
@@ -637,7 +637,7 @@ export default {
   padding-left: 20px;
   background: url("/static/image/_new/common/icon_item.png") 0 50% no-repeat;
   background-size: 15px 15px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-weight: 700;
   font-size: 12px;
 

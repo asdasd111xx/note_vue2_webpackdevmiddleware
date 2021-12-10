@@ -620,7 +620,7 @@ export default {
 .login-wrap {
   &.porn1 {
     .visitor-money {
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
   }
 }

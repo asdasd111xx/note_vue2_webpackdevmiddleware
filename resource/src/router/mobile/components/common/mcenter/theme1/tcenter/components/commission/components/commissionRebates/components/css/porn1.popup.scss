@@ -48,7 +48,7 @@
     height: 48px;
     line-height: 48px;
     border-radius: 5px 5px 0 0;
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
     // background-color: #00347d;
     color: #fff;
     font-size: 16px;
@@ -63,7 +63,7 @@
     border-top: 1px solid #f8f8f7;
 
     .path-back {
-      color: #d1b79c;
+      color: $share_member_text_color4;
       border-left: 1px solid #f8f8f7;
     }
 
@@ -82,7 +82,7 @@
 
     .path-only-close {
       width: 100%;
-      color: #d1b79c;
+      color: $share_member_text_color4;
     }
   }
 
@@ -138,7 +138,7 @@
       display: inline-block;
       width: 45%;
       background: #faf5f0;
-      color: #be9e7f;
+      color: $share_member_text_color4;
       // color: #fff;
       border-radius: 4px;
       margin: 0 3px;

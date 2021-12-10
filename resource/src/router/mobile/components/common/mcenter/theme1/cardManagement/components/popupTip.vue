@@ -178,7 +178,7 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: #d1b79c;
+    color: $share_member_text_color4;
   }
 }
 </style>
