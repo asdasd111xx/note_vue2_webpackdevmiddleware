@@ -191,7 +191,7 @@
                 $style['send-keyring'],
                 { [$style.disabled]: smsTimer || !isVerifyPhone }
               ]"
-              @click="showCaptchaPopup"
+              @click="getKeyring"
             >
               {{ time ? `${time}s` : "获取验证码" }}
             </div>
