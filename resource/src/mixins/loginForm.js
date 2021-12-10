@@ -263,7 +263,7 @@ export default {
             window.RESET_MEM_SETTING();
 
             if (this.siteConfig.ROUTER_TPL === "sg1") {
-              this.$router.push("/mobile/live/iframe/home?hasFooter=true");
+              window.location.href = "/mobile/live/iframe/home?hasFooter=true";
               return;
             }
 
