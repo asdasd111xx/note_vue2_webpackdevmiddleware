@@ -10,7 +10,7 @@ export default {
   data() {
     return {
       time: 0,
-      lockStatus: false,
+      // lockStatus: false,
       isVerifyPhone: false,
       smsTimer: null,
       thirdyCaptchaObj: null,

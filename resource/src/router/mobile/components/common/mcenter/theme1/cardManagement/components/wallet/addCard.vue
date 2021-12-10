@@ -1228,7 +1228,7 @@ export default {
         return;
       }
       if (this.selectTarget.walletId === 37) {
-        setPopupStatus(true, "qrcode");
+        this.setPopupStatus(true, "qrcode");
       }
       if (this.selectTarget.oneClickBindingMode) {
         // 呼叫 API 前另需視窗
