@@ -221,7 +221,6 @@
         <!-- 上方 Tip 顯示 -->
         <template v-if="selectTarget.walletName && addBankCardStep === 'one'">
           <ul
-            v-if="!checkWalletPhoneVerification"
             :class="[
               {
                 [$style['onTop']]:
@@ -277,7 +276,7 @@
             },
             {
               [$style['hidden']]:
-                !checkWalletPhoneVerification &&
+                addBankCardStep === 'one' &&
                 selectTarget.walletId === 37 &&
                 !selectTarget.oneClickBindingMode
             }
