@@ -392,7 +392,8 @@ export default {
         api_uri: "/api/platform/v1/diamond/buy/user",
         method: "post",
         data: {
-          ...this.currentSelRate
+          ...this.currentSelRate,
+          ref_id: `${Date.now()}${this.memInfo.username}`
         }
       }).then(data => {
         if (data && data.error_text) {
