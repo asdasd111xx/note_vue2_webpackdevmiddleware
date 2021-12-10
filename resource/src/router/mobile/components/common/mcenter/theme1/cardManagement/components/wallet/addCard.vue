@@ -171,7 +171,7 @@
               :placeholder="'请输入手机号码'"
               :class="$style['phone-input']"
               maxlength="36"
-              @input="checkData($event.target.value, 'phone')"
+              @input="verification('phone')"
             />
           </div>
         </div>
@@ -269,6 +269,7 @@
             $style['submit'],
             {
               [$style['disabled']]:
+                (addBankCardStep === 'two' && !NextStepStatus) ||
                 (!NextStepStatus &&
                   lockStatus &&
                   !selectTarget.oneClickBindingMode) ||
@@ -662,18 +663,19 @@ export default {
           .replace(/[^0-9]/g, "");
       }
 
-      // if (key === "phone") {
-      //   this.actionVerificationFormData({
-      //     target: "phone",
-      //     value: this.formData.phone
-      //   }).then(res => {
-      //     this.formData.phone = res;
-      //   });
+      if (key === "phone") {
+        console.log("phonephonephone", this.formData.phone);
+        this.actionVerificationFormData({
+          target: "phone",
+          value: this.formData.phone
+        }).then(res => {
+          this.formData.phone = res;
+        });
 
-      //   if (this.formData.phone === "" || this.formData.keyring === "") {
-      //     lock = true;
-      //   }
-      // }
+        if (this.formData.phone === "" || this.formData.keyring === "") {
+          lock = true;
+        }
+      }
 
       if (
         !this.selectTarget.walletName ||

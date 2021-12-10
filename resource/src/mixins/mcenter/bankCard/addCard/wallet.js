@@ -9,22 +9,14 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   data() {
     return {
-      //       vBankList: [],
-      //       currentVBank: "",
-      //       isShowPop: false,
-      //       formData: {
-      //         walletAddress: "",
-      //         bank_id: "",
-      //         cgpPwd: ""
-      //       },
-      //       walletAddressTips: "",
-      //       errorMsg: "",
       time: 0,
       lockStatus: false,
       isVerifyPhone: false,
       smsTimer: null,
-      NextStepStatus: false
-      //       msg: ""
+      thirdyCaptchaObj: null,
+      NextStepStatus: false,
+      isShowCaptcha: false,
+      isClickedCaptcha: false
     };
   },
   computed: {
@@ -69,6 +61,30 @@ export default {
   //       this.vBankList = response.ret;
   //     });
   //   },
+  watch: {
+    addBankCardStep() {
+      if (this.addBankCardStep === "one") {
+        this.formData.phone = "";
+        this.formData.keyring = "";
+        this.errorMsg = "";
+        this.checkData();
+      } else if (this.addBankCardStep === "two") {
+        this.errorMsg = "";
+      }
+    },
+    thirdyCaptchaObj() {
+      this.getKeyring();
+    },
+    "formData.phone"() {
+      if (["ey1"].includes(this.themeTPL) || this.formData.phone.length >= 11) {
+        this.errorMsg = "";
+        this.isVerifyPhone = true;
+      } else {
+        // this.errorMsg = "手机格式不符合要求";
+        this.isVerifyPhone = false;
+      }
+    }
+  },
   methods: {
     showCaptchaPopup() {
       if (this.isClickedCaptcha || this.smsTimer) {
