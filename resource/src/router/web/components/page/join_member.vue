@@ -1598,7 +1598,7 @@ export default {
             });
             return;
           }
-          // this.errMsg = res.msg;
+          this.errMsg = res.msg;
         }
       });
     },
