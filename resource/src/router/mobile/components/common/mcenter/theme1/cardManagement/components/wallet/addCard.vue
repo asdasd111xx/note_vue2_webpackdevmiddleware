@@ -81,16 +81,12 @@
           </p>
 
           <div
-            v-if="!checkWalletPhoneVerification || selectTarget.walletId !== 37"
             :class="[
               $style['input-wrap'],
               { [$style['disable']]: selectTarget.walletId === 37 }
             ]"
           >
             <input
-              v-if="
-                !checkWalletPhoneVerification || selectTarget.walletId !== 37
-              "
               v-model="formData['walletAddress'].value"
               type="text"
               :placeholder="formData['walletAddress'].placeholder"
@@ -102,10 +98,14 @@
           <div
             v-if="
               (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
-                (selectTarget.walletId === 37 && !checkWalletPhoneVerification)
+                (selectTarget.walletId === 37 && addBankCardStep === 'one')
             "
             :class="$style['qrcode']"
-            @click="setPopupStatus(true, 'qrcode')"
+            @click="
+              checkWalletPhoneVerification
+                ? goToPhoneCheck()
+                : setPopupStatus(true, 'qrcode')
+            "
           >
             <img
               :src="
@@ -289,7 +289,12 @@
           >
             下一步
           </span>
-          <span v-else-if="addBankCardStep === 'two'">提交</span>
+          <span
+            v-else-if="
+              addBankCardStep === 'two' || selectTarget.walletId === 37
+            "
+            >提交</span
+          >
           <span v-else
             >{{
               selectTarget.oneClickBindingMode
@@ -644,6 +649,14 @@ export default {
       "getCustomerServiceUrl",
       "actionVerificationFormData"
     ]),
+    goToPhoneCheck() {
+      console.log("goto");
+      if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "two");
+        return;
+      }
+    },
     handleClickService() {
       localStorage.setItem("bankCardType", "wallet");
       this.$router.push("/mobile/service?redirect=bankCard");
@@ -1264,9 +1277,10 @@ export default {
         }
         return;
       }
-    },
-    phoneSmbmit() {
-      alert("phone submit");
+
+      if (this.selectTarget.walletId === 37) {
+        setPopupStatus(true, "qrcode");
+      }
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
