@@ -1223,7 +1223,7 @@ export default {
     },
     handleSmbmit() {
       if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
-        //手機驗證開啟時USDT欄位檢查錢包格式
+        //手機驗證開啟時USDT ERC20,TRC20 欄位檢查錢包格式
         if (
           this.selectTarget.walletId === 46 ||
           this.selectTarget.walletId === 39
