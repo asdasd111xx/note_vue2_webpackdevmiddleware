@@ -46,9 +46,13 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: $share_member_text_color4;
+  background: $share_text_color1;
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
+
+  &.porn1 {
+    background: $befa_member_text_color1;
+  }
 }
 
 .discount-item {
