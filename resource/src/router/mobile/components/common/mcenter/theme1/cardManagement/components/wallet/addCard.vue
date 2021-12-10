@@ -466,7 +466,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.memInfo);
     this.isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
     if (this.isBackFromService) {
       this.setBank(this.isBackFromService);
@@ -675,17 +674,12 @@ export default {
       }
 
       if (key === "phone") {
-        console.log("phonephonephone", this.formData.phone);
         this.actionVerificationFormData({
           target: "phone",
           value: this.formData.phone
         }).then(res => {
           this.formData.phone = res;
         });
-
-        if (this.formData.phone === "" || this.formData.keyring === "") {
-          lock = true;
-        }
       }
 
       if (
