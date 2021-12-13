@@ -222,7 +222,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      membalance: "getMemBalance"
+      membalance: "getMemBalance",
+      memInfo: "getMemInfo"
     }),
     memAmount() {
       return (
@@ -393,7 +394,7 @@ export default {
         method: "post",
         data: {
           ...this.currentSelRate,
-          ref_id: `${Date.now()}${this.memInfo.username}`
+          ref_id: `${Date.now()}${this.memInfo.user.username}`
         }
       }).then(data => {
         if (data && data.error_text) {

@@ -265,7 +265,7 @@ export default {
                 return;
             }
           } else {
-            this.$router.push(`/mobile/live/iframe/home`);
+            this.$router.push(`/mobile/live/iframe/home?hasFooter=true`);
           }
         },
         hasClose: true,
