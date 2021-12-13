@@ -72,7 +72,7 @@
 }
 
 .bank-card-wrap {
-  background-color: $main_background_white1;
+  background-color: #f3f3f3;
   margin-top: 10px;
 }
 
@@ -400,7 +400,7 @@
   min-height: 390px;
   z-index: 3;
   background-color: #ffffff;
-  border-radius: 4px;
+  border-radius: 10px;
   position: relative;
 
   &.deposit {
@@ -412,9 +412,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    background: $share_member_text_color4;
-    border-radius: 3px 3px 0 0;
-    color: white;
+    color: $main_title_color1;
     position: relative;
     line-height: 50px;
 
@@ -442,12 +440,6 @@
     }
   }
 
-  .hr {
-    width: 100%;
-    height: 2px;
-    background-color: #f8f8f7;
-  }
-
   .check-content {
     background-color: #ffffff;
     font-size: 15px;
@@ -470,6 +462,7 @@
       font-weight: 400;
       text-align: center;
       color: $main_text_color3;
+      margin-bottom: 4px;
     }
   }
 
@@ -477,16 +470,18 @@
     color: $main_text_color2;
     height: 33px;
     line-height: 33px;
-    margin: 2px 11px;
+    padding: 0px 11px;
+    position: relative;
 
     &.check-total {
       color: $main_text_color3;
-      background: $main_background_white1;
+      background: #f3f3f3;
     }
 
     &.check-actual {
       color: $main_text_color3;
       font-weight: 700;
+      background: #f3f3f3;
     }
 
     &.custom-color {
@@ -518,26 +513,42 @@
     }
   }
 
+  .check-cell::before {
+    content: "";
+    position: absolute;
+    width: 93%;
+    height: 1px;
+    top: -1px;
+    background: #eeeeee;
+    text-align: center;
+    margin: 0 auto;
+  }
+
   .check-button-wrap {
-    padding: 10px 11px;
+    padding: 2px 0px;
     color: $share_member_text_color4;
     text-align: center;
     bottom: 12px;
     width: 100%;
+    border-top: 1px solid#F8F8F7;
+    font-size: 16px;
+    margin-top: 30px;
 
     .check-btn {
-      width: 90px;
-      height: 45px;
-      line-height: 45px;
-      background: #faf5f0;
-      border-radius: 3px;
-      margin: 0 3px;
+      font-weight: bold;
+      width: 100px;
+      height: 50px;
+      line-height: 50px;
       display: inline-block;
-
+      position: relative;
+      border-right: 1px solid #f8f8f7;
       &.submit {
-        color: white;
-        background: $share_main_button_color2;
+        color: $share_main_button_color2;
       }
+    }
+
+    .check-btn:last-child {
+      border-right: none;
     }
   }
 }
