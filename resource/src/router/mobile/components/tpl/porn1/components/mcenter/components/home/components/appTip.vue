@@ -99,13 +99,13 @@ export default {
 
 .go-btn {
   height: 23px;
-  border: 1pt solid $share_member_text_color4;
+  border: 1pt solid $share_member_text_color11;
   border-radius: 12px;
   text-align: center;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  color: $share_member_text_color4;
+  color: $share_member_text_color11;
   margin-right: 10px;
 }
 </style>

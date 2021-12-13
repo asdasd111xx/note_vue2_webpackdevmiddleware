@@ -238,7 +238,7 @@ input {
   height: 30px;
   border-radius: 3px;
   line-height: 30px;
-  background-color: $share_member_text_color7;
+  background-color: $share_member_text_color10;
   color: $share_member_text_color3;
   pointer-events: none;
   // 取消點擊特效
@@ -248,16 +248,7 @@ input {
   &.active {
     pointer-events: auto;
     color: $share_member_text_color3;
-    background-color: $share_member_text_color1;
-  }
-
-  &.porn1 {
-    color: $befa_member_text_color1;
-    background-color: $befa_member_main_color2;
-    &.active {
-      color: $befa_member_text_color1;
-      background-color: $befa_member_main_color1;
-    }
+    background-color: $share_member_text_color4;
   }
 }
 
