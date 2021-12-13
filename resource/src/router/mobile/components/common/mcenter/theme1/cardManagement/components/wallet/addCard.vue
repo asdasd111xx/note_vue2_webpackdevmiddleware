@@ -191,7 +191,7 @@
                 $style['send-keyring'],
                 { [$style.disabled]: smsTimer || !isVerifyPhone }
               ]"
-              @click="showCaptchaPopup"
+              @click="getKeyring"
             >
               {{ time ? `${time}s` : "获取验证码" }}
             </div>
@@ -1264,50 +1264,55 @@ export default {
         this.$emit("update:addBankCardStep", "two");
         return;
       }
-
-      if (this.addBankCardStep === "two" && this.selectTarget.walletId === 37) {
+      //確認是否需手機驗證及是否是勾選購寶錢包
+      if (
+        this.checkWalletPhoneVerification &&
+        this.selectTarget.walletId === 37
+      ) {
         this.setPopupStatus(true, "qrcode");
-      }
-      if (this.selectTarget.oneClickBindingMode) {
-        // 呼叫 API 前另需視窗
-        let newWindow = "";
-        newWindow = window.open();
+        return;
+      } else {
+        if (this.selectTarget.oneClickBindingMode) {
+          // 呼叫 API 前另需視窗
+          let newWindow = "";
+          newWindow = window.open();
 
-        const newWindowHref = uri => {
-          try {
-            newWindow.location = uri;
-          } catch (e) {
-            console.log(e);
-            console.log(newWindow);
-            console.log(uri);
-          }
-        };
-        if ([47, 48].includes(this.selectTarget.walletId)) {
-          this.epointTimeCount = 60;
-          this.epointTimeStamp = setInterval(() => {
-            if (this.epointTimeCount === 0) {
-              clearInterval(this.epointTimeStamp);
-              this.epointTimeStamp = null;
+          const newWindowHref = uri => {
+            try {
+              newWindow.location = uri;
+            } catch (e) {
+              console.log(e);
+              console.log(newWindow);
+              console.log(uri);
             }
-            this.epointTimeCount -= 1;
-          }, 1000);
-        }
-        this.getBindWalletInfo().then(url => {
-          if (url) {
-            newWindowHref(url);
+          };
+          if ([47, 48].includes(this.selectTarget.walletId)) {
+            this.epointTimeCount = 60;
+            this.epointTimeStamp = setInterval(() => {
+              if (this.epointTimeCount === 0) {
+                clearInterval(this.epointTimeStamp);
+                this.epointTimeStamp = null;
+              }
+              this.epointTimeCount -= 1;
+            }, 1000);
+          }
+          this.getBindWalletInfo().then(url => {
+            if (url) {
+              newWindowHref(url);
+            } else {
+              newWindow.close();
+            }
+            return;
+          });
+        } else {
+          // CGPay
+          if (this.selectTarget.walletId === 21) {
+            this.submitByToken();
           } else {
-            newWindow.close();
+            this.submitByNormal();
           }
           return;
-        });
-      } else {
-        // CGPay
-        if (this.selectTarget.walletId === 21) {
-          this.submitByToken();
-        } else {
-          this.submitByNormal();
         }
-        return;
       }
     },
     setPopupStatus(isShow, type) {
