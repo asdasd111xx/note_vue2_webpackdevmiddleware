@@ -619,13 +619,14 @@
       <!-- Yabo -->
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="[$style['btn-wrap']]">
-          <div :class="[$style['submit-btn']]">
+          <div :class="[$style['submit-btn'], $style[siteConfig.ROUTER_TPL]]">
             <div @click="linkToRecharge">额度转让&nbsp;实时返佣</div>
           </div>
 
           <div
             :class="[
               $style['submit-btn'],
+              $style[siteConfig.ROUTER_TPL],
               { [$style['disabled']]: lockSubmit }
             ]"
           >

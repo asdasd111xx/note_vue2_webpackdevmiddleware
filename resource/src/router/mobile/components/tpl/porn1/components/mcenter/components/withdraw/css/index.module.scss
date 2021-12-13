@@ -348,6 +348,17 @@
   margin-top: 15px;
   padding: 0 14px;
 
+  &.porn1 {
+    > div {
+      background: $befa_member_main_color1;
+    }
+    &.disabled {
+      div {
+        background: $befa_member_main_color2;
+      }
+    }
+  }
+
   > div {
     margin: 0 auto;
     height: 45px;
@@ -359,16 +370,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: #ffffff;
+    color: $share_member_text_color3;
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-      background: -o-linear-gradient(left, #e9dacb, #eee5db);
-      background: -moz-linear-gradient(left, #e9dacb, #eee5db);
-      background: linear-gradient(to left, #e9dacb, #eee5db);
+      background: $share_main_button_color1;
     }
   }
 }
