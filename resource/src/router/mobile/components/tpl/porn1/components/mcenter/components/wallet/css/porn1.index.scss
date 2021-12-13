@@ -294,7 +294,7 @@
   border-radius: 34px;
 
   .content {
-    color: $main_title_color1;
+    color: $share_member_text_color2;
     font-size: 16px;
     margin-left: 8%;
     font-weight: 700;
@@ -353,10 +353,11 @@
     position: absolute;
     display: inline-block;
     width: 3px;
-    height: 14px;
+    height: 15px;
     top: 2.5px;
     left: 0;
     background: $share_member_text_color2;
+    border-radius: 2px;
   }
 
   // 查看更多
