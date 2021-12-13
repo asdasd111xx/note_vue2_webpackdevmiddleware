@@ -847,9 +847,7 @@
 
                 <!-- CGP 安全防護碼 -->
                 <!-- v-if="walletData['CGPay'].method === 0" -->
-                <div
-                  :class="$style['input-wrap']"
-                >
+                <div :class="$style['input-wrap']">
                   <input
                     id="cgp-password"
                     :class="$style['wallet-password']"
@@ -1167,6 +1165,7 @@
           <div
             :class="[
               $style['pay-button'],
+              $style[routerTPL],
               {
                 [$style.disabled]:
                   !checkSuccess ||
@@ -1405,7 +1404,7 @@ export default {
 
       marqueeList: [],
       displayMoneyValue: "",
-      isShowCGPPwd:false,
+      isShowCGPPwd: false
     };
   },
   watch: {
@@ -2332,7 +2331,7 @@ export default {
       }
 
       this.isShowCGPPwd = !this.isShowCGPPwd;
-    },
+    }
   }
 };
 </script>

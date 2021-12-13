@@ -296,13 +296,15 @@
   border-radius: 3px;
   // cursor: pointer;
   color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
 
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  &.porn1 {
+    background: $befa_member_main_color1;
   }
 }
 
