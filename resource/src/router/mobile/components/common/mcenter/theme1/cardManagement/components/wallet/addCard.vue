@@ -189,6 +189,7 @@
             <div
               :class="[
                 $style['send-keyring'],
+                $style[routerTPL],
                 { [$style.disabled]: smsTimer || !isVerifyPhone }
               ]"
               @click="getKeyring"
@@ -487,6 +488,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   watch: {
