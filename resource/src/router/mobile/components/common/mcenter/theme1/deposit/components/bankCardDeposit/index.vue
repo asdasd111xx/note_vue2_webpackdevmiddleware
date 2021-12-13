@@ -23,6 +23,7 @@
         :key="`swiper-data-${index}`"
         :class="[
           $style['swiper-item'],
+          $style[routerTPL],
           {
             [$style['is-current']]:
               listItem.payment_group_id === curModeGroup.payment_group_id

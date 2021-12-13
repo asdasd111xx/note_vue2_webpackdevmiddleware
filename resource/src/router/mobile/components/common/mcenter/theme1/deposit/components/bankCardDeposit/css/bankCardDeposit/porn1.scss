@@ -18,6 +18,13 @@
   color: #a6a9b2;
   white-space: nowrap;
 
+  &.porn1 {
+    &.is-current {
+      span {
+        border-bottom: 2px solid $share_member_text_color4;
+      }
+    }
+  }
   span {
     height: 34px;
     line-height: 34px;
@@ -29,7 +36,7 @@
     color: #5e626d;
 
     span {
-      border-bottom: 2px solid $share_member_text_color4;
+      border-bottom: 2px solid $share_text_color1;
     }
   }
 }
