@@ -17,7 +17,7 @@
           {{ `总余额(美元)：${currencyData.total_balance}` }}
         </div>
         <div
-          v-for="(item, index) in currencyData.currency_list"
+          v-for="(item, index) in currencyHasMoney"
           :key="index"
           :class="$style['cell']"
           @click="handleClickItem(item)"
@@ -28,10 +28,7 @@
           </div>
           <div>{{ item.balance }}</div>
         </div>
-        <div
-          v-if="currencyData.currency_list.length === 0"
-          :class="$style['no-coin']"
-        >
+        <div v-if="currencyHasMoney.length === 0" :class="$style['no-coin']">
           币希帐户无余额<span>返回钱包</span>
         </div>
       </div>
@@ -62,9 +59,7 @@ export default {
       activeIndex: 0
     };
   },
-  created() {
-    console.log(this.currencyData);
-  },
+  created() {},
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -92,6 +87,15 @@ export default {
         default:
           return "";
       }
+    },
+    currencyHasMoney() {
+      let newArr = [];
+      if (this.currencyData.currency_list.length > 0) {
+        newArr = this.currencyData.currency_list.filter(coin => {
+          return +coin.balance > 0;
+        });
+      }
+      return newArr;
     }
   },
   methods: {
