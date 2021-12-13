@@ -28,7 +28,8 @@ $main_discover_color1: #bf8646;
 $main_error_color1: #db6372;
 
 /* 包網 */
-// 澳博国际
+/*--- 澳博 ---*/
+//大廳 遊戲
 $share_main_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
 $share_main_button_text_color: #ffffff;
 $share_text_color1: #ad9982; //首頁上方icon文字顏色
@@ -41,8 +42,33 @@ $share_text_color7: #ffffff; //首頁左邊遊戲icon文字(active)
 $share_footer_color1: #9ca3bf;
 $share_footer_active_color1: $share_text_color5;
 
-// 51国际
+/*---  51国际 ---*/
 $sp1_main_color1: #ffbb00;
 
-// 币发
+//包網 會員中心
+$share_member_text_color1: #d1b79c;
+$share_member_text_color2: #414655; //文字前面的長方形
+$share_member_text_color3: #ffffff;
+$share_member_text_color4: #6aaaf5;
+$share_member_text_color5: #be9e7f;
+$share_member_text_color6: #eeeeee;
+$share_member_text_color7: #e9dacc;
+$share_member_text_color8: #db6372;
+$share_member_text_color9: #9ca3bf;
+$share_member_text_color10: #cccccc;
+$share_member_text_color11: #5e626d;
+$share_member_text_color12: #ad9982;
+$share_member_text_color13: #a6a9b2;
+
+$share_main_button_color1: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+$share_main_button_color2: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+
+/*--- 币发 ---*/
+//大廳 遊戲
 $befa_main_color: #3354ad;
+
+//會員中心
+$befa_member_main_color1: #3354ad;
+$befa_member_main_color2: #adbade;
+$befa_member_main_color3: #3676d5;
+$befa_member_text_color1: #ffffff;

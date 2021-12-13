@@ -18,6 +18,13 @@
   color: #a6a9b2;
   white-space: nowrap;
 
+  &.porn1 {
+    &.is-current {
+      span {
+        border-bottom: 2px solid $share_member_text_color4;
+      }
+    }
+  }
   span {
     height: 34px;
     line-height: 34px;
@@ -29,7 +36,7 @@
     color: #5e626d;
 
     span {
-      border-bottom: 2px solid #be9e7f;
+      border-bottom: 2px solid $share_text_color1;
     }
   }
 }
@@ -112,7 +119,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   transform: translateY(-50%);
 }
 
@@ -148,9 +155,13 @@
   }
 
   &.is-current {
-    border: 1px solid #d1b79c;
-    color: #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 
   .pay-mode-tag {
@@ -246,7 +257,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -281,9 +292,13 @@
 
   &.is-current {
     background-color: #fff;
-    color: #d1b79c;
-    border: 1px solid #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+    color: $share_member_text_color4;
+    border: 1px solid $share_member_text_color4;
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 }
 
@@ -304,13 +319,15 @@
   border-radius: 3px;
   // cursor: pointer;
   color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
 
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  &.porn1 {
+    background: $befa_member_main_color1;
   }
 }
 
@@ -380,7 +397,7 @@
   color: $main_text_color2;
 
   .time {
-    color: #be9e7f;
+    color: $share_member_text_color4;
     margin: 0 5px 0 5px;
 
     &.ey {
@@ -414,7 +431,7 @@
     }
 
     .sg {
-      color: #be9e7f;
+      color: $share_member_text_color4;
       font-weight: 500;
     }
   }
@@ -426,8 +443,8 @@
   .conversion-btn {
     display: inline-block;
     margin-left: 10px;
-    border: 1px solid #be9e7f;
-    color: #be9e7f;
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -591,7 +608,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 
@@ -799,15 +816,19 @@
   color: #cbced8;
 
   &.success {
-    color: #d1b79c;
+    color: $share_member_text_color4;
   }
 }
 
 .current-data {
   background-color: #fff;
-  color: #d1b79c;
-  border: 1px solid #d1b79c;
-  background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+  color: $share_member_text_color4;
+  border: 1px solid $share_member_text_color4;
+  background: linear-gradient(
+    -45deg,
+    $share_member_text_color4 12px,
+    hsla(0, 0%, 100%, 0) 0
+  );
 }
 
 .pop-message-mark {
@@ -856,7 +877,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #d1b79c;
+  color: $share_member_text_color4;
 }
 
 .money-tip-wrap {
@@ -892,7 +913,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
@@ -1060,7 +1081,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1152,7 +1172,7 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: #d1b79c;
+    color: $share_member_text_color4;
 
     &.sg {
       color: #bf8646;
@@ -1176,7 +1196,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 
@@ -1193,7 +1213,7 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   margin: 0;
   padding: 0;
   height: 40px;
@@ -1216,7 +1236,7 @@
 
 .top-promotion {
   background: #f8f8f7;
-  color: #be9e7f;
+  color: $share_member_text_color4;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1228,7 +1248,7 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: #d1b79c;
+  color: $share_member_text_color4;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;

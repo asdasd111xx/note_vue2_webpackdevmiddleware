@@ -136,7 +136,7 @@
         @set-captcha="setCaptcha"
         :page-type="'friends'"
       />
-      <button @click="checkInput">
+      <button :class="$style[siteConfig.ROUTER_TPL]" @click="checkInput">
         {{ $text("S_ADD") }}
       </button>
       <div :class="$style.tips">

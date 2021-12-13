@@ -414,7 +414,7 @@
             />
           </span>
           <div
-            :class="$style['max-money-btn']"
+            :class="[$style['max-money-btn'], $style[siteConfig.ROUTER_TPL]]"
             @click="getMaxMoney(membalance, tranOut)"
           >
             {{ $text("S_MAX", "最大") }}
@@ -424,6 +424,7 @@
       <div
         :class="[
           $style['transfer-btn'],
+          $style[siteConfig.ROUTER_TPL],
           {
             [$style['is-disable']]: btnLock || !transferMoney
           }

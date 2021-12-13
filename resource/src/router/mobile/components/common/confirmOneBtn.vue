@@ -69,6 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/css/variable.scss";
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s;
@@ -123,7 +124,7 @@ export default {
 }
 
 .confirm-btn-wrap {
-  color: #d1b79c;
+  color: $share_member_text_color4;
   padding: 20px 0;
 
   &.ey1 {

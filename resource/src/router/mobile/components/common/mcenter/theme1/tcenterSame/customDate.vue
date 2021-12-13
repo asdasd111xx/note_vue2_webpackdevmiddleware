@@ -57,7 +57,11 @@
     </div>
     <div :class="$style['field-search-wrap']">
       <div
-        :class="[$style['btn-search'], { [$style['disable']]: !checkDate }]"
+        :class="[
+          $style['btn-search'],
+          $style[siteConfig.ROUTER_TPL],
+          { [$style['disable']]: !checkDate }
+        ]"
         @click.stop="
           () => {
             if (!checkDate) {

@@ -45,7 +45,15 @@ $fixed_spacing_height: 43px;
       left: 50%;
       bottom: 0;
       transform: translateX(-50%);
-      background: #be9e7f;
+      background: $share_member_text_color1;
+    }
+  }
+
+  &.porn1 {
+    &.is-current {
+      &::after {
+        background: $befa_member_main_color2;
+      }
     }
   }
 }

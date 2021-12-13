@@ -43,7 +43,7 @@
   height: 48px;
   line-height: 48px;
   border-radius: 5px 5px 0 0;
-  background-color: #be9e7f;
+  background-color: $share_member_text_color2;
   color: #fff;
   font-size: 16px;
   text-align: center;
@@ -84,12 +84,12 @@
     margin: 0 3px;
 
     &.close {
-      color: #be9e7f;
+      color: $share_member_text_color4;
       background: #faf5f0;
     }
 
     &.confirm {
-      background: linear-gradient(#bd9d7d, #f9ddbd);
+      background: $share_member_text_color4;
     }
   }
 }

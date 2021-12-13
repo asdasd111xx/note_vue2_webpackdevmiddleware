@@ -29,7 +29,12 @@
                 </div>
               </div>
             </div>
-            <div :class="$style['process-bar-line']">
+            <div
+              :class="[
+                $style['process-bar-line'],
+                $style[siteConfig.ROUTER_TPL]
+              ]"
+            >
               <div
                 :class="$style['process-bar-current-line']"
                 :style="{
@@ -40,7 +45,9 @@
 
             <div :class="$style['process-bar-bottom']">
               <span>{{ "还差" }}</span>
-              <span>{{ item.lack }}</span>
+              <span :class="$style[`${item.lack > 0 ? 'red' : 'blue'}`]">{{
+                item.lack
+              }}</span>
             </div>
           </div>
         </div>

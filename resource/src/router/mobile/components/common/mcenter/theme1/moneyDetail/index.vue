@@ -40,6 +40,7 @@
             v-for="option in categoryOpt"
             :key="option.key"
             :class="[
+              $style[siteConfig.ROUTER_TPL],
               $style.select,
               { [$style.active]: currentCategory.key === option.key }
             ]"
@@ -64,6 +65,7 @@
             :key="option.key"
             :class="[
               $style['select-time'],
+              $style[siteConfig.ROUTER_TPL],
               { [$style.active]: currentDate.key === option.key }
             ]"
             @click="setDate(option)"
@@ -108,7 +110,13 @@
             :min-limit="limitTime"
             :max-limit="estToday"
           />
-          <div :class="['picker-button-wrap', 'clearfix']">
+          <div
+            :class="[
+              $style['picker-button-wrap'],
+              $style[siteConfig.ROUTER_TPL],
+              'clearfix'
+            ]"
+          >
             <div :class="$style.cancel" @click="onCancel">取消</div>
             <div :class="$style.confirm" @click="onConfirm">确定</div>
           </div>

@@ -177,6 +177,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .mask {
   position: fixed;
   top: 0;
@@ -278,7 +279,7 @@ export default {
   }
 
   &:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1:last-child {
@@ -286,7 +287,7 @@ export default {
   }
 
   &.porn1:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 }
 

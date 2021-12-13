@@ -111,7 +111,7 @@
     .regist-title-bar {
       width: 3px;
       height: 18px;
-      background: linear-gradient(to top, #d1b79c, #ad9982);
+      background: linear-gradient(to top, $share_member_text_color4, #ad9982);
       border-radius: 1px;
       margin-left: 5px;
       margin-right: 5px;
@@ -173,7 +173,7 @@
         margin: 5px 5px 0 0;
 
         &.deposit {
-          background-color: #d1b79c;
+          background-color: $share_member_text_color4;
         }
 
         &.withdraw {
@@ -206,7 +206,7 @@
         height: 10px;
         width: 100px;
         border-radius: 5px;
-        background-color: #d1b79c;
+        background-color: $share_member_text_color4;
 
         &.isZero {
           background-color: #ededed;

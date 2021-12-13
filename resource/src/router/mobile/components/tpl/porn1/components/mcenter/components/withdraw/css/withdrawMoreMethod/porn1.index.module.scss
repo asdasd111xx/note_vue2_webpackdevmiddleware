@@ -35,7 +35,7 @@
     position: absolute;
     text-align: center;
     width: 40px;
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 
   .title {
@@ -51,7 +51,7 @@
   .cell {
     font-size: 14px;
     background-color: #ffffff;
-    color: #be9e7f;
+    color: $share_member_text_color4;
     height: 50px;
     line-height: 50px;
     margin-bottom: 1px;

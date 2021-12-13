@@ -64,12 +64,23 @@
       padding-bottom: 10px;
       text-align: center;
 
+      &.porn1 {
+        button {
+          color: $befa_member_text_color1;
+          background: $befa_member_main_color1;
+        }
+        .unrebate-btn {
+          color: $befa_member_text_color1;
+          background: $befa_member_main_color2;
+        }
+      }
+
       button {
         width: 270px;
         height: 39px;
-        color: #fff;
+        color: $share_member_text_color3;
         // background: #00347d;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: $share_main_button_color2;
 
         border: 0;
         outline: none;
@@ -77,8 +88,8 @@
       }
 
       .unrebate-btn {
-        color: #f3ede7;
-        background: linear-gradient(to left, #e9dacb, #eee5db);
+        color: $share_member_text_color3;
+        background: $share_main_button_color1;
       }
     }
 

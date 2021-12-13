@@ -620,7 +620,7 @@ export default {
 .login-wrap {
   &.porn1 {
     .visitor-money {
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
   }
 }
@@ -793,7 +793,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   color: white;
   margin: 0 auto;
   text-align: center;

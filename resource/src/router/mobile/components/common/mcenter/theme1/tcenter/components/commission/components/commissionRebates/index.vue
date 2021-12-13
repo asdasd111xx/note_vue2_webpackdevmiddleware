@@ -160,7 +160,7 @@
             </div>
           </div>
 
-          <div :class="$style['rebate-btn']">
+          <div :class="[$style['rebate-btn'], $style[siteConfig.ROUTER_TPL]]">
             <template>
               <button
                 v-if="caculateList.state === 1"

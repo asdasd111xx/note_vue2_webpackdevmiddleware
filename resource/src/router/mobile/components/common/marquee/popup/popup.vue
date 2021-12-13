@@ -131,6 +131,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .mask {
   position: fixed;
   top: 0;
@@ -230,7 +231,7 @@ export default {
   font-size: 18px;
 
   &.porn1 {
-    color: #d1b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1 {

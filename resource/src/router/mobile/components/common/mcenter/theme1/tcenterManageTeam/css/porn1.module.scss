@@ -30,7 +30,6 @@ $fixed_spacing_height: 43px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
   &.is-current {
     color: $main_text_color4;
 
@@ -42,7 +41,23 @@ $fixed_spacing_height: 43px;
       left: 50%;
       bottom: 0;
       transform: translateX(-50%);
-      background: #be9e7f;
+      background: $share_member_text_color4;
+    }
+  }
+  &.porn1 {
+    &.is-current {
+      color: $main_text_color4;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 43px;
+        height: 2px;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        background: $befa_member_main_color2;
+      }
     }
   }
 }

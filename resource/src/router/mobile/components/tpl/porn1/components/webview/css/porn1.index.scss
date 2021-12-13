@@ -65,6 +65,10 @@
       color: #bf8646;
       font-size: 10px;
       margin-top: 2.5px;
+
+      &.porn1 {
+        color: $befa_member_text_color1;
+      }
     }
   }
 }
@@ -119,11 +123,11 @@
 
     .download {
       display: inline-block;
-      color: #be9e7f;
+      color: $share_member_text_color4;
       font-size: 12px;
       padding: 4px 12px;
       margin-bottom: 15px;
-      border: 1px solid #be9e7f;
+      border: 1px solid $share_member_text_color4;
       border-radius: 3px;
     }
   }

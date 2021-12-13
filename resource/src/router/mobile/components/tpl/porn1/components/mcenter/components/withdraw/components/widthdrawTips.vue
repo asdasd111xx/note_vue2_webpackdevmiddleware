@@ -26,7 +26,6 @@
         <div :class="$style['check-content']">
           <template v-if="type === 'tips'">
             <div :class="$style['time']">流水检查时间：{{ getNowTime() }}</div>
-            <div :class="$style['hr']" />
             <div v-if="serialNumberData && serialNumberData.total">
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']"> 流水要求 </span>
