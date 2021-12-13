@@ -238,6 +238,80 @@
         </div>
       </div>
     </template>
+    <template v-if="bcWalletEnableType">
+      <div :class="$style['bc-wrap']">
+        <div :class="$style['bc-title']">币希钱包</div>
+        <div :class="$style['bc-content']">
+          <div
+            v-if="bcWalletBindType"
+            :class="[$style['bc-data'], $style['first']]"
+            @click="bcClickEvent('money')"
+          >
+            <div>{{ "999,999.00" }}</div>
+            <div>
+              总余额(美元)
+            </div>
+          </div>
+          <div v-if="bcWalletBindType" :class="$style['line']" />
+          <div
+            v-if="bcWalletBindType"
+            :class="$style['bc-data']"
+            @click="bcClickEvent('qrcode')"
+          >
+            <img
+              :class="$style['img-icon']"
+              :src="
+                $getCdnPath('/static/image/common/wallet/btse_btn_qrcode.png')
+              "
+            />
+            <div>币希收款码</div>
+          </div>
+          <div
+            v-if="!bcWalletBindType"
+            :class="[$style['bc-data'], $style['less']]"
+            @click="bcClickEvent('bind')"
+          >
+            <img
+              :class="$style['img-icon']"
+              :src="
+                $getCdnPath('/static/image/common/wallet/btse_btn_wallet.png')
+              "
+            />
+            <div>绑定钱包</div>
+          </div>
+          <div :class="$style['line']" />
+          <div
+            :class="[
+              $style['bc-data'],
+              { [$style['less']]: !bcWalletBindType }
+            ]"
+            @click="bcClickEvent('inter')"
+          >
+            <img
+              :class="$style['img-icon']"
+              :src="
+                $getCdnPath('/static/image/common/wallet/btse_btn_btse.png')
+              "
+            />
+            <div>进入币希</div>
+          </div>
+          <div :class="$style['line']" />
+          <div
+            :class="[
+              $style['bc-data'],
+              { [$style['less']]: !bcWalletBindType }
+            ]"
+            @click="bcClickEvent('use')"
+          >
+            <img
+              :class="$style['img-icon']"
+              :src="$getCdnPath('/static/image/common/wallet/btse_btn_use.png')"
+            />
+            <div>使用方法</div>
+          </div>
+        </div>
+      </div>
+    </template>
 
     <div :class="$style['invite-wrap']" @click="onClickInvite">
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -311,6 +385,13 @@
       :content="maintainInfo"
       @close="handleCloseMaintainInfo"
     />
+    <bc-wallet-popup
+      v-if="bcMoneyShowType"
+      :currency-data="bcCurrencyData"
+      :open-qr-code="getWalletUserReceiveCode"
+      :reload-money="getWalletCurrencyBalanceList"
+      @close="closeBcMoneyPopup"
+    />
   </div>
 </template>
 
@@ -326,6 +407,7 @@ import Vue from "vue";
 import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import bcWalletPopup from "./bcWalletPopup";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
@@ -334,7 +416,8 @@ export default {
   components: {
     balanceTran,
     message,
-    maintainBlock
+    maintainBlock,
+    bcWalletPopup
   },
   mixins: [mixin],
   data() {
@@ -352,8 +435,16 @@ export default {
       //swagDiamondBalance: "0",
       birdBalance: "--",
       redJackpotData: null,
-      loginMoney: ""
+      loginMoney: "",
       // updateBalance: null
+      bcWalletEnableType: true,
+      bcWalletBindType: true,
+      bcMoneyShowType: false,
+      bcCurrencyData: {
+        bind: false,
+        total_balance: "",
+        currency_list: []
+      }
     };
   },
   computed: {
@@ -577,6 +668,7 @@ export default {
     this.actionSetUserBalance().then(() => {
       this.getRedJackpot();
     });
+    this.getWalletCurrencyBalanceList();
   },
   beforeUnmount() {
     clearInterval(this.updateBalance);
@@ -613,7 +705,8 @@ export default {
       "actionSetGlobalMessage",
       "actionGetRechargeStatus",
       "actionGetMemInfoV3",
-      "actionSetUserBalance"
+      "actionSetUserBalance",
+      "getCustomerServiceUrl"
     ]),
     dialogMessage(msg) {
       return this.actionSetGlobalMessage({ msg: msg });
@@ -833,6 +926,113 @@ export default {
             origin: "home"
           });
         });
+    },
+
+    bcClickEvent(type) {
+      switch (type) {
+        case "money":
+          this.bcMoneyShowType = true;
+          break;
+        case "qrcode":
+          this.getWalletUserReceiveCode();
+          break;
+        case "bind":
+          this.$router.push(
+            `/mobile/mcenter/bankcard?redirect=wallet&type=wallet&wallet=bcwallet&swift=BBBTSECN1`
+          );
+          break;
+        case "inter":
+          this.getCustomerServiceUrl({
+            urlName: "btse_login",
+            needToken: false
+          }).then(res => {
+            let newWindow = "";
+            newWindow = window.open(res.uri);
+          });
+          break;
+        case "use":
+          this.getPromotionList(this.floatData.linkDetail);
+          break;
+        default:
+          break;
+      }
+    },
+    getPromotionList(id) {
+      this.promotionId = +id;
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+        params: {
+          tabId: 0
+        }
+      }).then(res => {
+        if (res && res.data) {
+          let linkData = res.data.ret.find(data => {
+            return data.id === this.promotionId;
+          });
+          if (linkData) {
+            this.mobileLinkOpen({
+              linkType: "mi",
+              linkTitle: linkData.name,
+              linkTo: linkData.link
+            });
+          } else {
+            this.actionSetGlobalMessage({
+              msg: "抱歉，此活动不存在"
+            });
+          }
+        }
+      });
+    },
+    closeBcMoneyPopup() {
+      this.bcMoneyShowType = false;
+    },
+    getWalletCurrencyBalanceList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/Currency/Balance/List`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
+          this.bcWalletBindType = res.data.bind;
+          this.bcCurrencyData = res.data;
+        } else {
+          // this.bcCurrencyData = {
+          //   bind: true,
+          //   total_balance: "12414152345",
+          //   currency_list: [
+          //     {
+          //       balance: "1,000,000.99",
+          //       currency: "BTC",
+          //       name: "比特币"
+          //     },
+          //     {
+          //       balance: "900,000.00",
+          //       currency: "ETH",
+          //       name: "以太坊"
+          //     }
+          //   ]
+          // };
+        }
+      });
+    },
+    getWalletUserReceiveCode() {
+      return axios({
+        method: "get",
+        url:
+          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/wallet/user/receive_code"
+      })
+        .then(res => {
+          console.log(res);
+          if (res && res.data && res.data.ret) {
+            let newWindow = "";
+            newWindow = window.open(res.data.ret.url);
+          }
+        })
+        .catch(res => {});
     }
   }
 };

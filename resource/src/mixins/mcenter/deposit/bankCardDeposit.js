@@ -53,6 +53,8 @@ export default {
       defaultEpointWallet: "",
       outerCryptoOption: [],
       userBankOption: [],
+      bcCurrencyData: null,
+      selectBcCoin: null,
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
       showEpointWalletAddress: false,
@@ -1023,6 +1025,14 @@ export default {
         }
       }
 
+      //幣希
+      if (this.curPayInfo.payment_method_id === 32) {
+        paramsData = {
+          ...paramsData,
+          currency: this.selectBcCoin.currency
+        };
+      }
+
       let _isPWA = true;
 
       return axios({
@@ -1395,7 +1405,11 @@ export default {
         params: {
           type: 1,
           amount: this.moneyValue,
-          method_id: this.curPayInfo.payment_method_id
+          method_id: this.curPayInfo.payment_method_id,
+          currency:
+            this.curPayInfo.payment_method_id === 32
+              ? this.selectBcCoin.currency
+              : ""
         }
       })
         .then(response => {

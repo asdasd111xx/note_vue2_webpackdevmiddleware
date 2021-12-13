@@ -63,6 +63,22 @@
   background-color: #fff;
 }
 
+.bc-coint {
+  display: flex;
+  justify-content: space-between;
+
+  .coin-money {
+    margin-left: 30px;
+    width: 60%
+  }
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
+}
+
 .feature-title {
   height: 16px;
   line-height: 16px;

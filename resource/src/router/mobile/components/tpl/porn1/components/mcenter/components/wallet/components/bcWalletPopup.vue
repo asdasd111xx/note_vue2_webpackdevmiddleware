@@ -18,6 +18,7 @@
             :class="$style['update-img']"
             :src="$getCdnPath(`/static/image/common/btn_update.png`)"
             alt="update"
+            @click="reloadMoney"
           />
         </div>
         <div :class="$style['cell']">
@@ -29,25 +30,10 @@
         <div :class="$style['content-tip']">
           各资产换算美元后加总，实际金额请至币希查看
         </div>
-        <div :class="$style['content-title']">各资产余额</div>
-        <div
-          v-for="(item, index) in currencyHasMoney"
-          :key="index"
-          :class="$style['cell']"
-        >
-          <div :class="$style['currency']">
-            <span>{{ item.currency }}</span
-            ><span :class="$style['name']">{{ item.name }}</span>
-          </div>
-          <div>{{ item.balance }}</div>
-        </div>
-        <div :class="$style['more']" @click="showAll">
-          点击查看全部余额
-          <i :class="[$style.expand, { [$style.collapse]: isShowAll }]" />
-        </div>
-        <div v-if="isShowAll">
+        <div v-if="+currencyData.total_balance > 0">
+          <div :class="$style['content-title']">各资产余额</div>
           <div
-            v-for="(item, index) in currencyNoMoney"
+            v-for="(item, index) in currencyHasMoney"
             :key="index"
             :class="$style['cell']"
           >
@@ -57,7 +43,38 @@
             </div>
             <div>{{ item.balance }}</div>
           </div>
+          <div :class="$style['more']" @click="showAll">
+            点击查看全部余额
+            <i :class="[$style.expand, { [$style.collapse]: isShowAll }]" />
+          </div>
+          <div v-if="isShowAll">
+            <div
+              v-for="(item, index) in currencyNoMoney"
+              :key="index"
+              :class="$style['cell']"
+            >
+              <div :class="$style['currency']">
+                <span>{{ item.currency }}</span
+                ><span :class="$style['name']">{{ item.name }}</span>
+              </div>
+              <div>{{ item.balance }}</div>
+            </div>
+          </div>
         </div>
+        <div
+          v-if="+currencyData.total_balance <= 0"
+          :class="$style['no-money']"
+        >
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/img_default_no_data.png`
+              )
+            "
+          />
+          <div>暫時沒有餘額</div>
+        </div>
+        <div :class="$style['pay-code']" @click="openQrCode">币希收款码</div>
       </div>
     </div>
   </div>
@@ -71,6 +88,14 @@ export default {
     currencyData: {
       type: Object,
       default: {}
+    },
+    openQrCode: {
+      type: Function,
+      default: () => {}
+    },
+    reloadMoney: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
@@ -79,9 +104,7 @@ export default {
       isShowAll: false
     };
   },
-  created() {
-    console.log(this.currencyData);
-  },
+  created() {},
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -116,7 +139,6 @@ export default {
         newArr = this.currencyData.currency_list.filter(coin => {
           return +coin.balance > 0;
         });
-        console.log(newArr);
       }
       return newArr;
     },
@@ -126,7 +148,6 @@ export default {
         newArr = this.currencyData.currency_list.filter(coin => {
           return +coin.balance === 0;
         });
-        console.log(newArr);
       }
       return newArr;
     }
@@ -293,5 +314,30 @@ export default {
     background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png")
       center center / 100% 100%;
   }
+}
+.no-money {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  > img {
+    width: 250px;
+    height: 250px;
+  }
+  > div {
+    height: 50px;
+    color: #a6a9b2;
+    margin: 38px;
+    font-size: 21px;
+  }
+}
+.pay-code {
+  height: 50px;
+  background-color: #bd9d7d;
+  color: white;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 38px;
 }
 </style>

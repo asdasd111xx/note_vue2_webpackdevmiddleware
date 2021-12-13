@@ -400,7 +400,7 @@
         <span>{{ "添加提现方式" }}</span>
       </div>
     </template>
-
+    
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
     <!-- 億元 : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="['ey1'].includes(themeTPL)">
@@ -601,6 +601,7 @@
           formatThousandsCurrency(cryptoMoney)
         }}</span>
         <span v-if="selectedCard.name === 'CGPay'">USDT</span>
+        <span v-else-if="selectedCard.bank_id === 2025">USDT</span>
       </div>
 
       <!-- 參考匯率 -->
@@ -1145,8 +1146,10 @@ export default {
       let cgpayCurrencyUSDT =
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28;
+      //幣希錢包
+      let useBcWallet = this.selectedCard.bank_id === 2025
 
-      return (withdrawType || cgpayCurrencyUSDT) && !this.epointSelectType;
+      return (withdrawType || cgpayCurrencyUSDT || useBcWallet) && !this.epointSelectType;
     },
     // 強制出款狀態
     forceStatus() {
@@ -1223,6 +1226,7 @@ export default {
         (this.isSelectedUSDT ||
           this.selectedCard.bank_id == 2009 ||
           this.selectedCard.bank_id == 2016 ||
+          this.selectedCard.bank_id == 2025 ||
           this.selectedCard.bank_id == 2026) &&
         this.selectedCard.offer_percent > 0
       );
@@ -1301,6 +1305,7 @@ export default {
       //選擇 CGPAY-USDT ,USDT
       if (
         this.withdrawCurrency.method_id === 28 ||
+        this.withdrawCurrency.method_id === 32 ||
         this.selectedCard.bank_id === 3002
       ) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
@@ -1436,6 +1441,9 @@ export default {
             item.alias.indexOf("-")
           );
           break;
+      }
+      if(this.selectedCard.bank_id === 2025){
+        this.getCryptoRate(31)
       }
       this.chooseUSDT();
       // if (this.withdrawValue) {
@@ -1750,6 +1758,8 @@ export default {
           .method_id;
       } else if (this.selectedCard.bank_id === 2009) {
         methonId = this.withdrawCurrency.method_id;
+      } else if (this.selectedCard.bank_id === 2025) {
+        methonId = 31;
       } else {
         methonId = "";
       }
@@ -2238,7 +2248,8 @@ export default {
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
         this.withdrawCurrency;
 
-      this.epointSelectType = localStorage.getItem("tmp_w_epointSelectType") === 'true';
+      this.epointSelectType =
+        localStorage.getItem("tmp_w_epointSelectType") === "true";
       if (localStorage.getItem("tmp_w_epointWallet")) {
         this.defaultEpointWallet = JSON.parse(
           localStorage.getItem("tmp_w_epointWallet")
@@ -2311,6 +2322,24 @@ export default {
           });
         }
       }
+    },
+    //取得加密貨幣匯率
+    getCryptoRate(id){
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Crypto/Rate`,
+        params: {
+          username: "",
+          method_id:id
+        }
+      }).then(res => {
+        // console.log(res);
+        if (res.errorCode === "00" && res.status === "000") {
+          console.log(res);
+        } else {
+          
+        }
+      });
     }
   },
   destroyed() {
