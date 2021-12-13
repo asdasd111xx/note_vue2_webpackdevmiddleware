@@ -35,7 +35,7 @@ $buttonTextColor: #fff;
 
   &.porn1 {
     &.active {
-      color: $befa_member_main_color1;
+      color: $befa_member_main_color2;
     }
   }
 }
@@ -228,6 +228,10 @@ $buttonTextColor: #fff;
     border-radius: 3px;
     text-align: center;
     color: $buttonTextColor;
+
+    &.porn1 {
+      background: $befa_member_main_color1;
+    }
 
     &.disable {
       opacity: 0.5;

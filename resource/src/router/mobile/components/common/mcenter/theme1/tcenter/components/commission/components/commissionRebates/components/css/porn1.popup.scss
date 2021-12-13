@@ -63,7 +63,6 @@
     border-top: 1px solid #f8f8f7;
 
     .path-back {
-      color: $share_member_text_color4;
       border-left: 1px solid #f8f8f7;
     }
 
@@ -78,6 +77,7 @@
     .path-back,
     .path-close {
       width: 50%;
+      color: $share_member_text_color4;
     }
 
     .path-only-close {

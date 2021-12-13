@@ -63,8 +63,13 @@
       height: 6px;
       border-radius: 3px;
       top: 0;
-      background-color: $share_member_text_color4;
+      background-color: $share_member_text_color1;
       z-index: 0;
+    }
+    &.porn1 {
+      .process-bar-current-line {
+        background-color: $befa_member_main_color1;
+      }
     }
   }
 
@@ -81,10 +86,18 @@
     }
     > span:last-child {
       font-size: 14px;
-      color: #6aaaf5;
+
       font-weight: bold;
       line-height: 17px;
       margin-left: 2px;
+
+      &.red {
+        color: $share_member_text_color8;
+      }
+
+      &.blue {
+        color: $share_member_text_color4;
+      }
     }
   }
 }
