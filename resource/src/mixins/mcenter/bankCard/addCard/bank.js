@@ -80,25 +80,6 @@ export default {
       }
 
       return result;
-    },
-    checkWalletPhoneVerification() {
-      // player_user_virtual_bank_phone (會員綁定電子錢包前需手機驗證，0否，1每次，2首次)
-      // phone.corfirm (已認證，0未認證/1已認證/2人工驗證)
-
-      let result = null;
-      let walletVerifyNum = this.memInfo.config.player_user_virtual_bank_phone;
-      let isPhoneVerify =
-        this.memInfo.phone.phone && this.memInfo.phone.confirm !== 0;
-
-      if (walletVerifyNum === 0 || (walletVerifyNum === 2 && isPhoneVerify)) {
-        result = false;
-      }
-
-      if (walletVerifyNum === 1 || (walletVerifyNum === 2 && !isPhoneVerify)) {
-        result = true;
-      }
-
-      return result;
     }
   },
   watch: {
