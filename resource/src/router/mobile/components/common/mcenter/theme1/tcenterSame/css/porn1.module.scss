@@ -30,7 +30,13 @@ $buttonTextColor: #fff;
   white-space: nowrap;
 
   &.active {
-    color: $share_member_text_color4;
+    color: $share_member_text_color1;
+  }
+
+  &.porn1 {
+    &.active {
+      color: $befa_member_main_color1;
+    }
   }
 }
 
@@ -289,7 +295,7 @@ $buttonTextColor: #fff;
   font-size: 14px;
   margin-top: 6px;
   padding: 8px 12px;
-  background-color: #dddddd;
+  background-color: #f2f2f2;
   font-weight: bold;
 
   &::before {
@@ -300,7 +306,7 @@ $buttonTextColor: #fff;
     height: 15px;
     top: 2.5px;
     margin-right: 3px;
-    background: linear-gradient(#bd9d7d, #f9ddbd);
+    background: $share_member_text_color2;
   }
 }
 
@@ -309,7 +315,6 @@ $buttonTextColor: #fff;
   padding: 2.5px 19px 2.5px 24px;
   margin-bottom: 1.5px;
   position: relative;
-  background: #fefffe;
   display: flex;
   font-size: 12px;
   line-height: 35px;
@@ -325,13 +330,13 @@ $buttonTextColor: #fff;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  &:nth-child(even) {
-    background-color: #ffffff;
-  }
+  // &:nth-child(even) {
+  //   background-color: #ffffff;
+  // }
 
-  &:nth-child(odd) {
-    background-color: #f2f2f2;
-  }
+  // &:nth-child(odd) {
+  //   background-color: #f2f2f2;
+  // }
 }
 
 @media screen and (min-width: $phone) {

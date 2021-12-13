@@ -116,7 +116,12 @@ $submitTextColor: #fff;
   line-height: 45px;
   border-radius: 3px;
   text-align: center;
-  color: #fff;
+  color: $share_member_text_color3;
+
+  &.porn1 {
+    background: $befa_member_main_color1;
+    color: $befa_member_text_color1;
+  }
 }
 
 .tips {
