@@ -6,7 +6,9 @@
           :src="
             $getCdnPath(
               `/static/image/common/btn_back_${
-                themeTPL === 'porn1'
+                themeTPL === 'porn1' ||
+                themeTPL === 'aobo1' ||
+                themeTPL === 'sp1'
                   ? 'grey'
                   : themeTPL === 'ey1'
                   ? 'white'
@@ -123,7 +125,7 @@ export default {
       return style;
     },
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     isCommon() {
       return this.$route.meta.common;
