@@ -1,6 +1,6 @@
 <template>
   <mobile-container
-    :class="$style.container"
+    :class="[$style.container, $style[routerTPL]]"
     :has-footer="!hasPrev && !fromlanding"
   >
     <div slot="content" :class="$style['content-wrap']">
@@ -382,13 +382,17 @@ export default {
 
 div.container {
   background-color: #fff;
-  background-image: url("/static/image/porn1/service/header_bg.png");
+  background-image: url("/static/image/aobo1/service/header_bg.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
   background-position: 0 -70px;
   background-repeat: no-repeat;
   position: relative;
   height: 100vh;
+
+  &.porn1 {
+    background-image: url("/static/image/porn1/service/header_bg.png");
+  }
 }
 
 .userInfo-block {
