@@ -10,3 +10,46 @@
 .entry-message-confirm {
   color: #bf8646;
 }
+.select-active {
+  color: $sg_main_text_color1;
+}
+
+.pay-mode-item {
+  &.is-current {
+    border: 1px solid $sg_main_text_color1;
+    color: $sg_main_text_color1;
+    background: linear-gradient(
+      -45deg,
+      $sg_main_text_color1 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
+  }
+}
+
+.pay-money-item {
+  &.is-current {
+    color: $sg_main_text_color1;
+    border: 1px solid $sg_main_text_color1;
+    background: linear-gradient(
+      -45deg,
+      $sg_main_text_color1 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
+  }
+}
+
+.current-data {
+  color: $sg_main_text_color1;
+  border: 1px solid $sg_main_text_color1;
+  background: linear-gradient(
+    -45deg,
+    $sg_main_text_color1 12px,
+    hsla(0, 0%, 100%, 0) 0
+  );
+}
+
+.feature-tip-title {
+  &.success {
+    color: $sg_main_text_color1;
+  }
+}

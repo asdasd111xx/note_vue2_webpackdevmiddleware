@@ -19,3 +19,15 @@
     background: linear-gradient(#fe593c, #e61938);
   }
 }
+
+.balance-wrap {
+  .balance-total-item {
+    .balance-item-money {
+      color: $sg_main_text_color2;
+    }
+  }
+
+  .recycle-btn {
+    color: $sg_main_text_color2;
+  }
+}

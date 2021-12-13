@@ -2,7 +2,7 @@
   <transition :name="'fade'">
     <div :class="$style['detail-alert-wrap']">
       <div :class="[$style['alert-wrap'], $style['deposit']]">
-        <div :class="$style['alert-title']">
+        <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
           <div :class="$style['alert-close-wrap']" @click="closeFuc(false)">
             <icon name="times" width="20" height="20" />
@@ -50,14 +50,15 @@
           <div :class="$style['tip-time']">
             {{ $text("S_RECORD_TIP01", "将以您最后提交时的存款资料做审核") }}
           </div>
-          <div :class="$style['btn-wrap']">
+          <div :class="[$style['btn-wrap'], $style[siteConfig.ROUTER_TPL]]">
             <div :class="$style['cancel-btn']" @click="closeFuc(false)">
               {{ $text("S_CANCEL", "取消") }}
             </div>
             <div
               :class="[
                 $style['confirm-btn'],
-                { [$style.disabled]: isSubmitDisabled }
+                { [$style.disabled]: isSubmitDisabled },
+                $style[siteConfig.ROUTER_TPL]
               ]"
               @click="saveDepositData"
             >
@@ -111,7 +112,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
     resultSpeedField: {
       get() {

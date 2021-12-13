@@ -1,5 +1,5 @@
 @import "./index.module.scss";
-
+@import "~@/css/variable.scss";
 .detail-alert-wrap {
   position: fixed;
   z-index: 5;
@@ -36,10 +36,10 @@
   font-size: 18px;
   font-weight: 700;
   text-align: center;
-  color: #ffffff;
+  color: $share_member_text_color2;
   width: 100%;
   height: 48px;
-  background: $share_member_text_color4;
+
   border-radius: 8px 8px 0 0;
   position: relative;
 
@@ -52,6 +52,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &.sg1 {
+    color: #ffffff;
+    background: #333333;
   }
 }
 
@@ -79,8 +84,8 @@
 
 .btn-wrap {
   width: 100%;
-  padding: 0 14px;
-
+  position: relative;
+  border-top: 1px solid #eeeeee;
   > div {
     max-width: 150px;
     margin: 15px 5px 10px 5px;
@@ -95,16 +100,47 @@
   > div:first-child {
     font-weight: 700;
     color: $share_member_text_color4;
-    background-color: #faf5f0;
   }
 
   > div:last-child {
     font-weight: 700;
-    color: #ffffff;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: $share_main_button_color2;
+    color: $share_member_text_color4;
+  }
+  > div:last-child::before {
+    position: absolute;
+    width: 1px;
+    height: 65px;
+    background-color: #eeeeee;
+    content: "";
+    left: 150px;
+    top: 1px;
+  }
+
+  &.sg1 {
+    > div {
+      max-width: 150px;
+      margin: 15px 5px 10px 5px;
+      width: 45%;
+      display: inline-block;
+      text-align: center;
+      border-radius: 3px;
+      height: 42px;
+      line-height: 42px;
+    }
+    border-radius: 3px;
+    border-top: none;
+    > div:first-child {
+      color: #ffffff;
+      background-color: #a2a2a2;
+    }
+    > div:last-child {
+      color: #ffffff;
+      background: linear-gradient(#fe593c, #e61938);
+    }
+    > div:last-child::before {
+      height: 0;
+      width: 0;
+    }
   }
 }
 
@@ -117,6 +153,7 @@
   color: #a6a9b2;
   margin: 7px 0;
   padding: 0px 16px;
+  margin-bottom: 40px;
 }
 
 @media screen and (max-width: $phone) {

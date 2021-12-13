@@ -1,1 +1,18 @@
 @import "./porn1.index.scss";
+.balance-wrap {
+  .balance-total-item {
+    .balance-item-money {
+      color: $sg_main_text_color2;
+    }
+  }
+
+  .recycle-btn {
+    color: $sg_main_text_color2;
+  }
+
+  .credit-trans-link {
+    flex: 1;
+    font-size: 16px;
+    color: $sg_main_text_color2;
+  }
+}
