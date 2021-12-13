@@ -191,7 +191,7 @@
                 $style['send-keyring'],
                 { [$style.disabled]: smsTimer || !isVerifyPhone }
               ]"
-              @click="getKeyring"
+              @click="showCaptchaPopup"
             >
               {{ time ? `${time}s` : "获取验证码" }}
             </div>
@@ -702,9 +702,7 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
-          lang: "zh-cn",
-          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
-          keyring: this.formData.keyring
+          lang: "zh-cn"
         }
       })
         .then(response => {
@@ -1233,14 +1231,15 @@ export default {
             return;
           }
         }
+
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "two");
         return;
       }
-      if (this.selectTarget.walletId === 37) {
+
+      if (this.addBankCardStep === "two" && this.selectTarget.walletId === 37) {
         this.setPopupStatus(true, "qrcode");
       }
-
       if (this.selectTarget.oneClickBindingMode) {
         // 呼叫 API 前另需視窗
         let newWindow = "";
@@ -1282,10 +1281,6 @@ export default {
         }
         return;
       }
-
-      // if (this.selectTarget.walletId === 37) {
-      //   setPopupStatus(true, "qrcode");
-      // }
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {

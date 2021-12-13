@@ -86,31 +86,31 @@ export default {
     showCaptcha() {
       this.isShowCaptcha = !this.isShowCaptcha;
     },
-    // showCaptchaPopup() {
-    //   if (this.isClickedCaptcha || this.smsTimer) {
-    //     return;
-    //   }
-    //   this.isClickedCaptcha = true;
-    //   setTimeout(() => {
-    //     this.isClickedCaptcha = false;
-    //   }, 2000);
+    showCaptchaPopup() {
+      if (this.isClickedCaptcha || this.smsTimer) {
+        return;
+      }
+      this.isClickedCaptcha = true;
+      setTimeout(() => {
+        this.isClickedCaptcha = false;
+      }, 2000);
 
-    //   const params = [
-    //     this.actionSetUserdata(true),
-    //     this.actionSetDomainConfigV2()
-    //   ];
+      const params = [
+        this.actionSetUserdata(true),
+        this.actionSetDomainConfigV2()
+      ];
 
-    //   Promise.all(params).then(() => {
-    //     // 無認證直接呼叫
-    //     if (this.memInfo.config.default_captcha_type === 0) {
-    //       this.getKeyring();
-    //       return;
-    //     }
+      Promise.all(params).then(() => {
+        // 無認證直接呼叫
+        if (this.memInfo.config.default_captcha_type === 0) {
+          this.getKeyring();
+          return;
+        }
 
-    //     // 彈驗證窗並利用Watch thirdyCaptchaObj 來呼叫 getKeyring()
-    //     this.showCaptcha();
-    //   });
-    // },
+        // 彈驗證窗並利用Watch thirdyCaptchaObj 來呼叫 getKeyring()
+        this.showCaptcha();
+      });
+    },
     getKeyring() {
       // if (this.lockStatus || this.smsTimer) {
       //   return;
