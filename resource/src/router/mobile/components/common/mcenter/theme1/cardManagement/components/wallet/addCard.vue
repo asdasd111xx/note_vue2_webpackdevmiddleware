@@ -366,6 +366,8 @@
       <template v-if="showPopStatus.type === 'qrcode'">
         <popup-qrcode
           :virtualBankId="selectTarget.walletId"
+          :phone="formData.phone"
+          :keyring="formData.keyring"
           @close="closePopup"
         />
       </template>
@@ -904,6 +906,7 @@ export default {
         }
       })
         .then(res => {
+          console.log("extextextetext-res", res);
           const { result, ret, msg } = res.data;
           this.isReceive = false;
 
@@ -915,6 +918,7 @@ export default {
           return Promise.resolve(ret.html);
         })
         .catch(error => {
+          console.log("extextextetext-error", error);
           const { msg, code } = error.response.data;
           this.isReceive = false;
           this.actionSetGlobalMessage({ msg, code });
@@ -1264,11 +1268,12 @@ export default {
         this.$emit("update:addBankCardStep", "two");
         return;
       }
-      //確認是否需手機驗證及是否是勾選購寶錢包
+      //需手機驗證時購寶錢包綁定流程
       if (
         this.checkWalletPhoneVerification &&
         this.selectTarget.walletId === 37
       ) {
+        console.log("gobaogobaogobaogobao");
         this.setPopupStatus(true, "qrcode");
         return;
       } else {
