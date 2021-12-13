@@ -67,7 +67,10 @@
           {{ item.text }}
         </div>
         <div
-          :class="$style['active-slider']"
+         :class="[
+            $style['active-slider'],
+            $style[siteConfig.ROUTER_TPL]
+          ]"
           :style="{
             left: tabSlider,
           }"
@@ -305,6 +308,7 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     tabList() {
       switch (this.currentTab) {
