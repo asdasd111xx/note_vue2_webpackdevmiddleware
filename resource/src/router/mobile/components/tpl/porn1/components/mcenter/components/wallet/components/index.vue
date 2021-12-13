@@ -1023,19 +1023,19 @@ export default {
       });
     },
     getWalletUserReceiveCode() {
-      return axios({
+      goLangApiRequest({
         method: "get",
-        url:
-          "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/wallet/user/receive_code"
-      })
-        .then(res => {
-          console.log(res);
-          if (res && res.data && res.data.ret) {
-            let newWindow = "";
-            newWindow = window.open(res.data.ret.url);
-          }
-        })
-        .catch(res => {});
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
+          let newWindow = "";
+          newWindow = window.open(res.data.url);
+        }
+      });
     }
   }
 };
