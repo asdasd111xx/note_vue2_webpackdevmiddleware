@@ -414,6 +414,7 @@ import bcWalletPopup from "./bcWalletPopup";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
+import mobileLinkOpen from "@/lib/mobile_link_open";
 
 export default {
   components: {
@@ -711,6 +712,7 @@ export default {
       "actionSetUserBalance",
       "getCustomerServiceUrl"
     ]),
+    mobileLinkOpen,
     dialogMessage(msg) {
       return this.actionSetGlobalMessage({ msg: msg });
     },
@@ -954,7 +956,13 @@ export default {
           });
           break;
         case "use":
-          this.getPromotionList();
+          this.getCustomerServiceUrl({
+            urlName: "btse_wallet",
+            needToken: false
+          }).then(res => {
+            this.getPromotionList(res.uri);
+          });
+
           break;
         default:
           break;
@@ -962,7 +970,6 @@ export default {
     },
     getPromotionList(id) {
       this.promotionId = +id;
-      this.promotionId = 2112130005;
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
@@ -982,7 +989,7 @@ export default {
             });
           } else {
             this.actionSetGlobalMessage({
-              msg: "抱歉，此活动不存在"
+              msg: "正在上线，敬请期待"
             });
           }
         }
