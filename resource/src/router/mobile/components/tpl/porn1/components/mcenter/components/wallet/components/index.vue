@@ -247,7 +247,7 @@
             :class="[$style['bc-data'], $style['first']]"
             @click="bcClickEvent('money')"
           >
-            <div>{{ "999,999.00" }}</div>
+            <div>{{ bcCurrencyData.total_balance }}</div>
             <div>
               总余额(美元)
             </div>
@@ -945,11 +945,11 @@ export default {
           );
           break;
         case "inter":
+          let newWindow = "";
           this.getCustomerServiceUrl({
             urlName: "btse_login",
             needToken: false
           }).then(res => {
-            let newWindow = "";
             newWindow = window.open(res.uri);
           });
           break;
@@ -1023,6 +1023,7 @@ export default {
       });
     },
     getWalletUserReceiveCode() {
+      let newWindow = "";
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
@@ -1032,7 +1033,6 @@ export default {
       }).then(res => {
         console.log(res);
         if (res.status === "000") {
-          let newWindow = "";
           newWindow = window.open(res.data.url);
         }
       });
