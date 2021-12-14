@@ -138,7 +138,7 @@ export default {
         },
         {
           key: "wallet",
-          text: ["porn1", "sg1"].includes(this.themeTPL)
+          text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
             ? "数字货币"
             : "电子钱包"
         }
@@ -164,6 +164,8 @@ export default {
         switch (themeTPL) {
           case "porn1":
           case "sg1":
+          case "aobo1":
+          case "sp1":
             return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
 
           case "ey1":
@@ -186,6 +188,8 @@ export default {
           switch (themeTPL) {
             case "porn1":
             case "sg1":
+            case "aobo1":
+            case "sp1":
               return showDetail
                 ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
                 : !isCommon
@@ -211,6 +215,8 @@ export default {
           switch (this.themeTPL) {
             case "porn1":
             case "sg1":
+            case "aobo1":
+            case "sp1":
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
 
             case "ey1":
