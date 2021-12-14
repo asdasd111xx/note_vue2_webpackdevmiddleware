@@ -221,10 +221,13 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  background: $share_member_text_color1;
+  background-image: $share_main_button_color2;
 
+  &.porn1 {
+    background: $befa_member_main_color1;
+    background-image: $befa_member_main_color1;
+  }
   &.disabled {
     pointer-events: none;
     opacity: 0.5;
