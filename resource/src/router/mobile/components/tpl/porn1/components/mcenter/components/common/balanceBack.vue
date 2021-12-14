@@ -15,7 +15,12 @@
               "
             />
             <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-            <div :class="$style['balance-item-money']">
+            <div
+              :class="[
+                $style['balance-item-money'],
+                $style[siteConfig.ROUTER_TPL]
+              ]"
+            >
               {{ balanceTran.membalance.vendor.default.amount }}
             </div>
           </div>
@@ -23,7 +28,11 @@
           <div
             v-if="hasLink"
             @click="handleCreditTrans"
-            :class="[$style['balance-total-item'], $style['credit-trans-link']]"
+            :class="[
+              $style['balance-total-item'],
+              $style['credit-trans-link'],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
           >
             <span> {{ $text("S_CREDIT_TRANSFER", "额度转让") }} </span>
           </div>
@@ -32,6 +41,7 @@
             id="one-recycle-btn"
             :class="[
               $style['recycle-btn'],
+              $style[siteConfig.ROUTER_TPL],
               balanceTran.balanceBackLock ? $style.disable : ''
             ]"
             @click="balanceBack()"

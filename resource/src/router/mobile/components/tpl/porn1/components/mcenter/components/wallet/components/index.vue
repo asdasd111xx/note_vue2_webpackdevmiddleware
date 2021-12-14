@@ -98,7 +98,12 @@
               >
                 {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
               </span>
-              <span :class="[$style['balance-redjackpot-image']]" />
+              <span
+                :class="[
+                  $style['balance-redjackpot-image'],
+                  $style[siteConfig.ROUTER_TPL]
+                ]"
+              />
             </div>
 
             <div
@@ -269,7 +274,7 @@
     </div>
 
     <div :class="$style['wager-wrap']">
-      <div :class="[$style['title']]">
+      <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
         投注记录
         <span @click="$router.push('/mobile/mcenter/betRecord')">查看更多</span>
       </div>

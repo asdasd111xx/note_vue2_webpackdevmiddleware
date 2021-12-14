@@ -16,7 +16,9 @@
                 : memInfo.user.username
             }}
           </span>
-          <span :class="$style['vip-level']"> VIP{{ viplevel }} </span>
+          <span :class="[$style['vip-level'], $style[siteConfig.ROUTER_TPL]]">
+            VIP{{ viplevel }}
+          </span>
         </template>
         <template v-else>
           <span @click.stop="$router.push('/mobile/login')">
@@ -211,6 +213,9 @@ export default {
   font-weight: bold;
   width: 40px;
   border-radius: 4px;
-  background: $share_member_text_color9;
+  background: $share_origin_color4;
+  &.porn1 {
+    background: $share_member_text_color9;
+  }
 }
 </style>

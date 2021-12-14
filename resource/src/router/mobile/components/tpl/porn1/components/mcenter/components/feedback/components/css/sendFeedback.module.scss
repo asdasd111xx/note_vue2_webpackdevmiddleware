@@ -186,7 +186,12 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_member_text_color4;
+    color: $share_origin_color5;
+  }
+  &.porn1 {
+    span {
+      color: $share_member_text_color4;
+    }
   }
 }
 

@@ -23,7 +23,7 @@
         ref="container"
         :class="[
           'news-content',
-          `${themeTPL}`,
+          `${routerTPL}`,
           { notHome: !isDepositOrWithdraw }
         ]"
       >
@@ -257,6 +257,10 @@ export default {
 
   &.porn1 {
     color: $main_text_color1;
+
+    &.notHome {
+      color: $share_member_text_color9;
+    }
   }
 
   &.ey1 {
@@ -268,7 +272,7 @@ export default {
   }
 
   &.notHome {
-    color: $share_member_text_color9;
+    color: $share_origin_color2;
   }
 }
 

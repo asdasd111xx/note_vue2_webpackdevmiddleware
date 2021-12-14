@@ -5,6 +5,7 @@
       <div
         :class="[
           $style['check-container'],
+          $style[siteConfig.ROUTER_TPL],
           {
             [$style['deposit']]: type === 'deposit'
           }

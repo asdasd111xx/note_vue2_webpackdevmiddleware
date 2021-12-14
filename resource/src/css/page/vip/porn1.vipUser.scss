@@ -122,7 +122,13 @@
   }
 
   &.current {
-    background: #5e626d;
+    background: $share_origin_color3;
+  }
+
+  &.porn1 {
+    &.current {
+      background: $share_member_text_color11;
+    }
   }
 
   &.next {
@@ -182,9 +188,13 @@
 
 .user-desc-block {
   padding-top: 3px;
-  color: #7086ce;
+  color: $share_origin_color15;
   font-size: 12px;
   font-weight: 700;
+
+  &.porn1 {
+    color: $share_member_text_color14;
+  }
 
   .desc-text {
     padding: 2.5px 0px;

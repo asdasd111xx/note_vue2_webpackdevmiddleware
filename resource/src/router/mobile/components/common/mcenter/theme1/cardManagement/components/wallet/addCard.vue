@@ -17,6 +17,7 @@
             <li
               :class="[
                 $style['wallet-item'],
+                $style[siteConfig.ROUTER_TPL],
                 {
                   [$style['is-current']]: item.id === selectTarget.walletId
                 }

@@ -202,7 +202,9 @@
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img :src="$getCdnPath('/static/image/porn1/common/btn_help.png')" />
+          <img
+            :src="$getCdnPath(`/static/image/${routerTPL}/common/btn_help.png`)"
+          />
         </div>
       </div>
     </template>

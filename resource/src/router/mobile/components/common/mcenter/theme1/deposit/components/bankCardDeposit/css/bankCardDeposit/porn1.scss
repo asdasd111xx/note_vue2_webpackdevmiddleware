@@ -142,9 +142,11 @@
   &.is-current {
     border: 1px solid $share_member_text_color4;
     color: $share_member_text_color4;
-    background: linear-gradient(-45deg,
-        $share_member_text_color4 10px,
-        hsla(0, 0%, 100%, 0) 0);
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 
   .pay-mode-tag {
@@ -240,7 +242,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -277,9 +279,11 @@
     background-color: #fff;
     color: $share_member_text_color4;
     border: 1px solid $share_member_text_color4;
-    background: linear-gradient(-45deg,
-        $share_member_text_color4 12px,
-        hsla(0, 0%, 100%, 0) 0);
+    background: linear-gradient(
+      -45deg,
+      $share_member_text_color4 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 }
 
@@ -796,8 +800,14 @@
   font-size: 14px;
   color: #cbced8;
 
+  &.porn1 {
+    &.success {
+      color: $share_member_text_color4;
+    }
+  }
+
   &.success {
-    color: $share_member_text_color4;
+    color: $share_origin_color1;
   }
 }
 
@@ -805,9 +815,11 @@
   background-color: #fff;
   color: $share_member_text_color4;
   border: 1px solid $share_member_text_color4;
-  background: linear-gradient(-45deg,
-      $share_member_text_color4 12px,
-      hsla(0, 0%, 100%, 0) 0);
+  background: linear-gradient(
+    -45deg,
+    $share_member_text_color4 12px,
+    hsla(0, 0%, 100%, 0) 0
+  );
 }
 
 .pop-message-mark {
@@ -892,7 +904,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1060,7 +1072,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1176,7 +1187,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 
@@ -1193,12 +1204,16 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: $share_origin_color1;
   margin: 0;
   padding: 0;
   height: 40px;
   line-height: 40px;
   list-style-type: none;
+
+  &.porn1 {
+    color: $share_member_text_color4;
+  }
 
   li {
     flex: 1;

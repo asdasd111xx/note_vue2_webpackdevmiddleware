@@ -74,11 +74,21 @@
       color: #222;
 
       &.week {
-        color: $share_member_text_color4;
+        color: $share_origin_color16;
       }
 
       &.is-current {
-        color: $share_member_text_color4;
+        color: $share_origin_color16;
+      }
+
+      &.porn1 {
+        &.week {
+          color: $share_member_text_color4;
+        }
+
+        &.is-current {
+          color: $share_member_text_color4;
+        }
       }
     }
 
@@ -364,6 +374,10 @@
     text-align: center;
     padding: 15px 0;
     border-top: 2px solid #f9f9f8;
-    color: $share_member_text_color4;
+    color: $share_origin_color1;
+
+    &.porn1 {
+      color: $share_member_text_color4;
+    }
   }
 }

@@ -139,6 +139,7 @@
 
   &.porn1 {
     li {
+      border: 1px solid $share_member_text_color6;
       &.active {
         background: $befa_member_main_color1;
         background-image: $befa_member_main_color1;
@@ -171,8 +172,8 @@
     &.active {
       line-height: 33px;
       color: #fff;
-      background: $share_member_text_color1;
-      background-image: $share_member_text_color1;
+      background: $share_origin_color8;
+      background-image: $share_origin_color8;
     }
 
     &:nth-child(n + 5) {
@@ -254,8 +255,8 @@
 }
 
 .time-cancel {
-  background: $share_main_button_color1;
-  color: $share_member_text_color3;
+  background: $share_origin_color9;
+  color: #be9e7f;
 }
 
 .time-confirm {
@@ -379,10 +380,15 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: $share_member_text_color2;
-    background-image: $share_member_text_color2;
+    background: $share_origin_color7;
+    background-image: $share_origin_color7;
     content: "";
     border-radius: 2px;
+  }
+
+  &.porn1 {
+    background: $share_member_text_color2;
+    background-image: $share_member_text_color2;
   }
 }
 

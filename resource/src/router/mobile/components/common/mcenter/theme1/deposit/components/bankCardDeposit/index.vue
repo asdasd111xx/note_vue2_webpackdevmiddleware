@@ -52,6 +52,7 @@
                 :key="`pay-mode-${info.payment_method_id}-${info.bank_id}`"
                 :class="[
                   $style['pay-mode-item'],
+                  $style[siteConfig.ROUTER_TPL],
                   {
                     [$style['is-current']]:
                       curPayInfo.payment_method_id === info.payment_method_id &&
@@ -123,7 +124,10 @@
               <!-- 客製額度轉帳入口 -->
               <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 <div
-                  :class="[$style['pay-mode-item']]"
+                  :class="[
+                    $style['pay-mode-item'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @click="handleCreditTrans"
                 >
                   <div :class="[$style['pay-sub-title'], $style['custom']]">
@@ -320,6 +324,7 @@
                   :key="data.id"
                   :class="[
                     $style['pay-mode-pass'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style['current-data']]: data.id === curPassRoad.id }
                   ]"
                   @click="changePassRoad(data)"
@@ -571,6 +576,7 @@
                   :key="`pay-money-${index}`"
                   :class="[
                     $style['pay-money-item'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style['is-current']]: moneyValue === item }
                   ]"
                   @click="
@@ -1121,6 +1127,7 @@
               v-else
               :class="[
                 $style['feature-tip-title'],
+                $style[siteConfig.ROUTER_TPL],
                 {
                   [$style['success']]:
                     realSaveMoney &&
@@ -1266,6 +1273,7 @@
             <ul
               :class="[
                 $style['entry-message-confirm'],
+                $style[siteConfig.ROUTER_TPL],
                 { [$style['sg']]: themeTPL === 'sg1' },
                 { [$style['ey']]: themeTPL === 'ey1' }
               ]"

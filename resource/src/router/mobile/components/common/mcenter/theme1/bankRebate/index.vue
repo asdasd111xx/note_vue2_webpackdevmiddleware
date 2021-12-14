@@ -48,6 +48,7 @@
               <div
                 :class="[
                   $style['total-item-money'],
+                  $style[siteConfig.ROUTER_TPL],
                   { [$style['is-current']]: item.type === currentType }
                 ]"
               >
@@ -359,7 +360,10 @@
         <div :class="$style['pop-mask']" @click="closePopup" />
         <div :class="$style['content-block']">
           <div :class="$style['msg']">{{ popupMsg }}</div>
-          <div :class="$style['close']" @click="closePopup">
+          <div
+            :class="[$style['close'], $style[siteConfig.ROUTER_TPL]]"
+            @click="closePopup"
+          >
             {{ $text("S_CONFIRM_2", "确定") }}
           </div>
         </div>

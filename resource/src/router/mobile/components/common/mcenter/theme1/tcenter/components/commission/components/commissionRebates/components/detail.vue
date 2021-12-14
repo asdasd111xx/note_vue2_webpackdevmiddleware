@@ -45,9 +45,20 @@
 
             <div :class="$style['process-bar-bottom']">
               <span>{{ "还差" }}</span>
-              <span :class="$style[`${item.lack > 0 ? 'red' : 'blue'}`]">{{
-                item.lack
-              }}</span>
+              <span
+                :class="
+                  $style[
+                    `${
+                      siteConfig.ROUTER_TPL
+                        ? 'blue'
+                        : item.lack > 0
+                        ? 'red'
+                        : 'blue'
+                    }`
+                  ]
+                "
+                >{{ item.lack }}</span
+              >
             </div>
           </div>
         </div>

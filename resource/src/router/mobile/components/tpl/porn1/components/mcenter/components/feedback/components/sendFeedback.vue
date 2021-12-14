@@ -80,7 +80,7 @@
     <div v-if="isShow" :class="$style['pop-wrap']">
       <div :class="$style['pop-mask']" />
       <div :class="$style['pop-menu']">
-        <div :class="$style['pop-title']">
+        <div :class="[$style['pop-title'], $style[siteConfig.ROUTER_TPL]]">
           <span @click="isShow = false">{{ $text("S_CANCEL", "取消") }}</span>
           {{ $text("S_QUESTION_CATEGORY", "选择问题类型") }}
         </div>

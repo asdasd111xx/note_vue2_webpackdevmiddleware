@@ -26,12 +26,18 @@
         <span
           :class="[
             $style['balance-item-money'],
-            $style['balance-redjackpot-text']
+            $style['balance-redjackpot-text'],
+            $style[siteConfig.ROUTER_TPL]
           ]"
         >
           {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
         </span>
-        <span :class="[$style['balance-redjackpot-image']]" />
+        <span
+          :class="[
+            $style['balance-redjackpot-image'],
+            $style[siteConfig.ROUTER_TPL]
+          ]"
+        />
       </div>
       <div
         v-if="bonus.balance"

@@ -58,12 +58,18 @@
             <span
               :class="[
                 $style['balance-item-money'],
-                $style['balance-redjackpot-text']
+                $style['balance-redjackpot-text'],
+                $style[siteConfig.ROUTER_TPL]
               ]"
             >
               {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
             </span>
-            <span :class="[$style['balance-redjackpot-image']]" />
+            <span
+              :class="[
+                $style['balance-redjackpot-image'],
+                $style[siteConfig.ROUTER_TPL]
+              ]"
+            />
           </div>
           <!-- 紅利彩金 -->
           <div
@@ -87,7 +93,13 @@
               </template>
             </span>
 
-            <span :class="[$style['balance-item-money'], $style['more']]">
+            <span
+              :class="[
+                $style['balance-item-money'],
+                $style[siteConfig.ROUTER_TPL],
+                $style['more']
+              ]"
+            >
               {{
                 bonus.balance ? formatThousandsCurrency(bonus.balance) : "0.00"
               }}
@@ -212,6 +224,7 @@
         <div
           :class="[
             $style['bank-type'],
+            $style[siteConfig.ROUTER_TPL],
             { [$style['is-current']]: !epointSelectType }
           ]"
           @click="() => setWithdrawTypeIsNormal(true)"
@@ -291,6 +304,7 @@
             <div
               :class="[
                 $style['check-box'],
+                $style[siteConfig.ROUTER_TPL],
                 { [$style['checked']]: item.id === selectedCard.id },
                 {
                   [$style['disable']]: !item.allow

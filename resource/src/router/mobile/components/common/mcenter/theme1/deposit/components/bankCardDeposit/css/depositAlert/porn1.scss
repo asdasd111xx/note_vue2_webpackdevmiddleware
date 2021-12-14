@@ -105,10 +105,14 @@
   margin: 0 auto;
   text-align: center;
   cursor: pointer;
-  color: $share_member_text_color4;
+  color: $share_origin_color1;
   background: #fefffe;
   font-size: 18px;
   font-weight: bold;
+
+  &.porn1 {
+    color: $share_member_text_color4;
+  }
 
   // &:active {
   //   background-color: $share_member_text_color4;

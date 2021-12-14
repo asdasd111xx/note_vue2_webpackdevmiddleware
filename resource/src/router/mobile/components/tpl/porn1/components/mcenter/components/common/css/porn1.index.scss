@@ -29,7 +29,11 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: $share_member_text_color4;
+      color: $share_origin_color5;
+
+      &.porn1 {
+        color: $share_member_text_color4;
+      }
     }
   }
 
@@ -37,8 +41,12 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: $share_member_text_color4;
+    color: $share_origin_color5;
     font-weight: 700;
+
+    &.porn1 {
+      color: $share_member_text_color4;
+    }
 
     &::before {
       content: "";
@@ -67,6 +75,10 @@
   .credit-trans-link {
     flex: 1;
     font-size: 16px;
-    color: $share_member_text_color4;
+    color: $share_origin_color5;
+
+    &.porn1 {
+      color: $share_member_text_color4;
+    }
   }
 }

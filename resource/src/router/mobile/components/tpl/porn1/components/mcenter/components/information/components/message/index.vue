@@ -82,6 +82,7 @@
             @click="onClick(message)"
             :class="[
               $style['icon-edit'],
+              $style[siteConfig.ROUTER_TPL],
               { [$style.active]: selectMessage.includes(message.id) }
             ]"
           />

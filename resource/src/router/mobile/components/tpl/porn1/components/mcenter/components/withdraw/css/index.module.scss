@@ -133,8 +133,15 @@
     right: 16px;
 
     &.checked {
-      background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
+      background: url("/static/image/aobo1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
+    }
+
+    &.porn1 {
+      &.checked {
+        background: url("/static/image/porn1/mcenter/ic_check.png") 0 0
+          no-repeat;
+      }
     }
 
     &.disable {
@@ -193,13 +200,25 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid $share_member_text_color4;
-      color: $share_member_text_color2;
+      border: 1px solid $share_origin_color1;
+      color: $share_origin_color1;
       background: linear-gradient(
         -45deg,
-        $share_member_text_color4 10px,
+        $share_origin_color1 10px,
         hsla(0, 0%, 100%, 0) 0
       );
+    }
+
+    &.porn1 {
+      &.is-current {
+        border: 1px solid $share_member_text_color4;
+        color: $share_member_text_color2;
+        background: linear-gradient(
+          -45deg,
+          $share_member_text_color4 10px,
+          hsla(0, 0%, 100%, 0) 0
+        );
+      }
     }
 
     .select {
@@ -436,6 +455,35 @@
       img {
         height: 23px;
         width: 100%;
+      }
+    }
+  }
+  &.aobo1,
+  &.sp1 {
+    border-radius: 3px;
+    .check-header {
+      background: $share_origin_color10;
+      color: #ffffff;
+      border-radius: 3px 3px 0 0;
+
+      .title {
+        width: 100%;
+        font-size: 17px;
+        font-weight: 400;
+        text-align: center;
+      }
+    }
+    .check-button-wrap {
+      color: #be9e7f;
+      margin-bottom: 10px;
+      .check-btn {
+        border-radius: 3px;
+        background: #faf5f0;
+
+        &.submit {
+          color: #ffffff;
+          background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+        }
       }
     }
   }
