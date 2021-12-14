@@ -2045,12 +2045,15 @@ export default {
         return;
       }
       //幣希檢查餘額
-      if(+this.cryptoMoney > +this.selectBcCoin.balance){
+      if(this.curPayInfo.payment_method_id === 32){
+        if(+this.cryptoMoney > +this.selectBcCoin.balance){
           this.actionSetGlobalMessage({
-            msg: "币希钱包余额不足"
-          });
-        return;
+              msg: "币希钱包余额不足"
+            });
+          return;
+        }
       }
+      
       // 使用者存款封鎖狀態
       //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
       switch (this.entryBlockStatusData.status) {

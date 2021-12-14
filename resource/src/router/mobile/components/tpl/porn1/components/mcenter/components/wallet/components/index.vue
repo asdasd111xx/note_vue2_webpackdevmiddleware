@@ -954,7 +954,7 @@ export default {
           });
           break;
         case "use":
-          this.getPromotionList(this.floatData.linkDetail);
+          this.getPromotionList();
           break;
         default:
           break;
@@ -962,6 +962,7 @@ export default {
     },
     getPromotionList(id) {
       this.promotionId = +id;
+      this.promotionId = 2112130005;
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
