@@ -32,7 +32,9 @@
           :class="$style['modal-dark-bg']"
           @click.self="errMsg = ''"
         >
-          <div :class="$style['verify-error-msg']">
+          <div
+            :class="[$style['verify-error-msg'], $style[siteConfig.ROUTER_TPL]]"
+          >
             {{ errMsg }}
             <button @click="errMsg = ''">关闭</button>
           </div>
@@ -44,7 +46,12 @@
           :class="$style['modal-dark-bg']"
           @click.self="mailVerifyModalShow = false"
         >
-          <div :class="$style['verify-modal-wrap']">
+          <div
+            :class="[
+              $style['verify-modal-wrap'],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             <h1>电子邮箱</h1>
             <div :class="$style['mail-wrap']">
               <input
@@ -91,7 +98,9 @@
           :class="$style['modal-dark-bg']"
           @click.self="mailSubmitFail = false"
         >
-          <div :class="$style['verify-error-msg']">
+          <div
+            :class="[$style['verify-error-msg'], $style[siteConfig.ROUTER_TPL]]"
+          >
             {{ mailSubmitFailMsg }}
             <button @click="mailSubmitFail = false">关闭</button>
           </div>
@@ -102,7 +111,12 @@
           :class="$style['modal-dark-bg']"
           @click.self="phoneVerifyModalShow = false"
         >
-          <div :class="$style['verify-modal-wrap']">
+          <div
+            :class="[
+              $style['verify-modal-wrap'],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             <h1>手机号码</h1>
             <div :class="$style['phonenum-wrap']">
               <input
@@ -144,14 +158,16 @@
             >
               {{ phoneSubmitFailMsg }}
             </p> -->
-            <button @click="submitPhoneVerify">确认送出</button>
+            <button @click="submitPhoneVerify">
+              确认送出
+            </button>
           </div>
         </div>
 
         <!-- 手機驗證錯誤訊息 -->
         <div
           v-if="phoneSubmitFail"
-          :class="$style['modal-dark-bg']"
+          :class="[$style['modal-dark-bg'], $style[siteConfig.ROUTER_TPL]]"
           @click.self="phoneSubmitFail = false"
         >
           <div :class="$style['verify-error-msg']">
@@ -342,6 +358,7 @@
                   v-if="mailNeedCode"
                   :class="[
                     $style['get-verify-btn'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style.active]: mailVerifybtnActive == true }
                   ]"
                   @click="openMailVerifyModal"
@@ -392,6 +409,7 @@
                   v-if="NeedCode"
                   :class="[
                     $style['get-verify-btn'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style.active]: phoneVerifybtnActive == true }
                   ]"
                   @click="openPhoneVerifyModal"
