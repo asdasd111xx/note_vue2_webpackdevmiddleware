@@ -226,8 +226,12 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color4;
+  color: $share_member_text_color1;
   transform: translateY(-50%);
+
+  &.porn1 {
+    color: $share_member_text_color4;
+  }
 }
 
 .red {

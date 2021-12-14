@@ -866,9 +866,9 @@
                       [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
-                  @click="walletData['CGPay'].method = 0"
+                  @click="()=>walletData['CGPay'].method = 0"
                 >
-                  CGP支付密码
+                  CGP安全防护码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
@@ -894,25 +894,44 @@
                 </div>
 
                 <!-- CGP 安全防護碼 -->
-                <!-- v-if="walletData['CGPay'].method === 0" -->
-                <div :class="$style['input-wrap']">
+                <div 
+                  v-show="walletData['CGPay'].method === 0 && isShowCGPPwd"
+                  :class="$style['input-wrap']">
                   <input
                     id="cgp-password"
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type="password"
+                    type= "text"
                     :placeholder="walletData['CGPay'].placeholder"
                     @input="verification('CGPPwd', $event.target.value)"
                   />
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/common/login/btn_eye_${
-                          isShowCGPPwd ? 'n' : 'd'
-                        }.png`
+                        `/static/image/common/login/btn_eye_n.png`
                       )
                     "
-                    @click="toggleEye('confPwd')"
+                    @click="toggleEye"
+                  />
+                </div>
+                <div 
+                  v-show="walletData['CGPay'].method === 0 && !isShowCGPPwd"
+                  :class="$style['input-wrap']">
+                  <input
+                    id="cgp-password"
+                    :class="$style['wallet-password']"
+                    v-model="walletData['CGPay'].password"
+                    type= "password"
+                    :placeholder="walletData['CGPay'].placeholder"
+                    @input="verification('CGPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_d.png`
+                      )
+                    "
+                    @click="toggleEye"
                   />
                 </div>
               </div>
@@ -2397,12 +2416,11 @@ export default {
       this.defaultEpointWallet = item;
     },
     toggleEye() {
-      if (this.isShowCGPPwd) {
-        document.getElementById("cgp-password").type = "password";
-      } else {
-        document.getElementById("cgp-password").type = "text";
-      }
-
+      // if (this.isShowCGPPwd) {
+      //   document.getElementById("cgp-password").type = "password";
+      // } else {
+      //   document.getElementById("cgp-password").type = "text";
+      // }
       this.isShowCGPPwd = !this.isShowCGPPwd;
     },
     getWalletCurrencyBalanceList(){

@@ -21,10 +21,11 @@
   &.porn1 {
     &.is-current {
       span {
-        border-bottom: 2px solid $share_member_text_color4;
+        border-bottom: 2px solid $befa_member_main_color1;
       }
     }
   }
+
   span {
     height: 34px;
     line-height: 34px;
@@ -36,7 +37,7 @@
     color: #5e626d;
 
     span {
-      border-bottom: 2px solid $share_text_color1;
+      border-bottom: 2px solid $share_member_text_color1;
     }
   }
 }
@@ -157,11 +158,9 @@
   &.is-current {
     border: 1px solid $share_member_text_color4;
     color: $share_member_text_color4;
-    background: linear-gradient(
-      -45deg,
-      $share_member_text_color4 10px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        $share_member_text_color4 10px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 
   .pay-mode-tag {
@@ -257,7 +256,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -294,11 +293,9 @@
     background-color: #fff;
     color: $share_member_text_color4;
     border: 1px solid $share_member_text_color4;
-    background: linear-gradient(
-      -45deg,
-      $share_member_text_color4 12px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        $share_member_text_color4 12px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -824,11 +821,9 @@
   background-color: #fff;
   color: $share_member_text_color4;
   border: 1px solid $share_member_text_color4;
-  background: linear-gradient(
-    -45deg,
-    $share_member_text_color4 12px,
-    hsla(0, 0%, 100%, 0) 0
-  );
+  background: linear-gradient(-45deg,
+      $share_member_text_color4 12px,
+      hsla(0, 0%, 100%, 0) 0);
 }
 
 .pop-message-mark {
@@ -913,9 +908,9 @@
   display: flex;
   align-items: center;
 
-  > img {
-    width: 30px;
-    height: 30px;
+  >img {
+    width: 20px;
+    height: 20px;
     margin-right: 10px;
   }
 }
@@ -1081,6 +1076,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1196,7 +1192,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 
