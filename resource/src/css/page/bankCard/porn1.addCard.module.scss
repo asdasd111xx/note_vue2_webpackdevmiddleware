@@ -393,7 +393,13 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_member_text_color4;
+    color: $share_member_text_color1;
+  }
+
+  &.porn1 {
+    span {
+      color: $share_member_text_color4;
+    }
   }
 }
 
@@ -431,6 +437,10 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color4;
+  color: $share_member_text_color1;
   transform: translateY(-50%);
+
+  &.porn1 {
+    color: $share_member_text_color4;
+  }
 }

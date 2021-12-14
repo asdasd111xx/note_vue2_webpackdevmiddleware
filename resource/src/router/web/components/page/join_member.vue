@@ -28,13 +28,15 @@
 
         <!-- 註冊回傳錯誤訊息彈窗 -->
         <div
-          v-if="registerSubmitFail"
+          v-if="errMsg"
           :class="$style['modal-dark-bg']"
-          @click.self="registerSubmitFail = false"
+          @click.self="errMsg = ''"
         >
-          <div :class="$style['verify-error-msg']">
+          <div
+            :class="[$style['verify-error-msg'], $style[siteConfig.ROUTER_TPL]]"
+          >
             {{ errMsg }}
-            <button @click="registerSubmitFail = false">关闭</button>
+            <button @click="errMsg = ''">关闭</button>
           </div>
         </div>
 
@@ -44,7 +46,12 @@
           :class="$style['modal-dark-bg']"
           @click.self="mailVerifyModalShow = false"
         >
-          <div :class="$style['verify-modal-wrap']">
+          <div
+            :class="[
+              $style['verify-modal-wrap'],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             <h1>电子邮箱</h1>
             <div :class="$style['mail-wrap']">
               <input
@@ -91,7 +98,9 @@
           :class="$style['modal-dark-bg']"
           @click.self="mailSubmitFail = false"
         >
-          <div :class="$style['verify-error-msg']">
+          <div
+            :class="[$style['verify-error-msg'], $style[siteConfig.ROUTER_TPL]]"
+          >
             {{ mailSubmitFailMsg }}
             <button @click="mailSubmitFail = false">关闭</button>
           </div>
@@ -102,7 +111,12 @@
           :class="$style['modal-dark-bg']"
           @click.self="phoneVerifyModalShow = false"
         >
-          <div :class="$style['verify-modal-wrap']">
+          <div
+            :class="[
+              $style['verify-modal-wrap'],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             <h1>手机号码</h1>
             <div :class="$style['phonenum-wrap']">
               <input
@@ -144,14 +158,16 @@
             >
               {{ phoneSubmitFailMsg }}
             </p> -->
-            <button @click="submitPhoneVerify">确认送出</button>
+            <button @click="submitPhoneVerify">
+              确认送出
+            </button>
           </div>
         </div>
 
         <!-- 手機驗證錯誤訊息 -->
         <div
           v-if="phoneSubmitFail"
-          :class="$style['modal-dark-bg']"
+          :class="[$style['modal-dark-bg'], $style[siteConfig.ROUTER_TPL]]"
           @click.self="phoneSubmitFail = false"
         >
           <div :class="$style['verify-error-msg']">
@@ -342,6 +358,7 @@
                   v-if="mailNeedCode"
                   :class="[
                     $style['get-verify-btn'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style.active]: mailVerifybtnActive == true }
                   ]"
                   @click="openMailVerifyModal"
@@ -392,6 +409,7 @@
                   v-if="NeedCode"
                   :class="[
                     $style['get-verify-btn'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style.active]: phoneVerifybtnActive == true }
                   ]"
                   @click="openPhoneVerifyModal"
@@ -896,6 +914,24 @@ export default {
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
+
+    if (!document.querySelector('script[data-name="esabgnixob"]')) {
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
+
+      if (window.location.host.includes("localhost")) {
+        this.script.setAttribute(
+          "src",
+          "https://eyt.66boxing.com/mobile/esabgnixob.js"
+        );
+      } else {
+        this.script.setAttribute("src", "esabgnixob.js");
+      }
+
+      document.head.appendChild(this.script);
+    }
+
     const username = {
       key: "username",
       content: {
@@ -1564,7 +1600,7 @@ export default {
           return;
         }
 
-        if (res.status !== "000") {
+        if (res && res.status && res.status !== "000") {
           this.getCaptcha();
 
           this.registerSubmitFail = true;
@@ -1598,7 +1634,15 @@ export default {
             });
             return;
           }
-          this.errMsg = res.msg;
+        } else {
+          if (res && res.msg) {
+            this.errMsg = res.msg;
+          }
+
+          // network error
+          if (res && res.message) {
+            this.errMsg = res.message;
+          }
         }
       });
     },

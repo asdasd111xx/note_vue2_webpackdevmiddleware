@@ -94,7 +94,7 @@
       <div v-if="category_isShowPop" :class="$style['pop-wrap']">
         <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
         <div :class="$style['pop-menu']">
-          <div :class="$style['pop-title']">
+          <div :class="[$style['pop-title'], $style[routerTPL]]">
             <span @click="category_isShowPop = false">{{
               $text("S_CANCEL", "取消")
             }}</span>
@@ -109,7 +109,7 @@
               {{ item }}
               <icon
                 v-if="category_currentIndex === index"
-                :class="$style['select-icon']"
+                :class="[$style['select-icon'], $style[routerTPL]]"
                 name="check"
               />
             </li>
