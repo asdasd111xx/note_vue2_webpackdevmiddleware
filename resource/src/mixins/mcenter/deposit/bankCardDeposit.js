@@ -64,9 +64,9 @@ export default {
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
-          method: 0,
+          method: 1,
           password: "",
-          placeholder: "请输入CGPay支付密码"
+          placeholder: "请输入CGP安全防护码"
         }
       },
       // 傳遞給 depositInfo (訂單限時)
@@ -957,7 +957,6 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-      console.log(123);
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,

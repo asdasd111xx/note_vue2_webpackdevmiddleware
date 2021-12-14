@@ -247,7 +247,7 @@
             :class="[$style['bc-data'], $style['first']]"
             @click="bcClickEvent('money')"
           >
-            <div>{{ "999,999.00" }}</div>
+            <div>{{ bcCurrencyData.total_balance }}</div>
             <div>
               总余额(美元)
             </div>
@@ -414,6 +414,7 @@ import bcWalletPopup from "./bcWalletPopup";
 import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
+import mobileLinkOpen from "@/lib/mobile_link_open";
 
 export default {
   components: {
@@ -711,6 +712,7 @@ export default {
       "actionSetUserBalance",
       "getCustomerServiceUrl"
     ]),
+    mobileLinkOpen,
     dialogMessage(msg) {
       return this.actionSetGlobalMessage({ msg: msg });
     },
@@ -945,16 +947,22 @@ export default {
           );
           break;
         case "inter":
+          let newWindow = "";
           this.getCustomerServiceUrl({
             urlName: "btse_login",
             needToken: false
           }).then(res => {
-            let newWindow = "";
             newWindow = window.open(res.uri);
           });
           break;
         case "use":
-          this.getPromotionList(this.floatData.linkDetail);
+          this.getCustomerServiceUrl({
+            urlName: "btse_wallet",
+            needToken: false
+          }).then(res => {
+            this.getPromotionList(res.uri);
+          });
+
           break;
         default:
           break;
@@ -981,7 +989,7 @@ export default {
             });
           } else {
             this.actionSetGlobalMessage({
-              msg: "抱歉，此活动不存在"
+              msg: "正在上线，敬请期待"
             });
           }
         }
@@ -1023,6 +1031,7 @@ export default {
       });
     },
     getWalletUserReceiveCode() {
+      let newWindow = "";
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
@@ -1032,7 +1041,6 @@ export default {
       }).then(res => {
         console.log(res);
         if (res.status === "000") {
-          let newWindow = "";
           newWindow = window.open(res.data.url);
         }
       });

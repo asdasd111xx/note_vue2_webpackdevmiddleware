@@ -1223,13 +1223,14 @@ export default {
             hasCallback: true,
             dataObj: {
               cb: () => {
-                this.getCustomerServiceUrl({
-                  urlName: "btse_register",
-                  needToken: false
-                }).then(res => {
-                  let newWindow = "";
-                  newWindow = window.open(res.uri);
-                });
+                lib_newWindowOpen(
+                  this.getCustomerServiceUrl({
+                    urlName: "btse_register",
+                    needToken: false
+                  }).then(res => {
+                    return res.uri;
+                  })
+                );
               },
               text: "立即申请"
             }

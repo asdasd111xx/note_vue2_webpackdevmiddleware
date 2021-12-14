@@ -866,9 +866,9 @@
                       [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
-                  @click="walletData['CGPay'].method = 0"
+                  @click="()=>walletData['CGPay'].method = 0"
                 >
-                  CGP支付密码
+                  CGP安全防护码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
@@ -894,25 +894,44 @@
                 </div>
 
                 <!-- CGP 安全防護碼 -->
-                <!-- v-if="walletData['CGPay'].method === 0" -->
-                <div :class="$style['input-wrap']">
+                <div 
+                  v-show="walletData['CGPay'].method === 0 && isShowCGPPwd"
+                  :class="$style['input-wrap']">
                   <input
                     id="cgp-password"
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type="password"
+                    type= "text"
                     :placeholder="walletData['CGPay'].placeholder"
                     @input="verification('CGPPwd', $event.target.value)"
                   />
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/common/login/btn_eye_${
-                          isShowCGPPwd ? 'n' : 'd'
-                        }.png`
+                        `/static/image/common/login/btn_eye_n.png`
                       )
                     "
-                    @click="toggleEye('confPwd')"
+                    @click="toggleEye"
+                  />
+                </div>
+                <div 
+                  v-show="walletData['CGPay'].method === 0 && !isShowCGPPwd"
+                  :class="$style['input-wrap']">
+                  <input
+                    id="cgp-password"
+                    :class="$style['wallet-password']"
+                    v-model="walletData['CGPay'].password"
+                    type= "password"
+                    :placeholder="walletData['CGPay'].placeholder"
+                    @input="verification('CGPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_d.png`
+                      )
+                    "
+                    @click="toggleEye"
                   />
                 </div>
               </div>
@@ -2026,12 +2045,15 @@ export default {
         return;
       }
       //幣希檢查餘額
-      if(+this.cryptoMoney > +this.selectBcCoin.balance){
+      if(this.curPayInfo.payment_method_id === 32){
+        if(+this.cryptoMoney > +this.selectBcCoin.balance){
           this.actionSetGlobalMessage({
-            msg: "币希钱包余额不足"
-          });
-        return;
+              msg: "币希钱包余额不足"
+            });
+          return;
+        }
       }
+      
       // 使用者存款封鎖狀態
       //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
       switch (this.entryBlockStatusData.status) {
@@ -2397,12 +2419,11 @@ export default {
       this.defaultEpointWallet = item;
     },
     toggleEye() {
-      if (this.isShowCGPPwd) {
-        document.getElementById("cgp-password").type = "password";
-      } else {
-        document.getElementById("cgp-password").type = "text";
-      }
-
+      // if (this.isShowCGPPwd) {
+      //   document.getElementById("cgp-password").type = "password";
+      // } else {
+      //   document.getElementById("cgp-password").type = "text";
+      // }
       this.isShowCGPPwd = !this.isShowCGPPwd;
     },
     getWalletCurrencyBalanceList(){
