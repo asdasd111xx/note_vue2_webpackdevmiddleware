@@ -1,9 +1,8 @@
-@import './porn1.module.scss';
+@import "./porn1.module.scss";
 
 .active-slider {
-  background: #FB4E74;
+  background: #fb4e74;
 }
-
 
 .send-keyring {
   color: white;
@@ -17,16 +16,15 @@
 }
 
 .submit-wrap {
-
-  >div {
+  > div {
     border-radius: 3px;
     background: linear-gradient(#fe593c, #e61938);
   }
 
   &.disabled {
-    >div {
+    > div {
       background: linear-gradient(#fed3cb, #ffc5ce);
-      color: #FFFFFF;
+      color: #ffffff;
     }
   }
 }

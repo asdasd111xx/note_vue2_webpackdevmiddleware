@@ -31,7 +31,7 @@
 }
 
 .balance-redjackpot-text {
-  color: $share_member_text_color4;
+  color: $sg_main_text_color1;
   word-break: break-word;
 }
 
@@ -76,6 +76,19 @@
       display: block;
       left: 18px;
       position: absolute;
+    }
+  }
+}
+.balance-total-item {
+  .balance-item-money {
+    color: $sg_main_text_color1;
+  }
+}
+
+.select-container {
+  .select-header {
+    span {
+      color: $sg_main_text_color1;
     }
   }
 }

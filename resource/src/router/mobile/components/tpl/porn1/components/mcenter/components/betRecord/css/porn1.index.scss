@@ -374,21 +374,15 @@
   &:before {
     display: block;
     width: 3px;
-    height: 14px;
+    height: 15px;
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: $share_member_text_color5;
-    background-image: $share_member_text_color1;
+    background: $share_member_text_color2;
+    background-image: $share_member_text_color2;
     content: "";
-  }
-
-  &.porn1 {
-    &:before {
-      background: $befa_member_main_color1;
-      background-image: $befa_member_main_color1;
-    }
+    border-radius: 2px;
   }
 }
 

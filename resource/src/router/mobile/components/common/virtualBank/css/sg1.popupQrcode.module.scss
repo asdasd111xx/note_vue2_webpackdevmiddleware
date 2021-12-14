@@ -7,3 +7,13 @@
 //     }
 //   }
 // }
+
+.button-block {
+  color: #414655;
+
+  span {
+    &:nth-child(2) {
+      color: $sg_main_text_color2;
+    }
+  }
+}

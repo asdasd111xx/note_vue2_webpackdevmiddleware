@@ -184,7 +184,7 @@ export default {
   }
 
   div:last-of-type {
-    color: $share_member_text_color4;
+    color: $sg_main_text_color1;
     font-size: 12px;
     height: 50%;
 

@@ -28,8 +28,9 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
   .check-button-wrap {
     color: #fff;
-
+    margin-bottom: 10px;
     .check-btn {
+      border-radius: 3px;
       background: #a2a2a2;
 
       &.submit {
@@ -87,4 +88,47 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
       color: #a2a2a2;
     }
   }
+}
+
+.bank-wrap {
+  .bank-type {
+    &.is-current {
+      border: 1px solid $sg_main_text_color1;
+      color: $sg_main_text_color1;
+      background: linear-gradient(
+        -45deg,
+        $sg_main_text_color1 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
+    }
+  }
+}
+
+.offer {
+  height: 30px;
+  color: $sg_main_text_color1;
+  padding: 5px 14px;
+  width: 100%;
+}
+
+.exchange-rate,
+.actual-money,
+.crypto-block {
+  .time {
+    color: $sg_main_text_color1;
+  }
+}
+
+.check-header {
+  border-radius: 3px 3px 0 0;
+
+  .title {
+    width: 100%;
+    font-size: 17px;
+    font-weight: 400;
+    text-align: center;
+  }
+}
+.check-container {
+  border-radius: 3px;
 }

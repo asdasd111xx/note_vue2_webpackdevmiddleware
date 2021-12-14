@@ -46,7 +46,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/mcenter/vip/vip_run.png`
               )
             "
             :style="

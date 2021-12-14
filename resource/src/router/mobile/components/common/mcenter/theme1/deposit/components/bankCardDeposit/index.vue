@@ -192,7 +192,7 @@
                     {{ item.label }}
                     <icon
                       v-if="item.value === curSelectedBank.value"
-                      :class="$style['select-active']"
+                      :class="[$style['select-active']]"
                       name="check"
                     />
                   </li>

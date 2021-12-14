@@ -20,3 +20,17 @@
   background-color: #ffffff;
   margin-right: 10px;
 }
+
+.wallet-list {
+  .wallet-item {
+    &.is-current {
+      border: 1px solid $sg_main_text_color1;
+      color: $sg_main_text_color1;
+      background: linear-gradient(
+        -45deg,
+        $sg_main_text_color1 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
+    }
+  }
+}

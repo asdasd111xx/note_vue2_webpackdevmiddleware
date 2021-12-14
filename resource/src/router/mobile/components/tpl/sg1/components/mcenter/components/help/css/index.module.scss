@@ -183,7 +183,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: $share_member_text_color4;
+  background-color: $sg_main_text_color1;
   width: 45px;
   transition: left 0.31s;
 }
@@ -288,7 +288,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: $sg_main_text_color1;
   border-top: 1px solid #f8f8f7;
 }
 
@@ -356,7 +356,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_member_text_color4;
+    color: $sg_main_text_color1;
   }
 }
 
@@ -393,7 +393,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color4;
+  color: $sg_main_text_color1;
   transform: translateY(-50%);
 }
 
@@ -541,7 +541,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: $share_member_text_color4;
+  background: $sg_main_text_color1;
   // left: calc(33% / 2 - 20px);
 
   transition: left 0.31s;
