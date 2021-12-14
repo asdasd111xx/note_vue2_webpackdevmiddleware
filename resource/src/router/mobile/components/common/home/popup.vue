@@ -73,7 +73,7 @@
       <div v-if="!sitePostList" class="clearfix">
         <div :class="$style['modal-button']" @click="closePop()">知道了</div>
         <div
-          :class="[$style['modal-button'], $style[themeTPL]]"
+          :class="[$style['modal-button'], $style[siteConfig.ROUTER_TPL]]"
           @click="closePop(true)"
         >
           查看详情
@@ -280,6 +280,10 @@ export default {
 
   &:last-child {
     color: $share_member_text_color4;
+  }
+
+  &.sg1:last-child {
+    color: $sg_main_text_color2;
   }
 
   &.ey1:last-child {
