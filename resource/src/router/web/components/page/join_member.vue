@@ -28,13 +28,13 @@
 
         <!-- 註冊回傳錯誤訊息彈窗 -->
         <div
-          v-if="registerSubmitFail"
+          v-if="errMsg"
           :class="$style['modal-dark-bg']"
-          @click.self="registerSubmitFail = false"
+          @click.self="errMsg = ''"
         >
           <div :class="$style['verify-error-msg']">
             {{ errMsg }}
-            <button @click="registerSubmitFail = false">关闭</button>
+            <button @click="errMsg = ''">关闭</button>
           </div>
         </div>
 
@@ -896,6 +896,24 @@ export default {
     this.getCaptcha();
     let joinConfig = [];
     let joinReminder = {};
+
+    if (!document.querySelector('script[data-name="esabgnixob"]')) {
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
+
+      if (window.location.host.includes("localhost")) {
+        this.script.setAttribute(
+          "src",
+          "https://eyt.66boxing.com/mobile/esabgnixob.js"
+        );
+      } else {
+        this.script.setAttribute("src", "esabgnixob.js");
+      }
+
+      document.head.appendChild(this.script);
+    }
+
     const username = {
       key: "username",
       content: {
@@ -1564,7 +1582,7 @@ export default {
           return;
         }
 
-        if (res.status !== "000") {
+        if (res && res.status && res.status !== "000") {
           this.getCaptcha();
 
           this.registerSubmitFail = true;
@@ -1598,7 +1616,15 @@ export default {
             });
             return;
           }
-          this.errMsg = res.msg;
+        } else {
+          if (res && res.msg) {
+            this.errMsg = res.msg;
+          }
+
+          // network error
+          if (res && res.message) {
+            this.errMsg = res.message;
+          }
         }
       });
     },
