@@ -173,6 +173,8 @@ export default {
               this.closePopup();
             }, 3000);
             return;
+          } else {
+            localStorage.setItem("popupQrcode", "success");
           }
 
           this.countdownSec = ret.expire_at;

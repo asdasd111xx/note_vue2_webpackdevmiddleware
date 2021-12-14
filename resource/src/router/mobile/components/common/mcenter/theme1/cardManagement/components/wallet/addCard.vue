@@ -1281,10 +1281,15 @@ export default {
         this.checkWalletPhoneVerification &&
         this.selectTarget.walletId === 37
       ) {
-        const params = [this.setPopupStatus(true, "qrcode")];
-        Promise.all(params).then(() => {
-          this.$emit("update:addBankCardStep", "one");
-        });
+        this.setPopupStatus(true, "qrcode");
+
+        setTimeout(() => {
+          if (localStorage.getItem("popupQrcode") === "success") {
+            this.$emit("update:addBankCardStep", "one");
+            localStorage.removeItem("popupQrcode");
+          }
+        }, 3000);
+
         return;
       } else {
         if (this.selectTarget.oneClickBindingMode) {
