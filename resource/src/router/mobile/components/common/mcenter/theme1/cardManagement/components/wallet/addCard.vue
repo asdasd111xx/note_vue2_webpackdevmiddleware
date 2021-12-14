@@ -192,7 +192,7 @@
                 $style[routerTPL],
                 { [$style.disabled]: smsTimer || !isVerifyPhone }
               ]"
-              @click="getKeyring"
+              @click="showCaptchaPopup"
             >
               {{ time ? `${time}s` : "获取验证码" }}
             </div>
@@ -904,13 +904,14 @@ export default {
         url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
         params: {
+          username: this.memInfo.user.username,
           wallet_gateway_id: id,
           phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
           keyring: this.formData.keyring
         }
       })
         .then(res => {
-          console.log("extextextetext-res", res);
+          // console.log("extextextetext-res", res);
           const { result, ret, msg } = res.data;
           this.isReceive = false;
 
@@ -918,7 +919,9 @@ export default {
             this.actionSetGlobalMessage({ msg });
             return Promise.resolve(false);
           }
-
+          if (result === "ok" && this.addBankCardStep === "two") {
+            this.$emit("update:addBankCardStep", "one");
+          }
           return Promise.resolve(ret.html);
         })
         .catch(error => {
@@ -1277,8 +1280,10 @@ export default {
         this.checkWalletPhoneVerification &&
         this.selectTarget.walletId === 37
       ) {
-        console.log("gobaogobaogobaogobao");
-        this.setPopupStatus(true, "qrcode");
+        const params = [this.setPopupStatus(true, "qrcode")];
+        Promise.all(params).then(() => {
+          this.$emit("update:addBankCardStep", "one");
+        });
         return;
       } else {
         if (this.selectTarget.oneClickBindingMode) {

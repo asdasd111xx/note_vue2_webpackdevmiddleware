@@ -164,7 +164,7 @@ export default {
         }
       })
         .then(res => {
-          console.log("popupQrcode-res", res);
+          // console.log("popupQrcode-res", res);
           const { result, ret } = res.data;
           if (result !== "ok") {
             this.actionSetGlobalMessage({ msg: res.data.msg });
