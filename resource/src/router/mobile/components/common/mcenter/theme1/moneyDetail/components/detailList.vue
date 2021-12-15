@@ -15,7 +15,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${
+                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${
                   currentCategory.key == 'outer'
                     ? 'vendor'
                     : currentCategory.key
