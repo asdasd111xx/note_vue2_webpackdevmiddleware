@@ -152,11 +152,7 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  :class="[
-                    'login-button',
-                    'login-submit',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
+                  :class="['login-button', 'login-submit']"
                   @click="handleClickLogin"
                 >
                   <div>

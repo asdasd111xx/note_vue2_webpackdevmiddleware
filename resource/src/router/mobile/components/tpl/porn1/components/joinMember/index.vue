@@ -95,7 +95,7 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: $share_main_button_color;
+  background: $main_gradient_color1;
   border-radius: 30px;
   height: 50px;
   line-height: 50px;
@@ -105,10 +105,10 @@ export default {
   font-family: Segoe UI, Segoe UI-Bold;
   font-weight: 700;
   text-align: center;
-  color: $share_main_button_text_color;
+  color: $main_text_color1;
 
   &.disable {
-    background: linear-gradient(#e9dacb, #eee5db);
+    background: $main_gradient_color2;
     pointer-events: none;
   }
 

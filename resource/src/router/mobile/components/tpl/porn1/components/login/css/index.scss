@@ -154,28 +154,15 @@
     align-items: center;
 
     > div {
-      color: $share_main_button_text_color;
+      color: $main_text_color1;
       text-align: center;
       line-height: 50px;
-      background: $share_main_button_color;
+      background: $main_gradient_color1;
       border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
       width: 100%;
       max-width: 375px;
-    }
-    &.porn1 {
-      > div {
-        color: #ffffff;
-        background: $befa_main_color;
-      }
-    }
-
-    &.sp1 {
-      > div {
-        color: $main_text_color6;
-        background: $sp1_main_color1;
-      }
     }
   }
 }

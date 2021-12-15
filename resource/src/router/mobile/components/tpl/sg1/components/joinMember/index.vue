@@ -79,7 +79,7 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: linear-gradient(to left, #fe593c 0%, #e61938 100%);
+  background: $main_gradient_color1;
   border-radius: 3px;
   height: 50px;
   line-height: 50px;

@@ -1,0 +1,49 @@
+$main_color1: #fe593c;
+$main_color2: #e61938;
+$main_color3: #fed3cb;
+$main_color4: #ffc5ce;
+$main_color100: #bf8646;
+
+$main_text_color1: #ffffff;
+$main_text_color2: #ffffff;
+$main_text_color3: #a6a9b2;
+$main_text_color4: #5e626d;
+$main_gradient_color1: linear-gradient(
+  to left,
+  $main_color1 0%,
+  $main_color2 100%
+);
+$main_gradient_color2: linear-gradient(
+  to left,
+  $main_color3 0%,
+  $main_color4 100%
+);
+
+$member_color1: #fe593c;
+$member_color2: #e61938;
+$member_color3: #fed3cb;
+$member_color4: #ffc5ce;
+$member_color100: #bf8646;
+$member_text_color1: #ffffff;
+$member_text_color2: #ffffff;
+$member_text_color3: #a6a9b2;
+$member_text_color4: #5e626d;
+$member_gradient_color1: linear-gradient(
+  to left,
+  $main_color1 0%,
+  $main_color2 100%
+);
+$member_gradient_color2: linear-gradient(
+  to left,
+  $main_color3 0%,
+  $main_color4 100%
+);
+
+$wallet_border_color: #be9e7f;
+$redpot: #bf8646;
+$deco_color: linear-gradient(to bottom, $main_color1 0%, $main_color2 100%);
+$joinmember_title: #9b6b40;
+$apptip_title: #e61938;
+$apptip_btn: #e61938;
+$popup_text_color1: #bf8646;
+$popup_text_color2: #414655;

@@ -116,13 +116,10 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: $share_origin_color5;
+    color: $member_color100;
     display: flex;
     justify-content: center;
     align-items: center;
-    &.porn1 {
-      color: $share_member_text_color1;
-    }
   }
 }
 
@@ -157,11 +154,7 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: $share_origin_color5;
-
-      &.porn1 {
-        color: $share_member_text_color4;
-      }
+      color: $member_color100;
     }
   }
 
@@ -169,12 +162,8 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: $share_origin_color5;
+    color: $member_color100;
     font-weight: 700;
-
-    &.porn1 {
-      color: $share_member_text_color4;
-    }
 
     &::before {
       content: "";
@@ -277,12 +266,8 @@
   }
 
   .balance-redjackpot-text {
-    color: $share_origin_color6;
+    color: $redpot;
     word-break: break-word;
-
-    &.porn1 {
-      color: $share_member_text_color8;
-    }
   }
 
   .balance-redjackpot-image {
