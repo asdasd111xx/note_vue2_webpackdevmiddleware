@@ -27,10 +27,11 @@ const postcssLoader = {
   }
 };
 
+console.log("process.env.assetsVariablePath: ", process.env.assetsVariablePath);
 const sassLoader = {
   loader: "sass-loader",
   options: {
-    prependData: `$buildTimestamp: ${config.build.env.TIMESTAMP};`
+    prependData: process.env.assetsVariablePath
   }
 };
 

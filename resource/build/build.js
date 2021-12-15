@@ -6,6 +6,26 @@ process.env.NODE_ENV = "production";
 process.env.CDN_HOST = process.argv[2] || "";
 console.log("[debug]process.argv:", process.argv);
 console.log("[debug]process.env.CDN_HOST:", process.env.CDN_HOST);
+
+let assetsVariablePath = `@import "./src/css/variable/porn1.scss";`;
+let buildSite = "";
+try {
+  process.argv.map(a => {
+    if (a.startsWith("--SITE=") || a.startsWith("--site=")) {
+      buildSite = a.split("=")[1];
+      console.log("buildSite: ", buildSite);
+      assetsVariablePath = `@import "./src/css/variable/${buildSite}.scss";`;
+      console.info("=> build target site:", buildSite);
+      console.info("=> import variable scss:", assetsVariablePath);
+      return;
+    }
+  });
+} catch (e) {
+  console.info("=> error:", e);
+}
+
+process.env.assetsVariablePath = assetsVariablePath;
+
 var ora = require("ora");
 var rm = require("rimraf");
 var path = require("path");
