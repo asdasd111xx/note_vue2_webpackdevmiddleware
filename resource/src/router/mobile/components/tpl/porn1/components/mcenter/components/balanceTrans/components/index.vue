@@ -15,7 +15,8 @@
         <span
           :class="[
             $style['balance-item-vendor'],
-            $style['balance-redjackpot-text']
+            $style['balance-redjackpot-text'],
+            $style[siteConfig.ROUTER_TPL]
           ]"
         >
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
