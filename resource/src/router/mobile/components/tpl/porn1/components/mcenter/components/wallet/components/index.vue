@@ -953,7 +953,7 @@ export default {
           this.bcMoneyShowType = true;
           break;
         case "qrcode":
-          lib_newWindowOpen(this.getWalletUserReceiveCode());
+          this.getWalletUserReceiveCode();
           break;
         case "bind":
           this.$router.push(
@@ -1046,18 +1046,20 @@ export default {
       });
     },
     getWalletUserReceiveCode() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        console.log(res);
-        if (res.status === "000") {
-          return res.data.url;
-        }
-      });
+      lib_newWindowOpen(
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          console.log(res);
+          if (res.status === "000") {
+            return res.data.url;
+          }
+        })
+      );
     }
   }
 };

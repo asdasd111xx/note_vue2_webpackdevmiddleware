@@ -74,7 +74,12 @@
           />
           <div>暫時沒有餘額</div>
         </div>
-        <div :class="$style['pay-code']" @click="openQrCode">币希收款码</div>
+        <div
+          :class="[$style['pay-code'], $style[routerTPL]]"
+          @click="openQrCode"
+        >
+          币希收款码
+        </div>
       </div>
     </div>
   </div>
@@ -111,6 +116,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     itemText() {
       switch (this.type) {
@@ -333,11 +341,18 @@ export default {
 }
 .pay-code {
   height: 50px;
-  background-color: #bd9d7d;
+  background: $share_origin_color8;
   color: white;
   align-items: center;
   display: flex;
   justify-content: center;
   margin: 38px;
+
+  &.pron1 {
+    background: $befa_main_button_color2;
+  }
+  &.sg1 {
+    background: $sg_main_button_color1;
+  }
 }
 </style>
