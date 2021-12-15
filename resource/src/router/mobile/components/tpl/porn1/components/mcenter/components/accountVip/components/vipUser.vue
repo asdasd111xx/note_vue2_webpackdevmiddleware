@@ -38,7 +38,13 @@
 
     <!-- 進度條 -->
     <div :class="$style['run-block']">
-      <div :class="[$style['run-level'], $style['current']]">
+      <div
+        :class="[
+          $style['run-level'],
+          $style[siteConfig.ROUTER_TPL],
+          $style['current']
+        ]"
+      >
         <p>{{ userVipInfo.now_level_alias }}</p>
       </div>
       <div :class="$style['run-bar']">
@@ -72,7 +78,7 @@
 
     <!-- //說明資訊 -->
     <!-- base_type	有效投注計算方式(1.廳開始日, 2.自訂時間, 3.區間統計) -->
-    <div :class="$style['user-desc-block']">
+    <div :class="[$style['user-desc-block'], $style[siteConfig.ROUTER_TPL]]">
       <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●累计充值(元)：
         <span :class="$style['money']">{{

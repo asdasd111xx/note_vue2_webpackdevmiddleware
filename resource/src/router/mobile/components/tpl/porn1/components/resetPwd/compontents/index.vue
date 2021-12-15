@@ -569,7 +569,7 @@ input {
   }
 
   &.porn1 {
-    background: $befa_member_main_color2;
+    background: $befa_member_main_color3;
     color: $befa_member_text_color1;
 
     &.active {

@@ -114,10 +114,14 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: $share_member_text_color1;
+    color: $share_origin_color5;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &.porn1 {
+      color: $share_member_text_color1;
+    }
   }
 }
 
@@ -152,7 +156,11 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: $share_member_text_color4;
+      color: $share_origin_color5;
+
+      &.porn1 {
+        color: $share_member_text_color4;
+      }
     }
   }
 
@@ -160,8 +168,12 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: $share_member_text_color4;
+    color: $share_origin_color5;
     font-weight: 700;
+
+    &.porn1 {
+      color: $share_member_text_color4;
+    }
 
     &::before {
       content: "";
@@ -264,8 +276,12 @@
   }
 
   .balance-redjackpot-text {
-    color: $share_member_text_color8;
+    color: $share_origin_color6;
     word-break: break-word;
+
+    &.porn1 {
+      color: $share_member_text_color8;
+    }
   }
 
   .balance-redjackpot-image {
@@ -274,7 +290,11 @@
     right: 0;
     width: 25px;
     height: 25px;
-    background: url("/static/image/common/ic_event.png") center center / 100% 100%;
+    background: url("/static/image/aobo1/common/ic_event.png") center center / 100% 100%;
+
+    &.porn1 {
+      background: url("/static/image/porn1/common/ic_event.png") center center / 100% 100%;
+    }
   }
 
   .item-fix {
@@ -312,7 +332,7 @@
   .image {
     position: absolute;
     top: 0;
-    right: 20px;
+    right: 8px;
     width: 100px;
     height: 68px;
 
@@ -323,7 +343,7 @@
   }
 
   &.porn1 {
-    background: $befa_member_main_color3;
+    background: #3676d5;
 
     .content {
       color: $befa_member_text_color1;
@@ -353,8 +373,14 @@
     height: 15px;
     top: 2.5px;
     left: 0;
-    background: $share_member_text_color2;
+    background: $share_origin_color7;
     border-radius: 2px;
+  }
+
+  &.porn1 {
+    &::before {
+      background: $share_member_text_color2;
+    }
   }
 
   // 查看更多

@@ -251,8 +251,12 @@
 }
 
 .balance-redjackpot-text {
-  color: $share_member_text_color8;
+  color: $share_origin_color6;
   word-break: break-word;
+
+  &.porn1 {
+    color: $share_member_text_color8;
+  }
 }
 
 .balance-redjackpot-image {
@@ -261,7 +265,13 @@
   right: 0;
   width: 25px;
   height: 25px;
-  background: url("/static/image/common/ic_event.png") center center / 100% 100%;
+
+  background: url("/static/image/aobo1/common/ic_event.png") center center /
+    100% 100%;
+  &.porn1 {
+    background: url("/static/image/porn1/common/ic_event.png") center center /
+      100% 100%;
+  }
 }
 
 .balance-manual-wrap {
@@ -444,7 +454,8 @@
   background: $share_main_button_color2;
 
   &.porn1 {
-    background: $befa_member_main_color1;
+    color: $befa_member_text_color1;
+    background-image: $befa_main_button_color2;
   }
 }
 
@@ -459,18 +470,15 @@
   background: $share_main_button_color2;
 
   &.porn1 {
-    background: $befa_member_main_color1;
     color: $befa_member_text_color1;
+    background: $befa_main_button_color2;
     &.is-disable {
-      background: $befa_member_main_color2;
-      color: #fff;
+      background: $befa_main_button_color1;
+      color: $befa_member_text_color2;
     }
   }
   &.is-disable {
-    background: linear-gradient(to left, #e9dacb, #eee5db);
-    background: -moz-linear-gradient(to left, #e9dacb, #eee5db);
-    background: -webkit-linear-gradient(to left, #e9dacb, #eee5db);
-    background: -o-linear-gradient(to left, #e9dacb, #eee5db);
+    background: $share_main_button_color1;
     pointer-events: none;
   }
 }

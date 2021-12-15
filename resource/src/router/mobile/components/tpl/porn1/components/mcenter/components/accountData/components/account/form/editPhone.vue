@@ -102,6 +102,7 @@
               v-if="sendBtn.isShow"
               :class="[
                 $style['btn-send'],
+                $style[siteConfig.ROUTER_TPL],
                 {
                   [$style.active]: isActive()
                 }

@@ -57,7 +57,12 @@
                 "
               />
               <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-              <div :class="$style['balance-item-money']">
+              <div
+                :class="[
+                  $style['balance-item-money'],
+                  $style[siteConfig.ROUTER_TPL]
+                ]"
+              >
                 {{ balanceTran.membalance.vendor.default.amount }}
               </div>
             </div>
@@ -65,6 +70,7 @@
             <div
               :class="[
                 $style['recycle-btn'],
+                $style[siteConfig.ROUTER_TPL],
                 balanceTran.balanceBackLock ? $style.disable : ''
               ]"
               @click="balanceBack()"
@@ -82,6 +88,7 @@
               <span
                 :class="[
                   $style['balance-item-vendor'],
+                  $style[siteConfig.ROUTER_TPL],
                   $style['balance-redjackpot-text']
                 ]"
               >
@@ -93,12 +100,18 @@
               <span
                 :class="[
                   $style['balance-item-money'],
+                  $style[siteConfig.ROUTER_TPL],
                   $style['balance-redjackpot-text']
                 ]"
               >
                 {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
               </span>
-              <span :class="[$style['balance-redjackpot-image']]" />
+              <span
+                :class="[
+                  $style['balance-redjackpot-image'],
+                  $style[siteConfig.ROUTER_TPL]
+                ]"
+              />
             </div>
 
             <div
@@ -343,7 +356,7 @@
     </div>
 
     <div :class="$style['wager-wrap']">
-      <div :class="[$style['title']]">
+      <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
         投注记录
         <span @click="$router.push('/mobile/mcenter/betRecord')">查看更多</span>
       </div>

@@ -67,11 +67,11 @@
       &.porn1 {
         button {
           color: $befa_member_text_color1;
-          background: $befa_member_main_color1;
+          background-image: $befa_main_button_color2;
         }
         .unrebate-btn {
-          color: $befa_member_text_color1;
-          background: $befa_member_main_color2;
+          color: $befa_member_text_color2;
+          background: $befa_main_button_color1;
         }
       }
 

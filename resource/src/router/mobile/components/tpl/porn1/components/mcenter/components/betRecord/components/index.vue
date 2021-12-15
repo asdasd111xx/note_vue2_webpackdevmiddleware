@@ -213,7 +213,12 @@
                   {{ getVendorName(gameDetail.vendor, gameDetail.kind) }}
                 </div>
                 <div :class="$style['detail-game']">
-                  <div :class="$style['game-name']">
+                  <div
+                    :class="[
+                      $style['game-name'],
+                      $style[siteConfig.ROUTER_TPL]
+                    ]"
+                  >
                     {{ gameDetail.game_name }}
                   </div>
                   <div :class="[$style['game-count'], 'clearfix']">

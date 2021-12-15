@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/ey1/mcenter/help/ic_help_${listInfo.img}.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/mcenter/help/ic_help_${listInfo.img}.png`
               )
             "
           />
@@ -117,7 +117,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {

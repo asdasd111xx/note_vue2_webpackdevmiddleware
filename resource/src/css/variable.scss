@@ -59,6 +59,7 @@ $share_member_text_color10: #cccccc;
 $share_member_text_color11: #5e626d;
 $share_member_text_color12: #ad9982;
 $share_member_text_color13: #a6a9b2;
+$share_member_text_color14: #7086ce; //vip文字
 
 $share_main_button_color1: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 $share_main_button_color2: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
@@ -69,11 +70,54 @@ $befa_main_color: #3354ad;
 
 //會員中心
 $befa_member_main_color1: #3354ad;
-$befa_member_main_color2: #adbade;
-$befa_member_main_color3: #3676d5;
-$befa_member_text_color1: #ffffff;
+$befa_member_main_color2: #3354ad;
+$befa_member_main_color3: #adbade;
+$befa_member_main_color4: #adbade;
 
-//原絲瓜
+$befa_member_text_color1: #ffffff; //主色
+$befa_member_text_color2: #ffffff; //補色
+
+$befa_main_button_color1: linear-gradient(
+  to left,
+  $befa_member_main_color3 0%,
+  $befa_member_main_color4 100%
+);
+$befa_main_button_color2: linear-gradient(
+  to left,
+  $befa_member_main_color1 0%,
+  $befa_member_main_color2 100%
+);
+
+/*--- 原絲瓜 ---*/
 $sg_main_text_color1: #be9e7f;
 $sg_main_text_color2: #bf8646;
 $sg_main_button_color1: linear-gradient(#fe593c, #e61938);
+
+/*--- 澳博、51 還沒改藍色 ---*/
+$share_origin_color1: #d1b79c; //$share_member_text_color4
+$share_origin_color2: #d1b79c; //$share_member_text_color9
+$share_origin_color3: #d1b79c; //$share_member_text_color11;
+$share_origin_color4: linear-gradient(
+  90deg,
+  #eeddd0,
+  #d5b69c
+); //$share_member_text_color9
+$share_origin_color5: #be9e7f; //$share_member_text_color4
+$share_origin_color6: #be9e7f; //$share_member_text_color8
+$share_origin_color7: linear-gradient(
+  to bottom,
+  #bd9d7d 0%,
+  #f9ddbd 100%
+); //$share_member_text_color2
+$share_origin_color8: linear-gradient(
+  to left,
+  #bd9d7d 0%,
+  #f9ddbd 100%
+); //$share_member_text_color1
+$share_origin_color9: #faf5f0; //$share_main_button_color1
+$share_origin_color10: #be9e7f; //$share_member_text_color3
+$share_origin_color12: #e9dacc; //$share_member_text_color10
+$share_origin_color13: #f3ede7; //$share_member_text_color3
+$share_origin_color14: #bbab98; //$share_member_text_color2
+$share_origin_color15: #9ba3bf; //$share_member_text_color14
+$share_origin_color16: #bf8646; //$share_member_text_color4

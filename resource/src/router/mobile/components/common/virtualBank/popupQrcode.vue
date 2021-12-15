@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div :class="$style['button-block']">
+      <div :class="[$style['button-block'], $style[siteConfig.ROUTER_TPL]]">
         <span @click="closePopup">取消</span>
         <span @click="downloadImage">
           {{ downloadText }}

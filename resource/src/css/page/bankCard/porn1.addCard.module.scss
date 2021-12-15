@@ -54,13 +54,25 @@
     cursor: pointer;
 
     &.is-current {
-      border: 1px solid $share_member_text_color4;
-      color: $share_member_text_color4;
+      border: 1px solid $share_origin_color1;
+      color: $share_origin_color1;
       background: linear-gradient(
         -45deg,
-        $share_member_text_color4 10px,
+        $share_origin_color5 10px,
         hsla(0, 0%, 100%, 0) 0
       );
+    }
+
+    &.porn1 {
+      &.is-current {
+        border: 1px solid $share_member_text_color4;
+        color: $share_member_text_color4;
+        background: linear-gradient(
+          -45deg,
+          $share_member_text_color4 10px,
+          hsla(0, 0%, 100%, 0) 0
+        );
+      }
     }
   }
 
@@ -233,10 +245,12 @@
   margin: 20px 0;
 
   &.porn1 {
+    background: $befa_main_button_color2;
     color: $befa_member_text_color1;
-    background: $befa_member_main_color1;
+
     &.disabled {
-      background: $befa_member_main_color2;
+      background: $befa_main_button_color1;
+      color: $befa_member_text_color2;
     }
   }
 

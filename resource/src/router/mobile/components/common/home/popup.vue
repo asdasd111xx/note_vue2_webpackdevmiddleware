@@ -84,7 +84,7 @@
         <div
           :class="[
             $style['modal-button-center'],
-            $style[siteConfig.MOBILE_WEB_TPL]
+            $style[siteConfig.ROUTER_TPL]
           ]"
           @click="closePop()"
         >
@@ -279,7 +279,7 @@ export default {
   }
 
   &:last-child {
-    color: $share_member_text_color4;
+    color: $share_origin_color1;
   }
 
   &.sg1:last-child {

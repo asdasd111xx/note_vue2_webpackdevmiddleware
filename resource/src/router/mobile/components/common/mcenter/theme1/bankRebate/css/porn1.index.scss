@@ -74,11 +74,21 @@
       color: #222;
 
       &.week {
-        color: $share_member_text_color4;
+        color: $share_origin_color16;
       }
 
       &.is-current {
-        color: $share_member_text_color4;
+        color: $share_origin_color16;
+      }
+
+      &.porn1 {
+        &.week {
+          color: $share_member_text_color4;
+        }
+
+        &.is-current {
+          color: $share_member_text_color4;
+        }
       }
     }
 
@@ -145,9 +155,11 @@
         outline: none;
       }
       &.porn1 {
-        background: $befa_member_main_color1;
+        color: $befa_member_text_color1;
+        background: $befa_main_button_color2;
         &.disable {
-          background: $befa_member_main_color2;
+          color: $befa_member_text_color2;
+          background: $befa_main_button_color1;
         }
       }
 
@@ -222,9 +234,11 @@
     text-align: center;
 
     &.porn1 {
-      background: $befa_member_main_color1;
+      background: $befa_main_button_color2;
+      color: $befa_member_text_color1;
       &.disable {
-        background: $befa_member_main_color2;
+        background: $befa_main_button_color1;
+        color: $befa_member_text_color2;
       }
     }
 
@@ -276,9 +290,11 @@
   background: $share_main_button_color2;
 
   &.porn1 {
-    background: $befa_member_main_color1;
+    background: $befa_main_button_color2;
+    color: $befa_member_text_color1;
     &.is-disabled {
-      background: $befa_member_main_color2;
+      background: $befa_main_button_color1;
+      color: $befa_member_text_color2;
     }
   }
 
@@ -364,6 +380,10 @@
     text-align: center;
     padding: 15px 0;
     border-top: 2px solid #f9f9f8;
-    color: $share_member_text_color4;
+    color: $share_origin_color1;
+
+    &.porn1 {
+      color: $share_member_text_color4;
+    }
   }
 }
