@@ -280,9 +280,7 @@
             {
               [$style['disabled']]:
                 (addBankCardStep === 'two' && !NextStepStatus) ||
-                (!NextStepStatus &&
-                  lockStatus &&
-                  !selectTarget.oneClickBindingMode) ||
+                (lockStatus && !selectTarget.oneClickBindingMode) ||
                 epointTimeCount > 0
             },
             {
