@@ -97,7 +97,11 @@ window.RESET_MEM_SETTING = reload => {
 /* plugins css - end */
 // 推播中心websocket api
 let cid = getCookie("cid");
-if (cid) {
+
+const urlParams = new URLSearchParams(window.location.search);
+const isApp = urlParams.get("isApp");
+
+if (cid && !isApp) {
   const script = document.createElement("script");
   script.setAttribute("src", "/api/v1/ws/front_file");
   script.setAttribute("data-id", "ws-bc");
