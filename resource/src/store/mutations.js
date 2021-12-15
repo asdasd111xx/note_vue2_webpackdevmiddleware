@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-// import navFilterPage from '@/lib/nav_filter_page';
 import * as types from "./mutations_type";
 
 import EST from "@/lib/EST";

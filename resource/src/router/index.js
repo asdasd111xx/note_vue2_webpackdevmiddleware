@@ -3,11 +3,9 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import Router from "vue-router";
 import Vue from "vue";
 import agent from "./agent";
-import domain from "./domain";
 import error404 from "./404";
 import error500 from "./500";
 import game from "./game";
-import isMobile from "@/lib/is_mobile";
 import mobile from "./mobile";
 import noService from "./no_service";
 import popControl from "./popcontrol";
@@ -80,7 +78,6 @@ export default new Router({
     game,
     agent,
     mobile,
-    domain,
     error500,
     noService,
     upup,
