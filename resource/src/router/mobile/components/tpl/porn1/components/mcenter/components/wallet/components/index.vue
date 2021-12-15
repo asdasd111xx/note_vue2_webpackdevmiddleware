@@ -415,6 +415,7 @@ import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
 
 export default {
   components: {
@@ -939,7 +940,7 @@ export default {
           this.bcMoneyShowType = true;
           break;
         case "qrcode":
-          this.getWalletUserReceiveCode();
+          lib_newWindowOpen(this.getWalletUserReceiveCode());
           break;
         case "bind":
           this.$router.push(
@@ -947,13 +948,14 @@ export default {
           );
           break;
         case "inter":
-          let newWindow = "";
-          this.getCustomerServiceUrl({
-            urlName: "btse_login",
-            needToken: false
-          }).then(res => {
-            newWindow = window.open(res.uri);
-          });
+          lib_newWindowOpen(
+            this.getCustomerServiceUrl({
+              urlName: "btse_login",
+              needToken: false
+            }).then(res => {
+              return res.uri;
+            })
+          );
           break;
         case "use":
           this.getCustomerServiceUrl({
@@ -1031,8 +1033,7 @@ export default {
       });
     },
     getWalletUserReceiveCode() {
-      let newWindow = "";
-      goLangApiRequest({
+      return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
         params: {
@@ -1041,7 +1042,7 @@ export default {
       }).then(res => {
         console.log(res);
         if (res.status === "000") {
-          newWindow = window.open(res.data.url);
+          return res.data.url;
         }
       });
     }
