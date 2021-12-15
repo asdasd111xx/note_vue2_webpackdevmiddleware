@@ -570,11 +570,32 @@
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
-          使用{{ selectedCard.name }}出款，额外赠送{{
-            formatThousandsCurrency(offer())
-          }}元(CNY)优惠
+          {{`加送 ${3} %提现优惠`}}
         </span>
+        <span :class="[$style['option']]" @click="showRealStatusType(true)">详情</span>
       </div>
+      <div v-if="showRealStatus" :class="$style['pop-message']">
+            <div :class="$style['pop-message-mark']" />
+            <div :class="$style['message-container']">
+              <ul :class="$style['message-content']">
+                <div :class="$style['message-content-title']">
+                  详情
+                </div>
+                <template
+                  v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
+                >
+                  <li :class="$style['tip-list']" v-html="promitionText" />
+                </template>
+                <li>• 实际存入依审核结果为准</li>
+              </ul>
+              <div
+                :class="$style['message-close']"
+                @click="showRealStatusType(false)"
+              >
+                关闭
+              </div>
+            </div>
+          </div>
       <!-- 到帳金額 -->
       <div
         :class="[
@@ -904,7 +925,8 @@ export default {
       marqueeList: [],
 
       displayWithdrawValue: "",
-      epointSelectType: false
+      epointSelectType: false,
+      showRealStatus: false,
     };
   },
   watch: {
@@ -965,6 +987,7 @@ export default {
           this.getUserWalletList();
           this.getBounsAccount();
           this.actionSetAnnouncementList({ type: 2 });
+          this.getWithdrawOffer();
         });
 
         this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
@@ -1234,13 +1257,14 @@ export default {
       }
     },
     hasOffer() {
-      return (
-        (this.isSelectedUSDT ||
-          this.selectedCard.bank_id == 2009 ||
-          this.selectedCard.bank_id == 2016 ||
-          this.selectedCard.bank_id == 2026) &&
-        this.selectedCard.offer_percent > 0
-      );
+      // return (
+      //   (this.isSelectedUSDT ||
+      //     this.selectedCard.bank_id == 2009 ||
+      //     this.selectedCard.bank_id == 2016 ||
+      //     this.selectedCard.bank_id == 2026) &&
+      //   this.selectedCard.offer_percent > 0
+      // );
+      return true
     },
 
     marqueeTitle() {
@@ -2327,7 +2351,13 @@ export default {
           });
         }
       }
-    }
+    },
+    showRealStatusType(type){
+      this.showRealStatus = type;
+      if (type) {
+        this.getWithdrawOffer(this.withdrawValue);
+      }
+    },
   },
   destroyed() {
     this.resetTimerStatus();
