@@ -80,7 +80,10 @@
               </template>
             </div>
           </div>
-          <div v-if="computeState" :class="$style['path-bottom']">
+          <div
+            v-if="computeState"
+            :class="[$style['path-bottom'], $style[siteConfig.ROUTER_TPL]]"
+          >
             <div :class="$style['path-close']" @click="close">
               {{ $t("S_CLOSE") }}
             </div>
@@ -88,7 +91,10 @@
               {{ $t("S_BACK") }}
             </div>
           </div>
-          <div v-else :class="$style['path-bottom']">
+          <div
+            v-else
+            :class="[$style['path-bottom'], $style[siteConfig.ROUTER_TPL]]"
+          >
             <div :class="$style['path-only-close']" @click="close">
               {{ $t("S_CLOSE") }}
             </div>

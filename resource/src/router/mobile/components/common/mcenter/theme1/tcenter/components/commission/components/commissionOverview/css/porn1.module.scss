@@ -84,8 +84,12 @@
   height: 8px;
   border-radius: 50%;
   margin-right: 3px;
-  background: $share_member_text_color13;
+  background: $share_origin_color18;
   bottom: 1px;
+
+  &.porn1 {
+    background: $share_member_text_color13;
+  }
 }
 
 .profit_child_item {

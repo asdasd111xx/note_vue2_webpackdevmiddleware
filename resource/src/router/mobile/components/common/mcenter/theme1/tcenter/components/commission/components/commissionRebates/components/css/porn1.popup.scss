@@ -64,6 +64,10 @@
 
     .path-back {
       border-left: 1px solid #f8f8f7;
+      color: $share_origin_color1;
+    }
+    .path-close {
+      color: $share_origin_color17;
     }
 
     .path-back,
@@ -77,12 +81,22 @@
     .path-back,
     .path-close {
       width: 50%;
-      color: $share_member_text_color4;
     }
 
     .path-only-close {
       width: 100%;
-      color: $share_member_text_color4;
+      color: $share_origin_color1;
+    }
+
+    &.porn1 {
+      .path-back,
+      .path-close {
+        color: $share_member_text_color4;
+      }
+
+      .path-only-close {
+        color: $share_member_text_color4;
+      }
     }
   }
 

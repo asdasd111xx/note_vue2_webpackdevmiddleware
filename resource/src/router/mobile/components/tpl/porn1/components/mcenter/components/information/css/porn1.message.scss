@@ -384,6 +384,15 @@
     font-size: 18px;
     text-align: center;
   }
+
+  &.porn1 {
+    .delete-cancel {
+      color: $share_member_text_color4;
+    }
+    .delete-confirm {
+      color: $share_member_text_color4;
+    }
+  }
 }
 
 .delete-cancel {
@@ -391,7 +400,7 @@
 }
 
 .delete-confirm {
-  color: $share_member_text_color4;
+  color: $share_member_text_color1;
 }
 
 .message-header {
