@@ -824,8 +824,19 @@ export default {
 
           if (errorCode !== "00" || status !== "000") {
             // this.actionSetGlobalMessage({ msg });
-            this.errorMsg = msg;
-            return;
+            if (
+              //手機驗證開啟時USDT ERC20,TRC20 驗證位址後先進入手機驗證
+              (this.selectTarget.walletId === 46 ||
+                this.selectTarget.walletId === 39) &&
+              this.checkWalletPhoneVerification &&
+              response.code == "C640022"
+            ) {
+              this.$emit("update:addBankCardStep", "two");
+              return;
+            } else {
+              this.errorMsg = msg;
+              return;
+            }
           }
 
           this.actionSetGlobalMessage({
