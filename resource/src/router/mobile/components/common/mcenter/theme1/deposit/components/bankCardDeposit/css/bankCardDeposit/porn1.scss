@@ -15,16 +15,8 @@
   height: 38px;
   line-height: 38px;
   text-align: center;
-  color: #a6a9b2;
+  color: $member_text_color3;
   white-space: nowrap;
-
-  &.porn1 {
-    &.is-current {
-      span {
-        border-bottom: 2px solid $befa_member_main_color1;
-      }
-    }
-  }
 
   span {
     height: 34px;
@@ -34,10 +26,10 @@
   }
 
   &.is-current {
-    color: #5e626d;
+    color: $member_text_color4;
 
     span {
-      border-bottom: 2px solid $share_member_text_color1;
+      border-bottom: 2px solid $member_slider;
     }
   }
 }
@@ -140,11 +132,11 @@
   }
 
   &.is-current {
-    border: 1px solid $share_member_text_color4;
-    color: $share_member_text_color4;
+    border: 1px solid $wallet_border_color;
+    color: $wallet_border_color;
     background: linear-gradient(
       -45deg,
-      $share_member_text_color4 10px,
+      $wallet_border_color 10px,
       hsla(0, 0%, 100%, 0) 0
     );
   }
@@ -277,11 +269,11 @@
 
   &.is-current {
     background-color: #fff;
-    color: $share_member_text_color4;
-    border: 1px solid $share_member_text_color4;
+    color: $wallet_border_color;
+    border: 1px solid $wallet_border_color;
     background: linear-gradient(
       -45deg,
-      $share_member_text_color4 12px,
+      $wallet_border_color 12px,
       hsla(0, 0%, 100%, 0) 0
     );
   }
@@ -816,11 +808,11 @@
 
 .current-data {
   background-color: #fff;
-  color: $share_member_text_color4;
-  border: 1px solid $share_member_text_color4;
+  color: $wallet_border_color;
+  border: 1px solid $wallet_border_color;
   background: linear-gradient(
     -45deg,
-    $share_member_text_color4 12px,
+    $wallet_border_color 12px,
     hsla(0, 0%, 100%, 0) 0
   );
 }
