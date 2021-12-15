@@ -112,10 +112,10 @@ export default {
       });
     },
     getKeyring() {
-      if (this.lockStatus || this.smsTimer) {
-        return;
-      }
-      this.lockStatus = true;
+      // if (this.lockStatus || this.smsTimer) {
+      //   return;
+      // }
+      // this.lockStatus = true;
 
       let captchaParams = {};
       captchaParams["captcha_text"] = this.thirdyCaptchaObj || "";
