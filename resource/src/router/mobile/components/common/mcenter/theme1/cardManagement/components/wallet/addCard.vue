@@ -199,6 +199,14 @@
             </div>
           </div>
         </div>
+
+        <!-- 其它驗證 ex拼圖,滑動,數字... -->
+        <popup-verification
+          v-if="isShowCaptcha"
+          @show-captcha="showCaptcha"
+          @set-captcha="setCaptcha"
+          :page-type="'default'"
+        />
       </template>
 
       <div :class="$style['info-confirm']">
@@ -390,11 +398,13 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import lib_newWindowOpen from "@/lib/newWindowOpen";
 // import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
 import walletMixin from "@/mixins/mcenter/bankCard/addCard/wallet";
+import popupVerification from "@/components/popupVerification";
 
 export default {
   components: {
     popupQrcode,
-    popupTip
+    popupTip,
+    popupVerification
   },
   props: {
     setPageStatus: {

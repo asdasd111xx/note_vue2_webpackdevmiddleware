@@ -112,17 +112,16 @@ export default {
       });
     },
     getKeyring() {
-      // if (this.lockStatus || this.smsTimer) {
-      //   return;
-      // }
-      // this.lockStatus = true;
+      if (this.lockStatus || this.smsTimer) {
+        return;
+      }
+      this.lockStatus = true;
 
       let captchaParams = {};
       captchaParams["captcha_text"] = this.thirdyCaptchaObj || "";
 
       goLangApiRequest({
         method: "post",
-        // url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Verify/UserBank/Sms`,
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Verify/User/Virtual/Bank/Sms`,
         params: {
           lang: "zh-cn",
