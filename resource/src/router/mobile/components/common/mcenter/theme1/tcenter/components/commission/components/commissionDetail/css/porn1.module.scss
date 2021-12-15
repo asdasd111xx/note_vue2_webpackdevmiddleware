@@ -316,19 +316,23 @@
   }
 }
 
-.profit_child_name::before {
-  content: "";
-  position: relative;
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 3px;
-  background: $share_origin_color18;
-  bottom: 1px;
+.profit_child_name {
+  &::before {
+    content: "";
+    position: relative;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 3px;
+    background: $share_origin_color18;
+    bottom: 1px;
+  }
 
   &.porn1 {
-    background: $share_member_text_color13;
+    &::before {
+      background: $share_member_text_color13;
+    }
   }
 }
 
