@@ -315,7 +315,7 @@ export default {
 
         // network error
         if (res && res.message) {
-          this.errMsg = res.message;
+          this.errMsg = `网路异常(${res.message})`;
         }
 
         if (callBackFuc) {
