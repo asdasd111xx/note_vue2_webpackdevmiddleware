@@ -296,7 +296,8 @@
             v-if="
               addBankCardStep === 'one' &&
                 checkWalletPhoneVerification &&
-                selectTarget.walletId !== 21
+                selectTarget.walletId !== 21 &&
+                selectTarget.walletId !== 47
             "
           >
             下一步
