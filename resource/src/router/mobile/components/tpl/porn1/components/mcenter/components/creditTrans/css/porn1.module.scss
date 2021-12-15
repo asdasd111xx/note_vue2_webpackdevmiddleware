@@ -225,7 +225,7 @@ input {
   &.porn1 {
     background-color: $befa_member_main_color1;
     &.disabled {
-      background-color: $befa_member_main_color2;
+      background-color: $befa_member_main_color3;
     }
   }
 }
@@ -254,12 +254,14 @@ input::placeholder {
 
   &.porn1 {
     > div {
-      background: $befa_member_main_color1;
+      background: $befa_main_button_color2;
+      color: $befa_member_text_color1;
     }
     &.disabled {
       > div {
         opacity: rgba(#fff, 0.5);
-        background: $befa_member_main_color2;
+        background: $befa_main_button_color1;
+        color: $befa_member_text_color2;
       }
     }
   }

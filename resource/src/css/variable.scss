@@ -70,9 +70,23 @@ $befa_main_color: #3354ad;
 
 //會員中心
 $befa_member_main_color1: #3354ad;
-$befa_member_main_color2: #adbade;
-$befa_member_main_color3: #3676d5;
-$befa_member_text_color1: #ffffff;
+$befa_member_main_color2: #3354ad;
+$befa_member_main_color3: #adbade;
+$befa_member_main_color4: #adbade;
+
+$befa_member_text_color1: #ffffff; //主色
+$befa_member_text_color2: #ffffff; //補色
+
+$befa_main_button_color1: linear-gradient(
+  to left,
+  $befa_member_main_color3 0%,
+  $befa_member_main_color4 100%
+);
+$befa_main_button_color2: linear-gradient(
+  to left,
+  $befa_member_main_color1 0%,
+  $befa_member_main_color2 100%
+);
 
 /*--- 原絲瓜 ---*/
 $sg_main_text_color1: #be9e7f;

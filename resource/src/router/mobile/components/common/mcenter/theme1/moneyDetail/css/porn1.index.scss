@@ -150,13 +150,13 @@
 .picker-button-wrap {
   &.porn1 {
     .cancel {
-      background: $befa_member_main_color2;
-      color: $befa_member_text_color1;
+      background: $befa_main_button_color1;
+      color: $befa_member_text_color2;
     }
 
     .confirm {
-      background: $befa_member_main_color1;
       color: $befa_member_text_color1;
+      background-image: $befa_main_button_color2;
     }
   }
 }

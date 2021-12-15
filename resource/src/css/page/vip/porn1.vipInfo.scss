@@ -27,7 +27,9 @@
   }
 
   &.porn1 {
-    background: $share_member_text_color2;
+    &::before {
+      background: $share_member_text_color2;
+    }
   }
 }
 

@@ -243,20 +243,20 @@
 .time-button-group {
   &.porn1 {
     .time-cancel {
-      color: $befa_member_text_color1;
-      background: $befa_member_main_color2;
+      color: $befa_member_text_color2;
+      background: $befa_main_button_color1;
     }
     .time-confirm {
       background: $befa_member_main_color1;
-      background-image: $befa_member_main_color1;
       color: $befa_member_text_color1;
+      background-image: $befa_main_button_color2;
     }
   }
 }
 
 .time-cancel {
   background: $share_origin_color9;
-  color: #be9e7f;
+  color: $share_member_text_color5;
 }
 
 .time-confirm {
@@ -387,8 +387,10 @@
   }
 
   &.porn1 {
-    background: $share_member_text_color2;
-    background-image: $share_member_text_color2;
+    &::before {
+      background: $share_member_text_color2;
+      background-image: $share_member_text_color2;
+    }
   }
 }
 

@@ -454,7 +454,8 @@
   background: $share_main_button_color2;
 
   &.porn1 {
-    background: $befa_member_main_color1;
+    color: $befa_member_text_color1;
+    background-image: $befa_main_button_color2;
   }
 }
 
@@ -469,18 +470,15 @@
   background: $share_main_button_color2;
 
   &.porn1 {
-    background: $befa_member_main_color1;
     color: $befa_member_text_color1;
+    background: $befa_main_button_color2;
     &.is-disable {
-      background: $befa_member_main_color2;
-      color: #fff;
+      background: $befa_main_button_color1;
+      color: $befa_member_text_color2;
     }
   }
   &.is-disable {
-    background: linear-gradient(to left, #e9dacb, #eee5db);
-    background: -moz-linear-gradient(to left, #e9dacb, #eee5db);
-    background: -webkit-linear-gradient(to left, #e9dacb, #eee5db);
-    background: -o-linear-gradient(to left, #e9dacb, #eee5db);
+    background: $share_main_button_color1;
     pointer-events: none;
   }
 }
