@@ -47,6 +47,7 @@
             <span
               :class="[
                 $style['balance-item-vendor'],
+                $style[siteConfig.ROUTER_TPL],
                 $style['balance-redjackpot-text']
               ]"
             >
@@ -304,7 +305,7 @@
             <div
               :class="[
                 $style['check-box'],
-                $style[siteConfig.ROUTER_TPL],
+                $style[`image-${siteConfig.ROUTER_TPL}`],
                 { [$style['checked']]: item.id === selectedCard.id },
                 {
                   [$style['disable']]: !item.allow
@@ -396,7 +397,7 @@
             (moreMethodStatus.bankCard || moreMethodStatus.wallet)) ||
             (epointSelectType && epointWallet.length === 0)
         "
-        :class="[$style['add-bank-card']]"
+        :class="[$style['add-bank-card'], $style[siteConfig.ROUTER_TPL]]"
         @click="
           () => {
             if (epointSelectType) {
@@ -409,7 +410,7 @@
           }
         "
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        <img :src="$getCdnPath(`/static/image/${routerTPL}/mcenter/add.png`)" />
         &nbsp;
         <span>{{ "添加提现方式" }}</span>
       </div>
@@ -620,7 +621,9 @@
       <!-- 參考匯率 -->
       <div v-if="isSelectedUSDT" :class="$style['exchange-rate']">
         参考汇率 1 USDT ≈ {{ rate }} CNY (
-        <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+        <span :class="[$style['time'], $style[siteConfig.ROUTER_TPL]]">{{
+          timeUSDT()
+        }}</span>
         后更新 )
       </div>
 

@@ -795,6 +795,7 @@
                       <span
                         :class="[
                           $style['time'],
+                          $style[siteConfig.ROUTER_TPL],
                           { [$style['ey']]: themeTPL === 'ey1' }
                         ]"
                         >{{ timeUSDT() }}</span
@@ -825,7 +826,7 @@
                       [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
-                  @click="()=>walletData['CGPay'].method = 0"
+                  @click="() => (walletData['CGPay'].method = 0)"
                 >
                   CGP安全防护码
                   <img
@@ -853,42 +854,40 @@
                 </div>
 
                 <!-- CGP 安全防護碼 -->
-                <div 
+                <div
                   v-show="walletData['CGPay'].method === 0 && isShowCGPPwd"
-                  :class="$style['input-wrap']">
+                  :class="$style['input-wrap']"
+                >
                   <input
                     id="cgp-password"
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type= "text"
+                    type="text"
                     :placeholder="walletData['CGPay'].placeholder"
                     @input="verification('CGPPwd', $event.target.value)"
                   />
                   <img
                     :src="
-                      $getCdnPath(
-                        `/static/image/common/login/btn_eye_n.png`
-                      )
+                      $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
                     "
                     @click="toggleEye"
                   />
                 </div>
-                <div 
+                <div
                   v-show="walletData['CGPay'].method === 0 && !isShowCGPPwd"
-                  :class="$style['input-wrap']">
+                  :class="$style['input-wrap']"
+                >
                   <input
                     id="cgp-password"
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type= "password"
+                    type="password"
                     :placeholder="walletData['CGPay'].placeholder"
                     @input="verification('CGPPwd', $event.target.value)"
                   />
                   <img
                     :src="
-                      $getCdnPath(
-                        `/static/image/common/login/btn_eye_d.png`
-                      )
+                      $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
                     "
                     @click="toggleEye"
                   />

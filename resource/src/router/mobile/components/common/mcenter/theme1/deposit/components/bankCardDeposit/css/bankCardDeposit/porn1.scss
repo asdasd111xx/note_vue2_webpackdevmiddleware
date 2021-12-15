@@ -383,9 +383,11 @@
   color: $main_text_color2;
 
   .time {
-    color: $share_member_text_color4;
+    color: $share_origin_color6;
     margin: 0 5px 0 5px;
-
+    &.porn1 {
+      color: $share_member_text_color8;
+    }
     &.ey {
       color: #e42a30;
     }
