@@ -100,6 +100,12 @@
   padding-left: 41px;
 }
 
+@mixin check-ok($backgroundImg) {
+  border: none;
+  background: url($backgroundImg) 0 0 no-repeat;
+  background-size: 18px 18px;
+}
+
 .icon-edit {
   position: absolute;
   top: 24px;
@@ -111,9 +117,15 @@
   background-color: #fff;
 
   &.active {
-    border: none;
-    background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
-    background-size: 18px 18px;
+    &.image-porn1 {
+      @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+    }
+    &.image-aobo1 {
+      @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+    }
+    &.image-sp1 {
+      @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+    }
   }
 }
 

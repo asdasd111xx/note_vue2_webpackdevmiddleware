@@ -80,6 +80,11 @@
   margin-top: 10px;
 }
 
+@mixin check-ok($backgroundImg) {
+  background: url($backgroundImg) 0 0 no-repeat;
+  background-size: 100%;
+}
+
 .bank-card-cell {
   position: relative;
   background-color: $main_white_color1;
@@ -137,8 +142,15 @@
     right: 16px;
 
     &.checked {
-      background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
+      &.image-porn1 {
+        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+      }
+      &.image-aobo1 {
+        @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+      }
+      &.image-sp1 {
+        @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+      }
     }
 
     &.disable {

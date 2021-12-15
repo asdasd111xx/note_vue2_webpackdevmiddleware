@@ -305,7 +305,7 @@
             <div
               :class="[
                 $style['check-box'],
-                $style[siteConfig.ROUTER_TPL],
+                $style[`image-${siteConfig.ROUTER_TPL}`],
                 { [$style['checked']]: item.id === selectedCard.id },
                 {
                   [$style['disable']]: !item.allow
