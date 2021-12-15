@@ -295,7 +295,11 @@
           @click="handleSmbmit"
         >
           <span
-            v-if="addBankCardStep === 'one' && checkWalletPhoneVerification"
+            v-if="
+              addBankCardStep === 'one' &&
+                checkWalletPhoneVerification &&
+                selectTarget.walletId !== 21
+            "
           >
             下一步
           </span>
@@ -311,6 +315,8 @@
                 ? [47, 48].includes(selectTarget.walletId)
                   ? "绑定钱包"
                   : "一键绑定"
+                : checkWalletPhoneVerification
+                ? "下一步"
                 : $text("S_CONFIRM", "确认")
             }}
           </span>
