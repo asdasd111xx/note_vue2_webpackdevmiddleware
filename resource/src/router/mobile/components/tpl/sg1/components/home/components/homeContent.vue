@@ -701,7 +701,7 @@ export default {
     color: $share_member_text_color4;
   }
   &.sg1:last-child {
-    color: $sg_main_text_color2;
+    color: var(--member_color100);
   }
 }
 </style>

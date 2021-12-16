@@ -212,7 +212,7 @@
 
   &.sg1 {
     &.active {
-      background: $sg_main_button_color1;
+      background: var(--member_gradient_color1);
     }
   }
 }
@@ -259,7 +259,7 @@
   }
   &.sg1 {
     button {
-      color: $sg_main_text_color2;
+      color: var(--member_color100);
     }
   }
 }
@@ -280,16 +280,16 @@
   &.sg1 {
     .mail-wrap {
       button.get-verify {
-        background: $sg_main_button_color1;
+        background: var(--member_gradient_color1);
       }
     }
     .phonenum-wrap {
       button.get-verify {
-        background: $sg_main_button_color1;
+        background: var(--member_gradient_color1);
       }
     }
     button {
-      color: $sg_main_text_color2;
+      color: var(--member_color100);
     }
   }
   h1 {
@@ -854,7 +854,7 @@
   }
 
   &.sg1:last-child {
-    color: $sg_main_text_color2;
+    color: var(--member_color100);
   }
 
   &.ey1:last-child {
