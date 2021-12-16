@@ -131,15 +131,11 @@
     line-height: 45px;
     border: none;
     border-radius: 3px;
-    background: $share_main_button_color2;
-    color: #fff;
+    background: $member_gradient_color1;
+    color: $member_text_color1;
     font-size: 13px;
     text-align: center;
     outline: none;
-    &.porn1 {
-      color: $befa_member_text_color1;
-      background-image: $befa_main_button_color2;
-    }
   }
 }
 

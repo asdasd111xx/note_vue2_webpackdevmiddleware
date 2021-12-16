@@ -78,7 +78,7 @@
             )
           "
         >
-          <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
+          <div :class="[$style['title']]">
             有效投注金额
             <img
               :src="`/static/image/common/arrow_next.png`"

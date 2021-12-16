@@ -180,15 +180,9 @@ $submitTextColor: #fff;
           height: 10px;
           width: 10px;
           margin: 0 5px;
-          background-color: $share_origin_color18;
+          background-color: $deco_color2;
           border: 0px solid white;
           border-radius: 5px;
-        }
-
-        &.porn1 {
-          &::before {
-            background-color: $share_member_text_color13;
-          }
         }
 
         .arrow_next {
