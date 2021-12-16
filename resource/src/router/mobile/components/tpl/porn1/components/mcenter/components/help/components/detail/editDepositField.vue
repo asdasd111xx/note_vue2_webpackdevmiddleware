@@ -4,7 +4,11 @@
       <div :class="[$style['alert-wrap'], $style['deposit']]">
         <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
-          <div :class="$style['alert-close-wrap']" @click="closeFuc(false)">
+          <div
+            v-if="['aobo1', 'sp1', 'sg1'].includes(this.routerTPL)"
+            :class="$style['alert-close-wrap']"
+            @click="closeFuc(false)"
+          >
             <icon name="times" width="20" height="20" />
           </div>
         </div>

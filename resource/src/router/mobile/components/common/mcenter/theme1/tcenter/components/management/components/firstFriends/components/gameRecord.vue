@@ -33,7 +33,9 @@
             }}</span>
           </div>
         </div>
-        <div :class="$style['game-title']">{{ info.gameName }}</div>
+        <div :class="[$style['game-title'], $style[siteConfig.ROUTER_TPL]]">
+          {{ info.gameName }}
+        </div>
         <div :class="$style['item-content']">
           <div v-for="(childItem, index) in info.list" :key="index">
             <div

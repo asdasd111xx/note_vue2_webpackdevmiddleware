@@ -1,4 +1,3 @@
-import { apiErrorAlarm } from "./errorConsole";
 import axios from "axios";
 
 export default ({
@@ -38,7 +37,6 @@ export default ({
           alert(`${response.data.msg}`);
         }
         fail(response);
-        apiErrorAlarm({ url, response });
       }
 
       return responseInfo ? response : response.data;

@@ -47,13 +47,13 @@ env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="",shortPro
 
             name: "push2GCR-"+name,
             image: "plugins/gcr",
-            mem_limit: "2G",
+            mem_limit: "4G",
             depends_on: (if env=="prod" || env =="demo" then ["clone"]),
             settings: {
                 repo: "gcr.io/rd7-project/"+imageName,
                 tags: ["latest",env+"-${DRONE_COMMIT}","${DRONE_TAG}"],
                 json_key: { "from_secret":"GOOGLE_CREDENTIALS"},
-                build_args: ["website="+env,"product="+product],
+                build_args: ["website="+shortProduct,"product="+product],
             },
         },
         {
@@ -132,13 +132,13 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
 
             name: "push2GCR-"+name,
             image: "plugins/gcr",
-            mem_limit: "2G",
+            mem_limit: "4G",
             depends_on: (if env=="prod" || env =="demo" then ["clone"]),
             settings: {
                 repo: "gcr.io/rd7-project/"+imageName,
                 tags: ["latest",env+"-${DRONE_COMMIT}","${DRONE_TAG}"],
                 json_key: { "from_secret":"GOOGLE_CREDENTIALS"},
-                build_args: ["website="+env,"product="+product],
+                build_args: ["website="+shortProduct,"product="+product],
             },
             // when :
             //     conditionWhen(env)
@@ -185,13 +185,26 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
     //     ref: ["refs/heads/master"],
     //     event: ["tag"],
 };
+local onlyimage(name,imageName,shortProduct)={
+    name: "push2GCR-"+name,
+    image: "plugins/gcr",
+    mem_limit: "4G",
+    depends_on:  ["clone"],
+    settings: {
+        repo: "gcr.io/rd7-project/"+imageName,
+        tags: ["latest","${DRONE_COMMIT}","${DRONE_TAG}"],
+        json_key: { "from_secret":"GOOGLE_CREDENTIALS"},
+        build_args: ["website="+shortProduct],
+    },
+};
+
 local onlyGKE(name="QA",cluster="xbb-common",zone="asia-east1-a"
 ,env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="istio",nodePool="",nodePoolName="")={
 
             name: product + "GKE-"+ env +"(" + origin +")",
             image: "nytimes/drone-gke",
-            depends_on: ["push2GCR-"+name],
+            depends_on: ["push2GCR-"+product],
             environment:{
                 TOKEN: {"from_secret": "GOOGLE_CREDENTIALS"},
             },
@@ -217,28 +230,15 @@ local onlyGKE(name="QA",cluster="xbb-common",zone="asia-east1-a"
             },
         
 };
+local buildall2(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 
-local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     kind: "pipeline",
     name: "AllPipeline("+ name +")",
-    steps:[
-        {
-
-            name: "push2GCR-"+name,
-            image: "plugins/gcr",
-            mem_limit: "2G",
-            depends_on:  ["clone"],
-            settings: {
-                repo: "gcr.io/rd7-project/"+imageName,
-                tags: ["latest","${DRONE_COMMIT}","${DRONE_TAG}"],
-                json_key: { "from_secret":"GOOGLE_CREDENTIALS"},
-                // build_args: ["website="+env,"product="+product],
-            },
-        },
-    ]+
-    if name=="QA" then 
+    steps:
+    if name=="QA" then
     [
-        # yabo
+       # yabo
+        onlyimage("yabo","yaboxxx-web","porn1"),
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
             ,"yaboxxx-web","10.27.1.218","yabo","istio","env","qa"),
@@ -249,96 +249,165 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
         //     ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
         //     ,"yaboxxx-web","10.27.1.218","yiyuan","istio","env","qa"),
 
-
         # istio-sigua
+        onlyimage("sigua","yaboxxx-web","sg1"),
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
             ,"yaboxxx-web","10.27.1.218","sigua","istio","env","qa"),
 
         
         # istio-aubo
+        onlyimage("aubo","yaboxxx-web","aobo1"),
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
             ,"yaboxxx-web","10.27.1.218","aubo","istio","env","qa"),
 
         # istio-sp51
+        onlyimage("sp51","yaboxxx-web","sp1"),
         onlyGKE("QA","yaboxxx-test","asia-east1-b"
             ,"qa","sp51-frontend-qa","","sp51-frontend-nginx-config-qa"
             ,"yaboxxx-web","10.27.1.218","sp51","istio","env","qa"),
-        // onlyGKE("QA","yaboxxx-prod","asia-east1-b"
-        //     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-        //     ,"yaboxxx-web","10.17.3.48","sigua","istio","prod"),
-
-
     ]else if name=="Beta" then  [
         # yabo
+        onlyimage("yabo","yaboxxx-web","porn1"),
         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
             ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
             ,"yaboxxx-web","10.17.3.48","yabo","istio","env","prod"),
-        // # yiyuan
-        // onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
-        //     ,"beta","yiyuan-frontend-proxy-beta","","yiyuan-frontend-proxy-nginx-config-beta"
-        //     ,"yaboxxx-web","10.17.3.48","yiyuan","istio","env","prod"),
         # sigua
+        onlyimage("sigua","yaboxxx-web","porn1"),
         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
             ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
             ,"yaboxxx-web","10.17.3.48","sigua","istio","env","prod"),
-            
-    ]else if name=="Prod" then [
-        # yabo
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-            ,"yaboxxx-web","10.17.1.94","yabo","istio","env","prod"),
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
-            ,"yaboxxx-web","10.17.1.94","yabo","istio","env","prod"),
-   
-        // # istio-yiyuan
-        // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-        //     ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
-        //     ,"yaboxxx-web","10.17.1.94","yiyuan","istio","env","prod"),
-        // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-        //     ,"prod","yiyuan-frontend-proxy-prod","","yiyuan-frontend-proxy-nginx-config-prod"
-        //     ,"yaboxxx-web","10.17.1.94","yiyuan","istio","env","prod"),
-
-        # istio-sigua
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-            ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
-            ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
-
-        # istio-aubo
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-            ,"yaboxxx-web","10.17.1.94","aubo","istio","env","prod"),
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"prod","aubo-frontend-prod","","aubo-frontend-nginx-config-prod"
-            ,"yaboxxx-web","10.17.1.94","aubo","istio","env","prod"),
-
-        # istio-sp51
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
-            ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod"),
-        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-            ,"prod","sp51-frontend-prod","","sp51-frontend-nginx-config-prod"
-            ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod"),
-
- 
     ],
     trigger:
         conditionTrigger(name,shortProduct)
-    // trigger:
-    //     ref: ["refs/heads/master"],
-    //     event: ["tag"],
-
 };
 
+// local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
+//     kind: "pipeline",
+//     name: "AllPipeline("+ name +")",
+//     steps:[
+//         {
+
+//             name: "push2GCR-"+name,
+//             image: "plugins/gcr",
+//             mem_limit: "2G",
+//             depends_on:  ["clone"],
+//             settings: {
+//                 repo: "gcr.io/rd7-project/"+imageName,
+//                 tags: ["latest","${DRONE_COMMIT}","${DRONE_TAG}"],
+//                 json_key: { "from_secret":"GOOGLE_CREDENTIALS"},
+//                 build_args: ["website="+shortProduct],
+//             },
+//         },
+//     ]+
+//     if name=="QA" then 
+//     [
+//         # yabo
+//         onlyGKE("QA","yaboxxx-test","asia-east1-b"
+//             ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
+//             ,"yaboxxx-web","10.27.1.218","yabo","istio","env","qa"),
+
+
+//         // # istio-yiyuan
+//         // onlyGKE("QA","yaboxxx-test","asia-east1-b"
+//         //     ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
+//         //     ,"yaboxxx-web","10.27.1.218","yiyuan","istio","env","qa"),
+
+
+//         # istio-sigua
+//         onlyGKE("QA","yaboxxx-test","asia-east1-b"
+//             ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
+//             ,"yaboxxx-web","10.27.1.218","sigua","istio","env","qa"),
+
+        
+//         # istio-aubo
+//         onlyGKE("QA","yaboxxx-test","asia-east1-b"
+//             ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
+//             ,"yaboxxx-web","10.27.1.218","aubo","istio","env","qa"),
+
+//         # istio-sp51
+//         onlyGKE("QA","yaboxxx-test","asia-east1-b"
+//             ,"qa","sp51-frontend-qa","","sp51-frontend-nginx-config-qa"
+//             ,"yaboxxx-web","10.27.1.218","sp51","istio","env","qa"),
+//         // onlyGKE("QA","yaboxxx-prod","asia-east1-b"
+//         //     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
+//         //     ,"yaboxxx-web","10.17.3.48","sigua","istio","prod"),
+
+
+//     ]else if name=="Beta" then  [
+//         # yabo
+//         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
+//             ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
+//             ,"yaboxxx-web","10.17.3.48","yabo","istio","env","prod"),
+//         // # yiyuan
+//         // onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
+//         //     ,"beta","yiyuan-frontend-proxy-beta","","yiyuan-frontend-proxy-nginx-config-beta"
+//         //     ,"yaboxxx-web","10.17.3.48","yiyuan","istio","env","prod"),
+//         # sigua
+//         onlyGKE("Beta","yaboxxx-prod","asia-east1-b"
+//             ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
+//             ,"yaboxxx-web","10.17.3.48","sigua","istio","env","prod"),
+            
+//     ]else if name=="Prod" then [
+//         # yabo
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
+//             ,"yaboxxx-web","10.17.1.94","yabo","istio","env","prod"),
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"prod","yabo-frontend-proxy-prod","","yabo-frontend-proxy-nginx-config-prod"
+//             ,"yaboxxx-web","10.17.1.94","yabo","istio","env","prod"),
+   
+//         // # istio-yiyuan
+//         // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//         //     ,"demo","yiyuan-frontend-proxy-demo","","yiyuan-frontend-proxy-nginx-config-demo"
+//         //     ,"yaboxxx-web","10.17.1.94","yiyuan","istio","env","prod"),
+//         // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//         //     ,"prod","yiyuan-frontend-proxy-prod","","yiyuan-frontend-proxy-nginx-config-prod"
+//         //     ,"yaboxxx-web","10.17.1.94","yiyuan","istio","env","prod"),
+
+//         # istio-sigua
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+//             ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
+//             ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
+
+//         # istio-aubo
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
+//             ,"yaboxxx-web","10.17.1.94","aubo","istio","env","prod"),
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"prod","aubo-frontend-prod","","aubo-frontend-nginx-config-prod"
+//             ,"yaboxxx-web","10.17.1.94","aubo","istio","env","prod"),
+
+//         # istio-sp51
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
+//             ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod"),
+//         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+//             ,"prod","sp51-frontend-prod","","sp51-frontend-nginx-config-prod"
+//             ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod"),
+
+ 
+//     ],
+//     trigger:
+//         conditionTrigger(name,shortProduct)
+//     // trigger:
+//     //     ref: ["refs/heads/master"],
+//     //     event: ["tag"],
+
+// };
+
 [
+
+    // 12/15 原則更新，
+    // master 只發 Prod & Demo
+    // 其他分支 只發 QA & Beta
     # All
-    buildall("QA","yaboxxx-web","all"),
-    buildall("Beta","yaboxxx-web","all"),
+    buildall2("QA","yaboxxx-web","all"),
+    buildall2("Beta","yaboxxx-web","all"),
     // buildall("Prod","yaboxxx-web","all"),
 
 
@@ -347,34 +416,34 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","sp51-frontend-qa","","sp51-frontend-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.218","sp51","istio","sp","env","qa"),
+    ,"yaboxxx-web","10.27.1.218","sp51","istio","sp1","env","qa"),
 
-    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
-    ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.1.94","sp51","istio","sp","env","prod"),
+    // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    // ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
+    // ,"yaboxxx-web","10.17.1.94","sp51","istio","sp1","env","prod"),
 
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
     // ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod",
     // "prod","yaboxxx-prod","sp51-frontend-prod","","sp51-frontend-nginx-config-prod"
-    // ,"10.17.1.94","sp","env","prod"),
+    // ,"10.17.1.94","sp1","env","prod"),
 
     # istio-aubo
 
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","aubo-frontend-qa","","aubo-frontend-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.218","aubo","istio","ab","env","qa"),
+    ,"yaboxxx-web","10.27.1.218","aubo","istio","aobo1","env","qa"),
 
-   Pipeline("Demo","yaboxxx-prod","asia-east1-b"
-    ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
-    ,"yaboxxx-web","10.17.1.94","aubo","istio","ab","env","prod"),
+//    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+//     ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
+//     ,"yaboxxx-web","10.17.1.94","aubo","istio","aobo1","env","prod"),
 
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
     // ,"yaboxxx-web","10.17.1.94","aubo","istio","env","prod",
     // "prod","yaboxxx-prod","aubo-frontend-prod","","aubo-frontend-nginx-config-prod"
-    // ,"10.17.1.94","ab","env","prod"),
+    // ,"10.17.1.94","aobo1","env","prod"),
 
 
     # istio-sigua
@@ -389,25 +458,25 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","sigua-frontend-proxy-qa","","sigua-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.218","sigua","istio","sg","env","qa"),
+    ,"yaboxxx-web","10.27.1.218","sigua","istio","sg1","env","qa"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
-    ,"yaboxxx-web","10.17.3.48","sigua","istio","sg","env","prod"),
+    ,"yaboxxx-web","10.17.3.48","sigua","istio","sg1","env","prod"),
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa2","sigua-frontend-proxy-qa2","","sigua-frontend-proxy-nginx-config-qa2"
     ,"yaboxxx-web","10.27.1.218","sigua","istio","sg2","env","qa"),
 
-    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
-    ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.1.94","sigua","istio","sg","env","prod"),
+    // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    // ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+    // ,"yaboxxx-web","10.17.1.94","sigua","istio","sg1","env","prod"),
 
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
     // ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod",
     // "prod","yaboxxx-prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
-    // ,"10.17.1.94","sg","env","prod"),
+    // ,"10.17.1.94","sg1","env","prod"),
 
 
 
@@ -421,15 +490,15 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
 
     Pipeline("QA","yaboxxx-test","asia-east1-b"
     ,"qa","yabo-frontend-proxy-qa","","yabo-frontend-proxy-nginx-config-qa"
-    ,"yaboxxx-web","10.27.1.218","yabo","istio","yb","env","qa"),
+    ,"yaboxxx-web","10.27.1.218","yabo","istio","porn1","env","qa"),
 
     Pipeline("Beta","yaboxxx-prod","asia-east1-b"
     ,"beta","yabo-frontend-proxy-beta","","yabo-frontend-proxy-nginx-config-beta"
-    ,"yaboxxx-web","10.17.3.48","yabo","istio","yb","env","prod"),
+    ,"yaboxxx-web","10.17.3.48","yabo","istio","porn1","env","prod"),
 
-    Pipeline("Demo","yaboxxx-prod","asia-east1-b"
-    ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
-    ,"yaboxxx-web","10.17.1.94","yabo","istio","yb","env","prod"),
+    // Pipeline("Demo","yaboxxx-prod","asia-east1-b"
+    // ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
+    // ,"yaboxxx-web","10.17.1.94","yabo","istio","porn1","env","prod"),
 
     // Build("Prod","yaboxxx-prod","asia-east1-b"
     // ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"

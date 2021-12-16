@@ -18,8 +18,6 @@ import Icon from "vue-awesome/components/Icon";
 import LoadScript from "vue-plugin-load-script";
 import Loading from "vue-loading-overlay";
 import Meta from "vue-meta";
-// vee-validate - 表單驗證
-import VeeValidate from "vee-validate";
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue";
@@ -28,10 +26,8 @@ import VueCookie from "vue-cookie";
 import VueCropper from "vue-cropper";
 import VueLazyload from "vue-lazyload";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import VueRx from "vue-rx";
 // swal
 import VueSwal2 from "vue-sweetalert2";
-import Vuebar from "vuebar";
 import Vuex from "vuex";
 import depositLink from "./lib/depositLink";
 import getCdnPath from "./lib/getCdnPath";
@@ -97,7 +93,11 @@ window.RESET_MEM_SETTING = reload => {
 /* plugins css - end */
 // 推播中心websocket api
 let cid = getCookie("cid");
-if (cid) {
+
+const urlParams = new URLSearchParams(window.location.search);
+const isApp = urlParams.get("isApp");
+
+if (cid && !isApp) {
   const script = document.createElement("script");
   script.setAttribute("src", "/api/v1/ws/front_file");
   script.setAttribute("data-id", "ws-bc");
@@ -137,14 +137,11 @@ if (process.env.NODE_ENV === "development") {
 const script_cdn_host = window.SCRIPT_CDN_HOST ? window.SCRIPT_CDN_HOST : "/";
 Vue.use(LoadScript);
 Vue.use(Vuex);
-Vue.use(VueRx);
-Vue.use(VeeValidate, { inject: true });
 Vue.use(VueCookie);
 Vue.use(moment);
 Vue.use(VueLazyload);
 Vue.use(VueSwal2);
 Vue.use(Loading);
-Vue.use(Vuebar);
 Vue.use(Meta);
 Vue.use(getCdnPath);
 Vue.use(text);

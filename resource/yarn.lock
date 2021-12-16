@@ -3864,18 +3864,6 @@ findup-sync@3.0.0:
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
 
-fine-uploader-wrappers@1.0.1, fine-uploader-wrappers@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/fine-uploader-wrappers/-/fine-uploader-wrappers-1.0.1.tgz#044a9432076bd02ac1404866ec6e197fc662fcbf"
-  integrity sha1-BEqUMgdr0CrBQEhm7G4Zf8Zi/L8=
-  dependencies:
-    object-assign "4.1.0"
-
-"fine-uploader@>=5.11.10 <6.0.0":
-  version "5.16.2"
-  resolved "https://registry.yarnpkg.com/fine-uploader/-/fine-uploader-5.16.2.tgz#0d878da1cd2753f80683ac091df5daff9ffb8c44"
-  integrity sha1-DYeNoc0nU/gGg6wJHfXa/5/7jEQ=
-
 flat-cache@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-2.0.1.tgz#5d296d6f04bda44a4630a301413bdbc2ec085ec0"
@@ -5149,11 +5137,6 @@ jquery@3.1.1:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.1.1.tgz#347c1c21c7e004115e0a4da32cece041fad3c8a3"
   integrity sha1-NHwcIcfgBBFeCk2jLOzgQfrTyKM=
 
-jquery@>=1.7.2:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
-  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
-
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.2.tgz#313b6274dda718f714d00b3330bbae6e38e90209"
@@ -6262,11 +6245,6 @@ oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==
-
-object-assign@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
-  integrity sha1-ejs9DpgGPUP0wD8uiubNUahog6A=
 
 object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
@@ -7785,13 +7763,6 @@ rust-result@^1.0.0:
   dependencies:
     individual "^2.0.0"
 
-rxjs@6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.2.1.tgz#246cebec189a6cbc143a3ef9f62d6f4c91813ca1"
-  integrity sha512-OwMxHxmnmHTUpgO+V7dZChf3Tixf4ih95cmXjzzadULziVl/FKhHScGLj4goEw9weePVOH2Q0+GcCBUhKCZc/g==
-  dependencies:
-    tslib "^1.9.0"
-
 rxjs@^6.5.3:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
@@ -8059,13 +8030,6 @@ slice-ansi@^2.1.0:
     ansi-styles "^3.2.0"
     astral-regex "^1.0.0"
     is-fullwidth-code-point "^2.0.0"
-
-slick-carousel@1.6:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/slick-carousel/-/slick-carousel-1.6.0.tgz#780f378e470f4e6f6bec1aa2bae0475f4f9eb085"
-  integrity sha1-eA83jkcPTm9r7BqiuuBHX0+esIU=
-  dependencies:
-    jquery ">=1.7.2"
 
 slick-carousel@^1.6.0:
   version "1.8.1"
@@ -9004,13 +8968,6 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-v-viewer@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/v-viewer/-/v-viewer-1.0.1.tgz#64020be8d72df4980723e782f7d43e13f539ac1c"
-  integrity sha512-S+HOP6SfGV4MLRXCuT1rllyhB+vwrlk9XMum8r9j6hL0Yan47EBTdbEM0ODopK0g6gXSoMUhHnwpOsLR5by3/Q==
-  dependencies:
-    viewerjs "^1.0.0"
-
 v8-compile-cache@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.0.3.tgz#00f7494d2ae2b688cfe2899df6ed2c54bef91dbe"
@@ -9084,11 +9041,6 @@ videojs-vtt.js@^0.14.1:
   dependencies:
     global "^4.3.1"
 
-viewerjs@^1.0.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/viewerjs/-/viewerjs-1.5.0.tgz#debea9492189fa41223cc567de915d79435899d0"
-  integrity sha512-ZiJ0vrXDvomLSY3ixaZCJtmdenomsvPPQwZKwvtXUMCiO2HHtFGoB/KqpS9QzABSeKaRLfcENp1uRYJ7l1MkYQ==
-
 vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
@@ -9103,11 +9055,6 @@ vue-awesome@3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/vue-awesome/-/vue-awesome-3.3.1.tgz#028fce4e2ef1775cff13c077679efc5fdd5a922f"
   integrity sha512-AybgLXfguWCIJaqZ1qD0gfEA31W0psKk3Nmou7QIssuQaEETHuELXMKW4vCg2c+i52iLPBaqDNQLlKWVcY8xnw==
-
-vue-ckeditor2@1.26.0:
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/vue-ckeditor2/-/vue-ckeditor2-1.26.0.tgz#9c4c5447fdc0b082fe68041abcfeef25a00a2937"
-  integrity sha512-7lj2SuIrti0YyLpR/WP/366cunzl/m3Gxsv+6TXK3kffEbIlHBaAhliloA8LOPlCXgx5SGThcvx6i1qKfX0gUQ==
 
 vue-clipboard2@0.3.0:
   version "0.3.0"
@@ -9138,11 +9085,6 @@ vue-cropper@^0.5.5:
   resolved "https://registry.yarnpkg.com/vue-cropper/-/vue-cropper-0.5.5.tgz#9bd1ba563c7faa268abd52fb2af4c6c28d33c962"
   integrity sha512-5mGaBlS1EwLxUFwHHX2Q8zOZSiVfBUjOfolR+ZNKwu7Rh3u+GhwHYOyFkgZHhhoQBBNdyVB28O6W+MpMimhCbA==
 
-vue-draggable-resizable@2.0.0-rc1:
-  version "2.0.0-rc1"
-  resolved "https://registry.yarnpkg.com/vue-draggable-resizable/-/vue-draggable-resizable-2.0.0-rc1.tgz#e07fd12102d092d3731732d02cb60d879618917c"
-  integrity sha512-Zqe14L8BmMPEA7j1/lpLavLP4i5En2otsPtk4NNQphlCyDHvEh748C/WJ3g9XMV5KN980bZGTPE8NWsGl0Qq2A==
-
 vue-eslint-parser@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.0.0.tgz#a4ed2669f87179dedd06afdd8736acbb3a3864d6"
@@ -9154,15 +9096,6 @@ vue-eslint-parser@^7.0.0:
     espree "^6.1.2"
     esquery "^1.0.1"
     lodash "^4.17.15"
-
-vue-fineuploader@2.0.0-rc.9:
-  version "2.0.0-rc.9"
-  resolved "https://registry.yarnpkg.com/vue-fineuploader/-/vue-fineuploader-2.0.0-rc.9.tgz#117894be8bc7c2cfaf5f81425b28b14e046222a3"
-  integrity sha512-Xd3MiytwOUzweF2+pb4fjcVs+xJ4TMFdsCHdPkq/3pfuq3fkjAu6UGaozlLXrXneEtzHRoiUNZsCb0/TlJTkgw==
-  dependencies:
-    fine-uploader ">=5.11.10 <6.0.0"
-    fine-uploader-wrappers "^1.0.1"
-    lodash.isplainobject "^4.0.6"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
@@ -9232,16 +9165,6 @@ vue-router@3.1.5:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.1.5.tgz#ff29b8a1e1306c526b52d4dc0532109f16c41231"
   integrity sha512-BszkPvhl7I9h334GjckCh7sVFyjTPMMJFJ4Bsrem/Ik+B/9gt5tgrk8k4gGLO4ZpdvciVdg7O41gW4DisQWurg==
 
-vue-rx@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/vue-rx/-/vue-rx-6.0.0.tgz#9f002a96dc54bd43ff7fc199262c7ebc15211e0a"
-  integrity sha512-xSbl3zQpyAvQglAip5LhDDVT6nCGJeK1el0bGalXvEjS72PPgexUKv7o6F1PSrK7oM4SskJeWfgCoj5zZnOcWw==
-
-vue-search-select@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/vue-search-select/-/vue-search-select-2.6.1.tgz#d52df1409ddb0d7c8edc958ce4ae86aeaa64d6d0"
-  integrity sha512-QYxwOBY6U5ql2C6IEeybLEJfJSLuDEUMus3lU0j+GgkTAXyGV0caG2hkpBXwVmoUjbrJqIHXteO8EE8fYhFxrA==
-
 vue-select@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-2.4.0.tgz#ef06547fe857f3259841ab2f3d29c5d8a1e52630"
@@ -9253,11 +9176,6 @@ vue-slick@1.1.12:
   integrity sha1-wOOrE1yCirxv8CNik1pSdbjFru0=
   dependencies:
     slick-carousel "^1.6.0"
-
-vue-slide-up-down@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/vue-slide-up-down/-/vue-slide-up-down-1.6.0.tgz#1d1bfc39d502c31317aec45beb3cf2b1373e623c"
-  integrity sha512-3qYUMg57gg4GfWGttP9V1qRxHWyim1wf6DewUsytRpuwvh+Xm5G5i7w876RrihtlwTZP68MsOmSrtNx39Jp2jw==
 
 vue-socket.io@^3.0.7:
   version "3.0.7"
@@ -9329,11 +9247,6 @@ vue@^2.5.21:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
-vuebar@0.0.18:
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/vuebar/-/vuebar-0.0.18.tgz#d769b6af334abb2c3fc02dbb5a02381a9d1080cf"
-  integrity sha512-gEoLuC7awC8ip54cGXTuka1j8FEKgVh4+DDD7QLaKznXUcLxyOvVmDJBnNzRWSLUYkYe90ssVS/vKm3YgP3b1g==
-
 vuedraggable@^2.24.3:
   version "2.24.3"
   resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-2.24.3.tgz#43c93849b746a24ce503e123d5b259c701ba0d19"
@@ -9345,11 +9258,6 @@ vuejs-datepicker@0.9.20:
   version "0.9.20"
   resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-0.9.20.tgz#88ae3db157fea7509541b10e26fdb66f9118e79c"
   integrity sha512-96WEmdn9t7J1WXudY7igMIcSbZfy4GfMHFfXaWHbIKFOyMOupmraqBUSAkPcYQ97ayZotk0KrZA4WXTuxMulMw==
-
-vuejs-paginate@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vuejs-paginate/-/vuejs-paginate-2.1.0.tgz#93e1ad1539b713a688c7a2d3080bda60fcc6c77d"
-  integrity sha512-gnwyXlmCiDOu9MLWxN5UJ4PGijKGNOMpHG8ujsrynCzTJljn/rp7Jq0WiDGDAMi5/u0AHuYIHhced+tUW4jblA==
 
 vuex@2.3.1:
   version "2.3.1"

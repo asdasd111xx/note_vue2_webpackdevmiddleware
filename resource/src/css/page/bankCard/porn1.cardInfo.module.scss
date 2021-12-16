@@ -197,7 +197,16 @@
   height: 50px;
   align-items: center;
   border-top: 1px solid #f7f8fb;
-  color: $share_member_text_color4;
+  color: $share_origin_color17;
+
+  &.porn1 {
+    color: $share_member_text_color4;
+    span {
+      &:nth-child(2) {
+        color: $share_member_text_color4;
+      }
+    }
+  }
 
   &::after {
     content: "";
@@ -216,7 +225,7 @@
     font-weight: 700;
 
     &:nth-child(2) {
-      color: $share_member_text_color4;
+      color: $share_origin_color1;
     }
   }
 }

@@ -210,6 +210,10 @@
   - git tag -a "allQA-v1.3.57" -m "allBeta-v1.3.57"
   - git push origin master --tags
 
+- 佈署到 Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 allDemo- 】（大小寫需一致）
+  - git tag -a "allProd-v1.3.57" -m "allProd-v1.3.57"
+  - git push origin master --tags
+
 - 佈署到 Prod & Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 allProd- 】（大小寫需一致）
   - git tag -a "allProd-v1.3.57" -m "allProd-v1.3.57"
   - git push origin master --tags
@@ -218,87 +222,77 @@
 
 
 
-- 佈署到 QA，觸發條件：下 tag，tag 名稱前綴需為 【 ybQA- 】（大小寫需一致）
-  - git tag -a "ybQA-v1.3.57" -m "ybQA-v1.3.57"
+- 佈署到 QA，觸發條件：下 tag，tag 名稱前綴需為 【 porn1QA- 】（大小寫需一致）
+  - git tag -a "porn1QA-v1.3.57" -m "porn1QA-v1.3.57"
   - git push origin master --tags
-- 佈署到 Beta tag，tag 名稱前綴需為 【 ybBeta- 】（大小寫需一致）
-  - git tag -a "ybBeta-v1.3.57" -m "ybBeta-v1.3.57"
+- 佈署到 Beta tag，tag 名稱前綴需為 【 porn1Beta- 】（大小寫需一致）
+  - git tag -a "porn1Beta-v1.3.57" -m "porn1Beta-v1.3.57"
   - git push origin master --tags
-- 佈署到 Demo tag，tag 名稱前綴需為 【 ybDemo- 】（大小寫需一致）
-  - git tag -a "ybDemo-v1.3.57" -m "ybDemo-v1.3.57"
-  - git push origin master --tags
-
-- 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 ybProd- 】（大小寫需一致）
-  - git tag -a "ybProd-v0.1" -m "ybProd-v0.0.1"
+- 佈署到 Demo tag，tag 名稱前綴需為 【 porn1Demo- 】（大小寫需一致）
+  - git tag -a "porn1Demo-v1.3.57" -m "porn1Demo-v1.3.57"
   - git push origin master --tags
 
-## yiyuan 佈署方式
-
-- 佈署到 QA 站，觸發條件：下 tag，tag 名稱前綴需為 【 eyQA- 】（大小寫需一致）
-  - git tag -a "eyQA-v1.3.57" -m "eyQA-v1.3.57"
-  - git push origin master --tags
-- 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 eyBeta- 】（大小寫需一致）
-  - git tag -a "eyBeta-v1.3.57" -m "eyBeta-v1.3.57"
+- 佈署到  Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 porn1Demo- 】（大小寫需一致）
+  - git tag -a "porn1Demo-v0.1" -m "porn1Demo-v0.0.1"
   - git push origin master --tags
 
-- 佈署到 Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 eyDemo- 】（大小寫需一致）
-  - git tag -a "eyDemo-v1.3.57" -m "eyDemo-v1.3.57"
+- 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 porn1Prod- 】（大小寫需一致）
+  - git tag -a "porn1Prod-v0.1" -m "porn1Prod-v0.0.1"
   - git push origin master --tags
 
-- 佈署到 Prod && Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 eyProd- 】（大小寫需一致）
-  - git tag -a "eyProd-v0.1" -m "eyProd-v0.0.1"
-  - git push origin master --tags
+
 
 ## sigua 佈署方式
 
 
-- 佈署到 QA  站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA- 】（大小寫需一致）
-  - git tag -a "sgQA-v1.3.57" -m "sgQA-v1.3.57"
+- 佈署到 QA  站，觸發條件：下 tag，tag 名稱前綴需為 【 sg1QA- 】（大小寫需一致）
+  - git tag -a "sg1QA-v1.3.57" -m "sg1QA-v1.3.57"
   - git push origin master --tags
 
 
-- 佈署到 QA2  站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA2- 】（大小寫需一致）
+- 佈署到 QA2  站，觸發條件：下 tag，tag 名稱前綴需為 【 sg2QA- 】（大小寫需一致）
   - 網址為： eyqa1-io.77rd7.com（12/1供Demo用)
-  - git tag -a "sgQA2-v1.3.57" -m "sgQA2-v1.3.57"
+  - git tag -a "sg2QA-v1.3.57" -m "sg2QA-v1.3.57"
   - git push origin master --tags
 
-- 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 sgBeta- 】（大小寫需一致）
-  - git tag -a "sgBeta-v1.3.57" -m "sgBeta-v1.3.57"
+- 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 sg1Beta- 】（大小寫需一致）
+  - git tag -a "sg1Beta-v1.3.57" -m "sg1Beta-v1.3.57"
   - git push origin master --tags
 
-- 佈署到 Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sgDemo- 】（大小寫需一致）
-  - git tag -a "sgDemo-v0.1" -m "sgProd-v0.0.1"
+- 佈署到 Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sg1Demo- 】（大小寫需一致）
+  - git tag -a "sg1Demo-v0.1" -m "sg1Demo-v0.0.1"
   - git push origin master --sgDemo
 
-- 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sgProd- 】（大小寫需一致）
-  - git tag -a "sgProd-v0.1" -m "sgProd-v0.0.1"
+- 佈署到 Prod && Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sg1Prod- 】（大小寫需一致）
+  - git tag -a "sg1Prod-v0.1" -m "sg1Prod-v0.0.1"
   - git push origin master --tags
 
 ## aubo 佈署方式
 
-- 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 abQA- 】（大小寫需一致）
-  - git tag -a "abQA-v1.3.57" -m "abQA-v1.3.57"
+- 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 aobo1QA- 】（大小寫需一致）
+  - git tag -a "aobo1QA-v1.3.57" -m "aobo1QA-v1.3.57"
   - git push origin master --tags
 
-- 佈署到  Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 abDemo- 】（大小寫需一致）
-  - git tag -a "abDemo-v0.1" -m "abDemo-v0.0.1"
+
+- 佈署到  Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 aobo1Demo- 】（大小寫需一致）
+  - git tag -a "aobo1Demo-v0.1" -m "aobo1Demo-v0.0.1"
   - git push origin master --tags
 
-- 佈署到 Prod && Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 abProd- 】（大小寫需一致）
-  - git tag -a "abProd-v0.1" -m "abProd-v0.0.1"
+- 佈署到 Prod && Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 aobo1Prod- 】（大小寫需一致）
+  - git tag -a "aobo1Prod-v0.1" -m "aobo1Prod-v0.0.1"
   - git push origin master --tags
 
 
 ## SP51 佈署方式
 
-- 佈署到 QA，觸發條件：下 tag，tag 名稱前綴需為 【 spQA- 】（大小寫需一致）
-  - git tag -a "spQA-v1.3.57" -m "spQA-v1.3.57"
+- 佈署到 QA，觸發條件：下 tag，tag 名稱前綴需為 【 sp1QA- 】（大小寫需一致）
+  - git tag -a "sp1QA-v1.3.57" -m "sp1QA-v1.3.57"
   - git push origin master --tags
 
-- 佈署到 Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 spDemo- 】（大小寫需一致）
-  - git tag -a "spDemo-v0.1" -m "spDemo-v0.0.1"
+- 佈署到 Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 sp1Demo- 】（大小寫需一致）
+  - git tag -a "sp1Demo-v0.1" -m "sp1Demo-v0.0.1"
   - git push origin master --tags
 
-- 佈署到 Prod && Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 spProd- 】（大小寫需一致）
-  - git tag -a "spProd-v0.1" -m "spProd-v0.0.1"
+- 佈署到 Prod && Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 sp1Prod- 】（大小寫需一致）
+  - git tag -a "sp1Prod-v0.1" -m "sp1Prod-v0.0.1"
   - git push origin master --tags
