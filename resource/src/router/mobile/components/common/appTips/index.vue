@@ -289,7 +289,7 @@ export default {
     animation: slide-up 1s forwards;
   }
   .title {
-    color: $apptip_title;
+    color: var(--apptip_title);
   }
 
   // -webkit-animation-timing-function: forwards;
@@ -341,7 +341,7 @@ export default {
 
     > .download-btn {
       align-items: center;
-      background: $apptip_btn;
+      background: var(--apptip_btn);
       border-radius: 13.5px;
       display: flex;
       height: 27px;
@@ -350,7 +350,7 @@ export default {
       width: 100%;
 
       span {
-        color: $main_text_color2;
+        color: var(--main_text_color2);
         font-size: 12px;
         font-weight: 700;
         text-align: center;

@@ -31,7 +31,7 @@ console.log("process.env.assetsVariablePath: ", process.env.assetsVariablePath);
 const sassLoader = {
   loader: "sass-loader",
   options: {
-    prependData: process.env.assetsVariablePath
+    // prependData: process.env.assetsVariablePath
   }
 };
 

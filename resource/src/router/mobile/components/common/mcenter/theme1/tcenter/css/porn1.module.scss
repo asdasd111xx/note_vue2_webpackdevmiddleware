@@ -12,13 +12,13 @@
   height: 43px;
   line-height: 43px;
   text-align: center;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.is-current {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
 
     &::after {
       content: "";

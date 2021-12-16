@@ -130,7 +130,7 @@ export default {
   font-size: 12px;
 
   > span:last-child {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
   }
 }
 
@@ -148,7 +148,7 @@ export default {
 .info-wrap {
   padding: 0 14px;
   position: relative;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   border-top: 1px solid #eee;
   border-bottom: solid 1px #eee;
 
@@ -159,7 +159,7 @@ export default {
   }
 
   .title {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
     font-size: 12px;
     line-height: 14px;
     width: 80%;

@@ -42,7 +42,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
 
   img {
     width: 13px;
@@ -56,7 +56,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: $member_color100;
+    color: var(--member_color100);
   }
 }
 
@@ -64,7 +64,7 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: $member_color100;
+  color: var(--member_color100);
   font-weight: 700;
 
   &::before {
@@ -94,11 +94,11 @@
 .balance-tip-wrap {
   width: 100%;
   text-align: left;
-  color: $member_text_color4;
+  color: var(--member_text_color4);
 
   .balance-auto-tip {
     font-size: 12px;
-    color: $member_text_color3;
+    color: var(--member_text_color3);
   }
 }
 
@@ -186,7 +186,7 @@
   padding: 10px 4px 15px;
   text-align: center;
   font-size: 14px;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   border-bottom: 1px solid #eee;
 
   &:not(:nth-child(4n + 1)):before {
@@ -210,7 +210,7 @@
 
   &.expend,
   &.collapse {
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     border-bottom: none;
 
     .icon {
@@ -243,7 +243,7 @@
 
 .balance-item-money {
   display: block;
-  color: $member_text_color3;
+  color: var(--member_text_color3);
 
   &.more {
     word-break: break-word;
@@ -251,7 +251,7 @@
 }
 
 .balance-redjackpot-text {
-  color: $redpot;
+  color: var(--redpot);
   word-break: break-word;
 }
 
@@ -282,7 +282,7 @@
   display: block;
   padding: 8px 17px;
   background: #eee;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   font-size: 14px;
 }
 
@@ -352,7 +352,7 @@
     font-size: 16px;
     text-align: center;
     height: 65px;
-    color: $main_text_color3;
+    color: var(--main_text_color3);
 
     &::before {
       content: "";
@@ -373,7 +373,7 @@
   .select-content {
     position: relative;
     font-size: 14px;
-    color: $main_text_color3;
+    color: var(--main_text_color3);
     max-height: 500px;
     overflow: hidden;
     overflow-y: auto;
@@ -396,7 +396,7 @@
 
 .select-title {
   font-size: 12px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
 }
 
 // .select-arrow-icon {
@@ -431,7 +431,7 @@
   outline: none;
   border: none;
   background: transparent;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
 
   &::placeholder {
     color: #cdced8;
@@ -447,7 +447,7 @@
   font-size: 14px;
   border-radius: 3px;
   color: #fff;
-  background: $member_gradient_color1;
+  background: var(--member_gradient_color1);
 }
 
 .transfer-btn {
@@ -458,10 +458,10 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: $member_gradient_color1;
+  background: var(--member_gradient_color1);
 
   &.is-disable {
-    background: $member_gradient_color2;
+    background: var(--member_gradient_color2);
     pointer-events: none;
   }
 }

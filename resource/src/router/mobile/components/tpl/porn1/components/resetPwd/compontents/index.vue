@@ -516,7 +516,7 @@ input {
   border: none;
   outline: none;
   border-radius: 0;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
 
   &::placeholder {
     color: #cbced8;
@@ -529,7 +529,7 @@ input {
   position: relative;
 
   .title {
-    color: $main_text_color3;
+    color: var(--main_text_color3);
     margin: 17px 0 6px;
   }
 

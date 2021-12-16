@@ -325,10 +325,9 @@ $fixed_spacing_height: 43px;
   font-weight: 500;
   font-size: 14px;
   text-align: center;
-  color: $main_text_color2;
-
+  color: var(--main_text_color2);
   &.active {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
     // border-bottom: solid 1px $share_member_text_color4;
   }
 }
@@ -357,7 +356,7 @@ $fixed_spacing_height: 43px;
 
 .time {
   line-height: 13px;
-  color: $main_text_color4;
+  color: var(--main_text_color4);
   font-size: 10px;
 
   > img {

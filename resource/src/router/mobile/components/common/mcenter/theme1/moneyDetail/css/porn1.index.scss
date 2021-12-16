@@ -88,8 +88,8 @@
     line-height: 35px;
     border: none;
     border-radius: 3px;
-    background: $member_gradient_color1;
-    color: $member_text_color1;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
   }
 }
 
@@ -142,13 +142,13 @@
 }
 .confirm {
   composes: button;
-  color: $member_text_color1;
-  background: $member_gradient_color1;
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
 }
 .cancel {
   composes: button;
-  background: $member_gradient_color2;
-  color: $member_text_color1;
+  background: var(--member_gradient_color2);
+  color: var(--member_text_color1);
 }
 
 .date-tip {

@@ -732,7 +732,7 @@
 
 .visitor-get {
   margin-top: 5px;
-  color: $joinmember_title;
+  color: var(--joinmember_title);
   width: 100%;
   text-align: center;
   font-weight: 500;

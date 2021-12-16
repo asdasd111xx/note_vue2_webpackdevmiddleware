@@ -79,23 +79,25 @@ export default {
 
     pornRequest({
       url: `/video/artist`
-    }).then(response => {
-      if (response.status !== 200) {
-        return;
-      }
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          return;
+        }
 
-      this.hotArtist = [...response.result.hotArtist];
-      this.allArtist = [...response.result.allArtist];
-    }).then(() => {
-      let wrap = document.getElementsByClassName(
-        this.$style["discover-artist-wrap"]
-      );
-      const container = document.getElementsByClassName(
-        this.$style["artist-container"]
-      );
-      const target = container[container.length - 1];
-      this.dynamicPB = wrap[0].offsetHeight - target.offsetHeight
-    });
+        this.hotArtist = [...response.result.hotArtist];
+        this.allArtist = [...response.result.allArtist];
+      })
+      .then(() => {
+        let wrap = document.getElementsByClassName(
+          this.$style["discover-artist-wrap"]
+        );
+        const container = document.getElementsByClassName(
+          this.$style["artist-container"]
+        );
+        const target = container[container.length - 1];
+        this.dynamicPB = wrap[0].offsetHeight - target.offsetHeight;
+      });
   },
   beforeDestroy() {
     $(window).off("scroll", this.onScroll);
@@ -167,7 +169,7 @@ export default {
 }
 
 .all {
-  color: $main_text_color4;
+  color: var(--main_text_color4);
 }
 
 .artist-wrap {
@@ -194,7 +196,7 @@ export default {
   height: 15px;
   line-height: 15px;
   margin-top: 8px;
-  color: $main_text_color1;
+  color: var(--main_text_color1);
   font-size: 11px;
   text-align: center;
   text-overflow: ellipsis;

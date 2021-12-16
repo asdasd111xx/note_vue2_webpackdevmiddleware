@@ -144,7 +144,7 @@
       color: white;
       text-align: center;
       line-height: 50px;
-      background: $main_gradient_color1;
+      background: var(--main_gradient_color1);
       border-radius: 3px;
       font-size: 13px;
       font-weight: 700;
@@ -176,7 +176,7 @@
 }
 
 .version {
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   position: absolute;
   right: 14px;
   bottom: 5px;

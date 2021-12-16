@@ -38,7 +38,7 @@ export default {
 .third-wrap {
   width: 100%;
   padding-bottom: 10px;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   border-bottom: 2px solid #eee;
 
   .card-item {

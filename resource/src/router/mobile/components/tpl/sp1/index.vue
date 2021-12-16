@@ -38,6 +38,8 @@ export default {
 };
 </script>
 <style src="@/css/index.scss" lang="scss"></style>
+<style src="@/css/variable/sp1.scss" lang="scss"></style>
+
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 

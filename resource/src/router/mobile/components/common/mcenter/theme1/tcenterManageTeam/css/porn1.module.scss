@@ -26,12 +26,12 @@ $fixed_spacing_height: 43px;
   height: 43px;
   line-height: 43px;
   text-align: center;
-  color: $member_text_color3;
+  color: var(--member_text_color3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   &.is-current {
-    color: $member_color1;
+    color: var(--member_color1);
 
     &::after {
       content: "";
@@ -41,7 +41,7 @@ $fixed_spacing_height: 43px;
       left: 50%;
       bottom: 0;
       transform: translateX(-50%);
-      background: $member_color1;
+      background: var(--member_color1);
     }
   }
 }

@@ -1,15 +1,15 @@
 @import "./sendFeedback.module.scss";
 
 .submit {
-  background: $member_gradient_color1;
+  background: var(--member_gradient_color1);
 
   &.disabled {
-    background: $member_gradient_color2;
+    background: var(--member_gradient_color2);
   }
 }
 
 .pop-title {
   span {
-    color: $member_color100;
+    color: var(--member_color1) 00;
   }
 }

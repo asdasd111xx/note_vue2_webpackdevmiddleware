@@ -251,10 +251,9 @@ export default {
   width: 50%;
   text-align: center;
   font-size: 16px;
-  color: $main_text_color2;
-
+  color: var(--main_text_color2);
   &.is-current {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
   }
 }
 

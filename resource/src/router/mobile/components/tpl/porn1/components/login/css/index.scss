@@ -137,7 +137,7 @@
       float: left;
       position: relative;
       margin-left: 6px;
-      color: $main_text_color4;
+      color: var(--main_text_color4);
     }
 
     .login-unit-link {
@@ -154,10 +154,10 @@
     align-items: center;
 
     > div {
-      color: $main_text_color1;
+      color: var(--main_text_color1);
       text-align: center;
       line-height: 50px;
-      background: $main_gradient_color1;
+      background: var(--main_gradient_color1);
       border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
@@ -184,7 +184,7 @@
 
     &.porn1 {
       &.link-join-mem {
-        color: $main_text_color4;
+        color: var(--main_text_color4);
       }
 
       &.link-submit {
@@ -194,7 +194,7 @@
 
     &.sp1 {
       &.link-join-mem {
-        color: $main_text_color4;
+        color: var(--main_text_color4);
       }
 
       &.link-submit {
@@ -205,7 +205,7 @@
 }
 
 .version {
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   position: absolute;
   right: 14px;
   bottom: 5px;

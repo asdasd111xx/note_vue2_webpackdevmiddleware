@@ -209,11 +209,11 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid $wallet_border_color;
-      color: $wallet_border_color;
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
       background: linear-gradient(
         -45deg,
-        $wallet_border_color 10px,
+        var(--wallet_border_color) 10px,
         hsla(0, 0%, 100%, 0) 0
       );
     }
@@ -335,8 +335,8 @@
 
   > span {
     font-size: 14px;
-    background: $member_gradient_color1;
-    color: $member_text_color1;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -364,7 +364,7 @@
   > div {
     margin: 0 auto;
     height: 45px;
-    background: $member_gradient_color1;
+    background: var(--member_gradient_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -372,13 +372,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: $member_text_color1;
+    color: var(--member_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: $member_gradient_color2;
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -492,25 +492,25 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       margin-bottom: 4px;
     }
   }
 
   .check-cell {
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     height: 33px;
     line-height: 33px;
     padding: 0px 11px;
     position: relative;
 
     &.check-total {
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       background: #f3f3f3;
     }
 
     &.check-actual {
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       font-weight: 700;
       background: #f3f3f3;
     }

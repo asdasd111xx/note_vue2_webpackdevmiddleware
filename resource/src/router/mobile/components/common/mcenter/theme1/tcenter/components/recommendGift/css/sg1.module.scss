@@ -28,7 +28,7 @@
 .no-data-wrap {
   .btn-money {
     border-radius: 5px;
-    background: $member_gradient_color1;
-    color: $member_text_color1;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
   }
 }

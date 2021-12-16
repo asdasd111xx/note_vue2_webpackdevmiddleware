@@ -69,7 +69,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .help-wrap {
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   position: relative;
 
   .list {

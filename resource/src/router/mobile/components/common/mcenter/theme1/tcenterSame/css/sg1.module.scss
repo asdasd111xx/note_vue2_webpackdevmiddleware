@@ -1,29 +1,29 @@
 @import "./porn1.module.scss";
 
 .link {
-  color: $member_text_color3;
+  color: var(--member_text_color3);
 
   &.active {
-    color: $member_color1;
+    color: var(--member_color1);
   }
 }
 
 .search-tab {
-  color: $member_text_color3;
+  color: var(--member_text_color3);
 
   &.active {
-    color: $member_color1;
+    color: var(--member_color1);
   }
 }
 
 .field-search-wrap {
   .btn-search {
-    background: $member_gradient_color1;
+    background: var(--member_gradient_color1);
 
-    color: $member_text_color1;
+    color: var(--member_text_color1);
 
     &.disable {
-      background: $member_gradient_color2;
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -31,6 +31,6 @@
 //rebateRate
 .serial-number-title {
   &::before {
-    background: $deco_color;
+    background: var(--deco_color);
   }
 }

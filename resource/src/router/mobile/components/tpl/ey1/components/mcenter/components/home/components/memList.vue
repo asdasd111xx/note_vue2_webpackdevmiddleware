@@ -180,7 +180,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: $main_white_color1;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
 
   > span {
     width: 100%;

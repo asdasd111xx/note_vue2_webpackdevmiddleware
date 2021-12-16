@@ -359,7 +359,7 @@ export default {
   font-weight: 500;
 
   &.active {
-    color: $main_text_color1;
+    color: var(--main_text_color1);
   }
 }
 

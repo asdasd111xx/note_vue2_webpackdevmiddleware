@@ -22,9 +22,9 @@
   button {
     width: 140px;
     height: 40px;
-    background: $member_gradient_color1;
+    background: var(--member_gradient_color1);
     font-size: 14px;
-    color: $member_text_color1;
+    color: var(--member_text_color1);
     font-weight: 700;
     border: none;
     outline: 0;

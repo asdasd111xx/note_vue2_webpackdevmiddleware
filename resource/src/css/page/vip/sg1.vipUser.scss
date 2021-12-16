@@ -5,31 +5,30 @@
     .name {
       // vip text
       span:last-of-type {
-        background: $member_gradient_color2;
+        background: var(--member_gradient_color2);
       }
     }
   }
 }
 
 .user-desc-block {
-  color: $member_text_color5;
-
+  color: var(--member_text_color5);
   .money {
     color: #333333;
   }
 }
 
 .run-level-alias {
-  background: $member_gradient_color2;
+  background: var(--member_gradient_color2);
 }
 
 .run-level {
   &.current {
-    background: $member_gradient_color1;
+    background: var(--member_gradient_color1);
   }
 
   &.next {
-    background: $member_gradient_color2;
+    background: var(--member_gradient_color2);
   }
 }
 

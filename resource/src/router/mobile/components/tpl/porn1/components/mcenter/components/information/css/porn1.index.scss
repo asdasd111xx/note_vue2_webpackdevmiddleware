@@ -32,7 +32,7 @@
   text-align: center;
 
   &.active {
-    border-bottom-color: $main_color100;
+    border-bottom-color: var(--main_color1) 00;
     color: #414655;
   }
 }
@@ -57,7 +57,7 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: $member_slider;
+  background: var(--member_slider);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }

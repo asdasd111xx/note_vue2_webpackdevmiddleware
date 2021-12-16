@@ -46,7 +46,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: $member_color1;
+  background: var(--member_color1);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }
@@ -200,7 +200,7 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: $member_gradient_color1;
+  background-color: var(--member_gradient_color1);
   border-radius: 3px;
   color: white;
   font-weight: 400;
@@ -214,7 +214,7 @@ input {
 
   &.disabled {
     color: white;
-    background-color: $member_gradient_color1;
+    background-color: var(--member_gradient_color1);
     pointer-events: none;
   }
 }
@@ -231,7 +231,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: $member_gradient_color1;
+    background: var(--member_gradient_color1);
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -243,7 +243,7 @@ input::placeholder {
 
   &.disabled {
     > div {
-      background: $member_gradient_color2;
+      background: var(--member_gradient_color2);
       pointer-events: none;
     }
   }

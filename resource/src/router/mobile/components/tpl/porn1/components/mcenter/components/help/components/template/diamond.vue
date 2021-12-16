@@ -24,12 +24,12 @@ export default {
       list: [
         {
           name: "SWAG 钻石购买说明",
-          key: "buymethod",
+          key: "buymethod"
         },
         {
           name: "SWAG 钻石使用方法",
-          key: "usage",
-        },
+          key: "usage"
+        }
       ]
     };
   },
@@ -49,13 +49,17 @@ export default {
         (this.$route.query && this.$route.query.APP)
       );
       return isApp;
-    },
+    }
   },
-  created() { },
+  created() {},
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     handleClick(item) {
-      this.$router.push(`/mobile/mcenter/help/detail?type=${item.key}${this.isApp ? "&app=true" : ""}`);
+      this.$router.push(
+        `/mobile/mcenter/help/detail?type=${item.key}${
+          this.isApp ? "&app=true" : ""
+        }`
+      );
     }
   }
 };
@@ -65,7 +69,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .help-wrap {
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   position: relative;
 
   .list {

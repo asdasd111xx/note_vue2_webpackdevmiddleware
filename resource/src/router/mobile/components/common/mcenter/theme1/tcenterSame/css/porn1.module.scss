@@ -23,14 +23,14 @@ $buttonTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: $member_text_color3;
+  color: var(--member_text_color3);
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: $member_color1;
+    color: var(--member_color1);
   }
 }
 
@@ -38,7 +38,7 @@ $buttonTextColor: #fff;
 .third-wrap {
   width: 100%;
   padding-bottom: 10px;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   border-bottom: 2px solid #eee;
 
   .card-item {
@@ -215,16 +215,16 @@ $buttonTextColor: #fff;
   margin-top: 18px;
 
   .btn-search {
-    background: $member_gradient_color1;
+    background: var(--member_gradient_color1);
     margin: 0 auto;
     width: 85%;
     line-height: 45px;
     border-radius: 3px;
     text-align: center;
-    color: $member_text_color1;
+    color: var(--member_text_color1);
 
     &.disable {
-      background: $member_gradient_color2;
+      background: var(--member_gradient_color2);
     }
   }
 }

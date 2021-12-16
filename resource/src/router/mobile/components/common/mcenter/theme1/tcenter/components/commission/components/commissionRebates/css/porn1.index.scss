@@ -67,9 +67,9 @@
       button {
         width: 270px;
         height: 39px;
-        color: $member_text_color1;
+        color: var(--member_text_color1);
         // background: #00347d;
-        background: $member_gradient_color1;
+        background: var(--member_gradient_color1);
 
         border: 0;
         outline: none;
@@ -77,7 +77,7 @@
       }
 
       .unrebate-btn {
-        background: $member_gradient_color2;
+        background: var(--member_gradient_color2);
       }
     }
 

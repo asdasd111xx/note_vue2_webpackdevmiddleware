@@ -23,7 +23,7 @@
     height: 20px;
     top: 2.5px;
     margin-right: 12px;
-    background: $deco_color;
+    background: var(--deco_color);
   }
 }
 
@@ -79,5 +79,5 @@
   text-align: center;
   font-size: 16px;
   font-weight: 700;
-  color: $vip_detail_color;
+  color: var(--vip_detail_color);
 }

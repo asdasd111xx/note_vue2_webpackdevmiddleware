@@ -161,7 +161,7 @@ export default {
 
 .help-wrap {
   overflow-x: hidden;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   position: relative;
 
   .list {
