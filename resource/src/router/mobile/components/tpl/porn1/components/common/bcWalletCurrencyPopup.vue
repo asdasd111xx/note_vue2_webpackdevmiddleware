@@ -33,7 +33,7 @@
           <div>{{ formatThousandsCurrency(item.balance) }}</div>
         </div>
         <div v-if="currencyHasMoney.length === 0" :class="$style['no-coin']">
-          币希帐户无余额<span>返回钱包</span>
+          币希帐户无余额<span @click="openWalletPopup">返回钱包</span>
         </div>
       </div>
     </div>
@@ -53,6 +53,10 @@ export default {
     currencyData: {
       type: Object,
       default: {}
+    },
+    openWalletPopup: {
+      type: Function,
+      default: () => {}
     },
     itemFunc: {
       type: Function,

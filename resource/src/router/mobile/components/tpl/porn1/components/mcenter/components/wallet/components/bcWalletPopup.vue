@@ -76,7 +76,7 @@
         </div>
         <div
           :class="[$style['pay-code'], $style[routerTPL]]"
-          @click="openQrCode"
+          @click="getWalletUserReceiveCode"
         >
           币希收款码
         </div>
@@ -94,10 +94,6 @@ export default {
     currencyData: {
       type: Object,
       default: {}
-    },
-    openQrCode: {
-      type: Function,
-      default: () => {}
     },
     reloadMoney: {
       type: Function,
@@ -173,6 +169,22 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    getWalletUserReceiveCode() {
+      lib_newWindowOpen(
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/User/Receive/Code`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          console.log(res);
+          if (res.status === "000") {
+            return res.data.url;
+          }
+        })
+      );
     }
   }
 };

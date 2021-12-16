@@ -533,7 +533,7 @@
                 @click="setPopupStatus(true, 'bcWalletCurrency')"
             >
               <div>充值币种</div>
-              <div v-if="selectBcCoin" :class="[$style['coin-money']]">
+              <div v-if="selectBcCoin || selectBcCoin.balance<=0" :class="[$style['coin-money']]">
                 {{`${formatThousandsCurrency(selectBcCoin.balance)} ${selectBcCoin.currency}`}}
               </div>
               <div v-else :class="[$style['coin-money']]">--</div>
@@ -1390,9 +1390,16 @@
           :open-type="`deposit`"
           :currency-data="bcCurrencyData"
           :item-func="setBcCurrency"
+          :open-wallet-popup="openBCWalletPopup"
           @close="closePopup"
         />
       </template>
+      <bc-wallet-popup
+        v-if="showPopStatus.type === 'bcWalletPopup'"
+        :currency-data="bcCurrencyData"
+        :reload-money="getWalletCurrencyBalanceList"
+        @close="closePopup"
+      />
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
@@ -1416,6 +1423,7 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import bcWalletPopup from "@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/bcWalletPopup";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
@@ -1435,7 +1443,8 @@ export default {
     bcWalletCurrencyPopup,
     popupQrcode,
     confirmOneBtn,
-    marquee
+    marquee,
+    bcWalletPopup
   },
   mixins: [mixin],
   props: {
@@ -1488,7 +1497,8 @@ export default {
 
       marqueeList: [],
       displayMoneyValue: "",
-      isShowCGPPwd: false
+      isShowCGPPwd: false,
+      bcMoneyShowType:false
     };
   },
   watch: {
@@ -2445,7 +2455,20 @@ export default {
           console.log(res);
           if(res.status === "000"){
             this.bcCurrencyData = res.data
-            this.selectBcCoin = res.data.currency_list[0]
+
+            let currencyHasMoney = [];
+            let newArr = [];
+            if (res.data.currency_list.length > 0) {
+              newArr = res.data.currency_list.filter(coin => {
+                return +coin.balance > 0;
+              });
+            }
+            if(currencyHasMoney.length >0){
+              this.selectBcCoin = currencyHasMoney[0]
+            }else{
+              this.selectBcCoin = res.data.currency_list[0]
+            }
+            
             // this.bcCurrencyData = {
             //   bind:true,
             //   total_balance:"12414152345",
@@ -2487,6 +2510,9 @@ export default {
       this.selectBcCoin = currency;
       this.updateTime = true;
       this.convertCryptoMoney();
+    },
+    openBCWalletPopup(){
+      this.setPopupStatus(true,"bcWalletPopup")
     }
   }
 };

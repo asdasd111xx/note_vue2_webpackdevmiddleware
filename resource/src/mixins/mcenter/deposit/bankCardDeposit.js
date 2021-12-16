@@ -54,7 +54,11 @@ export default {
       outerCryptoOption: [],
       userBankOption: [],
       bcCurrencyData: null,
-      selectBcCoin: null,
+      selectBcCoin: {
+        balance: "",
+        currency: "",
+        name: ""
+      },
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
       showEpointWalletAddress: false,
