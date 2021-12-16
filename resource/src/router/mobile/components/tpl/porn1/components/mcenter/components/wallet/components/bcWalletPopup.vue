@@ -25,7 +25,7 @@
           <div :class="$style['currency']">
             <span>USD</span><span :class="$style['name']">美元</span>
           </div>
-          <div>{{ currencyData.total_balance }}</div>
+          <div>{{ formatThousandsCurrency(currencyData.total_balance) }}</div>
         </div>
         <div :class="$style['content-tip']">
           各资产换算美元后加总，实际金额请至币希查看
@@ -57,7 +57,7 @@
                 <span>{{ item.currency }}</span
                 ><span :class="$style['name']">{{ item.name }}</span>
               </div>
-              <div>{{ item.balance }}</div>
+              <div>{{ formatThousandsCurrency(item.balance) }}</div>
             </div>
           </div>
         </div>
@@ -87,6 +87,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   props: {
@@ -169,6 +170,9 @@ export default {
     },
     showAll() {
       this.isShowAll = !this.isShowAll;
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

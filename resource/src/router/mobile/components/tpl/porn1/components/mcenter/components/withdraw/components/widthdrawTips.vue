@@ -158,7 +158,11 @@
                   "
                   :class="$style['crypto-money']"
                 >
-                  {{ formatThousandsCurrency(cryptoMoney) }}
+                  {{
+                    selectCard.bank_id === 2025
+                      ? formatThousandsCurrencyUnFix(cryptoMoney, 6)
+                      : formatThousandsCurrency(cryptoMoney)
+                  }}
                 </span>
               </div>
             </div>
@@ -245,6 +249,10 @@ export default {
     hasOffer: {
       type: Boolean,
       default: false
+    },
+    selectCard: {
+      type: Object,
+      default: {}
     }
   },
   mounted() {

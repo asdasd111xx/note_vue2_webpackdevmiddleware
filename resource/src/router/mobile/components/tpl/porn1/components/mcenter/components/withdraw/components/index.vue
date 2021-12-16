@@ -414,7 +414,7 @@
         <span>{{ "添加提现方式" }}</span>
       </div>
     </template>
-    
+
     <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
     <!-- 億元 : 銀行卡列表 + 更多提現方式按鈕 -->
     <template v-if="['ey1'].includes(themeTPL)">
@@ -612,7 +612,9 @@
           >{{ selectedCard.name }}到帐</span
         >
         <span :class="$style['money-currency']">{{
-          formatThousandsCurrency(cryptoMoney)
+          selectedCard.bank_id === 2025
+            ? formatThousandsCurrencyFix(cryptoMoney)
+            : formatThousandsCurrency(cryptoMoney)
         }}</span>
         <span v-if="selectedCard.name === 'CGPay'">USDT</span>
         <span v-else-if="selectedCard.bank_id === 2025">USDT</span>
@@ -734,6 +736,7 @@
       <template v-if="showPopStatus.type === 'check'">
         <widthdraw-tips
           :actual-money="actualMoneyPlusOffer()"
+          :select-card="selectedCard"
           :crypto-money="cryptoMoney"
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
@@ -1162,9 +1165,12 @@ export default {
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28;
       //幣希錢包
-      let useBcWallet = this.selectedCard.bank_id === 2025
+      let useBcWallet = this.selectedCard.bank_id === 2025;
 
-      return (withdrawType || cgpayCurrencyUSDT || useBcWallet) && !this.epointSelectType;
+      return (
+        (withdrawType || cgpayCurrencyUSDT || useBcWallet) &&
+        !this.epointSelectType
+      );
     },
     // 強制出款狀態
     forceStatus() {
@@ -1436,13 +1442,15 @@ export default {
     handleSelectCard(item) {
       console.log(item);
       this.updateAmount(item.swift_code);
+      this.updateTime = true;
       this.selectedCard = {
         id: item.id,
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
         swift_code: item.swift_code,
         offer_percent: item.offer_percent,
-        offer_limit: item.offer_limit
+        offer_limit: item.offer_limit,
+        currency: item.currency
       };
 
       switch (item.withdrawType) {
@@ -1457,8 +1465,8 @@ export default {
           );
           break;
       }
-      if(this.selectedCard.bank_id === 2025){
-        this.getCryptoRate(31)
+      if (this.selectedCard.bank_id === 2025) {
+        this.getCryptoRate(31);
       }
       this.chooseUSDT();
       // if (this.withdrawValue) {
@@ -1926,16 +1934,18 @@ export default {
     convertCryptoMoney() {
       let _params = {
         type: 2,
-        amount: this.actualMoneyPlusOffer(false)
+        amount: this.actualMoneyPlusOffer(false),
+        method_id: "" //改為必填
       };
       if (
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28
       ) {
-        _params = {
-          ..._params,
-          method_id: this.withdrawCurrency.method_id
-        };
+        _params.method_id = this.withdrawCurrency.method_id;
+      }
+
+      if (this.selectedCard.bank_id === 2025) {
+        _params.method_id = this.selectedCard.currency[0].method_id;
       }
 
       if (
@@ -1947,11 +1957,7 @@ export default {
         });
         let methonId = this.withdrawUserData.crypto[methinIdx].currency[0]
           .method_id;
-
-        _params = {
-          ..._params,
-          method_id: methonId
-        };
+        _params.method_id = methonId;
       }
 
       return axios({
@@ -2313,6 +2319,12 @@ export default {
       }
       return thousandsCurrency(Number(value).toFixed(2));
     },
+    formatThousandsCurrencyFix(value, fixCount) {
+      if (value === "--") {
+        return "--";
+      }
+      return thousandsCurrency(Number(value));
+    },
     //普通提現/e點富
     setWithdrawTypeIsNormal(type) {
       if (type) {
@@ -2337,20 +2349,19 @@ export default {
       }
     },
     //取得加密貨幣匯率
-    getCryptoRate(id){
+    getCryptoRate(id) {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Crypto/Rate`,
         params: {
           username: "",
-          method_id:id
+          method_id: id
         }
       }).then(res => {
         // console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
           console.log(res);
         } else {
-          
         }
       });
     }

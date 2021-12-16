@@ -534,7 +534,7 @@
             >
               <div>充值币种</div>
               <div v-if="selectBcCoin" :class="[$style['coin-money']]">
-                {{`${selectBcCoin.balance} ${selectBcCoin.currency}`}}
+                {{`${formatThousandsCurrency(selectBcCoin.balance)} ${selectBcCoin.currency}`}}
               </div>
               <div v-else :class="[$style['coin-money']]">--</div>
               <img
@@ -2485,7 +2485,8 @@ export default {
     },
     setBcCurrency(currency){
       console.log(currency);
-      this.selectBcCoin = currency
+      this.selectBcCoin = currency;
+      this.updateTime = true;
       this.convertCryptoMoney();
     }
   }

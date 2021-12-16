@@ -260,7 +260,9 @@
             :class="[$style['bc-data'], $style['first']]"
             @click="bcClickEvent('money')"
           >
-            <div>{{ bcCurrencyData.total_balance }}</div>
+            <div>
+              {{ formatThousandsCurrency(bcCurrencyData.total_balance) }}
+            </div>
             <div>
               总余额(美元)
             </div>

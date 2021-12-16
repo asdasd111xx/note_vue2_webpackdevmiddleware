@@ -14,7 +14,11 @@
 
       <div :class="$style['content']">
         <div v-if="openType === 'deposit'" :class="$style['total']">
-          {{ `总余额(美元)：${currencyData.total_balance}` }}
+          {{
+            `总余额(美元)：${formatThousandsCurrency(
+              currencyData.total_balance
+            )}`
+          }}
         </div>
         <div
           v-for="(item, index) in currencyHasMoney"
@@ -26,7 +30,7 @@
             <span>{{ item.currency }}</span
             ><span :class="$style['name']">{{ item.name }}</span>
           </div>
-          <div>{{ item.balance }}</div>
+          <div>{{ formatThousandsCurrency(item.balance) }}</div>
         </div>
         <div v-if="currencyHasMoney.length === 0" :class="$style['no-coin']">
           币希帐户无余额<span>返回钱包</span>
@@ -38,6 +42,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   props: {
@@ -105,6 +110,9 @@ export default {
     handleClickItem(item) {
       this.itemFunc(item);
       this.close();
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(Number(value));
     }
   }
 };
