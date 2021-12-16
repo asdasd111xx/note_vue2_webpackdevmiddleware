@@ -10,16 +10,8 @@
   --main_text_color3: #a6a9b2;
   --main_text_color4: #5e626d;
   --main_text_color5: #a6a9b2;
-  --main_gradient_color1: linear-gradient(
-    to left,
-    var(--main_color1) 0%,
-    var(--main_color2) 100%
-  );
-  --main_gradient_color2: linear-gradient(
-    to left,
-    var(--main_color3) 0%,
-    var(--main_color4) 100%
-  );
+  --main_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --main_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
   //會員中心
   --member_color1: #bd9d7d;
@@ -34,16 +26,8 @@
   --member_text_color4: #5e626d;
   --member_text_color5: #9ba3bf;
 
-  --member_gradient_color1: linear-gradient(
-    to left,
-    val(--member_color1) 0%,
-    val(--member_color2) 100%
-  );
-  --member_gradient_color2: linear-gradient(
-    to left,
-    val(--member_color3) 0%,
-    val(--member_color4) 100%
-  );
+  --member_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --member_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
   //功能
   --redpot: #be9e7f;

@@ -9,16 +9,8 @@
   --main_text_color3: #a6a9b2;
   --main_text_color4: #5e626d;
   --main_text_color5: #323943;
-  --main_gradient_color1: linear-gradient(
-    to left,
-    var(--main_color1) 0%,
-    var(--main_color2) 100%
-  );
-  --main_gradient_color2: linear-gradient(
-    to left,
-    var(--main_color3) 0%,
-    var(--main_color4) 100%
-  );
+  --main_gradient_color1: linear-gradient(to left, #3354ad 0%, #3354ad 100%);
+  --main_gradient_color2: linear-gradient(to left, #adbade 0%, #adbade 100%);
 
   //會員中心
   --member_color1: #3354ad;
@@ -32,16 +24,8 @@
   --member_text_color3: #a6a9b2;
   --member_text_color4: #5e626d;
   --member_text_color5: #7086ce;
-  --member_gradient_color1: linear-gradient(
-    to left,
-    val(--member_color1) 0%,
-    val(--member_color2) 100%
-  );
-  --member_gradient_color2: linear-gradient(
-    to left,
-    val(--member_color3) 0%,
-    val(--member_color4) 100%
-  );
+  --member_gradient_color1: linear-gradient(to left, #3354ad 0%, #3354ad 100%);
+  --member_gradient_color2: linear-gradient(to left, #adbade 0%, #adbade 100%);
 
   //功能
   --wallet_border_color: #6aaaf5;
