@@ -345,17 +345,10 @@
   justify-content: center;
   float: right;
 
-  &.porn1 {
-    > span {
-      color: $befa_member_text_color1;
-      background: $befa_main_button_color2;
-    }
-  }
-
   > span {
     font-size: 14px;
-    background: $share_main_button_color2;
-    color: $share_member_text_color3;
+    background: $member_gradient_color1;
+    color: $member_text_color1;
     border-radius: 11px;
     width: 82px;
     height: 21px;
