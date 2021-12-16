@@ -192,7 +192,6 @@
         @click="sendEmail($route.params.type)"
         :class="[
           $style['forget-submit'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['active']]: username && email }
         ]"
       >
@@ -202,7 +201,6 @@
         v-else
         :class="[
           $style['forget-submit'],
-          $style[siteConfig.ROUTER_TPL],
           {
             [$style['active']]: checkSubmit && !allTip.username
           }
