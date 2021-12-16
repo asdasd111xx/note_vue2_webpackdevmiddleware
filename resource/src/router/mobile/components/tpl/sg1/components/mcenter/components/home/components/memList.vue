@@ -392,7 +392,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: $main_white_color1;
-  color: var(--main_text_color3);
+  color: #414655;
 
   > span {
     width: 100%;
