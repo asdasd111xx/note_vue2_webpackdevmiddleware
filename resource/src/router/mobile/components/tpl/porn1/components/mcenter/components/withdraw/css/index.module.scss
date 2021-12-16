@@ -373,23 +373,10 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  &.porn1 {
-    > div {
-      background: $befa_main_button_color2;
-      color: $befa_member_text_color1;
-    }
-    &.disabled {
-      div {
-        background: $befa_main_button_color1;
-        color: $befa_member_text_color2;
-      }
-    }
-  }
-
   > div {
     margin: 0 auto;
     height: 45px;
-    background: $share_main_button_color2;
+    background: $member_gradient_color1;
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -397,13 +384,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: $share_member_text_color3;
+    color: $member_text_color1;
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: $share_main_button_color1;
+      background: $member_gradient_color2;
     }
   }
 }
