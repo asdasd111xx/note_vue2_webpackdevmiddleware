@@ -56,7 +56,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: $share_member_text_color4;
+    color: $member_color100;
   }
 }
 
@@ -64,7 +64,7 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: $share_member_text_color4;
+  color: $member_color100;
   font-weight: 700;
 
   &::before {
@@ -94,11 +94,11 @@
 .balance-tip-wrap {
   width: 100%;
   text-align: left;
-  color: $main_text_color3;
+  color: $member_text_color4;
 
   .balance-auto-tip {
     font-size: 12px;
-    color: $main_text_color2;
+    color: $member_text_color3;
   }
 }
 
@@ -243,7 +243,7 @@
 
 .balance-item-money {
   display: block;
-  color: $main_text_color2;
+  color: $member_text_color3;
 
   &.more {
     word-break: break-word;
@@ -251,12 +251,8 @@
 }
 
 .balance-redjackpot-text {
-  color: $share_origin_color6;
+  color: $redpot;
   word-break: break-word;
-
-  &.porn1 {
-    color: $share_member_text_color8;
-  }
 }
 
 .balance-redjackpot-image {
@@ -451,12 +447,7 @@
   font-size: 14px;
   border-radius: 3px;
   color: #fff;
-  background: $share_main_button_color2;
-
-  &.porn1 {
-    color: $befa_member_text_color1;
-    background-image: $befa_main_button_color2;
-  }
+  background: $member_gradient_color1;
 }
 
 .transfer-btn {
@@ -467,18 +458,10 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: $share_main_button_color2;
+  background: $member_gradient_color1;
 
-  &.porn1 {
-    color: $befa_member_text_color1;
-    background: $befa_main_button_color2;
-    &.is-disable {
-      background: $befa_main_button_color1;
-      color: $befa_member_text_color2;
-    }
-  }
   &.is-disable {
-    background: $share_main_button_color1;
+    background: $member_gradient_color2;
     pointer-events: none;
   }
 }

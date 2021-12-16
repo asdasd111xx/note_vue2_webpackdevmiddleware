@@ -1,14 +1,14 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: $member_gradient_color1;
 }
 
 .transfer-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: $member_gradient_color1;
 
   &.is-disable {
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    background: $member_gradient_color2;
   }
 }
 
@@ -81,14 +81,14 @@
 }
 .balance-total-item {
   .balance-item-money {
-    color: $sg_main_text_color1;
+    color: $member_color100;
   }
 }
 
 .select-container {
   .select-header {
     span {
-      color: $sg_main_text_color1;
+      color: $member_color100;
     }
   }
 }

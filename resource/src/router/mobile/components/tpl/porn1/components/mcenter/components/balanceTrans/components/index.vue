@@ -15,8 +15,7 @@
         <span
           :class="[
             $style['balance-item-vendor'],
-            $style['balance-redjackpot-text'],
-            $style[siteConfig.ROUTER_TPL]
+            $style['balance-redjackpot-text']
           ]"
         >
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -27,8 +26,7 @@
         <span
           :class="[
             $style['balance-item-money'],
-            $style['balance-redjackpot-text'],
-            $style[siteConfig.ROUTER_TPL]
+            $style['balance-redjackpot-text']
           ]"
         >
           {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
@@ -421,7 +419,7 @@
             />
           </span>
           <div
-            :class="[$style['max-money-btn'], $style[siteConfig.ROUTER_TPL]]"
+            :class="[$style['max-money-btn']]"
             @click="getMaxMoney(membalance, tranOut)"
           >
             {{ $text("S_MAX", "最大") }}
@@ -431,7 +429,6 @@
       <div
         :class="[
           $style['transfer-btn'],
-          $style[siteConfig.ROUTER_TPL],
           {
             [$style['is-disable']]: btnLock || !transferMoney
           }
