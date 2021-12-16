@@ -23,13 +23,7 @@
     height: 20px;
     top: 2.5px;
     margin-right: 12px;
-    background: $share_origin_color7;
-  }
-
-  &.porn1 {
-    &::before {
-      background: $share_member_text_color2;
-    }
+    background: $deco_color;
   }
 }
 
@@ -85,9 +79,5 @@
   text-align: center;
   font-size: 16px;
   font-weight: 700;
-  color: $share_origin_color14;
-
-  &.porn1 {
-    color: $share_member_text_color2;
-  }
+  color: $vip_detail_color;
 }

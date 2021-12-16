@@ -7,10 +7,7 @@
           <img :src="avatarSrc" alt="avatar" />
         </div>
 
-        <div
-          ref="name"
-          :class="[$style['name'], $style[siteConfig.ROUTER_TPL]]"
-        >
+        <div ref="name" :class="[$style['name']]">
           <span>{{ memInfo.user.username }}</span>
           <span :style="`display: ${setVipTextDisplay}`">
             {{ userVipInfo.now_level_alias }}
@@ -38,13 +35,7 @@
 
     <!-- 進度條 -->
     <div :class="$style['run-block']">
-      <div
-        :class="[
-          $style['run-level'],
-          $style[siteConfig.ROUTER_TPL],
-          $style['current']
-        ]"
-      >
+      <div :class="[$style['run-level'], $style['current']]">
         <p>{{ userVipInfo.now_level_alias }}</p>
       </div>
       <div :class="$style['run-bar']">
@@ -78,7 +69,7 @@
 
     <!-- //說明資訊 -->
     <!-- base_type	有效投注計算方式(1.廳開始日, 2.自訂時間, 3.區間統計) -->
-    <div :class="[$style['user-desc-block'], $style[siteConfig.ROUTER_TPL]]">
+    <div :class="[$style['user-desc-block']]">
       <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●累计充值(元)：
         <span :class="$style['money']">{{
