@@ -96,7 +96,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color4;
+  color: $member_color100;
   transform: translateY(-50%);
 }
 
@@ -295,17 +295,12 @@
   white-space: nowrap;
   border-radius: 3px;
   // cursor: pointer;
-  color: #fff;
-  background: $share_main_button_color2;
+  color: $member_text_color1;
+  background: $member_gradient_color1;
 
   &.disabled {
-    opacity: 0.5;
+    background: $member_gradient_color2;
     pointer-events: none;
-  }
-
-  &.porn1 {
-    color: $befa_member_text_color1;
-    background-image: $befa_main_button_color2;
   }
 }
 
@@ -588,7 +583,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_member_text_color4;
+    color: $member_color100;
   }
 }
 

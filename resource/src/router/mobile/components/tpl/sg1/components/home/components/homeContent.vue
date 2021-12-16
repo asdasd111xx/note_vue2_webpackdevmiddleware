@@ -334,14 +334,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #731c25;
+  color: $main_text_color5;
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
   &.active {
-    color: #fff;
+    color: $main_text_color1;
   }
 }
 

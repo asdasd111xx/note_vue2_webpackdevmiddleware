@@ -23,20 +23,14 @@ $buttonTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: $main_text_color2;
+  color: $member_text_color3;
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: $share_member_text_color1;
-  }
-
-  &.porn1 {
-    &.active {
-      color: $befa_member_main_color3;
-    }
+    color: $member_color1;
   }
 }
 
@@ -221,21 +215,16 @@ $buttonTextColor: #fff;
   margin-top: 18px;
 
   .btn-search {
-    background: $share_main_button_color2;
+    background: $member_gradient_color1;
     margin: 0 auto;
     width: 85%;
     line-height: 45px;
     border-radius: 3px;
     text-align: center;
-    color: $buttonTextColor;
-
-    &.porn1 {
-      color: $befa_member_text_color1;
-      background-image: $befa_main_button_color2;
-    }
+    color: $member_text_color1;
 
     &.disable {
-      opacity: 0.5;
+      background: $member_gradient_color2;
     }
   }
 }

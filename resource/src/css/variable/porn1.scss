@@ -1,3 +1,4 @@
+//大廳 遊戲
 $main_color1: #3354ad;
 $main_color2: #3354ad;
 $main_color3: #adbade;
@@ -7,7 +8,7 @@ $main_text_color1: #ffffff;
 $main_text_color2: #ffffff;
 $main_text_color3: #a6a9b2;
 $main_text_color4: #5e626d;
-
+$main_text_color5: #323943;
 $main_gradient_color1: linear-gradient(
   to left,
   $main_color1 0%,
@@ -19,6 +20,7 @@ $main_gradient_color2: linear-gradient(
   $main_color4 100%
 );
 
+//會員中心
 $member_color1: #3354ad;
 $member_color2: #3354ad;
 $member_color3: #adbade;
@@ -30,21 +32,24 @@ $member_text_color3: #a6a9b2;
 $member_text_color4: #5e626d;
 $member_gradient_color1: linear-gradient(
   to left,
-  $main_color1 0%,
-  $main_color2 100%
+  $member_color1 0%,
+  $member_color2 100%
 );
 $member_gradient_color2: linear-gradient(
   to left,
-  $main_color3 0%,
-  $main_color4 100%
+  $member_color3 0%,
+  $member_color4 100%
 );
 
+//功能
 $wallet_border_color: #6aaaf5;
 $redpot: #db6372;
 $deco_color: #414655;
+$deco_color2: #a6a9b2;
 $joinmember_title: #9b6b40;
 $apptip_title: #3354ad;
 $apptip_btn: #3354ad;
 $popup_text_color1: #6aaaf5;
 $popup_text_color2: #6aaaf5;
 $member_slider: #3354ad;
+$webview_icon_text: #fff;

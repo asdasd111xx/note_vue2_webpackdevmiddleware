@@ -19,20 +19,12 @@
     color: #a6a9b2;
   }
 
-  &.porn1 {
-    button {
-      background: $befa_member_main_color1;
-      background-image: $befa_member_main_color1;
-    }
-  }
-
   button {
     width: 140px;
     height: 40px;
-    background: $share_member_text_color1;
-    background-image: $share_main_button_color2;
+    background: $member_gradient_color1;
     font-size: 14px;
-    color: #fff;
+    color: $member_text_color1;
     font-weight: 700;
     border: none;
     outline: 0;

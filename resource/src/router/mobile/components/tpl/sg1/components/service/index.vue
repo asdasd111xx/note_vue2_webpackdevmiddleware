@@ -399,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: $sg_main_text_color1;
+  color: $main_color100;
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: $main_gradient_color1;
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;

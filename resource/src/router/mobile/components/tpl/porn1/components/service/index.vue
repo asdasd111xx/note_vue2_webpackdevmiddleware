@@ -449,12 +449,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #6aaaf5;
+  color: $main_color100;
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: #6aaaf5;
+    background: $main_color100;
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
