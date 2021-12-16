@@ -183,7 +183,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: $sg_main_text_color1;
+  background-color: $deco_color2;
   width: 45px;
   transition: left 0.31s;
 }
@@ -541,7 +541,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: $sg_main_text_color1;
+  background: $deco_color2;
   // left: calc(33% / 2 - 20px);
 
   transition: left 0.31s;
