@@ -562,7 +562,7 @@
           :placeholder="valuePlaceholder"
           @keyup="moneyUSDT($event)"
         />
-        <span :class="[$style['withdraw-max'], $style[siteConfig.ROUTER_TPL]]">
+        <span :class="[$style['withdraw-max']]">
           <span @click="handleMaxWithdraw">
             {{ $text("S_WITHRAW_MAX2", "最高提现") }}
           </span>
