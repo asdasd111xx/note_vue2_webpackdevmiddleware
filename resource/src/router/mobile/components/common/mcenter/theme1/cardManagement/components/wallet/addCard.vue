@@ -168,7 +168,7 @@
             </template>
             <input
               v-model="formData.phone"
-              type="text"
+              type="tel"
               :placeholder="'请输入手机号码'"
               :class="$style['phone-input']"
               maxlength="36"
@@ -182,7 +182,7 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.keyring"
-              type="text"
+              type="tel"
               placeholder="请输入手机验证码"
               id="phone-code"
               @input="checkData($event.target.value, 'keyring')"
