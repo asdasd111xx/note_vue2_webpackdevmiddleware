@@ -12,13 +12,13 @@
   --main_text_color5: #a6a9b2;
   --main_gradient_color1: linear-gradient(
     to left,
-    --main_color1 0%,
-    --main_color2 100%
+    var(--main_color1) 0%,
+    var(--main_color2) 100%
   );
   --main_gradient_color2: linear-gradient(
     to left,
-    --main_color3 0%,
-    --main_color4 100%
+    var(--main_color3) 0%,
+    var(--main_color4) 100%
   );
 
   //會員中心
@@ -36,13 +36,13 @@
 
   --member_gradient_color1: linear-gradient(
     to left,
-    --member_color1 0%,
-    --member_color2 100%
+    val(--member_color1) 0%,
+    val(--member_color2) 100%
   );
   --member_gradient_color2: linear-gradient(
     to left,
-    --member_color3 0%,
-    --member_color4 100%
+    val(--member_color3) 0%,
+    val(--member_color4) 100%
   );
 
   //功能

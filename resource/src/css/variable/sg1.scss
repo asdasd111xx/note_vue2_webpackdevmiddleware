@@ -12,13 +12,13 @@
   --main_text_color5: #731c25;
   --main_gradient_color1: linear-gradient(
     to left,
-    --main_color1 0%,
-    --main_color2 100%
+    var(--main_color1) 0%,
+    var(--main_color2) 100%
   );
   --main_gradient_color2: linear-gradient(
     to left,
-    --main_color3 0%,
-    --main_color4 100%
+    var(--main_color3) 0%,
+    var(--main_color4) 100%
   );
 
   //會員中心
