@@ -7,7 +7,7 @@
 
 .wallet-info-wrap {
   background: $main_white_color1;
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
   font-size: 12px;
   margin-top: 12px;
   padding: 12px 17px 0;
@@ -79,7 +79,7 @@
     div:last-of-type {
       position: relative;
       font-size: 10px;
-      color: var(--main_text_color2);
+      color: var(--member_text_color3);
       padding-right: 24px;
       height: 15px;
     }
@@ -106,7 +106,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
 
   img {
     width: 13px;
@@ -116,7 +116,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: var(--member_color1) 00;
+    color: var(--member_color100);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,7 +154,7 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: var(--member_color1) 00;
+      color: var(--member_color100);
     }
   }
 
@@ -162,7 +162,7 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: var(--member_color1) 00;
+    color: var(--member_color100);
     font-weight: 700;
 
     &::before {
@@ -204,7 +204,7 @@
     padding: 10px 4px 15px;
     text-align: center;
     font-size: 14px;
-    color: var(--main_text_color3);
+    color: var(--main_text_color4);
     border-bottom: 1px solid #dad6d6;
     margin: 0px;
 
@@ -258,7 +258,7 @@
 
   .balance-item-money {
     display: block;
-    color: var(--main_text_color2);
+    color: var(--member_text_color3);
 
     &.more {
       word-break: break-word;
@@ -439,13 +439,13 @@
 
       .vendor {
         font-size: 10px;
-        color: var(--main_text_color2);
+        color: var(--member_text_color3);
       }
 
       .game-desc {
         display: flex;
         justify-content: space-between;
-        color: var(--main_text_color3);
+        color: var(--member_text_color4);
         padding-top: 6px;
       }
 
