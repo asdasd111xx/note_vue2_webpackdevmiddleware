@@ -6,11 +6,7 @@
   >
     <span>收藏我们随时下载APP </span>
     <div>
-      <span
-        :class="[$style['go-btn'], $style[siteConfig.ROUTER_TPL]]"
-        @click="handleClick"
-        >立即收藏</span
-      >
+      <span :class="[$style['go-btn']]" @click="handleClick">立即收藏</span>
       <img
         :src="$getCdnPath('/static/image/common/btn_close_grey.png')"
         @click="handleClose"
@@ -81,7 +77,7 @@ export default {
   position: relative;
 
   > span:first-child {
-    color: var(--main_text_color2);
+    color: var(--member_text_color3);
   }
 
   img {
@@ -99,18 +95,13 @@ export default {
 
 .go-btn {
   height: 23px;
-  border: 1pt solid $share_origin_color3;
+  border: 1pt solid var(--member_text_color4);
   border-radius: 12px;
   text-align: center;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  color: $share_origin_color3;
+  color: var(--member_text_color4);
   margin-right: 10px;
-
-  &.porn1 {
-    border: 1pt solid $share_member_text_color11;
-    color: $share_member_text_color11;
-  }
 }
 </style>
