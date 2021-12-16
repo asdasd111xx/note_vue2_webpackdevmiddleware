@@ -710,7 +710,7 @@ export default {
                 // this.$router.push('/mobile/mcenter/swag');
               } else if (this.isfromWithdraw) {
                 localStorage.setItem("tmp_w_1", res.ret);
-                this.$router.push("/mobile/mcenter/withdraw");
+                this.$router.replace("/mobile/mcenter/withdraw");
               }
             }
           }
@@ -730,7 +730,9 @@ export default {
               this.actionSetWithdrawCheck();
               setTimeout(() => {
                 localStorage.setItem("set-account-success", true);
-                this.$router.push("/mobile/mcenter/accountData?success=true");
+                this.$router.replace(
+                  "/mobile/mcenter/accountData?success=true"
+                );
               }, 200);
             },
             fail: res => {
@@ -750,7 +752,7 @@ export default {
           success: () => {
             setTimeout(() => {
               localStorage.setItem("set-account-success", true);
-              this.$router.push("/mobile/mcenter/accountData");
+              this.$router.replace("/mobile/mcenter/accountData");
             }, 200);
           },
           fail: res => {

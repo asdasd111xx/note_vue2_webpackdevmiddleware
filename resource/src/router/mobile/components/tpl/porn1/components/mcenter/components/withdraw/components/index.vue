@@ -2225,7 +2225,10 @@ export default {
             )["offer_percent"],
             offer_limit: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
               "offer_limit"
-            ]
+            ],
+            currency: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "currency"
+            ],
           }
         : {
             bank_id: defaultCard?.bank_id,
