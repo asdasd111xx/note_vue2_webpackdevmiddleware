@@ -4,7 +4,6 @@
       <div
         :class="[
           $style['top-sub-title'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['active']]: mcenterBankRebateType === 'history' },
           { [$style['self']]: !rebateInitData.self_rebate }
         ]"
@@ -16,7 +15,6 @@
         v-if="rebateInitData.self_rebate"
         :class="[
           $style['top-sub-title'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['active']]: mcenterBankRebateType === 'realtime' }
         ]"
         @click="getItemType('realtime')"
@@ -48,7 +46,6 @@
               <div
                 :class="[
                   $style['total-item-money'],
-                  $style[siteConfig.ROUTER_TPL],
                   { [$style['is-current']]: item.type === currentType }
                 ]"
               >
@@ -141,7 +138,6 @@
         <div
           :class="[
             $style['real-top-btn'],
-            $style[siteConfig.ROUTER_TPL],
             { [$style['disable']]: btnLock && formatTime }
           ]"
         >
@@ -182,7 +178,6 @@
         <div
           :class="[
             $style['receive-vip-btn'],
-            $style[siteConfig.ROUTER_TPL],
             {
               [$style['is-disabled']]:
                 isReceiveAllLock || !immediateData[0].operateStatus
