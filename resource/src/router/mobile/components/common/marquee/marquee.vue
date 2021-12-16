@@ -21,11 +21,7 @@
 
       <div
         ref="container"
-        :class="[
-          'news-content',
-          `${routerTPL}`,
-          { notHome: !isDepositOrWithdraw }
-        ]"
+        :class="['news-content', { notHome: !isDepositOrWithdraw }]"
       >
         <VTextMarquee
           :speed="35"
@@ -249,30 +245,14 @@ export default {
   display: block;
   line-height: 12px;
   margin-left: 6px;
-  color: $main_text_color1;
+  color: $marquee_text_color1;
   font-size: 12px;
   overflow: hidden;
   min-width: calc(100vw - 51px);
   -webkit-tap-highlight-color: transparent;
 
-  &.porn1 {
-    color: $main_text_color1;
-
-    &.notHome {
-      color: $share_member_text_color9;
-    }
-  }
-
-  &.ey1 {
-    color: #2348b3;
-  }
-
-  &.sg1 {
-    color: #b7b7b7;
-  }
-
   &.notHome {
-    color: $share_origin_color2;
+    color: $marquee_text_color2;
   }
 }
 

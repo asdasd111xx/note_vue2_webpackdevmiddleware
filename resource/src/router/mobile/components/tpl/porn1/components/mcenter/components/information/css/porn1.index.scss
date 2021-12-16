@@ -32,7 +32,7 @@
   text-align: center;
 
   &.active {
-    border-bottom-color: $share_member_text_color4;
+    border-bottom-color: $main_color100;
     color: #414655;
   }
 }
@@ -57,11 +57,7 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: $share_member_text_color1;
+  background: $member_slider;
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
-
-  &.porn1 {
-    background: $befa_member_main_color1;
-  }
 }
