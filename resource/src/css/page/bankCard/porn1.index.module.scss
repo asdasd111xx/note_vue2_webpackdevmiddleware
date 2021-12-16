@@ -93,13 +93,13 @@
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: var(--main_text_color2);
+  color: var(--member_text_color3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.is-current {
-    color: var(--main_text_color4);
+    color: var(--member_text_color4);
   }
 }
 
@@ -109,10 +109,6 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: $share_member_text_color1;
+  background: var(--member_gradient_color1);
   transition: left 0.31s;
-
-  &.porn1 {
-    background: $befa_member_main_color1;
-  }
 }
