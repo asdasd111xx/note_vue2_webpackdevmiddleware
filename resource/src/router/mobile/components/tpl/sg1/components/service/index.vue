@@ -595,7 +595,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--main_gradient_color1);
       border-radius: 9px 0 0 9px;
     }
   }

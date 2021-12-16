@@ -9,7 +9,7 @@
       line-height: 35px;
       border: none;
       border-radius: 3px;
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--member_gradient_color1);
       color: #fff;
     }
   }
@@ -21,7 +21,7 @@
 }
 
 .time-confirm {
-  background: linear-gradient(90deg, #e61938, #fe593c);
+  background: var(--member_gradient_color1);
   color: #ffffff;
 }
 

@@ -1,11 +1,10 @@
 @import "./porn1.module.scss";
-$main_color: linear-gradient(to left, #fe593c, #e61938);
 
 .date-wrap {
   > div {
     &.active {
       &::after {
-        background: $main_color;
+        background: var(--member_gradient_color1);
       }
     }
   }
@@ -18,7 +17,7 @@ $main_color: linear-gradient(to left, #fe593c, #e61938);
 
 .btn-check {
   border-radius: 5px;
-  background: $main_color;
+  background: var(--member_gradient_color1);
   color: white;
 }
 
