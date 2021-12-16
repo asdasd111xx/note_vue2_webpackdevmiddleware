@@ -225,7 +225,6 @@
         <div
           :class="[
             $style['bank-type'],
-            $style[siteConfig.ROUTER_TPL],
             { [$style['is-current']]: !epointSelectType }
           ]"
           @click="() => setWithdrawTypeIsNormal(true)"

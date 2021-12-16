@@ -96,7 +96,7 @@
       color: $wallet_border_color;
       background: linear-gradient(
         -45deg,
-        $sg_main_text_color1 10px,
+        $wallet_border_color 10px,
         hsla(0, 0%, 100%, 0) 0
       );
     }

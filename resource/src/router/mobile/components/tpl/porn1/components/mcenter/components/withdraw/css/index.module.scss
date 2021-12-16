@@ -209,25 +209,13 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid $share_origin_color1;
-      color: $share_origin_color1;
+      border: 1px solid $wallet_border_color;
+      color: $wallet_border_color;
       background: linear-gradient(
         -45deg,
-        $share_origin_color1 10px,
+        $wallet_border_color 10px,
         hsla(0, 0%, 100%, 0) 0
       );
-    }
-
-    &.porn1 {
-      &.is-current {
-        border: 1px solid $share_member_text_color4;
-        color: $share_member_text_color2;
-        background: linear-gradient(
-          -45deg,
-          $share_member_text_color4 10px,
-          hsla(0, 0%, 100%, 0) 0
-        );
-      }
     }
 
     .select {
