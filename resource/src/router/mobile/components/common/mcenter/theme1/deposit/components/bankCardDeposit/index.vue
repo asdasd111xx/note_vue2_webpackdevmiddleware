@@ -2455,9 +2455,8 @@ export default {
             this.bcCurrencyData = res.data
 
             let currencyHasMoney = [];
-            let newArr = [];
             if (res.data.currency_list.length > 0) {
-              newArr = res.data.currency_list.filter(coin => {
+              currencyHasMoney = res.data.currency_list.filter(coin => {
                 return +coin.balance > 0;
               });
             }
