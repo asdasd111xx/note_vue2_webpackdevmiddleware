@@ -492,20 +492,20 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--main_text_color3);
+      color: var(--member_text_color4);
       margin-bottom: 4px;
     }
   }
 
   .check-cell {
-    color: var(--main_text_color2);
+    color: var(--member_text_color3);
     height: 33px;
     line-height: 33px;
     padding: 0px 11px;
     position: relative;
 
     &.check-total {
-      color: var(--main_text_color3);
+      color: var(--member_text_color4);
       background: #f3f3f3;
     }
 
