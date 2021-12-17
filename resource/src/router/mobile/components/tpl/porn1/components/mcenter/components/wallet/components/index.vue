@@ -57,12 +57,7 @@
                 "
               />
               <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-              <div
-                :class="[
-                  $style['balance-item-money'],
-                  $style[siteConfig.ROUTER_TPL]
-                ]"
-              >
+              <div :class="[$style['balance-item-money']]">
                 {{ balanceTran.membalance.vendor.default.amount }}
               </div>
             </div>
@@ -70,7 +65,6 @@
             <div
               :class="[
                 $style['recycle-btn'],
-                $style[siteConfig.ROUTER_TPL],
                 balanceTran.balanceBackLock ? $style.disable : ''
               ]"
               @click="balanceBack()"
@@ -88,7 +82,6 @@
               <span
                 :class="[
                   $style['balance-item-vendor'],
-                  $style[siteConfig.ROUTER_TPL],
                   $style['balance-redjackpot-text']
                 ]"
               >
@@ -100,7 +93,6 @@
               <span
                 :class="[
                   $style['balance-item-money'],
-                  $style[siteConfig.ROUTER_TPL],
                   $style['balance-redjackpot-text']
                 ]"
               >

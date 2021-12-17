@@ -89,7 +89,7 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #dccab8, #d2b496);
+    background: var(--deco_color);
     border-radius: 1px;
     margin-left: 10px;
     margin-right: 10px;
@@ -123,13 +123,13 @@ export default {
     }
 
     > .copy-btn {
-      color: #d3b498;
+      color: var(--member_color100);
       width: 120px;
       text-align: center;
       > div {
         border-radius: 5px;
-        border: 1px solid #d3b498;
-        color: #d3b498;
+        border: 1px solid var(--member_color100);
+        color: var(--member_color100);
         padding: 2.5px 5px;
       }
     }
@@ -143,16 +143,13 @@ export default {
   text-align: center;
 
   > div {
-    color: white;
+    color: var(--member_text_color1);
     height: 45px;
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
 
-    background: -webkit-linear-gradient(right, #dccab8, #d2b496);
-    background: -o-linear-gradient(left, #9c856e, #d2b496);
-    background: -moz-linear-gradient(left, #9c856e, #d2b496);
-    background: linear-gradient(to left, #9c856e, #d2b496);
+    background: var(--member_gradient_color1);
   }
 }
 </style>

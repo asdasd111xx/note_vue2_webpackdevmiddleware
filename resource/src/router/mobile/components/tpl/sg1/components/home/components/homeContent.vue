@@ -334,14 +334,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #731c25;
+  color: #bebcbc;
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
   &.active {
-    color: #fff;
+    color: var(--main_text_color1);
   }
 }
 
@@ -701,7 +701,7 @@ export default {
     color: $share_member_text_color4;
   }
   &.sg1:last-child {
-    color: $sg_main_text_color2;
+    color: var(--member_color100);
   }
 }
 </style>

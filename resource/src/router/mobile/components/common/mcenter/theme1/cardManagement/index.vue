@@ -72,7 +72,7 @@
         {{ item.text }}
       </div>
       <div
-        :class="[$style['active-slider'], $style[siteConfig.ROUTER_TPL]]"
+        :class="[$style['active-slider']]"
         :style="{ left: `calc(25% + 50% * ${currentTab})` }"
       />
     </div>

@@ -368,7 +368,9 @@
 
                 <div
                   :class="[$style['clear']]"
-                  v-else-if="allValue[field.key].length > 0"
+                  v-else-if="
+                    allValue[field.key].length > 0 && !showMailCheckIcon
+                  "
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
@@ -419,7 +421,9 @@
 
                 <div
                   :class="[$style['clear']]"
-                  v-else-if="allValue[field.key].length > 0"
+                  v-else-if="
+                    allValue[field.key].length > 0 && !showPhoneCheckIcon
+                  "
                 >
                   <img
                     :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
@@ -578,11 +582,7 @@
 
       <div v-else :class="[$style['join-btn-wrap']]">
         <div
-          :class="[
-            $style['join-btn'],
-            { [$style.disabled]: isLoading },
-            $style[this.siteConfig.ROUTER_TPL]
-          ]"
+          :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
           @click="joinSubmit()"
         >
           {{ $text("S_REGISTER", "注册") }}
@@ -747,7 +747,8 @@ export default {
         "phone",
         "birthday",
         "gender",
-        "withdraw_password"
+        "withdraw_password",
+        "captcha_text"
       ],
       checkFail: false,
       registerData: [],
@@ -910,201 +911,204 @@ export default {
     }
   },
   created() {
-    this.actionSetUserdata();
-    this.getCaptcha();
-    let joinConfig = [];
-    let joinReminder = {};
+    this.actionSetUserdata().then(() => {
+      this.getCaptcha();
+      let joinConfig = [];
+      let joinReminder = {};
 
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement("script");
-      this.script.setAttribute("type", "text/javascript");
-      this.script.setAttribute("data-name", "esabgnixob");
+      if (!document.querySelector('script[data-name="esabgnixob"]')) {
+        this.script = document.createElement("script");
+        this.script.setAttribute("type", "text/javascript");
+        this.script.setAttribute("data-name", "esabgnixob");
 
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute(
-          "src",
-          "https://eyt.66boxing.com/mobile/esabgnixob.js"
-        );
-      } else {
-        this.script.setAttribute("src", "esabgnixob.js");
+        if (window.location.host.includes("localhost")) {
+          this.script.setAttribute(
+            "src",
+            "https://eyt.66boxing.com/mobile/esabgnixob.js"
+          );
+        } else {
+          this.script.setAttribute("src", "esabgnixob.js");
+        }
+
+        document.head.appendChild(this.script);
       }
 
-      document.head.appendChild(this.script);
-    }
+      const username = {
+        key: "username",
+        content: {
+          note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
+          note2: ""
+        }
+      };
+      const password = {
+        key: "password",
+        content: {
+          note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母及数字"),
+          note2: ""
+        }
+      };
+      const confirmPassword = {
+        key: "confirm_password",
+        content: {
+          note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
+          note2: ""
+        }
+      };
+      const captchaText = {
+        key: "captcha_text",
+        content: {
+          note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
+          note2: ""
+        }
+      };
 
-    const username = {
-      key: "username",
-      content: {
-        note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
-        note2: ""
-      }
-    };
-    const password = {
-      key: "password",
-      content: {
-        note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母及数字"),
-        note2: ""
-      }
-    };
-    const confirmPassword = {
-      key: "confirm_password",
-      content: {
-        note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
-        note2: ""
-      }
-    };
-    const captchaText = {
-      key: "captcha_text",
-      content: {
-        note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
-        note2: ""
-      }
-    };
-
-    member
-      .joinConfig({
-        success: ({ result, ret }) => {
-          if (result !== "ok") {
-            return;
-          }
-          //是否顯示mail驗證按鈕
-          if (ret.email.code_register == true) {
-            this.mailNeedCode = true;
-          } else {
-            this.mailNeedCode = false;
-          }
-
-          //是否顯示手機驗證按鈕
-          if (ret.phone.code_register == true) {
-            this.NeedCode = true;
-          } else {
-            this.NeedCode = false;
-          }
-          Object.keys(this.joinMemInfo).forEach(key => {
-            if (
-              key === "captcha_text" &&
-              this.memInfo.config.register_captcha_type !== 1
-            ) {
-              this.joinMemInfo[key].show = false;
+      member
+        .joinConfig({
+          success: ({ result, ret }) => {
+            if (result !== "ok") {
               return;
             }
-
-            if (!ret[key]) {
-              return;
+            //是否顯示mail驗證按鈕
+            if (ret.email.code_register == true) {
+              this.mailNeedCode = true;
+            } else {
+              this.mailNeedCode = false;
             }
 
-            if (key === "introducer" && this.$cookie.get("a")) {
+            //是否顯示手機驗證按鈕
+            if (ret.phone.code_register == true) {
+              this.NeedCode = true;
+            } else {
+              this.NeedCode = false;
+            }
+            Object.keys(this.joinMemInfo).forEach(key => {
+              if (
+                key === "captcha_text" &&
+                this.memInfo.config.register_captcha_type !== 1
+              ) {
+                this.joinMemInfo[key].show = false;
+                return;
+              }
+
+              if (!ret[key]) {
+                return;
+              }
+
+              if (key === "introducer" && this.$cookie.get("a")) {
+                this.joinMemInfo[key] = {
+                  ...this.joinMemInfo[key],
+                  isRequired: true,
+                  show: false,
+                  hasVerify: ret[key].code_register
+                };
+                return;
+              }
+
+              if (key === "gender") {
+                let tip = this.placeholderKeyValue("gender", "tip");
+                if (tip) {
+                  this.selectData.gender.options[0].label = tip;
+                  this.selectData.gender.selected.label = tip;
+                }
+              }
+
+              if (key === "phone") {
+                this.selectData.phone.options = [
+                  ...this.selectData.phone.options,
+                  ...ret[key].country_codes.map(label => ({
+                    label,
+                    value: label
+                  }))
+                ];
+
+                [
+                  this.selectData.phone.selected
+                ] = this.selectData.phone.options;
+              }
+
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
-                isRequired: true,
-                show: false,
+                isRequired: ret[key].required,
+                show: !ret[key].none,
                 hasVerify: ret[key].code_register
               };
-              return;
-            }
-
-            if (key === "gender") {
-              let tip = this.placeholderKeyValue("gender", "tip");
-              if (tip) {
-                this.selectData.gender.options[0].label = tip;
-                this.selectData.gender.selected.label = tip;
-              }
-            }
-
-            if (key === "phone") {
-              this.selectData.phone.options = [
-                ...this.selectData.phone.options,
-                ...ret[key].country_codes.map(label => ({
-                  label,
-                  value: label
-                }))
+              joinConfig = [
+                ...joinConfig,
+                { key, content: { note1: "", note2: "" } }
               ];
-
-              [this.selectData.phone.selected] = this.selectData.phone.options;
-            }
-
-            this.joinMemInfo[key] = {
-              ...this.joinMemInfo[key],
-              isRequired: ret[key].required,
-              show: !ret[key].none,
-              hasVerify: ret[key].code_register
-            };
-            joinConfig = [
-              ...joinConfig,
-              { key, content: { note1: "", note2: "" } }
-            ];
-          });
-        }
-      })
-      .then(() => {
-        const preview = this.$route.name === "preview" ? "View" : "";
-        const status = this.$cookie.get("newsite") ? "New" : "";
-
-        ajax({
-          method: "get",
-          url: `/tpl/${this.memInfo.user.domain}/playerRegister${preview}${status}.json`,
-          params: {
-            v: Date.parse(new Date())
-          },
-          success: response => {
-            response.data.forEach(item => {
-              Object.keys(item).forEach(key => {
-                const content = JSON.parse(item[key][this.$i18n.locale]);
-
-                joinReminder = {
-                  ...joinReminder,
-                  [key]: {
-                    note1: content.note1 || "",
-                    note2: content.note2 || ""
-                  }
-                };
-
-                // if (key === "gender" && joinReminder[key].note1) {
-                //   this.selectData.gender.options[0].label =
-                //     joinReminder[key].note1;
-                //   this.selectData.gender.selected.label =
-                //     joinReminder[key].note1;
-                // }
-                if (key === "gender") {
-                  let tip = this.placeholderKeyValue("gender", "tip");
-                  if (tip) {
-                    this.selectData.gender.options[0].label = tip;
-                    this.selectData.gender.selected.label = tip;
-                  } else if (joinReminder[key].note1) {
-                    this.selectData.gender.options[0].label =
-                      joinReminder[key].note1;
-                    this.selectData.gender.selected.label =
-                      joinReminder[key].note1;
-                  }
-                }
-              });
-            });
-
-            joinConfig.map(item => {
-              const info = item;
-              info.content = {
-                ...item.content,
-                ...joinReminder[item.key]
-              };
-
-              return info;
             });
           }
-        }).then(() => {
-          this.registerData = [
-            username,
-            password,
-            confirmPassword,
-            ...joinConfig,
-            captchaText
-          ];
-        });
-      });
+        })
+        .then(() => {
+          const preview = this.$route.name === "preview" ? "View" : "";
+          const status = this.$cookie.get("newsite") ? "New" : "";
 
-    if (!this.loginStatus) {
-      this.getGuestBalance();
-    }
-    this.getPlaceholderList();
+          ajax({
+            method: "get",
+            url: `/tpl/${this.memInfo.user.domain}/playerRegister${preview}${status}.json`,
+            params: {
+              v: Date.parse(new Date())
+            },
+            success: response => {
+              response.data.forEach(item => {
+                Object.keys(item).forEach(key => {
+                  const content = JSON.parse(item[key][this.$i18n.locale]);
+
+                  joinReminder = {
+                    ...joinReminder,
+                    [key]: {
+                      note1: content.note1 || "",
+                      note2: content.note2 || ""
+                    }
+                  };
+
+                  // if (key === "gender" && joinReminder[key].note1) {
+                  //   this.selectData.gender.options[0].label =
+                  //     joinReminder[key].note1;
+                  //   this.selectData.gender.selected.label =
+                  //     joinReminder[key].note1;
+                  // }
+                  if (key === "gender") {
+                    let tip = this.placeholderKeyValue("gender", "tip");
+                    if (tip) {
+                      this.selectData.gender.options[0].label = tip;
+                      this.selectData.gender.selected.label = tip;
+                    } else if (joinReminder[key].note1) {
+                      this.selectData.gender.options[0].label =
+                        joinReminder[key].note1;
+                      this.selectData.gender.selected.label =
+                        joinReminder[key].note1;
+                    }
+                  }
+                });
+              });
+
+              joinConfig.map(item => {
+                const info = item;
+                info.content = {
+                  ...item.content,
+                  ...joinReminder[item.key]
+                };
+
+                return info;
+              });
+            }
+          }).then(() => {
+            this.registerData = [
+              username,
+              password,
+              confirmPassword,
+              ...joinConfig,
+              captchaText
+            ];
+          });
+        });
+
+      if (!this.loginStatus) {
+        this.getGuestBalance();
+      }
+      this.getPlaceholderList();
+    });
   },
   methods: {
     ...mapActions([
@@ -1135,6 +1139,12 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     getCaptcha() {
+      if (
+        this.isGetCaptcha ||
+        this.memInfo.config.register_captcha_type === 1
+      ) {
+        this.joinMemInfo["captcha_text"].show = true;
+      }
       if (
         this.isGetCaptcha ||
         this.memInfo.config.register_captcha_type !== 1

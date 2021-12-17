@@ -70,7 +70,7 @@ export default {
 }
 
 .no-porn-title {
-  color: $main_text_color2;
+  color: var(--main_text_color2);
 }
 
 .porn-open-btn {

@@ -13,7 +13,7 @@
 
   span {
     &:nth-child(2) {
-      color: $sg_main_text_color2;
+      color: var(--member_color100);
     }
   }
 }

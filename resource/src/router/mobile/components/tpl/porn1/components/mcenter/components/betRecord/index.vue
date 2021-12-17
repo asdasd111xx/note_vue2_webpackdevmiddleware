@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import mobileContainer from '../../../common/mobileContainer';
-import betRecoard from './components/index';
+import { mapGetters } from "vuex";
+import mobileContainer from "../../../common/mobileContainer";
+import betRecoard from "./components/index";
 
 export default {
   components: {
@@ -17,20 +17,20 @@ export default {
     betRecoard
   },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     headerConfig() {
       return {
         prev: true,
-        title: this.$text('S_BETHISTORYBTN', '投注记录'),
-        onClick: () => { this.$router.back(); }
+        title: this.$text("S_BETHISTORYBTN", "投注记录"),
+        onClick: () => {
+          this.$router.back();
+        }
       };
-    },
+    }
   },
-  created() {
-  },
+  created() {}
 };
 </script>
 <style lang="scss" module>

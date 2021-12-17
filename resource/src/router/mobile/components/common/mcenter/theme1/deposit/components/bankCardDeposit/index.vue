@@ -23,7 +23,6 @@
         :key="`swiper-data-${index}`"
         :class="[
           $style['swiper-item'],
-          $style[routerTPL],
           {
             [$style['is-current']]:
               listItem.payment_group_id === curModeGroup.payment_group_id
@@ -52,7 +51,7 @@
                 :key="`pay-mode-${info.payment_method_id}-${info.bank_id}`"
                 :class="[
                   $style['pay-mode-item'],
-                  $style[siteConfig.ROUTER_TPL],
+
                   {
                     [$style['is-current']]:
                       curPayInfo.payment_method_id === info.payment_method_id &&
@@ -324,7 +323,7 @@
                   :key="data.id"
                   :class="[
                     $style['pay-mode-pass'],
-                    $style[siteConfig.ROUTER_TPL],
+
                     { [$style['current-data']]: data.id === curPassRoad.id }
                   ]"
                   @click="changePassRoad(data)"
@@ -1238,7 +1237,6 @@
           <div
             :class="[
               $style['pay-button'],
-              $style[routerTPL],
               {
                 [$style.disabled]:
                   !checkSuccess ||

@@ -19,6 +19,7 @@ export default {
   getWebInfo: state => state.webInfo,
   // 取 cdn 路徑
   getCdnDomain: state => state.webInfo.cdn_domain,
+  getSlideCDNDomain: state => state.slideCDNDomain,
   getCdnRoot: state => state.cdnRoot,
   getLang: state => state.webInfo.language,
   getSpecialCase: state => state.webInfo.special_case,

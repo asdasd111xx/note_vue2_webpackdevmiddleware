@@ -194,7 +194,7 @@ export default {
 }
 
 .sub-text {
-  color: $main_text_color2;
+  color: var(--member_text_color3);
 }
 
 .vip-promotion-wrap {

@@ -220,17 +220,12 @@
   white-space: nowrap;
   cursor: pointer;
   border-radius: 3px;
-  color: #fff;
-  background: $share_member_text_color1;
-  background-image: $share_main_button_color2;
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
 
-  &.porn1 {
-    background: $befa_member_main_color1;
-    background-image: $befa_main_button_color2;
-  }
   &.disabled {
     pointer-events: none;
-    opacity: 0.5;
+    background: var(--member_gradient_color2);
   }
 }
 

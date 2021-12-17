@@ -225,7 +225,6 @@
         <div
           :class="[
             $style['bank-type'],
-            $style[siteConfig.ROUTER_TPL],
             { [$style['is-current']]: !epointSelectType }
           ]"
           @click="() => setWithdrawTypeIsNormal(true)"
@@ -562,7 +561,7 @@
           :placeholder="valuePlaceholder"
           @keyup="moneyUSDT($event)"
         />
-        <span :class="[$style['withdraw-max'], $style[siteConfig.ROUTER_TPL]]">
+        <span :class="[$style['withdraw-max']]">
           <span @click="handleMaxWithdraw">
             {{ $text("S_WITHRAW_MAX2", "最高提现") }}
           </span>
@@ -639,14 +638,13 @@
       <!-- Yabo -->
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="[$style['btn-wrap']]">
-          <div :class="[$style['submit-btn'], $style[siteConfig.ROUTER_TPL]]">
+          <div :class="[$style['submit-btn']]">
             <div @click="linkToRecharge">额度转让&nbsp;实时返佣</div>
           </div>
 
           <div
             :class="[
               $style['submit-btn'],
-              $style[siteConfig.ROUTER_TPL],
               { [$style['disabled']]: lockSubmit }
             ]"
           >

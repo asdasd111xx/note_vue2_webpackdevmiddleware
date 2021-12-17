@@ -11,24 +11,24 @@
 // }
 
 .btn-send {
-  background: linear-gradient(to left, #fed3cb, #ffc5ce);
+  background: var(--member_gradient_color2);
 
   &.active {
     color: #ffffff;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: var(--member_gradient_color1);
   }
 }
 
 .btn-submit {
-  >div {
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+  > div {
+    background: var(--member_gradient_color2);
   }
 
   &.active {
-    >div {
+    > div {
       pointer-events: auto;
       color: #ffffff;
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--member_gradient_color1);
     }
   }
 }

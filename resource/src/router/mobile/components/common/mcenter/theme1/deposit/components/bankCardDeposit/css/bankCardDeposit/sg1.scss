@@ -1,17 +1,23 @@
 @import "./porn1.scss";
 .pay-button {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: var(--member_gradient_color1);
 }
 
 .message-close {
-  color: #bf8646;
+  color: var(--member_color100);
 }
 
 .entry-message-confirm {
-  color: #bf8646;
+  color: var(--member_color100);
 }
 .select-active {
-  color: $sg_main_text_color1;
+  color: var(--member_color100);
+}
+
+.pop-title {
+  span {
+    color: var(--member_color100);
+  }
 }
 
 .pay-mode-item {

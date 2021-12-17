@@ -353,23 +353,18 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: $share_text_color6;
+  color: var(--main_text_color3);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
-  &.active {
-    color: #fff;
-  }
   &.sp1 {
-    color: #353541;
+    color: #222222;
   }
-  &.porn1 {
-    color: #323943;
-    &.active {
-      color: #fff;
-    }
+
+  &.active {
+    color: var(--main_text_color1);
   }
 }
 

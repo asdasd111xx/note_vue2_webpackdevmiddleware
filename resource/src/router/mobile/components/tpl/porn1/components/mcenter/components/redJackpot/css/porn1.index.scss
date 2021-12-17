@@ -13,16 +13,12 @@
     padding: 3px 0px;
     line-height: 17px;
     height: 24px;
-    color: $share_member_text_color3;
+    color: var(--member_text_color1);
     text-align: center;
     font-weight: bold;
     width: 75px;
     border-radius: 4px;
-    background: $share_main_button_color2;
-    &.porn1 {
-      color: $befa_member_text_color1;
-      background-image: $befa_main_button_color2;
-    }
+    background: var(--redpot_button_color);
   }
 
   .option1 {
@@ -80,14 +76,8 @@
   text-align: center;
 
   .money-text {
-    color: $share_origin_color5;
+    color: var(--member_color100);
     word-break: break-word;
-  }
-
-  &.porn1 {
-    .money-text {
-      color: $share_member_text_color4;
-    }
   }
 }
 

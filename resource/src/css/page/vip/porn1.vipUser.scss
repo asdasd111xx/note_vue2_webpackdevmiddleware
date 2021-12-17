@@ -38,22 +38,16 @@
         font-weight: 700;
         word-break: break-word;
       }
-      &.porn1 {
-        span:last-of-type {
-          color: $befa_member_text_color1;
-          background: $befa_main_button_color2;
-        }
-      }
 
       // vip text
       span:last-of-type {
-        background: linear-gradient(to right, #eeddd0, #d5b69c);
+        background: var(--member_gradient_color1);
         margin: 5px 0 0 0;
         padding: 0px 5px;
         font-size: 12px;
         line-height: 20px;
         height: 20px;
-        color: #ffffff;
+        color: var(--member_text_color1);
         text-align: center;
         font-weight: 700;
         border-radius: 4px;
@@ -122,13 +116,7 @@
   }
 
   &.current {
-    background: $share_origin_color3;
-  }
-
-  &.porn1 {
-    &.current {
-      background: $share_member_text_color11;
-    }
+    background: #5e626d;
   }
 
   &.next {
@@ -188,13 +176,9 @@
 
 .user-desc-block {
   padding-top: 3px;
-  color: $share_origin_color15;
+  color: var(--member_text_color5);
   font-size: 12px;
   font-weight: 700;
-
-  &.porn1 {
-    color: $share_member_text_color14;
-  }
 
   .desc-text {
     padding: 2.5px 0px;

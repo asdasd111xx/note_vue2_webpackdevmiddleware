@@ -6,11 +6,11 @@
 
 .send-keyring {
   color: white;
-  background: linear-gradient(#fe593c, #e61938);
+  background: var(--member_gradient_color1);
 
   &.disabled {
     color: white;
-    background: linear-gradient(#fed3cb, #ffc5ce);
+    background: var(--member_gradient_color2);
     pointer-events: none;
   }
 }
@@ -18,12 +18,12 @@
 .submit-wrap {
   > div {
     border-radius: 3px;
-    background: linear-gradient(#fe593c, #e61938);
+    background: var(--member_gradient_color1);
   }
 
   &.disabled {
     > div {
-      background: linear-gradient(#fed3cb, #ffc5ce);
+      background: var(--member_gradient_color2);
       color: #ffffff;
     }
   }

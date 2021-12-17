@@ -13,25 +13,25 @@
   align-items: center;
   margin-top: 11px;
 
-  >div {
+  > div {
     width: 50%;
   }
 
-  >.balance-wrap {
-    >div:first-child {
+  > .balance-wrap {
+    > div:first-child {
       text-align: center;
 
-      >img {
+      > img {
         width: 14px;
         height: 14px;
       }
 
-      >span {
+      > span {
         color: #5e626d;
       }
     }
 
-    >div:last-child {
+    > div:last-child {
       color: $share_member_text_color4;
       text-align: center;
       font-size: 16px;
@@ -69,7 +69,7 @@
     color: $share_member_text_color2;
   }
 
-  >img {
+  > img {
     width: 18px;
     height: 18px;
   }
@@ -100,12 +100,12 @@
     opacity: 0.5;
   }
 
-  >img {
+  > img {
     width: 25px;
     height: 25px;
   }
 
-  >span {
+  > span {
     padding: 0 0 0 10px;
     width: 80%;
     overflow: hidden;
@@ -134,7 +134,7 @@
     }
   }
 
-  >.check-box {
+  > .check-box {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -211,21 +211,13 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid $share_origin_color1;
-      color: $share_origin_color1;
-      background: linear-gradient(-45deg,
-          $share_origin_color1 10px,
-          hsla(0, 0%, 100%, 0) 0);
-    }
-
-    &.porn1 {
-      &.is-current {
-        border: 1px solid $share_member_text_color4;
-        color: $share_member_text_color2;
-        background: linear-gradient(-45deg,
-            $share_member_text_color4 10px,
-            hsla(0, 0%, 100%, 0) 0);
-      }
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
+      background: linear-gradient(
+        -45deg,
+        var(--wallet_border_color) 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
     }
 
     .select {
@@ -264,7 +256,7 @@
   margin-top: 5px;
   position: relative;
 
-  >input {
+  > input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -343,17 +335,10 @@
   justify-content: center;
   float: right;
 
-  &.porn1 {
-    >span {
-      color: $befa_member_text_color1;
-      background: $befa_main_button_color2;
-    }
-  }
-
-  >span {
+  > span {
     font-size: 14px;
-    background: $share_main_button_color2;
-    color: $share_member_text_color3;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -378,24 +363,10 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  &.porn1 {
-    >div {
-      background: $befa_main_button_color2;
-      color: $befa_member_text_color1;
-    }
-
-    &.disabled {
-      div {
-        background: $befa_main_button_color1;
-        color: $befa_member_text_color2;
-      }
-    }
-  }
-
-  >div {
+  > div {
     margin: 0 auto;
     height: 45px;
-    background: $share_main_button_color2;
+    background: var(--member_gradient_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -403,13 +374,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: $share_member_text_color3;
+    color: var(--member_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: $share_main_button_color1;
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -527,25 +498,25 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       margin-bottom: 4px;
     }
   }
 
   .check-cell {
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     height: 33px;
     line-height: 33px;
     padding: 0px 11px;
     position: relative;
 
     &.check-total {
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       background: #f3f3f3;
     }
 
     &.check-actual {
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       font-weight: 700;
       background: #f3f3f3;
     }
@@ -554,7 +525,7 @@
       color: $share_member_text_color8;
     }
 
-    >span:last-child {
+    > span:last-child {
       float: right;
     }
 
@@ -649,7 +620,7 @@
   margin-top: 5px;
   -webkit-text-security: disc;
 
-  >input {
+  > input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -673,8 +644,8 @@
 }
 
 @media screen and (min-width: $phone) {
-  >.balance-wrap {
-    >div:last-child {
+  > .balance-wrap {
+    > div:last-child {
       font-size: 17px;
     }
   }
@@ -696,7 +667,7 @@
   }
 
   .withdraw-input {
-    >input {
+    > input {
       font-size: 17px;
 
       &::placeholder {
@@ -711,7 +682,7 @@
   }
 
   .withdraw-max {
-    >span {
+    > span {
       font-size: 15px;
     }
   }
@@ -721,7 +692,7 @@
   }
 
   .submit-btn {
-    >div {
+    > div {
       font-size: 15px;
     }
   }

@@ -1,0 +1,53 @@
+:root {
+  //大廳 遊戲
+  --main_color1: #bd9d7d;
+  --main_color2: #f9ddbd;
+  --main_color3: #e9dacb;
+  --main_color4: #eee5db;
+  --main_color100: #6aaaf5;
+  --main_text_color1: #ffffff;
+  --main_text_color2: #ffffff;
+  --main_text_color3: #a6a9b2;
+  --main_text_color4: #5e626d;
+  --main_text_color5: #a6a9b2;
+  --main_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --main_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+
+  //會員中心
+  --member_color1: #bd9d7d;
+  --member_color2: #f9ddbd;
+  --member_color3: #e9dacb;
+  --member_color4: #eee5db;
+  --member_color100: #be9e7f;
+  --member_color101: #e9dacc;
+  --member_text_color1: #ffffff;
+  --member_text_color2: #ffffff;
+  --member_text_color3: #a6a9b2;
+  --member_text_color4: #5e626d;
+  --member_text_color5: #9ba3bf;
+
+  --member_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --member_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+
+  //功能
+  --redpot: #be9e7f;
+  --deco_color: linear-gradient(
+    to bottom,
+    --main_color1 0%,
+    --main_color2 100%
+  );
+  --deco_color2: #be9e7f;
+  --wallet_border_color: #be9e7f;
+  --joinmember_title: #9b6b40;
+  --apptip_title: #000000de;
+  --apptip_btn: var(--main_gradient_color1);
+  --popup_text_color1: #d1b79c;
+  --popup_text_color2: #414655;
+  --member_slider: #d1b79c;
+  --webview_icon_text: #bf8646;
+  --marquee_text_color1: #9ca3bf;
+  --marquee_text_color2: #d1b79c;
+  --vip_detail_color: #bbab98;
+  --avatar-vip-icon-color: var(--main_gradient_color1);
+  --redpot_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+}

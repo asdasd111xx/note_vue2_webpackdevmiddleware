@@ -7,7 +7,6 @@
         :key="`tab-${item.key}`"
         :class="[
           $style['tab-item'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['is-current']]: tabCurrent === index }
         ]"
         :style="{ width: `${100 / tabItem.length}%` }"

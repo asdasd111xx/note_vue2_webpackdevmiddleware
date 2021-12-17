@@ -108,11 +108,7 @@
           请避免使用与其他网站相同或易于被他人猜测到的密码
         </div>
         <div
-          :class="[
-            $style['submit'],
-            $style[siteConfig.ROUTER_TPL],
-            { [$style['active']]: submitActive }
-          ]"
+          :class="[$style['submit'], { [$style['active']]: submitActive }]"
           @click="checkField(true)"
         >
           {{ $text("S_SUBMIT", "提交") }}
@@ -516,7 +512,7 @@ input {
   border: none;
   outline: none;
   border-radius: 0;
-  color: $main_text_color3;
+  color: var(--member_text_color4);
 
   &::placeholder {
     color: #cbced8;
@@ -529,7 +525,7 @@ input {
   position: relative;
 
   .title {
-    color: $main_text_color3;
+    color: var(--member_text_color4);
     margin: 17px 0 6px;
   }
 
@@ -554,42 +550,20 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
-  background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-  background: -o-linear-gradient(left, #e9dacb, #eee5db);
-  background: -moz-linear-gradient(left, #e9dacb, #eee5db);
-  background: linear-gradient(to left, #e9dacb, #eee5db);
+  background: var(--main_gradient_color2);
   color: #f3ede7;
 
   &.active {
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: $share_main_button_color2;
+    background: var(--main_gradient_color1);
     color: white;
   }
 
-  &.porn1 {
-    background: $befa_member_main_color3;
-    color: $befa_member_text_color1;
-
-    &.active {
-      background: $befa_member_main_color1;
-      color: $befa_member_text_color1;
-    }
-  }
-
   &.sg1 {
-    background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
-    background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
-    background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    background: var(--member_gradient_color2);
     color: #f3ede7;
 
     &.active {
-      background: -webkit-linear-gradient(right, #fe593c, #e61938);
-      background: -o-linear-gradient(left, #fe593c, #e61938);
-      background: -moz-linear-gradient(left, #fe593c, #e61938);
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--main_gradient_color1);
       color: white;
     }
   }

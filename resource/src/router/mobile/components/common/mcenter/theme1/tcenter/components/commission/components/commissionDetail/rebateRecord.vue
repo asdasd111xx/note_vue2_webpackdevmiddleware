@@ -15,12 +15,7 @@
           :key="key"
           :class="[$style['profit_child']]"
         >
-          <div
-            :class="[
-              $style['profit_child_name'],
-              $style[siteConfig.ROUTER_TPL]
-            ]"
-          >
+          <div :class="[$style['profit_child_name']]">
             {{ content.name }}
           </div>
           <div

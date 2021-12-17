@@ -15,16 +15,8 @@
   height: 38px;
   line-height: 38px;
   text-align: center;
-  color: #a6a9b2;
+  color: var(--member_text_color3);
   white-space: nowrap;
-
-  &.porn1 {
-    &.is-current {
-      span {
-        border-bottom: 2px solid $befa_member_main_color1;
-      }
-    }
-  }
 
   span {
     height: 34px;
@@ -34,10 +26,10 @@
   }
 
   &.is-current {
-    color: #5e626d;
+    color: var(--member_text_color4);
 
     span {
-      border-bottom: 2px solid $share_member_text_color1;
+      border-bottom: 2px solid var(--member_slider);
     }
   }
 }
@@ -120,7 +112,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   transform: translateY(-50%);
 }
 
@@ -156,11 +148,11 @@
   }
 
   &.is-current {
-    border: 1px solid $share_member_text_color4;
-    color: $share_member_text_color4;
+    border: 1px solid var(--wallet_border_color);
+    color: var(--wallet_border_color);
     background: linear-gradient(
       -45deg,
-      $share_member_text_color4 10px,
+      var(--wallet_border_color) 10px,
       hsla(0, 0%, 100%, 0) 0
     );
   }
@@ -293,11 +285,11 @@
 
   &.is-current {
     background-color: #fff;
-    color: $share_member_text_color4;
-    border: 1px solid $share_member_text_color4;
+    color: var(--wallet_border_color);
+    border: 1px solid var(--wallet_border_color);
     background: linear-gradient(
       -45deg,
-      $share_member_text_color4 12px,
+      var(--wallet_border_color) 12px,
       hsla(0, 0%, 100%, 0) 0
     );
   }
@@ -319,17 +311,12 @@
   white-space: nowrap;
   border-radius: 3px;
   // cursor: pointer;
-  color: #fff;
-  background: $share_main_button_color2;
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
 
   &.disabled {
-    opacity: 0.5;
+    background: var(--member_gradient_color2);
     pointer-events: none;
-  }
-
-  &.porn1 {
-    color: $befa_member_text_color1;
-    background-image: $befa_main_button_color2;
   }
 }
 
@@ -396,8 +383,7 @@
   align-items: center;
   width: 100%;
   height: 52px;
-  color: $main_text_color2;
-
+  color: var(--main_text_color2);
   .time {
     color: $share_origin_color6;
     margin: 0 5px 0 5px;
@@ -612,7 +598,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 }
 
@@ -832,11 +818,11 @@
 
 .current-data {
   background-color: #fff;
-  color: $share_member_text_color4;
-  border: 1px solid $share_member_text_color4;
+  color: var(--wallet_border_color);
+  border: 1px solid var(--wallet_border_color);
   background: linear-gradient(
     -45deg,
-    $share_member_text_color4 12px,
+    var(--wallet_border_color) 12px,
     hsla(0, 0%, 100%, 0) 0
   );
 }

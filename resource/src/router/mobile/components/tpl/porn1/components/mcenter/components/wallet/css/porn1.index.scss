@@ -7,7 +7,7 @@
 
 .wallet-info-wrap {
   background: $main_white_color1;
-  color: $main_text_color3;
+  color: var(--member_text_color4);
   font-size: 12px;
   margin-top: 12px;
   padding: 12px 17px 0;
@@ -79,7 +79,7 @@
     div:last-of-type {
       position: relative;
       font-size: 10px;
-      color: $main_text_color2;
+      color: var(--member_text_color3);
       padding-right: 24px;
       height: 15px;
     }
@@ -93,10 +93,12 @@
   right: 0;
   width: 15px;
   height: 15px;
-  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png") center center / 100% 100%;
+  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png")
+    center center / 100% 100%;
 
   &.collapse {
-    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png") center center / 100% 100%;
+    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png")
+      center center / 100% 100%;
   }
 }
 
@@ -104,7 +106,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: $main_text_color3;
+  color: var(--member_text_color4);
 
   img {
     width: 13px;
@@ -114,14 +116,10 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: $share_origin_color5;
+    color: var(--member_color100);
     display: flex;
     justify-content: center;
     align-items: center;
-
-    &.porn1 {
-      color: $share_member_text_color1;
-    }
   }
 }
 
@@ -156,11 +154,7 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: $share_origin_color5;
-
-      &.porn1 {
-        color: $share_member_text_color4;
-      }
+      color: var(--member_color100);
     }
   }
 
@@ -168,12 +162,8 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: $share_origin_color5;
+    color: var(--member_color100);
     font-weight: 700;
-
-    &.porn1 {
-      color: $share_member_text_color4;
-    }
 
     &::before {
       content: "";
@@ -214,7 +204,7 @@
     padding: 10px 4px 15px;
     text-align: center;
     font-size: 14px;
-    color: $main_text_color3;
+    color: var(--member_text_color4);
     border-bottom: 1px solid #dad6d6;
     margin: 0px;
 
@@ -236,7 +226,7 @@
 
   &.collapse {
     float: right;
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     border-bottom: none;
 
     .icon {
@@ -268,7 +258,7 @@
 
   .balance-item-money {
     display: block;
-    color: $main_text_color2;
+    color: var(--member_text_color3);
 
     &.more {
       word-break: break-word;
@@ -276,12 +266,8 @@
   }
 
   .balance-redjackpot-text {
-    color: $share_origin_color6;
+    color: var(--redpot);
     word-break: break-word;
-
-    &.porn1 {
-      color: $share_member_text_color8;
-    }
   }
 
   .balance-redjackpot-image {
@@ -290,10 +276,12 @@
     right: 0;
     width: 25px;
     height: 25px;
-    background: url("/static/image/aobo1/common/ic_event.png") center center / 100% 100%;
+    background: url("/static/image/aobo1/common/ic_event.png") center center /
+      100% 100%;
 
     &.porn1 {
-      background: url("/static/image/porn1/common/ic_event.png") center center / 100% 100%;
+      background: url("/static/image/porn1/common/ic_event.png") center center /
+        100% 100%;
     }
   }
 
@@ -388,7 +376,7 @@
     position: relative;
     font-size: 10px;
     font-weight: 400;
-    color: $main_text_color2;
+    color: var(--member_text_color3);
     padding-right: 24px;
 
     &::after {
@@ -398,7 +386,8 @@
       height: 15px;
       right: 0;
       top: 1;
-      background: url("/static/image/common/arrow_next.png") center center / 100% 100%;
+      background: url("/static/image/common/arrow_next.png") center center /
+        100% 100%;
     }
   }
 }
@@ -411,7 +400,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
-    color: $main_text_color3;
+    color: var(--main_text_color3);
 
     .icon-cell {
       min-height: 54px;
@@ -450,7 +439,7 @@
   height: 125px;
 
   .bc-title {
-    color: #5E626D
+    color: #5e626d;
   }
 
   .bc-content {
@@ -487,7 +476,7 @@
     .line {
       width: 1px;
       height: 40px;
-      background-color: #EAEAEA
+      background-color: #eaeaea;
     }
   }
 }
@@ -504,13 +493,13 @@
 
       .vendor {
         font-size: 10px;
-        color: $main_text_color2;
+        color: var(--member_text_color3);
       }
 
       .game-desc {
         display: flex;
         justify-content: space-between;
-        color: $main_text_color3;
+        color: var(--member_text_color4);
         padding-top: 6px;
       }
 
@@ -529,7 +518,7 @@
     font-size: 12px;
     text-align: center;
     margin: 35px 0;
-    color: $main_text_color2;
+    color: var(--member_text_color3);
   }
 }
 
