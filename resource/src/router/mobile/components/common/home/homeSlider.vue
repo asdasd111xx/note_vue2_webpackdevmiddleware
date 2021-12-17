@@ -7,7 +7,11 @@
   >
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
-        <img :src="info.image" :class="$style['phone-image']" :data-key="key" />
+        <img
+          :src="`${info.image}`"
+          :class="$style['phone-image']"
+          :data-key="key"
+        />
       </div>
     </swiper-slide>
     <div slot="pagination" class="swiper-pagination" />
@@ -49,7 +53,8 @@ export default {
       mobileInfo: "getMobileInfo",
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      slideCDNDomain: "getSlideCDNDomain"
     }),
     themeTPL() {
       return this.siteConfig.ROUTER_TPL;
@@ -90,7 +95,7 @@ export default {
         // }
 
         // const isShow = this.show(this.getDefaultCondition(item.condition));
-        let cdn = this.cdnDomain ? this.cdnDomain : "/cdn";
+        let cdn = this.slideCDNDomain ? `${this.slideCDNDomain}/cdn` : "/cdn";
         list.push({
           ...item,
           image: `${cdn}${item.image0["zh-cn"]}`

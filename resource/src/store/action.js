@@ -837,7 +837,16 @@ export const actionSetUserdata = (
       if (headers[configInfo.CDN_HEADER]) {
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
+      console.log(headers["x-cdn"]);
+      if (headers["x-cdn"]) {
+        commit(
+          types.SETSLIDECDNDOMAIN,
+          `https://${headers["x-cdn"].split(",")[0]}`
+        );
+      }
+
       commit(types.SETCDNROOT, cdnRoot);
+
       // let domain = data.ret.user.domain.toString();
       // switch (domain) {
       //   case "9999894":
