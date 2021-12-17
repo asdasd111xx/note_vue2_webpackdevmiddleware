@@ -352,7 +352,7 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #bebcbc;
+  color: #a6a9b2;
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
