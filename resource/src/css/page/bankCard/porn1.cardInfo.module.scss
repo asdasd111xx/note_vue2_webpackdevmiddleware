@@ -197,7 +197,7 @@
   height: 50px;
   align-items: center;
   border-top: 1px solid #f7f8fb;
-  color: #000;
+  color: var(--popup_text_color2);
 
   &::after {
     content: "";
@@ -216,7 +216,7 @@
     font-weight: 700;
 
     &:nth-child(2) {
-      color: var(--member_color100);
+      color: var(--popup_text_color1);
     }
   }
 }
