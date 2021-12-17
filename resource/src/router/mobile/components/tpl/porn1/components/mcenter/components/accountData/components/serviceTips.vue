@@ -8,7 +8,7 @@
       为了你的隐私安全，信息在确认后将无法修改
     </template>
     <br />
-    如需帮助，请
+    <span>如需帮助，请</span>
     <span @click="$router.push('/mobile/service')">联系客服</span>
   </div>
 </template>

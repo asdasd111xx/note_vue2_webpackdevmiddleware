@@ -343,12 +343,15 @@ input {
   margin-top: 19px;
   text-align: center;
   width: 100%;
-  color: var(--member_text_color3);
+  color: var(--member_color102);
   font-size: 14px;
   height: 100px;
   line-height: 21px;
+  span:first-of-type {
+    color: #a6a9b2;
+  }
 
-  > span {
+  span:last-child {
     color: #6aaaf5;
   }
 }
