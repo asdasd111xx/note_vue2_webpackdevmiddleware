@@ -297,7 +297,8 @@
               addBankCardStep === 'one' &&
                 checkWalletPhoneVerification &&
                 selectTarget.walletId !== 21 &&
-                selectTarget.walletId !== 47
+                selectTarget.walletId !== 47 &&
+                selectTarget.walletId !== 48
             "
           >
             下一步
