@@ -126,7 +126,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  color: var(--main_text_color1);
+  color: #9ca3bf;
   background-color: white;
   background-repeat: no-repeat;
   background-size: cover;
