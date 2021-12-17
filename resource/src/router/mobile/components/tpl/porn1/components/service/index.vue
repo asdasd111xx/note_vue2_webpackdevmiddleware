@@ -775,7 +775,7 @@ div.container {
   .title,
   .content {
     margin: 0 17px;
-    color: var(--main_text_color2);
+    color: var(--member_text_color3);
     font-size: 12px;
   }
 
@@ -806,7 +806,7 @@ div.container {
       margin: 10px auto;
       padding: 0 0 0 40px;
       background: #ffffff;
-      border: 1px solid var(--main_text_color2);
+      border: 1px solid var(--member_text_color3);
       border-radius: 10px;
 
       &::before {
