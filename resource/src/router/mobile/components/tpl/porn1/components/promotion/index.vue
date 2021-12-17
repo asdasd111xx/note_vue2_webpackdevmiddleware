@@ -305,7 +305,7 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: var(--main_color1);
+  background-color: var(--member_color1);
   width: 50px;
   transition: left 0.31s;
 }
