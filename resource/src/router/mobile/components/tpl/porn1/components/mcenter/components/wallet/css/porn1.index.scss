@@ -93,10 +93,12 @@
   right: 0;
   width: 15px;
   height: 15px;
-  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png") center center / 100% 100%;
+  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png")
+    center center / 100% 100%;
 
   &.collapse {
-    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png") center center / 100% 100%;
+    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png")
+      center center / 100% 100%;
   }
 }
 
@@ -274,10 +276,12 @@
     right: 0;
     width: 25px;
     height: 25px;
-    background: url("/static/image/aobo1/common/ic_event.png") center center / 100% 100%;
+    background: url("/static/image/aobo1/common/ic_event.png") center center /
+      100% 100%;
 
     &.porn1 {
-      background: url("/static/image/porn1/common/ic_event.png") center center / 100% 100%;
+      background: url("/static/image/porn1/common/ic_event.png") center center /
+        100% 100%;
     }
   }
 
@@ -382,7 +386,8 @@
       height: 15px;
       right: 0;
       top: 1;
-      background: url("/static/image/common/arrow_next.png") center center / 100% 100%;
+      background: url("/static/image/common/arrow_next.png") center center /
+        100% 100%;
     }
   }
 }
@@ -424,7 +429,7 @@
 
 .bc-wrap {
   background: $main_white_color1;
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
   font-size: 12px;
   margin-top: 12px;
   padding: 12px 17px 0;

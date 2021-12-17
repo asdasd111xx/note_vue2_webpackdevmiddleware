@@ -146,7 +146,7 @@ export default {
 
 .wrap {
   background-color: rgba(0, 0, 0, 0.8);
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -168,7 +168,7 @@ export default {
 
 .header {
   background-color: #ffffff;
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
   font-size: 17px;
   height: 75px;
   line-height: 75px;
