@@ -148,7 +148,7 @@
                 :class="[$style['check-cell'], $style['custom-color']]"
               >
                 <span :class="$style['sub-title']">
-                  {{ withdrawName }}到帐
+                  {{ selectCard.bank_id === 2025 ? "币希" : withdrawName }}到帐
                 </span>
                 <span
                   :style="
@@ -160,7 +160,7 @@
                 >
                   {{
                     selectCard.bank_id === 2025
-                      ? formatThousandsCurrencyUnFix(cryptoMoney, 6)
+                      ? formatThousandsCurrencyUnFix(cryptoMoney)
                       : formatThousandsCurrency(cryptoMoney)
                   }}
                 </span>

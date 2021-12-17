@@ -25,7 +25,9 @@
           <div :class="$style['currency']">
             <span>USD</span><span :class="$style['name']">美元</span>
           </div>
-          <div>{{ formatThousandsCurrency(currencyData.total_balance) }}</div>
+          <div>
+            {{ formatThousandsCurrency(currencyData.total_balance, false) }}
+          </div>
         </div>
         <div :class="$style['content-tip']">
           各资产换算美元后加总，实际金额请至币希查看
@@ -57,7 +59,7 @@
                 <span>{{ item.currency }}</span
                 ><span :class="$style['name']">{{ item.name }}</span>
               </div>
-              <div>{{ formatThousandsCurrency(item.balance) }}</div>
+              <div>{{ formatThousandsCurrency(item.balance, true) }}</div>
             </div>
           </div>
         </div>
@@ -167,8 +169,11 @@ export default {
     showAll() {
       this.isShowAll = !this.isShowAll;
     },
-    formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+    formatThousandsCurrency(value, isDisplay) {
+      if (isDisplay) {
+        return thousandsCurrency(Number(value));
+      }
+      return thousandsCurrency(Number(value).toFixed(2));
     },
     getWalletUserReceiveCode() {
       lib_newWindowOpen(

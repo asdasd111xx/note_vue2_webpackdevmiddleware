@@ -96,7 +96,7 @@
                   $style['balance-redjackpot-text']
                 ]"
               >
-                {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
+                {{ formatThousandsCurrency(redJackpotData.remain_bonus, true) }}
               </span>
               <span
                 :class="[
@@ -123,7 +123,9 @@
 
               <span :class="[$style['balance-item-money'], $style['more']]">
                 {{
-                  bonus.balance ? formatThousandsCurrency(bonus.balance) : 0.0
+                  bonus.balance
+                    ? formatThousandsCurrency(bonus.balance, true)
+                    : 0.0
                 }}
               </span>
             </div>
@@ -253,7 +255,7 @@
             @click="bcClickEvent('money')"
           >
             <div>
-              {{ formatThousandsCurrency(bcCurrencyData.total_balance) }}
+              {{ formatThousandsCurrency(bcCurrencyData.total_balance, false) }}
             </div>
             <div>
               总余额(美元)
@@ -369,7 +371,7 @@
             <div :class="$style['game-desc']">
               <span :class="$style['game']">{{ item.game_name }}</span>
               <span :class="$style['money']">{{
-                formatThousandsCurrency(item.valid_bet)
+                formatThousandsCurrency(item.valid_bet, true)
               }}</span>
             </div>
           </div>
@@ -912,8 +914,11 @@ export default {
         }
       });
     },
-    formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+    formatThousandsCurrency(value, isDisplay) {
+      if (isDisplay) {
+        return thousandsCurrency(Number(value));
+      }
+      return thousandsCurrency(Number(value).toFixed(2));
     },
     getDomainConfig() {
       return axios({

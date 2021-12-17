@@ -570,7 +570,7 @@
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
-          使用{{ selectedCard.name }}出款，额外赠送{{
+          使用{{ selectedCard.bank_id === 2025 ? '币希' : selectedCard.name }}出款，额外赠送{{
             formatThousandsCurrency(offer())
           }}元(CNY)优惠
         </span>
@@ -609,7 +609,7 @@
       <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
         <!-- <span :class="$style['money-currency']">¥</span> -->
         <span :class="$style['money-currency']"
-          >{{ selectedCard.name }}到帐</span
+          >{{ selectedCard.bank_id === 2025 ? '币希' : selectedCard.name }}到帐</span
         >
         <span :class="$style['money-currency']">{{
           selectedCard.bank_id === 2025
