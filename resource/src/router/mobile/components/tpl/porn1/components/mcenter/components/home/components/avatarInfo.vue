@@ -208,14 +208,11 @@ export default {
   font-size: 11px;
   line-height: 17px;
   height: 17px;
-  color: #ffffff;
+  color: var(--member_text_color1);
   text-align: center;
   font-weight: bold;
   width: 40px;
   border-radius: 4px;
-  background: $share_origin_color4;
-  &.porn1 {
-    background: $share_member_text_color9;
-  }
+  background: var(--avatar-vip-icon-color);
 }
 </style>

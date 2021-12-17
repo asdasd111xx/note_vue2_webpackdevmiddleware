@@ -75,15 +75,7 @@
 
       &.active {
         border: 2px solid transparent;
-        border-color: $share_origin_color1;
-      }
-    }
-
-    &.porn1 {
-      img {
-        &.active {
-          border-color: $share_member_text_color4;
-        }
+        border-color: var(--member_color100);
       }
     }
 
@@ -96,6 +88,9 @@
       }
       &.image-sp1 {
         @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+      }
+      &.image-sg1 {
+        @include check-ok("/static/image/sg1/mcenter/ic_check.png");
       }
     }
   }

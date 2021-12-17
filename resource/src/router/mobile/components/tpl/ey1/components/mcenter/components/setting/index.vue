@@ -109,7 +109,7 @@ export default {
 }
 
 .setting-wrap {
-  color: var(--main_text_color3);
+  color: #414655;
 
   > div:first-child {
     margin-top: 5px;
