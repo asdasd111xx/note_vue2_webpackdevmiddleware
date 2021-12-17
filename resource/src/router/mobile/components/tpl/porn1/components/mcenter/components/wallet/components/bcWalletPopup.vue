@@ -90,6 +90,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
