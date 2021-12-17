@@ -39,7 +39,7 @@
     margin-left: 6px;
     font-size: 16px;
     font-weight: 700;
-    color: var(--main_text_color3);
+    color: #414655;
   }
 
   .add-btn {
@@ -82,7 +82,7 @@
     margin-right: 8px;
     font-size: 20px;
     font-weight: 700;
-    color: var(--main_text_color4);
+    color: #414655;
   }
 
   .count {
@@ -180,11 +180,11 @@
 
 .content {
   padding: 17px 18px;
-  color: var(--main_text_color2);
+  color: #a6a9b2;
   text-align: center;
 
   .title {
-    color: var(--main_text_color3);
+    color: #414655;
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 10px;
@@ -197,16 +197,7 @@
   height: 50px;
   align-items: center;
   border-top: 1px solid #f7f8fb;
-  color: $share_origin_color17;
-
-  &.porn1 {
-    color: $share_member_text_color4;
-    span {
-      &:nth-child(2) {
-        color: $share_member_text_color4;
-      }
-    }
-  }
+  color: var(--popup_text_color2);
 
   &::after {
     content: "";
@@ -225,7 +216,7 @@
     font-weight: 700;
 
     &:nth-child(2) {
-      color: $share_origin_color1;
+      color: var(--popup_text_color1);
     }
   }
 }

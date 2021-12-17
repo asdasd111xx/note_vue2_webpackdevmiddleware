@@ -128,7 +128,7 @@
           <span>确定解除绑定该张卡片吗？</span>
         </div>
 
-        <div :class="[$style['button-block'], $style[siteConfig.ROUTER_TPL]]">
+        <div :class="[$style['button-block']]">
           <span @click="isShowPop = false">
             {{ $text("S_CANCEL", "取消") }}
           </span>
