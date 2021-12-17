@@ -111,7 +111,7 @@ export default {
 .mcenter-avatar-wrap {
   height: 120px;
   background-color: $main_white_color1;
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
   padding: 15px;
   border-bottom: 1px solid #eee;
 
