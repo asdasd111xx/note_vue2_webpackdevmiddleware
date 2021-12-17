@@ -170,7 +170,7 @@ export default {
 
   p {
     margin-top: 10px;
-    color: $main_text_color5;
+    color: #bebcbc;
   }
 }
 

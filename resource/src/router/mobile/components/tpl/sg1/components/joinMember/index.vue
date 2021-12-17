@@ -92,7 +92,7 @@ export default {
   color: #ffffff;
 
   &.disable {
-    background: linear-gradient(#e9dacb, #eee5db);
+    background: var(--main_gradient_color2);
   }
 }
 

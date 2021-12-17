@@ -29,10 +29,7 @@
             :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
           >
             <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
-            <div
-              v-if="tab.id === tabId"
-              :class="[$style['tab-slider'], $style[routerTPL]]"
-            />
+            <div v-if="tab.id === tabId" :class="[$style['tab-slider']]" />
           </swiper-slide>
         </swiper>
       </div>
@@ -308,13 +305,9 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: $share_text_color5;
+  background-color: var(--main_color1);
   width: 50px;
   transition: left 0.31s;
-
-  &.porn1 {
-    background-color: $main_text_color6;
-  }
 }
 
 .type-btn {

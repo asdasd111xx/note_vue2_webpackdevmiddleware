@@ -111,20 +111,6 @@ export default {
     background: var(--main_gradient_color2);
     pointer-events: none;
   }
-
-  &.porn1 {
-    color: #ffffff;
-    background: $befa_main_color;
-  }
-
-  &.sp1 {
-    color: $main_text_color6;
-    background: $sp1_main_color1;
-
-    &.disable {
-      opacity: 0.5;
-    }
-  }
 }
 
 .js-nc-check-bar {
