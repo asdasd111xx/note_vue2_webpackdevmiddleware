@@ -49,6 +49,7 @@ export default {
   preview: false,
   // 設定是否透過外面CDN廠商代理
   cdnRoot: "",
+  slideCDNDomain: "",
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     字型對照表
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

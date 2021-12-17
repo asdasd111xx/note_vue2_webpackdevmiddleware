@@ -118,6 +118,9 @@ export default {
   [types.SETCDNROOT](state, url) {
     state.cdnRoot = url;
   },
+  [types.SETSLIDECDNDOMAIN](state, url) {
+    state.slideCDNDomain = url;
+  },
   // 設定遊戲資料
   [types.SETGAMEDATA](state, gameData) {
     const temp = state.gameData;
