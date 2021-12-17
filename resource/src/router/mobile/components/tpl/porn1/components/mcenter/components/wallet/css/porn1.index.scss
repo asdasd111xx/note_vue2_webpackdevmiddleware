@@ -429,7 +429,7 @@
 
 .bc-wrap {
   background: $main_white_color1;
-  color: $main_text_color3;
+  color: var(--member_text_color4);
   font-size: 12px;
   margin-top: 12px;
   padding: 12px 17px 0;
