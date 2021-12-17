@@ -1784,6 +1784,8 @@ export default {
           .method_id;
       } else if (this.selectedCard.bank_id === 2009) {
         methonId = this.withdrawCurrency.method_id;
+      } else if (this.selectedCard.bank_id === 2025) {
+        methonId = this.selectedCard.currency[0].method_id;
       } else {
         methonId = "";
       }
