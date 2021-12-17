@@ -51,6 +51,7 @@
           <div
             :class="[
               $style['type-title'],
+              $style[siteConfig.ROUTER_TPL],
               { [$style.active]: typeList[selectedIndex].icon === type.icon }
             ]"
           >
@@ -352,11 +353,15 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #a6a9b2;
+  color: var(--main_text_color3);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
+
+  &.sp1 {
+    color: #222222;
+  }
 
   &.active {
     color: var(--main_text_color1);
