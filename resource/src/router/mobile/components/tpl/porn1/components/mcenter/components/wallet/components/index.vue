@@ -973,11 +973,29 @@ export default {
           );
           break;
         case "use":
-          this.getCustomerServiceUrl({
-            urlName: "btse_wallet",
-            needToken: false
+          // this.getCustomerServiceUrl({
+          //   urlName: "btse_wallet",
+          //   needToken: false
+          // }).then(res => {
+          //   this.getPromotionList(res.uri);
+          // });
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+            params: {
+              lang: "zh-cn",
+              urlName: "btse_wallet",
+              needToken: false
+            }
           }).then(res => {
-            this.getPromotionList(res.uri);
+            const { status, data, msg, errorCode } = res;
+
+            if (status === "000" && errorCode === "00") {
+              this.getPromotionList(data.uri);
+            }
+            this.actionSetGlobalMessage({
+              msg: "正在上线，敬请期待"
+            });
           });
 
           break;

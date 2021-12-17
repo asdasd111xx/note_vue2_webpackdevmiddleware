@@ -2246,7 +2246,8 @@ export default {
             withdrawType: defaultCard?.withdrawType,
             swift_code: defaultCard?.swift_code,
             offer_percent: defaultCard?.offer_percent,
-            offer_limit: defaultCard?.offer_limit
+            offer_limit: defaultCard?.offer_limit,
+            currency:defaultCard?.currency
           };
 
       // 更新 Withdraw Info
