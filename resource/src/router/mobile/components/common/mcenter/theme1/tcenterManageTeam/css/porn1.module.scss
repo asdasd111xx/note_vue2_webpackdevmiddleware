@@ -31,7 +31,7 @@ $fixed_spacing_height: 43px;
   text-overflow: ellipsis;
   white-space: nowrap;
   &.is-current {
-    color: var(--member_color1);
+    color: #5e626d;
 
     &::after {
       content: "";
