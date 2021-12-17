@@ -15,7 +15,7 @@
 .select-container {
   .select-header {
     span {
-      color: #bf8646;
+      color: var(--member_color100);
     }
   }
 }
@@ -27,23 +27,23 @@
 }
 
 .balance-item-money {
-  color: #a2a2a2;
+  color: var(--member_text_color3);
 }
 
 .balance-redjackpot-text {
-  color: $sg_main_text_color1;
+  color: var(--member_color100);
   word-break: break-word;
 }
 
 .transfer-money-input {
   &::placeholder {
-    color: #a2a2a2;
+    color: var(--member_text_color3);
   }
 }
 
 .balance-tip-wrap {
   .balance-auto-tip {
-    color: #a2a2a2;
+    color: var(--member_text_color3);
   }
 }
 
