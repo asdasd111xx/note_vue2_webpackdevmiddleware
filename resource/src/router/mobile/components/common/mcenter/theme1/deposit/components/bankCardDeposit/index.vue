@@ -532,7 +532,7 @@
                 @click="setPopupStatus(true, 'bcWalletCurrency')"
             >
               <div>充值币种</div>
-              <div v-if="selectBcCoin || selectBcCoin.balance<=0" :class="[$style['coin-money']]">
+              <div v-if="selectBcCoin && selectBcCoin.balance > 0" :class="[$style['coin-money']]">
                 {{`${formatThousandsCurrency(selectBcCoin.balance)} ${selectBcCoin.currency}`}}
               </div>
               <div v-else :class="[$style['coin-money']]">--</div>
@@ -1250,7 +1250,8 @@
                     !walletData['CGPay'].password) ||
                   (showOuterCryptoAddress && outerCryptoAddress === '') ||
                   (showEpointWalletAddress &&
-                    (epointBankName === '' || epointBankAccount === ''))
+                    (epointBankName === '' || epointBankAccount === '')) ||
+                    (isSelectBindWallet(32) && cryptoMoney <=0)
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -2120,7 +2121,7 @@ export default {
       this.closePopup();
 
       //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 30, 402, 404)) {
+      if (this.isSelectBindWallet(25, 30, 32, 402, 404)) {
         let oldrate = this.rate;
         this.convertCryptoMoney();
         if (this.rate !== oldrate) {

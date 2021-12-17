@@ -254,7 +254,7 @@
             :class="[$style['bc-data'], $style['first']]"
             @click="bcClickEvent('money')"
           >
-            <div>
+            <div :class="[$style['total-money']]">
               {{ formatThousandsCurrency(bcCurrencyData.total_balance, false) }}
             </div>
             <div>
