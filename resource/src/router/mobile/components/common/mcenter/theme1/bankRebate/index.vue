@@ -218,7 +218,7 @@
                 </template>
                 <ele-loading v-else-if="rebateState === 'loading'" />
 
-                <template v-else>
+                <template>
                   <!-- 當返水金額符合最低返水金額才可領取 rebate 和 min_rebate -->
                   <a
                     v-if="caculateList.operateStatus"
