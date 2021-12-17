@@ -160,7 +160,7 @@ export default {
 
 .help-wrap {
   overflow-x: hidden;
-  color: var(--main_text_color3);
+  color: var(--member_text_color4);
   position: relative;
 
   .list {
