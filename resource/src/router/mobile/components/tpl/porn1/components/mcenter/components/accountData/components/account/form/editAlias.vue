@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <service-tips :type="'alias'" />
+    <service-tips :edit="edit" :type="'alias'" />
   </div>
 </template>
 
