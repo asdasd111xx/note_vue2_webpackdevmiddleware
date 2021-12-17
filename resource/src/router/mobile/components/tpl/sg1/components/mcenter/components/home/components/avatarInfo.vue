@@ -38,13 +38,18 @@
             : paopaoUserInfo.background
         })no-repeat center center / cover`
       }"
+      @click="onListClick('memberCard', false)"
     ></div>
     <!-- 姓名/註冊 -->
     <div :class="$style['info-wrap']">
-      <div @click.stop="onListClick('my_style')">
+      <div>
         <template v-if="loginStatus">
           <span v-for="(item, index) in badgesList" :key="index">
-            <img :class="$style['badge']" :src="item" />
+            <img
+              @click.stop="onListClick('my_style')"
+              :class="$style['badge']"
+              :src="item"
+            />
           </span>
           <span :class="$style['info-name']">
             {{ paopaoUserInfo.alias }}
