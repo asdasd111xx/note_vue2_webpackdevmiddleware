@@ -95,7 +95,7 @@ window.RESET_MEM_SETTING = reload => {
 let cid = getCookie("cid");
 
 const urlParams = new URLSearchParams(window.location.search);
-const isApp = urlParams.get("isApp");
+const isApp = urlParams.get("isApp") || urlParams.get("app");
 
 if (cid && !isApp) {
   const script = document.createElement("script");
