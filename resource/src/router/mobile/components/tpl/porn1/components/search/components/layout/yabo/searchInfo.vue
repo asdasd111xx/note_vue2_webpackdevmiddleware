@@ -270,7 +270,6 @@ export default {
   p {
     font-size: 16px;
     margin-top: 10px;
-    // color: $main_text_color5;
     color: #000;
   }
 }

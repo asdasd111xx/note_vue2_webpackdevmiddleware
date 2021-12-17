@@ -131,14 +131,14 @@ export default {
     width: 90px;
     position: relative;
     > img {
-      border: 1px $main_text_color1 solid;
+      border: 1px var(--main_text_color1) solid;
       height: 100%;
       border-radius: 50%;
     }
 
     > div {
       color: white;
-      background-color: $main_text_color1;
+      background-color: var(--main_text_color1);
       width: 64px;
       border-radius: 7px;
       line-height: 17px;
@@ -159,17 +159,17 @@ export default {
       height: 16px;
       line-height: 16px;
       margin: 1.5px;
-      color: $main_text_color1;
+      color: var(--main_text_color1);
     }
 
     .title {
-      color: $main_text_color4;
+      color: var(--main_text_color4);
     }
 
     .intro {
       display: block;
       margin: 1.5px;
-      color: $main_text_color1;
+      color: var(--main_text_color1);
       width: 100%;
 
       span {

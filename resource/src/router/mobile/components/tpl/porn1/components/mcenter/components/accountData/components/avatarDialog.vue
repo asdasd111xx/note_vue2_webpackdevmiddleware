@@ -7,7 +7,7 @@
           :key="`avatar-${index}`"
           :class="$style['avatar-wrap']"
         >
-          <div :class="[$style['avatar-cell'], $style[siteConfig.ROUTER_TPL]]">
+          <div :class="[$style['avatar-cell']]">
             <img
               :class="[{ [$style['active']]: currentImgID === index }]"
               :src="$getCdnPath(item.url)"

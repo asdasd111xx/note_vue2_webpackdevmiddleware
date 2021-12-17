@@ -26,15 +26,9 @@
       width: 16px;
     }
 
-    &.porn1 {
-      &.active {
-        border-bottom: 2px solid $befa_main_color;
-      }
-    }
-
     &.active {
       color: #5e626d;
-      border-bottom: 2px solid $share_member_text_color1;
+      border-bottom: 2px solid var(--member_color1);
     }
 
     &.self {
@@ -74,21 +68,11 @@
       color: #222;
 
       &.week {
-        color: $share_origin_color16;
+        color: var(--member_color100);
       }
 
       &.is-current {
-        color: $share_origin_color16;
-      }
-
-      &.porn1 {
-        &.week {
-          color: $share_member_text_color4;
-        }
-
-        &.is-current {
-          color: $share_member_text_color4;
-        }
+        color: var(--member_color100);
       }
     }
 
@@ -227,23 +211,14 @@
     min-width: 105px;
     border-radius: 17px;
     height: 33px;
-    background: $share_main_button_color2;
+    background: var(--member_gradient_color1);
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 
-    &.porn1 {
-      background: $befa_main_button_color2;
-      color: $befa_member_text_color1;
-      &.disable {
-        background: $befa_main_button_color1;
-        color: $befa_member_text_color2;
-      }
-    }
-
     &.disable {
-      background: $share_main_button_color1;
+      background: var(--member_gradient_color2);
       height: 45px;
       border-radius: 3px;
     }
@@ -287,19 +262,10 @@
   text-align: center;
   border-radius: 17px;
   color: #fff;
-  background: $share_main_button_color2;
-
-  &.porn1 {
-    background: $befa_main_button_color2;
-    color: $befa_member_text_color1;
-    &.is-disabled {
-      background: $befa_main_button_color1;
-      color: $befa_member_text_color2;
-    }
-  }
+  background: var(--member_gradient_color1);
 
   &.is-disabled {
-    background: $share_main_button_color1;
+    background: var(--member_gradient_color2);
     color: #fff;
     pointer-events: none;
   }

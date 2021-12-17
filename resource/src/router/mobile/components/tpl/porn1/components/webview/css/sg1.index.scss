@@ -3,7 +3,7 @@
 .header-icon {
   .icon {
     .text {
-      color: #fff;
+      color: var(--webview_icon_text);
     }
   }
 }
@@ -15,7 +15,7 @@
     }
 
     .download {
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--main_gradient_color1);
       border: none;
       color: #fff;
     }

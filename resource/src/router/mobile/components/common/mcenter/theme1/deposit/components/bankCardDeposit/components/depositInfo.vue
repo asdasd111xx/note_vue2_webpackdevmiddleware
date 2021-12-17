@@ -153,7 +153,6 @@
     <div
       :class="[
         $style['submit-btn'],
-        $style[siteConfig.ROUTER_TPL],
         {
           [$style['disabled']]:
             isSubmitDisabled || (countdownSec < 1 && isShowTimer)

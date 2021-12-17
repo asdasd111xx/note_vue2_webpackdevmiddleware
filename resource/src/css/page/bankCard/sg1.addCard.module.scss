@@ -1,28 +1,28 @@
 @import "./porn1.addCard.module.scss";
 .submit {
-  background: linear-gradient(#fe593c, #e61938);
+  background: var(--member_gradient_color1);
 
   &.disabled {
-    background: linear-gradient(#fed3cb, #ffc5ce);
+    background: var(--member_gradient_color2);
   }
 }
 
 .send-keyring {
-  background: linear-gradient(#fe593c, #e61938);
+  background: var(--member_gradient_color1);
 
   &.disabled {
-    background: linear-gradient(#fed3cb, #ffc5ce);
+    background: var(--member_gradient_color2);
   }
 }
 
 .pop-title {
   span {
-    color: $sg_main_text_color2;
+    color: var(--member_color100);
   }
 }
 
 .select-icon {
-  color: $sg_main_text_color2;
+  color: var(--member_color100);
 }
 
 .phone-selected {
@@ -34,11 +34,11 @@
 .wallet-list {
   .wallet-item {
     &.is-current {
-      border: 1px solid $sg_main_text_color1;
-      color: $sg_main_text_color1;
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
       background: linear-gradient(
         -45deg,
-        $sg_main_text_color1 10px,
+        var(--wallet_border_color) 10px,
         hsla(0, 0%, 100%, 0) 0
       );
     }

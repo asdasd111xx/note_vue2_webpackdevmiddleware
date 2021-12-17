@@ -582,11 +582,7 @@
 
       <div v-else :class="[$style['join-btn-wrap']]">
         <div
-          :class="[
-            $style['join-btn'],
-            { [$style.disabled]: isLoading },
-            $style[this.siteConfig.ROUTER_TPL]
-          ]"
+          :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
           @click="joinSubmit()"
         >
           {{ $text("S_REGISTER", "注册") }}

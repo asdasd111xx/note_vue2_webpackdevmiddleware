@@ -500,7 +500,7 @@ export default {
 
   // 亞博點擊的文字color
   &.active {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
   }
 
   &.gay {

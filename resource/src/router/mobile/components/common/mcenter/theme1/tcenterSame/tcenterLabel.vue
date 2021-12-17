@@ -4,11 +4,7 @@
     <div :class="$style['top-link']">
       <div v-for="(item, index) in childItem" :key="`tab-${item.name}`">
         <span
-          :class="[
-            $style.link,
-            $style[siteConfig.ROUTER_TPL],
-            { [$style.active]: tabCurrent === index }
-          ]"
+          :class="[$style.link, { [$style.active]: tabCurrent === index }]"
           :style="{ width: `${100 / childItem.length}%` }"
           @click="changeTab(item)"
           >{{ item.text }}</span

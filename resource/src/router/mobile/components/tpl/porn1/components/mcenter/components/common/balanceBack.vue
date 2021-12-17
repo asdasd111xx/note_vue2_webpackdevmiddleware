@@ -15,12 +15,7 @@
               "
             />
             <span> {{ $text("S_MCENTER_WALLET", "中心钱包") }} </span>
-            <div
-              :class="[
-                $style['balance-item-money'],
-                $style[siteConfig.ROUTER_TPL]
-              ]"
-            >
+            <div :class="[$style['balance-item-money']]">
               {{ balanceTran.membalance.vendor.default.amount }}
             </div>
           </div>
@@ -41,7 +36,6 @@
             id="one-recycle-btn"
             :class="[
               $style['recycle-btn'],
-              $style[siteConfig.ROUTER_TPL],
               balanceTran.balanceBackLock ? $style.disable : ''
             ]"
             @click="balanceBack()"

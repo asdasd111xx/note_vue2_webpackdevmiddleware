@@ -170,12 +170,12 @@
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   display: inline-block;
   background-color: white;
 
   &.active {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
   }
 }
 

@@ -45,7 +45,7 @@ export default {
       siteConfig: "getSiteConfig"
     }),
     theme() {
-      return `root-${this.siteConfig.MOBILE_WEB_TPL}`;
+      return `root-${this.siteConfig.ROUTER_TPL}`;
     }
   },
   created() {

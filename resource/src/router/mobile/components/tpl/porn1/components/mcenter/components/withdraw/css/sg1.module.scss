@@ -1,5 +1,4 @@
 @import "./index.module.scss";
-$bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
 .add-bank-card {
   color: #414655;
@@ -15,7 +14,7 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
   > span {
     &.rubbing-btn {
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--member_gradient_color1);
     }
   }
 }
@@ -34,7 +33,7 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
       background: #a2a2a2;
 
       &.submit {
-        background: $bg_linear_gradient;
+        background: var(--member_gradient_color1);
       }
     }
   }
@@ -42,18 +41,18 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
 .withdraw-max {
   > span {
-    background: $bg_linear_gradient;
+    background: var(--member_gradient_color1);
   }
 }
 
 .submit-btn {
   > div {
-    background: $bg_linear_gradient;
+    background: var(--member_gradient_color1);
   }
 
   &.disabled {
     div {
-      background: linear-gradient(to left, #fed3cb, #ffc5ce);
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -93,11 +92,11 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 .bank-wrap {
   .bank-type {
     &.is-current {
-      border: 1px solid $sg_main_text_color1;
-      color: $sg_main_text_color1;
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
       background: linear-gradient(
         -45deg,
-        $sg_main_text_color1 10px,
+        var(--wallet_border_color) 10px,
         hsla(0, 0%, 100%, 0) 0
       );
     }

@@ -209,25 +209,13 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid $share_origin_color1;
-      color: $share_origin_color1;
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
       background: linear-gradient(
         -45deg,
-        $share_origin_color1 10px,
+        var(--wallet_border_color) 10px,
         hsla(0, 0%, 100%, 0) 0
       );
-    }
-
-    &.porn1 {
-      &.is-current {
-        border: 1px solid $share_member_text_color4;
-        color: $share_member_text_color2;
-        background: linear-gradient(
-          -45deg,
-          $share_member_text_color4 10px,
-          hsla(0, 0%, 100%, 0) 0
-        );
-      }
     }
 
     .select {
@@ -345,17 +333,10 @@
   justify-content: center;
   float: right;
 
-  &.porn1 {
-    > span {
-      color: $befa_member_text_color1;
-      background: $befa_main_button_color2;
-    }
-  }
-
   > span {
     font-size: 14px;
-    background: $share_main_button_color2;
-    color: $share_member_text_color3;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -380,23 +361,10 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  &.porn1 {
-    > div {
-      background: $befa_main_button_color2;
-      color: $befa_member_text_color1;
-    }
-    &.disabled {
-      div {
-        background: $befa_main_button_color1;
-        color: $befa_member_text_color2;
-      }
-    }
-  }
-
   > div {
     margin: 0 auto;
     height: 45px;
-    background: $share_main_button_color2;
+    background: var(--member_gradient_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -404,13 +372,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: $share_member_text_color3;
+    color: var(--member_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: $share_main_button_color1;
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -524,25 +492,25 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       margin-bottom: 4px;
     }
   }
 
   .check-cell {
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     height: 33px;
     line-height: 33px;
     padding: 0px 11px;
     position: relative;
 
     &.check-total {
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       background: #f3f3f3;
     }
 
     &.check-actual {
-      color: $main_text_color3;
+      color: var(--main_text_color3);
       font-weight: 700;
       background: #f3f3f3;
     }

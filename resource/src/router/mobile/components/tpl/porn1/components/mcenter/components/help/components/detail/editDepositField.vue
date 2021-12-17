@@ -119,6 +119,9 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     resultSpeedField: {
       get() {
         return this.speedField;

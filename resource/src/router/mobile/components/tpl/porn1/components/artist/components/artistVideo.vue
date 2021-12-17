@@ -97,7 +97,7 @@ export default {
   align-items: center;
 
   > span:last-child {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
     font-size: 14px;
   }
   > span:first-child {
@@ -170,7 +170,7 @@ export default {
 
   p {
     margin-top: 10px;
-    color: $main_text_color5;
+    color: #bebcbc;
   }
 }
 

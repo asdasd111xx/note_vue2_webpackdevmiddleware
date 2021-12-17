@@ -449,12 +449,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #6aaaf5;
+  color: var(--main_color100);
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: #6aaaf5;
+    background: var(--main_color100);
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
@@ -775,7 +775,7 @@ div.container {
   .title,
   .content {
     margin: 0 17px;
-    color: $main_text_color2;
+    color: var(--member_text_color3);
     font-size: 12px;
   }
 
@@ -806,7 +806,7 @@ div.container {
       margin: 10px auto;
       padding: 0 0 0 40px;
       background: #ffffff;
-      border: 1px solid $main_text_color2;
+      border: 1px solid var(--member_text_color3);
       border-radius: 10px;
 
       &::before {
