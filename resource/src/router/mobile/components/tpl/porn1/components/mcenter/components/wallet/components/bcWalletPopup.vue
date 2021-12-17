@@ -43,7 +43,7 @@
               <span>{{ item.currency }}</span
               ><span :class="$style['name']">{{ item.name }}</span>
             </div>
-            <div>{{ item.balance }}</div>
+            <div>{{ formatThousandsCurrency(item.balance, true) }}</div>
           </div>
           <div :class="$style['more']" @click="showAll">
             点击查看全部余额
@@ -171,7 +171,7 @@ export default {
     },
     formatThousandsCurrency(value, isDisplay) {
       if (isDisplay) {
-        return thousandsCurrency(Number(value));
+        return thousandsCurrency(value);
       }
       return thousandsCurrency(Number(value).toFixed(2));
     },

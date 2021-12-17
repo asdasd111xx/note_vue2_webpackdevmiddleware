@@ -118,7 +118,7 @@ export default {
     },
     formatThousandsCurrency(value, isDisplay) {
       if (isDisplay) {
-        return thousandsCurrency(Number(value));
+        return thousandsCurrency(value);
       }
       return thousandsCurrency(Number(value).toFixed(2));
     }
