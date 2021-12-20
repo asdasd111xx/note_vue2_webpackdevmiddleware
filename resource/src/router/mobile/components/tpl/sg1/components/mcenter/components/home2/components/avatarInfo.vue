@@ -157,20 +157,22 @@ export default {
     }
   },
   created() {
-    setTimeout(() => {
-      axios({
-        method: "get",
-        url: this.memInfo.user.custom_image
-      })
-        .then(res => {
-          if (res && res.data) {
-            this.avatarSrc = res.data.ret;
-          }
+    if (this.memInfo && this.memInfo.user && this.memInfo.custom_image) {
+      setTimeout(() => {
+        axios({
+          method: "get",
+          url: this.memInfo.user.custom_image
         })
-        .catch(error => {
-          this.actionSetGlobalMessage({ msg: error.response.data.msg });
-        });
-    }, 500);
+          .then(res => {
+            if (res && res.data) {
+              this.avatarSrc = res.data.ret;
+            }
+          })
+          .catch(error => {
+            this.actionSetGlobalMessage({ msg: error.response.data.msg });
+          });
+      }, 500);
+    }
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),

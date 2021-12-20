@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import notification from '@/router/mobile/components/common/notification';
-import message from '@/router/mobile/components/common/message2';
-import { mapGetters, mapActions } from 'vuex';
+import notification from "@/router/mobile/components/common/notification";
+import message from "@/router/mobile/components/common/message2";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -25,24 +25,24 @@ export default {
     message
   },
   data() {
-    return {
-    };
+    return {};
   },
   watch: {
-    globalMessage() {
-    }
+    globalMessage() {}
   },
   mounted() {
-    console.log("===sg===")
+    console.log("===sg===");
   },
   computed: {
     ...mapGetters({
-      globalMessage: 'getGlobalMessage'
-    }),
-  },
+      globalMessage: "getGlobalMessage"
+    })
+  }
 };
 </script>
 <style src="@/css/index.scss" lang="scss"></style>
+<style src="@/css/variable/live.scss" lang="scss"></style>
+
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
