@@ -226,7 +226,7 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: #000;
   border-top: 1px solid #f8f8f7;
 
   &.ey1 {

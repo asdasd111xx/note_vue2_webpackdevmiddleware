@@ -416,7 +416,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    color: $main_title_color1;
+    color: #414655;
     position: relative;
     line-height: 50px;
 
@@ -425,6 +425,7 @@
       font-size: 17px;
       font-weight: 400;
       text-align: center;
+      font-weight: 700;
     }
 
     .btn-close {
@@ -498,31 +499,36 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--main_text_color3);
+      color: var(--member_text_color4);
       margin-bottom: 4px;
     }
   }
 
   .check-cell {
-    color: var(--main_text_color2);
+    color: #414655;
     height: 33px;
     line-height: 33px;
     padding: 0px 11px;
     position: relative;
 
     &.check-total {
-      color: var(--main_text_color3);
+      color: var(--member_text_color4);
       background: #f3f3f3;
     }
 
     &.check-actual {
-      color: var(--main_text_color3);
+      color: #414655;
       font-weight: 700;
       background: #f3f3f3;
     }
 
     &.custom-color {
-      color: $share_member_text_color8;
+      color: #db6372;
+
+      &.custom-color-background {
+        background: #f3f3f3;
+        font-weight: 700;
+      }
     }
 
     > span:last-child {
@@ -533,15 +539,20 @@
       content: "CNY";
       color: #cbced8;
       padding-left: 10px;
-      font-weight: 400;
+    }
+    .money-bold::after {
+      content: "CNY";
+      color: #a6a9b2;
+      padding-left: 10px;
+      font-weight: 700;
     }
 
     // For Crypto
     .crypto-money::after {
       content: "USDT";
-      color: #e9dacc;
+      color: #a6a9b2;
       padding-left: 1px;
-      font-weight: 400;
+      font-weight: 700;
     }
 
     .crypto-money {

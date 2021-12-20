@@ -139,11 +139,11 @@
         outline: none;
       }
       &.porn1 {
-        color: $befa_member_text_color1;
-        background: $befa_main_button_color2;
+        color: #fff;
+        background: #414655;
         &.disable {
-          color: $befa_member_text_color2;
-          background: $befa_main_button_color1;
+          color: #a6a9b2;
+          background: #eaeaea;
         }
       }
 
@@ -153,7 +153,7 @@
         height: 20px;
         line-height: 20px;
         color: #fff;
-        background: $share_main_button_color2;
+        background: var(--member_gradient_color1);
         border: 0;
         border-radius: 10px;
         outline: none;
@@ -161,7 +161,7 @@
 
         &.disable {
           color: #f3ede7;
-          background: $share_main_button_color1;
+          background: var(--member_gradient_color2);
         }
       }
     }
@@ -216,9 +216,10 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #a6a9b2;
 
     &.disable {
-      background: var(--member_gradient_color2);
+      background: #eaeaea;
       height: 45px;
       border-radius: 3px;
     }
@@ -227,7 +228,7 @@
       color: #fff;
 
       &.disable {
-        color: #f3ede7;
+        color: var(--main_text_color3);
       }
 
       .calculate-button-title {

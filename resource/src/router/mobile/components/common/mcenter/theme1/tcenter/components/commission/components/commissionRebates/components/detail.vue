@@ -49,10 +49,10 @@
                 :class="
                   $style[
                     `${
-                      siteConfig.ROUTER_TPL
-                        ? 'blue'
-                        : item.lack > 0
-                        ? 'red'
+                      routerTPL === 'porn1'
+                        ? item.lack > 0
+                          ? 'red'
+                          : 'blue'
                         : 'blue'
                     }`
                   ]
@@ -248,6 +248,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     detailList() {
       //page1 有效投注金額、会员人数

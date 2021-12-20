@@ -54,25 +54,11 @@
     cursor: pointer;
 
     &.is-current {
-      border: 1px solid $share_origin_color1;
-      color: $share_origin_color1;
-      background: linear-gradient(
-        -45deg,
-        $share_origin_color5 10px,
-        hsla(0, 0%, 100%, 0) 0
-      );
-    }
-
-    &.porn1 {
-      &.is-current {
-        border: 1px solid $share_member_text_color4;
-        color: $share_member_text_color4;
-        background: linear-gradient(
-          -45deg,
-          $share_member_text_color4 10px,
-          hsla(0, 0%, 100%, 0) 0
-        );
-      }
+      border: 1px solid var(--wallet_border_color);
+      color: var(--member_text_color4);
+      background: linear-gradient(-45deg,
+          var(--wallet_border_color) 10px,
+          hsla(0, 0%, 100%, 0) 0);
     }
   }
 
@@ -101,7 +87,7 @@
     height: 21px;
     line-height: 21px;
     font-size: 16px;
-    color: var(--member_text_color4);
+    color: #414655;
     background: transparent;
     border: none;
     outline: 0;
@@ -314,7 +300,7 @@
   width: 12px;
   top: 0;
 
-  > img {
+  >img {
     height: 12px;
     width: 12px;
   }

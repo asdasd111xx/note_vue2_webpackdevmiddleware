@@ -338,7 +338,7 @@
                       v-if="transOutText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${routerTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -387,7 +387,7 @@
                       v-if="transInText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${routerTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -556,6 +556,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     balanceInfo() {
       const data = {};

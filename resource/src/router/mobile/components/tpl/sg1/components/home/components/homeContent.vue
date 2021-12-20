@@ -334,7 +334,7 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #bebcbc;
+  color: var(--main_text_color5);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;

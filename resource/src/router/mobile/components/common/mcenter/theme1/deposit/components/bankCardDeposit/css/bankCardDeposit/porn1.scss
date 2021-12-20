@@ -1207,28 +1207,16 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: $share_origin_color1;
+  color: var(--member_color100);
   margin: 0;
   padding: 0;
   height: 40px;
   line-height: 40px;
   list-style-type: none;
 
-  &.porn1 {
-    color: $share_member_text_color4;
-  }
-
   li {
     flex: 1;
     border-right: 1px solid #f8f8f7;
-  }
-
-  &.sg {
-    color: #bf8646;
-  }
-
-  &.ey {
-    color: #e42a30;
   }
 }
 
