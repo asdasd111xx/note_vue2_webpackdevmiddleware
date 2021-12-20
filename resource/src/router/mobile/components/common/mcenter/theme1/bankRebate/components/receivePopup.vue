@@ -28,9 +28,9 @@
               <div>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</div>
               <span
                 >{{
-                  caculateData ? caculateData[0].start_at : data.start_at
+                  caculateData[0] ? caculateData[0].start_at : data.start_at
                 }}~{{
-                  caculateData ? caculateData[0].end_at : data.end_at
+                  caculateData[0] ? caculateData[0].end_at : data.end_at
                 }}</span
               >
             </div>

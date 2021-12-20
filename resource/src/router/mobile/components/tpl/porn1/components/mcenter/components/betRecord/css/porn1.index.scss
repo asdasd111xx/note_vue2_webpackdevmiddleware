@@ -347,17 +347,9 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: $share_origin_color7;
-    background-image: $share_origin_color7;
     content: "";
     border-radius: 2px;
-  }
-
-  &.porn1 {
-    &::before {
-      background: $share_member_text_color2;
-      background-image: $share_member_text_color2;
-    }
+    background: var(--deco_color);
   }
 }
 
