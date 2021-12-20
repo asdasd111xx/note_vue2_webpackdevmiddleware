@@ -287,11 +287,7 @@
   }
 
   .time {
-    color: $share_origin_color6;
-
-    &.porn1 {
-      color: $share_member_text_color8;
-    }
+    color: var(--rate_countdown_time);
   }
 
   .serial {

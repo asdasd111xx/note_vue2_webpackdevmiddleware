@@ -522,25 +522,24 @@
               </div>
             </div>
             <div
-              v-if="
-                isSelectBindWallet(32) &&
-                  this.curPassRoad.is_bind_wallet
-              "
-              :class="[
-                $style['feature-wrap'],$style['bc-coint']
-              ]"
-                @click="setPopupStatus(true, 'bcWalletCurrency')"
+              v-if="isSelectBindWallet(32) && this.curPassRoad.is_bind_wallet"
+              :class="[$style['feature-wrap'], $style['bc-coint']]"
+              @click="setPopupStatus(true, 'bcWalletCurrency')"
             >
               <div>充值币种</div>
-              <div v-if="selectBcCoin && selectBcCoin.balance > 0" :class="[$style['coin-money']]">
-                {{`${formatThousandsCurrency(selectBcCoin.balance)} ${selectBcCoin.currency}`}}
+              <div
+                v-if="selectBcCoin && selectBcCoin.balance > 0"
+                :class="[$style['coin-money']]"
+              >
+                {{
+                  `${formatThousandsCurrency(selectBcCoin.balance)} ${
+                    selectBcCoin.currency
+                  }`
+                }}
               </div>
               <div v-else :class="[$style['coin-money']]">--</div>
-              <img
-                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                />
+              <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
             </div>
-
 
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
@@ -785,14 +784,7 @@
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
                       >1 USDT ≈ {{ rate }} CNY (
-                      <span
-                        :class="[
-                          $style['time'],
-                          $style[siteConfig.ROUTER_TPL],
-                          { [$style['ey']]: themeTPL === 'ey1' }
-                        ]"
-                        >{{ timeUSDT() }}</span
-                      >
+                      <span :class="[$style['time']]">{{ timeUSDT() }}</span>
                       后更新 )</span
                     >
                   </div>
@@ -838,7 +830,7 @@
                   <span>参考汇率 </span>
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
-                      >1 {{selectBcCoin.currency}} ≈ {{ rate }} CNY (
+                      >1 {{ selectBcCoin.currency }} ≈ {{ rate }} CNY (
                       <span
                         :class="[
                           $style['time'],
@@ -1251,7 +1243,7 @@
                   (showOuterCryptoAddress && outerCryptoAddress === '') ||
                   (showEpointWalletAddress &&
                     (epointBankName === '' || epointBankAccount === '')) ||
-                    (isSelectBindWallet(32) && cryptoMoney <=0)
+                  (isSelectBindWallet(32) && cryptoMoney <= 0)
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1497,7 +1489,7 @@ export default {
       marqueeList: [],
       displayMoneyValue: "",
       isShowCGPPwd: false,
-      bcMoneyShowType:false
+      bcMoneyShowType: false
     };
   },
   watch: {
@@ -2061,15 +2053,15 @@ export default {
         return;
       }
       //幣希檢查餘額
-      if(this.curPayInfo.payment_method_id === 32){
-        if(+this.cryptoMoney > +this.selectBcCoin.balance){
+      if (this.curPayInfo.payment_method_id === 32) {
+        if (+this.cryptoMoney > +this.selectBcCoin.balance) {
           this.actionSetGlobalMessage({
-              msg: "币希钱包余额不足"
-            });
+            msg: "币希钱包余额不足"
+          });
           return;
         }
       }
-      
+
       // 使用者存款封鎖狀態
       //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
       switch (this.entryBlockStatusData.status) {
@@ -2442,75 +2434,74 @@ export default {
       // }
       this.isShowCGPPwd = !this.isShowCGPPwd;
     },
-    getWalletCurrencyBalanceList(){
+    getWalletCurrencyBalanceList() {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/Currency/Balance/List`,
         params: {
           lang: "zh-cn"
         }
-      })
-        .then(res => {
-          console.log(res);
-          if(res.status === "000"){
-            this.bcCurrencyData = res.data
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
+          this.bcCurrencyData = res.data;
 
-            let currencyHasMoney = [];
-            if (res.data.currency_list.length > 0) {
-              currencyHasMoney = res.data.currency_list.filter(coin => {
-                return +coin.balance > 0;
-              });
-            }
-            if(currencyHasMoney.length >0){
-              this.selectBcCoin = currencyHasMoney[0]
-            }else{
-              this.selectBcCoin = res.data.currency_list[0]
-            }
-            
-            // this.bcCurrencyData = {
-            //   bind:true,
-            //   total_balance:"12414152345",
-            //     currency_list:[
-            //     {
-            //       balance:"1,000,000.99",
-            //       currency:"BTC",
-            //       name:"比特币"
-            //     },
-            //     {
-            //       balance:"900,000.00",
-            //       currency:"ETH",
-            //       name:"以太坊"
-            //     }
-            //   ]
-            // }
-          }else{
-            this.bcCurrencyData = {
-              bind:true,
-              total_balance:"12414152345",
-                currency_list:[
-                {
-                  balance:"1,000,000.99",
-                  currency:"BTC",
-                  name:"比特币"
-                },
-                {
-                  balance:"900,000.00",
-                  currency:"ETH",
-                  name:"以太坊"
-                }
-              ]
-            }
+          let currencyHasMoney = [];
+          if (res.data.currency_list.length > 0) {
+            currencyHasMoney = res.data.currency_list.filter(coin => {
+              return +coin.balance > 0;
+            });
           }
-        })
+          if (currencyHasMoney.length > 0) {
+            this.selectBcCoin = currencyHasMoney[0];
+          } else {
+            this.selectBcCoin = res.data.currency_list[0];
+          }
+
+          // this.bcCurrencyData = {
+          //   bind:true,
+          //   total_balance:"12414152345",
+          //     currency_list:[
+          //     {
+          //       balance:"1,000,000.99",
+          //       currency:"BTC",
+          //       name:"比特币"
+          //     },
+          //     {
+          //       balance:"900,000.00",
+          //       currency:"ETH",
+          //       name:"以太坊"
+          //     }
+          //   ]
+          // }
+        } else {
+          this.bcCurrencyData = {
+            bind: true,
+            total_balance: "12414152345",
+            currency_list: [
+              {
+                balance: "1,000,000.99",
+                currency: "BTC",
+                name: "比特币"
+              },
+              {
+                balance: "900,000.00",
+                currency: "ETH",
+                name: "以太坊"
+              }
+            ]
+          };
+        }
+      });
     },
-    setBcCurrency(currency){
+    setBcCurrency(currency) {
       console.log(currency);
       this.selectBcCoin = currency;
       this.updateTime = true;
       this.convertCryptoMoney();
     },
-    openBCWalletPopup(){
-      this.setPopupStatus(true,"bcWalletPopup")
+    openBCWalletPopup() {
+      this.setPopupStatus(true, "bcWalletPopup");
     }
   }
 };

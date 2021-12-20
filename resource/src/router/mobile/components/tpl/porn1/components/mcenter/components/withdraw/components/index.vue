@@ -625,9 +625,7 @@
       <!-- 參考匯率 -->
       <div v-if="isSelectedUSDT" :class="$style['exchange-rate']">
         参考汇率 1 USDT ≈ {{ rate }} CNY (
-        <span :class="[$style['time'], $style[siteConfig.ROUTER_TPL]]">{{
-          timeUSDT()
-        }}</span>
+        <span :class="[$style['time']]">{{ timeUSDT() }}</span>
         后更新 )
       </div>
 

@@ -69,7 +69,7 @@
 
   .coin-money {
     margin-left: 30px;
-    width: 60%
+    width: 60%;
   }
 
   img {
@@ -150,9 +150,11 @@
   &.is-current {
     border: 1px solid var(--wallet_border_color);
     color: var(--wallet_border_color);
-    background: linear-gradient(-45deg,
-        var(--wallet_border_color) 10px,
-        hsla(0, 0%, 100%, 0) 0);
+    background: linear-gradient(
+      -45deg,
+      var(--wallet_border_color) 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 
   .pay-mode-tag {
@@ -248,7 +250,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -285,9 +287,11 @@
     background-color: #fff;
     color: var(--wallet_border_color);
     border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(-45deg,
-        var(--wallet_border_color) 12px,
-        hsla(0, 0%, 100%, 0) 0);
+    background: linear-gradient(
+      -45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 }
 
@@ -382,16 +386,8 @@
   color: var(--main_text_color3);
 
   .time {
-    color: $share_origin_color6;
+    color: var(--rate_countdown_time);
     margin: 0 5px 0 5px;
-
-    &.porn1 {
-      color: $share_member_text_color8;
-    }
-
-    &.ey {
-      color: #e42a30;
-    }
   }
 
   .content {
@@ -819,9 +815,11 @@
   background-color: #fff;
   color: var(--wallet_border_color);
   border: 1px solid var(--wallet_border_color);
-  background: linear-gradient(-45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0);
+  background: linear-gradient(
+    -45deg,
+    var(--wallet_border_color) 12px,
+    hsla(0, 0%, 100%, 0) 0
+  );
 }
 
 .pop-message-mark {
@@ -906,7 +904,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1074,7 +1072,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1190,7 +1187,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 
