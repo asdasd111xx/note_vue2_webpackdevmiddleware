@@ -196,11 +196,7 @@
           </p>
         </div>
         <div
-          :class="[
-            $style['submit'],
-            $style[siteConfig.ROUTER_TPL],
-            { [$style['disabled']]: !NextStepStatus }
-          ]"
+          :class="[$style['submit'], { [$style['disabled']]: !NextStepStatus }]"
           @click="sendData"
         >
           {{

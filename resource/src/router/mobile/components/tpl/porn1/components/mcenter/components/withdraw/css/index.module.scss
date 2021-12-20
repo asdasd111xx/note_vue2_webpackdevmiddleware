@@ -703,8 +703,8 @@
 
 .offer {
   height: 30px;
-  background-color: $main_white_color1;
-  color: $share_member_text_color4;
+  background-color: #fefffe;
+  color: var(--wallet_border_color);
   padding: 5px 14px;
   width: 100%;
 }

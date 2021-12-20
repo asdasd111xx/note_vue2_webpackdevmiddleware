@@ -281,17 +281,14 @@
   position: absolute;
   right: 0;
   top: -4px;
-  background: var(--member_gradient_color1);
+  background: var(--member_color100);
   color: #fff;
   border-radius: 3px;
 
   &.disabled {
+    background: var(--member_color101);
     pointer-events: none;
     opacity: 0.5;
-  }
-
-  &.porn1 {
-    background: $befa_member_main_color1;
   }
 }
 

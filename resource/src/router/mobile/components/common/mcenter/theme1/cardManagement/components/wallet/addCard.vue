@@ -276,7 +276,6 @@
         <div
           :class="[
             $style['submit'],
-            $style[siteConfig.ROUTER_TPL],
             {
               [$style['disabled']]:
                 (addBankCardStep === 'two' && !NextStepStatus) ||
