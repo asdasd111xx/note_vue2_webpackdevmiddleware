@@ -396,7 +396,7 @@
             (moreMethodStatus.bankCard || moreMethodStatus.wallet)) ||
             (epointSelectType && epointWallet.length === 0)
         "
-        :class="[$style['add-bank-card'], $style[siteConfig.ROUTER_TPL]]"
+        :class="[$style['add-bank-card']]"
         @click="
           () => {
             if (epointSelectType) {
@@ -570,9 +570,9 @@
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
-          使用{{ selectedCard.bank_id === 2025 ? '币希' : selectedCard.name }}出款，额外赠送{{
-            formatThousandsCurrency(offer())
-          }}元(CNY)优惠
+          使用{{
+            selectedCard.bank_id === 2025 ? "币希" : selectedCard.name
+          }}出款，额外赠送{{ formatThousandsCurrency(offer()) }}元(CNY)优惠
         </span>
       </div>
       <!-- 到帳金額 -->
@@ -609,7 +609,9 @@
       <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
         <!-- <span :class="$style['money-currency']">¥</span> -->
         <span :class="$style['money-currency']"
-          >{{ selectedCard.bank_id === 2025 ? '币希' : selectedCard.name }}到帐</span
+          >{{
+            selectedCard.bank_id === 2025 ? "币希" : selectedCard.name
+          }}到帐</span
         >
         <span :class="$style['money-currency']">{{
           selectedCard.bank_id === 2025
@@ -2231,7 +2233,7 @@ export default {
             ],
             currency: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
               "currency"
-            ],
+            ]
           }
         : {
             bank_id: defaultCard?.bank_id,
@@ -2247,7 +2249,7 @@ export default {
             swift_code: defaultCard?.swift_code,
             offer_percent: defaultCard?.offer_percent,
             offer_limit: defaultCard?.offer_limit,
-            currency:defaultCard?.currency
+            currency: defaultCard?.currency
           };
 
       // 更新 Withdraw Info
