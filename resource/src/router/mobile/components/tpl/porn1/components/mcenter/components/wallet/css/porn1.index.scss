@@ -93,10 +93,12 @@
   right: 0;
   width: 15px;
   height: 15px;
-  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png") center center / 100% 100%;
+  background: url("/static/image/common/mcenter/wallet/ic_wallter_details_expand.png")
+    center center / 100% 100%;
 
   &.collapse {
-    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png") center center / 100% 100%;
+    background: url("/static/image/common/mcenter/wallet/ic_wallter_details_collapse.png")
+      center center / 100% 100%;
   }
 }
 
@@ -274,10 +276,12 @@
     right: 0;
     width: 25px;
     height: 25px;
-    background: url("/static/image/aobo1/common/ic_event.png") center center / 100% 100%;
+    background: url("/static/image/aobo1/common/ic_event.png") center center /
+      100% 100%;
 
     &.porn1 {
-      background: url("/static/image/porn1/common/ic_event.png") center center / 100% 100%;
+      background: url("/static/image/porn1/common/ic_event.png") center center /
+        100% 100%;
     }
   }
 
@@ -350,21 +354,14 @@
 
   &::before {
     content: "";
-    content: "";
     position: absolute;
     display: inline-block;
     width: 3px;
     height: 15px;
     top: 2.5px;
     left: 0;
-    background: $share_origin_color7;
+    background: var(--deco_color);
     border-radius: 2px;
-  }
-
-  &.porn1 {
-    &::before {
-      background: $share_member_text_color2;
-    }
   }
 
   // 查看更多
@@ -382,7 +379,8 @@
       height: 15px;
       right: 0;
       top: 1;
-      background: url("/static/image/common/arrow_next.png") center center / 100% 100%;
+      background: url("/static/image/common/arrow_next.png") center center /
+        100% 100%;
     }
   }
 }
@@ -456,7 +454,7 @@
       width: 25%;
 
       .total-money {
-        color: #6AAAF5;
+        color: #6aaaf5;
       }
 
       &.less {

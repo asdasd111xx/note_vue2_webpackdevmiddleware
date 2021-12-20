@@ -352,7 +352,7 @@
     </div>
 
     <div :class="$style['wager-wrap']">
-      <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
+      <div :class="[$style['title']]">
         投注记录
         <span @click="$router.push('/mobile/mcenter/betRecord')">查看更多</span>
       </div>

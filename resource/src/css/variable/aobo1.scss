@@ -32,11 +32,7 @@
 
   //功能
   --redpot: #be9e7f;
-  --deco_color: linear-gradient(
-    to bottom,
-    --main_color1 0%,
-    --main_color2 100%
-  );
+  --deco_color: var(--main_gradient_color1);
   --deco_color2: #be9e7f;
   --wallet_border_color: #d1b79c;
   --joinmember_title: #9b6b40;
