@@ -102,9 +102,13 @@ export default {
       import(
         /* webpackChunkName: 'accountVipDetailSg1' */ "../../tpl/sg1/components/mcenter/components/vipDetail"
       ),
+    // homeSg1: () =>
+    //   import(
+    //     /* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/mcenter/components/home"
+    //   ),
     homeSg1: () =>
       import(
-        /* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/mcenter/components/home"
+        /* webpackChunkName: 'homeSg1' */ "../../tpl/sg1/components/mcenter/components/home2"
       ),
     walletSg1: () =>
       import(
