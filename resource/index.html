@@ -143,7 +143,7 @@
 
         if (data.site === "sp1" && data.domain === "94") {
           let gtagElem = document.createElement('script')
-          gtagElem.attributes('src', 'https://www.googletagmanager.com/gtag/js?id=UA-213963200-1')
+          gtagElem.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=UA-213963200-1')
           document.body.append(gtagElem);
 
           window.dataLayer = window.dataLayer || [];
