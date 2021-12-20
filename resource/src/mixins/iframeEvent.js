@@ -376,7 +376,7 @@ export default {
 
       console.log("iframeOnSendMessage:", event, data);
       if (event === "EVENT_GET_GAME_URL_TOKEN") {
-        if (data && data.data.result === "error") {
+        if (data && data.data && data.data.result === "error") {
           this.actionSetGlobalMessage({
             msg: data.data.msg,
             code: data.data.code
