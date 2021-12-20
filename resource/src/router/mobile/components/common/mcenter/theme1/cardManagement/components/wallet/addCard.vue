@@ -111,7 +111,7 @@
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/bankCard/ic_qrcode.png`
+                  `/static/image/${routerTPL}/mcenter/bankCard/ic_qrcode.png`
                 )
               "
               alt="qrcode"
