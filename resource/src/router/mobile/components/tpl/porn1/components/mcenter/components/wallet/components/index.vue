@@ -1043,6 +1043,7 @@ export default {
         if (res.status === "000") {
           this.bcWalletBindType = res.data.bind;
           this.bcCurrencyData = res.data;
+          this.bcWalletEnableType = res.data.enable;
         } else {
           // this.bcCurrencyData = {
           //   bind: true,
