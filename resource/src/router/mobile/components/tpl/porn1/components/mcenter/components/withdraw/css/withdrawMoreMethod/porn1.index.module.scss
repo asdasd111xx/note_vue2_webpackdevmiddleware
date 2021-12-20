@@ -35,13 +35,7 @@
     position: absolute;
     text-align: center;
     width: 40px;
-    color: $share_origin_color10;
-  }
-
-  &.porn1 {
-    .prev {
-      color: $share_member_text_color4;
-    }
+    color: var(--addcard_popup_prev_text_color);
   }
 
   .title {
@@ -57,15 +51,12 @@
   .cell {
     font-size: 14px;
     background-color: #ffffff;
-    color: $share_origin_color10;
+    color: var(--addcard_popup_text_color);
 
     height: 50px;
     line-height: 50px;
     margin-bottom: 1px;
     padding-left: 23px;
-    &.porn1 {
-      color: $share_member_text_color2;
-    }
   }
 
   .add-block {

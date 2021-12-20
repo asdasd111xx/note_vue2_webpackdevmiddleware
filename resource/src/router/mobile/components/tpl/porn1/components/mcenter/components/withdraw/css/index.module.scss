@@ -53,7 +53,7 @@
 //增加銀行卡
 .add-bank-card {
   background-color: $main_white_color1;
-  color: $share_origin_color14;
+  color: var(--addcard_popup_text_color);
   font-size: 15px;
   height: 50px;
   line-height: 50px;
@@ -64,10 +64,6 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-
-  &.porn1 {
-    color: $share_member_text_color2;
-  }
 
   > img {
     width: 18px;
@@ -145,9 +141,11 @@
       &.image-porn1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }
+
       &.image-aobo1 {
         @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
       }
+
       &.image-sp1 {
         @include check-ok("/static/image/sp1/mcenter/ic_check.png");
       }
@@ -289,11 +287,7 @@
   }
 
   .time {
-    color: $share_origin_color6;
-
-    &.porn1 {
-      color: $share_member_text_color8;
-    }
+    color: var(--member_text_color6);
   }
 
   .serial {
@@ -442,9 +436,11 @@
       }
     }
   }
+
   &.aobo1,
   &.sp1 {
     border-radius: 3px;
+
     .check-header {
       background: $share_origin_color10;
       color: #ffffff;
@@ -457,9 +453,11 @@
         text-align: center;
       }
     }
+
     .check-button-wrap {
       color: #be9e7f;
       margin-bottom: 10px;
+
       .check-btn {
         border-radius: 3px;
         background: #faf5f0;
@@ -517,7 +515,7 @@
     }
 
     &.custom-color {
-      color: #db6372;
+      color: var(--member_text_color6);
 
       &.custom-color-background {
         background: #f3f3f3;
@@ -584,6 +582,7 @@
       display: inline-block;
       position: relative;
       border-right: 1px solid #f8f8f7;
+
       &.submit {
         color: $share_main_button_color2;
       }
@@ -704,8 +703,8 @@
 
 .offer {
   height: 30px;
-  background-color: $main_white_color1;
-  color: $share_member_text_color4;
+  background-color: #fefffe;
+  color: var(--widthdraw_tip_text_color);
   padding: 5px 14px;
   width: 100%;
 }

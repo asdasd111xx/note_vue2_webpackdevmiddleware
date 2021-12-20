@@ -89,7 +89,7 @@
     height: 21px;
     line-height: 21px;
     font-size: 16px;
-    color: var(--member_text_color3);
+    color: #414655;
     background: transparent;
     border: none;
     outline: 0;
@@ -281,11 +281,12 @@
   position: absolute;
   right: 0;
   top: -4px;
-  background: var(--member_gradient_color1);
+  background: var(--member_color100);
   color: #fff;
   border-radius: 3px;
 
   &.disabled {
+    background: var(--member_color101);
     pointer-events: none;
     opacity: 0.5;
   }

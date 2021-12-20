@@ -152,7 +152,7 @@
                 ]"
               >
                 <span :class="$style['sub-title']">
-                  {{ withdrawName }}到帐
+                  {{ selectCard.bank_id === 2025 ? "币希" : withdrawName }}到帐
                 </span>
                 <span
                   :style="
@@ -162,7 +162,11 @@
                   "
                   :class="$style['crypto-money']"
                 >
-                  {{ formatThousandsCurrency(cryptoMoney) }}
+                  {{
+                    selectCard.bank_id === 2025
+                      ? formatThousandsCurrencyUnFix(cryptoMoney)
+                      : formatThousandsCurrency(cryptoMoney)
+                  }}
                 </span>
               </div>
             </div>
@@ -249,6 +253,10 @@ export default {
     hasOffer: {
       type: Boolean,
       default: false
+    },
+    selectCard: {
+      type: Object,
+      default: {}
     }
   },
   mounted() {

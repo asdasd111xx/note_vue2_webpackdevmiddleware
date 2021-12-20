@@ -137,6 +137,9 @@ export default {
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
+    },
+    formatThousandsCurrencyUnFix(value) {
+      return thousandsCurrency(Number(value));
     }
   }
 };

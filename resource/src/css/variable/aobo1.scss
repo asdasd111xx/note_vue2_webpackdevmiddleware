@@ -25,17 +25,14 @@
   --member_text_color3: #a6a9b2;
   --member_text_color4: #5e626d;
   --member_text_color5: #9ba3bf;
+  --member_text_color6: #be9e7f;
 
   --member_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   --member_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
   //功能
   --redpot: #be9e7f;
-  --deco_color: linear-gradient(
-    to bottom,
-    --main_color1 0%,
-    --main_color2 100%
-  );
+  --deco_color: var(--main_gradient_color1);
   --deco_color2: #be9e7f;
   --wallet_border_color: #d1b79c;
   --joinmember_title: #9b6b40;
@@ -43,6 +40,7 @@
   --apptip_btn: var(--main_gradient_color1);
   --popup_text_color1: #d1b79c;
   --popup_text_color2: #414655;
+  --popup_text_color3: #414655;
   --member_slider: #d1b79c;
   --webview_icon_text: #bf8646;
   --marquee_text_color1: #9ca3bf;
@@ -50,4 +48,7 @@
   --vip_detail_color: #bbab98;
   --avatar-vip-icon-color: var(--main_gradient_color1);
   --redpot_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --addcard_popup_text_color: #bbab98;
+  --addcard_popup_prev_text_color: #be9e7f;
+  --widthdraw_tip_text_color: #be9e7f;
 }

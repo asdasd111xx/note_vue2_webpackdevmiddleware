@@ -29,7 +29,7 @@
               <div
                 v-for="(item, index) in methodList"
                 :key="index"
-                :class="[$style['cell'], $style[siteConfig.ROUTER_TPL]]"
+                :class="[$style['cell']]"
                 @click="addMethod(item)"
               >
                 <div

@@ -105,7 +105,7 @@
 
 .offer {
   height: 30px;
-  color: $sg_main_text_color1;
+  color: var(--widthdraw_tip_text_color);
   padding: 5px 14px;
   width: 100%;
 }
