@@ -180,7 +180,7 @@ export default {
                 this.$router.push(`/mobile/mcenter/live/diamond`);
                 return;
               case "CUSTOMERSERVICE":
-                this.$router.push(`/mobile/mcenter/service`);
+                this.$router.push(`/mobile/service`);
                 return;
               case "MCENTERHOME":
                 this.$router.push(`/mobile/mcenter/`);
