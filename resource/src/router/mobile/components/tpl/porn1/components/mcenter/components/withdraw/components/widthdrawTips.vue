@@ -137,7 +137,7 @@
                       ? { 'font-size': '12px' }
                       : {}
                   "
-                  :class="$style['money']"
+                  :class="[$style['money-bold']]"
                 >
                   {{ actualMoney }}
                 </span>
@@ -145,7 +145,11 @@
 
               <div
                 v-if="hasCrypto"
-                :class="[$style['check-cell'], $style['custom-color']]"
+                :class="[
+                  $style['check-cell'],
+                  $style['custom-color'],
+                  $style['custom-color-background']
+                ]"
               >
                 <span :class="$style['sub-title']">
                   {{ withdrawName }}到帐
