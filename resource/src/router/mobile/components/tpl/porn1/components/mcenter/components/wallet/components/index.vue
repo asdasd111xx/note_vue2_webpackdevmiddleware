@@ -1015,11 +1015,14 @@ export default {
             return data.id === this.promotionId;
           });
           if (linkData) {
-            this.mobileLinkOpen({
-              linkType: "mi",
-              linkTitle: linkData.name,
-              linkTo: linkData.link
-            });
+            // this.mobileLinkOpen({
+            //   linkType: "mi",
+            //   linkTitle: linkData.name,
+            //   linkTo: linkData.link
+            // });
+            localStorage.setItem("iframe-third-url", `${linkData.link}?v=m`);
+            localStorage.setItem("iframe-third-url-title", linkData.name);
+            this.$router.replace(`/mobile/iframe/bcWallet?func=false`);
           } else {
             this.actionSetGlobalMessage({
               msg: "正在上线，敬请期待"

@@ -1243,7 +1243,7 @@
                   (showOuterCryptoAddress && outerCryptoAddress === '') ||
                   (showEpointWalletAddress &&
                     (epointBankName === '' || epointBankAccount === '')) ||
-                  (isSelectBindWallet(32) && cryptoMoney <= 0)
+                    (isSelectBindWallet(32) && (cryptoMoney <=0|| selectBcCoin.balance <=0))
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"

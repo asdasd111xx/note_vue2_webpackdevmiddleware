@@ -1328,7 +1328,8 @@ export default {
       if (
         this.withdrawCurrency.method_id === 28 ||
         this.withdrawCurrency.method_id === 32 ||
-        this.selectedCard.bank_id === 3002
+        this.selectedCard.bank_id === 3002 ||
+        this.selectedCard.bank_id === 2025
       ) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
       }
@@ -2330,7 +2331,7 @@ export default {
       if (value === "--") {
         return "--";
       }
-      return thousandsCurrency(Number(value));
+      return thousandsCurrency(value);
     },
     //普通提現/e點富
     setWithdrawTypeIsNormal(type) {
