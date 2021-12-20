@@ -44,8 +44,8 @@
         <div
           :class="[
             $style['modal-button'],
-            $style[themeTPL],
-            { [$style[themeTPL]]: origin !== 'home' }
+
+            { [$style[siteConfig.ROUTER_TPL]]: origin !== 'home' }
           ]"
           @click="closePop()"
         >
@@ -229,17 +229,6 @@ export default {
   line-height: 50px;
   text-align: center;
   font-size: 18px;
-
-  &.porn1 {
-    color: $share_member_text_color4;
-  }
-
-  &.ey1 {
-    color: #e42a30;
-  }
-
-  &.sg1 {
-    color: #000;
-  }
+  color: var(--popup_text_color1);
 }
 </style>

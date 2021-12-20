@@ -103,15 +103,11 @@
     line-height: 45px;
     margin: 0 auto;
     border-radius: 3px;
-    background: $share_main_button_color2;
-    color: $share_member_text_color3;
+    color: var(--member_text_color1);
+    background: var(--member_gradient_color1);
     font-weight: 700;
     font-size: 14px;
     text-align: center;
-
-    &.porn1 {
-      background: $befa_member_main_color1;
-    }
   }
 }
 

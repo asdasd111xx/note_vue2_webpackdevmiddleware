@@ -4,7 +4,6 @@
       <div
         :class="[
           $style['top-sub-title'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['active']]: mcenterBankRebateType === 'history' },
           { [$style['self']]: !rebateInitData.self_rebate }
         ]"
@@ -16,7 +15,6 @@
         v-if="rebateInitData.self_rebate"
         :class="[
           $style['top-sub-title'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['active']]: mcenterBankRebateType === 'realtime' }
         ]"
         @click="getItemType('realtime')"
@@ -140,7 +138,6 @@
         <div
           :class="[
             $style['real-top-btn'],
-            $style[siteConfig.ROUTER_TPL],
             { [$style['disable']]: btnLock && formatTime }
           ]"
         >
@@ -181,7 +178,6 @@
         <div
           :class="[
             $style['receive-vip-btn'],
-            $style[siteConfig.ROUTER_TPL],
             {
               [$style['is-disabled']]:
                 isReceiveAllLock || !immediateData[0].operateStatus
@@ -222,7 +218,7 @@
                 </template>
                 <ele-loading v-else-if="rebateState === 'loading'" />
 
-                <template v-else>
+                <template>
                   <!-- 當返水金額符合最低返水金額才可領取 rebate 和 min_rebate -->
                   <a
                     v-if="caculateList.operateStatus"
@@ -359,7 +355,10 @@
         <div :class="$style['pop-mask']" @click="closePopup" />
         <div :class="$style['content-block']">
           <div :class="$style['msg']">{{ popupMsg }}</div>
-          <div :class="$style['close']" @click="closePopup">
+          <div
+            :class="[$style['close'], $style[siteConfig.ROUTER_TPL]]"
+            @click="closePopup"
+          >
             {{ $text("S_CONFIRM_2", "确定") }}
           </div>
         </div>

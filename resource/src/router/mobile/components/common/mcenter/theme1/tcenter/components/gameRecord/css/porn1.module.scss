@@ -18,7 +18,7 @@ $buttonTextColor: #fff;
   display: inline-block;
   line-height: 12px;
   margin: 0 9px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   font-size: 12px;
 
   &.active {

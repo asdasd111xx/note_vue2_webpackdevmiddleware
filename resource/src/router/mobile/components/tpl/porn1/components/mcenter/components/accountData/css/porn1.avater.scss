@@ -1,5 +1,17 @@
 @import "~@/css/variable.scss";
 
+@mixin check-ok($backgroundImg) {
+  position: absolute;
+  bottom: 10%;
+  right: -10px;
+  background: url($backgroundImg) 0 0 no-repeat;
+  background-size: 100%;
+  width: 18px;
+  height: 18px;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+
 // avatar dialog
 .dialog {
   position: fixed;
@@ -63,20 +75,23 @@
 
       &.active {
         border: 2px solid transparent;
-        border-color: $share_member_text_color4;
+        border-color: var(--member_color100);
       }
     }
 
     .check {
-      position: absolute;
-      bottom: 10%;
-      right: -10px;
-      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
-      width: 18px;
-      height: 18px;
-      -webkit-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
+      &.image-porn1 {
+        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+      }
+      &.image-aobo1 {
+        @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+      }
+      &.image-sp1 {
+        @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+      }
+      &.image-sg1 {
+        @include check-ok("/static/image/sg1/mcenter/ic_check.png");
+      }
     }
   }
 

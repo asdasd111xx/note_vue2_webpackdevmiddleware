@@ -1,7 +1,7 @@
 @import "./porn1.module.scss";
 
 .link {
-  color: #a2a2a2;
+  color: var(--member_text_color3);
 
   &.active {
     color: $main_title_color1;
@@ -9,7 +9,7 @@
 }
 
 .search-tab {
-  color: #a2a2a2;
+  color: var(--member_text_color3);
 
   &.active {
     color: $main_title_color1;
@@ -23,7 +23,7 @@
     color: white;
 
     &.disable {
-      opacity: 0.5;
+      background: var(--member_gradient_color2);
     }
   }
 }

@@ -616,7 +616,7 @@ div.container {
   .title,
   .content {
     margin: 5px 17px;
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     font-size: 12px;
   }
 
@@ -652,7 +652,7 @@ div.container {
       width: 180px;
       margin: 10px auto;
       background: #ffffff;
-      border: 1px solid $main_text_color2;
+      border: 1px solid var(--main_text_color2);
       border-radius: 10px;
       color: #414655;
       text-align: center;

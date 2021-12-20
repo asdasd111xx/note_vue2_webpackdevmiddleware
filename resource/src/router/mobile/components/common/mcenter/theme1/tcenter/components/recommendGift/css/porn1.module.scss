@@ -213,7 +213,7 @@
 
 .date {
   font-size: 17px;
-  color: $main_text_color3;
+  color: #414655;
   margin: 7px 0 5px 0;
   font-weight: bold;
 }
@@ -289,8 +289,8 @@
     line-height: 45px;
     margin: 0 auto;
     border-radius: 3px;
-    background: $share_main_button_color2;
-    color: #fff;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
     font-weight: 700;
     font-size: 14px;
     text-align: center;

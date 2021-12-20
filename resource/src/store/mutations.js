@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-// import navFilterPage from '@/lib/nav_filter_page';
 import * as types from "./mutations_type";
 
 import EST from "@/lib/EST";
@@ -118,6 +117,9 @@ export default {
   // 設定是否透過外面CDN廠商代理
   [types.SETCDNROOT](state, url) {
     state.cdnRoot = url;
+  },
+  [types.SETSLIDECDNDOMAIN](state, url) {
+    state.slideCDNDomain = url;
   },
   // 設定遊戲資料
   [types.SETGAMEDATA](state, gameData) {

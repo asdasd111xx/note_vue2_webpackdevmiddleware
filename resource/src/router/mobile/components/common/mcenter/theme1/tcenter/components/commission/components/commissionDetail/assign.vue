@@ -241,7 +241,7 @@ export default {
 .total-block {
   display: flex;
   justify-content: space-between;
-  color: $main_text_color3;
+  color: #414655;
   font-size: 12px;
   height: 40px;
   line-height: 40px;
@@ -272,7 +272,7 @@ export default {
 }
 .card {
   background: $main_white_color1;
-  color: $main_text_color3;
+  color: #414655;
   border-radius: 8px;
   margin-bottom: 9px;
 

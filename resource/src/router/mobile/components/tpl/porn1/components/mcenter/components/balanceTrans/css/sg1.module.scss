@@ -51,13 +51,13 @@
 
 .transfer-money-input {
   &::placeholder {
-    color: #a2a2a2;
+    color: var(--member_text_color3);
   }
 }
 
 .balance-tip-wrap {
   .balance-auto-tip {
-    color: #a2a2a2;
+    color: var(--member_text_color3);
   }
 }
 
@@ -90,6 +90,19 @@
       display: block;
       left: 18px;
       position: absolute;
+    }
+  }
+}
+.balance-total-item {
+  .balance-item-money {
+    color: var(--member_color100);
+  }
+}
+
+.select-container {
+  .select-header {
+    span {
+      color: var(--member_color100);
     }
   }
 }

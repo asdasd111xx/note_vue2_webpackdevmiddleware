@@ -5,6 +5,7 @@
       <div
         :class="[
           $style['check-container'],
+          $style[siteConfig.ROUTER_TPL],
           {
             [$style['deposit']]: type === 'deposit'
           }
@@ -26,7 +27,6 @@
         <div :class="$style['check-content']">
           <template v-if="type === 'tips'">
             <div :class="$style['time']">流水检查时间：{{ getNowTime() }}</div>
-            <div :class="$style['hr']" />
             <div v-if="serialNumberData && serialNumberData.total">
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']"> 流水要求 </span>
@@ -137,7 +137,7 @@
                       ? { 'font-size': '12px' }
                       : {}
                   "
-                  :class="$style['money']"
+                  :class="[$style['money-bold']]"
                 >
                   {{ actualMoney }}
                 </span>
@@ -145,10 +145,14 @@
 
               <div
                 v-if="hasCrypto"
-                :class="[$style['check-cell'], $style['custom-color']]"
+                :class="[
+                  $style['check-cell'],
+                  $style['custom-color'],
+                  $style['custom-color-background']
+                ]"
               >
                 <span :class="$style['sub-title']">
-                  {{ withdrawName }}到帐
+                  {{ selectCard.bank_id === 2025 ? "币希" : withdrawName }}到帐
                 </span>
                 <span
                   :style="
@@ -158,7 +162,11 @@
                   "
                   :class="$style['crypto-money']"
                 >
-                  {{ formatThousandsCurrency(cryptoMoney) }}
+                  {{
+                    selectCard.bank_id === 2025
+                      ? formatThousandsCurrencyUnFix(cryptoMoney)
+                      : formatThousandsCurrency(cryptoMoney)
+                  }}
                 </span>
               </div>
             </div>
@@ -245,6 +253,10 @@ export default {
     hasOffer: {
       type: Boolean,
       default: false
+    },
+    selectCard: {
+      type: Object,
+      default: {}
     }
   },
   mounted() {

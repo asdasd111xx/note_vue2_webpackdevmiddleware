@@ -39,7 +39,7 @@
     margin-left: 6px;
     font-size: 16px;
     font-weight: 700;
-    color: $main_text_color3;
+    color: var(--member_text_color4);
   }
 
   .add-btn {
@@ -82,12 +82,12 @@
     margin-right: 8px;
     font-size: 20px;
     font-weight: 700;
-    color: $main_text_color3;
+    color: var(--member_text_color4);
   }
 
   .count {
     font-size: 14px;
-    color: $main_text_color3;
+    color: var(--member_text_color4);
   }
 }
 
@@ -180,11 +180,11 @@
 
 .content {
   padding: 17px 18px;
-  color: $main_text_color2;
+  color: var(--member_text_color3);
   text-align: center;
 
   .title {
-    color: $main_text_color3;
+    color: var(--member_text_color4);
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 10px;
@@ -197,7 +197,7 @@
   height: 50px;
   align-items: center;
   border-top: 1px solid #f7f8fb;
-  color: $share_member_text_color4;
+  color: var(--popup_text_color2);
 
   &::after {
     content: "";
@@ -216,7 +216,7 @@
     font-weight: 700;
 
     &:nth-child(2) {
-      color: $share_member_text_color4;
+      color: var(--popup_text_color1);
     }
   }
 }

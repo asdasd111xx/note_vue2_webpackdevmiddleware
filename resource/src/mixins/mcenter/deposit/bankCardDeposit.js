@@ -53,6 +53,12 @@ export default {
       defaultEpointWallet: "",
       outerCryptoOption: [],
       userBankOption: [],
+      bcCurrencyData: null,
+      selectBcCoin: {
+        balance: "",
+        currency: "",
+        name: ""
+      },
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
       showEpointWalletAddress: false,
@@ -62,9 +68,9 @@ export default {
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
-          method: 0,
+          method: 1,
           password: "",
-          placeholder: "请输入CGPay支付密码"
+          placeholder: "请输入CGP安全防护码"
         }
       },
       // 傳遞給 depositInfo (訂單限時)
@@ -955,7 +961,6 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-      console.log(123);
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
@@ -1021,6 +1026,14 @@ export default {
             pay_account_id: this.defaultEpointWallet.id
           };
         }
+      }
+
+      //幣希
+      if (this.curPayInfo.payment_method_id === 32) {
+        paramsData = {
+          ...paramsData,
+          currency: this.selectBcCoin.currency
+        };
       }
 
       let _isPWA = true;
@@ -1389,13 +1402,23 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
+      if (
+        this.curPayInfo.payment_method_id === 32 &&
+        !this.selectBcCoin.currency
+      ) {
+        return;
+      }
       return axios({
         method: "get",
         url: API_CRYPTO_MONEY,
         params: {
           type: 1,
           amount: this.moneyValue,
-          method_id: this.curPayInfo.payment_method_id
+          method_id: this.curPayInfo.payment_method_id,
+          currency:
+            this.curPayInfo.payment_method_id === 32
+              ? this.selectBcCoin.currency
+              : ""
         }
       })
         .then(response => {

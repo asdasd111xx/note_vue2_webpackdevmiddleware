@@ -37,7 +37,7 @@ $submitTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -110,13 +110,13 @@ $submitTextColor: #fff;
 }
 
 .submit {
-  background: $share_main_button_color2;
+  background: var(--member_gradient_color1);
   margin: 0 auto;
   width: 85%;
   line-height: 45px;
   border-radius: 3px;
   text-align: center;
-  color: #fff;
+  color: var(--member_text_color1);
 }
 
 .tips {

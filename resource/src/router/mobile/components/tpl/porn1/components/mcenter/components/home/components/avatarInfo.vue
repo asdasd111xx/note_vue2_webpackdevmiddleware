@@ -16,7 +16,9 @@
                 : memInfo.user.username
             }}
           </span>
-          <span :class="$style['vip-level']"> VIP{{ viplevel }} </span>
+          <span :class="[$style['vip-level'], $style[siteConfig.ROUTER_TPL]]">
+            VIP{{ viplevel }}
+          </span>
         </template>
         <template v-else>
           <span @click.stop="$router.push('/mobile/login')">
@@ -206,14 +208,11 @@ export default {
   font-size: 11px;
   line-height: 17px;
   height: 17px;
-  color: #ffffff;
+  color: var(--member_text_color1);
   text-align: center;
   font-weight: bold;
   width: 40px;
   border-radius: 4px;
-  background: -webkit-linear-gradient(left, #eeddd0, #d5b69c);
-  background: -o-linear-gradient(right, #eeddd0, #d5b69c);
-  background: -moz-linear-gradient(right, #eeddd0, #d5b69c);
-  background: linear-gradient(to right, #eeddd0, #d5b69c);
+  background: var(--avatar-vip-icon-color);
 }
 </style>

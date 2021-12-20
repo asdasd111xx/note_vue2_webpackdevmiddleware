@@ -1,7 +1,7 @@
 import merge from "lodash/merge";
 import store from "../../../../../store";
 import tplAobo1 from "./aobo1";
-import tplEy1 from "./ey1";
+// import tplEy1 from "./ey1";
 import tplPorn1 from "./porn1";
 import tplSg1 from "./sg1";
 import tplSp1 from "./sp1";
@@ -22,7 +22,7 @@ export default merge(
     }
   },
   tplPorn1, // 币发BIFA
-  tplEy1,
+  // tplEy1,
   tplSg1,
   tplAobo1,
   tplSp1

@@ -24,7 +24,7 @@
       }
 
       &.is-current {
-        color: #e53266;
+        color: var(--main_color100);
       }
     }
 
@@ -59,10 +59,10 @@
 
     .rebate-btn {
       a {
-        background: #000;
+        background: var(--member_gradient_color1);
 
         &.disable {
-          background: #ababab;
+          background: var(--member_gradient_color2);
         }
       }
       button {
@@ -80,10 +80,10 @@
 
 .real-top-wrap {
   .real-top-btn {
-    background: #000;
+    background: var(--member_gradient_color1);
 
     &.disable {
-      background: #ababab;
+      background: var(--member_gradient_color2);
     }
 
     .calculate-button {
@@ -95,10 +95,10 @@
 }
 
 .receive-vip-btn {
-  background: #000;
+  background: var(--member_gradient_color1);
 
   &.is-disabled {
-    background: #ababab;
+    background: var(--member_gradient_color2);
   }
 }
 
@@ -108,6 +108,6 @@
 
 .popup {
   .close {
-    color: #000;
+    color: var(--member_gradient_color1);
   }
 }

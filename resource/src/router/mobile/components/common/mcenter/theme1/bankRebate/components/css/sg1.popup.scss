@@ -31,7 +31,7 @@
     }
 
     &.confirm {
-      color: #000;
+      color: var(--popup_text_color1);
       background: #fff;
     }
   }

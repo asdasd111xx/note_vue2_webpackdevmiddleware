@@ -6,7 +6,7 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 币发BIFA 500015
-const domain = "https://yb01.66boxing.com/";
+// const domain = "https://yb01.66boxing.com/";
 // Beta 100003
 // const domain = "https://ybbe1.777vendor.com/";
 // Demo 69
@@ -28,7 +28,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://ey.688lg.com/';
 
 // 泡泡 500035
-// const domain = "https://sgtt.66boxing.com/";
+const domain = "https://sgtt.66boxing.com/";
 
 // Beta 100009
 // const domain ="https://sg.66apples.com";
@@ -78,27 +78,6 @@ module.exports = {
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
     proxyTable: {
-      // 可於自己開發時改換但不要蓋紀錄
-      // '/ubb': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
-      // '/static': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
-      // '/i18n': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
-      // '/checkinfo': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
       "/api": {
         target: domain,
         changeOrigin: true,
@@ -119,11 +98,6 @@ module.exports = {
       "/cdn": {
         //  開發測試用
         // target: 'http://pineapple.vir888.net',
-        target: domain,
-        changeOrigin: true,
-        secure: false
-      },
-      "/payment": {
         target: domain,
         changeOrigin: true,
         secure: false

@@ -38,22 +38,16 @@
         font-weight: 700;
         word-break: break-word;
       }
-      &.porn1 {
-        span:last-of-type {
-          background: $befa_member_main_color1;
-          color: $befa_member_text_color1;
-        }
-      }
 
       // vip text
       span:last-of-type {
-        background: linear-gradient(to right, #eeddd0, #d5b69c);
+        background: var(--member_gradient_color1);
         margin: 5px 0 0 0;
         padding: 0px 5px;
         font-size: 12px;
         line-height: 20px;
         height: 20px;
-        color: #ffffff;
+        color: var(--member_text_color1);
         text-align: center;
         font-weight: 700;
         border-radius: 4px;
@@ -182,7 +176,7 @@
 
 .user-desc-block {
   padding-top: 3px;
-  color: #7086ce;
+  color: var(--member_text_color5);
   font-size: 12px;
   font-weight: 700;
 

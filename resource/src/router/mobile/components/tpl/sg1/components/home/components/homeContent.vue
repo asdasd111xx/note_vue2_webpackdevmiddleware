@@ -341,7 +341,7 @@ export default {
   font-weight: 500;
 
   &.active {
-    color: #fff;
+    color: var(--main_text_color1);
   }
 }
 
@@ -699,6 +699,9 @@ export default {
 
   &.porn1:last-child {
     color: $share_member_text_color4;
+  }
+  &.sg1:last-child {
+    color: var(--member_color100);
   }
 }
 </style>

@@ -36,7 +36,6 @@
       <div
         :class="[
           $style['close'],
-          [$style[siteConfig.MOBILE_WEB_TPL]],
           {
             [$style['is-captcha-image']]: captchaType === 1
           }
@@ -45,11 +44,7 @@
       >
         关闭
       </div>
-      <div
-        v-if="captchaType === 1"
-        :class="[$style['submit'], $style[siteConfig.MOBILE_WEB_TPL]]"
-        @click="submit"
-      >
+      <div v-if="captchaType === 1" :class="[$style['submit']]" @click="submit">
         确认送出
       </div>
     </div>
@@ -226,19 +221,11 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: #000;
   border-top: 1px solid #f8f8f7;
 
-  &.ey1 {
-    color: #e42a30;
-  }
-
-  &.sg1 {
-    color: #000;
-  }
-
   &.is-captcha-image {
-    color: #414655;
+    color: var(--popup_text_color3);
     display: inline-block;
     width: 48%;
   }
@@ -250,20 +237,11 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: var(--popup_text_color1);
   display: inline-block;
   width: 48%;
   border-top: 1px solid #f8f8f7;
   border-left: 1px solid #f8f8f7;
-
-  &.porn1,
-  .sg1 {
-    color: $share_member_text_color4;
-  }
-
-  &.ey1 {
-    color: #e42a30;
-  }
 }
 
 .captchaText-wrap {

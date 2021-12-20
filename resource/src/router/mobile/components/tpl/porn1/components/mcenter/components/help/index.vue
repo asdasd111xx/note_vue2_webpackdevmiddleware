@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/ey1/mcenter/help/ic_help_${listInfo.img}.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/mcenter/help/ic_help_${listInfo.img}.png`
               )
             "
           />
@@ -117,7 +117,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -160,7 +161,7 @@ export default {
 
 .help-wrap {
   overflow-x: hidden;
-  color: $main_text_color3;
+  color: var(--member_text_color4);
   position: relative;
 
   .list {

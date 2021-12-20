@@ -22,7 +22,7 @@
       </div>
 
       <div
-        :class="$style['active-slider']"
+        :class="[$style['active-slider']]"
         :style="{ left: `calc(25% + 50% * ${currentTab})` }"
       />
     </div>

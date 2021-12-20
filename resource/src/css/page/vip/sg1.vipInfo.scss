@@ -2,15 +2,13 @@
 
 .title {
   &::before {
-    background: #000;
+    background: var(--member_gradient_color1);
   }
 }
 
 .vip-detail {
-  color: #000;
-}
+  color: var(--vip_detail_color);
 
-.cells-block {
   .cell-text {
     color: #a2a2a2;
   }

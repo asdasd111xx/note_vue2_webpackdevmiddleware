@@ -82,6 +82,7 @@
             @click="onClick(message)"
             :class="[
               $style['icon-edit'],
+              $style[`image-${siteConfig.ROUTER_TPL}`],
               { [$style.active]: selectMessage.includes(message.id) }
             ]"
           />
@@ -202,7 +203,13 @@
           <div :class="$style['tips-text']">
             删除后将无法恢复，确定要删除吗？
           </div>
-          <div :class="[$style['tips-button'], 'clearfix']">
+          <div
+            :class="[
+              $style['tips-button'],
+              $style[siteConfig.ROUTER_TPL],
+              'clearfix'
+            ]"
+          >
             <div :class="$style['delete-cancel']" @click="isDelete = false">
               取消
             </div>

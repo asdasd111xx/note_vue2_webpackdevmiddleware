@@ -152,11 +152,7 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  :class="[
-                    'login-button',
-                    'login-submit',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
+                  :class="['login-button', 'login-submit']"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -288,24 +284,7 @@ export default {
       return this.siteConfig.ROUTER_TPL;
     }
   },
-  created() {
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement("script");
-      this.script.setAttribute("type", "text/javascript");
-      this.script.setAttribute("data-name", "esabgnixob");
-
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute(
-          "src",
-          "https://yb01.66boxing.com/mobile/esabgnixob.js"
-        );
-      } else {
-        this.script.setAttribute("src", "esabgnixob.js");
-      }
-
-      document.head.appendChild(this.script);
-    }
-  },
+  created() {},
   methods: {
     ...mapActions([
       "actionGetLayeredURL",
@@ -419,7 +398,7 @@ export default {
 }
 
 .link-submit {
-  color: $main_text_color1;
+  color: var(--main_text_color1);
 }
 .submit {
   margin: 0 auto;

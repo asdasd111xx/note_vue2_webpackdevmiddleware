@@ -50,7 +50,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: $share_member_text_color4;
+  background-color: var(--member_color1);
   width: 45px;
   transition: left 0.31s;
 }
@@ -102,14 +102,14 @@
     max-width: 375px;
     width: 100%;
     border-radius: 3px;
-    background: $share_main_button_color1;
+    background: var(--member_gradient_color2);
     margin: 0 auto;
   }
 
   &.active {
     > div {
-      color: #ffffff;
-      background: $share_main_button_color2;
+      color: var(--member_text_color1);
+      background: var(--member_gradient_color1);
     }
   }
 }
@@ -126,7 +126,7 @@
   color: white;
   width: 100px;
   height: 30px;
-  background: #e9dacc;
+  background: var(--member_color101);
   border-radius: 3px;
   pointer-events: none;
   right: 14px;
@@ -137,7 +137,7 @@
 
   &.active {
     pointer-events: unset;
-    background: #bd9d7d;
+    background: var(--main_color100);
   }
 }
 

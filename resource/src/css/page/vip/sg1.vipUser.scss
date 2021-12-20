@@ -1,36 +1,34 @@
 @import "./porn1.vipUser.scss";
-$main-color: #e42a30;
 
 .user-info-block {
   .user-info {
     .name {
       // vip text
       span:last-of-type {
-        background: #000;
+        background: var(--member_gradient_color1);
       }
     }
   }
 }
 
 .user-desc-block {
-  color: #000000;
-
+  color: var(--member_text_color5);
   .money {
     color: #e53266;
   }
 }
 
 .run-level-alias {
-  background: #b1b1b1;
+  background: var(--member_gradient_color2);
 }
 
 .run-level {
   &.current {
-    background: #000;
+    background: var(--member_gradient_color1);
   }
 
   &.next {
-    background: #b1b1b1;
+    background: var(--member_gradient_color2);
   }
 }
 

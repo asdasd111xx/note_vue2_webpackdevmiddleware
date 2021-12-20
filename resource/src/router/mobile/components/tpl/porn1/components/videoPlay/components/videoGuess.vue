@@ -221,7 +221,7 @@ export default {
   padding-top: 1px;
   overflow: hidden;
   line-height: 14px;
-  color: $main_text_color4;
+  color: var(--main_text_color4);
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -234,7 +234,7 @@ export default {
 .views {
   height: 12px;
   line-height: 12px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   font-size: 9px;
   display: flex;
   align-items: center;

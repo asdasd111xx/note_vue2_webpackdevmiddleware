@@ -15,7 +15,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${
+                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${
                   currentCategory.key == 'outer'
                     ? 'vendor'
                     : currentCategory.key
@@ -53,7 +53,7 @@
     <div :class="$style.tips">{{ noDataText }}</div>
     <div
       v-if="currentCategory.key === 'deposit'"
-      :class="[$style['btn-deposit'], $style[siteConfig.ROUTER_TPL]]"
+      :class="[$style['btn-deposit']]"
       @click="onDeposit"
     >
       立即充值

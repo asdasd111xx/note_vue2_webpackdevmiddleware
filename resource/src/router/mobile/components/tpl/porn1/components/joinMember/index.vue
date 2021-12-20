@@ -48,33 +48,11 @@ export default {
       };
     }
   },
-  beforeDestroy() {
-    // let script = document.querySelector('script[data-name="esabgnixob"]');
-    // if (script) {
-    //   script.parentElement.removeChild(script);
-    // }
-  },
+  beforeDestroy() {},
   created() {
     if (this.loginStatus) {
       this.$router.push("/mobile");
       return;
-    }
-
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement("script");
-      this.script.setAttribute("type", "text/javascript");
-      this.script.setAttribute("data-name", "esabgnixob");
-
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute(
-          "src",
-          "https://yb01.66boxing.com/mobile/esabgnixob.js"
-        );
-      } else {
-        this.script.setAttribute("src", "esabgnixob.js");
-      }
-
-      document.head.appendChild(this.script);
     }
   }
 };
@@ -117,7 +95,7 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: $share_main_button_color;
+  background: var(--main_gradient_color1);
   border-radius: 30px;
   height: 50px;
   line-height: 50px;
@@ -127,25 +105,11 @@ export default {
   font-family: Segoe UI, Segoe UI-Bold;
   font-weight: 700;
   text-align: center;
-  color: $share_main_button_text_color;
+  color: var(--main_text_color1);
 
   &.disable {
-    background: linear-gradient(#e9dacb, #eee5db);
+    background: var(--main_gradient_color2);
     pointer-events: none;
-  }
-
-  &.porn1 {
-    color: #ffffff;
-    background: $befa_main_color;
-  }
-
-  &.sp1 {
-    color: $main_text_color6;
-    background: $sp1_main_color1;
-
-    &.disable {
-      opacity: 0.5;
-    }
   }
 }
 

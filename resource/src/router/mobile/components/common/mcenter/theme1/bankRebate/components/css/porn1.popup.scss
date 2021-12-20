@@ -7,6 +7,37 @@
   left: 0;
   bottom: 0;
   z-index: 99;
+
+  &.porn1 {
+    .content-wrap {
+      padding: 13px 0 0 0;
+    }
+    .button-wrap {
+      height: 42px;
+      line-height: 41px;
+      border-top: 1px solid #eeeeee;
+
+      .button-item {
+        border-radius: 0px;
+
+        &.close {
+          background: #f8f8f7;
+          color: $share_member_text_color4;
+        }
+
+        &.confirm {
+          background: #f8f8f7;
+          color: $share_member_text_color4;
+          border-left: 1px solid #eeeeee;
+        }
+      }
+    }
+    .title {
+      background: #f8f8f7;
+      color: #000;
+      font-size: 17px;
+    }
+  }
 }
 
 .pop-mask {
@@ -43,7 +74,7 @@
   height: 48px;
   line-height: 48px;
   border-radius: 5px 5px 0 0;
-  background-color: $share_member_text_color4;
+  background-color: #be9e7f;
   color: #fff;
   font-size: 16px;
   text-align: center;
@@ -84,16 +115,26 @@
     margin: 0 3px;
 
     &.close {
-      color: $share_member_text_color4;
+      color: #be9e7f;
       background: #faf5f0;
     }
 
     &.confirm {
-      background: linear-gradient(#bd9d7d, #f9ddbd);
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     }
   }
 }
 
 .tips {
   margin-top: 15px;
+}
+
+.tips-close {
+  color: $share_member_text_color4;
+  border-top: 1px solid $share_member_text_color6;
+  text-align: center;
+  margin: auto;
+  margin-top: 26px;
+  padding: 14px;
+  font-size: 16px;
 }

@@ -280,24 +280,7 @@ export default {
       return false;
     }
   },
-  created() {
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement("script");
-      this.script.setAttribute("type", "text/javascript");
-      this.script.setAttribute("data-name", "esabgnixob");
-
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute(
-          "src",
-          "https://yb01.66boxing.com/mobile/esabgnixob.js"
-        );
-      } else {
-        this.script.setAttribute("src", "esabgnixob.js");
-      }
-
-      document.head.appendChild(this.script);
-    }
-  },
+  created() {},
   methods: {
     ...mapActions([
       "actionGetLayeredURL",
@@ -434,7 +417,7 @@ export default {
 }
 
 .link-submit {
-  color: $main_text_color1;
+  color: var(--main_text_color1);
 }
 .submit {
   background: #fff;

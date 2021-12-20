@@ -62,7 +62,7 @@
     }
 
     .text {
-      color: #bf8646;
+      color: var(--webview_icon_text);
       font-size: 10px;
       margin-top: 2.5px;
     }
@@ -112,18 +112,18 @@
     }
 
     .text {
-      color: $main_text_color3;
+      color: var(--member_text_color4);
       padding: 10px 0;
       font-weight: 700;
     }
 
     .download {
       display: inline-block;
-      color: $share_member_text_color4;
+      color: var(--main_color100);
       font-size: 12px;
       padding: 4px 12px;
       margin-bottom: 15px;
-      border: 1px solid $share_member_text_color4;
+      border: 1px solid var(--main_color100);
       border-radius: 3px;
     }
   }

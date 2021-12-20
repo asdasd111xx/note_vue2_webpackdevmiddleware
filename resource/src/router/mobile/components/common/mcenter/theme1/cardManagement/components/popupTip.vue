@@ -134,11 +134,11 @@ export default {
 
 .content {
   padding: 17px 13px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   text-align: center;
 
   .title {
-    color: $main_text_color3;
+    color: var(--main_text_color3);
     font-size: 18px;
     font-weight: 700;
   }

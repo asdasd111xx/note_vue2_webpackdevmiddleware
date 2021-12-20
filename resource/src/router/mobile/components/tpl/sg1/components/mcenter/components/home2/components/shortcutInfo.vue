@@ -503,7 +503,7 @@ export default {
 }
 
 .sub-text {
-  color: $main_text_color2;
+  color: var(--main_text_color2);
 }
 
 .vip-promotion-wrap {

@@ -31,7 +31,12 @@
         >
           {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
         </span>
-        <span :class="[$style['balance-redjackpot-image']]" />
+        <span
+          :class="[
+            $style['balance-redjackpot-image'],
+            $style[siteConfig.ROUTER_TPL]
+          ]"
+        />
       </div>
       <div
         v-if="bonus.balance"
@@ -333,7 +338,7 @@
                       v-if="transOutText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${routerTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -382,7 +387,7 @@
                       v-if="transInText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${routerTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -414,7 +419,7 @@
             />
           </span>
           <div
-            :class="[$style['max-money-btn'], $style[siteConfig.ROUTER_TPL]]"
+            :class="[$style['max-money-btn']]"
             @click="getMaxMoney(membalance, tranOut)"
           >
             {{ $text("S_MAX", "最大") }}
@@ -424,7 +429,6 @@
       <div
         :class="[
           $style['transfer-btn'],
-          $style[siteConfig.ROUTER_TPL],
           {
             [$style['is-disable']]: btnLock || !transferMoney
           }
@@ -462,7 +466,6 @@
 <script>
 import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import { ModelSelect } from "vue-search-select";
 import ajax from "@/lib/ajax";
 import mcenter from "@/api/mcenter";
 import message from "@/router/mobile/components/common/message";
@@ -553,6 +556,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     balanceInfo() {
       const data = {};

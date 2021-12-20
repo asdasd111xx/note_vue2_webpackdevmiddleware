@@ -58,17 +58,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import InfiniteLoading from 'vue-infinite-loading';
-import axios from 'axios';
-import querystring from 'querystring';
-import mobileContainer from '../common/mobileContainer';
-import pornRequest from '@/api/pornRequest';
-import { getEncryptImage } from '@/lib/crypto';
+import { mapGetters } from "vuex";
+import InfiniteLoading from "vue-infinite-loading";
+import axios from "axios";
+import querystring from "querystring";
+import mobileContainer from "../common/mobileContainer";
+import pornRequest from "@/api/pornRequest";
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   components: {
-    pageLoading: () => import(/* webpackChunkName: 'pageLoading' */ '@/router/mobile/components/common/pageLoading'),
+    pageLoading: () =>
+      import(
+        /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
+      ),
     InfiniteLoading,
     mobileContainer
   },
@@ -85,27 +88,34 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     searchTags() {
-      return this.$route.params.key ? this.$route.params.key.replace(/,/g, "・") : ''
+      return this.$route.params.key
+        ? this.$route.params.key.replace(/,/g, "・")
+        : "";
     },
     headerConfig() {
       return {
         prev: true,
         isBackgroundGradient: true,
-        title: '筛选结果',
-        onClick: () => { this.$router.back(); }
+        title: "筛选结果",
+        onClick: () => {
+          this.$router.back();
+        }
       };
     }
   },
   created() {
-    if (localStorage.getItem('content_rating')) {
-      if (localStorage.getItem('content_rating') !== "1") {
-        this.$router.push('/mobile');
+    if (localStorage.getItem("content_rating")) {
+      if (localStorage.getItem("content_rating") !== "1") {
+        this.$router.push("/mobile");
       }
-    } else if (!this.memInfo.config.content_rating || !this.memInfo.user.content_rating) {
-      this.$router.push('/mobile');
+    } else if (
+      !this.memInfo.config.content_rating ||
+      !this.memInfo.user.content_rating
+    ) {
+      this.$router.push("/mobile");
     }
 
     this.setVideoList();
@@ -115,17 +125,19 @@ export default {
       return {
         src: image,
         error: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`),
-        loading: this.$getCdnPath(`/static/image/porn1/default/bg_video03_d.png`)
-      }
+        loading: this.$getCdnPath(
+          `/static/image/porn1/default/bg_video03_d.png`
+        )
+      };
     },
     getTag(tag) {
-      return tag.split(',');
+      return tag.split(",");
     },
     getVideoList(page) {
       return pornRequest({
-        method: 'post',
+        method: "post",
         url: `/video/tagsearch`,
-        data: { tags: this.$route.params.key, page: page },
+        data: { tags: this.$route.params.key, page: page }
       });
     },
     setVideoList() {
@@ -136,7 +148,7 @@ export default {
       this.isReceive = true;
       this.hasInfinite = false;
 
-      this.getVideoList(1).then((response) => {
+      this.getVideoList(1).then(response => {
         this.isLoading = false;
         this.isReceive = false;
 
@@ -151,8 +163,8 @@ export default {
         setTimeout(() => {
           this.videoList.forEach(item => {
             getEncryptImage(item);
-          })
-        }, 300)
+          });
+        }, 300);
 
         if (response.result.current_page >= response.result.last_page) {
           return;
@@ -168,14 +180,13 @@ export default {
 
       this.isReceive = true;
 
-      this.getVideoList(this.current + 1).then((response) => {
+      this.getVideoList(this.current + 1).then(response => {
         if (response.status !== 200) {
           return;
         }
 
         this.videoList = [...this.videoList, ...response.result.data];
         this.current += 1;
-
 
         this.total = response.result.last_page;
         this.isReceive = false;
@@ -263,7 +274,7 @@ export default {
   overflow: hidden;
   height: 17px;
   line-height: 17px;
-  color: $main_text_color4;
+  color: var(--main_text_color4);
   font-size: 13px;
   font-weight: 400;
   text-overflow: ellipsis;
@@ -284,7 +295,7 @@ export default {
     padding: 0 10px;
     border-radius: 7px;
     background-color: #eeeeee;
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     font-size: 12px;
   }
 }
@@ -292,7 +303,7 @@ export default {
 .views {
   display: flex;
   align-items: center;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   height: 13px;
   line-height: 13px;
   font-size: 10px;

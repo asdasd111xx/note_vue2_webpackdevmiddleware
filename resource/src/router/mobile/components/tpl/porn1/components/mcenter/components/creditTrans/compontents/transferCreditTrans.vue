@@ -81,7 +81,6 @@
               <div
                 :class="[
                   $style['send-keyring'],
-                  $style[routerTPL],
                   {
                     [$style.disabled]:
                       isSendKeyring ||
@@ -133,7 +132,6 @@
       <div
         :class="[
           $style['submit-wrap'],
-          $style[routerTPL],
           {
             [$style.disabled]: !isVerifyForm || isSendRecharge
           }

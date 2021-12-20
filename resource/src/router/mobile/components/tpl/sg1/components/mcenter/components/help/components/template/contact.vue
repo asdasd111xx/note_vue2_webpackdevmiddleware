@@ -162,7 +162,7 @@ export default {
   text-align: center;
 
   > div {
-    color: white;
+    color: var(--member_text_color1);
     height: 45px;
     border-radius: 23px;
     font-size: 16px;
