@@ -254,7 +254,7 @@
             :class="[$style['bc-data'], $style['first']]"
             @click="bcClickEvent('money')"
           >
-            <div :class="[$style['total-money']]">
+            <div :class="$style['total-money']">
               {{ formatThousandsCurrency(bcCurrencyData.total_balance, false) }}
             </div>
             <div>
@@ -989,10 +989,11 @@ export default {
 
             if (status === "000" && errorCode === "00") {
               this.getPromotionList(data.uri);
+            } else {
+              this.actionSetGlobalMessage({
+                msg: "正在上线，敬请期待"
+              });
             }
-            this.actionSetGlobalMessage({
-              msg: "正在上线，敬请期待"
-            });
           });
 
           break;

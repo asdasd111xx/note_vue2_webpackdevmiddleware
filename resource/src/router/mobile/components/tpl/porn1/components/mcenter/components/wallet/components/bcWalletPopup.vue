@@ -364,18 +364,11 @@ export default {
 }
 .pay-code {
   height: 50px;
-  background: $share_origin_color8;
+  background: var(--member_gradient_color1);
   color: white;
   align-items: center;
   display: flex;
   justify-content: center;
   margin: 38px;
-
-  &.pron1 {
-    background: $befa_main_button_color2;
-  }
-  &.sg1 {
-    background: $sg_main_button_color1;
-  }
 }
 </style>

@@ -1402,6 +1402,12 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
+      if (
+        this.curPayInfo.payment_method_id === 32 &&
+        !this.selectBcCoin.currency
+      ) {
+        return;
+      }
       return axios({
         method: "get",
         url: API_CRYPTO_MONEY,
