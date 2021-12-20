@@ -82,6 +82,14 @@ export default {
       type: Number,
       require: true
     },
+    phone: {
+      type: String,
+      default: ""
+    },
+    keyring: {
+      type: String,
+      default: ""
+    },
     bindType: {
       type: String,
       default: "withdraw"
@@ -150,10 +158,13 @@ export default {
         method: "get",
         params: {
           // bind_type: queryType ? queryType : this.bindType,
-          wallet_gateway_id: id
+          wallet_gateway_id: id,
+          phone: "86-" + this.phone,
+          keyring: this.keyring
         }
       })
         .then(res => {
+          // console.log("popupQrcode-res", res);
           const { result, ret } = res.data;
           if (result !== "ok") {
             this.actionSetGlobalMessage({ msg: res.data.msg });
@@ -162,6 +173,8 @@ export default {
               this.closePopup();
             }, 3000);
             return;
+          } else {
+            localStorage.setItem("popupQrcode", "success");
           }
 
           this.countdownSec = ret.expire_at;

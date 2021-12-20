@@ -63,6 +63,22 @@
   background-color: #fff;
 }
 
+.bc-coint {
+  display: flex;
+  justify-content: space-between;
+
+  .coin-money {
+    margin-left: 30px;
+    width: 60%
+  }
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
+}
+
 .feature-title {
   height: 16px;
   line-height: 16px;
@@ -134,11 +150,9 @@
   &.is-current {
     border: 1px solid var(--wallet_border_color);
     color: var(--wallet_border_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 10px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 10px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 
   .pay-mode-tag {
@@ -234,7 +248,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -271,11 +285,9 @@
     background-color: #fff;
     color: var(--wallet_border_color);
     border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 12px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -367,13 +379,16 @@
   align-items: center;
   width: 100%;
   height: 52px;
-  color: var(--main_text_color2);
+  color: var(--main_text_color3);
+
   .time {
     color: $share_origin_color6;
     margin: 0 5px 0 5px;
+
     &.porn1 {
       color: $share_member_text_color8;
     }
+
     &.ey {
       color: #e42a30;
     }
@@ -804,11 +819,9 @@
   background-color: #fff;
   color: var(--wallet_border_color);
   border: 1px solid var(--wallet_border_color);
-  background: linear-gradient(
-    -45deg,
-    var(--wallet_border_color) 12px,
-    hsla(0, 0%, 100%, 0) 0
-  );
+  background: linear-gradient(-45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0);
 }
 
 .pop-message-mark {
@@ -857,7 +870,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: var(--member_color1);
 }
 
 .money-tip-wrap {
@@ -893,7 +906,7 @@
   display: flex;
   align-items: center;
 
-  > img {
+  >img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1061,6 +1074,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1176,7 +1190,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 

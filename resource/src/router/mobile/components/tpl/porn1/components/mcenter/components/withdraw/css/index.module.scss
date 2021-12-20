@@ -145,9 +145,11 @@
       &.image-porn1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }
+
       &.image-aobo1 {
         @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
       }
+
       &.image-sp1 {
         @include check-ok("/static/image/sp1/mcenter/ic_check.png");
       }
@@ -442,9 +444,11 @@
       }
     }
   }
+
   &.aobo1,
   &.sp1 {
     border-radius: 3px;
+
     .check-header {
       background: $share_origin_color10;
       color: #ffffff;
@@ -457,9 +461,11 @@
         text-align: center;
       }
     }
+
     .check-button-wrap {
       color: #be9e7f;
       margin-bottom: 10px;
+
       .check-btn {
         border-radius: 3px;
         background: #faf5f0;
@@ -584,6 +590,7 @@
       display: inline-block;
       position: relative;
       border-right: 1px solid #f8f8f7;
+
       &.submit {
         color: $share_main_button_color2;
       }

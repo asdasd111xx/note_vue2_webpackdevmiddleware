@@ -90,8 +90,6 @@ a {
   align-items: center;
   border-top: 1px solid #f7f8fb;
 
-  color: $share_origin_color17;
-
   &::after {
     content: "";
     position: absolute;
@@ -107,18 +105,9 @@ a {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-
+    color: var(--popup_text_color2);
     &:nth-child(2) {
-      color: $share_origin_color1;
-    }
-  }
-
-  &.porn1 {
-    color: $share_member_text_color4;
-    span {
-      &:nth-child(2) {
-        color: $share_member_text_color4;
-      }
+      color: var(--popup_text_color1);
     }
   }
 }
