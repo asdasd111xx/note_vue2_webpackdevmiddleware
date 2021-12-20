@@ -36,7 +36,6 @@
       <div
         :class="[
           $style['close'],
-          [$style[siteConfig.MOBILE_WEB_TPL]],
           {
             [$style['is-captcha-image']]: captchaType === 1
           }
@@ -229,12 +228,8 @@ export default {
   color: #000;
   border-top: 1px solid #f8f8f7;
 
-  &.ey1 {
-    color: #e42a30;
-  }
-
   &.is-captcha-image {
-    color: #414655;
+    color: var(--popup_text_color3);
     display: inline-block;
     width: 48%;
   }
