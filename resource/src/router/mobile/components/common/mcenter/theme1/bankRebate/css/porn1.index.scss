@@ -138,30 +138,22 @@
         border: 0;
         outline: none;
       }
-      &.porn1 {
-        color: #fff;
-        background: #414655;
-        &.disable {
-          color: #a6a9b2;
-          background: #eaeaea;
-        }
-      }
 
-      a {
+      .receive-btn {
         display: inline-block;
         width: 50px;
         height: 20px;
         line-height: 20px;
         color: #fff;
-        background: var(--member_gradient_color1);
+        background: var(--bankrebate_receive_button1);
         border: 0;
         border-radius: 10px;
         outline: none;
         font-weight: 400;
 
         &.disable {
-          color: #f3ede7;
-          background: var(--member_gradient_color2);
+          color: var(--bankrebate_receive_text_color);
+          background: var(--bankrebate_receive_button2);
         }
       }
     }

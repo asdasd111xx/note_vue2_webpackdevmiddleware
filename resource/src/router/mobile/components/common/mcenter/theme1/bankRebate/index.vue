@@ -224,7 +224,7 @@
                     v-if="caculateList.operateStatus"
                     id="receive-button"
                     :class="[
-                      $style[siteConfig.ROUTER_TPL],
+                      $style['receive-btn'],
                       {
                         [$style['disable']]: btnReceiveLock[listIndex]
                       }
