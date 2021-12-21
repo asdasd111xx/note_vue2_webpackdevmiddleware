@@ -96,7 +96,9 @@
                   $style['balance-redjackpot-text']
                 ]"
               >
-                {{ formatThousandsCurrency(redJackpotData.remain_bonus, true) }}
+                {{
+                  formatThousandsCurrency(redJackpotData.remain_bonus, false)
+                }}
               </span>
               <span
                 :class="[
@@ -124,7 +126,7 @@
               <span :class="[$style['balance-item-money'], $style['more']]">
                 {{
                   bonus.balance
-                    ? formatThousandsCurrency(bonus.balance, true)
+                    ? formatThousandsCurrency(bonus.balance, false)
                     : 0.0
                 }}
               </span>
@@ -368,7 +370,7 @@
             <div :class="$style['game-desc']">
               <span :class="$style['game']">{{ item.game_name }}</span>
               <span :class="$style['money']">{{
-                formatThousandsCurrency(item.valid_bet, true)
+                formatThousandsCurrency(item.valid_bet, false)
               }}</span>
             </div>
           </div>
