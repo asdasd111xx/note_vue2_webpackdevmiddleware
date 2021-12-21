@@ -386,7 +386,7 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: $share_member_text_color4;
+    background-color: #222;
   }
 
   &.av.active .line {

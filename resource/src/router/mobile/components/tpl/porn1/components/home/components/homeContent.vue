@@ -383,7 +383,7 @@ export default {
     width: 60px;
     height: 28px;
     line-height: 28px;
-    border: 1px solid #d5bea4;
+    border: 1px solid #222;
     border-radius: 3px;
     color: #bf8646;
     font-size: 12px;
