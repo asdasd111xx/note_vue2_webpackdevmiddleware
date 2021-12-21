@@ -865,3 +865,18 @@
     color: $share_member_text_color4;
   }
 }
+
+.thirdy-block-wrap {
+  width: 100%;
+  margin: 0 6px;
+  text-align: right;
+
+  &.aobo1 {
+    margin: auto;
+
+    .thirdy-block {
+      width: 100%;
+      margin: auto;
+    }
+  }
+}

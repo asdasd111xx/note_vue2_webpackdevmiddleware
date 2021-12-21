@@ -550,13 +550,14 @@
         </form>
 
         <!-- 3拼圖驗證/4手繪/5行為驗證 -->
-        <template
+        <div
           v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
+          :class="[$style['thirdy-block-wrap'], $style[siteConfig.ROUTER_TPL]]"
         >
           <thirdy-verification
             ref="thirdyCaptchaObj"
             @set-captcha="setCaptcha"
-            :class="$style['thirdy-block']"
+            :class="[$style['thirdy-block'], $style['field-right']]"
             :page-type="'register'"
           />
 
@@ -568,7 +569,7 @@
             "
             v-html="allTip['captcha_text']"
           />
-        </template>
+        </div>
       </div>
 
       <!-- :is-enable="isSlideAble" -->

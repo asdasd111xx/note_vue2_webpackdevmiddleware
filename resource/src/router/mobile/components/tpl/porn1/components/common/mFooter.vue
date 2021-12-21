@@ -309,6 +309,7 @@ export default {
   height: 45px;
   color: $share_footer_color1;
   position: relative;
+  font-weight: 700;
 
   &.active {
     color: $share_footer_active_color1;
