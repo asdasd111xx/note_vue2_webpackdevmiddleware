@@ -123,7 +123,7 @@
           />
         </div>
 
-        <div :class="[$style['tip-text'], $style[`${routerTPL}`]]">
+        <div :class="[$style['tip-text']]">
           永久网址
         </div>
       </div>
@@ -705,17 +705,10 @@ div.container {
   padding: 0 5px;
   margin: 0 auto;
   font-size: 8px;
-  color: $share_main_button_text_color;
-  background: $share_main_button_color;
+  color: var(--main_text_color2);
+  background: var(--service-bottom-button);
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
-
-  &.porn1 {
-    background: $befa_main_color;
-  }
-  &.sp1 {
-    background: #000;
-  }
 }
 
 .pop-wrap {
