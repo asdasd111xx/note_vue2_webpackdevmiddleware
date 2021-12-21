@@ -239,14 +239,14 @@ export default {
         _bundleID = "";
 
       // 預設
-      this.superAppUrl = "https://user.51cjq.xyz/pkgs/ybsp2.app";
+      // this.superAppUrl = "https://user.51cjq.xyz/pkgs/ybsp2.app";
+
       switch (this.routerTPL) {
         case "porn1":
           _vendor = 67;
           _bundleID = "chungyo.foxyporn.prod.enterprise.vip";
           break;
 
-        // 缺bundleID
         case "aobo1":
           _vendor = 92;
           _bundleID = "cyiosdev0001.aoboCasino.prod";
@@ -262,7 +262,7 @@ export default {
         }
       }).then(res => {
         if (res.data && res.status === "000") {
-          if (res && res.data) {
+          if (res && res.data && res.data.url) {
             this.superAppUrl = res.data.url;
           }
         }
@@ -278,12 +278,14 @@ export default {
           return;
         }
 
-        if (this.requiredMoneyStatus === "ok") {
+        let newWindow = window.open(" ");
+
+        if (this.requiredMoneyStatus === "ok" && this.superAppUrl) {
           // 超級籤app下載網址
-          const appUrl = this.superAppUrl;
-          window.open(appUrl, "_blank");
+          newWindow.location.href = this.superAppUrl;
         } else {
           this.actionSetGlobalMessage({ msg: this.superErrorMsg });
+          newWindow.close();
         }
 
         return;

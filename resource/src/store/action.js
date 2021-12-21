@@ -836,7 +836,7 @@ export const actionSetUserdata = (
       if (headers[configInfo.CDN_HEADER]) {
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
-      console.log(headers["x-cdn"]);
+
       if (headers["x-cdn"]) {
         commit(
           types.SETSLIDECDNDOMAIN,
