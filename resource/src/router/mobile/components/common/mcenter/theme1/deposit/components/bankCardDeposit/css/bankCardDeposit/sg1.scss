@@ -22,11 +22,11 @@
 
 .pay-mode-item {
   &.is-current {
-    border: 1px solid $sg_main_text_color1;
-    color: $sg_main_text_color1;
+    border: 1px solid var(--wallet_border_color);
+    color: var(--wallet_border_color);
     background: linear-gradient(
       -45deg,
-      $sg_main_text_color1 10px,
+      var(--wallet_border_color) 10px,
       hsla(0, 0%, 100%, 0) 0
     );
   }
@@ -34,28 +34,28 @@
 
 .pay-money-item {
   &.is-current {
-    color: $sg_main_text_color1;
-    border: 1px solid $sg_main_text_color1;
+    color: var(--wallet_border_color);
+    border: 1px solid var(--wallet_border_color);
     background: linear-gradient(
       -45deg,
-      $sg_main_text_color1 12px,
+      var(--wallet_border_color) 12px,
       hsla(0, 0%, 100%, 0) 0
     );
   }
 }
 
 .current-data {
-  color: $sg_main_text_color1;
-  border: 1px solid $sg_main_text_color1;
+  color: var(--wallet_border_color);
+  border: 1px solid var(--wallet_border_color);
   background: linear-gradient(
     -45deg,
-    $sg_main_text_color1 12px,
+    var(--wallet_border_color) 12px,
     hsla(0, 0%, 100%, 0) 0
   );
 }
 
 .feature-tip-title {
   &.success {
-    color: $sg_main_text_color1;
+    color: var(--wallet_border_color);
   }
 }

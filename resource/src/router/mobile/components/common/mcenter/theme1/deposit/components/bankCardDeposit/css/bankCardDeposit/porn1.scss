@@ -800,14 +800,8 @@
   font-size: 14px;
   color: #cbced8;
 
-  &.porn1 {
-    &.success {
-      color: $share_member_text_color4;
-    }
-  }
-
   &.success {
-    color: $share_origin_color1;
+    color: var(--popup_text_color1);
   }
 }
 

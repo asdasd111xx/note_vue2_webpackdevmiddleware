@@ -184,7 +184,7 @@ export default {
   }
 
   div:last-of-type {
-    color: $sg_main_text_color1;
+    color: var(--wallet_border_color);
     font-size: 12px;
     height: 50%;
 
