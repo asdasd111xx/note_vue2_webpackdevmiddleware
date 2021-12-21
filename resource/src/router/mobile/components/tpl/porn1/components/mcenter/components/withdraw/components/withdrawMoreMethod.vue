@@ -168,6 +168,7 @@ export default {
         let data = this.noticeData[0];
 
         if (data.event === "trade_bind_wallet" && data.result === "ok") {
+          this.noticeData.pop();
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: () => {

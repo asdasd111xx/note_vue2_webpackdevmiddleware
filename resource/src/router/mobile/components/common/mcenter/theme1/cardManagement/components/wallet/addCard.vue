@@ -567,6 +567,7 @@ export default {
         // 針對 Qrcode 掃碼，因不會跳轉至其它 App 或 Web，仍停留在目前 App 時才進行推播流程
         // 故已排除在開啟外部 App or Web 時，如收到推播成功，則不會進行任何動作
         if (data.event === "trade_bind_wallet") {
+          this.noticeData.pop();
           if (data.result === "ok" && !document.hidden) {
             this.actionSetGlobalMessage({
               msg: "绑定成功",
@@ -578,10 +579,12 @@ export default {
               cb: this.clearMsgCallback
             });
           } else {
-            this.actionSetGlobalMessage({
-              msg: data.msg,
-              cb: this.clearMsgCallback
-            });
+            // http://fb.vir888.com/default.asp?539073#4638722
+            // 移除推波錯誤流程 停留原頁
+            // this.actionSetGlobalMessage({
+            //   msg: data.msg,
+            //   cb: this.clearMsgCallback
+            // });
           }
         }
       }
@@ -839,7 +842,6 @@ export default {
               return;
             }
           }
-
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: this.clearMsgCallback
@@ -985,7 +987,7 @@ export default {
       const { query } = this.$route;
       localStorage.removeItem("selectTarget");
       let redirect = _redirect || query?.redirect;
-
+      this.$emit("update:addBankCardStep", "one");
       if (!redirect) {
         this.setPageStatus(1, "walletCardInfo", true);
         return;

@@ -13,25 +13,25 @@
   align-items: center;
   margin-top: 11px;
 
-  > div {
+  >div {
     width: 50%;
   }
 
-  > .balance-wrap {
-    > div:first-child {
+  >.balance-wrap {
+    >div:first-child {
       text-align: center;
 
-      > img {
+      >img {
         width: 14px;
         height: 14px;
       }
 
-      > span {
+      >span {
         color: #5e626d;
       }
     }
 
-    > div:last-child {
+    >div:last-child {
       color: $share_member_text_color4;
       text-align: center;
       font-size: 16px;
@@ -65,7 +65,7 @@
   justify-content: center;
   font-weight: bold;
 
-  > img {
+  >img {
     width: 18px;
     height: 18px;
   }
@@ -96,12 +96,12 @@
     opacity: 0.5;
   }
 
-  > img {
+  >img {
     width: 25px;
     height: 25px;
   }
 
-  > span {
+  >span {
     padding: 0 0 0 10px;
     width: 80%;
     overflow: hidden;
@@ -130,7 +130,7 @@
     }
   }
 
-  > .check-box {
+  >.check-box {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -209,11 +209,9 @@
     &.is-current {
       border: 1px solid var(--wallet_border_color);
       color: var(--wallet_border_color);
-      background: linear-gradient(
-        -45deg,
-        var(--wallet_border_color) 10px,
-        hsla(0, 0%, 100%, 0) 0
-      );
+      background: linear-gradient(-45deg,
+          var(--wallet_border_color) 10px,
+          hsla(0, 0%, 100%, 0) 0);
     }
 
     .select {
@@ -252,7 +250,7 @@
   margin-top: 5px;
   position: relative;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -327,7 +325,7 @@
   justify-content: center;
   float: right;
 
-  > span {
+  >span {
     font-size: 14px;
     background: var(--member_gradient_color1);
     color: var(--member_text_color1);
@@ -355,7 +353,7 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  > div {
+  >div {
     margin: 0 auto;
     height: 45px;
     background: var(--member_gradient_color1);
@@ -523,7 +521,11 @@
       }
     }
 
-    > span:last-child {
+    &.offer-twoline {
+      height: 66px;
+    }
+
+    >span:last-child {
       float: right;
     }
 
@@ -532,6 +534,7 @@
       color: #cbced8;
       padding-left: 10px;
     }
+
     .money-bold::after {
       content: "CNY";
       color: #a6a9b2;
@@ -623,7 +626,7 @@
   margin-top: 5px;
   -webkit-text-security: disc;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -647,8 +650,8 @@
 }
 
 @media screen and (min-width: $phone) {
-  > .balance-wrap {
-    > div:last-child {
+  >.balance-wrap {
+    >div:last-child {
       font-size: 17px;
     }
   }
@@ -670,7 +673,7 @@
   }
 
   .withdraw-input {
-    > input {
+    >input {
       font-size: 17px;
 
       &::placeholder {
@@ -685,7 +688,7 @@
   }
 
   .withdraw-max {
-    > span {
+    >span {
       font-size: 15px;
     }
   }
@@ -695,7 +698,7 @@
   }
 
   .submit-btn {
-    > div {
+    >div {
       font-size: 15px;
     }
   }

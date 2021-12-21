@@ -107,24 +107,16 @@
 
               <div
                 v-if="hasOffer"
-                :class="[$style['check-cell'], $style['custom-color']]"
-                :style="
-                  bonusOffer && bonusOffer.length > 9
-                    ? { 'font-size': '12px' }
-                    : {}
-                "
+                :class="[
+                  $style['check-cell'],
+                  $style['custom-color'],
+                  $style['offer-twoline']
+                ]"
               >
-                <span :class="$style['sub-title']">
+                <div :class="$style['sub-title']">
                   {{ withdrawName }}出款额外赠送
-                </span>
-                <span
-                  :style="
-                    bonusOffer && bonusOffer.length > 9
-                      ? { 'font-size': '12px' }
-                      : {}
-                  "
-                  :class="[$style['money']]"
-                >
+                </div>
+                <span :class="[$style['money']]">
                   {{ bonusOffer }}
                 </span>
               </div>
