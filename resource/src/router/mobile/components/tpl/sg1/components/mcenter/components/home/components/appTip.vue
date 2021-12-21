@@ -17,10 +17,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import moment from "moment";
-import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import mcenter from "@/api/mcenter";
-import member from "@/api/member";
 import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
@@ -33,7 +29,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({})
+    ...mapGetters({ siteConfig: "getSiteConfig" })
   },
   created() {
     let platform = getCookie("platform");

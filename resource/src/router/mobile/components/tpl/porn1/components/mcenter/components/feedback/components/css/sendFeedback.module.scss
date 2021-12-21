@@ -126,20 +126,14 @@
   height: 45px;
   line-height: 45px;
   margin: 20px auto 0;
-  background: $share_member_text_color1;
-  background-image: $share_main_button_color2;
+  background: var(--member_gradient_color1);
   font-size: 14px;
-  color: #fff;
+  color: var(--member_text_color1);
   text-align: center;
   border-radius: 5px;
 
-  &.porn1 {
-    background: $befa_member_main_color1;
-    background-image: $befa_member_main_color1;
-  }
-
   &.disabled {
-    opacity: 0.5;
+    background: var(--member_gradient_color2);
     pointer-events: none;
   }
 }
@@ -186,12 +180,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_origin_color5;
-  }
-  &.porn1 {
-    span {
-      color: $share_member_text_color4;
-    }
+    color: var(--member_color100);
   }
 }
 

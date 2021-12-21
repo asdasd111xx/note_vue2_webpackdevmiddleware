@@ -76,10 +76,7 @@
         </div>
 
         <div :class="[$style['submit-form-row']]">
-          <div
-            :class="[$style.submit, $style[siteConfig.ROUTER_TPL]]"
-            @click="onInquire"
-          >
+          <div :class="[$style.submit]" @click="onInquire">
             {{ $text("S_INQUIRE", "查询") }}
           </div>
         </div>

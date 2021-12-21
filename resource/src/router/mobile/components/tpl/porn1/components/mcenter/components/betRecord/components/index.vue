@@ -29,7 +29,6 @@
         v-if="selectMenu === 'game'"
         :class="[
           $style['dropdown-wrap'],
-          $style[siteConfig.ROUTER_TPL],
           'clearfix',
           { [$style['game']]: selectMenu === 'game' }
         ]"
@@ -72,10 +71,7 @@
           <li
             v-for="(time, key) in allTotalData"
             :key="`date-${key}`"
-            :class="[
-              $style[siteConfig.ROUTER_TPL],
-              { [$style.active]: currentSelectTime === time.text }
-            ]"
+            :class="[{ [$style.active]: currentSelectTime === time.text }]"
             @click="getTimeRecord(time)"
           >
             {{ time.text }}
@@ -213,12 +209,7 @@
                   {{ getVendorName(gameDetail.vendor, gameDetail.kind) }}
                 </div>
                 <div :class="$style['detail-game']">
-                  <div
-                    :class="[
-                      $style['game-name'],
-                      $style[siteConfig.ROUTER_TPL]
-                    ]"
-                  >
+                  <div :class="[$style['game-name']]">
                     {{ gameDetail.game_name }}
                   </div>
                   <div :class="[$style['game-count'], 'clearfix']">

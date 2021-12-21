@@ -46,13 +46,9 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: $share_text_color1;
+  background: var(--member_color1);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
-
-  &.porn1 {
-    background: $befa_member_main_color1;
-  }
 }
 
 .discount-item {
@@ -204,9 +200,9 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: $share_member_text_color4;
+  background: var(--wallet_border_color);
   border-radius: 3px;
-  color: white;
+  color: var(--member_text_color1);
   font-weight: 400;
   height: 30px;
   line-height: 30px;
@@ -217,16 +213,8 @@ input {
   width: 100px;
 
   &.disabled {
-    color: white;
-    background-color: $share_member_text_color7;
+    background: var(--member_color101);
     pointer-events: none;
-  }
-
-  &.porn1 {
-    background-color: $befa_member_main_color1;
-    &.disabled {
-      background-color: $befa_member_main_color3;
-    }
   }
 }
 
@@ -242,7 +230,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: $share_main_button_color2;
+    background: var(--member_gradient_color1);
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -252,23 +240,9 @@ input::placeholder {
     height: 100%;
   }
 
-  &.porn1 {
-    > div {
-      background: $befa_main_button_color2;
-      color: $befa_member_text_color1;
-    }
-    &.disabled {
-      > div {
-        opacity: rgba(#fff, 0.5);
-        background: $befa_main_button_color1;
-        color: $befa_member_text_color2;
-      }
-    }
-  }
-
   &.disabled {
     > div {
-      background: $share_main_button_color1;
+      background: var(--member_gradient_color2);
       pointer-events: none;
     }
   }

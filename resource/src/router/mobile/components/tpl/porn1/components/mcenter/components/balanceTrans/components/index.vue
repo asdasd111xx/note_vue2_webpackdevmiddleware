@@ -15,8 +15,7 @@
         <span
           :class="[
             $style['balance-item-vendor'],
-            $style['balance-redjackpot-text'],
-            $style[siteConfig.ROUTER_TPL]
+            $style['balance-redjackpot-text']
           ]"
         >
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
@@ -27,8 +26,7 @@
         <span
           :class="[
             $style['balance-item-money'],
-            $style['balance-redjackpot-text'],
-            $style[siteConfig.ROUTER_TPL]
+            $style['balance-redjackpot-text']
           ]"
         >
           {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
@@ -340,7 +338,7 @@
                       v-if="transOutText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${routerTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -389,7 +387,7 @@
                       v-if="transInText === vendor.text"
                       :src="
                         $getCdnPath(
-                          `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                          `/static/image/${routerTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
                         )
                       "
                       alt="sel"
@@ -421,7 +419,7 @@
             />
           </span>
           <div
-            :class="[$style['max-money-btn'], $style[siteConfig.ROUTER_TPL]]"
+            :class="[$style['max-money-btn']]"
             @click="getMaxMoney(membalance, tranOut)"
           >
             {{ $text("S_MAX", "最大") }}
@@ -431,7 +429,6 @@
       <div
         :class="[
           $style['transfer-btn'],
-          $style[siteConfig.ROUTER_TPL],
           {
             [$style['is-disable']]: btnLock || !transferMoney
           }
@@ -469,7 +466,6 @@
 <script>
 import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import { ModelSelect } from "vue-search-select";
 import ajax from "@/lib/ajax";
 import mcenter from "@/api/mcenter";
 import message from "@/router/mobile/components/common/message";
@@ -560,6 +556,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     balanceInfo() {
       const data = {};

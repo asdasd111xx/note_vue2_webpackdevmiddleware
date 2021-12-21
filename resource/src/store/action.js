@@ -19,7 +19,6 @@ import agent from "@/api/agent";
 import ajax from "@/lib/ajax";
 import bbosRequest from "@/api/bbosRequest";
 import common from "@/api/common";
-import { errorAlarm } from "@/lib/error_console";
 import game from "@/api/game";
 import getLang from "@/lib/getLang";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -135,7 +134,7 @@ export const actionChangePage = (
 ) => {
   // 自訂頁面不存在
   if (type === "custom" && !state.webInfo.pageData[page]) {
-    errorAlarm("PAGE DOES NOT EXIST", [`PAGE ID:${page}`]);
+    console.log("PAGE DOES NOT EXIST", [`PAGE ID:${page}`]);
     return;
   }
 
@@ -837,7 +836,16 @@ export const actionSetUserdata = (
       if (headers[configInfo.CDN_HEADER]) {
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
+
+      if (headers["x-cdn"]) {
+        commit(
+          types.SETSLIDECDNDOMAIN,
+          `https://${headers["x-cdn"].split(",")[0]}`
+        );
+      }
+
       commit(types.SETCDNROOT, cdnRoot);
+
       // let domain = data.ret.user.domain.toString();
       // switch (domain) {
       //   case "9999894":

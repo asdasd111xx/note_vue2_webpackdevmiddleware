@@ -23,7 +23,7 @@
   text-align: center;
   height: 65px;
   background: #fefefe;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -33,7 +33,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
 
   &.wallet {
     flex: 0;

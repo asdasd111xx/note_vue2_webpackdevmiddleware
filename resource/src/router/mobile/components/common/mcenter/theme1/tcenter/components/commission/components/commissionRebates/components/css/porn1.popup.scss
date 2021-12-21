@@ -64,6 +64,10 @@
 
     .path-back {
       border-left: 1px solid #f8f8f7;
+      color: var(--popup_text_color1);
+    }
+    .path-close {
+      color: var(--popup_text_color3);
     }
 
     .path-back,
@@ -77,12 +81,11 @@
     .path-back,
     .path-close {
       width: 50%;
-      color: $share_member_text_color4;
     }
 
     .path-only-close {
       width: 100%;
-      color: $share_member_text_color4;
+      color: var(--popup_text_color1);
     }
   }
 

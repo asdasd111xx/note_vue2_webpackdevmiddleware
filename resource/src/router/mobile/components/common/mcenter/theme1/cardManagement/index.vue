@@ -6,7 +6,9 @@
           :src="
             $getCdnPath(
               `/static/image/common/btn_back_${
-                themeTPL === 'porn1'
+                themeTPL === 'porn1' ||
+                themeTPL === 'aobo1' ||
+                themeTPL === 'sp1'
                   ? 'grey'
                   : themeTPL === 'ey1'
                   ? 'white'
@@ -70,7 +72,7 @@
         {{ item.text }}
       </div>
       <div
-        :class="[$style['active-slider'], $style[siteConfig.ROUTER_TPL]]"
+        :class="[$style['active-slider']]"
         :style="{ left: `calc(25% + 50% * ${currentTab})` }"
       />
     </div>
@@ -123,7 +125,7 @@ export default {
       return style;
     },
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     isCommon() {
       return this.$route.meta.common;
@@ -136,7 +138,7 @@ export default {
         },
         {
           key: "wallet",
-          text: ["porn1", "sg1"].includes(this.themeTPL)
+          text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
             ? "数字货币"
             : "电子钱包"
         }
@@ -162,6 +164,8 @@ export default {
         switch (themeTPL) {
           case "porn1":
           case "sg1":
+          case "aobo1":
+          case "sp1":
             return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
 
           case "ey1":
@@ -184,6 +188,8 @@ export default {
           switch (themeTPL) {
             case "porn1":
             case "sg1":
+            case "aobo1":
+            case "sp1":
               return showDetail
                 ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
                 : !isCommon
@@ -209,6 +215,8 @@ export default {
           switch (this.themeTPL) {
             case "porn1":
             case "sg1":
+            case "aobo1":
+            case "sp1":
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
 
             case "ey1":
@@ -359,10 +367,11 @@ export default {
       localStorage.removeItem("oneClickBindingMode");
       localStorage.removeItem("isBackFromService");
       localStorage.removeItem("selectTarget");
-      // 目前只有銀行卡有分兩階段
+      // 銀行卡/電子錢包分兩階段
       if (
-        this.currentPage === "addBankCard" &&
-        this.addBankCardStep === "two"
+        (this.currentPage === "addBankCard" &&
+          this.addBankCardStep === "two") ||
+        (this.currentPage === "addWalletCard" && this.addBankCardStep === "two")
       ) {
         this.step = "one";
         return;

@@ -7,7 +7,9 @@
     <div :class="$style['card-info']">
       <!-- Select Wallet Type -->
       <!-- Yabo -->
-      <template v-if="['porn1', 'sg1'].includes(themeTPL)">
+      <template
+        v-if="['porn1', 'sg1'].includes(themeTPL) && addBankCardStep === 'one'"
+      >
         <div :class="$style['wallet-block']">
           <p :class="$style['wallet-text']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -39,7 +41,7 @@
       </template>
 
       <!-- 億元 -->
-      <template v-if="['ey1'].includes(themeTPL)">
+      <!-- <template v-if="['ey1'].includes(themeTPL) && addBankCardStep === 'one'">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -67,9 +69,11 @@
             />
           </div>
         </div>
-      </template>
+      </template> -->
 
-      <template v-if="!selectTarget.oneClickBindingMode">
+      <template
+        v-if="!selectTarget.oneClickBindingMode && addBankCardStep === 'one'"
+      >
         <!-- Input -->
         <!-- 錢包地址 -->
         <div v-if="selectTarget.walletName" :class="$style['info-item']">
@@ -95,15 +99,19 @@
           <div
             v-if="
               (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
-                selectTarget.walletId === 37
+                (selectTarget.walletId === 37 && addBankCardStep === 'one')
             "
             :class="$style['qrcode']"
-            @click="setPopupStatus(true, 'qrcode')"
+            @click="
+              checkWalletPhoneVerification
+                ? goToPhoneCheck()
+                : setPopupStatus(true, 'qrcode')
+            "
           >
             <img
               :src="
                 $getCdnPath(
-                  `/static/image/${themeTPL}/mcenter/bankCard/ic_qrcode.png`
+                  `/static/image/${routerTPL}/mcenter/bankCard/ic_qrcode.png`
                 )
               "
               alt="qrcode"
@@ -133,7 +141,8 @@
         v-if="
           ['ey1'].includes(themeTPL) &&
             !selectTarget.oneClickBindingMode &&
-            selectTarget.walletName
+            selectTarget.walletName &&
+            addBankCardStep === 'one'
         "
       >
         <p :class="$style['wallet-tip']">
@@ -141,6 +150,75 @@
         </p>
       </template>
 
+      <!-- 手機驗證 -->
+      <template v-if="addBankCardStep === 'two'">
+        <div :class="$style['info-item']">
+          <p :class="$style['input-title']">手机号码</p>
+          <div :class="$style['input-wrap']">
+            <template v-if="['ey1'].includes(themeTPL)">
+              <select v-model="phoneHead" :class="$style['phone-selected']">
+                <option
+                  v-for="option in phoneHeadOption"
+                  v-bind:value="option"
+                  :key="option"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </template>
+            <input
+              v-model="formData.phone"
+              type="tel"
+              :placeholder="'请输入手机号码'"
+              :class="$style['phone-input']"
+              maxlength="36"
+              @input="verification('phone')"
+            />
+          </div>
+        </div>
+
+        <div :class="$style['info-item']">
+          <p :class="$style['input-title']">手机验证码</p>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="formData.keyring"
+              type="tel"
+              placeholder="请输入手机验证码"
+              id="phone-code"
+              @input="checkData($event.target.value, 'keyring')"
+            />
+            <div
+              :class="[
+                $style['send-keyring'],
+                $style[routerTPL],
+                { [$style.disabled]: smsTimer || !isVerifyPhone }
+              ]"
+              @click="showCaptchaPopup"
+            >
+              {{ time ? `${time}s` : "获取验证码" }}
+            </div>
+          </div>
+        </div>
+
+        <!-- 其它驗證 ex拼圖,滑動,數字... -->
+        <popup-verification
+          v-if="isShowCaptcha"
+          @show-captcha="showCaptcha"
+          @set-captcha="setCaptcha"
+          :page-type="'default'"
+        />
+      </template>
+
+      <div :class="$style['info-confirm']">
+        <div :class="$style['confirm-remind']">
+          <p v-if="addBankCardStep === 'two'">
+            1. 为确保您的资金安全，添加电子钱包需进行简单的数据核实 <br />
+            2. 因手机号码影响各项重要功能，请您务必谨慎填写 <br />
+            3.
+            {{ siteConfig.SITE_NAME }}时刻关心您的资金安全
+          </p>
+        </div>
+      </div>
       <!-- Confirm Button -->
       <div
         :class="$style['info-confirm']"
@@ -151,22 +229,27 @@
         }"
       >
         <!-- 上方 Tip 顯示 -->
-        <template v-if="selectTarget.walletName">
+        <template v-if="selectTarget.walletName && addBankCardStep === 'one'">
           <ul
             :class="[
               {
                 [$style['onTop']]:
-                  !selectTarget.oneClickBindingMode && walletTipInfo.length > 0
+                  !selectTarget.oneClickBindingMode &&
+                  walletTipInfo.length > 0 &&
+                  addBankCardStep === 'one'
               },
               {
                 [$style['onBottom']]:
-                  selectTarget.oneClickBindingMode && walletTipInfo.length > 0
+                  selectTarget.oneClickBindingMode &&
+                  walletTipInfo.length > 0 &&
+                  addBankCardStep === 'one'
               },
               {
                 [$style['no-button']]:
                   !selectTarget.oneClickBindingMode &&
                   walletTipInfo.length > 0 &&
-                  selectTarget.walletId === 37
+                  selectTarget.walletId === 37 &&
+                  addBankCardStep === 'one'
               }
             ]"
           >
@@ -183,36 +266,60 @@
           </ul>
         </template>
         <div
-          v-if="epointTimeCount > 0 && selectTarget.walletId === 48"
+          v-if="epointTimeCount > 0 && [47, 48].includes(selectTarget.walletId)"
           :class="$style['epoint-time']"
         >
           {{ `请于 ${epointTimeCount} 秒内绑定帐号` }}
         </div>
         <!-- 確認鈕 -->
+
         <div
           :class="[
             $style['submit'],
-            $style[siteConfig.ROUTER_TPL],
             {
               [$style['disabled']]:
+                (addBankCardStep === 'two' && !NextStepStatus) ||
                 (lockStatus && !selectTarget.oneClickBindingMode) ||
-                epointTimeCount > 0
+                ([47, 48].includes(selectTarget.walletId) &&
+                  epointTimeCount > 0)
             },
             {
               [$style['hidden']]:
+                addBankCardStep === 'one' &&
                 selectTarget.walletId === 37 &&
                 !selectTarget.oneClickBindingMode
             }
           ]"
           @click="handleSmbmit"
         >
-          {{
-            selectTarget.oneClickBindingMode
-              ? selectTarget.walletId === 48
-                ? "绑定钱包"
-                : "一键绑定"
-              : $text("S_CONFIRM", "确认")
-          }}
+          <span
+            v-if="
+              addBankCardStep === 'one' &&
+                checkWalletPhoneVerification &&
+                selectTarget.walletId !== 21 &&
+                selectTarget.walletId !== 47 &&
+                selectTarget.walletId !== 48
+            "
+          >
+            下一步
+          </span>
+          <span
+            v-else-if="
+              addBankCardStep === 'two' || selectTarget.walletId === 37
+            "
+            >提交</span
+          >
+          <span v-else
+            >{{
+              selectTarget.oneClickBindingMode
+                ? [47, 48].includes(selectTarget.walletId)
+                  ? "绑定钱包"
+                  : "一键绑定"
+                : checkWalletPhoneVerification
+                ? "下一步"
+                : $text("S_CONFIRM", "确认")
+            }}
+          </span>
         </div>
       </div>
     </div>
@@ -275,6 +382,8 @@
       <template v-if="showPopStatus.type === 'qrcode'">
         <popup-qrcode
           :virtualBankId="selectTarget.walletId"
+          :phone="formData.phone"
+          :keyring="formData.keyring"
           @close="closePopup"
         />
       </template>
@@ -284,6 +393,8 @@
 
 <script>
 import axios from "axios";
+import ajax from "@/lib/ajax";
+import { API_MCENTER_USER_CONFIG } from "@/config/api";
 import { mapGetters, mapActions } from "vuex";
 import i18n from "@/config/i18n";
 // import virtualBankMixin from "@/mixins/mcenter/bankCard/addCard/virtualBank";
@@ -291,11 +402,15 @@ import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrco
 import popupTip from "../popupTip";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import lib_newWindowOpen from "@/lib/newWindowOpen";
+// import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
+import walletMixin from "@/mixins/mcenter/bankCard/addCard/wallet";
+import popupVerification from "@/components/popupVerification";
 
 export default {
   components: {
     popupQrcode,
-    popupTip
+    popupTip,
+    popupVerification
   },
   props: {
     setPageStatus: {
@@ -305,10 +420,17 @@ export default {
     userLevelObj: {
       type: Object,
       default: {}
+    },
+    addBankCardStep: {
+      type: String,
+      required: true
     }
   },
+  mixins: [walletMixin],
   data() {
     return {
+      phoneHead: "+86",
+      phoneHeadOption: [],
       // 卡片有關參數
       selectTarget: {
         walletId: "",
@@ -331,6 +453,8 @@ export default {
 
       // 欄位資料
       formData: {
+        phone: "",
+        keyring: "",
         walletAddress: {
           title: i18n.t("S_WALLET_ADDRESS"),
           value: "",
@@ -381,6 +505,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   watch: {
@@ -441,6 +568,7 @@ export default {
         // 針對 Qrcode 掃碼，因不會跳轉至其它 App 或 Web，仍停留在目前 App 時才進行推播流程
         // 故已排除在開啟外部 App or Web 時，如收到推播成功，則不會進行任何動作
         if (data.event === "trade_bind_wallet") {
+          this.noticeData.pop();
           if (data.result === "ok" && !document.hidden) {
             this.actionSetGlobalMessage({
               msg: "绑定成功",
@@ -452,10 +580,12 @@ export default {
               cb: this.clearMsgCallback
             });
           } else {
-            this.actionSetGlobalMessage({
-              msg: data.msg,
-              cb: this.clearMsgCallback
-            });
+            // http://fb.vir888.com/default.asp?539073#4638722
+            // 移除推波錯誤流程 停留原頁
+            // this.actionSetGlobalMessage({
+            //   msg: data.msg,
+            //   cb: this.clearMsgCallback
+            // });
           }
         }
       }
@@ -491,6 +621,16 @@ export default {
     }
   },
   created() {
+    // 國碼
+    ajax({
+      method: "get",
+      url: API_MCENTER_USER_CONFIG,
+      errorAlert: false
+    }).then(response => {
+      if (response && response.result === "ok") {
+        this.phoneHeadOption = response.ret.config.phone.country_codes;
+      }
+    });
     Promise.all([this.getUserBindList()]).then(() => {
       this.getWalletList();
     });
@@ -531,8 +671,16 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "getCustomerServiceUrl"
+      "getCustomerServiceUrl",
+      "actionVerificationFormData"
     ]),
+    goToPhoneCheck() {
+      if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "two");
+        return;
+      }
+    },
     handleClickService() {
       localStorage.setItem("bankCardType", "wallet");
       this.$router.push("/mobile/service?redirect=bankCard");
@@ -550,6 +698,15 @@ export default {
           .replace(" ", "")
           .trim()
           .replace(/[^0-9]/g, "");
+      }
+
+      if (key === "phone") {
+        this.actionVerificationFormData({
+          target: "phone",
+          value: this.formData.phone
+        }).then(res => {
+          this.formData.phone = res;
+        });
       }
 
       if (
@@ -614,8 +771,8 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 // CGPay || 購寶，只能綁定過一次(不論存放常用 or 歷史)
-                if ([21, 37, 48].includes(item.virtual_bank_id)) {
-                  return [21, 37, 48].includes(item.virtual_bank_id);
+                if ([21, 37, 47, 48].includes(item.virtual_bank_id)) {
+                  return [21, 37, 47, 48].includes(item.virtual_bank_id);
                 } else if (
                   // 億元沒開限綁一組，則可添加多個同種類錢包，
                   // ["ey1"].includes(this.themeTPL) &&
@@ -660,7 +817,9 @@ export default {
         params: {
           lang: "zh-cn",
           address: this.formData["walletAddress"].value,
-          virtualBankId: String(this.selectTarget.walletId)
+          virtualBankId: String(this.selectTarget.walletId),
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(response => {
@@ -670,10 +829,20 @@ export default {
 
           if (errorCode !== "00" || status !== "000") {
             // this.actionSetGlobalMessage({ msg });
-            this.errorMsg = msg;
-            return;
+            if (
+              //手機驗證開啟時USDT ERC20,TRC20 驗證位址後先進入手機驗證
+              (this.selectTarget.walletId === 46 ||
+                this.selectTarget.walletId === 39) &&
+              this.checkWalletPhoneVerification &&
+              response.code == "C640022"
+            ) {
+              this.$emit("update:addBankCardStep", "two");
+              return;
+            } else {
+              this.errorMsg = msg;
+              return;
+            }
           }
-
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: this.clearMsgCallback
@@ -702,7 +871,9 @@ export default {
           // bind_type: "withdraw",
           wallet_gateway_id: 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
-          wallet_token: this.formData["CGPPwd"].value
+          wallet_token: this.formData["CGPPwd"].value,
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(response => {
@@ -749,6 +920,9 @@ export default {
         case 21:
           id = 3;
           break;
+        case 47:
+          id = 4;
+          break;
         case 48:
           id = 5;
           break;
@@ -760,10 +934,14 @@ export default {
         url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet",
         method: "get",
         params: {
-          wallet_gateway_id: id
+          username: this.memInfo.user.username,
+          wallet_gateway_id: id,
+          phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+          keyring: this.formData.keyring
         }
       })
         .then(res => {
+          // console.log("extextextetext-res", res);
           const { result, ret, msg } = res.data;
           this.isReceive = false;
 
@@ -771,10 +949,13 @@ export default {
             this.actionSetGlobalMessage({ msg });
             return Promise.resolve(false);
           }
-
+          if (result === "ok" && this.addBankCardStep === "two") {
+            this.$emit("update:addBankCardStep", "one");
+          }
           return Promise.resolve(ret.html);
         })
         .catch(error => {
+          console.log("extextextetext-error", error);
           const { msg, code } = error.response.data;
           this.isReceive = false;
           this.actionSetGlobalMessage({ msg, code });
@@ -788,16 +969,17 @@ export default {
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
       this.lockStatus = true;
-
       this.showBindingFormat = localStorage.getItem("oneClickBindingMode");
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
-      if ([21, 48].includes(this.selectTarget.walletId)) {
+      if ([21].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
         if (this.showBindingFormat) {
           this.selectTarget.oneClickBindingMode = false;
         } else {
           this.selectTarget.oneClickBindingMode = true;
         }
+      } else if ([47, 48].includes(this.selectTarget.walletId)) {
+        this.selectTarget.oneClickBindingMode = true;
       } else {
         this.selectTarget.oneClickBindingMode = false;
       }
@@ -807,7 +989,7 @@ export default {
       const { query } = this.$route;
       localStorage.removeItem("selectTarget");
       let redirect = _redirect || query?.redirect;
-
+      this.$emit("update:addBankCardStep", "one");
       if (!redirect) {
         this.setPageStatus(1, "walletCardInfo", true);
         return;
@@ -879,7 +1061,7 @@ export default {
                 this.selectTarget.oneClickBindingMode = false;
                 localStorage.setItem(
                   "oneClickBindingMode",
-                  "oneClickBindingMode"
+                  this.selectTarget.oneClickBindingMode
                 );
               } else {
                 this.selectTarget.oneClickBindingMode = true;
@@ -1063,6 +1245,31 @@ export default {
         return;
       }
 
+      //币希钱包
+      if (id === 47) {
+        this.walletTipInfo = [
+          {
+            key: "bcwallet",
+            text: `没有币希钱包帐号?`,
+            hasCallback: true,
+            dataObj: {
+              cb: () => {
+                lib_newWindowOpen(
+                  this.getCustomerServiceUrl({
+                    urlName: "btse_register",
+                    needToken: false
+                  }).then(res => {
+                    return res.uri;
+                  })
+                );
+              },
+              text: "立即申请"
+            }
+          }
+        ];
+        return;
+      }
+
       // if (
       //   ["porn1", "sg1"].includes(this.themeTPL) &&
       //   this.selectTarget.swiftCode === "BBUSDTCN1"
@@ -1084,46 +1291,79 @@ export default {
       // }
     },
     handleSmbmit() {
-      if (this.selectTarget.oneClickBindingMode) {
-        // 呼叫 API 前另需視窗
-        let newWindow = "";
-        newWindow = window.open();
-
-        const newWindowHref = uri => {
-          try {
-            newWindow.location = uri;
-          } catch (e) {
-            console.log(e);
-            console.log(newWindow);
-            console.log(uri);
+      if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
+        //手機驗證開啟時USDT ERC20,TRC20 欄位檢查錢包格式
+        if (
+          this.selectTarget.walletId === 46 ||
+          this.selectTarget.walletId === 39
+        ) {
+          this.submitByNormal();
+          if (this.isReceive) {
+            return;
           }
-        };
-        if (this.selectTarget.walletId === 48) {
-          this.epointTimeCount = 60;
-          this.epointTimeStamp = setInterval(() => {
-            if (this.epointTimeCount === 0) {
-              clearInterval(this.epointTimeStamp);
-              this.epointTimeStamp = null;
-            }
-            this.epointTimeCount -= 1;
-          }, 1000);
         }
-        this.getBindWalletInfo().then(url => {
-          if (url) {
-            newWindowHref(url);
+
+        this.NextStepStatus = false;
+        this.$emit("update:addBankCardStep", "two");
+        return;
+      }
+      //需手機驗證時購寶錢包綁定流程
+      if (
+        this.checkWalletPhoneVerification &&
+        this.selectTarget.walletId === 37
+      ) {
+        this.setPopupStatus(true, "qrcode");
+
+        setTimeout(() => {
+          if (localStorage.getItem("popupQrcode") === "success") {
+            this.$emit("update:addBankCardStep", "one");
+            localStorage.removeItem("popupQrcode");
+          }
+        }, 3000);
+
+        return;
+      } else {
+        if (this.selectTarget.oneClickBindingMode) {
+          // 呼叫 API 前另需視窗
+          let newWindow = "";
+          newWindow = window.open();
+
+          const newWindowHref = uri => {
+            try {
+              newWindow.location = uri;
+            } catch (e) {
+              console.log(e);
+              console.log(newWindow);
+              console.log(uri);
+            }
+          };
+          if ([47, 48].includes(this.selectTarget.walletId)) {
+            this.epointTimeCount = 60;
+            this.epointTimeStamp = setInterval(() => {
+              if (this.epointTimeCount === 0) {
+                clearInterval(this.epointTimeStamp);
+                this.epointTimeStamp = null;
+              }
+              this.epointTimeCount -= 1;
+            }, 1000);
+          }
+          this.getBindWalletInfo().then(url => {
+            if (url) {
+              newWindowHref(url);
+            } else {
+              newWindow.close();
+            }
+            return;
+          });
+        } else {
+          // CGPay
+          if (this.selectTarget.walletId === 21) {
+            this.submitByToken();
           } else {
-            newWindow.close();
+            this.submitByNormal();
           }
           return;
-        });
-      } else {
-        // CGPay
-        if (this.selectTarget.walletId === 21) {
-          this.submitByToken();
-        } else {
-          this.submitByNormal();
         }
-        return;
       }
     },
     setPopupStatus(isShow, type) {

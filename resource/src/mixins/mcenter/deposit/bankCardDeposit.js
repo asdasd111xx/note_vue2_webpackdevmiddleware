@@ -53,6 +53,12 @@ export default {
       defaultEpointWallet: "",
       outerCryptoOption: [],
       userBankOption: [],
+      bcCurrencyData: null,
+      selectBcCoin: {
+        balance: "",
+        currency: "",
+        name: ""
+      },
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
       showEpointWalletAddress: false,
@@ -1022,6 +1028,14 @@ export default {
         }
       }
 
+      //幣希
+      if (this.curPayInfo.payment_method_id === 32) {
+        paramsData = {
+          ...paramsData,
+          currency: this.selectBcCoin.currency
+        };
+      }
+
       let _isPWA = true;
 
       return axios({
@@ -1388,13 +1402,23 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
+      if (
+        this.curPayInfo.payment_method_id === 32 &&
+        !this.selectBcCoin.currency
+      ) {
+        return;
+      }
       return axios({
         method: "get",
         url: API_CRYPTO_MONEY,
         params: {
           type: 1,
           amount: this.moneyValue,
-          method_id: this.curPayInfo.payment_method_id
+          method_id: this.curPayInfo.payment_method_id,
+          currency:
+            this.curPayInfo.payment_method_id === 32
+              ? this.selectBcCoin.currency
+              : ""
         }
       })
         .then(response => {

@@ -3,13 +3,7 @@
 .nav-item {
   button {
     border: 1px solid #cccccc;
-    color: #CCCCCC;
+    color: #cccccc;
     border-radius: 5px;
-
-    &:active,
-    &.is-current {
-      background: linear-gradient(#fe593c, #e61938);
-      color: #FFF;
-    }
   }
 }

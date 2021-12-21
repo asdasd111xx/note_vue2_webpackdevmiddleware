@@ -158,7 +158,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { ModelSelect } from "vue-search-select";
 import mcenter from "@/api/mcenter";
 import ajax from "@/lib/ajax";
 import { getCookie } from "@/lib/cookie";
@@ -166,9 +165,6 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import yaboRequest from "@/api/yaboRequest";
 
 export default {
-  components: {
-    ModelSelect
-  },
   data() {
     return {
       balanceLock: true,

@@ -68,8 +68,7 @@
         </div>
         <div
          :class="[
-            $style['active-slider'],
-            $style[siteConfig.ROUTER_TPL]
+            $style['active-slider']
           ]"
           :style="{
             left: tabSlider,
@@ -102,7 +101,7 @@
     <div v-if="category_isShowPop" :class="$style['pop-wrap']">
       <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
       <div :class="$style['pop-menu']">
-        <div :class="[$style['pop-title'],$style[routerTPL]]">
+        <div :class="[$style['pop-title']]">
           <span @click="category_isShowPop = false">{{
             $text("S_CANCEL", "取消")
           }}</span>
@@ -125,7 +124,7 @@
             {{ item.name }}
             <icon
               v-if="category_currentIndex === index"
-              :class="[$style['select-icon'],$style[routerTPL]]"
+              :class="[$style['select-icon']]"
               name="check"
             />
           </li>

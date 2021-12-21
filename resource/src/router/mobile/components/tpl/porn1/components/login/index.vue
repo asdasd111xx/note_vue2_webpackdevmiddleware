@@ -152,11 +152,7 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  :class="[
-                    'login-button',
-                    'login-submit',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
+                  :class="['login-button', 'login-submit']"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -402,7 +398,7 @@ export default {
 }
 
 .link-submit {
-  color: $main_text_color1;
+  color: var(--main_text_color1);
 }
 .submit {
   margin: 0 auto;

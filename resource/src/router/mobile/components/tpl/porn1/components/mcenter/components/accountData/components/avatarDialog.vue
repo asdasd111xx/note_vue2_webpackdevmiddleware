@@ -7,7 +7,7 @@
           :key="`avatar-${index}`"
           :class="$style['avatar-wrap']"
         >
-          <div :class="[$style['avatar-cell'], $style[siteConfig.ROUTER_TPL]]">
+          <div :class="[$style['avatar-cell']]">
             <img
               :class="[{ [$style['active']]: currentImgID === index }]"
               :src="$getCdnPath(item.url)"
@@ -15,7 +15,7 @@
             />
             <div
               v-if="currentImgID === index"
-              :class="[$style.check, $style[siteConfig.ROUTER_TPL]]"
+              :class="[$style.check, $style[`image-${siteConfig.ROUTER_TPL}`]]"
             />
           </div>
         </div>

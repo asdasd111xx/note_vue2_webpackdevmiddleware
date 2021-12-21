@@ -77,25 +77,19 @@
   height: 35px;
   line-height: 33px;
   margin: 3px 1%;
-  border: 1px solid $share_member_text_color6;
+  border: 1px solid #eeeeee;
   border-radius: 5px;
   background-color: #fff;
   color: #a6a9b2;
   font-size: 12px;
   text-align: center;
 
-  &.porn1 {
-    &.active {
-      background: $befa_member_main_color1;
-    }
-  }
-
   &.active {
     line-height: 35px;
     border: none;
     border-radius: 3px;
-    background: $share_member_text_color1;
-    color: #fff;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
   }
 }
 
@@ -146,31 +140,17 @@
   font-size: 15px;
   text-align: center;
 }
-
-.picker-button-wrap {
-  &.porn1 {
-    .cancel {
-      background: $befa_main_button_color1;
-      color: $befa_member_text_color2;
-    }
-
-    .confirm {
-      color: $befa_member_text_color1;
-      background-image: $befa_main_button_color2;
-    }
-  }
+.confirm {
+  composes: button;
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
 }
 .cancel {
   composes: button;
-  background: $share_main_button_color1;
-  color: $share_member_text_color3;
+  background: var(--member_gradient_color2);
+  color: var(--member_text_color1);
 }
 
-.confirm {
-  composes: button;
-  color: $share_member_text_color3;
-  background: $share_main_button_color2;
-}
 .date-tip {
   position: absolute;
   min-width: 200px;

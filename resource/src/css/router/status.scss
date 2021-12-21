@@ -62,7 +62,7 @@ body {
   color: $share_text_color5;
 
   &.porn1 {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
   }
 
   &.sg1 {

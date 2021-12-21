@@ -66,7 +66,6 @@ export default {
     checkPhoneVerification() {
       // player_user_bank_phone (會員綁定銀行卡前需手機驗證，0否，1每次，2首次)
       // phone.corfirm (已認證，0未認證/1已認證/2人工驗證)
-
       let result = null;
       let verifyNum = this.memInfo.config.player_user_bank_phone;
       let isPhoneVerify =

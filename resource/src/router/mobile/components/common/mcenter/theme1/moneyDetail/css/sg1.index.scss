@@ -94,8 +94,8 @@
     line-height: 35px;
     border: none;
     border-radius: 3px;
-    background: linear-gradient(to left, #fe593c, #e61938);
-    color: #fff;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
   }
 }
 

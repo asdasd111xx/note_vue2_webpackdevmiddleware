@@ -2,7 +2,7 @@
   <div :class="$style['vip-info-wrap']">
     <template v-if="currentLevelData && currentLevelData.withdraw_fee">
       <!-- <div :class="$style['title']">VIP {{ currentLevelData.seq }}尊享</div> -->
-      <div :class="[$style['title'], $style[siteConfig.ROUTER_TPL]]">
+      <div :class="[$style['title']]">
         {{ `${currentLevelData.alias}尊享` }}
       </div>
 
@@ -186,7 +186,7 @@
         </div>
       </div>
       <div
-        :class="[$style['vip-detail'], $style[siteConfig.ROUTER_TPL]]"
+        :class="[$style['vip-detail']]"
         @click="openPromotion('promotion_vip')"
       >
         查看VIP详情 》

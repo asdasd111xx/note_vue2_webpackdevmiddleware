@@ -47,6 +47,7 @@
             <span
               :class="[
                 $style['balance-item-vendor'],
+                $style[siteConfig.ROUTER_TPL],
                 $style['balance-redjackpot-text']
               ]"
             >
@@ -224,7 +225,6 @@
         <div
           :class="[
             $style['bank-type'],
-            $style[siteConfig.ROUTER_TPL],
             { [$style['is-current']]: !epointSelectType }
           ]"
           @click="() => setWithdrawTypeIsNormal(true)"
@@ -304,7 +304,7 @@
             <div
               :class="[
                 $style['check-box'],
-                $style[siteConfig.ROUTER_TPL],
+                $style[`image-${siteConfig.ROUTER_TPL}`],
                 { [$style['checked']]: item.id === selectedCard.id },
                 {
                   [$style['disable']]: !item.allow
@@ -409,7 +409,7 @@
           }
         "
       >
-        <img :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/add.png`)" />
+        <img :src="$getCdnPath(`/static/image/${routerTPL}/mcenter/add.png`)" />
         &nbsp;
         <span>{{ "添加提现方式" }}</span>
       </div>
@@ -561,7 +561,7 @@
           :placeholder="valuePlaceholder"
           @keyup="moneyUSDT($event)"
         />
-        <span :class="[$style['withdraw-max'], $style[siteConfig.ROUTER_TPL]]">
+        <span :class="[$style['withdraw-max']]">
           <span @click="handleMaxWithdraw">
             {{ $text("S_WITHRAW_MAX2", "最高提现") }}
           </span>
@@ -630,12 +630,17 @@
       <div v-if="isSelectedUSDT" :class="$style['crypto-block']">
         <!-- <span :class="$style['money-currency']">¥</span> -->
         <span :class="$style['money-currency']"
-          >{{ selectedCard.name }}到帐</span
+          >{{
+            selectedCard.bank_id === 2025 ? "币希" : selectedCard.name
+          }}到帐</span
         >
         <span :class="$style['money-currency']">{{
-          formatThousandsCurrency(cryptoMoney)
+          selectedCard.bank_id === 2025
+            ? formatThousandsCurrencyFix(cryptoMoney)
+            : formatThousandsCurrency(cryptoMoney)
         }}</span>
         <span v-if="selectedCard.name === 'CGPay'">USDT</span>
+        <span v-else-if="selectedCard.bank_id === 2025">USDT</span>
       </div>
 
       <!-- 參考匯率 -->
@@ -654,14 +659,13 @@
       <!-- Yabo -->
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="[$style['btn-wrap']]">
-          <div :class="[$style['submit-btn'], $style[siteConfig.ROUTER_TPL]]">
+          <div :class="[$style['submit-btn']]">
             <div @click="linkToRecharge">额度转让&nbsp;实时返佣</div>
           </div>
 
           <div
             :class="[
               $style['submit-btn'],
-              $style[siteConfig.ROUTER_TPL],
               { [$style['disabled']]: lockSubmit }
             ]"
           >
@@ -754,6 +758,7 @@
       <template v-if="showPopStatus.type === 'check'">
         <widthdraw-tips
           :actual-money="actualMoneyPlusOffer()"
+          :select-card="selectedCard"
           :crypto-money="cryptoMoney"
           :withdraw-value="+withdrawValue"
           :type="widthdrawTipsType"
@@ -1183,8 +1188,13 @@ export default {
       let cgpayCurrencyUSDT =
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28;
+      //幣希錢包
+      let useBcWallet = this.selectedCard.bank_id === 2025;
 
-      return (withdrawType || cgpayCurrencyUSDT) && !this.epointSelectType;
+      return (
+        (withdrawType || cgpayCurrencyUSDT || useBcWallet) &&
+        !this.epointSelectType
+      );
     },
     // 強制出款狀態
     forceStatus() {
@@ -1257,14 +1267,14 @@ export default {
       }
     },
     hasOffer() {
-      // return (
-      //   (this.isSelectedUSDT ||
-      //     this.selectedCard.bank_id == 2009 ||
-      //     this.selectedCard.bank_id == 2016 ||
-      //     this.selectedCard.bank_id == 2026) &&
-      //   this.selectedCard.offer_percent > 0
-      // );
-      return true
+      return (
+        (this.isSelectedUSDT ||
+          this.selectedCard.bank_id == 2009 ||
+          this.selectedCard.bank_id == 2016 ||
+          this.selectedCard.bank_id == 2025 ||
+          this.selectedCard.bank_id == 2026) &&
+        this.selectedCard.offer_percent > 0
+      );
     },
 
     marqueeTitle() {
@@ -1340,7 +1350,9 @@ export default {
       //選擇 CGPAY-USDT ,USDT
       if (
         this.withdrawCurrency.method_id === 28 ||
-        this.selectedCard.bank_id === 3002
+        this.withdrawCurrency.method_id === 32 ||
+        this.selectedCard.bank_id === 3002 ||
+        this.selectedCard.bank_id === 2025
       ) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
       }
@@ -1455,13 +1467,15 @@ export default {
     handleSelectCard(item) {
       console.log(item);
       this.updateAmount(item.swift_code);
+      this.updateTime = true;
       this.selectedCard = {
         id: item.id,
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
         swift_code: item.swift_code,
         offer_percent: item.offer_percent,
-        offer_limit: item.offer_limit
+        offer_limit: item.offer_limit,
+        currency: item.currency
       };
 
       switch (item.withdrawType) {
@@ -1475,6 +1489,9 @@ export default {
             item.alias.indexOf("-")
           );
           break;
+      }
+      if (this.selectedCard.bank_id === 2025) {
+        this.getCryptoRate(31);
       }
       this.chooseUSDT();
       // if (this.withdrawValue) {
@@ -1789,6 +1806,8 @@ export default {
           .method_id;
       } else if (this.selectedCard.bank_id === 2009) {
         methonId = this.withdrawCurrency.method_id;
+      } else if (this.selectedCard.bank_id === 2025) {
+        methonId = this.selectedCard.currency[0].method_id;
       } else {
         methonId = "";
       }
@@ -1942,16 +1961,18 @@ export default {
     convertCryptoMoney() {
       let _params = {
         type: 2,
-        amount: this.actualMoneyPlusOffer(false)
+        amount: this.actualMoneyPlusOffer(false),
+        method_id: "" //改為必填
       };
       if (
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28
       ) {
-        _params = {
-          ..._params,
-          method_id: this.withdrawCurrency.method_id
-        };
+        _params.method_id = this.withdrawCurrency.method_id;
+      }
+
+      if (this.selectedCard.bank_id === 2025) {
+        _params.method_id = this.selectedCard.currency[0].method_id;
       }
 
       if (
@@ -1963,11 +1984,7 @@ export default {
         });
         let methonId = this.withdrawUserData.crypto[methinIdx].currency[0]
           .method_id;
-
-        _params = {
-          ..._params,
-          method_id: methonId
-        };
+        _params.method_id = methonId;
       }
 
       return axios({
@@ -2235,6 +2252,9 @@ export default {
             )["offer_percent"],
             offer_limit: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
               "offer_limit"
+            ],
+            currency: JSON.parse(localStorage.getItem("tmp_w_selectedCard"))[
+              "currency"
             ]
           }
         : {
@@ -2250,7 +2270,8 @@ export default {
             withdrawType: defaultCard?.withdrawType,
             swift_code: defaultCard?.swift_code,
             offer_percent: defaultCard?.offer_percent,
-            offer_limit: defaultCard?.offer_limit
+            offer_limit: defaultCard?.offer_limit,
+            currency: defaultCard?.currency
           };
 
       // 更新 Withdraw Info
@@ -2329,6 +2350,12 @@ export default {
       }
       return thousandsCurrency(Number(value).toFixed(2));
     },
+    formatThousandsCurrencyFix(value, fixCount) {
+      if (value === "--") {
+        return "--";
+      }
+      return thousandsCurrency(value);
+    },
     //普通提現/e點富
     setWithdrawTypeIsNormal(type) {
       if (type) {
@@ -2358,6 +2385,23 @@ export default {
         this.getWithdrawOffer(this.withdrawValue);
       }
     },
+    //取得加密貨幣匯率
+    getCryptoRate(id) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Crypto/Rate`,
+        params: {
+          username: "",
+          method_id: id
+        }
+      }).then(res => {
+        // console.log(res);
+        if (res.errorCode === "00" && res.status === "000") {
+          console.log(res);
+        } else {
+        }
+      });
+    }
   },
   destroyed() {
     this.resetTimerStatus();
