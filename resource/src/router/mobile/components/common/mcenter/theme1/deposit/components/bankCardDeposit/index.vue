@@ -6,38 +6,40 @@
     >
       {{ topPromotionMessage }}
     </div> -->
-    <marquee
-      v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
-      :list="marqueeList"
-      :titleList="marqueeTitle"
-      :origin="'deposit'"
-    />
+    <div :class="[$style['header-wrap']]">
+      <marquee
+        v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
+        :list="marqueeList"
+        :titleList="marqueeTitle"
+        :origin="'deposit'"
+      />
 
-    <swiper
-      v-if="depositData.length > 1"
-      :options="categoryOptions"
-      :class="$style['swiper-wrap']"
-    >
-      <swiper-slide
-        v-for="(listItem, index) in depositData"
-        :key="`swiper-data-${index}`"
-        :class="[
-          $style['swiper-item'],
-          {
-            [$style['is-current']]:
-              listItem.payment_group_id === curModeGroup.payment_group_id
-          }
-        ]"
+      <swiper
+        v-if="depositData.length > 1"
+        :options="categoryOptions"
+        :class="$style['swiper-wrap']"
       >
-        <span @click="modeChange(listItem, index)">{{
-          listItem.payment_group_name || listItem.name
-        }}</span>
-      </swiper-slide>
-    </swiper>
-
+        <swiper-slide
+          v-for="(listItem, index) in depositData"
+          :key="`swiper-data-${index}`"
+          :class="[
+            $style['swiper-item'],
+            {
+              [$style['is-current']]:
+                listItem.payment_group_id === curModeGroup.payment_group_id
+            }
+          ]"
+        >
+          <span @click="modeChange(listItem, index)">{{
+            listItem.payment_group_name || listItem.name
+          }}</span>
+        </swiper-slide>
+      </swiper>
+    </div>
     <div
       v-if="depositData.length > 0 && submitStatus === 'stepOne'"
       :class="$style['deposit-edit-wrap']"
+      :style="{ 'margin-top': `${depositWrapMarignTop}px` }"
     >
       <template v-if="Object.keys(curModeGroup).length > 0">
         <div :class="$style['bank-card-wrap']">

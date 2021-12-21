@@ -1293,3 +1293,14 @@
     border-top: 1px solid #eee;
   }
 }
+
+.header-wrap {
+  position: fixed;
+  top: 43px;
+  z-index: 10;
+  width: 100%;
+}
+
+.deposit-edit-wrap {
+  margin-top: 35px;
+}

@@ -838,7 +838,7 @@ export const actionSetUserdata = (
       }
 
       const prodVendor = ["67", "80", "41", "92", "94"];
-      console.log(state.webDomain.domain);
+
       if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
         commit(
           types.SETSLIDECDNDOMAIN,
