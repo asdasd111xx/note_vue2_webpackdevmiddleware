@@ -177,35 +177,15 @@
     display: inline-block;
     text-align: center;
     margin: 0 10px;
-    color: $share_text_color2;
+    color: var(--main_text_color4);
     &.link-submit {
-      color: $share_text_color3;
-    }
-
-    &.porn1 {
-      &.link-join-mem {
-        color: var(--main_text_color4);
-      }
-
-      &.link-submit {
-        color: $befa_main_color;
-      }
-    }
-
-    &.sp1 {
-      &.link-join-mem {
-        color: var(--main_text_color4);
-      }
-
-      &.link-submit {
-        color: $sp1_main_color1;
-      }
+      color: var(--main_text_color3);
     }
   }
 }
 
 .version {
-  color: var(--main_text_color3);
+  color: #414655;
   position: absolute;
   right: 14px;
   bottom: 5px;

@@ -166,11 +166,11 @@
     margin: 0 10px;
 
     &.link-submit {
-      color: #6aaaf5;
+      color: var(--main_text_color3);
     }
 
     a {
-      color: #5e626d;
+      color: var(--main_text_color4);
     }
   }
 }
