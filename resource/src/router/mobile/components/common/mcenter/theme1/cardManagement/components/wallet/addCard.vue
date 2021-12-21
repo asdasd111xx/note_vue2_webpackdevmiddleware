@@ -41,7 +41,7 @@
       </template>
 
       <!-- 億元 -->
-      <template v-if="['ey1'].includes(themeTPL) && addBankCardStep === 'one'">
+      <!-- <template v-if="['ey1'].includes(themeTPL) && addBankCardStep === 'one'">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">
             {{ $text("S_WALLET_TYPE", "钱包类型") }}
@@ -69,7 +69,7 @@
             />
           </div>
         </div>
-      </template>
+      </template> -->
 
       <template
         v-if="!selectTarget.oneClickBindingMode && addBankCardStep === 'one'"
@@ -280,7 +280,8 @@
               [$style['disabled']]:
                 (addBankCardStep === 'two' && !NextStepStatus) ||
                 (lockStatus && !selectTarget.oneClickBindingMode) ||
-                epointTimeCount > 0
+                ([47, 48].includes(selectTarget.walletId) &&
+                  epointTimeCount > 0)
             },
             {
               [$style['hidden']]:
@@ -968,16 +969,17 @@ export default {
       this.selectTarget.walletId = bank.id;
       this.selectTarget.swiftCode = bank.swift_code;
       this.lockStatus = true;
-
       this.showBindingFormat = localStorage.getItem("oneClickBindingMode");
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
-      if ([21, 47, 48].includes(this.selectTarget.walletId)) {
+      if ([21].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
         if (this.showBindingFormat) {
           this.selectTarget.oneClickBindingMode = false;
         } else {
           this.selectTarget.oneClickBindingMode = true;
         }
+      } else if ([47, 48].includes(this.selectTarget.walletId)) {
+        this.selectTarget.oneClickBindingMode = true;
       } else {
         this.selectTarget.oneClickBindingMode = false;
       }
@@ -1059,7 +1061,7 @@ export default {
                 this.selectTarget.oneClickBindingMode = false;
                 localStorage.setItem(
                   "oneClickBindingMode",
-                  "oneClickBindingMode"
+                  this.selectTarget.oneClickBindingMode
                 );
               } else {
                 this.selectTarget.oneClickBindingMode = true;
