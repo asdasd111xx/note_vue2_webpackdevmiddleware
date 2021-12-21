@@ -162,7 +162,13 @@
               </div>
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
-                <div :class="['link-button', 'link-join-mem']">
+                <div
+                  :class="[
+                    'link-button',
+                    'link-join-mem',
+                    this.siteConfig.ROUTER_TPL
+                  ]"
+                >
                   <span @click="checkLayeredURL">
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
