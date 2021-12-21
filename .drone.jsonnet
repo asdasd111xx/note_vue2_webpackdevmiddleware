@@ -339,7 +339,7 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     # All
     buildall("QA","yaboxxx-web","all"),
     buildall("Beta","yaboxxx-web","all"),
-    // buildall("Prod","yaboxxx-web","all"),
+    buildall("Prod","yaboxxx-web","all"),
 
 
     # istio-sp51
