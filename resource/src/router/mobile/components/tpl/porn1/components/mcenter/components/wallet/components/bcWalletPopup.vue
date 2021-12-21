@@ -74,7 +74,7 @@
               )
             "
           />
-          <div>暫時沒有餘額</div>
+          <div>暂时没有余额</div>
         </div>
         <div
           :class="[$style['pay-code'], $style[routerTPL]]"
