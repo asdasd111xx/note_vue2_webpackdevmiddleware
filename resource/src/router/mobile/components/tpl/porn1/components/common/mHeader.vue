@@ -152,7 +152,11 @@
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
         <img
-          :src="$getCdnPath('/static/image/porn1/common/btn_setting.png')"
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.ROUTER_TPL}/common/btn_setting.png`
+            )
+          "
           @click="handleClickSetting"
         />
         <div>
