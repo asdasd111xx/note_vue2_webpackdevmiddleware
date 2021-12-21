@@ -1454,7 +1454,7 @@ export default {
           //當切換成USDT和歸零的時候才重call秒數
           if (this.updateTime) {
             this.updateTime = false;
-            this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+            this.countdownSec = ret.ttl;
           }
 
           // 僅限按下按鈕觸發，@input & @blur 皆不會觸發

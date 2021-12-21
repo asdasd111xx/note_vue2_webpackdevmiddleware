@@ -1852,6 +1852,7 @@ export default {
               // 更新 Withdraw Info
               this.updateAmount(this.selectedCard.swift_code);
               this.isSuccessAlertShow = true;
+              this.errTips = "";
               // this.actionSetGlobalMessage({
               //   msg: "提现成功",
               //   cb: () => {
@@ -1891,6 +1892,7 @@ export default {
                   // 更新 Withdraw Info
                   this.updateAmount(this.selectedCard.swift_code);
                   this.isSuccessAlertShow = true;
+                  this.errTips = "";
                   // this.actionSetGlobalMessage({
                   //   msg: "提现成功"
                   // });

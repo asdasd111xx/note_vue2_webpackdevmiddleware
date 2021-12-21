@@ -536,7 +536,7 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: $share_member_text_color4;
+    background-color: #222;
   }
 
   &.av.active .line {
@@ -589,9 +589,9 @@ export default {
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid #d5bea4;
+    border: 1px solid #222;
     border-radius: 5px;
-    color: #d5bea4;
+    color: #222;
     font-size: 14px;
     text-align: center;
 
@@ -637,7 +637,7 @@ export default {
   padding-left: 20px;
   background: url("/static/image/_new/common/icon_item.png") 0 50% no-repeat;
   background-size: 15px 15px;
-  color: $share_member_text_color4;
+  color: #222;
   font-weight: 700;
   font-size: 12px;
 
@@ -660,7 +660,7 @@ export default {
   color: #fff;
   font-size: 12px;
   text-align: center;
-  background: $share_main_button_color2;
+  background: #3354ad;
   &.gay {
     background: #4a8cb8;
   }

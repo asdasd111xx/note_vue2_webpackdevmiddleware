@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="routerTPL === 'porn1'"
-    :class="[$style.footer, 'clearfix']"
+    :class="[$style.footer, $style[siteConfig.ROUTER_TPL], 'clearfix']"
     id="footer"
   >
     <div
@@ -298,6 +298,10 @@ export default {
   background: -o-linear-gradient(left, #ffffff, #eeeeee);
   background: -moz-linear-gradient(left, #ffffff, #eeeeee);
   background: linear-gradient(to left, #ffffff, #eeeeee);
+  &.porn1 {
+    background: url("/static/image/porn1/common/footer/bg_tabbar.png") 50% 40% /
+      100% no-repeat;
+  }
 
   border-radius: 20px 20px 0 0;
   box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
@@ -309,6 +313,7 @@ export default {
   height: 45px;
   color: $share_footer_color1;
   position: relative;
+  font-weight: 700;
 
   &.active {
     color: $share_footer_active_color1;

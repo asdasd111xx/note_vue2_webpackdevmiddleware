@@ -45,7 +45,7 @@
         <div :class="$style['no-data']">
           <div :class="$style['search-img']">
             <img
-              :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
+              :src="$getCdnPath('/static/image/common/ic_search_grey.png')"
               alt="search"
             />
           </div>
