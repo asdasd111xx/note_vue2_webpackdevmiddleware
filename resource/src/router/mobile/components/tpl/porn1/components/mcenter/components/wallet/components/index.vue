@@ -448,8 +448,8 @@ export default {
       redJackpotData: null,
       loginMoney: "",
       // updateBalance: null
-      bcWalletEnableType: true,
-      bcWalletBindType: true,
+      bcWalletEnableType: false,
+      bcWalletBindType: false,
       bcMoneyShowType: false,
       bcCurrencyData: {
         bind: false,
@@ -1039,7 +1039,6 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
         if (res.status === "000") {
           this.bcWalletBindType = res.data.bind;
           this.bcCurrencyData = res.data;
