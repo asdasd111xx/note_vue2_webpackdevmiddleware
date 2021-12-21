@@ -322,10 +322,7 @@
       </div>
     </template>
 
-    <div
-      :class="[$style['invite-wrap'], $style[siteConfig.ROUTER_TPL]]"
-      @click="onClickInvite"
-    >
+    <div :class="[$style['invite-wrap']]" @click="onClickInvite">
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>

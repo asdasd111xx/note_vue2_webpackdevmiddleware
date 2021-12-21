@@ -29,12 +29,7 @@
                 </div>
               </div>
             </div>
-            <div
-              :class="[
-                $style['process-bar-line'],
-                $style[siteConfig.ROUTER_TPL]
-              ]"
-            >
+            <div :class="[$style['process-bar-line']]">
               <div
                 :class="$style['process-bar-current-line']"
                 :style="{
