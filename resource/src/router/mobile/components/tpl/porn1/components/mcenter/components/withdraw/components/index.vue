@@ -933,6 +933,11 @@ export default {
       if (value === 2009) {
         this.selectedCard.name = "CGPay";
       }
+    },
+    actualMoney(value) {
+      if (this.isSelectedUSDT) {
+        this.convertCryptoMoney();
+      }
     }
   },
   created() {
@@ -1442,7 +1447,7 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
-      console.log(item);
+      // console.log(item);
       this.updateAmount(item.swift_code);
       this.updateTime = true;
       this.selectedCard = {
@@ -2368,7 +2373,7 @@ export default {
       }).then(res => {
         // console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
-          console.log(res);
+          // console.log(res);
         } else {
         }
       });

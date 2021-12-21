@@ -1082,7 +1082,7 @@ export default {
             eventLabel: "success"
           });
 
-          console.log(ret, _isWebview);
+          // console.log(ret, _isWebview);
 
           // 如有回傳限制時間
           if (ret.remit.limit_time) {
@@ -1480,7 +1480,6 @@ export default {
     },
     // 取得使用者站外錢包入款錢包地址
     getVendorCryptoOuterUserAddressList() {
-      console.log("getVendorCryptoOuterUserAddressList");
       return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_OUTER_WALLET,
@@ -1490,7 +1489,7 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            console.log(response);
+            // console.log(response);
             this.outerCryptoOption = [];
             this.defaultOuterCrypto = "";
             response.data.ret.forEach(outerAddress => {
@@ -1513,7 +1512,7 @@ export default {
     },
     // 取得使用者銀行卡列表(迅付)
     getUserBankList() {
-      console.log("API_MCENTER_DEPOSIT_BANK");
+      // console.log("API_MCENTER_DEPOSIT_BANK");
       return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_BANK,
@@ -1521,7 +1520,7 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            console.log(response);
+            // console.log(response);
             this.userBankOption = [];
             this.userBankOption = response.data.ret;
             this.userBankOption.push({ account: "其他银行卡" });

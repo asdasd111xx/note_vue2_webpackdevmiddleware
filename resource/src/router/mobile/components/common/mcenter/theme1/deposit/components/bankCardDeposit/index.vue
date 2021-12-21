@@ -2443,7 +2443,7 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.status === "000") {
           this.bcCurrencyData = res.data;
 
@@ -2496,7 +2496,7 @@ export default {
       });
     },
     setBcCurrency(currency) {
-      console.log(currency);
+      // console.log(currency);
       this.selectBcCoin = currency;
       this.updateTime = true;
       this.convertCryptoMoney();
