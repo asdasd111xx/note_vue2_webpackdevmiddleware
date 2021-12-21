@@ -45,10 +45,9 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mcenter from "@/api/mcenter";
-import member from "@/api/member";
-import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import avatarEditer from "./avatarEditer";
+
 export default {
   components: {
     pageLoading: () =>
@@ -90,12 +89,7 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
-    }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    }
+    })
   },
   mounted() {
     // 是否自訂上傳頭像
@@ -107,7 +101,11 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionGetExtRedirect"
+    ]),
     onClose(index) {
       localStorage.removeItem("tmp-avatar-img");
       this.$emit("close", index);
@@ -137,23 +135,34 @@ export default {
       }
 
       this.isPageLoading = true;
-      mcenter
-        .accountDataSet({
-          params: { image: index, custom: false },
-          success: () => {
-            this.onClose(index);
-            setTimeout(() => {
-              this.isPageLoading = false;
-            }, 500);
-          },
-          fail: res => {
-            this.actionSetGlobalMessage({ msg: res.data.msg });
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/head-photo",
+        method: "put",
+        data: {
+          image_file: "",
+          head_photo_id: index
+        }
+      });
+
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player`,
+        params: {
+          image: index,
+          custom: false
+        }
+      }).then(res => {
+        if (res && res.data && res.status === "000") {
+          this.onClose(index);
+          setTimeout(() => {
             this.isPageLoading = false;
-          }
-        })
-        .then(() => {
+          }, 500);
+        } else {
+          this.actionSetGlobalMessage({ msg: res.data.msg });
           this.isPageLoading = false;
-        });
+        }
+      });
     },
     selectImg(index) {
       this.currentImgID = index;
@@ -174,6 +183,4 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" src="../css/porn1.avater.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/sg1.avater.scss" module="$style_sg1"></style>
+<style lang="scss" src="../css/sg1.avater.scss" module></style>

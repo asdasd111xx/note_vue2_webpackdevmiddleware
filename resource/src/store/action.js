@@ -836,7 +836,7 @@ export const actionSetUserdata = (
       if (headers[configInfo.CDN_HEADER]) {
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
-      console.log(headers["x-cdn"]);
+
       if (headers["x-cdn"]) {
         commit(
           types.SETSLIDECDNDOMAIN,
@@ -2521,6 +2521,7 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
     data = {}
   } = params;
 
+  console.log(params);
   return goLangApiRequest({
     method: "post",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/${externalID}`,

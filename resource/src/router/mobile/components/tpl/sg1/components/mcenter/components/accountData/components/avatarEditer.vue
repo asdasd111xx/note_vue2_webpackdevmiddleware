@@ -65,8 +65,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mcenter from "@/api/mcenter";
-import member from "@/api/member";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 export default {
   components: {
@@ -117,11 +116,6 @@ export default {
       memCurrency: "getMemCurrency",
       siteConfig: "getSiteConfig"
     }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
     headerConfig() {
       return {
         prev: true,
@@ -134,7 +128,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
     chooseFile() {
       // 檢查相機權限 web clip似乎沒用
       //   try {
@@ -162,6 +156,15 @@ export default {
       try {
         this.$refs.cropper.getCropBlob(data => {
           if (data) {
+            let liveFormData = new FormData();
+            liveFormData.append("image_file", data);
+
+            this.actionGetExtRedirect({
+              api_uri: "/api/platform/v1/user/head-photo",
+              method: "put",
+              data: liveFormData
+            });
+
             let formData = new FormData();
             formData.append("custom_image", data);
             axios({
@@ -238,8 +241,7 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/porn1.avater.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/sg1.avater.scss" module="$style_sg1"></style>
+<style lang="scss" src="../css/sg1.avater.scss" module></style>
 <style>
 /* 複寫套件 */
 .vue-cropper {
