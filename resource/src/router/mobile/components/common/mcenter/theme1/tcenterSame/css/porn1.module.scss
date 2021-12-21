@@ -292,6 +292,10 @@ $buttonTextColor: #fff;
   background-color: #dddddd;
   font-weight: bold;
 
+  &.porn1 {
+    background-color: #f2f2f2;
+  }
+
   &::before {
     content: "";
     position: relative;
