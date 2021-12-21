@@ -570,7 +570,7 @@
       <!-- 優惠提示 -->
       <div v-if="hasOffer" :class="[$style['offer']]">
         <span>
-          {{`加送 ${3} %提现优惠`}}
+          {{`加送 ${+offerInfo.offer_percent} %提现优惠`}}
         </span>
         <span :class="[$style['option']]" @click="showRealStatusType(true)">详情</span>
       </div>
@@ -1465,7 +1465,7 @@ export default {
       this.isShowMore = !this.isShowMore;
     },
     handleSelectCard(item) {
-      console.log(item);
+      // console.log(item);
       this.updateAmount(item.swift_code);
       this.updateTime = true;
       this.selectedCard = {
@@ -1494,6 +1494,7 @@ export default {
         this.getCryptoRate(31);
       }
       this.chooseUSDT();
+      this.getWithdrawOffer()
       // if (this.withdrawValue) {
       //   this.verification("withdrawValue", this.withdrawValue);
       // }
@@ -2110,6 +2111,7 @@ export default {
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
       this.chooseUSDT();
+      this.getWithdrawOffer()
 
       // 選項停留在 USDT 時，不執行重新刷新匯率動作
       if (this.isSelectedUSDT) {
@@ -2397,7 +2399,7 @@ export default {
       }).then(res => {
         // console.log(res);
         if (res.errorCode === "00" && res.status === "000") {
-          console.log(res);
+          // console.log(res);
         } else {
         }
       });

@@ -328,7 +328,7 @@ export default {
 
       textValue += this.offerInfo.is_full_offer
         ? "• 今日领取已达上限"
-        : `•今日优惠已领 ${this.formatThousandsCurrency(
+        : `• 今日优惠已领 ${this.formatThousandsCurrency(
             this.offerInfo.gotten_offer
           )}元`;
 
@@ -665,13 +665,23 @@ export default {
     },
     // 取得會員層級當日取款試算優惠、金額(迅付)
     getWithdrawOffer(amount) {
-      console.log(123);
+      let method_id = 0;
+      if (this.selectedCard.bank_id === 2009) {
+        method_id = this.withdrawCurrency.method_id;
+      } else {
+        method_id = this.selectedCard.currency
+          ? this.selectedCard.currency[0]
+            ? this.selectedCard.currency[0].method_id
+            : 0
+          : 0;
+      }
+
       return axios({
         method: "get",
         url:
           "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/vendor_user_level/withdraw/offer",
         params: {
-          payment_method_id: 0, //銀行卡時=0
+          payment_method_id: method_id, //銀行卡時=0
           amount: amount
         }
       })
