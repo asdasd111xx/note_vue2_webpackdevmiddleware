@@ -99,7 +99,7 @@ export default {
 .info-block {
   position: relative;
   padding: 10px 0;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 

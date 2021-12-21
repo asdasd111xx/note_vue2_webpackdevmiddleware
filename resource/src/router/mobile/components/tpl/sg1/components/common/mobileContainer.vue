@@ -48,11 +48,11 @@ export default {
   components: {
     appTips,
     mHeader: () => import(/* webpackChunkName: 'mHeader' */ "./mHeader"),
-    mFooter: () => import(/* webpackChunkName: 'mFooter' */ "./mFooter"),
-    agentNote: () =>
-      import(
-        /* webpackChunkName: 'note' */ "@/router/agent/components/common/note"
-      )
+    mFooter: () => import(/* webpackChunkName: 'mFooter' */ "./mFooter")
+    // agentNote: () =>
+    //   import(
+    //     /* webpackChunkName: 'note' */ "@/router/agent/components/common/note"
+    //   )
   },
   data() {
     return {

@@ -29,7 +29,7 @@
                 </div>
               </div>
             </div>
-            <div :class="$style['process-bar-line']">
+            <div :class="[$style['process-bar-line']]">
               <div
                 :class="$style['process-bar-current-line']"
                 :style="{
@@ -40,7 +40,20 @@
 
             <div :class="$style['process-bar-bottom']">
               <span>{{ "还差" }}</span>
-              <span>{{ item.lack }}</span>
+              <span
+                :class="
+                  $style[
+                    `${
+                      routerTPL === 'porn1'
+                        ? item.lack > 0
+                          ? 'red'
+                          : 'blue'
+                        : 'blue'
+                    }`
+                  ]
+                "
+                >{{ item.lack }}</span
+              >
             </div>
           </div>
         </div>
@@ -230,6 +243,9 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     detailList() {
       //page1 有效投注金額、会员人数

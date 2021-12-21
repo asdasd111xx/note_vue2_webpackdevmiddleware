@@ -220,14 +220,12 @@
   white-space: nowrap;
   cursor: pointer;
   border-radius: 3px;
-  color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
 
   &.disabled {
     pointer-events: none;
-    opacity: 0.5;
+    background: var(--member_gradient_color2);
   }
 }
 

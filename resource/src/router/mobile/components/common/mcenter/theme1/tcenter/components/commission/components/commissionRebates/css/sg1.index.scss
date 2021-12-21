@@ -3,12 +3,12 @@
   .content-item {
     .rebate-btn {
       button {
-        background: linear-gradient(to left, #fe593c, #e61938);
+        background: var(--member_gradient_color1);
       }
 
       .unrebate-btn {
         color: #fff;
-        background: linear-gradient(to left, #fed3cb, #ffc5ce);
+        background: var(--member_gradient_color2);
       }
     }
   }

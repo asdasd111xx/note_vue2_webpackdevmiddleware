@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div :class="$style['pop-wrap']">
+    <div :class="[$style['pop-wrap'], $style[siteConfig.ROUTER_TPL]]">
       <div :class="$style['pop-mask']" />
       <div :class="$style['pop-block']">
         <div v-if="!computeState" :class="$style['close-img']" @click="close">
@@ -28,9 +28,9 @@
               <div>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</div>
               <span
                 >{{
-                  caculateData ? caculateData[0].start_at : data.start_at
+                  caculateData[0] ? caculateData[0].start_at : data.start_at
                 }}~{{
-                  caculateData ? caculateData[0].end_at : data.end_at
+                  caculateData[0] ? caculateData[0].end_at : data.end_at
                 }}</span
               >
             </div>
@@ -68,6 +68,12 @@
             <template v-else>
               <div :class="$style['tips']">
                 如欲离开本画面, 请稍候至返水历史查看记录
+              </div>
+              <div
+                v-if="['porn1'].includes(this.routerTPL)"
+                :class="$style['tips-close']"
+              >
+                {{ $text("S_CLOSE") }}
               </div>
             </template>
           </div>
@@ -108,6 +114,9 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {

@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .option {
   position: fixed;
   height: 43px;
@@ -12,16 +13,16 @@
     padding: 3px 0px;
     line-height: 17px;
     height: 24px;
-    color: #ffffff;
+    color: var(--member_text_color1);
     text-align: center;
     font-weight: bold;
     width: 75px;
     border-radius: 4px;
-    background: linear-gradient(to right, #F9DDBD, #BD9D7D);
+    background: var(--redpot_button_color);
   }
 
   .option1 {
-    color: #FB7126;
+    color: #fb7126;
     margin-top: 3px;
     margin-right: 10px;
   }
@@ -31,12 +32,12 @@
     margin-top: 4px;
 
     .title {
-      color: #5E626D;
+      color: #5e626d;
       margin-right: 5px;
     }
 
     .time {
-      color: #FB7126;
+      color: #fb7126;
     }
   }
 }
@@ -75,7 +76,7 @@
   text-align: center;
 
   .money-text {
-    color: #BF8646;
+    color: var(--member_color100);
     word-break: break-word;
   }
 }
@@ -84,7 +85,7 @@
   display: flex;
   word-break: break-word;
   padding: 15px;
-  color: #AAAAAA;
+  color: #aaaaaa;
   background: #fff;
   border-top: 1px solid #eee;
   border-left: 1px solid #eee;

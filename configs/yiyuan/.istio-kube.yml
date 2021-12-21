@@ -9,7 +9,7 @@ metadata:
     base: yiyuan-frontend
   name: {{.deployName}}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: yiyuan-frontend-proxy-{{.env}}

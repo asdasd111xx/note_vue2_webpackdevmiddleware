@@ -134,11 +134,11 @@ export default {
 
 .content {
   padding: 17px 13px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   text-align: center;
 
   .title {
-    color: $main_text_color3;
+    color: var(--main_text_color3);
     font-size: 18px;
     font-weight: 700;
   }
@@ -178,7 +178,7 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: #d1b79c;
+    color: $share_member_text_color4;
   }
 }
 </style>

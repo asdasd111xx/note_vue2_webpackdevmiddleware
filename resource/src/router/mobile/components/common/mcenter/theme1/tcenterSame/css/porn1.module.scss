@@ -23,14 +23,14 @@ $buttonTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: $main_text_color2;
+  color: var(--member_text_color3);
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: #be9e7f;
+    color: var(--member_color1);
   }
 }
 
@@ -38,7 +38,7 @@ $buttonTextColor: #fff;
 .third-wrap {
   width: 100%;
   padding-bottom: 10px;
-  color: $main_text_color3;
+  color: #414655;
   border-bottom: 2px solid #eee;
 
   .card-item {
@@ -215,16 +215,16 @@ $buttonTextColor: #fff;
   margin-top: 18px;
 
   .btn-search {
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: var(--member_gradient_color1);
     margin: 0 auto;
     width: 85%;
     line-height: 45px;
     border-radius: 3px;
     text-align: center;
-    color: $buttonTextColor;
+    color: var(--member_text_color1);
 
     &.disable {
-      opacity: 0.5;
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -292,6 +292,10 @@ $buttonTextColor: #fff;
   background-color: #dddddd;
   font-weight: bold;
 
+  &.porn1 {
+    background-color: #f2f2f2;
+  }
+
   &::before {
     content: "";
     position: relative;
@@ -300,7 +304,8 @@ $buttonTextColor: #fff;
     height: 15px;
     top: 2.5px;
     margin-right: 3px;
-    background: linear-gradient(#bd9d7d, #f9ddbd);
+    background: var(--deco_color);
+    border-radius: 2px;
   }
 }
 
@@ -309,7 +314,6 @@ $buttonTextColor: #fff;
   padding: 2.5px 19px 2.5px 24px;
   margin-bottom: 1.5px;
   position: relative;
-  background: #fefffe;
   display: flex;
   font-size: 12px;
   line-height: 35px;
@@ -324,6 +328,15 @@ $buttonTextColor: #fff;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  &.porn1 {
+    &:nth-child(even) {
+      background-color: #ffffff;
+    }
+
+    &:nth-child(odd) {
+      background-color: #ffffff;
+    }
   }
   &:nth-child(even) {
     background-color: #ffffff;

@@ -72,10 +72,7 @@
 
       <div v-if="!sitePostList" class="clearfix">
         <div :class="$style['modal-button']" @click="closePop()">知道了</div>
-        <div
-          :class="[$style['modal-button'], $style[themeTPL]]"
-          @click="closePop(true)"
-        >
+        <div :class="[$style['modal-button']]" @click="closePop(true)">
           查看详情
         </div>
       </div>
@@ -84,7 +81,7 @@
         <div
           :class="[
             $style['modal-button-center'],
-            $style[siteConfig.MOBILE_WEB_TPL]
+            $style[siteConfig.ROUTER_TPL]
           ]"
           @click="closePop()"
         >
@@ -177,6 +174,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .mask {
   position: fixed;
   top: 0;
@@ -273,20 +271,12 @@ export default {
   font-size: 18px;
 
   &:first-child {
-    color: #000;
+    color: var(--popup_text_color2);
     border-right: 1px solid #eee;
   }
 
   &:last-child {
-    color: #d2b79c;
-  }
-
-  &.ey1:last-child {
-    color: #e42a30;
-  }
-
-  &.porn1:last-child {
-    color: #d2b79c;
+    color: var(--popup_text_color1);
   }
 }
 

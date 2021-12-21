@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .top-link {
   display: block;
   padding: 8px 9px;
@@ -76,7 +77,7 @@
   height: 35px;
   line-height: 33px;
   margin: 3px 1%;
-  border: 1px solid #a6a9b2;
+  border: 1px solid #eeeeee;
   border-radius: 5px;
   background-color: #fff;
   color: #a6a9b2;
@@ -87,8 +88,8 @@
     line-height: 35px;
     border: none;
     border-radius: 3px;
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: #fff;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
   }
 }
 
@@ -139,17 +140,15 @@
   font-size: 15px;
   text-align: center;
 }
-
-.cancel {
-  composes: button;
-  background: #faf5f0;
-  color: #b1987f;
-}
-
 .confirm {
   composes: button;
-  background: linear-gradient(90deg, #dccab8, #d2b496);
-  color: #fff;
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
+}
+.cancel {
+  composes: button;
+  background: var(--member_gradient_color2);
+  color: var(--member_text_color1);
 }
 
 .date-tip {

@@ -41,7 +41,7 @@
                 >{{ info.amount | amountFormat }}
 
                 <div
-                  v-if="(path && info.amount > 0) || (path && info.type == 0)"
+                  v-if="(path && info.amount >= 0) || (path && info.type == 0)"
                   :class="$style['arrow-next']"
                 >
                   <img

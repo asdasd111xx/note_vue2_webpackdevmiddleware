@@ -28,7 +28,7 @@
           </div>
         </div>
         <div
-          :class="$style['active-slider']"
+          :class="[$style['active-slider']]"
           :style="{
             left: `calc(16.5% + 33% * ${currentTab})`
           }"
@@ -69,9 +69,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      // 'actionSetMcenterMsgCount'
-    ]),
+    ...mapActions(["actionSetMcenterMsgCount"]),
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
@@ -91,6 +89,11 @@ export default {
           break;
       }
       this.$emit("getCurrentTemplate", this.currentTemplate);
+    }
+  },
+  watch: {
+    "$route.query.pid"() {
+      this.actionSetMcenterMsgCount();
     }
   },
   computed: {

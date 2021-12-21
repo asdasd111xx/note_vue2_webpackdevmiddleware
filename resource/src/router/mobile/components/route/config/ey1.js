@@ -92,7 +92,6 @@ export default {
       import(
         /* webpackChunkName: 'betRecordEy1' */ "../../tpl/ey1/components/mcenter/components/betRecord"
       ),
-    //     bonusAccountEy1: () => import(/* webpackChunkName: 'bonusAccountEy1' */'../../tpl/ey1/components/mcenter/components/bonusAccount'),
     moneyDetailEy1: () =>
       import(
         /* webpackChunkName: 'moneyDetailEy1' */ "../../tpl/ey1/components/mcenter/components/moneyDetail"

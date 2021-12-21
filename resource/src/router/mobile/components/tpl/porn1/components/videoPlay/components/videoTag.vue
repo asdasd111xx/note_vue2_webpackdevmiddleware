@@ -46,7 +46,7 @@ export default {
 
 .video-tag-wrap {
   align-items: center;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   display: flex;
   overflow-x: auto;
   width: 100%;

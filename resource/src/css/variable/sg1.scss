@@ -1,0 +1,67 @@
+:root {
+  --main_color1: #fe593c;
+  --main_color2: #e61938;
+  --main_color3: #fed3cb;
+  --main_color4: #ffc5ce;
+  --main_color100: #bf8646;
+
+  --main_text_color1: #ffffff;
+  --main_text_color2: #ffffff;
+  --main_text_color3: #a6a9b2;
+  --main_text_color4: #5e626d;
+  --main_text_color5: #731c25;
+  --main_gradient_color1: linear-gradient(to left, #fe593c 0%, #e61938 100%);
+  --main_gradient_color2: linear-gradient(to left, #fed3cb 0%, #ffc5ce 100%);
+
+  //會員中心
+  --member_color1: #bf8646;
+  --member_color2: #f9ddbd;
+  --member_color3: #e9dacb;
+  --member_color4: #eee5db;
+  // --member_color1: #fe593c;
+  // --member_color2: #e61938;
+  // --member_color3: #fed3cb;
+  // --member_color4: #ffc5ce;
+  --member_color100: #bf8646;
+  --member_color101: #e9dacc;
+  --member_text_color1: #ffffff;
+  --member_text_color2: #ffffff;
+  --member_text_color3: #a6a9b2;
+  --member_text_color4: #5e626d;
+  --member_text_color5: #bf8646;
+  --member_text_color6: #be9e7f;
+
+  --member_gradient_color1: linear-gradient(to left, #fe593c 0%, #e61938 100%);
+  --member_gradient_color2: linear-gradient(to left, #fed3cb 0%, #ffc5ce 100%);
+
+  //功能
+  --wallet_border_color: #be9e7f;
+  --redpot: #bf8646;
+  --deco_color: linear-gradient(to bottom, #fe593c 0%, #e61938 100%);
+  --deco_color2: #e61938;
+  --joinmember_title: #9b6b40;
+  --service-bottom-button: #fb4e74;
+  --apptip_title: #e61938;
+  --apptip_btn: #e61938;
+  --popup_text_color1: #bf8646;
+  --popup_text_color2: #414655;
+  --popup_text_color3: #414655;
+  --member_slider: #d1b79c;
+  --webview_icon_text: #fff;
+  --marquee_text_color1: #b7b7b7;
+  --marquee_text_color2: #d1b79c;
+  --vip_detail_color: #bf8646;
+  --avatar-vip-icon-color: linear-gradient(to left, #febdb2 0%, #ff8093 100%);
+  --redpot_button_color: linear-gradient(to right, #f9d388, #f4b22e);
+  --addcard_popup_text_color: #bbab98;
+  --addcard_popup_prev_text_color: #be9e7f;
+  --widthdraw_tip_text_color: #be9e7f;
+  --label_bg_color: linear-gradient(#fe593c, #e61938);
+  --label_text_color1: #cccccc;
+  --label_text_color2: #fff;
+  --bankrebate_receive_button1: var(--member_gradient_color1);
+  --bankrebate_receive_button2: var(--member_gradient_color2);
+  --bankrebate_receive_text_color: #ffffff;
+  --invite_background_color: #f2e2d1;
+  --invite_text_color: #414655;
+}

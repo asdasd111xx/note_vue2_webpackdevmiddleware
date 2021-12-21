@@ -13,47 +13,47 @@
   align-items: center;
   margin-top: 11px;
 
-  > div {
+  >div {
     width: 50%;
   }
 
-  > .balance-wrap {
-    > div:first-child {
+  >.balance-wrap {
+    >div:first-child {
       text-align: center;
 
-      > img {
+      >img {
         width: 14px;
         height: 14px;
       }
 
-      > span {
+      >span {
         color: #5e626d;
       }
     }
 
-    > div:last-child {
-      color: #be9e7f;
+    >div:last-child {
+      color: $share_member_text_color4;
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: #be9e7f;
+    color: $share_member_text_color4;
     text-align: center;
     font-size: 16px;
   }
 }
 
 .withdraw-wrap {
-  margin-top: 31px;
+  // margin-top: 31px;
   margin-bottom: 16px;
 }
 
 //增加銀行卡
 .add-bank-card {
   background-color: $main_white_color1;
-  color: #be9e7f;
+  color: var(--addcard_popup_text_color);
   font-size: 15px;
   height: 50px;
   line-height: 50px;
@@ -65,15 +65,20 @@
   justify-content: center;
   font-weight: bold;
 
-  > img {
+  >img {
     width: 18px;
     height: 18px;
   }
 }
 
 .bank-card-wrap {
-  background-color: $main_background_white1;
+  background-color: #f3f3f3;
   margin-top: 10px;
+}
+
+@mixin check-ok($backgroundImg) {
+  background: url($backgroundImg) 0 0 no-repeat;
+  background-size: 100%;
 }
 
 .bank-card-cell {
@@ -91,12 +96,12 @@
     opacity: 0.5;
   }
 
-  > img {
+  >img {
     width: 25px;
     height: 25px;
   }
 
-  > span {
+  >span {
     padding: 0 0 0 10px;
     width: 80%;
     overflow: hidden;
@@ -113,7 +118,7 @@
 
     &.rubbing-btn {
       font-size: 14px;
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      background: $share_main_button_color2;
       color: white;
       border-radius: 11px;
       width: 82px;
@@ -125,7 +130,7 @@
     }
   }
 
-  > .check-box {
+  >.check-box {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -133,8 +138,17 @@
     right: 16px;
 
     &.checked {
-      background: url("/static/image/porn1/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
+      &.image-porn1 {
+        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+      }
+
+      &.image-aobo1 {
+        @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+      }
+
+      &.image-sp1 {
+        @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+      }
     }
 
     &.disable {
@@ -193,9 +207,11 @@
     margin-right: 10px;
 
     &.is-current {
-      border: 1px solid #d1b79c;
-      color: #d1b79c;
-      background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
+      background: linear-gradient(-45deg,
+          var(--wallet_border_color) 10px,
+          hsla(0, 0%, 100%, 0) 0);
     }
 
     .select {
@@ -234,7 +250,7 @@
   margin-top: 5px;
   position: relative;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -269,7 +285,7 @@
   }
 
   .time {
-    color: #be9e7f;
+    color: var(--member_text_color6);
   }
 
   .serial {
@@ -280,8 +296,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid #be9e7f;
-    color: #be9e7f;
+    border: 1px solid $share_member_text_color4;
+    color: $share_member_text_color4;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -309,13 +325,10 @@
   justify-content: center;
   float: right;
 
-  > span {
+  >span {
     font-size: 14px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: white;
+    background: var(--member_gradient_color1);
+    color: var(--member_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -340,13 +353,10 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  > div {
+  >div {
     margin: 0 auto;
     height: 45px;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: var(--member_gradient_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -354,16 +364,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: #ffffff;
+    color: var(--member_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-      background: -o-linear-gradient(left, #e9dacb, #eee5db);
-      background: -moz-linear-gradient(left, #e9dacb, #eee5db);
-      background: linear-gradient(to left, #e9dacb, #eee5db);
+      background: var(--member_gradient_color2);
     }
   }
 }
@@ -387,7 +394,7 @@
   min-height: 390px;
   z-index: 3;
   background-color: #ffffff;
-  border-radius: 4px;
+  border-radius: 10px;
   position: relative;
 
   &.deposit {
@@ -399,9 +406,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    background: #be9e7f;
-    border-radius: 3px 3px 0 0;
-    color: white;
+    color: #414655;
     position: relative;
     line-height: 50px;
 
@@ -410,6 +415,7 @@
       font-size: 17px;
       font-weight: 400;
       text-align: center;
+      font-weight: 700;
     }
 
     .btn-close {
@@ -429,10 +435,37 @@
     }
   }
 
-  .hr {
-    width: 100%;
-    height: 2px;
-    background-color: #f8f8f7;
+  &.aobo1,
+  &.sp1 {
+    border-radius: 3px;
+
+    .check-header {
+      background: $share_origin_color10;
+      color: #ffffff;
+      border-radius: 3px 3px 0 0;
+
+      .title {
+        width: 100%;
+        font-size: 17px;
+        font-weight: 400;
+        text-align: center;
+      }
+    }
+
+    .check-button-wrap {
+      color: #be9e7f;
+      margin-bottom: 10px;
+
+      .check-btn {
+        border-radius: 3px;
+        background: #faf5f0;
+
+        &.submit {
+          color: #ffffff;
+          background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+        }
+      }
+    }
   }
 
   .check-content {
@@ -456,31 +489,43 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: $main_text_color3;
+      color: var(--member_text_color4);
+      margin-bottom: 4px;
     }
   }
 
   .check-cell {
-    color: $main_text_color2;
+    color: #414655;
     height: 33px;
     line-height: 33px;
-    margin: 2px 11px;
+    padding: 0px 11px;
+    position: relative;
 
     &.check-total {
-      color: $main_text_color3;
-      background: $main_background_white1;
+      color: var(--member_text_color4);
+      background: #f3f3f3;
     }
 
     &.check-actual {
-      color: $main_text_color3;
+      color: #414655;
       font-weight: 700;
+      background: #f3f3f3;
     }
 
     &.custom-color {
-      color: #be9e7f;
+      color: var(--member_text_color6);
+
+      &.custom-color-background {
+        background: #f3f3f3;
+        font-weight: 700;
+      }
     }
 
-    > span:last-child {
+    &.offer-twoline {
+      height: 66px;
+    }
+
+    >span:last-child {
       float: right;
     }
 
@@ -488,15 +533,21 @@
       content: "CNY";
       color: #cbced8;
       padding-left: 10px;
-      font-weight: 400;
+    }
+
+    .money-bold::after {
+      content: "CNY";
+      color: #a6a9b2;
+      padding-left: 10px;
+      font-weight: 700;
     }
 
     // For Crypto
     .crypto-money::after {
       content: "USDT";
-      color: #e9dacc;
+      color: #a6a9b2;
       padding-left: 1px;
-      font-weight: 400;
+      font-weight: 700;
     }
 
     .crypto-money {
@@ -505,26 +556,43 @@
     }
   }
 
+  .check-cell::before {
+    content: "";
+    position: absolute;
+    width: 93%;
+    height: 1px;
+    top: -1px;
+    background: #eeeeee;
+    text-align: center;
+    margin: 0 auto;
+  }
+
   .check-button-wrap {
-    padding: 10px 11px;
-    color: #be9e7f;
+    padding: 2px 0px;
+    color: $share_member_text_color4;
     text-align: center;
     bottom: 12px;
     width: 100%;
+    border-top: 1px solid#F8F8F7;
+    font-size: 16px;
+    margin-top: 30px;
 
     .check-btn {
-      width: 90px;
-      height: 45px;
-      line-height: 45px;
-      background: #faf5f0;
-      border-radius: 3px;
-      margin: 0 3px;
+      font-weight: bold;
+      width: 100px;
+      height: 50px;
+      line-height: 50px;
       display: inline-block;
+      position: relative;
+      border-right: 1px solid #f8f8f7;
 
       &.submit {
-        color: white;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        color: $share_main_button_color2;
       }
+    }
+
+    .check-btn:last-child {
+      border-right: none;
     }
   }
 }
@@ -558,7 +626,7 @@
   margin-top: 5px;
   -webkit-text-security: disc;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -582,8 +650,8 @@
 }
 
 @media screen and (min-width: $phone) {
-  > .balance-wrap {
-    > div:last-child {
+  >.balance-wrap {
+    >div:last-child {
       font-size: 17px;
     }
   }
@@ -605,7 +673,7 @@
   }
 
   .withdraw-input {
-    > input {
+    >input {
       font-size: 17px;
 
       &::placeholder {
@@ -620,7 +688,7 @@
   }
 
   .withdraw-max {
-    > span {
+    >span {
       font-size: 15px;
     }
   }
@@ -630,7 +698,7 @@
   }
 
   .submit-btn {
-    > div {
+    >div {
       font-size: 15px;
     }
   }
@@ -638,8 +706,8 @@
 
 .offer {
   height: 30px;
-  background-color: $main_white_color1;
-  color: #be9e7f;
+  background-color: #fefffe;
+  color: var(--widthdraw_tip_text_color);
   padding: 5px 14px;
   width: 100%;
 }

@@ -340,7 +340,7 @@ export default {
   display: inline-block;
   width: 230px;
   background: $main_white_color1;
-  color: $main_text_color3;
+  color: var(--main_text_color3);
   border-radius: 8px;
   margin: 0px 10px 10px 0;
   padding: 0 9px 0 12px;
@@ -474,7 +474,7 @@ export default {
 
   .date {
     background: none;
-    color: $main_text_color3;
+    color: var(--main_text_color3);
     font-weight: 700;
     font-size: 16px;
     padding: 0 15px;
@@ -486,13 +486,13 @@ export default {
     min-height: 300px;
 
     .text {
-      color: $main_text_color2;
+      color: var(--main_text_color2);
     }
   }
 
   .tips {
     padding: 40px 0;
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     font-size: 12px;
     text-align: center;
 
@@ -505,7 +505,7 @@ export default {
 
 .tips {
   padding: 40px 0;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   font-size: 12px;
   text-align: center;
 

@@ -350,7 +350,7 @@ export default {
 
   // 亞博點擊的文字color
   &.active {
-    color: $main_text_color4;
+    color: var(--main_text_color4);
   }
 
   &.gay {
@@ -386,11 +386,11 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
   }
 
   &.av.active .line {
-    background-color: #be9e7f;
+    background-color: $share_member_text_color4;
   }
 }
 

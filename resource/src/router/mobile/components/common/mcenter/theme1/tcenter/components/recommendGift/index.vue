@@ -235,7 +235,7 @@
             {{ path ? "暂无资料" : "还没有任何记录" }}
           </div>
           <div
-            :class="$style['btn-money']"
+            :class="[$style['btn-money']]"
             @click="$router.replace('/mobile/mcenter/makeMoney?giftDetail=1')"
           >
             {{ giftTitle }}

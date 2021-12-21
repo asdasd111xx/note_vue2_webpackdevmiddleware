@@ -177,8 +177,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   created() {
     this.getRechargeBalance();

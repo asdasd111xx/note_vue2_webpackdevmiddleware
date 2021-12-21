@@ -24,7 +24,7 @@
           <div :class="$style['img']">
             <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
           </div>
-          <div :class="$style['text']">{{ item.text }}</div>
+          <div :class="[$style['text'], $style[themeTPL]]">{{ item.text }}</div>
         </div>
       </div>
     </div>

@@ -152,7 +152,11 @@
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
         <img
-          :src="$getCdnPath('/static/image/porn1/common/btn_setting.png')"
+          :src="
+            $getCdnPath(
+              `/static/image/${siteConfig.ROUTER_TPL}/common/btn_setting.png`
+            )
+          "
           @click="handleClickSetting"
         />
         <div>
@@ -202,7 +206,9 @@
           教程
         </span>
         <div :class="$style['btn-icon']">
-          <img :src="$getCdnPath('/static/image/porn1/common/btn_help.png')" />
+          <img
+            :src="$getCdnPath(`/static/image/${routerTPL}/common/btn_help.png`)"
+          />
         </div>
       </div>
     </template>
@@ -620,7 +626,7 @@ export default {
 .login-wrap {
   &.porn1 {
     .visitor-money {
-      color: #be9e7f;
+      color: $share_member_text_color4;
     }
   }
 }
@@ -724,7 +730,7 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: $main_text_color2;
+    color: var(--main_text_color2);
     font-size: 14px;
     outline: none;
 
@@ -757,7 +763,7 @@ export default {
     }
 
     &::placeholder {
-      color: $main_text_color2;
+      color: var(--main_text_color2);
     }
   }
 }
@@ -793,7 +799,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   color: white;
   margin: 0 auto;
   text-align: center;

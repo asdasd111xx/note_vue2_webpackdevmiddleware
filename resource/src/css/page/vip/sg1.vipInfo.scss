@@ -2,10 +2,10 @@
 
 .title {
   &::before {
-    background: linear-gradient(#fe593c, #e61938);
+    background: var(--member_gradient_color1);
   }
 }
 
 .vip-detail {
-  color: #bf8646;
+  color: var(--vip_detail_color);
 }

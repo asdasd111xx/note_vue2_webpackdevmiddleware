@@ -1,8 +1,8 @@
 import {
   API_CRYPTO_MONEY,
+  API_MCENTER_DEPOSIT_BANK,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_OUTER_WALLET,
-  API_MCENTER_DEPOSIT_BANK,
   API_MCENTER_DEPOSIT_THIRD,
   API_TRADE_RELAY
 } from "@/config/api";
@@ -53,6 +53,12 @@ export default {
       defaultEpointWallet: "",
       outerCryptoOption: [],
       userBankOption: [],
+      bcCurrencyData: null,
+      selectBcCoin: {
+        balance: "",
+        currency: "",
+        name: ""
+      },
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
       showEpointWalletAddress: false,
@@ -62,9 +68,9 @@ export default {
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
-          method: 0,
+          method: 1,
           password: "",
-          placeholder: "请输入CGPay支付密码"
+          placeholder: "请输入CGP安全防护码"
         }
       },
       // 傳遞給 depositInfo (訂單限時)
@@ -83,7 +89,10 @@ export default {
       countdownSec: 0,
 
       topPromotionMessage: "",
-      cgPromotionMessage: ""
+      cgPromotionMessage: "",
+
+      // 充值上方跑馬燈&支付方式高度
+      depositWrapMarignTop: 70
     };
   },
   watch: {
@@ -99,6 +108,19 @@ export default {
       this.showEpointWalletAddress = this.isSelectBindWallet(34)
         ? this.defaultEpointWallet.account === "其他银行卡"
         : false;
+    },
+    depositData(val) {
+      let top = 0;
+
+      if (val && val.length > 1) {
+        top += 35;
+      }
+
+      if (this.marqueeList && this.marqueeList.length > 0) {
+        top += 35;
+      }
+
+      this.depositWrapMarignTop = top;
     }
   },
   computed: {
@@ -955,7 +977,6 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-      console.log(123);
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
@@ -1023,6 +1044,14 @@ export default {
         }
       }
 
+      //幣希
+      if (this.curPayInfo.payment_method_id === 32) {
+        paramsData = {
+          ...paramsData,
+          currency: this.selectBcCoin.currency
+        };
+      }
+
       let _isPWA = true;
 
       return axios({
@@ -1069,7 +1098,7 @@ export default {
             eventLabel: "success"
           });
 
-          console.log(ret, _isWebview);
+          // console.log(ret, _isWebview);
 
           // 如有回傳限制時間
           if (ret.remit.limit_time) {
@@ -1389,13 +1418,23 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
+      if (
+        this.curPayInfo.payment_method_id === 32 &&
+        !this.selectBcCoin.currency
+      ) {
+        return;
+      }
       return axios({
         method: "get",
         url: API_CRYPTO_MONEY,
         params: {
           type: 1,
           amount: this.moneyValue,
-          method_id: this.curPayInfo.payment_method_id
+          method_id: this.curPayInfo.payment_method_id,
+          currency:
+            this.curPayInfo.payment_method_id === 32
+              ? this.selectBcCoin.currency
+              : ""
         }
       })
         .then(response => {
@@ -1457,7 +1496,6 @@ export default {
     },
     // 取得使用者站外錢包入款錢包地址
     getVendorCryptoOuterUserAddressList() {
-      console.log("getVendorCryptoOuterUserAddressList");
       return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_OUTER_WALLET,
@@ -1467,7 +1505,7 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            console.log(response);
+            // console.log(response);
             this.outerCryptoOption = [];
             this.defaultOuterCrypto = "";
             response.data.ret.forEach(outerAddress => {
@@ -1490,7 +1528,7 @@ export default {
     },
     // 取得使用者銀行卡列表(迅付)
     getUserBankList() {
-      console.log("API_MCENTER_DEPOSIT_BANK");
+      // console.log("API_MCENTER_DEPOSIT_BANK");
       return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_BANK,
@@ -1498,7 +1536,7 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            console.log(response);
+            // console.log(response);
             this.userBankOption = [];
             this.userBankOption = response.data.ret;
             this.userBankOption.push({ account: "其他银行卡" });

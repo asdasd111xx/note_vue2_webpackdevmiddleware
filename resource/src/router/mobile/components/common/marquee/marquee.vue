@@ -21,11 +21,7 @@
 
       <div
         ref="container"
-        :class="[
-          'news-content',
-          `${themeTPL}`,
-          { notHome: !isDepositOrWithdraw }
-        ]"
+        :class="['news-content', { notHome: !isDepositOrWithdraw }]"
       >
         <VTextMarquee
           :speed="35"
@@ -237,8 +233,8 @@ export default {
 }
 
 .fixed-wrap {
-  position: fixed;
-  top: 43px;
+  // position: fixed;
+  // top: 43px;
   z-index: 2;
   background: #f8f8f7;
   max-width: $mobile_max_width;
@@ -249,26 +245,14 @@ export default {
   display: block;
   line-height: 12px;
   margin-left: 6px;
-  color: $main_text_color1;
+  color: var(--marquee_text_color1);
   font-size: 12px;
   overflow: hidden;
   min-width: calc(100vw - 51px);
   -webkit-tap-highlight-color: transparent;
 
-  &.porn1 {
-    color: $main_text_color1;
-  }
-
-  &.ey1 {
-    color: #2348b3;
-  }
-
-  &.sg1 {
-    color: #b7b7b7;
-  }
-
   &.notHome {
-    color: #be9e7f;
+    color: var(--marquee_text_color2);
   }
 }
 

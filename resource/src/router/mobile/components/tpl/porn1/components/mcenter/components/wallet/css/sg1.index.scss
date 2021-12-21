@@ -9,13 +9,25 @@
 .wallet-info-wrap {
   .goDeposit {
     color: #fefffe !important;
-    background: linear-gradient(#fe593c, #e61938) !important;
+    background: var(--member_gradient_color1) !important;
     box-shadow: 0pt 3px 7px 0pt rgba(255, 0, 0, 0.3) !important;
   }
 }
 
 .title {
   &::before {
-    background: linear-gradient(#fe593c, #e61938);
+    background: var(--member_gradient_color1);
+  }
+}
+
+.balance-wrap {
+  .balance-total-item {
+    .balance-item-money {
+      color: var(--member_color100);
+    }
+  }
+
+  .recycle-btn {
+    color: var(--member_color100);
   }
 }

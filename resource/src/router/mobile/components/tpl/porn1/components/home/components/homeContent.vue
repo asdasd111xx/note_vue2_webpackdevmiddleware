@@ -353,23 +353,18 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: $share_text_color6;
+  color: var(--main_text_color3);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
-  &.active {
-    color: #fff;
-  }
   &.sp1 {
-    color: #353541;
+    color: #222222;
   }
-  &.porn1 {
-    color: #323943;
-    &.active {
-      color: #fff;
-    }
+
+  &.active {
+    color: var(--main_text_color1);
   }
 }
 
@@ -398,7 +393,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      background: $share_main_button_color2;
       color: #fff;
     }
   }
@@ -729,7 +724,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 
   &.ey1:last-child {
@@ -737,7 +732,7 @@ export default {
   }
 
   &.porn1:last-child {
-    color: #d2b79c;
+    color: $share_member_text_color4;
   }
 }
 </style>

@@ -30,7 +30,7 @@
   font-size: 17px;
   border-radius: 7px 7px 0 0;
   color: #fff;
-  background: #be9e7f;
+  background: $share_member_text_color4;
 }
 
 .alert-close-wrap {
@@ -105,12 +105,12 @@
   margin: 0 auto;
   text-align: center;
   cursor: pointer;
-  color: #bd9d7d;
+  color: var(--member_color100);
   background: #fefffe;
   font-size: 18px;
   font-weight: bold;
 
   // &:active {
-  //   background-color: #be9e7f;
+  //   background-color: $share_member_text_color4;
   // }
 }

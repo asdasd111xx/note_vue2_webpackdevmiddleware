@@ -399,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: #be9e7f;
+  color: var(--main_color100);
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: var(--main_gradient_color1);
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
@@ -595,7 +595,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: linear-gradient(to left, #fe593c, #e61938);
+      background: var(--main_gradient_color1);
       border-radius: 9px 0 0 9px;
     }
   }
@@ -603,7 +603,7 @@ div.container {
   .title,
   .content {
     margin: 0 17px;
-    color: $main_text_color2;
+    color: var(--member_text_color3);
     font-size: 12px;
   }
 
@@ -634,7 +634,7 @@ div.container {
       margin: 10px auto;
       padding: 0 0 0 40px;
       background: #ffffff;
-      border: 1px solid $main_text_color2;
+      border: 1px solid var(--member_text_color3);
       border-radius: 10px;
 
       &::before {

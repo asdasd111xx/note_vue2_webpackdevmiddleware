@@ -108,7 +108,7 @@
             :min-limit="limitTime"
             :max-limit="estToday"
           />
-          <div :class="['picker-button-wrap', 'clearfix']">
+          <div :class="[$style['picker-button-wrap'], 'clearfix']">
             <div :class="$style.cancel" @click="onCancel">取消</div>
             <div :class="$style.confirm" @click="onConfirm">确定</div>
           </div>

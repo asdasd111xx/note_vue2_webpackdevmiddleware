@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .no-feedback {
   width: 180px;
   position: absolute;
@@ -21,11 +22,9 @@
   button {
     width: 140px;
     height: 40px;
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+    background: var(--member_gradient_color1);
     font-size: 14px;
-    color: #fff;
+    color: var(--member_text_color1);
     font-weight: 700;
     border: none;
     outline: 0;

@@ -152,11 +152,7 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  :class="[
-                    'login-button',
-                    'login-submit',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
+                  :class="['login-button', 'login-submit']"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -365,7 +361,7 @@ export default {
 .title {
   margin-bottom: 16px;
   padding: 15px 20%;
-  background: #be9e7f;
+  background: $share_member_text_color4;
   width: 100%;
   font-size: 20px;
   line-height: 20px;
@@ -402,12 +398,12 @@ export default {
 }
 
 .link-submit {
-  color: $main_text_color1;
+  color: var(--main_text_color1);
 }
 .submit {
   margin: 0 auto;
   border-radius: 8px;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
   width: 80%;
   height: 40px;
   line-height: 40px;

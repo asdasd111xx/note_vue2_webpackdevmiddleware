@@ -1,389 +1,385 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 $bouns_color1: #bf8646;
-$bouns_color2: #BE9E7F;
-$bouns_color3: #FAF5F0;
-$bouns_color4: #ECC374;
-$bouns_color5: #FF7F00;
-$bouns_color6: #FFF07B;
+$bouns_color2: $share_member_text_color4;
+$bouns_color3: #faf5f0;
+$bouns_color4: #ecc374;
+$bouns_color5: #ff7f00;
+$bouns_color6: #fff07b;
 
 .dialog {
-    animation: fade-in 0.31s;
-    position: fixed;
-    width: 100%;
-    left: 0;
-    top: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 500;
+  animation: fade-in 0.31s;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
 }
 
 .dialog {
-    >div {
-        position: relative;
-        background-color: rgba($color: #FFFFFF, $alpha: 1);
-        border-radius: 11px;
-        border: #ECC374 solid 6px;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 375px;
-        width: 90%;
-        min-height: 190px;
-        padding: 12px;
-        color: white;
-    }
+  > div {
+    position: relative;
+    background-color: rgba($color: #ffffff, $alpha: 1);
+    border-radius: 11px;
+    border: #ecc374 solid 6px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 375px;
+    width: 90%;
+    min-height: 190px;
+    padding: 12px;
+    color: white;
+  }
 }
 
 .dialog-close {
-    animation: fade-out 0.31s;
+  animation: fade-out 0.31s;
 }
 
 .title-coin {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: -20%;
-    left: calc(50% - 70px);
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: -20%;
+  left: calc(50% - 70px);
 
-    >img {
-        width: 140px;
-        height: 100px;
-    }
+  > img {
+    width: 140px;
+    height: 100px;
+  }
 }
 
 .title {
-    margin-top: 9%;
-    line-height: 24px;
-    color: $bouns_color1;
-    width: 100%;
-    font-size: 18px;
-    font-weight: 700;
-    text-align: center;
+  margin-top: 9%;
+  line-height: 24px;
+  color: $bouns_color1;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .bouns-func {
-    position: absolute;
-    bottom: 22px;
-    left: 0;
-    display: flex;
-    padding: 0 5px;
-    height: 40px;
-    width: 100%;
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  display: flex;
+  padding: 0 5px;
+  height: 40px;
+  width: 100%;
 
-    >div {
-        width: 120px;
-        height: 40px;
-        font-size: 15px;
-        text-align: center;
-        border-radius: 20px;
-        line-height: 40px;
-    }
-
-    >div:first-child {
-        color: $bouns_color2;
-        background-color: #FAF5F0;
-        margin: 0 auto;
-    }
-
-}
-
-.active-btn {
-    text-align: center;
-    color: #FFFFFF;
+  > div {
+    width: 120px;
     height: 40px;
     font-size: 15px;
     text-align: center;
     border-radius: 20px;
     line-height: 40px;
-    max-width: 275px;
+  }
+
+  > div:first-child {
+    color: $bouns_color2;
+    background-color: #faf5f0;
     margin: 0 auto;
-    background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-    background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  }
+}
+
+.active-btn {
+  text-align: center;
+  color: #ffffff;
+  height: 40px;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 20px;
+  line-height: 40px;
+  max-width: 275px;
+  margin: 0 auto;
+  background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
+  background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
+  background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
+  background: $share_main_button_color2;
 }
 
 // 進度條
 .bouns-process-wrap {
-    position: absolute;
-    right: 0;
-    top: 43px;
+  position: absolute;
+  right: 0;
+  top: 43px;
 }
 
 .bouns-process {
-    animation: fade-in 0.31s;
+  animation: fade-in 0.31s;
+  width: 30px;
+  height: 30px;
+  opacity: 0.8;
+  background: #444444;
+  border-radius: 14px 0 0 15px;
+  color: $bouns_color5;
+  font-size: 15px;
+  line-height: 30px;
+  transition: width 0.31s;
+  padding-left: 2px;
+
+  .coin-wrap {
     width: 30px;
-    height: 30px;
-    opacity: 0.8;
-    background: #444444;
-    border-radius: 14px 0 0 15px;
-    color: $bouns_color5;
-    font-size: 15px;
-    line-height: 30px;
-    transition: width .31s;
-    padding-left: 2px;
-
-    .coin-wrap {
-        width: 30px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 100%;
-
-            >img {
-                width: 16px;
-                height: 16px;
-            }
-        }
-
-        >span {
-            color: $bouns_color6;
-            display: block;
-            overflow: hidden;
-            position: absolute;
-            text-align: center;
-            text-overflow: ellipsis;
-            top: 0;
-            white-space: nowrap;
-
-            &.loading-text {
-                position: relative;
-                font-size: 12px;
-            }
-
-            &.earn {
-                color: $bouns_color5;
-                margin-left: 3px;
-                position: relative;
-                text-align: left;
-            }
-        }
-    }
-
-    &.loading {
-        width: 100px;
-
-        .coin-wrap {
-            width: 100px;
-            justify-content: flex-start;
-        }
-    }
-
-    &.active {
-        width: 105px;
-
-        .coin-wrap {
-            width: 105px;
-            justify-content: flex-start;
-        }
-    }
-
-    .earn-keep-btn {
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        max-width: 275px;
-        margin: 0 auto;
-        font-size: 15px;
-        border-radius: 20px;
-        margin: 0px 20px;
-    }
-
-
-}
-
-.bouns-earn-wrap {
-    display: inline-block;
-    width: 100%;
-    position: relative;
-
-    >.earn-title {
-        color: #3F1000;
-        font-size: 14px;
-        margin: 8px 0;
-        height: 25px;
-        line-height: 25px;
-        text-align: center;
-        font-weight: 500;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        >span:last-child {
-            color: #FF8C21;
-            font-size: 22px;
-            font-weight: 700;
-        }
-    }
-}
-
-.earn-cell-wrap {
-    position: relative;
-    display: block;
-    width: 100%;
-    max-height: 250px;
-    overflow-y: auto;
-    overflow-x: auto;
-}
-
-.earn-cell {
-    width: 33%;
-    float: left;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 14px;
 
-    &.active {
-        opacity: 0.6;
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 100%;
+
+      > img {
+        width: 16px;
+        height: 16px;
+      }
     }
 
-    >div {
-        width: 54px;
-        height: 64px;
-        color: #FF8400;
-        text-align: center;
+    > span {
+      color: $bouns_color6;
+      display: block;
+      overflow: hidden;
+      position: absolute;
+      text-align: center;
+      text-overflow: ellipsis;
+      top: 0;
+      white-space: nowrap;
+
+      &.loading-text {
         position: relative;
+        font-size: 12px;
+      }
 
-        >div:first-child {
-            position: relative;
-            width: 100%;
-            padding: 4px 0;
-            background-color: #FCF7E2;
-
-            >img {
-                margin: 0 auto;
-                width: 30px;
-                height: 30px;
-            }
-        }
-
-        >.earn-single-num {
-            height: 24px;
-            line-height: 24px;
-            font-size: 15px;
-            background-color: #F5D992;
-        }
-
-        >.had-earned {
-            position: absolute;
-            top: calc(50% - 20px);
-            left: calc(50% - 20px);
-            width: 40px;
-            height: 40px;
-        }
+      &.earn {
+        color: $bouns_color5;
+        margin-left: 3px;
+        position: relative;
+        text-align: left;
+      }
     }
+  }
+
+  &.loading {
+    width: 100px;
+
+    .coin-wrap {
+      width: 100px;
+      justify-content: flex-start;
+    }
+  }
+
+  &.active {
+    width: 105px;
+
+    .coin-wrap {
+      width: 105px;
+      justify-content: flex-start;
+    }
+  }
+
+  .earn-keep-btn {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    max-width: 275px;
+    margin: 0 auto;
+    font-size: 15px;
+    border-radius: 20px;
+    margin: 0px 20px;
+  }
+}
+
+.bouns-earn-wrap {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+
+  > .earn-title {
+    color: #3f1000;
+    font-size: 14px;
+    margin: 8px 0;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > span:last-child {
+      color: #ff8c21;
+      font-size: 22px;
+      font-weight: 700;
+    }
+  }
+}
+
+.earn-cell-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.earn-cell {
+  width: 33%;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+
+  &.active {
+    opacity: 0.6;
+  }
+
+  > div {
+    width: 54px;
+    height: 64px;
+    color: #ff8400;
+    text-align: center;
+    position: relative;
+
+    > div:first-child {
+      position: relative;
+      width: 100%;
+      padding: 4px 0;
+      background-color: #fcf7e2;
+
+      > img {
+        margin: 0 auto;
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    > .earn-single-num {
+      height: 24px;
+      line-height: 24px;
+      font-size: 15px;
+      background-color: #f5d992;
+    }
+
+    > .had-earned {
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+      width: 40px;
+      height: 40px;
+    }
+  }
 }
 
 :global {
-    @keyframes fade-in {
-        0% {
-            display: flex;
-            opacity: 0;
-        }
-
-        100% {
-            display: flex;
-            opacity: 1;
-        }
+  @keyframes fade-in {
+    0% {
+      display: flex;
+      opacity: 0;
     }
 
-    @-webkit-keyframes fade-in {
-        0% {
-            display: flex;
-            opacity: 0;
-        }
+    100% {
+      display: flex;
+      opacity: 1;
+    }
+  }
 
-        100% {
-            display: flex;
-            opacity: 1;
-        }
+  @-webkit-keyframes fade-in {
+    0% {
+      display: flex;
+      opacity: 0;
     }
 
-    @keyframes fade-out {
-        0% {
-            display: flex;
-            opacity: 1;
-        }
+    100% {
+      display: flex;
+      opacity: 1;
+    }
+  }
 
-        100% {
-            display: none;
-            opacity: 0;
-        }
+  @keyframes fade-out {
+    0% {
+      display: flex;
+      opacity: 1;
     }
 
-    @-webkit-keyframes fade-out {
-        0% {
-            display: flex;
-            opacity: 1;
-        }
-
-        100% {
-            display: flex;
-            opacity: 0;
-        }
+    100% {
+      display: none;
+      opacity: 0;
     }
+  }
+
+  @-webkit-keyframes fade-out {
+    0% {
+      display: flex;
+      opacity: 1;
+    }
+
+    100% {
+      display: flex;
+      opacity: 0;
+    }
+  }
 }
 
 @media screen and (max-height: 376px) {
-    .earn-wrap {
-        max-width: 80% !important;
-        height: calc(100% - 60px) !important;
-        max-height: 260px;
-    }
+  .earn-wrap {
+    max-width: 80% !important;
+    height: calc(100% - 60px) !important;
+    max-height: 260px;
+  }
 
-    .earn-cell-wrap {
-        width: 100%;
-        height: 90px;
-        display: inline-flex;
-    }
+  .earn-cell-wrap {
+    width: 100%;
+    height: 90px;
+    display: inline-flex;
+  }
 
-    .earn-cell {
-        margin: 1px 5px;
-        display: inline-flex;
-    }
-
+  .earn-cell {
+    margin: 1px 5px;
+    display: inline-flex;
+  }
 }
 
 @media screen and (min-width: $phone) {
-    .title {
-        font-size: 20x;
-    }
+  .title {
+    font-size: 20x;
+  }
 
-    .bouns-func {
-        >div {
-            font-size: 17px;
-        }
+  .bouns-func {
+    > div {
+      font-size: 17px;
     }
+  }
 }
 
 @media screen and (min-width: $pad) {
-    .title {
-        font-size: 22px;
-    }
+  .title {
+    font-size: 22px;
+  }
 
-    .bouns-func {
-        >div {
-            font-size: 20px;
-        }
+  .bouns-func {
+    > div {
+      font-size: 20px;
     }
+  }
 
-    .bouns-process {
-        width: 60px;
+  .bouns-process {
+    width: 60px;
 
-        .active {
-            // width: 100px;
-        }
+    .active {
+      // width: 100px;
     }
+  }
 }

@@ -46,7 +46,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: var(--member_color1);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }
@@ -97,7 +97,7 @@ input {
   justify-content: space-between;
   align-items: baseline;
   padding: 0px 14px;
-  color: #be9e7f;
+  color: $share_member_text_color5;
   font-size: 12px;
 }
 
@@ -112,7 +112,7 @@ input {
 }
 
 .form {
-  background-color: #eeeeee;
+  // background-color: #eeeeee;
   font-size: 14px;
 }
 
@@ -200,9 +200,9 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: #d1b79c;
+  background: var(--wallet_border_color);
   border-radius: 3px;
-  color: white;
+  color: var(--member_text_color1);
   font-weight: 400;
   height: 30px;
   line-height: 30px;
@@ -213,8 +213,7 @@ input {
   width: 100px;
 
   &.disabled {
-    color: white;
-    background-color: #e9dacc;
+    background: var(--member_color101);
     pointer-events: none;
   }
 }
@@ -231,10 +230,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: var(--member_gradient_color1);
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -246,17 +242,14 @@ input::placeholder {
 
   &.disabled {
     > div {
-      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
-      background: linear-gradient(to right, #eee5db, #e9dacb);
+      background: var(--member_gradient_color2);
       pointer-events: none;
     }
   }
 }
 
 .serial-number-links {
-  color: #6aaaf5;
+  color: $share_member_text_color4;
   position: absolute;
   right: 17px;
 }

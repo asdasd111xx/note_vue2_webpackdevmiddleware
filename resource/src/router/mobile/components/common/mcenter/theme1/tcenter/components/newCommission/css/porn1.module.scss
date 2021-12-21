@@ -32,7 +32,7 @@ $submitTextColor: #fff;
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     height: 30px;
     padding: 2px 4px;
   }
@@ -48,14 +48,14 @@ $submitTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: $main_text_color2;
+  color: var(--main_text_color2);
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: #be9e7f;
+    color: $share_member_text_color4;
   }
 }
 
@@ -121,13 +121,13 @@ $submitTextColor: #fff;
 }
 
 .submit {
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: var(--member_gradient_color1);
   margin: 0 auto;
   width: 85%;
   line-height: 45px;
   border-radius: 3px;
   text-align: center;
-  color: #fff;
+  color: var(--member_text_color1);
 }
 
 .time-range {
@@ -166,7 +166,7 @@ $submitTextColor: #fff;
         position: relative;
         display: flex;
         align-items: center;
-        color: #A6A9B2;
+        color: #a6a9b2;
 
         &::before {
           content: "";
@@ -175,7 +175,7 @@ $submitTextColor: #fff;
           height: 10px;
           width: 10px;
           margin: 0 5px;
-          background-color: #BE9E7F;
+          background-color: var(--deco_color2);
           border: 0px solid white;
           border-radius: 5px;
         }
@@ -186,7 +186,6 @@ $submitTextColor: #fff;
           height: 10px;
           width: 10px;
         }
-
       }
 
       .content {
@@ -194,13 +193,12 @@ $submitTextColor: #fff;
         color: #414655;
 
         &.lose {
-          color: #DB6372;
+          color: #db6372;
         }
       }
 
-
       &.darker {
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
       }
     }
   }

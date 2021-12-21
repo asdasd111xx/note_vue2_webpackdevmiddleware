@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .menu-wrap {
   width: 100%;
   padding: 8px 17px;
@@ -145,19 +146,16 @@
     text-align: center;
     font-size: 12px;
     color: #a6a9b2;
-    border: 1px solid #a6a9b2;
-    border-radius: 3px;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 
     &.active {
       line-height: 33px;
-      color: #fff;
-      background: #bd9d7d;
-      background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
-      border: none;
+      color: var(--member_text_color1);
+      background: var(--member_gradient_color1);
     }
 
     &:nth-child(n + 5) {
@@ -187,7 +185,8 @@
 
 .custom-date {
   padding: 16px 0;
-  background: url("/static/image/common/arrow_next.png") no-repeat right 0 center;
+  background: url("/static/image/common/arrow_next.png") no-repeat right 0
+    center;
   background-size: 15px 15px;
   border-bottom: 1px solid #eee;
 
@@ -223,16 +222,13 @@
   text-align: center;
 }
 
-.time-cancel {
-  background: #faf5f0;
-  color: #be9e7f;
-}
-
 .time-confirm {
-  color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  color: var(--member_text_color1);
+  background: var(--member_gradient_color1);
+}
+.time-cancel {
+  background: var(--member_gradient_color2);
+  color: var(--member_text_color1);
 }
 
 .data-wrap {
@@ -346,15 +342,14 @@
   &:before {
     display: block;
     width: 3px;
-    height: 14px;
+    height: 15px;
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(top, #bd9d7d, #f9ddbd);
     content: "";
+    border-radius: 2px;
+    background: var(--deco_color);
   }
 }
 
@@ -366,7 +361,7 @@
   padding-left: 8px;
   color: #414655;
 
-  >div {
+  > div {
     flex: 1;
   }
 
