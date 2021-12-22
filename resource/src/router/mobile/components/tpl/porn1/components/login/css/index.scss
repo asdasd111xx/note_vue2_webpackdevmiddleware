@@ -177,30 +177,12 @@
     display: inline-block;
     text-align: center;
     margin: 0 10px;
-    color: $share_text_color2;
-    &.link-submit {
-      color: $share_text_color3;
-    }
-
-    &.porn1 {
-      &.link-join-mem {
-        color: var(--main_text_color4);
-      }
-
-      &.link-submit {
-        color: $befa_main_color;
-      }
-    }
-
-    &.sp1 {
-      &.link-join-mem {
-        color: var(--main_text_color4);
-      }
-
-      &.link-submit {
-        color: $sp1_main_color1;
-      }
-    }
+  }
+  .link-join-mem {
+    color: var(--joinmember_left_text_color);
+  }
+  .link-submit {
+    color: var(--joinmember_right_text_color);
   }
 }
 

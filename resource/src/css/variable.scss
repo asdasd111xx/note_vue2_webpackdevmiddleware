@@ -64,29 +64,5 @@ $share_member_text_color14: #7086ce; //vip文字
 $share_main_button_color1: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 $share_main_button_color2: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
 
-/*--- 币发 ---*/
-//大廳 遊戲
-$befa_main_color: #3354ad;
-
-//會員中心
-$befa_member_main_color1: #3354ad;
-$befa_member_main_color2: #3354ad;
-$befa_member_main_color3: #adbade;
-$befa_member_main_color4: #adbade;
-
-$befa_member_text_color1: #ffffff; //主色
-$befa_member_text_color2: #ffffff; //補色
-
-$befa_main_button_color1: linear-gradient(
-  to left,
-  $befa_member_main_color3 0%,
-  $befa_member_main_color4 100%
-);
-$befa_main_button_color2: linear-gradient(
-  to left,
-  $befa_member_main_color1 0%,
-  $befa_member_main_color2 100%
-);
-
 /*--- 澳博、51 還沒改藍色 ---*/
 $share_origin_color10: #be9e7f; //$share_member_text_color3
