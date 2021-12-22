@@ -51,7 +51,9 @@
         :class="$style['video-cell']"
       >
         <div v-if="videoData.list" :class="[$style['video-type'], 'clearfix']">
-          <div :class="$style['type-name']">{{ videoData.name }}</div>
+          <div :class="[$style['type-name'], $style[siteConfig.ROUTER_TPL]]">
+            {{ videoData.name }}
+          </div>
           <div
             :class="$style['btn-more']"
             @click.stop="handleMore(i, videoData)"
