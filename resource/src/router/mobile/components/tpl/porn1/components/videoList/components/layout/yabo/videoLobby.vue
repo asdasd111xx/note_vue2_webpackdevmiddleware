@@ -35,7 +35,7 @@
             $getCdnPath(
               `/static/image/_new/common/icon_more${
                 isShowAllTag ? '_close' : ''
-              }.png`
+              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
             )
           "
         />
@@ -45,7 +45,7 @@
             $getCdnPath(
               `/static/image/_new/common/icon_more${
                 isShowAllTag ? '_close_w' : '_w'
-              }.png`
+              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
             )
           "
         />
@@ -673,8 +673,7 @@ export default {
   color: #fff;
   font-size: 12px;
   text-align: center;
-  background: #3354ad;
-  background-color: var(--porn_btn_color);
+  background: var(--porn_btn_color);
 
   &.gay {
     background: #4a8cb8;
