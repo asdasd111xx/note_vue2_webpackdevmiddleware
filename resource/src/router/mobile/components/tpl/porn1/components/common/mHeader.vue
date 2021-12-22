@@ -84,7 +84,10 @@
           :class="$style['gay-search']"
         />
 
-        <div v-else :class="$style['normal-search']" />
+        <div
+          v-else
+          :class="[$style['normal-search'], $style[siteConfig.ROUTER_TPL]]"
+        />
       </div>
     </template>
 
@@ -958,5 +961,10 @@ export default {
   width: 20px;
   height: 20px;
   background-size: contain;
+
+  &.aobo1 {
+    background: url("/static/image/common/ic_search_gold.png");
+    background-size: contain;
+  }
 }
 </style>
