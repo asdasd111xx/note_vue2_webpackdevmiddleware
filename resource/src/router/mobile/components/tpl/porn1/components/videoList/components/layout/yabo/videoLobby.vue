@@ -643,7 +643,7 @@ export default {
   padding-left: 20px;
   background: url("/static/image/common/icon_item.png") 0 50% no-repeat;
   background-size: 15px 15px;
-  color: #222;
+  color: var(--porn_text_color);
   font-weight: 700;
   font-size: 12px;
 
