@@ -117,7 +117,6 @@
         v-else
         :class="[
           $style['login-wrap'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
@@ -552,7 +551,7 @@ export default {
     height: 20px;
     // line-height: 20px;
     margin: 0 1px;
-    color: black;
+    color: var(--visitor_title_color);
     font-size: 17px;
     vertical-align: middle;
     @media screen and(max-width: 320px) {
@@ -592,7 +591,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: $share_text_color4;
+    color: var(--visitor_money_color);
     margin: 0;
     padding: 0;
 
@@ -611,26 +610,6 @@ export default {
   }
   .visitor-border {
     border-right: 1px solid #9ca4be;
-  }
-}
-
-.login-wrap {
-  &.sp1 {
-    .visitor-money {
-      color: #ffffff;
-    }
-
-    > span {
-      color: $sp1_main_color1;
-    }
-  }
-}
-
-.login-wrap {
-  &.porn1 {
-    .visitor-money {
-      color: $share_member_text_color4;
-    }
   }
 }
 

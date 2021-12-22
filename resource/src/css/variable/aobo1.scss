@@ -31,14 +31,19 @@
   --member_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
   //功能
-  --redpot: #be9e7f;
-  --deco_color: linear-gradient(to bottom, #bd9d7d 0%, #f9ddbd 100%);
-  --deco_color2: #be9e7f;
-  --wallet_border_color: #d1b79c;
+  //大廳 遊戲
   --joinmember_title: #9b6b40;
   --joinmember_left_text_color: #5e626d;
   --joinmember_right_text_color: #9ca3bf;
   --service-bottom-button: var(--member_gradient_color1);
+  --visitor_title_color: #000;
+  --visitor_money_color: #fb7126;
+
+  //會員中心
+  --redpot: #be9e7f;
+  --deco_color: linear-gradient(to bottom, #bd9d7d 0%, #f9ddbd 100%);
+  --deco_color2: #be9e7f;
+  --wallet_border_color: #d1b79c;
   --apptip_title: #000000de;
   --apptip_btn: var(--main_gradient_color1);
   --popup_text_color1: #d1b79c;

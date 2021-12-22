@@ -524,7 +524,7 @@ export default {
     line-height: 20px;
     margin: 0 1.5px;
     padding: 0 3px;
-    color: #f9e8b4;
+    color: var(--visitor_title_color);
     font-size: 17px;
     vertical-align: middle;
     @media screen and (max-width: 320px) {
@@ -549,7 +549,7 @@ export default {
   }
 
   .visitor-title {
-    color: #f9e8b4;
+    color: var(--visitor_title_color);
     font-size: 12px;
     margin: 0;
     padding: 0;
@@ -557,7 +557,7 @@ export default {
   }
   .visitor-money {
     font-size: 12px;
-    color: #ffffff;
+    color: var(--visitor_money_color);
     margin: 0;
     padding: 0;
     padding-right: 2px;
