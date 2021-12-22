@@ -168,7 +168,7 @@ export const site_80 = {
       LES: "8"
     }
   },
-  CDN_HEADER: "x-cdn-ey"
+  CDN_HEADER: "x-cdn-sg"
 };
 
 /**
