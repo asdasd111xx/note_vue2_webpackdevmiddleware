@@ -79,7 +79,13 @@
         :class="$style['video-cell']"
       >
         <div v-if="videoData.list" :class="[$style['video-type'], 'clearfix']">
-          <div :class="[$style['type-name'], $style[source]]">
+          <div
+            :class="[
+              $style['type-name'],
+              $style[source],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             {{ videoData.name }}
           </div>
           <div
@@ -635,14 +641,16 @@ export default {
   height: 20px;
   line-height: 20px;
   padding-left: 20px;
-  background: url("/static/image/_new/common/icon_item.png") 0 50% no-repeat;
+  background: url("/static/image/common/icon_item.png") 0 50% no-repeat;
   background-size: 15px 15px;
   color: #222;
   font-weight: 700;
   font-size: 12px;
 
-  &.sg1 {
-    background: url("/static/image/sg1/common/icon_item.png") 0 50% no-repeat;
+  &.ponr1,
+  &.aobo1,
+  &.sp1 {
+    background: url("/static/image/common/icon_item_b.png") 0 50% no-repeat;
   }
 
   &.gay {
