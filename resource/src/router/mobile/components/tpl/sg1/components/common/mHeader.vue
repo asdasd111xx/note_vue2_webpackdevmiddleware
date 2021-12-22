@@ -897,7 +897,7 @@ export default {
 }
 
 .normal-search {
-  background: url("/static/image/common/ic_search_grey.png");
+  background: url("/static/image/common/ic_search_gold.png");
   width: 20px;
   height: 20px;
   background-size: contain;
