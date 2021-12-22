@@ -114,13 +114,13 @@
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
-                <template v-if="['porn1', 'sg1'].includes(routerTPL)">
+                <template>
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
 
-                <template v-if="['ey1'].includes(routerTPL)">
+                <!-- <template v-if="['ey1'].includes(routerTPL)">
                   {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
-                </template>
+                </template> -->
               </span>
 
               <span :class="[$style['balance-item-money'], $style['more']]">
