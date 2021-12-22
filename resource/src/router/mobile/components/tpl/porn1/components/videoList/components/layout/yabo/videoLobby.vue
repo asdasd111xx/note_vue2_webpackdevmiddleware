@@ -536,7 +536,7 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: #222;
+    background-color: var(--porn_line_color);
   }
 
   &.av.active .line {
@@ -641,6 +641,10 @@ export default {
   font-weight: 700;
   font-size: 12px;
 
+  &.sg1 {
+    background: url("/static/image/sg1/common/icon_item.png") 0 50% no-repeat;
+  }
+
   &.gay {
     color: #333;
   }
@@ -661,6 +665,8 @@ export default {
   font-size: 12px;
   text-align: center;
   background: #3354ad;
+  background-color: var(--porn_btn_color);
+
   &.gay {
     background: #4a8cb8;
   }
