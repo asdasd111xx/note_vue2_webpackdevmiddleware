@@ -595,9 +595,9 @@ export default {
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid #222;
+    border: 1px solid var(--porn_line_color);
     border-radius: 5px;
-    color: #222;
+    color: var(--porn_line_color);
     font-size: 14px;
     text-align: center;
 
@@ -647,9 +647,7 @@ export default {
   font-weight: 700;
   font-size: 12px;
 
-  &.porn1,
-  &.aobo1,
-  &.sp1 {
+  &.porn1 {
     background: url("/static/image/common/icon_item_b.png") 0 50% no-repeat;
     background-size: 15px 15px;
   }
