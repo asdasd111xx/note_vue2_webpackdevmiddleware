@@ -255,7 +255,7 @@ export default {
         { key: "deposit", text: "充值" },
         { key: "vendor", text: "转帐" },
         { key: "withdraw", text: "提现" },
-        { key: "bonus", text: "红利" },
+        { key: "bonus", text: "优惠" },
         { key: "manual", text: "人工" },
         { key: "wage", text: "返利" },
         { key: "ingroup_transfer", text: "转让" }
@@ -444,7 +444,7 @@ export default {
       this.type = ["internal_memo"];
       this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: "internal_memo", text: "红利" });
+      this.setCategory({ key: "internal_memo", text: "优惠" });
     },
     setCategory(value) {
       this.currentCategory = value;

@@ -54,7 +54,7 @@
         <recoard-detail-slider
           v-if="detailInfo"
           :detail-info="detailInfo"
-          :detail-type="{ text: '红利' }"
+          :detail-type="{ text: '优惠' }"
           @close="showDetail(null)"
         />
       </div>
