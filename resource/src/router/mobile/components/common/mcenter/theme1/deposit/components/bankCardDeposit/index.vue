@@ -754,22 +754,7 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span
-                        :class="[
-                          {
-                            [$style['yb']]:
-                              themeTPL === 'porn1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['ey']]:
-                              themeTPL === 'ey1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['sg']]:
-                              themeTPL === 'sg1' && cryptoMoney > 0
-                          }
-                        ]"
-                      >
+                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
@@ -801,22 +786,7 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span
-                        :class="[
-                          {
-                            [$style['yb']]:
-                              themeTPL === 'porn1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['ey']]:
-                              themeTPL === 'ey1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['sg']]:
-                              themeTPL === 'sg1' && cryptoMoney > 0
-                          }
-                        ]"
-                      >
+                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>

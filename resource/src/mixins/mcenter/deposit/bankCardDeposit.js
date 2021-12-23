@@ -324,7 +324,7 @@ export default {
 
       textValue += this.offerInfo.is_full_offer
         ? "• 今日领取已达上限"
-        : `•今日优惠已领 ${this.formatThousandsCurrency(
+        : `• 今日优惠已领 ${this.formatThousandsCurrency(
             this.offerInfo.gotten_offer
           )}元`;
 
