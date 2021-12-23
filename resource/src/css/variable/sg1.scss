@@ -46,6 +46,11 @@
   --promotion_gift_button: #ffefdd;
   --promotion_gift_button_text_color: #000;
   --promotion_gift_button_border: 32px;
+  --mcenter_wrap_text_color: #ffad0a; //首頁右邊icon文字顏色
+  --type_title_text_color: var(--main_text_color5); //首頁左邊icon文字顏色
+  --type_title_text_color_active: var(
+    --main_text_color1
+  ); //首頁左邊icon文字顏色 active
 
   //會員中心
   --wallet_border_color: #be9e7f;
