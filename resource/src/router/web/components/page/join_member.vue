@@ -595,7 +595,7 @@
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
-        已有会员帐号
+        <a>若有会员帐号<br />请点击前往登入</a>
       </div>
       <div :class="$style['version']">
         {{ version }}
