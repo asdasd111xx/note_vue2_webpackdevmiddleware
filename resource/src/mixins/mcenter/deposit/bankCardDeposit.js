@@ -175,6 +175,28 @@ export default {
         : 0;
       //充值優惠小數點後兩位捨去
       // promotionValue = Math.floor(promotionValue * 100) / 100;
+      // 超過優惠金額以單筆上限為主
+      if (
+        +this.offerInfo.per_offer_limit > 0 &&
+        promotionValue > +this.offerInfo.per_offer_limit
+      ) {
+        promotionValue = +this.offerInfo.per_offer_limit;
+      }
+      // 檢查每日優惠金額有無達到上限
+      if (this.offerInfo.is_full_offer) {
+        promotionValue = 0;
+      } else if (
+        +this.offerInfo.offer_limit > 0 &&
+        promotionValue >
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
+      ) {
+        promotionValue =
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
+
+        //充值優惠小數點後兩位捨去
+        promotionValue = Math.floor(promotionValue * 100) / 100;
+      }
+
       let deductionValue = +this.getPassRoadOrAi.fee_percent
         ? new BigNumber(this.moneyValue)
             .multipliedBy(
@@ -197,7 +219,7 @@ export default {
         (this.depositInterval.maxMoney &&
           this.depositInterval.maxMoney < this.moneyValue) ||
         (+this.getPassRoadOrAi.fee_percent <= 0 &&
-          +this.getPassRoadOrAi.fee_amount > +this.moneyValue)
+          +this.getPassRoadOrAi.fee_amount > +this.moneyValue + promotionValue)
       ) {
         return "0.00";
       }
@@ -215,28 +237,6 @@ export default {
         // 只取小數點後二位
         total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
         return this.formatThousandsCurrency(total);
-      }
-
-      // 超過優惠金額以單筆上限為主
-      if (
-        +this.offerInfo.per_offer_limit > 0 &&
-        promotionValue > +this.offerInfo.per_offer_limit
-      ) {
-        promotionValue = +this.offerInfo.per_offer_limit;
-      }
-      // 檢查每日優惠金額有無達到上限
-      if (this.offerInfo.is_full_offer) {
-        promotionValue = 0;
-      } else if (
-        +this.offerInfo.offer_limit > 0 &&
-        promotionValue >
-          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
-      ) {
-        promotionValue =
-          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
-
-        //充值優惠小數點後兩位捨去
-        promotionValue = Math.floor(promotionValue * 100) / 100;
       }
 
       // 總額計算
