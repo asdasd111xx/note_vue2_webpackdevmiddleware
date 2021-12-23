@@ -1107,11 +1107,11 @@ export default {
     width: 50%;
     padding: 10px 0;
     &.close {
-      color: var(--main_color100);
+      color: var(--member_color100);
       border-right: 1px solid #f7f8fb;
     }
     &.confirm {
-      color: var(--main_color100);
+      color: var(--member_color100);
     }
   }
 }

@@ -204,7 +204,7 @@ export default {
   text-align: center;
 
   &.active {
-    color: var(--main_text_color2);
+    color: #ffffff;
   }
 }
 

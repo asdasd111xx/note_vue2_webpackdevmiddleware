@@ -69,7 +69,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .help-wrap {
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
   position: relative;
 
   .list {

@@ -137,7 +137,7 @@
       float: left;
       position: relative;
       margin-left: 6px;
-      color: var(--main_text_color4);
+      color: var(--slider_text_active_color);
     }
 
     .login-unit-link {
@@ -157,7 +157,7 @@
       color: var(--main_text_color1);
       text-align: center;
       line-height: 50px;
-      background: var(--main_gradient_color1);
+      background: var(--main_button_color1);
       border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
@@ -187,7 +187,7 @@
 }
 
 .version {
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
   position: absolute;
   right: 14px;
   bottom: 5px;

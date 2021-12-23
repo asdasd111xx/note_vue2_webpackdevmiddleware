@@ -1,19 +1,66 @@
 :root {
-  //大廳 遊戲
-  --main_color1: #bd9d7d;
-  --main_color2: #f9ddbd;
-  --main_color3: #e9dacb;
-  --main_color4: #eee5db;
+  /***---------------- 企劃書主色輔色 ----------------***/
+  /***--- 大廳 遊戲 ---***/
+  //底色(固定顏色)
+  --homepage_color: #ffffff; //首頁底色
+  --homepage_border_color: #c9c9c9; //內邊框
+  --homepage_inner_color: #f8f8f7; //內頁底色
+  --homepage_inner_border_color: #c9c9c9; //內邊框
+
+  //主色(客製顏色)
+  --main_color: #d1b79c; //主色
+  --main_border_color: #d1b79c; //內邊框
+  --secondary_color: #7e6b56; //輔色(維護字體與首頁中間選單字體)
+  --secondary_border_color: #7e6b56; //內邊框
+
+  //選單(客製顏色)
+  --selector_color1: #364064; //首頁 左側選單、功能列 文字主色
+  --selector_border_color1: #707070; //內邊框
+  --selector_color2: #4d2d1f; //首頁 左側選單文字Hover主色
+  --selector_border_color2: #707070; //內邊框
+
+  //按鈕主色
+  --main_button_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --main_button_text_color1: #ffffff;
+  --main_button_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+  --main_button_text_color2: #ffffff;
+
+  //首頁左側選單（選單(客製顏色)）
+  --homepage_left_text_color: #364064;
+  --homepage_left_text_active_color: #4d2d1f;
+
+  //首頁中間選單（輔色）
+  --homepage_right_text_color: #7e6b56;
+
+  //功能列（一般：選單(客製顏色)、點選：輔色）
+  --footer_color: #364064;
+  --footer_active_color: #7e6b56;
+
+  //第二層選單（主色）
+  //>底線模式
+  --slider_text_color: #a6a9b2;
+  --slider_text_active_color: #5e626d;
+  --slider_underline_active_color: #d1b79c;
+  //>方塊模式
+  --square_text_color: #d1b79c;
+  --square_border_color: #d1b79c;
+  --square_background_color: #ffffff;
+  --square_text_active_color: #ffffff;
+  --square_border_active_color: #d1b79c;
+  --square_background_active_color: #d1b79c;
+
+  //客服永久網址按鈕
+  --service_bottom_text_button: #ffffff;
+  --service_bottom_background_button: #deb79c;
+
+  //首頁訪客彩金
+  --visitor_title_color: #000;
+  --visitor_money_color: #fb7126;
+
   --main_color100: #6aaaf5;
   --main_text_color1: #ffffff;
-  --main_text_color2: #ffffff;
-  --main_text_color3: #a6a9b2;
-  --main_text_color4: #5e626d;
-  --main_text_color5: #a6a9b2;
-  --main_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-  --main_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
-  //會員中心
+  /***--- 會員中心 ----***/
   --member_color1: #bd9d7d;
   --member_color2: #f9ddbd;
   --member_color3: #e9dacb;
@@ -30,39 +77,40 @@
   --member_gradient_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   --member_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
-  //功能
-  //大廳 遊戲
-  --joinmember_title: #9b6b40;
-  --joinmember_left_text_color: #5e626d;
-  --joinmember_right_text_color: #9ca3bf;
-  --service-bottom-button: var(--member_gradient_color1);
-  --visitor_title_color: #000; //訪客彩金
-  --visitor_money_color: #fb7126;
-  --promotion_gift_button: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-  --promotion_gift_button_text_color: #fff;
-  --promotion_gift_button_border: 3px;
-  --mcenter_wrap_text_color: #ad9982; //首頁右邊icon文字顏色
-  --type_title_text_color: var(--main_text_color3); //首頁左邊icon文字顏色
-  --type_title_text_color_active: var(
-    --main_text_color1
-  ); //首頁左邊icon文字顏色 active
+  /***---------------- 功能 ----------------***/
+  /***--- 大廳 遊戲 功能 ---***/
+  --joinmember_title: #9b6b40; //註冊頁標題
+  --joinmember_left_text_color: #5e626d; //註冊頁左下文字
+  --joinmember_right_text_color: #9ca3bf; //註冊頁右下文字
+  --promotion_gift_button: linear-gradient(
+    to left,
+    #bd9d7d 0%,
+    #f9ddbd 100%
+  ); //優惠上方按鈕背景
+  --promotion_gift_button_text_color: #fff; //優惠上方按鈕文字
+  --promotion_gift_button_border: 3px; //優惠上方按鈕圓角
+  --service_webview_button: #6aaaf5; //webview我的客服下載按鈕
+  --service_webview_text_button: #6aaaf5; //webview我的客服下載按鈕文字
+  --webview_icon_text: #bf8646; //webview我的客服文字
+  --service_add_button: #6aaaf5; //我的客服立即添加按鈕
+  --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
+  --service_text_color: #6aaaf5; //我的客服立即添加按鈕左邊的文字
 
-  //會員中心
+  /***--- 會員中心 功能 ----***/
   --redpot: #be9e7f;
   --deco_color: linear-gradient(to bottom, #bd9d7d 0%, #f9ddbd 100%);
   --deco_color2: #be9e7f;
   --wallet_border_color: #d1b79c;
   --apptip_title: #000000de;
-  --apptip_btn: var(--main_gradient_color1);
+  --apptip_btn: var(--main_button_color1);
   --popup_text_color1: #d1b79c;
   --popup_text_color2: #414655;
   --popup_text_color3: #414655;
   --member_slider: #d1b79c;
-  --webview_icon_text: #bf8646;
   --marquee_text_color1: #9ca3bf;
   --marquee_text_color2: #d1b79c;
   --vip_detail_color: #bbab98;
-  --avatar-vip-icon-color: var(--main_gradient_color1);
+  --avatar-vip-icon-color: var(--main_button_color1);
   --redpot_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   --addcard_popup_text_color: #bbab98;
   --addcard_popup_prev_text_color: #be9e7f;

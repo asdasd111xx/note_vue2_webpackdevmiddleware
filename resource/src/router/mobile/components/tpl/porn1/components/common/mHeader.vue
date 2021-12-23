@@ -712,7 +712,7 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: var(--main_text_color2);
+    color: #ffffff;
     font-size: 14px;
     outline: none;
 
@@ -745,7 +745,7 @@ export default {
     }
 
     &::placeholder {
-      color: var(--main_text_color2);
+      color: #ffffff;
     }
   }
 }

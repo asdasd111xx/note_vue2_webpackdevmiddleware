@@ -163,7 +163,7 @@ export default {
     }
 
     .title {
-      color: var(--main_text_color4);
+      color: var(--slider_text_active_color);
     }
 
     .intro {

@@ -196,7 +196,7 @@ export default {
   height: 20px;
   line-height: 20px;
   margin-bottom: 10px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   font-size: 14px;
 
   &::before {
@@ -207,7 +207,7 @@ export default {
   }
 
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 
   > span {
@@ -261,7 +261,7 @@ export default {
   font-size: 12px;
   height: 16px;
   line-height: 16px;
-  color: var(--main_text_color2);
+  color: #ffffff;
 }
 
 .btn-confirm {

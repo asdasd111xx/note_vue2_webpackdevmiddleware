@@ -92,7 +92,7 @@ export default {
   text-align: center;
   height: 65px;
   background: #fefefe;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 }
 
 .item {
@@ -100,7 +100,7 @@ export default {
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 
   // Swag 錢包區塊
   &.wallet {

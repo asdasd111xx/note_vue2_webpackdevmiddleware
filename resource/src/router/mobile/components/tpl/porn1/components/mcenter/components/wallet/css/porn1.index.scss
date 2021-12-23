@@ -226,7 +226,7 @@
 
   &.collapse {
     float: right;
-    color: var(--main_text_color2);
+    color: #ffffff;
     border-bottom: none;
 
     .icon {
@@ -382,7 +382,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
-    color: var(--main_text_color3);
+    color: var(--slider_text_color);
 
     .icon-cell {
       min-height: 54px;

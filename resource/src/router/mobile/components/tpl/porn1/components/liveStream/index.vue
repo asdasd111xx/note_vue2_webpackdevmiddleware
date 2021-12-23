@@ -251,9 +251,9 @@ export default {
   width: 50%;
   text-align: center;
   font-size: 16px;
-  color: var(--main_text_color2);
+  color: #ffffff;
   &.is-current {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 }
 

@@ -399,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: var(--main_color100);
+  color: var(--member_color100);
   font-weight: bold;
 
   .add-bottom {
     color: #fff;
-    background: var(--main_gradient_color1);
+    background: var(--main_button_color1);
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
@@ -595,7 +595,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: var(--main_gradient_color1);
+      background: var(--main_button_color1);
       border-radius: 9px 0 0 9px;
     }
   }

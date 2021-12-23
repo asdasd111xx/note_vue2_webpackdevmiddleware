@@ -274,7 +274,7 @@ export default {
   overflow: hidden;
   height: 17px;
   line-height: 17px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   font-size: 13px;
   font-weight: 400;
   text-overflow: ellipsis;
@@ -295,7 +295,7 @@ export default {
     padding: 0 10px;
     border-radius: 7px;
     background-color: #eeeeee;
-    color: var(--main_text_color2);
+    color: #ffffff;
     font-size: 12px;
   }
 }
@@ -303,7 +303,7 @@ export default {
 .views {
   display: flex;
   align-items: center;
-  color: var(--main_text_color2);
+  color: #ffffff;
   height: 13px;
   line-height: 13px;
   font-size: 10px;

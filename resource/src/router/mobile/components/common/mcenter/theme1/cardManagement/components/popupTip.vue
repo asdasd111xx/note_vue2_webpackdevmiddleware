@@ -134,11 +134,11 @@ export default {
 
 .content {
   padding: 17px 13px;
-  color: var(--main_text_color2);
+  color: #ffffff;
   text-align: center;
 
   .title {
-    color: var(--main_text_color3);
+    color: var(--slider_text_color);
     font-size: 18px;
     font-weight: 700;
   }

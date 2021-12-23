@@ -550,11 +550,11 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
-  background: var(--main_gradient_color2);
+  background: var(--main_button_color2);
   color: #f3ede7;
 
   &.active {
-    background: var(--main_gradient_color1);
+    background: var(--main_button_color1);
     color: white;
   }
 
@@ -563,7 +563,7 @@ input {
     color: #f3ede7;
 
     &.active {
-      background: var(--main_gradient_color1);
+      background: var(--main_button_color1);
       color: white;
     }
   }
