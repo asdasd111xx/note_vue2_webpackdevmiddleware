@@ -171,7 +171,7 @@ export default {
             ...this.info
           }
         });
-      } else if (this.info.show_detail) {
+      } else if (this.info.current_entry_id) {
         this.setTabState(false);
         this.$emit("update:currentInfo", this.info);
 

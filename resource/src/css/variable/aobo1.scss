@@ -31,11 +31,19 @@
   --member_gradient_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
 
   //功能
+  //大廳 遊戲
+  --joinmember_title: #9b6b40;
+  --joinmember_left_text_color: #5e626d;
+  --joinmember_right_text_color: #9ca3bf;
+  --service-bottom-button: var(--member_gradient_color1);
+  --visitor_title_color: #000;
+  --visitor_money_color: #fb7126;
+
+  //會員中心
   --redpot: #be9e7f;
   --deco_color: linear-gradient(to bottom, #bd9d7d 0%, #f9ddbd 100%);
   --deco_color2: #be9e7f;
   --wallet_border_color: #d1b79c;
-  --joinmember_title: #9b6b40;
   --apptip_title: #000000de;
   --apptip_btn: var(--main_gradient_color1);
   --popup_text_color1: #d1b79c;
@@ -54,4 +62,12 @@
   --label_bg_color: #be9e7f;
   --label_text_color1: #bf8646;
   --label_text_color2: #fff;
+  --bankrebate_receive_button1: var(--member_gradient_color1);
+  --bankrebate_receive_button2: var(--member_gradient_color2);
+  --bankrebate_receive_text_color: #f3ede7;
+  --invite_background_color: #f2e2d1;
+  --invite_text_color: #be9e7f;
+  --porn_btn_color: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  --porn_line_color: #be9e7f;
+  --porn_text_color: #be9e7f;
 }

@@ -96,7 +96,9 @@
                   $style['balance-redjackpot-text']
                 ]"
               >
-                {{ formatThousandsCurrency(redJackpotData.remain_bonus, true) }}
+                {{
+                  formatThousandsCurrency(redJackpotData.remain_bonus, false)
+                }}
               </span>
               <span
                 :class="[
@@ -112,19 +114,19 @@
               @click="$router.push('/mobile/mcenter/bonus')"
             >
               <span :class="$style['balance-item-vendor']">
-                <template v-if="['porn1', 'sg1'].includes(routerTPL)">
+                <template>
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
 
-                <template v-if="['ey1'].includes(routerTPL)">
+                <!-- <template v-if="['ey1'].includes(routerTPL)">
                   {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
-                </template>
+                </template> -->
               </span>
 
               <span :class="[$style['balance-item-money'], $style['more']]">
                 {{
                   bonus.balance
-                    ? formatThousandsCurrency(bonus.balance, true)
+                    ? formatThousandsCurrency(bonus.balance, false)
                     : 0.0
                 }}
               </span>
@@ -322,10 +324,7 @@
       </div>
     </template>
 
-    <div
-      :class="[$style['invite-wrap'], $style[siteConfig.ROUTER_TPL]]"
-      @click="onClickInvite"
-    >
+    <div :class="[$style['invite-wrap']]" @click="onClickInvite">
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
@@ -371,7 +370,7 @@
             <div :class="$style['game-desc']">
               <span :class="$style['game']">{{ item.game_name }}</span>
               <span :class="$style['money']">{{
-                formatThousandsCurrency(item.valid_bet, true)
+                formatThousandsCurrency(item.valid_bet, false)
               }}</span>
             </div>
           </div>
@@ -451,8 +450,8 @@ export default {
       redJackpotData: null,
       loginMoney: "",
       // updateBalance: null
-      bcWalletEnableType: true,
-      bcWalletBindType: true,
+      bcWalletEnableType: false,
+      bcWalletBindType: false,
       bcMoneyShowType: false,
       bcCurrencyData: {
         bind: false,
@@ -1042,7 +1041,6 @@ export default {
           lang: "zh-cn"
         }
       }).then(res => {
-        console.log(res);
         if (res.status === "000") {
           this.bcWalletBindType = res.data.bind;
           this.bcCurrencyData = res.data;

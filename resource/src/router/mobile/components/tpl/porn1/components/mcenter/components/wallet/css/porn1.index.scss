@@ -295,11 +295,11 @@
   width: 100%;
   height: 70px;
   margin-top: 12px;
-  background: #f2e2d1;
+  background: var(--invite_background_color);
   border-radius: 34px;
 
   .content {
-    color: $share_member_text_color2;
+    color: var(--invite_text_color);
     font-size: 16px;
     margin-left: 8%;
     font-weight: 700;
@@ -309,10 +309,11 @@
     justify-content: center;
     flex-direction: column;
 
+    //億元樣式
     .sub {
       font-size: 12px;
       text-align: left;
-      color: $share_member_text_color1;
+      color: #d1b79c;
       font-weight: 400;
     }
   }
@@ -327,18 +328,6 @@
     img {
       width: 100%;
       height: 100%;
-    }
-  }
-
-  &.porn1 {
-    background: #3676d5;
-
-    .content {
-      color: $befa_member_text_color1;
-    }
-
-    .sub {
-      color: $befa_member_text_color1;
     }
   }
 }

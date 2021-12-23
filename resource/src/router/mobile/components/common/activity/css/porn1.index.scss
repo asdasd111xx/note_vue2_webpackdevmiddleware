@@ -161,15 +161,13 @@
     background: none;
 
     &.porn1 {
-      color: #bf8646;
-      border: 1px solid #d5bea4;
+      color: #222;
+      border: 1px solid #222;
       border-radius: 3px;
 
       &:active,
       &.is-current {
-        background: #bd9d7d;
-        background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-        background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+        background: #222;
         color: #fff;
       }
     }

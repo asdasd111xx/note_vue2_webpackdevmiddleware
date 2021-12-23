@@ -250,7 +250,7 @@ export default {
     }
   },
   created() {
-    this.getTitle();
+    // this.getTitle();
   },
   mounted() {
     this.avatarSrc = `/static/image/common/default/avatar_nologin.png`;

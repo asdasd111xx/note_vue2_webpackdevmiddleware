@@ -1,4 +1,5 @@
 :root {
+  //大廳 遊戲
   --main_color1: #3354ad;
   --main_color2: #3354ad;
   --main_color3: #adbade;
@@ -30,11 +31,19 @@
   --member_gradient_color2: linear-gradient(to left, #adbade 0%, #adbade 100%);
 
   //功能
+  //大廳 遊戲
+  --joinmember_title: #9b6b40;
+  --joinmember_left_text_color: #5e626d;
+  --joinmember_right_text_color: #3354ad;
+  --service-bottom-button: #3354ad;
+  --visitor_title_color: #000;
+  --visitor_money_color: #6aaaf5;
+
+  //會員中心
   --wallet_border_color: #6aaaf5;
   --redpot: #db6372;
   --deco_color: #414655;
   --deco_color2: #a6a9b2;
-  --joinmember_title: #9b6b40;
   --apptip_title: #3354ad;
   --apptip_btn: #3354ad;
   --popup_text_color1: #6aaaf5;
@@ -53,4 +62,12 @@
   --label_bg_color: #222222;
   --label_text_color1: #222222;
   --label_text_color2: #ffffff;
+  --bankrebate_receive_button1: #414655;
+  --bankrebate_receive_button2: #eaeaea;
+  --bankrebate_receive_text_color: #a6a9b2;
+  --invite_background_color: #3676d5;
+  --invite_text_color: #ffffff;
+  --porn_btn_color: #3354ad;
+  --porn_line_color: #222;
+  --porn_text_color: #222;
 }

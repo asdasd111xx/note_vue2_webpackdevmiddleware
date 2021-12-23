@@ -955,6 +955,11 @@ export default {
       if (value === 2009) {
         this.selectedCard.name = "CGPay";
       }
+    },
+    actualMoney(value) {
+      if (this.isSelectedUSDT) {
+        this.convertCryptoMoney();
+      }
     }
   },
   created() {
@@ -1871,6 +1876,7 @@ export default {
               // 更新 Withdraw Info
               this.updateAmount(this.selectedCard.swift_code);
               this.isSuccessAlertShow = true;
+              this.errTips = "";
               // this.actionSetGlobalMessage({
               //   msg: "提现成功",
               //   cb: () => {
@@ -1910,6 +1916,7 @@ export default {
                   // 更新 Withdraw Info
                   this.updateAmount(this.selectedCard.swift_code);
                   this.isSuccessAlertShow = true;
+                  this.errTips = "";
                   // this.actionSetGlobalMessage({
                   //   msg: "提现成功"
                   // });

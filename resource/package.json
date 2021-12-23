@@ -26,6 +26,7 @@
     "date-fns": "2.11.0",
     "file-saver": "^2.0.2",
     "vue-template-compiler": "2.4.1",
+    "vee-validate": "2.0.6",
     "hint.css": "2.6.0",
     "hls.js": "^0.13.2",
     "html2canvas": "^1.0.0-rc.5",

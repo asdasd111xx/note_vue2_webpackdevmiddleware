@@ -162,23 +162,13 @@
               </div>
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
-                <div
-                  :class="[
-                    'link-button',
-                    'link-join-mem',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
-                >
+                <div :class="['link-button', 'link-join-mem']">
                   <span @click="checkLayeredURL">
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
                 <div
-                  :class="[
-                    'link-button',
-                    'link-submit',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
+                  :class="['link-button', 'link-submit']"
                   @click="$router.push('/mobile/service')"
                 >
                   {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
