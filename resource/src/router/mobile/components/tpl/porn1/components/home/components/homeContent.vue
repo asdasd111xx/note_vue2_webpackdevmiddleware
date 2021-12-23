@@ -51,7 +51,6 @@
           <div
             :class="[
               $style['type-title'],
-              $style[siteConfig.ROUTER_TPL],
               { [$style.active]: typeList[selectedIndex].icon === type.icon }
             ]"
           >
@@ -68,7 +67,7 @@
             <div
               v-for="(info, index) in mcenterList"
               :key="`mcenter-${index}`"
-              :class="[$style['mcenter-wrap'], $style[siteConfig.ROUTER_TPL]]"
+              :class="[$style['mcenter-wrap']]"
               @click="onGoToMcenter(info.path)"
             >
               <template v-if="info.name === 'grade'">
@@ -266,10 +265,7 @@
         </div>
 
         <div
-          :class="[
-            $style['modal-button-center'],
-            $style[siteConfig.MOBILE_WEB_TPL]
-          ]"
+          :class="[$style['modal-button-center']]"
           @click="closeRedirect_url()"
         >
           确定
@@ -353,18 +349,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: var(--main_text_color3);
+  color: var(--type_title_text_color);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
-  &.sp1 {
-    color: #222222;
-  }
-
   &.active {
-    color: var(--main_text_color1);
+    color: var(--type_title_text_color_active);
   }
 }
 
@@ -393,7 +385,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: #fff;
     }
   }
@@ -419,7 +411,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: $share_text_color1;
+    color: var(--mcenter_wrap_text_color);
     font-size: 12px;
     text-align: center;
   }
@@ -430,12 +422,6 @@ export default {
     position: absolute;
     font-weight: 700;
     color: #906246;
-  }
-
-  &.porn1 {
-    > div {
-      color: #707994;
-    }
   }
 }
 
@@ -724,15 +710,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: $share_member_text_color4;
-  }
-
-  &.ey1:last-child {
-    color: #e42a30;
-  }
-
-  &.porn1:last-child {
-    color: $share_member_text_color4;
+    color: var(--popup_text_color1);
   }
 }
 </style>

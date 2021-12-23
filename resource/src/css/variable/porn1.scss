@@ -38,6 +38,14 @@
   --service-bottom-button: #3354ad;
   --visitor_title_color: #000;
   --visitor_money_color: #6aaaf5;
+  --promotion_gift_button: #9ca3bf;
+  --promotion_gift_button_text_color: #ffffff;
+  --promotion_gift_button_border: 32px;
+  --mcenter_wrap_text_color: #707994; //首頁右邊icon文字顏色
+  --type_title_text_color: var(--main_text_color3); //首頁左邊icon文字顏色
+  --type_title_text_color_active: var(
+    --main_text_color1
+  ); //首頁左邊icon文字顏色 active
 
   //會員中心
   --wallet_border_color: #6aaaf5;

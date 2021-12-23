@@ -334,14 +334,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: var(--main_text_color5);
+  color: var(--type_title_text_color);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
   &.active {
-    color: var(--main_text_color1);
+    color: var(--type_title_text_color_active);
   }
 }
 
@@ -396,7 +396,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ffad0a;
+    color: var(--mcenter_wrap_text_color);
     font-size: 12px;
     text-align: center;
   }
