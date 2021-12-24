@@ -26,7 +26,7 @@
         left: 50%;
         bottom: 0;
         transform: translateX(-50%);
-        background: $share_member_text_color4;
+        background: var(--member_color100);
       }
     }
   }
@@ -97,7 +97,7 @@
   line-height: 47px;
   margin: 45px auto;
   border-radius: 4px;
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   color: #fff;
   font-size: 15px;
   text-align: center;

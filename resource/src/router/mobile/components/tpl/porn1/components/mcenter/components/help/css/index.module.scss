@@ -299,7 +299,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   border-top: 1px solid #f8f8f7;
 }
 
@@ -433,7 +433,7 @@
     line-height: 45px;
     margin: 0 auto;
     border-radius: 3px;
-    background: $share_main_button_color2;
+    background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     color: #fff;
     font-weight: 700;
     font-size: 14px;

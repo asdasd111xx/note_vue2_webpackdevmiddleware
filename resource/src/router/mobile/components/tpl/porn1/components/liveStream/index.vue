@@ -275,7 +275,7 @@ export default {
   vertical-align: middle;
 
   &.active {
-    border-bottom: $share_member_text_color4 solid 2px;
+    border-bottom: var(--member_color100) solid 2px;
   }
 }
 
@@ -317,7 +317,7 @@ export default {
   line-height: 21px;
   width: 43pt;
   height: 21px;
-  background: $share_member_text_color4;
+  background: var(--member_color100);
   border-radius: 10px;
 }
 

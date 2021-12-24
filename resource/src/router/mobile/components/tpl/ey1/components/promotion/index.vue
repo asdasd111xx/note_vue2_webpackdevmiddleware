@@ -251,7 +251,7 @@ $fixed_spacing_height: 43px;
   color: #ffffff;
   &.active {
     color: #5e626d;
-    // border-bottom: solid 1px $share_member_text_color4;
+    // border-bottom: solid 1px var(--member_color100);
   }
 }
 

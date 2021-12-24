@@ -209,7 +209,7 @@ export default {
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
   background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   &.open {
     display: none;
   }

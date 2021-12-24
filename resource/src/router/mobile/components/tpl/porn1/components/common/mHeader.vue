@@ -781,7 +781,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   color: white;
   margin: 0 auto;
   text-align: center;

@@ -188,7 +188,7 @@ $card-width: calc(100% - 30px);
       line-height: 20px;
       padding-top: 10px;
       border-top: #f8f8f7 1px solid;
-      color: $share_member_text_color4;
+      color: var(--member_color100);
       font-weight: 600;
     }
   }

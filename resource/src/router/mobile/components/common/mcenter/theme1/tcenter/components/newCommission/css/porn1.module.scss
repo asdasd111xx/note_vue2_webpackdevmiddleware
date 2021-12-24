@@ -55,7 +55,7 @@ $submitTextColor: #fff;
   white-space: nowrap;
 
   &.active {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 }
 

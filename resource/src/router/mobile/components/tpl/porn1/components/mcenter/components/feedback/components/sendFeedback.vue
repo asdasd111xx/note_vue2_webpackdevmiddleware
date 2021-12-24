@@ -97,7 +97,7 @@
             {{ item.content }}
             <icon
               v-if="item.id === paramsData.type_id"
-              :class="[$style['select-check'], $style[theme]]"
+              :class="[$style['select-check']]"
               name="check"
             />
           </li>

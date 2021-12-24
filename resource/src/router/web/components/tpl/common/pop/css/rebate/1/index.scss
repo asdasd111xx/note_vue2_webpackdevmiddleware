@@ -15,7 +15,7 @@
     height: 48px;
     line-height: 48px;
     border-radius: 5px 5px 0 0;
-    background-color: $share_member_text_color4;
+    background-color: var(--member_color100);
     color: #fff;
     font-size: 16px;
     text-align: center;
@@ -63,7 +63,7 @@
     }
     #button-entry-close {
       background: #faf5f0;
-      color: $share_member_text_color4;
+      color: var(--member_color100);
     }
   }
 }

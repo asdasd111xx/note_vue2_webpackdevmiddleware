@@ -1028,7 +1028,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 
   &.ey1:last-child {
@@ -1036,7 +1036,7 @@ export default {
   }
 
   &.porn1:last-child {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 }
 </style>

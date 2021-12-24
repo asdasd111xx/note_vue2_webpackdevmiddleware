@@ -134,7 +134,7 @@ export default {
     position: absolute;
     text-align: center;
     width: 40px;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 
   .title {
@@ -150,7 +150,7 @@ export default {
   .cell {
     position: relative;
     background-color: #ffffff;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     height: 50px;
     line-height: 50px;
     font-size: 14px;
@@ -164,7 +164,7 @@ export default {
     top: 50%;
     width: 15px;
     height: 15px;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     transform: translateY(-50%);
   }
 }

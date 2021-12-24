@@ -46,7 +46,7 @@
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,7 +58,7 @@
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: left;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     text-align: center;
   }
 }
@@ -101,15 +101,15 @@
   }
 
   &.selected {
-    border: 1px solid $share_member_text_color4;
+    border: 1px solid var(--member_color100);
     background: linear-gradient(
       -45deg,
-      $share_member_text_color4 10px,
+      var(--member_color100) 10px,
       rgba(255, 255, 255, 0) 0
     );
 
     .price {
-      color: $share_member_text_color4;
+      color: var(--member_color100);
     }
 
     .num {
@@ -157,7 +157,7 @@
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-weight: 400;
   text-align: left;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   padding: 12px 17px;
 }
 
@@ -251,7 +251,7 @@
   .check-header {
     width: 100%;
     height: 50px;
-    background: $share_member_text_color4;
+    background: var(--member_color100);
     border-radius: 3px 3px 0 0;
     color: white;
     position: relative;
@@ -297,7 +297,7 @@
 
   .check-button-wrap {
     padding: 10px 11px;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -313,7 +313,7 @@
 
       &.submit {
         color: white;
-        background: $share_main_button_color2;
+        background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       }
     }
   }

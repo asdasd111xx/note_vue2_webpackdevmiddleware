@@ -219,7 +219,7 @@
     <div v-if="isShowPopBankList" :class="$style['pop-wrap']">
       <div :class="$style['pop-mask']" @click="isShowPopBankList = false" />
       <div :class="$style['pop-menu']">
-        <div :class="[$style['pop-title'], $style[routerTPL]]">
+        <div :class="[$style['pop-title']]">
           <span @click="isShowPopBankList = false">
             {{ $text("S_CANCEL", "取消") }}
           </span>
@@ -232,7 +232,7 @@
             {{ item.name }}
             <icon
               v-if="item.id === formData.bankId"
-              :class="[$style['select-icon'], $style[routerTPL]]"
+              :class="[$style['select-icon']]"
               name="check"
             />
           </li>

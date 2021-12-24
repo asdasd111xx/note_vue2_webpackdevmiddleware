@@ -760,7 +760,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: $share_member_text_color4;
+      background: var(--member_color100);
       border-radius: 9px 0 0 9px;
     }
   }

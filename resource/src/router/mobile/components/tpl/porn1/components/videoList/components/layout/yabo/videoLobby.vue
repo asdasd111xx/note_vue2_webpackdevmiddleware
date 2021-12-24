@@ -546,7 +546,7 @@ export default {
   }
 
   &.av.active .line {
-    background-color: $share_member_text_color4;
+    background-color: var(--member_color100);
   }
 }
 

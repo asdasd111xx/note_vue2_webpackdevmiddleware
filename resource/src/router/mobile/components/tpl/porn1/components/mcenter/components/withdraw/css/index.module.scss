@@ -32,14 +32,14 @@
     }
 
     > div:last-child {
-      color: $share_member_text_color4;
+      color: var(--member_color100);
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     text-align: center;
     font-size: 16px;
   }
@@ -118,7 +118,7 @@
 
     &.rubbing-btn {
       font-size: 14px;
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: white;
       border-radius: 11px;
       width: 82px;
@@ -298,8 +298,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid $share_member_text_color4;
-    color: $share_member_text_color4;
+    border: 1px solid var(--member_color100);
+    color: var(--member_color100);
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -571,7 +571,7 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -589,7 +589,7 @@
       border-right: 1px solid #f8f8f7;
 
       &.submit {
-        color: $share_main_button_color2;
+        color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       }
     }
 

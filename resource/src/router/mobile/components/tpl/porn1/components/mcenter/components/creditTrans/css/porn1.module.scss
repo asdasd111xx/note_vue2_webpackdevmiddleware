@@ -249,7 +249,7 @@ input::placeholder {
 }
 
 .serial-number-links {
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   position: absolute;
   right: 17px;
 }
