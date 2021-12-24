@@ -351,7 +351,7 @@ export default {
 .title {
   margin-bottom: 16px;
   padding: 15px 20%;
-  background: $share_member_text_color4;
+  background: var(--member_color100);
   width: 100%;
   font-size: 20px;
   line-height: 20px;
@@ -388,12 +388,12 @@ export default {
 }
 
 .link-submit {
-  color: var(--main_text_color1);
+  color: #9ca3bf;
 }
 .submit {
   margin: 0 auto;
   border-radius: 8px;
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   width: 80%;
   height: 40px;
   line-height: 40px;

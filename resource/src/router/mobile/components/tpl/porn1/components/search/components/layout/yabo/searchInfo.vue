@@ -238,7 +238,7 @@ export default {
   line-height: 20px;
   bottom: 0;
   font-size: 12px;
-  color: $main_white_color1;
+  color: #fefffe;
   background: rgb(2, 1, 1);
   opacity: 0.8;
   overflow: hidden;
@@ -250,7 +250,7 @@ export default {
   position: absolute;
   width: 100%;
   height: calc(100vh - 100px);
-  background: $main_background_white1;
+  background: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;

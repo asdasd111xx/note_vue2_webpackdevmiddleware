@@ -36,8 +36,8 @@
 }
 
 .card {
-  background: $main_white_color1;
-  color: var(--main_text_color3);
+  background: #fefffe;
+  color: var(--slider_text_color);
   border-radius: 8px;
   margin-bottom: 9px;
 
@@ -69,13 +69,13 @@
 
     .payout {
       &.is-negative {
-        color: $main_error_color1;
+        color: #db6372;
       }
 
       &::before {
         content: "派彩：";
         position: relative;
-        color: var(--main_text_color3);
+        color: var(--slider_text_color);
       }
     }
   }

@@ -78,7 +78,7 @@
   .card {
     // width: 30%;
     flex: 1;
-    background: #fff;
+    background: var(--homepage_color);
     border-radius: 7px;
     box-shadow: 0 3px 7px 0px rgba(0, 0, 0, 0.05);
     text-align: center;
@@ -112,18 +112,18 @@
     }
 
     .text {
-      color: var(--member_text_color4);
+      color: var(--webview_icon_text);
       padding: 10px 0;
       font-weight: 700;
     }
 
     .download {
       display: inline-block;
-      color: var(--main_color100);
+      color: var(--service_webview_text_button);
       font-size: 12px;
       padding: 4px 12px;
       margin-bottom: 15px;
-      border: 1px solid var(--main_color100);
+      border: 1px solid var(--service_webview_button);
       border-radius: 3px;
     }
   }

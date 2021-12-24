@@ -1,9 +1,9 @@
 @import "./porn1.index.module.scss";
-$main_color: $share_member_text_color4;
+$main_color: var(--member_color100);
 
 .more-method-header {
   .prev {
-    color: var(--main_text_color3);
+    color: #414655;
   }
 }
 

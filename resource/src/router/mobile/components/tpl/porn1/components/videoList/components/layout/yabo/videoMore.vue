@@ -326,7 +326,7 @@ export default {
   position: fixed;
   top: 43px;
   z-index: 2;
-  background: $main_white_color1;
+  background: #fefffe;
 
   &.gay {
     background: #3e81ac;
@@ -350,7 +350,7 @@ export default {
 
   // 亞博點擊的文字color
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 
   &.gay {
@@ -390,7 +390,7 @@ export default {
   }
 
   &.av.active .line {
-    background-color: $share_member_text_color4;
+    background-color: var(--member_color100);
   }
 }
 
@@ -483,7 +483,7 @@ export default {
   line-height: 20px;
   bottom: 0;
   font-size: 12px;
-  color: $main_white_color1;
+  color: #fefffe;
   background: #000;
   opacity: 0.8;
   overflow: hidden;

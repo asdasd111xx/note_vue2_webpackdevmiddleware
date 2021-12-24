@@ -341,7 +341,7 @@ export default {
 
     > .download-btn {
       align-items: center;
-      background: var(--apptip_btn);
+      background: var(--main_button_color1);
       border-radius: 13.5px;
       display: flex;
       height: 27px;
@@ -350,7 +350,7 @@ export default {
       width: 100%;
 
       span {
-        color: var(--main_text_color2);
+        color: var(--main_button_text_color1);
         font-size: 12px;
         font-weight: 700;
         text-align: center;
@@ -363,7 +363,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: $share_main_button_color;
+    color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     height: 20px;
   }
 

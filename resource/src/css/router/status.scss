@@ -59,10 +59,10 @@ body {
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
-  color: $share_text_color5;
+  color: #be9e7f;
 
   &.porn1 {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 
   &.sg1 {

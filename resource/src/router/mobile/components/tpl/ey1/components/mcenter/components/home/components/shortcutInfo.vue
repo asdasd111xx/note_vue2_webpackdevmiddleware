@@ -177,7 +177,7 @@ export default {
 }
 
 .sub-text {
-  color: var(--main_text_color2);
+  color: #ffffff;
 }
 
 .vip-promotion-wrap {

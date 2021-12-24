@@ -474,7 +474,7 @@ export default {
   //display: flex;
   transition-property: transform;
   overflow-x: auto;
-  background: $main_white_color1;
+  background: #fefffe;
 
   &.gay {
     background: #3e81ac;
@@ -506,7 +506,7 @@ export default {
 
   // 亞博點擊的文字color
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 
   &.gay {
@@ -546,7 +546,7 @@ export default {
   }
 
   &.av.active .line {
-    background-color: $share_member_text_color4;
+    background-color: var(--member_color100);
   }
 }
 
@@ -623,7 +623,7 @@ export default {
 .video-list-wrap {
   overflow-y: auto;
   padding: 0 17px;
-  background: $main_background_white1;
+  background: #f8f8f8;
   padding-top: 43px;
   height: calc(100vh - 50px);
 }

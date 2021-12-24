@@ -82,7 +82,7 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .content-wrap {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
   color: #414655;
   height: calc(100vh + 43px);
   overflow-y: scroll;

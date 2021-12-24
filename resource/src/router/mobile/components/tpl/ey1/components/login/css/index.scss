@@ -176,7 +176,7 @@
 }
 
 .version {
-  color: var(--main_text_color3);
+  color: #a6a9b2;
   position: absolute;
   right: 14px;
   bottom: 5px;
@@ -186,7 +186,7 @@
 .err-msg {
   max-width: 375px;
   margin: 0 auto;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 26px;
   line-height: 26px;
 }

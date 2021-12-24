@@ -817,7 +817,9 @@ export default {
       isLoading: false,
       showRedirectJump: false,
       redirect_url: "",
-      placeholderResult: []
+      placeholderResult: [],
+      register_phone_keyring: "",
+      register_email_keyring: ""
     };
   },
   computed: {
@@ -1522,7 +1524,9 @@ export default {
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
-        code: localStorage.getItem("promotionCode") || ""
+        code: localStorage.getItem("promotionCode") || "",
+        phone_keyring: this.phoneVerifyModalShow ? this.register_phone_keyring : "",
+        email_keyring: this.mailVerifyModalShow ? this.register_email_keyring : ""
       };
 
       const self = this;
@@ -1826,6 +1830,7 @@ export default {
       });
     },
     getPhoneVerifyCode() {
+      console.log(123);
       //寄出會員註冊驗證簡訊
       axios({
         method: "post",
@@ -1871,6 +1876,7 @@ export default {
             this.phoneVerifyModalShow = false;
             this.showPhoneCheckIcon = true;
             this.NeedCode = false;
+            this.register_phone_keyring = res.data.ret.keyring
           }
         })
         .catch(error => {
@@ -1926,6 +1932,7 @@ export default {
             this.mailVerifyModalShow = false;
             this.showMailCheckIcon = true;
             this.mailNeedCode = false;
+            this.register_email_keyring = res.data.ret.keyring
           }
         })
         .catch(error => {

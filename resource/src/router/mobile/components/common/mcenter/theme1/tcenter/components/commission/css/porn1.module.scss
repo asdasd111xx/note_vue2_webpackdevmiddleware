@@ -37,14 +37,14 @@ $submitTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: var(--main_text_color2);
+  color: #ffffff;
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 }
 

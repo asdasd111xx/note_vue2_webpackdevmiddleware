@@ -399,10 +399,10 @@
 
   &.porn1 {
     .delete-cancel {
-      color: $share_member_text_color4;
+      color: var(--member_color100);
     }
     .delete-confirm {
-      color: $share_member_text_color4;
+      color: var(--member_color100);
     }
   }
 }
@@ -412,7 +412,7 @@
 }
 
 .delete-confirm {
-  color: $share_member_text_color1;
+  color: #d1b79c;
 }
 
 .message-header {

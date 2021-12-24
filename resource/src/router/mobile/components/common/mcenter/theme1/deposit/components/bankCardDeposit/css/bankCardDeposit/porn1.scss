@@ -379,7 +379,7 @@
   align-items: center;
   width: 100%;
   height: 52px;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 
   .time {
     color: var(--member_text_color6);
@@ -414,8 +414,8 @@
   .conversion-btn {
     display: inline-block;
     margin-left: 10px;
-    border: 1px solid $share_member_text_color4;
-    color: $share_member_text_color4;
+    border: 1px solid var(--member_color100);
+    color: var(--member_color100);
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -1142,7 +1142,7 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
 
     &.sg {
       color: #bf8646;
@@ -1198,7 +1198,7 @@
 
 .top-promotion {
   background: #f8f8f7;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1210,7 +1210,7 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;

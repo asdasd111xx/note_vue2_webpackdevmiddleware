@@ -27,7 +27,7 @@
 }
 
 .dialog-wrap {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
   border-radius: 20px 20px 0 0;
   bottom: 0;
   max-width: $mobile_max_width;
@@ -52,7 +52,7 @@
 
     > div {
       color: #5e626d;
-      background-color: $main_white_color1;
+      background-color: #fefffe;
       width: 100%;
       height: 50px;
       line-height: 50px;
@@ -186,7 +186,7 @@
 }
 
 .choose-btn {
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   border-radius: 3px;
   color: #ffffff;
   font-size: 14px;
@@ -214,12 +214,12 @@
 
 .cancel-btn {
   background: #faf5f0;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   float: left;
 }
 
 .submit-btn {
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   color: #ffffff;
   float: right;
 }

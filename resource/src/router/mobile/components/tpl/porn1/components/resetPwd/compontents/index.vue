@@ -498,7 +498,7 @@ export default {
 @import "~@/css/variable.scss";
 .reset-container {
   min-height: 100%;
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .reset-content {
@@ -538,7 +538,7 @@ input {
     }
   }
 
-  border-bottom: solid 1px $main_background_white1;
+  border-bottom: solid 1px #f8f8f8;
 }
 
 .submit {
@@ -550,11 +550,11 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
-  background: var(--main_gradient_color2);
+  background: var(--main_button_color2);
   color: #f3ede7;
 
   &.active {
-    background: var(--main_gradient_color1);
+    background: var(--main_button_color1);
     color: white;
   }
 
@@ -563,7 +563,7 @@ input {
     color: #f3ede7;
 
     &.active {
-      background: var(--main_gradient_color1);
+      background: var(--main_button_color1);
       color: white;
     }
   }
@@ -580,9 +580,9 @@ input {
 }
 
 .err-msg {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   height: 33px;
   line-height: 40px;
 }
