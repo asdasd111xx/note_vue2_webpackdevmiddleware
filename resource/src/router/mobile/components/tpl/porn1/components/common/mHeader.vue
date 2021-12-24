@@ -942,7 +942,7 @@ export default {
   background-size: contain;
 
   &.aobo1 {
-    background: url("/static/image/common/ic_search_gold.png");
+    background: url("/static/image/common/ic_search_grey2.png");
     background-size: contain;
   }
 }
