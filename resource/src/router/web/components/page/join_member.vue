@@ -595,7 +595,7 @@
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
-        <a>若有会员帐号<br />请点击前往登入</a>
+        <a>若有会员帐号，<span>去登录＞</span></a>
       </div>
       <div :class="$style['version']">
         {{ version }}
@@ -1525,8 +1525,12 @@ export default {
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
         code: localStorage.getItem("promotionCode") || "",
-        phone_keyring: this.phoneVerifyModalShow ? this.register_phone_keyring : "",
-        email_keyring: this.mailVerifyModalShow ? this.register_email_keyring : ""
+        phone_keyring: this.phoneVerifyModalShow
+          ? this.register_phone_keyring
+          : "",
+        email_keyring: this.mailVerifyModalShow
+          ? this.register_email_keyring
+          : ""
       };
 
       const self = this;
@@ -1876,7 +1880,7 @@ export default {
             this.phoneVerifyModalShow = false;
             this.showPhoneCheckIcon = true;
             this.NeedCode = false;
-            this.register_phone_keyring = res.data.ret.keyring
+            this.register_phone_keyring = res.data.ret.keyring;
           }
         })
         .catch(error => {
@@ -1932,7 +1936,7 @@ export default {
             this.mailVerifyModalShow = false;
             this.showMailCheckIcon = true;
             this.mailNeedCode = false;
-            this.register_email_keyring = res.data.ret.keyring
+            this.register_email_keyring = res.data.ret.keyring;
           }
         })
         .catch(error => {

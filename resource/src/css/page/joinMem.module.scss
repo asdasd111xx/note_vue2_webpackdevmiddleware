@@ -748,7 +748,9 @@
 
   a {
     color: #5e626d;
-    text-decoration: underline;
+    span {
+      color: blue;
+    }
   }
 }
 
