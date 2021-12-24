@@ -20,9 +20,9 @@
   --selector_border_color2: #707070; //內邊框
 
   //按鈕主色
-  --main_button_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  --main_button_color1: linear-gradient(to right, #bd9d7d 0%, #f9ddbd 100%);
   --main_button_text_color1: #ffffff;
-  --main_button_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+  --main_button_color2: linear-gradient(to right, #e9dacb 0%, #eee5db 100%);
   --main_button_text_color2: #ffffff;
 
   //首頁左側選單（選單(客製顏色)）
@@ -94,6 +94,10 @@
   --service_add_button: #6aaaf5; //我的客服立即添加按鈕
   --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
   --service_text_color: #6aaaf5; //我的客服立即添加按鈕左邊的文字
+  --send_keyring: #6aaaf5; //獲取驗證碼按鈕
+  --send_keyring_disabled: #cccccc; //獲取驗證碼按鈕disabled
+  --popup_tip_ok_color: #d1b79c; //溫馨提示彈窗 確認
+  --popup_tip_close_color: #d1b79c; //溫馨提示彈窗 關閉
 
   /***--- 會員中心 功能 ----***/
   --redpot: #be9e7f;
@@ -101,13 +105,10 @@
   --deco_color2: #be9e7f;
   --wallet_border_color: #d1b79c;
   --apptip_title: #000000de;
-  --apptip_btn: var(--main_button_color1);
   --popup_text_color1: #d1b79c;
   --popup_text_color2: #414655;
   --popup_text_color3: #414655;
   --member_slider: #d1b79c;
-  --marquee_text_color1: #9ca3bf;
-  --marquee_text_color2: #d1b79c;
   --vip_detail_color: #bbab98;
   --avatar-vip-icon-color: var(--main_button_color1);
   --redpot_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
