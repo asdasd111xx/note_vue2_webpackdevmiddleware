@@ -180,7 +180,7 @@ export default {
 
 .tab-wrap {
   height: 43px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   position: relative;
 }
 
@@ -229,7 +229,7 @@ export default {
   font-weight: 500;
   background-color: black;
   opacity: 0.6;
-  color: $main_white_color1;
+  color: #fefffe;
   font-size: 12px;
   height: 36px;
   width: 100%;

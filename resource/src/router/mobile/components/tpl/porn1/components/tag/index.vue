@@ -218,13 +218,13 @@ export default {
   width: 100%;
   height: 43px;
   line-height: 43px;
-  color: $main_discover_color1;
-  background-color: $main_white_color1;
+  color: #bf8646;
+  background-color: #fefffe;
   font-size: 12px;
   text-align: center;
 
-  border-top: solid 1px $main_background_white1;
-  border-bottom: solid 1px $main_background_white1;
+  border-top: solid 1px #f8f8f8;
+  border-bottom: solid 1px #f8f8f8;
 }
 
 .video {
@@ -319,7 +319,7 @@ export default {
   position: absolute;
   width: 100%;
   height: calc(100vh - 100px);
-  background: $main_background_white1;
+  background: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;

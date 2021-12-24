@@ -103,12 +103,12 @@
 }
 
 .wrap {
-  background: $main_white_color1;
+  background: #fefffe;
 }
 
 .account-data-wrap {
   color: var(--member_text_color4);
-  background: $main_white_color1;
+  background: #fefffe;
 }
 
 .feature-btn {
@@ -190,7 +190,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: $main_white_color1;
+  background: #fefffe;
   position: relative;
   margin-bottom: 14px;
 
@@ -239,7 +239,7 @@ input {
   border-radius: 3px;
   line-height: 30px;
   background: var(--member_color101);
-  color: var(--main_text_color1);
+  color: var(--member_text_color1);
   pointer-events: none;
   // 取消點擊特效
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -252,9 +252,9 @@ input {
 }
 
 .top-tips {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -262,7 +262,7 @@ input {
 
 .bottom-tips {
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   visibility: hidden;
   height: 30px;
 
@@ -842,7 +842,7 @@ input {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
 }
 

@@ -1080,7 +1080,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
   text-align: center;
   color: #a6a9b2;

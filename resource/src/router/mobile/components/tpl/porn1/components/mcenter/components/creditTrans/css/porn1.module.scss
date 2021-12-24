@@ -83,9 +83,9 @@ input {
 }
 
 .top-tips {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   margin-bottom: -1px;
   min-height: 40px;
   display: flex;
@@ -97,7 +97,7 @@ input {
   justify-content: space-between;
   align-items: baseline;
   padding: 0px 14px;
-  color: $share_member_text_color5;
+  color: #be9e7f;
   font-size: 12px;
 }
 
@@ -131,7 +131,7 @@ input {
 }
 
 .keyring-tips {
-  color: $main_error_color1;
+  color: #db6372;
 }
 
 .form-tips {
@@ -142,7 +142,7 @@ input {
   font-weight: 400;
   line-height: 20px;
   position: relative;
-  color: $main_error_color1;
+  color: #db6372;
   display: block;
   word-break: break-all;
   //   height: 30px;

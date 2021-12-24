@@ -238,7 +238,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .live-stream-wrap {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   position: relative;
   height: 100%;
 }

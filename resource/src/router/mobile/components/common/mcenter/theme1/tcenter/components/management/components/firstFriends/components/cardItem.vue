@@ -76,7 +76,7 @@ export default {
 
 // 一般預設的樣式
 .card-item {
-  background: $main_white_color1;
+  background: #fefffe;
   color: #a6a9b2;
   margin-top: 10px;
   padding-bottom: 7px;

@@ -128,7 +128,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
 }
 

@@ -427,7 +427,7 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 15px;
-  background: $main_white_color1;
+  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
 

@@ -777,7 +777,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: #fff;
     }
   }

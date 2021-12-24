@@ -155,7 +155,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .help-wrap {
@@ -168,7 +168,7 @@ export default {
     padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
 
     > span {
       width: 100%;

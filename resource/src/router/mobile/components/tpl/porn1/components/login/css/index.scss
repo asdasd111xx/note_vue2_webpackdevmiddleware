@@ -5,7 +5,7 @@
 }
 
 .title {
-  color: $main_title_color1;
+  color: #000000;
   font-size: 16px;
 }
 
@@ -154,7 +154,7 @@
     align-items: center;
 
     > div {
-      color: var(--main_text_color1);
+      color: var(--main_button_text_color1);
       text-align: center;
       line-height: 50px;
       background: var(--main_button_color1);
@@ -197,7 +197,7 @@
 .err-msg {
   max-width: 375px;
   margin: 0 auto;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 26px;
   line-height: 26px;
 }

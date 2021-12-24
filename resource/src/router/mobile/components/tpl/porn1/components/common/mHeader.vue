@@ -448,7 +448,7 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 10px;
-  background: $main_white_color1;
+  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
 
@@ -866,7 +866,7 @@ export default {
   position: absolute;
   right: 17px;
   top: 0;
-  color: $main_title_color1;
+  color: #000000;
 
   > span {
     display: inline-block;

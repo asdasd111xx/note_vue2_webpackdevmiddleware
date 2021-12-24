@@ -2,36 +2,36 @@
 @import "../../../../../components/mcenter/components/balanceTrans/css/porn1.module.scss";
 
 .balance-tran-container {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
 }
 
 // 中心錢包
 .balance-wrap-wrap {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   height: 67px;
   display: flex;
   align-items: center;
   margin-top: 11px;
 
-  >div {
+  > div {
     width: 50%;
   }
 
-  >.balance-wrap {
-    >div:first-child {
+  > .balance-wrap {
+    > div:first-child {
       text-align: center;
 
-      >img {
+      > img {
         width: 14px;
         height: 14px;
       }
 
-      >span {
+      > span {
         color: #5e626d;
       }
     }
 
-    >div:last-child {
+    > div:last-child {
       color: $share_member_text_color4;
       text-align: center;
       font-size: 16px;
@@ -52,7 +52,7 @@
 
 //增加銀行卡
 .add-bank-card {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: var(--addcard_popup_text_color);
   font-size: 15px;
   height: 50px;
@@ -65,7 +65,7 @@
   justify-content: center;
   font-weight: bold;
 
-  >img {
+  > img {
     width: 18px;
     height: 18px;
   }
@@ -83,7 +83,7 @@
 
 .bank-card-cell {
   position: relative;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 1px 18px;
   color: #414655;
   min-height: 50px;
@@ -96,12 +96,12 @@
     opacity: 0.5;
   }
 
-  >img {
+  > img {
     width: 25px;
     height: 25px;
   }
 
-  >span {
+  > span {
     padding: 0 0 0 10px;
     width: 80%;
     overflow: hidden;
@@ -130,7 +130,7 @@
     }
   }
 
-  >.check-box {
+  > .check-box {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -190,7 +190,7 @@
   display: flex;
   // height: 60px;
   margin-top: 10px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 8px 18px;
   // min-height: 50px;
   flex-wrap: wrap;
@@ -209,9 +209,11 @@
     &.is-current {
       border: 1px solid var(--wallet_border_color);
       color: var(--wallet_border_color);
-      background: linear-gradient(-45deg,
-          var(--wallet_border_color) 10px,
-          hsla(0, 0%, 100%, 0) 0);
+      background: linear-gradient(
+        -45deg,
+        var(--wallet_border_color) 10px,
+        hsla(0, 0%, 100%, 0) 0
+      );
     }
 
     .select {
@@ -242,7 +244,7 @@
 
 .withdraw-input {
   height: 54px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
   line-height: 54px;
   padding: 0 14px;
@@ -250,7 +252,7 @@
   margin-top: 5px;
   position: relative;
 
-  >input {
+  > input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -273,7 +275,7 @@
 .exchange-rate,
 .actual-money,
 .crypto-block {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 5px 14px 0;
   font-size: 14px;
   color: #cbced8;
@@ -325,7 +327,7 @@
   justify-content: center;
   float: right;
 
-  >span {
+  > span {
     font-size: 14px;
     background: var(--member_gradient_color1);
     color: var(--member_text_color1);
@@ -339,7 +341,7 @@
 }
 
 .withdraw-error-tips {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 5px 12px;
   color: #db6372;
   font-size: 13.5px;
@@ -353,7 +355,7 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  >div {
+  > div {
     margin: 0 auto;
     height: 45px;
     background: var(--member_gradient_color1);
@@ -440,7 +442,7 @@
     border-radius: 3px;
 
     .check-header {
-      background: $share_origin_color10;
+      background: #be9e7f;
       color: #ffffff;
       border-radius: 3px 3px 0 0;
 
@@ -525,7 +527,7 @@
       height: 66px;
     }
 
-    >span:last-child {
+    > span:last-child {
       float: right;
     }
 
@@ -618,7 +620,7 @@
 
 .withdraw-pwd-input {
   height: 54px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
   line-height: 54px;
   padding: 0 14px;
@@ -626,7 +628,7 @@
   margin-top: 5px;
   -webkit-text-security: disc;
 
-  >input {
+  > input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -650,8 +652,8 @@
 }
 
 @media screen and (min-width: $phone) {
-  >.balance-wrap {
-    >div:last-child {
+  > .balance-wrap {
+    > div:last-child {
       font-size: 17px;
     }
   }
@@ -673,7 +675,7 @@
   }
 
   .withdraw-input {
-    >input {
+    > input {
       font-size: 17px;
 
       &::placeholder {
@@ -688,7 +690,7 @@
   }
 
   .withdraw-max {
-    >span {
+    > span {
       font-size: 15px;
     }
   }
@@ -698,7 +700,7 @@
   }
 
   .submit-btn {
-    >div {
+    > div {
       font-size: 15px;
     }
   }

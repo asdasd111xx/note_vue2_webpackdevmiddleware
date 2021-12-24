@@ -60,7 +60,7 @@ export default {
 @import "~@/css/variable.scss";
 
 div.container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .content-wrap {

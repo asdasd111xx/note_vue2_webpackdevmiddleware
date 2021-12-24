@@ -36,7 +36,7 @@
 }
 
 .card {
-  background: $main_white_color1;
+  background: #fefffe;
   color: var(--slider_text_color);
   border-radius: 8px;
   margin-bottom: 9px;
@@ -69,7 +69,7 @@
 
     .payout {
       &.is-negative {
-        color: $main_error_color1;
+        color: #db6372;
       }
 
       &::before {

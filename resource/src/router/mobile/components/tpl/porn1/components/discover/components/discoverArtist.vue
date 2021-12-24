@@ -165,7 +165,7 @@ export default {
 }
 
 .hot {
-  color: $main_discover_color1;
+  color: #bf8646;
 }
 
 .all {
@@ -196,7 +196,7 @@ export default {
   height: 15px;
   line-height: 15px;
   margin-top: 8px;
-  color: var(--main_text_color1);
+  color: #9ca3bf;
   font-size: 11px;
   text-align: center;
   text-overflow: ellipsis;
@@ -216,12 +216,12 @@ export default {
     height: 15px;
     line-height: 16px;
     border-radius: 50%;
-    color: $main_discover_color1;
+    color: #bf8646;
     font-size: 9px;
     text-align: center;
 
     &.active {
-      background-color: $main_discover_color1;
+      background-color: #bf8646;
       color: #fefffe;
     }
   }

@@ -105,10 +105,11 @@ export default {
   font-family: Segoe UI, Segoe UI-Bold;
   font-weight: 700;
   text-align: center;
-  color: var(--main_text_color1);
+  color: var(--main_button_text_color1);
 
   &.disable {
     background: var(--main_button_color2);
+    color: var(--main_button_text_color2);
     pointer-events: none;
   }
 }

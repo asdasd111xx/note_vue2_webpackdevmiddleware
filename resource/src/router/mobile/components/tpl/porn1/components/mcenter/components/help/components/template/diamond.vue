@@ -77,7 +77,7 @@ export default {
     padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
   }
 
   .btn-next {

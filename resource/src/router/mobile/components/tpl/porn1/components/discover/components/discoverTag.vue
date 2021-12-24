@@ -149,7 +149,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   height: 50px;
   position: fixed;
   top: 43px;
@@ -186,7 +186,7 @@ export default {
 .list-wrap {
   margin-top: 64px;
   margin-bottom: 20px;
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
   padding: 0 14px;
 }
 
@@ -232,7 +232,7 @@ export default {
   bottom: 40px;
   height: 120px;
   padding: 5px 0;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   max-width: $mobile_max_width;
 
   > div:first-child {

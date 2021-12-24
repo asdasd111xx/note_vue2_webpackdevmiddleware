@@ -339,7 +339,7 @@ export default {
 .card {
   display: inline-block;
   width: 230px;
-  background: $main_white_color1;
+  background: #fefffe;
   color: var(--slider_text_color);
   border-radius: 8px;
   margin: 0px 10px 10px 0;

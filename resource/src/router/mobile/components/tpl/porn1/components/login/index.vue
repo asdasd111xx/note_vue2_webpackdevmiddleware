@@ -388,7 +388,7 @@ export default {
 }
 
 .link-submit {
-  color: var(--main_text_color1);
+  color: #9ca3bf;
 }
 .submit {
   margin: 0 auto;

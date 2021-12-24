@@ -47,6 +47,6 @@ export default {
 @import "@/css/variable.scss";
 
 .content-wrap {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 </style>

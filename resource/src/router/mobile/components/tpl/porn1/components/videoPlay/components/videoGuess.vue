@@ -170,7 +170,7 @@ export default {
 .like {
   line-height: 20px;
   margin-bottom: 15px;
-  color: $main_discover_color1;
+  color: #bf8646;
   font-weight: 500;
 
   &.custom {

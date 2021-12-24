@@ -76,7 +76,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .title {

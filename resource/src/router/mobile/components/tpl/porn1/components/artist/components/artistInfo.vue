@@ -131,14 +131,14 @@ export default {
     width: 90px;
     position: relative;
     > img {
-      border: 1px var(--main_text_color1) solid;
+      border: 1px #9ca3bf solid;
       height: 100%;
       border-radius: 50%;
     }
 
     > div {
       color: white;
-      background-color: var(--main_text_color1);
+      background-color: #9ca3bf;
       width: 64px;
       border-radius: 7px;
       line-height: 17px;
@@ -159,7 +159,7 @@ export default {
       height: 16px;
       line-height: 16px;
       margin: 1.5px;
-      color: var(--main_text_color1);
+      color: #9ca3bf;
     }
 
     .title {
@@ -169,7 +169,7 @@ export default {
     .intro {
       display: block;
       margin: 1.5px;
-      color: var(--main_text_color1);
+      color: #9ca3bf;
       width: 100%;
 
       span {

@@ -363,7 +363,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: $share_main_button_color;
+    color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     height: 20px;
   }
 

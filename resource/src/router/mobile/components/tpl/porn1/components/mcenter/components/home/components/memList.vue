@@ -388,7 +388,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mem-list {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .list-part {
@@ -407,7 +407,7 @@ export default {
   padding: 0 18px;
   display: flex;
   align-items: center;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
 
   > span {

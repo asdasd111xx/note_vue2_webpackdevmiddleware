@@ -76,7 +76,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .title {
@@ -98,7 +98,7 @@ export default {
 .content {
   padding: 5px;
   .cell {
-    background-color: $main_white_color1;
+    background-color: #fefffe;
     display: flex;
     align-items: center;
     padding: 0 12px;
