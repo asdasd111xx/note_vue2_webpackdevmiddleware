@@ -81,11 +81,9 @@
   --joinmember_title: #9b6b40; //註冊頁標題
   --joinmember_left_text_color: #5e626d; //註冊頁左下文字
   --joinmember_right_text_color: #9ca3bf; //註冊頁右下文字
-  --promotion_gift_button: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //優惠上方按鈕背景
+  --promotion_gift_button: linear-gradient(to left,
+      #bd9d7d 0%,
+      #f9ddbd 100%); //優惠上方按鈕背景
   --promotion_gift_button_text_color: #fff; //優惠上方按鈕文字
   --promotion_gift_button_border: 3px; //優惠上方按鈕圓角
   --service_webview_button: #6aaaf5; //webview我的客服下載按鈕
@@ -128,4 +126,7 @@
   --porn_btn_color: linear-gradient(to left, #bd9d7d, #f9ddbd);
   --porn_line_color: #be9e7f;
   --porn_text_color: #be9e7f;
+
+
+  --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
 }
