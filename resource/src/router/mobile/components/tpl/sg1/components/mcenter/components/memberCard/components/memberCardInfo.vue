@@ -72,7 +72,8 @@
           ><img
             src="/static/image/sg1/mcenter/memberCard/ic_member.png"
             alt=""/></i
-        >会员帐号 <span style="margin-left: 35px;">{{ cardInfo.alias }}</span>
+        >会员帐号
+        <span style="margin-left: 35px;">{{ memInfo.user.username }}</span>
       </li>
       <li>
         <i
