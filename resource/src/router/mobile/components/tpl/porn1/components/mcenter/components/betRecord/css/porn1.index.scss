@@ -154,8 +154,8 @@
 
     &.active {
       line-height: 33px;
-      color: var(--member_text_color1);
-      background: var(--member_gradient_color1);
+      color: var(--mcenter_button_text_color1);
+      background: var(--mcenter_button_color1);
     }
 
     &:nth-child(n + 5) {
@@ -223,12 +223,12 @@
 }
 
 .time-confirm {
-  color: var(--member_text_color1);
-  background: var(--member_gradient_color1);
+  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_button_color1);
 }
 .time-cancel {
-  background: var(--member_gradient_color2);
-  color: var(--member_text_color1);
+  background: var(--mcenter_button_color2);
+  color: var(--mcenter_button_text_color1);
 }
 
 .data-wrap {

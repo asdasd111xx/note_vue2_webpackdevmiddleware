@@ -119,21 +119,8 @@
   //>數字0.00
   --vip_text_color2: #414655;
 
-  --member_color1: #3354ad;
-  --member_color2: #3354ad;
-  --member_color3: #adbade;
-  --member_color4: #adbade;
   --member_color100: #6aaaf5;
   --member_color101: #cccccc;
-  --member_text_color1: #ffffff;
-  --member_text_color2: #ffffff;
-  --member_text_color3: #a6a9b2;
-  --member_text_color4: #5e626d;
-  --member_text_color5: #7086ce;
-  --member_text_color6: #db6372;
-
-  --member_gradient_color1: linear-gradient(to left, #3354ad 0%, #3354ad 100%);
-  --member_gradient_color2: linear-gradient(to left, #adbade 0%, #adbade 100%);
 
   /***---------------- 功能 ----------------***/
   /***--- 大廳 遊戲 功能 ---***/
@@ -181,4 +168,5 @@
   --invite_background_color: #3676d5;
   --invite_text_color: #ffffff;
   --porn_btn_color: #3354ad;
+  --countdown_time_text_color: #db6372; //匯率試算倒數時間
 }

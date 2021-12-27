@@ -1,17 +1,17 @@
 @import "./porn1.addCard.module.scss";
 .submit {
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
   }
 }
 
 .send-keyring {
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
   }
 }
 

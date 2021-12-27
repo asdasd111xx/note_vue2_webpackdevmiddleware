@@ -6,11 +6,11 @@
 
 .send-keyring {
   color: white;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
     color: white;
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
@@ -18,12 +18,12 @@
 .submit-wrap {
   > div {
     border-radius: 3px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
   }
 
   &.disabled {
     > div {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
       color: #ffffff;
     }
   }

@@ -55,7 +55,7 @@
 
     &.is-current {
       border: 1px solid var(--wallet_border_color);
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       background: linear-gradient(
         -45deg,
         var(--wallet_border_color) 10px,
@@ -76,7 +76,7 @@
 
 .wallet-tip {
   font-size: 12px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   margin: 20px 0 0;
 }
 
@@ -97,22 +97,22 @@
 
     &::-webkit-input-placeholder {
       font-size: 14px;
-      color: var(--member_text_color3);
+      color: var(--mcenter_slider_text_color);
     }
 
     &::-moz-placeholder {
       font-size: 14px;
-      color: var(--member_text_color3);
+      color: var(--mcenter_slider_text_color);
     }
 
     &:-ms-input-placeholder {
       font-size: 14px;
-      color: var(--member_text_color3);
+      color: var(--mcenter_slider_text_color);
     }
 
     &::placeholder {
       font-size: 14px;
-      color: var(--member_text_color3);
+      color: var(--mcenter_slider_text_color);
     }
   }
 
@@ -160,7 +160,7 @@
 .info-confirm {
   display: flex;
   flex-direction: column;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 
   .confirm-remind {
     margin-top: 20px;
@@ -225,16 +225,16 @@
 .submit {
   height: 45px;
   line-height: 45px;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
   font-size: 14px;
-  color: var(--member_text_color1);
+  color: var(--mcenter_button_text_color1);
   text-align: center;
   border-radius: 3px;
   margin: 20px 0;
 
   &.disabled {
     pointer-events: none;
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
   }
 
   &.hidden {
@@ -252,7 +252,7 @@
   padding: 50px 0;
   text-align: center;
   font-size: 14px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 }
 
 .service-btn {

@@ -309,9 +309,9 @@ $fixed_spacing_height: 43px;
   line-height: 43px;
   font-size: 14px;
   text-align: center;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   &.active {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 

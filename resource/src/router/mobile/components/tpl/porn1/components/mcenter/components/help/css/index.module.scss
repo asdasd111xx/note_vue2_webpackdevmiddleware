@@ -183,7 +183,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: var(--member_color1);
+  background-color: var(--mcenter_main_color);
   width: 45px;
   transition: left 0.31s;
 }
@@ -470,7 +470,7 @@
 .help-wrap {
   overflow-x: hidden;
   overflow-y: scroll;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   position: relative;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -552,7 +552,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: var(--member_color1);
+  background: var(--mcenter_main_color);
   // left: calc(33% / 2 - 20px);
 
   transition: left 0.31s;

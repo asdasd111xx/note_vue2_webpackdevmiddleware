@@ -512,7 +512,7 @@ input {
   border: none;
   outline: none;
   border-radius: 0;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   &::placeholder {
     color: #cbced8;
@@ -525,7 +525,7 @@ input {
   position: relative;
 
   .title {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     margin: 17px 0 6px;
   }
 

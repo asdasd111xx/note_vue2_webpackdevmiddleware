@@ -23,14 +23,14 @@ $buttonTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: var(--member_color1);
+    color: var(--mcenter_main_color);
   }
 }
 
@@ -215,16 +215,16 @@ $buttonTextColor: #fff;
   margin-top: 18px;
 
   .btn-search {
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
     margin: 0 auto;
     width: 85%;
     line-height: 45px;
     border-radius: 3px;
     text-align: center;
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
 
     &.disable {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
     }
   }
 }

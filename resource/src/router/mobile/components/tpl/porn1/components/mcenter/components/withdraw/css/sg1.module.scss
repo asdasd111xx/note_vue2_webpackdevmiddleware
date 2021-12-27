@@ -14,7 +14,7 @@
 
   > span {
     &.rubbing-btn {
-      background: var(--member_gradient_color1);
+      background: var(--mcenter_button_color1);
     }
   }
 }
@@ -33,7 +33,7 @@
       background: #a2a2a2;
 
       &.submit {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
       }
     }
   }
@@ -41,18 +41,18 @@
 
 .withdraw-max {
   > span {
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
   }
 }
 
 .submit-btn {
   > div {
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
   }
 
   &.disabled {
     div {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
     }
   }
 }

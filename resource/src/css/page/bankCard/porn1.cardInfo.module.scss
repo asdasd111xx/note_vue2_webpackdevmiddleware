@@ -39,7 +39,7 @@
     margin-left: 6px;
     font-size: 16px;
     font-weight: 700;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
   }
 
   .add-btn {
@@ -82,12 +82,12 @@
     margin-right: 8px;
     font-size: 20px;
     font-weight: 700;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
   }
 
   .count {
     font-size: 14px;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -180,11 +180,11 @@
 
 .content {
   padding: 17px 18px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   text-align: center;
 
   .title {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 10px;

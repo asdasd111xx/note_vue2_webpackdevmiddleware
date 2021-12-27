@@ -143,12 +143,12 @@ export default {
   text-align: center;
 
   > div {
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
     height: 45px;
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
   }
 }
 </style>

@@ -46,7 +46,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: var(--member_color1);
+  background: var(--mcenter_main_color);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }
@@ -202,7 +202,7 @@ input {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: var(--wallet_border_color);
   border-radius: 3px;
-  color: var(--member_text_color1);
+  color: var(--mcenter_button_text_color1);
   font-weight: 400;
   height: 30px;
   line-height: 30px;
@@ -230,7 +230,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -242,7 +242,7 @@ input::placeholder {
 
   &.disabled {
     > div {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
       pointer-events: none;
     }
   }

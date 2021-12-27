@@ -287,7 +287,7 @@
   }
 
   .time {
-    color: var(--member_text_color6);
+    color: var(--countdown_time_text_color);
   }
 
   .serial {
@@ -329,8 +329,8 @@
 
   > span {
     font-size: 14px;
-    background: var(--member_gradient_color1);
-    color: var(--member_text_color1);
+    background: var(--mcenter_button_color1);
+    color: var(--mcenter_button_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -358,7 +358,7 @@
   > div {
     margin: 0 auto;
     height: 45px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -366,13 +366,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
     }
   }
 }
@@ -491,7 +491,7 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       margin-bottom: 4px;
     }
   }
@@ -504,7 +504,7 @@
     position: relative;
 
     &.check-total {
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       background: #f3f3f3;
     }
 
@@ -515,7 +515,7 @@
     }
 
     &.custom-color {
-      color: var(--member_text_color6);
+      color: var(--countdown_time_text_color);
 
       &.custom-color-background {
         background: #f3f3f3;

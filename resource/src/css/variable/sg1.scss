@@ -127,25 +127,8 @@
   //>數字0.00
   --vip_text_color2: #333333;
 
-  --member_color1: #bf8646;
-  --member_color2: #f9ddbd;
-  --member_color3: #e9dacb;
-  --member_color4: #eee5db;
-  // --member_color1: #fe593c;
-  // --member_color2: #e61938;
-  // --member_color3: #fed3cb;
-  // --member_color4: #ffc5ce;
   --member_color100: #bf8646;
   --member_color101: #e9dacc;
-  --member_text_color1: #ffffff;
-  --member_text_color2: #ffffff;
-  --member_text_color3: #a6a9b2;
-  --member_text_color4: #5e626d;
-  --member_text_color5: #bf8646;
-  --member_text_color6: #be9e7f;
-
-  --member_gradient_color1: linear-gradient(to left, #fe593c 0%, #e61938 100%);
-  --member_gradient_color2: linear-gradient(to left, #fed3cb 0%, #ffc5ce 100%);
 
   /***---------------- 功能 ----------------***/
 
@@ -197,10 +180,11 @@
   --label_bg_color: linear-gradient(#fe593c, #e61938);
   --label_text_color1: #cccccc;
   --label_text_color2: #fff;
-  --bankrebate_receive_button1: var(--member_gradient_color1);
-  --bankrebate_receive_button2: var(--member_gradient_color2);
+  --bankrebate_receive_button1: var(--mcenter_button_color1);
+  --bankrebate_receive_button2: var(--mcenter_button_color2);
   --bankrebate_receive_text_color: #ffffff;
   --invite_background_color: #f2e2d1;
   --invite_text_color: #414655;
   --porn_btn_color: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
 }
