@@ -600,7 +600,7 @@ export default {
           this.allTip.keyring = "";
 
           if (res && res.status === 429) {
-            this.actionGetToManyRequestMsg(res.message).then(result => {
+            this.actionGetToManyRequestMsg(res.data.message).then(result => {
               this.errorMsg = result;
             });
             return;
@@ -649,7 +649,7 @@ export default {
         },
         fail: res => {
           if (res && res.status === 429) {
-            this.actionGetToManyRequestMsg(res.message).then(result => {
+            this.actionGetToManyRequestMsg(res.data.message).then(result => {
               this.errorMsg = result;
             });
             return;
