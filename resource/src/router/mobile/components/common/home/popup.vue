@@ -177,37 +177,39 @@ export default {
       // link_type 1/外部連結, 2/內部連結, 3/遊戲連結, 4/優小秘連結
       switch (value.link_type) {
         case 1:
-          this.mobileLinkOpen({
-            linkType: "external",
-            linkTo: value.zh_cn_url
-          });
+          localStorage.setItem("iframe-third-url", value.zh_cn_url);
+          this.$router.push(`/mobile/iframe/${this.$route.name}`);
           break;
         case 2:
           // 內部連結選項：必填。{string=deposit/存款, withdraw/取款, bank-rebate/我的返水, ubb/寰宇瀏覽器, cgpay/CGP教程, mobile-bet/app下載頁, agent-login/代理登入, service/在線客服, promotion/優惠活動}
           // internal_link
-          let mobile_internal_link = "";
-          switch (value.internal_link) {
-            case "ubb": //寰宇瀏覽器
-              break;
-            case "cgpay": //CGP教程
-              break;
-            case "mobile-bet": //app下載頁
-              break;
-            case "agent-login": //代理登入
-              break;
-            case "deposit": //存款
-            case "withdraw": //取款
-            case "bank-rebate": //我的返水
-            case "service": //在線客服
-            case "promotion": //優惠活動
-            default:
-              mobile_internal_link = value.internal_link;
-              break;
+          if (this.$route.name === value.internal_link) {
+            this.closePop();
+          } else {
+            let mobile_internal_link = "";
+            switch (value.internal_link) {
+              case "ubb": //寰宇瀏覽器
+                break;
+              case "cgpay": //CGP教程
+                break;
+              case "mobile-bet": //app下載頁
+                break;
+              case "agent-login": //代理登入
+                break;
+              case "deposit": //存款
+              case "withdraw": //取款
+              case "bank-rebate": //我的返水
+              case "service": //在線客服
+              case "promotion": //優惠活動
+              default:
+                mobile_internal_link = value.internal_link;
+                break;
+            }
+            this.mobileLinkOpen({
+              linkType: "internal",
+              linkTo: mobile_internal_link
+            });
           }
-          this.mobileLinkOpen({
-            linkType: "internal",
-            linkTo: mobile_internal_link
-          });
           break;
         case 3:
           let gameLinkType = 0;
@@ -241,8 +243,8 @@ export default {
           }
           this.mobileLinkOpen({
             linkType: gameLinkType,
-            linkTo: value.zh_cn_vendor,
-            linkItem: { "zh-cn": value.zh_cn_code }
+            linkTo: value.vendor,
+            linkItem: { "zh-cn": value.code }
           });
           break;
         case 4:
@@ -418,5 +420,9 @@ export default {
 .news-image {
   width: 100%;
   overflow: scroll;
+
+  > img {
+    width: 100%;
+  }
 }
 </style>

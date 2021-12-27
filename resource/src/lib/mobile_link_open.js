@@ -385,7 +385,12 @@ export default target => {
     }
   }
 
-  if (!store.state.loginStatus && vendor != "sigua_ly") {
+  if (
+    !store.state.loginStatus &&
+    vendor != "sigua_ly" &&
+    vendor != "sigua2_ly" &&
+    vendor != "sigua3_ly"
+  ) {
     router.push("/mobile/login");
     return;
   }
@@ -415,7 +420,11 @@ export default target => {
       default:
         break;
     }
-    if (vendor != "sigua_ly") {
+    if (
+      vendor != "sigua_ly" &&
+      vendor != "sigua2_ly" &&
+      vendor != "sigua3_ly"
+    ) {
       let notVipGame = JSON.parse(
         localStorage.getItem("needFilterGameData")
       ).find(filterData => {
