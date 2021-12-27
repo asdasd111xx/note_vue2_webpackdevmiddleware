@@ -61,7 +61,7 @@
       </div>
     </div>
     <!-- page2 -->
-    <template v-if="$route.query.depth === 1 && !$route.query.user">
+    <template v-if="$route.query.depth && !$route.query.user">
       <div :class="$style['friend-wrap']">
         <div v-if="friendNameList !== undefined">
           <card-total :data="friendBet" />
@@ -362,7 +362,7 @@
 
 <script>
 import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -446,10 +446,9 @@ export default {
     }
   },
   created() {
-    // this.getAllDetailList();
     setTimeout(() => {
       this.getLayerDetail();
-    }, 1000);
+    }, 500);
   },
   watch: {
     "$route.query": {
@@ -464,16 +463,14 @@ export default {
             this.memberId ||
             this.memInfo.user.id
           ) {
-            // this.getFriendsList(this.depth);
             this.getLayerFriends(this.depth);
           }
         } else if (item.user) {
           //page3
           this.setHeaderTitle(item.user);
           this.setTabState(false);
-          // this.getUserGameList();
           this.getLayerFriendGame();
-          this.getFriendGameRateList();
+          this.getLayerFriendGameRate();
         } else {
           this.setHeaderTitle("返利管理");
         }
@@ -734,22 +731,24 @@ export default {
         {
           name: "总有效投注：",
           item:
-            this.friendGameList?.total?.valid_bet > 0
+            this.friendGameList?.total?.current_valid_bet > 0
               ? this.formatThousandsCurrency(
-                  this.friendGameList.total.valid_bet
+                  this.friendGameList.total.current_valid_bet
                 )
               : "--"
         },
         {
           name: "总损益：",
-          item: this.friendGameList?.total?.profit
-            ? this.friendGameList?.total?.profit != 0
-              ? this.formatThousandsCurrency(this.friendGameList.total.profit)
+          item: this.friendGameList?.total?.current_profit
+            ? this.friendGameList?.total?.current_profit != 0
+              ? this.formatThousandsCurrency(
+                  this.friendGameList.total.current_profit
+                )
               : "--"
             : "--",
-          color: this.friendGameList?.total?.profit
-            ? this.friendGameList?.total?.profit != 0
-              ? this.chooseColor(this.friendGameList.total.profit)
+          color: this.friendGameList?.total?.current_profit
+            ? this.friendGameList?.total?.current_profit != 0
+              ? this.chooseColor(this.friendGameList.total.current_profit)
               : "--"
             : "--"
         },
@@ -761,16 +760,16 @@ export default {
       //page3 好友投注遊戲類別
       let data = this.friendGameList?.ret?.map(info => {
         return {
-          title: info.name,
+          title: info.alias,
           list: [
             {
               name: "有效投注",
-              item: this.formatThousandsCurrency(info.valid_bet),
+              item: this.formatThousandsCurrency(info.current_valid_bet),
               show: true
             },
             {
               name: "损益",
-              item: this.formatThousandsCurrency(info.profit),
+              item: this.formatThousandsCurrency(info.current_profit),
               color: this.chooseColor(info.profit),
               show: true
             }
@@ -778,66 +777,33 @@ export default {
         };
       });
       return data;
-    },
-    friendGameRate() {
-      let data = this.gameRateResult?.ret?.map(info => {
-        return {
-          title: info.key,
-          list: [
-            {
-              name: info.title.alias,
-              item: info.title.rate,
-              show: true
-            }
-          ]
-        };
-      });
-      return data;
     }
+    // friendGameRate() {
+    //   let data = this.gameRateResult?.ret?.map(info => {
+    //     return {
+    //       title: info.key,
+    //       list: [
+    //         {
+    //           name: info.title.alias,
+    //           item: info.title.rate,
+    //           show: true
+    //         }
+    //       ]
+    //     };
+    //   });
+    //   return data;
+    // }
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     //損益 正紅負黑
     chooseColor(val) {
       return val < 0 ? "red" : "black";
     },
-    // getAllDetailList() {
-    //   //取得今日實時返利詳情
-    //   goLangApiRequest({
-    //     method: "get",
-    //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/RealTime/Detail`,
-    //     params: {
-    //       lang: "zh-cn",
-    //       cid: this.cid
-    //     }
-    //   }).then(res => {
-    //     if (res && res.status === "000") {
-    //       //有效投注金額、会员人数
-    //       this.resultDetail = res.data.ret ?? "";
-    //       this.resultDetailList = {
-    //         at: this.resultDetail.at,
-    //         valid_bet: this.resultDetail.valid_bet,
-    //         lack_sub_valid_bet: this.resultDetail.lack_sub_valid_bet,
-    //         next_sub_valid_bet: this.resultDetail.next_sub_valid_bet,
-    //         user_count: this.resultDetail.user_count,
-    //         lack_sub_user_count: this.resultDetail.lack_sub_user_count,
-    //         next_sub_user_count: this.resultDetail.next_sub_user_count
-    //       };
-    //       //entryId
-    //       this.memberId = this.resultDetail.id ?? "";
-
-    //       //多層級好友
-    //       // this.resultFriend = res.data.layer_detail ?? [];
-    //     }
-    //   });
-    // },
-    //Page1取得分級資料c04.48
+    //Page1 取得分級好友資料c04.48
     getLayerDetail() {
-      const summary = this.summaryContent.filter(item => {
-        return item.key == "expected";
-      });
-
       let paramData = {
-        period: summary[0] ? summary[0].period : "",
+        period: this.profitList[0].period,
         user_id: this.memInfo.user.id
       };
       goLangApiRequest({
@@ -854,40 +820,18 @@ export default {
       }).then(res => {
         //多層級好友
         this.resultFriend = res.data.return_data?.ret?.depth_details ?? [];
+
+        //單一會員重新計算中
+        if (res && res.data.status_code == "22007710") {
+          this.actionSetGlobalMessage(res.data.status_message);
+        }
       });
     },
-    // getFriendsList(depth) {
-    //   //取得特定期數好友有效投注額及佣金列表
-    //   goLangApiRequest({
-    //     method: "post",
-    //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-    //       .$route.query.current_entry_id || this.memberId}/Friends`,
-    //     params: {
-    //       lang: "zh-cn",
-    //       cid: this.cid,
-    //       depth: this.$route.query.depth || depth
-    //     }
-    //   })
-    //     .then(res => {
-    //       if (res && res.status === "000") {
-    //         this.friendMemberList = res.data ?? [];
-    //       }
-    //     })
-    //     .catch(error => {
-    //       if (error && error.data && error.data.msg) {
-    //         this.actionSetGlobalMessage(error.data.msg);
-    //       }
-    //     });
-    // },
 
-    //Page2取得特定期數好友有效投注額及佣金列表
+    //Page2 取得特定期數好友有效投注額及佣金列表
     getLayerFriends(depth) {
-      const summary = this.summaryContent.filter(item => {
-        return item.key == "expected";
-      });
-
       let paramData = {
-        period: summary[0] ? summary[0].period : "",
+        period: this.profitList[0].period,
         user_id: this.memInfo.user.id,
         depth: this.$route.query.depth || depth
       };
@@ -914,37 +858,10 @@ export default {
           }
         });
     },
-    getUserGameList() {
-      //取得使用者有效投注平台統計
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .$route.query.current_entry_id ||
-          this.memberId}/Vendor/Validbet/Report`,
-        params: {
-          lang: "zh-cn",
-          cid: this.cid,
-          userId: this.$route.query.userId
-        }
-      }).then(res => {
-        if (res && res.status === "000") {
-          //該好友投注所有遊戲
-          this.friendGameList = res.data ?? [];
-        }
-      });
-    },
+    //Page3 取得返利明細特定好友級數各會員平台貢獻明細
     getLayerFriendGame() {
-      // let paramData = {};
-      // paramData = this.friendMemberList?.ret?.map(info => {
-      //   return {
-      //     user_id: info.user_id,
-      //     id: info.id
-      //   };
-      // });
-
-      //Page3 取得返利明細特定好友級數各會員平台貢獻明細
       goLangApiRequest({
-        method: "get",
+        method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
         params: {
           lang: "zh-cn",
@@ -956,29 +873,37 @@ export default {
           id: this.$route.query.id
         }
       }).then(res => {
-        console.log("friendGameListfriendGameList", res);
         if (res && res.status === "000") {
           //該好友投注所有遊戲
-          this.friendGameList = res.data ?? [];
+          this.friendGameList = res.data.return_data ?? [];
         }
       });
     },
-    getFriendGameRateList() {
+    getLayerFriendGameRate() {
+      let paramData = {
+        period: this.profitList[0].period,
+        user_id: this.$route.query.memberId,
+        depth: this.$route.query.depth || this.depth
+      };
+
       //取得返利明細特定階層各平台分潤比率
       goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Wage/Entry/${this
-          .$route.query.current_entry_id || this.memberId}/Layer/Condition`,
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
         params: {
           lang: "zh-cn",
           cid: this.cid,
-          depth: this.$route.query.depth || this.depth
+          externalID: "commission",
+          api_uri: "/api/wage/depth/rate",
+          method: "get",
+          ...paramData
         }
       }).then(res => {
         if (res && res.status === "000") {
           //返利比例
           this.gameRateResult = [];
-          this.friendGameRateList = res.data ?? [];
+          this.friendGameRateList = res.data.return_data.ret ?? [];
+
           const name = {
             1: "体育",
             2: "视讯",
@@ -990,31 +915,12 @@ export default {
 
           //存放類別代號
           let categoryNum = Object.keys(this.friendGameRateList);
-          let category = [];
 
-          //存放類別裡的所有子類別key值
-          let item = [];
           for (let i = 1; i <= categoryNum.length; i++) {
-            category.push(this.friendGameRateList[i]);
-            item.push(Object.keys(this.friendGameRateList[i]));
-          }
-
-          for (let i = 0; i < item.length; i++) {
-            // 存放第i個子類別裡面的子類別key值
-            let childCategory = Object.keys(category[i]);
-            let arr = [];
-            for (let j = 0; j < childCategory.length; j++) {
-              arr.push({
-                alias: category[i][childCategory[j]].alias,
-                rate: category[i][childCategory[j]].rate
-              });
-            }
             this.gameRateResult.push({
-              title: name[categoryNum[i]],
-              item: arr
+              title: name[i],
+              item: this.friendGameRateList[i - 1].details
             });
-            arr = [];
-            childCategory = [];
           }
         }
       });
