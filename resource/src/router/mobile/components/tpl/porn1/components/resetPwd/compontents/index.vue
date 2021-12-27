@@ -550,32 +550,13 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
+  border-radius: 23px;
   background: var(--main_button_color2);
-  color: #f3ede7;
+  color: var(--main_button_text_color2);
 
   &.active {
     background: var(--main_button_color1);
-    color: white;
-  }
-
-  &.sg1 {
-    background: var(--member_gradient_color2);
-    color: #f3ede7;
-
-    &.active {
-      background: var(--main_button_color1);
-      color: white;
-    }
-  }
-
-  &.ey1 {
-    background: #fdcccc;
-    color: #f3ede7;
-
-    &.active {
-      background: #e42a30;
-      color: white;
-    }
+    color: var(--main_button_text_color1);
   }
 }
 

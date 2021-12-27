@@ -81,21 +81,19 @@
   --joinmember_title: #9b6b40; //註冊頁標題
   --joinmember_left_text_color: #5e626d; //註冊頁左下文字
   --joinmember_right_text_color: #9ca3bf; //註冊頁右下文字
-  --promotion_gift_button: linear-gradient(to left,
-      #bd9d7d 0%,
-      #f9ddbd 100%); //優惠上方按鈕背景
+  --promotion_gift_button: #9ca3bf; //優惠上方按鈕背景
   --promotion_gift_button_text_color: #fff; //優惠上方按鈕文字
   --promotion_gift_button_border: 3px; //優惠上方按鈕圓角
-  --service_webview_button: #6aaaf5; //webview我的客服下載按鈕
-  --service_webview_text_button: #6aaaf5; //webview我的客服下載按鈕文字
-  --webview_icon_text: #bf8646; //webview我的客服文字
+  --service_webview_button: #d1b79c; //webview我的客服下載按鈕
+  --service_webview_text_button: #d1b79c; //webview我的客服下載按鈕文字
+  --webview_icon_text: #fff; //webview我的客服文字
   --service_add_button: #6aaaf5; //我的客服立即添加按鈕
   --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
   --service_text_color: #6aaaf5; //我的客服立即添加按鈕左邊的文字
   --send_keyring: #6aaaf5; //獲取驗證碼按鈕
   --send_keyring_disabled: #cccccc; //獲取驗證碼按鈕disabled
-  --popup_tip_ok_color: #d1b79c; //溫馨提示彈窗 確認
-  --popup_tip_close_color: #d1b79c; //溫馨提示彈窗 關閉
+  --popup_tip_ok_color: #6aaaf5; //溫馨提示彈窗 確認
+  --popup_tip_close_color: #6aaaf5; //溫馨提示彈窗 關閉
 
   /***--- 會員中心 功能 ----***/
   --redpot: #be9e7f;
@@ -124,9 +122,6 @@
   --invite_background_color: #f2e2d1;
   --invite_text_color: #be9e7f;
   --porn_btn_color: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  --porn_line_color: #be9e7f;
-  --porn_text_color: #be9e7f;
-
 
   --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
 }

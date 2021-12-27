@@ -311,7 +311,6 @@ export default {
   height: 45px;
   color: var(--footer_color);
   position: relative;
-  font-weight: 700;
 
   &.active {
     color: var(--footer_active_color);

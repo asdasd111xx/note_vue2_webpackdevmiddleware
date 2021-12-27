@@ -346,7 +346,7 @@ export default {
 .item {
   width: auto;
   line-height: 44px;
-  color: #bcbdc1;
+  color: var(--slider_text_color);
 
   // 亞博點擊的文字color
   &.active {
@@ -386,7 +386,7 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: var(--porn_line_color);
+    background-color: var(--slider_underline_active_color);
   }
 
   &.av.active .line {
