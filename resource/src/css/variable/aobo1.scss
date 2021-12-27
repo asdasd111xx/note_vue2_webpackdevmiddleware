@@ -92,7 +92,7 @@
   --mcenter_dropdown_border_color: #eeeeee;
   --mcenter_dropdown_text_active_color: #ffffff;
   --mcenter_dropdown_background_active_color: #d1b79c;
-  --mcenter_dropdown_bordert_active_color: #eeeeee;
+  --mcenter_dropdown_border_active_color: #eeeeee;
   //>取消 確定
   --mcenter_dropdown_ok_text_color: var(--mcenter_button_text_color1);
   --mcenter_dropdown_ok_background_color: var(--mcenter_button_color1);
@@ -100,12 +100,8 @@
   --mcenter_dropdown_cancel_background_color: var(--mcenter_button_color2);
 
   //邀請好友獲得現金獎勵
-  --mcenter_invite_background_color: linear-gradient(
-    to bottom,
-    #e9dacb 0%,
-    #eee5db 100%
-  );
-  --mcenter_invite_text_color: #414655;
+  --mcenter_invite_background_color: #f2e2d1;
+  --mcenter_invite_text_color: #be9e7f;
 
   //我的推廣（文字配色設定）
   //>领取/详情： 底色【輔色】
@@ -150,7 +146,7 @@
   /***--- 會員中心 功能 ----***/
   --redpot: #be9e7f;
   --deco_color: linear-gradient(to bottom, #bd9d7d 0%, #f9ddbd 100%);
-  --deco_color2: #be9e7f;
+  --deco_color2: #be9e7f; //盈虧返例、團隊概況 前面圓形的顏色
   --wallet_border_color: #d1b79c;
   --apptip_title: #000000de;
   --popup_text_color1: #d1b79c;
@@ -158,21 +154,14 @@
   --popup_text_color3: #414655;
   --marquee_text_color1: #9ca3bf;
   --marquee_text_color2: #d1b79c;
-  --member_slider: #d1b79c;
   --vip_detail_color: #bbab98;
   --avatar-vip-icon-color: var(--main_button_color1);
   --redpot_button_color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   --addcard_popup_text_color: #bbab98;
   --addcard_popup_prev_text_color: #be9e7f;
   --widthdraw_tip_text_color: #be9e7f;
-  --label_bg_color: #be9e7f;
-  --label_text_color1: #bf8646;
-  --label_text_color2: #fff;
   --bankrebate_receive_button1: var(--mcenter_button_color1);
   --bankrebate_receive_button2: var(--mcenter_button_color2);
   --bankrebate_receive_text_color: #f3ede7;
-  --invite_background_color: #f2e2d1;
-  --invite_text_color: #be9e7f;
-  --porn_btn_color: linear-gradient(to left, #bd9d7d, #f9ddbd);
   --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
 }

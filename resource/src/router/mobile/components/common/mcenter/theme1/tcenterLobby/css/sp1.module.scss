@@ -180,7 +180,7 @@
         }
 
         &.withdraw {
-          background-color: #636f93;
+          background-color: var(--tcenter_progress_color2);
         }
       }
 
@@ -209,7 +209,7 @@
         height: 10px;
         width: 100px;
         border-radius: 7px;
-        background-color: #d1b79c;
+        background-color: var(--tcenter_progress_color1);
 
         &.isZero {
           background-color: #ededed;
