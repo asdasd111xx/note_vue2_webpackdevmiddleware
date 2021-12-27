@@ -5,86 +5,14 @@
     :hasFooter="false"
   >
     <div slot="content" :class="$style['content-wrap']">
-      <div :class="$style['yabo']">
+      <img
+        :class="$style['bg']"
+        :src="$getCdnPath(`/static/image/sg1/about/bg.png`)"
+      />
+      <div :class="$style['icon']">
         <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
       </div>
       <div :class="$style['version']">版本号 {{ version }}</div>
-      <div :class="$style['officel']">
-        <!-- <div>官方认证</div>
-        <div :class="$style['content']">
-          <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img01.png`)" />
-            <div>英国GC<br />监督委员会</div>
-          </div>
-          <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img02.png`)" />
-            <div>马耳他博彩牌照<br />(MGA)认证</div>
-          </div>
-          <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img03.png`)" />
-            <div>英属维尔京群岛<br />(BIV)认证</div>
-          </div>
-          <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/img04.png`)" />
-            <div>菲律宾(PAGCOR)<br />监督博彩牌照</div>
-          </div>
-        </div> -->
-      </div>
-
-      <div :class="[$style['sponsor'], $style['partner']]">
-        <!-- <div>联盟伙伴</div>
-        <div :class="$style['content']">
-          <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/logo_jdb.png`)" />
-            <div>JDB集团</div>
-          </div>
-          <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_sigua.png`)"
-            />
-            <div>丝瓜视频</div>
-          </div>
-          <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_hglive.png`)"
-            />
-            <div>黄瓜视频</div>
-          </div>
-          <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_aglive.png`)"
-            />
-            <div>AG视讯</div>
-          </div>
-        </div> -->
-      </div>
-
-      <div :class="[$style['sponsor'], $style['partner']]">
-        <!-- <div :class="$style['content']">
-          <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_suncity.png`)"
-            />
-            <div>太阳城</div>
-          </div>
-          <div :class="$style['cell']">
-            <img :src="$getCdnPath(`/static/image/_new/about/logo_bbin.png`)" />
-            <div>BBIN集团</div>
-          </div>
-          <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_csball.png`)"
-            />
-            <div>皇冠体育</div>
-          </div>
-          <div :class="$style['cell']">
-            <img
-              :src="$getCdnPath(`/static/image/_new/about/logo_kycard.png`)"
-            />
-            <div>开元棋牌</div>
-          </div>
-        </div> -->
-      </div>
     </div>
   </mobile-container>
 </template>
@@ -128,17 +56,23 @@ export default {
 .container {
   color: #9ca3bf;
   background-color: white;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/static/image/sg1/about/bg.png");
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.bg {
+  min-height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 25px;
+  z-index: -1;
 }
 
 .content-wrap {
-  height: 100vh;
   overflow-y: auto;
-  padding: 25px 0;
 }
-.yabo {
+
+.icon {
   width: 80px;
   height: 80px;
   margin: 0 auto;
@@ -153,46 +87,5 @@ export default {
   font-size: 13px;
   text-align: center;
   width: 100%;
-}
-
-.officel,
-.sponsor {
-  text-align: center;
-  margin-top: 91px;
-
-  > div:first-child {
-    font-size: 17px;
-  }
-
-  .content {
-    display: flex;
-    margin-top: 19px;
-    padding: 0 2%;
-  }
-
-  .cell {
-    width: 25%;
-    font-size: 13px;
-
-    img {
-      height: 50px;
-      width: 50px;
-    }
-  }
-}
-.sponsor {
-  margin-top: 40px;
-}
-
-.partner {
-  .cell {
-    width: 25%;
-    font-size: 13px;
-
-    img {
-      height: 30px;
-      width: 70px;
-    }
-  }
 }
 </style>
