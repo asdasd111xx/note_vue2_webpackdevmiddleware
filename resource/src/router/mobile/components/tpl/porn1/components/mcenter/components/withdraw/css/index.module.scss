@@ -118,8 +118,8 @@
 
     &.rubbing-btn {
       font-size: 14px;
-      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-      color: white;
+      background: var(--member_gradient_color1);
+      color: var(--member_text_color1);
       border-radius: 11px;
       width: 82px;
       height: 21px;

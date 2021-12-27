@@ -25,7 +25,6 @@ export default {
         alias: "CGP",
         method_id: 15
       },
-
       isAlertTip: false,
       isAjaxUse: false,
       alertData: {
@@ -669,9 +668,9 @@ export default {
       if (this.selectedCard.bank_id === 2009) {
         method_id = this.withdrawCurrency.method_id;
       } else {
-        method_id = this.selectedCard.currency
-          ? this.selectedCard.currency[0]
-            ? this.selectedCard.currency[0].method_id
+        method_id = this.selectedCard.offer_data
+          ? this.selectedCard.offer_data[0]
+            ? this.selectedCard.offer_data[0].method_id
             : 0
           : 0;
       }

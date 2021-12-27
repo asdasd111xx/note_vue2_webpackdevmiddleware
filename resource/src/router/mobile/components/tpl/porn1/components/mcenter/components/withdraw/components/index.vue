@@ -568,7 +568,7 @@
         </span>
       </div>
       <!-- 優惠提示 -->
-      <div v-if="hasOffer" :class="[$style['offer']]">
+      <div v-if="offerInfo.offer_enable" :class="[$style['offer']]">
         <span>
           {{`加送 ${+offerInfo.offer_percent} %提现优惠`}}
         </span>
@@ -766,7 +766,7 @@
           :swift-code="selectedCard.swift_code"
           :bonus-offer="formatThousandsCurrency(offer())"
           :withdraw-name="selectedCard.name"
-          :has-offer="hasOffer"
+          :has-offer="offerInfo.offer_enable"
           @close="closePopup"
           @submit="handleSubmit"
           @save="saveCurrentValue(true)"
@@ -878,7 +878,6 @@ export default {
       errCode: "",
       firstDeposit: false,
       // hasBankCard: false,
-
       isLoading: true,
       isSendSubmit: false,
       isSerial: false,
@@ -1271,16 +1270,17 @@ export default {
         return obj;
       }
     },
-    hasOffer() {
-      return (
-        (this.isSelectedUSDT ||
-          this.selectedCard.bank_id == 2009 ||
-          this.selectedCard.bank_id == 2016 ||
-          this.selectedCard.bank_id == 2025 ||
-          this.selectedCard.bank_id == 2026) &&
-        this.selectedCard.offer_percent > 0
-      );
-    },
+    // hasOffer() {
+    //   return this.selectedCard.offer_data[0].offer_enable
+    //   // return (
+    //   //   (this.isSelectedUSDT ||
+    //   //     this.selectedCard.bank_id == 2009 ||
+    //   //     this.selectedCard.bank_id == 2016 ||
+    //   //     this.selectedCard.bank_id == 2025 ||
+    //   //     this.selectedCard.bank_id == 2026) &&
+    //   //   this.selectedCard.offer_percent > 0
+    //   // );
+    // },
 
     marqueeTitle() {
       let arr = this.marqueeList.map(item => {
@@ -1478,6 +1478,7 @@ export default {
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
         swift_code: item.swift_code,
+        offer_data:item.offer_data,
         offer_percent: item.offer_percent,
         offer_limit: item.offer_limit,
         currency: item.currency
@@ -2140,7 +2141,7 @@ export default {
     },
     offer() {
       let bonusOffer = Math.round(
-        (this.selectedCard.offer_percent * this.withdrawValue) / 100
+        (+this.offerInfo.offer_percent * this.withdrawValue) / 100
       );
 
       switch (true) {
