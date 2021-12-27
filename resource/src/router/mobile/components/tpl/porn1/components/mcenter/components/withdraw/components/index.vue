@@ -570,7 +570,7 @@
       <!-- 優惠提示 -->
       <div v-if="offerInfo.offer_enable" :class="[$style['offer']]">
         <span>
-          {{`加送 ${+offerInfo.offer_percent} %提现优惠`}}
+          {{`加送 ${formatThousandsCurrency(offerInfo.offer_percent)} %提现优惠`}}
         </span>
         <span :class="[$style['option']]" @click="showRealStatusType(true)">详情</span>
       </div>
