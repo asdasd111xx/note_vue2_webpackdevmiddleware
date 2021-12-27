@@ -362,7 +362,7 @@ export default {
           item: `${this.detailList.rate || 0}%`,
           key: "level",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
@@ -391,35 +391,35 @@ export default {
           item: this.amountFormat(this.detailList.dispatched_rebate),
           key: "sent",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_SENT_PROMOTIONS", "已派優惠"),
           item: this.amountFormat(this.detailList.dispatched_offer),
           key: "discount",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_MEM_DEPOSIT_2", "會員存款"),
           item: this.amountFormat(this.detailList.deposit),
           key: "deposit",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
           item: this.amountFormat(this.detailList.withdraw),
           key: "withdraw",
           color: this.detailList.withdraw < 0,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_PLATFORM_COST", "平台费"),
           item: this.amountFormat(this.detailList.vendor_fee),
           key: "fee",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
@@ -428,7 +428,7 @@ export default {
             : this.$text("S_NONE", "無"),
           key: "previous",
           color: false,
-          show: true
+          show: false
         }
       ].filter(i => i.show);
     }

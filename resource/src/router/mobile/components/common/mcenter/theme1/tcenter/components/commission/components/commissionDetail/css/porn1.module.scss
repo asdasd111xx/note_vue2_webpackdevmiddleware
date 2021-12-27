@@ -291,15 +291,15 @@
   margin: 5.5px;
 }
 
-.profit_child:first-child {
-  flex: 1 1 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-}
+// .profit_child:first-child {
+//   flex: 1 1 100%;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   height: 50px;
+// }
 
-.profit_child:not(:first-child) {
+.profit_child {
   flex: 1 1 40%;
   height: 70px;
 
