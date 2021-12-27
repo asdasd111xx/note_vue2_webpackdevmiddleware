@@ -837,7 +837,9 @@ export const actionSetUserdata = (
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
 
-      if (headers["x-cdn"]) {
+      const prodVendor = ["67", "80", "41", "92", "94"];
+
+      if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
         commit(
           types.SETSLIDECDNDOMAIN,
           `https://${headers["x-cdn"].split(",")[0]}`
@@ -2387,6 +2389,10 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 
 // 取得429發送太頻繁字串
 export const actionGetToManyRequestMsg = ({ state }, message) => {
+  if (!message) {
+    return "";
+  }
+
   return i18n.t(
     message
       .toString()
@@ -2521,7 +2527,6 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
     data = {}
   } = params;
 
-  console.log(params);
   return goLangApiRequest({
     method: "post",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/${externalID}`,

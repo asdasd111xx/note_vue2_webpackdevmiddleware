@@ -15,7 +15,7 @@
     height: 48px;
     line-height: 48px;
     border-radius: 5px 5px 0 0;
-    background-color: $share_member_text_color4;
+    background-color: var(--member_color100);
     color: #fff;
     font-size: 16px;
     text-align: center;
@@ -58,12 +58,12 @@
       margin: 0 5px;
     }
     #button-entry-history {
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: #fff;
     }
     #button-entry-close {
       background: #faf5f0;
-      color: $share_member_text_color4;
+      color: var(--member_color100);
     }
   }
 }

@@ -1,35 +1,30 @@
 @import "./porn1.module.scss";
 
 .active-slider {
-  background: #000000;
+  background: #fb4e74;
 }
 
 .send-keyring {
   color: white;
-  background: #000000;
-  border-radius: 15px;
+  background: var(--mcenter_button_color1);
 
   &.disabled {
-    color: #ededed;
-    background: #d2d2d2;
+    color: white;
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
 
-.promotion-tips {
-  color: #b1b1b1;
-}
-
 .submit-wrap {
   > div {
-    border-radius: 23px;
-    background: #000000;
+    border-radius: 3px;
+    background: var(--mcenter_button_color1);
   }
 
   &.disabled {
     > div {
-      background: #d2d2d2;
-      color: #ededed;
+      background: var(--mcenter_button_color2);
+      color: #ffffff;
     }
   }
 }

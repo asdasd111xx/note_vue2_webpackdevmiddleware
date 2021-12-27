@@ -6,8 +6,8 @@
 }
 
 .wallet-info-wrap {
-  background: $main_white_color1;
-  color: var(--member_text_color4);
+  background: #fefffe;
+  color: var(--mcenter_slider_text_active_color);
   font-size: 12px;
   margin-top: 12px;
   padding: 12px 17px 0;
@@ -41,7 +41,7 @@
       line-height: 30px;
       text-align: center;
       background: linear-gradient(to right, #99a3c1, #636f93);
-      color: $main_white_color1;
+      color: #fefffe;
       border-radius: 15px;
       box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.3);
     }
@@ -79,7 +79,7 @@
     div:last-of-type {
       position: relative;
       font-size: 10px;
-      color: var(--member_text_color3);
+      color: var(--mcenter_slider_text_color);
       padding-right: 24px;
       height: 15px;
     }
@@ -106,7 +106,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   img {
     width: 13px;
@@ -144,7 +144,7 @@
     flex: 1;
     font-size: 12px;
     font-weight: 700;
-    color: $main_title_color1;
+    color: #000000;
 
     img {
       width: 13px;
@@ -204,7 +204,7 @@
     padding: 10px 4px 15px;
     text-align: center;
     font-size: 14px;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     border-bottom: 1px solid #dad6d6;
     margin: 0px;
 
@@ -226,7 +226,7 @@
 
   &.collapse {
     float: right;
-    color: var(--main_text_color2);
+    color: #ffffff;
     border-bottom: none;
 
     .icon {
@@ -247,7 +247,7 @@
 
   .balance-info-maintain {
     font-size: 12px;
-    color: $main_error_color1;
+    color: #db6372;
   }
 
   .balance-wrench {
@@ -258,7 +258,7 @@
 
   .balance-item-money {
     display: block;
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
 
     &.more {
       word-break: break-word;
@@ -295,11 +295,11 @@
   width: 100%;
   height: 70px;
   margin-top: 12px;
-  background: #f2e2d1;
+  background: var(--invite_background_color);
   border-radius: 34px;
 
   .content {
-    color: $share_member_text_color2;
+    color: var(--invite_text_color);
     font-size: 16px;
     margin-left: 8%;
     font-weight: 700;
@@ -309,10 +309,11 @@
     justify-content: center;
     flex-direction: column;
 
+    //億元樣式
     .sub {
       font-size: 12px;
       text-align: left;
-      color: $share_member_text_color1;
+      color: #d1b79c;
       font-weight: 400;
     }
   }
@@ -329,18 +330,6 @@
       height: 100%;
     }
   }
-
-  &.porn1 {
-    background: #3676d5;
-
-    .content {
-      color: $befa_member_text_color1;
-    }
-
-    .sub {
-      color: $befa_member_text_color1;
-    }
-  }
 }
 
 .title {
@@ -349,7 +338,7 @@
   justify-content: space-between;
   font-size: 14px;
   font-weight: 700;
-  color: $main_title_color1;
+  color: #000000;
   padding-left: 7px;
 
   &::before {
@@ -369,7 +358,7 @@
     position: relative;
     font-size: 10px;
     font-weight: 400;
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
     padding-right: 24px;
 
     &::after {
@@ -393,7 +382,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
-    color: var(--main_text_color3);
+    color: var(--slider_text_color);
 
     .icon-cell {
       min-height: 54px;
@@ -421,8 +410,8 @@
 }
 
 .bc-wrap {
-  background: $main_white_color1;
-  color: var(--member_text_color4);
+  background: #fefffe;
+  color: var(--mcenter_slider_text_active_color);
   font-size: 12px;
   margin-top: 12px;
   padding: 12px 17px 0;
@@ -490,13 +479,13 @@
 
       .vendor {
         font-size: 10px;
-        color: var(--member_text_color3);
+        color: var(--mcenter_slider_text_color);
       }
 
       .game-desc {
         display: flex;
         justify-content: space-between;
-        color: var(--member_text_color4);
+        color: var(--mcenter_slider_text_active_color);
         padding-top: 6px;
       }
 
@@ -515,7 +504,7 @@
     font-size: 12px;
     text-align: center;
     margin: 35px 0;
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 

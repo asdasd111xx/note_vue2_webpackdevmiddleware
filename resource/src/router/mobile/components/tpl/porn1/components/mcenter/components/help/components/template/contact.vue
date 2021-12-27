@@ -76,7 +76,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .title {
@@ -98,7 +98,7 @@ export default {
 .content {
   padding: 5px;
   .cell {
-    background-color: $main_white_color1;
+    background-color: #fefffe;
     display: flex;
     align-items: center;
     padding: 0 12px;
@@ -143,13 +143,13 @@ export default {
   text-align: center;
 
   > div {
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
     height: 45px;
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
 
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
   }
 }
 </style>

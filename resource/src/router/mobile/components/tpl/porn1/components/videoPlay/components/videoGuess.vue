@@ -170,7 +170,7 @@ export default {
 .like {
   line-height: 20px;
   margin-bottom: 15px;
-  color: $main_discover_color1;
+  color: #bf8646;
   font-weight: 500;
 
   &.custom {
@@ -221,7 +221,7 @@ export default {
   padding-top: 1px;
   overflow: hidden;
   line-height: 14px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -234,7 +234,7 @@ export default {
 .views {
   height: 12px;
   line-height: 12px;
-  color: var(--main_text_color2);
+  color: #ffffff;
   font-size: 9px;
   display: flex;
   align-items: center;

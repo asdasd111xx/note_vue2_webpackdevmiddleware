@@ -16,18 +16,35 @@
             @keydown.13="submit"
           />
         </div>
-        <div :class="$style.submit" @click="submit">
-          {{ $text("S_JM_SURE_SEND", "确认送出") }}
-        </div>
-      </div>
-      <div :class="$style.tip">
-        {{ $text("S_NO_SETTING", "若未设置，请联系线上客服") }}
+        <template v-if="['sg1'].includes(themeTPL)">
+          <div :class="$style.tip">
+            {{ $text("S_NO_SETTING", "若未设置，请联系线上客服") }}
+          </div>
+          <div :class="$style.submit" @click="submit">
+            {{ $text("S_JM_SURE_SEND", "确认送出") }}
+          </div>
+        </template>
+
+        <template v-else>
+          <div :class="$style.tip">
+            {{ $text("S_NO_SETTING", "若未设置，请联系线上客服") }}
+          </div>
+          <div :class="$style.choose">
+            <div :class="$style.cancel" @click="onClose">
+              {{ $text("S_CANCEL", "取消") }}
+            </div>
+            <div :class="$style.submit" @click="submit">
+              {{ $text("S_JM_SURE_SEND", "确认送出") }}
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   props: {
     theme: {
@@ -47,22 +64,28 @@ export default {
     return {
       checkItemInfo: {
         name: {
-          title: this.$text('S_ENTER_REAL_NAME', '请输入真实姓名'),
-          placeholder: this.$text('S_REAL_NAME', '真实姓名')
+          title: this.$text("S_ENTER_REAL_NAME", "请输入真实姓名"),
+          placeholder: this.$text("S_REAL_NAME", "真实姓名")
         }
       },
-      inputVal: '',
+      inputVal: "",
       lock: false
     };
   },
   computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
     $style() {
       return this.theme || this.$styleDefault;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     }
   },
   methods: {
     onClose() {
-      this.$emit('update:checkItem', '');
+      this.$emit("update:checkItem", "");
     },
     submit() {
       if (this.lock) {

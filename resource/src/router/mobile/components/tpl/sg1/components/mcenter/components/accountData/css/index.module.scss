@@ -103,12 +103,12 @@
 }
 
 .wrap {
-  background: $main_white_color1;
+  background: #fefffe1;
 }
 
 .account-data-wrap {
   color: var(--main_text_color3);
-  background: $main_white_color1;
+  background: #fefffe1;
 }
 
 .feature-btn {
@@ -248,7 +248,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: $main_white_color1;
+  background: #fefffe1;
   position: relative;
   margin-bottom: 14px;
 
@@ -311,9 +311,9 @@ input {
 }
 
 .top-tips {
-  background: $main_white_color1;
+  background: #fefffe1;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -321,7 +321,7 @@ input {
 
 .bottom-tips {
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   visibility: hidden;
   height: 30px;
 
@@ -1093,7 +1093,7 @@ input {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe1;
   border-radius: 8px;
 }
 

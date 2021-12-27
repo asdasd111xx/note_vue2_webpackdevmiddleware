@@ -46,7 +46,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: var(--member_color1);
+  background: var(--mcenter_main_color);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }
@@ -83,9 +83,9 @@ input {
 }
 
 .top-tips {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   margin-bottom: -1px;
   min-height: 40px;
   display: flex;
@@ -97,7 +97,7 @@ input {
   justify-content: space-between;
   align-items: baseline;
   padding: 0px 14px;
-  color: $share_member_text_color5;
+  color: #be9e7f;
   font-size: 12px;
 }
 
@@ -131,7 +131,7 @@ input {
 }
 
 .keyring-tips {
-  color: $main_error_color1;
+  color: #db6372;
 }
 
 .form-tips {
@@ -142,7 +142,7 @@ input {
   font-weight: 400;
   line-height: 20px;
   position: relative;
-  color: $main_error_color1;
+  color: #db6372;
   display: block;
   word-break: break-all;
   //   height: 30px;
@@ -202,7 +202,7 @@ input {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: var(--wallet_border_color);
   border-radius: 3px;
-  color: var(--member_text_color1);
+  color: var(--mcenter_button_text_color1);
   font-weight: 400;
   height: 30px;
   line-height: 30px;
@@ -230,7 +230,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -242,14 +242,14 @@ input::placeholder {
 
   &.disabled {
     > div {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
       pointer-events: none;
     }
   }
 }
 
 .serial-number-links {
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   position: absolute;
   right: 17px;
 }

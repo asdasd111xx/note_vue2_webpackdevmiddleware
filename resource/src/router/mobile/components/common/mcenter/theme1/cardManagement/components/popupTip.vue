@@ -128,17 +128,17 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
 }
 
 .content {
   padding: 17px 13px;
-  color: var(--main_text_color2);
+  color: #ffffff;
   text-align: center;
 
   .title {
-    color: var(--main_text_color3);
+    color: var(--slider_text_color);
     font-size: 18px;
     font-weight: 700;
   }
@@ -178,7 +178,7 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 }
 </style>

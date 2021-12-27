@@ -334,14 +334,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #b1b1b1;
+  color: var(--homepage_left_text_color);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
   &.active {
-    color: var(--main_text_color1);
+    color: var(--homepage_left_text_active_color);
   }
 }
 
@@ -370,7 +370,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: #fff;
     }
   }
@@ -396,7 +396,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ffad0a;
+    color: var(--homepage_right_text_color);
     font-size: 12px;
     text-align: center;
   }
@@ -690,7 +690,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 
   &.ey1:last-child {
@@ -698,7 +698,10 @@ export default {
   }
 
   &.porn1:last-child {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
+  }
+  &.sg1:last-child {
+    color: var(--member_color100);
   }
   &.sg1:last-child {
     color: var(--member_color100);

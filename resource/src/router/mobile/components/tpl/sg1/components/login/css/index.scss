@@ -5,7 +5,7 @@
 }
 
 .title {
-  color: $main_title_color1;
+  color: #000000;
   font-size: 16px;
 }
 
@@ -144,8 +144,8 @@
       color: white;
       text-align: center;
       line-height: 50px;
-      background: #000;
-      border-radius: 75px;
+      background: var(--main_button_color1);
+      border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
       width: 100%;
@@ -166,17 +166,17 @@
     margin: 0 8px;
 
     &.link-submit {
-      color: #6aaaf5;
+      color: var(--joinmember_right_text_color);
     }
 
     a {
-      color: #5e626d;
+      color: var(--joinmember_left_text_color);
     }
   }
 }
 
 .version {
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
   position: absolute;
   right: 14px;
   bottom: 5px;
@@ -186,7 +186,7 @@
 .err-msg {
   max-width: 375px;
   margin: 0 auto;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 26px;
   line-height: 26px;
 }

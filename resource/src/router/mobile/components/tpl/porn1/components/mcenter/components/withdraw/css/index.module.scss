@@ -2,12 +2,12 @@
 @import "../../../../../components/mcenter/components/balanceTrans/css/porn1.module.scss";
 
 .balance-tran-container {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
 }
 
 // 中心錢包
 .balance-wrap-wrap {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   height: 67px;
   display: flex;
   align-items: center;
@@ -32,14 +32,14 @@
     }
 
     > div:last-child {
-      color: $share_member_text_color4;
+      color: var(--member_color100);
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     text-align: center;
     font-size: 16px;
   }
@@ -52,7 +52,7 @@
 
 //增加銀行卡
 .add-bank-card {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: var(--addcard_popup_text_color);
   font-size: 15px;
   height: 50px;
@@ -83,7 +83,7 @@
 
 .bank-card-cell {
   position: relative;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 1px 18px;
   color: #414655;
   min-height: 50px;
@@ -118,7 +118,7 @@
 
     &.rubbing-btn {
       font-size: 14px;
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: white;
       border-radius: 11px;
       width: 82px;
@@ -190,7 +190,7 @@
   display: flex;
   // height: 60px;
   margin-top: 10px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 8px 18px;
   // min-height: 50px;
   flex-wrap: wrap;
@@ -244,7 +244,7 @@
 
 .withdraw-input {
   height: 54px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
   line-height: 54px;
   padding: 0 14px;
@@ -275,7 +275,7 @@
 .exchange-rate,
 .actual-money,
 .crypto-block {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 5px 14px 0;
   font-size: 14px;
   color: #cbced8;
@@ -287,7 +287,7 @@
   }
 
   .time {
-    color: var(--member_text_color6);
+    color: var(--countdown_time_text_color);
   }
 
   .serial {
@@ -298,8 +298,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid $share_member_text_color4;
-    color: $share_member_text_color4;
+    border: 1px solid var(--member_color100);
+    color: var(--member_color100);
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -329,8 +329,8 @@
 
   > span {
     font-size: 14px;
-    background: var(--member_gradient_color1);
-    color: var(--member_text_color1);
+    background: var(--mcenter_button_color1);
+    color: var(--mcenter_button_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -341,7 +341,7 @@
 }
 
 .withdraw-error-tips {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   padding: 5px 12px;
   color: #db6372;
   font-size: 13.5px;
@@ -358,7 +358,7 @@
   > div {
     margin: 0 auto;
     height: 45px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -366,13 +366,13 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
     }
   }
 }
@@ -442,7 +442,7 @@
     border-radius: 3px;
 
     .check-header {
-      background: $share_origin_color10;
+      background: #be9e7f;
       color: #ffffff;
       border-radius: 3px 3px 0 0;
 
@@ -491,7 +491,7 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       margin-bottom: 4px;
     }
   }
@@ -504,7 +504,7 @@
     position: relative;
 
     &.check-total {
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       background: #f3f3f3;
     }
 
@@ -515,12 +515,16 @@
     }
 
     &.custom-color {
-      color: var(--member_text_color6);
+      color: var(--countdown_time_text_color);
 
       &.custom-color-background {
         background: #f3f3f3;
         font-weight: 700;
       }
+    }
+
+    &.offer-twoline {
+      height: 66px;
     }
 
     > span:last-child {
@@ -566,7 +570,7 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -584,7 +588,7 @@
       border-right: 1px solid #f8f8f7;
 
       &.submit {
-        color: $share_main_button_color2;
+        color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       }
     }
 
@@ -615,7 +619,7 @@
 
 .withdraw-pwd-input {
   height: 54px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
   line-height: 54px;
   padding: 0 14px;

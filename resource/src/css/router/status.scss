@@ -70,10 +70,10 @@ body {
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
-  color: $share_text_color5;
+  color: #9ca3bf;
 
   &.porn1 {
-    color: var(--main_text_color4);
+    color: #1f2021;
   }
 
   &.sg1 {
@@ -224,11 +224,7 @@ body {
   }
 
   span {
-    color: #ff7700;
-
-    &.sg1 {
-      color: #ff7171;
-    }
+    color: #db6372;
   }
 
   &.sg1 {

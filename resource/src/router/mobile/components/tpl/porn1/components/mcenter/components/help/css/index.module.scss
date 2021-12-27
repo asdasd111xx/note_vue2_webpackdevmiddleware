@@ -169,12 +169,12 @@
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: var(--main_text_color2);
+  color: #ffffff;
   display: inline-block;
   background-color: white;
 
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 }
 
@@ -183,7 +183,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: var(--member_color1);
+  background-color: var(--mcenter_main_color);
   width: 45px;
   transition: left 0.31s;
 }
@@ -299,7 +299,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   border-top: 1px solid #f8f8f7;
 }
 
@@ -433,7 +433,7 @@
     line-height: 45px;
     margin: 0 auto;
     border-radius: 3px;
-    background: $share_main_button_color2;
+    background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     color: #fff;
     font-weight: 700;
     font-size: 14px;
@@ -470,7 +470,7 @@
 .help-wrap {
   overflow-x: hidden;
   overflow-y: scroll;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   position: relative;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -479,7 +479,7 @@
     padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
 
     > span {
       width: 100%;
@@ -552,7 +552,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: var(--member_color1);
+  background: var(--mcenter_main_color);
   // left: calc(33% / 2 - 20px);
 
   transition: left 0.31s;

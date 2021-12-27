@@ -7,7 +7,7 @@
 
 .err-msg {
   padding: 2px 0;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 32px;
 
   > div {
@@ -50,7 +50,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: var(--member_color1);
+  background-color: var(--mcenter_main_color);
   width: 45px;
   transition: left 0.31s;
 }
@@ -85,7 +85,7 @@
 
 .errorTips {
   padding: 2px 0;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 25px;
   line-height: 25px;
 }
@@ -101,15 +101,16 @@
   > div {
     max-width: 375px;
     width: 100%;
-    border-radius: 3px;
-    background: var(--member_gradient_color2);
+    border-radius: 23px;
+    background: var(--main_button_color2);
+    color: var(--main_button_text_color2);
     margin: 0 auto;
   }
 
   &.active {
     > div {
-      color: var(--member_text_color1);
-      background: var(--member_gradient_color1);
+      color: var(--main_button_text_color1);
+      background: var(--main_button_color1);
     }
   }
 }
@@ -126,7 +127,7 @@
   color: white;
   width: 100px;
   height: 30px;
-  background: var(--member_color101);
+  background: var(--send_keyring_disabled);
   border-radius: 3px;
   pointer-events: none;
   right: 14px;
@@ -137,7 +138,7 @@
 
   &.active {
     pointer-events: unset;
-    background: var(--main_color100);
+    background: var(--send_keyring);
   }
 }
 

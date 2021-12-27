@@ -33,7 +33,7 @@
             }}</span>
           </div>
         </div>
-        <div :class="[$style['game-title'], $style[siteConfig.ROUTER_TPL]]">
+        <div :class="[$style['game-title']]">
           {{ info.gameName }}
         </div>
         <div :class="$style['item-content']">

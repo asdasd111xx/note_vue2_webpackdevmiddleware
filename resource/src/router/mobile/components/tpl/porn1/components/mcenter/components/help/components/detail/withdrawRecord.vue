@@ -146,6 +146,7 @@
 import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import editWithdrawField from "./editWithdrawField";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
@@ -227,33 +228,32 @@ export default {
     },
     getData() {
       let params = {
-        first_result: 0,
-        max_results: 10
+        firstResult: 0,
+        maxResults: 10
       };
 
       let cid = getCookie("cid");
       if (!cid) return;
 
-      axios({
-        method: "get",
-        url: "/api/payment/v1/c/withdraw/list",
-        errorAlert: false,
-        params: params
-      })
-        .then(res => {
-          if (res && res.data && res.data.result === "ok") {
-            this.data = res.data.ret;
-            console.log(this.data);
-            this.total = res.data.pagination.total;
-            this.filterStatus();
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/Withdraw/List`,
+        params: {
+          ...params
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.data = res.data.ret;
+          this.total = res.data.pagination.total;
+          this.filterStatus();
+        } else {
+          if ((res && res.msg) || (res && res.message)) {
+            this.actionSetGlobalMessage({
+              msg: res.msg || res.message
+            });
           }
-        })
-        .catch(error => {
-          this.actionSetGlobalMessage({
-            msg: error.response.data.msg,
-            code: error.response.data.code
-          });
-        });
+        }
+      });
     },
     getStatus(status) {
       status = status.toLowerCase();

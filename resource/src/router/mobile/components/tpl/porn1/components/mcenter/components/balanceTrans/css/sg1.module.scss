@@ -1,22 +1,21 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
-  background: #000;
+  background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
-  background: #000;
-  border-radius: 23px;
+  background: var(--mcenter_button_color1);
 
   &.is-disable {
-    background: #d2d2d2;
+    background: var(--mcenter_button_color2);
   }
 }
 
 .select-container {
   .select-header {
     span {
-      color: #000;
+      color: var(--member_color100);
     }
   }
 }
@@ -36,28 +35,24 @@
   }
 }
 
-.balance-item-vendor {
-  &.balance-redjackpot-text {
-    color: #414655;
-  }
+.balance-item-money {
+  color: var(--mcenter_slider_text_color);
 }
 
-.balance-item-money {
-  &.balance-redjackpot-text {
-    color: #e53266;
-    word-break: break-word;
-  }
+.balance-redjackpot-text {
+  color: var(--member_color100);
+  word-break: break-word;
 }
 
 .transfer-money-input {
   &::placeholder {
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 
 .balance-tip-wrap {
   .balance-auto-tip {
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 

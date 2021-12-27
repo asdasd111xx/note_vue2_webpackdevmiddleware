@@ -169,12 +169,12 @@
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: var(--main_text_color2);
+  color: #ffffff;
   display: inline-block;
   background-color: white;
 
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 }
 
@@ -288,7 +288,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #000;
+  color: var(--wallet_border_color);
   border-top: 1px solid #f8f8f7;
 }
 
@@ -356,6 +356,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
+    color: var(--wallet_border_color);
   }
   height: calc(100% - 82px);
   padding-left: 18px;
@@ -389,7 +390,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: #e53266;
+  color: var(--wallet_border_color);
   transform: translateY(-50%);
 }
 
@@ -418,7 +419,7 @@
     line-height: 45px;
     margin: 0 auto;
     border-radius: 3px;
-    background: $share_main_button_color2;
+    background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     color: #fff;
     font-weight: 700;
     font-size: 14px;
@@ -455,7 +456,7 @@
 .help-wrap {
   overflow-x: hidden;
   overflow-y: scroll;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   position: relative;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
@@ -464,7 +465,7 @@
     padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
 
     > span {
       width: 100%;

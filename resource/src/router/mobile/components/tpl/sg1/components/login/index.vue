@@ -371,16 +371,15 @@ export default {
   margin: 194px auto 0;
   border-radius: 4px;
   background: #ffffff;
-  padding-bottom: 45px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   max-width: 270px;
   color: #5e626d;
   font-size: 14px;
-  border-radius: 14px;
+  border-radius: 10px;
 }
 
 .title {
-  padding: 18px 20%;
+  padding: 20px 20% 10px 20%;
   width: 100%;
   font-size: 18px;
   line-height: 18px;
@@ -389,9 +388,10 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-weight: 700;
 }
 .field {
-  margin: 0 auto 16px;
+  margin: 0 auto;
   width: 80%;
 
   .field-title {
@@ -417,39 +417,33 @@ export default {
 }
 
 .link-submit {
-  color: var(--main_text_color1);
+  color: #9ca3bf;
 }
 .submit {
-  background: #fff;
-  width: 50%;
-  height: 40px;
-  line-height: 40px;
-  color: #e53266;
+  margin: 0 auto;
+  width: 100%;
+  height: 60px;
+  line-height: 34px;
+  color: var(--popup_tip_ok_color);
   cursor: pointer;
   text-align: center;
   font-size: 18px;
-  position: absolute;
-  right: 0;
-  bottom: 8px;
-  border-left: 1px solid #f8f8f7;
+  font-weight: 700;
+  border-top: 1px solid #eeeeee;
+  padding: 13px 0px;
 }
 
 .close {
   position: absolute;
-  bottom: 8px;
-  left: 0px;
-  width: 50%;
+  top: 10px;
+  right: 10px;
+  width: 40px;
   height: 40px;
   line-height: 40px;
   text-align: center;
-  color: #414655;
+  background: url("/static/image/_new/common/btn_close.png") 10px 10px no-repeat;
   cursor: pointer;
   transition: all 0.3s ease;
-
-  &::before {
-    content: "取消";
-    font-size: 18px;
-  }
 }
 
 .tip {
@@ -457,10 +451,8 @@ export default {
   width: 100%;
   font-size: 14px;
   text-align: center;
-  color: #ff1010;
-  margin: 8px 0;
-  padding: 0 0 12px 0;
-  border-bottom: 1px solid #f8f8f7;
+  color: #a6a9b2;
+  padding-bottom: 13px;
 }
 
 .mask {

@@ -315,11 +315,9 @@ $fixed_spacing_height: 43px;
   line-height: 43px;
   font-size: 14px;
   text-align: center;
-  color: #000000;
-
+  color: var(--mcenter_slider_text_color);
   &.active {
-    color: var(--member_text_color4);
-    // border-bottom: solid 1px $share_member_text_color4;
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -347,7 +345,7 @@ $fixed_spacing_height: 43px;
 
 .time {
   line-height: 13px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   font-size: 10px;
 
   > img {

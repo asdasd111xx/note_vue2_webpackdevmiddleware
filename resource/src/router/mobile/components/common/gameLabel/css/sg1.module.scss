@@ -4,12 +4,6 @@
   button {
     border: 1px solid #cccccc;
     color: #cccccc;
-    border-radius: 23px;
-
-    &:active,
-    &.is-current {
-      background: #000;
-      color: #fff;
-    }
+    border-radius: 5px;
   }
 }

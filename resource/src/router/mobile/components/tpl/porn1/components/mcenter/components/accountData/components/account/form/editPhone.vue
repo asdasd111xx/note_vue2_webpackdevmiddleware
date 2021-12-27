@@ -544,6 +544,7 @@ export default {
                 this.isSendSMS = false;
               });
             } else {
+              // http: "429"
               if (res && res.status === "506") {
                 this.actionGetToManyRequestMsg(res.msg).then(res => {
                   this.tipMsg = res;
@@ -564,8 +565,10 @@ export default {
             if (error && error.msg) {
               this.tipMsg = error.msg;
             } else {
-              if (error && error.status === 429) {
-                this.actionGetToManyRequestMsg(error.message).then(res => {
+              if (error.response && error.response.status === 429) {
+                this.actionGetToManyRequestMsg(
+                  error.response.data.message
+                ).then(res => {
                   this.tipMsg = res;
                 });
                 return;
@@ -611,11 +614,11 @@ export default {
               this.tipMsg = error.response.data.msg;
             } else {
               if (error.response && error.response.status === 429) {
-                this.actionGetToManyRequestMsg(error.response.message).then(
-                  res => {
-                    this.tipMsg = res;
-                  }
-                );
+                this.actionGetToManyRequestMsg(
+                  error.response.data.message
+                ).then(res => {
+                  this.tipMsg = res;
+                });
                 return;
               }
               this.tipMsg = error.response.data;
@@ -665,11 +668,11 @@ export default {
               this.tipMsg = error.response.data.msg;
             } else {
               if (error.response && error.response.status === 429) {
-                this.actionGetToManyRequestMsg(error.response.message).then(
-                  res => {
-                    this.tipMsg = res;
-                  }
-                );
+                this.actionGetToManyRequestMsg(
+                  error.response.data.message
+                ).then(res => {
+                  this.tipMsg = res;
+                });
                 return;
               }
               this.tipMsg = error.response.data;

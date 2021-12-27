@@ -162,23 +162,13 @@
               </div>
               <div class="login-link-wrap">
                 <!-- 加入會員 -->
-                <div
-                  :class="[
-                    'link-button',
-                    'link-join-mem',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
-                >
+                <div :class="['link-button', 'link-join-mem']">
                   <span @click="checkLayeredURL">
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
                 <div
-                  :class="[
-                    'link-button',
-                    'link-submit',
-                    this.siteConfig.ROUTER_TPL
-                  ]"
+                  :class="['link-button', 'link-submit']"
                   @click="$router.push('/mobile/service')"
                 >
                   {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
@@ -351,39 +341,41 @@ export default {
   margin: 194px auto 0;
   border-radius: 4px;
   background: #ffffff;
-  padding-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   max-width: 340px;
   color: #fff;
   font-size: 14px;
+  border-radius: 10px;
 }
 
 .title {
   margin-bottom: 16px;
   padding: 15px 20%;
-  background: $share_member_text_color4;
+  background: #fff;
   width: 100%;
   font-size: 20px;
   line-height: 20px;
   text-align: center;
-  color: #fff;
+  color: #414655;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-weight: 700;
+  border-radius: 10px;
 }
 .field {
-  margin: 0 auto 16px;
+  margin: 0 auto 7px;
   width: 80%;
 
   .field-title {
     line-height: 3;
-    color: #5e626d;
+    color: #a6a9b2;
   }
 
   input {
     display: block;
     background-color: #ffffff;
-    border: 1px solid #a5a5a5;
+    border: 1px solid #eeeeee;
     border-radius: 8px;
     width: 100%;
     height: 40px;
@@ -398,18 +390,35 @@ export default {
 }
 
 .link-submit {
-  color: var(--main_text_color1);
+  color: #9ca3bf;
 }
-.submit {
-  margin: 0 auto;
-  border-radius: 8px;
-  background: $share_main_button_color2;
-  width: 80%;
-  height: 40px;
-  line-height: 40px;
-  color: #ffffff;
-  cursor: pointer;
+
+.choose {
   text-align: center;
+  margin: auto;
+  width: 100%;
+  height: 59px;
+  font-size: 0;
+  border-top: 1px solid #eeeeee;
+  font-weight: 700;
+  .cancel,
+  .submit {
+    font-size: 16px;
+    display: inline-block;
+    margin: 0 auto;
+
+    cursor: pointer;
+    text-align: center;
+    padding: 0 59px;
+    line-height: 58px;
+  }
+  .cancel {
+    color: var(--popup_tip_close_color);
+  }
+  .submit {
+    border-left: 1px solid #eeeeee;
+    color: var(--popup_tip_ok_color);
+  }
 }
 
 .close {
@@ -431,11 +440,10 @@ export default {
 }
 
 .tip {
-  margin: 20px auto 0;
+  margin: 0 auto 22px auto;
   width: 80%;
   font-size: 15px;
-  text-align: center;
-  color: #f94444;
+  color: #a5a5a5;
 }
 
 .mask {

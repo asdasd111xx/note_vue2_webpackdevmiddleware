@@ -124,7 +124,7 @@ export default {
 }
 
 .confirm-btn-wrap {
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   padding: 20px 0;
 
   &.ey1 {

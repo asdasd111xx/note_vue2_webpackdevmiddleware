@@ -77,7 +77,7 @@ export default {
   position: relative;
 
   > span:first-child {
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 
   img {
@@ -95,13 +95,13 @@ export default {
 
 .go-btn {
   height: 23px;
-  border: 1pt solid var(--member_text_color4);
+  border: 1pt solid var(--mcenter_slider_text_active_color);
   border-radius: 12px;
   text-align: center;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   margin-right: 10px;
 }
 </style>

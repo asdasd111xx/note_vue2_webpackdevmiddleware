@@ -170,12 +170,12 @@
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: var(--main_text_color2);
+  color: #ffffff;
   display: inline-block;
   background-color: white;
 
   &.active {
-    color: var(--main_text_color4);
+    color: #ff1010;
   }
 }
 
@@ -184,7 +184,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: $share_member_text_color4;
+  background-color: var(--member_color100);
   width: 45px;
   transition: left 0.31s;
 }
@@ -301,7 +301,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: $share_member_text_color4;
+    color: var(--member_color100);
   }
 }
 
@@ -330,7 +330,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color4;
+  color: var(--member_color100);
   transform: translateY(-50%);
 }
 

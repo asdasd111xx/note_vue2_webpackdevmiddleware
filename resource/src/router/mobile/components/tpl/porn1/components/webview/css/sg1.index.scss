@@ -15,10 +15,9 @@
     }
 
     .download {
-      background: #000;
-      border-radius: 12px;
+      background: var(--main_button_color1);
       border: none;
-      color: #fff;
+      color: var(--service_add_text_button);
     }
   }
 }

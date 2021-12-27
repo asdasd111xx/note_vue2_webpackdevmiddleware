@@ -1,29 +1,29 @@
 @import "./porn1.module.scss";
 
 .link {
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 
   &.active {
-    color: $main_title_color1;
+    color: var(--mcenter_main_color);
   }
 }
 
 .search-tab {
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 
   &.active {
-    color: $main_title_color1;
+    color: var(--mcenter_main_color);
   }
 }
 
 .field-search-wrap {
   .btn-search {
-    background: $main_title_color1;
-    border-radius: 23px;
-    color: white;
+    background: var(--mcenter_button_color1);
+
+    color: var(--mcenter_button_text_color1);
 
     &.disable {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
     }
   }
 }
@@ -31,6 +31,6 @@
 //rebateRate
 .serial-number-title {
   &::before {
-    background: $main_title_color1;
+    background: var(--deco_color);
   }
 }

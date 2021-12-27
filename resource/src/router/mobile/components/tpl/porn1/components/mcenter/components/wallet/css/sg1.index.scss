@@ -24,41 +24,25 @@
 .wallet-info-wrap {
   .goDeposit {
     color: #fefffe !important;
-    background: #000 !important;
-    box-shadow: 0px 10px 20px 0px rgba(131, 131, 131, 0.3) !important;
+    background: var(--mcenter_button_color1) !important;
+    box-shadow: 0pt 3px 7px 0pt rgba(255, 0, 0, 0.3) !important;
   }
 }
 
 .title {
   &::before {
-    background: #000;
+    background: var(--mcenter_button_color1);
   }
 }
 
 .balance-wrap {
   .balance-total-item {
-    color: #000;
-
     .balance-item-money {
-      color: #e53266;
+      color: var(--member_color100);
     }
   }
 
   .recycle-btn {
-    color: #000;
-  }
-}
-
-.balance-item-wrap {
-  .balance-redjackpot-text {
-    color: #000;
-    &.balance-item-money {
-      color: #e53266;
-    }
-  }
-
-  .balance-redjackpot-image {
-    background: url("/static/image/sg1/common/ic_event.png") center center /
-      100% 100%;
+    color: var(--member_color100);
   }
 }

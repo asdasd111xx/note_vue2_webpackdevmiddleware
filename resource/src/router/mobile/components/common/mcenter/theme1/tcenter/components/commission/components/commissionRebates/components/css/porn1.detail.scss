@@ -29,7 +29,7 @@
     line-height: 16px;
 
     .current-num {
-      color: $share_member_text_color4;
+      color: var(--member_color100);
     }
     .total-num {
       display: flex;
@@ -63,13 +63,8 @@
       height: 6px;
       border-radius: 3px;
       top: 0;
-      background-color: $share_member_text_color1;
+      background-color: var(--member_slider);
       z-index: 0;
-    }
-    &.porn1 {
-      .process-bar-current-line {
-        background-color: $befa_member_main_color1;
-      }
     }
   }
 
@@ -92,11 +87,11 @@
       margin-left: 2px;
 
       &.red {
-        color: $share_member_text_color8;
+        color: #db6372;
       }
 
       &.blue {
-        color: $share_member_text_color4;
+        color: #6aaaf5;
       }
     }
   }

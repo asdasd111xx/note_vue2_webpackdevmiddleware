@@ -74,7 +74,7 @@
               )
             "
           />
-          <div>暫時沒有餘額</div>
+          <div>暂时没有余额</div>
         </div>
         <div
           :class="[$style['pay-code'], $style[routerTPL]]"
@@ -364,7 +364,7 @@ export default {
 }
 .pay-code {
   height: 50px;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
   color: white;
   align-items: center;
   display: flex;

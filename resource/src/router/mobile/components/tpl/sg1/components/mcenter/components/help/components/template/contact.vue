@@ -74,7 +74,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .title {
@@ -87,7 +87,7 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: #000000;
+    background: var(--deco_color);
     border-radius: 1px;
     margin-left: 10px;
     margin-right: 10px;
@@ -107,8 +107,7 @@ export default {
   }
 
   .cell {
-    position: relative;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
     display: flex;
     align-items: center;
     padding: 0 12px;
@@ -134,14 +133,16 @@ export default {
     }
 
     > .copy-btn {
-      color: #000000;
+      color: var(--member_color100);
       width: 120px;
       text-align: center;
       background-color: #ededed;
       border-radius: 14px;
       border: 1px solid #000000;
       > div {
-        color: #000000;
+        border-radius: 5px;
+        border: 1px solid var(--member_color100);
+        color: var(--member_color100);
         padding: 2.5px 5px;
       }
     }
@@ -162,25 +163,12 @@ export default {
   text-align: center;
 
   > div {
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
     height: 45px;
     border-radius: 23px;
     font-size: 16px;
     line-height: 45px;
-    background: #000000;
-  }
-}
-
-.left-line {
-  border-left: 1px solid #eeeeee;
-  padding: 0 20px;
-
-  > div:first-child {
-    font-size: 14px;
-  }
-
-  > div:last-child {
-    font-size: 12px;
+    background: var(--mcenter_button_color1);
   }
 }
 </style>

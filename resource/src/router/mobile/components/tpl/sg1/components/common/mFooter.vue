@@ -144,7 +144,7 @@ export default {
   bottom: 0;
   width: 100%;
   min-height: 66px;
-  z-index: 5;
+  z-index: 50;
 
   background: -webkit-linear-gradient(bottom, #ffffff, #f0f0f0);
   background: -o-linear-gradient(bottom, #ffffff, #f0f0f0);

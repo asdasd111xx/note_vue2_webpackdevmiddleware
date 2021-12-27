@@ -616,7 +616,7 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            console.log(response);
+            // console.log(response);
             this.userBankOption = [];
             this.userBankOption = response.data.ret;
             this.defaultEpointWallet = this.userBankOption[0];

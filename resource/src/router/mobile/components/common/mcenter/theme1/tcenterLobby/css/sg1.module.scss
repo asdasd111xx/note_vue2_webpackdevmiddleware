@@ -30,14 +30,15 @@
 }
 
 .title-commission {
-  border-color: #f9e8b4;
-  color: #f9e8b4;
+  border: 1px solid #ffafbe;
+  color: #ffafbe;
+  background: transparent;
 }
 
 .regist-data {
   .all-regist-title {
     .regist-title-bar {
-      background: #000;
+      background: linear-gradient(to top, #e61938, #fe593c);
     }
   }
 }
@@ -47,7 +48,7 @@
     .topday-content {
       .title-point {
         &.deposit {
-          background-color: #000;
+          background-color: #e61938;
         }
 
         &.withdraw {
@@ -62,7 +63,7 @@
       background-color: #ffd68a;
 
       .person-bar {
-        background-color: #000;
+        background-color: #e61938;
       }
     }
   }

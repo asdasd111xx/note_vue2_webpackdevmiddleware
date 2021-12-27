@@ -112,8 +112,8 @@
       height: 18px;
       background: linear-gradient(
         to top,
-        $share_member_text_color1,
-        $share_member_text_color12
+        var(--mcenter_main_color),
+        var(--mcenter_secondary_color)
       );
       border-radius: 1px;
       margin-left: 5px;
@@ -176,7 +176,7 @@
         margin: 5px 5px 0 0;
 
         &.deposit {
-          background-color: $share_member_text_color1;
+          background-color: #d1b79c;
         }
 
         &.withdraw {
@@ -209,7 +209,7 @@
         height: 10px;
         width: 100px;
         border-radius: 7px;
-        background-color: $share_member_text_color1;
+        background-color: #d1b79c;
 
         &.isZero {
           background-color: #ededed;

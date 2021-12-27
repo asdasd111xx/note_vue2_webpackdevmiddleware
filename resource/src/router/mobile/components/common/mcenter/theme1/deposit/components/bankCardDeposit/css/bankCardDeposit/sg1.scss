@@ -9,59 +9,63 @@
 }
 
 .pay-button {
-  background: #000;
   border-radius: 23px;
-  &.disabled {
-    opacity: 0.1;
+  background: var(--mcenter_button_color1);
+}
+
+.message-close {
+  color: var(--member_color100);
+}
+
+.entry-message-confirm {
+  color: var(--member_color100);
+}
+.select-active {
+  color: var(--member_color100);
+}
+
+.pop-title {
+  span {
+    color: var(--member_color100);
   }
 }
 
 .pay-mode-item {
   &.is-current {
-    border: 1.5px solid #e53266;
-    color: #e53266;
-    background: linear-gradient(-45deg, #e53266 10px, hsla(0, 0%, 100%, 0) 0);
+    border: 1px solid var(--wallet_border_color);
+    color: var(--wallet_border_color);
+    background: linear-gradient(
+      -45deg,
+      var(--wallet_border_color) 10px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
-}
-
-.current-data {
-  background-color: #fff;
-  color: #e53266;
-  border: 1.5px solid #e53266;
-  background: linear-gradient(-45deg, #e53266 12px, hsla(0, 0%, 100%, 0) 0);
 }
 
 .pay-money-item {
   &.is-current {
-    background-color: #fff;
-    color: #e53266;
-    border: 1px solid #e53266;
-    background: linear-gradient(-45deg, #e53266 12px, hsla(0, 0%, 100%, 0) 0);
+    color: var(--wallet_border_color);
+    border: 1px solid var(--wallet_border_color);
+    background: linear-gradient(
+      -45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 }
 
-.message-close {
-  color: #000;
-}
-
-.entry-message-confirm {
-  color: #000;
+.current-data {
+  color: var(--wallet_border_color);
+  border: 1px solid var(--wallet_border_color);
+  background: linear-gradient(
+    -45deg,
+    var(--wallet_border_color) 12px,
+    hsla(0, 0%, 100%, 0) 0
+  );
 }
 
 .feature-tip-title {
-  color: #cbced8;
-
   &.success {
-    color: #000;
+    color: var(--wallet_border_color);
   }
-}
-
-.pop-title {
-  span {
-    color: #000;
-  }
-}
-
-.select-active {
-  color: #e53266;
 }

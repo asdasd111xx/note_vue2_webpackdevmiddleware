@@ -24,7 +24,7 @@
       }
 
       &.is-current {
-        color: var(--main_color100);
+        color: var(--member_color100);
       }
     }
 
@@ -53,16 +53,16 @@
 
       &.disable {
         color: #ffffff;
-        background: #ababab;
+        background: var(--mcenter_button_color2);
       }
     }
 
     .rebate-btn {
       a {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
 
         &.disable {
-          background: var(--member_gradient_color2);
+          background: var(--mcenter_button_color2);
         }
       }
       button {
@@ -80,10 +80,10 @@
 
 .real-top-wrap {
   .real-top-btn {
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
 
     &.disable {
-      background: var(--member_gradient_color2);
+      background: var(--mcenter_button_color2);
     }
 
     .calculate-button {
@@ -95,10 +95,10 @@
 }
 
 .receive-vip-btn {
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.is-disabled {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
   }
 }
 
@@ -108,6 +108,6 @@
 
 .popup {
   .close {
-    color: var(--member_gradient_color1);
+    color: var(--mcenter_button_color1);
   }
 }

@@ -22,12 +22,12 @@
 
         &.close {
           background: #f8f8f7;
-          color: $share_member_text_color4;
+          color: var(--member_color100);
         }
 
         &.confirm {
           background: #f8f8f7;
-          color: $share_member_text_color4;
+          color: var(--member_color100);
           border-left: 1px solid #eeeeee;
         }
       }
@@ -130,8 +130,8 @@
 }
 
 .tips-close {
-  color: $share_member_text_color4;
-  border-top: 1px solid $share_member_text_color6;
+  color: #6aaaf5;
+  border-top: 1px solid #eeeeee;
   text-align: center;
   margin: auto;
   margin-top: 26px;

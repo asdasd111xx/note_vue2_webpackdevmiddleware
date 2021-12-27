@@ -208,11 +208,11 @@ export default {
 @import "~@/css/variable.scss";
 
 .iframe-wrap {
-  height: 100vh;
+  height: 99vh;
   width: 100%;
   background-color: #fff;
   transition: margin 0.31s, height 0.31s;
-
+  padding-bottom: 1px;
   &.fullScreen {
     margin-top: unset !important;
     height: 100vh !important;

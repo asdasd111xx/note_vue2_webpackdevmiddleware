@@ -137,7 +137,7 @@ export default {
   position: relative;
   height: 45px;
   line-height: 59px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   display: inline-flex;
   align-items: center;
   width: 100%;

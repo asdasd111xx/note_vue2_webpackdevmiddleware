@@ -252,7 +252,7 @@ export default {
     }
   },
   created() {
-    this.getTitle();
+    // this.getTitle();
   },
   methods: {
     formatThousandsCurrency(value) {

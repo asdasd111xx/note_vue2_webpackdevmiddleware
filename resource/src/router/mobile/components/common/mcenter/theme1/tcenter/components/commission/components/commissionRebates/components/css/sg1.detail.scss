@@ -2,12 +2,12 @@
 .process-bar-wrap {
   .process-bar-top {
     .current-num {
-      color: $main_title_color1;
+      color: var(--deco_color2);
     }
   }
   .process-bar-line {
     .process-bar-current-line {
-      background-color: $main_title_color1;
+      background-color: var(--deco_color2);
     }
   }
 }

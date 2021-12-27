@@ -1,9 +1,9 @@
 @import "./porn1.module.scss";
 
 .active-slider {
-  background: $main_title_color1;
+  background: #000000;
 }
 
 .profit_child_name::before {
-  background: $main_title_color1;
+  background: var(--deco_color2);
 }

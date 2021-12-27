@@ -18,6 +18,7 @@ import Icon from "vue-awesome/components/Icon";
 import LoadScript from "vue-plugin-load-script";
 import Loading from "vue-loading-overlay";
 import Meta from "vue-meta";
+import VeeValidate from "vee-validate";
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue";
@@ -26,7 +27,6 @@ import VueCookie from "vue-cookie";
 import VueCropper from "vue-cropper";
 import VueLazyload from "vue-lazyload";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-// swal
 import VueSwal2 from "vue-sweetalert2";
 import Vuex from "vuex";
 import depositLink from "./lib/depositLink";
@@ -150,6 +150,7 @@ Vue.use(VueClipboard);
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.use(depositLink);
 Vue.use(VueCropper);
+Vue.use(VeeValidate);
 Vue.component("icon", Icon);
 Vue.loadScript(`//g.alicdn.com/sd/ncpc/nc.js?t=${Date.now()}`);
 Vue.loadScript(`${script_cdn_host}public/js/jquery-3.3.1.min.js`).then(() => {

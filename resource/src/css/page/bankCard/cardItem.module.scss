@@ -15,7 +15,7 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     height: 130px;
     padding: 21px 16px 21px 64px;
     margin-top: -15px;
-    color: $main_white_color1;
+    color: #fefffe;
 
     &:nth-child(1) {
       margin-top: 0;
@@ -26,7 +26,7 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     height: 70px;
     padding: 15px 16px 15px 64px;
     margin-bottom: 10px;
-    color: var(--main_text_color3);
+    color: var(--slider_text_color);
   }
 
   &--bg-common-gradient {
@@ -102,7 +102,7 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     }
 
     &--color-pointer {
-      color: $main_white_color1;
+      color: #fefffe;
     }
   }
 

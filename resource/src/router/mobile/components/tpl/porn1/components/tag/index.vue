@@ -45,7 +45,7 @@
         <div :class="$style['no-data']">
           <div :class="$style['search-img']">
             <img
-              :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
+              :src="$getCdnPath('/static/image/common/ic_search_grey.png')"
               alt="search"
             />
           </div>
@@ -218,13 +218,13 @@ export default {
   width: 100%;
   height: 43px;
   line-height: 43px;
-  color: $main_discover_color1;
-  background-color: $main_white_color1;
+  color: #bf8646;
+  background-color: #fefffe;
   font-size: 12px;
   text-align: center;
 
-  border-top: solid 1px $main_background_white1;
-  border-bottom: solid 1px $main_background_white1;
+  border-top: solid 1px #f8f8f8;
+  border-bottom: solid 1px #f8f8f8;
 }
 
 .video {
@@ -274,7 +274,7 @@ export default {
   overflow: hidden;
   height: 17px;
   line-height: 17px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   font-size: 13px;
   font-weight: 400;
   text-overflow: ellipsis;
@@ -295,7 +295,7 @@ export default {
     padding: 0 10px;
     border-radius: 7px;
     background-color: #eeeeee;
-    color: var(--main_text_color2);
+    color: #ffffff;
     font-size: 12px;
   }
 }
@@ -303,7 +303,7 @@ export default {
 .views {
   display: flex;
   align-items: center;
-  color: var(--main_text_color2);
+  color: #ffffff;
   height: 13px;
   line-height: 13px;
   font-size: 10px;
@@ -319,7 +319,7 @@ export default {
   position: absolute;
   width: 100%;
   height: calc(100vh - 100px);
-  background: $main_background_white1;
+  background: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;

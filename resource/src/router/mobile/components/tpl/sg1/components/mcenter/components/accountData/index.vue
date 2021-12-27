@@ -13,7 +13,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../common/mobileContainer";
-import account from "./components/index";
+import account from "@/router/mobile/components/tpl/porn1/components/mcenter/components/accountData/components/index";
 
 export default {
   components: {
@@ -31,7 +31,7 @@ export default {
       return {
         prev: true,
         onClick: () => {
-          this.$router.push("/mobile/mcenter/memberCard");
+          this.$router.push("/mobile/mcenter/home");
         },
         title: this.$text("S_PERSON_INFO", "个人资料")
       };
@@ -45,6 +45,6 @@ export default {
 
 .content-wrap {
   height: calc(100vh - 110px);
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 </style>

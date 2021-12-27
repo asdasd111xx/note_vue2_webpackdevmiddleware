@@ -4,13 +4,12 @@
   color: #a2a2a2;
 
   &.active {
-    color: $main_title_color1;
+    color: var(--member_color100);
   }
 }
 
 .submit {
-  background: $main_title_color1;
-  border-radius: 23px;
+  background: var(--mcenter_button_color1);
   color: #fff;
 }
 
@@ -19,7 +18,7 @@
     .data-content {
       .title {
         &::before {
-          background-color: $main_title_color1;
+          background-color: #e61938;
         }
       }
     }
@@ -28,6 +27,6 @@
 
 .link {
   &.active {
-    color: $main_title_color1;
+    color: #000000;
   }
 }

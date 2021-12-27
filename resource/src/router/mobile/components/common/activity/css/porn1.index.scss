@@ -158,44 +158,16 @@
     padding: 0;
     outline: none;
     font-size: 12px;
-    background: none;
+    background: var(--square_background_color);
+    color: var(--square_text_color);
+    border: 1px solid var(--square_border_color);
+    border-radius: 3px;
 
-    &.porn1 {
-      color: #bf8646;
-      border: 1px solid #d5bea4;
-      border-radius: 3px;
-
-      &:active,
-      &.is-current {
-        background: #bd9d7d;
-        background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-        background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
-        color: #fff;
-      }
-    }
-
-    &.ey1 {
-      border: 1px solid #cccccc;
-      color: #cccccc;
-      border-radius: 5px;
-
-      &:active,
-      &.is-current {
-        background: #e42a30;
-        color: #fff;
-      }
-    }
-
-    &.sg1 {
-      border: 1px solid #cccccc;
-      color: #cccccc;
-      border-radius: 5px;
-
-      &:active,
-      &.is-current {
-        background: linear-gradient(#fe593c, #e61938);
-        color: #fff;
-      }
+    &:active,
+    &.is-current {
+      background: var(--square_background_active_color);
+      color: var(--square_text_active_color);
+      border: 1px solid var(--square_border_active_color);
     }
   }
 }

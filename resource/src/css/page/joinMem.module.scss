@@ -2,7 +2,7 @@
 
 .err-msg {
   padding: 2px 0;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -210,6 +210,13 @@
 
   &.active {
     background: #6aaaf5;
+    color: #fff;
+  }
+
+  &.sg1 {
+    &.active {
+      background: var(--mcenter_button_color1);
+    }
   }
 
   &.sg1 {
@@ -282,12 +289,12 @@
   &.sg1 {
     .mail-wrap {
       button.get-verify {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
       }
     }
     .phonenum-wrap {
       button.get-verify {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
       }
     }
     button {
@@ -740,21 +747,19 @@
   font-size: 17px;
 }
 
-.visitor-get-sg {
-  margin-top: 5px;
-  color: #000;
-  width: 100%;
-  text-align: center;
-  font-weight: 500;
-  font-size: 17px;
-}
-
 .has-visitor {
   color: #5e626d;
   margin-top: 40px;
   width: 100%;
   text-align: center;
   font-weight: 500;
+
+  a {
+    color: #5e626d;
+    span {
+      color: blue;
+    }
+  }
 }
 
 :global {
@@ -860,7 +865,11 @@
   font-size: 18px;
 
   &:last-child {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
+  }
+
+  &.sg1:last-child {
+    color: var(--member_color100);
   }
 
   &.sg1:last-child {
@@ -872,6 +881,21 @@
   }
 
   &.porn1:last-child {
-    color: $share_member_text_color4;
+    color: var(--member_color100);
+  }
+}
+
+.thirdy-block-wrap {
+  width: 100%;
+  margin: 0 6px;
+  text-align: right;
+
+  &.aobo1 {
+    margin: auto;
+
+    .thirdy-block {
+      width: 100%;
+      margin: auto;
+    }
   }
 }

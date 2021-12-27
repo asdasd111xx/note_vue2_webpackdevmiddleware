@@ -35,7 +35,7 @@
             $getCdnPath(
               `/static/image/_new/common/icon_more${
                 isShowAllTag ? '_close' : ''
-              }.png`
+              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
             )
           "
         />
@@ -45,7 +45,7 @@
             $getCdnPath(
               `/static/image/_new/common/icon_more${
                 isShowAllTag ? '_close_w' : '_w'
-              }.png`
+              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
             )
           "
         />
@@ -79,7 +79,13 @@
         :class="$style['video-cell']"
       >
         <div v-if="videoData.list" :class="[$style['video-type'], 'clearfix']">
-          <div :class="[$style['type-name'], $style[source]]">
+          <div
+            :class="[
+              $style['type-name'],
+              $style[source],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             {{ videoData.name }}
           </div>
           <div
@@ -468,7 +474,7 @@ export default {
   //display: flex;
   transition-property: transform;
   overflow-x: auto;
-  background: $main_white_color1;
+  background: #fefffe;
 
   &.gay {
     background: #3e81ac;
@@ -496,11 +502,11 @@ export default {
   // transition-property: transform;
   width: auto;
   line-height: 42px;
-  color: #bcbdc1;
+  color: var(--slider_text_color);
 
   // 亞博點擊的文字color
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 
   &.gay {
@@ -536,11 +542,11 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: $share_member_text_color4;
+    background-color: var(--slider_underline_active_color);
   }
 
   &.av.active .line {
-    background-color: $share_member_text_color4;
+    background-color: var(--member_color100);
   }
 }
 
@@ -589,9 +595,9 @@ export default {
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid #d5bea4;
+    border: 1px solid var(--slider_underline_active_color);
     border-radius: 5px;
-    color: #d5bea4;
+    color: var(--slider_underline_active_color);
     font-size: 14px;
     text-align: center;
 
@@ -617,7 +623,7 @@ export default {
 .video-list-wrap {
   overflow-y: auto;
   padding: 0 17px;
-  background: $main_background_white1;
+  background: #f8f8f8;
   padding-top: 43px;
   height: calc(100vh - 50px);
 }
@@ -635,11 +641,16 @@ export default {
   height: 20px;
   line-height: 20px;
   padding-left: 20px;
-  background: url("/static/image/_new/common/icon_item.png") 0 50% no-repeat;
+  background: url("/static/image/common/icon_item.png") 0 50% no-repeat;
   background-size: 15px 15px;
-  color: $share_member_text_color4;
+  color: var(--main_color);
   font-weight: 700;
   font-size: 12px;
+
+  &.porn1 {
+    background: url("/static/image/common/icon_item_b.png") 0 50% no-repeat;
+    background-size: 15px 15px;
+  }
 
   &.gay {
     color: #333;
@@ -657,10 +668,11 @@ export default {
   height: 20px;
   line-height: 20px;
   border-radius: 3px;
-  color: #fff;
+  color: var(--main_button_text_color1);
   font-size: 12px;
   text-align: center;
-  background: $share_main_button_color2;
+  background: var(--main_button_color1);
+
   &.gay {
     background: #4a8cb8;
   }
