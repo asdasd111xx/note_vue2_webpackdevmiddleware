@@ -58,6 +58,75 @@
   --visitor_money_color: #ffffff;
 
   /***--- 會員中心 ----***/
+  //底色(固定顏色)
+  --mcenter_color: #f8f8f7;
+  --mcenter_border_color: #c9c9c9; //內邊框
+
+  //主色(客製顏色)
+  --mcenter_main_color: #bf8646; //主色
+  --mcenter_border_color: #bf8646; //內邊框
+  --mcenter_secondary_color: #f9ddbd; //輔色
+  --mcenter_secondary_border_color: #f9ddbd; //內邊框
+
+  //按鈕主色
+  --mcenter_button_color1: linear-gradient(to left, #fe593c 0%, #e61938 100%);
+  --mcenter_button_text_color1: #ffffff;
+  --mcenter_button_color2: linear-gradient(to left, #fed3cb 0%, #ffc5ce 100%);
+  --mcenter_button_text_color2: #ffffff;
+
+  //第二層選單【主色】
+  --mcenter_slider_text_color: #a5a9b3;
+  --mcenter_slider_text_active_color: #414655;
+  --mcenter_slider_underline_active_color: #e61938;
+
+  //第三層選單【主色】
+  --mcenter_text_color: #a6a9b2;
+  --mcenter_text_active_color: #bf8646;
+
+  //下拉選單【主色】
+  //>今日~自定义
+  --mcenter_dropdown_text_color: #a6a9b2;
+  --mcenter_dropdown_background_color: #ffffff;
+  --mcenter_dropdown_border_color: #eeeeee;
+  --mcenter_dropdown_text_active_color: #ffffff;
+  --mcenter_dropdown_background_active_color: linear-gradient(
+    to left,
+    #fe593c 0%,
+    #e61938
+  );
+  --mcenter_dropdown_bordert_active_color: #ffffff;
+  //>取消 確定
+  --mcenter_dropdown_ok_text_color: var(--mcenter_button_text_color1);
+  --mcenter_dropdown_ok_background_color: linear-gradient(
+    90deg,
+    #e61938,
+    #fe593c
+  );
+  --mcenter_dropdown_cancel_text_color: var(--mcenter_button_text_color2);
+  --mcenter_dropdown_cancel_background_color: #a2a2a2;
+
+  //邀請好友獲得現金獎勵
+  --mcenter_invite_background_color: #f2e2d1;
+  --mcenter_invite_text_color: #414655;
+
+  //我的推廣（文字配色設定）
+  //>领取/详情： 底色【輔色】
+  --tcenter_color: #ffd68a;
+  //>標題文字-左
+  --tcenter_left_title_color: #f8e1a1;
+  //標題文字-右
+  --tcenter_right_title_color: #fff;
+
+  //我的推廣-進度調【主色】
+  --tcenter_progress_color: #e61938;
+  --tcenter_progress_color2: #ffd68a;
+
+  //VIP特权
+  //>当前充值(元)
+  --vip_text_color1: #bf8646;
+  //>數字0.00
+  --vip_text_color2: #333333;
+
   --member_color1: #bf8646;
   --member_color2: #f9ddbd;
   --member_color3: #e9dacb;

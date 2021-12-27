@@ -58,6 +58,67 @@
   --visitor_money_color: #fb7126;
 
   /***--- 會員中心 ----***/
+  //底色(固定顏色)
+  --mcenter_color: #f8f8f7;
+  --mcenter_border_color: #c9c9c9; //內邊框
+
+  //主色(客製顏色)
+  --mcenter_main_color: #3354ad; //主色
+  --mcenter_border_color: #3354ad; //內邊框
+  --mcenter_secondary_color: #adbade; //輔色
+  --mcenter_secondary_border_color: #adbade; //內邊框
+
+  //按鈕主色
+  --mcenter_button_color1: linear-gradient(to left, #3354ad 0%, #3354ad 100%);
+  --mcenter_button_text_color1: #ffffff;
+  --mcenter_button_color2: linear-gradient(to left, #cad4f0 0%, #cad4f0 100%);
+  --mcenter_button_text_color2: #ffffff;
+
+  //第二層選單【主色】
+  --mcenter_slider_text_color: #a6a9b2;
+  --mcenter_slider_text_active_color: #5e626d;
+  --mcenter_slider_underline_active_color: #3354ad;
+
+  //第三層選單【主色】
+  --mcenter_text_color: #a6a9b2;
+  --mcenter_text_active_color: #3354ad;
+
+  //下拉選單【主色】
+  //>今日~自定义
+  --mcenter_dropdown_text_color: #a6a9b2;
+  --mcenter_dropdown_background_color: #ffffff;
+  --mcenter_dropdown_border_color: #eeeeee;
+  --mcenter_dropdown_text_active_color: #ffffff;
+  --mcenter_dropdown_background_active_color: #3354ad;
+  --mcenter_dropdown_bordert_active_color: #eeeeee;
+  //>取消 確定
+  --mcenter_dropdown_ok_text_color: var(--mcenter_button_text_color1);
+  --mcenter_dropdown_ok_background_color: var(--mcenter_button_color1);
+  --mcenter_dropdown_cancel_text_color: var(--mcenter_button_text_color2);
+  --mcenter_dropdown_cancel_background_color: var(--mcenter_button_color2);
+
+  //邀請好友獲得現金獎勵
+  --mcenter_invite_background_color: #3676d5;
+  --mcenter_invite_text_color: #ffffff;
+
+  //我的推廣（文字配色設定）
+  //>领取/详情： 底色【輔色】
+  --tcenter_color: #adbade;
+  //>標題文字-左
+  --tcenter_left_title_color: #becefd;
+  //標題文字-右
+  --tcenter_right_title_color: #f5f8fd;
+
+  //我的推廣-進度調【主色】
+  --tcenter_progress_color1: #3354ad;
+  --tcenter_progress_color2: #636f93;
+
+  //VIP特权
+  //>当前充值(元)
+  --vip_text_color1: #7086ce;
+  //>數字0.00
+  --vip_text_color2: #414655;
+
   --member_color1: #3354ad;
   --member_color2: #3354ad;
   --member_color3: #adbade;
