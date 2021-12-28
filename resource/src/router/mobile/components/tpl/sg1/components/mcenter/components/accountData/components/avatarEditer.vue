@@ -185,6 +185,17 @@ export default {
                     localStorage.setItem("tmp-avatar-img", base64data);
                   };
 
+                  this.actionGetExtRedirect({
+                    api_uri: "/api/platform/v1/user/head-photo",
+                    method: "put",
+                    data: {
+                      head_photo_id: 0,
+                      custom_image_route: res.data.ret.custom_image.split(
+                        "/"
+                      )[4]
+                    }
+                  }).then(res => {});
+
                   this.actionSetGlobalMessage({
                     msg: "上传成功",
                     cb: () => {

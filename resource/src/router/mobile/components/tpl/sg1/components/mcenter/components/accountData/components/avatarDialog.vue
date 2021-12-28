@@ -9,11 +9,11 @@
         >
           <div :class="$style['avatar-cell']">
             <img
-              :class="[{ [$style['active']]: currentImgID === index }]"
-              :src="$getCdnPath(item.url)"
-              @click="selectImg(index)"
+              :class="[{ [$style['active']]: currentImgID === item.image_id }]"
+              :src="item.link"
+              @click="selectImg(item)"
             />
-            <div v-if="currentImgID === index" :class="$style.check" />
+            <div v-if="currentImgID === item.image_id" :class="$style.check" />
           </div>
         </div>
 
@@ -45,7 +45,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import goLangApiRequest from "@/api/goLangApiRequest";
 import avatarEditer from "./avatarEditer";
 
 export default {
@@ -67,20 +66,20 @@ export default {
       currentImgID: 999,
       isShowAvatarEditer: false,
       defaultAvatarList: [
-        { url: "/static/image/common/mcenter/default/avatar_0.png" },
-        { url: "/static/image/common/mcenter/default/avatar_1.png" },
-        { url: "/static/image/common/mcenter/default/avatar_2.png" },
-        { url: "/static/image/common/mcenter/default/avatar_3.png" },
-        { url: "/static/image/common/mcenter/default/avatar_4.png" },
-        { url: "/static/image/common/mcenter/default/avatar_5.png" },
-        { url: "/static/image/common/mcenter/default/avatar_6.png" },
-        { url: "/static/image/common/mcenter/default/avatar_7.png" },
-        { url: "/static/image/common/mcenter/default/avatar_8.png" },
-        { url: "/static/image/common/mcenter/default/avatar_9.png" },
-        { url: "/static/image/common/mcenter/default/avatar_10.png" },
-        { url: "/static/image/common/mcenter/default/avatar_11.png" },
-        { url: "/static/image/common/mcenter/default/avatar_12.png" },
-        { url: "/static/image/common/mcenter/default/avatar_13.png" }
+        // { url: "/static/image/common/mcenter/default/avatar_0.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_1.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_2.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_3.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_4.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_5.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_6.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_7.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_8.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_9.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_10.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_11.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_12.png" },
+        // { url: "/static/image/common/mcenter/default/avatar_13.png" }
       ],
       isPageLoading: false
     };
@@ -92,12 +91,14 @@ export default {
     })
   },
   mounted() {
-    // 是否自訂上傳頭像
-    // 八張預設圖
-    this.actionSetUserdata(true).then(() => {
-      this.currentImgID = this.memInfo.user.custom
-        ? "999"
-        : this.memInfo.user.image;
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/head-photo/preset-list",
+      method: "get"
+    }).then(res => {
+      if (res && res.result && res.result.data) {
+        this.currentImgID = res.result.use;
+        this.defaultAvatarList = res.result.data;
+      }
     });
   },
   methods: {
@@ -128,8 +129,8 @@ export default {
         this.$refs["cameraInput"].value = null;
       });
     },
-    saveAvatar(index) {
-      if (this.memInfo.user.image === this.imgID) {
+    saveAvatar(item) {
+      if (this.currentImgID === item.image_id) {
         this.onClose();
         return;
       }
@@ -141,32 +142,41 @@ export default {
         method: "put",
         data: {
           image_file: "",
-          head_photo_id: index
-        }
-      });
-
-      goLangApiRequest({
-        method: "put",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player`,
-        params: {
-          image: index,
-          custom: false
+          head_photo_id: item.image_id
         }
       }).then(res => {
-        if (res && res.data && res.status === "000") {
-          this.onClose(index);
+        if (res && !res.error_text) {
+          this.onClose(item.image_id);
           setTimeout(() => {
             this.isPageLoading = false;
           }, 500);
         } else {
-          this.actionSetGlobalMessage({ msg: res.data.msg });
+          this.actionSetGlobalMessage({ msg: res.error_text });
           this.isPageLoading = false;
         }
       });
+
+      // goLangApiRequest({
+      //   method: "put",
+      //   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player`,
+      //   params: {
+      //     image: index,
+      //     custom: false
+      //   }
+      // }).then(res => {
+      //   if (res && res.data && res.status === "000") {
+      //     this.onClose(index);
+      //     setTimeout(() => {
+      //       this.isPageLoading = false;
+      //     }, 500);
+      //   } else {
+      //     this.actionSetGlobalMessage({ msg: res.data.msg });
+      //     this.isPageLoading = false;
+      //   }
+      // });
     },
-    selectImg(index) {
-      this.currentImgID = index;
-      this.saveAvatar(index);
+    selectImg(item) {
+      this.saveAvatar(item);
     },
     handleCloseEditer(isDone) {
       this.actionSetUserdata(true);

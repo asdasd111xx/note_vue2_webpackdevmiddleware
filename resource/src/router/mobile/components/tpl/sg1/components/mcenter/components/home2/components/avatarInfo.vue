@@ -145,43 +145,55 @@ export default {
       } else {
         return;
       }
-    },
-    siteAvatar() {
-      if (memInfo) {
-        return $getCdnPath(
-          `/static/image/common/mcenter/default/avatar_${memInfo.user.image}.png`
-        );
-      } else {
-        return $getCdnPath(`/static/image/common/default/avatar_nologin.png`);
-      }
     }
   },
   created() {
-    if (this.memInfo && this.memInfo.user && this.memInfo.custom_image) {
-      setTimeout(() => {
-        axios({
-          method: "get",
-          url: this.memInfo.user.custom_image
-        })
-          .then(res => {
-            if (res && res.data) {
-              this.avatarSrc = res.data.ret;
-            }
-          })
-          .catch(error => {
-            this.actionSetGlobalMessage({ msg: error.response.data.msg });
-          });
-      }, 500);
-    }
+    this.getAvatarSrc();
   },
   methods: {
-    ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetGlobalMessage",
+      "actionGetExtRedirect"
+    ]),
+    getAvatarSrc() {
+      // 是否自訂上傳頭像
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/front-page",
+        method: "get"
+      }).then(data => {
+        if (data && data.result && data.result.head_photo) {
+          this.avatarSrc = data.result.head_photo;
+        }
+      });
+
+      if (this.avatarSrc) {
+        return;
+      }
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/head-photo/preset-list",
+        method: "get"
+      }).then(res => {
+        if (res && res.result && res.result.data) {
+          let currentImgID = res.result.use;
+          let defaultAvatarList = res.result.data;
+          if (currentImgID && defaultAvatarList) {
+            this.avatarSrc = defaultAvatarList.find(
+              i => i.image_id === currentImgID
+            ).link;
+          }
+        }
+      });
+    },
     onListClick(target, isLive = true) {
       if (!this.loginStatus) {
         this.$router.push("/mobile/login");
         return;
       }
+
       sendUmeng(25);
+
       if (isLive) {
         this.$router.push(`/mobile/live/iframe/${target}`);
       } else {

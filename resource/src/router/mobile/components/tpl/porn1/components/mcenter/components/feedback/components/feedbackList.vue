@@ -117,13 +117,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import mcenter from "@/api/mcenter";
 import ajax from "@/lib/ajax";
 import { API_FEEDBACK_REPLIED_LIST } from "@/config/api";
 import EST from "@/lib/EST";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   filters: {
@@ -190,6 +190,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["actionGetExtRedirect"]),
     getShortConetent(content) {
       return content.replace(/<?\/?br ?\/?>/g, "\n");
     },
@@ -269,6 +270,38 @@ export default {
     },
     getAvatarSrc() {
       if (!this.loginStatus) return;
+
+      if (this.siteConfig.ROUTER_TPL === "sg1") {
+        // 是否自訂上傳頭像
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/front-page",
+          method: "get"
+        }).then(data => {
+          if (data && data.result && data.result.head_photo) {
+            this.avatarSrc = data.result.head_photo;
+          }
+        });
+
+        if (this.avatarSrc) {
+          return;
+        }
+
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/head-photo/preset-list",
+          method: "get"
+        }).then(res => {
+          if (res && res.result && res.result.data) {
+            let currentImgID = res.result.use;
+            let defaultAvatarList = res.result.data;
+            if (currentImgID && defaultAvatarList) {
+              this.avatarSrc = defaultAvatarList.find(
+                i => i.image_id === currentImgID
+              ).link;
+            }
+          }
+        });
+        return;
+      }
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {

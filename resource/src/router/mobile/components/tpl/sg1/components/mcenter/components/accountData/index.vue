@@ -13,7 +13,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../../common/mobileContainer";
-import account from "@/router/mobile/components/tpl/porn1/components/mcenter/components/accountData/components/index";
+import account from "./components/index";
 
 export default {
   components: {
