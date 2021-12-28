@@ -60,20 +60,6 @@
         v-if="$route.query.depth && !$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
-        <div
-          v-if="friendNameList !== undefined && friendNameList.length > 0"
-          :class="$style['friend-wrap']"
-        >
-          <div>
-            <card-total :data="friendBet" />
-          </div>
-          <div :class="$style['card-item-wrap']">
-            <card-item
-              :card-item-list="friendNameList"
-              @click-card="enterNextLayer"
-            />
-          </div>
-        </div>
         <!-- 盈虧返利Page2 好友名單列表 -->
         <div
           v-if="
@@ -92,6 +78,22 @@
             />
           </div>
         </div>
+        <!-- line -->
+        <div
+          v-if="friendNameList !== undefined && friendNameList.length > 0"
+          :class="$style['friend-wrap']"
+        >
+          <div>
+            <card-total :data="friendBet" />
+          </div>
+          <div :class="$style['card-item-wrap']">
+            <card-item
+              :card-item-list="friendNameList"
+              @click-card="enterNextLayer"
+            />
+          </div>
+        </div>
+
         <div v-else :class="$style['no-data']">
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
@@ -99,12 +101,42 @@
           <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
       </div>
-
+      <!-- page3 -->
       <div
         v-if="$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
-        <div :class="$style['friend-wrap']">
+        <!-- 盈虧返利Page3 遊戲列表 -->
+        <div
+          v-if="
+            rebatefriendGameCategory !== undefined &&
+              rebatefriendGameCategory.length > 0
+          "
+          :class="$style['friend-wrap']"
+        >
+          <div>
+            <card-total :data="rebatefriendGameBet" />
+            <span :class="$style['rebate-rate']" @click="toggleSerial"
+              >返利比例</span
+            >
+          </div>
+          <div
+            v-if="
+              rebatefriendGameCategory !== undefined &&
+                rebatefriendGameCategory.length > 0
+            "
+            :class="$style['card-item-wrap']"
+          >
+            <card-item :card-item-list="rebatefriendGameCategory" />
+          </div>
+        </div>
+        <!-- line -->
+        <div
+          v-if="
+            friendGameCategory !== undefined && friendGameCategory.length > 0
+          "
+          :class="$style['friend-wrap']"
+        >
           <div>
             <card-total :data="friendGameBet" />
             <span :class="$style['rebate-rate']" @click="toggleSerial"
@@ -171,15 +203,19 @@ export default {
 
       page: 1,
       isSerial: false,
-      resultFriend: [],
-      friendMemberList: [],
+      //盈虧返利Page1
       levelTrans: {
         1: "S_FIRST_LEVEL_FRIEND",
         2: "S_SECOND_LEVEL_FRIEND",
         3: "S_THIRD_LEVEL_FRIEND",
         4: "S_FOURTH_LEVEL_FRIEND",
         5: "S_FIFTH_LEVEL_FRIEND"
-      }
+      },
+      resultFriend: [],
+      //盈虧返利Page2
+      friendMemberList: [],
+      //盈虧返利Page3
+      rebatefriendGameList: []
     };
   },
 
@@ -213,6 +249,7 @@ export default {
           this.setHeaderTitle(item.user);
           this.setTabState(false);
           this.getUserGameList();
+          this.getLayerFriendGame();
           this.getFriendGameRateList();
         }
       },
@@ -335,6 +372,62 @@ export default {
           },
           isClick: true,
           img: true,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.current_valid_bet),
+              show: true
+            },
+            {
+              name: "损益",
+              item: this.formatThousandsCurrency(info.current_profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            }
+          ]
+        };
+      });
+      return data;
+    },
+    //盈虧返利page3 上方標題
+    rebatefriendGameBet() {
+      let strArr = [
+        {
+          name: "总有效投注：",
+          item:
+            this.rebatefriendGameList?.total?.current_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.rebatefriendGameList.total.current_valid_bet
+                )
+              : "--"
+        },
+        {
+          name: "总损益：",
+          item: this.rebatefriendGameList?.total?.current_profit
+            ? this.rebatefriendGameList?.total?.current_profit != 0
+              ? this.formatThousandsCurrency(
+                  this.rebatefriendGameList.total.current_profit
+                )
+              : "--"
+            : "--",
+          color: this.rebatefriendGameList?.total?.current_profit
+            ? this.rebatefriendGameList?.total?.current_profit != 0
+              ? this.chooseColor(this.rebatefriendGameList.total.current_profit)
+              : "--"
+            : "--"
+        },
+        {
+          name: "笔数：",
+          item: this.rebatefriendGameList?.pagination?.total ?? "0"
+        }
+      ];
+      return strArr;
+    },
+    //盈虧返利page3 好友投注遊戲類別
+    rebatefriendGameCategory() {
+      let data = this.rebatefriendGameList?.ret?.map(info => {
+        return {
+          title: info.alias,
           list: [
             {
               name: "有效投注",
@@ -657,6 +750,27 @@ export default {
           }
         });
     },
+    //盈虧返利Page3 取得返利明細特定好友級數各會員平台貢獻明細
+    getLayerFriendGame() {
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/vendor_detail",
+          method: "get",
+          user_id: this.$route.query.userId,
+          id: this.$route.query.detailId
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //該好友投注所有遊戲
+          this.rebatefriendGameList = res.data.return_data ?? [];
+        }
+      });
+    },
     toggleSerial() {
       this.isSerial = !this.isSerial;
     },
@@ -676,7 +790,8 @@ export default {
           memberId: this.memberId,
           depth: this.$route.query.depth || this.depth,
           userId: friend.userid,
-          user: friend.user
+          user: friend.user,
+          detailId: friend.id
         };
       } else if (!this.$route.query.depth) {
         //第二層
