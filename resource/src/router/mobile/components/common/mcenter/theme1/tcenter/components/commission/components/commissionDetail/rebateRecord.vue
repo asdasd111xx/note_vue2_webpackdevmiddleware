@@ -165,7 +165,7 @@
       <rebate-rate
         v-if="isSerial"
         :handle-close="toggleSerial"
-        :game-rate-result="gameRateResult"
+        :game-rate-result="rebategameRateResult || gameRateResult"
       />
     </template>
   </div>
@@ -223,7 +223,10 @@ export default {
       //盈虧返利Page2
       friendMemberList: [],
       //盈虧返利Page3
-      rebatefriendGameList: []
+      rebatefriendGameList: [],
+      //盈虧返利Page3-1 返利比例
+      rebatefriendGameRateList: [],
+      rebategameRateResult: []
     };
   },
 
@@ -242,6 +245,7 @@ export default {
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
+            //盈虧返利page1
             this.getLayerDetail();
             return;
           }
@@ -251,6 +255,7 @@ export default {
           this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
           this.setTabState(false);
           this.getRebateFriends();
+          //盈虧返利page2
           this.getLayerFriends();
         } else if (item.user) {
           //page3
@@ -259,6 +264,8 @@ export default {
           this.getUserGameList();
           this.getLayerFriendGame();
           this.getFriendGameRateList();
+          //盈虧返利page3
+          this.getLayerFriendGameRate();
         }
       },
       deep: true,
@@ -776,6 +783,52 @@ export default {
         if (res && res.status === "000") {
           //該好友投注所有遊戲
           this.rebatefriendGameList = res.data.return_data ?? [];
+        }
+      });
+    },
+    //盈虧返利Page3-1 取得返利明細特定階層各平台分潤比率
+    getLayerFriendGameRate() {
+      let paramData = {
+        period: this.$route.query.period,
+        user_id: this.memInfo.user.id,
+        depth: this.$route.query.depth || this.depth
+      };
+
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/rate",
+          method: "get",
+          ...paramData
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //返利比例
+          this.rebategameRateResult = [];
+          this.rebatefriendGameRateList = res.data.return_data.ret ?? [];
+
+          const name = {
+            1: "体育",
+            2: "视讯",
+            3: "电子",
+            4: "彩票",
+            5: "棋牌",
+            6: "麻将"
+          };
+
+          //存放類別代號
+          let categoryNum = Object.keys(this.rebatefriendGameRateList);
+
+          for (let i = 1; i <= categoryNum.length; i++) {
+            this.rebategameRateResult.push({
+              title: name[i],
+              item: this.rebatefriendGameRateList[i - 1].details
+            });
+          }
         }
       });
     },
