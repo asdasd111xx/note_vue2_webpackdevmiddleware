@@ -238,8 +238,8 @@ input {
   height: 30px;
   border-radius: 3px;
   line-height: 30px;
-  background: var(--member_color101);
-  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_send_keyring_disabled);
+  color: #fff;
   pointer-events: none;
   // 取消點擊特效
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -247,7 +247,8 @@ input {
 
   &.active {
     pointer-events: auto;
-    background: var(--member_color100);
+    color: #fff;
+    background: var(--mcenter_send_keyring);
   }
 }
 
@@ -882,8 +883,5 @@ input {
     font-size: 18px;
     font-weight: 700;
     color: #6aaaf5;
-    // &:nth-child(2) {
-    //   color: var(--member_color100);
-    // }
   }
 }

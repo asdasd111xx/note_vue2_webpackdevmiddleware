@@ -177,13 +177,13 @@
 
     > div:first-child {
       font-weight: 700;
-      color: var(--member_color100);
+      color: var(--popup_text_color3);
       background: #ffffff;
     }
 
     > div:last-child {
       font-weight: 700;
-      color: var(--member_color100);
+      color: var(--popup_text_color1);
       background: #ffffff;
     }
     > div:last-child::before {

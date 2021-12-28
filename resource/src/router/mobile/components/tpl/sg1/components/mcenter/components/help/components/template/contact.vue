@@ -133,16 +133,15 @@ export default {
     }
 
     > .copy-btn {
-      color: var(--member_color100);
       width: 120px;
       text-align: center;
       background-color: #ededed;
-      border-radius: 14px;
-      border: 1px solid #000000;
+      font-size: 12px;
+
       > div {
-        border-radius: 5px;
-        border: 1px solid var(--member_color100);
-        color: var(--member_color100);
+        border-radius: 15px;
+        border: 1px solid var(--help_contact_copy);
+        color: var(--help_contact_copy);
         padding: 2.5px 5px;
       }
     }

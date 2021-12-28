@@ -60,7 +60,8 @@
               :class="[
                 $style['balance-item-money'],
                 $style['balance-redjackpot-text'],
-                $style[siteConfig.ROUTER_TPL]
+                $style[siteConfig.ROUTER_TPL],
+                $style['money']
               ]"
             >
               {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}

@@ -22,12 +22,12 @@
 
         &.close {
           background: #f8f8f7;
-          color: var(--member_color100);
+          color: var(--popup_text_color3);
         }
 
         &.confirm {
           background: #f8f8f7;
-          color: var(--member_color100);
+          color: var(--popup_text_color1);
           border-left: 1px solid #eeeeee;
         }
       }

@@ -248,10 +248,7 @@
         </div>
 
         <div
-          :class="[
-            $style['modal-button-center'],
-            $style[siteConfig.MOBILE_WEB_TPL]
-          ]"
+          :class="[$style['modal-button-center']]"
           @click="closeRedirect_url()"
         >
           确定
@@ -690,18 +687,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: var(--member_color100);
-  }
-
-  &.ey1:last-child {
-    color: #e42a30;
-  }
-
-  &.porn1:last-child {
-    color: var(--member_color100);
-  }
-  &.sg1:last-child {
-    color: var(--member_color100);
+    color: var(--send_keyring);
   }
   &.sg1:last-child {
     color: var(--member_color100);

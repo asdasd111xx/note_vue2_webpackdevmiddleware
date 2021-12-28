@@ -29,7 +29,7 @@
     color: var(--mcenter_slider_text_active_color);
 
     span {
-      border-bottom: 2px solid var(--member_slider);
+      border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
     }
   }
 }
@@ -112,7 +112,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--member_color100);
+  color: var(--addcard_popup_prev_text_color);
   transform: translateY(-50%);
 }
 
@@ -593,7 +593,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--member_color100);
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 
@@ -807,7 +807,7 @@
   }
 
   &.success {
-    color: var(--popup_text_color1);
+    color: var(--widthdraw_tip_text_color);
   }
 }
 
@@ -1163,15 +1163,7 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: var(--member_color100);
-
-    &.sg {
-      color: #bf8646;
-    }
-
-    &.ey {
-      color: #e42a30;
-    }
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 

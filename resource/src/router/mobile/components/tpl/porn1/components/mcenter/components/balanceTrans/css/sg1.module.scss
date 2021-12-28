@@ -40,8 +40,11 @@
 }
 
 .balance-redjackpot-text {
-  color: var(--member_color100);
   word-break: break-word;
+
+  &.money {
+    color: var(--redpot);
+  }
 }
 
 .transfer-money-input {

@@ -129,7 +129,7 @@ export default {
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
-    color: var(--member_color100);
+    color: #bd9d7d;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -23,14 +23,14 @@ $buttonTextColor: #fff;
 
 .link {
   padding-left: 20px;
-  color: var(--mcenter_slider_text_color);
+  color: var(--mcenter_text_color);
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.active {
-    color: var(--mcenter_main_color);
+    color: var(--mcenter_text_active_color);
   }
 }
 

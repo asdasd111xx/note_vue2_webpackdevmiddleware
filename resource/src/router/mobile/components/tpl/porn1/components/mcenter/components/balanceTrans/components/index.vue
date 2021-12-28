@@ -26,7 +26,8 @@
         <span
           :class="[
             $style['balance-item-money'],
-            $style['balance-redjackpot-text']
+            $style['balance-redjackpot-text'],
+            $style['money']
           ]"
         >
           {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
