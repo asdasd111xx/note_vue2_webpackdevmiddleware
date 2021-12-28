@@ -61,6 +61,7 @@
         :class="$style['card-wrap']"
       >
         <!-- 盈虧返利Page2 好友名單列表 -->
+
         <div
           v-if="
             rebatefriendNameList !== undefined &&
@@ -78,7 +79,9 @@
             />
           </div>
         </div>
+
         <!-- line -->
+
         <div
           v-if="friendNameList !== undefined && friendNameList.length > 0"
           :class="$style['friend-wrap']"
@@ -94,7 +97,12 @@
           </div>
         </div>
 
-        <div v-else :class="$style['no-data']">
+        <div
+          v-if="
+            friendNameList === undefined || rebatefriendNameList === undefined
+          "
+          :class="$style['no-data']"
+        >
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
           />
