@@ -2147,15 +2147,22 @@ export default {
       switch (true) {
         case !this.withdrawValue:
           return "--";
+        case this.offerInfo.is_full_offer:
+          return "--";
 
-        case this.selectedCard.offer_percent === "0" ||
+        case this.offerInfo.offer_percent === "0" ||
           bonusOffer <= 0 ||
           +this.actualMoney <= 0:
           return "0.00";
 
-        case bonusOffer >= this.selectedCard.offer_limit &&
-          this.selectedCard.offer_limit !== "0":
-          return `${this.selectedCard.offer_limit}`;
+        case bonusOffer >= this.offerInfo.offer_limit &&
+          this.offerInfo.offer_limit !== "0":
+          return `${this.offerInfo.offer_limit}`;
+
+        case +this.offerInfo.offer_limit > 0 &&
+        bonusOffer >
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer:
+          return +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
 
         default:
           return `${bonusOffer}`;
