@@ -20,7 +20,7 @@
         <template>
           <!-- 平台資料  -->
           <div :class="[$style['account-data-field'], 'clearfix']">
-            <span :class="$style['field-title']">帳號</span>
+            <span :class="$style['field-title']">帐号</span>
             <div :class="$style['field-value']">
               <span>
                 {{
@@ -63,14 +63,14 @@
             :class="[$style['account-data-field'], 'clearfix']"
             @click="memInfo.user.gender ? '' : (showGenderEdit = true)"
           >
-            <span :class="$style['field-title']">性別</span>
+            <span :class="$style['field-title']">性别</span>
             <div :class="$style['field-value']" v-if="!showGenderEdit">
               <span v-if="memInfo.user.gender" :class="$style['field-text']">
                 {{ memInfo.user.gender == 1 ? "男" : "女" }}</span
               >
               <template v-else>
                 <span :class="[$style['field-text'], $style['yet']]"
-                  >未選擇</span
+                  >未选择</span
                 >
                 <div :class="$style['feature-btn']">
                   <div :class="$style['btn-next']">
@@ -99,7 +99,7 @@
                     :class="$style['btn-confirm']"
                     @click="handleGenderSubmit"
                   >
-                    {{ $text("S_CONFIRM", "確認") }}
+                    {{ $text("S_CONFIRM", "确认") }}
                   </span>
                 </div>
               </div>
@@ -111,7 +111,7 @@
             :class="[$style['account-data-field'], 'clearfix']"
             @click="$router.push('/mobile/mcenter/accountData/alias')"
           >
-            <span :class="$style['field-title']">直播暱稱</span>
+            <span :class="$style['field-title']">直播昵称</span>
             <div :class="$style['field-value']">
               <span
                 v-if="paopaoMemberCardInfo.alias"
@@ -120,7 +120,7 @@
                 {{ paopaoMemberCardInfo.alias }}</span
               >
               <span v-else :class="[$style['field-text'], $style['yet']]"
-                >尚未設定</span
+                >尚未设定</span
               >
               <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
@@ -135,7 +135,7 @@
             :class="[$style['account-data-field'], 'clearfix']"
             @click="$router.push('/mobile/mcenter/accountData/intro')"
           >
-            <span :class="$style['field-title']">簽名</span>
+            <span :class="$style['field-title']">签名</span>
             <div :class="$style['field-value']">
               <span
                 v-if="paopaoMemberCardInfo.intro"
@@ -143,7 +143,7 @@
                 >{{ paopaoMemberCardInfo.intro }}</span
               >
               <span v-else :class="[$style['field-text'], $style['yet']]"
-                >TA好像忘記簽名了</span
+                >TA好像忘记签名了</span
               >
               <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
@@ -158,7 +158,7 @@
             :class="[$style['account-data-field'], 'clearfix']"
             @click="showHometownEdit = true"
           >
-            <span :class="$style['field-title']">地區</span>
+            <span :class="$style['field-title']">地区</span>
             <div :class="$style['field-value']" v-if="!showHometownEdit">
               <span
                 v-if="paopaoMemberCardInfo.hometown"
@@ -166,7 +166,7 @@
                 >{{ paopaoMemberCardInfo.hometown }}
               </span>
               <span v-else :class="[$style['field-text'], $style['yet']]"
-                >請選擇所在地區
+                >请选择所在地区
               </span>
               <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
@@ -176,8 +176,8 @@
                 </div>
               </div>
             </div>
-            <!-- 修改地區 -->
 
+            <!-- 修改地區 -->
             <template>
               <div
                 v-if="showHometownEdit"
@@ -227,7 +227,7 @@
                     :class="$style['btn-confirm']"
                     @click="handleHometownSubmit"
                   >
-                    {{ $text("S_CONFIRM", "確認") }}
+                    {{ $text("S_CONFIRM", "确认") }}
                   </span>
                 </div>
               </div>
@@ -286,7 +286,7 @@
                 >{{ paopaoMemberCardInfo.relationship }}</span
               >
               <span v-else :class="[$style['field-text'], $style['yet']]"
-                >尚未設定</span
+                >尚未设定</span
               >
               <div :class="$style['feature-btn']">
                 <div :class="$style['btn-next']">
@@ -322,7 +322,7 @@
                     :class="$style['btn-confirm']"
                     @click="handleRelationshipSubmit"
                   >
-                    {{ $text("S_CONFIRM", "確認") }}
+                    {{ $text("S_CONFIRM", "确认") }}
                   </span>
                 </div>
               </div>
@@ -331,7 +331,7 @@
 
           <!-- 平台資料  -->
           <div :class="[$style['account-data-field'], 'clearfix']">
-            <span :class="$style['field-title']">真實姓名</span>
+            <span :class="$style['field-title']">真实姓名</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.name" :class="$style['field-text']">
                 {{ memInfo.user.name }}</span
@@ -361,7 +361,9 @@
                 : $router.push('/mobile/mcenter/accountData/phone')
             "
           >
-            <span :class="$style['field-title']">手機號碼</span>
+            <span :class="$style['field-title']">{{
+              $text("S_TEL", "手机号码")
+            }}</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.phone" :class="$style['field-text']">{{
                 memInfo.user.phone
@@ -384,7 +386,9 @@
             :class="[$style['account-data-field'], 'clearfix']"
             @click="$router.push('/mobile/mcenter/accountData/email')"
           >
-            <span :class="$style['field-title']">電子郵箱</span>
+            <span :class="$style['field-title']">{{
+              $text("S_E_MAIL", "电子邮箱")
+            }}</span>
             <div :class="$style['field-value']">
               <span v-if="memInfo.user.email" :class="$style['field-text']">
                 {{ memInfo.user.email }}</span
@@ -418,7 +422,7 @@
               }}</span>
               <template v-else>
                 <span :class="[$style['field-text'], $style['yet']]"
-                  >尚未設定</span
+                  >尚未设定</span
                 >
                 <div :class="$style['feature-btn']">
                   <div :class="$style['btn-next']">
@@ -445,7 +449,7 @@
               }}</span>
               <template v-else>
                 <span :class="[$style['field-text'], $style['yet']]"
-                  >尚未設定</span
+                  >尚未设定</span
                 >
                 <div :class="$style['feature-btn']">
                   <div :class="$style['btn-next']">
@@ -489,10 +493,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import DatePicker from "vue2-datepicker";
 import Vue from "vue";
 import mcenter from "@/api/mcenter";
-import { API_MCENTER_USER_CONFIG } from "@/config/api";
 //https://github.com/k186/pd-select/
 // import pdSelect from "pd-select";
 // Vue.use(pdSelect);

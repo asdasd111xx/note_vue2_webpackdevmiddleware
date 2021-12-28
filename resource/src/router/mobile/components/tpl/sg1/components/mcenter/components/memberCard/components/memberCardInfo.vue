@@ -82,7 +82,7 @@
             alt=""/></i
         >生日
         <span>{{
-          memInfo.user.birthday == "" ? "尚未設定" : memInfo.user.birthday
+          memInfo.user.birthday == "" ? "尚未设定" : memInfo.user.birthday
         }}</span>
       </li>
       <li>
@@ -92,7 +92,7 @@
             alt=""/></i
         >地区
         <span>{{
-          cardInfo.hometown == "" ? "尚未設定" : cardInfo.hometown
+          cardInfo.hometown == "" ? "尚未设定" : cardInfo.hometown
         }}</span>
       </li>
       <li>
@@ -102,7 +102,7 @@
             alt=""/></i
         >感情
         <span>{{
-          cardInfo.relationship == "" ? "尚未設定" : cardInfo.relationship
+          cardInfo.relationship == "" ? "尚未设定" : cardInfo.relationship
         }}</span>
       </li>
     </div>
