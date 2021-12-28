@@ -162,14 +162,13 @@
   --marquee_text_color2: #9ca3bf; //提現、充值跑馬燈
   --vip_detail_color: #414655; //查看VIP详情
   --avatar-vip-icon-color: #9ca3bf; //我的 vip等級 背景顏色
-  --redpot_button_color: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //紅包彩金裡面領取按鈕
+  --redpot_button_color: linear-gradient(to left,
+      #bd9d7d 0%,
+      #f9ddbd 100%); //紅包彩金裡面領取按鈕
   --addcard_popup_text_color: #414655; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
   --addcard_popup_prev_text_color: #6aaaf5; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --widthdraw_tip_text_color: #6aaaf5; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
+  --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
   --bankrebate_receive_button1: #414655; //我的返水 一鍵領取按鈕
   --bankrebate_receive_button2: #eaeaea; //我的返水 一鍵領取按鈕disable
   --bankrebate_receive_text_color: #a6a9b2; //我的返水 一鍵領取按鈕文字
