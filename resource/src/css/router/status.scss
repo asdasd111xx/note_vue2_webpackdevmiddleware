@@ -82,7 +82,7 @@ body {
   font-weight: 400;
   text-align: center;
   color: #9ca3bf;
-  margin: 115px auto;
+  margin: 20px auto;
 
   &.has-time {
     margin-bottom: 0;
@@ -115,8 +115,10 @@ body {
   color: #a6a9b2;
   margin: 0 auto;
 
-  // position: absolute;
-  // bottom: 2.5%;
+  bottom: 8%;
+  position: absolute;
+  text-align: center;
+  width: 100%;
 
   > span {
     color: #6aaaf5;
