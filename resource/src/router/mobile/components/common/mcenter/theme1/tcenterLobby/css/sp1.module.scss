@@ -72,7 +72,7 @@
     padding-bottom: 5px;
 
     .list-name {
-      color: #646874;
+      color: var(--tcenter_left_title_color);
       display: flex;
 
       .list-btn {
@@ -82,12 +82,12 @@
         border: 0 solid;
         border-radius: 20px;
         padding: 0 7px;
-        background-color: #ad9982;
+        background-color: var(--tcenter_color);
       }
     }
 
     .list-value {
-      color: #414141;
+      color: var(--tcenter_right_title_color);
     }
   }
 }
@@ -176,7 +176,7 @@
         margin: 5px 5px 0 0;
 
         &.deposit {
-          background-color: #d1b79c;
+          background-color: var(--tcenter_progress_color1);
         }
 
         &.withdraw {
