@@ -691,10 +691,10 @@ export default {
         smsUrl = "/api/v1/c/outer/sms/verify";
         params["phone"] = `${this.phoneHead.replace("+", "")}-${this.newValue}`;
       } else if (this.isfromWithdraw) {
-        smsUrl = "/api/v1/c/player/withdraw/sms/verify";
+        smsUrl = `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Withdraw/Sms/Verify`;
       }
 
-      if (this.isfromWithdraw || this.isfromSWAG) {
+      if (this.isfromSWAG) {
         ajax({
           method: "put",
           url: smsUrl,
@@ -715,6 +715,22 @@ export default {
                 this.$router.replace("/mobile/mcenter/withdraw");
               }
             }
+          }
+        });
+      } else if (this.isfromWithdraw) {
+        goLangApiRequest({
+          method: "put",
+          url: smsUrl,
+          params: {
+            lang: "zh-cn",
+            ...params
+          }
+        }).then(res => {
+          console.log(res);
+          if (res && res.status === "000") {
+            // 完成後回到上一頁
+            localStorage.setItem("tmp_w_1", res.data);
+            this.$router.replace("/mobile/mcenter/withdraw");
           }
         });
       } else {
