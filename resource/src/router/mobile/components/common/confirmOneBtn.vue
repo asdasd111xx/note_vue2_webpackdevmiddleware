@@ -15,15 +15,7 @@
           v-html="data.content"
         />
 
-        <div
-          :class="[
-            'confirm-btn-wrap',
-            {
-              ey1: themeTPL === 'ey1'
-            }
-          ]"
-          @click="handleClick"
-        >
+        <div :class="['confirm-btn-wrap']" @click="handleClick">
           {{ data.btnText }}
         </div>
       </div>
@@ -124,15 +116,7 @@ export default {
 }
 
 .confirm-btn-wrap {
-  color: var(--member_color100);
+  color: var(--popup_text_color1);
   padding: 20px 0;
-
-  &.ey1 {
-    color: #e42a30;
-  }
-
-  &.sg1 {
-    color: #bf8646;
-  }
 }
 </style>

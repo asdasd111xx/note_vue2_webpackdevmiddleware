@@ -123,13 +123,13 @@ export default {
     }
 
     > .copy-btn {
-      color: var(--member_color100);
+      color: var(--help_contact_copy);
       width: 120px;
       text-align: center;
       > div {
         border-radius: 5px;
-        border: 1px solid var(--member_color100);
-        color: var(--member_color100);
+        border: 1px solid var(--help_contact_copy);
+        color: var(--help_contact_copy);
         padding: 2.5px 5px;
       }
     }

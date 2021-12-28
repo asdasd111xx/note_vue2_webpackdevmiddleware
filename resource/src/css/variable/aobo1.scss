@@ -161,7 +161,7 @@
     #f9ddbd 100%
   ); //前面長方形顏色(我的推廣 全部下級概況)
   --deco_color2: #be9e7f; //盈虧返例、團隊概況 前面圓形的顏色
-  --popup_text_color1: #d1b79c; //彈窗確定
+  --popup_text_color1: #be9e7f; //彈窗確定
   --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
   --popup_text_color3: #414655; //彈窗取消
   --marquee_text_color1: #9ca3bf; //大廳跑馬燈
@@ -173,8 +173,8 @@
     #bd9d7d 0%,
     #f9ddbd 100%
   ); //紅包彩金裡面領取按鈕
-  --addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣 彈窗 文字
-  --addcard_popup_prev_text_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣 取消
+  --addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
+  --addcard_popup_prev_text_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
   --bankrebate_receive_button1: var(
     --mcenter_button_color1
@@ -186,4 +186,5 @@
   --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
   --mcenter_send_keyring: #be9e7f; //獲取驗證碼按鈕
   --mcenter_send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
+  --help_contact_copy: #be9e7f; //幫助中心 聯繫我們 複製
 }

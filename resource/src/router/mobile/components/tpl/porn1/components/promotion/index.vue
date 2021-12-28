@@ -317,7 +317,6 @@ $fixed_spacing_height: 43px;
   color: var(--slider_text_color);
   &.active {
     color: var(--slider_text_active_color);
-    // border-bottom: solid 1px var(--member_color100);
   }
 }
 
