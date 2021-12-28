@@ -534,7 +534,11 @@ export default {
                   info.end_at
                 )}`,
           day: this.remainderDays,
-          period: info.period,
+          period: info.period
+            ? info.period
+            : `${this.periodFormat(info.start_at)}_${this.periodFormat(
+                info.end_at
+              ).substring(5, 9)}`,
           list: [
             {
               name: this.$text("S_EXPECTED_REBATE", "预估返利"),
@@ -955,6 +959,9 @@ export default {
     },
     dateYearFormat(date) {
       return Vue.moment(new Date(date)).format("YYYY-MM-DD");
+    },
+    periodFormat(date) {
+      return Vue.moment(new Date(date)).format("YYYY-MMDD");
     },
     enterNextLayer(friend) {
       //進到下一頁
