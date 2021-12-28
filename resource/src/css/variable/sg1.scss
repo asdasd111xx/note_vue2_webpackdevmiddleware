@@ -128,7 +128,6 @@
   --vip_text_color2: #333333;
 
   --member_color100: #bf8646;
-  --member_color101: #e9dacc;
 
   /***---------------- 功能 ----------------***/
 
@@ -157,30 +156,48 @@
   --send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
   --popup_tip_ok_color: #bf8646; //溫馨提示彈窗 確認
   --popup_tip_close_color: #bf8646; //溫馨提示彈窗 關閉
+  --apptip_title: #e61938; //大廳立即下載title
 
   /***--- 會員中心 功能 ----***/
-  --wallet_border_color: #be9e7f;
-  --redpot: #bf8646;
-  --deco_color: linear-gradient(to bottom, #fe593c 0%, #e61938 100%);
+  --wallet_border_color: #be9e7f; //充值 選擇支付方式、支付通道框框＆裡面文字
+  --redpot: #bf8646; //紅包彩金文字顏色
+  --deco_color: linear-gradient(
+    to bottom,
+    #fe593c 0%,
+    #e61938 100%
+  ); //前面長方形顏色(我的推廣 全部下級概況)
   --deco_color2: linear-gradient(
     to top,
     #e61938,
     #fe593c
   ); //盈虧返例、團隊概況 前面圓形的顏色
-  --apptip_title: #e61938;
-  --popup_text_color1: #bf8646;
-  --popup_text_color2: #414655;
-  --popup_text_color3: #414655;
-  --marquee_text_color1: #b7b7b7;
-  --marquee_text_color2: #d1b79c;
-  --vip_detail_color: #bf8646;
-  --avatar-vip-icon-color: linear-gradient(to left, #febdb2 0%, #ff8093 100%);
-  --redpot_button_color: linear-gradient(to right, #f9d388, #f4b22e);
-  --addcard_popup_text_color: #bbab98;
-  --addcard_popup_prev_text_color: #be9e7f;
-  --widthdraw_tip_text_color: #be9e7f;
-  --bankrebate_receive_button1: var(--mcenter_button_color1);
-  --bankrebate_receive_button2: var(--mcenter_button_color2);
-  --bankrebate_receive_text_color: #ffffff;
+  --popup_text_color1: #bf8646; //彈窗確定
+  --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
+  --popup_text_color3: #414655; //彈窗取消
+  --marquee_text_color1: #b7b7b7; //大廳跑馬燈
+  --marquee_text_color2: #d1b79c; //提現、充值跑馬燈
+  --vip_detail_color: #bf8646; //查看VIP详情
+  --avatar-vip-icon-color: linear-gradient(
+    to left,
+    #febdb2 0%,
+    #ff8093 100%
+  ); //我的 vip等級 背景顏色
+  --redpot_button_color: linear-gradient(
+    to right,
+    #f9d388,
+    #f4b22e
+  ); //紅包彩金裡面領取按鈕
+  --addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣 彈窗 文字
+  --addcard_popup_prev_text_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣 取消
+  --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
+  --bankrebate_receive_button1: var(
+    --mcenter_button_color1
+  ); //我的返水 一鍵領取按鈕
+  --bankrebate_receive_button2: var(
+    --mcenter_button_color2
+  ); //我的返水 一鍵領取按鈕disable
+  --bankrebate_receive_text_color: #ffffff; //我的返水 一鍵領取按鈕文字
   --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
+  --mcenter_send_keyring: #bf8646; //獲取驗證碼按鈕
+  --mcenter_send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
 }

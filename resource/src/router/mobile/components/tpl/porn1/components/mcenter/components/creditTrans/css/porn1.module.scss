@@ -200,9 +200,9 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background: var(--wallet_border_color);
+  background: var(--mcenter_send_keyring);
   border-radius: 3px;
-  color: var(--mcenter_button_text_color1);
+  color: #fff;
   font-weight: 400;
   height: 30px;
   line-height: 30px;
@@ -213,7 +213,8 @@ input {
   width: 100px;
 
   &.disabled {
-    background: var(--member_color101);
+    color: #fff;
+    background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
   }
 }

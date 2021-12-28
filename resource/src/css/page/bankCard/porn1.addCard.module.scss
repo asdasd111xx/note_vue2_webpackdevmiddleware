@@ -281,12 +281,12 @@
   position: absolute;
   right: 0;
   top: -4px;
-  background: var(--member_color100);
+  background: var(--mcenter_send_keyring);
   color: #fff;
   border-radius: 3px;
 
   &.disabled {
-    background: var(--member_color101);
+    background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
     opacity: 0.5;
   }

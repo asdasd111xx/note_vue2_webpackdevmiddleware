@@ -120,7 +120,7 @@
 
 .btn-send {
   margin: 3px 0;
-  background-color: var(--member_color101);
+  background-color: var(--mcenter_send_keyring_disabled);
   border-radius: 3px;
   color: white;
   line-height: 30px;
@@ -134,7 +134,7 @@
   &.active {
     pointer-events: auto;
     color: #ffffff;
-    background-color: var(--member_color100);
+    background-color: var(--mcenter_send_keyring);
   }
 }
 
