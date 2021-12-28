@@ -26,7 +26,7 @@
   }
 
   &.is-current {
-    color: var(--mcenter_slider_text_active_color);
+    color: #414655;
 
     span {
       border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
@@ -149,7 +149,7 @@
 
   &.is-current {
     border: 1px solid var(--wallet_border_color);
-    color: var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
     background: linear-gradient(
       -45deg,
       var(--wallet_border_color) 10px,
@@ -285,7 +285,7 @@
 
   &.is-current {
     background-color: #fff;
-    color: var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
     border: 1px solid var(--wallet_border_color);
     background: linear-gradient(
       -45deg,
@@ -406,7 +406,7 @@
     }
 
     .yb {
-      color: #414655;
+      color: #6aaaf5;
       font-weight: 500;
     }
 
@@ -807,7 +807,7 @@
 
 .current-data {
   background-color: #fff;
-  color: var(--wallet_border_color);
+  color: var(--wallet_border_text_color);
   border: 1px solid var(--wallet_border_color);
   background: linear-gradient(
     -45deg,
