@@ -32,14 +32,14 @@
     }
 
     > div:last-child {
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
     text-align: center;
     font-size: 16px;
   }
@@ -298,8 +298,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid var(--member_color100);
-    color: var(--member_color100);
+    border: 1px solid var(--mcenter_wallet_text_color);
+    color: var(--mcenter_wallet_text_color);
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -572,7 +572,7 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
     text-align: center;
     bottom: 12px;
     width: 100%;

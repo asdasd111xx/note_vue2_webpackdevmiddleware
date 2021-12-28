@@ -116,7 +116,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,7 +154,7 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
@@ -162,7 +162,7 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
     font-weight: 700;
 
     &::before {

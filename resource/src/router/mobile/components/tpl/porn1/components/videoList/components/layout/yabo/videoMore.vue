@@ -390,7 +390,7 @@ export default {
   }
 
   &.av.active .line {
-    background-color: var(--member_color100);
+    background-color: var(--slider_underline_active_color);
   }
 }
 

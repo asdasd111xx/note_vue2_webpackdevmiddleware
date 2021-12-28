@@ -46,19 +46,6 @@ $submitTextColor: #fff;
   background-color: #fff;
 }
 
-.link {
-  padding-left: 20px;
-  color: #ffffff;
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &.active {
-    color: var(--member_color100);
-  }
-}
-
 .search-form {
   background-color: #fff;
   border-top: 1px solid #eee;
