@@ -119,8 +119,6 @@
   //>數字0.00
   --vip_text_color2: #414655;
 
-  --member_color100: #6aaaf5;
-
   /***---------------- 功能 ----------------***/
   /***--- 大廳 遊戲 功能 ---***/
   --joinmember_title: #9b6b40; //註冊頁標題
@@ -129,8 +127,8 @@
   --promotion_gift_button: #9ca3bf; //優惠上方按鈕背景
   --promotion_gift_button_text_color: #ffffff; //優惠上方按鈕邊框
   --promotion_gift_button_border: 32px; //優惠上方按鈕圓角
-  --service_webview_button: #6aaaf5; //webview我的客服下載按鈕
-  --service_webview_text_button: #6aaaf5; //webview我的客服下載按鈕文字
+  --service_webview_button: #3354ad; //webview我的客服下載按鈕
+  --service_webview_text_button: #3354ad; //webview我的客服下載按鈕文字
   --webview_icon_text: #fff; //webview我的客服文字
   --service_add_button: #6aaaf5; //我的客服立即添加按鈕
   --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
@@ -172,9 +170,12 @@
   --bankrebate_receive_button1: #414655; //我的返水 一鍵領取按鈕
   --bankrebate_receive_button2: #eaeaea; //我的返水 一鍵領取按鈕disable
   --bankrebate_receive_text_color: #a6a9b2; //我的返水 一鍵領取按鈕文字
+  --bankrebate_text_active_color: #6aaaf5; //我的返水 active文字
   --countdown_time_text_color: #db6372; //匯率試算倒數時間
   --mcenter_send_keyring: #6aaaf5; //獲取驗證碼按鈕
   --mcenter_send_keyring_disabled: #cccccc; //獲取驗證碼按鈕disabled
   --help_contact_copy: #6aaaf5; //幫助中心 聯繫我們 複製
   --mcenter_wallet_text_color: #6aaaf5; //中心錢包的錢＆一鍵回收＆額度轉讓字
+  --redpot_text_color: #6aaaf5; //紅包彩金文字
+  --mcenter_change_avatar_image: #6aaaf5; //編輯個人頭像
 }
