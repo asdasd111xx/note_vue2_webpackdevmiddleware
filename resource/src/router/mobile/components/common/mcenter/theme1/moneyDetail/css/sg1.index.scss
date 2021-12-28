@@ -153,14 +153,14 @@
 
 .cancel {
   composes: button;
-  background: #a2a2a2;
-  color: #ffffff;
+  background: #f2f2f2;
+  color: #000000;
 }
 
 .confirm {
   composes: button;
-  background: linear-gradient(90deg, #e61938, #fe593c);
-  color: #ffffff;
+  background: var(--mcenter_button_color1);
+  color: var(--mcenter_button_text_color1);
 }
 
 .date-tip {
