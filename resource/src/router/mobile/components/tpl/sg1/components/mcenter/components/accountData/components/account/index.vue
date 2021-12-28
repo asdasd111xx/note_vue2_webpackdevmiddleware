@@ -492,7 +492,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
+import DatePicker from "vue2-datepicker";
 import Vue from "vue";
 import mcenter from "@/api/mcenter";
 //https://github.com/k186/pd-select/
