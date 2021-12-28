@@ -45,7 +45,6 @@ export default {
       default: "porn1"
     }
   },
-  data() {},
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
