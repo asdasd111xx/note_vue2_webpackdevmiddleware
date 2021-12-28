@@ -28,6 +28,12 @@
           </div>
         </div>
       </div>
+      <div>
+        <card-item
+          :card-item-list="rebatefriendLayerList"
+          @click-card="enterNextLayer"
+        />
+      </div>
     </div>
     <template v-if="$route.params.item === 'detail'">
       <template v-if="friendLayerList.length > 0">
@@ -107,6 +113,7 @@
 </template>
 
 <script>
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import commissionDetail from "@/mixins/mcenter/commission/commissionDetail";
@@ -114,6 +121,7 @@ import cardItem from "../../../../../tcenterSame/cardItem";
 import cardTotal from "../../../../../tcenterSame/cardAllTotal";
 import rebateRate from "../../../../../tcenterSame/rebateRate";
 import Vue, { nextTick } from "vue";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -143,7 +151,15 @@ export default {
       title: this.$route.params.title ?? "",
 
       page: 1,
-      isSerial: false
+      isSerial: false,
+      resultFriend: [],
+      levelTrans: {
+        1: "S_FIRST_LEVEL_FRIEND",
+        2: "S_SECOND_LEVEL_FRIEND",
+        3: "S_THIRD_LEVEL_FRIEND",
+        4: "S_FOURTH_LEVEL_FRIEND",
+        5: "S_FIFTH_LEVEL_FRIEND"
+      }
     };
   },
 
@@ -162,6 +178,7 @@ export default {
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
+            this.getLayerDetail();
             return;
           }
           this.getSummary();
@@ -193,6 +210,43 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    //盈虧返利 Page1 好友層
+    rebatefriendLayerList() {
+      let layerdata = this.resultFriend?.map(info => {
+        return {
+          title: this.$text(this.levelTrans[info.depth]),
+          childTitle: "查看",
+          // 傳遞給子元件點擊專用
+          paramsValue: { depth: info.depth },
+          isClick: true,
+          img: true,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.valid_bet),
+              show: true
+            },
+            {
+              name: "损益",
+              item: this.formatThousandsCurrency(info.profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            },
+            {
+              name: "有效会员",
+              item: info.valid_user,
+              show: true
+            },
+            {
+              name: "上期結轉",
+              item: info.last_shift == 0 ? "無" : "有",
+              show: true
+            }
+          ].filter(item => item.show)
+        };
+      });
+      return layerdata;
     },
     friendLayerList() {
       //page1 好友層
@@ -439,6 +493,36 @@ export default {
     }
   },
   methods: {
+    formatThousandsCurrency(value) {
+      return +value ? thousandsCurrency(value) : "0.00";
+    },
+    //Page1 取得盈歸返利分級好友資料c04.48
+    getLayerDetail() {
+      let paramData = {
+        period: this.$route.query.period,
+        user_id: this.memInfo.user.id
+      };
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/detail",
+          method: "get",
+          ...paramData
+        }
+      }).then(res => {
+        //多層級好友
+        this.resultFriend = res.data.return_data?.ret?.depth_details ?? [];
+
+        //單一會員重新計算中
+        if (res && res.data.status_code == "22007710") {
+          this.actionSetGlobalMessage(res.data.status_message);
+        }
+      });
+    },
     toggleSerial() {
       this.isSerial = !this.isSerial;
     },
