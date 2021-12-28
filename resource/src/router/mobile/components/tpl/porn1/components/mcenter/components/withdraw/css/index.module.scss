@@ -32,14 +32,14 @@
     }
 
     >div:last-child {
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
     text-align: center;
     font-size: 16px;
   }
@@ -285,7 +285,7 @@
   }
 
   .time {
-    color: var(--member_text_color6);
+    color: var(--countdown_time_text_color);
   }
 
   .serial {
@@ -296,8 +296,8 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid var(--member_color100);
-    color: var(--member_color100);
+    border: 1px solid var(--mcenter_wallet_text_color);
+    color: var(--mcenter_wallet_text_color);
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -327,8 +327,8 @@
 
   >span {
     font-size: 14px;
-    background: var(--member_gradient_color1);
-    color: var(--member_text_color1);
+    background: var(--mcenter_button_color1);
+    color: var(--mcenter_button_text_color1);
     border-radius: 11px;
     width: 82px;
     height: 21px;
@@ -356,7 +356,7 @@
   >div {
     margin: 0 auto;
     height: 45px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
     border-radius: 3px;
     width: 100%;
     max-width: 340px;
@@ -364,13 +364,14 @@
     font-size: 14px;
     font-weight: 700;
     text-align: center;
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
   }
 
   &.disabled {
     div {
       pointer-events: none;
-      background: var(--member_gradient_color2);
+      color: var(--mcenter_button_text_color2);
+      background: var(--mcenter_button_color2);
     }
   }
 }
@@ -489,7 +490,7 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       margin-bottom: 4px;
     }
   }
@@ -502,7 +503,7 @@
     position: relative;
 
     &.check-total {
-      color: var(--member_text_color4);
+      color: var(--mcenter_slider_text_active_color);
       background: #f3f3f3;
     }
 
@@ -513,7 +514,7 @@
     }
 
     &.custom-color {
-      color: var(--member_text_color6);
+      color: var(--countdown_time_text_color);
 
       &.custom-color-background {
         background: #f3f3f3;
@@ -569,7 +570,7 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
     text-align: center;
     bottom: 12px;
     width: 100%;

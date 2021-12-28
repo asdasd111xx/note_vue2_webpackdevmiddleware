@@ -397,13 +397,11 @@
     text-align: center;
   }
 
-  &.porn1 {
-    .delete-cancel {
-      color: var(--member_color100);
-    }
-    .delete-confirm {
-      color: var(--member_color100);
-    }
+  .delete-cancel {
+    color: var(--popup_text_color3);
+  }
+  .delete-confirm {
+    color: var(--popup_text_color1);
   }
 }
 

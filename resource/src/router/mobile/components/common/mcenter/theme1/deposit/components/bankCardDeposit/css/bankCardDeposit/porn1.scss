@@ -15,7 +15,7 @@
   height: 38px;
   line-height: 38px;
   text-align: center;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   white-space: nowrap;
 
   span {
@@ -26,10 +26,10 @@
   }
 
   &.is-current {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
 
     span {
-      border-bottom: 2px solid var(--member_slider);
+      border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
     }
   }
 }
@@ -112,7 +112,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--member_color100);
+  color: var(--addcard_popup_prev_text_color);
   transform: translateY(-50%);
 }
 
@@ -307,11 +307,11 @@
   white-space: nowrap;
   border-radius: 3px;
   // cursor: pointer;
-  color: var(--member_text_color1);
-  background: var(--member_gradient_color1);
+  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
@@ -382,7 +382,7 @@
   color: var(--slider_text_color);
 
   .time {
-    color: var(--member_text_color6);
+    color: var(--countdown_time_text_color);
     margin: 0 5px 0 5px;
   }
 
@@ -579,7 +579,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--member_color100);
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 
@@ -787,7 +787,7 @@
   color: #cbced8;
 
   &.success {
-    color: var(--popup_text_color1);
+    color: var(--widthdraw_tip_text_color);
   }
 }
 
@@ -846,7 +846,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--member_color1);
+  color: var(--mcenter_main_color);
 }
 
 .money-tip-wrap {
@@ -1142,15 +1142,7 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: var(--member_color100);
-
-    &.sg {
-      color: #bf8646;
-    }
-
-    &.ey {
-      color: #e42a30;
-    }
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 

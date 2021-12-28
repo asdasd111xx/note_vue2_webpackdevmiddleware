@@ -123,13 +123,13 @@ export default {
     }
 
     > .copy-btn {
-      color: var(--member_color100);
+      color: var(--help_contact_copy);
       width: 120px;
       text-align: center;
       > div {
         border-radius: 5px;
-        border: 1px solid var(--member_color100);
-        color: var(--member_color100);
+        border: 1px solid var(--help_contact_copy);
+        color: var(--help_contact_copy);
         padding: 2.5px 5px;
       }
     }
@@ -143,12 +143,12 @@ export default {
   text-align: center;
 
   > div {
-    color: var(--member_text_color1);
+    color: var(--mcenter_button_text_color1);
     height: 45px;
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
-    background: var(--member_gradient_color1);
+    background: var(--mcenter_button_color1);
   }
 }
 </style>

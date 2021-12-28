@@ -399,12 +399,12 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: var(--member_color100);
+  color: var(--service_text_color);
   font-weight: bold;
 
   .add-bottom {
-    color: #fff;
-    background: var(--main_button_color1);
+    color: var(--service_add_text_button);
+    background: var(--service_add_button);
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
@@ -595,7 +595,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: var(--main_button_color1);
+      background: var(--service_tip_color);
       border-radius: 9px 0 0 9px;
     }
   }
@@ -603,7 +603,7 @@ div.container {
   .title,
   .content {
     margin: 0 17px;
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
     font-size: 12px;
   }
 
@@ -634,7 +634,7 @@ div.container {
       margin: 10px auto;
       padding: 0 0 0 40px;
       background: #ffffff;
-      border: 1px solid var(--member_text_color3);
+      border: 1px solid var(--mcenter_slider_text_color);
       border-radius: 10px;
 
       &::before {

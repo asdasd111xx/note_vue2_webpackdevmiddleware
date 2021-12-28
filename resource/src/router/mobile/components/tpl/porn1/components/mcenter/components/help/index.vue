@@ -161,7 +161,7 @@ export default {
 
 .help-wrap {
   overflow-x: hidden;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   position: relative;
 
   .list {

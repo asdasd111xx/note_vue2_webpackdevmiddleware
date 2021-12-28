@@ -178,7 +178,7 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: var(--member_color100);
+    color: var(--popup_text_color1);
   }
 }
 </style>

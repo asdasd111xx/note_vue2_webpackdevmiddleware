@@ -1279,14 +1279,7 @@
                 {{ statusText }}
               </div>
             </div>
-            <ul
-              :class="[
-                $style['entry-message-confirm'],
-                $style[siteConfig.ROUTER_TPL],
-                { [$style['sg']]: themeTPL === 'sg1' },
-                { [$style['ey']]: themeTPL === 'ey1' }
-              ]"
-            >
+            <ul :class="[$style['entry-message-confirm']]">
               <li @click="submitInfo">确定</li>
               <!-- has_csr: 是否啟用代客充值 -->
               <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
@@ -1306,11 +1299,7 @@
               <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
             </div>
             <div
-              :class="[
-                $style['entry-message-confirm'],
-                { [$style['sg']]: themeTPL === 'sg1' },
-                { [$style['ey']]: themeTPL === 'ey1' }
-              ]"
+              :class="[$style['entry-message-confirm']]"
               @click="setPopupStatus(false, '')"
             >
               关闭

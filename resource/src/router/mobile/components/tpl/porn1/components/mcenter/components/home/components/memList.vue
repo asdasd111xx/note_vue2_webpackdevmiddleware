@@ -250,9 +250,18 @@ export default {
         case "aobo1":
           _vendor = this.memInfo.user.domain;
           _bundleID =
-            this.memInfo.user.domain === 92
+            +this.memInfo.user.domain === 92
               ? "cyiosdev0001.aoboCasino.prod"
               : "cyiosdev0001.aoboCasino.qa";
+          break;
+
+        case "sp1":
+          _vendor = this.memInfo.user.domain;
+          _bundleID =
+            +this.memInfo.user.domain === 94
+              ? "cyiosdev0001.mobile.intl51.vip"
+              : "cyiosdev0001.mobile.intl51.qa";
+
           break;
       }
 

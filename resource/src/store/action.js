@@ -2396,6 +2396,10 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 
 // 取得429發送太頻繁字串
 export const actionGetToManyRequestMsg = ({ state }, message) => {
+  if (!message) {
+    return "";
+  }
+
   return i18n.t(
     message
       .toString()

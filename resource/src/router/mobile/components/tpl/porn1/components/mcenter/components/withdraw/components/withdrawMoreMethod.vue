@@ -6,12 +6,7 @@
       <template v-if="!showPopStatus.isShow">
         <div :class="$style['more-method-wrap']">
           <div :class="[$style['more-method-container']]">
-            <div
-              :class="[
-                $style['more-method-header'],
-                $style[siteConfig.ROUTER_TPL]
-              ]"
-            >
+            <div :class="[$style['more-method-header']]">
               <div @click="closePopup" :class="$style['prev']">
                 {{ $text("S_CANCEL", "取消") }}
               </div>

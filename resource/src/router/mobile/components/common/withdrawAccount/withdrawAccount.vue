@@ -626,9 +626,11 @@ export default {
           this.isSendKeyring = false;
 
           if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestMsg(error.response.message).then(res => {
-              this.tipMsg = res;
-            });
+            this.actionGetToManyRequestMsg(error.response.data.message).then(
+              res => {
+                this.tipMsg = res;
+              }
+            );
             return;
           }
         });

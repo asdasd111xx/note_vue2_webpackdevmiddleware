@@ -27,13 +27,13 @@
   height: 42px;
   line-height: 42px;
   margin: 0 auto;
-  color: #a5a9b3;
+  color: var(--mcenter_slider_text_color);
   font-size: 13px;
   text-align: center;
 
   &.active {
-    border-bottom-color: var(--member_color100);
-    color: #414655;
+    border-bottom-color: var(--mcenter_slider_underline_active_color);
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 

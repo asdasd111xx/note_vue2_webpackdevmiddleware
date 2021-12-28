@@ -37,11 +37,11 @@
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: #a6a9b2;
+  color: var(--find_password_text_color);
   position: relative;
 
   &.active {
-    color: #5e626d;
+    color: var(--find_password_text_active_color);
   }
 }
 
@@ -50,7 +50,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: var(--member_color1);
+  background-color: var(--find_password_underline_active_color);
   width: 45px;
   transition: left 0.31s;
 }

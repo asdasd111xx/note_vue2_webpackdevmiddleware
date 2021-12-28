@@ -502,6 +502,11 @@ export default {
               };
 
               let getCustomizeLink = () => {
+                if (!uri) {
+                  this.src = "";
+                  return;
+                }
+
                 return goLangApiRequest({
                   method: "post",
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,

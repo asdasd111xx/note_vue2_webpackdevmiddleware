@@ -56,7 +56,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
   }
 }
 
@@ -64,7 +64,7 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: var(--member_color100);
+  color: var(--mcenter_wallet_text_color);
   font-weight: 700;
 
   &::before {
@@ -94,11 +94,11 @@
 .balance-tip-wrap {
   width: 100%;
   text-align: left;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   .balance-auto-tip {
     font-size: 12px;
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 
@@ -186,7 +186,7 @@
   padding: 10px 4px 15px;
   text-align: center;
   font-size: 14px;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   border-bottom: 1px solid #eee;
 
   &:not(:nth-child(4n + 1)):before {
@@ -243,7 +243,7 @@
 
 .balance-item-money {
   display: block;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 
   &.more {
     word-break: break-word;
@@ -353,7 +353,7 @@
     font-size: 16px;
     text-align: center;
     height: 65px;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
 
     &::before {
       content: "";
@@ -367,14 +367,14 @@
     span {
       position: absolute;
       left: 0;
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
   .select-content {
     position: relative;
     font-size: 14px;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     max-height: 500px;
     overflow: hidden;
     overflow-y: auto;
@@ -397,7 +397,7 @@
 
 .select-title {
   font-size: 12px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 }
 
 // .select-arrow-icon {
@@ -432,7 +432,7 @@
   outline: none;
   border: none;
   background: transparent;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   &::placeholder {
     color: #cdced8;
@@ -448,7 +448,7 @@
   font-size: 14px;
   border-radius: 3px;
   color: #fff;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
@@ -459,10 +459,10 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.is-disable {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
