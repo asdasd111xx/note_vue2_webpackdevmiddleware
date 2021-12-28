@@ -186,7 +186,7 @@
 }
 
 .choose-btn {
-  background: var(--mcenter_button_color1);
+  background: var(--mcenter_upload_image_button);
   color: var(--mcenter_button_text_color1);
   border-radius: 3px;
   font-size: 14px;
@@ -213,13 +213,13 @@
 }
 
 .cancel-btn {
-  background: var(--mcenter_button_color1);
-  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_upload_image_cancel_button);
+  color: var(--mcenter_upload_image_cancel_text_button);
   float: left;
 }
 
 .submit-btn {
-  background: var(--mcenter_button_color1);
+  background: var(--mcenter_upload_image_button);
   color: var(--mcenter_button_text_color1);
   float: right;
 }

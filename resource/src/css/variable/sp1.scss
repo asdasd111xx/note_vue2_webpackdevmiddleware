@@ -152,9 +152,11 @@
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框＆裡面文字
   --redpot: #be9e7f; //紅包彩金文字顏色
-  --deco_color: linear-gradient(to bottom,
-      #bd9d7d 0%,
-      #f9ddbd 100%); //前面長方形顏色(我的推廣 全部下級概況)
+  --deco_color: linear-gradient(
+    to bottom,
+    #bd9d7d 0%,
+    #f9ddbd 100%
+  ); //前面長方形顏色(我的推廣 全部下級概況)
   --deco_color2: #be9e7f; //盈虧返例、團隊概況 前面圓形的顏色
   --popup_text_color1: #be9e7f; //彈窗確定
   --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
@@ -163,15 +165,21 @@
   --marquee_text_color2: #d1b79c; //提現、充值跑馬燈
   --vip_detail_color: #bbab98; //查看VIP详情
   --avatar-vip-icon-color: var(--mcenter_button_color1); //我的 vip等級 背景顏色
-  --redpot_button_color: linear-gradient(to left,
-      #bd9d7d 0%,
-      #f9ddbd 100%); //紅包彩金裡面領取按鈕
+  --redpot_button_color: linear-gradient(
+    to left,
+    #bd9d7d 0%,
+    #f9ddbd 100%
+  ); //紅包彩金裡面領取按鈕
   --addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
   --addcard_popup_prev_text_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
   --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
-  --bankrebate_receive_button1: var(--mcenter_button_color1); //我的返水 一鍵領取按鈕
-  --bankrebate_receive_button2: var(--mcenter_button_color2); //我的返水 一鍵領取按鈕disable
+  --bankrebate_receive_button1: var(
+    --mcenter_button_color1
+  ); //我的返水 一鍵領取按鈕
+  --bankrebate_receive_button2: var(
+    --mcenter_button_color2
+  ); //我的返水 一鍵領取按鈕disable
   --bankrebate_receive_text_color: #f3ede7; //我的返水 一鍵領取按鈕文字
   --bankrebate_text_active_color: #be9e7f; //我的返水 active文字
   --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
@@ -181,4 +189,12 @@
   --mcenter_wallet_text_color: #be9e7f; //中心錢包的錢＆一鍵回收＆額度轉讓字
   --redpot_text_color: #be9e7f; //紅包彩金文字
   --mcenter_change_avatar_image: #be9e7f; //編輯個人頭像
+  --mcenter_upload_image_button: linear-gradient(
+    to left,
+    #bd9d7d 0%,
+    #f9ddbd 100%
+  ); //個人頭像 從相冊選取
+  --mcenter_upload_image_text_button: #ffffff; //個人頭像 從相冊選取 文字
+  --mcenter_upload_image_cancel_button: #faf5f0; //個人頭像從相冊選取 取消
+  --mcenter_upload_image_cancel_text_button: #be9e7f; //個人頭像從相冊選取 取消文字
 }
