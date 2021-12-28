@@ -595,7 +595,7 @@ div.container {
       padding: 0 5px;
       font-size: 12px;
       color: #fff;
-      background: var(--main_button_color1);
+      background: var(--service_tip_color);
       border-radius: 9px 0 0 9px;
     }
   }

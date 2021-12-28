@@ -152,6 +152,11 @@
   --webview_icon_text: #fff; //webview我的客服文字
   --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
   --service_text_color: #bf8646; //我的客服立即添加按鈕左邊的文字
+  --service_tip_color: linear-gradient(
+    to left,
+    #fe593c 0%,
+    #e61938 100%
+  ); //我的客服彈窗 重要提醒
   --send_keyring: #bf8646; //獲取驗證碼按鈕
   --send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
   --popup_tip_ok_color: #bf8646; //溫馨提示彈窗 確認
