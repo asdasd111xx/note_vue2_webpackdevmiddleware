@@ -75,7 +75,7 @@
 
       &.active {
         border: 2px solid transparent;
-        border-color: var(--member_color100);
+        border-color: var(--mcenter_change_avatar_image);
       }
     }
 
@@ -186,9 +186,9 @@
 }
 
 .choose-btn {
-  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  background: var(--mcenter_upload_image_button);
+  color: var(--mcenter_button_text_color1);
   border-radius: 3px;
-  color: #ffffff;
   font-size: 14px;
   font-weight: 400;
   height: 45px;
@@ -213,13 +213,13 @@
 }
 
 .cancel-btn {
-  background: #faf5f0;
-  color: var(--member_color100);
+  background: var(--mcenter_upload_image_cancel_button);
+  color: var(--mcenter_upload_image_cancel_text_button);
   float: left;
 }
 
 .submit-btn {
-  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-  color: #ffffff;
+  background: var(--mcenter_upload_image_button);
+  color: var(--mcenter_button_text_color1);
   float: right;
 }
