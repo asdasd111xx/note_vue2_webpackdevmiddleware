@@ -3,7 +3,7 @@
     <div
       id="header"
       :class="[$style['message-header']]"
-      :style="isEditing ? { width: '100%' } : {}"
+      :style="isEditing ? { width: '100%', background: 'transparent' } : {}"
     >
       <div
         v-if="isEditing"
