@@ -1,13 +1,14 @@
 @import "./index.module.scss";
 
 .btn-send {
-  background: #e0e0e0;
+  background: var(--main_button_color2);
   width: 110px;
   border-radius: 23px;
   font-size: 14px;
+  color: var(--main_button_text_color2);
   &.active {
-    color: #ffffff;
-    background: #000;
+    color: var(--main_button_text_color1);
+    background: var(--main_button_color1);
   }
 }
 

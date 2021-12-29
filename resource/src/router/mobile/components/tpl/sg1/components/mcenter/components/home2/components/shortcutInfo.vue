@@ -456,9 +456,9 @@ export default {
   }
 
   button {
-    color: #fff;
+    color: var(--mcenter_button_text_color1);
     font-size: 12px;
-    background: #000;
+    background: var(--mcenter_button_color1);
     padding: 3px 25px;
     border-radius: 10px;
   }
@@ -489,9 +489,9 @@ export default {
   }
 
   button {
-    color: #fff;
+    color: var(--mcenter_button_text_color1);
     font-size: 12px;
-    background: #000;
+    background: var(--mcenter_button_color1);
     padding: 3px 25px;
     border-radius: 10px;
   }

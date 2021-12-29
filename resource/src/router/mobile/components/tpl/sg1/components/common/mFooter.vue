@@ -159,13 +159,13 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: #424142;
+  color: var(--footer_color);
   position: relative;
   font-weight: 400;
   font-size: 15px;
 
   &.active {
-    color: #424142;
+    color: var(--footer_active_color);
     font-weight: 700;
   }
 

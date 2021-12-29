@@ -455,8 +455,8 @@ export default {
 }
 
 .go-edit {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--mcenter_button_color1);
+  color: var(--mcenter_button_text_color1);
   font-size: 14px;
   border-radius: 23px;
   width: 90%;

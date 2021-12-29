@@ -33,8 +33,8 @@
   --homepage_right_text_color: #ffad0a;
 
   //功能列（一般：選單(客製顏色)、點選：輔色）
-  --footer_color: #731c25;
-  --footer_active_color: #fe593c;
+  --footer_color: #424142;
+  --footer_active_color: #424142;
 
   //第二層選單（主色）
   //>底線模式
@@ -70,7 +70,7 @@
 
   //按鈕主色
   --mcenter_button_color1: #000;
-  --mcenter_button_text_color1: #f3ede7;
+  --mcenter_button_text_color1: #ffffff;
   --mcenter_button_color2: #d2d2d2;
   --mcenter_button_text_color2: #ededed;
 
@@ -159,8 +159,8 @@
   ); //我的客服彈窗 重要提醒
   --send_keyring: var(--main_button_color1); //獲取驗證碼按鈕
   --send_keyring_disabled: var(--main_button_color2); //獲取驗證碼按鈕disabled
-  --popup_tip_ok_color: #000; //溫馨提示彈窗 確認 & 大廳公告彈窗左
-  --popup_tip_close_color: #000; //溫馨提示彈窗 關閉 & 大廳公告彈窗右
+  --popup_tip_ok_color: #6aaaf5; //溫馨提示彈窗 確認 & 大廳公告彈窗左
+  --popup_tip_close_color: #6aaaf5; //溫馨提示彈窗 關閉 & 大廳公告彈窗右
   --apptip_title: #e61938; //大廳立即下載title
   --find_password_text_color: #a5a9b3; //找回密碼
   --find_password_text_active_color: #414655; //找回密碼active
@@ -187,7 +187,7 @@
   ); //盈虧返例、團隊概況 前面圓形的顏色
   --popup_text_color1: #000; //彈窗確定
   --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
-  --popup_text_color3: #414655; //彈窗取消
+  --popup_text_color3: #000; //彈窗取消
   --marquee_text_color1: #b7b7b7; //大廳跑馬燈
   --marquee_text_color2: #b1b1b1; //提現、充值跑馬燈
   --vip_detail_color: #000; //查看VIP详情
@@ -213,12 +213,14 @@
   ); //我的返水 一鍵領取按鈕disable
   --bankrebate_receive_text_color: #ffffff; //我的返水 一鍵領取按鈕文字
   --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
-  --mcenter_send_keyring: #bf8646; //獲取驗證碼按鈕
-  --mcenter_send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
+  --mcenter_send_keyring: var(--main_button_color1); //獲取驗證碼按鈕
+  --mcenter_send_keyring_disabled: var(
+    --main_button_color2
+  ); //獲取驗證碼按鈕disabled
   --help_contact_copy: #222; //幫助中心 聯繫我們 複製
   --mcenter_wallet_text_color: #db6372; //中心錢包的錢＆一鍵回收＆額度轉讓字
   --redpot_text_color: #bf8646; //紅包彩金文字
-  --mcenter_change_avatar_image: #bf8646; //編輯個人頭像
+  --mcenter_change_avatar_image: #000000; //編輯個人頭像
   --mcenter_upload_image_button: linear-gradient(
     to left,
     #fe593c 0%,

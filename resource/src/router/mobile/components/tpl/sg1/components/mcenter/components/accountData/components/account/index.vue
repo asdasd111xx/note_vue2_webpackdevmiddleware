@@ -384,7 +384,11 @@
           </div>
           <div
             :class="[$style['account-data-field'], 'clearfix']"
-            @click="$router.push('/mobile/mcenter/accountData/email')"
+            @click="
+              memInfo.user.email
+                ? ''
+                : $router.push('/mobile/mcenter/accountData/email')
+            "
           >
             <span :class="$style['field-title']">{{
               $text("S_E_MAIL", "电子邮箱")

@@ -40,7 +40,7 @@
 
     > div {
       color: #5e626d;
-      background-color: #fefffe1;
+      background-color: #fefffe;
       width: 100%;
       height: 50px;
       line-height: 50px;
@@ -221,7 +221,7 @@
   color: #ffffff;
   text-align: center;
   border-bottom: 1px solid #eee;
-  background: #fefffe1;
+  background: #fefffe;
 
   &::before {
     content: "";
@@ -269,7 +269,7 @@
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   box-shadow: none;
-  color: var(--main_text_color2);
+  color: #a6a9b2;
   font-size: 15px;
   height: 100%;
   line-height: 43px;
@@ -280,7 +280,7 @@
   border: unset;
 
   > .active {
-    color: var(--main_text_color3);
+    color: #414655;
   }
 }
 
@@ -289,7 +289,7 @@
     img {
       &.active {
         border: 2px solid transparent;
-        border-color: #e42a30;
+        border-color: var(--mcenter_change_avatar_image);
       }
     }
 
