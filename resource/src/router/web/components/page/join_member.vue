@@ -607,7 +607,7 @@
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
-        <a>若有会员帐号，<span>去登录＞</span></a>
+        <a>若有会员帐号，<span>去登录＞</span></a>
       </div>
       <div :class="$style['version']">
         {{ version }}
@@ -842,6 +842,7 @@ export default {
       siteConfig: "getSiteConfig",
       version: "getVersion"
     }),
+
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
@@ -1892,12 +1893,12 @@ export default {
         console.log(res);
         if (res.status === "000") {
           this.phoneVerifyModalShow = false;
-            this.showPhoneCheckIcon = true;
-            this.NeedCode = false;
-            this.register_phone_keyring = res.data.keyring;
-        }else{
-            this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg = res.msg
+          this.showPhoneCheckIcon = true;
+          this.NeedCode = false;
+          this.register_phone_keyring = res.data.keyring;
+        } else {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg = res.msg;
         }
       });
     },
@@ -1939,13 +1940,13 @@ export default {
       }).then(res => {
         console.log(res);
         if (res.status === "000") {
-            this.mailVerifyModalShow = false;
-            this.showMailCheckIcon = true;
-            this.mailNeedCode = false;
-            this.register_email_keyring = res.data.keyring;
-        }else{
-            this.mailSubmitFail = true;
-            this.mailSubmitFailMsg = res.msg
+          this.mailVerifyModalShow = false;
+          this.showMailCheckIcon = true;
+          this.mailNeedCode = false;
+          this.register_email_keyring = res.data.keyring;
+        } else {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg = res.msg;
         }
       });
       // axios({

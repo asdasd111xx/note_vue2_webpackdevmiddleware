@@ -85,7 +85,7 @@ export default {
 .join-btn {
   margin: 0 auto;
   background: var(--main_button_color1);
-  border-radius: 3px;
+  border-radius: 25px;
   height: 50px;
   line-height: 50px;
   width: 100%;
@@ -94,10 +94,11 @@ export default {
   font-family: Segoe UI, Segoe UI-Bold;
   font-weight: 700;
   text-align: center;
-  color: #ffffff;
+  color: var(--main_button_text_color1);
 
   &.disable {
     background: var(--main_button_color2);
+    color: var(--main_button_text_color2);
   }
 }
 
@@ -132,6 +133,10 @@ export default {
   border-radius: 75px;
   margin-bottom: 28px;
 }
+.field-text {
+  text-align: left;
+  padding-left: 10px;
+}
 
 .field-right {
   width: calc(100% - 95px);
@@ -161,5 +166,9 @@ export default {
   .click-unit {
     border-radius: 20px;
   }
+}
+
+.get-verify-btn {
+  border-radius: 15px;
 }
 </style>
