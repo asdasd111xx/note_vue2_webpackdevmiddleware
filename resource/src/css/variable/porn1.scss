@@ -151,6 +151,7 @@
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #6aaaf5; //充值 選擇支付方式、支付通道框框
   --wallet_border_text_color: #414655; //充值 選擇支付方式、支付通道框框的文字顏色
+  --deposit_crypto_block_money_color: #6aaaf5; //充值 轉入金額顏色
   --redpot: #db6372; //紅包彩金文字顏色
   --deco_color: #414655; //前面長方形顏色(我的推廣 全部下級概況)
   --deco_color2: #a6a9b2; //盈虧返例、團隊概況 前面圓形的顏色
@@ -161,11 +162,9 @@
   --marquee_text_color2: #9ca3bf; //提現、充值跑馬燈
   --vip_detail_color: #414655; //查看VIP详情
   --avatar-vip-icon-color: #9ca3bf; //我的 vip等級 背景顏色
-  --redpot_button_color: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //紅包彩金裡面領取按鈕
+  --redpot_button_color: linear-gradient(to left,
+      #bd9d7d 0%,
+      #f9ddbd 100%); //紅包彩金裡面領取按鈕
   --addcard_popup_text_color: #414655; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
   --addcard_popup_prev_text_color: #6aaaf5; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --widthdraw_tip_text_color: #6aaaf5; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
