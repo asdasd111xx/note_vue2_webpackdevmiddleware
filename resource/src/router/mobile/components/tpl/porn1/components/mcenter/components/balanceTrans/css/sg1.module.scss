@@ -1,13 +1,18 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
+  border-radius: 11px;
+  color: var(--mcenter_button_text_color1);
   background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
+  border-radius: 23px;
+  color: var(--mcenter_button_text_color1);
   background: var(--mcenter_button_color1);
 
   &.is-disable {
+    color: var(--mcenter_button_text_color2);
     background: var(--mcenter_button_color2);
   }
 }
@@ -15,7 +20,7 @@
 .select-container {
   .select-header {
     span {
-      color: var(--mcenter_slider_text_active_color);
+      color: var(--addcard_popup_prev_text_color);
     }
   }
 }

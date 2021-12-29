@@ -4,14 +4,14 @@
     :has-footer="false"
     :class="$style.container"
   >
-    <div slot="content" :class="$style['help-wrap']">
-      <div
-        v-for="listInfo in list"
-        v-if="listInfo.needLogin ? loginStatus : true"
-        :key="`list-${listInfo.name}`"
-        :class="$style.list"
-        @click="handleClick(listInfo)"
-      >
+    <div
+      slot="content"
+      :class="$style['help-wrap']"
+      v-for="listInfo in list"
+      :key="`list-${listInfo.name}`"
+      @click="handleClick(listInfo)"
+    >
+      <div v-if="listInfo.needLogin ? loginStatus : true" :class="$style.list">
         <div :class="$style['list-icon']">
           <img
             :src="
@@ -187,7 +187,7 @@ export default {
     }
 
     .list-info {
-      color: #cbced8;
+      color: #a2a2a2;
       font-size: 12px;
       position: absolute;
       right: 38px;
