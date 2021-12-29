@@ -8,7 +8,7 @@
     <div>
       <span :class="$style['go-btn']" @click="handleClick">立即收藏</span>
       <img
-        :src="$getCdnPath('/static/image/common/btn_close_grey.png')"
+        :src="$getCdnPath('/static/image/common/btn_close_white.png')"
         @click="handleClose"
       />
     </div>
