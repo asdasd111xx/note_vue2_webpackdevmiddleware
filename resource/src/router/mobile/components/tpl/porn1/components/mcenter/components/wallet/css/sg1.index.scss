@@ -26,7 +26,7 @@
     .goDeposit {
       color: var(--mcenter_button_text_color1);
       background: var(--mcenter_button_color1);
-      box-shadow: 0pt 3px 7px 0pt rgba(255, 0, 0, 0.3);
+      box-shadow: 0pt 3px 7px 0pt rgba(131, 131, 131, 0.3);
     }
   }
 }
@@ -39,6 +39,7 @@
 
 .balance-wrap {
   .balance-total-item {
+    color: var(--mcenter_wallet_redpot_text_color);
     .balance-item-money {
       color: var(--mcenter_wallet_text_color);
     }
