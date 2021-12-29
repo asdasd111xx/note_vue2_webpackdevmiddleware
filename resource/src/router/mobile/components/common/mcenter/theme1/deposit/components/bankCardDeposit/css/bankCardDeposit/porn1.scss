@@ -15,7 +15,7 @@
   height: 38px;
   line-height: 38px;
   text-align: center;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   white-space: nowrap;
 
   span {
@@ -26,10 +26,10 @@
   }
 
   &.is-current {
-    color: var(--member_text_color4);
+    color: #414655;
 
     span {
-      border-bottom: 2px solid var(--member_slider);
+      border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
     }
   }
 }
@@ -112,7 +112,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--member_color100);
+  color: var(--addcard_popup_prev_text_color);
   transform: translateY(-50%);
 }
 
@@ -149,7 +149,7 @@
 
   &.is-current {
     border: 1px solid var(--wallet_border_color);
-    color: var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
     background: linear-gradient(
       -45deg,
       var(--wallet_border_color) 10px,
@@ -285,7 +285,7 @@
 
   &.is-current {
     background-color: #fff;
-    color: var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
     border: 1px solid var(--wallet_border_color);
     background: linear-gradient(
       -45deg,
@@ -311,11 +311,11 @@
   white-space: nowrap;
   border-radius: 3px;
   // cursor: pointer;
-  color: var(--member_text_color1);
-  background: var(--member_gradient_color1);
+  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
@@ -383,10 +383,10 @@
   align-items: center;
   width: 100%;
   height: 52px;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 
   .time {
-    color: var(--member_text_color6);
+    color: var(--countdown_time_text_color);
     margin: 0 5px 0 5px;
   }
 
@@ -406,7 +406,7 @@
     }
 
     .yb {
-      color: #414655;
+      color: #6aaaf5;
       font-weight: 500;
     }
 
@@ -416,7 +416,7 @@
     }
 
     .sg {
-      color: $share_member_text_color4;
+      color: #bf8646;
       font-weight: 500;
     }
   }
@@ -428,8 +428,8 @@
   .conversion-btn {
     display: inline-block;
     margin-left: 10px;
-    border: 1px solid $share_member_text_color4;
-    color: $share_member_text_color4;
+    border: 1px solid #bd9d7d;
+    color: #bd9d7d;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -593,7 +593,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--member_color100);
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 
@@ -801,13 +801,13 @@
   color: #cbced8;
 
   &.success {
-    color: var(--popup_text_color1);
+    color: var(--widthdraw_tip_text_color);
   }
 }
 
 .current-data {
   background-color: #fff;
-  color: var(--wallet_border_color);
+  color: var(--wallet_border_text_color);
   border: 1px solid var(--wallet_border_color);
   background: linear-gradient(
     -45deg,
@@ -862,7 +862,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--member_color1);
+  color: var(--mcenter_main_color);
 }
 
 .money-tip-wrap {
@@ -1157,15 +1157,7 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: $share_member_text_color4;
-
-    &.sg {
-      color: #bf8646;
-    }
-
-    &.ey {
-      color: #e42a30;
-    }
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 
@@ -1198,7 +1190,7 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: var(--member_color100);
+  color: var(--popup_text_color1);
   margin: 0;
   padding: 0;
   height: 40px;
@@ -1213,7 +1205,7 @@
 
 .top-promotion {
   background: #f8f8f7;
-  color: $share_member_text_color4;
+  color: #bd9d7d;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1225,7 +1217,7 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: $share_member_text_color4;
+  color: var(--widthdraw_tip_text_color);
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;

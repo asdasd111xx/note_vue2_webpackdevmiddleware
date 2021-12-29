@@ -4,13 +4,13 @@
   color: #a2a2a2;
 
   &.active {
-    color: var(--member_color100);
+    color: #6aaaf5;
   }
 }
 
 .field-search-wrap {
   .btn-search {
-    background: var(--member_gradient_color1);
+    background: #6aaaf5;
     color: white;
 
     &.disable {

@@ -248,10 +248,7 @@
         </div>
 
         <div
-          :class="[
-            $style['modal-button-center'],
-            $style[siteConfig.MOBILE_WEB_TPL]
-          ]"
+          :class="[$style['modal-button-center']]"
           @click="closeRedirect_url()"
         >
           确定
@@ -334,14 +331,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: var(--type_title_text_color);
+  color: var(--homepage_left_text_color);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
   &.active {
-    color: var(--type_title_text_color_active);
+    color: var(--homepage_left_text_active_color);
   }
 }
 
@@ -370,7 +367,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: $share_main_button_color2;
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: #fff;
     }
   }
@@ -396,7 +393,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: var(--mcenter_wrap_text_color);
+    color: var(--homepage_right_text_color);
     font-size: 12px;
     text-align: center;
   }
@@ -690,18 +687,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: $share_member_text_color4;
-  }
-
-  &.ey1:last-child {
-    color: #e42a30;
-  }
-
-  &.porn1:last-child {
-    color: $share_member_text_color4;
-  }
-  &.sg1:last-child {
-    color: var(--member_color100);
+    color: var(--send_keyring);
   }
 }
 </style>

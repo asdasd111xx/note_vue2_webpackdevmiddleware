@@ -42,7 +42,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 
   img {
     width: 13px;
@@ -50,13 +50,13 @@
     vertical-align: text-bottom;
   }
 
-  >span {
+  > span {
     margin-left: 5px;
   }
 
   .balance-item-money {
     font-size: 16px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
   }
 }
 
@@ -64,7 +64,7 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: var(--member_color100);
+  color: var(--mcenter_wallet_text_color);
   font-weight: 700;
 
   &::before {
@@ -94,11 +94,11 @@
 .balance-tip-wrap {
   width: 100%;
   text-align: left;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   .balance-auto-tip {
     font-size: 12px;
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 
@@ -111,20 +111,20 @@
   }
 
   /* Focus */
-  .ui.toggle.checkbox input:focus~.box:before,
-  .ui.toggle.checkbox input:focus~label:before {
+  .ui.toggle.checkbox input:focus ~ .box:before,
+  .ui.toggle.checkbox input:focus ~ label:before {
     background-color: rgba(0, 0, 0, 0.05) !important;
   }
 
   /* Active */
-  .ui.toggle.checkbox input:checked~.box:before,
-  .ui.toggle.checkbox input:checked~label:before {
+  .ui.toggle.checkbox input:checked ~ .box:before,
+  .ui.toggle.checkbox input:checked ~ label:before {
     background-color: #7d87a3 !important;
   }
 
   /* Active Focus */
-  .ui.toggle.checkbox input:focus:checked~.box:before,
-  .ui.toggle.checkbox input:focus:checked~label:before {
+  .ui.toggle.checkbox input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox input:focus:checked ~ label:before {
     background-color: #7d87a3 !important;
   }
 
@@ -134,15 +134,15 @@
     height: 29px;
   }
 
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~.box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~label:after {
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:after,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:after {
     left: 20px;
     top: 1px;
     box-shadow: none;
   }
 
-  .ui.toggle.checkbox.field-checkbox.ey1 input~.box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input~label:after {
+  .ui.toggle.checkbox.field-checkbox.ey1 input ~ .box:after,
+  .ui.toggle.checkbox.field-checkbox.ey1 input ~ label:after {
     left: 1px;
     top: 1px;
     box-shadow: none;
@@ -161,10 +161,10 @@
   }
 
   .ui.toggle.checkbox.field-checkbox.ey1 .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~.box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked~label:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked~.box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked~label:before {
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ .box:before,
+  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ label:before {
     background-color: #6aaaf5 !important;
   }
 }
@@ -186,7 +186,7 @@
   padding: 10px 4px 15px;
   text-align: center;
   font-size: 14px;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
   border-bottom: 1px solid #eee;
 
   &:not(:nth-child(4n + 1)):before {
@@ -210,7 +210,7 @@
 
   &.expend,
   &.collapse {
-    color: var(--main_text_color3);
+    color: var(--slider_text_color);
     border-bottom: none;
 
     .icon {
@@ -232,7 +232,7 @@
 
 .balance-info-maintain {
   font-size: 12px;
-  color: $main_error_color1;
+  color: #db6372;
 }
 
 .balance-wrench {
@@ -243,7 +243,7 @@
 
 .balance-item-money {
   display: block;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 
   &.more {
     word-break: break-word;
@@ -262,10 +262,12 @@
   width: 25px;
   height: 25px;
 
-  background: url("/static/image/aobo1/common/ic_event.png") center center / 100% 100%;
+  background: url("/static/image/aobo1/common/ic_event.png") center center /
+    100% 100%;
 
   &.porn1 {
-    background: url("/static/image/porn1/common/ic_event.png") center center / 100% 100%;
+    background: url("/static/image/porn1/common/ic_event.png") center center /
+      100% 100%;
   }
 }
 
@@ -281,14 +283,15 @@
   display: block;
   padding: 8px 17px;
   background: #eee;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
   font-size: 14px;
 }
 
 .balance-transfer-wrap {
   margin: 1% 0 2%;
   border-radius: 4px;
-  background: url("/static/image/common/mcenter/balanceTrans/ic_transfergo.png") #fff 50% 50% no-repeat;
+  background: url("/static/image/common/mcenter/balanceTrans/ic_transfergo.png")
+    #fff 50% 50% no-repeat;
   background-size: 20px 15px;
 }
 
@@ -335,7 +338,7 @@
 
   .select-wrap {
     position: absolute;
-    background: $main_white_color1;
+    background: #fefffe;
     width: 100%;
     bottom: 0;
     padding: 0 17px;
@@ -350,7 +353,7 @@
     font-size: 16px;
     text-align: center;
     height: 65px;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
 
     &::before {
       content: "";
@@ -364,14 +367,14 @@
     span {
       position: absolute;
       left: 0;
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
   .select-content {
     position: relative;
     font-size: 14px;
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     max-height: 500px;
     overflow: hidden;
     overflow-y: auto;
@@ -394,7 +397,7 @@
 
 .select-title {
   font-size: 12px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 }
 
 // .select-arrow-icon {
@@ -429,7 +432,7 @@
   outline: none;
   border: none;
   background: transparent;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   &::placeholder {
     color: #cdced8;
@@ -445,7 +448,7 @@
   font-size: 14px;
   border-radius: 3px;
   color: #fff;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
@@ -456,10 +459,10 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.is-disable {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }

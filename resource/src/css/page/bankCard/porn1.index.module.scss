@@ -93,13 +93,13 @@
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.is-current {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -109,6 +109,6 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: var(--member_color1);
+  background: var(--mcenter_slider_underline_active_color);
   transition: left 0.31s;
 }

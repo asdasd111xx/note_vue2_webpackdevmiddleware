@@ -180,7 +180,7 @@ export default {
 
 .tab-wrap {
   height: 43px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   position: relative;
 }
 
@@ -189,7 +189,7 @@ export default {
   bottom: 1.5px;
   left: calc(12.5% - 25px);
   height: 2px;
-  background-color: $share_member_text_color4;
+  background-color: var(--slider_underline_active_color);
   width: 50px;
   transition: left 0.31s;
 }
@@ -204,7 +204,7 @@ export default {
   text-align: center;
 
   &.active {
-    color: var(--main_text_color2);
+    color: #ffffff;
   }
 }
 
@@ -229,7 +229,7 @@ export default {
   font-weight: 500;
   background-color: black;
   opacity: 0.6;
-  color: $main_white_color1;
+  color: #fefffe;
   font-size: 12px;
   height: 36px;
   width: 100%;

@@ -248,8 +248,20 @@ export default {
           break;
 
         case "aobo1":
-          _vendor = 92;
-          _bundleID = "cyiosdev0001.aoboCasino.prod";
+          _vendor = this.memInfo.user.domain;
+          _bundleID =
+            +this.memInfo.user.domain === 92
+              ? "cyiosdev0001.aoboCasino.prod"
+              : "cyiosdev0001.aoboCasino.qa";
+          break;
+
+        case "sp1":
+          _vendor = this.memInfo.user.domain;
+          _bundleID =
+            +this.memInfo.user.domain === 94
+              ? "cyiosdev0001.mobile.intl51.vip"
+              : "cyiosdev0001.mobile.intl51.qa";
+
           break;
       }
 
@@ -385,7 +397,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mem-list {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .list-part {
@@ -404,7 +416,7 @@ export default {
   padding: 0 18px;
   display: flex;
   align-items: center;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
 
   > span {

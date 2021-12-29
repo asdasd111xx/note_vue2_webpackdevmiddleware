@@ -164,7 +164,7 @@ export default {
 
 div.container {
   // Yabo & gay & les
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   overflow-x: hidden;
   &.smallPig {
     background-color: #333;

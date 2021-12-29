@@ -271,12 +271,12 @@ export default {
   font-size: 18px;
 
   &:first-child {
-    color: var(--popup_text_color2);
+    color: var(--popup_tip_close_color);
     border-right: 1px solid #eee;
   }
 
   &:last-child {
-    color: var(--popup_text_color1);
+    color: var(--popup_tip_ok_color);
   }
 }
 

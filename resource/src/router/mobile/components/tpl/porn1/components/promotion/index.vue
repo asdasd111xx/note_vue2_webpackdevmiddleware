@@ -301,7 +301,7 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: var(--member_color1);
+  background-color: var(--slider_underline_active_color);
   width: 50px;
   transition: left 0.31s;
 }
@@ -314,10 +314,9 @@ $fixed_spacing_height: 43px;
   font-weight: 500;
   font-size: 14px;
   text-align: center;
-  color: var(--member_text_color3);
+  color: var(--slider_text_color);
   &.active {
-    color: var(--member_text_color4);
-    // border-bottom: solid 1px $share_member_text_color4;
+    color: var(--slider_text_active_color);
   }
 }
 
@@ -345,7 +344,7 @@ $fixed_spacing_height: 43px;
 
 .time {
   line-height: 13px;
-  color: var(--main_text_color4);
+  color: var(--slider_text_active_color);
   font-size: 10px;
 
   > img {

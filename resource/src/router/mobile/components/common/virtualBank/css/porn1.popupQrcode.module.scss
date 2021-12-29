@@ -29,17 +29,17 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
 }
 
 .content {
   padding: 17px 18px;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   text-align: center;
 
   .title {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     font-size: 18px;
     font-weight: 700;
   }
@@ -69,7 +69,7 @@ a {
       margin-bottom: 5px;
     }
 
-    color: $main_error_color1;
+    color: #db6372;
   }
 
   .tips {

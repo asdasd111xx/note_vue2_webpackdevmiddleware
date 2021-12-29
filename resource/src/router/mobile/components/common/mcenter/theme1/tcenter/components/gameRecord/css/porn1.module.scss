@@ -18,11 +18,11 @@ $buttonTextColor: #fff;
   display: inline-block;
   line-height: 12px;
   margin: 0 9px;
-  color: var(--main_text_color2);
+  color: #ffffff;
   font-size: 12px;
 
   &.active {
-    color: $share_member_text_color4;
+    color: #6aaaf5;
   }
 }
 
@@ -95,7 +95,7 @@ $buttonTextColor: #fff;
   border-top: 1px solid #eaeaea;
 
   .btn-search {
-    background: $share_main_button_color2;
+    background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     margin: 0 auto;
     width: 85%;
     line-height: 45px;

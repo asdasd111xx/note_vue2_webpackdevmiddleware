@@ -502,6 +502,11 @@ export default {
               };
 
               let getCustomizeLink = () => {
+                if (!uri) {
+                  this.src = "";
+                  return;
+                }
+
                 return goLangApiRequest({
                   method: "post",
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
@@ -1080,7 +1085,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
   text-align: center;
   color: #a6a9b2;
@@ -1107,11 +1112,11 @@ export default {
     width: 50%;
     padding: 10px 0;
     &.close {
-      color: var(--main_color100);
+      color: var(--popup_tip_close_color);
       border-right: 1px solid #f7f8fb;
     }
     &.confirm {
-      color: var(--main_color100);
+      color: var(--popup_tip_ok_color);
     }
   }
 }

@@ -15,16 +15,16 @@
     border-bottom: #f8e1a1 dashed 1px;
 
     .list-name {
-      color: #f8e1a1;
+      color: var(--tcenter_left_title_color);
 
       .list-btn {
         color: #222222;
-        background-color: #ffd68a;
+        background-color: var(--tcenter_color);
       }
     }
 
     .list-value {
-      color: #ffffff;
+      color: var(--tcenter_right_title_color);
     }
   }
 }
@@ -48,11 +48,11 @@
     .topday-content {
       .title-point {
         &.deposit {
-          background-color: #e61938;
+          background-color: var(--tcenter_progress_color1);
         }
 
         &.withdraw {
-          background-color: #ffd68a;
+          background-color: var(--tcenter_progress_color2);
         }
       }
     }

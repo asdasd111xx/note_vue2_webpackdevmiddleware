@@ -8,7 +8,6 @@
       v-for="info in list"
       :key="info.key"
       :class="[
-        $style[siteConfig.ROUTER_TPL],
         $style['footer-item'],
         $style[`${info.key}`],
         {
@@ -94,7 +93,6 @@
       :key="info.key"
       :class="[
         $style['footer-item'],
-        $style['sp1'],
         $style[`${info.key}`],
         { [$style.active]: isActive(info.key) }
       ]"
@@ -311,19 +309,11 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: $share_footer_color1;
+  color: var(--footer_color);
   position: relative;
-  font-weight: 700;
 
   &.active {
-    color: $share_footer_active_color1;
-  }
-
-  &.porn1 {
-    color: #707994;
-    &.active {
-      color: #323943;
-    }
+    color: var(--footer_active_color);
   }
 
   > div {
@@ -344,10 +334,6 @@ export default {
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  &.sp1 {
-    color: #222222;
   }
 }
 

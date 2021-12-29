@@ -208,7 +208,7 @@ export default {
   font-size: 11px;
   line-height: 17px;
   height: 17px;
-  color: var(--member_text_color1);
+  color: var(--mcenter_button_text_color1);
   text-align: center;
   font-weight: bold;
   width: 40px;

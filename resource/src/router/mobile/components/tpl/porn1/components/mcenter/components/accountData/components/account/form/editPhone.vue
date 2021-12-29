@@ -544,6 +544,7 @@ export default {
                 this.isSendSMS = false;
               });
             } else {
+              // http: "429"
               if (res && res.status === "506") {
                 this.actionGetToManyRequestMsg(res.msg).then(res => {
                   this.tipMsg = res;
@@ -564,8 +565,10 @@ export default {
             if (error && error.msg) {
               this.tipMsg = error.msg;
             } else {
-              if (error && error.status === 429) {
-                this.actionGetToManyRequestMsg(error.message).then(res => {
+              if (error.response && error.response.status === 429) {
+                this.actionGetToManyRequestMsg(
+                  error.response.data.message
+                ).then(res => {
                   this.tipMsg = res;
                 });
                 return;
@@ -611,11 +614,11 @@ export default {
               this.tipMsg = error.response.data.msg;
             } else {
               if (error.response && error.response.status === 429) {
-                this.actionGetToManyRequestMsg(error.response.message).then(
-                  res => {
-                    this.tipMsg = res;
-                  }
-                );
+                this.actionGetToManyRequestMsg(
+                  error.response.data.message
+                ).then(res => {
+                  this.tipMsg = res;
+                });
                 return;
               }
               this.tipMsg = error.response.data;
@@ -665,11 +668,11 @@ export default {
               this.tipMsg = error.response.data.msg;
             } else {
               if (error.response && error.response.status === 429) {
-                this.actionGetToManyRequestMsg(error.response.message).then(
-                  res => {
-                    this.tipMsg = res;
-                  }
-                );
+                this.actionGetToManyRequestMsg(
+                  error.response.data.message
+                ).then(res => {
+                  this.tipMsg = res;
+                });
                 return;
               }
               this.tipMsg = error.response.data;
@@ -688,10 +691,10 @@ export default {
         smsUrl = "/api/v1/c/outer/sms/verify";
         params["phone"] = `${this.phoneHead.replace("+", "")}-${this.newValue}`;
       } else if (this.isfromWithdraw) {
-        smsUrl = "/api/v1/c/player/withdraw/sms/verify";
+        smsUrl = `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Withdraw/Sms/Verify`;
       }
 
-      if (this.isfromWithdraw || this.isfromSWAG) {
+      if (this.isfromSWAG) {
         ajax({
           method: "put",
           url: smsUrl,
@@ -712,6 +715,22 @@ export default {
                 this.$router.replace("/mobile/mcenter/withdraw");
               }
             }
+          }
+        });
+      } else if (this.isfromWithdraw) {
+        goLangApiRequest({
+          method: "put",
+          url: smsUrl,
+          params: {
+            lang: "zh-cn",
+            ...params
+          }
+        }).then(res => {
+          console.log(res);
+          if (res && res.status === "000") {
+            // 完成後回到上一頁
+            localStorage.setItem("tmp_w_1", res.data);
+            this.$router.replace("/mobile/mcenter/withdraw");
           }
         });
       } else {
