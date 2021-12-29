@@ -327,12 +327,6 @@ export default {
       name: "mcenter-rewardRules",
       component
     },
-    // {
-    // //SWAG
-    // path: "swag",
-    // name: "mcenter-swag",
-    // component
-    // },
     {
       // 推廣大廳
       path: "tcenterLobby",
