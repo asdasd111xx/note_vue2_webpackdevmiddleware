@@ -1,6 +1,7 @@
 @import "./sendFeedback.module.scss";
 
 .submit {
+  border-radius: 23px;
   background: var(--mcenter_button_color1);
 
   &.disabled {
