@@ -21,7 +21,7 @@
               <span :class="[$style['profit_date']]"> {{ info.date }}</span>
 
               <span :class="[$style['profit_day']]"
-                >剩余天数{{ info.day }}天</span
+                >剩余天数：{{ info.day }}天</span
               >
             </div>
           </div>
