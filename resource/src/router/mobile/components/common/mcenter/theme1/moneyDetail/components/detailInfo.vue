@@ -114,13 +114,6 @@ export default {
 
       //  明細後聯繫客服上一頁
       if (
-        this.$route.name === "mcenter-swag" &&
-        currentUrl !== "/mobile/mcenter/swag?tab=1"
-      ) {
-        this.$router.replace("/mobile/mcenter/swag?tab=1");
-      }
-
-      if (
         this.$route.name === "mcenter-creditTrans" &&
         currentUrl !== "/mobile/mcenter/creditTrans?tab=2"
       ) {

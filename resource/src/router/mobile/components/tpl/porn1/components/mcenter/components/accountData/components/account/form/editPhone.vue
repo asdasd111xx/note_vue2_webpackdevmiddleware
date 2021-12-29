@@ -78,7 +78,7 @@
         </div>
       </template>
 
-      <template v-if="checkCode.isShow || isfromWithdraw || isfromSWAG">
+      <template v-if="checkCode.isShow || isfromWithdraw">
         <div :class="$style.block">
           <div :class="$style.title">
             手机验证码
@@ -199,11 +199,6 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    isfromSWAG() {
-      return this.$route.query.redirect
-        ? this.$route.query.redirect.toUpperCase() === "SWAG"
-        : false;
-    },
     isfromWithdraw() {
       const { query } = this.$route;
       let redirect = query.redirect;
@@ -220,15 +215,14 @@ export default {
       let _funcBtnActive = true;
       let checkActiveArray = [this.newValue, !this.tipMsg];
       //  提現前驗證不需要舊手機欄位
-      if (this.checkCode.isShow || this.isfromWithdraw || this.isfromSWAG) {
+      if (this.checkCode.isShow || this.isfromWithdraw) {
         checkActiveArray.push(!!this.codeValue);
       }
 
       if (
         this.memInfo.phone.phone &&
         this.oldPhone.isShow &&
-        !this.isfromWithdraw &&
-        !this.isfromSWAG
+        !this.isfromWithdraw
       ) {
         checkActiveArray.push(!!this.oldValue);
       }
@@ -289,8 +283,7 @@ export default {
     sendBtn() {
       return {
         label: this.$text("S_GET_VERIFICATION_CODE", "获取验证码"),
-        isShow:
-          this.info.verification || this.isfromWithdraw || this.isfromSWAG,
+        isShow: this.info.verification || this.isfromWithdraw,
         countdownSec: this.countdownSec
       };
     }
@@ -404,7 +397,7 @@ export default {
         if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
           this.tipMsg = "";
 
-          if (this.isfromWithdraw || this.isfromSWAG) {
+          if (this.isfromWithdraw) {
             this.isVerifyPhone = true;
             return;
           }
@@ -519,10 +512,7 @@ export default {
       };
 
       let smsUrl = "";
-      if (this.isfromSWAG) {
-        smsUrl = "/api/v1/c/player/outer/sms";
-        params["vendor"] = "swag";
-      } else if (this.isfromWithdraw) {
+      if (this.isfromWithdraw) {
         smsUrl = `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Withdraw/Verify/Sms`;
       } else {
         smsUrl = "/api/v1/c/player/verify/phone";
@@ -574,54 +564,6 @@ export default {
                 return;
               }
               this.tipMsg = error.msg;
-            }
-          });
-      } else if (this.isfromSWAG) {
-        axios({
-          method: "post",
-          url: smsUrl,
-          data: params
-        })
-          .then(res => {
-            if (res && res.data && res.data.result === "ok") {
-              this.getPhoneTTL().then(() => {
-                this.locker();
-                this.isSendSMS = false;
-              });
-            } else {
-              if (res.data && res.data.msg) {
-                this.tipMsg = res.data.msg;
-              } else {
-                console.log(res.data);
-                this.tipMsg = res.data;
-              }
-            }
-            this.isSendSMS = false;
-            this.showCaptcha(false);
-          })
-          .catch(error => {
-            this.showCaptcha(false);
-            this.countdownSec = "";
-            this.isSendSMS = false;
-            console.log(error.response);
-
-            if (error.response.data && error.response.data.msg) {
-              // SWAG需求特利暫時調整
-              if (this.isfromSWAG && error.response.data.code == "C20190") {
-                this.tipMsg = "尚未绑定电话，请先至会员资料设定";
-                return;
-              }
-              this.tipMsg = error.response.data.msg;
-            } else {
-              if (error.response && error.response.status === 429) {
-                this.actionGetToManyRequestMsg(
-                  error.response.data.message
-                ).then(res => {
-                  this.tipMsg = res;
-                });
-                return;
-              }
-              this.tipMsg = error.response.data;
             }
           });
       } else {
@@ -681,43 +623,17 @@ export default {
       }
     },
     handleSubmit() {
-      // 提款,SWAG手機驗證
+      // 提款手機驗證
       let smsUrl = "";
       let params = {
         keyring: this.codeValue
       };
 
-      if (this.isfromSWAG) {
-        smsUrl = "/api/v1/c/outer/sms/verify";
-        params["phone"] = `${this.phoneHead.replace("+", "")}-${this.newValue}`;
-      } else if (this.isfromWithdraw) {
+      if (this.isfromWithdraw) {
         smsUrl = `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Withdraw/Sms/Verify`;
       }
 
-      if (this.isfromSWAG) {
-        ajax({
-          method: "put",
-          url: smsUrl,
-          errorAlert: false,
-          params: params,
-          fail: res => {
-            this.tipMsg = `${res.data.msg}`;
-          },
-          success: res => {
-            if (res && res.result === "ok") {
-              // 完成後回到上一頁
-              if (this.isfromSWAG) {
-                localStorage.setItem("tmp_d_1", res.ret);
-                this.$router.back();
-                // this.$router.push('/mobile/mcenter/swag');
-              } else if (this.isfromWithdraw) {
-                localStorage.setItem("tmp_w_1", res.ret);
-                this.$router.replace("/mobile/mcenter/withdraw");
-              }
-            }
-          }
-        });
-      } else if (this.isfromWithdraw) {
+      if (this.isfromWithdraw) {
         goLangApiRequest({
           method: "put",
           url: smsUrl,

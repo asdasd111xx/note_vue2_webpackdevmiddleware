@@ -144,22 +144,14 @@
                   />
                 </template>
               </template>
-              <div
-                v-if="
-                  game.isMaintain || (isMaintainSwag && game.vendor === 'SWAG')
-                "
-                :class="[$style['maintain-mask']]"
-              >
+              <div v-if="game.isMaintain" :class="[$style['maintain-mask']]">
                 <div
                   :class="[
                     {
                       [$style['maintain-mask-1']]:
-                        game.imageType === 1 ||
-                        game.imageType === 2 ||
-                        game.vendor === 'SWAG'
+                        game.imageType === 1 || game.imageType === 2
                     },
-                    { [$style['maintain-mask-2']]: game.imageType === 0 },
-                    { [$style['swag']]: game.vendor === 'SWAG' }
+                    { [$style['maintain-mask-2']]: game.imageType === 0 }
                   ]"
                 >
                   <div
@@ -179,52 +171,21 @@
                       } 维护中`
                     }}
                   </div>
-                  <div
-                    v-if="
-                      game.isMaintain ||
-                        (isMaintainSwag &&
-                          game.vendor === 'SWAG' &&
-                          swagConfig &&
-                          swagConfig.enable !== 0)
-                    "
-                    :class="[$style['container']]"
-                  >
+                  <div v-if="game.isMaintain" :class="[$style['container']]">
                     <div :class="[$style['us-time']]">
                       {{ `-美东时间-` }}
                     </div>
                     <div :class="[$style['container-maintain']]">
-                      <div
-                        :class="[
-                          $style['container-maintain-time'],
-                          { [$style['swag']]: game.vendor === 'SWAG' }
-                        ]"
-                      >
-                        {{
-                          `${
-                            game.vendor === "SWAG"
-                              ? swagESTMaintainStartAt
-                              : game.start_at
-                          }`
-                        }}
+                      <div :class="[$style['container-maintain-time']]">
+                        {{ `${game.start_at}` }}
                       </div>
                       <img
                         :src="
                           $getCdnPath(`/static/image/casino/ic_transfergo.png`)
                         "
                       />
-                      <div
-                        :class="[
-                          $style['container-maintain-time'],
-                          { [$style['swag']]: game.vendor === 'SWAG' }
-                        ]"
-                      >
-                        {{
-                          `${
-                            game.vendor === "SWAG"
-                              ? swagESTMaintainEndAt
-                              : game.end_at
-                          }`
-                        }}
+                      <div :class="[$style['container-maintain-time']]">
+                        {{ `${game.end_at}` }}
                       </div>
                     </div>
                   </div>
@@ -494,10 +455,6 @@ export default {
       background-color: #9ca3bf;
       width: 60%;
 
-      &.swag {
-        max-width: 245px;
-      }
-
       > div.maintain-text-1 {
         word-break: break-all;
         margin-top: 15px;
@@ -526,11 +483,6 @@ export default {
           > div.container-maintain-time {
             line-height: 12px;
             font-size: 8px !important;
-
-            &.swag {
-              line-height: 11px;
-              font-size: 9px !important;
-            }
           }
         }
       }

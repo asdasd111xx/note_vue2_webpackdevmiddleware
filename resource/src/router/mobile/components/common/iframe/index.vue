@@ -186,8 +186,6 @@ export default {
           return "/mobile";
         case "PROMOTION":
           return "/mobile/promotion";
-        case "SWAG":
-          return "/mobile";
         case "TCENTERLOBBY":
           return "/mobile/mcenter/tcenterLobby";
         case "VIPINFO":
@@ -234,26 +232,6 @@ export default {
           localStorage.getItem("iframe-third-url-title") ||
           ""
       };
-
-      // SWAG 固定
-      switch (origin) {
-        case "SWAG":
-          baseConfig.hasHeader = true;
-          baseConfig.hasFooter = false;
-          baseConfig.title = "SWAG";
-          this.isFullScreen = true;
-          break;
-
-        // 泡泡特例
-        case "GAME":
-          if (
-            this.siteConfig.ROUTER_TPL === "sg1" &&
-            this.$route.query.vendor === "lg_sport"
-          ) {
-            baseConfig.hasFooter = true;
-            break;
-          }
-      }
 
       return {
         ...baseConfig,
@@ -316,82 +294,6 @@ export default {
       }
       switch (params.page.toUpperCase()) {
         case "THIRDPARTY":
-        case "SWAG":
-          if (localStorage.getItem("iframe-third-url")) {
-            const vendor = query.vendor;
-            if (vendor === "SL") {
-              window.sportEvent = type => {
-                if (type === "GO_IM_SPORT") {
-                  if (!this.loginStatus) {
-                    this.$router.push("/mobile/login");
-                    return;
-                  } else {
-                    // 0421 進入遊戲前檢查withdrawcheck
-                    if (!this.withdrawCheckStatus.account) {
-                      lib_useGlobalWithdrawCheck("home");
-                      return;
-                    }
-
-                    const openGameSuccessFunc = res => {
-                      this.isShowLoading = false;
-                    };
-
-                    const openGameFailFunc = res => {
-                      this.isShowLoading = false;
-
-                      if (res && res.data) {
-                        let data = res.data;
-                        this.actionSetGlobalMessage({
-                          msg: data.msg,
-                          code: data.code
-                        });
-                      }
-                    };
-                    openGame(
-                      { vendor: "boe", kind: 1 },
-                      openGameSuccessFunc,
-                      openGameFailFunc
-                    );
-                  }
-                }
-              };
-            }
-            this.src = localStorage.getItem("iframe-third-url");
-            return;
-          }
-
-          let userId = "guest";
-          if (
-            this.memInfo &&
-            this.memInfo.user &&
-            this.memInfo.user.id &&
-            this.memInfo.user.id !== 0
-          ) {
-            userId = this.memInfo.user.id;
-          }
-
-          goLangApiRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}`
-          }).then(res => {
-            if (res && res.status !== "000") {
-              // 維護非即時更新狀態
-              if (res.msg && res.code !== "77700029") {
-                this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
-              }
-
-              if (res.code === "77700029") {
-                this.$router.back();
-                return;
-              }
-            } else {
-              this.src = res.data;
-            }
-          });
-          // SWAG
-          // this.src = 'https://feature-yabo.app.swag.live/';
-          break;
-
         case "THIRD":
           let type = this.$route.params.type;
 
@@ -727,12 +629,6 @@ export default {
               // }
             }
 
-            return;
-
-          case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
-          case "EVENT_THIRDPARTY_DEPOSIT":
-            // localStorage.setItem("iframe-third-url-swag", "https://yabo.care/");
-            this.$router.push("/mobile/mcenter/swag?tab=0&prev=back");
             return;
 
           case "EVENT_THIRDPARTY_MAIN_DEPOSIT":

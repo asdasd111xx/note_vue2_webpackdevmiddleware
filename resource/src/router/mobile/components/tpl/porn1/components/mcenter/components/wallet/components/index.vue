@@ -170,65 +170,12 @@
       </template>
     </balance-tran>
 
-    <!-- <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-      <div :class="$style['swag-wrap']">
-        <div :class="$style['title']">SWAG钱包</div>
-        <div :class="$style['icon-block']">
-          <div :class="$style['icon-cell']">
-            <div :class="$style['balance']" @click="handleSWAGBalance">
-              <template v-if="isMaintainSwag">
-                <span
-                  :class="$style['maintain-tip-text']"
-                  @click="dialogMessage('SWAG 维护中')"
-                  >维护中</span
-                >
-                <img
-                  v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
-                  :class="$style['maintain-tip-img']"
-                  :src="
-                    $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
-                  "
-                />
-              </template>
-              <template v-else>
-                {{ swagDiamondBalance }}
-              </template>
-            </div>
-            {{ $t("S_DIAMOND_BALANCE") }}
-          </div>
-
-          <div
-            v-for="(item, index) in swagIcons"
-            :key="'icon-' + index"
-            :class="$style['icon-cell']"
-            @click="item.onClick"
-          >
-            <div :class="$style['image']">
-              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
-            </div>
-            {{ item.text }}
-          </div>
-        </div>
-      </div>
-    </template> -->
-
     <template v-if="['ey1'].includes(routerTPL)">
       <div :class="$style['swag-wrap']">
         <div :class="$style['title']">蜂鸟钱包</div>
         <div :class="$style['icon-block']">
           <div :class="$style['icon-cell']">
             <div :class="$style['balance']">
-              <!-- <template v-if="isMaintainSwag">
-                <span :class="$style['maintain-tip-text']">维护中</span>
-                <img
-                  v-if="isMaintainSwag && swagConfig && swagConfig.enable !== 0"
-                  :class="$style['maintain-tip-img']"
-                  :src="$getCdnPath('/static/image/common/mcenter/ic_tips.png')"
-                />
-              </template>
-              <template v-else>
-                {{ swagDiamondBalance }}
-              </template> -->
               {{ birdBalance }}
             </div>
             {{ $t("S_BIRD_BALANCE") }}
@@ -446,7 +393,6 @@ export default {
       mainNoData: false,
       isCheckWithdraw: false,
       bonus: {},
-      //swagDiamondBalance: "0",
       birdBalance: "--",
       redJackpotData: null,
       loginMoney: "",
@@ -468,8 +414,6 @@ export default {
       gameData: "getGameData",
       siteConfig: "getSiteConfig",
       rechargeConfig: "getRechargeConfig",
-      // swagConfig: "getSwagConfig",
-      // swagBalance: "getSwagBalance",
       withdrawCheckStatus: "getWithdrawCheckStatus"
     }),
     $style() {
@@ -492,37 +436,6 @@ export default {
         case "sg1":
           return "sg1";
       }
-    },
-    swagIcons() {
-      return [
-        {
-          key: "buyDiamond",
-          show: true,
-          text: this.$text("S_BUY_DIAMOND", "购买钻石"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_buydiamond.png`,
-          onClick: () => {
-            this.$router.push("/mobile/mcenter/swag");
-          }
-        },
-        {
-          key: "howToBuy",
-          show: true,
-          text: this.$text("S_TO_BUY", "如何购买"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_howtobuy.png`,
-          onClick: () => {
-            this.$router.push("/mobile/mcenter/help/detail?type=buymethod");
-          }
-        },
-        {
-          key: "instrustions",
-          show: true,
-          text: this.$text("S_INSTRUSTIONS", "使用方法"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_swag_instrustions.png`,
-          onClick: () => {
-            this.$router.push("/mobile/mcenter/help/detail?type=usage&key=2");
-          }
-        }
-      ].filter(item => item.show);
     },
     birdIcons() {
       return [
@@ -652,9 +565,7 @@ export default {
     }
 
     if (["porn1", "sg1"].includes(this.themeTPL)) {
-      // this.initSWAGConfig();
       if (this.membalance && this.membalance.total) {
-        // this.loginMoney = `${this.membalance.total}`;
       } else {
         this.loginMoney = "";
       }
@@ -702,9 +613,6 @@ export default {
     }, 30000);
   },
   watch: {
-    // swagBalance(val) {
-    //   this.swagDiamondBalance = val.balance;
-    // },
     membalance() {
       if (["ey1"].includes(this.themeTPL)) {
         this.loginMoney =
