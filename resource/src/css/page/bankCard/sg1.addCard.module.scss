@@ -1,5 +1,6 @@
 @import "./porn1.addCard.module.scss";
 .submit {
+  border-radius: 23px;
   background: var(--mcenter_button_color1);
 
   &.disabled {
@@ -8,10 +9,11 @@
 }
 
 .send-keyring {
-  background: var(--mcenter_button_color1);
+  border-radius: 15px;
+  background: var(--mcenter_send_keyring);
 
   &.disabled {
-    background: var(--mcenter_button_color2);
+    background: var(--mcenter_send_keyring_disabled);
   }
 }
 
@@ -34,6 +36,7 @@
 .wallet-list {
   .wallet-item {
     &.is-current {
+      border-radius: 3px;
       border: 1px solid var(--wallet_border_color);
       color: var(--wallet_border_color);
       background: linear-gradient(
