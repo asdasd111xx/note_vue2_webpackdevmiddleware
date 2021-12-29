@@ -575,13 +575,13 @@ export default {
     height: 45px;
     line-height: 45px;
     font-size: 14px;
-    background: #333333;
-    color: #d2d2d2;
+    background: var(--mcenter_button_color1);
+    color: var(--mcenter_button_text_color1);
     border-radius: 22.5px;
 
     &.disabled {
-      background: #d2d2d2;
-      color: #ededed;
+      background: var(--mcenter_button_color2);
+      color: var(--mcenter_button_text_color2);
     }
   }
 }
@@ -608,12 +608,12 @@ export default {
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: #000000;
+  color: var(--mcenter_slider_text_color);
   opacity: 0.6;
   width: 50%;
 
   &.is-current {
-    color: #000000;
+    color: var(--mcenter_slider_text_active_color);
     opacity: 1;
   }
 }
@@ -624,7 +624,7 @@ export default {
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: #000000;
+  background: var(--mcenter_slider_underline_active_color);
   left: calc(50% - 20px);
   transition: left 0.31s;
   border-radius: 3px;
@@ -715,16 +715,16 @@ export default {
       width: 80px;
       height: 30px;
       line-height: 30px;
-      background: #000000;
+      background: var(--mcenter_button_color1);
       border-radius: 12.5px;
-      color: #ffffff;
+      color: var(--mcenter_button_text_color1);
     }
 
     &.serial {
       > div {
-        color: #000000;
+        color: var(--mcenter_main_color);
         background: #ededed;
-        border: 1px solid #000000;
+        border: 1px solid var(--mcenter_border_color);
       }
     }
 
