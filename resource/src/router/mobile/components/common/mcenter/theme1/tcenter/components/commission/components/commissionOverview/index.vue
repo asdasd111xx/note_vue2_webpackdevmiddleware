@@ -632,11 +632,11 @@ export default {
       let layerdata = this.resultFriend?.map(info => {
         return {
           title: this.$text(this.levelTrans[info.depth]),
-          childTitle: "查看",
+          childTitle: info.valid_user > 0 ? "查看" : "",
           // 傳遞給子元件點擊專用
           paramsValue: { depth: info.depth },
-          isClick: true,
-          img: true,
+          isClick: info.valid_user > 0 ? true : false,
+          img: info.valid_user > 0 ? true : false,
           list: [
             {
               name: "有效投注",
