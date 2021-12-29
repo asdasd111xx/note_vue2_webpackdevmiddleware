@@ -103,13 +103,7 @@
           </div>
         </div>
 
-        <div
-          v-if="
-            ($route.query.type != 0 && friendNameList === undefined) ||
-              ($route.query.type == 0 && rebatefriendNameList === undefined)
-          "
-          :class="$style['no-data']"
-        >
+        <div v-else :class="$style['no-data']">
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
           />
