@@ -2,7 +2,8 @@
   <div :class="$style['record-wrap']">
     <div
       v-if="
-        $route.query.third &&
+        $route.query.type == 0 &&
+          $route.query.third &&
           $route.query.record &&
           !$route.query.depth &&
           !$route.query.userId
@@ -36,7 +37,7 @@
       </div>
     </div>
     <template v-if="$route.params.item === 'detail'">
-      <template v-if="friendLayerList.length > 0">
+      <template v-if="$route.query.type != 0 && friendLayerList.length > 0">
         <div
           v-if="
             $route.query.record && !$route.query.depth && !$route.query.userId
@@ -64,7 +65,8 @@
 
         <div
           v-if="
-            rebatefriendNameList !== undefined &&
+            $route.query.type == 0 &&
+              rebatefriendNameList !== undefined &&
               rebatefriendNameList.length > 0
           "
           :class="$style['friend-wrap']"
@@ -83,7 +85,11 @@
         <!-- line -->
 
         <div
-          v-if="friendNameList !== undefined && friendNameList.length > 0"
+          v-if="
+            $route.query.type != 0 &&
+              friendNameList !== undefined &&
+              friendNameList.length > 0
+          "
           :class="$style['friend-wrap']"
         >
           <div>
@@ -99,7 +105,8 @@
 
         <div
           v-if="
-            friendNameList === undefined || rebatefriendNameList === undefined
+            ($route.query.type != 0 && friendNameList === undefined) ||
+              ($route.query.type == 0 && rebatefriendNameList === undefined)
           "
           :class="$style['no-data']"
         >
@@ -117,7 +124,8 @@
         <!-- 盈虧返利Page3 遊戲列表 -->
         <div
           v-if="
-            rebatefriendGameCategory !== undefined &&
+            $route.query.type == 0 &&
+              rebatefriendGameCategory !== undefined &&
               rebatefriendGameCategory.length > 0
           "
           :class="$style['friend-wrap']"
@@ -137,11 +145,18 @@
           >
             <card-item :card-item-list="rebatefriendGameCategory" />
           </div>
+          <rebate-rate
+            v-if="isSerial"
+            :handle-close="toggleSerial"
+            :game-rate-result="rebategameRateResult"
+          />
         </div>
         <!-- line -->
         <div
           v-if="
-            friendGameCategory !== undefined && friendGameCategory.length > 0
+            $route.query.type != 0 &&
+              friendGameCategory !== undefined &&
+              friendGameCategory.length > 0
           "
           :class="$style['friend-wrap']"
         >
@@ -159,14 +174,13 @@
           >
             <card-item :card-item-list="friendGameCategory" />
           </div>
+          <rebate-rate
+            v-if="isSerial"
+            :handle-close="toggleSerial"
+            :game-rate-result="gameRateResult"
+          />
         </div>
       </div>
-
-      <rebate-rate
-        v-if="isSerial"
-        :handle-close="toggleSerial"
-        :game-rate-result="rebategameRateResult || gameRateResult"
-      />
     </template>
   </div>
 </template>
@@ -231,6 +245,7 @@ export default {
   },
 
   watch: {
+    //$route.query.type  0盈虧返利 1投注返利 2損益返利
     "$route.query": {
       handler: function(item) {
         if (item.record) {
@@ -241,12 +256,13 @@ export default {
               : this.$route.query.period
           );
           this.setTabState(true);
-
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
-            //盈虧返利page1
-            this.getLayerDetail();
+            if (this.$route.query.type == 0) {
+              //盈虧返利page1
+              this.getLayerDetail();
+            }
             return;
           }
           this.getSummary();
@@ -254,18 +270,25 @@ export default {
           //page2
           this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
           this.setTabState(false);
-          this.getRebateFriends();
-          //盈虧返利page2
-          this.getLayerFriends();
+          if (this.$route.query.type != 0) {
+            this.getRebateFriends();
+          } else {
+            //盈虧返利page2
+            this.getLayerFriends();
+          }
         } else if (item.user) {
           //page3
           this.setHeaderTitle(item.user);
           this.setTabState(false);
-          this.getUserGameList();
-          this.getLayerFriendGame();
-          this.getFriendGameRateList();
-          //盈虧返利page3
-          this.getLayerFriendGameRate();
+
+          if (this.$route.query.type != 0) {
+            this.getUserGameList();
+            this.getFriendGameRateList();
+          } else {
+            //盈虧返利page3
+            this.getLayerFriendGame();
+            this.getLayerFriendGameRate();
+          }
         }
       },
       deep: true,
