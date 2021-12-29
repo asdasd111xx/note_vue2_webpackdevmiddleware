@@ -1,5 +1,10 @@
 <template>
-  <div class="manage-rebate">
+  <div
+    class="manage-rebate"
+    :style="{
+      marginTop: path == 'profit' && $route.query.depth ? '0px' : '87px'
+    }"
+  >
     <!-- 最上層功能列 -->
     <div v-if="tabState" :class="[$style['tab-wrap'], 'clearfix']">
       <div
