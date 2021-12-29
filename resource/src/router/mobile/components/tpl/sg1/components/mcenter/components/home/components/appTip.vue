@@ -72,7 +72,7 @@ export default {
   -o-transition: opacity 0.25s linear;
   transition: opacity 0.25s linear;
   opacity: 1;
-  background-color: #a6a9b2;
+  background-color: var(--mcenter_collect_app_background_color);
   padding: 0 18px;
   font-size: 12px;
   display: flex;
@@ -81,7 +81,7 @@ export default {
   position: relative;
 
   > span:first-child {
-    color: #ffffff;
+    color: var(--mcenter_collect_app_text_color);
   }
 
   img {
@@ -99,13 +99,13 @@ export default {
 
 .go-btn {
   height: 23px;
-  border: 1pt solid #ffffff;
+  border: 1pt solid var(--mcenter_collect_app_button_color);
   border-radius: 12px;
   text-align: center;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  color: #ffffff;
+  color: var(--mcenter_collect_app_button_color);
   margin-right: 10px;
 }
 </style>

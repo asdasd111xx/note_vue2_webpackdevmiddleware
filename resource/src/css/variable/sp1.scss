@@ -152,7 +152,7 @@
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框
   --wallet_border_text_color: #414655; //充值 選擇支付方式、支付通道框框的文字顏色
-  --redpot: #be9e7f; //紅包彩金文字顏色
+  --deposit_crypto_block_money_color: #bf8646; //充值 轉入金額顏色
   --deco_color: linear-gradient(
     to bottom,
     #bd9d7d 0%,
@@ -171,6 +171,7 @@
     #bd9d7d 0%,
     #f9ddbd 100%
   ); //紅包彩金裡面領取按鈕
+  --redpot_text_color: #be9e7f; //紅包彩金頁面裡的文字
   --addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
   --addcard_popup_prev_text_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
@@ -187,8 +188,10 @@
   --mcenter_send_keyring: #be9e7f; //獲取驗證碼按鈕
   --mcenter_send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
   --help_contact_copy: #be9e7f; //幫助中心 聯繫我們 複製
-  --mcenter_wallet_text_color: #be9e7f; //中心錢包的錢＆一鍵回收＆額度轉讓字
-  --redpot_text_color: #be9e7f; //紅包彩金文字
+  --mcenter_wallet_text_color: #be9e7f; //中心錢包的錢 (額度轉讓＆錢包＆提現＆轉帳)
+  --mcenter_wallet_recycle_text_color: #be9e7f; //一鍵回收＆額度轉讓字 (額度轉讓＆錢包＆提現＆轉帳)
+  --mcenter_wallet_redpot_text_color: #be9e7f; //紅包彩金文字 (提現＆轉帳＆錢包)
+  --mcenter_wallet_redpot_money_color: #be9e7f; //紅包彩金的錢 (提現＆轉帳＆錢包)
   --mcenter_change_avatar_image: #be9e7f; //編輯個人頭像
   --mcenter_upload_image_button: linear-gradient(
     to left,
@@ -198,4 +201,7 @@
   --mcenter_upload_image_text_button: #ffffff; //個人頭像 從相冊選取 文字
   --mcenter_upload_image_cancel_button: #faf5f0; //個人頭像從相冊選取 取消
   --mcenter_upload_image_cancel_text_button: #be9e7f; //個人頭像從相冊選取 取消文字
+  --mcenter_collect_app_text_color: #a6a9b2; //收藏我们随时下载APP 文字
+  --mcenter_collect_app_background_color: #ececf2; //收藏我们随时下载APP 背景
+  --mcenter_collect_app_button_color: #5e626d; //收藏我们随时下载APP 立即收藏
 }

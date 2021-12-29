@@ -50,7 +50,14 @@ export default {
   created() {
     let query = this.$route.query;
     if (
-      ["withdraw", "deposit", "gameintro", "support", "buymethod", "usage"].includes(query.type)
+      [
+        "withdraw",
+        "deposit",
+        "gameintro",
+        "support",
+        "buymethod",
+        "usage"
+      ].includes(query.type)
     ) {
       this.type = query.type;
     } else {
@@ -69,10 +76,10 @@ export default {
       return isApp;
     },
     beforeDestroy() {
-      document.title = '';
+      document.title = "";
     },
     headerConfig() {
-      let title = '';
+      let title = "";
 
       switch (this.type) {
         case "withdraw":
@@ -81,14 +88,6 @@ export default {
 
         case "deposit":
           title = this.$text("S_RECENTLY_DEPOSIT", "8日内充值记录");
-          break;
-
-        case "buymethod":
-          title = 'SWAG 钻石购买说明';
-          break;
-
-        case "usage":
-          title = 'SWAG 钻石使用方法';
           break;
 
         default:
@@ -100,9 +99,11 @@ export default {
         return {
           prev: true,
           onClick: () => {
-            if (localStorage.getItem('help-center-back')) {
-              this.$router.replace(`/mobile/${localStorage.getItem('help-center-back')}`);
-              localStorage.removeItem('help-center-back');
+            if (localStorage.getItem("help-center-back")) {
+              this.$router.replace(
+                `/mobile/${localStorage.getItem("help-center-back")}`
+              );
+              localStorage.removeItem("help-center-back");
             } else {
               this.$router.back();
             }
