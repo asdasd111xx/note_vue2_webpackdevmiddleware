@@ -335,7 +335,7 @@ export default {
               show: true
             },
             {
-              name: "损益",
+              name: "总损益",
               item: this.formatThousandsCurrency(info.profit),
               color: this.chooseColor(info.profit),
               show: true
@@ -346,8 +346,8 @@ export default {
               show: true
             },
             {
-              name: "上期結轉",
-              item: info.last_shift == 0 ? "無" : "有",
+              name: "上期结转",
+              item: info.last_shift == 0 ? "无" : "有",
               show: true
             }
           ].filter(item => item.show)
@@ -651,7 +651,7 @@ export default {
     threeAmount() {
       return [
         {
-          name: this.$text("S_EXPECTED_REBATE", "预估返利"),
+          name: this.$text("S_LOSS_REBATE", "盈亏返利"),
           item: this.amountFormat(this.detailList.amount) ?? "",
           key: "estimate",
           color: this.detailList.amount < 0,
@@ -666,7 +666,7 @@ export default {
         },
         {
           name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
-          item: this.amountFormat(this.detailList.valid_user) ?? "",
+          item: this.detailList.valid_user,
           key: "member",
           color: false,
           show: true

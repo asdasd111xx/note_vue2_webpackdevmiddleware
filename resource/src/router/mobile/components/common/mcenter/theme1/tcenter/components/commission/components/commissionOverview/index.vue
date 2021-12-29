@@ -644,7 +644,7 @@ export default {
               show: true
             },
             {
-              name: "损益",
+              name: "总损益",
               item: this.formatThousandsCurrency(info.profit),
               color: this.chooseColor(info.profit),
               show: true
@@ -655,8 +655,8 @@ export default {
               show: true
             },
             {
-              name: "上期結轉",
-              item: info.last_shift == 0 ? "無" : "有",
+              name: "上期结转",
+              item: info.last_shift == 0 ? "无" : "有",
               show: true
             }
           ].filter(item => item.show)
