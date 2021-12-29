@@ -82,6 +82,16 @@
           </div>
         </div>
 
+        <div
+          v-if="$route.query.type == 0 && rebatefriendNameList === undefined"
+          :class="$style['no-data']"
+        >
+          <img
+            :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+          />
+          <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+        </div>
+
         <!-- line -->
 
         <div
@@ -103,7 +113,14 @@
           </div>
         </div>
 
-        <div v-else :class="$style['no-data']">
+        <div
+          v-if="
+            $route.query.type != 0 ||
+              friendNameList === undefined ||
+              friendNameList === []
+          "
+          :class="$style['no-data']"
+        >
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
           />
