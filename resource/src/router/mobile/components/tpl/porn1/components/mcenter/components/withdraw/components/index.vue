@@ -47,7 +47,6 @@
             <span
               :class="[
                 $style['balance-item-vendor'],
-                $style[siteConfig.ROUTER_TPL],
                 $style['balance-redjackpot-text']
               ]"
             >
@@ -59,9 +58,7 @@
             <span
               :class="[
                 $style['balance-item-money'],
-                $style['balance-redjackpot-text'],
-                $style[siteConfig.ROUTER_TPL],
-                $style['money']
+                $style['balance-redjackpot-money']
               ]"
             >
               {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}

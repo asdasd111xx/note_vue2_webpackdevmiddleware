@@ -162,7 +162,7 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: var(--mcenter_wallet_text_color);
+    color: var(--mcenter_wallet_recycle_text_color);
     font-weight: 700;
 
     &::before {
@@ -266,11 +266,12 @@
   }
 
   .balance-redjackpot-text {
+    color: var(--mcenter_wallet_redpot_text_color);
     word-break: break-word;
-
-    &.money {
-      color: var(--redpot);
-    }
+  }
+  .balance-redjackpot-money {
+    color: var(--mcenter_wallet_redpot_money_color);
+    word-break: break-word;
   }
 
   .balance-redjackpot-image {
