@@ -208,7 +208,7 @@
 
     &.is-current {
       border: 1px solid var(--wallet_border_color);
-      color: var(--wallet_border_color);
+      color: var(--wallet_border_text_color);
       background: linear-gradient(-45deg,
           var(--wallet_border_color) 10px,
           hsla(0, 0%, 100%, 0) 0);

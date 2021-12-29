@@ -9,11 +9,8 @@
 // }
 
 .button-block {
-  color: #414655;
-
-  span {
-    &:nth-child(2) {
-      color: var(--member_color100);
-    }
+  color: var(--popup_text_color2);
+  &:nth-child(2) {
+    color: var(--popup_text_color1);
   }
 }

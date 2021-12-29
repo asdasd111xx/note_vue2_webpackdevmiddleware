@@ -189,7 +189,7 @@ export default {
   bottom: 1.5px;
   left: calc(12.5% - 25px);
   height: 2px;
-  background-color: var(--member_color100);
+  background-color: var(--slider_underline_active_color);
   width: 50px;
   transition: left 0.31s;
 }

@@ -26,7 +26,7 @@
   }
 
   &.is-current {
-    color: var(--mcenter_slider_text_active_color);
+    color: #414655;
 
     span {
       border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
@@ -149,7 +149,7 @@
 
   &.is-current {
     border: 1px solid var(--wallet_border_color);
-    color: var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
     background: linear-gradient(-45deg,
         var(--wallet_border_color) 10px,
         hsla(0, 0%, 100%, 0) 0);
@@ -283,7 +283,7 @@
 
   &.is-current {
     background-color: #fff;
-    color: var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
     border: 1px solid var(--wallet_border_color);
     background: linear-gradient(-45deg,
         var(--wallet_border_color) 12px,
@@ -414,8 +414,8 @@
   .conversion-btn {
     display: inline-block;
     margin-left: 10px;
-    border: 1px solid var(--member_color100);
-    color: var(--member_color100);
+    border: 1px solid #bd9d7d;
+    color: #bd9d7d;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -793,7 +793,7 @@
 
 .current-data {
   background-color: #fff;
-  color: var(--wallet_border_color);
+  color: var(--wallet_border_text_color);
   border: 1px solid var(--wallet_border_color);
   background: linear-gradient(-45deg,
       var(--wallet_border_color) 12px,
@@ -1175,7 +1175,7 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: var(--member_color100);
+  color: var(--popup_text_color1);
   margin: 0;
   padding: 0;
   height: 40px;
@@ -1190,7 +1190,7 @@
 
 .top-promotion {
   background: #f8f8f7;
-  color: var(--member_color100);
+  color: #bd9d7d;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1202,7 +1202,7 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: var(--member_color100);
+  color: var(--widthdraw_tip_text_color);
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;

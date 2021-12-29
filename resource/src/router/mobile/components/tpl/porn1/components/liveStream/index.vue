@@ -275,7 +275,7 @@ export default {
   vertical-align: middle;
 
   &.active {
-    border-bottom: var(--member_color100) solid 2px;
+    border-bottom: var(--slider_underline_active_color) solid 2px;
   }
 }
 
@@ -317,7 +317,7 @@ export default {
   line-height: 21px;
   width: 43pt;
   height: 21px;
-  background: var(--member_color100);
+  background: #be9e7f;
   border-radius: 10px;
 }
 

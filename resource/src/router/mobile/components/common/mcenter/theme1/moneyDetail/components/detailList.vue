@@ -97,10 +97,7 @@ export default {
       return style;
     },
     isEmbed() {
-      return (
-        this.$route.name === "mcenter-creditTrans" ||
-        this.$route.name === "mcenter-swag"
-      );
+      return this.$route.name === "mcenter-creditTrans";
     }
   },
   props: {
@@ -155,7 +152,6 @@ export default {
 
       if (
         this.pageType !== "ingroup_transfer" &&
-        this.pageType !== "swag" &&
         this.pageType !== "internal_memo"
       ) {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);

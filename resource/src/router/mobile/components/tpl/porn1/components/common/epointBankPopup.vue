@@ -134,7 +134,7 @@ export default {
     position: absolute;
     text-align: center;
     width: 40px;
-    color: var(--member_color100);
+    color: var(--addcard_popup_prev_text_color);
   }
 
   .title {
@@ -150,7 +150,7 @@ export default {
   .cell {
     position: relative;
     background-color: #ffffff;
-    color: var(--member_color100);
+    color: var(--addcard_popup_text_color);
     height: 50px;
     line-height: 50px;
     font-size: 14px;
@@ -164,7 +164,7 @@ export default {
     top: 50%;
     width: 15px;
     height: 15px;
-    color: var(--member_color100);
+    color: var(--addcard_popup_prev_text_color);
     transform: translateY(-50%);
   }
 }
