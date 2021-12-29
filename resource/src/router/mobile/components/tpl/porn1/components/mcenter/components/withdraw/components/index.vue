@@ -670,13 +670,14 @@
             ]"
           >
             <div @click="checkSubmit">立即提现</div>
+            <!-- <span>{{offer()}}</span> -->
           </div>
         </div>
       </template>
 
       <!-- 取款密碼＋Botton -->
       <!-- 億元 -->
-      <template v-if="['ey1'].includes(themeTPL)">
+      <!-- <template v-if="['ey1'].includes(themeTPL)">
         <div :class="[$style['withdraw-pwd-input']]">
           <input
             v-model="withdrawPwd"
@@ -698,7 +699,7 @@
             <div @click="checkSubmit">立即提现</div>
           </div>
         </div>
-      </template>
+      </template> -->
     </template>
 
     <!-- Tips -->
@@ -764,7 +765,7 @@
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
           :swift-code="selectedCard.swift_code"
-          :bonus-offer="formatThousandsCurrency(offer())"
+          :bonus-offer="formatThousandsCurrency(offerInfo.offer)"
           :withdraw-name="selectedCard.name"
           :has-offer="offerInfo.offer_enable"
           @close="closePopup"
@@ -1599,6 +1600,8 @@ export default {
           }
         }
 
+        this.getWithdrawOffer(this.withdrawValue);
+
         // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
         this.withdrawCheck().then(res => {
           if (res === "ok") {
@@ -2143,10 +2146,11 @@ export default {
       let bonusOffer = Math.round(
         (+this.offerInfo.offer_percent * this.withdrawValue) / 100
       );
-
+      let maxOffer = Math.min(+this.offerInfo.offer_limit - +this.offerInfo.gotten_offer,this.offerInfo.per_offer_limit)
       switch (true) {
         case !this.withdrawValue:
           return "--";
+
         case this.offerInfo.is_full_offer:
           return "--";
 
@@ -2155,14 +2159,8 @@ export default {
           +this.actualMoney <= 0:
           return "0.00";
 
-        case bonusOffer >= this.offerInfo.offer_limit &&
-          this.offerInfo.offer_limit !== "0":
-          return `${this.offerInfo.offer_limit}`;
-
-        case +this.offerInfo.offer_limit > 0 &&
-        bonusOffer >
-          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer:
-          return +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
+        case bonusOffer >= maxOffer && maxOffer > 0:
+          return maxOffer
 
         default:
           return `${bonusOffer}`;

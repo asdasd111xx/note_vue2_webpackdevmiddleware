@@ -65,8 +65,7 @@
                 </span>
                 <span :class="$style['money']">
                   {{
-                    formatThousandsCurrency(serialNumberData.total.deduction) >
-                    0
+                    +serialNumberData.total.deduction > 0
                       ? "-" +
                         formatThousandsCurrency(
                           serialNumberData.total.deduction
@@ -91,9 +90,7 @@
                 <span :class="$style['sub-title']"> 扣除总计 </span>
                 <span :class="$style['money']">
                   {{
-                    formatThousandsCurrency(
-                      serialNumberData.total.total_deduction
-                    ) > 0
+                    +serialNumberData.total.total_deduction > 0
                       ? "-" +
                         formatThousandsCurrency(
                           serialNumberData.total.total_deduction
