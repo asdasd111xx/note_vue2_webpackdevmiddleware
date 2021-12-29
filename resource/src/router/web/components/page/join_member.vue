@@ -1862,33 +1862,25 @@ export default {
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
-      axios({
+      goLangApiRequest({
         method: "put",
-        url: "/api/v1/c/player/register/phone/verify",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone/Verify`,
+        params: {
           phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
           keyring: this.phoneVerifyCode
         }
-      })
-        .then(res => {
-          if (res && res.data.result !== "ok") {
-            this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg =
-              res.data.msg + "(" + res.data.code + ")" || "phoneverify error1";
-          } else {
-            // this.mailSubmitFailMsg = "验证OK";
-            this.phoneVerifyModalShow = false;
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
+          this.phoneVerifyModalShow = false;
             this.showPhoneCheckIcon = true;
             this.NeedCode = false;
-            this.register_phone_keyring = res.data.ret.keyring;
-          }
-        })
-        .catch(error => {
-          this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg =
-            error.response.data.msg + "(" + error.response.data.code + ")" ||
-            "phoneverify error2";
-        });
+            this.register_phone_keyring = res.data.keyring;
+        }else{
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg = res.msg
+        }
+      });
     },
     getMailVerifyCode() {
       //寄出mail會員註冊驗證碼
@@ -1918,33 +1910,52 @@ export default {
     },
     submitMailVerify() {
       //會員註冊mail驗證
-      axios({
+      goLangApiRequest({
         method: "put",
-        url: "/api/v1/c/player/register/email/verify",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email/Verify`,
+        params: {
           email: this.allValue.email,
           keyring: this.mailVerifyCode
         }
-      })
-        .then(res => {
-          if (res && res.data.result !== "ok") {
-            this.mailSubmitFail = true;
-            this.mailSubmitFailMsg =
-              res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
-          } else {
-            // this.mailSubmitFailMsg = "验证OK";
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
             this.mailVerifyModalShow = false;
             this.showMailCheckIcon = true;
             this.mailNeedCode = false;
-            this.register_email_keyring = res.data.ret.keyring;
-          }
-        })
-        .catch(error => {
-          this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            error.response.data.msg + "(" + error.response.data.code + ")" ||
-            "mailverify error2";
-        });
+            this.register_email_keyring = res.data.keyring;
+        }else{
+            this.mailSubmitFail = true;
+            this.mailSubmitFailMsg = res.msg
+        }
+      });
+      // axios({
+      //   method: "put",
+      //   url: "/api/v1/c/player/register/email/verify",
+      //   data: {
+      //     email: this.allValue.email,
+      //     keyring: this.mailVerifyCode
+      //   }
+      // })
+      //   .then(res => {
+      //     if (res && res.data.result !== "ok") {
+      //       this.mailSubmitFail = true;
+      //       this.mailSubmitFailMsg =
+      //         res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
+      //     } else {
+      //       // this.mailSubmitFailMsg = "验证OK";
+      //       this.mailVerifyModalShow = false;
+      //       this.showMailCheckIcon = true;
+      //       this.mailNeedCode = false;
+      //       this.register_email_keyring = res.data.ret.keyring;
+      //     }
+      //   })
+      //   .catch(error => {
+      //     this.mailSubmitFail = true;
+      //     this.mailSubmitFailMsg =
+      //       error.response.data.msg + "(" + error.response.data.code + ")" ||
+      //       "mailverify error2";
+      //   });
     }
   }
 };
