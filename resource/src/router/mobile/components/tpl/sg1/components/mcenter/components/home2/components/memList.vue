@@ -110,16 +110,16 @@ export default {
           isPart: true,
           show: true
         },
-        // {
-        //   initName: this.$text('S_JOINTOLIVERS'),
-        //   name: "",
-        //   path: "",
-        //   pageName: "host",
-        //   image: "host",
-        //   info: "",
-        //   isPart: false,
-        //   show: true
-        // },
+        {
+          initName: this.$text("S_JOINTOLIVERS"),
+          name: "",
+          path: "",
+          pageName: "host",
+          image: "host",
+          info: "",
+          isPart: false,
+          show: true
+        },
         {
           initName: "帮助中心",
           name: "S_HELP_CENTER",
@@ -274,6 +274,28 @@ export default {
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onListClick(item) {
+      if (item.pageName === "host") {
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+          params: {
+            version: "2"
+          }
+        }).then(res => {
+          if (
+            res &&
+            res.data &&
+            res.data.data.case_data &&
+            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+          ) {
+            window.open(
+              res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0]
+                .linkTo["zh-cn"]
+            );
+          }
+        });
+      }
+
       if (item.pageName === "super") {
         if (!this.loginStatus) {
           this.$router.push("/mobile/login");
