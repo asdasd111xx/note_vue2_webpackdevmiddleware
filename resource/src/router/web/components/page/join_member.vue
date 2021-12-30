@@ -18,17 +18,13 @@
             :class="$style['visitor-get']"
             :style="themeTPL == 'sg1' ? 'color:#000' : ''"
           >
-            {{ themeTPL == "sg1" ? "访客彩金 58.00 元" : "访客加入会员" }}
+            访客加入会员
           </div>
           <div
             :class="$style['visitor-get']"
             :style="themeTPL == 'sg1' ? 'color:#000' : ''"
           >
-            {{
-              themeTPL == "sg1"
-                ? "注册即送 58.00 钻"
-                : `领取彩金：${formatThousandsCurrency(guestAmount)}元`
-            }}
+            {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
           </div>
         </div>
         <!-- 錯誤訊息 -->
