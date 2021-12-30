@@ -1,7 +1,7 @@
 <template>
   <div slot="content" :class="$style['content-wrap']">
     <!-- 暱稱變更阻擋提示 -->
-    <transition name="fade">
+    <!-- <transition name="fade">
       <div v-show="cantEditAlias" :class="$style['alert-dialog-masker']">
         <div :class="$style['alert-dialog-wrap']">
           <h3>提示</h3>
@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition> -->
 
     <account-header :header-config="headerConfig" />
     <div :class="[$style.wrap, 'clearfix']">
@@ -90,7 +90,7 @@ export default {
     }
   },
   created() {
-    this.checkAliasEdit();
+    // this.checkAliasEdit();
 
     this.actionGetExtRedirect({
       api_uri: "/api/platform/v1/user/personal-info",
@@ -115,16 +115,16 @@ export default {
         this.value = val;
       });
     },
-    checkAliasEdit() {
-      return this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/alias-update-status",
-        method: "get"
-      }).then(data => {
-        if (data && data.result && data.result.allow_update === false) {
-          this.cantEditAlias = true;
-        }
-      });
-    },
+    // checkAliasEdit() {
+    //   return this.actionGetExtRedirect({
+    //     api_uri: "/api/platform/v1/user/alias-update-status",
+    //     method: "get"
+    //   }).then(data => {
+    //     if (data && data.result && data.result.allow_update === false) {
+    //       this.cantEditAlias = true;
+    //     }
+    //   });
+    // },
     handleSubmit() {
       // 驗證失敗d
       //   if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
@@ -132,24 +132,24 @@ export default {
       //     return Promise.resolve(result);
       //   }
 
-      this.checkAliasEdit().then(() => {
-        if (this.cantEditAlias) {
-          return;
-        }
+      // this.checkAliasEdit().then(() => {
+      //   if (this.cantEditAlias) {
+      //     return;
+      //   }
 
-        const setNickname = this.actionGetExtRedirect({
-          api_uri: "/api/platform/v1/user/update-alias",
-          method: "put",
-          data: { alias: this.value.substring(0, 20) }
-        });
-
-        return Promise.all([setNickname]).then(response => {
-          if (response.every(res => res.result === "success")) {
-            localStorage.setItem("set-account-success", true);
-            this.$router.push("/mobile/mcenter/accountData");
-          }
-        });
+      const setNickname = this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/update-alias",
+        method: "put",
+        data: { alias: this.value.substring(0, 20) }
       });
+
+      return Promise.all([setNickname]).then(response => {
+        if (response.every(res => res.result === "success")) {
+          localStorage.setItem("set-account-success", true);
+          this.$router.push("/mobile/mcenter/accountData");
+        }
+      });
+      // });
     }
   }
 };

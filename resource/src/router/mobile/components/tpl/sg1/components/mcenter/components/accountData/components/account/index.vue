@@ -109,7 +109,7 @@
           <!-- 直播資料  -->
           <div
             :class="[$style['account-data-field'], 'clearfix']"
-            @click="$router.push('/mobile/mcenter/accountData/alias')"
+            @click="checkAliasEdit"
           >
             <span :class="$style['field-title']">直播昵称</span>
             <div :class="$style['field-value']">
@@ -131,6 +131,25 @@
               </div>
             </div>
           </div>
+
+          <!-- 暱稱變更阻擋提示 -->
+          <transition name="fade">
+            <div v-show="cantEditAlias" :class="$style['alert-dialog-masker']">
+              <div :class="$style['alert-dialog-wrap']">
+                <h3>提示</h3>
+                <p>修改次数不足，请购买更名卡后 再重新操作</p>
+                <div :class="$style['btn-wrap']">
+                  <span @click="cantEditAlias = false">取消</span>
+                  <span
+                    @click="
+                      $router.push('/mobile/live/iframe/mall?hasFooter=false')
+                    "
+                    >去购买</span
+                  >
+                </div>
+              </div>
+            </div>
+          </transition>
           <div
             :class="[$style['account-data-field'], 'clearfix']"
             @click="$router.push('/mobile/mcenter/accountData/intro')"
@@ -558,6 +577,7 @@ export default {
       showRelationshipEdit: false,
       selectRelationshipValue: "",
       showHometownEdit: false,
+      cantEditAlias: false,
       relationshipList: [],
       addressInfo: {
         id: "",
@@ -619,6 +639,18 @@ export default {
     //   this.$refs.thecity.init();
     //   this.$refs.thedistrict.init();
     // },
+    checkAliasEdit() {
+      return this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/alias-update-status",
+        method: "get"
+      }).then(data => {
+        if (data && data.result && data.result.allow_update === false) {
+          this.cantEditAlias = true;
+        } else {
+          this.$router.push("/mobile/mcenter/accountData/alias");
+        }
+      });
+    },
     gettheDistrictList() {
       this.hometownList.map(item => {
         if (this.thecity == item.city) {
