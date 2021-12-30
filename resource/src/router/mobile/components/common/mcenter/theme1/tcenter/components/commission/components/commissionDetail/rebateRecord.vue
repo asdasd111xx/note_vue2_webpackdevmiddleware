@@ -2,7 +2,8 @@
   <div :class="$style['record-wrap']">
     <div
       v-if="
-        $route.query.third &&
+        $route.query.type == 0 &&
+          $route.query.third &&
           $route.query.record &&
           !$route.query.depth &&
           !$route.query.userId
@@ -28,9 +29,15 @@
           </div>
         </div>
       </div>
+      <div>
+        <card-item
+          :card-item-list="rebatefriendLayerList"
+          @click-card="enterNextLayer"
+        />
+      </div>
     </div>
     <template v-if="$route.params.item === 'detail'">
-      <template v-if="friendLayerList.length > 0">
+      <template v-if="$route.query.type != 0 && friendLayerList.length > 0">
         <div
           v-if="
             $route.query.record && !$route.query.depth && !$route.query.userId
@@ -49,12 +56,50 @@
         </div>
       </template>
 
+      <!-- page2 -->
       <div
         v-if="$route.query.depth && !$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
+        <!-- 盈虧返利Page2 好友名單列表 -->
+
         <div
-          v-if="friendNameList !== undefined && friendNameList.length > 0"
+          v-if="
+            $route.query.type == 0 &&
+              rebatefriendNameList !== undefined &&
+              rebatefriendNameList.length > 0
+          "
+          :class="$style['friend-wrap']"
+        >
+          <div>
+            <card-total :data="rebatefriendBet" />
+          </div>
+          <div :class="$style['card-item-wrap']">
+            <card-item
+              :card-item-list="rebatefriendNameList"
+              @click-card="enterNextLayer"
+            />
+          </div>
+        </div>
+
+        <div
+          v-if="$route.query.type == 0 && rebatefriendNameList === undefined"
+          :class="$style['no-data']"
+        >
+          <img
+            :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+          />
+          <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+        </div>
+
+        <!-- line -->
+
+        <div
+          v-if="
+            $route.query.type != 0 &&
+              friendNameList !== undefined &&
+              friendNameList.length > 0
+          "
           :class="$style['friend-wrap']"
         >
           <div>
@@ -67,19 +112,65 @@
             />
           </div>
         </div>
-        <div v-else :class="$style['no-data']">
+
+        <div
+          v-if="
+            $route.query.type != 0 ||
+              friendNameList === undefined ||
+              friendNameList === []
+          "
+          :class="$style['no-data']"
+        >
           <img
             :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
           />
           <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
         </div>
       </div>
-
+      <!-- page3 -->
       <div
         v-if="$route.query.userId && !$route.query.third"
         :class="$style['card-wrap']"
       >
-        <div :class="$style['friend-wrap']">
+        <!-- 盈虧返利Page3 遊戲列表 -->
+        <div
+          v-if="
+            $route.query.type == 0 &&
+              rebatefriendGameCategory !== undefined &&
+              rebatefriendGameCategory.length > 0
+          "
+          :class="$style['friend-wrap']"
+        >
+          <div>
+            <card-total :data="rebatefriendGameBet" />
+            <span :class="$style['rebate-rate']" @click="toggleSerial"
+              >返利比例</span
+            >
+          </div>
+          <div
+            v-if="
+              rebatefriendGameCategory !== undefined &&
+                rebatefriendGameCategory.length > 0
+            "
+            :class="$style['card-item-wrap']"
+          >
+            <card-item :card-item-list="rebatefriendGameCategory" />
+          </div>
+          <rebate-rate
+            v-if="isSerial"
+            :handle-close="toggleSerial"
+            :game-rate-result="rebategameRateResult"
+          />
+        </div>
+        <!-- line -->
+        <div
+          v-if="
+            $route.query.type != 0 &&
+              friendGameCategory !== undefined &&
+              friendGameCategory.length > 0
+          "
+          :class="$style['friend-wrap']"
+        >
           <div>
             <card-total :data="friendGameBet" />
             <span :class="$style['rebate-rate']" @click="toggleSerial"
@@ -94,19 +185,19 @@
           >
             <card-item :card-item-list="friendGameCategory" />
           </div>
+          <rebate-rate
+            v-if="isSerial"
+            :handle-close="toggleSerial"
+            :game-rate-result="gameRateResult"
+          />
         </div>
       </div>
-
-      <rebate-rate
-        v-if="isSerial"
-        :handle-close="toggleSerial"
-        :game-rate-result="gameRateResult"
-      />
     </template>
   </div>
 </template>
 
 <script>
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import commissionDetail from "@/mixins/mcenter/commission/commissionDetail";
@@ -114,6 +205,7 @@ import cardItem from "../../../../../tcenterSame/cardItem";
 import cardTotal from "../../../../../tcenterSame/cardAllTotal";
 import rebateRate from "../../../../../tcenterSame/rebateRate";
 import Vue, { nextTick } from "vue";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -143,11 +235,28 @@ export default {
       title: this.$route.params.title ?? "",
 
       page: 1,
-      isSerial: false
+      isSerial: false,
+      //盈虧返利Page1
+      levelTrans: {
+        1: "S_FIRST_LEVEL_FRIEND",
+        2: "S_SECOND_LEVEL_FRIEND",
+        3: "S_THIRD_LEVEL_FRIEND",
+        4: "S_FOURTH_LEVEL_FRIEND",
+        5: "S_FIFTH_LEVEL_FRIEND"
+      },
+      resultFriend: [],
+      //盈虧返利Page2
+      friendMemberList: [],
+      //盈虧返利Page3
+      rebatefriendGameList: [],
+      //盈虧返利Page3-1 返利比例
+      rebatefriendGameRateList: [],
+      rebategameRateResult: []
     };
   },
 
   watch: {
+    //$route.query.type  0盈虧返利 1投注返利 2損益返利
     "$route.query": {
       handler: function(item) {
         if (item.record) {
@@ -158,10 +267,13 @@ export default {
               : this.$route.query.period
           );
           this.setTabState(true);
-
           if (this.$route.query.third) {
             // 第三方返利只取第三方返利資料
             this.getDetail();
+            if (this.$route.query.type == 0) {
+              //盈虧返利page1
+              this.getLayerDetail();
+            }
             return;
           }
           this.getSummary();
@@ -169,13 +281,25 @@ export default {
           //page2
           this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
           this.setTabState(false);
-          this.getRebateFriends();
+          if (this.$route.query.type != 0) {
+            this.getRebateFriends();
+          } else {
+            //盈虧返利page2
+            this.getLayerFriends();
+          }
         } else if (item.user) {
           //page3
           this.setHeaderTitle(item.user);
           this.setTabState(false);
-          this.getUserGameList();
-          this.getFriendGameRateList();
+
+          if (this.$route.query.type != 0) {
+            this.getUserGameList();
+            this.getFriendGameRateList();
+          } else {
+            //盈虧返利page3
+            this.getLayerFriendGame();
+            this.getLayerFriendGameRate();
+          }
         }
       },
       deep: true,
@@ -193,6 +317,182 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    //盈虧返利 Page1 好友層
+    rebatefriendLayerList() {
+      let layerdata = this.resultFriend?.map(info => {
+        return {
+          title: this.$text(this.levelTrans[info.depth]),
+          childTitle: "查看",
+          // 傳遞給子元件點擊專用
+          paramsValue: { depth: info.depth },
+          isClick: true,
+          img: true,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.valid_bet),
+              show: true
+            },
+            {
+              name: "总损益",
+              item: this.formatThousandsCurrency(info.profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            },
+            {
+              name: "有效会员",
+              item: info.valid_user,
+              show: true
+            },
+            {
+              name: "上期结转",
+              item: info.last_shift == 0 ? "无" : "有",
+              show: true
+            }
+          ].filter(item => item.show)
+        };
+      });
+      return layerdata;
+    },
+    //盈虧返利page2 上方標題
+    rebatefriendBet() {
+      let strArr = [
+        {
+          name: "上期结转有效投注：",
+          item:
+            this.friendMemberList?.sub_total?.last_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.last_valid_bet
+                )
+              : "0.00"
+        },
+        {
+          name: "上期结转损益：",
+          item:
+            this.friendMemberList?.sub_total?.last_profit > 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.last_profit
+                )
+              : "0.00"
+        },
+        {
+          name: "总有效投注：",
+          item:
+            this.friendMemberList?.total?.current_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.current_valid_bet
+                )
+              : "--"
+        },
+        {
+          name: "总损益：",
+          item: this.friendMemberList?.total?.current_profit
+            ? this.friendMemberList?.total?.current_profit != 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.current_profit
+                )
+              : "--"
+            : "--",
+          color: this.friendMemberList?.total?.current_profit
+            ? this.friendMemberList?.total?.current_profit != 0
+              ? this.chooseColor(this.friendMemberList?.total?.current_profit)
+              : "--"
+            : "--"
+        },
+        {
+          name: "笔数：",
+          item: this.friendMemberList?.pagination?.total ?? "0"
+        }
+      ];
+      return strArr;
+    },
+    //盈虧返利page2 好友帳號列表
+    rebatefriendNameList() {
+      let data = this.friendMemberList?.ret?.map(info => {
+        return {
+          title: info.username,
+          childTitle: "查看",
+          // 傳遞給子元件點擊專用
+          paramsValue: {
+            user: info.username,
+            userid: info.user_id,
+            id: info.id
+          },
+          isClick: true,
+          img: true,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.current_valid_bet),
+              show: true
+            },
+            {
+              name: "损益",
+              item: this.formatThousandsCurrency(info.current_profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            }
+          ]
+        };
+      });
+      return data;
+    },
+    //盈虧返利page3 上方標題
+    rebatefriendGameBet() {
+      let strArr = [
+        {
+          name: "总有效投注：",
+          item:
+            this.rebatefriendGameList?.total?.current_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.rebatefriendGameList.total.current_valid_bet
+                )
+              : "--"
+        },
+        {
+          name: "总损益：",
+          item: this.rebatefriendGameList?.total?.current_profit
+            ? this.rebatefriendGameList?.total?.current_profit != 0
+              ? this.formatThousandsCurrency(
+                  this.rebatefriendGameList.total.current_profit
+                )
+              : "--"
+            : "--",
+          color: this.rebatefriendGameList?.total?.current_profit
+            ? this.rebatefriendGameList?.total?.current_profit != 0
+              ? this.chooseColor(this.rebatefriendGameList.total.current_profit)
+              : "--"
+            : "--"
+        },
+        {
+          name: "笔数：",
+          item: this.rebatefriendGameList?.pagination?.total ?? "0"
+        }
+      ];
+      return strArr;
+    },
+    //盈虧返利page3 好友投注遊戲類別
+    rebatefriendGameCategory() {
+      let data = this.rebatefriendGameList?.ret?.map(info => {
+        return {
+          title: info.alias,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.current_valid_bet),
+              show: true
+            },
+            {
+              name: "损益",
+              item: this.formatThousandsCurrency(info.current_profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            }
+          ]
+        };
+      });
+      return data;
     },
     friendLayerList() {
       //page1 好友層
@@ -351,7 +651,7 @@ export default {
     threeAmount() {
       return [
         {
-          name: this.$text("S_EXPECTED_REBATE", "预估返利"),
+          name: this.$text("S_LOSS_REBATE", "盈亏返利"),
           item: this.amountFormat(this.detailList.amount) ?? "",
           key: "estimate",
           color: this.detailList.amount < 0,
@@ -362,11 +662,11 @@ export default {
           item: `${this.detailList.rate || 0}%`,
           key: "level",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
-          item: this.amountFormat(this.detailList.valid_user) ?? "",
+          item: this.detailList.valid_user,
           key: "member",
           color: false,
           show: true
@@ -391,35 +691,35 @@ export default {
           item: this.amountFormat(this.detailList.dispatched_rebate),
           key: "sent",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_SENT_PROMOTIONS", "已派優惠"),
           item: this.amountFormat(this.detailList.dispatched_offer),
           key: "discount",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_MEM_DEPOSIT_2", "會員存款"),
           item: this.amountFormat(this.detailList.deposit),
           key: "deposit",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
           item: this.amountFormat(this.detailList.withdraw),
           key: "withdraw",
           color: this.detailList.withdraw < 0,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_PLATFORM_COST", "平台费"),
           item: this.amountFormat(this.detailList.vendor_fee),
           key: "fee",
           color: false,
-          show: true
+          show: false
         },
         {
           name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
@@ -428,7 +728,7 @@ export default {
             : this.$text("S_NONE", "無"),
           key: "previous",
           color: false,
-          show: true
+          show: false
         }
       ].filter(i => i.show);
     }
@@ -439,6 +739,133 @@ export default {
     }
   },
   methods: {
+    formatThousandsCurrency(value) {
+      return +value ? thousandsCurrency(value) : "0.00";
+    },
+    //盈虧返利Page1 取得盈歸返利分級好友資料c04.48
+    getLayerDetail() {
+      let paramData = {
+        period: this.$route.query.period,
+        user_id: this.memInfo.user.id
+      };
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/detail",
+          method: "get",
+          ...paramData
+        }
+      }).then(res => {
+        //多層級好友
+        this.resultFriend = res.data.return_data?.ret?.depth_details ?? [];
+
+        //單一會員重新計算中
+        if (res && res.data.status_code == "22007710") {
+          this.actionSetGlobalMessage(res.data.status_message);
+        }
+      });
+    },
+    //盈虧返利Page2 取得特定期數好友有效投注額及佣金列表
+    getLayerFriends(depth) {
+      let paramData = {
+        period: this.$route.query.period,
+        user_id: this.memInfo.user.id,
+        depth: this.$route.query.depth || depth
+      };
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/detail",
+          method: "get",
+          ...paramData
+        }
+      })
+        .then(res => {
+          if (res && res.status === "000") {
+            this.friendMemberList = res.data.return_data ?? [];
+          }
+        })
+        .catch(error => {
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage(error.data.msg);
+          }
+        });
+    },
+    //盈虧返利Page3 取得返利明細特定好友級數各會員平台貢獻明細
+    getLayerFriendGame() {
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/vendor_detail",
+          method: "get",
+          user_id: this.$route.query.userId,
+          id: this.$route.query.detailId
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //該好友投注所有遊戲
+          this.rebatefriendGameList = res.data.return_data ?? [];
+        }
+      });
+    },
+    //盈虧返利Page3-1 取得返利明細特定階層各平台分潤比率
+    getLayerFriendGameRate() {
+      let paramData = {
+        period: this.$route.query.period,
+        user_id: this.memInfo.user.id,
+        depth: this.$route.query.depth || this.depth
+      };
+
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/rate",
+          method: "get",
+          ...paramData
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //返利比例
+          this.rebategameRateResult = [];
+          this.rebatefriendGameRateList = res.data.return_data.ret ?? [];
+
+          const name = {
+            1: "体育",
+            2: "视讯",
+            3: "电子",
+            4: "彩票",
+            5: "棋牌",
+            6: "麻将"
+          };
+
+          //存放類別代號
+          let categoryNum = Object.keys(this.rebatefriendGameRateList);
+
+          for (let i = 1; i <= categoryNum.length; i++) {
+            this.rebategameRateResult.push({
+              title: name[i],
+              item: this.rebatefriendGameRateList[i - 1].details
+            });
+          }
+        }
+      });
+    },
     toggleSerial() {
       this.isSerial = !this.isSerial;
     },
@@ -458,7 +885,8 @@ export default {
           memberId: this.memberId,
           depth: this.$route.query.depth || this.depth,
           userId: friend.userid,
-          user: friend.user
+          user: friend.user,
+          detailId: friend.id
         };
       } else if (!this.$route.query.depth) {
         //第二層
