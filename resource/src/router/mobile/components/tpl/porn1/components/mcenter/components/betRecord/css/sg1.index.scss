@@ -222,13 +222,13 @@
 }
 
 .time-cancel {
-  color: var(--mcenter_button_text_color3);
-  background: var(--mcenter_button_color3);
+  color: var(--mcenter_dropdown_cancel_text_color);
+  background: var(--mcenter_dropdown_cancel_background_color);
 }
 
 .time-confirm {
-  color: var(--mcenter_button_text_color1);
-  background: var(--mcenter_button_color1);
+  color: var(--mcenter_dropdown_ok_text_color);
+  background: var(--mcenter_dropdown_ok_background_color);
 }
 
 .data-wrap {
