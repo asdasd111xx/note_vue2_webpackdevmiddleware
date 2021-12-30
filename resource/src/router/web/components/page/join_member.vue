@@ -601,9 +601,13 @@
           {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
-
+      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
+        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
+        <span @click.stop="beHost">成为主播</span>
+        <span @click.stop="$router.push('/mobile')">访客进入</span>
+      </div>
       <div
-        v-if="themeTPL != 'ey1'"
+        v-if="themeTPL != 'sg1' && themeTPL != 'ey1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
@@ -1133,6 +1137,28 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
+    beHost() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+        params: {
+          version: "2"
+        }
+      }).then(res => {
+        if (
+          res &&
+          res.data &&
+          res.data.data.case_data &&
+          res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+        ) {
+          window.open(
+            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+              "zh-cn"
+            ]
+          );
+        }
+      });
+    },
     toggleDatePick() {
       this.$refs.thedatepicker[0].showYearView = !this.$refs.thedatepicker[0]
         .showYearView;
