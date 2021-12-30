@@ -112,7 +112,7 @@ export default {
     onClickPost(id) {
       this.currentPost = {};
       this.currentPostImage = "";
-      this.$router.push({ query: { pid: id } });
+      this.$router.push({ query: { page: "post", pid: id } });
 
       if (!this.$route.query.pid || this.postData.length == 0) {
         this.$router.back();

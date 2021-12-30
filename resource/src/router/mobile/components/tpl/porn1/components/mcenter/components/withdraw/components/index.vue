@@ -350,7 +350,8 @@
           "
         >
           <div :class="[$style['bank-card-cell']]">
-            <div :class="[$style['check-box'], $style['checked']]" />
+            <div :class="[$style['check-box'],
+                $style[`image-${siteConfig.ROUTER_TPL}`], $style['checked']]" />
             <span :class="[]">
               {{
                 parseCardName(
@@ -1831,16 +1832,17 @@ export default {
         };
       }
 
-      if (this.epointSelectType) {
-        this.selectedCard = {
-          id: this.epointWallet[0].id,
-          withdrawType: this.epointWallet[0].withdrawType,
-          bank_id: this.epointWallet[0].bank_id,
-          swift_code: this.epointWallet[0].swift_code,
-          offer_percent: this.epointWallet[0].offer_percent,
-          offer_limit: this.epointWallet[0].offer_limit
-        };
-      }
+      // if (this.epointSelectType) {
+      //   this.selectedCard = {
+      //     id: this.epointWallet[0].id,
+      //     withdrawType: this.epointWallet[0].withdrawType,
+      //     bank_id: this.epointWallet[0].bank_id,
+      //     swift_code: this.epointWallet[0].swift_code,
+      //     offer_percent: this.epointWallet[0].offer_percent,
+      //     offer_limit: this.epointWallet[0].offer_limit,
+      //     offer_data:this.epointWallet[0].offer_data
+      //   };
+      // }
 
       // console.log(_params);
       //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232

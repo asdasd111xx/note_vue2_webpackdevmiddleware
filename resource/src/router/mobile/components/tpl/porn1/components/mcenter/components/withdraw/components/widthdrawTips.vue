@@ -111,7 +111,9 @@
                 ]"
               >
                 <div :class="$style['sub-title']">
-                  {{ withdrawName }}出款额外赠送
+                  {{
+                    withdrawName === "" ? "银行卡" : withdrawName
+                  }}出款额外赠送
                 </div>
                 <span :class="[$style['money']]">
                   {{ bonusOffer }}

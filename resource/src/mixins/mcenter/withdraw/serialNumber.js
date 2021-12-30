@@ -139,7 +139,7 @@ export default {
       return thousandsCurrency(_value);
     },
     formatThousandsCurrencyUnFix(value) {
-      return thousandsCurrency(Number(value));
+      return thousandsCurrency(value);
     }
   }
 };
