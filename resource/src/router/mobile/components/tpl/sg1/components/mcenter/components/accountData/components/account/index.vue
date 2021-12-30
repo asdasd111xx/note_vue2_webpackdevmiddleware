@@ -573,7 +573,7 @@ export default {
       showSuccess: false,
       birthdayValue: "",
       showGenderEdit: false,
-      selectGenderValue: "",
+      selectGenderValue: "1",
       showRelationshipEdit: false,
       selectRelationshipValue: "",
       showHometownEdit: false,
