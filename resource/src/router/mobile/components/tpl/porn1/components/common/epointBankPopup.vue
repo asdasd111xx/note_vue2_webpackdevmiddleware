@@ -164,7 +164,7 @@ export default {
     top: 50%;
     width: 15px;
     height: 15px;
-    color: var(--addcard_popup_prev_text_color);
+    color: var(--addcard_popup_check_color);
     transform: translateY(-50%);
   }
 }
