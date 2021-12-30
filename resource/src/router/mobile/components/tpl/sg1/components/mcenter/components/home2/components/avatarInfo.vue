@@ -45,13 +45,12 @@
       <div>
         <template v-if="loginStatus">
           <span v-for="(item, index) in badgesList" :key="index">
-            <img
-              @click.stop="onListClick('my_style')"
-              :class="$style['badge']"
-              :src="item"
-            />
+            <img :class="$style['badge']" :src="item" />
           </span>
-          <span :class="$style['info-name']">
+          <span
+            :class="$style['info-name']"
+            @click="onListClick('memberCard', false)"
+          >
             {{ paopaoUserInfo.alias }}
           </span>
         </template>
