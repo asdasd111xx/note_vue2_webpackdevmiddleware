@@ -712,7 +712,7 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: #ffffff;
+    color: #5e626d;
     font-size: 14px;
     outline: none;
 
@@ -745,7 +745,7 @@ export default {
     }
 
     &::placeholder {
-      color: #ffffff;
+      color: #fff;
     }
   }
 }
@@ -781,7 +781,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  background: var(--video_search_button);
   color: white;
   margin: 0 auto;
   text-align: center;
