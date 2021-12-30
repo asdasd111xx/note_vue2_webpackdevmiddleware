@@ -46,3 +46,9 @@
     opacity: 0.1;
   }
 }
+
+// VIP如何保級
+.card-level-downgrade {
+  color: #fff;
+  background: var(--vip_keeplevel_color);
+}
