@@ -39,7 +39,25 @@
       {{ resultGameName }}
     </div>
     <!-- 最愛 -->
-    <div :class="getClass(['icon-star-wrap'])" @click.stop="toggleFavorite">
+    <div
+      v-if="['porn1'].includes(routerTPL)"
+      :class="getClass(['icon-star-wrap'])"
+      @click.stop="toggleFavorite"
+    >
+      <div
+        v-if="showFavor && loginStatus"
+        :class="
+          getClass(['icon-star-porn1', 'is-favorite'], {
+            'is-favorite': isFavorite
+          })
+        "
+      />
+    </div>
+    <div
+      v-else
+      :class="getClass(['icon-star-wrap'])"
+      @click.stop="toggleFavorite"
+    >
       <div
         v-if="showFavor && loginStatus"
         :class="
@@ -132,6 +150,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     /**
      * 當前平台維護狀態
