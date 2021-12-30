@@ -138,6 +138,7 @@
     right: 16px;
 
     &.checked {
+      @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
       &.image-porn1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }

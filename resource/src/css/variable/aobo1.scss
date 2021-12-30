@@ -120,6 +120,8 @@
   --vip_text_color1: #7086ce;
   //>數字0.00
   --vip_text_color2: #333333;
+  //>如何保級
+  --vip_keeplevel_color: linear-gradient(to right, #99a3c1 0%, #636f93 100%);
 
   /***---------------- 功能 ----------------***/
   /***--- 大廳 遊戲 功能 ---***/
@@ -149,6 +151,14 @@
   --video_popup_left_background_button: #f2f2f2; //影片裡面提示框左邊按鈕
   --video_popup_right_text_button: #f2f2f2; //影片裡面提示框右邊按鈕文字
   --video_popup_right_background_button: #5e626d; //影片裡面提示框右邊按鈕
+  --video_search_button: linear-gradient(
+    to left,
+    #bd9d7d 0%,
+    #f9ddbd 100%
+  ); //影片內部搜尋按鈕
+  --video_more_dropdown_text_color: #d1b79c; //影片分類下拉視窗 文字
+  --video_more_dropdown_border_color: #d1b79c; //影片分類下拉視窗 框線
+  --game_bonus_amount: #aa7e28; //電子大廳 彩金金額
 
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框

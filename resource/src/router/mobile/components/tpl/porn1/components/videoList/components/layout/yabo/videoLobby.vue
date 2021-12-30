@@ -54,7 +54,12 @@
 
     <div
       v-show="isShowAllTag"
-      :class="[$style['all-tag-wrap'], $style[source], 'clearfix']"
+      :class="[
+        $style['all-tag-wrap'],
+        $style[siteConfig.ROUTER_TPL],
+        $style[source],
+        'clearfix'
+      ]"
     >
       <template v-for="(tag, index) in videoTag">
         <div
@@ -589,15 +594,23 @@ export default {
   min-height: 250px;
   overflow-y: scroll;
 
+  &.porn1 {
+    height: calc(100% - 85px);
+    opacity: 0.9;
+    > div {
+      margin-top: 7px;
+    }
+  }
+
   > div {
     float: left;
     width: 23%;
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid var(--slider_underline_active_color);
+    border: 1px solid var(--video_more_dropdown_border_color);
     border-radius: 5px;
-    color: var(--slider_underline_active_color);
+    color: var(--video_more_dropdown_text_color);
     font-size: 14px;
     text-align: center;
 
