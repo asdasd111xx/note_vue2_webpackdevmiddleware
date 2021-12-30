@@ -398,25 +398,26 @@ export default {
   margin: auto;
   width: 100%;
   height: 59px;
+  display: flex;
   font-size: 0;
+  justify-content: center;
+  align-items: center;
   border-top: 1px solid #eeeeee;
   font-weight: 700;
+  line-height: 58px;
+
   .cancel,
   .submit {
+    width: 100%;
     font-size: 16px;
-    display: inline-block;
     margin: 0 auto;
-
     cursor: pointer;
-    text-align: center;
-    padding: 0 59px;
-    line-height: 58px;
   }
   .cancel {
+    border-right: 1px solid #eeeeee;
     color: var(--popup_tip_close_color);
   }
   .submit {
-    border-left: 1px solid #eeeeee;
     color: var(--popup_tip_ok_color);
   }
 }

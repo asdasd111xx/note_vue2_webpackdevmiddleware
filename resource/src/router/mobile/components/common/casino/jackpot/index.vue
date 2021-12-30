@@ -528,7 +528,7 @@ export default {
     font-family: Arial, Arial-Regular;
     font-weight: 400;
     text-align: right;
-    color: #aa7e28;
+    color: var(--game_bonus_amount);
   }
 }
 

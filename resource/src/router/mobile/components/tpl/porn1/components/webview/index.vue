@@ -62,13 +62,12 @@
       </div>
     </div>
 
-    <div :class="$style['info-card']" @click="clickService">
+    <div
+      :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
+      @click="clickService"
+    >
       <div>
         <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/webview/ic_service01.png`)"
-          />
-          &nbsp;
           <span>在线客服1</span>
         </div>
         <div>Main Customer Support</div>
@@ -84,13 +83,12 @@
       </div>
     </div>
 
-    <div :class="$style['info-card2']" @click="clickService">
+    <div
+      :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
+      @click="clickService"
+    >
       <div>
         <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/webview/ic_service02.png`)"
-          />
-          &nbsp;
           <span>在线客服2</span>
         </div>
         <div>Reserve Customer Support</div>
