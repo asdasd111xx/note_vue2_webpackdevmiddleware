@@ -70,7 +70,10 @@ import { sendUmeng } from "@/lib/sendUmeng";
 export default {
   data() {
     return {
-      noDataText: "暂时没有新的充值记录",
+      noDataText:
+        this.pageType === "ingroup_transfer"
+          ? "暂时没有新的转让记录"
+          : "暂时没有新的充值记录",
       emptyImage: "no_data"
     };
   },
