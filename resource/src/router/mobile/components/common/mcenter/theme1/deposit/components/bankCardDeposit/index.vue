@@ -371,7 +371,7 @@
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || e点富(34)-->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || E点付(34)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -1949,7 +1949,7 @@ export default {
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=bcwallet&swift=${this.curPayInfo.swift_code}`
           );
           break;
-        // e点富
+        // E点付
         case 34:
           this.$router.push(
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`

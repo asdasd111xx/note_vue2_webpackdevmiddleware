@@ -241,7 +241,7 @@
           ]"
           @click="setWithdrawTypeIsNormal(false)"
         >
-          e点富
+          E点付
           <img
             :class="$style['select']"
             :src="$getCdnPath(`/static/image/common/select_active.png`)"
@@ -619,7 +619,7 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
-        <span v-else-if="epointSelectType">e点</span>
+        <span v-else-if="epointSelectType">E点</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -1293,7 +1293,7 @@ export default {
 
     realWidthdrawText() {
       if (this.epointSelectType) {
-        return "e点富到帐";
+        return "E点付到帐";
       } else if (this.selectedCard.name && !this.isSelectedUSDT) {
         return `${this.selectedCard.name}到帐`;
       } else {
