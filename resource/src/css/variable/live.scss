@@ -205,12 +205,8 @@
     #febdb2 0%,
     #ff8093 100%
   ); //我的 vip等級 背景顏色
-  --redpot_button_color: linear-gradient(
-    to right,
-    #f9d388,
-    #f4b22e
-  ); //紅包彩金裡面領取按鈕
-  --redpot_text_color: #bf8646; //紅包彩金文字
+  --redpot_button_color: #ededed; //紅包彩金裡面領取按鈕
+  --redpot_text_color: #e53266; //紅包彩金文字
   --addcard_popup_text_color: #414655; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
   --addcard_popup_prev_text_color: #000000; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --addcard_popup_check_color: #e53266; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 打勾

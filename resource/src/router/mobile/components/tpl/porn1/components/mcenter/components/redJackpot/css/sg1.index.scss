@@ -6,17 +6,20 @@
     padding: 3px 0px;
     line-height: 17px;
     height: 24px;
-    color: #e53266;
+    color: var(--redpot_text_color);
     text-align: center;
     font-weight: bold;
     width: 75px;
     border-radius: 11px;
     background: #ededed;
   }
+  .option1 {
+    color: var(--redpot_text_color);
+  }
 }
 
 .menu-wrap {
   .money-text {
-    color: #e53266;
+    color: var(--redpot_text_color);
   }
 }
