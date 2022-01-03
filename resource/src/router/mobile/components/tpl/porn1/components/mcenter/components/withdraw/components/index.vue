@@ -931,6 +931,7 @@ export default {
       displayWithdrawValue: "",
       epointSelectType: false,
       showRealStatus: false,
+      updateBalance: null
     };
   },
   watch: {
@@ -1046,6 +1047,20 @@ export default {
     // if (this.memInfo.auto_transfer.enable) {
     //   this.balanceBack();
     // }
+    this.updateBalance = setInterval(() => {
+      let cid = getCookie("cid");
+
+      if (!cid) {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+      } else {
+        this.actionSetUserBalance();
+      }
+    }, 30000);
+  },
+  beforeDestroy() {
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
   },
   computed: {
     ...mapGetters({
@@ -1304,7 +1319,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList"]),
+    ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList","actionSetUserBalance"]),
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
