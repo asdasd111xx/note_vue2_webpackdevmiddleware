@@ -5,14 +5,14 @@
 }
 
 .bank-card-cell {
-  > .check-box {
+  >.check-box {
     &.checked {
       background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
       background-size: 100%;
     }
   }
 
-  > span {
+  >span {
     &.rubbing-btn {
       background: var(--mcenter_button_color1);
     }
@@ -28,6 +28,7 @@
   .check-button-wrap {
     color: #fff;
     margin-bottom: 10px;
+
     .check-btn {
       border-radius: 3px;
       background: #a2a2a2;
@@ -40,13 +41,13 @@
 }
 
 .withdraw-max {
-  > span {
+  >span {
     background: var(--mcenter_button_color1);
   }
 }
 
 .submit-btn {
-  > div {
+  >div {
     background: var(--mcenter_button_color1);
   }
 
@@ -58,7 +59,7 @@
 }
 
 .withdraw-input {
-  > input {
+  >input {
     &::placeholder {
       color: #a2a2a2;
     }
@@ -94,11 +95,9 @@
     &.is-current {
       border: 1px solid var(--wallet_border_color);
       color: var(--wallet_border_color);
-      background: linear-gradient(
-        -45deg,
-        var(--wallet_border_color) 10px,
-        hsla(0, 0%, 100%, 0) 0
-      );
+      background: linear-gradient(-45deg,
+          var(--wallet_border_color) 10px,
+          hsla(0, 0%, 100%, 0) 0);
     }
   }
 }
@@ -128,6 +127,7 @@
     text-align: center;
   }
 }
+
 .check-container {
   border-radius: 3px;
 }

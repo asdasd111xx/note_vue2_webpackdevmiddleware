@@ -44,7 +44,7 @@
               $style['value'],
               {
                 [$style['match']]:
-                  item.bank_name === 'e点富' && item.status === 'confirm'
+                  item.bank_name === 'E点付' && item.status === 'confirm'
               }
             ]"
           >
@@ -57,7 +57,7 @@
             </div>
             <div
               v-else-if="
-                item.bank_name === 'e点富' && item.status === 'confirm'
+                item.bank_name === 'E点付' && item.status === 'confirm'
               "
               @click="openMatchLink(item)"
             >

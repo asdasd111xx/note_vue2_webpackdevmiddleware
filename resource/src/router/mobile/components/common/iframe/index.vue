@@ -125,7 +125,8 @@ export default {
       src: "",
       showBack: true,
       contentTitle: "",
-      exitCheck: false
+      exitCheck: false,
+      justForBack: false
     };
   },
   components: {
@@ -255,7 +256,8 @@ export default {
             (this.$route.params.page.toUpperCase() === "GIFT" ||
               this.$route.params.page.toUpperCase() === "HISTORY" ||
               this.$route.params.page.toUpperCase() === "DEPOSIT" ||
-              this.$route.params.page.toUpperCase() === "BCWALLET") &&
+              this.$route.params.page.toUpperCase() === "BCWALLET" ||
+              this.justForBack) &&
             !iframeThirdOrigin
           ) {
             window.history.back();

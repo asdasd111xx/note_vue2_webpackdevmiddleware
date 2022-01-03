@@ -43,7 +43,11 @@
       </template>
       <template>
         <div :class="$style['post-image']">
-          <img :id="`image-${currentPost.id}`" :src="currentPostImage" />
+          <img
+            :id="`image-${currentPost.id}`"
+            :src="currentPostImage"
+            @click="linkTo(currentPost)"
+          />
         </div>
       </template>
     </div>
@@ -83,6 +87,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import mixin from "@/mixins/mcenter/message/message";
+import mobileLinkOpen from "@/lib/mobile_link_open";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   mixins: [mixin],
@@ -102,10 +108,11 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetPost"]),
+    mobileLinkOpen,
     onClickPost(id) {
       this.currentPost = {};
       this.currentPostImage = "";
-      this.$router.push({ query: { pid: id } });
+      this.$router.push({ query: { page: "post", pid: id } });
 
       if (!this.$route.query.pid || this.postData.length == 0) {
         this.$router.back();
@@ -125,6 +132,114 @@ export default {
       this.currentPost = this.postData.find(
         post => post.id === this.$route.query.pid
       );
+    },
+    linkTo(value) {
+      // link_type 1/外部連結, 2/內部連結, 3/遊戲連結, 4/優小秘連結
+      switch (value.link_type) {
+        case 1:
+          localStorage.setItem("iframe-third-url", value.zh_cn_url);
+          this.$router.push(`/mobile/iframe/${this.$route.name}`);
+          break;
+        case 2:
+          // 內部連結選項：必填。{string=deposit/存款, withdraw/取款, bank-rebate/我的返水, ubb/寰宇瀏覽器, cgpay/CGP教程, mobile-bet/app下載頁, agent-login/代理登入, service/在線客服, promotion/優惠活動}
+          // internal_link
+          let mobile_internal_link = "";
+          switch (value.internal_link) {
+            case "ubb": //寰宇瀏覽器
+              break;
+            case "cgpay": //CGP教程
+              break;
+            case "mobile-bet": //app下載頁
+              break;
+            case "agent-login": //代理登入
+              break;
+            case "deposit": //存款
+            case "withdraw": //取款
+            case "bank-rebate": //我的返水
+            case "service": //在線客服
+            case "promotion": //優惠活動
+            default:
+              mobile_internal_link = value.internal_link;
+              break;
+          }
+          this.mobileLinkOpen({
+            linkType: "internal",
+            linkTo: mobile_internal_link
+          });
+          break;
+        case 3:
+          let gameLinkType = 0;
+          switch (value.kind) {
+            case 1:
+              gameLinkType = "sport";
+              break;
+
+            case 2:
+              gameLinkType = "live";
+              break;
+
+            case 3:
+              gameLinkType = "casino";
+              break;
+
+            case 4:
+              gameLinkType = "lottery";
+              break;
+
+            case 5:
+              gameLinkType = "card";
+              break;
+
+            case 6:
+              gameLinkType = "mahjong";
+              break;
+
+            default:
+              break;
+          }
+          this.mobileLinkOpen({
+            linkType: gameLinkType,
+            linkTo: value.vendor,
+            linkItem: { "zh-cn": value.code }
+          });
+          break;
+        case 4:
+          let usmCode = value.zh_cn_url.split("/")[
+            value.zh_cn_url.split("/").length - 1
+          ];
+          usmCode = usmCode.split("?")[0];
+          console.log(usmCode);
+          this.getPromotionList(usmCode);
+          break;
+        default:
+          break;
+      }
+    },
+    getPromotionList(id) {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+        params: {
+          tabId: 0
+        }
+      }).then(res => {
+        if (res && res.data) {
+          let linkData = res.data.ret.find(data => {
+            return data.id === +id;
+          });
+          if (linkData) {
+            this.mobileLinkOpen({
+              linkType: "mi",
+              linkTitle: linkData.name,
+              linkTo: linkData.link
+            });
+          } else {
+            this.actionSetGlobalMessage({
+              msg: "抱歉，此活动不存在"
+            });
+          }
+        }
+      });
     }
   },
   created() {
