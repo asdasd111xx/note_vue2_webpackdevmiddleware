@@ -68,7 +68,7 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("do-not-show-withdraw-post");
   // 浮動推廣
   localStorage.removeItem("do-not-show-float-list");
-
+  localStorage.removeItem("appTips");
   if (reload) {
     window.location.reload();
   }
