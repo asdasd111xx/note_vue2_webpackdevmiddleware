@@ -8,25 +8,33 @@
   bottom: 0;
   z-index: 99;
 
-  &.porn1 {
+  &.porn1,
+  &.sg1 {
     .content-wrap {
       padding: 13px 0 0 0;
     }
+
+    .pop-block {
+      border-radius: 20px;
+    }
+
     .button-wrap {
-      height: 42px;
-      line-height: 41px;
+      height: 50px;
+      line-height: 49px;
       border-top: 1px solid #eeeeee;
+      font-size: 18px;
+      font-weight: bold;
 
       .button-item {
         border-radius: 0px;
 
         &.close {
-          background: #f8f8f7;
+          background: none;
           color: var(--popup_text_color3);
         }
 
         &.confirm {
-          background: #f8f8f7;
+          background: none;
           color: var(--popup_text_color1);
           border-left: 1px solid #eeeeee;
         }
@@ -36,6 +44,9 @@
       background: #f8f8f7;
       color: #000;
       font-size: 17px;
+      border-radius: 20px 20px 0 0;
+      font-weight: bold;
+      border-bottom: 1px solid #eeeeee;
     }
   }
 }
@@ -127,6 +138,7 @@
 
 .tips {
   margin-top: 15px;
+  margin-bottom: 13px;
 }
 
 .tips-close {
