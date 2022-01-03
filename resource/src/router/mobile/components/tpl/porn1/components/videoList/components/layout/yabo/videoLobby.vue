@@ -65,7 +65,10 @@
         <div
           :key="`all-tag-${index}`"
           @click="onChangeVideoType(tag.id, tag.title)"
-          :class="tag.title.length > 4 ? $style['small'] : ''"
+          :class="[
+            [tag.title.length > 4 ? $style['small'] : ''],
+            { [$style.active]: tag.id === +videoType.id }
+          ]"
         >
           {{ tag.title }}
         </div>
@@ -608,9 +611,10 @@ export default {
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid var(--video_more_dropdown_border_color);
+    border: 1px solid var(--square_border_color);
     border-radius: 5px;
-    color: var(--video_more_dropdown_text_color);
+    color: var(--square_text_color);
+    background: var(--square_background_color);
     font-size: 14px;
     text-align: center;
 
@@ -620,16 +624,34 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+
+    &.active {
+      color: var(--square_text_active_color);
+      background: var(--square_background_active_color);
+      border: 1px solid var(--square_border_active_color);
+    }
   }
 
   &.gay > div {
     border-color: #3e81ac;
     color: #3e81ac;
+
+    &.active {
+      color: #3e81ac;
+      background: none;
+      border: 1px solid #3e81ac;
+    }
   }
 
   &.les > div {
     border-color: #d64545;
     color: #d64545;
+
+    &.active {
+      color: #d64545;
+      background: none;
+      border: 1px solid #d64545;
+    }
   }
 }
 
