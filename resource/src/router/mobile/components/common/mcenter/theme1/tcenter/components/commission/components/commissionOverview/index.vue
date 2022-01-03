@@ -723,7 +723,7 @@ export default {
       let data = this.friendMemberList?.ret?.map(info => {
         return {
           title: info.username,
-          childTitle: "查看",
+          childTitle: info.current_valid_bet > 0 ? "查看" : "",
           // 傳遞給子元件點擊專用
           paramsValue: {
             user: info.username,
