@@ -25,7 +25,6 @@ export default {
         alias: "CGP",
         method_id: 15
       },
-
       isAlertTip: false,
       isAjaxUse: false,
       alertData: {
@@ -48,7 +47,8 @@ export default {
       defaultEpointWallet: {
         id: "",
         account: ""
-      }
+      },
+      offerInfo: null
     };
   },
   computed: {
@@ -294,6 +294,44 @@ export default {
         }
       }
       return list;
+    },
+    /**
+     * 優惠金額提示訊息
+     *
+     * @return string
+     */
+    promitionText() {
+      let textValue = "";
+
+      if (!this.offerInfo.is_full_offer) {
+        textValue += `• 此笔提现成功加赠优惠 ${this.formatThousandsCurrency(
+          this.offerInfo.offer
+        )}元\n`;
+      }
+
+      if (+this.offerInfo.per_offer_limit && +this.offerInfo.offer_limit) {
+        textValue += `• 单笔上限 ${this.formatThousandsCurrency(
+          this.offerInfo.per_offer_limit
+        )} 元，单日上限 ${this.formatThousandsCurrency(
+          this.offerInfo.offer_limit
+        )} 元(美东时间计算)\n`;
+      } else if (+this.offerInfo.per_offer_limit) {
+        textValue += `• 单笔上限 ${this.formatThousandsCurrency(
+          this.offerInfo.per_offer_limit
+        )} 元\n`;
+      } else if (+this.offerInfo.offer_limit) {
+        textValue += `• 单日上限 ${this.formatThousandsCurrency(
+          this.offerInfo.offer_limit
+        )} 元(美东时间计算)\n`;
+      }
+
+      textValue += this.offerInfo.is_full_offer
+        ? "• 今日领取已达上限"
+        : `• 今日优惠已领 ${this.formatThousandsCurrency(
+            this.offerInfo.gotten_offer
+          )}元`;
+
+      return textValue;
     }
   },
   watch: {
@@ -623,6 +661,35 @@ export default {
           }
         })
         .catch(error => {});
+    },
+    // 取得會員層級當日取款試算優惠、金額(迅付)
+    getWithdrawOffer(amount) {
+      let method_id = 0;
+      if (this.selectedCard.bank_id === 2009) {
+        method_id = this.withdrawCurrency.method_id;
+      } else {
+        method_id = this.selectedCard.offer_data
+          ? this.selectedCard.offer_data[0]
+            ? this.selectedCard.offer_data[0].method_id
+            : 0
+          : 0;
+      }
+      //取得會員層級當日取款試算優惠、金額 C04.55
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Withdraw/Offer`,
+        params: {
+          payment_method_id: method_id, //銀行卡時=0
+          amount: amount
+        }
+      }).then(response => {
+        if (response && response.data && response.status === "000") {
+          // console.log(response.data);
+          this.offerInfo = response.data;
+        } else {
+          this.actionSetGlobalMessage({ msg: response.msg });
+        }
+      });
     }
   }
 };

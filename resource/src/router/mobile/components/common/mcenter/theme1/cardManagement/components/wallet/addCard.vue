@@ -1186,7 +1186,7 @@ export default {
                   localStorage.setItem("iframe-third-url", res.uri);
                   localStorage.setItem(
                     "iframe-third-url-title",
-                    "e点富是什么?"
+                    "E点付是什么?"
                   );
                   console.log(this.$route.query);
                   this.$router.replace(
@@ -1198,7 +1198,7 @@ export default {
                   );
                 });
               },
-              text: "e点富是什么?"
+              text: "E点付是什么?"
             }
           },
           // {
@@ -1216,12 +1216,12 @@ export default {
           //       //   })
           //       // );
           //     },
-          //     text: "如何使用e点富存款"
+          //     text: "如何使用E点付存款"
           //   }
           // },
           // {
           //   key: "epoint",
-          //   text: `没有e点富帐号?`,
+          //   text: `没有E点付帐号?`,
           //   hasCallback: true,
           //   dataObj: {
           //     cb: () => {
@@ -1239,7 +1239,7 @@ export default {
           // },
           {
             key: "epoint",
-            text: `建议您e点富户名同网站真实姓名，加速出款审核时间`
+            text: `建议您E点付户名同网站真实姓名，加速出款审核时间`
           }
         ];
         return;

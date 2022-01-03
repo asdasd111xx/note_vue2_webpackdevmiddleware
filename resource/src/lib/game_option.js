@@ -14,6 +14,14 @@ const embedGamesList = [
     kind: 4
   },
   {
+    vendor: "sigua2_ly",
+    kind: 4
+  },
+  {
+    vendor: "sigua3_ly",
+    kind: 4
+  },
+  {
     vendor: "lg_yb_card",
     kind: 5
   },

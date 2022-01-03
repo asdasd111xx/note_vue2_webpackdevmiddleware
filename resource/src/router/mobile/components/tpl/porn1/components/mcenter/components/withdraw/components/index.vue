@@ -241,7 +241,7 @@
           ]"
           @click="setWithdrawTypeIsNormal(false)"
         >
-          e点富
+          E点付
           <img
             :class="$style['select']"
             :src="$getCdnPath(`/static/image/common/select_active.png`)"
@@ -350,7 +350,8 @@
           "
         >
           <div :class="[$style['bank-card-cell']]">
-            <div :class="[$style['check-box'], $style['checked']]" />
+            <div :class="[$style['check-box'],
+                $style[`image-${siteConfig.ROUTER_TPL}`], $style['checked']]" />
             <span :class="[]">
               {{
                 parseCardName(
@@ -566,13 +567,34 @@
         </span>
       </div>
       <!-- 優惠提示 -->
-      <div v-if="hasOffer" :class="[$style['offer']]">
+      <div v-if="offerInfo.offer_enable" :class="[$style['offer']]">
         <span>
-          使用{{
-            selectedCard.bank_id === 2025 ? "币希" : selectedCard.name
-          }}出款，额外赠送{{ formatThousandsCurrency(offer()) }}元(CNY)优惠
+          {{`加送 ${formatThousandsCurrency(offerInfo.offer_percent)} %提现优惠`}}
         </span>
+        <span :class="[$style['option']]" @click="showRealStatusType(true)">详情</span>
       </div>
+      <div v-if="showRealStatus" :class="$style['pop-message']">
+            <div :class="$style['pop-message-mark']" />
+            <div :class="$style['message-container']">
+              <ul :class="$style['message-content']">
+                <div :class="$style['message-content-title']">
+                  详情
+                </div>
+                <template
+                  v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
+                >
+                  <li :class="$style['tip-list']" v-html="promitionText" />
+                </template>
+                <li>• 实际存入依审核结果为准</li>
+              </ul>
+              <div
+                :class="$style['message-close']"
+                @click="showRealStatusType(false)"
+              >
+                关闭
+              </div>
+            </div>
+          </div>
       <!-- 到帳金額 -->
       <div
         :class="[
@@ -598,7 +620,7 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
-        <span v-else-if="epointSelectType">e点</span>
+        <span v-else-if="epointSelectType">E点</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -647,13 +669,14 @@
             ]"
           >
             <div @click="checkSubmit">立即提现</div>
+            <!-- <span>{{offer()}}</span> -->
           </div>
         </div>
       </template>
 
       <!-- 取款密碼＋Botton -->
       <!-- 億元 -->
-      <template v-if="['ey1'].includes(themeTPL)">
+      <!-- <template v-if="['ey1'].includes(themeTPL)">
         <div :class="[$style['withdraw-pwd-input']]">
           <input
             v-model="withdrawPwd"
@@ -675,7 +698,7 @@
             <div @click="checkSubmit">立即提现</div>
           </div>
         </div>
-      </template>
+      </template> -->
     </template>
 
     <!-- Tips -->
@@ -741,9 +764,9 @@
           :type="widthdrawTipsType"
           :has-crypto="isSelectedUSDT"
           :swift-code="selectedCard.swift_code"
-          :bonus-offer="formatThousandsCurrency(offer())"
+          :bonus-offer="formatThousandsCurrency(offerInfo.offer)"
           :withdraw-name="selectedCard.name"
-          :has-offer="hasOffer"
+          :has-offer="offerInfo.offer_enable"
           @close="closePopup"
           @submit="handleSubmit"
           @save="saveCurrentValue(true)"
@@ -855,7 +878,6 @@ export default {
       errCode: "",
       firstDeposit: false,
       // hasBankCard: false,
-
       isLoading: true,
       isSendSubmit: false,
       isSerial: false,
@@ -907,7 +929,9 @@ export default {
       marqueeList: [],
 
       displayWithdrawValue: "",
-      epointSelectType: false
+      epointSelectType: false,
+      showRealStatus: false,
+      updateBalance: null
     };
   },
   watch: {
@@ -973,6 +997,7 @@ export default {
           this.getUserWalletList();
           this.getBounsAccount();
           this.actionSetAnnouncementList({ type: 2 });
+          this.getWithdrawOffer();
         });
 
         this.depositBeforeWithdraw = this.memInfo.config.deposit_before_withdraw;
@@ -1022,6 +1047,20 @@ export default {
     // if (this.memInfo.auto_transfer.enable) {
     //   this.balanceBack();
     // }
+    this.updateBalance = setInterval(() => {
+      let cid = getCookie("cid");
+
+      if (!cid) {
+        clearInterval(this.updateBalance);
+        this.updateBalance = null;
+      } else {
+        this.actionSetUserBalance();
+      }
+    }, 30000);
+  },
+  beforeDestroy() {
+    clearInterval(this.updateBalance);
+    this.updateBalance = null;
   },
   computed: {
     ...mapGetters({
@@ -1246,16 +1285,17 @@ export default {
         return obj;
       }
     },
-    hasOffer() {
-      return (
-        (this.isSelectedUSDT ||
-          this.selectedCard.bank_id == 2009 ||
-          this.selectedCard.bank_id == 2016 ||
-          this.selectedCard.bank_id == 2025 ||
-          this.selectedCard.bank_id == 2026) &&
-        this.selectedCard.offer_percent > 0
-      );
-    },
+    // hasOffer() {
+    //   return this.selectedCard.offer_data[0].offer_enable
+    //   // return (
+    //   //   (this.isSelectedUSDT ||
+    //   //     this.selectedCard.bank_id == 2009 ||
+    //   //     this.selectedCard.bank_id == 2016 ||
+    //   //     this.selectedCard.bank_id == 2025 ||
+    //   //     this.selectedCard.bank_id == 2026) &&
+    //   //   this.selectedCard.offer_percent > 0
+    //   // );
+    // },
 
     marqueeTitle() {
       let arr = this.marqueeList.map(item => {
@@ -1269,7 +1309,7 @@ export default {
 
     realWidthdrawText() {
       if (this.epointSelectType) {
-        return "e点富到帐";
+        return "E点付到帐";
       } else if (this.selectedCard.name && !this.isSelectedUSDT) {
         return `${this.selectedCard.name}到帐`;
       } else {
@@ -1279,7 +1319,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList"]),
+    ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList","actionSetUserBalance"]),
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
@@ -1453,6 +1493,7 @@ export default {
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
         swift_code: item.swift_code,
+        offer_data:item.offer_data,
         offer_percent: item.offer_percent,
         offer_limit: item.offer_limit,
         currency: item.currency
@@ -1474,6 +1515,7 @@ export default {
         this.getCryptoRate(31);
       }
       this.chooseUSDT();
+      this.getWithdrawOffer()
       // if (this.withdrawValue) {
       //   this.verification("withdrawValue", this.withdrawValue);
       // }
@@ -1571,6 +1613,8 @@ export default {
             return;
           }
         }
+
+        this.getWithdrawOffer(this.withdrawValue);
 
         // 會員綁定銀行卡前需手機驗證 与 投注/轉帳前需綁定銀行卡
         this.withdrawCheck().then(res => {
@@ -1803,16 +1847,17 @@ export default {
         };
       }
 
-      if (this.epointSelectType) {
-        this.selectedCard = {
-          id: this.epointWallet[0].id,
-          withdrawType: this.epointWallet[0].withdrawType,
-          bank_id: this.epointWallet[0].bank_id,
-          swift_code: this.epointWallet[0].swift_code,
-          offer_percent: this.epointWallet[0].offer_percent,
-          offer_limit: this.epointWallet[0].offer_limit
-        };
-      }
+      // if (this.epointSelectType) {
+      //   this.selectedCard = {
+      //     id: this.epointWallet[0].id,
+      //     withdrawType: this.epointWallet[0].withdrawType,
+      //     bank_id: this.epointWallet[0].bank_id,
+      //     swift_code: this.epointWallet[0].swift_code,
+      //     offer_percent: this.epointWallet[0].offer_percent,
+      //     offer_limit: this.epointWallet[0].offer_limit,
+      //     offer_data:this.epointWallet[0].offer_data
+      //   };
+      // }
 
       // console.log(_params);
       //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232
@@ -2092,6 +2137,7 @@ export default {
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
       this.chooseUSDT();
+      this.getWithdrawOffer()
 
       // 選項停留在 USDT 時，不執行重新刷新匯率動作
       if (this.isSelectedUSDT) {
@@ -2113,21 +2159,23 @@ export default {
     },
     offer() {
       let bonusOffer = Math.round(
-        (this.selectedCard.offer_percent * this.withdrawValue) / 100
+        (+this.offerInfo.offer_percent * this.withdrawValue) / 100
       );
-
+      let maxOffer = Math.min(+this.offerInfo.offer_limit - +this.offerInfo.gotten_offer,this.offerInfo.per_offer_limit)
       switch (true) {
         case !this.withdrawValue:
           return "--";
 
-        case this.selectedCard.offer_percent === "0" ||
+        case this.offerInfo.is_full_offer:
+          return "--";
+
+        case this.offerInfo.offer_percent === "0" ||
           bonusOffer <= 0 ||
           +this.actualMoney <= 0:
           return "0.00";
 
-        case bonusOffer >= this.selectedCard.offer_limit &&
-          this.selectedCard.offer_limit !== "0":
-          return `${this.selectedCard.offer_limit}`;
+        case bonusOffer >= maxOffer && maxOffer > 0:
+          return maxOffer
 
         default:
           return `${bonusOffer}`;
@@ -2359,6 +2407,12 @@ export default {
             }
           });
         }
+      }
+    },
+    showRealStatusType(type){
+      this.showRealStatus = type;
+      if (type) {
+        this.getWithdrawOffer(this.withdrawValue);
       }
     },
     //取得加密貨幣匯率

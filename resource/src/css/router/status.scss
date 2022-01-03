@@ -24,6 +24,7 @@ body {
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
   min-height: 812px;
+  height: 100vh;
   padding-top: 30px;
   position: relative;
   overflow-x: hidden;
@@ -73,7 +74,7 @@ body {
   color: #9ca3bf;
 
   &.porn1 {
-    color: #9ca3bf;
+    color: #5e626d;
   }
 
   &.sg1 {
@@ -168,14 +169,11 @@ body {
   font-size: 14px;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-weight: 400;
-  text-align: center;
   color: #a6a9b2;
   margin: 0 auto;
-
-  bottom: 8%;
-  position: absolute;
   text-align: center;
   width: 100%;
+  margin-top: 35%;
 
   > span {
     color: #6aaaf5;
@@ -249,13 +247,3 @@ body {
 
 @import "~@/css/variable.scss";
 @import "~@/css/index.scss";
-
-@media screen and (max-height: $pad) {
-  .main-img {
-    height: 300px;
-  }
-
-  .tips {
-    margin: 30px 0;
-  }
-}

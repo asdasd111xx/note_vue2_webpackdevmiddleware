@@ -37,6 +37,27 @@
   }
 }
 
+.check-container {
+  .check-header {
+    background: #333333;
+    color: #ffffff;
+  }
+
+  .check-button-wrap {
+    color: #fff;
+    margin-bottom: 10px;
+
+    .check-btn {
+      border-radius: 3px;
+      background: #a2a2a2;
+
+      &.submit {
+        background: var(--mcenter_button_color1);
+      }
+    }
+  }
+}
+
 .withdraw-max {
   > span {
     background: var(--mcenter_button_color1);
@@ -45,7 +66,13 @@
 
 .submit-btn {
   > div {
-    border-radius: 23px;
+    background: var(--mcenter_button_color1);
+  }
+
+  &.disabled {
+    div {
+      background: var(--mcenter_button_color2);
+    }
   }
 }
 
@@ -92,6 +119,17 @@
 .crypto-block {
   .time {
     color: var(--wallet_border_color);
+  }
+}
+
+.check-header {
+  border-radius: 3px 3px 0 0;
+
+  .title {
+    width: 100%;
+    font-size: 17px;
+    font-weight: 400;
+    text-align: center;
   }
 }
 
