@@ -141,7 +141,7 @@ export default {
       }
 
       if (showDetail) {
-        this.$router.push("/mobile/mcenter/information/post");
+        this.$router.push("/mobile/mcenter/information/post?page=post");
         return;
       }
 
