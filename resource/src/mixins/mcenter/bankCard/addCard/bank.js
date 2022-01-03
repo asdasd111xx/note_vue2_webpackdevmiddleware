@@ -266,7 +266,7 @@ export default {
       this.checkData();
     },
     checkData(value, key) {
-      if (key === "accountName" && this.memInfo.user.name === "") {
+      if (key === "accountName" && !this.memInfo.user.name) {
         this.actionVerificationFormData({ target: "name", value: value }).then(
           val => {
             this.formData.accountName = val;
