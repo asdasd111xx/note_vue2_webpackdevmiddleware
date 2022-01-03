@@ -406,17 +406,17 @@
     }
 
     .yb {
-      color: #6aaaf5;
+      color: var(--deposit_crypto_block_money_color);
       font-weight: 500;
     }
 
     .ey {
-      color: #e42a30;
+      color: var(--deposit_crypto_block_money_color);
       font-weight: 500;
     }
 
     .sg {
-      color: #bf8646;
+      color: var(--deposit_crypto_block_money_color);
       font-weight: 500;
     }
   }
@@ -799,12 +799,6 @@
 .feature-tip-title {
   font-size: 14px;
   color: #cbced8;
-
-  &.porn1 {
-    &.success {
-      color: #6aaaf5;
-    }
-  }
 
   &.success {
     color: var(--widthdraw_tip_text_color);

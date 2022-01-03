@@ -181,6 +181,7 @@
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #e53266; //充值 選擇支付方式、支付通道框框＆裡面文字
   --wallet_border_text_color: #e53266; //充值 選擇支付方式、支付通道框框的文字顏色
+  --deposit_crypto_block_money_color: #000000; //充值 轉入金額顏色
   --deco_color: linear-gradient(
     to bottom,
     #000 0%,
@@ -207,7 +208,7 @@
   --addcard_popup_text_color: #414655; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
   --addcard_popup_prev_text_color: #000000; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
   --addcard_popup_check_color: #e53266; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 打勾
-  --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
+  --widthdraw_tip_text_color: #000000; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
   --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
   --bankrebate_receive_button1: var(
     --mcenter_button_color1
@@ -216,7 +217,7 @@
     --mcenter_button_color2
   ); //我的返水 一鍵領取按鈕disable
   --bankrebate_receive_text_color: #ffffff; //我的返水 一鍵領取按鈕文字
-  --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
+  --countdown_time_text_color: #000000; //匯率試算倒數時間
   --mcenter_send_keyring: var(--main_button_color1); //獲取驗證碼按鈕
   --mcenter_send_keyring_disabled: var(
     --main_button_color2

@@ -2,7 +2,9 @@
 .content-wrap {
   .content-item {
     .rebate-btn {
-      border-radius: 23px;
+      > button {
+        border-radius: 23px;
+      }
     }
   }
 }
