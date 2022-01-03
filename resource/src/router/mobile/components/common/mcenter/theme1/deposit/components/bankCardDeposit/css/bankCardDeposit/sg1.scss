@@ -1,13 +1,5 @@
 @import "./porn1.scss";
 
-.swiper-item {
-  &.is-current {
-    span {
-      border-bottom: 2px solid #000;
-    }
-  }
-}
-
 .pay-button {
   border-radius: 23px;
   color: var(--mcenter_button_text_color1);

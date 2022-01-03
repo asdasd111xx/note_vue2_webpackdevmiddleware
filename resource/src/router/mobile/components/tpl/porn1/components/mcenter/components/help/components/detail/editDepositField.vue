@@ -1,6 +1,6 @@
 <template>
   <transition :name="'fade'">
-    <div :class="[$style['detail-alert-wrap'], $style[themeTPL]]">
+    <div :class="[$style['detail-alert-wrap']]">
       <div :class="[$style['alert-wrap'], $style['deposit']]">
         <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
