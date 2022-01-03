@@ -175,8 +175,6 @@
     #bd9d7d 0%,
     #f9ddbd 100%
   ); //影片內部搜尋按鈕
-  --video_more_dropdown_text_color: #fb4e74; //影片分類下拉視窗 文字
-  --video_more_dropdown_border_color: #fb4e74; //影片分類下拉視窗 框線
   --game_bonus_amount: #aa7e28; //電子大廳 彩金金額
 
   /***--- 會員中心 功能 ----***/
@@ -231,6 +229,7 @@
   --mcenter_wallet_recycle_text_color: #bf8646; //一鍵回收＆額度轉讓字(額度轉讓＆錢包＆提現＆轉帳)
   --mcenter_wallet_redpot_text_color: #bf8646; //紅包彩金文字 (提現＆轉帳＆錢包)
   --mcenter_wallet_redpot_money_color: #bf8646; //紅包彩金的錢 (提現＆轉帳＆錢包)
+  --mcenter_promotion_tips: #be9e7f; //額度轉讓喜訊
   --mcenter_change_avatar_image: #bf8646; //編輯個人頭像
   --mcenter_upload_image_button: linear-gradient(
     to left,
