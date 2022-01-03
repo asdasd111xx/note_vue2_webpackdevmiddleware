@@ -44,8 +44,8 @@
           :src="
             $getCdnPath(
               `/static/image/_new/common/icon_more${
-                isShowAllTag ? '_close_w' : '_w'
-              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
+                isShowAllTag ? '_close' : '_w'
+              }.png`
             )
           "
         />
@@ -611,9 +611,9 @@ export default {
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid var(--square_border_color);
+    border: 1px solid var(--video_more_dropdown_border_color);
     border-radius: 5px;
-    color: var(--square_text_color);
+    color: var(--video_more_dropdown_text_color);
     background: var(--square_background_color);
     font-size: 14px;
     text-align: center;
@@ -626,9 +626,9 @@ export default {
     }
 
     &.active {
-      color: var(--square_text_active_color);
-      background: var(--square_background_active_color);
-      border: 1px solid var(--square_border_active_color);
+      color: var(--video_more_dropdown_text_active_color);
+      background: var(--video_more_dropdown_background_active_color);
+      border: 1px solid var(--video_more_dropdown_border_active_color);
     }
   }
 
