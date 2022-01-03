@@ -369,12 +369,14 @@ export default {
         },
         {
           name: "上期结转损益：",
-          item:
-            this.friendMemberList?.sub_total?.last_profit > 0
-              ? this.formatThousandsCurrency(
-                  this.friendMemberList?.total?.last_profit
-                )
-              : "0.00"
+          item: this.friendMemberList?.sub_total?.last_profit
+            ? this.formatThousandsCurrency(
+                this.friendMemberList?.total?.last_profit
+              )
+            : "0.00",
+          color: this.friendMemberList?.sub_total?.last_profit
+            ? this.chooseColor(this.friendMemberList?.sub_total?.last_profit)
+            : "--"
         },
         {
           name: "总有效投注：",
