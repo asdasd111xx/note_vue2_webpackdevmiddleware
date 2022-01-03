@@ -1066,7 +1066,6 @@ export default {
           this.actionSetIsLoading(false);
 
           const { result, ret, msg, code } = response.data;
-
           let _isWebview =
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
@@ -1120,6 +1119,7 @@ export default {
           if (ret.wallet.url) {
             if (this.curPayInfo.payment_method_id === 34) {
               localStorage.setItem("iframe-third-url", ret.wallet.url);
+              localStorage.setItem("iframe-third-url-title", "");
               // localStorage.setItem("iframe-third-url-title", "搓合查询");
               this.$router.push(`/mobile/iframe/deposit?func=false`);
               newWindow.close();
