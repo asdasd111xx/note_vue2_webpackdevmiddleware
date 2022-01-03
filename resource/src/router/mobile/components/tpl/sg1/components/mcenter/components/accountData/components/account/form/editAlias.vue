@@ -26,12 +26,12 @@
         </div>
       </div>
       <div :class="$style.block">
-        <div :class="$style.title">{{ $text("S_NICKNAME") }}</div>
+        <div :class="$style.title">{{ $text("S_LIVE_NICKNAME") }}</div>
         <div :class="$style['input-wrap']">
           <input
             ref="input"
             v-model="value"
-            :placeholder="`请输入${$text('S_NICKNAME')}`"
+            :placeholder="`请输入${$text('S_LIVE_NICKNAME')}`"
             :class="$style.input"
             @input="onInput"
             :maxlength="20"
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <!-- <service-tips :edit="edit" :type="'alias'" /> -->
+    <service-tips :edit="edit" :type="'alias'" />
   </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: this.$text("S_NICKNAME", "真实姓名"),
+        title: this.$text("S_LIVE_NICKNAME", "直播昵称"),
         onClickFunc: () => {
           this.handleSubmit();
         },
