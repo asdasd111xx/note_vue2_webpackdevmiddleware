@@ -139,24 +139,22 @@
   --promotion_gift_button: #ffefdd; //優惠上方按鈕背景
   --promotion_gift_button_text_color: #000; //優惠上方按鈕文字
   --promotion_gift_button_border: 32px; //優惠上方按鈕圓角
-  --service_webview_button: linear-gradient(
-    to left,
-    #fe593c 0%,
-    #e61938 100%
-  ); //webview我的客服下載按鈕
-  --service_webview_text_button: #ffffff; //webview我的客服下載按鈕文字
+  --service_webview_button: var(--main_button_color1); //webview我的客服下載按鈕
+  --service_webview_text_button: var(
+    --service_add_text_button
+  ); //webview我的客服下載按鈕文字
   --service_add_button: linear-gradient(
     to left,
-    #fe593c 0%,
-    #e61938 100%
+    #000 0%,
+    #000 100%
   ); //我的客服立即添加按鈕
   --webview_icon_text: #fff; //webview我的客服文字
   --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
-  --service_text_color: #bf8646; //我的客服立即添加按鈕左邊的文字
+  --service_text_color: #6aaaf5; //我的客服立即添加按鈕左邊的文字
   --service_tip_color: linear-gradient(
     to left,
-    #fe593c 0%,
-    #e61938 100%
+    #000 0%,
+    #000 100%
   ); //我的客服彈窗 重要提醒
   --send_keyring: var(--main_button_color1); //獲取驗證碼按鈕
   --send_keyring_disabled: var(--main_button_color2); //獲取驗證碼按鈕disabled

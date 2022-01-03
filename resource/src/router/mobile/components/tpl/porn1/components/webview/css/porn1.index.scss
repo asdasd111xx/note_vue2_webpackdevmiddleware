@@ -197,6 +197,14 @@
       #f6d2bd
     );
   }
+  &.image-sg1 {
+    @include info-card(
+      #fd5183,
+      #e53266,
+      "/static/image/common/service/bg_service01.png",
+      #f6d2bd
+    );
+  }
 }
 
 .customer_service2 {
@@ -211,6 +219,14 @@
       #b4cfef,
       #8bb4e2,
       "/static/image/porn1/webview/service_card2.png",
+      #cedff3
+    );
+  }
+  &.image-sg1 {
+    @include info-card(
+      #61d2eb,
+      #4cbed8,
+      "/static/image/common/service/bg_service02.png",
       #cedff3
     );
   }

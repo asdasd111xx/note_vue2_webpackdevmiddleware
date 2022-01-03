@@ -15,9 +15,9 @@
     }
 
     .download {
-      background: var(--main_button_color1);
-      border: none;
-      color: var(--service_add_text_button);
+      background: var(--service_webview_button);
+      border-radius: 14px;
+      color: var(--service_webview_text_button);
     }
   }
 }

@@ -68,6 +68,10 @@
     >
       <div>
         <div>
+          <img
+            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
+          />
+          &nbsp;
           <span>在线客服1</span>
         </div>
         <div>Main Customer Support</div>
@@ -89,6 +93,10 @@
     >
       <div>
         <div>
+          <img
+            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
+          />
+          &nbsp;
           <span>在线客服2</span>
         </div>
         <div>Reserve Customer Support</div>
