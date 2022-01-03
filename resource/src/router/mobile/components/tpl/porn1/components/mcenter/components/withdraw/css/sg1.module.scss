@@ -4,6 +4,24 @@
   color: #414655;
 }
 
+.check-container {
+  .check-cell {
+    &.check-total {
+      background: #f8f8f7;
+    }
+
+    &.check-actual {
+      background: #f8f8f7;
+    }
+
+    &.custom-color {
+      &.custom-color-background {
+        background: #f8f8f7;
+      }
+    }
+  }
+}
+
 .bank-card-cell {
   > .check-box {
     &.checked {
@@ -19,28 +37,6 @@
   }
 }
 
-.check-container {
-  border-radius: 20px;
-  .check-header {
-    background: #ffff;
-    color: #000;
-    border-radius: 20px 20px 0 0;
-  }
-
-  .check-button-wrap {
-    color: #fff;
-    margin-bottom: 10px;
-    .check-btn {
-      border-radius: 3px;
-      background: #a2a2a2;
-
-      &.submit {
-        background: linear-gradient(to left, #fe593c 0%, #e61938);
-      }
-    }
-  }
-}
-
 .withdraw-max {
   > span {
     background: var(--mcenter_button_color1);
@@ -49,13 +45,7 @@
 
 .submit-btn {
   > div {
-    background: var(--mcenter_button_color1);
-  }
-
-  &.disabled {
-    div {
-      background: var(--mcenter_button_color2);
-    }
+    border-radius: 23px;
   }
 }
 
@@ -74,21 +64,6 @@
 
 .tips {
   color: #a2a2a2;
-}
-
-.check-container {
-  .check-cell {
-    color: #a2a2a2;
-
-    .money::after {
-      color: #a2a2a2;
-    }
-
-    // For Crypto
-    .crypto-money::after {
-      color: #a2a2a2;
-    }
-  }
 }
 
 .bank-wrap {
@@ -120,18 +95,8 @@
   }
 }
 
-.check-header {
-  border-radius: 3px 3px 0 0;
-
-  .title {
-    background-color: #000;
-    width: 100%;
-    font-size: 17px;
-    font-weight: 400;
-    text-align: center;
-    color: #fff;
-  }
-}
 .check-container {
-  border-radius: 3px;
+  .check-button-wrap {
+    font-size: 18px;
+  }
 }

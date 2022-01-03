@@ -5,7 +5,7 @@
         <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
           <div
-            v-if="['aobo1', 'sp1', 'sg1'].includes(this.routerTPL)"
+            v-if="['aobo1', 'sp1'].includes(this.routerTPL)"
             :class="$style['alert-close-wrap']"
             @click="closeFuc(false)"
           >
