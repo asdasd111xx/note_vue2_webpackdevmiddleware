@@ -158,8 +158,8 @@
   ); //我的客服彈窗 重要提醒
   --send_keyring: var(--main_button_color1); //獲取驗證碼按鈕
   --send_keyring_disabled: var(--main_button_color2); //獲取驗證碼按鈕disabled
-  --popup_tip_ok_color: #6aaaf5; //溫馨提示彈窗 確認 & 大廳公告彈窗左
-  --popup_tip_close_color: #6aaaf5; //溫馨提示彈窗 關閉 & 大廳公告彈窗右
+  --popup_tip_ok_color: #000000; //溫馨提示彈窗 確認 & 大廳公告彈窗左
+  --popup_tip_close_color: #000000; //溫馨提示彈窗 關閉 & 大廳公告彈窗右
   --apptip_title: #e61938; //大廳立即下載title
   --find_password_text_color: #a5a9b3; //找回密碼
   --find_password_text_active_color: #414655; //找回密碼active
@@ -226,6 +226,7 @@
   --mcenter_wallet_recycle_text_color: #000000; //一鍵回收＆額度轉讓字(額度轉讓＆錢包＆提現＆轉帳)
   --mcenter_wallet_redpot_text_color: #414655; //紅包彩金文字 (提現＆轉帳＆錢包)
   --mcenter_wallet_redpot_money_color: #e53266; //紅包彩金的錢 (提現＆轉帳＆錢包)
+  --mcenter_promotion_tips: #b1b1b1; //額度轉讓喜訊
   --mcenter_change_avatar_image: #000000; //編輯個人頭像
   --mcenter_upload_image_button: linear-gradient(
     to left,

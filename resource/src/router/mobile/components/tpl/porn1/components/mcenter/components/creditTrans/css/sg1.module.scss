@@ -1,30 +1,32 @@
 @import "./porn1.module.scss";
 
 .active-slider {
-  background: #fb4e74;
+  background: var(--mcenter_slider_underline_active_color);
 }
 
 .send-keyring {
   color: white;
-  background: var(--mcenter_button_color1);
+  background: var(--mcenter_send_keyring);
+  border-radius: 15px;
 
   &.disabled {
-    color: white;
-    background: var(--mcenter_button_color2);
+    color: var(--mcenter_button_text_color2);
+    background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
   }
 }
 
 .submit-wrap {
   > div {
-    border-radius: 3px;
+    border-radius: 23px;
     background: var(--mcenter_button_color1);
+    color: var(--mcenter_button_text_color1);
   }
 
   &.disabled {
     > div {
       background: var(--mcenter_button_color2);
-      color: #ffffff;
+      color: var(--mcenter_button_text_color2);
     }
   }
 }
