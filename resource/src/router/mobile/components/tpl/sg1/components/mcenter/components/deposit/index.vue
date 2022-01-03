@@ -44,7 +44,12 @@ export default {
             window.location.reload();
             this.$router.push("/mobile/mcenter/deposit");
           } else {
-            this.$router.push("/mobile/mcenter");
+            // 由直播間進入，需返回直播間
+            if (["live"].includes(this.$route.query.redirect)) {
+              this.$router.push("/mobile/live/home");
+            } else {
+              this.$router.push("/mobile/mcenter");
+            }
           }
         }
       };

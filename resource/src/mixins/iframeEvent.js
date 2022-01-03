@@ -380,7 +380,7 @@ export default {
           this.actionSetGlobalMessage({
             msg: data.data.msg,
             code: data.data.code,
-            origin: "live/home"
+            origin: "live-home"
           });
         }
 
