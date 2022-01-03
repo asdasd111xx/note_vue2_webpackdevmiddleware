@@ -40,6 +40,7 @@ export default {
           case "recharge":
           case "iframe":
           case "epoint":
+          case "live":
             return true;
         }
       }

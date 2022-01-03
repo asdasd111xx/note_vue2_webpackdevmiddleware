@@ -723,15 +723,15 @@ export default {
       let data = this.friendMemberList?.ret?.map(info => {
         return {
           title: info.username,
-          childTitle: "查看",
+          childTitle: info.current_valid_bet > 0 ? "查看" : "",
           // 傳遞給子元件點擊專用
           paramsValue: {
             user: info.username,
             userid: info.user_id,
             id: info.id
           },
-          isClick: true,
-          img: true,
+          isClick: info.current_valid_bet > 0 ? true : false,
+          img: info.current_valid_bet > 0 ? true : false,
           list: [
             {
               name: "有效投注",
@@ -776,7 +776,13 @@ export default {
               : "--"
             : "--"
         },
-        { name: "笔数：", item: this.friendGameList?.pagination?.total ?? "0" }
+        {
+          name: "笔数：",
+          item:
+            this.friendGameCategory !== undefined
+              ? this.friendGameCategory.length
+              : "0"
+        }
       ];
       return strArr;
     },
@@ -800,7 +806,11 @@ export default {
           ]
         };
       });
-      return data;
+      if (data !== undefined) {
+        return data.filter(i => {
+          return i.list[0].item !== "0.00";
+        });
+      }
     }
     // friendGameRate() {
     //   let data = this.gameRateResult?.ret?.map(info => {
