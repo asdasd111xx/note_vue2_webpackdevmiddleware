@@ -674,23 +674,22 @@ export default {
             : 0
           : 0;
       }
-
-      return axios({
+      //取得會員層級當日取款試算優惠、金額 C04.55
+      return goLangApiRequest({
         method: "get",
-        url:
-          "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/vendor_user_level/withdraw/offer",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Withdraw/Offer`,
         params: {
           payment_method_id: method_id, //銀行卡時=0
           amount: amount
         }
-      })
-        .then(response => {
-          if (response && response.data && response.data.result === "ok") {
-            console.log(response.data.ret);
-            this.offerInfo = response.data.ret;
-          }
-        })
-        .catch(error => {});
+      }).then(response => {
+        if (response && response.data && response.status === "000") {
+          // console.log(response.data);
+          this.offerInfo = response.data;
+        } else {
+          this.actionSetGlobalMessage({ msg: response.msg });
+        }
+      });
     }
   }
 };
