@@ -2,14 +2,7 @@
 .content-wrap {
   .content-item {
     .rebate-btn {
-      button {
-        background: var(--mcenter_button_color1);
-      }
-
-      .unrebate-btn {
-        color: #fff;
-        background: var(--mcenter_button_color2);
-      }
+      border-radius: 23px;
     }
   }
 }
