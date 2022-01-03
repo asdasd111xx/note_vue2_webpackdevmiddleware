@@ -1,14 +1,20 @@
 @import "~@/css/variable.scss";
 .menu-wrap {
   width: 100%;
+  max-width: $mobile_max_width;
   padding: 8px 17px;
   background: #fff;
   position: fixed;
   top: 43px;
-  left: 0;
   z-index: 5;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+}
+
+@media (orientation: landscape) {
+  .menu-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 
 .menu-select-game {
@@ -112,16 +118,17 @@
 
 .dropdown-wrap {
   width: 100%;
-  padding: 15px 7px 15px 17px;
+  padding: 15px 7px;
   margin: 0;
-  position: fixed;
-  top: 93px;
+  position: absolute;
+  top: 49px;
   left: 0;
   z-index: 5;
   background: #fff;
   list-style: none;
   overflow-x: hidden;
   overflow-y: auto;
+  max-width: 420px;
 
   &.game {
     min-height: 400px;
@@ -163,6 +170,12 @@
     &:nth-child(n + 5) {
       margin-top: 9px;
     }
+  }
+}
+
+@media (orientation: landscape) {
+  .dropdown-wrap {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 
