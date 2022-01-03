@@ -379,7 +379,8 @@ export default {
         if (data && data.data && data.data.result === "error") {
           this.actionSetGlobalMessage({
             msg: data.data.msg,
-            code: data.data.code
+            code: data.data.code,
+            origin: "live/home"
           });
         }
 
