@@ -126,6 +126,16 @@ export default {
         info.routeName === "liveHome"
       ) {
         return true;
+      } else if (
+        this.$route.name.indexOf("deposit") > -1 &&
+        info.routeName === "deposit"
+      ) {
+        return true;
+      } else if (
+        this.$route.name.indexOf("iframe") > -1 &&
+        info.routeName === "live-sport"
+      ) {
+        return true;
       }
       return info.routeName === this.$route.name;
     }
