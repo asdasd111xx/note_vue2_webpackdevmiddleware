@@ -8,11 +8,8 @@
 }
 
 .register-wrap {
-  background-color: #fff;
-
-  button {
-    background: var(--mcenter_button_color1);
-    color: var(--mcenter_button_text_color1);
+  > button {
+    border-radius: 23px;
   }
 }
 
