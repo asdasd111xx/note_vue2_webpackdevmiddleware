@@ -79,7 +79,7 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: var(--main_gradient_color1);
+  background: var(--main_button_color1);
   border-radius: 3px;
   height: 50px;
   line-height: 50px;
@@ -92,7 +92,7 @@ export default {
   color: #ffffff;
 
   &.disable {
-    background: var(--main_gradient_color2);
+    background: var(--main_button_color2);
   }
 }
 

@@ -228,14 +228,15 @@ export default {
 
       if (item.key === "amount") {
         const limit = Number(this.rechargeConfig.recharge_limit) || 0;
-        const amount = Number(this.formData.amount);
+        const amount = Number(value);
 
         this.formData.amount = value.replace(/[^0-9]/g, "").substring(0, 16);
         this.displayAmount = thousandsCurrency(this.formData.amount);
 
-        if (this.formData.amount !== "" && amount === 0) {
+        if (value !== "" && amount === 0) {
           errorMessage = "请输入转让金额";
         }
+
         // 客端不判斷金額大小
         // else if (limit && amount < limit) {
         //   // errorMessage = "转帐金额低于最低限额";
@@ -411,9 +412,11 @@ export default {
           }, 1000);
 
           if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestMsg(error.response.message).then(res => {
-              this.errorMessage.phone = res;
-            });
+            this.actionGetToManyRequestMsg(error.response.data.message).then(
+              res => {
+                this.errorMessage.phone = res;
+              }
+            );
             return;
           }
 

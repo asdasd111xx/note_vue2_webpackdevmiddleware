@@ -207,7 +207,7 @@ export default {
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: $share_member_text_color4;
+  background: #d1b79c;
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 

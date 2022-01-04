@@ -27,7 +27,7 @@
 }
 
 .dialog-wrap {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
   border-radius: 20px 20px 0 0;
   bottom: 0;
   max-width: $mobile_max_width;
@@ -52,7 +52,7 @@
 
     > div {
       color: #5e626d;
-      background-color: $main_white_color1;
+      background-color: #fefffe;
       width: 100%;
       height: 50px;
       line-height: 50px;
@@ -75,11 +75,12 @@
 
       &.active {
         border: 2px solid transparent;
-        border-color: var(--member_color100);
+        border-color: var(--mcenter_change_avatar_image);
       }
     }
 
     .check {
+      @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
       &.image-porn1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }
@@ -186,9 +187,9 @@
 }
 
 .choose-btn {
-  background: $share_main_button_color2;
+  background: var(--mcenter_upload_image_button);
+  color: var(--mcenter_button_text_color1);
   border-radius: 3px;
-  color: #ffffff;
   font-size: 14px;
   font-weight: 400;
   height: 45px;
@@ -213,13 +214,13 @@
 }
 
 .cancel-btn {
-  background: #faf5f0;
-  color: $share_member_text_color4;
+  background: var(--mcenter_upload_image_cancel_button);
+  color: var(--mcenter_upload_image_cancel_text_button);
   float: left;
 }
 
 .submit-btn {
-  background: $share_main_button_color2;
-  color: #ffffff;
+  background: var(--mcenter_upload_image_button);
+  color: var(--mcenter_button_text_color1);
   float: right;
 }

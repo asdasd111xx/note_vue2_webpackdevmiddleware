@@ -27,13 +27,13 @@
   height: 42px;
   line-height: 42px;
   margin: 0 auto;
-  color: #a5a9b3;
+  color: var(--mcenter_slider_text_color);
   font-size: 13px;
   text-align: center;
 
   &.active {
-    border-bottom-color: var(--main_color100);
-    color: #414655;
+    border-bottom-color: var(--mcenter_slider_underline_active_color);
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -57,7 +57,7 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: var(--member_slider);
+  background: var(--mcenter_slider_underline_active_color);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }

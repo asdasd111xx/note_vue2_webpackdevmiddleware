@@ -101,7 +101,7 @@ export default {
 
 .wrap {
   background-color: rgba(0, 0, 0, 0.8);
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
   height: 100%;
   margin: 0;
   overflow: hidden;
@@ -124,7 +124,7 @@ export default {
 
 .header {
   background-color: #ffffff;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
   font-size: 17px;
   height: 75px;
   line-height: 75px;
@@ -134,7 +134,7 @@ export default {
     position: absolute;
     text-align: center;
     width: 40px;
-    color: $share_member_text_color4;
+    color: var(--addcard_popup_prev_text_color);
   }
 
   .title {
@@ -150,7 +150,7 @@ export default {
   .cell {
     position: relative;
     background-color: #ffffff;
-    color: $share_member_text_color4;
+    color: var(--addcard_popup_text_color);
     height: 50px;
     line-height: 50px;
     font-size: 14px;
@@ -164,7 +164,7 @@ export default {
     top: 50%;
     width: 15px;
     height: 15px;
-    color: $share_member_text_color4;
+    color: var(--addcard_popup_check_color);
     transform: translateY(-50%);
   }
 }

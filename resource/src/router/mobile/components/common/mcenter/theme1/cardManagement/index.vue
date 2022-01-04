@@ -403,6 +403,10 @@ export default {
             // this.setPageStatus(1, "walletCardInfo", true);
             console.log("epoint back?");
             break;
+
+          case "live-home":
+            this.$router.push("/mobile/live/home");
+            break;
           default:
             this.$router.back();
             break;

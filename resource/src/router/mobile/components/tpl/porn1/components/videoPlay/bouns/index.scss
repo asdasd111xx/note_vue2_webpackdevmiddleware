@@ -1,7 +1,7 @@
 @import "~@/css/variable.scss";
 
-$bouns_color1: #bf8646;
-$bouns_color2: $share_member_text_color4;
+$bouns_color1: var(--video_popup_title_color);
+$bouns_color2: var(--video_popup_left_text_button);
 $bouns_color3: #faf5f0;
 $bouns_color4: #ecc374;
 $bouns_color5: #ff7f00;
@@ -85,14 +85,14 @@ $bouns_color6: #fff07b;
 
   > div:first-child {
     color: $bouns_color2;
-    background-color: #faf5f0;
+    background-color: var(--video_popup_left_background_button);
     margin: 0 auto;
   }
 }
 
 .active-btn {
   text-align: center;
-  color: #ffffff;
+  color: var(--video_popup_right_text_button);
   height: 40px;
   font-size: 15px;
   text-align: center;
@@ -100,10 +100,7 @@ $bouns_color6: #fff07b;
   line-height: 40px;
   max-width: 275px;
   margin: 0 auto;
-  background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: $share_main_button_color2;
+  background: var(--video_popup_right_background_button);
 }
 
 // 進度條

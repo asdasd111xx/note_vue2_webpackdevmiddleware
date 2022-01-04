@@ -56,17 +56,16 @@
                 </span>
               </div>
 
-              <div :class="$style['check-cell']">
-                <span :class="$style['sub-title']">
+              <div :class="[$style['check-cell'], $style['offer-twoline']]">
+                <div :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
                   <template v-if="['ey1'].includes(themeTPL)">
                     (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
                   </template>
-                </span>
+                </div>
                 <span :class="$style['money']">
                   {{
-                    formatThousandsCurrency(serialNumberData.total.deduction) >
-                    0
+                    +serialNumberData.total.deduction > 0
                       ? "-" +
                         formatThousandsCurrency(
                           serialNumberData.total.deduction
@@ -91,9 +90,7 @@
                 <span :class="$style['sub-title']"> 扣除总计 </span>
                 <span :class="$style['money']">
                   {{
-                    formatThousandsCurrency(
-                      serialNumberData.total.total_deduction
-                    ) > 0
+                    +serialNumberData.total.total_deduction > 0
                       ? "-" +
                         formatThousandsCurrency(
                           serialNumberData.total.total_deduction
@@ -114,7 +111,9 @@
                 ]"
               >
                 <div :class="$style['sub-title']">
-                  {{ withdrawName }}出款额外赠送
+                  {{
+                    withdrawName === "" ? "银行卡" : withdrawName
+                  }}出款额外赠送
                 </div>
                 <span :class="[$style['money']]">
                   {{ bonusOffer }}

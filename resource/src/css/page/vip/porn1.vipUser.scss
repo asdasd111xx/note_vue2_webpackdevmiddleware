@@ -41,13 +41,13 @@
 
       // vip text
       span:last-of-type {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
         margin: 5px 0 0 0;
         padding: 0px 5px;
         font-size: 12px;
         line-height: 20px;
         height: 20px;
-        color: var(--member_text_color1);
+        color: var(--mcenter_button_text_color1);
         text-align: center;
         font-weight: 700;
         border-radius: 4px;
@@ -176,7 +176,7 @@
 
 .user-desc-block {
   padding-top: 3px;
-  color: var(--member_text_color5);
+  color: var(--vip_text_color1);
   font-size: 12px;
   font-weight: 700;
 
@@ -185,6 +185,6 @@
   }
 
   .money {
-    color: #000000;
+    color: var(--vip_text_color2);
   }
 }

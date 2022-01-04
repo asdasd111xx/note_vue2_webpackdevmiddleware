@@ -17,7 +17,7 @@
           >
             {{ info.title }}
           </span>
-          <div :class="$style['line']" />
+          <div :class="[$style['line'], $style[siteConfig.ROUTER_TPL]]" />
         </swiper-slide>
       </swiper>
 
@@ -44,8 +44,8 @@
           :src="
             $getCdnPath(
               `/static/image/_new/common/icon_more${
-                isShowAllTag ? '_close_w' : '_w'
-              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
+                isShowAllTag ? '_close' : '_w'
+              }.png`
             )
           "
         />
@@ -54,13 +54,21 @@
 
     <div
       v-show="isShowAllTag"
-      :class="[$style['all-tag-wrap'], $style[source], 'clearfix']"
+      :class="[
+        $style['all-tag-wrap'],
+        $style[siteConfig.ROUTER_TPL],
+        $style[source],
+        'clearfix'
+      ]"
     >
       <template v-for="(tag, index) in videoTag">
         <div
           :key="`all-tag-${index}`"
           @click="onChangeVideoType(tag.id, tag.title)"
-          :class="tag.title.length > 4 ? $style['small'] : ''"
+          :class="[
+            [tag.title.length > 4 ? $style['small'] : ''],
+            { [$style.active]: tag.id === +videoType.id }
+          ]"
         >
           {{ tag.title }}
         </div>
@@ -89,7 +97,11 @@
             {{ videoData.name }}
           </div>
           <div
-            :class="[$style['btn-more'], $style[source]]"
+            :class="[
+              $style['btn-more'],
+              $style[source],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
             @click.stop="handleMore(videoData)"
           >
             更多
@@ -474,7 +486,7 @@ export default {
   //display: flex;
   transition-property: transform;
   overflow-x: auto;
-  background: $main_white_color1;
+  background: #fefffe;
 
   &.gay {
     background: #3e81ac;
@@ -502,11 +514,11 @@ export default {
   // transition-property: transform;
   width: auto;
   line-height: 42px;
-  color: #bcbdc1;
+  color: var(--slider_text_color);
 
   // 亞博點擊的文字color
   &.active {
-    color: var(--main_text_color4);
+    color: var(--slider_text_active_color);
   }
 
   &.gay {
@@ -535,6 +547,10 @@ export default {
     transform: translateX(-50%);
     border-radius: 1px;
     background-color: #fff;
+
+    &.sg1 {
+      background: #bd9d7d;
+    }
   }
 
   &.active .line {
@@ -542,11 +558,15 @@ export default {
   }
 
   &.yabo.active .line {
-    background-color: var(--porn_line_color);
+    background-color: var(--slider_underline_active_color);
+
+    &.sg1 {
+      background: #bd9d7d;
+    }
   }
 
   &.av.active .line {
-    background-color: $share_member_text_color4;
+    background-color: var(--slider_underline_active_color);
   }
 }
 
@@ -585,9 +605,15 @@ export default {
   z-index: 2;
   border-radius: 0 0 10px 10px;
   background-color: #fff;
-  height: 29%;
-  min-height: 250px;
   overflow-y: scroll;
+
+  &.porn1 {
+    height: calc(100% - 85px);
+    opacity: 0.9;
+    > div {
+      margin-top: 7px;
+    }
+  }
 
   > div {
     float: left;
@@ -595,9 +621,10 @@ export default {
     height: 28px;
     line-height: 28px;
     margin: 0 1% 4px;
-    border: 1px solid var(--porn_line_color);
+    border: 1px solid var(--video_more_dropdown_border_color);
     border-radius: 5px;
-    color: var(--porn_line_color);
+    color: var(--video_more_dropdown_text_color);
+    background: var(--square_background_color);
     font-size: 14px;
     text-align: center;
 
@@ -607,23 +634,51 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+
+    &.active {
+      color: var(--video_more_dropdown_text_active_color);
+      background: var(--video_more_dropdown_background_active_color);
+      border: 1px solid var(--video_more_dropdown_border_active_color);
+    }
   }
 
   &.gay > div {
     border-color: #3e81ac;
     color: #3e81ac;
+
+    &.active {
+      color: #3e81ac;
+      background: none;
+      border: 1px solid #3e81ac;
+    }
   }
 
   &.les > div {
     border-color: #d64545;
     color: #d64545;
+
+    &.active {
+      color: #d64545;
+      background: none;
+      border: 1px solid #d64545;
+    }
+  }
+
+  &.sg1 > div {
+    color: #bd9d7d;
+    border: 1px solid #bd9d7d;
+
+    &.active {
+      color: #ffffff;
+      background: var(--video_search_button);
+    }
   }
 }
 
 .video-list-wrap {
   overflow-y: auto;
   padding: 0 17px;
-  background: $main_background_white1;
+  background: #f8f8f8;
   padding-top: 43px;
   height: calc(100vh - 50px);
 }
@@ -643,7 +698,7 @@ export default {
   padding-left: 20px;
   background: url("/static/image/common/icon_item.png") 0 50% no-repeat;
   background-size: 15px 15px;
-  color: var(--porn_text_color);
+  color: var(--main_color);
   font-weight: 700;
   font-size: 12px;
 
@@ -668,10 +723,10 @@ export default {
   height: 20px;
   line-height: 20px;
   border-radius: 3px;
-  color: #fff;
   font-size: 12px;
   text-align: center;
-  background: var(--porn_btn_color);
+  background: var(--video_more_button);
+  color: var(--main_button_text_color1);
 
   &.gay {
     background: #4a8cb8;
@@ -679,6 +734,10 @@ export default {
 
   &.les {
     background: #d64545;
+  }
+
+  &.sg1 {
+    background: var(--video_search_button);
   }
 
   // &:hover {

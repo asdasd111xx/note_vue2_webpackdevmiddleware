@@ -26,7 +26,7 @@
         <span
           :class="[
             $style['balance-item-money'],
-            $style['balance-redjackpot-text']
+            $style['balance-redjackpot-money']
           ]"
         >
           {{ formatThousandsCurrency(redJackpotData.remain_bonus) }}
@@ -86,7 +86,7 @@
             {{ $t("S_MAINTAIN") }}
             <img
               :src="
-                $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                $getCdnPath(`/static/image/${routerTPL}/mcenter/ic_tips.png`)
               "
               :class="$style['balance-wrench']"
             />
@@ -136,7 +136,7 @@
             {{ $t("S_MAINTAIN") }}
             <img
               :src="
-                $getCdnPath(`/static/image/${themeTPL}/mcenter/ic_tips.png`)
+                $getCdnPath(`/static/image/${routerTPL}/mcenter/ic_tips.png`)
               "
               :class="$style['balance-wrench']"
             />

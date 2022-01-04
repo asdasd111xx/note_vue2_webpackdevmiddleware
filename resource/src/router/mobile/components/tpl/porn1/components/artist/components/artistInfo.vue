@@ -131,14 +131,14 @@ export default {
     width: 90px;
     position: relative;
     > img {
-      border: 1px var(--main_text_color1) solid;
+      border: 1px #9ca3bf solid;
       height: 100%;
       border-radius: 50%;
     }
 
     > div {
       color: white;
-      background-color: var(--main_text_color1);
+      background-color: #9ca3bf;
       width: 64px;
       border-radius: 7px;
       line-height: 17px;
@@ -159,17 +159,17 @@ export default {
       height: 16px;
       line-height: 16px;
       margin: 1.5px;
-      color: var(--main_text_color1);
+      color: #9ca3bf;
     }
 
     .title {
-      color: var(--main_text_color4);
+      color: var(--slider_text_active_color);
     }
 
     .intro {
       display: block;
       margin: 1.5px;
-      color: var(--main_text_color1);
+      color: #9ca3bf;
       width: 100%;
 
       span {
@@ -209,7 +209,7 @@ export default {
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
   background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   &.open {
     display: none;
   }

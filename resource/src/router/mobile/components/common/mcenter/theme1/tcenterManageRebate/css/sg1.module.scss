@@ -1,13 +1,13 @@
 @import "./porn1.module.scss";
 
 .tab-item {
-  color: #a2a2a2;
+  color: var(--mcenter_slider_text_color);
 
   &.is-current {
-    color: #5e626d;
+    color: var(--mcenter_slider_text_active_color);
 
     &::after {
-      background: #fb4e74;
+      background: var(--mcenter_slider_underline_active_color);
     }
   }
 }

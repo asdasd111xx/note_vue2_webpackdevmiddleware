@@ -2,7 +2,7 @@
 
 .err-msg {
   padding: 2px 0;
-  color: $main_error_color1;
+  color: #db6372;
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -208,11 +208,12 @@
 
   &.active {
     background: #6aaaf5;
+    color: #fff;
   }
 
   &.sg1 {
     &.active {
-      background: var(--member_gradient_color1);
+      background: var(--mcenter_button_color1);
     }
   }
 }
@@ -259,7 +260,7 @@
   }
   &.sg1 {
     button {
-      color: var(--member_color100);
+      color: #6aaaf5;
     }
   }
 }
@@ -280,16 +281,16 @@
   &.sg1 {
     .mail-wrap {
       button.get-verify {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
       }
     }
     .phonenum-wrap {
       button.get-verify {
-        background: var(--member_gradient_color1);
+        background: var(--mcenter_button_color1);
       }
     }
     button {
-      color: var(--member_color100);
+      color: #6aaaf5;
     }
   }
   h1 {
@@ -745,6 +746,13 @@
   width: 100%;
   text-align: center;
   font-weight: 500;
+
+  a {
+    color: #5e626d;
+    span {
+      color: #6aaaf5;
+    }
+  }
 }
 
 :global {
@@ -809,8 +817,9 @@
 
 .version {
   color: #414655;
-  position: absolute;
-  right: 14px;
+  right: 0px;
+  padding: 2px 14px;
+  text-align: right;
   bottom: 5px;
   font-size: 12px;
 }
@@ -850,11 +859,11 @@
   font-size: 18px;
 
   &:last-child {
-    color: $share_member_text_color4;
+    color: #6aaaf5;
   }
 
   &.sg1:last-child {
-    color: var(--member_color100);
+    color: #6aaaf5;
   }
 
   &.ey1:last-child {
@@ -862,7 +871,7 @@
   }
 
   &.porn1:last-child {
-    color: $share_member_text_color4;
+    color: #6aaaf5;
   }
 }
 

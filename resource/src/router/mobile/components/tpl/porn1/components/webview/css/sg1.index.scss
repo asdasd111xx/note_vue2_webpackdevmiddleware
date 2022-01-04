@@ -15,9 +15,9 @@
     }
 
     .download {
-      background: var(--main_gradient_color1);
+      background: var(--main_button_color1);
       border: none;
-      color: #fff;
+      color: var(--service_add_text_button);
     }
   }
 }

@@ -2,17 +2,17 @@
 .balance-wrap {
   .balance-total-item {
     .balance-item-money {
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
   .recycle-btn {
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_recycle_text_color);
   }
 
   .credit-trans-link {
     flex: 1;
     font-size: 16px;
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_recycle_text_color);
   }
 }

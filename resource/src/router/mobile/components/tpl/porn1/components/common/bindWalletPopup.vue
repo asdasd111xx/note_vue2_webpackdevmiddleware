@@ -423,7 +423,7 @@ export default {
 .content {
   min-height: 140px;
   padding: 0 20px;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 
   .title {
     display: flex;
@@ -489,7 +489,7 @@ export default {
 }
 
 .tips-text {
-  color: var(--main_text_color2);
+  color: #ffffff;
   padding: 20px 0;
 
   p {
@@ -508,7 +508,7 @@ export default {
   padding: 15px 0;
   border-top: 2px solid #f9f9f8;
   font-size: 18px;
-  color: var(--main_text_color3);
+  color: var(--slider_text_color);
 
   span {
     flex: 1;

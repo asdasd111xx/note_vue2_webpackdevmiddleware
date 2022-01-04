@@ -29,7 +29,8 @@
     line-height: 16px;
 
     .current-num {
-      color: $share_member_text_color4;
+      font-weight: bold;
+      color: var(--tcenter_real_rebate_color);
     }
     .total-num {
       display: flex;
@@ -63,7 +64,7 @@
       height: 6px;
       border-radius: 3px;
       top: 0;
-      background-color: var(--member_slider);
+      background-color: var(--tcenter_progress_color1);
       z-index: 0;
     }
   }
@@ -87,11 +88,11 @@
       margin-left: 2px;
 
       &.red {
-        color: $share_member_text_color8;
+        color: #db6372;
       }
 
       &.blue {
-        color: $share_member_text_color4;
+        color: #6aaaf5;
       }
     }
   }

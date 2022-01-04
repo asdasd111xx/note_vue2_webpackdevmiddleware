@@ -194,7 +194,7 @@ export default {
 }
 
 .sub-text {
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 }
 
 .vip-promotion-wrap {

@@ -12,7 +12,7 @@
   color: #ffffff;
   text-align: center;
   border-bottom: 1px solid #eee;
-  background: $main_white_color1;
+  background: #fefffe;
 
   &::before {
     content: "";
@@ -60,7 +60,7 @@
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   box-shadow: none;
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
   font-size: 15px;
   height: 100%;
   line-height: 43px;
@@ -71,6 +71,6 @@
   border: unset;
 
   > .active {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
   }
 }

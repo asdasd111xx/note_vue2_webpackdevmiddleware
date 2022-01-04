@@ -11,7 +11,7 @@
     height: 42px;
     line-height: 42px;
     border-bottom: 2px solid transparent;
-    color: var(--main_text_color2);
+    color: #ffffff;
     font-size: 14px;
     text-align: center;
 
@@ -26,7 +26,7 @@
         left: 50%;
         bottom: 0;
         transform: translateX(-50%);
-        background: $share_member_text_color4;
+        background: #be9e7f;
       }
     }
   }
@@ -45,12 +45,12 @@
 
 .member-text {
   float: left;
-  color: $main_discover_color1;
+  color: #bf8646;
 }
 
 .member-count {
   float: right;
-  color: $main_title_color1;
+  color: #000000;
 }
 
 .info-wrap {
@@ -97,7 +97,7 @@
   line-height: 47px;
   margin: 45px auto;
   border-radius: 4px;
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   color: #fff;
   font-size: 15px;
   text-align: center;

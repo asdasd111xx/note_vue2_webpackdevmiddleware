@@ -46,19 +46,6 @@ $submitTextColor: #fff;
   background-color: #fff;
 }
 
-.link {
-  padding-left: 20px;
-  color: var(--main_text_color2);
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &.active {
-    color: $share_member_text_color4;
-  }
-}
-
 .search-form {
   background-color: #fff;
   border-top: 1px solid #eee;
@@ -121,13 +108,13 @@ $submitTextColor: #fff;
 }
 
 .submit {
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
   margin: 0 auto;
   width: 85%;
   line-height: 45px;
   border-radius: 3px;
   text-align: center;
-  color: var(--member_text_color1);
+  color: var(--mcenter_button_text_color1);
 }
 
 .time-range {
@@ -154,7 +141,7 @@ $submitTextColor: #fff;
       display: flex;
       flex-direction: column;
       height: 70px;
-      width: 47%;
+      width: 46%;
       background-color: white;
       border: 0px solid white;
       border-radius: 5px;

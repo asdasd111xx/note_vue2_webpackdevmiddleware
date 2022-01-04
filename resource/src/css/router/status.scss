@@ -24,6 +24,7 @@ body {
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
   min-height: 812px;
+  height: 100vh;
   padding-top: 30px;
   position: relative;
   overflow-x: hidden;
@@ -59,10 +60,10 @@ body {
   font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
   font-weight: 700;
   text-align: center;
-  color: $share_text_color5;
+  color: #9ca3bf;
 
   &.porn1 {
-    color: var(--main_text_color4);
+    color: #5e626d;
   }
 
   &.sg1 {
@@ -82,7 +83,7 @@ body {
   font-weight: 400;
   text-align: center;
   color: #9ca3bf;
-  margin: 115px auto;
+  margin: 20px auto;
 
   &.has-time {
     margin-bottom: 0;
@@ -111,12 +112,11 @@ body {
   font-size: 14px;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-weight: 400;
-  text-align: center;
   color: #a6a9b2;
   margin: 0 auto;
-
-  // position: absolute;
-  // bottom: 2.5%;
+  text-align: center;
+  width: 100%;
+  margin-top: 35%;
 
   > span {
     color: #6aaaf5;
@@ -162,7 +162,7 @@ body {
   }
 
   span {
-    color: #ff7700;
+    color: #db6372;
   }
 
   &.sg1 {
@@ -185,14 +185,3 @@ body {
 
 @import "~@/css/variable.scss";
 @import "~@/css/index.scss";
-
-@media screen and (max-height: $pad) {
-  .main-img {
-    height: 300px;
-  }
-
-  .tips {
-    margin-top: 30px;
-    position: relative;
-  }
-}

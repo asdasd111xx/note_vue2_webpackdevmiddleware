@@ -271,7 +271,7 @@ export default {
   margin-top: 10px;
 }
 .card {
-  background: $main_white_color1;
+  background: #fefffe;
   color: #414655;
   border-radius: 8px;
   margin-bottom: 9px;
@@ -316,12 +316,12 @@ export default {
 
   .card-getNumber {
     &.is-negative {
-      color: $main_error_color1;
+      color: #db6372;
     }
   }
 
   .state-unqualified {
-    color: $main_error_color1;
+    color: #db6372;
 
     &.state-unqualified-record {
       color: #db6372;

@@ -51,15 +51,15 @@
   margin: 5.5px;
 }
 
-.profit_child:first-child {
-  flex: 1 1 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-}
+// .profit_child:first-child {
+//   flex: 1 1 100%;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   height: 50px;
+// }
 
-.profit_child:not(:first-child) {
+.profit_child {
   flex: 1 1 40%;
   height: 70px;
 
@@ -106,12 +106,12 @@
 
 .date {
   float: left;
-  color: $main_discover_color1;
+  color: #bf8646;
 }
 
 .remainder {
   float: right;
-  color: $main_title_color1;
+  color: #000000;
 }
 
 .summary-wrap {
@@ -219,4 +219,22 @@
   color: #aaa;
   font-size: 14px;
   text-align: center;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.rebate-rate {
+  height: 25px;
+  display: flex;
+  justify-content: flex-end;
+  color: #6aaaf5;
+  padding: 9px 2px;
+  text-decoration: underline;
+}
+
+.friend-wrap {
+  padding: 13px;
 }

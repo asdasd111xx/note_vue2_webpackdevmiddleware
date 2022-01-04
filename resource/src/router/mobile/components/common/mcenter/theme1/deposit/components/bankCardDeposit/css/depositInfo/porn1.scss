@@ -6,7 +6,7 @@
 
   span {
     font-weight: 700;
-    color: $main_error_color1;
+    color: #db6372;
   }
 }
 
@@ -220,12 +220,12 @@
   white-space: nowrap;
   cursor: pointer;
   border-radius: 3px;
-  color: var(--member_text_color1);
-  background: var(--member_gradient_color1);
+  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
     pointer-events: none;
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
   }
 }
 

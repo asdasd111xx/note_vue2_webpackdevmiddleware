@@ -237,19 +237,40 @@ export default {
 
       let _vendor = "",
         _bundleID = "";
-
+      let list = {};
       // 預設
       // this.superAppUrl = "https://user.51cjq.xyz/pkgs/ybsp2.app";
 
       switch (this.routerTPL) {
         case "porn1":
+          list = {
+            69: "cyiosdev0001.foxyporn.stage.wang",
+            67: "chungyo.foxyporn.prod.enterprise.vip"
+          };
           _vendor = 67;
-          _bundleID = "chungyo.foxyporn.prod.enterprise.vip";
+          _bundleID = list[+this.memInfo.user.domain]
+            ? list[+this.memInfo.user.domain]
+            : "cyiosdev0001.foxyporn.qa.wang";
           break;
 
         case "aobo1":
-          _vendor = 92;
-          _bundleID = "cyiosdev0001.aoboCasino.prod";
+          list = {
+            93: "cyiosdev0001.aoboCasino.demo",
+            92: "cyiosdev0001.aoboCasino.prod"
+          };
+          _vendor = this.memInfo.user.domain;
+          _bundleID = list[+this.memInfo.user.domain]
+            ? list[+this.memInfo.user.domain]
+            : "cyiosdev0001.aoboCasino.qa";
+          break;
+
+        case "sp1":
+          _vendor = this.memInfo.user.domain;
+          _bundleID =
+            +this.memInfo.user.domain === 94
+              ? "cyiosdev0001.mobile.intl51.vip"
+              : "cyiosdev0001.mobile.intl51.qa";
+
           break;
       }
 
@@ -278,14 +299,11 @@ export default {
           return;
         }
 
-        let newWindow = window.open(" ");
-
         if (this.requiredMoneyStatus === "ok" && this.superAppUrl) {
-          // 超級籤app下載網址
+          let newWindow = window.open();
           newWindow.location.href = this.superAppUrl;
         } else {
           this.actionSetGlobalMessage({ msg: this.superErrorMsg });
-          newWindow.close();
         }
 
         return;
@@ -385,7 +403,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mem-list {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .list-part {
@@ -404,7 +422,7 @@ export default {
   padding: 0 18px;
   display: flex;
   align-items: center;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   color: #414655;
 
   > span {

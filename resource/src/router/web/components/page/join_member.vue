@@ -595,7 +595,7 @@
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
-        已有会员帐号
+        <a>若有会员帐号，<span>去登录＞</span></a>
       </div>
       <div :class="$style['version']">
         {{ version }}
@@ -817,7 +817,9 @@ export default {
       isLoading: false,
       showRedirectJump: false,
       redirect_url: "",
-      placeholderResult: []
+      placeholderResult: [],
+      register_phone_keyring: "",
+      register_email_keyring: ""
     };
   },
   computed: {
@@ -1522,7 +1524,13 @@ export default {
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
-        code: localStorage.getItem("promotionCode") || ""
+        code: localStorage.getItem("promotionCode") || "",
+        phone_keyring: this.phoneVerifyModalShow
+          ? this.register_phone_keyring
+          : "",
+        email_keyring: this.mailVerifyModalShow
+          ? this.register_email_keyring
+          : ""
       };
 
       const self = this;
@@ -1826,6 +1834,7 @@ export default {
       });
     },
     getPhoneVerifyCode() {
+      console.log(123);
       //寄出會員註冊驗證簡訊
       axios({
         method: "post",
@@ -1853,32 +1862,25 @@ export default {
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
-      axios({
+      goLangApiRequest({
         method: "put",
-        url: "/api/v1/c/player/register/phone/verify",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone/Verify`,
+        params: {
           phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
           keyring: this.phoneVerifyCode
         }
-      })
-        .then(res => {
-          if (res && res.data.result !== "ok") {
-            this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg =
-              res.data.msg + "(" + res.data.code + ")" || "phoneverify error1";
-          } else {
-            // this.mailSubmitFailMsg = "验证OK";
-            this.phoneVerifyModalShow = false;
-            this.showPhoneCheckIcon = true;
-            this.NeedCode = false;
-          }
-        })
-        .catch(error => {
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
+          this.phoneVerifyModalShow = false;
+          this.showPhoneCheckIcon = true;
+          this.NeedCode = false;
+          this.register_phone_keyring = res.data.keyring;
+        } else {
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg =
-            error.response.data.msg + "(" + error.response.data.code + ")" ||
-            "phoneverify error2";
-        });
+          this.phoneSubmitFailMsg = res.msg;
+        }
+      });
     },
     getMailVerifyCode() {
       //寄出mail會員註冊驗證碼
@@ -1908,32 +1910,52 @@ export default {
     },
     submitMailVerify() {
       //會員註冊mail驗證
-      axios({
+      goLangApiRequest({
         method: "put",
-        url: "/api/v1/c/player/register/email/verify",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email/Verify`,
+        params: {
           email: this.allValue.email,
           keyring: this.mailVerifyCode
         }
-      })
-        .then(res => {
-          if (res && res.data.result !== "ok") {
-            this.mailSubmitFail = true;
-            this.mailSubmitFailMsg =
-              res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
-          } else {
-            // this.mailSubmitFailMsg = "验证OK";
-            this.mailVerifyModalShow = false;
-            this.showMailCheckIcon = true;
-            this.mailNeedCode = false;
-          }
-        })
-        .catch(error => {
+      }).then(res => {
+        console.log(res);
+        if (res.status === "000") {
+          this.mailVerifyModalShow = false;
+          this.showMailCheckIcon = true;
+          this.mailNeedCode = false;
+          this.register_email_keyring = res.data.keyring;
+        } else {
           this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            error.response.data.msg + "(" + error.response.data.code + ")" ||
-            "mailverify error2";
-        });
+          this.mailSubmitFailMsg = res.msg;
+        }
+      });
+      // axios({
+      //   method: "put",
+      //   url: "/api/v1/c/player/register/email/verify",
+      //   data: {
+      //     email: this.allValue.email,
+      //     keyring: this.mailVerifyCode
+      //   }
+      // })
+      //   .then(res => {
+      //     if (res && res.data.result !== "ok") {
+      //       this.mailSubmitFail = true;
+      //       this.mailSubmitFailMsg =
+      //         res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
+      //     } else {
+      //       // this.mailSubmitFailMsg = "验证OK";
+      //       this.mailVerifyModalShow = false;
+      //       this.showMailCheckIcon = true;
+      //       this.mailNeedCode = false;
+      //       this.register_email_keyring = res.data.ret.keyring;
+      //     }
+      //   })
+      //   .catch(error => {
+      //     this.mailSubmitFail = true;
+      //     this.mailSubmitFailMsg =
+      //       error.response.data.msg + "(" + error.response.data.code + ")" ||
+      //       "mailverify error2";
+      //   });
     }
   }
 };

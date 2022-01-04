@@ -1,7 +1,7 @@
 @import "@/css/variable.scss";
 
 .management-wrap {
-  background: $main_background_white1;
+  background: #f8f8f8;
 }
 
 .top-link-wrap {
@@ -21,7 +21,7 @@
     white-space: nowrap;
 
     &.active {
-      color: $share_member_text_color4;
+      color: #d1b79c;
     }
   }
 }

@@ -1,4 +1,5 @@
 <template>
+  <!-- 返利紀錄  -->
   <div
     :class="[
       $style['commission-list-wrap'],
@@ -159,6 +160,7 @@ export default {
           ? this.rebateDateFormat(this.info.period)
           : this.info.period
       );
+      //盈亏返利
       if (this.$route.params.title && this.info.type === 0) {
         this.$router.push({
           params: {

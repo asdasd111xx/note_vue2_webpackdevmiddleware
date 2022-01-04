@@ -126,14 +126,14 @@
   height: 45px;
   line-height: 45px;
   margin: 20px auto 0;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
   font-size: 14px;
-  color: var(--member_text_color1);
+  color: var(--mcenter_button_text_color1);
   text-align: center;
   border-radius: 5px;
 
   &.disabled {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
@@ -180,7 +180,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--member_color100);
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 
@@ -220,12 +220,8 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: $share_member_text_color1;
+  color: var(--addcard_popup_check_color);
   transform: translateY(-50%);
-
-  &.porn1 {
-    color: $share_member_text_color4;
-  }
 }
 
 .red {

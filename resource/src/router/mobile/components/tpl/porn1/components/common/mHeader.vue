@@ -103,7 +103,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
               )
             "
             @click="handleClickAsk"
@@ -117,7 +117,6 @@
         v-else
         :class="[
           $style['login-wrap'],
-          $style[siteConfig.ROUTER_TPL],
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
@@ -144,7 +143,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
             )
           "
           @click="handleClickAsk"
@@ -449,7 +448,7 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 10px;
-  background: $main_white_color1;
+  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
 
@@ -552,7 +551,7 @@ export default {
     height: 20px;
     // line-height: 20px;
     margin: 0 1px;
-    color: black;
+    color: var(--visitor_title_color);
     font-size: 17px;
     vertical-align: middle;
     @media screen and(max-width: 320px) {
@@ -592,7 +591,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: $share_text_color4;
+    color: var(--visitor_money_color);
     margin: 0;
     padding: 0;
 
@@ -611,26 +610,6 @@ export default {
   }
   .visitor-border {
     border-right: 1px solid #9ca4be;
-  }
-}
-
-.login-wrap {
-  &.sp1 {
-    .visitor-money {
-      color: #ffffff;
-    }
-
-    > span {
-      color: $sp1_main_color1;
-    }
-  }
-}
-
-.login-wrap {
-  &.porn1 {
-    .visitor-money {
-      color: $share_member_text_color4;
-    }
   }
 }
 
@@ -733,7 +712,7 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: var(--main_text_color2);
+    color: #5e626d;
     font-size: 14px;
     outline: none;
 
@@ -766,7 +745,7 @@ export default {
     }
 
     &::placeholder {
-      color: var(--main_text_color2);
+      color: #fff;
     }
   }
 }
@@ -802,7 +781,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: $share_main_button_color2;
+  background: var(--video_search_button);
   color: white;
   margin: 0 auto;
   text-align: center;
@@ -887,7 +866,7 @@ export default {
   position: absolute;
   right: 17px;
   top: 0;
-  color: $main_title_color1;
+  color: #000000;
 
   > span {
     display: inline-block;
@@ -963,7 +942,7 @@ export default {
   background-size: contain;
 
   &.aobo1 {
-    background: url("/static/image/common/ic_search_gold.png");
+    background: url("/static/image/common/ic_search_grey2.png");
     background-size: contain;
   }
 }

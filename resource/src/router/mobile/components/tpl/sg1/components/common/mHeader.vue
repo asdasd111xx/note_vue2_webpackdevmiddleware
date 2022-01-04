@@ -427,7 +427,7 @@ export default {
   width: 100%;
   height: 43px;
   padding: 0 15px;
-  background: $main_white_color1;
+  background: #fefffe;
   text-align: center;
   border-bottom: 1px solid #eee;
 
@@ -524,7 +524,7 @@ export default {
     line-height: 20px;
     margin: 0 1.5px;
     padding: 0 3px;
-    color: #f9e8b4;
+    color: var(--visitor_title_color);
     font-size: 17px;
     vertical-align: middle;
     @media screen and (max-width: 320px) {
@@ -549,7 +549,7 @@ export default {
   }
 
   .visitor-title {
-    color: #f9e8b4;
+    color: var(--visitor_title_color);
     font-size: 12px;
     margin: 0;
     padding: 0;
@@ -557,7 +557,7 @@ export default {
   }
   .visitor-money {
     font-size: 12px;
-    color: #ffffff;
+    color: var(--visitor_money_color);
     margin: 0;
     padding: 0;
     padding-right: 2px;
@@ -661,7 +661,7 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: var(--main_text_color2);
+    color: #ffffff;
     font-size: 14px;
     outline: none;
 
@@ -694,7 +694,7 @@ export default {
     }
 
     &::placeholder {
-      color: var(--main_text_color2);
+      color: #ffffff;
     }
   }
 }
@@ -726,7 +726,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: $share_main_button_color2;
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   color: white;
   margin: 0 auto;
   text-align: center;

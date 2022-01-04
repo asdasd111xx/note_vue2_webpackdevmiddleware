@@ -2,32 +2,32 @@
 
 .invite-wrap {
   .content {
-    color: #414655;
+    color: var(--mcenter_invite_text_color);
   }
 }
 
 .wallet-info-wrap {
   .goDeposit {
     color: #fefffe !important;
-    background: var(--member_gradient_color1) !important;
+    background: var(--mcenter_button_color1) !important;
     box-shadow: 0pt 3px 7px 0pt rgba(255, 0, 0, 0.3) !important;
   }
 }
 
 .title {
   &::before {
-    background: var(--member_gradient_color1);
+    background: var(--deco_color);
   }
 }
 
 .balance-wrap {
   .balance-total-item {
     .balance-item-money {
-      color: var(--member_color100);
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
   .recycle-btn {
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_recycle_text_color);
   }
 }

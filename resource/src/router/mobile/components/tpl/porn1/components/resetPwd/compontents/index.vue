@@ -498,7 +498,7 @@ export default {
 @import "~@/css/variable.scss";
 .reset-container {
   min-height: 100%;
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .reset-content {
@@ -512,7 +512,7 @@ input {
   border: none;
   outline: none;
   border-radius: 0;
-  color: var(--member_text_color4);
+  color: var(--mcenter_slider_text_active_color);
 
   &::placeholder {
     color: #cbced8;
@@ -525,7 +525,7 @@ input {
   position: relative;
 
   .title {
-    color: var(--member_text_color4);
+    color: var(--mcenter_slider_text_active_color);
     margin: 17px 0 6px;
   }
 
@@ -538,7 +538,7 @@ input {
     }
   }
 
-  border-bottom: solid 1px $main_background_white1;
+  border-bottom: solid 1px #f8f8f8;
 }
 
 .submit {
@@ -550,39 +550,20 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
-  background: var(--main_gradient_color2);
-  color: #f3ede7;
+  border-radius: 23px;
+  background: var(--main_button_color2);
+  color: var(--main_button_text_color2);
 
   &.active {
-    background: var(--main_gradient_color1);
-    color: white;
-  }
-
-  &.sg1 {
-    background: var(--member_gradient_color2);
-    color: #f3ede7;
-
-    &.active {
-      background: var(--main_gradient_color1);
-      color: white;
-    }
-  }
-
-  &.ey1 {
-    background: #fdcccc;
-    color: #f3ede7;
-
-    &.active {
-      background: #e42a30;
-      color: white;
-    }
+    background: var(--main_button_color1);
+    color: var(--main_button_text_color1);
   }
 }
 
 .err-msg {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   height: 33px;
   line-height: 40px;
 }

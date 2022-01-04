@@ -364,7 +364,7 @@ export default {
 }
 .pay-code {
   height: 50px;
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
   color: white;
   align-items: center;
   display: flex;

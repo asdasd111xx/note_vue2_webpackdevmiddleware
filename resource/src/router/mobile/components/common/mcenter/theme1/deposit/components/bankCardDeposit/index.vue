@@ -371,7 +371,7 @@
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || e点富(34)-->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || E点付(34)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -756,22 +756,7 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span
-                        :class="[
-                          {
-                            [$style['yb']]:
-                              themeTPL === 'porn1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['ey']]:
-                              themeTPL === 'ey1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['sg']]:
-                              themeTPL === 'sg1' && cryptoMoney > 0
-                          }
-                        ]"
-                      >
+                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
@@ -803,22 +788,7 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span
-                        :class="[
-                          {
-                            [$style['yb']]:
-                              themeTPL === 'porn1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['ey']]:
-                              themeTPL === 'ey1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['sg']]:
-                              themeTPL === 'sg1' && cryptoMoney > 0
-                          }
-                        ]"
-                      >
+                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
@@ -1309,14 +1279,7 @@
                 {{ statusText }}
               </div>
             </div>
-            <ul
-              :class="[
-                $style['entry-message-confirm'],
-                $style[siteConfig.ROUTER_TPL],
-                { [$style['sg']]: themeTPL === 'sg1' },
-                { [$style['ey']]: themeTPL === 'ey1' }
-              ]"
-            >
+            <ul :class="[$style['entry-message-confirm']]">
               <li @click="submitInfo">确定</li>
               <!-- has_csr: 是否啟用代客充值 -->
               <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
@@ -1336,11 +1299,7 @@
               <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
             </div>
             <div
-              :class="[
-                $style['entry-message-confirm'],
-                { [$style['sg']]: themeTPL === 'sg1' },
-                { [$style['ey']]: themeTPL === 'ey1' }
-              ]"
+              :class="[$style['entry-message-confirm']]"
               @click="setPopupStatus(false, '')"
             >
               关闭
@@ -1990,7 +1949,7 @@ export default {
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=bcwallet&swift=${this.curPayInfo.swift_code}`
           );
           break;
-        // e点富
+        // E点付
         case 34:
           this.$router.push(
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`

@@ -197,12 +197,12 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: var(--main_text_color2);
+    color: #5e626d;
     font-size: 14px;
     outline: none;
 
     &::placeholder {
-      color: var(--main_text_color2);
+      color: #a6a9b2;
     }
   }
 }
@@ -215,7 +215,7 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: $share_main_button_color2;
+  background: var(--video_search_button);
   color: white;
   margin: 0 auto;
   text-align: center;
@@ -244,14 +244,14 @@ export default {
 .recommend {
   position: relative;
   .wrap {
-    color: #bf8646;
+    color: #262626;
   }
 }
 
 .title {
   height: 30px;
   line-height: 30px;
-  color: #5e626d;
+  color: var(--main_color);
   font-weight: 400;
   font-size: 12px;
   margin-left: 8px;
@@ -264,7 +264,7 @@ export default {
     left: 0px;
     top: 7px;
     border-radius: 2px;
-    background: linear-gradient(to left, #d2bba4, #f1e5db);
+    background: var(--main_color);
   }
 }
 
@@ -316,7 +316,7 @@ export default {
     position: relative;
     font-size: 14pt;
     text-align: center;
-    color: #bf8646;
+    color: #262626;
     padding: 15px 0;
 
     > span {

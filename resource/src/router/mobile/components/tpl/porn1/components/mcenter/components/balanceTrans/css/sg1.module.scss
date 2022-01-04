@@ -1,21 +1,21 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
-  background: var(--member_gradient_color1);
+  background: var(--mcenter_button_color1);
 
   &.is-disable {
-    background: var(--member_gradient_color2);
+    background: var(--mcenter_button_color2);
   }
 }
 
 .select-container {
   .select-header {
     span {
-      color: var(--member_color100);
+      color: var(--mcenter_slider_text_active_color);
     }
   }
 }
@@ -27,23 +27,27 @@
 }
 
 .balance-item-money {
-  color: var(--member_text_color3);
+  color: var(--mcenter_slider_text_color);
 }
 
 .balance-redjackpot-text {
-  color: var(--member_color100);
+  color: var(--mcenter_wallet_redpot_text_color);
+  word-break: break-word;
+}
+.balance-redjackpot-money {
+  color: var(--mcenter_wallet_redpot_money_color);
   word-break: break-word;
 }
 
 .transfer-money-input {
   &::placeholder {
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 
 .balance-tip-wrap {
   .balance-auto-tip {
-    color: var(--member_text_color3);
+    color: var(--mcenter_slider_text_color);
   }
 }
 
@@ -81,14 +85,14 @@
 }
 .balance-total-item {
   .balance-item-money {
-    color: var(--member_color100);
+    color: var(--mcenter_wallet_text_color);
   }
 }
 
 .select-container {
   .select-header {
     span {
-      color: var(--member_color100);
+      color: var(--mcenter_slider_text_active_color);
     }
   }
 }

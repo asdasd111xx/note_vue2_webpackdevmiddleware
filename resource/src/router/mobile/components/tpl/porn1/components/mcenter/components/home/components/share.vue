@@ -227,7 +227,7 @@ export default {
     background: #fff;
     height: 45px;
     font-size: 16px;
-    color: $main_title_color1;
+    color: #000000;
   }
 }
 </style>

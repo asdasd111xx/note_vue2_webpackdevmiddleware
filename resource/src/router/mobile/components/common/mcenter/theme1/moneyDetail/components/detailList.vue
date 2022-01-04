@@ -97,10 +97,7 @@ export default {
       return style;
     },
     isEmbed() {
-      return (
-        this.$route.name === "mcenter-creditTrans" ||
-        this.$route.name === "mcenter-swag"
-      );
+      return this.$route.name === "mcenter-creditTrans";
     }
   },
   props: {
@@ -143,6 +140,9 @@ export default {
     ) {
       this.emptyImage = "img_default_no_data";
       this.noDataText = `暂时没有新的签到彩金`;
+    } else {
+      this.emptyImage = "no_data";
+      this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
     }
   },
   methods: {
@@ -155,7 +155,6 @@ export default {
 
       if (
         this.pageType !== "ingroup_transfer" &&
-        this.pageType !== "swag" &&
         this.pageType !== "internal_memo"
       ) {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
