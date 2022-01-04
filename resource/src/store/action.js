@@ -598,8 +598,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetUserdata");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMobileInfo");
-    dispatch("actionGetMemInfoV3");
-
     await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
 
     // 設定網站設定檔資訊 (start)
@@ -643,8 +641,9 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         }
       });
     }
-    dispatch("actionSetSiteConfig", configInfo);
+    await dispatch("actionSetSiteConfig", configInfo);
     dispatch("actionSetNews");
+    dispatch("actionGetMemInfoV3");
 
     if (["porn1", "sg1"].includes(state.webDomain.site)) {
       dispatch("actionSetRechargeConfig");
@@ -1597,7 +1596,12 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     window.CHECKRECHARGETSTATUS = undefined;
   }, 1200);
 
+  if (!state.memInfoV3 || !state.memInfoV3.user) {
+    return;
+  }
+
   const info = state.memInfoV3.user;
+
   if (!!info.bankrupt) {
     dispatch("actionSetGlobalMessage", {
       msg: "您的钱包已停权，请联系线上客服！"
@@ -1802,13 +1806,13 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     window.CHECKV3PLAYERSTATUS = undefined;
   }, 1200);
 
-  return axios({
+  return goLangApiRequest({
     method: "get",
-    url: "/api/v3/c/player"
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/V3`
   })
     .then(res => {
-      if (res && res.data && res.data.result === "ok") {
-        commit(types.SETMEMINFOV3, res.data.ret);
+      if (res && res.data && res.status === "000") {
+        commit(types.SETMEMINFOV3, res.data);
       }
     })
     .catch(error => {

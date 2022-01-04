@@ -39,7 +39,6 @@ import mobileContainer from "../../../../common/mobileContainer";
 import transferCreditTrans from "../compontents/transferCreditTrans";
 import promotionCreditTrans from "../compontents/promotionCreditTrans";
 import recoardRecharge from "../compontents/recoardRecharge";
-import axios from "axios";
 
 export default {
   components: {
