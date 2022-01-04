@@ -68,7 +68,10 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    })
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   }
 };
 </script>
