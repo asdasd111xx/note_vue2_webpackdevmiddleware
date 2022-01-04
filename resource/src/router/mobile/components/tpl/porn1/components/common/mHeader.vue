@@ -103,7 +103,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
               )
             "
             @click="handleClickAsk"
@@ -143,7 +143,7 @@
         <img
           :src="
             $getCdnPath(
-              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
+              `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
             )
           "
           @click="handleClickAsk"

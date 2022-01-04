@@ -17,7 +17,7 @@
           >
             {{ info.title }}
           </span>
-          <div :class="$style['line']" />
+          <div :class="[$style['line'], $style[siteConfig.ROUTER_TPL]]" />
         </swiper-slide>
       </swiper>
 
@@ -97,7 +97,11 @@
             {{ videoData.name }}
           </div>
           <div
-            :class="[$style['btn-more'], $style[source]]"
+            :class="[
+              $style['btn-more'],
+              $style[source],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
             @click.stop="handleMore(videoData)"
           >
             更多
@@ -543,6 +547,10 @@ export default {
     transform: translateX(-50%);
     border-radius: 1px;
     background-color: #fff;
+
+    &.sg1 {
+      background: #bd9d7d;
+    }
   }
 
   &.active .line {
@@ -551,6 +559,10 @@ export default {
 
   &.yabo.active .line {
     background-color: var(--slider_underline_active_color);
+
+    &.sg1 {
+      background: #bd9d7d;
+    }
   }
 
   &.av.active .line {
@@ -593,8 +605,6 @@ export default {
   z-index: 2;
   border-radius: 0 0 10px 10px;
   background-color: #fff;
-  height: 29%;
-  min-height: 250px;
   overflow-y: scroll;
 
   &.porn1 {
@@ -651,6 +661,16 @@ export default {
       color: #d64545;
       background: none;
       border: 1px solid #d64545;
+    }
+  }
+
+  &.sg1 > div {
+    color: #bd9d7d;
+    border: 1px solid #bd9d7d;
+
+    &.active {
+      color: #ffffff;
+      background: var(--video_search_button);
     }
   }
 }
@@ -715,6 +735,10 @@ export default {
 
   &.les {
     background: #d64545;
+  }
+
+  &.sg1 {
+    background: var(--video_search_button);
   }
 
   // &:hover {
