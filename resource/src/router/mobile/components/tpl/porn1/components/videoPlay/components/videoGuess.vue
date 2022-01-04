@@ -10,7 +10,11 @@
         :src="
           $getCdnPath(
             `/static/image/_new/video/icon_like${
-              ['les', 'gay'].includes(source) ? '_red' : ''
+              ['les', 'gay'].includes(source)
+                ? '_red'
+                : ['porn1'].includes(routerTPL)
+                ? '_gray'
+                : ''
             }.png`
           )
         "
@@ -74,6 +78,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     img() {
       return this.$getCdnPath(
@@ -170,7 +177,7 @@ export default {
 .like {
   line-height: 20px;
   margin-bottom: 15px;
-  color: #bf8646;
+  color: var(--video_guess_like_color);
   font-weight: 500;
 
   &.custom {

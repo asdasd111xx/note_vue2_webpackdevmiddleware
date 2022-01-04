@@ -130,7 +130,7 @@ export default {
   font-size: 12px;
 
   > span:last-child {
-    color: var(--slider_text_active_color);
+    color: #5e626d;
   }
 }
 
@@ -139,10 +139,7 @@ export default {
   width: 3px;
   height: 15px;
   vertical-align: middle;
-  background: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(bottom, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(bottom, #bd9d7d, #f9ddbd);
-  background: linear-gradient(to bottom, #bd9d7d, #f9ddbd);
+  background: var(--video_introduction_icon_color);
 }
 
 .info-wrap {
