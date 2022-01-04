@@ -257,6 +257,7 @@ export default {
               this.$route.params.page.toUpperCase() === "HISTORY" ||
               this.$route.params.page.toUpperCase() === "DEPOSIT" ||
               this.$route.params.page.toUpperCase() === "BCWALLET" ||
+              this.$route.params.page.toUpperCase() === "GAME" ||
               this.justForBack) &&
             !iframeThirdOrigin
           ) {
@@ -295,40 +296,82 @@ export default {
         return;
       }
       switch (params.page.toUpperCase()) {
-        case "THIRDPARTY":
         case "THIRD":
-          let type = this.$route.params.type;
+        case "THIRDPARTY":
+          if (localStorage.getItem("iframe-third-url")) {
+            const vendor = query.vendor;
+            if (vendor === "SL") {
+              window.sportEvent = type => {
+                if (type === "GO_IM_SPORT") {
+                  if (!this.loginStatus) {
+                    this.$router.push("/mobile/login");
+                    return;
+                  } else {
+                    // 0421 進入遊戲前檢查withdrawcheck
+                    if (!this.withdrawCheckStatus.account) {
+                      lib_useGlobalWithdrawCheck("home");
+                      return;
+                    }
 
-          switch (type) {
-            case "fengniao":
-              if (query.alias) {
-                this.getExternalUrl(type);
-                return;
+                    const openGameSuccessFunc = res => {
+                      this.isShowLoading = false;
+                    };
+
+                    const openGameFailFunc = res => {
+                      this.isShowLoading = false;
+
+                      if (res && res.data) {
+                        let data = res.data;
+                        this.actionSetGlobalMessage({
+                          msg: data.msg,
+                          code: data.code
+                        });
+                      }
+                    };
+                    openGame(
+                      { vendor: "boe", kind: 1 },
+                      openGameSuccessFunc,
+                      openGameFailFunc
+                    );
+                  }
+                }
+              };
+            }
+            this.src = localStorage.getItem("iframe-third-url");
+            return;
+          }
+
+          let userId = "guest";
+          if (
+            this.memInfo &&
+            this.memInfo.user &&
+            this.memInfo.user.id &&
+            this.memInfo.user.id !== 0
+          ) {
+            userId = this.memInfo.user.id;
+          }
+
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}`
+          }).then(res => {
+            if (res && res.status !== "000") {
+              // 維護非即時更新狀態
+              if (res.msg && res.code !== "77700029") {
+                this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
               }
 
-            default:
-              axios({
-                method: "get",
-                url: "/api/v1/c/link/customize",
-                params: {
-                  code: "fengniao",
-                  client_uri: localStorage.getItem("iframe-third-url") || ""
-                }
-              })
-                .then(res => {
-                  this.isLoading = false;
-                  if (res && res.data && res.data.ret && res.data.ret.uri) {
-                    this.src = res.data.ret.uri;
-                  }
-                })
-                .catch(error => {
-                  this.isLoading = false;
-                  if (error && error.data && error.data.msg) {
-                    this.actionSetGlobalMessage({ msg: error.data.msg });
-                  }
-                });
-              return;
-          }
+              if (res.code === "77700029") {
+                this.$router.back();
+                return;
+              }
+            } else {
+              this.src = res.data;
+            }
+          });
+
+          break;
+
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
@@ -538,20 +581,6 @@ export default {
     },
     onListener(e) {
       console.log(e);
-      // //  需要監聽的白名單
-      // let whiteList = [window.location.origin,
-      //   'https://play.qybtv.xyz',
-      //   'https://play.pybtv.xyz',
-      //   'https://play.qybpb.xyz',
-      //   'https://play.pybpb.xyz',
-      //   'https://dglzsm.com',
-      //   'http://47.240.78.53',
-      //   'http://47.240.57.135',
-      //   'http://47.240.117.62',
-      //   'http://eyt.iplay.bet',
-      //   'http://eyd.666uxm.com',
-      //   'https://688lg410.666uxm.com/'
-      // ];
       if (e.data) {
         let data = e.data;
         // console.log(data);
@@ -598,12 +627,6 @@ export default {
               return;
             } else {
               this.$router.push("/mobile/login");
-
-              // if (this.themeTPL === "ey1") {
-              //   this.$router.replace("/mobile/login");
-              // } else {
-              //   this.$router.replace("/mobile/joinmember?prev=home");
-              // }
             }
 
             return;
@@ -623,12 +646,6 @@ export default {
               return;
             } else {
               this.$router.push("/mobile/login");
-
-              // if (this.themeTPL === "ey1") {
-              //   this.$router.replace("/mobile/login");
-              // } else {
-              //   this.$router.replace("/mobile/joinmember?prev=home");
-              // }
             }
 
             return;
@@ -638,12 +655,6 @@ export default {
               this.$router.push("/mobile/mcenter/deposit?prev=back");
             } else {
               this.$router.replace("/mobile/login");
-
-              // if (this.themeTPL === "ey1") {
-              //   this.$router.replace("/mobile/login");
-              // } else {
-              //   this.$router.replace("/mobile/joinmember?prev=home");
-              // }
             }
 
             return;
