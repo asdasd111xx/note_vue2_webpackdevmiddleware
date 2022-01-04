@@ -257,6 +257,7 @@ export default {
               this.$route.params.page.toUpperCase() === "HISTORY" ||
               this.$route.params.page.toUpperCase() === "DEPOSIT" ||
               this.$route.params.page.toUpperCase() === "BCWALLET" ||
+              this.$route.params.page.toUpperCase() === "GAME" ||
               this.justForBack) &&
             !iframeThirdOrigin
           ) {
