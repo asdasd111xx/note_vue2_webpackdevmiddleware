@@ -430,7 +430,7 @@
         :class="[
           $style['transfer-btn'],
           {
-            [$style['is-disable']]: btnLock || !transferMoney
+            [$style['is-disable']]: btnLock || !displayTransferMoney
           }
         ]"
         @click="
