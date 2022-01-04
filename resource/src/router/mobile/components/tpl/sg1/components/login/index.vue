@@ -401,7 +401,6 @@ export default {
     background-color: #ffffff;
     border: 1px solid #e3e3e3;
     font-size: 12px;
-    border-radius: 60px;
     width: 100%;
     height: 40px;
     text-indent: 10px;
@@ -422,7 +421,7 @@ export default {
   width: 100%;
   height: 60px;
   line-height: 34px;
-  color: var(--popup_tip_ok_color);
+  color: #6aaaf5;
   cursor: pointer;
   text-align: center;
   font-size: 18px;
@@ -447,7 +446,7 @@ export default {
 .tip {
   margin: 20px auto 0;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   color: #a6a9b2;
   padding-bottom: 13px;
