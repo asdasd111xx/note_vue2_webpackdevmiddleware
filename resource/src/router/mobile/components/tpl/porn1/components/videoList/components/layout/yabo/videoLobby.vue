@@ -723,10 +723,9 @@ export default {
   height: 20px;
   line-height: 20px;
   border-radius: 3px;
-  color: var(--square_text_active_color);
   font-size: 12px;
   text-align: center;
-  background: var(--main_button_color1);
+  background: var(--video_more_button);
   color: var(--main_button_text_color1);
 
   &.gay {
