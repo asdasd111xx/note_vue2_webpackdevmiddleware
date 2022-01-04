@@ -1,1 +1,6 @@
 @import "./index.module.scss";
+.submit-btn {
+  > div {
+    border-radius: 23px;
+  }
+}
