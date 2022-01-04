@@ -29,7 +29,8 @@
     line-height: 16px;
 
     .current-num {
-      color: #6aaaf5;
+      font-weight: bold;
+      color: var(--tcenter_real_rebate_color);
     }
     .total-num {
       display: flex;
@@ -63,7 +64,7 @@
       height: 6px;
       border-radius: 3px;
       top: 0;
-      background-color: var(--mcenter_main_color);
+      background-color: var(--tcenter_progress_color1);
       z-index: 0;
     }
   }
