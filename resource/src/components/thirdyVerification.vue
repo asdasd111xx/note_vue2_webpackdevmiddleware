@@ -12,7 +12,7 @@
     >
       <!-- 澳博、51国际 完整註冊樣式 拼圖驗證圖案不一樣-->
       <div
-        v-if="['aobo1', 'sp1'].includes(siteConfig.ROUTER_TPL)"
+        v-if="['aobo1', 'sp1', 'sg1'].includes(siteConfig.ROUTER_TPL)"
         :class="$style['icon']"
       >
         <img
