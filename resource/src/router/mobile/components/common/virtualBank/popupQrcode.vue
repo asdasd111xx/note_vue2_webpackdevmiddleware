@@ -60,7 +60,7 @@
       </div>
 
       <div :class="[$style['button-block']]">
-        <span @click="closePopup">取消</span>
+        <span @click="closePopup">关闭</span>
         <span @click="downloadImage">
           {{ downloadText }}
         </span>
