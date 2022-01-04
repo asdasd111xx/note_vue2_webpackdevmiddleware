@@ -356,7 +356,7 @@
         <div :class="$style['content-block']">
           <div :class="$style['msg']">{{ popupMsg }}</div>
           <div :class="[$style['close']]" @click="closePopup">
-            {{ $text("S_CONFIRM_2", "确定") }}
+            {{ $text("S_CLOSE", "关闭") }}
           </div>
         </div>
       </div>
