@@ -45,14 +45,27 @@
 </template>
 
 <script>
-import info from "../../json/support.json";
+import { mapGetters } from "vuex";
 import mixin from '@/mixins/mcenter/help/help';
 
 export default {
   mixins: [mixin],
   created() {
-    this.source = info;
   },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
+  },
+  mounted() {
+    fetch(`/i18n/json/${this.routerTPL}/support.json`)
+    .then(res => res.json())
+    .then(data => this.source = data)
+  }
 };
 </script>
 <style src="../../css/index.module.scss" lang="scss" module>
