@@ -13,10 +13,10 @@
     </template>
     <template v-else>
       <share v-if="themeTPL === 'porn1'" :is-show-share.sync="isShowShare" />
-      <ey1-share
+      <!-- <ey1-share
         v-else-if="themeTPL === 'ey1'"
         :is-show-share.sync="isShowShare"
-      />
+      /> -->
       <sg1-share
         v-else-if="themeTPL === 'sg1'"
         :is-show-share.sync="isShowShare"
@@ -30,8 +30,13 @@ import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import html2canvas from "html2canvas";
 import share from "@/router/mobile/components/tpl/porn1/components/mcenter/components/home/components/share";
+<<<<<<< HEAD
 import ey1Share from "@/router/mobile/components/tpl/ey1/components/mcenter/components/home/components/share";
 import sg1Share from "@/router/mobile/components/tpl/sg1/components/mcenter/components/home2/components/share";
+=======
+// import ey1Share from "@/router/mobile/components/tpl/ey1/components/mcenter/components/home/components/share";
+import sg1Share from "@/router/mobile/components/tpl/sg1/components/mcenter/components/home/components/share";
+>>>>>>> develop
 
 /**
  * @param {String} type - 彈窗類型
@@ -42,7 +47,10 @@ export default {
     Swiper,
     SwiperSlide,
     share,
+<<<<<<< HEAD
     ey1Share,
+=======
+>>>>>>> develop
     sg1Share
   },
   props: {

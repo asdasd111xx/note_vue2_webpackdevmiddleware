@@ -8,7 +8,6 @@
 import { mapGetters, mapActions } from "vuex";
 import porn1Service from "@/router/mobile/components/tpl/porn1/components/service";
 import sg1Service from "@/router/mobile/components/tpl/sg1/components/service";
-import ey1Service from "@/router/mobile/components/tpl/ey1/components/service";
 import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
 import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 export default {
@@ -45,11 +44,12 @@ export default {
           siteConfigTest[`site_${res.domain}`] ||
           siteConfigOfficial[`site_${res.domain}`];
       }
-      if (["ey1", "sg1"].includes(res.site)) {
+      if (["sg1"].includes(res.site)) {
         this.template = `${res.site}Service`;
       } else {
         this.template = `porn1Service`;
       }
+
       if (configInfo) {
         this.show = true;
       }
