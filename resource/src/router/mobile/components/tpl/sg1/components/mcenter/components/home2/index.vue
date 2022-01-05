@@ -54,7 +54,6 @@ export default {
             code: data.error_code
           });
         } else {
-          console.log(data.result);
           this.paopaoUserInfo = data.result;
         }
       });
