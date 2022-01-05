@@ -350,8 +350,13 @@
           "
         >
           <div :class="[$style['bank-card-cell']]">
-            <div :class="[$style['check-box'],
-                $style[`image-${siteConfig.ROUTER_TPL}`], $style['checked']]" />
+            <div
+              :class="[
+                $style['check-box'],
+                $style[`image-${siteConfig.ROUTER_TPL}`],
+                $style['checked']
+              ]"
+            />
             <span :class="[]">
               {{
                 parseCardName(
@@ -569,32 +574,36 @@
       <!-- 優惠提示 -->
       <div v-if="offerInfo.offer_enable" :class="[$style['offer']]">
         <span>
-          {{`加送 ${formatThousandsCurrency(offerInfo.offer_percent)} %提现优惠`}}
+          {{
+            `加送 ${formatThousandsCurrency(offerInfo.offer_percent)} %提现优惠`
+          }}
         </span>
-        <span :class="[$style['option']]" @click="showRealStatusType(true)">详情</span>
+        <span :class="[$style['option']]" @click="showRealStatusType(true)"
+          >详情</span
+        >
       </div>
       <div v-if="showRealStatus" :class="$style['pop-message']">
-            <div :class="$style['pop-message-mark']" />
-            <div :class="$style['message-container']">
-              <ul :class="$style['message-content']">
-                <div :class="$style['message-content-title']">
-                  详情
-                </div>
-                <template
-                  v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
-                >
-                  <li :class="$style['tip-list']" v-html="promitionText" />
-                </template>
-                <li>• 实际存入依审核结果为准</li>
-              </ul>
-              <div
-                :class="$style['message-close']"
-                @click="showRealStatusType(false)"
-              >
-                关闭
-              </div>
+        <div :class="$style['pop-message-mark']" />
+        <div :class="$style['message-container']">
+          <ul :class="$style['message-content']">
+            <div :class="$style['message-content-title']">
+              详情
             </div>
+            <template
+              v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
+            >
+              <li :class="$style['tip-list']" v-html="promitionText" />
+            </template>
+            <li>• 实际存入依审核结果为准</li>
+          </ul>
+          <div
+            :class="$style['message-close']"
+            @click="showRealStatusType(false)"
+          >
+            关闭
           </div>
+        </div>
+      </div>
       <!-- 到帳金額 -->
       <div
         :class="[
@@ -1319,7 +1328,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionGetServiceMaintain", "actionSetAnnouncementList","actionSetUserBalance"]),
+    ...mapActions([
+      "actionGetServiceMaintain",
+      "actionSetAnnouncementList",
+      "actionSetUserBalance"
+    ]),
     linkToRecharge() {
       this.$router.push("/mobile/mcenter/creditTrans?tab=0");
     },
@@ -1428,7 +1441,9 @@ export default {
         // 實際提現金額 < 0
         if (_actualMoney <= 0) {
           //http://fb.vir888.com/default.asp?535621#4619033
-          this.errTips = "实际提现金额须大于0，请重新输入";
+          this.errTips = ["porn1", "sg1"].includes(this.routerTPL)
+            ? "实际提现金额须大于0，请确认余额或点击详情"
+            : "实际提现金额须大于0，请重新输入";
           // 實際提現金額 => 有流水時為 0
           this.actualMoney = _actualMoney !== value ? 0 : this.actualMoney;
           return;
@@ -1493,7 +1508,7 @@ export default {
         withdrawType: item.withdrawType,
         bank_id: item.bank_id,
         swift_code: item.swift_code,
-        offer_data:item.offer_data,
+        offer_data: item.offer_data,
         offer_percent: item.offer_percent,
         offer_limit: item.offer_limit,
         currency: item.currency
@@ -1515,7 +1530,7 @@ export default {
         this.getCryptoRate(31);
       }
       this.chooseUSDT();
-      this.getWithdrawOffer()
+      this.getWithdrawOffer();
       // if (this.withdrawValue) {
       //   this.verification("withdrawValue", this.withdrawValue);
       // }
@@ -2137,7 +2152,7 @@ export default {
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
       this.chooseUSDT();
-      this.getWithdrawOffer()
+      this.getWithdrawOffer();
 
       // 選項停留在 USDT 時，不執行重新刷新匯率動作
       if (this.isSelectedUSDT) {
@@ -2161,7 +2176,10 @@ export default {
       let bonusOffer = Math.round(
         (+this.offerInfo.offer_percent * this.withdrawValue) / 100
       );
-      let maxOffer = Math.min(+this.offerInfo.offer_limit - +this.offerInfo.gotten_offer,this.offerInfo.per_offer_limit)
+      let maxOffer = Math.min(
+        +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer,
+        this.offerInfo.per_offer_limit
+      );
       switch (true) {
         case !this.withdrawValue:
           return "--";
@@ -2175,7 +2193,7 @@ export default {
           return "0.00";
 
         case bonusOffer >= maxOffer && maxOffer > 0:
-          return maxOffer
+          return maxOffer;
 
         default:
           return `${bonusOffer}`;
@@ -2409,7 +2427,7 @@ export default {
         }
       }
     },
-    showRealStatusType(type){
+    showRealStatusType(type) {
       this.showRealStatus = type;
       if (type) {
         this.getWithdrawOffer(this.withdrawValue);
