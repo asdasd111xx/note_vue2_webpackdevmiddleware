@@ -85,6 +85,12 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    isEmbedDetail() {
+      // 共用紀錄
+      return ["ingroup_transfer", "internal_memo", "paopao"].includes(
+        this.pageType
+      );
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
@@ -153,10 +159,7 @@ export default {
       this.$emit("update:detailInfo", info);
       localStorage.setItem("money-detail-id", info.id);
 
-      if (
-        this.pageType !== "ingroup_transfer" &&
-        this.pageType !== "internal_memo"
-      ) {
+      if (!this.isEmbedDetail) {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
     },

@@ -1,8 +1,6 @@
 <template>
   <div :class="$style['money-detail-wrap']">
-    <template
-      v-if="pageType !== 'ingroup_transfer' && pageType !== 'internal_memo'"
-    >
+    <template v-if="!isEmbedDetail">
       <div
         v-if="$route.params.page !== 'detail' || !detailInfo"
         :class="[$style['top-link'], 'clearfix']"
@@ -116,12 +114,7 @@
     </template>
 
     <detail-info
-      v-if="
-        $route.params.page === 'detail' &&
-          detailInfo &&
-          pageType !== 'ingroup_transfer' &&
-          pageType !== 'internal_memo'
-      "
+      v-if="$route.params.page === 'detail' && detailInfo && !isEmbedDetail"
       :current-category="currentCategory"
       :opcode-list="opcodeList"
       :detail-info.sync="detailInfo"
@@ -136,11 +129,7 @@
     />
     <!-- 捲動加載 -->
     <infinite-loading
-      v-if="
-        showInfinite &&
-          pageType !== 'ingroup_transfer' &&
-          pageType !== 'internal_memo'
-      "
+      v-if="showInfinite && !isEmbedDetail"
       ref="infiniteLoading"
       @infinite="infiniteHandler"
     >
@@ -188,10 +177,7 @@ export default {
   },
   watch: {
     detailInfo(val) {
-      if (
-        this.pageType === "ingroup_transfer" ||
-        this.pageType === "internal_memo"
-      ) {
+      if (this.isEmbedDetail) {
         this.$emit("showDetail", val);
       }
     }
@@ -235,6 +221,12 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    isEmbedDetail() {
+      // 共用紀錄
+      return ["ingroup_transfer", "internal_memo", "paopao"].includes(
+        this.pageType
+      );
+    },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
@@ -301,13 +293,10 @@ export default {
     });
 
     // 共用額度轉移紀錄
-    if (this.pageType === "ingroup_transfer") {
-      this.setDefaultCreditTrans();
-    }
-
     // 共用红包紀錄
-    if (this.pageType === "internal_memo") {
-      this.setDefaultRedJackpot();
+    // 共用泡泡鑽石紀錄
+    if (this.pageType && this.isEmbedDetail) {
+      this.setDefaultCommonPageType();
     }
   },
   mounted() {
@@ -354,6 +343,10 @@ export default {
       if (this.type.find(i => i === "internal_memo")) {
         params["category"] = null;
         params["opcode"] = ["5028"];
+      }
+
+      if (this.type.find(i => i === "outer")) {
+        params["opcode"] = ["9002"];
       }
 
       localStorage.setItem("money-detail-params", JSON.stringify(params));
@@ -411,18 +404,30 @@ export default {
         }
       });
     },
-    setDefaultCreditTrans() {
-      this.type = ["ingroup_transfer"];
-      this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
-      this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: "ingroup_transfer", text: "转让" });
-    },
+    setDefaultCommonPageType() {
+      const typeList = {
+        paopao: {
+          key: "outer",
+          text: "泡泡直播",
+          type: "outer"
+        },
+        ingroup_transfer: {
+          key: "ingroup_transfer",
+          text: "转让",
+          type: "ingroup_transfer"
+        },
+        internal_memo: {
+          key: "internal_memo",
+          text: "优惠",
+          type: "internal_memo"
+        }
+      };
 
-    setDefaultRedJackpot() {
-      this.type = ["internal_memo"];
+      let current = typeList[this.pageType];
+      this.type = [current.type];
       this.startTime = new Date(Vue.moment(this.estToday).add(-29, "days"));
       this.endTime = new Date(Vue.moment(this.estToday));
-      this.setCategory({ key: "internal_memo", text: "优惠" });
+      this.setCategory({ key: current.key, text: current.text });
     },
     setCategory(value) {
       this.currentCategory = value;
@@ -437,8 +442,7 @@ export default {
       this.changeDatePicker("");
       if (
         !localStorage.getItem("money-detail-params-service") ||
-        this.pageType === "ingroup_transfer" ||
-        this.pageType === "internal_memo"
+        this.isEmbedDetail
       ) {
         this.getData();
       }
@@ -482,7 +486,7 @@ export default {
       this.changeDatePicker("");
       if (
         !localStorage.getItem("money-detail-params-service") ||
-        this.pageType === "ingroup_transfer"
+        this.isEmbedDetail
       ) {
         this.getData();
       }
@@ -527,7 +531,7 @@ export default {
      */
     infiniteHandler($state) {
       // 防止在切換類別的時候馬上觸發捲動加載，造成有遊戲重複出現的情況
-      if (this.isReceive && this.pageType === "ingroup_transfer") {
+      if (this.isReceive && this.isEmbedDetail) {
         return;
       }
 
