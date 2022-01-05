@@ -374,20 +374,22 @@ export default {
           if (result !== "ok" || ret.length === 0) {
             return;
           }
+          if (this.detailList) {
+            return;
+          } else {
+            this.detailList = ret.reduce(
+              (init, info) => {
+                const date = EST(info.created_at, "YYYY-MM-DD");
 
-          this.detailList = ret.reduce(
-            (init, info) => {
-              const date = EST(info.created_at, "YYYY-MM-DD");
+                if (!init[date]) {
+                  return { ...init, [date]: [info] };
+                }
 
-              if (!init[date]) {
-                return { ...init, [date]: [info] };
-              }
-
-              return { ...init, [date]: [...init[date], info] };
-            },
-            { ...this.detailList }
-          );
-
+                return { ...init, [date]: [...init[date], info] };
+              },
+              { ...this.detailList }
+            );
+          }
           if (pagination.total === "0") {
             return;
           }
@@ -402,7 +404,7 @@ export default {
             setTimeout(() => {
               localStorage.removeItem("money-detail-params-service");
               localStorage.removeItem("money-detail-id");
-            }, 500);
+            }, 100);
           }
         },
         fail: res => {
