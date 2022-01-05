@@ -5,17 +5,7 @@
       :class="$style['avatar-wrap']"
       @click="onListClick('memberCard', false)"
     >
-      <img
-        v-if="loginStatus"
-        :class="$style['avatar-pic']"
-        :src="
-          memInfo.user.custom
-            ? avatarSrc
-            : $getCdnPath(
-                `/static/image/common/mcenter/default/avatar_${memInfo.user.image}.png`
-              )
-        "
-      />
+      <img v-if="loginStatus" :class="$style['avatar-pic']" :src="avatarSrc" />
       <img
         v-else
         :class="$style['avatar-pic']"
