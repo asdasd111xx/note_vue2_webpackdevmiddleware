@@ -284,6 +284,10 @@ export default {
       this.$router.push("/mobile/login");
     }
     this.init();
+
+    if (this.$route.query.tab) {
+      this.setCurrentTab(+this.$route.query.tab);
+    }
   },
   mounted() {
     this.getBalance();
@@ -370,6 +374,14 @@ export default {
       this.actionSetUserBalance();
     },
     setCurrentTab(index) {
+      if (index === this.currentTab) {
+        return;
+      }
+
+      if (+this.$route.query.tab !== index) {
+        this.$router.replace({ query: { tab: index } });
+      }
+
       switch (index) {
         default:
         case 0:

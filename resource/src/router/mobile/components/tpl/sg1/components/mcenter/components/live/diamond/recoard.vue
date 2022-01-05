@@ -12,11 +12,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import mixin from "@/mixins/mcenter/recharge/recharge";
 import recoardDetailSlider from "./recoardDetailSilder";
 
 export default {
-  mixins: [mixin],
   components: {
     moneyDetail: () =>
       import(
