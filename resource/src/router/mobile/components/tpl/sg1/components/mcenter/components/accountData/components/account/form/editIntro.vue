@@ -9,12 +9,12 @@
         </div>
       </div>
       <div :class="$style.block">
-        <div :class="$style.title">簽名</div>
+        <div :class="$style.title">签名</div>
         <div :class="$style['input-wrap']">
           <input
             ref="input"
             v-model="value"
-            :placeholder="`请输入簽名`"
+            :placeholder="`请输入签名`"
             :class="$style.input"
             @input="onInput"
             :maxlength="20"
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <!-- <service-tips :edit="edit" :type="'alias'" /> -->
+    <service-tips :edit="edit" :type="'intro'" />
   </div>
 </template>
 
@@ -47,7 +47,6 @@ export default {
     return {
       value: "",
       tipMsg: ""
-      // cantEditAlias: false
     };
   },
   mounted() {
@@ -63,7 +62,7 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: "簽名",
+        title: "签名",
         onClickFunc: () => {
           this.handleSubmit();
         },
