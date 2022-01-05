@@ -1113,6 +1113,9 @@ input {
     font-weight: 700;
     margin-bottom: 10px;
   }
+  > span {
+    color: #a2a2a2;
+  }
 }
 
 .button-block {
@@ -1137,7 +1140,7 @@ input {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: #000;
+    color: #6aaaf5;
     // &:nth-child(2) {
     //   color: #d1b79c;
     // }
