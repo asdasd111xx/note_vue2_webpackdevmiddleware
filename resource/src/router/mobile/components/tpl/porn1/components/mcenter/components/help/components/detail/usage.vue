@@ -29,6 +29,7 @@
             v-for="(item, index) in item.list"
             :class="$style['text-block']"
             v-html="item"
+            :key="index"
           />
         </div>
 

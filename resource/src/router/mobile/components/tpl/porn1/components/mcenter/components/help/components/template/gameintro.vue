@@ -37,6 +37,7 @@
             v-for="(item, index) in item.content"
             :class="$style['text-block']"
             v-html="item"
+            :key="index"
           />
           <div v-if="category_currentkind === 'live' && index === 5">
             <table :class="$style['table-border']">
