@@ -353,6 +353,7 @@ export default {
       }
       this.getContent(info);
       this.$router.push({ query: { pid: info.id } });
+      this.unReadMessage();
     },
     onSelectAll() {
       this.selectMessage = [...this.messageData.map(message => message.id)];
@@ -368,7 +369,7 @@ export default {
           return;
         }
         setTimeout(() => {
-          this.actionSetMcenterMsgCount();
+          this.getMessgae();
           this.isLoading = false;
         }, 500);
       });
@@ -402,6 +403,13 @@ export default {
           this.actionSetGlobalMessage({ msg: "消息删除成功" });
         }
       });
+    },
+    //點擊未讀訊息進入 返回後變為已讀訊息要往下放
+    unReadMessage() {
+      setTimeout(() => {
+        this.getMessgae();
+        this.isLoading = false;
+      }, 200);
     }
   }
 };
