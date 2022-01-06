@@ -199,9 +199,12 @@ export default {
           );
         },
         onClick: () => {
-          //從推薦禮金點擊推廣賺錢後 進入推廣賺錢或禮金明細返回統一到我的頁面
+          //從推薦禮金點擊推廣賺錢後 返回回到推薦禮金
           if (this.$route.query.giftDetail) {
-            this.$router.push("/mobile/mcenter/home");
+            // this.$router.push("/mobile/mcenter/home");
+            this.$router.push(
+              "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
+            );
           } else {
             this.$router.back();
           }
