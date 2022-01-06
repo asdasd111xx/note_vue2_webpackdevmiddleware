@@ -25,7 +25,7 @@
 .table-container {
   position: relative;
   width: 100%;
-  background: $main_background_white1;
+  background: #f8f8f8;
 }
 
 .title {
@@ -86,7 +86,7 @@
 
     // 每一個content 且 第一個 item
     & .item:first-of-type {
-      color: $main_white_color1;
+      color: #fefffe;
     }
 
     // 每一個奇數的content 且 第一個 item

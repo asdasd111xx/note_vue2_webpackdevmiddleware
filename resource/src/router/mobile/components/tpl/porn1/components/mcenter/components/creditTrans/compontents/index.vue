@@ -18,7 +18,7 @@
         {{ item.text }}
       </div>
       <div
-        :class="$style['active-slider']"
+        :class="[$style['active-slider']]"
         :style="{
           left: `calc(16.5% + 33% * ${currentTab})`
         }"
@@ -39,7 +39,6 @@ import mobileContainer from "../../../../common/mobileContainer";
 import transferCreditTrans from "../compontents/transferCreditTrans";
 import promotionCreditTrans from "../compontents/promotionCreditTrans";
 import recoardRecharge from "../compontents/recoardRecharge";
-import axios from "axios";
 
 export default {
   components: {
@@ -74,6 +73,9 @@ export default {
       rechargeConfig: "getRechargeConfig",
       siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;

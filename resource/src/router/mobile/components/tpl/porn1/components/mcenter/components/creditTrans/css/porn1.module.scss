@@ -32,11 +32,11 @@
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: #a6a9b2;
+  color: var(--mcenter_slider_text_color);
   width: 33%;
 
   &.is-current {
-    color: #5e626d;
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -46,7 +46,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: var(--mcenter_slider_underline_active_color);
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }
@@ -83,9 +83,9 @@ input {
 }
 
 .top-tips {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   margin-bottom: -1px;
   min-height: 40px;
   display: flex;
@@ -97,7 +97,7 @@ input {
   justify-content: space-between;
   align-items: baseline;
   padding: 0px 14px;
-  color: #be9e7f;
+  color: var(--mcenter_promotion_tips);
   font-size: 12px;
 }
 
@@ -112,7 +112,7 @@ input {
 }
 
 .form {
-  background-color: #eeeeee;
+  // background-color: #eeeeee;
   font-size: 14px;
 }
 
@@ -131,7 +131,7 @@ input {
 }
 
 .keyring-tips {
-  color: $main_error_color1;
+  color: #db6372;
 }
 
 .form-tips {
@@ -142,7 +142,7 @@ input {
   font-weight: 400;
   line-height: 20px;
   position: relative;
-  color: $main_error_color1;
+  color: #db6372;
   display: block;
   word-break: break-all;
   //   height: 30px;
@@ -200,9 +200,9 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background-color: #d1b79c;
+  background: var(--mcenter_send_keyring);
   border-radius: 3px;
-  color: white;
+  color: #fff;
   font-weight: 400;
   height: 30px;
   line-height: 30px;
@@ -213,8 +213,8 @@ input {
   width: 100px;
 
   &.disabled {
-    color: white;
-    background-color: #e9dacc;
+    color: #fff;
+    background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
   }
 }
@@ -231,10 +231,7 @@ input::placeholder {
 
   > div {
     border-radius: 3px;
-    background: -webkit-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -o-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: -moz-linear-gradient(to right, #f9ddbd, #bd9d7d);
-    background: linear-gradient(to right, #f9ddbd, #bd9d7d);
+    background: var(--mcenter_button_color1);
     line-height: 43px;
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
@@ -246,10 +243,7 @@ input::placeholder {
 
   &.disabled {
     > div {
-      background: -webkit-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -o-linear-gradient(to right, #eee5db, #e9dacb);
-      background: -moz-linear-gradient(to right, #eee5db, #e9dacb);
-      background: linear-gradient(to right, #eee5db, #e9dacb);
+      background: var(--mcenter_button_color2);
       pointer-events: none;
     }
   }

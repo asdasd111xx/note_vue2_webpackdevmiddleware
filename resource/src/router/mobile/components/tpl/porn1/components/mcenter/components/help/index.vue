@@ -16,7 +16,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/ey1/mcenter/help/ic_help_${listInfo.img}.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/mcenter/help/ic_help_${listInfo.img}.png`
               )
             "
           />
@@ -117,7 +117,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
@@ -155,12 +156,12 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .help-wrap {
   overflow-x: hidden;
-  color: $main_text_color3;
+  color: var(--mcenter_slider_text_active_color);
   position: relative;
 
   .list {
@@ -168,7 +169,7 @@ export default {
     padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
 
     > span {
       width: 100%;

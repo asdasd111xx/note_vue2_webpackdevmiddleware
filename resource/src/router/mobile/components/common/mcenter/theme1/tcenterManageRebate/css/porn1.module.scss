@@ -29,23 +29,23 @@ $fixed_spacing_height: 43px;
   height: 43px;
   line-height: 43px;
   text-align: center;
-  color: $main_text_color2;
+  color: var(--mcenter_slider_text_color);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &.is-current {
-    color: $main_text_color4;
+    color: var(--mcenter_slider_text_active_color);
 
     &::after {
       content: "";
       position: absolute;
       width: 43px;
-      height: 2px;
+      height: 3px;
       left: 50%;
       bottom: 0;
       transform: translateX(-50%);
-      background: #be9e7f;
+      background: var(--mcenter_slider_underline_active_color);
     }
   }
 }

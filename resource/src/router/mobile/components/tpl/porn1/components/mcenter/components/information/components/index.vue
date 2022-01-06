@@ -28,7 +28,7 @@
           </div>
         </div>
         <div
-          :class="$style['active-slider']"
+          :class="[$style['active-slider']]"
           :style="{
             left: `calc(16.5% + 33% * ${currentTab})`
           }"
@@ -60,37 +60,44 @@ export default {
     };
   },
   created() {
-    if (["message", "news", "post"].includes(this.$route.params.page)) {
-      this.currentTemplate = this.$route.params.page;
-      this.$emit("update:currentTemplate", this.$route.params.page);
+    console.log(this.$route.query.page);
+    if (["message", "news", "post"].includes(this.$route.query.page)) {
+      this.currentTemplate = this.$route.query.page;
+      this.$emit("update:currentTemplate", this.$route.query.page);
       this.currentTab = ["message", "news", "post"].indexOf(
-        this.$route.params.page
+        this.$route.query.page
       );
     }
   },
   methods: {
-    ...mapActions([
-      // 'actionSetMcenterMsgCount'
-    ]),
+    ...mapActions(["actionSetMcenterMsgCount"]),
     setCurrentTab(index) {
       this.currentTab = index;
       switch (index) {
         case 0:
           this.$emit("update:currentTemplate", "message");
           this.currentTemplate = "message";
+          this.$router.replace({ query: { page: "message" } });
           break;
 
         case 1:
           this.$emit("update:currentTemplate", "news");
           this.currentTemplate = "news";
+          this.$router.replace({ query: { page: "news" } });
           break;
 
         case 2:
           this.$emit("update:currentTemplate", "post");
           this.currentTemplate = "post";
+          this.$router.replace({ query: { page: "post" } });
           break;
       }
       this.$emit("getCurrentTemplate", this.currentTemplate);
+    }
+  },
+  watch: {
+    "$route.query.pid"() {
+      this.actionSetMcenterMsgCount();
     }
   },
   computed: {

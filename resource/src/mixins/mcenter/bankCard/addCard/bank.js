@@ -66,7 +66,6 @@ export default {
     checkPhoneVerification() {
       // player_user_bank_phone (會員綁定銀行卡前需手機驗證，0否，1每次，2首次)
       // phone.corfirm (已認證，0未認證/1已認證/2人工驗證)
-
       let result = null;
       let verifyNum = this.memInfo.config.player_user_bank_phone;
       let isPhoneVerify =
@@ -267,7 +266,7 @@ export default {
       this.checkData();
     },
     checkData(value, key) {
-      if (key === "accountName" && this.memInfo.user.name === "") {
+      if (key === "accountName" && !this.memInfo.user.name) {
         this.actionVerificationFormData({ target: "name", value: value }).then(
           val => {
             this.formData.accountName = val;
@@ -434,38 +433,32 @@ export default {
                     this.time -= 1;
                   }, 1500);
                 } else {
-                  if (res.msg) {
+                  if (res && res.status === "506") {
+                    this.actionGetToManyRequestMsg(res.msg).then(res => {
+                      this.errorMsg = res;
+                    });
+                  } else if (res.msg) {
                     this.errorMsg = res.msg;
                   }
                 }
               })
               .catch(error => {
-                if (error && error.status === 429) {
-                  this.actionGetToManyRequestMsg(error.response).then(res => {
-                    this.errorMsg = res;
-                  });
-                  return;
-                }
-
                 if (error.status) {
                   this.errorMsg = `${error.msg}`;
                   return;
                 }
               });
           } else {
-            if (res.msg) {
+            if (res && res.status === "506") {
+              this.actionGetToManyRequestMsg(res.msg).then(res => {
+                this.errorMsg = res;
+              });
+            } else if (res.msg) {
               this.errorMsg = res.msg;
             }
           }
         })
         .catch(error => {
-          if (error && error.status === 429) {
-            this.actionGetToManyRequestMsg(error.response).then(res => {
-              this.errorMsg = res;
-            });
-            return;
-          }
-
           this.lockStatus = false;
 
           if (error.response.data && error.response.data.msg) {

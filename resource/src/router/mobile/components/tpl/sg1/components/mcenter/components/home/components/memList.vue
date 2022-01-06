@@ -57,6 +57,7 @@ import mcenter from "@/api/mcenter";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
 import share from "./share";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -280,6 +281,23 @@ export default {
         return;
       }
 
+      switch (item.pageName) {
+        case "help":
+          sendUmeng(32);
+          break;
+        case "about":
+          sendUmeng(33);
+          break;
+        case "mypromotion":
+          sendUmeng(34);
+          break;
+        case "share":
+          sendUmeng(35);
+          break;
+        default:
+          break;
+      }
+
       if (item.pageName === "mypromotion") {
         if (!this.loginStatus) {
           this.$router.push("/mobile/login");
@@ -354,7 +372,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mem-list {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .list-part {
@@ -373,8 +391,8 @@ export default {
   padding: 0 18px;
   display: flex;
   align-items: center;
-  background-color: $main_white_color1;
-  color: $main_text_color3;
+  background-color: #fefffe;
+  color: #414655;
 
   > span {
     width: 100%;

@@ -238,7 +238,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .live-stream-wrap {
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   position: relative;
   height: 100%;
 }
@@ -251,10 +251,9 @@ export default {
   width: 50%;
   text-align: center;
   font-size: 16px;
-  color: $main_text_color2;
-
+  color: #ffffff;
   &.is-current {
-    color: $main_text_color4;
+    color: var(--slider_text_active_color);
   }
 }
 
@@ -276,7 +275,7 @@ export default {
   vertical-align: middle;
 
   &.active {
-    border-bottom: #be9e7f solid 2px;
+    border-bottom: var(--slider_underline_active_color) solid 2px;
   }
 }
 

@@ -105,13 +105,13 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 .content-wrap {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .mcenter-avatar-wrap {
   height: 120px;
-  background-color: $main_white_color1;
-  color: $main_text_color3;
+  background-color: #fefffe;
+  color: #414655;
   padding: 15px;
   border-bottom: 1px solid #eee;
 

@@ -3,11 +3,7 @@
     <div slot="content" :class="$style['promotion-wrap']">
       <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
         <div
-          :class="[
-            $style['promotion-gift'],
-            $style['right'],
-            $style[routerTPL]
-          ]"
+          :class="[$style['promotion-gift'], $style['right']]"
           @click="onGiftClick(giftList[0])"
         >
           <span>{{ giftList[0].name }}</span>
@@ -29,10 +25,7 @@
             :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
           >
             <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
-            <div
-              v-if="tab.id === tabId"
-              :class="[$style['tab-slider'], $style[routerTPL]]"
-            />
+            <div v-if="tab.id === tabId" :class="[$style['tab-slider']]" />
           </swiper-slide>
         </swiper>
       </div>
@@ -95,11 +88,7 @@ export default {
     };
   },
   created() {
-    if (this.routerTPL === "sg1") {
-      sendUmeng(51);
-    } else {
-      sendUmeng(52);
-    }
+    sendUmeng(52);
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
@@ -180,20 +169,12 @@ export default {
       });
     },
     onGiftClick(target) {
-      switch (target) {
+      switch (target.name) {
         case "审核查询":
-          if (this.routerTPL === "sg1") {
-            sendUmeng(52);
-          } else {
-            sendUmeng(53);
-          }
+          sendUmeng(53);
           break;
         case "自领优惠":
-          if (this.routerTPL === "sg1") {
-            sendUmeng(53);
-          } else {
-            sendUmeng(54);
-          }
+          sendUmeng(54);
           break;
         default:
           break;
@@ -320,13 +301,9 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: $share_text_color5;
+  background-color: var(--slider_underline_active_color);
   width: 50px;
   transition: left 0.31s;
-
-  &.porn1 {
-    background-color: $main_text_color6;
-  }
 }
 
 .type-btn {
@@ -337,11 +314,9 @@ $fixed_spacing_height: 43px;
   font-weight: 500;
   font-size: 14px;
   text-align: center;
-  color: $main_text_color2;
-
+  color: var(--slider_text_color);
   &.active {
-    color: $main_text_color4;
-    // border-bottom: solid 1px #be9e7f;
+    color: var(--slider_text_active_color);
   }
 }
 
@@ -369,7 +344,7 @@ $fixed_spacing_height: 43px;
 
 .time {
   line-height: 13px;
-  color: $main_text_color4;
+  color: var(--slider_text_active_color);
   font-size: 10px;
 
   > img {
@@ -418,27 +393,15 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $share_main_button_text_color;
-  background: $share_main_button_color;
-
+  color: var(--promotion_gift_button_text_color);
+  background: var(--promotion_gift_button);
+  border-radius: var(--promotion_gift_button_border);
   &.right {
     right: 14px;
   }
 
   &.left {
     left: 14px;
-  }
-
-  &.porn1 {
-    color: #222222;
-    background: #ffefdd;
-    border-radius: 32px;
-  }
-
-  &.sp1 {
-    color: #222222;
-    background: #ffbb00;
-    border-radius: 10px;
   }
 
   > .red-dot {

@@ -108,11 +108,7 @@
           请避免使用与其他网站相同或易于被他人猜测到的密码
         </div>
         <div
-          :class="[
-            $style['submit'],
-            $style[themeTPL],
-            { [$style['active']]: submitActive }
-          ]"
+          :class="[$style['submit'], { [$style['active']]: submitActive }]"
           @click="checkField(true)"
         >
           {{ $text("S_SUBMIT", "提交") }}
@@ -502,7 +498,7 @@ export default {
 @import "~@/css/variable.scss";
 .reset-container {
   min-height: 100%;
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .reset-content {
@@ -516,7 +512,7 @@ input {
   border: none;
   outline: none;
   border-radius: 0;
-  color: $main_text_color3;
+  color: var(--mcenter_slider_text_active_color);
 
   &::placeholder {
     color: #cbced8;
@@ -529,7 +525,7 @@ input {
   position: relative;
 
   .title {
-    color: $main_text_color3;
+    color: var(--mcenter_slider_text_active_color);
     margin: 17px 0 6px;
   }
 
@@ -542,7 +538,7 @@ input {
     }
   }
 
-  border-bottom: solid 1px $main_background_white1;
+  border-bottom: solid 1px #f8f8f8;
 }
 
 .submit {
@@ -554,54 +550,20 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
+  border-radius: 23px;
+  background: var(--main_button_color2);
+  color: var(--main_button_text_color2);
 
-  &.porn1 {
-    background: -webkit-linear-gradient(right, #e9dacb, #eee5db);
-    background: -o-linear-gradient(left, #e9dacb, #eee5db);
-    background: -moz-linear-gradient(left, #e9dacb, #eee5db);
-    background: linear-gradient(to left, #e9dacb, #eee5db);
-    color: #f3ede7;
-
-    &.active {
-      background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-      background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-      color: white;
-    }
-  }
-
-  &.sg1 {
-    background: -webkit-linear-gradient(right, #fed3cb, #ffc5ce);
-    background: -o-linear-gradient(left, #fed3cb, #ffc5ce);
-    background: -moz-linear-gradient(left, #fed3cb, #ffc5ce);
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
-    color: #f3ede7;
-
-    &.active {
-      background: -webkit-linear-gradient(right, #fe593c, #e61938);
-      background: -o-linear-gradient(left, #fe593c, #e61938);
-      background: -moz-linear-gradient(left, #fe593c, #e61938);
-      background: linear-gradient(to left, #fe593c, #e61938);
-      color: white;
-    }
-  }
-
-  &.ey1 {
-    background: #fdcccc;
-    color: #f3ede7;
-
-    &.active {
-      background: #e42a30;
-      color: white;
-    }
+  &.active {
+    background: var(--main_button_color1);
+    color: var(--main_button_text_color1);
   }
 }
 
 .err-msg {
-  background: $main_white_color1;
+  background: #fefffe;
   padding: 0 14px;
-  color: $main_error_color1;
+  color: #db6372;
   height: 33px;
   line-height: 40px;
 }

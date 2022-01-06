@@ -2,7 +2,7 @@
   <div>
     <template v-if="!$route.params.id">
       <template v-if="isReceive">
-        <div v-if="feedbackList.length === 0" :class="$style['no-feedback']">
+        <div v-if="feedbackList.length === 0" :class="[$style['no-feedback']]">
           <img
             :src="`/static/image/${theme}/mcenter/feedback/no_feedback.png`"
           />

@@ -125,7 +125,8 @@ export default {
       src: "",
       showBack: true,
       contentTitle: "",
-      exitCheck: false
+      exitCheck: false,
+      justForBack: false
     };
   },
   components: {
@@ -146,6 +147,9 @@ export default {
   },
   mounted() {
     this.initIframe();
+    if (this.$route.params.page === "history") {
+      document.title = "搓合查询";
+    }
   },
   watch: {
     "$route.params.page"() {
@@ -183,12 +187,14 @@ export default {
           return "/mobile";
         case "PROMOTION":
           return "/mobile/promotion";
-        case "SWAG":
-          return "/mobile";
         case "TCENTERLOBBY":
           return "/mobile/mcenter/tcenterLobby";
         case "VIPINFO":
           return "/mobile/mcenter/accountVIP";
+        case "EPOINT":
+          return `/mobile/mcenter/bankCard?redirect=epoint&type=wallet&wallet=epoint`;
+        case "EPOINTFROMDEPOSIT":
+          return `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`;
         default:
           return "/mobile";
       }
@@ -228,16 +234,6 @@ export default {
           ""
       };
 
-      // SWAG 固定
-      switch (origin) {
-        case "SWAG":
-          baseConfig.hasHeader = true;
-          baseConfig.hasFooter = false;
-          baseConfig.title = "SWAG";
-          this.isFullScreen = true;
-          break;
-      }
-
       return {
         ...baseConfig,
         onClick: () => {
@@ -257,12 +253,18 @@ export default {
             return;
           }
           if (
-            this.$route.params.page.toUpperCase() === "GIFT" &&
+            (this.$route.params.page.toUpperCase() === "GIFT" ||
+              this.$route.params.page.toUpperCase() === "HISTORY" ||
+              this.$route.params.page.toUpperCase() === "DEPOSIT" ||
+              this.$route.params.page.toUpperCase() === "BCWALLET" ||
+              this.$route.params.page.toUpperCase() === "GAME" ||
+              this.justForBack) &&
             !iframeThirdOrigin
           ) {
             window.history.back();
             return;
           }
+
           this.$router.replace(this.originUrl);
           return;
         }
@@ -293,10 +295,9 @@ export default {
         this.src = localStorage.getItem("iframe-third-url");
         return;
       }
-
       switch (params.page.toUpperCase()) {
+        case "THIRD":
         case "THIRDPARTY":
-        case "SWAG":
           if (localStorage.getItem("iframe-third-url")) {
             const vendor = query.vendor;
             if (vendor === "SL") {
@@ -368,43 +369,9 @@ export default {
               this.src = res.data;
             }
           });
-          // SWAG
-          // this.src = 'https://feature-yabo.app.swag.live/';
+
           break;
 
-        case "THIRD":
-          let type = this.$route.params.type;
-
-          switch (type) {
-            case "fengniao":
-              if (query.alias) {
-                this.getExternalUrl(type);
-                return;
-              }
-
-            default:
-              axios({
-                method: "get",
-                url: "/api/v1/c/link/customize",
-                params: {
-                  code: "fengniao",
-                  client_uri: localStorage.getItem("iframe-third-url") || ""
-                }
-              })
-                .then(res => {
-                  this.isLoading = false;
-                  if (res && res.data && res.data.ret && res.data.ret.uri) {
-                    this.src = res.data.ret.uri;
-                  }
-                })
-                .catch(error => {
-                  this.isLoading = false;
-                  if (error && error.data && error.data.msg) {
-                    this.actionSetGlobalMessage({ msg: error.data.msg });
-                  }
-                });
-              return;
-          }
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
@@ -492,6 +459,11 @@ export default {
               };
 
               let getCustomizeLink = () => {
+                if (!uri) {
+                  this.src = "";
+                  return;
+                }
+
                 return goLangApiRequest({
                   method: "post",
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
@@ -609,20 +581,6 @@ export default {
     },
     onListener(e) {
       console.log(e);
-      // //  需要監聽的白名單
-      // let whiteList = [window.location.origin,
-      //   'https://play.qybtv.xyz',
-      //   'https://play.pybtv.xyz',
-      //   'https://play.qybpb.xyz',
-      //   'https://play.pybpb.xyz',
-      //   'https://dglzsm.com',
-      //   'http://47.240.78.53',
-      //   'http://47.240.57.135',
-      //   'http://47.240.117.62',
-      //   'http://eyt.iplay.bet',
-      //   'http://eyd.666uxm.com',
-      //   'https://688lg410.666uxm.com/'
-      // ];
       if (e.data) {
         let data = e.data;
         // console.log(data);
@@ -668,12 +626,6 @@ export default {
               return;
             } else {
               this.$router.push("/mobile/login");
-
-              // if (this.themeTPL === "ey1") {
-              //   this.$router.replace("/mobile/login");
-              // } else {
-              //   this.$router.replace("/mobile/joinmember?prev=home");
-              // }
             }
 
             return;
@@ -693,20 +645,8 @@ export default {
               return;
             } else {
               this.$router.push("/mobile/login");
-
-              // if (this.themeTPL === "ey1") {
-              //   this.$router.replace("/mobile/login");
-              // } else {
-              //   this.$router.replace("/mobile/joinmember?prev=home");
-              // }
             }
 
-            return;
-
-          case "EVENT_THIRDPARTY_CURRENCY_NOT_ENOUGH":
-          case "EVENT_THIRDPARTY_DEPOSIT":
-            // localStorage.setItem("iframe-third-url-swag", "https://yabo.care/");
-            this.$router.push("/mobile/mcenter/swag?tab=0&prev=back");
             return;
 
           case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
@@ -714,12 +654,6 @@ export default {
               this.$router.push("/mobile/mcenter/deposit?prev=back");
             } else {
               this.$router.replace("/mobile/login");
-
-              // if (this.themeTPL === "ey1") {
-              //   this.$router.replace("/mobile/login");
-              // } else {
-              //   this.$router.replace("/mobile/joinmember?prev=home");
-              // }
             }
 
             return;
@@ -1070,7 +1004,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
   text-align: center;
   color: #a6a9b2;
@@ -1097,11 +1031,11 @@ export default {
     width: 50%;
     padding: 10px 0;
     &.close {
-      color: #414655;
+      color: var(--popup_tip_close_color);
       border-right: 1px solid #f7f8fb;
     }
     &.confirm {
-      color: #bf8646;
+      color: var(--popup_tip_ok_color);
     }
   }
 }

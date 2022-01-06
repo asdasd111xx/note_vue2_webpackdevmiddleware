@@ -48,7 +48,7 @@
     height: 48px;
     line-height: 48px;
     border-radius: 5px 5px 0 0;
-    background-color: #be9e7f;
+    background-color: var(--popup_text_color1);
     // background-color: #00347d;
     color: #fff;
     font-size: 16px;
@@ -63,8 +63,11 @@
     border-top: 1px solid #f8f8f7;
 
     .path-back {
-      color: #d1b79c;
       border-left: 1px solid #f8f8f7;
+      color: var(--popup_text_color1);
+    }
+    .path-close {
+      color: var(--popup_text_color3);
     }
 
     .path-back,
@@ -82,7 +85,7 @@
 
     .path-only-close {
       width: 100%;
-      color: #d1b79c;
+      color: var(--popup_text_color1);
     }
   }
 
@@ -127,7 +130,7 @@
     .button-entry-history {
       display: inline-block;
       width: 45%;
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       // background: #00347d;
       color: #fff;
       border-radius: 4px;
@@ -138,7 +141,7 @@
       display: inline-block;
       width: 45%;
       background: #faf5f0;
-      color: #be9e7f;
+      color: var(--popup_text_color3);
       // color: #fff;
       border-radius: 4px;
       margin: 0 3px;

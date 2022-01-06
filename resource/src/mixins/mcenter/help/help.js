@@ -15,15 +15,16 @@ export default {
       category_list: []
     };
   },
-  mounted() {
-    const query = this.$route.query;
-    if (query.key) {
-      this.$nextTick(() => {
-        this.handleToggleContent(query.key);
-      });
-    }
-  },
+  mounted() {},
   watch: {
+    data() {
+      this.$nextTick(() => {
+        const query = this.$route.query;
+        if (query.key) {
+          this.handleToggleContent(query.key);
+        }
+      });
+    },
     source(val) {
       // 補 isOpen 參數
       if (this.isCategoryMode) {

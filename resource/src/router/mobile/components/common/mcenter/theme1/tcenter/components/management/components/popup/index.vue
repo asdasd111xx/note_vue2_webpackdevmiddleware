@@ -13,10 +13,10 @@
     </template>
     <template v-else>
       <share v-if="themeTPL === 'porn1'" :is-show-share.sync="isShowShare" />
-      <ey1-share
+      <!-- <ey1-share
         v-else-if="themeTPL === 'ey1'"
         :is-show-share.sync="isShowShare"
-      />
+      /> -->
       <sg1-share
         v-else-if="themeTPL === 'sg1'"
         :is-show-share.sync="isShowShare"
@@ -30,7 +30,7 @@ import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import html2canvas from "html2canvas";
 import share from "@/router/mobile/components/tpl/porn1/components/mcenter/components/home/components/share";
-import ey1Share from "@/router/mobile/components/tpl/ey1/components/mcenter/components/home/components/share";
+// import ey1Share from "@/router/mobile/components/tpl/ey1/components/mcenter/components/home/components/share";
 import sg1Share from "@/router/mobile/components/tpl/sg1/components/mcenter/components/home/components/share";
 
 /**
@@ -42,18 +42,17 @@ export default {
     Swiper,
     SwiperSlide,
     share,
-    ey1Share,
-    sg1Share,
+    sg1Share
   },
   props: {
     type: {
       type: String,
-      required: true,
+      required: true
     },
     link: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -66,7 +65,7 @@ export default {
         navigation: {
           nextEl: `.${this.$style["btn-next"]}`,
           prevEl: `.${this.$style["btn-prev"]}`,
-          disabledClass: `${this.$style["navi-disabled"]}`,
+          disabledClass: `${this.$style["navi-disabled"]}`
         },
         on: {
           init: () => {
@@ -82,23 +81,23 @@ export default {
             ) {
               this.htmlToCanvas(this.swiperIndex);
             }
-          },
-        },
+          }
+        }
       },
       qrCodeEdition: {
         qrcode_a: "qrcode-img-a",
-        qrcode_b: "qrcode-img-b",
+        qrcode_b: "qrcode-img-b"
       },
       isCombineFinish: [],
       isMounted: false,
-      isSwiperInit: false,
+      isSwiperInit: false
     };
   },
   computed: {
     ...mapGetters({
       curLang: "getCurLang",
       isPwa: "getIsPwa",
-      siteConfig: "getSiteConfig",
+      siteConfig: "getSiteConfig"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -118,8 +117,8 @@ export default {
         if (!value) {
           this.$emit("close");
         }
-      },
-    },
+      }
+    }
   },
   mounted() {
     this.isMounted = true;
@@ -145,17 +144,17 @@ export default {
         const options = {
           useCORS: true,
           windowWidth: document.body.scrollWidth,
-          windowHeight: document.body.scrollHeight,
+          windowHeight: document.body.scrollHeight
         };
-        html2canvas(el, options).then((canvas) => {
+        html2canvas(el, options).then(canvas => {
           this.$set(this.canvasLink, index, canvas.toDataURL());
         });
       });
     },
     openImg(index) {
       window.open(this.canvasLink[index]);
-    },
-  },
+    }
+  }
 };
 </script>
 

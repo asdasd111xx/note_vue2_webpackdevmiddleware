@@ -76,7 +76,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .title {
@@ -89,7 +89,7 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: linear-gradient(to top, #fe593c, #e61938);
+    background: var(--deco_color);
     border-radius: 1px;
     margin-left: 10px;
     margin-right: 10px;
@@ -98,7 +98,7 @@ export default {
 .content {
   padding: 5px;
   .cell {
-    background-color: $main_white_color1;
+    background-color: #fefffe;
     display: flex;
     align-items: center;
     padding: 0 12px;
@@ -123,13 +123,13 @@ export default {
     }
 
     > .copy-btn {
-      color: #d3b498;
+      color: var(--help_contact_copy);
       width: 120px;
       text-align: center;
       > div {
         border-radius: 5px;
-        border: 1px solid #d3b498;
-        color: #d3b498;
+        border: 1px solid var(--help_contact_copy);
+        color: var(--help_contact_copy);
         padding: 2.5px 5px;
       }
     }
@@ -143,12 +143,12 @@ export default {
   text-align: center;
 
   > div {
-    color: white;
+    color: var(--mcenter_button_text_color1);
     height: 45px;
     border-radius: 5px;
     font-size: 16px;
     line-height: 45px;
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: var(--mcenter_button_color1);
   }
 }
 </style>

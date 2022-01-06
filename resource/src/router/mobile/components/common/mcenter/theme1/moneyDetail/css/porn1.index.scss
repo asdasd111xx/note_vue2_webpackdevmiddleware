@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .top-link {
   display: block;
   padding: 8px 9px;
@@ -76,19 +77,19 @@
   height: 35px;
   line-height: 33px;
   margin: 3px 1%;
-  border: 1px solid #a6a9b2;
+  border: 1px solid var(--mcenter_dropdown_border_color);
   border-radius: 5px;
-  background-color: #fff;
-  color: #a6a9b2;
+  background: var(--mcenter_dropdown_background_color);
+  color: var(--mcenter_dropdown_text_color);
   font-size: 12px;
   text-align: center;
 
   &.active {
     line-height: 35px;
-    border: none;
+    border: 1px solid var(--mcenter_dropdown_bordert_active_color);
     border-radius: 3px;
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-    color: #fff;
+    background: var(--mcenter_dropdown_background_active_color);
+    color: var(--mcenter_dropdown_text_active_color);
   }
 }
 
@@ -139,17 +140,15 @@
   font-size: 15px;
   text-align: center;
 }
-
-.cancel {
-  composes: button;
-  background: #faf5f0;
-  color: #b1987f;
-}
-
 .confirm {
   composes: button;
-  background: linear-gradient(90deg, #dccab8, #d2b496);
-  color: #fff;
+  color: var(--mcenter_dropdown_ok_text_color);
+  background: var(--mcenter_dropdown_ok_background_color);
+}
+.cancel {
+  composes: button;
+  background: var(--mcenter_dropdown_cancel_background_color);
+  color: var(--mcenter_dropdown_cancel_text_color);
 }
 
 .date-tip {

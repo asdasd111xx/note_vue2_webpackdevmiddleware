@@ -79,23 +79,25 @@ export default {
 
     pornRequest({
       url: `/video/artist`
-    }).then(response => {
-      if (response.status !== 200) {
-        return;
-      }
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          return;
+        }
 
-      this.hotArtist = [...response.result.hotArtist];
-      this.allArtist = [...response.result.allArtist];
-    }).then(() => {
-      let wrap = document.getElementsByClassName(
-        this.$style["discover-artist-wrap"]
-      );
-      const container = document.getElementsByClassName(
-        this.$style["artist-container"]
-      );
-      const target = container[container.length - 1];
-      this.dynamicPB = wrap[0].offsetHeight - target.offsetHeight
-    });
+        this.hotArtist = [...response.result.hotArtist];
+        this.allArtist = [...response.result.allArtist];
+      })
+      .then(() => {
+        let wrap = document.getElementsByClassName(
+          this.$style["discover-artist-wrap"]
+        );
+        const container = document.getElementsByClassName(
+          this.$style["artist-container"]
+        );
+        const target = container[container.length - 1];
+        this.dynamicPB = wrap[0].offsetHeight - target.offsetHeight;
+      });
   },
   beforeDestroy() {
     $(window).off("scroll", this.onScroll);
@@ -163,11 +165,11 @@ export default {
 }
 
 .hot {
-  color: $main_discover_color1;
+  color: #bf8646;
 }
 
 .all {
-  color: $main_text_color4;
+  color: var(--slider_text_active_color);
 }
 
 .artist-wrap {
@@ -194,7 +196,7 @@ export default {
   height: 15px;
   line-height: 15px;
   margin-top: 8px;
-  color: $main_text_color1;
+  color: #9ca3bf;
   font-size: 11px;
   text-align: center;
   text-overflow: ellipsis;
@@ -214,12 +216,12 @@ export default {
     height: 15px;
     line-height: 16px;
     border-radius: 50%;
-    color: $main_discover_color1;
+    color: #bf8646;
     font-size: 9px;
     text-align: center;
 
     &.active {
-      background-color: $main_discover_color1;
+      background-color: #bf8646;
       color: #fefffe;
     }
   }

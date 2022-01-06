@@ -23,7 +23,6 @@
 }
 
 @media (orientation: landscape) {
-
   .wiithdraw-account-header {
     max-width: $mobile_max_landscape_width !important;
   }
@@ -37,7 +36,7 @@
   align-items: center;
   justify-content: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
   }
@@ -121,7 +120,7 @@
 
 .btn-send {
   margin: 3px 0;
-  background-color: #E9DACC;
+  background-color: var(--mcenter_send_keyring_disabled);
   border-radius: 3px;
   color: white;
   line-height: 30px;
@@ -135,7 +134,7 @@
   &.active {
     pointer-events: auto;
     color: #ffffff;
-    background-color: #D1B79C;
+    background-color: var(--mcenter_send_keyring);
   }
 }
 
@@ -151,15 +150,15 @@
   margin-top: 20px;
   position: relative;
 
-  >div {
-    background-color: #E9DACC;
+  > div {
+    background: var(--mcenter_button_color2);
   }
 
   &.active {
-    >div {
+    > div {
       pointer-events: auto;
       color: #ffffff;
-      background-color: #D1B79C;
+      background: var(--mcenter_button_color1);
     }
   }
 }

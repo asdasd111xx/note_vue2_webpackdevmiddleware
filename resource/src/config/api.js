@@ -344,6 +344,9 @@ export const API_MCENTER_DEPOSIT_CHANNEL =
 // 會員中心 - 站外錢包入款錢包地址
 export const API_MCENTER_DEPOSIT_OUTER_WALLET =
   "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/vendor/crypto/outer/user_address/list";
+// 會員中心 - 取得使用者銀行卡
+export const API_MCENTER_DEPOSIT_BANK =
+  "/api/v1/c/ext/inpay?api_uri=api/trade/v2/c/vendor/user_bank";
 // 會員中心 - 存款取得8日內紀錄
 export const API_MCENTER_DEPOSIT_RECORD =
   "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/list";
@@ -374,7 +377,7 @@ export const API_WITHDRAW_WRITE_2 = "/api/v1/c/withdraw/inpay";
 
 // 會員中心 - 取款 - 取得CGPAY綁定資訊
 export const API_WITHDRAW_CGPAY_BINDING =
-  "/api/v1/c/ext/inpay?api_uri=/api/trade/v1/c/withdraw/bind_wallet";
+  "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/withdraw/bind_wallet";
 
 // 會員中心、代理中心取款
 export const API_WITHDRAW = "/api/v1/c/link/withdraw";

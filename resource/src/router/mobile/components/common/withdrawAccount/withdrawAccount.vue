@@ -390,7 +390,7 @@ export default {
 
         this.getDomainConfig().then(() => {
           // 億元：如果沒有開啟「投注/轉帳前需設定提現資料」
-          if (!this.withdraw_info_before_bet) {
+          if (this.themeTPL === "ey1" && !this.withdraw_info_before_bet) {
             // 改強制跳銀行卡
             // http://fb.vir888.com/default.asp?494542#4261984
             if (!this.checkBankSwitch || this.ub_before_bet_mode !== 0) {
@@ -626,9 +626,11 @@ export default {
           this.isSendKeyring = false;
 
           if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestMsg(error.response).then(res => {
-              this.tipMsg = res;
-            });
+            this.actionGetToManyRequestMsg(error.response.data.message).then(
+              res => {
+                this.tipMsg = res;
+              }
+            );
             return;
           }
         });

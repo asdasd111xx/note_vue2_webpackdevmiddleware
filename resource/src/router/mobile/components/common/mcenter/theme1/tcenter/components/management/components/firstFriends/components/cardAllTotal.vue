@@ -31,7 +31,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
-  color: $main_text_color3;
+  color: #a6a9b2;
   border-bottom: 2px solid #eee;
 }
 </style>

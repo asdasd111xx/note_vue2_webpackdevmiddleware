@@ -143,7 +143,6 @@ export default {
       import(
         /* webpackChunkName: 'betRecordAobo1' */ "../../tpl/porn1/components/mcenter/components/betRecord"
       ),
-    // bonusAccountAobo1: () => import(/* webpackChunkName: 'bonusAccountAobo1' */'../../tpl/porn1/components/mcenter/components/bonusAccount'),
     moneyDetailAobo1: () =>
       import(
         /* webpackChunkName: 'moneyDetailAobo1' */ "../../tpl/porn1/components/mcenter/components/moneyDetail"

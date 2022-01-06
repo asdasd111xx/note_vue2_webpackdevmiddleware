@@ -256,6 +256,12 @@
   - git tag -a "sgQA-v1.3.57" -m "sgQA-v1.3.57"
   - git push origin master --tags
 
+
+- 佈署到 QA2  站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA2- 】（大小寫需一致）
+  - 網址為： eyqa1-io.77rd7.com（12/1供Demo用)
+  - git tag -a "sgQA2-v1.3.57" -m "sgQA2-v1.3.57"
+  - git push origin master --tags
+
 - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 sgBeta- 】（大小寫需一致）
   - git tag -a "sgBeta-v1.3.57" -m "sgBeta-v1.3.57"
   - git push origin master --tags

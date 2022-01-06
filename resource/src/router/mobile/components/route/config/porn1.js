@@ -143,7 +143,6 @@ export default {
       import(
         /* webpackChunkName: 'betRecordPorn1' */ "../../tpl/porn1/components/mcenter/components/betRecord"
       ),
-    // bonusAccountPorn1: () => import(/* webpackChunkName: 'bonusAccountPorn1' */'../../tpl/porn1/components/mcenter/components/bonusAccount'),
     moneyDetailPorn1: () =>
       import(
         /* webpackChunkName: 'moneyDetailPorn1' */ "../../tpl/porn1/components/mcenter/components/moneyDetail"
@@ -276,10 +275,6 @@ export default {
       import(
         /* webpackChunkName: 'rewardRulesPorn1' */ "../../tpl/porn1/components/mcenter/components/rewardRules"
       ),
-    // swagPorn1: () =>
-    //   import(
-    //     /* webpackChunkName: 'swagPorn1' */ "../../tpl/porn1/components/mcenter/components/swag"
-    //   ),
     tcenterLobbyPorn1: () =>
       import(
         /* webpackChunkName: 'tcenterLobbyPorn1' */ "../../tpl/porn1/components/mcenter/components/tcenter/tcenterLobby"

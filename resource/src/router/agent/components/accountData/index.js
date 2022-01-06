@@ -1,8 +1,8 @@
 export default {
-    path: 'accountData',
-    component: (resolve) => {
-        require.ensure(['./components'], () => {
-            resolve(require('./components'));
-        });
-    }
+  path: "accountData",
+  component: resolve => {
+    require.ensure(["./components"], () => {
+      resolve(require("./components"));
+    });
+  }
 };

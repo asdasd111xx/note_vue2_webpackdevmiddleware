@@ -161,11 +161,27 @@ export default target => {
           return;
         }
         if (getCookie("platform") === "h") {
-          store.dispatch("actionGetLayeredURL").then(res => {
-            if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-              router.push(`/mobile/joinmember`);
+          // store.dispatch("actionGetActingURL").then(res => {
+          //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {
+          //     this.$router.push(`/mobile/joinmember`);
+          //   } else {
+          //     store.dispatch("actionGetLayeredURL").then(res => {
+          //       if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+          //         router.push(`/mobile/joinmember`);
+          //       } else {
+          //         window.location.replace(
+          //           `https://${res[0]}/mobile/joinmember`
+          //         );
+          //       }
+          //     });
+          //   }
+          // });
+          store.dispatch("actionGetRegisterURL").then(res => {
+            console.log(res);
+            if (res.redirect_url) {
+              window.location.replace(res.redirect_url + "/mobile/joinmember");
             } else {
-              window.location.replace(`https://${res[0]}/mobile/joinmember`);
+              this.$router.push(`/mobile/joinmember`);
             }
           });
         } else {
@@ -369,7 +385,12 @@ export default target => {
     }
   }
 
-  if (!store.state.loginStatus) {
+  if (
+    !store.state.loginStatus &&
+    vendor != "sigua_ly" &&
+    vendor != "sigua2_ly" &&
+    vendor != "sigua3_ly"
+  ) {
     router.push("/mobile/login");
     return;
   }
@@ -399,17 +420,21 @@ export default target => {
       default:
         break;
     }
+    if (
+      vendor != "sigua_ly" &&
+      vendor != "sigua2_ly" &&
+      vendor != "sigua3_ly"
+    ) {
+      let notVipGame = JSON.parse(
+        localStorage.getItem("needFilterGameData")
+      ).find(filterData => {
+        return filterData.gameCode === code;
+      });
 
-    let notVipGame = JSON.parse(
-      localStorage.getItem("needFilterGameData")
-    ).find(filterData => {
-      return filterData.gameCode === code;
-    });
-    // console.log(notVipGame);
-
-    if (linkTo === "lg_yb_card" && notVipGame) {
-      store.dispatch("actionSetGlobalMessage", { msg: "VIP等级不足" });
-      return;
+      if (linkTo === "lg_yb_card" && notVipGame) {
+        store.dispatch("actionSetGlobalMessage", { msg: "VIP等级不足" });
+        return;
+      }
     }
 
     const gameData = store.state.gameData["_allGame"];

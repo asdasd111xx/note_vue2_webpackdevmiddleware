@@ -15,7 +15,7 @@
     width: 50%;
     height: 43px;
     line-height: 43px;
-    color: #a6a9b2;
+    color: var(--mcenter_slider_text_color);
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -27,8 +27,8 @@
     }
 
     &.active {
-      color: #5e626d;
-      border-bottom: 2px solid #be9e7f;
+      color: var(--mcenter_slider_text_active_color);
+      border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
     }
 
     &.self {
@@ -68,11 +68,11 @@
       color: #222;
 
       &.week {
-        color: #bf8646;
+        color: var(--bankrebate_text_active_color);
       }
 
       &.is-current {
-        color: #bf8646;
+        color: var(--bankrebate_text_active_color);
       }
     }
 
@@ -139,21 +139,21 @@
         outline: none;
       }
 
-      a {
+      .receive-btn {
         display: inline-block;
         width: 50px;
         height: 20px;
         line-height: 20px;
         color: #fff;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: var(--bankrebate_receive_button1);
         border: 0;
         border-radius: 10px;
         outline: none;
         font-weight: 400;
 
         &.disable {
-          color: #f3ede7;
-          background: linear-gradient(#e9dacb, #eee5db);
+          color: var(--bankrebate_receive_text_color);
+          background: var(--bankrebate_receive_button2);
         }
       }
     }
@@ -203,14 +203,15 @@
     min-width: 105px;
     border-radius: 17px;
     height: 33px;
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: var(--mcenter_button_color1);
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #a6a9b2;
 
     &.disable {
-      background: linear-gradient(#e9dacb, #eee5db);
+      background: var(--bankrebate_receive_button2);
       height: 45px;
       border-radius: 3px;
     }
@@ -219,7 +220,7 @@
       color: #fff;
 
       &.disable {
-        color: #f3ede7;
+        color: var(--slider_text_color);
       }
 
       .calculate-button-title {
@@ -253,12 +254,12 @@
   margin-top: 9px;
   text-align: center;
   border-radius: 17px;
-  color: #fff;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_button_color1);
 
   &.is-disabled {
-    background: linear-gradient(to left, #e9dacb, #eee5db);
-    color: #fff;
+    background: var(--mcenter_button_color2);
+    color: var(--mcenter_button_text_color2);
     pointer-events: none;
   }
 }
@@ -338,6 +339,6 @@
     text-align: center;
     padding: 15px 0;
     border-top: 2px solid #f9f9f8;
-    color: #be9e7f;
+    color: var(--popup_text_color1);
   }
 }

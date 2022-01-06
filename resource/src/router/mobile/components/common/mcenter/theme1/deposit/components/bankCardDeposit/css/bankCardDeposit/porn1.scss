@@ -1,8 +1,12 @@
 @import "~@/css/variable.scss";
 
 .swiper-wrap {
-  margin-top: 31px;
+  // margin-top: 31px;
   background-color: #fff;
+
+  ::-webkit-scrollbar {
+    width: initial;
+  }
 }
 
 .swiper-item {
@@ -11,7 +15,7 @@
   height: 38px;
   line-height: 38px;
   text-align: center;
-  color: #a6a9b2;
+  color: var(--mcenter_slider_text_color);
   white-space: nowrap;
 
   span {
@@ -22,10 +26,10 @@
   }
 
   &.is-current {
-    color: #5e626d;
+    color: #414655;
 
     span {
-      border-bottom: 2px solid #be9e7f;
+      border-bottom: 2px solid var(--mcenter_slider_underline_active_color);
     }
   }
 }
@@ -33,12 +37,46 @@
 .bank-card-wrap {
   position: relative;
   background: #f8f8f7;
+
+  &.no-swiper {
+    padding-top: 40px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: unset;
+    border-radius: unset;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: unset;
+    -webkit-box-shadow: unset;
+  }
 }
 
 .feature-wrap {
   padding: 10px;
   margin-bottom: 5px;
   background-color: #fff;
+}
+
+.bc-coint {
+  display: flex;
+  justify-content: space-between;
+
+  .coin-money {
+    margin-left: 30px;
+    width: 60%;
+  }
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
 }
 
 .feature-title {
@@ -74,7 +112,7 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: #be9e7f;
+  color: var(--addcard_popup_check_color);
   transform: translateY(-50%);
 }
 
@@ -110,9 +148,11 @@
   }
 
   &.is-current {
-    border: 1px solid #d1b79c;
-    color: #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 10px, hsla(0, 0%, 100%, 0) 0);
+    border: 1px solid var(--wallet_border_color);
+    color: var(--wallet_border_text_color);
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 10px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 
   .pay-mode-tag {
@@ -173,7 +213,7 @@
   height: 40px;
   line-height: 40px;
   font-size: 12px;
-  margin-right: 6px;
+  margin: 5px 6px 5px 0;
   color: #000;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -193,6 +233,14 @@
     right: 1px;
     bottom: 3px;
   }
+
+  .pay-mode-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 25px;
+  }
 }
 
 .no-bind-wallet {
@@ -200,7 +248,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -235,9 +283,11 @@
 
   &.is-current {
     background-color: #fff;
-    color: #d1b79c;
-    border: 1px solid #d1b79c;
-    background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+    color: var(--wallet_border_text_color);
+    border: 1px solid var(--wallet_border_color);
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 12px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -257,13 +307,11 @@
   white-space: nowrap;
   border-radius: 3px;
   // cursor: pointer;
-  color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  color: var(--mcenter_button_text_color1);
+  background: var(--mcenter_button_color1);
 
   &.disabled {
-    opacity: 0.5;
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }
@@ -331,15 +379,11 @@
   align-items: center;
   width: 100%;
   height: 52px;
-  color: $main_text_color2;
+  color: var(--slider_text_color);
 
   .time {
-    color: #be9e7f;
+    color: var(--countdown_time_text_color);
     margin: 0 5px 0 5px;
-
-    &.ey {
-      color: #e42a30;
-    }
   }
 
   .content {
@@ -357,18 +401,8 @@
       color: #414655;
     }
 
-    .yb {
-      color: #414655;
-      font-weight: 500;
-    }
-
-    .ey {
-      color: #e42a30;
-      font-weight: 500;
-    }
-
-    .sg {
-      color: #be9e7f;
+    .crypto-money {
+      color: var(--deposit_crypto_block_money_color);
       font-weight: 500;
     }
   }
@@ -380,8 +414,8 @@
   .conversion-btn {
     display: inline-block;
     margin-left: 10px;
-    border: 1px solid #be9e7f;
-    color: #be9e7f;
+    border: 1px solid #bd9d7d;
+    color: #bd9d7d;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -484,6 +518,18 @@
   font-size: 14px;
 }
 
+.select-epoint-bank-item {
+  height: 23px;
+  margin-left: 80px;
+  font-size: 14px;
+
+  img {
+    height: 19px;
+    right: 10px;
+    float: right;
+  }
+}
+
 .select-bank-icon {
   float: right;
   width: 15px;
@@ -533,7 +579,7 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: #be9e7f;
+    color: var(--addcard_popup_prev_text_color);
   }
 }
 
@@ -568,6 +614,61 @@
 .bank-feature-wrap {
   float: left;
   width: 100%;
+}
+
+.pay-mode-tip {
+  float: left;
+  width: 85%;
+  height: 20px;
+  margin-top: 10px;
+  color: #6aaaf5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.pay-mode-tip-show {
+  width: 100%;
+  float: left;
+  animation: fade-in 0.5s;
+}
+
+.pay-mode-tip-close {
+  float: left;
+  animation: fade-out 0.5s;
+}
+
+@keyframes fade-in {
+  0% {
+    margin-top: -35px;
+    opacity: 0;
+  }
+
+  100% {
+    margin-top: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    margin-top: 0px;
+    opacity: 1;
+  }
+
+  100% {
+    margin-top: -35px;
+    opacity: 0;
+  }
+}
+
+.pay-mode-tip-more {
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px;
+  color: #6aaaf5;
 }
 
 .feature-deposit-wrap {
@@ -686,15 +787,17 @@
   color: #cbced8;
 
   &.success {
-    color: #d1b79c;
+    color: var(--widthdraw_tip_text_color);
   }
 }
 
 .current-data {
   background-color: #fff;
-  color: #d1b79c;
-  border: 1px solid #d1b79c;
-  background: linear-gradient(-45deg, #d1b79c 12px, hsla(0, 0%, 100%, 0) 0);
+  color: var(--wallet_border_text_color);
+  border: 1px solid var(--wallet_border_color);
+  background: linear-gradient(-45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0);
 }
 
 .pop-message-mark {
@@ -743,7 +846,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #d1b79c;
+  color: var(--mcenter_main_color);
 }
 
 .money-tip-wrap {
@@ -772,6 +875,17 @@
 
   &.hide {
     display: none;
+  }
+}
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+
+  >img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
   }
 }
 
@@ -936,6 +1050,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1025,6 +1140,10 @@
   background: #fefffe;
   border-radius: 8px;
   transform: translate(-50%, -50%);
+
+  .close {
+    color: var(--addcard_popup_prev_text_color);
+  }
 }
 
 .entry-message-content {
@@ -1039,8 +1158,15 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
+  }
+
+  .wrap-line {
+    padding: 14px 14px;
+    color: #a6a9b2;
+    word-break: break-all;
+    white-space: pre-wrap;
   }
 }
 
@@ -1049,7 +1175,7 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: #d1b79c;
+  color: var(--popup_text_color1);
   margin: 0;
   padding: 0;
   height: 40px;
@@ -1060,19 +1186,11 @@
     flex: 1;
     border-right: 1px solid #f8f8f7;
   }
-
-  &.sg {
-    color: #bf8646;
-  }
-
-  &.ey {
-    color: #e42a30;
-  }
 }
 
 .top-promotion {
   background: #f8f8f7;
-  color: #be9e7f;
+  color: #bd9d7d;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1084,7 +1202,7 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: #d1b79c;
+  color: var(--widthdraw_tip_text_color);
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;
@@ -1138,4 +1256,28 @@
   padding-top: 5px;
   font-size: 12px;
   color: #db6372;
+
+  &.less {
+    margin-top: 5px;
+  }
+}
+
+.other-bank-input-text {
+  padding-top: 5px;
+  padding-bottom: 10px;
+
+  &.border {
+    border-top: 1px solid #eee;
+  }
+}
+
+.header-wrap {
+  position: fixed;
+  top: 43px;
+  z-index: 10;
+  width: 100%;
+}
+
+.deposit-edit-wrap {
+  margin-top: 35px;
 }

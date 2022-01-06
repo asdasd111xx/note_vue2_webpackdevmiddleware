@@ -10,7 +10,7 @@
 .total-block {
   display: flex;
   justify-content: space-between;
-  color: $main_text_color3;
+  color: #414655;
   font-size: 12px;
   height: 40px;
   line-height: 40px;
@@ -36,8 +36,8 @@
 }
 
 .card {
-  background: $main_white_color1;
-  color: $main_text_color3;
+  background: #fefffe;
+  color: var(--slider_text_color);
   border-radius: 8px;
   margin-bottom: 9px;
 
@@ -69,13 +69,13 @@
 
     .payout {
       &.is-negative {
-        color: $main_error_color1;
+        color: #db6372;
       }
 
       &::before {
         content: "派彩：";
         position: relative;
-        color: $main_text_color3;
+        color: var(--slider_text_color);
       }
     }
   }

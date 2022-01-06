@@ -37,6 +37,7 @@
             v-for="(item, index) in item.content"
             :class="$style['text-block']"
             v-html="item"
+            :key="index"
           />
           <div v-if="category_currentkind === 'live' && index === 5">
             <table :class="$style['table-border']">
@@ -94,7 +95,7 @@
       <div v-if="category_isShowPop" :class="$style['pop-wrap']">
         <div :class="$style['pop-mask']" @click="category_isShowPop = false" />
         <div :class="$style['pop-menu']">
-          <div :class="$style['pop-title']">
+          <div :class="[$style['pop-title'], $style[routerTPL]]">
             <span @click="category_isShowPop = false">{{
               $text("S_CANCEL", "取消")
             }}</span>
@@ -109,7 +110,7 @@
               {{ item }}
               <icon
                 v-if="category_currentIndex === index"
-                :class="$style['select-icon']"
+                :class="[$style['select-icon'], $style[routerTPL]]"
                 name="check"
               />
             </li>
@@ -127,7 +128,6 @@ import mixin from "@/mixins/mcenter/help/help";
 export default {
   mixins: [mixin],
   created() {
-    // this.source = info;
     this.isCategoryMode = true;
   },
   computed: {

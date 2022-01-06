@@ -47,11 +47,10 @@ import axios from "axios";
 import find from "lodash/find";
 import join from "lodash/join";
 import pornRequest from "@/api/pornRequest";
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       tags: [],
@@ -94,9 +93,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'actionSetGlobalMessage'
-    ]),
+    ...mapActions(["actionSetGlobalMessage"]),
     onClick(id) {
       this.active = id;
       $("#mobile-wrap").animate({ scrollTop: 0 });
@@ -108,7 +105,7 @@ export default {
       }
 
       if (this.selected.length == 5) {
-        this.actionSetGlobalMessage({ msg: '一次最多选5个标签' });
+        this.actionSetGlobalMessage({ msg: "一次最多选5个标签" });
         return;
       }
 
@@ -152,7 +149,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   height: 50px;
   position: fixed;
   top: 43px;
@@ -182,14 +179,14 @@ export default {
     background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
     background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
     background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-    background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+    background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   }
 }
 
 .list-wrap {
   margin-top: 64px;
   margin-bottom: 20px;
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
   padding: 0 14px;
 }
 
@@ -199,7 +196,7 @@ export default {
   height: 20px;
   line-height: 20px;
   margin-bottom: 10px;
-  color: $main_text_color4;
+  color: var(--slider_text_active_color);
   font-size: 14px;
 
   &::before {
@@ -210,7 +207,7 @@ export default {
   }
 
   &.active {
-    color: $main_text_color4;
+    color: var(--slider_text_active_color);
   }
 
   > span {
@@ -235,7 +232,7 @@ export default {
   bottom: 40px;
   height: 120px;
   padding: 5px 0;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   max-width: $mobile_max_width;
 
   > div:first-child {
@@ -264,7 +261,7 @@ export default {
   font-size: 12px;
   height: 16px;
   line-height: 16px;
-  color: $main_text_color2;
+  color: #ffffff;
 }
 
 .btn-confirm {
@@ -278,7 +275,7 @@ export default {
   background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
   background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
   background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   font-weight: 700;
   font-size: 18px;
   text-align: center;

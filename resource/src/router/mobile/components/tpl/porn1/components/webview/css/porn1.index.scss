@@ -62,7 +62,7 @@
     }
 
     .text {
-      color: #bf8646;
+      color: var(--webview_icon_text);
       font-size: 10px;
       margin-top: 2.5px;
     }
@@ -78,7 +78,7 @@
   .card {
     // width: 30%;
     flex: 1;
-    background: #fff;
+    background: var(--homepage_color);
     border-radius: 7px;
     box-shadow: 0 3px 7px 0px rgba(0, 0, 0, 0.05);
     text-align: center;
@@ -112,41 +112,49 @@
     }
 
     .text {
-      color: $main_text_color3;
+      color: #414655;
       padding: 10px 0;
       font-weight: 700;
     }
 
     .download {
       display: inline-block;
-      color: #be9e7f;
+      color: var(--service_webview_text_button);
       font-size: 12px;
       padding: 4px 12px;
       margin-bottom: 15px;
-      border: 1px solid #be9e7f;
+      border: 1px solid var(--service_webview_button);
       border-radius: 3px;
     }
   }
 }
 
-.info-card,
-.info-card2 {
+.btn-next {
+  position: absolute;
+  height: 100%;
+  top: calc(50% - 7px);
+  right: 14px;
+
+  > img {
+    height: 14px;
+    width: 14px;
+  }
+}
+
+@mixin info-card($color1, $color2, $backgroundImg, $smallTitleColor) {
   color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
+  background: linear-gradient(to left, $color1, $color2);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
   margin: 15px;
   height: 100px;
   border-radius: 10px;
   position: relative;
 
-  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-
   > div:first-child {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background-image: url("/static/image/common/service/bg_service01.png");
+    background-image: url($backgroundImg);
     background-size: auto 100%;
     background-position: top 0 right 0;
     height: 100%;
@@ -164,7 +172,7 @@
     }
 
     > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
+      color: $smallTitleColor;
     }
 
     > div > img {
@@ -174,28 +182,36 @@
   }
 }
 
-.info-card2 {
-  margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
-
-  > div:first-child {
-    background: url("/static/image/common/service/bg_service02.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    height: 100%;
-    background-repeat: no-repeat;
+.customer_service1 {
+  @include info-card(
+    #f6d2bd,
+    #e5997a,
+    "/static/image/common/service/bg_service01.png",
+    #f6d2bd
+  );
+  &.image-porn1 {
+    @include info-card(
+      #f6d2bd,
+      #e5997a,
+      "/static/image/porn1/webview/service_card.png",
+      #f6d2bd
+    );
   }
 }
 
-.btn-next {
-  position: absolute;
-  height: 100%;
-  top: calc(50% - 7px);
-  right: 14px;
-
-  > img {
-    height: 14px;
-    width: 14px;
+.customer_service2 {
+  @include info-card(
+    #b4cfef,
+    #8bb4e2,
+    "/static/image/common/service/bg_service02.png",
+    #cedff3
+  );
+  &.image-porn1 {
+    @include info-card(
+      #b4cfef,
+      #8bb4e2,
+      "/static/image/porn1/webview/service_card2.png",
+      #cedff3
+    );
   }
 }

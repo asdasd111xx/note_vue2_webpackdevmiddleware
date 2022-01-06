@@ -40,18 +40,17 @@
 
 .title-commission {
   position: absolute;
-  color: #bf8646;
-  border: 1px solid #bf8646;
+  color: #f5f8fd;
+  background: rgba(#fff, 0.5);
   border-bottom-left-radius: 20px;
   border-top-left-radius: 20px;
   border-right: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 3px 15px;
   right: 0px;
 }
 
 .main {
-  margin-top: 43px;
+  margin-top: 42px;
   background-image: url("/static/image/porn1/mcenter/tcenter/promote_bg.png");
   background-size: 100%;
   background-repeat: no-repeat;
@@ -68,12 +67,12 @@
     justify-content: space-between;
     margin-left: 40px;
     margin-right: 40px;
-    border-bottom: #5e626d dashed 1px;
+    border-bottom: #fff dashed 1px;
     padding-top: 15px;
     padding-bottom: 5px;
 
     .list-name {
-      color: #5e626d;
+      color: var(--tcenter_left_title_color);
       display: flex;
 
       .list-btn {
@@ -83,12 +82,12 @@
         border: 0 solid;
         border-radius: 20px;
         padding: 0 7px;
-        background-color: #636f93;
+        background-color: var(--tcenter_color);
       }
     }
 
     .list-value {
-      color: #414655;
+      color: var(--tcenter_right_title_color);
     }
   }
 }
@@ -111,8 +110,8 @@
     .regist-title-bar {
       width: 3px;
       height: 18px;
-      background: linear-gradient(to top, #dccab8, #d2b496);
-      border-radius: 1px;
+      background: var(--deco_color);
+      border-radius: 2px;
       margin-left: 5px;
       margin-right: 5px;
     }
@@ -167,17 +166,17 @@
       margin: 0 15px;
 
       .title-point {
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         border-radius: 5px;
         margin: 5px 5px 0 0;
 
         &.deposit {
-          background-color: #be9e7f;
+          background-color: var(--tcenter_progress_color1);
         }
 
         &.withdraw {
-          background-color: #636f93;
+          background-color: var(--tcenter_progress_color2);
         }
       }
 
@@ -196,20 +195,20 @@
 
     .background-bar {
       z-index: 0;
-      height: 14px;
+      height: 10px;
       width: 100%;
       border-radius: 7px;
-      background-color: #636f93;
+      background-color: #ededed;
 
       .person-bar {
         z-index: 1;
-        height: 14px;
+        height: 10px;
         width: 100px;
         border-radius: 7px;
-        background-color: #be9e7f;
+        background-color: var(--tcenter_progress_color1);
 
         &.isZero {
-          background-color: #cecece;
+          background-color: #ededed;
         }
       }
     }

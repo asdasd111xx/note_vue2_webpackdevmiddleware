@@ -53,7 +53,7 @@ export default {
     return {
       lang: {
         C_WS_DEPOSIT: "您的款项已入帐，请前往查看",
-        C_WS_WITHDRAW: "您的取款已完成，请前往查看",
+        C_WS_WITHDRAW: "您的取款已申请提交成功，会尽快为您处理，请耐心等候!",
         C_WS_REBATE: "您的返水已入帐，请前往查看",
         C_WS_ACTIVITY: "您有 1 笔优惠已入帐，请前往查看",
         C_WS_INBOX: "您有 1 封新的站内信，请前往查看",

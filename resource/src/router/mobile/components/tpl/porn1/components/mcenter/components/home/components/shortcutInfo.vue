@@ -190,7 +190,7 @@ export default {
 }
 
 .sub-text {
-  color: $main_text_color2;
+  color: var(--mcenter_slider_text_color);
 }
 
 .vip-promotion-wrap {

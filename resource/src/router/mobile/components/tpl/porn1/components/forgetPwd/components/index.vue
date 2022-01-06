@@ -54,7 +54,7 @@
           >
             <div :class="[$style['input-wrap'], 'clearfix']">
               <div :class="$style['form-title']">
-                {{ $t("S_USER_NAME") }}
+                {{ $t("S_ACCOUNT") }}
               </div>
               <input
                 v-model="username"
@@ -89,7 +89,7 @@
             <!-- eslint-enable vue/no-v-html -->
           </div>
           <div v-if="currentMethod === 'phone-step-1'" class="clearfix">
-            <div :class="$style['form-title']" @click="step2shortcut">
+            <div :class="$style['form-title']">
               获取验证码
             </div>
             <input
@@ -461,16 +461,15 @@ export default {
         } else {
           this.isSendKeyring = false;
 
-          if (res && Number(res.status) === 429) {
-            this.actionGetToManyRequestMsg(res).then(res => {
+          if (res && res.status === "506") {
+            this.actionGetToManyRequestMsg(res.msg).then(res => {
               this.errorMsg = res;
             });
-            return;
           }
 
           // 「请填写正确的用户名」(A-9340)
           if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
-            this.errorMsg = "请填写正确的用户名";
+            this.errorMsg = "请填写正确的帐号";
             return;
           }
 
@@ -555,16 +554,15 @@ export default {
         } else {
           this.isSendKeyring = false;
 
-          if (res && Number(res.status) === 429) {
-            this.actionGetToManyRequestMsg(res).then(res => {
+          if (res && res.status === "506") {
+            this.actionGetToManyRequestMsg(res.msg).then(res => {
               this.errorMsg = res;
             });
-            return;
           }
 
           // 「请填写正确的用户名」(A-9340)
           if (res && ["C20101", "C20114", "C20120"].includes(res.code)) {
-            this.errorMsg = "请填写正确的用户名";
+            this.errorMsg = "请填写正确的帐号";
             return;
           }
 
@@ -602,7 +600,7 @@ export default {
           this.allTip.keyring = "";
 
           if (res && res.status === 429) {
-            this.actionGetToManyRequestMsg(res).then(result => {
+            this.actionGetToManyRequestMsg(res.data.message).then(result => {
               this.errorMsg = result;
             });
             return;
@@ -651,7 +649,7 @@ export default {
         },
         fail: res => {
           if (res && res.status === 429) {
-            this.actionGetToManyRequestMsg(res).then(result => {
+            this.actionGetToManyRequestMsg(res.data.message).then(result => {
               this.errorMsg = result;
             });
             return;

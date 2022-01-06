@@ -1,28 +1,16 @@
 @import "./porn1.module.scss";
 
-.link {
-  color: #a2a2a2;
-
-  &.active {
-    color: #bf8646;
-  }
-}
-
 .submit {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: var(--mcenter_button_color1);
   color: #fff;
 }
 
 .all-data {
-
   .data-content-wrap {
-
     .data-content {
-
       .title {
-
         &::before {
-          background-color: #E61938;
+          background-color: #e61938;
         }
       }
     }

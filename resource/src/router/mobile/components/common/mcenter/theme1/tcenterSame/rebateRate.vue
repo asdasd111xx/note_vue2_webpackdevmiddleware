@@ -13,12 +13,18 @@
         v-for="(name, index) in gameRateResult"
         :key="index"
       >
-        <div :class="$style['serial-number-title']">
+        <div
+          :class="[
+            $style['serial-number-title'],
+            $style[siteConfig.ROUTER_TPL]
+          ]"
+        >
           {{ name.title }}
         </div>
         <div
           :class="[
             $style['serial-number-cell'],
+            $style[siteConfig.ROUTER_TPL],
             { [$style.active]: item.rate == 0 }
           ]"
           v-for="(item, index2) in name.item"

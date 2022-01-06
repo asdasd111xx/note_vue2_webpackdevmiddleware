@@ -271,16 +271,7 @@ export default {
                 });
                 return;
               } else {
-                switch (this.themeTPL) {
-                  case "porn1":
-                  case "sg1":
-                    this.actionSetGlobalMessage({ msg: "钱包刪除成功" });
-                    break;
-
-                  case "ey1":
-                    this.actionSetGlobalMessage({ msg: "刪除成功" });
-                    break;
-                }
+                this.actionSetGlobalMessage({ msg: "刪除成功" });
                 this.$emit("update:statusList", {
                   key: "showDetail",
                   value: false

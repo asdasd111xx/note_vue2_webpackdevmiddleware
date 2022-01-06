@@ -22,75 +22,75 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   computed: {
     ...mapGetters({
-      memInfo: 'getMemInfo'
+      memInfo: "getMemInfo"
     }),
     isAdult() {
-      if (localStorage.getItem('content_rating')) {
-        return localStorage.getItem('content_rating') === "1" ? true : false;
+      if (localStorage.getItem("content_rating")) {
+        return localStorage.getItem("content_rating") === "1" ? true : false;
       } else {
-        return this.memInfo.config.content_rating && this.memInfo.user.content_rating;
+        return (
+          this.memInfo.config.content_rating && this.memInfo.user.content_rating
+        );
       }
     },
     list() {
-      let list =
-        [
-          {
-            key: 'sponsor',
-            name: '联盟',
-            icon: 'sponsor'
-          },
-          {
-            key: 'rank',
-            name: this.$text('S_RANK', '排行'),
-            icon: 'rank',
-            isAdult: true
-          },
-          {
-            key: 'artist',
-            name: this.$text('S_ARTIST', '女优'),
-            icon: 'girl',
-            isAdult: true
+      let list = [
+        {
+          key: "sponsor",
+          name: "联盟",
+          icon: "sponsor"
+        },
+        {
+          key: "rank",
+          name: this.$text("S_RANK", "排行"),
+          icon: "rank",
+          isAdult: true
+        },
+        {
+          key: "artist",
+          name: this.$text("S_ARTIST", "女优"),
+          icon: "girl",
+          isAdult: true
+        },
+        {
+          key: "tag",
+          name: this.$text("S_TAG", "标签"),
+          icon: "tag",
+          isAdult: true
+        },
+        {
+          key: "agent",
+          name: this.$text("S_AGENT_GROUP_DOMESTIC", "国内代理群"),
+          icon: "potatochat"
+        },
+        {
+          key: "cooperation",
+          name: this.$text("S_COOPERATION_GROUP_FOREIGN", "国外合作群"),
+          icon: "telegram"
+        }
+      ];
 
-          },
-          {
-            key: 'tag',
-            name: this.$text('S_TAG', '标签'),
-            icon: 'tag',
-            isAdult: true
-          },
-          {
-            key: 'agent',
-            name: this.$text('S_AGENT_GROUP_DOMESTIC', '国内代理群'),
-            icon: 'potatochat'
-          },
-          {
-            key: 'cooperation',
-            name: this.$text('S_COOPERATION_GROUP_FOREIGN', '国外合作群'),
-            icon: 'telegram'
-          }
-        ];
-
-      return this.isAdult ? list : list.filter(i => !i.isAdult)
+      return this.isAdult ? list : list.filter(i => !i.isAdult);
     }
   },
   methods: {
     onClick(key) {
-      if (key === 'agent') {
-        window.open('https://lynnconway.me/yaboxxx', '_blank');
+      if (key === "agent") {
+        window.open("https://lynnconway.me/yaboxxx", "_blank");
         return;
       }
 
-      if (key === 'cooperation') {
-        window.open('https://t.me/yaboxxxxx', '_blank');
+      if (key === "cooperation") {
+        window.open("https://t.me/yaboxxxxx", "_blank");
         return;
       }
 
-      this.$router.push({ name: 'discover', params: { page: key } });
+      this.$router.push({ name: "discover", params: { page: key } });
     }
   }
 };
@@ -137,7 +137,7 @@ export default {
   position: relative;
   height: 45px;
   line-height: 59px;
-  color: $main_text_color4;
+  color: var(--slider_text_active_color);
   display: inline-flex;
   align-items: center;
   width: 100%;

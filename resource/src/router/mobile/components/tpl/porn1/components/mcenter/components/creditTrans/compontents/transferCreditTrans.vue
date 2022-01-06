@@ -156,7 +156,6 @@
 import { mapGetters, mapActions } from "vuex";
 import balanceBack from "@/router/mobile/components/tpl/porn1/components/mcenter/components/common/balanceBack";
 import popupVerification from "@/components/popupVerification";
-import axios from "axios";
 import tipsCreditTrans from "./tipsCreditTrans";
 import mixin from "@/mixins/mcenter/recharge/recharge";
 import serialNumber from "../../withdraw/components/serialNumber";
@@ -177,8 +176,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      memInfo: "getMemInfo"
-    })
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   },
   created() {
     this.getRechargeBalance();

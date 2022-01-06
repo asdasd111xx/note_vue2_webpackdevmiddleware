@@ -33,7 +33,7 @@
       <div :class="$style['no-data']">
         <div :class="$style['search-img']">
           <img
-            :src="$getCdnPath('/static/image/_new/common/icon_search_n.png')"
+            :src="$getCdnPath('/static/image/common/ic_search_grey.png')"
             alt="search"
           />
         </div>
@@ -251,7 +251,7 @@ export default {
   position: absolute;
   width: 100%;
   height: calc(100vh - 100px);
-  background: $main_background_white1;
+  background: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -271,7 +271,6 @@ export default {
   p {
     font-size: 16px;
     margin-top: 10px;
-    // color: $main_text_color5;
     color: #000;
   }
 }

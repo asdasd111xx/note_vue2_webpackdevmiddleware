@@ -38,7 +38,7 @@
           color: #222;
 
           &.is-negative {
-            color: $main_error_color1;
+            color: #db6372;
           }
         }
       }
@@ -69,7 +69,7 @@
         height: 39px;
         color: #fff;
         // background: #00347d;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
 
         border: 0;
         outline: none;

@@ -48,33 +48,10 @@ export default {
       };
     }
   },
-  beforeDestroy() {
-    // let script = document.querySelector('script[data-name="esabgnixob"]');
-    // if (script) {
-    //   script.parentElement.removeChild(script);
-    // }
-  },
   created() {
     if (this.loginStatus) {
       this.$router.push("/mobile");
       return;
-    }
-
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement("script");
-      this.script.setAttribute("type", "text/javascript");
-      this.script.setAttribute("data-name", "esabgnixob");
-
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute(
-          "src",
-          "https://yb01.66boxing.com/mobile/esabgnixob.js"
-        );
-      } else {
-        this.script.setAttribute("src", "esabgnixob.js");
-      }
-
-      document.head.appendChild(this.script);
     }
   }
 };
@@ -93,7 +70,7 @@ export default {
 
 .join-input {
   background-color: #fff;
-  border: 1px solid #d8d8d8;
+  // border: 1px solid #d8d8d8;
 
   &::placeholder {
     color: #a5a5a5;
@@ -102,7 +79,7 @@ export default {
 
 .join-btn {
   margin: 0 auto;
-  background: linear-gradient(to left, #fe593c 0%, #e61938 100%);
+  background: var(--main_button_color1);
   border-radius: 3px;
   height: 50px;
   line-height: 50px;
@@ -115,7 +92,7 @@ export default {
   color: #ffffff;
 
   &.disable {
-    background: linear-gradient(#e9dacb, #eee5db);
+    background: var(--main_button_color2);
   }
 }
 

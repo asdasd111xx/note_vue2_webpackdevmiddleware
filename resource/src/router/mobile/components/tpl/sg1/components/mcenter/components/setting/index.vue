@@ -105,11 +105,11 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .setting-wrap {
-  color: $main_text_color3;
+  color: #414655;
 
   > div:first-child {
     margin-top: 5px;
@@ -120,7 +120,7 @@ export default {
     padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: $main_white_color1;
+    background-color: #fefffe;
     border-bottom: 1px solid #eee;
 
     > span {
@@ -145,7 +145,7 @@ export default {
   }
 
   .logout {
-    background-color: $main_white_color1;
+    background-color: #fefffe;
     text-align: center;
     width: 100%;
     margin-top: 10px;

@@ -42,7 +42,7 @@
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: $main_text_color3;
+  color: var(--slider_text_color);
 
   img {
     width: 13px;
@@ -56,7 +56,7 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: #be9e7f;
+    color: var(--mcenter_wallet_text_color);
   }
 }
 
@@ -64,7 +64,7 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: #be9e7f;
+  color: var(--mcenter_wallet_recycle_text_color);
   font-weight: 700;
 
   &::before {
@@ -94,11 +94,11 @@
 .balance-tip-wrap {
   width: 100%;
   text-align: left;
-  color: $main_text_color3;
+  color: var(--mcenter_slider_text_active_color);
 
   .balance-auto-tip {
     font-size: 12px;
-    color: $main_text_color2;
+    color: var(--mcenter_slider_text_color);
   }
 }
 
@@ -186,7 +186,7 @@
   padding: 10px 4px 15px;
   text-align: center;
   font-size: 14px;
-  color: $main_text_color3;
+  color: var(--mcenter_slider_text_active_color);
   border-bottom: 1px solid #eee;
 
   &:not(:nth-child(4n + 1)):before {
@@ -210,7 +210,7 @@
 
   &.expend,
   &.collapse {
-    color: $main_text_color2;
+    color: var(--slider_text_color);
     border-bottom: none;
 
     .icon {
@@ -232,7 +232,7 @@
 
 .balance-info-maintain {
   font-size: 12px;
-  color: $main_error_color1;
+  color: #db6372;
 }
 
 .balance-wrench {
@@ -243,7 +243,7 @@
 
 .balance-item-money {
   display: block;
-  color: $main_text_color2;
+  color: #a6a9b2;
 
   &.more {
     word-break: break-word;
@@ -251,7 +251,11 @@
 }
 
 .balance-redjackpot-text {
-  color: #be9e7f;
+  color: var(--mcenter_wallet_redpot_text_color);
+  word-break: break-word;
+}
+.balance-redjackpot-money {
+  color: var(--mcenter_wallet_redpot_money_color);
   word-break: break-word;
 }
 
@@ -261,7 +265,14 @@
   right: 0;
   width: 25px;
   height: 25px;
-  background: url("/static/image/common/ic_event.png") center center / 100% 100%;
+
+  background: url("/static/image/aobo1/common/ic_event.png") center center /
+    100% 100%;
+
+  &.porn1 {
+    background: url("/static/image/porn1/common/ic_event.png") center center /
+      100% 100%;
+  }
 }
 
 .balance-manual-wrap {
@@ -276,7 +287,7 @@
   display: block;
   padding: 8px 17px;
   background: #eee;
-  color: $main_text_color3;
+  color: var(--slider_text_color);
   font-size: 14px;
 }
 
@@ -331,7 +342,7 @@
 
   .select-wrap {
     position: absolute;
-    background: $main_white_color1;
+    background: #fefffe;
     width: 100%;
     bottom: 0;
     padding: 0 17px;
@@ -346,7 +357,7 @@
     font-size: 16px;
     text-align: center;
     height: 65px;
-    color: $main_text_color3;
+    color: var(--mcenter_slider_text_active_color);
 
     &::before {
       content: "";
@@ -360,14 +371,14 @@
     span {
       position: absolute;
       left: 0;
-      color: #be9e7f;
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
   .select-content {
     position: relative;
     font-size: 14px;
-    color: $main_text_color3;
+    color: var(--mcenter_slider_text_active_color);
     max-height: 500px;
     overflow: hidden;
     overflow-y: auto;
@@ -390,7 +401,7 @@
 
 .select-title {
   font-size: 12px;
-  color: $main_text_color2;
+  color: var(--mcenter_slider_text_color);
 }
 
 // .select-arrow-icon {
@@ -425,7 +436,7 @@
   outline: none;
   border: none;
   background: transparent;
-  color: $main_text_color3;
+  color: var(--mcenter_slider_text_active_color);
 
   &::placeholder {
     color: #cdced8;
@@ -439,12 +450,9 @@
   line-height: 20px;
   text-align: center;
   font-size: 14px;
-  border-radius: 10px;
+  border-radius: 3px;
   color: #fff;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -webkit-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
@@ -455,16 +463,10 @@
   cursor: pointer;
   border-radius: 3px;
   color: #fff;
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -webkit-linear-gradient(to left, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: var(--mcenter_button_color1);
 
   &.is-disable {
-    background: linear-gradient(to left, #e9dacb, #eee5db);
-    background: -moz-linear-gradient(to left, #e9dacb, #eee5db);
-    background: -webkit-linear-gradient(to left, #e9dacb, #eee5db);
-    background: -o-linear-gradient(to left, #e9dacb, #eee5db);
+    background: var(--mcenter_button_color2);
     pointer-events: none;
   }
 }

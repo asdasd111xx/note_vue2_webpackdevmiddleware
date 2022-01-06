@@ -4,8 +4,7 @@
       v-if="downloadConfigData.show"
       :class="[
         $style['apptips-wrap'],
-        { [$style['close']]: !downloadConfigData.show },
-        $style[siteConfig.ROUTER_TPL]
+        { [$style['close']]: !downloadConfigData.show }
       ]"
     >
       <div :class="$style['container']">
@@ -289,6 +288,9 @@ export default {
   &.close {
     animation: slide-up 1s forwards;
   }
+  .title {
+    color: var(--apptip_title);
+  }
 
   // -webkit-animation-timing-function: forwards;
   // -webkit-opacity: 1;
@@ -339,7 +341,7 @@ export default {
 
     > .download-btn {
       align-items: center;
-      background: $share_main_button_color;
+      background: var(--main_button_color1);
       border-radius: 13.5px;
       display: flex;
       height: 27px;
@@ -348,7 +350,7 @@ export default {
       width: 100%;
 
       span {
-        color: $share_main_button_text_color;
+        color: var(--main_button_text_color1);
         font-size: 12px;
         font-weight: 700;
         text-align: center;
@@ -361,7 +363,7 @@ export default {
     margin-left: 5px;
     font-size: 14px;
     font-weight: 700;
-    color: $share_main_button_color;
+    color: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
     height: 20px;
   }
 
@@ -455,60 +457,6 @@ export default {
   100% {
     opacity: 0;
     top: -140px;
-  }
-}
-
-.apptips-wrap {
-  &.sg1 {
-    .title {
-      color: #e61938;
-    }
-
-    .download-wrap {
-      > .download-btn {
-        background: #e61938;
-
-        span {
-          color: #ffffff;
-        }
-      }
-    }
-  }
-}
-
-.apptips-wrap {
-  &.porn1 {
-    .title {
-      color: $befa_main_color;
-    }
-
-    .download-wrap {
-      > .download-btn {
-        background: $befa_main_color;
-
-        span {
-          color: #ffffff;
-        }
-      }
-    }
-  }
-}
-
-.apptips-wrap {
-  &.sp1 {
-    .title {
-      color: $sp1_main_color1;
-    }
-
-    .download-wrap {
-      > .download-btn {
-        background: $sp1_main_color1;
-
-        span {
-          color: #ffffff;
-        }
-      }
-    }
   }
 }
 </style>

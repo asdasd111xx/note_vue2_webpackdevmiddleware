@@ -31,9 +31,7 @@ import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
-  created() {
-    // this.source = info;
-  },
+  created() {},
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"

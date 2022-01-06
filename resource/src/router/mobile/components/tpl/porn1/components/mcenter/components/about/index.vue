@@ -130,7 +130,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .container {
-  color: $main_text_color1;
+  color: #a6a9b2;
   background-color: white;
   background-repeat: no-repeat;
   background-size: cover;

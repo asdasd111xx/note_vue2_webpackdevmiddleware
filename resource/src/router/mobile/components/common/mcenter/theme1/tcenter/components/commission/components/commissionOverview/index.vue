@@ -1,7 +1,16 @@
 <template>
   <div>
     <!-- 返利管理 -->
-    <div v-if="path" :class="[$style['profit']]">
+    <div
+      v-if="
+        path &&
+          routeItem === 'profit' &&
+          !$route.query.depth &&
+          !$route.query.userId
+      "
+      :class="[$style['profit']]"
+    >
+      <!-- page1 -->
       <div v-for="(info, index) in profitList" :key="index">
         <div :class="[$style['profit-wrap']]">
           <div :class="[$style['title-wrap']]">
@@ -12,7 +21,7 @@
               <span :class="[$style['profit_date']]"> {{ info.date }}</span>
 
               <span :class="[$style['profit_day']]"
-                >剩余天数{{ info.day }}天</span
+                >剩余天数：{{ info.day }}天</span
               >
             </div>
           </div>
@@ -36,6 +45,10 @@
               </div>
             </div>
           </div>
+          <card-item
+            :card-item-list="friendLayerList"
+            @click-card="enterNextLayer"
+          />
           <div :class="$style.tips">
             ※
             {{
@@ -47,6 +60,56 @@
         </div>
       </div>
     </div>
+    <!-- page2 -->
+    <template v-if="$route.query.depth && !$route.query.user">
+      <div :class="$style['friend-wrap']">
+        <div v-if="friendNameList !== undefined">
+          <card-total :data="friendBet" />
+        </div>
+        <div
+          v-if="friendNameList !== undefined"
+          :class="$style['card-item-wrap']"
+        >
+          <card-item
+            :card-item-list="friendNameList"
+            @click-card="enterNextLayer"
+          />
+        </div>
+        <div v-else :class="$style['no-data']">
+          <img
+            :src="$getCdnPath(`/static/image/${themeTPL}/mcenter/no_data.png`)"
+          />
+          <p>{{ $text("S_NO_DATA_YET", "暂无资料") }}</p>
+        </div>
+      </div>
+    </template>
+
+    <!-- page3 -->
+    <template v-if="$route.query.userId">
+      <div :class="$style['friend-wrap']">
+        <div>
+          <card-total :data="friendGameBet" />
+          <span :class="$style['rebate-rate']" @click="toggleSerial"
+            >返利比例</span
+          >
+        </div>
+        <div
+          v-if="
+            friendGameCategory !== undefined && friendGameCategory.length > 0
+          "
+          :class="$style['card-item-wrap']"
+        >
+          <card-item :card-item-list="friendGameCategory" />
+        </div>
+      </div>
+    </template>
+    <template>
+      <rebate-rate
+        v-if="isSerial"
+        :handle-close="toggleSerial"
+        :game-rate-result="gameRateResult"
+      />
+    </template>
     <!-- 我的推廣 -->
     <div v-if="!path">
       <div :class="[$style['date-wrap'], 'clearfix']">
@@ -299,13 +362,22 @@
 
 <script>
 import commissionOverview from "@/mixins/mcenter/commission/commissionOverview";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import EST from "@/lib/EST";
 import Vue from "vue";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-
+import cardItem from "../../../../../tcenterSame/cardItem";
+import cardTotal from "../../../../../tcenterSame/cardAllTotal";
+import rebateRate from "../../../../../tcenterSame/rebateRate";
 export default {
   mixins: [commissionOverview],
+  components: {
+    cardItem,
+    cardTotal,
+    rebateRate
+  },
   data() {
     return {
       isSummaryShow: {
@@ -314,7 +386,49 @@ export default {
         monthly: false,
         expected: false
       },
-      path: this.$route.params.title ?? "" //是否從返利管理來,
+      isSerial: false,
+
+      //會員id(entryId)
+      memberId: "",
+
+      //第幾層好友
+      depth: 1,
+      cid: getCookie("cid"),
+      path: this.$route.params.title ?? "", //是否從返利管理來,
+      levelTrans: {
+        1: "S_FIRST_LEVEL_FRIEND",
+        2: "S_SECOND_LEVEL_FRIEND",
+        3: "S_THIRD_LEVEL_FRIEND",
+        4: "S_FOURTH_LEVEL_FRIEND",
+        5: "S_FIFTH_LEVEL_FRIEND"
+      },
+      //---page1---
+      //有效投注金額、会员人数
+      resultDetail: [],
+      resultDetailList: {
+        at: "",
+        valid_bet: 0,
+        lack_sub_valid_bet: 0,
+        next_sub_valid_bet: 0,
+        user_count: 0,
+        lack_sub_user_count: 0,
+        next_sub_user_count: 0
+      },
+
+      //多層級好友
+      resultFriend: [],
+      title: "real",
+      routeItem: this.$route.params.item,
+
+      //---page2---
+      friendMemberList: [],
+
+      //---page3---
+      friendGameList: [],
+
+      //返利比例
+      friendGameRateList: [],
+      gameRateResult: []
     };
   },
   props: {
@@ -331,14 +445,50 @@ export default {
       default: () => {}
     }
   },
+  created() {
+    setTimeout(() => {
+      this.getLayerDetail();
+    }, 500);
+  },
+  watch: {
+    "$route.query": {
+      handler: function(item) {
+        if (item.depth && !item.user) {
+          //page2
+          this.setHeaderTitle(this.$text(this.levelTrans[item.depth]));
+          this.setTabState(false);
+
+          if (
+            this.$route.query.current_entry_id ||
+            this.memberId ||
+            this.memInfo.user.id
+          ) {
+            this.getLayerFriends(this.depth);
+          }
+        } else if (item.user) {
+          //page3
+          this.setHeaderTitle(item.user);
+          this.setTabState(false);
+          this.getLayerFriendGame();
+          this.getLayerFriendGameRate();
+        } else {
+          this.setHeaderTitle("返利管理");
+        }
+      }
+    }
+  },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
     $style() {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
     },
     monthRange() {
       // Get 目前年/月/日
@@ -384,7 +534,11 @@ export default {
                   info.end_at
                 )}`,
           day: this.remainderDays,
-          period: info.period,
+          period: info.period
+            ? info.period
+            : `${this.periodFormat(info.start_at)}_${this.periodFormat(
+                info.end_at
+              ).substring(5, 9)}`,
           list: [
             {
               name: this.$text("S_EXPECTED_REBATE", "预估返利"),
@@ -398,7 +552,7 @@ export default {
               item: `${info.rate || 0}%`,
               key: "level",
               color: false,
-              show: true
+              show: false
             },
             {
               name: this.$text("S_ACH_VALID_MEMBERS", "有效会员"),
@@ -427,21 +581,21 @@ export default {
               item: this.amountFormat(info.dispatched_rebate),
               key: "sent",
               color: false,
-              show: true
+              show: false
             },
             {
               name: this.$text("S_SENT_PROMOTIONS", "已派優惠"),
               item: this.amountFormat(info.dispatched_offer),
               key: "discount",
               color: false,
-              show: true
+              show: false
             },
             {
               name: this.$text("S_MEM_DEPOSIT_2", "會員存款"),
               item: this.amountFormat(info.deposit),
               key: "deposit",
               color: false,
-              show: true
+              show: false
             },
             {
               name: this.$text("S_MEM_WITHDRAW_2", "會員取款"),
@@ -450,14 +604,14 @@ export default {
               ),
               key: "withdraw",
               color: info.withdraw < 0,
-              show: true
+              show: false
             },
             {
               name: this.$text("S_PLATFORM_COST", "平台费"),
               item: this.amountFormat(info.vendor_fee),
               key: "fee",
               color: false,
-              show: true
+              show: false
             },
             {
               name: this.$text("S_PREVIOUS_REBATE", "上期结转"),
@@ -466,15 +620,348 @@ export default {
                 : this.$text("S_NONE", "無"),
               key: "previous",
               color: false,
-              show: true
+              show: false
             }
           ].filter(i => i.show)
         };
       });
       return data;
+    },
+    friendLayerList() {
+      //page1 好友層
+      let layerdata = this.resultFriend?.map(info => {
+        return {
+          title: this.$text(this.levelTrans[info.depth]),
+          childTitle: info.valid_user > 0 ? "查看" : "",
+          // 傳遞給子元件點擊專用
+          paramsValue: { depth: info.depth },
+          isClick: info.valid_user > 0 ? true : false,
+          img: info.valid_user > 0 ? true : false,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.valid_bet),
+              show: true
+            },
+            {
+              name: "总损益",
+              item: this.formatThousandsCurrency(info.profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            },
+            {
+              name: "有效会员",
+              item: info.valid_user,
+              show: true
+            },
+            {
+              name: "上期结转",
+              item: info.last_shift == 0 ? "无" : "有",
+              show: true
+            }
+          ].filter(item => item.show)
+        };
+      });
+      return layerdata;
+    },
+    friendBet() {
+      //page2 上方標題
+      let strArr = [
+        {
+          name: "上期结转有效投注：",
+          item:
+            this.friendMemberList?.sub_total?.last_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.last_valid_bet
+                )
+              : "0.00"
+        },
+        {
+          name: "上期结转损益：",
+          item: this.friendMemberList?.sub_total?.last_profit
+            ? this.formatThousandsCurrency(
+                this.friendMemberList?.total?.last_profit
+              )
+            : "0.00",
+          color: this.friendMemberList?.sub_total?.last_profit
+            ? this.chooseColor(this.friendMemberList?.sub_total?.last_profit)
+            : "--"
+        },
+        {
+          name: "总有效投注：",
+          item:
+            this.friendMemberList?.total?.current_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.current_valid_bet
+                )
+              : "--"
+        },
+        {
+          name: "总损益：",
+          item: this.friendMemberList?.total?.current_profit
+            ? this.friendMemberList?.total?.current_profit != 0
+              ? this.formatThousandsCurrency(
+                  this.friendMemberList?.total?.current_profit
+                )
+              : "--"
+            : "--",
+          color: this.friendMemberList?.total?.current_profit
+            ? this.friendMemberList?.total?.current_profit != 0
+              ? this.chooseColor(this.friendMemberList?.total?.current_profit)
+              : "--"
+            : "--"
+        },
+        {
+          name: "笔数：",
+          item: this.friendMemberList?.pagination?.total ?? "0"
+        }
+      ];
+      return strArr;
+    },
+    friendNameList() {
+      //page2 好友帳號列表
+      let data = this.friendMemberList?.ret?.map(info => {
+        return {
+          title: info.username,
+          childTitle: info.current_valid_bet > 0 ? "查看" : "",
+          // 傳遞給子元件點擊專用
+          paramsValue: {
+            user: info.username,
+            userid: info.user_id,
+            id: info.id
+          },
+          isClick: info.current_valid_bet > 0 ? true : false,
+          img: info.current_valid_bet > 0 ? true : false,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.current_valid_bet),
+              show: true
+            },
+            {
+              name: "损益",
+              item: this.formatThousandsCurrency(info.current_profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            }
+          ]
+        };
+      });
+      return data;
+    },
+    friendGameBet() {
+      //page3 上方標題
+      let strArr = [
+        {
+          name: "总有效投注：",
+          item:
+            this.friendGameList?.total?.current_valid_bet > 0
+              ? this.formatThousandsCurrency(
+                  this.friendGameList.total.current_valid_bet
+                )
+              : "--"
+        },
+        {
+          name: "总损益：",
+          item: this.friendGameList?.total?.current_profit
+            ? this.friendGameList?.total?.current_profit != 0
+              ? this.formatThousandsCurrency(
+                  this.friendGameList.total.current_profit
+                )
+              : "--"
+            : "--",
+          color: this.friendGameList?.total?.current_profit
+            ? this.friendGameList?.total?.current_profit != 0
+              ? this.chooseColor(this.friendGameList.total.current_profit)
+              : "--"
+            : "--"
+        },
+        {
+          name: "笔数：",
+          item:
+            this.friendGameCategory !== undefined
+              ? this.friendGameCategory.length
+              : "0"
+        }
+      ];
+      return strArr;
+    },
+    friendGameCategory() {
+      //page3 好友投注遊戲類別
+      let data = this.friendGameList?.ret?.map(info => {
+        return {
+          title: info.alias,
+          list: [
+            {
+              name: "有效投注",
+              item: this.formatThousandsCurrency(info.current_valid_bet),
+              show: true
+            },
+            {
+              name: "损益",
+              item: this.formatThousandsCurrency(info.current_profit),
+              color: this.chooseColor(info.profit),
+              show: true
+            }
+          ]
+        };
+      });
+      if (data !== undefined) {
+        return data.filter(i => {
+          return i.list[0].item !== "0.00";
+        });
+      }
     }
+    // friendGameRate() {
+    //   let data = this.gameRateResult?.ret?.map(info => {
+    //     return {
+    //       title: info.key,
+    //       list: [
+    //         {
+    //           name: info.title.alias,
+    //           item: info.title.rate,
+    //           show: true
+    //         }
+    //       ]
+    //     };
+    //   });
+    //   return data;
+    // }
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
+    //損益 正紅負黑
+    chooseColor(val) {
+      return val < 0 ? "red" : "black";
+    },
+    //Page1 取得分級好友資料c04.48
+    getLayerDetail() {
+      let paramData = {
+        period: this.profitList[0].period,
+        user_id: this.memInfo.user.id
+      };
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/detail",
+          method: "get",
+          ...paramData
+        }
+      }).then(res => {
+        //多層級好友
+        this.resultFriend = res.data.return_data?.ret?.depth_details ?? [];
+
+        //單一會員重新計算中
+        if (res && res.data.status_code == "22007710") {
+          this.actionSetGlobalMessage(res.data.status_message);
+        }
+      });
+    },
+
+    //Page2 取得特定期數好友有效投注額及佣金列表
+    getLayerFriends(depth) {
+      let paramData = {
+        period: this.profitList[0].period,
+        user_id: this.memInfo.user.id,
+        depth: this.$route.query.depth || depth
+      };
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/detail",
+          method: "get",
+          ...paramData
+        }
+      })
+        .then(res => {
+          if (res && res.status === "000") {
+            this.friendMemberList = res.data.return_data ?? [];
+          }
+        })
+        .catch(error => {
+          if (error && error.data && error.data.msg) {
+            this.actionSetGlobalMessage(error.data.msg);
+          }
+        });
+    },
+    //Page3 取得返利明細特定好友級數各會員平台貢獻明細
+    getLayerFriendGame() {
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/vendor_detail",
+          method: "get",
+          user_id: this.$route.query.userId,
+          id: this.$route.query.id
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //該好友投注所有遊戲
+          this.friendGameList = res.data.return_data ?? [];
+        }
+      });
+    },
+    getLayerFriendGameRate() {
+      let paramData = {
+        period: this.profitList[0].period,
+        user_id: this.$route.query.memberId,
+        depth: this.$route.query.depth || this.depth
+      };
+
+      //取得返利明細特定階層各平台分潤比率
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/commission`,
+        params: {
+          lang: "zh-cn",
+          cid: this.cid,
+          externalID: "commission",
+          api_uri: "/api/wage/depth/rate",
+          method: "get",
+          ...paramData
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //返利比例
+          this.gameRateResult = [];
+          this.friendGameRateList = res.data.return_data.ret ?? [];
+
+          const name = {
+            1: "体育",
+            2: "视讯",
+            3: "电子",
+            4: "彩票",
+            5: "棋牌",
+            6: "麻将"
+          };
+
+          //存放類別代號
+          let categoryNum = Object.keys(this.friendGameRateList);
+
+          for (let i = 1; i <= categoryNum.length; i++) {
+            this.gameRateResult.push({
+              title: name[i],
+              item: this.friendGameRateList[i - 1].details
+            });
+          }
+        }
+      });
+    },
+    formatThousandsCurrency(value) {
+      return +value ? thousandsCurrency(value) : "0.00";
+    },
     onClick({ key }) {
       this.isSummaryShow[key] = !this.isSummaryShow[key];
     },
@@ -484,6 +971,51 @@ export default {
     },
     dateYearFormat(date) {
       return Vue.moment(new Date(date)).format("YYYY-MM-DD");
+    },
+    periodFormat(date) {
+      return Vue.moment(new Date(date)).format("YYYY-MMDD");
+    },
+    enterNextLayer(friend) {
+      //進到下一頁
+      let title = "";
+      let queryParams = {};
+
+      //go page3
+      if (this.$route.query.depth) {
+        title = friend.user;
+        queryParams = {
+          memberId: this.$route.query.memberId || this.memberId,
+          depth: this.depth,
+          userId: friend.userid,
+          user: friend.user,
+          id: friend.id
+        };
+      } else if (!this.$route.query.depth) {
+        //go page2
+        this.depth = friend.depth;
+        queryParams = {
+          memberId:
+            this.$route.query.memberId || this.memberId || this.memInfo.user.id,
+          depth: friend.depth
+        };
+      }
+
+      clearInterval(this.timer);
+      this.timer = null;
+      this.timer = setTimeout(() => {
+        this.setHeaderTitle(title);
+        this.$router.push({
+          params: {
+            title: "profit"
+          },
+          query: {
+            ...queryParams
+          }
+        });
+      }, 300);
+    },
+    toggleSerial() {
+      this.isSerial = !this.isSerial;
     }
   }
 };

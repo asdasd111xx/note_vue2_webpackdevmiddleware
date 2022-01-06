@@ -1,11 +1,11 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
-$bouns_color1: #bf8646;
-$bouns_color2: #BE9E7F;
-$bouns_color3: #FAF5F0;
-$bouns_color4: #ECC374;
-$bouns_color5: #FF7F00;
-$bouns_color6: #FFF07B;
+$bouns_color1: var(--video_popup_title_color);
+$bouns_color2: var(--video_popup_left_text_button);
+$bouns_color3: #faf5f0;
+$bouns_color4: #ecc374;
+$bouns_color5: #ff7f00;
+$bouns_color6: #fff07b;
 
 .dialog {
   animation: fade-in 0.31s;
@@ -23,9 +23,9 @@ $bouns_color6: #FFF07B;
 .dialog {
   >div {
     position: relative;
-    background-color: rgba($color: #FFFFFF, $alpha: 1);
+    background-color: rgba($color: #ffffff, $alpha: 1);
     border-radius: 11px;
-    border: #ECC374 solid 6px;
+    border: #ecc374 solid 6px;
     margin-left: auto;
     margin-right: auto;
     max-width: 375px;
@@ -53,18 +53,6 @@ $bouns_color6: #FFF07B;
     width: 140px;
     height: 100px;
   }
-
-  &.title-ad {
-    top: -75px;
-  }
-}
-
-.title-close {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  right: -25px;
-  top: -25px;
 }
 
 .title {
@@ -75,11 +63,6 @@ $bouns_color6: #FFF07B;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
-}
-
-.link-to-img {
-  margin-top: 9%;
-  width: 100%;
 }
 
 .bouns-func {
@@ -102,15 +85,14 @@ $bouns_color6: #FFF07B;
 
   >div:first-child {
     color: $bouns_color2;
-    background-color: #FAF5F0;
+    background-color: var(--video_popup_left_background_button);
     margin: 0 auto;
   }
-
 }
 
 .active-btn {
   text-align: center;
-  color: #FFFFFF;
+  color: var(--video_popup_right_text_button);
   height: 40px;
   font-size: 15px;
   text-align: center;
@@ -118,10 +100,7 @@ $bouns_color6: #FFF07B;
   line-height: 40px;
   max-width: 275px;
   margin: 0 auto;
-  background: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background: -o-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: -moz-linear-gradient(left, #bd9d7d, #f9ddbd);
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: var(--video_popup_right_background_button);
 }
 
 // 進度條
@@ -141,7 +120,7 @@ $bouns_color6: #FFF07B;
   color: $bouns_color5;
   font-size: 15px;
   line-height: 30px;
-  transition: width .31s;
+  transition: width 0.31s;
   padding-left: 2px;
 
   .coin-wrap {
@@ -216,8 +195,6 @@ $bouns_color6: #FFF07B;
     border-radius: 20px;
     margin: 0px 20px;
   }
-
-
 }
 
 .bouns-earn-wrap {
@@ -226,7 +203,7 @@ $bouns_color6: #FFF07B;
   position: relative;
 
   >.earn-title {
-    color: #3F1000;
+    color: #3f1000;
     font-size: 14px;
     margin: 8px 0;
     height: 25px;
@@ -238,7 +215,7 @@ $bouns_color6: #FFF07B;
     align-items: center;
 
     >span:last-child {
-      color: #FF8C21;
+      color: #ff8c21;
       font-size: 22px;
       font-weight: 700;
     }
@@ -269,7 +246,7 @@ $bouns_color6: #FFF07B;
   >div {
     width: 54px;
     height: 64px;
-    color: #FF8400;
+    color: #ff8400;
     text-align: center;
     position: relative;
 
@@ -277,7 +254,7 @@ $bouns_color6: #FFF07B;
       position: relative;
       width: 100%;
       padding: 4px 0;
-      background-color: #FCF7E2;
+      background-color: #fcf7e2;
 
       >img {
         margin: 0 auto;
@@ -290,7 +267,7 @@ $bouns_color6: #FFF07B;
       height: 24px;
       line-height: 24px;
       font-size: 15px;
-      background-color: #F5D992;
+      background-color: #f5d992;
     }
 
     >.had-earned {
@@ -370,7 +347,6 @@ $bouns_color6: #FFF07B;
     margin: 1px 5px;
     display: inline-flex;
   }
-
 }
 
 @media screen and (min-width: $phone) {

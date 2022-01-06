@@ -1,13 +1,13 @@
 <template>
   <div :class="$style['user-info-wrap']">
     <!-- 個人資訊 -->
-    <div :class="$style['user-info-block']">
+    <div :class="[$style['user-info-block']]">
       <div ref="user-info" :class="$style['user-info']">
         <div :class="$style['avatar']">
           <img :src="avatarSrc" alt="avatar" />
         </div>
 
-        <div ref="name" :class="$style['name']">
+        <div ref="name" :class="[$style['name']]">
           <span>{{ memInfo.user.username }}</span>
           <span :style="`display: ${setVipTextDisplay}`">
             {{ userVipInfo.now_level_alias }}
@@ -43,7 +43,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/vip/vip_run.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/mcenter/vip/vip_run.png`
               )
             "
             :style="
@@ -69,7 +69,7 @@
 
     <!-- //說明資訊 -->
     <!-- base_type	有效投注計算方式(1.廳開始日, 2.自訂時間, 3.區間統計) -->
-    <div :class="$style['user-desc-block']">
+    <div :class="[$style['user-desc-block']]">
       <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●累计充值(元)：
         <span :class="$style['money']">{{
@@ -250,7 +250,7 @@ export default {
     }
   },
   created() {
-    this.getTitle();
+    // this.getTitle();
   },
   mounted() {
     this.avatarSrc = `/static/image/common/default/avatar_nologin.png`;

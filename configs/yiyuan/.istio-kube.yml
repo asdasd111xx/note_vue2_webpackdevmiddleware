@@ -9,7 +9,7 @@ metadata:
     base: yiyuan-frontend
   name: {{.deployName}}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: yiyuan-frontend-proxy-{{.env}}
@@ -78,5 +78,5 @@ spec:
           path: /exports/backend-upload
           server: {{.nfs}}
       nodeSelector:
-        cloud.google.com/gke-nodepool: {{.nodePoolName}}          
+        {{.nodePool}}: {{.nodePoolName}}         
 

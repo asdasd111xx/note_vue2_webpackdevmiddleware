@@ -8,6 +8,9 @@ export default {
   data() {
     return {
       serialNumberData: {},
+      totalAmount: 0,
+      page: 0,
+      pageInterval: 50,
       serialHeader: [
         {
           value: this.$text("S_NUMBER_NO", "序"),
@@ -64,18 +67,22 @@ export default {
     },
     // 取得流水
     getSerialNumberData(swift_code = "") {
-      axios({
+      return axios({
         method: "get",
         url: API_WITHDRAW_ASSIST,
         params: {
-          swift_code: swift_code
+          swift_code: swift_code,
+          first_result: this.page, //起始資料index
+          max_results: this.pageInterval //一次回傳幾筆資料
         }
       })
         .then(response => {
           if (response.data.result !== "ok") {
-            return;
+            return "error";
           }
+          this.totalAmount = response.data.pagination.total;
           this.serialNumberData = response.data;
+          return "ok";
         })
         .catch(error => {
           let { data } = error.response;
@@ -83,6 +90,7 @@ export default {
             msg: data.msg,
             code: data.code
           });
+          return "error";
         });
     },
     /**
@@ -129,6 +137,9 @@ export default {
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
       return thousandsCurrency(_value);
+    },
+    formatThousandsCurrencyUnFix(value) {
+      return thousandsCurrency(value);
     }
   }
 };

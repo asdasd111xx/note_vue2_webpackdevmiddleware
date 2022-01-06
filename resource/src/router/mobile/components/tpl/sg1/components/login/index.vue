@@ -20,7 +20,7 @@
                   ref="username"
                   v-model="username"
                   :title="$text('S_ACCOUNT', '帐号')"
-                  :placeholder="$text('S_USER_NAME', '用户名')"
+                  :placeholder="$text('S_ACCOUNT', '帐号')"
                   class="login-input"
                   maxlength="20"
                   tabindex="1"
@@ -272,26 +272,13 @@ export default {
       return false;
     }
   },
-  created() {
-    if (!document.querySelector('script[data-name="esabgnixob"]')) {
-      this.script = document.createElement("script");
-      this.script.setAttribute("type", "text/javascript");
-      this.script.setAttribute("data-name", "esabgnixob");
-
-      if (window.location.host.includes("localhost")) {
-        this.script.setAttribute(
-          "src",
-          "https://yb01.66boxing.com/mobile/esabgnixob.js"
-        );
-      } else {
-        this.script.setAttribute("src", "esabgnixob.js");
-      }
-
-      document.head.appendChild(this.script);
-    }
-  },
+  created() {},
   methods: {
-    ...mapActions(["actionGetLayeredURL"]),
+    ...mapActions([
+      "actionGetLayeredURL",
+      "actionGetActingURL",
+      "actionGetRegisterURL"
+    ]),
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
@@ -300,13 +287,29 @@ export default {
     },
     checkLayeredURL() {
       if (getCookie("platform") === "h") {
-        this.actionGetLayeredURL().then(res => {
-          if (res.indexOf(window.location.host) != -1 || res.length < 1) {
-            this.linktoJoin();
-          } else {
+        // this.actionGetActingURL().then(res => {
+        //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {
+        //     this.linktoJoin();
+        //   } else {
+        //     this.actionGetLayeredURL().then(res => {
+        //       if (res.indexOf(window.location.host) != -1 || res.length < 1) {
+        //         this.linktoJoin();
+        //       } else {
+        //         window.location.replace(
+        //           `https://${res[0]}/mobile/joinmember?login=1`
+        //         );
+        //       }
+        //     });
+        //   }
+        // });
+        this.actionGetRegisterURL().then(res => {
+          console.log(res);
+          if (res.redirect_url) {
             window.location.replace(
-              `https://${res[0]}/mobile/joinmember?login=1`
+              res.redirect_url + "/mobile/joinmember?login=1"
             );
+          } else {
+            this.linktoJoin();
           }
         });
       } else {
@@ -336,28 +339,27 @@ export default {
   margin: 194px auto 0;
   border-radius: 4px;
   background: #ffffff;
-  padding-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   max-width: 340px;
   color: #5e626d;
   font-size: 14px;
+  border-radius: 10px;
 }
 
 .title {
-  margin-bottom: 16px;
-  padding: 15px 20%;
-  background: #222222;
+  padding: 20px 20% 10px 20%;
   width: 100%;
   font-size: 20px;
   line-height: 20px;
   text-align: center;
-  color: #ffffff;
+  color: #414655;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-weight: 700;
 }
 .field {
-  margin: 0 auto 16px;
+  margin: 0 auto;
   width: 80%;
 
   .field-title {
@@ -382,36 +384,34 @@ export default {
 }
 
 .link-submit {
-  color: $main_text_color1;
+  color: #9ca3bf;
 }
 .submit {
   margin: 0 auto;
-  border-radius: 8px;
-  background: linear-gradient(to left, #e61938, #fe593c);
-  width: 80%;
-  height: 40px;
-  line-height: 40px;
-  color: #ffffff;
+  width: 100%;
+  height: 60px;
+  line-height: 34px;
+  color: var(--popup_tip_ok_color);
   cursor: pointer;
   text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  border-top: 1px solid #eeeeee;
+  padding: 13px 0px;
 }
 
 .close {
   position: absolute;
-  top: 5px;
+  top: 10px;
   right: 10px;
   width: 40px;
   height: 40px;
   line-height: 36px;
   font-size: 36px;
   text-align: center;
-  color: #fff;
+  background: url("/static/image/_new/common/btn_close.png") 10px 10px no-repeat;
   cursor: pointer;
   transition: all 0.3s ease;
-
-  &:hover {
-    transform: rotate(90deg);
-  }
 }
 
 .tip {
@@ -419,7 +419,8 @@ export default {
   width: 80%;
   font-size: 15px;
   text-align: center;
-  color: #f94444;
+  color: #a6a9b2;
+  padding-bottom: 13px;
 }
 
 .mask {

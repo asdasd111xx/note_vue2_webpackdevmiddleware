@@ -1,7 +1,8 @@
 import {
   API_AGCENTER_USER_LEVELS,
   API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO
+  API_WITHDRAW_INFO,
+  API_MCENTER_DEPOSIT_BANK
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -24,7 +25,6 @@ export default {
         alias: "CGP",
         method_id: 15
       },
-
       isAlertTip: false,
       isAjaxUse: false,
       alertData: {
@@ -41,7 +41,14 @@ export default {
       userLevelObj: {}, // 存放 Card type 開關 & 限綁一組開關
       nowOpenWallet: [],
       bank_card: [],
-      wallet_card: []
+      wallet_card: [],
+      epointWallet: {},
+      userBankOption: [],
+      defaultEpointWallet: {
+        id: "",
+        account: ""
+      },
+      offerInfo: null
     };
   },
   computed: {
@@ -65,8 +72,7 @@ export default {
       ) {
         return [];
       }
-
-      let resulAccount = [
+      let allAccount = [
         ...this.withdrawUserData.account.map(info => ({
           ...info,
           withdrawType: "account_id"
@@ -80,6 +86,16 @@ export default {
           withdrawType: "crypto_id"
         }))
       ];
+      let resulAccount = [];
+
+      // 過濾e點富
+      resulAccount = allAccount.filter(info => {
+        return info.bank_id != 2026;
+      });
+
+      this.epointWallet = allAccount.filter(info => {
+        return info.bank_id === 2026;
+      });
 
       // 目前應該進不來，沒有 isSupportCGPay 的欄位 ?
       if (this.withdrawUserData.isSupportCGPay && !isMobile()) {
@@ -278,6 +294,44 @@ export default {
         }
       }
       return list;
+    },
+    /**
+     * 優惠金額提示訊息
+     *
+     * @return string
+     */
+    promitionText() {
+      let textValue = "";
+
+      if (!this.offerInfo.is_full_offer) {
+        textValue += `• 此笔提现成功加赠优惠 ${this.formatThousandsCurrency(
+          this.offerInfo.offer
+        )}元\n`;
+      }
+
+      if (+this.offerInfo.per_offer_limit && +this.offerInfo.offer_limit) {
+        textValue += `• 单笔上限 ${this.formatThousandsCurrency(
+          this.offerInfo.per_offer_limit
+        )} 元，单日上限 ${this.formatThousandsCurrency(
+          this.offerInfo.offer_limit
+        )} 元(美东时间计算)\n`;
+      } else if (+this.offerInfo.per_offer_limit) {
+        textValue += `• 单笔上限 ${this.formatThousandsCurrency(
+          this.offerInfo.per_offer_limit
+        )} 元\n`;
+      } else if (+this.offerInfo.offer_limit) {
+        textValue += `• 单日上限 ${this.formatThousandsCurrency(
+          this.offerInfo.offer_limit
+        )} 元(美东时间计算)\n`;
+      }
+
+      textValue += this.offerInfo.is_full_offer
+        ? "• 今日领取已达上限"
+        : `• 今日优惠已领 ${this.formatThousandsCurrency(
+            this.offerInfo.gotten_offer
+          )}元`;
+
+      return textValue;
     }
   },
   watch: {
@@ -590,6 +644,52 @@ export default {
           const { msg } = error.response.data;
           this.actionSetGlobalMessage({ msg });
         });
+    },
+    // 取得使用者銀行卡列表(迅付)
+    getUserBankListFast() {
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_BANK,
+        params: {}
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            // console.log(response);
+            this.userBankOption = [];
+            this.userBankOption = response.data.ret;
+            this.defaultEpointWallet = this.userBankOption[0];
+          }
+        })
+        .catch(error => {});
+    },
+    // 取得會員層級當日取款試算優惠、金額(迅付)
+    getWithdrawOffer(amount) {
+      let method_id = 0;
+      if (this.selectedCard.bank_id === 2009) {
+        method_id = this.withdrawCurrency.method_id;
+      } else {
+        method_id = this.selectedCard.offer_data
+          ? this.selectedCard.offer_data[0]
+            ? this.selectedCard.offer_data[0].method_id
+            : 0
+          : 0;
+      }
+      //取得會員層級當日取款試算優惠、金額 C04.55
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Withdraw/Offer`,
+        params: {
+          payment_method_id: method_id, //銀行卡時=0
+          amount: amount
+        }
+      }).then(response => {
+        if (response && response.data && response.status === "000") {
+          // console.log(response.data);
+          this.offerInfo = response.data;
+        } else {
+          this.actionSetGlobalMessage({ msg: response.msg });
+        }
+      });
     }
   }
 };

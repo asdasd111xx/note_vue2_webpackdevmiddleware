@@ -1,5 +1,6 @@
 import {
   API_CRYPTO_MONEY,
+  API_MCENTER_DEPOSIT_BANK,
   API_MCENTER_DEPOSIT_CHANNEL,
   API_MCENTER_DEPOSIT_OUTER_WALLET,
   API_MCENTER_DEPOSIT_THIRD,
@@ -27,6 +28,8 @@ export default {
       curModeGroup: {},
       curPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
+      curPassRoadTipText: "",
+      curPassRoadTipTextShowMore: false,
       offerInfo: {},
       moneyValue: "",
       isShow: true,
@@ -47,16 +50,27 @@ export default {
       isSelectedCustomMoney: false,
       isDisableDepositInput: false,
       defaultOuterCrypto: "",
+      defaultEpointWallet: "",
       outerCryptoOption: [],
+      userBankOption: [],
+      bcCurrencyData: null,
+      selectBcCoin: {
+        balance: "",
+        currency: "",
+        name: ""
+      },
       isOuterCrypto: false,
       showOuterCryptoAddress: false,
+      showEpointWalletAddress: false,
       outerCryptoAddress: "",
+      epointBankName: "",
+      epointBankAccount: "",
       walletData: {
         CGPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
-          method: 0,
+          method: 1,
           password: "",
-          placeholder: "请输入CGPay支付密码"
+          placeholder: "请输入CGP安全防护码"
         }
       },
       // 傳遞給 depositInfo (訂單限時)
@@ -75,7 +89,10 @@ export default {
       countdownSec: 0,
 
       topPromotionMessage: "",
-      cgPromotionMessage: ""
+      cgPromotionMessage: "",
+
+      // 充值上方跑馬燈&支付方式高度
+      depositWrapMarignTop: 70
     };
   },
   watch: {
@@ -86,6 +103,24 @@ export default {
     },
     defaultOuterCrypto() {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
+    },
+    defaultEpointWallet() {
+      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+        ? this.defaultEpointWallet.account === "其他银行卡"
+        : false;
+    },
+    depositData(val) {
+      let top = 0;
+
+      if (val && val.length > 1) {
+        top += 35;
+      }
+
+      if (this.marqueeList && this.marqueeList.length > 0) {
+        top += 35;
+      }
+
+      this.depositWrapMarignTop = top;
     }
   },
   computed: {
@@ -140,6 +175,28 @@ export default {
         : 0;
       //充值優惠小數點後兩位捨去
       // promotionValue = Math.floor(promotionValue * 100) / 100;
+      // 超過優惠金額以單筆上限為主
+      if (
+        +this.offerInfo.per_offer_limit > 0 &&
+        promotionValue > +this.offerInfo.per_offer_limit
+      ) {
+        promotionValue = +this.offerInfo.per_offer_limit;
+      }
+      // 檢查每日優惠金額有無達到上限
+      if (this.offerInfo.is_full_offer) {
+        promotionValue = 0;
+      } else if (
+        +this.offerInfo.offer_limit > 0 &&
+        promotionValue >
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
+      ) {
+        promotionValue =
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
+
+        //充值優惠小數點後兩位捨去
+        promotionValue = Math.floor(promotionValue * 100) / 100;
+      }
+
       let deductionValue = +this.getPassRoadOrAi.fee_percent
         ? new BigNumber(this.moneyValue)
             .multipliedBy(
@@ -162,7 +219,7 @@ export default {
         (this.depositInterval.maxMoney &&
           this.depositInterval.maxMoney < this.moneyValue) ||
         (+this.getPassRoadOrAi.fee_percent <= 0 &&
-          +this.getPassRoadOrAi.fee_amount > +this.moneyValue)
+          +this.getPassRoadOrAi.fee_amount > +this.moneyValue + promotionValue)
       ) {
         return "0.00";
       }
@@ -180,28 +237,6 @@ export default {
         // 只取小數點後二位
         total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
         return this.formatThousandsCurrency(total);
-      }
-
-      // 超過優惠金額以單筆上限為主
-      if (
-        +this.offerInfo.per_offer_limit > 0 &&
-        promotionValue > +this.offerInfo.per_offer_limit
-      ) {
-        promotionValue = +this.offerInfo.per_offer_limit;
-      }
-      // 檢查每日優惠金額有無達到上限
-      if (this.offerInfo.is_full_offer) {
-        promotionValue = 0;
-      } else if (
-        +this.offerInfo.offer_limit > 0 &&
-        promotionValue >
-          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
-      ) {
-        promotionValue =
-          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
-
-        //充值優惠小數點後兩位捨去
-        promotionValue = Math.floor(promotionValue * 100) / 100;
       }
 
       // 總額計算
@@ -305,7 +340,7 @@ export default {
 
       textValue += this.offerInfo.is_full_offer
         ? "• 今日领取已达上限"
-        : `•今日优惠已领 ${this.formatThousandsCurrency(
+        : `• 今日优惠已领 ${this.formatThousandsCurrency(
             this.offerInfo.gotten_offer
           )}元`;
 
@@ -372,7 +407,7 @@ export default {
               title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
               value: this.curPassRoad.bank_account_name,
               isFontBold: false,
-              copyShow: false
+              copyShow: true
             },
             {
               objKey: "withdrawDeliver",
@@ -819,6 +854,7 @@ export default {
 
       this.checkDepositInput();
       this.getVendorCryptoOuterUserAddressList();
+      this.getUserBankList();
     },
     /**
      * 切換通道
@@ -880,6 +916,7 @@ export default {
       this.nameCheckFail = false;
       this.checkSuccess = false;
       this.showOuterCryptoAddress = false;
+      this.showEpointWalletAddress = false;
 
       this.walletData["CGPay"].password = "";
       this.cryptoMoney = "--";
@@ -940,7 +977,6 @@ export default {
 
       this.isShow = true;
       this.actionSetIsLoading(true);
-
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
@@ -992,6 +1028,29 @@ export default {
           };
         }
       }
+      //e點富
+      if (this.curPayInfo.payment_method_id === 34) {
+        if (this.showEpointWalletAddress) {
+          paramsData = {
+            ...paramsData,
+            pay_account: this.epointBankAccount,
+            pay_bank_name: this.epointBankName
+          };
+        } else {
+          paramsData = {
+            ...paramsData,
+            pay_account_id: this.defaultEpointWallet.id
+          };
+        }
+      }
+
+      //幣希
+      if (this.curPayInfo.payment_method_id === 32) {
+        paramsData = {
+          ...paramsData,
+          currency: this.selectBcCoin.currency
+        };
+      }
 
       let _isPWA = true;
 
@@ -1007,7 +1066,6 @@ export default {
           this.actionSetIsLoading(false);
 
           const { result, ret, msg, code } = response.data;
-
           let _isWebview =
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
@@ -1039,7 +1097,7 @@ export default {
             eventLabel: "success"
           });
 
-          console.log(ret, _isWebview);
+          // console.log(ret, _isWebview);
 
           // 如有回傳限制時間
           if (ret.remit.limit_time) {
@@ -1058,8 +1116,15 @@ export default {
             window.open(ret.deposit.url, "third");
             return { status: "third" };
           }
-
           if (ret.wallet.url) {
+            if (this.curPayInfo.payment_method_id === 34) {
+              localStorage.setItem("iframe-third-url", ret.wallet.url);
+              localStorage.setItem("iframe-third-url-title", "");
+              // localStorage.setItem("iframe-third-url-title", "搓合查询");
+              this.$router.push(`/mobile/iframe/deposit?func=false`);
+              newWindow.close();
+              return;
+            }
             if (_isWebview) {
               this.webviewOpenUrl = ret.wallet.url;
               // setTimeout(function () { document.location.href = ret.wallet.url; }, 250);
@@ -1353,13 +1418,23 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
+      if (
+        this.curPayInfo.payment_method_id === 32 &&
+        !this.selectBcCoin.currency
+      ) {
+        return;
+      }
       return axios({
         method: "get",
         url: API_CRYPTO_MONEY,
         params: {
           type: 1,
           amount: this.moneyValue,
-          method_id: this.curPayInfo.payment_method_id
+          method_id: this.curPayInfo.payment_method_id,
+          currency:
+            this.curPayInfo.payment_method_id === 32
+              ? this.selectBcCoin.currency
+              : ""
         }
       })
         .then(response => {
@@ -1379,7 +1454,7 @@ export default {
           //當切換成USDT和歸零的時候才重call秒數
           if (this.updateTime) {
             this.updateTime = false;
-            this.countdownSec = this.countdownSec ? this.countdownSec : ret.ttl;
+            this.countdownSec = ret.ttl;
           }
 
           // 僅限按下按鈕觸發，@input & @blur 皆不會觸發
@@ -1421,7 +1496,6 @@ export default {
     },
     // 取得使用者站外錢包入款錢包地址
     getVendorCryptoOuterUserAddressList() {
-      console.log("getVendorCryptoOuterUserAddressList");
       return axios({
         method: "get",
         url: API_MCENTER_DEPOSIT_OUTER_WALLET,
@@ -1431,7 +1505,7 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            console.log(response);
+            // console.log(response);
             this.outerCryptoOption = [];
             this.defaultOuterCrypto = "";
             response.data.ret.forEach(outerAddress => {
@@ -1449,6 +1523,25 @@ export default {
           }
 
           // this.outerCryptoOption = ["1", "2", "3"];
+        })
+        .catch(error => {});
+    },
+    // 取得使用者銀行卡列表(迅付)
+    getUserBankList() {
+      // console.log("API_MCENTER_DEPOSIT_BANK");
+      return axios({
+        method: "get",
+        url: API_MCENTER_DEPOSIT_BANK,
+        params: {}
+      })
+        .then(response => {
+          if (response && response.data && response.data.result === "ok") {
+            // console.log(response);
+            this.userBankOption = [];
+            this.userBankOption = response.data.ret;
+            this.userBankOption.push({ account: "其他银行卡" });
+            this.defaultEpointWallet = this.userBankOption[0];
+          }
         })
         .catch(error => {});
     },

@@ -7,3 +7,10 @@
 //     }
 //   }
 // }
+
+.button-block {
+  color: var(--popup_text_color2);
+  &:nth-child(2) {
+    color: var(--popup_text_color1);
+  }
+}

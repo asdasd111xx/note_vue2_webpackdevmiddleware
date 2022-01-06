@@ -142,7 +142,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import member from "@/api/member";
 import { getCookie } from "@/lib/cookie";
 
 export default {

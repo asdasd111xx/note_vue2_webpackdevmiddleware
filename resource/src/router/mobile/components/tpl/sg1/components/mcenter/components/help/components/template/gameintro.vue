@@ -37,6 +37,7 @@
             v-for="(item, index) in item.content"
             :class="$style['text-block']"
             v-html="item"
+            :key="index"
           />
           <div v-if="category_currentkind === 'live' && index === 5">
             <table :class="$style['table-border']">
@@ -121,14 +122,26 @@
 </template>
 
 <script>
-import info from "../../json/gameintro.json";
+import { mapGetters } from "vuex";
 import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
   created() {
     this.isCategoryMode = true;
-    this.source = info;
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
+  },
+  mounted() {
+    fetch(`/i18n/json/${this.routerTPL}/gameintro.json`)
+      .then(res => res.json())
+      .then(data => (this.source = data));
   }
 };
 </script>

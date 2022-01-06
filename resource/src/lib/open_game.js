@@ -62,22 +62,24 @@ export default (params, success = () => {}, fail = () => {}) => {
   let reqs = [];
 
   const getGameName = () => {
-    return goLangApiRequest({
-      method: "post",
-      url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
-      params: {
-        lang: "zh-cn",
-        kind: kind,
-        vendor: vendor,
-        code: code,
-        firstResult: 0,
-        maxResults: 20
-      }
-    }).then(res => {
-      if (res && res.data && res.data.ret && res.data.ret[0]) {
-        gameTitle = res.data.ret[0].name;
-      }
-    });
+    if (code != "") {
+      return goLangApiRequest({
+        method: "post",
+        url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
+        params: {
+          lang: "zh-cn",
+          kind: kind,
+          vendor: vendor,
+          code: code,
+          firstResult: 0,
+          maxResults: 20
+        }
+      }).then(res => {
+        if (res && res.data && res.data.ret && res.data.ret[0]) {
+          gameTitle = res.data.ret[0].name;
+        }
+      });
+    }
   };
 
   // 泡泡直播固定標題

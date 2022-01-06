@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading';
-import axios from 'axios';
-import querystring from 'querystring';
-import pornRequest from '@/api/pornRequest';
-import { getEncryptImage } from '@/lib/crypto';
+import InfiniteLoading from "vue-infinite-loading";
+import axios from "axios";
+import querystring from "querystring";
+import pornRequest from "@/api/pornRequest";
+import { getEncryptImage } from "@/lib/crypto";
 
 export default {
   components: {
@@ -60,7 +60,7 @@ export default {
       isReceive: false,
       hasInfinite: false,
       curIndex: 0,
-      active: 'views',
+      active: "views",
       videoList: [],
       current: 0,
       total: 0,
@@ -70,10 +70,14 @@ export default {
   computed: {
     tabs() {
       return [
-        { index: 0, key: 'views', name: this.$text('S_PLAYS', '播放数') },
-        { index: 1, key: 'zans', name: this.$text('S_ZANS', '点赞数') },
-        { index: 2, key: 'downloads', name: this.$text('S_DOWNLOADS', '下载数') },
-        { index: 3, key: 'comments', name: this.$text('S_COMMENTS', '评论数') }
+        { index: 0, key: "views", name: this.$text("S_PLAYS", "播放数") },
+        { index: 1, key: "zans", name: this.$text("S_ZANS", "点赞数") },
+        {
+          index: 2,
+          key: "downloads",
+          name: this.$text("S_DOWNLOADS", "下载数")
+        },
+        { index: 3, key: "comments", name: this.$text("S_COMMENTS", "评论数") }
       ];
     }
   },
@@ -90,8 +94,10 @@ export default {
       return {
         src: image,
         error: this.$getCdnPath(`/static/image/porn1/default/bg_video01_d.png`),
-        loading: this.$getCdnPath(`/static/image/porn1/default/bg_video01_d.png`)
-      }
+        loading: this.$getCdnPath(
+          `/static/image/porn1/default/bg_video01_d.png`
+        )
+      };
     },
     handleClick(tab) {
       this.active = tab.key;
@@ -99,9 +105,9 @@ export default {
     },
     getVideoList(page) {
       return pornRequest({
-        method: 'post',
+        method: "post",
         url: `/video/rank`,
-        data: { type: this.active, page: page },
+        data: { type: this.active, page: page }
       });
     },
     setVideoList() {
@@ -112,7 +118,7 @@ export default {
       this.isReceive = true;
       this.hasInfinite = false;
 
-      this.getVideoList(1).then((response) => {
+      this.getVideoList(1).then(response => {
         this.isReceive = false;
 
         if (response.status !== 200) {
@@ -126,8 +132,8 @@ export default {
         setTimeout(() => {
           this.videoList.forEach(item => {
             getEncryptImage(item);
-          })
-        }, 300)
+          });
+        }, 300);
 
         if (response.result.current_page >= response.result.last_page) {
           return;
@@ -143,7 +149,7 @@ export default {
 
       this.isReceive = true;
 
-      this.getVideoList(this.current + 1).then((response) => {
+      this.getVideoList(this.current + 1).then(response => {
         if (response.status !== 200) {
           return;
         }
@@ -174,7 +180,7 @@ export default {
 
 .tab-wrap {
   height: 43px;
-  background-color: $main_white_color1;
+  background-color: #fefffe;
   position: relative;
 }
 
@@ -183,7 +189,7 @@ export default {
   bottom: 1.5px;
   left: calc(12.5% - 25px);
   height: 2px;
-  background-color: #be9e7f;
+  background-color: var(--slider_underline_active_color);
   width: 50px;
   transition: left 0.31s;
 }
@@ -198,7 +204,7 @@ export default {
   text-align: center;
 
   &.active {
-    color: $main_text_color2;
+    color: #ffffff;
   }
 }
 
@@ -223,7 +229,7 @@ export default {
   font-weight: 500;
   background-color: black;
   opacity: 0.6;
-  color: $main_white_color1;
+  color: #fefffe;
   font-size: 12px;
   height: 36px;
   width: 100%;

@@ -207,7 +207,7 @@ export default {
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: #be9e7f;
+  background: #d1b79c;
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 

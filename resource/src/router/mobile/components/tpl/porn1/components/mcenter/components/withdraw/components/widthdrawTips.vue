@@ -5,6 +5,7 @@
       <div
         :class="[
           $style['check-container'],
+          $style[siteConfig.ROUTER_TPL],
           {
             [$style['deposit']]: type === 'deposit'
           }
@@ -26,7 +27,6 @@
         <div :class="$style['check-content']">
           <template v-if="type === 'tips'">
             <div :class="$style['time']">流水检查时间：{{ getNowTime() }}</div>
-            <div :class="$style['hr']" />
             <div v-if="serialNumberData && serialNumberData.total">
               <div :class="$style['check-cell']">
                 <span :class="$style['sub-title']"> 流水要求 </span>
@@ -56,17 +56,16 @@
                 </span>
               </div>
 
-              <div :class="$style['check-cell']">
-                <span :class="$style['sub-title']">
+              <div :class="[$style['check-cell'], $style['offer-twoline']]">
+                <div :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
                   <template v-if="['ey1'].includes(themeTPL)">
                     (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
                   </template>
-                </span>
+                </div>
                 <span :class="$style['money']">
                   {{
-                    formatThousandsCurrency(serialNumberData.total.deduction) >
-                    0
+                    +serialNumberData.total.deduction > 0
                       ? "-" +
                         formatThousandsCurrency(
                           serialNumberData.total.deduction
@@ -91,9 +90,7 @@
                 <span :class="$style['sub-title']"> 扣除总计 </span>
                 <span :class="$style['money']">
                   {{
-                    formatThousandsCurrency(
-                      serialNumberData.total.total_deduction
-                    ) > 0
+                    +serialNumberData.total.total_deduction > 0
                       ? "-" +
                         formatThousandsCurrency(
                           serialNumberData.total.total_deduction
@@ -107,24 +104,18 @@
 
               <div
                 v-if="hasOffer"
-                :class="[$style['check-cell'], $style['custom-color']]"
-                :style="
-                  bonusOffer && bonusOffer.length > 9
-                    ? { 'font-size': '12px' }
-                    : {}
-                "
+                :class="[
+                  $style['check-cell'],
+                  $style['custom-color'],
+                  $style['offer-twoline']
+                ]"
               >
-                <span :class="$style['sub-title']">
-                  {{ withdrawName }}出款额外赠送
-                </span>
-                <span
-                  :style="
-                    bonusOffer && bonusOffer.length > 9
-                      ? { 'font-size': '12px' }
-                      : {}
-                  "
-                  :class="[$style['money']]"
-                >
+                <div :class="$style['sub-title']">
+                  {{
+                    withdrawName === "" ? "银行卡" : withdrawName
+                  }}出款额外赠送
+                </div>
+                <span :class="[$style['money']]">
                   {{ bonusOffer }}
                 </span>
               </div>
@@ -137,7 +128,7 @@
                       ? { 'font-size': '12px' }
                       : {}
                   "
-                  :class="$style['money']"
+                  :class="[$style['money-bold']]"
                 >
                   {{ actualMoney }}
                 </span>
@@ -145,10 +136,14 @@
 
               <div
                 v-if="hasCrypto"
-                :class="[$style['check-cell'], $style['custom-color']]"
+                :class="[
+                  $style['check-cell'],
+                  $style['custom-color'],
+                  $style['custom-color-background']
+                ]"
               >
                 <span :class="$style['sub-title']">
-                  {{ withdrawName }}到帐
+                  {{ selectCard.bank_id === 2025 ? "币希" : withdrawName }}到帐
                 </span>
                 <span
                   :style="
@@ -158,7 +153,11 @@
                   "
                   :class="$style['crypto-money']"
                 >
-                  {{ formatThousandsCurrency(cryptoMoney) }}
+                  {{
+                    selectCard.bank_id === 2025
+                      ? formatThousandsCurrencyUnFix(cryptoMoney)
+                      : formatThousandsCurrency(cryptoMoney)
+                  }}
                 </span>
               </div>
             </div>
@@ -245,6 +244,10 @@ export default {
     hasOffer: {
       type: Boolean,
       default: false
+    },
+    selectCard: {
+      type: Object,
+      default: {}
     }
   },
   mounted() {

@@ -27,18 +27,19 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = 'https://ey8866.com/';
 // const domain = 'https://ey.688lg.com/';
 
-// 丝瓜 500035
-// const domain = "https://sgqa1.yaslbox.com/";
-// const domain = "https://sgqa1-io.yaslbox.com/";
+// 泡泡 500035
+// const domain = "https://sgtt.66boxing.com/";
+
 // Beta 100009
-// const domain = "https://sgbe1.grtymart.com/";
+// const domain ="https://sg.66apples.com";
+
 // Demo 81
 // const domain = 'https://sgt.66relish.com/';
 // Prod 80
-// const domain = 'https://5lpet08l.com/';
+// const domain = "https://5lpet08l.com/";
 
 // 澳博国际 QA 9999894
-// const domain = "https://auqa1.66boxing.com/";
+//const domain = "https://auqa1.66boxing.com/";
 // const domain = "https://952t.66boxing.com/";
 // Beta
 // const domain = "";
@@ -77,27 +78,6 @@ module.exports = {
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
     proxyTable: {
-      // 可於自己開發時改換但不要蓋紀錄
-      // '/ubb': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
-      // '/static': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
-      // '/i18n': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
-      // '/checkinfo': {
-      //     target: 'https://yaboxxxapp01.com/',
-      //     changeOrigin: true,
-      //     secure: false
-      // },
       "/api": {
         target: domain,
         changeOrigin: true,
@@ -118,11 +98,6 @@ module.exports = {
       "/cdn": {
         //  開發測試用
         // target: 'http://pineapple.vir888.net',
-        target: domain,
-        changeOrigin: true,
-        secure: false
-      },
-      "/payment": {
         target: domain,
         changeOrigin: true,
         secure: false

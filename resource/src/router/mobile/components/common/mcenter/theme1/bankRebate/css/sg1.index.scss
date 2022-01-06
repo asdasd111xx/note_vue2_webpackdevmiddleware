@@ -24,7 +24,7 @@
       }
 
       &.is-current {
-        color: #bf8646;
+        color: var(--bankrebate_text_active_color);
       }
     }
 
@@ -53,17 +53,16 @@
 
       &.disable {
         color: #ffffff;
-        background: linear-gradient(#fed3cb, #ffc5ce);
+        background: var(--mcenter_button_color2);
       }
     }
 
-
     .rebate-btn {
       a {
-        background: linear-gradient(to left, #fe593c, #e61938);
+        background: var(--mcenter_button_color1);
 
         &.disable {
-          background: linear-gradient(to left, #fed3cb, #ffc5ce);
+          background: var(--mcenter_button_color2);
         }
       }
     }
@@ -78,10 +77,10 @@
 
 .real-top-wrap {
   .real-top-btn {
-    background: linear-gradient(to left, #fe593c, #e61938);
+    background: var(--mcenter_button_color1);
 
     &.disable {
-      background: linear-gradient(#fed3cb, #ffc5ce);
+      background: var(--mcenter_button_color2);
     }
 
     .calculate-button {
@@ -93,10 +92,10 @@
 }
 
 .receive-vip-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: var(--mcenter_button_color1);
 
   &.is-disabled {
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    background: var(--mcenter_button_color2);
   }
 }
 
@@ -106,6 +105,6 @@
 
 .popup {
   .close {
-    color: linear-gradient(to left, #fe593c, #e61938);
+    color: var(--mcenter_button_color1);
   }
 }

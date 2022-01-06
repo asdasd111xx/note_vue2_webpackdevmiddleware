@@ -69,6 +69,7 @@ import mobileContainer from "../common/mobileContainer";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -85,6 +86,9 @@ export default {
       hasNewGift: false,
       isShowPop: false
     };
+  },
+  created() {
+    sendUmeng(51);
   },
   mounted() {
     this.tabId = (this.$route.query && this.$route.query.tab) || 0;
@@ -161,6 +165,16 @@ export default {
       });
     },
     onGiftClick(target) {
+      switch (target.name) {
+        case "审核查询":
+          sendUmeng(52);
+          break;
+        case "自领优惠":
+          sendUmeng(53);
+          break;
+        default:
+          break;
+      }
       let url = "";
       localStorage.setItem("iframe-third-url-title", target.name);
       this.$router.push(
@@ -295,11 +309,9 @@ $fixed_spacing_height: 43px;
   line-height: 43px;
   font-size: 14px;
   text-align: center;
-  color: $main_text_color2;
-
+  color: var(--mcenter_slider_text_color);
   &.active {
-    color: $main_text_color4;
-    // border-bottom: solid 1px #be9e7f;
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -327,7 +339,7 @@ $fixed_spacing_height: 43px;
 
 .time {
   line-height: 13px;
-  color: $main_text_color4;
+  color: var(--slider_text_active_color);
   font-size: 10px;
 
   > img {

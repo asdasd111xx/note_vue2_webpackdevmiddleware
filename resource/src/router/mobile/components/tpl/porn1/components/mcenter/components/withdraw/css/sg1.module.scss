@@ -1,5 +1,4 @@
 @import "./index.module.scss";
-$bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
 .add-bank-card {
   color: #414655;
@@ -12,6 +11,12 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
       background-size: 100%;
     }
   }
+
+  >span {
+    &.rubbing-btn {
+      background: var(--mcenter_button_color1);
+    }
+  }
 }
 
 .check-container {
@@ -22,12 +27,14 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
   .check-button-wrap {
     color: #fff;
+    margin-bottom: 10px;
 
     .check-btn {
+      border-radius: 3px;
       background: #a2a2a2;
 
       &.submit {
-        background: $bg_linear_gradient;
+        background: var(--mcenter_button_color1);
       }
     }
   }
@@ -35,18 +42,18 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
 
 .withdraw-max {
   >span {
-    background: $bg_linear_gradient;
+    background: var(--mcenter_button_color1);
   }
 }
 
 .submit-btn {
   >div {
-    background: $bg_linear_gradient;
+    background: var(--mcenter_button_color1);
   }
 
   &.disabled {
     div {
-      background: linear-gradient(to left, #fed3cb, #ffc5ce);
+      background: var(--mcenter_button_color2);
     }
   }
 }
@@ -81,4 +88,46 @@ $bg_linear_gradient: linear-gradient(to left, #fe593c, #e61938);
       color: #a2a2a2;
     }
   }
+}
+
+.bank-wrap {
+  .bank-type {
+    &.is-current {
+      border: 1px solid var(--wallet_border_color);
+      color: var(--wallet_border_color);
+      background: linear-gradient(-45deg,
+          var(--wallet_border_color) 10px,
+          hsla(0, 0%, 100%, 0) 0);
+    }
+  }
+}
+
+.offer {
+  height: 30px;
+  color: var(--widthdraw_tip_text_color);
+  padding: 5px 14px;
+  width: 100%;
+}
+
+.exchange-rate,
+.actual-money,
+.crypto-block {
+  .time {
+    color: var(--wallet_border_color);
+  }
+}
+
+.check-header {
+  border-radius: 3px 3px 0 0;
+
+  .title {
+    width: 100%;
+    font-size: 17px;
+    font-weight: 400;
+    text-align: center;
+  }
+}
+
+.check-container {
+  border-radius: 3px;
 }

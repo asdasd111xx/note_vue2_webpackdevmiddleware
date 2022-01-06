@@ -67,7 +67,7 @@
                 {{ $text("S_DEPOSIT_TIP03", "若长时间未到帐请联络客服") }}
               </li>
             </div>
-            <div :class="$style['confirm-btn']" @click="closeFuc(false)">
+            <div :class="[$style['confirm-btn']]" @click="closeFuc(false)">
               {{ $text("S_ENTER01", "我知道了") }}
             </div>
           </div>

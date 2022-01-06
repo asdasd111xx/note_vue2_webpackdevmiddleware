@@ -1,13 +1,20 @@
+@import "~@/css/variable.scss";
 .menu-wrap {
   width: 100%;
+  max-width: $mobile_max_width;
   padding: 8px 17px;
   background: #fff;
   position: fixed;
   top: 43px;
-  left: 0;
   z-index: 5;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+}
+
+@media (orientation: landscape) {
+  .menu-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
 }
 
 .menu-select-game {
@@ -111,16 +118,17 @@
 
 .dropdown-wrap {
   width: 100%;
-  padding: 15px 7px 15px 17px;
+  padding: 15px 7px;
   margin: 0;
-  position: fixed;
-  top: 93px;
+  position: absolute;
+  top: 49px;
   left: 0;
   z-index: 5;
   background: #fff;
   list-style: none;
   overflow-x: hidden;
   overflow-y: auto;
+  max-width: 420px;
 
   &.game {
     min-height: 400px;
@@ -144,25 +152,30 @@
     margin-right: 10px;
     text-align: center;
     font-size: 12px;
-    color: #a6a9b2;
-    border: 1px solid #a6a9b2;
-    border-radius: 3px;
+    background: var(--mcenter_dropdown_background_color);
+    color: var(--mcenter_dropdown_text_color);
+    border: 1px solid var(--mcenter_dropdown_border_color);
+    border-radius: 5px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 
     &.active {
       line-height: 33px;
-      color: #fff;
-      background: #bd9d7d;
-      background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-      background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
-      border: none;
+      color: var(--mcenter_dropdown_text_active_color);
+      background: var(--mcenter_dropdown_background_active_color);
+      border: 1px solid var(--mcenter_dropdown_border_active_color);
     }
 
     &:nth-child(n + 5) {
       margin-top: 9px;
     }
+  }
+}
+
+@media (orientation: landscape) {
+  .dropdown-wrap {
+    max-width: $mobile_max_landscape_width !important;
   }
 }
 
@@ -187,7 +200,8 @@
 
 .custom-date {
   padding: 16px 0;
-  background: url("/static/image/common/arrow_next.png") no-repeat right 0 center;
+  background: url("/static/image/common/arrow_next.png") no-repeat right 0
+    center;
   background-size: 15px 15px;
   border-bottom: 1px solid #eee;
 
@@ -223,16 +237,13 @@
   text-align: center;
 }
 
-.time-cancel {
-  background: #faf5f0;
-  color: #be9e7f;
-}
-
 .time-confirm {
-  color: #fff;
-  background: #bd9d7d;
-  background-image: -webkit-linear-gradient(right, #bd9d7d, #f9ddbd);
-  background-image: linear-gradient(right, #bd9d7d, #f9ddbd);
+  color: var(--mcenter_dropdown_ok_text_color);
+  background: var(--mcenter_dropdown_ok_background_color);
+}
+.time-cancel {
+  background: var(--mcenter_dropdown_cancel_background_color);
+  color: var(--mcenter_dropdown_cancel_text_color);
 }
 
 .data-wrap {
@@ -346,15 +357,14 @@
   &:before {
     display: block;
     width: 3px;
-    height: 14px;
+    height: 15px;
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: #bd9d7d;
-    background-image: -webkit-linear-gradient(top, #bd9d7d, #f9ddbd);
-    background-image: linear-gradient(top, #bd9d7d, #f9ddbd);
     content: "";
+    border-radius: 2px;
+    background: var(--deco_color);
   }
 }
 
@@ -366,7 +376,7 @@
   padding-left: 8px;
   color: #414655;
 
-  >div {
+  > div {
     flex: 1;
   }
 

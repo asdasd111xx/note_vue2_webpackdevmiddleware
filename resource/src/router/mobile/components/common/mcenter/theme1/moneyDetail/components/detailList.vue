@@ -15,7 +15,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/moneyDetail/icon_${
+                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${
                   currentCategory.key == 'outer'
                     ? 'vendor'
                     : currentCategory.key
@@ -53,7 +53,7 @@
     <div :class="$style.tips">{{ noDataText }}</div>
     <div
       v-if="currentCategory.key === 'deposit'"
-      :class="$style['btn-deposit']"
+      :class="[$style['btn-deposit']]"
       @click="onDeposit"
     >
       立即充值
@@ -85,6 +85,12 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig"
     }),
+    isEmbedDetail() {
+      // 共用紀錄
+      return ["ingroup_transfer", "internal_memo", "paopao"].includes(
+        this.pageType
+      );
+    },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
@@ -97,10 +103,7 @@ export default {
       return style;
     },
     isEmbed() {
-      return (
-        this.$route.name === "mcenter-creditTrans" ||
-        this.$route.name === "mcenter-swag"
-      );
+      return this.$route.name === "mcenter-creditTrans";
     }
   },
   props: {
@@ -143,6 +146,9 @@ export default {
     ) {
       this.emptyImage = "img_default_no_data";
       this.noDataText = `暂时没有新的签到彩金`;
+    } else {
+      this.emptyImage = "no_data";
+      this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
     }
   },
   methods: {
@@ -153,11 +159,7 @@ export default {
       this.$emit("update:detailInfo", info);
       localStorage.setItem("money-detail-id", info.id);
 
-      if (
-        this.pageType !== "ingroup_transfer" &&
-        this.pageType !== "swag" &&
-        this.pageType !== "internal_memo"
-      ) {
+      if (!this.isEmbedDetail) {
         this.$router.push("/mobile/mcenter/moneyDetail/detail?id=" + info.id);
       }
     },

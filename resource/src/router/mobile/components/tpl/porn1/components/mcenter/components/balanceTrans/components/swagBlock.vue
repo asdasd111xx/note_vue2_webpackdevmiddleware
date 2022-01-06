@@ -62,8 +62,7 @@ export default {
     maintainBlock
   },
   computed: {
-    ...mapGetters({
-    })
+    ...mapGetters({})
   },
   data() {
     return {
@@ -93,7 +92,7 @@ export default {
   text-align: center;
   height: 65px;
   background: #fefefe;
-  color: $main_text_color3;
+  color: var(--slider_text_color);
 }
 
 .item {
@@ -101,7 +100,7 @@ export default {
   flex: 1;
   font-size: 12px;
   font-weight: 700;
-  color: $main_text_color3;
+  color: var(--slider_text_color);
 
   // Swag 錢包區塊
   &.wallet {
@@ -130,7 +129,7 @@ export default {
     font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
     font-weight: 700;
     text-align: center;
-    color: #be9e7f;
+    color: #bd9d7d;
     display: flex;
     justify-content: center;
     align-items: center;

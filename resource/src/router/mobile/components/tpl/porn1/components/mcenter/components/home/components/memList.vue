@@ -237,19 +237,40 @@ export default {
 
       let _vendor = "",
         _bundleID = "";
-
+      let list = {};
       // 預設
-      this.superAppUrl = "https://user.51cjq.xyz/pkgs/ybsp2.app";
+      // this.superAppUrl = "https://user.51cjq.xyz/pkgs/ybsp2.app";
+
       switch (this.routerTPL) {
         case "porn1":
+          list = {
+            69: "cyiosdev0001.foxyporn.stage.wang",
+            67: "chungyo.foxyporn.prod.enterprise.vip"
+          };
           _vendor = 67;
-          _bundleID = "chungyo.foxyporn.prod.enterprise.vip";
+          _bundleID = list[+this.memInfo.user.domain]
+            ? list[+this.memInfo.user.domain]
+            : "cyiosdev0001.foxyporn.qa.wang";
           break;
 
-        // 缺bundleID
         case "aobo1":
-          _vendor = 92;
-          _bundleID = "";
+          list = {
+            93: "cyiosdev0001.aoboCasino.demo",
+            92: "cyiosdev0001.aoboCasino.prod"
+          };
+          _vendor = this.memInfo.user.domain;
+          _bundleID = list[+this.memInfo.user.domain]
+            ? list[+this.memInfo.user.domain]
+            : "cyiosdev0001.aoboCasino.qa";
+          break;
+
+        case "sp1":
+          _vendor = this.memInfo.user.domain;
+          _bundleID =
+            +this.memInfo.user.domain === 94
+              ? "cyiosdev0001.mobile.intl51.vip"
+              : "cyiosdev0001.mobile.intl51.qa";
+
           break;
       }
 
@@ -262,7 +283,7 @@ export default {
         }
       }).then(res => {
         if (res.data && res.status === "000") {
-          if (res && res.data) {
+          if (res && res.data && res.data.url) {
             this.superAppUrl = res.data.url;
           }
         }
@@ -278,10 +299,9 @@ export default {
           return;
         }
 
-        if (this.requiredMoneyStatus === "ok") {
-          // 超級籤app下載網址
-          const appUrl = this.superAppUrl;
-          window.open(appUrl, "_blank");
+        if (this.requiredMoneyStatus === "ok" && this.superAppUrl) {
+          let newWindow = window.open();
+          newWindow.location.href = this.superAppUrl;
         } else {
           this.actionSetGlobalMessage({ msg: this.superErrorMsg });
         }
@@ -303,11 +323,7 @@ export default {
           sendUmeng(35);
           break;
         case "share":
-          if (this.routerTPL === "sg1") {
-            sendUmeng(35);
-          } else {
-            sendUmeng(36);
-          }
+          sendUmeng(36);
           break;
         default:
           break;
@@ -387,7 +403,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .mem-list {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
 }
 
 .list-part {
@@ -406,8 +422,8 @@ export default {
   padding: 0 18px;
   display: flex;
   align-items: center;
-  background-color: $main_white_color1;
-  color: $main_text_color3;
+  background-color: #fefffe;
+  color: #414655;
 
   > span {
     width: 100%;

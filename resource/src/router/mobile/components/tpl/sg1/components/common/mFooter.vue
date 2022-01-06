@@ -35,6 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   props: {
@@ -80,6 +81,23 @@ export default {
   },
   methods: {
     onClick({ key, path }) {
+      switch (key) {
+        case "home":
+          sendUmeng(19);
+          break;
+        case "promotion":
+          sendUmeng(20);
+          break;
+        case "service":
+          sendUmeng(21);
+          break;
+        case "iframe":
+          sendUmeng(22);
+          break;
+        case "mcenter-home":
+          sendUmeng(23);
+          break;
+      }
       this.$router.push(path);
     },
     isActive(key) {

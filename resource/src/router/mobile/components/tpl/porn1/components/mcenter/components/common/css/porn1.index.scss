@@ -19,7 +19,7 @@
     flex: 1;
     font-size: 12px;
     font-weight: 700;
-    color: $main_text_color3;
+    color: #414655;
 
     img {
       width: 13px;
@@ -29,7 +29,7 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: #be9e7f;
+      color: var(--mcenter_wallet_text_color);
     }
   }
 
@@ -37,7 +37,7 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: #be9e7f;
+    color: var(--mcenter_wallet_recycle_text_color);
     font-weight: 700;
 
     &::before {
@@ -67,6 +67,6 @@
   .credit-trans-link {
     flex: 1;
     font-size: 16px;
-    color: #be9e7f;
+    color: var(--mcenter_wallet_recycle_text_color);
   }
 }

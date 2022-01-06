@@ -56,6 +56,23 @@ export default {
 
       this.$router.replace("/mobile/login");
     }
+
+    if (!document.querySelector('script[data-name="esabgnixob"]')) {
+      this.script = document.createElement("script");
+      this.script.setAttribute("type", "text/javascript");
+      this.script.setAttribute("data-name", "esabgnixob");
+
+      if (window.location.host.includes("localhost")) {
+        this.script.setAttribute(
+          "src",
+          "https://yb01.66boxing.com/mobile/esabgnixob.js"
+        );
+      } else {
+        this.script.setAttribute("src", "esabgnixob.js");
+      }
+
+      document.head.appendChild(this.script);
+    }
   },
   created() {
     this.getCaptcha();
@@ -105,7 +122,7 @@ export default {
     },
     handleClickLogin() {
       if (!this.username) {
-        this.errMsg = "用户名不得为空";
+        this.errMsg = "帐号不得为空";
         return;
       }
 
@@ -294,6 +311,11 @@ export default {
             return;
           }
           this.errMsg = res.status;
+        }
+
+        // network error
+        if (res && res.message) {
+          this.errMsg = `网路异常(${res.message})`;
         }
 
         if (callBackFuc) {

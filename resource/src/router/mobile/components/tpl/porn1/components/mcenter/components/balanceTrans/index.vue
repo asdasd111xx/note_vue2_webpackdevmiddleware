@@ -3,11 +3,6 @@
     <div slot="content" :class="$style['content-wrap']">
       <balanceBack :has-link="true" />
 
-      <!-- 僅限鴨博有 Swag -->
-      <!-- <template v-if="themeTPL === 'porn1'">
-        <swagBlock />
-      </template> -->
-
       <balanceTrans
         :is-show-block-tips.sync="isShowBlockTips"
         :is-show-more-out.sync="isShowMoreOut"

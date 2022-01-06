@@ -19,7 +19,6 @@ import agent from "@/api/agent";
 import ajax from "@/lib/ajax";
 import bbosRequest from "@/api/bbosRequest";
 import common from "@/api/common";
-import { errorAlarm } from "@/lib/error_console";
 import game from "@/api/game";
 import getLang from "@/lib/getLang";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -135,7 +134,7 @@ export const actionChangePage = (
 ) => {
   // 自訂頁面不存在
   if (type === "custom" && !state.webInfo.pageData[page]) {
-    errorAlarm("PAGE DOES NOT EXIST", [`PAGE ID:${page}`]);
+    console.log("PAGE DOES NOT EXIST", [`PAGE ID:${page}`]);
     return;
   }
 
@@ -599,8 +598,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetUserdata");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionGetMobileInfo");
-    dispatch("actionGetMemInfoV3");
-
     await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
 
     // 設定網站設定檔資訊 (start)
@@ -644,8 +641,9 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         }
       });
     }
-    dispatch("actionSetSiteConfig", configInfo);
+    await dispatch("actionSetSiteConfig", configInfo);
     dispatch("actionSetNews");
+    dispatch("actionGetMemInfoV3");
 
     if (["porn1", "sg1"].includes(state.webDomain.site)) {
       dispatch("actionSetRechargeConfig");
@@ -725,25 +723,22 @@ export const actionSetUserdata = (
     memstatus = true;
   }, 1000);
 
+  let configInfo = {};
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
+  }
+
   const hasLogin = getCookie("cid");
   if (hasLogin) {
-    axios({
-      method: "get",
-      url: "/api/v1/c/player/user_bank/list"
-    })
-      .then(res => {
-        if (res && res.data && res.data.result === "ok") {
-          commit(types.SET_HASBANK, res.data.ret.length > 0);
-        }
-      })
-      .catch(error => {
-        if (error.response && error.response.data.code === "M00001") {
-          dispatch("actionSetGlobalMessage", {
-            msg: error.response.data.msg,
-            code: error.response.data.code
-          });
-        }
-      });
+    goLangApiRequest({
+      method: "post",
+      url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
+    }).then(res => {
+      commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
+    });
   }
   //判斷uuid
   let uuidAccount = "";
@@ -761,14 +756,6 @@ export const actionSetUserdata = (
     script.setAttribute("data-name", "esabgnixob");
     script.onload = e => {
       //訪客註冊
-      let configInfo = {};
-      if (state.webDomain) {
-        configInfo =
-          siteConfigTest[`site_${state.webDomain.domain}`] ||
-          siteConfigOfficial[`site_${state.webDomain.domain}`] ||
-          siteConfigOfficial.preset;
-      }
-
       if (state.webDomain.site === "ey1" && hasLogin) {
         dispatch("actionSetUserWithdrawCheck");
       }
@@ -848,7 +835,18 @@ export const actionSetUserdata = (
       if (headers[configInfo.CDN_HEADER]) {
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
+
+      const prodVendor = ["67", "80", "41", "92", "94"];
+
+      if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
+        commit(
+          types.SETSLIDECDNDOMAIN,
+          `https://${headers["x-cdn"].split(",")[0]}`
+        );
+      }
+
       commit(types.SETCDNROOT, cdnRoot);
+
       // let domain = data.ret.user.domain.toString();
       // switch (domain) {
       //   case "9999894":
@@ -1598,7 +1596,12 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     window.CHECKRECHARGETSTATUS = undefined;
   }, 1200);
 
+  if (!state.memInfoV3 || !state.memInfoV3.user) {
+    return;
+  }
+
   const info = state.memInfoV3.user;
+
   if (!!info.bankrupt) {
     dispatch("actionSetGlobalMessage", {
       msg: "您的钱包已停权，请联系线上客服！"
@@ -1617,6 +1620,15 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     });
 
     return;
+  }
+
+  let configInfo = {};
+
+  if (state.webDomain) {
+    configInfo =
+      siteConfigTest[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial[`site_${state.webDomain.domain}`] ||
+      siteConfigOfficial.preset;
   }
 
   return axios({
@@ -1642,35 +1654,22 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       let withdraw_result = {};
 
       if (bank_required) {
-        const user_bank = axios({
-          method: "get",
-          url: "/api/v1/c/player/user_bank/list"
-        })
-          .then(res => {
-            if (
-              res &&
-              res.data &&
-              res.data.result === "ok" &&
-              res.data.ret.length > 0
-            ) {
-              bank_required_result = {
-                status: "ok"
-              };
-            } else {
-              bank_required_result = {
-                status: "bindcard",
-                code: "C50099",
-                type: "bindcard"
-              };
-            }
-          })
-          .catch(error => {
+        const user_bank = goLangApiRequest({
+          method: "post",
+          url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
+        }).then(res => {
+          if (res && res.data && res.status === "000" && res.data.length > 0) {
+            bank_required_result = {
+              status: "ok"
+            };
+          } else {
             bank_required_result = {
               status: "bindcard",
               code: "C50099",
               type: "bindcard"
             };
-          });
+          }
+        });
 
         params.push(user_bank);
       }
@@ -1753,6 +1752,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       });
     })
     .catch(error => {
+      console.log(error);
       if (error.response.data.code === "M00001") {
         dispatch("actionSetGlobalMessage", {
           msg: "请先登入",
@@ -1806,13 +1806,13 @@ export const actionGetMemInfoV3 = ({ state, dispatch, commit }) => {
     window.CHECKV3PLAYERSTATUS = undefined;
   }, 1200);
 
-  return axios({
+  return goLangApiRequest({
     method: "get",
-    url: "/api/v3/c/player"
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/V3`
   })
     .then(res => {
-      if (res && res.data && res.data.result === "ok") {
-        commit(types.SETMEMINFOV3, res.data.ret);
+      if (res && res.data && res.status === "000") {
+        commit(types.SETMEMINFOV3, res.data);
       }
     })
     .catch(error => {
@@ -2091,7 +2091,7 @@ export const actionSetWebDomain = ({ commit }) => {
         "background: #222; color: yellow; font-size:14px",
         {
           ...res.data,
-          version: version.find(i => i.site === "porn1").version
+          version: version.find(i => i.site === "normal").version
         }
       );
       const site = (res && res.data && String(res.data.site)) || "";
@@ -2399,20 +2399,17 @@ export const actionSetUserWithdrawCheck = ({ state, commit, dispatch }) => {
 };
 
 // 取得429發送太頻繁字串
-export const actionGetToManyRequestMsg = ({ state }, response) => {
-  if (response && Number(response.status) === 429) {
-    if (response.data && response.data.message) {
-      console.log(response.data.message);
-      return i18n.t(
-        response.data.message
-          .toString()
-          .toUpperCase()
-          .replace(/ /g, "_")
-      );
-    } else {
-      return response;
-    }
+export const actionGetToManyRequestMsg = ({ state }, message) => {
+  if (!message) {
+    return "";
   }
+
+  return i18n.t(
+    message
+      .toString()
+      .toUpperCase()
+      .replace(/ /g, "_")
+  );
 };
 
 // 取得廳設定 C02.233
@@ -2457,6 +2454,63 @@ export const actionGetLayeredURL = ({ state }, eventCode) => {
       const { msg } = error.response.data;
       dispatch("actionSetGlobalMessage", {
         msg
+      });
+    });
+};
+
+export const actionGetActingURL = ({ state }) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostnames/V2`,
+    params: {
+      // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+      clientType: 1,
+      withLevelHostname: true
+    }
+  })
+    .then(res => {
+      const { data, status, errorCode, msg } = res;
+
+      if (errorCode !== "00" || status !== "000") {
+        dispatch("actionSetGlobalMessage", {
+          msg
+        });
+        return Promise.resolve(false);
+      }
+      return Promise.resolve(data);
+    })
+    .catch(error => {
+      const { msg } = error.response.data;
+      dispatch("actionSetGlobalMessage", {
+        msg
+      });
+    });
+};
+
+export const actionGetRegisterURL = ({ state }) => {
+  return axios({
+    method: "get",
+    url: "/api/v1/c/register/bind-url/check"
+  })
+    .then(res => {
+      const { ret, result, msg, code } = res.data;
+      console.log(res);
+      if (!res || result !== "ok") {
+        dispatch("actionSetGlobalMessage", {
+          msg,
+          code
+        });
+        return;
+      } else {
+        return Promise.resolve(ret);
+      }
+    })
+    .catch(error => {
+      const msg = error?.response?.data?.msg;
+      const code = error?.response?.data?.code;
+      dispatch("actionSetGlobalMessage", {
+        msg,
+        code
       });
     });
 };

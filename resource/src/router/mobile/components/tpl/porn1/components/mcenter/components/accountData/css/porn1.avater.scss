@@ -1,5 +1,17 @@
 @import "~@/css/variable.scss";
 
+@mixin check-ok($backgroundImg) {
+  position: absolute;
+  bottom: 10%;
+  right: -10px;
+  background: url($backgroundImg) 0 0 no-repeat;
+  background-size: 100%;
+  width: 18px;
+  height: 18px;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+
 // avatar dialog
 .dialog {
   position: fixed;
@@ -15,7 +27,7 @@
 }
 
 .dialog-wrap {
-  background-color: $main_background_white1;
+  background-color: #f8f8f8;
   border-radius: 20px 20px 0 0;
   bottom: 0;
   max-width: $mobile_max_width;
@@ -27,26 +39,26 @@
 
   .dialog-func {
     text-align: center;
-    color: #5E626D;
+    color: #5e626d;
     font-size: 17px;
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
 
-    >div:first {
+    > div:first {
       padding-top: 1px;
     }
 
-    >div {
-      color: #5E626D;
-      background-color: $main_white_color1;
+    > div {
+      color: #5e626d;
+      background-color: #fefffe;
       width: 100%;
       height: 50px;
       line-height: 50px;
     }
 
-    >div:last-child {
+    > div:last-child {
       margin-top: 20px;
       color: black;
     }
@@ -63,20 +75,24 @@
 
       &.active {
         border: 2px solid transparent;
-        border-color: #d2b79c;
+        border-color: var(--mcenter_change_avatar_image);
       }
     }
 
     .check {
-      position: absolute;
-      bottom: 10%;
-      right: -10px;
-      background: url("/static/image/_new/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
-      width: 18px;
-      height: 18px;
-      -webkit-transform: translate(-50%, 0);
-      transform: translate(-50%, 0);
+      @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+      &.image-porn1 {
+        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+      }
+      &.image-aobo1 {
+        @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+      }
+      &.image-sp1 {
+        @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+      }
+      &.image-sg1 {
+        @include check-ok("/static/image/sg1/mcenter/ic_check.png");
+      }
     }
   }
 
@@ -133,10 +149,10 @@
   align-items: center;
   justify-content: center;
 
-  >div {
+  > div {
     width: 20px;
     height: 20px;
-    background-image: url('/static/image/common/btn_back_grey.png');
+    background-image: url("/static/image/common/btn_back_grey.png");
     background-size: cover;
     background-position: center;
   }
@@ -171,9 +187,9 @@
 }
 
 .choose-btn {
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+  background: var(--mcenter_upload_image_button);
+  color: var(--mcenter_button_text_color1);
   border-radius: 3px;
-  color: #ffffff;
   font-size: 14px;
   font-weight: 400;
   height: 45px;
@@ -185,7 +201,7 @@
 .func-btn {
   margin: 15px 0;
 
-  >div {
+  > div {
     width: 48%;
     display: inline-block;
     font-weight: 400;
@@ -198,13 +214,13 @@
 }
 
 .cancel-btn {
-  background: #faf5f0;
-  color: #be9e7f;
+  background: var(--mcenter_upload_image_cancel_button);
+  color: var(--mcenter_upload_image_cancel_text_button);
   float: left;
 }
 
 .submit-btn {
-  background: linear-gradient(to left, #bd9d7d, #f9ddbd);
-  color: #ffffff;
+  background: var(--mcenter_upload_image_button);
+  color: var(--mcenter_button_text_color1);
   float: right;
 }

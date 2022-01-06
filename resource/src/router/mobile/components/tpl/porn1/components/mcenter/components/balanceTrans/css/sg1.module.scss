@@ -1,21 +1,21 @@
 @import "./porn1.module.scss";
 
 .max-money-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: var(--mcenter_button_color1);
 }
 
 .transfer-btn {
-  background: linear-gradient(to left, #fe593c, #e61938);
+  background: var(--mcenter_button_color1);
 
   &.is-disable {
-    background: linear-gradient(to left, #fed3cb, #ffc5ce);
+    background: var(--mcenter_button_color2);
   }
 }
 
 .select-container {
   .select-header {
     span {
-      color: #bf8646;
+      color: var(--mcenter_slider_text_active_color);
     }
   }
 }
@@ -27,23 +27,27 @@
 }
 
 .balance-item-money {
-  color: #a2a2a2;
+  color: var(--mcenter_slider_text_color);
 }
 
 .balance-redjackpot-text {
-  color: #be9e7f;
+  color: var(--mcenter_wallet_redpot_text_color);
+  word-break: break-word;
+}
+.balance-redjackpot-money {
+  color: var(--mcenter_wallet_redpot_money_color);
   word-break: break-word;
 }
 
 .transfer-money-input {
   &::placeholder {
-    color: #a2a2a2;
+    color: var(--mcenter_slider_text_color);
   }
 }
 
 .balance-tip-wrap {
   .balance-auto-tip {
-    color: #a2a2a2;
+    color: var(--mcenter_slider_text_color);
   }
 }
 
@@ -76,6 +80,19 @@
       display: block;
       left: 18px;
       position: absolute;
+    }
+  }
+}
+.balance-total-item {
+  .balance-item-money {
+    color: var(--mcenter_wallet_text_color);
+  }
+}
+
+.select-container {
+  .select-header {
+    span {
+      color: var(--mcenter_slider_text_active_color);
     }
   }
 }

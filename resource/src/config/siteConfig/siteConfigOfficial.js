@@ -10,7 +10,7 @@ export const preset = {
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
 
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com",
   CDN_HEADER: ""
 };
@@ -38,7 +38,7 @@ export const site_67 = {
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("porn1"),
   SITE_NAME: "币发BIFA",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -61,7 +61,7 @@ export const site_69 = {
   VERSION: getVersion("porn1"),
   SITE_NAME: "币发BIFA",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -158,7 +158,7 @@ export const site_80 = {
   MOBILE_WEB_TPL: "sg1", // 手機網頁版模版
   VERSION: getVersion("sg1"),
   SITE_NAME: "泡泡直播",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
@@ -168,7 +168,7 @@ export const site_80 = {
       LES: "8"
     }
   },
-  CDN_HEADER: "x-cdn-ey"
+  CDN_HEADER: "x-cdn-sg"
 };
 
 /**
@@ -181,7 +181,7 @@ export const site_81 = {
   VERSION: getVersion("sg1"),
   SITE_NAME: "泡泡直播",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
@@ -227,7 +227,7 @@ export const site_92 = {
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.lysywh.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
@@ -248,8 +248,7 @@ export const site_93 = {
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.bjspzc.cn:9443/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",

@@ -3,7 +3,7 @@
     <div :class="$style['option']">
       <div
         v-if="optionType === 0"
-        :class="$style['option0']"
+        :class="[$style['option0'], $style[siteConfig.ROUTER_TPL]]"
         @click="getRedJackpotMoney"
       >
         领取
@@ -19,7 +19,7 @@
       <div :class="$style['top']">
         <div :class="$style['menu-wrap']">
           <p :class="$style['small']">锁定中彩金</p>
-          <p :class="$style['money-text']">
+          <p :class="[$style['money-text']]">
             {{
               redJackpotData !== null
                 ? formatThousandsCurrency(redJackpotData.remain_bonus)
@@ -54,7 +54,7 @@
         <recoard-detail-slider
           v-if="detailInfo"
           :detail-info="detailInfo"
-          :detail-type="{ text: '红利' }"
+          :detail-type="{ text: '优惠' }"
           @close="showDetail(null)"
         />
       </div>

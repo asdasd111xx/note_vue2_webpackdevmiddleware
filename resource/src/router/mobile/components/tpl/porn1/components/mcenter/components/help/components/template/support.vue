@@ -29,15 +29,14 @@
             v-for="(item, index) in item.list"
             :class="$style['text-block']"
             v-html="item"
+            :key="index"
           />
         </div>
 
         <div
           :class="[$style['arrow-btn'], { [$style['active']]: item.isOpen }]"
         >
-          <img
-            :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-          />
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
     </div>
@@ -46,13 +45,11 @@
 
 <script>
 import { mapGetters } from "vuex";
-import mixin from '@/mixins/mcenter/help/help';
+import mixin from "@/mixins/mcenter/help/help";
 
 export default {
   mixins: [mixin],
-  created() {
-    // this.source = info;
-  },
+  created() {},
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
@@ -64,9 +61,9 @@ export default {
   },
   mounted() {
     fetch(`/i18n/json/${this.routerTPL}/support.json`)
-    .then(res => res.json())
-    .then(data => this.source = data)
+      .then(res => res.json())
+      .then(data => (this.source = data));
   }
 };
 </script>
-<style src="../../css/index.module.scss" lang="scss" module>
+<style src="../../css/index.module.scss" lang="scss" module />

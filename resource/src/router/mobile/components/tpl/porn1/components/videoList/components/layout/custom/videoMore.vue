@@ -328,7 +328,7 @@ export default {
 }
 
 .wrap {
-  background: $main_white_color1;
+  background: #fefffe;
   max-width: $mobile_max_width;
   width: 100%;
   position: fixed;

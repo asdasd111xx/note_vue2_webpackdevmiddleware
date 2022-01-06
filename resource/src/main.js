@@ -18,7 +18,6 @@ import Icon from "vue-awesome/components/Icon";
 import LoadScript from "vue-plugin-load-script";
 import Loading from "vue-loading-overlay";
 import Meta from "vue-meta";
-// vee-validate - 表單驗證
 import VeeValidate from "vee-validate";
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
@@ -28,10 +27,7 @@ import VueCookie from "vue-cookie";
 import VueCropper from "vue-cropper";
 import VueLazyload from "vue-lazyload";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import VueRx from "vue-rx";
-// swal
 import VueSwal2 from "vue-sweetalert2";
-import Vuebar from "vuebar";
 import Vuex from "vuex";
 import depositLink from "./lib/depositLink";
 import getCdnPath from "./lib/getCdnPath";
@@ -72,7 +68,7 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("do-not-show-withdraw-post");
   // 浮動推廣
   localStorage.removeItem("do-not-show-float-list");
-
+  localStorage.removeItem("appTips");
   if (reload) {
     window.location.reload();
   }
@@ -97,7 +93,11 @@ window.RESET_MEM_SETTING = reload => {
 /* plugins css - end */
 // 推播中心websocket api
 let cid = getCookie("cid");
-if (cid) {
+
+const urlParams = new URLSearchParams(window.location.search);
+const isApp = urlParams.get("isApp") || urlParams.get("app");
+
+if (cid && !isApp) {
   const script = document.createElement("script");
   script.setAttribute("src", "/api/v1/ws/front_file");
   script.setAttribute("data-id", "ws-bc");
@@ -137,14 +137,11 @@ if (process.env.NODE_ENV === "development") {
 const script_cdn_host = window.SCRIPT_CDN_HOST ? window.SCRIPT_CDN_HOST : "/";
 Vue.use(LoadScript);
 Vue.use(Vuex);
-Vue.use(VueRx);
-Vue.use(VeeValidate, { inject: true });
 Vue.use(VueCookie);
 Vue.use(moment);
 Vue.use(VueLazyload);
 Vue.use(VueSwal2);
 Vue.use(Loading);
-Vue.use(Vuebar);
 Vue.use(Meta);
 Vue.use(getCdnPath);
 Vue.use(text);
@@ -153,6 +150,7 @@ Vue.use(VueClipboard);
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.use(depositLink);
 Vue.use(VueCropper);
+Vue.use(VeeValidate);
 Vue.component("icon", Icon);
 Vue.loadScript(`//g.alicdn.com/sd/ncpc/nc.js?t=${Date.now()}`);
 Vue.loadScript(`${script_cdn_host}public/js/jquery-3.3.1.min.js`).then(() => {

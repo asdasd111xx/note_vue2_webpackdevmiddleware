@@ -8,6 +8,8 @@ export const SETWEBINFO = "SETWEBINFO";
 export const SETPREVIEW = "SETPREVIEW";
 // 設定是否透過外面CDN廠商代理
 export const SETCDNROOT = "SETCDNROOT";
+export const SETSLIDECDNDOMAIN = "SETSLIDECDNDOMAIN";
+
 // 遊戲資料
 export const SETGAMEDATA = "SETGAMEDATA";
 export const SETVERSION = "SETVERSION";

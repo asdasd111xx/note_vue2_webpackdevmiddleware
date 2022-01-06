@@ -6,7 +6,9 @@
           :src="
             $getCdnPath(
               `/static/image/common/btn_back_${
-                themeTPL === 'porn1'
+                themeTPL === 'porn1' ||
+                themeTPL === 'aobo1' ||
+                themeTPL === 'sp1'
                   ? 'grey'
                   : themeTPL === 'ey1'
                   ? 'white'
@@ -70,7 +72,7 @@
         {{ item.text }}
       </div>
       <div
-        :class="$style['active-slider']"
+        :class="[$style['active-slider']]"
         :style="{ left: `calc(25% + 50% * ${currentTab})` }"
       />
     </div>
@@ -123,7 +125,7 @@ export default {
       return style;
     },
     themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
+      return this.siteConfig.ROUTER_TPL;
     },
     isCommon() {
       return this.$route.meta.common;
@@ -136,7 +138,7 @@ export default {
         },
         {
           key: "wallet",
-          text: ["porn1", "sg1"].includes(this.themeTPL)
+          text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
             ? "数字货币"
             : "电子钱包"
         }
@@ -162,6 +164,8 @@ export default {
         switch (themeTPL) {
           case "porn1":
           case "sg1":
+          case "aobo1":
+          case "sp1":
             return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
 
           case "ey1":
@@ -184,6 +188,8 @@ export default {
           switch (themeTPL) {
             case "porn1":
             case "sg1":
+            case "aobo1":
+            case "sp1":
               return showDetail
                 ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
                 : !isCommon
@@ -209,6 +215,8 @@ export default {
           switch (this.themeTPL) {
             case "porn1":
             case "sg1":
+            case "aobo1":
+            case "sp1":
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
 
             case "ey1":
@@ -281,7 +289,7 @@ export default {
     this.actionSetUserLevels().then(() => {
       let type = this.$route.query.type;
       let tempType = localStorage.getItem("bankCardType");
-
+      console.log(this.$route.query.redirect);
       // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
       if (this.hasRedirect || tempType) {
         if ((type && type === "bankCard") || tempType === "bankCard") {
@@ -290,6 +298,9 @@ export default {
 
         if ((type && type === "wallet") || tempType === "wallet") {
           this.setPageStatus(1, "addWalletCard", false);
+          if (this.$route.query.redirect === "epoint") {
+            this.$router.replace("/mobile/mcenter/bankCard");
+          }
         }
 
         localStorage.removeItem("bankCardType");
@@ -356,10 +367,11 @@ export default {
       localStorage.removeItem("oneClickBindingMode");
       localStorage.removeItem("isBackFromService");
       localStorage.removeItem("selectTarget");
-      // 目前只有銀行卡有分兩階段
+      // 銀行卡/電子錢包分兩階段
       if (
-        this.currentPage === "addBankCard" &&
-        this.addBankCardStep === "two"
+        (this.currentPage === "addBankCard" &&
+          this.addBankCardStep === "two") ||
+        (this.currentPage === "addWalletCard" && this.addBankCardStep === "two")
       ) {
         this.step = "one";
         return;
@@ -386,7 +398,15 @@ export default {
               this.$router.back();
             }
             break;
+          case "epoint":
+            // this.$router.replace("/mobile/mcenter/bankCard");
+            // this.setPageStatus(1, "walletCardInfo", true);
+            console.log("epoint back?");
+            break;
 
+          case "live-home":
+            this.$router.push("/mobile/live/home");
+            break;
           default:
             this.$router.back();
             break;

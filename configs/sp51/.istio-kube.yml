@@ -9,7 +9,7 @@ metadata:
     base: sp51-frontend
   name: {{.deployName}}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: sp51-frontend-{{.env}}
@@ -78,4 +78,4 @@ spec:
           path: /exports/backend-upload
           server: {{.nfs}}
       nodeSelector:
-        cloud.google.com/gke-nodepool: {{.nodePoolName}}
+        {{.nodePool}}: {{.nodePoolName}} 

@@ -1,3 +1,4 @@
+@import "~@/css/variable.scss";
 .withdraw-alert-wrap {
   position: absolute;
   width: 100%;
@@ -96,22 +97,7 @@
   text-align: center;
   cursor: pointer;
   border-radius: 4px;
-  color: #d1b79c;
-  background: #fefffe;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.confirm-btn-ey1 {
-  display: block;
-  width: 150px;
-  height: 40px;
-  line-height: 35px;
-  margin: 0 auto;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 4px;
-  color: #e42a30;
+  color: var(--popup_text_color1);
   background: #fefffe;
   font-size: 18px;
   font-weight: bold;

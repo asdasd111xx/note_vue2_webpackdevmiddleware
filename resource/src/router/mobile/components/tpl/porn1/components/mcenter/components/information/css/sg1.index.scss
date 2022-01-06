@@ -14,12 +14,11 @@
   }
 }
 
-
 .menu-list {
   position: relative;
   float: left;
   width: 33.333%;
-  background-color: #FFF;
+  background-color: #fff;
   text-align: center;
 }
 
@@ -28,13 +27,13 @@
   height: 42px;
   line-height: 42px;
   margin: 0 auto;
-  color: #A5A9B3;
+  color: var(--mcenter_slider_text_color);
   font-size: 13px;
   text-align: center;
 
   &.active {
-    border-bottom-color: #D2B79C;
-    color: #414655;
+    border-bottom-color: var(--mcenter_slider_underline_active_color);
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -47,8 +46,8 @@
   margin-left: 15px;
   padding: 0 5px;
   border-radius: 7px;
-  background-color: #DB6372;
-  color: #FFF;
+  background-color: #db6372;
+  color: #fff;
   font-size: 12px;
 }
 
@@ -58,7 +57,7 @@
   height: 2px;
   bottom: 0;
   transform: translateX(-50%);
-  background: #E61938;
+  background: #e61938;
   left: calc(33% / 2 - 20px);
   transition: left 0.31s;
 }

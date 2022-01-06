@@ -38,7 +38,7 @@
           color: #222;
 
           &.is-negative {
-            color: $main_error_color1;
+            color: #db6372;
           }
         }
       }
@@ -67,9 +67,9 @@
       button {
         width: 270px;
         height: 39px;
-        color: #fff;
+        color: var(--mcenter_button_text_color1);
         // background: #00347d;
-        background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+        background: var(--mcenter_button_color1);
 
         border: 0;
         outline: none;
@@ -77,8 +77,7 @@
       }
 
       .unrebate-btn {
-        color: #f3ede7;
-        background: linear-gradient(to left, #e9dacb, #eee5db);
+        background: var(--mcenter_button_color2);
       }
     }
 

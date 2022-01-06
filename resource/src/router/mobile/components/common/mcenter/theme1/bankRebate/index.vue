@@ -218,14 +218,17 @@
                 </template>
                 <ele-loading v-else-if="rebateState === 'loading'" />
 
-                <template v-else>
+                <template>
                   <!-- 當返水金額符合最低返水金額才可領取 rebate 和 min_rebate -->
                   <a
                     v-if="caculateList.operateStatus"
                     id="receive-button"
-                    :class="{
-                      [$style['disable']]: btnReceiveLock[listIndex]
-                    }"
+                    :class="[
+                      $style['receive-btn'],
+                      {
+                        [$style['disable']]: btnReceiveLock[listIndex]
+                      }
+                    ]"
                     href="###"
                     @click="popReceive(listIndex)"
                   >
@@ -352,7 +355,7 @@
         <div :class="$style['pop-mask']" @click="closePopup" />
         <div :class="$style['content-block']">
           <div :class="$style['msg']">{{ popupMsg }}</div>
-          <div :class="$style['close']" @click="closePopup">
+          <div :class="[$style['close']]" @click="closePopup">
             {{ $text("S_CONFIRM_2", "确定") }}
           </div>
         </div>

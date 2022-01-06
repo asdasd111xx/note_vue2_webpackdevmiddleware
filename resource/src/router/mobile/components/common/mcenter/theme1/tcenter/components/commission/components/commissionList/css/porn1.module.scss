@@ -14,7 +14,7 @@
 .total-block {
   display: flex;
   justify-content: space-between;
-  color: $main_text_color3;
+  color: #414655;
   font-size: 12px;
   height: 40px;
   line-height: 40px;
@@ -45,8 +45,8 @@
 }
 
 .card {
-  background: $main_white_color1;
-  color: $main_text_color3;
+  background: #fefffe;
+  color: #414655;
   border-radius: 8px;
   margin-bottom: 9px;
   padding-bottom: 6px;
@@ -118,7 +118,7 @@
       font-size: 12px;
     }
     &.is-negative {
-      color: $main_error_color1;
+      color: #db6372;
     }
 
     &.has-detail {
@@ -128,12 +128,12 @@
     &::before {
       content: "返利：";
       position: relative;
-      color: $main_text_color3;
+      color: #414655;
     }
   }
 
   .state-unqualified {
-    color: $main_error_color1;
+    color: #db6372;
   }
 }
 
@@ -174,7 +174,7 @@
 
 .date {
   font-size: 17px;
-  color: $main_text_color3;
+  color: #414655;
   margin: 7px 0 5px 0;
   font-weight: bold;
 }

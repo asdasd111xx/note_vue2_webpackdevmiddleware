@@ -1,87 +1,76 @@
 @import "./porn1.module.scss";
 
 .title {
-  background-image: url('/static/image/sg1/mcenter/tcenter/promote_topbg.png');
+  background-image: url("/static/image/sg1/mcenter/tcenter/promote_topbg.png");
 }
 
 .main {
-  background-image: url('/static/image/sg1/mcenter/tcenter/promote_bg.png');
+  background-image: url("/static/image/sg1/mcenter/tcenter/promote_bg.png");
 }
 
 .top-data {
   font-weight: inherit;
 
   .list-data {
-    border-bottom: #F8E1A1 dashed 1px;
+    border-bottom: #f8e1a1 dashed 1px;
 
     .list-name {
-      color: #F8E1A1;
+      color: var(--tcenter_left_title_color);
 
       .list-btn {
         color: #222222;
-        background-color: #FFD68A;
+        background-color: var(--tcenter_color);
       }
     }
 
     .list-value {
-      color: #FFFFFF;
+      color: var(--tcenter_right_title_color);
     }
   }
-
 }
 
-
 .title-commission {
-  border-color: #FFAFBE;
-  color: #FFAFBE;
+  border: 1px solid #ffafbe;
+  color: #ffafbe;
+  background: transparent;
 }
 
 .regist-data {
-
   .all-regist-title {
-
     .regist-title-bar {
-      background: linear-gradient(to top, #E61938, #FE593C);
+      background: linear-gradient(to top, #e61938, #fe593c);
     }
   }
 }
 
 .today-pay-content {
-
   .today-title {
-
     .topday-content {
-
       .title-point {
-
         &.deposit {
-          background-color: #E61938
+          background-color: var(--tcenter_progress_color1);
         }
 
         &.withdraw {
-          background-color: #FFD68A
+          background-color: var(--tcenter_progress_color2);
         }
       }
     }
   }
 
   .today-bar {
-
     .background-bar {
-      background-color: #FFD68A;
+      background-color: #ffd68a;
 
       .person-bar {
-        background-color: #E61938
+        background-color: #e61938;
       }
     }
   }
-
 }
-
 
 .special {
   .special-title {
-
     &::before {
       content: "";
       position: relative;
@@ -90,15 +79,13 @@
       height: 16px;
       top: 2.5px;
       margin-right: 7px;
-      background: linear-gradient(#FE593C, #E61938);
+      background: linear-gradient(#fe593c, #e61938);
     }
-
   }
 
   .special-content {
-
     .special-data {
-      color: #414655
+      color: #414655;
     }
   }
 }

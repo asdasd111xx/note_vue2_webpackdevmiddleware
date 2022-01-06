@@ -144,22 +144,14 @@
                   />
                 </template>
               </template>
-              <div
-                v-if="
-                  game.isMaintain || (isMaintainSwag && game.vendor === 'SWAG')
-                "
-                :class="[$style['maintain-mask']]"
-              >
+              <div v-if="game.isMaintain" :class="[$style['maintain-mask']]">
                 <div
                   :class="[
                     {
                       [$style['maintain-mask-1']]:
-                        game.imageType === 1 ||
-                        game.imageType === 2 ||
-                        game.vendor === 'SWAG'
+                        game.imageType === 1 || game.imageType === 2
                     },
-                    { [$style['maintain-mask-2']]: game.imageType === 0 },
-                    { [$style['swag']]: game.vendor === 'SWAG' }
+                    { [$style['maintain-mask-2']]: game.imageType === 0 }
                   ]"
                 >
                   <div
@@ -179,52 +171,21 @@
                       } 维护中`
                     }}
                   </div>
-                  <div
-                    v-if="
-                      game.isMaintain ||
-                        (isMaintainSwag &&
-                          game.vendor === 'SWAG' &&
-                          swagConfig &&
-                          swagConfig.enable !== 0)
-                    "
-                    :class="[$style['container']]"
-                  >
+                  <div v-if="game.isMaintain" :class="[$style['container']]">
                     <div :class="[$style['us-time']]">
                       {{ `-美东时间-` }}
                     </div>
                     <div :class="[$style['container-maintain']]">
-                      <div
-                        :class="[
-                          $style['container-maintain-time'],
-                          { [$style['swag']]: game.vendor === 'SWAG' }
-                        ]"
-                      >
-                        {{
-                          `${
-                            game.vendor === "SWAG"
-                              ? swagESTMaintainStartAt
-                              : game.start_at
-                          }`
-                        }}
+                      <div :class="[$style['container-maintain-time']]">
+                        {{ `${game.start_at}` }}
                       </div>
                       <img
                         :src="
                           $getCdnPath(`/static/image/casino/ic_transfergo.png`)
                         "
                       />
-                      <div
-                        :class="[
-                          $style['container-maintain-time'],
-                          { [$style['swag']]: game.vendor === 'SWAG' }
-                        ]"
-                      >
-                        {{
-                          `${
-                            game.vendor === "SWAG"
-                              ? swagESTMaintainEndAt
-                              : game.end_at
-                          }`
-                        }}
+                      <div :class="[$style['container-maintain-time']]">
+                        {{ `${game.end_at}` }}
                       </div>
                     </div>
                   </div>
@@ -248,10 +209,7 @@
         </div>
 
         <div
-          :class="[
-            $style['modal-button-center'],
-            $style[siteConfig.MOBILE_WEB_TPL]
-          ]"
+          :class="[$style['modal-button-center']]"
           @click="closeRedirect_url()"
         >
           确定
@@ -283,6 +241,7 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "~@/css/variable.scss";
 .home-wrap {
   overflow: hidden;
   position: relative;
@@ -333,14 +292,14 @@ export default {
   top: 32px;
   right: 0;
   left: 0;
-  color: #731c25;
+  color: var(--homepage_left_text_color);
   font-size: 12px;
   text-align: center;
   font-family: MicrosoftJhengHeiBold;
   font-weight: 500;
 
   &.active {
-    color: #fff;
+    color: var(--homepage_left_text_active_color);
   }
 }
 
@@ -369,7 +328,7 @@ export default {
       height: 30px;
       line-height: 30px;
       border: none;
-      background: linear-gradient(to left, #bd9d7d, #f9ddbd);
+      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
       color: #fff;
     }
   }
@@ -395,7 +354,7 @@ export default {
   > div {
     height: 16px;
     line-height: 16px;
-    color: #ffad0a;
+    color: var(--homepage_right_text_color);
     font-size: 12px;
     text-align: center;
   }
@@ -496,10 +455,6 @@ export default {
       background-color: #9ca3bf;
       width: 60%;
 
-      &.swag {
-        max-width: 245px;
-      }
-
       > div.maintain-text-1 {
         word-break: break-all;
         margin-top: 15px;
@@ -528,11 +483,6 @@ export default {
           > div.container-maintain-time {
             line-height: 12px;
             font-size: 8px !important;
-
-            &.swag {
-              line-height: 11px;
-              font-size: 9px !important;
-            }
           }
         }
       }
@@ -689,15 +639,7 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: #d2b79c;
-  }
-
-  &.ey1:last-child {
-    color: #e42a30;
-  }
-
-  &.porn1:last-child {
-    color: #d2b79c;
+    color: var(--send_keyring);
   }
 }
 </style>

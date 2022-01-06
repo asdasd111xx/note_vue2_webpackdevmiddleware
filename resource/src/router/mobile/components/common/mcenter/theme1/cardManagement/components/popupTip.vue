@@ -128,17 +128,17 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $main_white_color1;
+  background: #fefffe;
   border-radius: 8px;
 }
 
 .content {
   padding: 17px 13px;
-  color: $main_text_color2;
+  color: #ffffff;
   text-align: center;
 
   .title {
-    color: $main_text_color3;
+    color: var(--slider_text_color);
     font-size: 18px;
     font-weight: 700;
   }
@@ -178,7 +178,7 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: #d1b79c;
+    color: var(--popup_text_color1);
   }
 }
 </style>

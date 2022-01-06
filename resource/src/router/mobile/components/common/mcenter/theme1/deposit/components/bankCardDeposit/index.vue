@@ -6,38 +6,40 @@
     >
       {{ topPromotionMessage }}
     </div> -->
-    <marquee
-      v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
-      :list="marqueeList"
-      :titleList="marqueeTitle"
-      :origin="'deposit'"
-    />
+    <div :class="[$style['header-wrap']]">
+      <marquee
+        v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
+        :list="marqueeList"
+        :titleList="marqueeTitle"
+        :origin="'deposit'"
+      />
 
-    <swiper
-      v-if="depositData.length > 1"
-      :options="categoryOptions"
-      :class="$style['swiper-wrap']"
-    >
-      <swiper-slide
-        v-for="(listItem, index) in depositData"
-        :key="`swiper-data-${index}`"
-        :class="[
-          $style['swiper-item'],
-          {
-            [$style['is-current']]:
-              listItem.payment_group_id === curModeGroup.payment_group_id
-          }
-        ]"
+      <swiper
+        v-if="depositData.length > 1"
+        :options="categoryOptions"
+        :class="$style['swiper-wrap']"
       >
-        <span @click="modeChange(listItem, index)">{{
-          listItem.payment_group_name || listItem.name
-        }}</span>
-      </swiper-slide>
-    </swiper>
-
+        <swiper-slide
+          v-for="(listItem, index) in depositData"
+          :key="`swiper-data-${index}`"
+          :class="[
+            $style['swiper-item'],
+            {
+              [$style['is-current']]:
+                listItem.payment_group_id === curModeGroup.payment_group_id
+            }
+          ]"
+        >
+          <span @click="modeChange(listItem, index)">{{
+            listItem.payment_group_name || listItem.name
+          }}</span>
+        </swiper-slide>
+      </swiper>
+    </div>
     <div
       v-if="depositData.length > 0 && submitStatus === 'stepOne'"
       :class="$style['deposit-edit-wrap']"
+      :style="{ 'margin-top': `${depositWrapMarignTop}px` }"
     >
       <template v-if="Object.keys(curModeGroup).length > 0">
         <div :class="$style['bank-card-wrap']">
@@ -51,6 +53,7 @@
                 :key="`pay-mode-${info.payment_method_id}-${info.bank_id}`"
                 :class="[
                   $style['pay-mode-item'],
+
                   {
                     [$style['is-current']]:
                       curPayInfo.payment_method_id === info.payment_method_id &&
@@ -122,7 +125,10 @@
               <!-- 客製額度轉帳入口 -->
               <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 <div
-                  :class="[$style['pay-mode-item']]"
+                  :class="[
+                    $style['pay-mode-item'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @click="handleCreditTrans"
                 >
                   <div :class="[$style['pay-sub-title'], $style['custom']]">
@@ -191,7 +197,7 @@
                     {{ item.label }}
                     <icon
                       v-if="item.value === curSelectedBank.value"
-                      :class="$style['select-active']"
+                      :class="[$style['select-active']]"
                       name="check"
                     />
                   </li>
@@ -244,7 +250,64 @@
                 为即时到帐，请务必输入正确的汇款人姓名
               </div>
             </div>
+            <!-- e點富銀行 -->
+            <div
+              v-if="isSelectBindWallet(34) && this.curPassRoad.is_bind_wallet"
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <span :class="$style['select-bank-title']">
+                您的银行
+              </span>
+              <div
+                :class="$style['select-epoint-bank-item']"
+                @click="setPopupStatus(true, 'epointBank')"
+              >
+                {{ defaultEpointWallet.account }}
+                <img
+                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                />
+              </div>
+            </div>
 
+            <!-- v-if="showEpointWalletAddress" -->
+            <div
+              v-if="
+                isSelectBindWallet(34) &&
+                  curPassRoad.is_bind_wallet &&
+                  showEpointWalletAddress
+              "
+              :class="[
+                $style['feature-wrap'],
+                $style['select-card-wrap'],
+                'clearfix'
+              ]"
+            >
+              <div :class="$style['other-bank-input-text']">
+                银行名称
+                <input
+                  v-model="epointBankName"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入银行名称'"
+                />
+              </div>
+              <div :class="[$style['other-bank-input-text'], $style['border']]">
+                银行帐号
+                <input
+                  v-model="epointBankAccount"
+                  :class="$style['input-cgpay-address']"
+                  type="tel"
+                  :placeholder="'请输入银行帐号'"
+                />
+              </div>
+              <div :class="[$style['wallet-address-text'], $style['less']]">
+                为即时到帐，请务必输入正确的银行资讯
+              </div>
+            </div>
             <!-- 支付通道 -->
             <!-- 加密貨幣會隱藏 -->
             <div
@@ -262,11 +325,23 @@
                   :key="data.id"
                   :class="[
                     $style['pay-mode-pass'],
+
                     { [$style['current-data']]: data.id === curPassRoad.id }
                   ]"
                   @click="changePassRoad(data)"
                 >
                   {{ data.mainTitle }}
+                  <img
+                    v-if="tipTrans[data.display_tag]"
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/mcenter/deposit/icon_${
+                          tipTrans[data.display_tag]
+                        }.png`
+                      )
+                    "
+                    :class="$style['pay-mode-tag']"
+                  />
                   <img
                     v-if="data.id === curPassRoad.id"
                     :class="$style['pay-active']"
@@ -274,10 +349,29 @@
                   />
                 </div>
               </div>
+              <div
+                :class="[
+                  curPassRoad.tip != ''
+                    ? [$style['pay-mode-tip-show']]
+                    : [$style['pay-mode-tip-close']]
+                ]"
+              >
+                <div
+                  :class="$style['pay-mode-tip']"
+                  v-html="curPassRoadTipText"
+                ></div>
+                <div
+                  v-if="curPassRoadTipTextShowMore"
+                  :class="$style['pay-mode-tip-more']"
+                  @click="setPopupStatus(true, 'payTip')"
+                >
+                  more
+                </div>
+              </div>
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) -->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || E点付(34)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -291,7 +385,12 @@
                 <template v-if="cgPromotionMessage">
                   充值前请先绑定钱包
                 </template>
-
+                <template v-else-if="isSelectBindWallet(32)">
+                  充值前请先绑定{{ curPayInfo.payment_method_name }}
+                </template>
+                <template v-else-if="isSelectBindWallet(34)">
+                  充值前请先绑定{{ curPayInfo.payment_method_name }}钱包
+                </template>
                 <template v-else>
                   充值前请先绑定{{
                     isSelectBindWallet(16, 25, 30)
@@ -424,6 +523,25 @@
                 为即时到帐，请务必输入正确的钱包位址
               </div>
             </div>
+            <div
+              v-if="isSelectBindWallet(32) && this.curPassRoad.is_bind_wallet"
+              :class="[$style['feature-wrap'], $style['bc-coint']]"
+              @click="setPopupStatus(true, 'bcWalletCurrency')"
+            >
+              <div>充值币种</div>
+              <div
+                v-if="selectBcCoin && selectBcCoin.balance > 0"
+                :class="[$style['coin-money']]"
+              >
+                {{
+                  `${formatThousandsCurrency(selectBcCoin.balance)} ${
+                    selectBcCoin.currency
+                  }`
+                }}
+              </div>
+              <div v-else :class="[$style['coin-money']]">--</div>
+              <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+            </div>
 
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
@@ -481,13 +599,14 @@
                   :key="`pay-money-${index}`"
                   :class="[
                     $style['pay-money-item'],
+                    $style[siteConfig.ROUTER_TPL],
                     { [$style['is-current']]: moneyValue === item }
                   ]"
                   @click="
                     () => {
                       changeMoney(item);
                       if (
-                        isSelectBindWallet(25, 30, 402, 404) &&
+                        isSelectBindWallet(25, 30, 32, 402, 404) &&
                         isClickCoversionBtn &&
                         moneyValue > 0
                       ) {
@@ -523,7 +642,7 @@
                       () => {
                         changeMoney('', true);
                         if (
-                          isSelectBindWallet(25, 30, 402, 404) &&
+                          isSelectBindWallet(25, 30, 32, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue > 0
                         ) {
@@ -552,21 +671,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div
-                                v-if="
-                                    !isDepositAi &&
-                                        getPassRoadOrAi.amounts &&
-                                        getPassRoadOrAi.amounts.length === 0
-                                "
-                                :class="$style['feature-deposit-wrap']"
-                            >
-                                <div
-                                    :class="$style['pay-money-item']"
-                                >
-                                    --
-                                </div>
-                            </div> -->
-
               <!-- 金額輸入欄 -->
               <div
                 v-if="
@@ -605,7 +709,7 @@
                       $event => {
                         verification('money', $event.target.value);
                         if (
-                          isSelectBindWallet(25, 30, 402, 404) &&
+                          isSelectBindWallet(25, 30, 32, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -617,7 +721,7 @@
                     @keyup="
                       $event => {
                         if (
-                          isSelectBindWallet(25, 30, 402, 404) &&
+                          isSelectBindWallet(25, 30, 32, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -652,42 +756,13 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span
-                        :class="[
-                          {
-                            [$style['yb']]:
-                              themeTPL === 'porn1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['ey']]:
-                              themeTPL === 'ey1' && cryptoMoney > 0
-                          },
-                          {
-                            [$style['sg']]:
-                              themeTPL === 'sg1' && cryptoMoney > 0
-                          }
-                        ]"
-                      >
+                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
                         {{ curPayInfo.payment_method_name }}
                       </span>
                     </span>
-
-                    <!-- <div
-                    :class="[
-                      $style['conversion-btn'],
-                      {
-                        [$style['disable']]: isClickCoversionBtn || !moneyValue
-                      }
-                    ]"
-                    @click="convertCryptoMoney"
-                    >
-                    {{
-                      countdownSec > 0 ? `${formatCountdownSec()}` : `汇率试算`
-                    }}
-                  </div> -->
                   </div>
                 </div>
                 <!-- 參考匯率 -->
@@ -696,6 +771,38 @@
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
                       >1 USDT ≈ {{ rate }} CNY (
+                      <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+                      后更新 )</span
+                    >
+                  </div>
+                </div>
+              </template>
+              <!-- 幣希 匯率試算 -->
+              <template v-if="isSelectBindWallet(32)">
+                <div :class="$style['crypto-block']">
+                  <span>转入数量</span>
+                  <div :class="[$style['content']]">
+                    <span
+                      :class="[
+                        $style['no-money'],
+                        { [$style['money']]: cryptoMoney > 0 }
+                      ]"
+                    >
+                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
+                        {{ formatThousandsCurrency(cryptoMoney) }}
+                      </span>
+                      <span>
+                        {{ selectBcCoin.currency }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <!-- 參考匯率 -->
+                <div :class="$style['exchange-rate']">
+                  <span>参考汇率 </span>
+                  <div :class="[$style['content']]">
+                    <span :class="[$style['rate']]"
+                      >1 {{ selectBcCoin.currency }} ≈ {{ rate }} CNY (
                       <span
                         :class="[
                           $style['time'],
@@ -729,9 +836,9 @@
                       [$style['disable']]: walletData['CGPay'].balance === '--'
                     }
                   ]"
-                  @click="walletData['CGPay'].method = 0"
+                  @click="() => (walletData['CGPay'].method = 0)"
                 >
-                  CGP支付密码
+                  CGP安全防护码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
@@ -758,15 +865,41 @@
 
                 <!-- CGP 安全防護碼 -->
                 <div
-                  v-if="walletData['CGPay'].method === 0"
+                  v-show="walletData['CGPay'].method === 0 && isShowCGPPwd"
                   :class="$style['input-wrap']"
                 >
                   <input
+                    id="cgp-password"
                     :class="$style['wallet-password']"
                     v-model="walletData['CGPay'].password"
-                    type="tel"
+                    type="text"
                     :placeholder="walletData['CGPay'].placeholder"
                     @input="verification('CGPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
+                    "
+                    @click="toggleEye"
+                  />
+                </div>
+                <div
+                  v-show="walletData['CGPay'].method === 0 && !isShowCGPPwd"
+                  :class="$style['input-wrap']"
+                >
+                  <input
+                    id="cgp-password"
+                    :class="$style['wallet-password']"
+                    v-model="walletData['CGPay'].password"
+                    type="password"
+                    :placeholder="walletData['CGPay'].placeholder"
+                    @input="verification('CGPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
+                    "
+                    @click="toggleEye"
                   />
                 </div>
               </div>
@@ -1078,7 +1211,11 @@
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
-                  (showOuterCryptoAddress && outerCryptoAddress === '')
+                  (showOuterCryptoAddress && outerCryptoAddress === '') ||
+                  (showEpointWalletAddress &&
+                    (epointBankName === '' || epointBankAccount === '')) ||
+                  (isSelectBindWallet(32) &&
+                    (cryptoMoney <= 0 || selectBcCoin.balance <= 0))
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
@@ -1130,7 +1267,7 @@
     </div>
 
     <!-- 彈窗 -->
-    <template v-if="showPopStatus.isShow">
+    <template>
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1142,19 +1279,31 @@
                 {{ statusText }}
               </div>
             </div>
-            <ul
-              :class="[
-                $style['entry-message-confirm'],
-                { [$style['sg']]: themeTPL === 'sg1' },
-                { [$style['ey']]: themeTPL === 'ey1' }
-              ]"
-            >
+            <ul :class="[$style['entry-message-confirm']]">
               <li @click="submitInfo">确定</li>
               <!-- has_csr: 是否啟用代客充值 -->
               <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
                 代客充值
               </li>
             </ul>
+          </div>
+        </div>
+      </template>
+      <!-- 通道提示 -->
+      <template v-if="showPopStatus.type === 'payTip'">
+        <div>
+          <div :class="$style['pop-message-mark']" />
+          <div :class="$style['entry-message-container']">
+            <div :class="[$style['entry-message-content']]">
+              <p>通道提示</p>
+              <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
+            </div>
+            <div
+              :class="[$style['entry-message-confirm']]"
+              @click="setPopupStatus(false, '')"
+            >
+              关闭
+            </div>
           </div>
         </div>
       </template>
@@ -1181,6 +1330,28 @@
           @close="closePopup"
         />
       </template>
+      <template v-if="showPopStatus.type === 'epointBank'">
+        <epoint-bank-popup
+          :bank-list="userBankOption"
+          :item-func="setEpointBank"
+          @close="closePopup"
+        />
+      </template>
+      <template v-if="showPopStatus.type === 'bcWalletCurrency'">
+        <bc-wallet-currency-popup
+          :open-type="`deposit`"
+          :currency-data="bcCurrencyData"
+          :item-func="setBcCurrency"
+          :open-wallet-popup="openBCWalletPopup"
+          @close="closePopup"
+        />
+      </template>
+      <bc-wallet-popup
+        v-if="showPopStatus.type === 'bcWalletPopup'"
+        :currency-data="bcCurrencyData"
+        :reload-money="getWalletCurrencyBalanceList"
+        @close="closePopup"
+      />
 
       <!-- 支付成功 || 刷新匯率 || 維護彈窗 -->
       <template v-if="showPopStatus.type === 'funcTips'">
@@ -1196,12 +1367,15 @@ import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import blockListTips from "@/router/mobile/components/tpl/porn1/components/common/blockListTips";
 import bindWalletPopup from "@/router/mobile/components/tpl/porn1/components/common/bindWalletPopup";
+import epointBankPopup from "@/router/mobile/components/tpl/porn1/components/common/epointBankPopup";
+import bcWalletCurrencyPopup from "@/router/mobile/components/tpl/porn1/components/common/bcWalletCurrencyPopup";
 import DatePicker from "vue2-datepicker";
 import mixin from "@/mixins/mcenter/deposit/bankCardDeposit";
 import popupQrcode from "@/router/mobile/components/common/virtualBank/popupQrcode";
 import confirmOneBtn from "@/router/mobile/components/common/confirmOneBtn";
 import marquee from "@/router/mobile/components/common/marquee/marquee";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import bcWalletPopup from "@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/bcWalletPopup";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
@@ -1217,9 +1391,12 @@ export default {
     DatePicker,
     blockListTips,
     bindWalletPopup,
+    epointBankPopup,
+    bcWalletCurrencyPopup,
     popupQrcode,
     confirmOneBtn,
-    marquee
+    marquee,
+    bcWalletPopup
   },
   mixins: [mixin],
   props: {
@@ -1237,6 +1414,7 @@ export default {
       },
       initHeaderSetting: {},
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
+      tipTrans: { HOT: "recommend", EVENT: "event", FAST: "speed" },
 
       nameCheckFail: false,
 
@@ -1270,16 +1448,40 @@ export default {
       },
 
       marqueeList: [],
-      displayMoneyValue: ""
+      displayMoneyValue: "",
+      isShowCGPPwd: false,
+      bcMoneyShowType: false
     };
   },
   watch: {
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
+      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+        ? this.defaultEpointWallet.account === "其他银行卡"
+        : false;
     },
     curPassRoad() {
       console.log("passRoad", this.curPassRoad);
+      if (this.curPassRoad.tip != undefined) {
+        if (this.curPassRoad.tip === "" && this.curPassRoadTipText != "") {
+          //有到無因特效需delay
+          setTimeout(() => {
+            this.curPassRoadTipText = this.curPassRoad.tip.replace(
+              "\n",
+              "<br>"
+            );
+            this.curPassRoadTipTextShowMore =
+              this.curPassRoadTipText.length > 45 ||
+              this.curPassRoadTipText.indexOf("<br>") != -1;
+          }, 500);
+        } else {
+          this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
+          this.curPassRoadTipTextShowMore =
+            this.curPassRoadTipText.length > 45 ||
+            this.curPassRoadTipText.indexOf("<br>") != -1;
+        }
+      }
     },
     getPassRoadOrAi() {
       if (
@@ -1322,6 +1524,7 @@ export default {
 
         // event => 掃 QRcode 綁定錢包
         if (data.event === "trade_bind_wallet" && data.result === "ok") {
+          this.noticeData.pop();
           this.actionSetGlobalMessage({
             msg: "绑定成功",
             cb: () => {
@@ -1669,9 +1872,11 @@ export default {
         // 沒有維護則跑原本流程
         const params = [
           this.getPayGroup(),
+          this.getUserBankList(),
           this.checkEntryBlockStatus(),
           this.actionSetRechargeConfig(),
-          this.actionSetAnnouncementList({ type: 1 })
+          this.actionSetAnnouncementList({ type: 1 }),
+          this.getWalletCurrencyBalanceList()
         ];
         Promise.all(params).then(() => {
           // 起始時沒有任何錯誤才顯示跑馬燈
@@ -1735,14 +1940,26 @@ export default {
         // CGPay-USDT(TRC20)
         case 30:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
+          );
+          break;
+        // 幣希
+        case 32:
+          this.$router.push(
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=bcwallet&swift=${this.curPayInfo.swift_code}`
+          );
+          break;
+        // E点付
+        case 34:
+          this.$router.push(
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
           );
           break;
 
         // 購寶
         case 22:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.curPayInfo.swift_code}`
           );
 
           break;
@@ -1751,7 +1968,7 @@ export default {
         case 402:
         case 404:
           this.$router.push(
-            `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.curPayInfo.swift_code}`
           );
 
           break;
@@ -1797,6 +2014,16 @@ export default {
         this.checkEntryBlockStatus(true);
         return;
       }
+      //幣希檢查餘額
+      if (this.curPayInfo.payment_method_id === 32) {
+        if (+this.cryptoMoney > +this.selectBcCoin.balance) {
+          this.actionSetGlobalMessage({
+            msg: "币希钱包余额不足"
+          });
+          return;
+        }
+      }
+
       // 使用者存款封鎖狀態
       //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
       switch (this.entryBlockStatusData.status) {
@@ -1848,7 +2075,7 @@ export default {
       this.closePopup();
 
       //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 30, 402, 404)) {
+      if (this.isSelectBindWallet(25, 30, 32, 402, 404)) {
         let oldrate = this.rate;
         this.convertCryptoMoney();
         if (this.rate !== oldrate) {
@@ -1858,7 +2085,6 @@ export default {
           return;
         }
       }
-
       this.submitList().then(response => {
         // 重置阻擋狀態
         this.checkEntryBlockStatus();
@@ -2072,6 +2298,8 @@ export default {
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 30 ||
         this.curPayInfo.payment_method_id === 22 ||
+        this.curPayInfo.payment_method_id === 32 ||
+        this.curPayInfo.payment_method_id === 34 ||
         this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404
       );
@@ -2149,13 +2377,93 @@ export default {
         this.getPayOffer(this.moneyValue);
       }
     },
-    onClickService(){
+    onClickService() {
       if (this.routerTPL === "sg1") {
         sendUmeng(50);
       } else {
         sendUmeng(51);
       }
-      this.$router.push('/mobile/service')
+      this.$router.push("/mobile/service");
+    },
+    setEpointBank(item) {
+      this.defaultEpointWallet = item;
+    },
+    toggleEye() {
+      // if (this.isShowCGPPwd) {
+      //   document.getElementById("cgp-password").type = "password";
+      // } else {
+      //   document.getElementById("cgp-password").type = "text";
+      // }
+      this.isShowCGPPwd = !this.isShowCGPPwd;
+    },
+    getWalletCurrencyBalanceList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/Currency/Balance/List`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        // console.log(res);
+        if (res.status === "000") {
+          this.bcCurrencyData = res.data;
+
+          let currencyHasMoney = [];
+          if (res.data.currency_list.length > 0) {
+            currencyHasMoney = res.data.currency_list.filter(coin => {
+              return +coin.balance > 0;
+            });
+          }
+          if (currencyHasMoney.length > 0) {
+            this.selectBcCoin = currencyHasMoney[0];
+          } else {
+            this.selectBcCoin = res.data.currency_list[0];
+          }
+
+          // this.bcCurrencyData = {
+          //   bind:true,
+          //   total_balance:"12414152345",
+          //     currency_list:[
+          //     {
+          //       balance:"1,000,000.99",
+          //       currency:"BTC",
+          //       name:"比特币"
+          //     },
+          //     {
+          //       balance:"900,000.00",
+          //       currency:"ETH",
+          //       name:"以太坊"
+          //     }
+          //   ]
+          // }
+        } else {
+          this.bcCurrencyData = {
+            bind: true,
+            total_balance: "12414152345",
+            currency_list: [
+              {
+                balance: "1,000,000.99",
+                currency: "BTC",
+                name: "比特币"
+              },
+              {
+                balance: "900,000.00",
+                currency: "ETH",
+                name: "以太坊"
+              }
+            ]
+          };
+        }
+      });
+    },
+    setBcCurrency(currency) {
+      // console.log(currency);
+      this.selectBcCoin = currency;
+      this.updateTime = true;
+      this.convertCryptoMoney();
+    },
+    openBCWalletPopup() {
+      this.setPopupStatus(true, "bcWalletPopup");
     }
   }
 };

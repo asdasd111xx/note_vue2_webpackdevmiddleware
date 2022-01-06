@@ -2,7 +2,9 @@
   <div :class="$style['vip-info-wrap']">
     <template v-if="currentLevelData && currentLevelData.withdraw_fee">
       <!-- <div :class="$style['title']">VIP {{ currentLevelData.seq }}尊享</div> -->
-      <div :class="$style['title']">{{ `${currentLevelData.alias}尊享` }}</div>
+      <div :class="[$style['title']]">
+        {{ `${currentLevelData.alias}尊享` }}
+      </div>
 
       <div :class="$style['cells-block']">
         <div :class="$style['cell']">
@@ -95,51 +97,24 @@
             />
           </div>
           <div :class="$style['cell-text']">
-            <template v-if="['aobo1'].includes(routerTPL)">
+            <template>
               <div>
                 {{
                   `${
                     currentLevelData.monthly_gift == ""
                       ? "--"
-                      : formatThousandsCurrency(currentLevelData.monthly_gift)
+                      : currentLevelData.monthly_gift_str
                   }`
                 }}
               </div>
-              <div>
-                每月红包
-                <span v-if="['aobo1'].includes(routerTPL)">
-                  (每月15日派发)
-                </span>
+              <div v-if="currentLevelData.monthly_memo_1 != ''">
+                {{ currentLevelData.monthly_memo_1 }}
               </div>
-            </template>
-
-            <template v-else-if="['ey1'].includes(themeTPL)">
-              <div>
-                {{ formatThousandsCurrency(currentLevelData.weekly_gift) }}
-              </div>
-              <div>每周红包(周一自动派发)</div>
-            </template>
-            <template v-else>
-              <div>
-                {{
-                  `${
-                    currentLevelData.monthly_gift == ""
-                      ? "--"
-                      : formatThousandsCurrency(currentLevelData.monthly_gift) +
-                        "/" +
-                        formatThousandsCurrency(currentLevelData.monthly_gift)
-                  }`
-                }}
-              </div>
-              <div>每月红包</div>
             </template>
           </div>
 
-          <div
-            v-if="!['aobo1', 'ey1'].includes(routerTPL)"
-            :class="$style['special-cell']"
-          >
-            (第1、3个周四派发奖金)
+          <div :class="$style['special-cell']">
+            {{ currentLevelData.monthly_memo_2 }}
           </div>
         </div>
 
@@ -184,7 +159,7 @@
         </div>
       </div>
       <div
-        :class="$style['vip-detail']"
+        :class="[$style['vip-detail']]"
         @click="openPromotion('promotion_vip')"
       >
         查看VIP详情 》
@@ -230,7 +205,7 @@ export default {
     }
   },
   created() {
-    this.getTitle();
+    // this.getTitle();
   },
   methods: {
     formatThousandsCurrency(value) {

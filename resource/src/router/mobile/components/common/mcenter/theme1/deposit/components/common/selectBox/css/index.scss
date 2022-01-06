@@ -1,84 +1,84 @@
-@import '~@/css/variable.scss';
+@import "~@/css/variable.scss";
 
 .pop-wrap {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 99;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
 }
 
 .pop-mask {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
 }
 
 .pop-menu {
-    width: 100%;
-    height: 90%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background: #F8F8F7;
-    border-radius: 20px 20px 0 0;
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #f8f8f7;
+  border-radius: 20px 20px 0 0;
 }
 
 .pop-title {
-    height: 73px;
-    line-height: 73px;
-    margin-bottom: 9px;
-    position: relative;
-    font-size: 17px;
-    color: #414655;
-    background: #FEFFFE;
-    text-align: center;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
-    span {
-        padding: 0 14px;
-        position: absolute;
-        left: 0;
-        color: #BE9E7F;
-    }
+  height: 73px;
+  line-height: 73px;
+  margin-bottom: 9px;
+  position: relative;
+  font-size: 17px;
+  color: #414655;
+  background: #fefffe;
+  text-align: center;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  span {
+    padding: 0 14px;
+    position: absolute;
+    left: 0;
+    color: var(--addcard_popup_prev_text_color);
+  }
 }
 
 .pop-list {
-    height: calc(100% - 82px);
-    padding-left: 18px;
-    margin: 0;
-    list-style: none;
-    background: #FEFFFE;
-    overflow-y: scroll;
+  height: calc(100% - 82px);
+  padding-left: 18px;
+  margin: 0;
+  list-style: none;
+  background: #fefffe;
+  overflow-y: scroll;
 
-    li {
-        height: 50px;
-        line-height: 50px;
-        font-size: 14px;
-        color: #414655;
-        border-bottom: 1px solid #EEE;
-        position: relative;
-    }
+  li {
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #414655;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
 
-    img {
-        width: 24px;
-        height: 24px;
-        margin-right: 9px;
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-        vertical-align: top;
-    }
+  img {
+    width: 24px;
+    height: 24px;
+    margin-right: 9px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    vertical-align: top;
+  }
 }
 
 .select-active {
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    width: 15px;
-    height: 15px;
-    color: #BE9E7F;
-    transform: translateY(-50%);
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  color: var(--addcard_popup_check_color);
+  transform: translateY(-50%);
 }

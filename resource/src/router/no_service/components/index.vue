@@ -10,7 +10,8 @@
       {{ $t("ROUTER_NO_SERVICE_TITLE") }}
     </div>
     <div :class="$style['text']">
-      您所在的区域不在我们服务允许范围内({{ ip }})
+      <!-- 您所在的区域不在我们服务允许范围内({{ ip }}) -->
+      {{ topmsg }}
     </div>
 
     <!-- <div :class="$style['text']">IP：{{ ip }}({{ code }})</div> -->
@@ -73,9 +74,9 @@
     </div>
     <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
     <div :class="$style['text']">
-      IP所在区域不在我们服务范围内，造成您的困扰，很抱歉！若有任何疑惑，请与我们客户服务联络，谢谢。
+      {{ topmsg }}
     </div>
-    <div :class="$style['text']">IP：{{ ip }}({{ code }})</div>
+    <!-- <div :class="$style['text']">IP：{{ ip }}({{ code }})</div> -->
     <div :class="$style['main-img']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_403.png`)" />
     </div>
@@ -114,6 +115,7 @@ export default {
     return {
       ip: "",
       code: "",
+      topmsg: "",
       status: false,
       msg: "",
       username: ""
@@ -131,7 +133,7 @@ export default {
       }
 
       if (this.themeTPL === "aobo1") {
-        return "juzi8872@outlook.com";
+        return "asd1523642@gmail.com";
       }
 
       if (this.themeTPL === "sg1") {
@@ -158,6 +160,7 @@ export default {
       fail: response => {
         this.ip = response.data.ip;
         this.code = response.data.code;
+        this.topmsg = response.data.msg;
         this.status = true;
       }
     });

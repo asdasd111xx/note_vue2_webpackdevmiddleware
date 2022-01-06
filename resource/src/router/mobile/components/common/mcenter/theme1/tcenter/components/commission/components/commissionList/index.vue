@@ -1,4 +1,5 @@
 <template>
+  <!-- 返利紀錄  -->
   <div
     :class="[
       $style['commission-list-wrap'],
@@ -41,7 +42,7 @@
                 >{{ info.amount | amountFormat }}
 
                 <div
-                  v-if="(path && info.amount > 0) || (path && info.type == 0)"
+                  v-if="(path && info.amount >= 0) || (path && info.type == 0)"
                   :class="$style['arrow-next']"
                 >
                   <img
@@ -159,6 +160,7 @@ export default {
           ? this.rebateDateFormat(this.info.period)
           : this.info.period
       );
+      //盈亏返利
       if (this.$route.params.title && this.info.type === 0) {
         this.$router.push({
           params: {
@@ -171,7 +173,7 @@ export default {
             ...this.info
           }
         });
-      } else if (this.info.show_detail) {
+      } else if (this.info.current_entry_id) {
         this.setTabState(false);
         this.$emit("update:currentInfo", this.info);
 
