@@ -43,7 +43,7 @@
           </button>
         </div>
         <div :class="$style['myDiamond']">
-          <p>
+          <p @click="onListClick('live/diamond', false)">
             <img
               :src="$getCdnPath(`/static/image/sg1/mcenter/ic_diamond.png`)"
             />
@@ -59,7 +59,7 @@
             >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
           >
 
-          <button @click="$router.push('/mobile/mcenter/live/diamond')">
+          <button>
             兌換
           </button>
         </div>
