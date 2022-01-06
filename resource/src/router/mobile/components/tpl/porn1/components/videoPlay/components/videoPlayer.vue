@@ -248,18 +248,17 @@ export default {
 
       this.player.on("ended", () => {
         this.$refs.bonunsProcess.playCueTime("stop");
-        if (window.YABO_SOCKET) this.onSend("STOP");
+        if (window.YABO_SOCKET) {
+          this.onSend(
+            this.adSwitch && this.dialogType === "tips-wait" ? "ADSTOP" : "STOP"
+          );
+        }
       });
 
       this.player.on("play", () => {
         this.handleClickVideo();
         console.log("播放?");
       });
-
-      // setTimeout(() => {
-      //   this.onSend("PLAY");
-      //   this.onSend("STOP");
-      // }, 300);
     },
     // 點擊進圖條任務彈窗
     handleClickProcess() {
@@ -544,7 +543,11 @@ export default {
                 };
                 break;
               case "CLOSE":
-                this.onSend("STOP");
+                this.onSend(
+                  this.adSwitch && this.dialogType === "tips-wait"
+                    ? "ADSTOP"
+                    : "STOP"
+                );
                 break;
               case "AD":
                 // this.onSend("AD");
@@ -614,7 +617,9 @@ export default {
       }
     },
     handleLeavePage(cb) {
-      this.onSend("STOP");
+      this.onSend(
+        this.adSwitch && this.dialogType === "tips-wait" ? "ADSTOP" : "STOP"
+      );
       document.removeEventListener("visibilitychange", () => {}, false);
       window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
       window.YABO_SOCKET_VIDEO_DISCONNECT = null;
@@ -716,7 +721,9 @@ export default {
     document.addEventListener("visibilitychange", listner, false);
   },
   beforeDestroy() {
-    this.onSend("STOP");
+    this.onSend(
+      this.adSwitch && this.dialogType === "tips-wait" ? "ADSTOP" : "STOP"
+    );
     document.removeEventListener("visibilitychange", () => {}, false);
     window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
     window.YABO_SOCKET_VIDEO_DISCONNECT = null;

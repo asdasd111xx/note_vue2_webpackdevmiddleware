@@ -97,9 +97,13 @@ export default {
       // localStorage.setItem("iframe-third-url", this.adData.AdUrl);
       // this.$router.push(`/mobile/iframe/home`);
       // this.adData = { AdUrl: "https://yb01.666uxm.com/p/2106250001" };
-      let urlIdList = this.adData.AdUrl.split("/");
 
-      this.getPromotionList(urlIdList[urlIdList.length - 1]);
+      let usmCode = this.adData.AdUrl.split("/")[
+        this.adData.AdUrl.split("/").length - 1
+      ];
+      usmCode = usmCode.split("?")[0];
+
+      this.getPromotionList(usmCode);
     },
     getPromotionList(id) {
       this.promotionId = +id;
