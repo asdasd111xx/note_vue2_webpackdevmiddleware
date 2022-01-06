@@ -177,10 +177,12 @@ body {
 
   > span {
     color: #6aaaf5;
+  }
 
-    &.sg1 {
-      color: #6aaaf5;
-    }
+  &.sg1 {
+    position: absolute;
+    bottom: 6%;
+    margin-top: 0%;
   }
 }
 
