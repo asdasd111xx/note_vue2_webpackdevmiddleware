@@ -20,7 +20,7 @@
       <div
         :class="[$style['active-slider']]"
         :style="{
-          left: `calc(16.5% + 33% * ${currentTab})`
+          left: `calc(25% + 50% * ${currentTab})`
         }"
       />
     </div>
@@ -83,10 +83,10 @@ export default {
     },
     tabItem() {
       return [
-        {
-          key: "promotion",
-          text: this.$text("S_CREDIT_DISCOUNT", "转让优惠")
-        },
+        // {
+        //   key: "promotion",
+        //   text: this.$text("S_CREDIT_DISCOUNT", "转让优惠")
+        // },
         {
           key: "transfer",
           text: this.$text("S_CREDIT_TRANSFER", "额度转让")
