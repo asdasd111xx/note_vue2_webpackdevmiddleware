@@ -562,8 +562,8 @@ export default {
   },
   data() {
     return {
-      thecity: "",
-      thedistrict: "",
+      thecity: "北京",
+      thedistrict: "东城区",
       theCityList: [],
       theDistrictList: [],
       hometownList: [],
