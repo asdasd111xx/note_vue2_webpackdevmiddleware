@@ -165,11 +165,15 @@
   --find_password_text_color: #a5a9b3; //找回密碼
   --find_password_text_active_color: #414655; //找回密碼active
   --find_password_underline_active_color: #fb4e74; //找回密碼active底線
-  --video_popup_title_color: #262626; //影片裡面提示框title
-  --video_popup_left_text_button: #262626; //影片裡面提示框左邊按鈕文字
-  --video_popup_left_background_button: #f2f2f2; //影片裡面提示框左邊按鈕
-  --video_popup_right_text_button: #f2f2f2; //影片裡面提示框右邊按鈕文字
-  --video_popup_right_background_button: #5e626d; //影片裡面提示框右邊按鈕
+  --video_popup_title_color: #be9e7f; //影片裡面提示框title
+  --video_popup_left_text_button: #be9e7f; //影片裡面提示框左邊按鈕文字
+  --video_popup_left_background_button: #faf5f0; //影片裡面提示框左邊按鈕
+  --video_popup_right_text_button: #ffffff; //影片裡面提示框右邊按鈕文字
+  --video_popup_right_background_button: linear-gradient(
+    to left,
+    #bd9d7d 0%,
+    #f9ddbd 100%
+  ); //影片裡面提示框右邊按鈕
   --video_search_button: linear-gradient(
     to left,
     #bd9d7d 0%,

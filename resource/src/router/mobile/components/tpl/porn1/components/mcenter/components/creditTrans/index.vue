@@ -8,7 +8,7 @@
 
 <script>
 import mobileContainer from "../../../common/mobileContainer";
-import recharge from '@/router/mobile/components/tpl/porn1/components/mcenter/components/creditTrans/compontents/';
+import recharge from "@/router/mobile/components/tpl/porn1/components/mcenter/components/creditTrans/compontents/";
 
 export default {
   components: {
@@ -22,12 +22,9 @@ export default {
         prev: true,
         onClick: () => {
           this.$router.back();
-        },
-      }
+        }
+      };
     }
   }
 };
 </script>
-
-<style lang="scss" module>
-</style>

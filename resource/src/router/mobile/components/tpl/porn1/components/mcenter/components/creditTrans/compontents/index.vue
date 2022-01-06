@@ -20,7 +20,7 @@
       <div
         :class="[$style['active-slider']]"
         :style="{
-          left: `calc(16.5% + 33% * ${currentTab})`
+          left: `calc(25% + 50% * ${currentTab})`
         }"
       />
     </div>
@@ -83,10 +83,10 @@ export default {
     },
     tabItem() {
       return [
-        {
-          key: "promotion",
-          text: this.$text("S_CREDIT_DISCOUNT", "转让优惠")
-        },
+        // {
+        //   key: "promotion",
+        //   text: this.$text("S_CREDIT_DISCOUNT", "转让优惠")
+        // },
         {
           key: "transfer",
           text: this.$text("S_CREDIT_TRANSFER", "额度转让")
@@ -116,13 +116,13 @@ export default {
       switch (index) {
         default:
         case 0:
-          // this.$router.push("/mobile/iframe/promotion?alias=quota_transfer");
-          this.currentTemplate = "promotion-credit-trans";
-          this.currentTab = index;
-          break;
+        // this.$router.push("/mobile/iframe/promotion?alias=quota_transfer");
+        // this.currentTemplate = "promotion-credit-trans";
+        // this.currentTab = index;
+        // break;
 
         case 1:
-          if (this.currentTemplate === "transfer-credit-trans") return;
+          if (this.currentTab == index) return;
           const self = this;
           this.actionGetMemInfoV3().then(() => {
             this.actionGetRechargeStatus("recharge").then(res => {
@@ -135,6 +135,8 @@ export default {
           break;
 
         case 2:
+          if (this.currentTab == index) return;
+
           this.currentTemplate = "recoard-recharge";
           this.currentTab = index;
           break;
