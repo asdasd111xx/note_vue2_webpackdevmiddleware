@@ -137,7 +137,7 @@
             <div v-show="cantEditAlias" :class="$style['alert-dialog-masker']">
               <div :class="$style['alert-dialog-wrap']">
                 <h3>提示</h3>
-                <p>修改次数不足，请购买更名卡后 再重新操作</p>
+                <p>修改次数不足，请购买更名卡后<br />再重新操作</p>
                 <div :class="$style['btn-wrap']">
                   <span @click="cantEditAlias = false">取消</span>
                   <span
