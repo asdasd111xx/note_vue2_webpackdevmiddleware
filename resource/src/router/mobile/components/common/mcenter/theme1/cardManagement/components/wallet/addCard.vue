@@ -644,6 +644,7 @@ export default {
     });
 
     document.addEventListener("visibilitychange", () => {
+      this.actionSetUserdata(true);
       // 記錄當前 redirect，因用手機外開至其它 App 時，再關閉外開網頁時，router 會改變
       const redirect = this.$route?.query?.redirect;
 
