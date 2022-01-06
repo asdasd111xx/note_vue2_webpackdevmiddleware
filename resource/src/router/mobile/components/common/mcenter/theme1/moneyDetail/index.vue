@@ -180,6 +180,9 @@ export default {
       if (this.isEmbedDetail) {
         this.$emit("showDetail", val);
       }
+    },
+    noticeData() {
+      this.getData();
     }
   },
   data() {
@@ -219,7 +222,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      noticeData: "getNoticeData"
     }),
     isEmbedDetail() {
       // 共用紀錄
