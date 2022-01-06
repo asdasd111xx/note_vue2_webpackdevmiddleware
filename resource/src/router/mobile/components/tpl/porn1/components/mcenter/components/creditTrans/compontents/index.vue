@@ -116,13 +116,13 @@ export default {
       switch (index) {
         default:
         case 0:
-          // this.$router.push("/mobile/iframe/promotion?alias=quota_transfer");
-          this.currentTemplate = "promotion-credit-trans";
-          this.currentTab = index;
-          break;
+        // this.$router.push("/mobile/iframe/promotion?alias=quota_transfer");
+        // this.currentTemplate = "promotion-credit-trans";
+        // this.currentTab = index;
+        // break;
 
         case 1:
-          if (this.currentTemplate === "transfer-credit-trans") return;
+          if (this.currentTab == index) return;
           const self = this;
           this.actionGetMemInfoV3().then(() => {
             this.actionGetRechargeStatus("recharge").then(res => {
@@ -135,6 +135,8 @@ export default {
           break;
 
         case 2:
+          if (this.currentTab == index) return;
+
           this.currentTemplate = "recoard-recharge";
           this.currentTab = index;
           break;
