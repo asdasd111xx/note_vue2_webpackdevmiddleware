@@ -593,6 +593,26 @@ export default {
     this.getPaopaoMemberData();
     this.getHometownListData();
   },
+  watch: {
+    showGenderEdit() {
+      if (this.showGenderEdit) {
+        this.showHometownEdit = false;
+        this.showRelationshipEdit = false;
+      }
+    },
+    showRelationshipEdit() {
+      if (this.showRelationshipEdit) {
+        this.showHometownEdit = false;
+        this.showGenderEdit = false;
+      }
+    },
+    showHometownEdit() {
+      if (this.showHometownEdit) {
+        this.showRelationshipEdit = false;
+        this.showGenderEdit = false;
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
