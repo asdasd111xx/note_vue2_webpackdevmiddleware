@@ -366,6 +366,7 @@
         <receive-popup
           :data="receiveData"
           :caculateData="caculateData"
+          :click-all-receive="clickAllReceive"
           @close="closeReceivePopup"
           @confirm="getItemType('history')"
         />

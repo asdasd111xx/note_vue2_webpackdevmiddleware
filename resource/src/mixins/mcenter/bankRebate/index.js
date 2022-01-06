@@ -61,7 +61,8 @@ export default {
         today: "--",
         yesterday: "--",
         week: "--"
-      }
+      },
+      clickAllReceive: false
     };
   },
   computed: {
@@ -571,6 +572,7 @@ export default {
 
           // this.actionSetPop({ type: 'rebate', data: receiveData });
           this.isShowReceivePopup = true;
+          this.clickAllReceive = true;
           this.bankRebateInit();
         },
         fail: error => {
