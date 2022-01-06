@@ -15,9 +15,9 @@
             />
           </template>
         </div>
-        <span @click="downloadImage('')">
+        <!-- <span @click="downloadImage('')">
           {{ downloadText }}
-        </span>
+        </span> -->
 
         <div :class="$style['timer-block']">
           <div>

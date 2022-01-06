@@ -266,7 +266,13 @@
           </ul>
         </template>
         <div
-          v-if="epointTimeCount > 0 && [47, 48].includes(selectTarget.walletId)"
+          v-if="bcTimeCount > 0 && selectTarget.walletId === 47"
+          :class="$style['epoint-time']"
+        >
+          {{ `请于 ${bcTimeCount} 秒内绑定帐号` }}
+        </div>
+        <div
+          v-if="epointTimeCount > 0 && selectTarget.walletId === 48"
           :class="$style['epoint-time']"
         >
           {{ `请于 ${epointTimeCount} 秒内绑定帐号` }}
@@ -280,8 +286,8 @@
               [$style['disabled']]:
                 (addBankCardStep === 'two' && !NextStepStatus) ||
                 (lockStatus && !selectTarget.oneClickBindingMode) ||
-                ([47, 48].includes(selectTarget.walletId) &&
-                  epointTimeCount > 0)
+                (selectTarget.walletId === 47 && bcTimeCount > 0) ||
+                (selectTarget.walletId === 48 && epointTimeCount > 0)
             },
             {
               [$style['hidden']]:
@@ -483,7 +489,9 @@ export default {
       showBindingFormat: "",
 
       epointTimeCount: 0,
-      epointTimeStamp: null
+      epointTimeStamp: null,
+      bcTimeCount: 0,
+      bcTimeStamp: null
     };
   },
   mounted() {
@@ -1337,7 +1345,16 @@ export default {
               console.log(uri);
             }
           };
-          if ([47, 48].includes(this.selectTarget.walletId)) {
+          if (this.selectTarget.walletId === 47) {
+            this.bcTimeCount = 60;
+            this.bcTimeStamp = setInterval(() => {
+              if (this.bcTimeCount === 0) {
+                clearInterval(this.bcTimeStamp);
+                this.bcTimeStamp = null;
+              }
+              this.bcTimeCount -= 1;
+            }, 1000);
+          } else if (this.selectTarget.walletId === 48) {
             this.epointTimeCount = 60;
             this.epointTimeStamp = setInterval(() => {
               if (this.epointTimeCount === 0) {
