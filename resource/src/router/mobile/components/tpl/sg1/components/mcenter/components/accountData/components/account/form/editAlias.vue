@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <service-tips :edit="edit" :type="'alias'" />
+    <!-- <service-tips :edit="edit" :type="'alias'" /> -->
   </div>
 </template>
 
@@ -64,7 +64,8 @@ export default {
     return {
       value: "",
       tipMsg: "",
-      cantEditAlias: false
+      cantEditAlias: false,
+      edit: true
     };
   },
   mounted() {

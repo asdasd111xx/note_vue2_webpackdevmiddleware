@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <service-tips :edit="edit" :type="'intro'" />
+    <!-- <service-tips :edit="edit" :type="'intro'" /> -->
   </div>
 </template>
 
@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       value: "",
-      tipMsg: ""
+      tipMsg: "",
+      edit: true
     };
   },
   mounted() {
