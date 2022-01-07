@@ -622,5 +622,8 @@ export default {
   },
   [types.SETVERSION](state, data) {
     state.version = data;
+  },
+  [types.SET_LIVEMAINTAIN](state, data) {
+    state.liveMaintain = data;
   }
 };

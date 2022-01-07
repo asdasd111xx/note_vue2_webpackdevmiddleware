@@ -2542,7 +2542,28 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
     }
   }).then(res => {
     if (res && res.data) {
-      return res.data;
+      // 測試維護
+      // res.data.maintain = {
+      //   end: 1641524279,
+      //   reason: "臨時維護",
+      //   start: 1641524039,
+      //   state: 1
+      // };
+
+      if (res.data.maintain) {
+        const maintain = res.data.maintain;
+        if (
+          maintain.start === state.liveMaintain.start &&
+          maintain.end === state.liveMaintain.end
+        ) {
+          return;
+        }
+
+        commit(types.SET_LIVEMAINTAIN, res.data.maintain);
+      } else {
+        commit(types.SET_LIVEMAINTAIN, null);
+        return res.data;
+      }
     }
   });
 };

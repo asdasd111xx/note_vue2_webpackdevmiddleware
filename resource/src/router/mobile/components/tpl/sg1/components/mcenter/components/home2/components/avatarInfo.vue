@@ -120,7 +120,8 @@ export default {
       memInfo: "getMemInfo",
       memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      liveMaintain: "getLiveMaintain"
     }),
     badgesList() {
       if (this.paopaoUserInfo.badges && this.paopaoUserInfo.badges.length > 0) {
@@ -184,6 +185,10 @@ export default {
       sendUmeng(25);
 
       if (isLive) {
+        if (this.liveMaintain) {
+          this.$emit("showMaintainInfo");
+          return;
+        }
         this.$router.push(`/mobile/live/iframe/${target}`);
       } else {
         this.$router.push(`/mobile/mcenter/${target}`);

@@ -222,12 +222,23 @@ export default {
       isSerial: false
     };
   },
+  watch: {
+    liveMaintain(val) {
+      if (val && val.start) {
+        this.isMaintain = true;
+        this.showMaintainInfo();
+      } else {
+        this.isMaintain = false;
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       membalance: "getMemBalance",
-      memInfo: "getMemInfo"
+      memInfo: "getMemInfo",
+      liveMaintain: "getLiveMaintain"
     }),
     memAmount() {
       return (
@@ -310,11 +321,10 @@ export default {
     showMaintainInfo() {
       this.isShowMaintainInfo = true;
 
-      // 缺時間
-      const start = moment()
+      const start = moment(this.liveMaintain.start * 1000)
         .add(-12, "hours")
         .format("YYYY-MM-DD HH:mm:ss");
-      const end = moment()
+      const end = moment(this.liveMaintain.end * 1000)
         .add(-12, "hours")
         .format("YYYY-MM-DD HH:mm:ss");
 
@@ -343,7 +353,7 @@ export default {
         if (data && data.result && data.result.remind) {
           this.diamondRemind = data.result.remind;
         } else {
-          this.diamondRemind = "";
+          this.diamondRemind = [];
         }
       });
 
@@ -400,7 +410,7 @@ export default {
       }
     },
     submit() {
-      if (this.isLoading) {
+      if (this.isLoading || this.isMaintain) {
         return;
       }
 

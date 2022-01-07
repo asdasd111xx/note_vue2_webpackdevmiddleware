@@ -249,7 +249,8 @@ export default {
       loginStatus: "getLoginStatus",
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      liveMaintain: "getLiveMaintain"
     }),
     memAmount() {
       return (this.membalance && this.membalance.vendor.default.amount) || "--";
@@ -342,6 +343,10 @@ export default {
       }
 
       if (isLive) {
+        if (this.liveMaintain) {
+          this.$emit("showMaintainInfo");
+          return;
+        }
         this.$router.push(`/mobile/live/iframe/${target}`);
       } else {
         this.$router.push(`/mobile/mcenter/${target}`);

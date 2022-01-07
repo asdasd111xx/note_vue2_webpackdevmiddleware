@@ -134,8 +134,8 @@ export default {
         api_uri: "/api/platform/v1/view-path",
         method: "get"
       }).then(res => {
-        const list = res.result;
         if (res && res.result) {
+          const list = res.result;
           Object.keys(list).some(key => {
             if (key === this.pageType) {
               this.liveHomeSrc = list["home"];

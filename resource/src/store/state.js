@@ -459,5 +459,6 @@ export default {
     account: true
   },
   domainConfig: {},
-  systemConfig: {}
+  systemConfig: {},
+  liveMaintain: null
 };

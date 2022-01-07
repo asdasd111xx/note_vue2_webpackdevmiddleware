@@ -11,7 +11,7 @@
       </div>
       <div :class="$style['hr']"><div /></div>
     </div>
-    <div :class="$style['tips-content']">
+    <div v-if="data" :class="$style['tips-content']">
       <div v-for="(text, key) in data" :key="key">
         {{ `●${text}` }}
       </div>
@@ -28,8 +28,8 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   props: {
     data: {
-      type: Array,
-      default: () => []
+      type: Array || null,
+      default: null
     }
   },
   data() {
