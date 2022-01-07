@@ -416,7 +416,7 @@ export default {
       }
     },
     submit() {
-      if (this.isLoading || this.isMaintain) {
+      if (this.isLoading || this.isMaintain || this.lockedSubmit) {
         return;
       }
 
@@ -447,7 +447,7 @@ export default {
             msg: "兑换成功"
           });
 
-          this.currentSelRate = {};
+          //this.currentSelRate = {};
         }
 
         this.isLoading = false;
