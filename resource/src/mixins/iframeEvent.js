@@ -172,12 +172,19 @@ export default {
             this.toogleFooter(data);
             return;
 
+          case "EVENT_ADD_VALUE":
+            this.$router.push(`/mobile/mcenter/deposit`);
+            return;
+
           case "EVENT_REDIRECT_PAGE":
             let _data = data.data.toUpperCase();
             switch (_data) {
               case "EXCHANGEDIAMOND":
                 localStorage.setItem("live-iframe-event-from", data.from);
                 this.$router.push(`/mobile/mcenter/live/diamond`);
+                return;
+              case "DEPOSIT":
+                this.$router.push(`/mobile/mcenter/deposit`);
                 return;
               case "CUSTOMERSERVICE":
                 this.$router.push(`/mobile/service`);
