@@ -128,6 +128,7 @@
             <input
               v-model="formData['CGPPwd'].value"
               type="password"
+              inputmode="numeric"
               :placeholder="formData['CGPPwd'].placeholder"
               @input="verification('CGPPwd')"
               @blur="verification('CGPPwd')"
