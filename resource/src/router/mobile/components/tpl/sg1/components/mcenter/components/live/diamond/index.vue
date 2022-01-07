@@ -603,6 +603,7 @@ export default {
     font-size: 14px;
     background: var(--mcenter_button_color1);
     color: var(--mcenter_button_text_color1);
+    font-weight: bold;
     border-radius: 22.5px;
 
     &.disabled {
@@ -736,6 +737,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-weight: bold;
 
     > div {
       width: 80px;
