@@ -88,17 +88,21 @@ export default {
         funcBtn: this.$text("S_COMPLETE", "完成"),
         funcBtnActive: !!this.value && !this.tipMsg
       };
+    },
+    checkSameName() {
+      if (this.paopaoMemberCardInfo.alias == this.value) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   created() {
-    // this.checkAliasEdit();
-
     this.actionGetExtRedirect({
       api_uri: "/api/platform/v1/user/personal-info",
       method: "get"
     }).then(data => {
       this.paopaoMemberCardInfo = data.result;
-      this.value = this.paopaoMemberCardInfo.alias;
     });
   },
   methods: {
@@ -114,43 +118,34 @@ export default {
         value: e.target.value
       }).then(val => {
         this.value = val;
+        if (val) {
+          this.tipMsg = "";
+        }
       });
     },
-    // checkAliasEdit() {
-    //   return this.actionGetExtRedirect({
-    //     api_uri: "/api/platform/v1/user/alias-update-status",
-    //     method: "get"
-    //   }).then(data => {
-    //     if (data && data.result && data.result.allow_update === false) {
-    //       this.cantEditAlias = true;
-    //     }
-    //   });
-    // },
     handleSubmit() {
       // 驗證失敗d
       //   if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
       //     this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
       //     return Promise.resolve(result);
       //   }
+      if (this.checkSameName) {
+        this.tipMsg = "资料已存在，无法重复建立";
+        return;
+      } else {
+        const setNickname = this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/update-alias",
+          method: "put",
+          data: { alias: this.value.substring(0, 20) }
+        });
 
-      // this.checkAliasEdit().then(() => {
-      //   if (this.cantEditAlias) {
-      //     return;
-      //   }
-
-      const setNickname = this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/update-alias",
-        method: "put",
-        data: { alias: this.value.substring(0, 20) }
-      });
-
-      return Promise.all([setNickname]).then(response => {
-        if (response.every(res => res.result === "success")) {
-          localStorage.setItem("set-account-success", true);
-          this.$router.push("/mobile/mcenter/accountData");
-        }
-      });
-      // });
+        return Promise.all([setNickname]).then(response => {
+          if (response.every(res => res.result === "success")) {
+            localStorage.setItem("set-account-success", true);
+            this.$router.push("/mobile/mcenter/accountData");
+          }
+        });
+      }
     }
   }
 };
