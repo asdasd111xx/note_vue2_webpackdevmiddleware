@@ -839,7 +839,6 @@ export default {
           const { data, status, errorCode, msg } = response;
 
           if (errorCode !== "00" || status !== "000") {
-            // this.actionSetGlobalMessage({ msg });
             if (
               //手機驗證開啟時USDT ERC20,TRC20 驗證位址後先進入手機驗證
               (this.selectTarget.walletId === 46 ||
@@ -862,7 +861,6 @@ export default {
         .catch(error => {
           this.isReceive = false;
           const { msg } = error.response.data;
-          // this.actionSetGlobalMessage({ msg });
           this.errorMsg = msg;
         });
     },
@@ -892,7 +890,6 @@ export default {
           this.isReceive = false;
 
           if (result !== "ok" || result === "error") {
-            // this.actionSetGlobalMessage({ msg });
             this.errorMsg = msg;
 
             return;
@@ -906,7 +903,6 @@ export default {
         .catch(error => {
           this.isReceive = false;
           const { msg } = error.response.data;
-          // this.actionSetGlobalMessage({ msg });
           this.errorMsg = msg;
           return;
         });
@@ -955,12 +951,12 @@ export default {
           // console.log("extextextetext-res", res);
           const { result, ret, msg } = res.data;
           this.isReceive = false;
-
           if (result !== "ok") {
             this.actionSetGlobalMessage({ msg });
             return Promise.resolve(false);
           }
           if (result === "ok" && this.addBankCardStep === "two") {
+            this.errorMsg = "";
             this.$emit("update:addBankCardStep", "one");
           }
           return Promise.resolve(ret.html);
@@ -969,7 +965,8 @@ export default {
           console.log("extextextetext-error", error);
           const { msg, code } = error.response.data;
           this.isReceive = false;
-          this.actionSetGlobalMessage({ msg, code });
+          this.errorMsg = msg;
+          // this.actionSetGlobalMessage({ msg, code });
         });
     },
     setBank(bank) {
