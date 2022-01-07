@@ -438,7 +438,7 @@ export default {
 
         if (data && data.result && data.result.result === "success") {
           this.actionSetGlobalMessage({
-            msg: "success"
+            msg: "兑换成功"
           });
 
           this.currentSelRate = {};
