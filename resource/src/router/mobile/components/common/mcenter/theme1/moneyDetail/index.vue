@@ -176,13 +176,16 @@ export default {
       return Vue.moment(date).format("YYYY-MM-DD");
     }
   },
-  // watch: {
-  //   detailInfo(val) {
-  //     if (this.isEmbedDetail) {
-  //       this.$emit("showDetail", val);
-  //     }
-  //   }
-  // },
+  watch: {
+    //   detailInfo(val) {
+    //     if (this.isEmbedDetail) {
+    //       this.$emit("showDetail", val);
+    //     }
+    //   }
+    noticeData() {
+      this.getData();
+    }
+  },
   data() {
     const estToday = EST(new Date(), "", true);
     const limitTime = new Date(Vue.moment(estToday).add(-29, "days"));
