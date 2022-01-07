@@ -362,6 +362,7 @@ export default {
         this.isLoading = false;
         if (data && data.result && data.result.exchange_rate_list) {
           this.exchangeRateList = data.result.exchange_rate_list;
+          this.selectedRate(this.exchangeRateList[0]);
         } else {
           this.exchangeRateList = [];
         }
