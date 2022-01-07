@@ -33,7 +33,7 @@
   line-height: 42px;
   text-align: center;
   color: var(--mcenter_slider_text_color);
-  width: 33%;
+  width: 50%;
 
   &.is-current {
     color: var(--mcenter_slider_text_active_color);
@@ -47,7 +47,7 @@
   bottom: 1.5px;
   transform: translateX(-50%);
   background: var(--mcenter_slider_underline_active_color);
-  left: calc(33% / 2 - 20px);
+  left: calc(50% / 2 - 20px);
   transition: left 0.31s;
 }
 

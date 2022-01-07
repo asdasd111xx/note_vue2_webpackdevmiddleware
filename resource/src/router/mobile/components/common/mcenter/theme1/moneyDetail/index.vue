@@ -126,6 +126,7 @@
       :detail-list="detailList"
       :detail-info.sync="detailInfo"
       :page-type="pageType"
+      @openSlider="openSlider"
     />
     <!-- 捲動加載 -->
     <infinite-loading
@@ -176,10 +177,13 @@ export default {
     }
   },
   watch: {
-    detailInfo(val) {
-      if (this.isEmbedDetail) {
-        this.$emit("showDetail", val);
-      }
+    //   detailInfo(val) {
+    //     if (this.isEmbedDetail) {
+    //       this.$emit("showDetail", val);
+    //     }
+    //   }
+    noticeData() {
+      this.getData();
     }
   },
   data() {
@@ -219,7 +223,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      noticeData: "getNoticeData"
     }),
     isEmbedDetail() {
       // 共用紀錄
@@ -523,6 +528,13 @@ export default {
       this.changeCondition("");
       this.changeDatePicker("");
       this.getData();
+    },
+    openSlider() {
+      if (this.detailInfo) {
+        if (this.isEmbedDetail) {
+          this.$emit("showDetail", this.detailInfo);
+        }
+      }
     },
     /**
      * 捲動加載

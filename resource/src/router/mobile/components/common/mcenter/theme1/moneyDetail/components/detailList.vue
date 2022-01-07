@@ -157,6 +157,7 @@ export default {
     },
     onClick(info) {
       this.$emit("update:detailInfo", info);
+      this.$emit("openSlider");
       localStorage.setItem("money-detail-id", info.id);
 
       if (!this.isEmbedDetail) {

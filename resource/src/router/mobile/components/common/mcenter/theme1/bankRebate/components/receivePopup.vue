@@ -26,13 +26,7 @@
 
             <div :class="$style['result-item']">
               <div>{{ $text("S_COMPUTE_WAGER_INTERVAL", "结算区间") }}</div>
-              <span
-                >{{
-                  caculateData[0] ? caculateData[0].start_at : data.start_at
-                }}~{{
-                  caculateData[0] ? caculateData[0].end_at : data.end_at
-                }}</span
-              >
+              <span>{{ filterDate }}</span>
             </div>
 
             <template v-if="computeState">
@@ -84,6 +78,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import EST from "@/lib/EST";
@@ -99,6 +94,10 @@ export default {
     caculateData: {
       type: Object | Array,
       default: {}
+    },
+    clickAllReceive: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -117,6 +116,27 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    filterDate() {
+      //領取取當前時間顯示 一鍵領取取當前時間的整點為主來顯示
+      if (this.caculateData) {
+        let startTime = this.caculateData[0]
+          ? this.caculateData[0].start_at
+          : this.caculateData.start_at;
+        let endTime = this.caculateData[0]
+          ? this.caculateData[0].end_at
+          : this.caculateData.end_at;
+
+        if (this.clickAllReceive) {
+          return `${Vue.moment(startTime).format(
+            "YYYY-MM-DD 00:00:00"
+          )}~${Vue.moment(endTime).format("YYYY-MM-DD 23:59:59")}`;
+        } else {
+          return `${startTime}~${endTime}`;
+        }
+      }
+
+      return "";
     }
   },
   created() {
