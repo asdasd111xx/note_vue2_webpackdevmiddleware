@@ -284,6 +284,22 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
             ,"beta","sigua-frontend-proxy-beta","","sigua-frontend-proxy-nginx-config-beta"
             ,"yaboxxx-web","10.17.3.48","sigua","istio","env","prod"),
             
+    ]else if name=="Demo" then [
+        onlyGKE("Demo","yaboxxx-prod","asia-east1-b"
+            ,"demo","yabo-frontend-proxy-demo","","yabo-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.1.94","yabo","istio","env","prod"),
+
+        onlyGKE("Demo","yaboxxx-prod","asia-east1-b"
+            ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
+
+        onlyGKE("Demo","yaboxxx-prod","asia-east1-b"
+            ,"demo","aubo-frontend-demo","","aubo-frontend-nginx-config-demo"
+            ,"yaboxxx-web","10.17.1.94","aubo","istio","env","prod"),
+
+        onlyGKE("Demo","yaboxxx-prod","asia-east1-b"
+            ,"demo","sp51-frontend-demo","","sp51-frontend-nginx-config-demo"
+            ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod"),
     ]else if name=="Prod" then [
         # yabo
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
@@ -339,6 +355,7 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     # All
     // buildall("QA","yaboxxx-web","all"),
     // buildall("Beta","yaboxxx-web","all"),
+    buildall("Demo","yaboxxx-web","all"),
     buildall("Prod","yaboxxx-web","all"),
 
 
