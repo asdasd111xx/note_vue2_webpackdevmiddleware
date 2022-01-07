@@ -478,7 +478,7 @@ export default {
         }).then(res => {
           if (res && res.data) {
             this.actionSetGlobalMessage({
-              msg: "回收成功"
+              msg: "一键回收完成"
             });
 
             setTimeout(() => {
