@@ -56,7 +56,7 @@
                 : {},
               unloginString ? { color: ' #939393' } : {}
             ]"
-            >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
+            >{{ unloginString || diamondTotal }}</span
           >
 
           <button>

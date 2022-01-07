@@ -254,7 +254,7 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: this.$text("S_BUY_DIAMOND"),
+        title: this.$text("S_MY_DIAMOND"),
         hasHelp: {
           type: "diamond",
           url: `/mobile/mcenter/help/deposit`
@@ -278,11 +278,9 @@ export default {
     },
     getDiamondTotal() {
       if (this.diamondTotal) {
-        return `${this.formatThousandsCurrency(
-          this.diamondTotal.toFixed(2)
-        )}元`;
+        return `${this.diamondTotal}`;
       } else {
-        return `0.00元`;
+        return `0`;
       }
     }
   },
