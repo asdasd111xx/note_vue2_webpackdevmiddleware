@@ -209,6 +209,10 @@
 
   - git tag -a "allQA-v1.3.57" -m "allBeta-v1.3.57"
   - git push origin master --tags
+  - 
+- 佈署到 Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 allDemo- 】（大小寫需一致）
+  - git tag -a "allDemo-v1.3.57" -m "allDemo-v1.3.57"
+  - git push origin master --tags
 
 - 佈署到 Prod & Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 allProd- 】（大小寫需一致）
   - git tag -a "allProd-v1.3.57" -m "allProd-v1.3.57"
