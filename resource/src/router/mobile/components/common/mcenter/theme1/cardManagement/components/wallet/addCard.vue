@@ -279,7 +279,9 @@
             {
               [$style['disabled']]:
                 (addBankCardStep === 'two' && !NextStepStatus) ||
-                (lockStatus && !selectTarget.oneClickBindingMode) ||
+                (lockStatus &&
+                  !selectTarget.oneClickBindingMode &&
+                  selectTarget.walletId !== 37) ||
                 ([47, 48].includes(selectTarget.walletId) &&
                   epointTimeCount > 0)
             },
