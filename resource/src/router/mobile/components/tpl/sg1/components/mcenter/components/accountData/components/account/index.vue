@@ -575,7 +575,7 @@ export default {
       showGenderEdit: false,
       selectGenderValue: "1",
       showRelationshipEdit: false,
-      selectRelationshipValue: "",
+      selectRelationshipValue: "1",
       showHometownEdit: false,
       cantEditAlias: false,
       relationshipList: [],
