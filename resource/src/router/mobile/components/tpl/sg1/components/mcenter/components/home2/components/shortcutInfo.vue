@@ -56,7 +56,9 @@
                 : {},
               unloginString ? { color: ' #939393' } : {}
             ]"
-            >{{ unloginString || formatThousandsCurrency(diamondTotal) }}</span
+            >{{
+              unloginString || formatThousandsCurrency(diamondTotal, 0)
+            }}</span
           >
 
           <button>
@@ -310,8 +312,8 @@ export default {
       "actionGetExtRedirect",
       "actionSetUserBalance"
     ]),
-    formatThousandsCurrency(value) {
-      return thousandsCurrency(value.toFixed(2));
+    formatThousandsCurrency(value, point) {
+      return thousandsCurrency(value.toFixed(point));
     },
     onListClick(target, isLive = true) {
       if (!this.loginStatus) {

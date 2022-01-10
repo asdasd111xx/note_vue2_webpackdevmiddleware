@@ -43,7 +43,7 @@
                 "
               >
                 <template v-if="!isMaintain">
-                  {{ formatThousandsCurrency(getDiamondTotal, 2) }}
+                  {{ formatThousandsCurrency(getDiamondTotal, 0) }}
                 </template>
                 <template v-else>
                   <span :class="$style['maintain-tip-text']">维护中</span>
