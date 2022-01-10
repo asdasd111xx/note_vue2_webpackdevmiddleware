@@ -626,6 +626,7 @@ export default {
       this.hometownList.map(item => {
         if (this.thecity == item.city) {
           this.theDistrictList = item.district || [];
+          this.thedistrict = this.theDistrictList[0];
         }
       });
 
