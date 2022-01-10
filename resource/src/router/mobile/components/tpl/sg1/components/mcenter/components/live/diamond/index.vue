@@ -431,7 +431,7 @@ export default {
       }).then(data => {
         if (data && data.error_text) {
           this.actionSetGlobalMessage({
-            msg: error_text,
+            msg: data.error_text,
             code: error_code
           });
         }
