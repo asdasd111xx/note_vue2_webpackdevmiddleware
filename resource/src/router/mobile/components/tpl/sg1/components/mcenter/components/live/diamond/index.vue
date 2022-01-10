@@ -540,7 +540,7 @@ export default {
   }
 
   &.selected {
-    border: 1px solid #333333;
+    border: 2px solid #333333;
 
     .amount-active {
       display: block;
