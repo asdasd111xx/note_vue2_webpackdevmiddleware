@@ -43,7 +43,7 @@
                 "
               >
                 <template v-if="!isMaintain">
-                  {{ getDiamondTotal }}
+                  {{ formatThousandsCurrency(getDiamondTotal, 2) }}
                 </template>
                 <template v-else>
                   <span :class="$style['maintain-tip-text']">维护中</span>
@@ -129,10 +129,10 @@
                   />
                 </div>
                 <div :class="$style['num']" :alt="item.diamond_amount">
-                  {{ `${formatThousandsCurrency(item.diamond_amount)}钻` }}
+                  {{ `${item.diamond_amount}钻` }}
                 </div>
                 <div :class="$style['price']">
-                  {{ `${formatThousandsCurrency(item.cash_amount)}元` }}
+                  {{ `${formatThousandsCurrency(item.cash_amount, 0)}元` }}
                 </div>
                 <!-- <img
                 v-if="item.diamond_amount === currentSelRate.diamond_amount"
@@ -465,8 +465,9 @@ export default {
         JSON.stringify(this.currentSelRate)
       );
     },
-    formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+    formatThousandsCurrency(value, point) {
+      let _value = Number(value).toFixed(point);
+      return thousandsCurrency(_value);
     },
     balanceBack() {
       if (!this.isLoading) {
