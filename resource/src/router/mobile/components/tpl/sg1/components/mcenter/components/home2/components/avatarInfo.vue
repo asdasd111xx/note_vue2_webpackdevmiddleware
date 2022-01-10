@@ -212,9 +212,6 @@ export default {
   box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.08);
   margin: 0 0 10px 0;
   padding: 10px;
-
-  position: fixed;
-  z-index: 1;
   background-color: #fefffe;
 
   @media screen and (min-width: 800px) {

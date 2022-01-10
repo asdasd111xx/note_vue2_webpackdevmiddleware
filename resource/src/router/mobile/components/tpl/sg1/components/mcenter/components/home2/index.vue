@@ -1,16 +1,22 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
-      <app-tip @close="showTip = false" />
+      <app-tip @close="listWrapHeight = 430" />
       <avatar-info
         :paopao-user-info="paopaoUserInfo"
         @showMaintainInfo="showMaintainInfo"
       />
-      <shortcut-info
-        :paopao-user-info="paopaoUserInfo"
-        @showMaintainInfo="showMaintainInfo"
-      />
-      <mem-list />
+
+      <div
+        :class="$style['mem-list-wrap']"
+        :style="{ height: `calc(100vh - ${listWrapHeight}px)` }"
+      >
+        <shortcut-info
+          :paopao-user-info="paopaoUserInfo"
+          @showMaintainInfo="showMaintainInfo"
+        />
+        <mem-list />
+      </div>
       <maintain-block
         v-if="isShowMaintainInfo"
         :content="maintainInfo"
@@ -44,7 +50,8 @@ export default {
       isShowAppTip: true,
       paopaoUserInfo: {},
       isShowMaintainInfo: false,
-      maintainInfo: {}
+      maintainInfo: {},
+      listWrapHeight: 435
     };
   },
   watch: {
@@ -69,7 +76,12 @@ export default {
     }
   },
   created() {
-    this.isShowMaintainInfo = true;
+    if (localStorage.getItem("appTips") === "false") {
+      this.listWrapHeight = 435;
+    } else {
+      this.listWrapHeight = 435 + 42;
+    }
+
     if (this.loginStatus) {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/front-page",
@@ -136,7 +148,7 @@ div.container {
 }
 
 .content-wrap {
-  overflow-y: scroll;
+  height: calc(100vh - 66px - 43px);
 }
 
 .msg-icon {
@@ -148,5 +160,10 @@ div.container {
     float: right;
     width: 28px;
   }
+}
+
+.mem-list-wrap {
+  overflow-y: scroll;
+  height: calc(100vh - 435px);
 }
 </style>
