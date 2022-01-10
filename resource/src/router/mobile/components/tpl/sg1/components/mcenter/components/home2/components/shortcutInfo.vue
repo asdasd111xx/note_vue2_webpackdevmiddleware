@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="$style['mcenter-vip-wrap']">
+    <div :class="$style['mcenter-vip-wrap']" style="">
       <div :class="$style['tool-wrap']">
         <div :class="$style['myTool']" @click="onListClick('my_props')">
           <i
@@ -505,6 +505,7 @@ export default {
 .mcenter-vip-wrap {
   margin-bottom: 10px;
   background-color: #fefffe;
+  padding-top: 310px;
 }
 
 .sub-text {

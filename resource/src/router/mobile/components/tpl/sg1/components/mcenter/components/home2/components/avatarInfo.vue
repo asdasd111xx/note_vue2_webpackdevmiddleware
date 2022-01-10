@@ -213,6 +213,10 @@ export default {
   margin: 0 0 10px 0;
   padding: 10px;
 
+  position: fixed;
+  z-index: 1;
+  background-color: #fefffe;
+
   @media screen and (min-width: 800px) {
     background-size: 95% 45%;
   }
