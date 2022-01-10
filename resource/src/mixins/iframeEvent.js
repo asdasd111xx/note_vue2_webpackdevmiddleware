@@ -84,9 +84,12 @@ export default {
 
             return;
 
-          case "EVENT_EXIT":
           case "EVENT_THIRDPARTY_CLOSE":
             this.$router.replace(this.originUrl);
+            return;
+
+          case "EVENT_EXIT":
+            this.$router.back();
             return;
 
           // 避免迴圈重複本站
