@@ -81,7 +81,7 @@ export default {
     timeFormat(date) {
       return Vue.moment(date)
         .utcOffset(-4)
-        .format("YYYY-MM-DD HH:mm:ss");
+        .format("HH:mm:ss");
     }
   },
   computed: {
