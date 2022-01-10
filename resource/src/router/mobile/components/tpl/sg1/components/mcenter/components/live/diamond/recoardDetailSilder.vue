@@ -34,12 +34,12 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    }
+    })
+    // $style() {
+    //   const style =
+    //     this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+    //   return style;
+    // }
   },
   components: {
     pageLoading: () =>
