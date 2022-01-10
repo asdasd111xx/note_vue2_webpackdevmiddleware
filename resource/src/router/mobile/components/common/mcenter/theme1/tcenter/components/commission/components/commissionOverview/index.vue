@@ -544,7 +544,7 @@ export default {
               name: this.$text("S_EXPECTED_REBATE", "预估返利"),
               item: this.amountFormat(info.amount),
               key: "estimate",
-              color: info.amount < 0,
+              color: info.amount > 0,
               show: true
             },
             {
