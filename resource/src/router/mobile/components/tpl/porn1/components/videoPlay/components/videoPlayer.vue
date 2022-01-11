@@ -556,6 +556,7 @@ export default {
                 this.isAdDialog = true;
                 break;
               case "ADSTART":
+                this.keepPlay = true;
                 // this.onSend("ADSTART");
                 break;
               case "ADSTOP":
