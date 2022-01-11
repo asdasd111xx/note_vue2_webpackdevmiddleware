@@ -554,6 +554,7 @@ export default {
                 console.log(data);
                 this.adShowData = data.Ad;
                 this.isAdDialog = true;
+                this.playerPause();
                 break;
               case "ADSTART":
                 this.keepPlay = true;
@@ -561,7 +562,6 @@ export default {
                 break;
               case "ADSTOP":
                 // this.onSend("ADSTOP");
-                this.playerPause();
                 break;
               default:
                 break;
