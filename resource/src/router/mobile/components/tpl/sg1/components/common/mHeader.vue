@@ -196,7 +196,7 @@
           v-else-if="headerConfig.hasHelp.type === 'diamond'"
           :class="$style['btn-icon']"
           style="margin-right: 12px;"
-          @click="$router.push('/mobile/service')"
+          @click="handleClickService"
         >
           <img :src="$getCdnPath('/static/image/sg1/live/icon_service.png')" />
         </div>
