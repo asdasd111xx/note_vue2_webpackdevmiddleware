@@ -116,6 +116,7 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
+import { getEmbedGameVendor } from "@/lib/game_option";
 
 export default {
   data() {
@@ -125,8 +126,7 @@ export default {
       src: "",
       showBack: true,
       contentTitle: "",
-      exitCheck: false,
-      justForBack: false
+      exitCheck: false
     };
   },
   components: {
@@ -238,10 +238,23 @@ export default {
         ...baseConfig,
         onClick: () => {
           const iframeThirdOrigin = localStorage.getItem("iframe-third-origin");
+
+          let embedGame = getEmbedGameVendor(
+            this.$route.query.vendor,
+            this.$route.query.kind,
+            this.$route.query.code
+          );
+
+          if (embedGame && typeof embedGame !== "undefined") {
+            this.$router.replace(this.originUrl);
+            return;
+          }
+
           if (this.$route.query.vendor === "lg_live") {
             this.exitCheck = true;
             return;
           }
+
           if (
             this.$route.params.page.toUpperCase() === "GAME" &&
             iframeThirdOrigin &&
@@ -252,13 +265,13 @@ export default {
             this.$router.replace(`${this.originUrl}`);
             return;
           }
+
           if (
             (this.$route.params.page.toUpperCase() === "GIFT" ||
               this.$route.params.page.toUpperCase() === "HISTORY" ||
               this.$route.params.page.toUpperCase() === "DEPOSIT" ||
               this.$route.params.page.toUpperCase() === "BCWALLET" ||
-              this.$route.params.page.toUpperCase() === "GAME" ||
-              this.justForBack) &&
+              this.$route.params.page.toUpperCase() === "GAME") &&
             !iframeThirdOrigin
           ) {
             window.history.back();
