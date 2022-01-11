@@ -1721,7 +1721,8 @@ export default {
         methodId:
           this.selectedCard.bank_id === 2009
             ? this.withdrawCurrency.method_id
-            : ""
+            : this.selectedCard.bank_id === 2016 
+              ? this.selectedCard.currency[0].method_id : ""
       };
       return goLangApiRequest({
         method: "get",
