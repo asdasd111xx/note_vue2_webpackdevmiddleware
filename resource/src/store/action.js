@@ -1229,19 +1229,22 @@ export const actionEnterMCenterThirdPartyLink = (
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     MCENTER 會員中心
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-// 會員中心-設定未讀訊息
+// 會員中心-設定未讀訊息&所有訊息
 export const actionSetMcenterMsgCount = ({ state, commit }) => {
   if (!state.loginStatus) return;
 
   let num = 0;
+  let messageData = [];
   mcenter.message({
     success: response => {
+      messageData = response.ret;
       Object.keys(response.ret).forEach(index => {
         if (!response.ret[index].read) {
           num += 1;
         }
       });
       commit(types.SETMCENTERMSGCOUNT, num);
+      commit(types.MESSAGEDATA, messageData); //所有訊息
     }
   });
 };
