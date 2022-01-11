@@ -7,6 +7,9 @@
         {
           [$style['has-header']]: headerConfig.hasHeader
         },
+        {
+          [$style['has-footer']]: headerConfig.hasFooter
+        },
         { [$style['fullScreen']]: isFullScreen }
       ]"
     >
@@ -208,11 +211,13 @@ export default {
 @import "~@/css/variable.scss";
 
 .iframe-wrap {
-  height: 99vh;
+  height: calc(100vh);
   width: 100%;
   background-color: #fff;
   transition: margin 0.31s, height 0.31s;
   padding-bottom: 1px;
+  overflow: hidden;
+
   &.fullScreen {
     margin-top: unset !important;
     height: 100vh !important;
@@ -220,6 +225,10 @@ export default {
 
   &.has-header {
     margin-top: 43px;
+  }
+
+  &.has-footer {
+    height: calc(100vh - 66px);
   }
 }
 
