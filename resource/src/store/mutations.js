@@ -415,6 +415,13 @@ export default {
       msgCount: num
     };
   },
+  // 會員中心-設定所有訊息
+  [types.MESSAGEDATA](state, data) {
+    state.memInfo = {
+      ...state.memInfo,
+      msgData: data
+    };
+  },
   // 會員中心-設定我的返水-當前頁籤 (返水歷史/實時返水)
   [types.SETMCENTERBANKREBATE](state, obj) {
     state.mcenterBankRebate = obj;

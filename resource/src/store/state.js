@@ -189,6 +189,7 @@ export default {
       enable: false
     },
     msgCount: 0,
+    msgData: [],
     balance: {
       vendor: {
         default: {}
