@@ -1736,14 +1736,7 @@ export default {
           this.isCheckWithdraw = false;
           if (res.status === "000") {
             let check = true;
-            //CGPay取款戶名核實機制
-            if (!res.data.wallet) {
-              this.actionSetGlobalMessage({
-                msg: "钱包注册姓名与真实姓名不符"
-              });
-              check = false;
-              return;
-            }
+            
             Object.keys(res.data).forEach(i => {
               if (i !== "bank" && !res.data[i]) {
                 this.actionSetGlobalMessage({
@@ -1760,6 +1753,14 @@ export default {
                 return;
               }
             });
+            //CGPay取款戶名核實機制
+            if (!res.data.wallet) {
+              this.actionSetGlobalMessage({
+                msg: "钱包注册姓名与真实姓名不符"
+              });
+              check = false;
+              return;
+            }
 
             if (check) {
               return "ok";
