@@ -404,8 +404,8 @@ export default {
             console.log("epoint back?");
             break;
 
-          case "live-home":
-            this.$router.push("/mobile/live/home");
+          case "live-iframe":
+            this.$router.push("/mobile/live/iframe/home");
             break;
           default:
             this.$router.back();
