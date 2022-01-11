@@ -560,6 +560,7 @@ export default {
                 break;
               case "ADSTOP":
                 // this.onSend("ADSTOP");
+                this.playerPause();
                 break;
               default:
                 break;
