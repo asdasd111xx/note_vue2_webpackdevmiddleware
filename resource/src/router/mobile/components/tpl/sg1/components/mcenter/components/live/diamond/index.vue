@@ -87,11 +87,7 @@
               </div>
 
               <div :class="$style['account-btn']">
-                <div
-                  @click="
-                    $router.push('/mobile/mcenter/deposit?redirect=diamond')
-                  "
-                >
+                <div @click="$router.push('/mobile/mcenter/deposit')">
                   {{ $text("S_GO_DEPOSIT") }}
                 </div>
               </div>
