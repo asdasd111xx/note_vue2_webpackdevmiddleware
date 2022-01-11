@@ -19,8 +19,7 @@ export default {
   },
   components: {
     porn1Service,
-    sg1Service,
-    ey1Service
+    sg1Service
   },
   computed: {
     ...mapGetters({
