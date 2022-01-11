@@ -184,11 +184,10 @@ export default (params, success = () => {}, fail = () => {}) => {
             }
 
             success();
-            let gamePath = vendor === "sigua_ly" ? "sigua_ly" : "game";
 
             if (embedGame && !localStorage.getItem("reload-game")) {
               router.push(
-                `/mobile/iframe/${gamePath}?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
+                `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
               );
               return;
             }
