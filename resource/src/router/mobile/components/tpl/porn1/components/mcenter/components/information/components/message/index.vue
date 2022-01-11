@@ -239,7 +239,7 @@ export default {
       isLoading: false,
       isDelete: false,
       showFunctionButton: false,
-      messageData: [],
+      //messageData: [],
       selectMessage: []
     };
   },
@@ -252,6 +252,14 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
+    },
+    messageData: {
+      get() {
+        return this.memInfo.msgData;
+      },
+      set(val) {
+        return val;
+      }
     },
     currentMessage() {
       if (!this.$route.query.pid || this.messageData.length == 0) {
@@ -273,7 +281,7 @@ export default {
     }
   },
   created() {
-    this.getMessgae();
+    this.actionSetMcenterMsgCount();
   },
   methods: {
     ...mapActions([
@@ -283,12 +291,13 @@ export default {
     ]),
     getMessgae() {
       this.actionSetMcenterMsgCount();
-      mcenter.message({
-        success: response => {
-          this.messageData = response.ret;
-          this.hasReceive = true;
-        }
-      });
+      this.hasReceive = true;
+      // mcenter.message({
+      //   success: response => {
+      //     this.messageData = response.ret;
+      //     this.hasReceive = true;
+      //   }
+      // });
     },
     getContent({ id, read }, isSetRead) {
       if (read) {
@@ -408,7 +417,6 @@ export default {
     unReadMessage() {
       setTimeout(() => {
         this.getMessgae();
-        this.isLoading = false;
       }, 200);
     }
   }

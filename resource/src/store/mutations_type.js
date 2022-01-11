@@ -85,6 +85,8 @@ export const SET_AGENT_USER_CONFIG = "SET_AGENT_USER_CONFIG";
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 // 會員中心-未讀訊息
 export const SETMCENTERMSGCOUNT = "SETMCENTERMSGCOUNT";
+//會員中心-所有訊息
+export const MESSAGEDATA = "MESSAGEDATA";
 // 會員中心-我的返水-當前頁籤 (返水歷史/實時返水)
 export const SETMCENTERBANKREBATE = "SETMCENTERBANKREBATE";
 // 會員中心-我的返水

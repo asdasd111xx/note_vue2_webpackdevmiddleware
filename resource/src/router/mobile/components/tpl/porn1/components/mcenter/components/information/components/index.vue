@@ -95,11 +95,11 @@ export default {
       this.$emit("getCurrentTemplate", this.currentTemplate);
     }
   },
-  watch: {
-    "$route.query.pid"() {
-      this.actionSetMcenterMsgCount();
-    }
-  },
+  // watch: {
+  //   "$route.query.pid"() {
+  //     this.actionSetMcenterMsgCount();
+  //   }
+  // },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
