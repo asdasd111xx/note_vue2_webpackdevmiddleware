@@ -174,7 +174,7 @@ export default {
     originUrl() {
       let origin = this.$route.params.page.toUpperCase();
       let from = localStorage.getItem("iframe-third-origin");
-      console.log(from);
+
       if (from) {
         localStorage.removeItem("iframe-third-origin");
         return `/mobile/${from}`;

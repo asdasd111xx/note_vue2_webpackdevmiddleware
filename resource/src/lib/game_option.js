@@ -108,7 +108,6 @@ const checkVersion = function() {
 };
 
 export const getEmbedGameVendor = (vendor, kind = 0, code = "") => {
-  console.log(vendor, kind);
   if (!vendor) {
     return null;
   }
