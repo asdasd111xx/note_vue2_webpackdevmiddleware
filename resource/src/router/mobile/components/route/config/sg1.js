@@ -91,6 +91,10 @@ export default {
     liveIframeSg1: () =>
       import(
         /* webpackChunkName: 'liveIframeSg1' */ "../../tpl/sg1/components/live/iframe"
+      ),
+    liveHomeSg1: () =>
+      import(
+        /* webpackChunkName: 'liveHomeSg1' */ "../../tpl/sg1/components/live/iframe"
       )
   },
   mcenter: {
