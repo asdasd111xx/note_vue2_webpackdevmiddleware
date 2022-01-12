@@ -148,6 +148,8 @@ export default {
       switch (this.routerTPL) {
         default:
           return "_new";
+        case "aobo1":
+          return "aobo1";
         case "sp1":
           return "sp1";
         case "porn1":
