@@ -1,15 +1,16 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">
-      <template v-if="['sp1'].includes(siteConfig.ROUTER_TPL)">
+      <template v-if="['sp1', 'aobo1'].includes(siteConfig.ROUTER_TPL)">
         <div
           id="home-top-bg"
-          :class="$style['top-bg']"
+          :class="[$style['top-bg'], $style[routerTPL]]"
           :style="{
             'background-image': `url(${`/static/image/${siteConfig.ROUTER_TPL}/common/pic_top.png`})`
           }"
         />
       </template>
+
       <home-slider />
       <home-new />
       <home-content />
@@ -66,6 +67,9 @@ export default {
       loginStatus: "getLoginStatus",
       showRedEnvelope: "getShowRedEnvelope"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     headerConfig() {
       return {
         hasLogo: true,
@@ -151,7 +155,13 @@ div.container {
 }
 
 .top-bg {
-  background: url("/static/image/sp1/common/pic_top.png");
+  &.sp1 {
+    background: url("/static/image/sp1/common/pic_top.png");
+  }
+  &.aobo1 {
+    background: url("/static/image/aobo1/common/pic_top.png");
+  }
+
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
   height: 120px;

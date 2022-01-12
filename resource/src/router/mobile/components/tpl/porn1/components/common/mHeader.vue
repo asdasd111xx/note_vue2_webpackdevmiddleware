@@ -264,7 +264,7 @@ export default {
     }),
     mainClass() {
       const style = this.$style;
-      let disableBackgroundColor = !!["sp1"].includes(
+      let disableBackgroundColor = !!["sp1", "aobo1"].includes(
         this.siteConfig.ROUTER_TPL
       );
       return {
