@@ -155,7 +155,7 @@ export default {
       return this.$t(this.select.text);
     },
     checkCodeText() {
-      return this.$t("S_SEND_CHECK_CODE_VALID_TIME_5");
+      return this.$t("S_SEND_CHECK_CODE_VALID_TIME_10");
     }
   },
   created() {
