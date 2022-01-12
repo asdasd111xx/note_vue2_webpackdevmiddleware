@@ -138,7 +138,7 @@ export default {
       document.body.appendChild(script);
     },
     puzzleCaptchaInit() {
-      this.puzzleCaptcha = new TencentCaptcha("2028894711", res => {
+      this.puzzleCaptcha = new TencentCaptcha("2087553891", res => {
         if (res.ret === 0) {
           const { appid, randstr, ticket, ret } = res;
           this.ret = ret;
