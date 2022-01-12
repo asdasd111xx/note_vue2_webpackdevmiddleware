@@ -2351,7 +2351,7 @@ export default {
 
       this.epointSelectType =
         localStorage.getItem("tmp_w_epointSelectType") === "true";
-      if (localStorage.getItem("tmp_w_epointWallet")) {
+      if (localStorage.getItem("tmp_w_epointWallet") &&localStorage.getItem("tmp_w_epointWallet")!= 'undefined') {
         this.defaultEpointWallet = JSON.parse(
           localStorage.getItem("tmp_w_epointWallet")
         );
