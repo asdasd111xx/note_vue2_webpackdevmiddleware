@@ -893,7 +893,9 @@ export default {
     height: 100%;
     vertical-align: middle;
   }
-
+  &.aobo1 {
+    color: #ffffff;
+  }
   &.sp1 {
     color: #ffffff;
   }
