@@ -70,6 +70,8 @@ export default {
         // this.errorMsg = "手机格式不符合要求";
         this.isVerifyPhone = false;
       }
+      if (this.formData.phone.length != 11)
+        this.errorMsg = "手机格式不符合要求";
     }
   },
   methods: {
