@@ -136,7 +136,7 @@ export default {
             if (this.domainConfig && this.domainConfig.auto_keyring) {
             } else {
               this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
               });
             }
 

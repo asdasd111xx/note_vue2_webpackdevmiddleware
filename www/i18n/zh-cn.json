@@ -649,6 +649,7 @@
   "S_AGREE_CONTENT_18": "无论在任何情况下，本公司具有最终的解释权。",
   "S_SEND_CHECK_CODE_VALID_TIME": "验证码已发送，有效时间为%s分钟",
   "S_SEND_CHECK_CODE_VALID_TIME_5": "验证码已发送，有效时间为5分钟",
+  "S_SEND_CHECK_CODE_VALID_TIME_10": "验证码已发送，有效时间为10分钟",
   "S_SEND_CHECK_CODE_VALID_LIMIT": "发送次数已达上限，请于%s小时后再试！",
   "S_FIND_TRASH": "，若没收到信件请尝试至垃圾箱寻找。",
   "S_SMS_RECEPTION": "短信接收",
