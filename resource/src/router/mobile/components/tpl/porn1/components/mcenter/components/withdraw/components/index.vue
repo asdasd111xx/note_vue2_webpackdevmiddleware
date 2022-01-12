@@ -1736,9 +1736,8 @@ export default {
           this.isCheckWithdraw = false;
           if (res.status === "000") {
             let check = true;
-            
-            Object.keys(res.data).forEach(i => {
-              if (i !== "bank" && !res.data[i]) {
+            console.log(123);
+            if(!res.data.name||!res.data.phone||!res.data.withdraw_password){
                 this.actionSetGlobalMessage({
                   msg: "请先设定提现资料",
                   cb: () => {
@@ -1751,12 +1750,11 @@ export default {
                 });
                 check = false;
                 return;
-              }
-            });
+            }
             //CGPay取款戶名核實機制
             if (!res.data.wallet) {
               this.actionSetGlobalMessage({
-                msg: "钱包注册姓名与真实姓名不符"
+                msg: res.data.wallet_error.msg
               });
               check = false;
               return;
