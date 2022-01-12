@@ -8,56 +8,54 @@
   --homepage_inner_border_color: #c9c9c9; //內邊框
 
   //主色(客製顏色)
-  --main_color: #d1b79c; //主色
-  --main_border_color: #d1b79c; //內邊框
-  --secondary_color: #7e6b56; //輔色(維護字體與首頁中間選單字體)
-  --secondary_border_color: #7e6b56; //內邊框
+  --main_color: #e42a30; //主色
+  --main_border_color: #e42a30; //內邊框
+  --secondary_color: #fcac3a; //輔色(維護字體與首頁中間選單字體)
+  --secondary_border_color: #fcac3a; //內邊框
 
   //選單(客製顏色)
-  --selector_color1: #364064; //首頁 左側選單、功能列 文字主色
+  --selector_color1: #ff7171; //首頁 左側選單、功能列 文字主色
   --selector_border_color1: #707070; //內邊框
-  --selector_color2: #4d2d1f; //首頁 左側選單文字Hover主色
+  --selector_color2: #fff3f3; //首頁 左側選單文字Hover主色
   --selector_border_color2: #707070; //內邊框
 
   //按鈕主色
-  --main_button_color1: linear-gradient(to right, #bd9d7d 0%, #f9ddbd 100%);
+  --main_button_color1: linear-gradient(to right, #e42a30 0%, #c62228 100%);
   --main_button_text_color1: #ffffff;
-  --main_button_color2: linear-gradient(to right, #e9dacb 0%, #eee5db 100%);
+  --main_button_color2: linear-gradient(to right, #fdcccc 0%, #fdcccc 100%);
   --main_button_text_color2: #ffffff;
 
   //首頁左側選單（選單(客製顏色)）
-  --homepage_left_text_color: #364064;
-  --homepage_left_text_active_color: #4d2d1f;
+  --homepage_left_text_color: #fff3f3;
+  --homepage_left_text_active_color: #ff7171;
 
   //首頁中間選單（輔色）
-  --homepage_right_text_color: #7e6b56;
+  --homepage_right_text_color: #fcac3a;
 
   //功能列（一般：選單(客製顏色)、點選：輔色）
-  --footer_color: #364064;
-  --footer_active_color: #7e6b56;
+  --footer_color: #fff3f3;
+  --footer_active_color: #fcac3a;
 
   //第二層選單（主色）
   //>底線模式
   --slider_text_color: #a6a9b2;
-  --slider_text_active_color: #5e626d;
-  --slider_underline_active_color: #d1b79c;
+  --slider_text_active_color: #e42a30;
+  --slider_underline_active_color: #e42a30;
   //>方塊模式
-  --square_text_color: #d1b79c;
-  --square_border_color: #d1b79c;
+  --square_text_color: #e42a30;
+  --square_border_color: #e42a30;
   --square_background_color: #ffffff;
   --square_text_active_color: #ffffff;
-  --square_border_active_color: #d1b79c;
-  --square_background_active_color: #d1b79c;
+  --square_border_active_color: #e42a30;
+  --square_background_active_color: #e42a30;
 
   //客服永久網址按鈕
   --service_bottom_text_button: #ffffff;
-  --service_bottom_background_button: #deb79c;
+  --service_bottom_background_button: #e42a30;
 
   //首頁訪客彩金
-  --visitor_title_color: #000;
-  --visitor_money_color: #fb7126;
-
-  --main_text_color1: #ffffff;
+  --visitor_title_color: #ffffff;
+  --visitor_money_color: #fffb91;
 
   /***--- 會員中心 ----***/
   //底色(固定顏色)
@@ -100,8 +98,12 @@
   --mcenter_dropdown_cancel_background_color: var(--mcenter_button_color2);
 
   //邀請好友獲得現金獎勵
-  --mcenter_invite_background_color: #f2e2d1;
-  --mcenter_invite_text_color: #be9e7f;
+  --mcenter_invite_background_color: linear-gradient(
+    to left,
+    #e9dacb 0%,
+    #eee5db 100%
+  );
+  --mcenter_invite_text_color: #414655;
 
   //我的推廣（文字配色設定）
   //>领取/详情： 底色【輔色】
