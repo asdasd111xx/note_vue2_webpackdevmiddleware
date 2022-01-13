@@ -155,13 +155,6 @@ div.container {
 }
 
 .top-bg {
-  &.sp1 {
-    background: url("/static/image/sp1/common/pic_top.png");
-  }
-  &.aobo1 {
-    background: url("/static/image/aobo1/common/pic_top.png");
-  }
-
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
   height: 120px;
@@ -170,6 +163,14 @@ div.container {
   top: 0;
   z-index: 0;
   position: absolute;
+
+  &.sp1 {
+    background: url("/static/image/sp1/common/pic_top.png");
+  }
+  &.aobo1 {
+    background: url("/static/image/aobo1/common/pic_top.png");
+    background-size: 100% 100%;
+  }
 }
 @media (orientation: landscape) {
   .top-bg {
