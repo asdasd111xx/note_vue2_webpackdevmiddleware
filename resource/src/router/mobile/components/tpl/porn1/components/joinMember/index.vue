@@ -5,7 +5,7 @@
     :has-footer="false"
   >
     <div slot="content" class="content-wrap">
-      <div :class="$style['join-member-wrap']">
+      <div :class="[$style['join-member-wrap'], $style[routerTPL]]">
         <join-member :theme="$style">
           <template slot="join-header" />
         </join-member>
@@ -31,8 +31,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
     headerConfig() {
       return {
         prev: true,
@@ -69,6 +73,9 @@ export default {
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
 
+  &.aobo1 {
+    background-image: url("/static/image/aobo1/common/bg.png");
+  }
   // form {
   //   width: 90vw;
   //   display: flex;
