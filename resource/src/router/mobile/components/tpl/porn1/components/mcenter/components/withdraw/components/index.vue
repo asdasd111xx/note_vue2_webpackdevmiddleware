@@ -358,16 +358,26 @@
             :class="[
               $style['bank-card-cell'],
               {
-                [$style['disable']]: forceStatus === 2
+                [$style['disable']]:
+                  forceStatus === 2 ||
+                  (forceStatus === 1 &&
+                    userWithdrawCount === 0 &&
+                    isFirstWithdraw)
               }
             ]"
           >
             <div
               :class="[
-                 $style['check-box'] ,
+                $style['check-box'],
                 $style[`image-${siteConfig.ROUTER_TPL}`],
-                {[$style['checked']]: forceStatus !== 2},
-                {[$style['disable']]: forceStatus === 2}
+                { [$style['checked']]: forceStatus !== 1 && forceStatus !== 2 },
+                {
+                  [$style['disable']]:
+                    forceStatus === 2 ||
+                    (forceStatus === 1 &&
+                      userWithdrawCount === 0 &&
+                      isFirstWithdraw)
+                }
               ]"
             />
             <span :class="[]">
