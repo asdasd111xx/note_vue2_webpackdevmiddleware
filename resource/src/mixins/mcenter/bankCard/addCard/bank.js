@@ -97,15 +97,12 @@ export default {
       this.getKeyring();
     },
     "formData.phone"() {
-      if (["ey1"].includes(this.themeTPL) || this.formData.phone.length >= 11) {
-        this.errorMsg = "";
-        this.isVerifyPhone = true;
-      } else {
-        // this.errorMsg = "手机格式不符合要求";
-        this.isVerifyPhone = false;
-      }
-      if (this.formData.phone.length != 11)
+      if (this.formData.phone.length !== 11) {
         this.errorMsg = "手机格式不符合要求";
+        this.isVerifyPhone = false;
+      } else {
+        this.isVerifyPhone = true;
+      }
     },
     // 預防從提現資料進到綁定銀行卡，會有無法立即更新 name 的問題
     "memInfo.user.name"() {
