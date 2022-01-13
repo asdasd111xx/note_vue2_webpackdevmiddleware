@@ -104,6 +104,7 @@ import mcenter from "@/api/mcenter";
 import serviceTips from "../../serviceTips";
 import accountHeader from "../../accountHeader";
 import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -158,6 +159,13 @@ export default {
             this.emailShow = false;
           }
         }
+      }
+    });
+    this.getEmailTTL().then(() => {
+      if (this.ttl > 0) {
+        this.locker();
+        this.actionSetGlobalMessage(null);
+        this.tipMsg = "";
       }
     });
   },
@@ -239,12 +247,40 @@ export default {
       "actionVerificationFormData",
       "actionSetGlobalMessage"
     ]),
+    // 回傳會員手機驗證簡訊剩餘秒數可以重送
+    getEmailTTL() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Email/TTL`,
+        params: {
+          lang: "zh-cn"
+        }
+      })
+        .then(res => {
+          if (res && res.status === "000") {
+            this.ttl = res.data;
+          } else {
+            if (res.msg) {
+              this.errorMsg = res.msg;
+            }
+          }
+        })
+        .catch(error => {
+          if (error.status) {
+            this.tipMsg = `${error.msg}`;
+            return;
+          }
+        });
+    },
+
     locker() {
       this.countdownSec = this.ttl;
       if (this.domainConfig && this.domainConfig.auto_keyring) {
       } else {
         this.actionSetGlobalMessage({
-          msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
+          msg:
+            this.$text("S_SEND_CHECK_CODE_VALID_TIME_10") +
+            this.$text("S_FIND_TRASH")
         });
         this.tipMsg =
           this.$text("S_SEND_CHECK_CODE_VALID_TIME_10") +

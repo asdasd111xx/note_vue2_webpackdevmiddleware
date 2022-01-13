@@ -336,6 +336,7 @@ export default {
     this.getPhoneTTL().then(() => {
       if (this.ttl > 0) {
         this.locker();
+        this.actionSetGlobalMessage(null);
       }
     });
   },
