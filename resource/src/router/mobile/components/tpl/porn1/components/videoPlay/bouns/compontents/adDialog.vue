@@ -4,7 +4,7 @@
       isClose ? [$style['dialog'], $style['dialog-close']] : $style['dialog']
     "
   >
-    <div :class="[$style['earn-wrap']]">
+    <div :class="[$style['earn-wrap'], $style['earn-wrap-ad']]">
       <div :class="[$style['title-coin'], $style['title-ad']]">
         <img
           :src="$getCdnPath('/static/image/porn1/activesBouns/coin_title.png')"

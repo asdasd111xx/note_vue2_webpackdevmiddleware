@@ -33,6 +33,10 @@ $bouns_color6: #fff07b;
     min-height: 190px;
     padding: 12px;
     color: white;
+
+    &.earn-wrap-ad {
+      min-height: 320px;
+    }
   }
 }
 
@@ -79,9 +83,17 @@ $bouns_color6: #fff07b;
 }
 
 .link-to-img {
-  margin: 9% 3%;
-  width: 320px;
-  height: 320px;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding-top: 30px;
 }
 
 .bouns-func {
