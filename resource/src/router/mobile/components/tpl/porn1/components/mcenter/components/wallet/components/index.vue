@@ -436,6 +436,8 @@ export default {
           return "porn1";
         case "sg1":
           return "sg1";
+        case "aobo1":
+          return "aobo1";
       }
     },
     birdIcons() {
