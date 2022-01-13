@@ -354,12 +354,20 @@
               epointSelectType
           "
         >
-          <div :class="[$style['bank-card-cell']]">
+          <div
+            :class="[
+              $style['bank-card-cell'],
+              {
+                [$style['disable']]: forceStatus === 2
+              }
+            ]"
+          >
             <div
               :class="[
-                $style['check-box'],
+                 $style['check-box'] ,
                 $style[`image-${siteConfig.ROUTER_TPL}`],
-                $style['checked']
+                {[$style['checked']]: forceStatus !== 2},
+                {[$style['disable']]: forceStatus === 2}
               ]"
             />
             <span :class="[]">
@@ -1009,7 +1017,6 @@ export default {
         return true;
       }
 
-
       if (
         this.withdrawData &&
         this.withdrawData.payment_charge &&
@@ -1029,17 +1036,19 @@ export default {
         ) {
           return true;
         }
-        
+
         //e點富時(會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款))
-        if(this.forceStatus === 1 &&
+        if (
+          this.forceStatus === 1 &&
           this.userWithdrawCount === 0 &&
-          this.isFirstWithdraw && 
-          this.epointSelectType){
-            return true;
+          this.isFirstWithdraw &&
+          this.epointSelectType
+        ) {
+          return true;
         }
         //e點富時(非首次出款 + 強制使用 CGPay 出款)
-        if(this.forceStatus === 2 && this.epointSelectType){
-          return true
+        if (this.forceStatus === 2 && this.epointSelectType) {
+          return true;
         }
       }
       return false;
@@ -1589,8 +1598,9 @@ export default {
         methodId:
           this.selectedCard.bank_id === 2009
             ? this.withdrawCurrency.method_id
-            : this.selectedCard.bank_id === 2016 
-              ? this.selectedCard.currency[0].method_id : ""
+            : this.selectedCard.bank_id === 2016
+            ? this.selectedCard.currency[0].method_id
+            : ""
       };
       return goLangApiRequest({
         method: "get",
@@ -1605,19 +1615,23 @@ export default {
           if (res.status === "000") {
             let check = true;
             console.log(123);
-            if(!res.data.name||!res.data.phone||!res.data.withdraw_password){
-                this.actionSetGlobalMessage({
-                  msg: "请先设定提现资料",
-                  cb: () => {
-                    {
-                      this.$router.push(
-                        "/mobile/withdrawAccount?redirect=wallet"
-                      );
-                    }
+            if (
+              !res.data.name ||
+              !res.data.phone ||
+              !res.data.withdraw_password
+            ) {
+              this.actionSetGlobalMessage({
+                msg: "请先设定提现资料",
+                cb: () => {
+                  {
+                    this.$router.push(
+                      "/mobile/withdrawAccount?redirect=wallet"
+                    );
                   }
-                });
-                check = false;
-                return;
+                }
+              });
+              check = false;
+              return;
             }
             //CGPay取款戶名核實機制
             if (!res.data.wallet) {
@@ -2219,7 +2233,10 @@ export default {
 
       this.epointSelectType =
         localStorage.getItem("tmp_w_epointSelectType") === "true";
-      if (localStorage.getItem("tmp_w_epointWallet") &&localStorage.getItem("tmp_w_epointWallet")!= 'undefined') {
+      if (
+        localStorage.getItem("tmp_w_epointWallet") &&
+        localStorage.getItem("tmp_w_epointWallet") != "undefined"
+      ) {
         this.defaultEpointWallet = JSON.parse(
           localStorage.getItem("tmp_w_epointWallet")
         );
