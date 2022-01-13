@@ -35,7 +35,8 @@ $bouns_color6: #fff07b;
     color: white;
 
     &.earn-wrap-ad {
-      min-height: 320px;
+      height: 340px;
+      width: 320px;
     }
   }
 }
@@ -82,18 +83,27 @@ $bouns_color6: #fff07b;
   text-align: center;
 }
 
+.link-to {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
 .link-to-img {
-  max-height: 95%;
+  max-height: 100%;
   max-width: 100%;
   width: auto;
   height: auto;
   position: absolute;
   top: 0;
-  bottom: 20px;
   left: 0;
   right: 0;
+  bottom: 0;
   margin: auto;
-  padding-top: 30px;
 }
 
 .bouns-func {

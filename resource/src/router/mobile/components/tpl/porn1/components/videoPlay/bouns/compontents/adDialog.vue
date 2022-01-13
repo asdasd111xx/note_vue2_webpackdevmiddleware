@@ -19,11 +19,13 @@
         "
         @click="handleClose"
       />
-      <img
-        :class="$style['link-to-img']"
-        :src="adData.AdPic"
-        @click="handleLinkTo"
-      />
+      <div :class="$style['link-to']">
+        <img
+          :class="$style['link-to-img']"
+          :src="adData.AdPic"
+          @click="handleLinkTo"
+        />
+      </div>
     </div>
   </div>
 </template>
