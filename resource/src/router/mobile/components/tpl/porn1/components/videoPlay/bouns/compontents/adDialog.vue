@@ -119,17 +119,23 @@ export default {
             return data.id === this.promotionId;
           });
           if (linkData) {
-            this.mobileLinkOpen({
-              linkType: "mi",
-              linkTitle: linkData.name,
-              linkTo: linkData.link
-            });
+            localStorage.setItem("iframe-third-url", linkData.link);
+            localStorage.setItem("iframe-third-url-title", linkData.name);
+            this.$router.push(`/mobile/iframe/usm`);
+            // this.mobileLinkOpen({
+            //   linkType: "mi",
+            //   linkTitle: linkData.name,
+            //   linkTo: linkData.link
+            // });
           } else {
-            this.mobileLinkOpen({
-              linkType: "mi",
-              linkTitle: "    ",
-              linkTo: this.adData.AdUrl
-            });
+            localStorage.setItem("iframe-third-url", this.adData.AdUrl);
+            localStorage.setItem("iframe-third-url-title", "  ");
+            this.$router.push(`/mobile/iframe/usm`);
+            // this.mobileLinkOpen({
+            //   linkType: "mi",
+            //   linkTitle: "    ",
+            //   linkTo: this.adData.AdUrl
+            // });
           }
         }
       });
