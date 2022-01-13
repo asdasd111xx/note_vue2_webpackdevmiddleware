@@ -44,18 +44,18 @@
     <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
-        LEVEL {{ cardInfoTop.level }}
+        LEVEL {{ formatThousandsCurrency(cardInfoTop.level) }}
         <span style="marginLeft:2px; fontSize:7px ;color:#FFBC24;"> > </span>
       </span>
     </div>
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']" @click="onListClick('my_track')">
-        <span>{{ cardInfoTop.track_total || 0 }}</span>
+        <span>{{ formatThousandsCurrency(cardInfoTop.track_total) || 0 }}</span>
         追踪人数
       </div>
       <div :class="$style['tool']" @click="onListClick('my_props')">
-        <span>{{ cardInfoTop.prop_num || 0 }}</span>
+        <span>{{ formatThousandsCurrency(cardInfoTop.prop_num) || 0 }}</span>
         道具
       </div>
     </div>
@@ -150,6 +150,7 @@ import { mapGetters, mapActions } from "vuex";
 import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -283,6 +284,9 @@ export default {
       }).then(res => {
         this.viplevel = res.data ? res.data[0] && res.data[0].now_level_seq : 0;
       });
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };

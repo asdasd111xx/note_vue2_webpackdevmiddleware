@@ -54,7 +54,7 @@
     <div :class="$style['level-wrap']" @click="onListClick('my_vip')">
       <span :class="$style['vip-level']">
         <img :src="$getCdnPath(`/static/image/sg1/mcenter/ic_crown.png`)" />
-        LEVEL {{ this.paopaoUserInfo.level }}
+        LEVEL {{ formatThousandsCurrency(this.paopaoUserInfo.level) }}
         <span
           v-if="loginStatus"
           style="marginLeft:2px; fontSize:7px ;color:#FFBC24;"
@@ -66,15 +66,22 @@
 
     <div :class="$style['data-content']">
       <div :class="$style['follower']" @click="onListClick('my_track')">
-        <span>{{ unloginString || paopaoUserInfo.track_total }}</span>
+        <span>{{
+          unloginString || formatThousandsCurrency(paopaoUserInfo.track_total)
+        }}</span>
         追踪人数
       </div>
       <div :class="$style['favorite']" @click="onListClick('my_favorite')">
-        <span>{{ unloginString || paopaoUserInfo.favorite_total }}</span>
+        <span>{{
+          unloginString ||
+            formatThousandsCurrency(paopaoUserInfo.favorite_total)
+        }}</span>
         我的最爱
       </div>
       <div :class="$style['bubbles']" @click="onListClick('my_sent_paopao')">
-        <span>{{ unloginString || paopaoUserInfo.paopao_total }}</span>
+        <span>{{
+          unloginString || formatThousandsCurrency(paopaoUserInfo.paopao_total)
+        }}</span>
         送出泡泡
       </div>
     </div>
@@ -87,6 +94,7 @@ import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
 import { sendUmeng } from "@/lib/sendUmeng";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {},
@@ -193,6 +201,9 @@ export default {
       } else {
         this.$router.push(`/mobile/mcenter/${target}`);
       }
+    },
+    formatThousandsCurrency(value) {
+      return thousandsCurrency(value);
     }
   }
 };
