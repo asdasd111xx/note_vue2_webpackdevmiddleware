@@ -599,9 +599,9 @@ export default {
           "web-platform": getCookie("platform")
         }
       };
-      if (this.isDebug) {
-        console.log("[WS]: onSend:", data);
-      }
+      // if (this.isDebug) {
+      console.log("[WS]: onSend:", data);
+      // }
       window.YABO_SOCKET.send(JSON.stringify(data));
     },
     unloginModeAction(type) {
