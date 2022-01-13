@@ -1529,7 +1529,7 @@ export default {
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
-        code: localStorage.getItem("promotionCode") || "",
+        code: localStorage.getItem("x-code") || "",
         phone_keyring: this.phoneVerifyModalShow
           ? this.register_phone_keyring
           : "",
@@ -1550,8 +1550,9 @@ export default {
         params: {
           ...params,
           host: window.location.host,
-          deviceId: localStorage.getItem("uuidAccount"),
-          lang: "zh-cn"
+          deviceId: localStorage.getItem("uuidAccount") || "",
+          lang: "zh-cn",
+          register_channel: localStorage.getItem("x-channelid") || ""
         }
       }).then(res => {
         setTimeout(() => {
@@ -1649,10 +1650,7 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (
-                item === "introducer" &&
-                localStorage.getItem("promotionCode")
-              ) {
+              if (item === "introducer" && localStorage.getItem("x-code")) {
                 this.errMsg = res.errors[item];
               }
             });
