@@ -75,7 +75,7 @@
               />
             </div>
             <p
-              v-if="mailSubmitSuccess && mailSubmitFail == false"
+              v-if="mailSubmitSuccess && mailSubmitFail == false && ttlCount > 0"
               style="color:#5E626D"
             >
               验证码已发送，有效时间为
@@ -145,7 +145,7 @@
               />
             </div>
             <p
-              v-if="phoneSubmitSuccess && phoneSubmitFail == false"
+              v-if="phoneSubmitSuccess && phoneSubmitFail == false && ttlCount > 0"
               style="color:#5E626D"
             >
               验证码已发送，有效时间为
