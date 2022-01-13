@@ -46,14 +46,25 @@ export default new Router({
 
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
-        if (code) {
+        const channelid = urlParams.get("channelid");
+
+        if (code && code !== undefined) {
+          localStorage.setItem("x-code", code);
+
           setCookie("cid", "");
           setCookie("aid", "");
           localStorage.removeItem("aid");
           window.RESET_LOCAL_SETTING();
           window.RESET_MEM_SETTING();
+
+          if (channelid && channelid !== undefined) {
+            localStorage.setItem("x-channelid", channelid);
+            next(`/mobile?code=${code}&channelid=${channelid}`);
+            return;
+          }
+
+          next(`/mobile?code=${code}`);
         }
-        localStorage.setItem("promotionCode", code || "");
 
         next("/mobile");
         return;
@@ -63,14 +74,18 @@ export default new Router({
       path: "/a/:code",
       beforeEnter(to, from, next) {
         const code = to.params.code;
-        if (code) {
+        if (code && code !== undefined) {
+          localStorage.setItem("x-code", code || "");
+
           setCookie("cid", "");
           setCookie("aid", "");
           localStorage.removeItem("aid");
           window.RESET_LOCAL_SETTING();
           window.RESET_MEM_SETTING();
+
+          next(`/mobile?code=${code}`);
         }
-        localStorage.setItem("promotionCode", code || "");
+
         next("/mobile");
       }
     },
