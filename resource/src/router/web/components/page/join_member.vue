@@ -71,11 +71,13 @@
               <input
                 v-model="mailVerifyCode"
                 :class="$style['verifycode-input']"
-                placeholder="请輸入验证码"
+                placeholder="验证码"
               />
             </div>
             <p
-              v-if="mailSubmitSuccess && mailSubmitFail == false && ttlCount > 0"
+              v-if="
+                mailSubmitSuccess && mailSubmitFail == false && ttlCount > 0
+              "
               style="color:#5E626D"
             >
               验证码已发送，有效时间为
@@ -141,11 +143,13 @@
               <input
                 v-model="phoneVerifyCode"
                 :class="$style['verifycode-input']"
-                placeholder="请輸入验证码"
+                placeholder="验证码"
               />
             </div>
             <p
-              v-if="phoneSubmitSuccess && phoneSubmitFail == false && ttlCount > 0"
+              v-if="
+                phoneSubmitSuccess && phoneSubmitFail == false && ttlCount > 0
+              "
               style="color:#5E626D"
             >
               验证码已发送，有效时间为
@@ -666,6 +670,7 @@ export default {
       default: false
     }
   },
+
   data() {
     return {
       dateLang: datepickerLang(this.$i18n.locale),

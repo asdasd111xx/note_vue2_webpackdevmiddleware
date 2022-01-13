@@ -278,7 +278,9 @@ export default {
       if (this.domainConfig && this.domainConfig.auto_keyring) {
       } else {
         this.actionSetGlobalMessage({
-          msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
+          msg:
+            this.$text("S_SEND_CHECK_CODE_VALID_TIME_10") +
+            this.$text("S_FIND_TRASH")
         });
         this.tipMsg =
           this.$text("S_SEND_CHECK_CODE_VALID_TIME_10") +
