@@ -197,6 +197,14 @@
       #f6d2bd
     );
   }
+  &.image-aobo1 {
+    @include info-card(
+      #f6d2bd,
+      #e5997a,
+      "/static/image/aobo1/service/service_card.png",
+      #f6d2bd
+    );
+  }
 }
 
 .customer_service2 {
@@ -211,6 +219,14 @@
       #b4cfef,
       #8bb4e2,
       "/static/image/porn1/webview/service_card2.png",
+      #cedff3
+    );
+  }
+  &.image-aobo1 {
+    @include info-card(
+      #b4cfef,
+      #8bb4e2,
+      "/static/image/aobo1/service/service_card.png",
       #cedff3
     );
   }
