@@ -221,7 +221,7 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: #000;
+  color: #6aaaf5;
   border-top: 1px solid #f8f8f7;
 
   &.is-captcha-image {

@@ -841,9 +841,9 @@ export default {
 
           if (errorCode !== "00" || status !== "000") {
             // this.actionSetGlobalMessage({ msg });
-            this.actionSetGlobalMessage({
-              msg: "绑定失敗"
-            });
+            // this.actionSetGlobalMessage({
+            //   msg: "绑定失敗"
+            // });
             if (
               //手機驗證開啟時USDT ERC20,TRC20 驗證位址後先進入手機驗證
               (this.selectTarget.walletId === 46 ||
@@ -855,9 +855,9 @@ export default {
               return;
             } else {
               this.errorMsg = msg;
-              this.actionSetGlobalMessage({
-                msg: "绑定失敗"
-              });
+              // this.actionSetGlobalMessage({
+              //   msg: "绑定失敗"
+              // });
               return;
             }
           }
@@ -870,9 +870,9 @@ export default {
           this.isReceive = false;
           const { msg } = error.response.data;
           // this.actionSetGlobalMessage({ msg });
-          this.actionSetGlobalMessage({
-            msg: "绑定失敗"
-          });
+          // this.actionSetGlobalMessage({
+          //   msg: "绑定失敗"
+          // });
           this.errorMsg = msg;
         });
     },
@@ -903,9 +903,9 @@ export default {
 
           if (result !== "ok" || result === "error") {
             // this.actionSetGlobalMessage({ msg });
-            this.actionSetGlobalMessage({
-              msg: "绑定失敗"
-            });
+            // this.actionSetGlobalMessage({
+            //   msg: "绑定失敗"
+            // });
             this.errorMsg = msg;
             return;
           }
@@ -919,9 +919,9 @@ export default {
           this.isReceive = false;
           const { msg } = error.response.data;
           // this.actionSetGlobalMessage({ msg });
-          this.actionSetGlobalMessage({
-            msg: "绑定失敗"
-          });
+          // this.actionSetGlobalMessage({
+          //   msg: "绑定失敗"
+          // });
           this.errorMsg = msg;
           return;
         });

@@ -554,7 +554,7 @@ export default {
             this.errorMsg = `${res.msg}`;
           } else {
             this.actionSetGlobalMessage({
-              msg: "已发送手机验证码"
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
             });
           }
         } else {

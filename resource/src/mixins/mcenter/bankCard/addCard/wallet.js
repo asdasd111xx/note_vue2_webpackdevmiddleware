@@ -64,12 +64,11 @@ export default {
       this.getKeyring();
     },
     "formData.phone"() {
-      if (["ey1"].includes(this.themeTPL) || this.formData.phone.length >= 11) {
-        this.errorMsg = "";
-        this.isVerifyPhone = true;
-      } else {
+      if (this.formData.phone.length !== 11) {
         this.errorMsg = "手机格式不符合要求";
         this.isVerifyPhone = false;
+      } else {
+        this.isVerifyPhone = true;
       }
     }
   },
@@ -137,7 +136,7 @@ export default {
             if (this.domainConfig && this.domainConfig.auto_keyring) {
             } else {
               this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_5")
+                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
               });
             }
 
