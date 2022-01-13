@@ -385,7 +385,7 @@ div.container {
   background-image: url("/static/image/aobo1/service/header_bg.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
-  background-position: 0 -70px;
+  // background-position: 0 -70px;
   background-repeat: no-repeat;
   position: relative;
   height: 100vh;
