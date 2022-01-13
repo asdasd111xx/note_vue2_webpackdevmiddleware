@@ -141,6 +141,10 @@
       position: relative;
       margin-left: 6px;
       color: var(--slider_text_active_color);
+
+      &.aobo1 {
+        color: #5e626d;
+      }
     }
 
     .login-unit-link {

@@ -130,7 +130,7 @@
                     "
                   />
                 </div>
-                <span class="deposit-text">{{
+                <span :class="['deposit-text', `${routerTPL}`]">{{
                   $text("S_SAVE_PASSWORD", "记住密码")
                 }}</span>
                 <!-- 忘記密碼 -->
