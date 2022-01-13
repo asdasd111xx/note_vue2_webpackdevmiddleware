@@ -125,7 +125,7 @@
                   />
                 </div>
                 <div :class="$style['num']" :alt="item.diamond_amount">
-                  {{ `${item.diamond_amount}钻` }}
+                  {{ `${formatThousandsCurrency(item.diamond_amount, 0)}钻` }}
                 </div>
                 <div :class="$style['price']">
                   {{ `${formatThousandsCurrency(item.cash_amount, 0)}元` }}
