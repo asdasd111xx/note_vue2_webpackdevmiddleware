@@ -63,7 +63,7 @@ export default {
       isShowMore: true,
       isShowTransOutSelect: false,
       isShowTransInSelect: false,
-      currentTab: 1, //promotion transfer recoard
+      currentTab: 0, //promotion transfer recoard
       currentTemplate: "transfer-credit-trans"
     };
   },
@@ -102,7 +102,7 @@ export default {
     if (this.$route.query && this.$route.query.tab) {
       this.setCurrentTab(Number(this.$route.query.tab));
     } else {
-      this.$router.replace(`/mobile/mcenter/creditTrans?tab=1`);
+      this.$router.replace(`/mobile/mcenter/creditTrans?tab=0`);
     }
   },
   methods: {
@@ -115,13 +115,13 @@ export default {
     setCurrentTab(index) {
       switch (index) {
         default:
-        case 0:
+        // case 0:
         // this.$router.push("/mobile/iframe/promotion?alias=quota_transfer");
         // this.currentTemplate = "promotion-credit-trans";
         // this.currentTab = index;
         // break;
 
-        case 1:
+        case 0:
           if (this.currentTab == index) return;
           const self = this;
           this.actionGetMemInfoV3().then(() => {
@@ -134,7 +134,7 @@ export default {
           });
           break;
 
-        case 2:
+        case 1:
           if (this.currentTab == index) return;
 
           this.currentTemplate = "recoard-recharge";

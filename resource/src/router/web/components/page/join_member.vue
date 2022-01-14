@@ -66,7 +66,7 @@
                 ]"
                 @click="getMailVerifyCode"
               >
-                {{ mailVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ mailVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="mailVerifyCode"
@@ -138,7 +138,7 @@
                 ]"
                 @click="getPhoneVerifyCode"
               >
-                {{ phoneVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="phoneVerifyCode"
@@ -703,7 +703,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        introducer: this.$cookie.get("a") || "",
+        introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
@@ -1002,7 +1002,7 @@ export default {
                 return;
               }
 
-              if (key === "introducer" && this.$cookie.get("a")) {
+              if (key === "introducer" && localStorage.getItem("x-code")) {
                 this.joinMemInfo[key] = {
                   ...this.joinMemInfo[key],
                   isRequired: true,
@@ -1549,6 +1549,7 @@ export default {
         },
         params: {
           ...params,
+          introducer: localStorage.getItem("x-code") || "",
           host: window.location.host,
           deviceId: localStorage.getItem("uuidAccount") || "",
           lang: "zh-cn",

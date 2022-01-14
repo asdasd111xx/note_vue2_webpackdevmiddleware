@@ -235,6 +235,9 @@ export default {
         url.searchParams.append("channelid", channelid);
       }
 
+      // 落地頁直接下載
+      url.searchParams.append("action", "download");
+
       // safari
       setTimeout(() => {
         location.href = url.href;
