@@ -703,7 +703,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        introducer: this.$cookie.get("a") || "",
+        introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
@@ -1002,7 +1002,7 @@ export default {
                 return;
               }
 
-              if (key === "introducer" && this.$cookie.get("a")) {
+              if (key === "introducer" && localStorage.getItem("x-code")) {
                 this.joinMemInfo[key] = {
                   ...this.joinMemInfo[key],
                   isRequired: true,
@@ -1549,6 +1549,7 @@ export default {
         },
         params: {
           ...params,
+          introducer: localStorage.getItem("x-code") || "",
           host: window.location.host,
           deviceId: localStorage.getItem("uuidAccount") || "",
           lang: "zh-cn",
