@@ -188,6 +188,7 @@ export default {
           if (
             !this.isInit ||
             this.dialogType === "tips-wait" ||
+            this.isFULL ||
             !this.isActiveBouns
           ) {
             if (this.adSwitch) {
@@ -233,7 +234,10 @@ export default {
 
         if (this.player.seeking()) return;
         if (window.YABO_SOCKET && !this.keepPlay) {
-          if (this.adSwitch && this.dialogType === "tips-wait") {
+          if (
+            this.adSwitch &&
+            (this.dialogType === "tips-wait" || this.isFULL)
+          ) {
             this.onSend("ADSTOP");
           } else {
             this.onSend("STOP");
@@ -251,7 +255,9 @@ export default {
         this.$refs.bonunsProcess.playCueTime("stop");
         if (window.YABO_SOCKET) {
           this.onSend(
-            this.adSwitch && this.dialogType === "tips-wait" ? "ADSTOP" : "STOP"
+            this.adSwitch && (this.dialogType === "tips-wait" || this.isFULL)
+              ? "ADSTOP"
+              : "STOP"
           );
         }
       });
@@ -545,7 +551,8 @@ export default {
                 break;
               case "CLOSE":
                 this.onSend(
-                  this.adSwitch && this.dialogType === "tips-wait"
+                  this.adSwitch &&
+                    (this.dialogType === "tips-wait" || this.isFULL)
                     ? "ADSTOP"
                     : "STOP"
                 );
@@ -559,10 +566,8 @@ export default {
                 break;
               case "ADSTART":
                 this.keepPlay = true;
-                // this.onSend("ADSTART");
                 break;
               case "ADSTOP":
-                // this.onSend("ADSTOP");
                 break;
               default:
                 break;
@@ -621,7 +626,9 @@ export default {
     },
     handleLeavePage(cb) {
       this.onSend(
-        this.adSwitch && this.dialogType === "tips-wait" ? "ADSTOP" : "STOP"
+        this.adSwitch && (this.dialogType === "tips-wait" || this.isFULL)
+          ? "ADSTOP"
+          : "STOP"
       );
       document.removeEventListener("visibilitychange", () => {}, false);
       window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
@@ -725,7 +732,9 @@ export default {
   },
   beforeDestroy() {
     this.onSend(
-      this.adSwitch && this.dialogType === "tips-wait" ? "ADSTOP" : "STOP"
+      this.adSwitch && (this.dialogType === "tips-wait" || this.isFULL)
+        ? "ADSTOP"
+        : "STOP"
     );
     document.removeEventListener("visibilitychange", () => {}, false);
     window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
