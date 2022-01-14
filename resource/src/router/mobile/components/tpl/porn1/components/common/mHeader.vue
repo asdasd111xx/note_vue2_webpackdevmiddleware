@@ -120,20 +120,17 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <template v-if="event_jackpot || video_jackpot || register_jackpot">
-          <span :class="$style['visitor-title']" @click="checkLayeredURL"
-            >访客彩金</span
-          >
-          <span
-            :class="[$style['visitor-money'], $style['just-money']]"
-            @click="checkLayeredURL"
-            >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
-          >
-          <span :class="$style['visitor-money']" @click="checkLayeredURL">
-            领取
-          </span>
-        </template>
-        <span v-else :class="$style['visitor-noactivity']">访客注册</span>
+        <span :class="$style['visitor-title']" @click="checkLayeredURL"
+          >访客彩金</span
+        >
+        <span
+          :class="[$style['visitor-money'], $style['just-money']]"
+          @click="checkLayeredURL"
+          >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
+        >
+        <span :class="$style['visitor-money']" @click="checkLayeredURL"
+          >领取</span
+        >
         <span
           @click="
             () => {
@@ -256,10 +253,7 @@ export default {
       msg: "",
       source: this.$route.query.source,
       guestAmount: 0,
-      remainBonus: 0,
-      event_jackpot: "",
-      register_jackpot: "",
-      video_jackpot: ""
+      remainBonus: 0
     };
   },
   computed: {
@@ -303,7 +297,6 @@ export default {
     }
   },
   created() {
-    this.getActivityStatus();
     if (!this.loginStatus) {
       this.getGuestBalance();
     } else {
@@ -367,17 +360,6 @@ export default {
       }
 
       this.$router.push({ path: "search", query: { source: this.source } });
-    },
-
-    getActivityStatus() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
-      }).then(res => {
-        this.event_jackpot = res.data.event_jackpot;
-        this.register_jackpot = res.data.register_jackpot;
-        this.video_jackpot = res.data.video_jackpot;
-      });
     },
 
     // 取得訪客餘額
@@ -628,9 +610,6 @@ export default {
   }
   .visitor-border {
     border-right: 1px solid #9ca4be;
-  }
-  .visitor-noactivity {
-    color: var(--visitor_money_color);
   }
 }
 
