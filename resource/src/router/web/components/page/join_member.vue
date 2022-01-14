@@ -66,7 +66,7 @@
                 ]"
                 @click="getMailVerifyCode"
               >
-                {{ mailVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ mailVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="mailVerifyCode"
@@ -138,7 +138,7 @@
                 ]"
                 @click="getPhoneVerifyCode"
               >
-                {{ phoneVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="phoneVerifyCode"
