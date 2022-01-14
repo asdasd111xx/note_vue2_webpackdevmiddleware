@@ -291,6 +291,7 @@ export default {
           this.countdownSec = 0;
           clearInterval(this.timer);
           this.timer = null;
+          this.tipMsg = "";
           return;
         }
         this.countdownSec -= 1;

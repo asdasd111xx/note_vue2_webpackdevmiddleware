@@ -1335,10 +1335,15 @@ export default {
     ...mapActions([
       "actionGetServiceMaintain",
       "actionSetAnnouncementList",
-      "actionSetUserBalance"
+      "actionSetUserBalance",
+      "actionGetMemInfoV3",
+      "actionGetRechargeStatus"
     ]),
     linkToRecharge() {
-      this.$router.push("/mobile/mcenter/creditTrans?tab=0");
+      // this.$router.push("/mobile/mcenter/creditTrans?tab=0");
+      this.actionGetMemInfoV3().then(() => {
+        this.actionGetRechargeStatus("");
+      });
     },
     goBack() {
       this.isAlertShow = false;

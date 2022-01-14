@@ -2490,7 +2490,6 @@ export const actionGetRegisterURL = ({ state }) => {
   })
     .then(res => {
       const { ret, result, msg, code } = res.data;
-      console.log(res);
       if (!res || result !== "ok") {
         dispatch("actionSetGlobalMessage", {
           msg,
