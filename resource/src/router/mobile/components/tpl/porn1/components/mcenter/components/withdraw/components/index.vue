@@ -2258,7 +2258,11 @@ export default {
           localStorage.getItem("tmp_w_1") &&
           localStorage.getItem("tmp_w_rule") !== "1"
         ) {
-          this.withdrawCheck().then(this.handleSubmit());
+          this.withdrawCheck().then(res => {
+            if (res === "ok") {
+              this.handleSubmit()
+              }
+            });
         }
         localStorage.removeItem("tmp_w_rule");
       });
