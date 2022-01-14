@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       mcenterUserField: {},
+      paopaoMemberCardInfo: {},
       isReady: false,
       lang: this.$i18n.locale,
       verification: {
@@ -26,6 +27,66 @@ export default {
           text: "S_REAL_NAME_CONFIRM",
           isShow: true,
           field: {
+            birthday: {
+              key: "birthday",
+              text: "S_BIRTHDAY_DATE",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: true,
+              placeholder: "添加日期，确保您已满18岁",
+              sglive: false
+            },
+            gender: {
+              key: "gender",
+              text: "S_GENDER",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: true,
+              placeholder: "未选择",
+              sglive: false
+            },
+            liveName: {
+              key: "liveName_alias",
+              text: "S_LIVENAME",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: true,
+              placeholder: "尚未设定",
+              sglive: true
+            },
+            liveSign: {
+              key: "intro",
+              text: "S_LIVESIGN",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: true,
+              placeholder: "TA好像忘记签名了",
+              sglive: true
+            },
+            liveArea: {
+              key: "hometown",
+              text: "S_AREA",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: true,
+              placeholder: "请选择所在地区",
+              sglive: true
+            },
+            liveEmotion: {
+              key: "relationship",
+              text: "S_EMOTION",
+              status: "",
+              value: "",
+              btnShow: true,
+              isShow: true,
+              placeholder: "尚未设定",
+              sglive: true
+            },
             name: {
               key: "name",
               text: "S_REAL_NAME",
@@ -33,7 +94,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: true,
-              placeholder: "姓名需与银行持卡人姓名一致，否则无法提现"
+              placeholder: "姓名需与银行持卡人姓名一致，否则无法提现",
+              sglive: false
             },
             alias: {
               key: "alias",
@@ -43,35 +105,8 @@ export default {
               btnShow: true,
               type: "alias",
               isShow: true,
-              popTitle: "S_MODIFY_NICKNAME"
-            },
-            intro: {
-              key: "intro",
-              text: "intro",
-              status: "",
-              value: "",
-              btnShow: true,
-              type: "intro",
-              isShow: true,
-              popTitle: "未設定"
-            },
-            gender: {
-              key: "gender",
-              text: "S_GENDER",
-              status: "",
-              value: "",
-              btnShow: true,
-              isShow: true,
-              placeholder: "未选择"
-            },
-            birthday: {
-              key: "birthday",
-              text: "S_BIRTHDAY_DATE",
-              status: "",
-              value: "",
-              btnShow: true,
-              isShow: true,
-              placeholder: "添加日期，确保您已满18岁"
+              popTitle: "S_MODIFY_NICKNAME",
+              sglive: false
             },
             phone: {
               key: "phone",
@@ -82,7 +117,8 @@ export default {
               type: "bind",
               verification: true,
               isShow: true,
-              placeholder: "绑定手机保护帐号安全"
+              placeholder: "绑定手机保护帐号安全",
+              sglive: false
             },
             email: {
               key: "email",
@@ -93,7 +129,8 @@ export default {
               type: "bind",
               verification: true,
               isShow: false,
-              placeholder: "绑定邮箱保护帐号安全"
+              placeholder: "绑定邮箱保护帐号安全",
+              sglive: false
             },
             qq_num: {
               key: "qq",
@@ -102,7 +139,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: false,
-              placeholder: "尚未设定"
+              placeholder: "尚未设定",
+              sglive: false
             },
             weixin: {
               key: "weixin",
@@ -111,7 +149,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: false,
-              placeholder: "尚未设定"
+              placeholder: "尚未设定",
+              sglive: false
             },
             line: {
               key: "line",
@@ -120,7 +159,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: false,
-              placeholder: "尚未设定"
+              placeholder: "尚未设定",
+              sglive: false
             },
             facebook: {
               key: "facebook",
@@ -129,7 +169,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: false,
-              popTitle: ""
+              popTitle: "",
+              sglive: false
             },
             skype: {
               key: "skype",
@@ -138,7 +179,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: false,
-              popTitle: ""
+              popTitle: "",
+              sglive: false
             },
             // 無需求暫時不開放
             // telegram: {
@@ -166,7 +208,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: false,
-              popTitle: ""
+              popTitle: "",
+              sglive: false
             },
             withdrawPwd: {
               key: "withdrawPwd",
@@ -175,7 +218,8 @@ export default {
               value: "",
               btnShow: true,
               isShow: true,
-              popTitle: ""
+              popTitle: "",
+              sglive: false
             }
           }
         },
@@ -234,14 +278,14 @@ export default {
       }
     },
     lang() {
-      this.setData(this.mcenterUserField);
+      this.setData(this.mcenterUserField, this.paopaoMemberCardInfo);
     }
   },
   beforeUpdate() {
     this.lang = this.$i18n.locale;
   },
   methods: {
-    ...mapActions(["actionSetPop"]),
+    ...mapActions(["actionSetPop", "actionGetExtRedirect"]),
     getData() {
       ajax({
         method: "get",
@@ -260,14 +304,29 @@ export default {
             }
           });
           this.mcenterUserField = response.ret;
-          this.setData(response.ret);
+
+          this.getPaopaoMemberData();
         }
 
         this.isReady = true;
       });
     },
-    setData(userConfig = {}) {
-      if (Object.keys(userConfig).length === 0) {
+    getPaopaoMemberData() {
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/personal-info",
+        method: "get"
+      }).then(data => {
+        this.paopaoMemberCardInfo = data.result || null;
+
+        this.setData(this.mcenterUserField, this.paopaoMemberCardInfo);
+        this.isReady = true;
+      });
+    },
+    setData(userConfig = {}, paopaoConfig = {}) {
+      if (
+        Object.keys(userConfig).length === 0 &&
+        Object.keys(paopaoConfig).length === 0
+      ) {
         return;
       }
 
@@ -345,7 +404,54 @@ export default {
                 userConfig.config.withdraw_password.display &&
                 this.siteConfig.MOBILE_WEB_TPL !== "porn1"
             };
+          } else if (
+            key === "liveName" &&
+            (paopaoConfig.alias === "" || paopaoConfig.alias)
+          ) {
+            itemNow = {
+              ...itemNow,
+              status: paopaoConfig.alias ? "already" : "yet",
+              value: paopaoConfig.alias || itemNow.placeholder,
+              btnShow: true,
+              isShow: true
+            };
+          } else if (
+            key === "liveSign" &&
+            (paopaoConfig.intro === "" || paopaoConfig.intro)
+          ) {
+            itemNow = {
+              ...itemNow,
+              status: paopaoConfig.intro ? "already" : "yet",
+              value: paopaoConfig.intro || itemNow.placeholder,
+              btnShow: true,
+              isShow: true
+            };
+          } else if (
+            key === "liveArea" &&
+            (paopaoConfig.hometown === "" || paopaoConfig.hometown)
+          ) {
+            itemNow = {
+              ...itemNow,
+              status: paopaoConfig.hometown !== "" ? "already" : "yet",
+              value: paopaoConfig.hometown || itemNow.placeholder,
+              btnShow: true,
+              isShow: true
+            };
+          } else if (
+            key === "liveEmotion" &&
+            (paopaoConfig.relationship === "" || paopaoConfig.relationship)
+          ) {
+            itemNow = {
+              ...itemNow,
+              status: paopaoConfig.relationship !== "" ? "already" : "yet",
+              value: paopaoConfig.relationship || itemNow.placeholder,
+              btnShow: true,
+              isShow: true
+            };
           } else {
+            if (itemNow.sglive) {
+              return;
+            }
             const keyValue = this.memInfo.user[key];
             let checkValue = keyValue;
 

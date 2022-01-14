@@ -78,6 +78,21 @@ export default {
           component
         },
         {
+          path: "liveAlias",
+          name: "mcenter-accountData-liveAlias",
+          component
+        },
+        {
+          path: "hometown",
+          name: "mcenter-accountData-hometown",
+          component
+        },
+        {
+          path: "relationship",
+          name: "mcenter-accountData-relationship",
+          component
+        },
+        {
           path: "intro",
           name: "mcenter-accountData-intro",
           component

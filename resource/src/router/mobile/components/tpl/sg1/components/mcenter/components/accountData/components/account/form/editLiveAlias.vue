@@ -1,5 +1,22 @@
 <template>
   <div slot="content" :class="$style['content-wrap']">
+    <!-- 暱稱變更阻擋提示 -->
+    <!-- <transition name="fade">
+      <div v-show="cantEditAlias" :class="$style['alert-dialog-masker']">
+        <div :class="$style['alert-dialog-wrap']">
+          <h3>提示</h3>
+          <p>修改次数不足，请购买更名卡后 再重新操作</p>
+          <div :class="$style['btn-wrap']">
+            <span @click="cantEditAlias = false">取消</span>
+            <span
+              @click="$router.push('/mobile/live/iframe/mall?hasFooter=false')"
+              >去购买</span
+            >
+          </div>
+        </div>
+      </div>
+    </transition> -->
+
     <account-header :header-config="headerConfig" />
     <div :class="[$style.wrap, 'clearfix']">
       <!-- 錯誤訊息 -->
@@ -9,7 +26,7 @@
         </div>
       </div>
       <div :class="$style.block">
-        <div :class="$style.title">{{ $text("S_NICKNAME") }}</div>
+        <div :class="$style.title">{{ $text("S_LIVE_NICKNAME") }}</div>
         <div :class="$style['input-wrap']">
           <input
             ref="input"
@@ -29,19 +46,13 @@
         </div>
       </div>
     </div>
-    <service-tips :edit="false" :type="'alias'" />
+    <!-- <service-tips :edit="edit" :type="'alias'" /> -->
   </div>
 </template>
 
 <script>
-import {
-  API_MCENTER_ENABLE_ALIAS,
-  API_MCENTER_DISABLE_ALIAS
-} from "@/config/api";
 import { mapGetters, mapActions } from "vuex";
 import accountHeader from "../../accountHeader";
-import ajax from "@/lib/ajax";
-import mcenter from "@/api/mcenter";
 import serviceTips from "../../serviceTips";
 
 export default {
@@ -53,7 +64,8 @@ export default {
     return {
       value: "",
       tipMsg: "",
-      showNickname: false
+      cantEditAlias: false,
+      edit: true
     };
   },
   mounted() {
@@ -69,25 +81,36 @@ export default {
         onClick: () => {
           this.$router.back();
         },
-        title: this.$text("S_NICKNAME", "真实姓名"),
+        title: this.$text("S_LIVE_NICKNAME", "直播昵称"),
         onClickFunc: () => {
           this.handleSubmit();
         },
         funcBtn: this.$text("S_COMPLETE", "完成"),
         funcBtnActive: !!this.value && !this.tipMsg
       };
+    },
+    checkSameName() {
+      if (this.paopaoMemberCardInfo.alias == this.value) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   created() {
-    //  是否顯示暱稱 尚未實作
-    this.showNickname = this.memInfo.user.show_alias;
-    this.value = this.memInfo.user.alias;
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/user/personal-info",
+      method: "get"
+    }).then(data => {
+      this.paopaoMemberCardInfo = data.result;
+    });
   },
   methods: {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionVerificationFormData"
+      "actionVerificationFormData",
+      "actionGetExtRedirect"
     ]),
     onInput(e) {
       this.actionVerificationFormData({
@@ -95,35 +118,34 @@ export default {
         value: e.target.value
       }).then(val => {
         this.value = val;
+        if (val) {
+          this.tipMsg = "";
+        }
       });
     },
     handleSubmit() {
-      // 驗證失敗
+      // 驗證失敗d
       //   if (!/^[^，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*$/.test(this.value)) {
       //     this.$emit('msg', this.$text('S_NO_SYMBOL', '请勿输入特殊符号(允许空白)'));
       //     return Promise.resolve(result);
       //   }
+      if (this.checkSameName) {
+        this.tipMsg = "资料已存在，无法重复建立";
+        return;
+      } else {
+        const setNickname = this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/update-alias",
+          method: "put",
+          data: { alias: this.value.substring(0, 20) }
+        });
 
-      const setNickname = mcenter.accountDataSet({
-        params: {
-          alias: this.value.substring(0, 20)
-        }
-      });
-
-      const setShowNickname = ajax({
-        method: "put",
-        url: this.showNickname
-          ? API_MCENTER_ENABLE_ALIAS
-          : API_MCENTER_DISABLE_ALIAS,
-        errorAlert: false
-      });
-
-      return Promise.all([setNickname, setShowNickname]).then(response => {
-        if (response.every(res => res.result === "ok")) {
-          localStorage.setItem("set-account-success", true);
-          this.$router.push("/mobile/mcenter/accountData");
-        }
-      });
+        return Promise.all([setNickname]).then(response => {
+          if (response.every(res => res.result === "success")) {
+            localStorage.setItem("set-account-success", true);
+            this.$router.push("/mobile/mcenter/accountData");
+          }
+        });
+      }
     }
   }
 };

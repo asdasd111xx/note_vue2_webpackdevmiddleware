@@ -146,6 +146,18 @@ export default {
       import(
         /* webpackChunkName: 'accountDataAliasSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editAlias"
       ),
+    accountDataLiveAliasSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataLiveAliasSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editLiveAlias"
+      ),
+    accountDataHometownSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataHometownSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editHometown"
+      ),
+    accountDataRelationshipSg1: () =>
+      import(
+        /* webpackChunkName: 'accountDataRelationshipSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editRelationship"
+      ),
     accountDataIntroSg1: () =>
       import(
         /* webpackChunkName: 'accountDataIntroSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editIntro"
