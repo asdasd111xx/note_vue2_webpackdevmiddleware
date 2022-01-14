@@ -61,7 +61,7 @@
             }}</span
           >
 
-          <button>
+          <button @click="onListClick('live/diamond', false)">
             兌換
           </button>
         </div>
