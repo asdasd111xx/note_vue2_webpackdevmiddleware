@@ -756,7 +756,9 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
+                      <span
+                        :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
+                      >
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
@@ -788,7 +790,9 @@
                         { [$style['money']]: cryptoMoney > 0 }
                       ]"
                     >
-                      <span :class="[{[$style['crypto-money']]: cryptoMoney > 0}]">
+                      <span
+                        :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
+                      >
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
@@ -1897,7 +1901,9 @@ export default {
       "actionVerificationFormData",
       "actionSetGlobalMessage",
       "actionGetServiceMaintain",
-      "actionSetAnnouncementList"
+      "actionSetAnnouncementList",
+      "actionGetMemInfoV3",
+      "actionGetRechargeStatus"
     ]),
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
@@ -1918,7 +1924,10 @@ export default {
       this.setPopupStatus(false, "");
     },
     handleCreditTrans() {
-      this.$router.push("/mobile/mcenter/creditTrans?tab=0");
+      // this.$router.push("/mobile/mcenter/creditTrans?tab=0");
+      this.actionGetMemInfoV3().then(() => {
+        this.actionGetRechargeStatus("");
+      });
     },
     handleBindWallet() {
       // 億元 USDT 的部份仍以彈窗顯示
