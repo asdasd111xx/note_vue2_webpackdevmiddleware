@@ -383,7 +383,15 @@ export default {
   margin-bottom: 3px;
   border-radius: 7px;
   box-sizing: border-box;
-
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  // 大廳遊戲預設圖logo樣式
+  > img[lazy="error"]:first-child,
+  img[lazy="loading"]:first-child {
+    display: block;
+    width: 42%;
+    padding: 15px 2px;
+    margin: 0 auto;
+  }
   > img:first-child {
     display: block;
     width: 100%;

@@ -121,6 +121,7 @@
               :data-img-type="game.imageType"
               :data-type="game.type"
               :data-code="game.code"
+              :data-config="routerTPL"
               :class="[
                 $style.game,
                 { [$style['is-full']]: [1, 2, 3].includes(game.imageType) },
@@ -393,6 +394,16 @@ export default {
   min-height: 260px;
 }
 
+// 大廳遊戲預設圖背景樣式
+.wrap[data-config="porn1"],
+.wrap[data-config="sp1"] {
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+}
+
+.wrap[data-config="aobo1"] {
+  background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+}
+
 .wrap {
   overflow: hidden;
   position: relative;
@@ -401,7 +412,16 @@ export default {
   margin-bottom: 3px;
   border-radius: 7px;
   box-sizing: border-box;
+  // background: linear-gradient(180deg, #fdfeff, #fdf2f2);
 
+  // 大廳遊戲預設圖logo樣式
+  > img[lazy="error"]:first-child,
+  img[lazy="loading"]:first-child {
+    display: block;
+    width: 42%;
+    padding: 15px 2px;
+    margin: 0 auto;
+  }
   > img:first-child {
     display: block;
     width: 100%;

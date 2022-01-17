@@ -389,11 +389,17 @@ export default {
       }
       return {
         src: info.image,
+        // error: this.$getCdnPath(
+        //   `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+        // ),
+        // loading: this.$getCdnPath(
+        //   `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+        // )
         error: this.$getCdnPath(
-          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_logo.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_logo.png`
         )
       };
     },
