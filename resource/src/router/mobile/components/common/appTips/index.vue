@@ -209,11 +209,6 @@ export default {
         return;
       }
 
-      const promotionCode = localStorage.getItem("x-code");
-      if (promotionCode && promotionCode != "" && !this.loginStatus) {
-        this.$router.push("/mobile/login");
-        return;
-      }
       sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
