@@ -61,7 +61,7 @@ export default {
         show: false,
         bundleID: ""
       },
-      href: ""
+      landingurl: ""
     };
   },
   created() {
@@ -130,7 +130,7 @@ export default {
             }
           }).then(res => {
             if (res && res.data && res.data[0]) {
-              this.href = `${res.data[0]}`;
+              this.landingurl = `${res.data[0]}`;
             }
           });
         } else {
@@ -208,19 +208,44 @@ export default {
       if (!this.downloadConfigData.show) {
         return;
       }
-      const promotionCode = localStorage.getItem("promotionCode");
-      if (promotionCode && promotionCode != "" && !this.loginStatus) {
-        this.$router.push("/mobile/login");
-        return;
-      }
+
       sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
 
-      console.log(this.href);
+      if (
+        !["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
+        !this.loginStatus
+      ) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+
+      const refCode = localStorage.getItem("x-code");
+      const channelid = localStorage.getItem("x-channelid");
+
+      let url = new URL(
+        this.landingurl.startsWith("http")
+          ? this.landingurl
+          : `https://${this.landingurl}`
+      );
+
+      if (refCode) {
+        url.searchParams.append("code", refCode);
+      }
+
+      if (channelid) {
+        url.searchParams.append("channelid", channelid);
+      }
+
+      // 落地頁直接下載
+      if (["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
+        url.searchParams.append("action", "download");
+      }
+
       // safari
       setTimeout(() => {
-        location.href = `https://${this.href}`;
+        location.href = url.href;
       }, 250);
     },
     handleClickDownload() {

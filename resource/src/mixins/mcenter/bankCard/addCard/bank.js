@@ -97,10 +97,11 @@ export default {
       this.getKeyring();
     },
     "formData.phone"() {
-      if (this.formData.phone.length !== 11) {
+      if (this.formData.phone.length < 11 && this.addBankCardStep === "two") {
         this.errorMsg = "手机格式不符合要求";
         this.isVerifyPhone = false;
       } else {
+        this.errorMsg = "";
         this.isVerifyPhone = true;
       }
     },

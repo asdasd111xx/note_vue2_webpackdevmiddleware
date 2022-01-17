@@ -66,7 +66,7 @@
                 ]"
                 @click="getMailVerifyCode"
               >
-                {{ mailVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ mailVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="mailVerifyCode"
@@ -138,7 +138,7 @@
                 ]"
                 @click="getPhoneVerifyCode"
               >
-                {{ phoneVerifybtnSubmit ? ttlCount + "s" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="phoneVerifyCode"
@@ -154,7 +154,8 @@
             >
               验证码已发送，有效时间为
               <span style="color: red">10</span>
-              分钟，若没收到信件请尝试至垃圾箱寻找
+              分钟
+              <!-- http://fb.vir888.com/default.asp?545246#4700275 -->
             </p>
             <!-- <p
               v-if="phoneSubmitFail"
@@ -703,7 +704,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        introducer: this.$cookie.get("a") || "",
+        introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
@@ -1002,7 +1003,7 @@ export default {
                 return;
               }
 
-              if (key === "introducer" && this.$cookie.get("a")) {
+              if (key === "introducer" && localStorage.getItem("x-code")) {
                 this.joinMemInfo[key] = {
                   ...this.joinMemInfo[key],
                   isRequired: true,
@@ -1529,7 +1530,7 @@ export default {
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
-        code: localStorage.getItem("promotionCode") || "",
+        code: localStorage.getItem("x-code") || "",
         phone_keyring: this.phoneVerifyModalShow
           ? this.register_phone_keyring
           : "",
@@ -1549,9 +1550,11 @@ export default {
         },
         params: {
           ...params,
+          introducer: localStorage.getItem("x-code") || "",
           host: window.location.host,
-          deviceId: localStorage.getItem("uuidAccount"),
-          lang: "zh-cn"
+          deviceId: localStorage.getItem("uuidAccount") || "",
+          lang: "zh-cn",
+          register_channel: localStorage.getItem("x-channelid") || ""
         }
       }).then(res => {
         setTimeout(() => {
@@ -1649,10 +1652,7 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (
-                item === "introducer" &&
-                localStorage.getItem("promotionCode")
-              ) {
+              if (item === "introducer" && localStorage.getItem("x-code")) {
                 this.errMsg = res.errors[item];
               }
             });
