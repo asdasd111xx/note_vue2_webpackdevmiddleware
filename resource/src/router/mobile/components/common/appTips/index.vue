@@ -213,6 +213,14 @@ export default {
       this.isDownloading = true;
       this.setGAObj();
 
+      if (
+        !["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
+        !this.loginStatus
+      ) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+
       const refCode = localStorage.getItem("x-code");
       const channelid = localStorage.getItem("x-channelid");
 
