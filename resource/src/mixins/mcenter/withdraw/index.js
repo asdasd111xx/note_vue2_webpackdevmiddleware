@@ -43,8 +43,13 @@ export default {
       bank_card: [],
       wallet_card: [],
       epointWallet: {},
+      epointNewWallet: {},
       userBankOption: [],
       defaultEpointWallet: {
+        id: "",
+        account: ""
+      },
+      defaultEpointNewWallet: {
         id: "",
         account: ""
       },
@@ -90,11 +95,14 @@ export default {
 
       // 過濾e點富
       resulAccount = allAccount.filter(info => {
-        return info.bank_id != 2026;
+        return info.bank_id != 2026 && info.bank_id != 2030;
       });
 
       this.epointWallet = allAccount.filter(info => {
         return info.bank_id === 2026;
+      });
+      this.epointNewWallet = allAccount.filter(info => {
+        return info.bank_id === 2030;
       });
 
       // 目前應該進不來，沒有 isSupportCGPay 的欄位 ?
@@ -658,6 +666,7 @@ export default {
             this.userBankOption = [];
             this.userBankOption = response.data.ret;
             this.defaultEpointWallet = this.userBankOption[0];
+            this.defaultEpointNewWallet = this.userBankOption[0];
           }
         })
         .catch(error => {});

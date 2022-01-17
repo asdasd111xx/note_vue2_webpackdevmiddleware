@@ -1964,6 +1964,12 @@ export default {
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
           );
           break;
+        // e点富
+        case 40:
+          this.$router.push(
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epointNew&swift=${this.curPayInfo.swift_code}`
+          );
+          break;
 
         // 購寶
         case 22:
