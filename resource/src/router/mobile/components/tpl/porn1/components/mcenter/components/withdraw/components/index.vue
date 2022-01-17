@@ -1646,6 +1646,7 @@ export default {
                 }
               });
               check = false;
+              localStorage.removeItem("tmp_w_1");
               return;
             }
             //CGPay取款戶名核實機制
@@ -1654,6 +1655,7 @@ export default {
                 msg: res.data.wallet_error.msg
               });
               check = false;
+              localStorage.removeItem("tmp_w_1");
               return;
             }
 
