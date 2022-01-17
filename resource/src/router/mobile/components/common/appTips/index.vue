@@ -239,7 +239,10 @@ export default {
       }
 
       // 落地頁直接下載
-      url.searchParams.append("action", "download");
+      if (["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
+        url.searchParams.append("action", "download");
+        return;
+      }
 
       // safari
       setTimeout(() => {
