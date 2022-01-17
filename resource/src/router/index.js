@@ -50,6 +50,7 @@ export default new Router({
 
         if (code && code !== undefined) {
           localStorage.setItem("x-code", code);
+          localStorage.setItem("x-channelid", "");
 
           setCookie("cid", "");
           setCookie("aid", "");
