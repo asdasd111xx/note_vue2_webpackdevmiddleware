@@ -21,7 +21,7 @@ $bouns_color6: #fff07b;
 }
 
 .dialog {
-  > div {
+  >div {
     position: relative;
     background-color: rgba($color: #ffffff, $alpha: 1);
     border-radius: 11px;
@@ -33,6 +33,11 @@ $bouns_color6: #fff07b;
     min-height: 190px;
     padding: 12px;
     color: white;
+
+    &.earn-wrap-ad {
+      height: 340px;
+      width: 320px;
+    }
   }
 }
 
@@ -49,11 +54,24 @@ $bouns_color6: #fff07b;
   top: -20%;
   left: calc(50% - 70px);
 
-  > img {
+  >img {
     width: 140px;
     height: 100px;
   }
+
+  &.title-ad {
+    top: -75px;
+  }
 }
+
+.title-close {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: -25px;
+  top: -25px;
+}
+
 
 .title {
   margin-top: 9%;
@@ -65,6 +83,29 @@ $bouns_color6: #fff07b;
   text-align: center;
 }
 
+.link-to {
+  position: absolute;
+  width: 310px;
+  height: 300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.link-to-img {
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
 .bouns-func {
   position: absolute;
   bottom: 22px;
@@ -74,7 +115,7 @@ $bouns_color6: #fff07b;
   height: 40px;
   width: 100%;
 
-  > div {
+  >div {
     width: 120px;
     height: 40px;
     font-size: 15px;
@@ -83,7 +124,7 @@ $bouns_color6: #fff07b;
     line-height: 40px;
   }
 
-  > div:first-child {
+  >div:first-child {
     color: $bouns_color2;
     background-color: var(--video_popup_left_background_button);
     margin: 0 auto;
@@ -137,13 +178,13 @@ $bouns_color6: #fff07b;
       width: 30px;
       height: 100%;
 
-      > img {
+      >img {
         width: 16px;
         height: 16px;
       }
     }
 
-    > span {
+    >span {
       color: $bouns_color6;
       display: block;
       overflow: hidden;
@@ -202,7 +243,7 @@ $bouns_color6: #fff07b;
   width: 100%;
   position: relative;
 
-  > .earn-title {
+  >.earn-title {
     color: #3f1000;
     font-size: 14px;
     margin: 8px 0;
@@ -214,7 +255,7 @@ $bouns_color6: #fff07b;
     justify-content: center;
     align-items: center;
 
-    > span:last-child {
+    >span:last-child {
       color: #ff8c21;
       font-size: 22px;
       font-weight: 700;
@@ -243,34 +284,34 @@ $bouns_color6: #fff07b;
     opacity: 0.6;
   }
 
-  > div {
+  >div {
     width: 54px;
     height: 64px;
     color: #ff8400;
     text-align: center;
     position: relative;
 
-    > div:first-child {
+    >div:first-child {
       position: relative;
       width: 100%;
       padding: 4px 0;
       background-color: #fcf7e2;
 
-      > img {
+      >img {
         margin: 0 auto;
         width: 30px;
         height: 30px;
       }
     }
 
-    > .earn-single-num {
+    >.earn-single-num {
       height: 24px;
       line-height: 24px;
       font-size: 15px;
       background-color: #f5d992;
     }
 
-    > .had-earned {
+    >.had-earned {
       position: absolute;
       top: calc(50% - 20px);
       left: calc(50% - 20px);
@@ -355,7 +396,7 @@ $bouns_color6: #fff07b;
   }
 
   .bouns-func {
-    > div {
+    >div {
       font-size: 17px;
     }
   }
@@ -367,7 +408,7 @@ $bouns_color6: #fff07b;
   }
 
   .bouns-func {
-    > div {
+    >div {
       font-size: 20px;
     }
   }

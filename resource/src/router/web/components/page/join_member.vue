@@ -154,7 +154,8 @@
             >
               验证码已发送，有效时间为
               <span style="color: red">10</span>
-              分钟，若没收到信件请尝试至垃圾箱寻找
+              分钟
+              <!-- http://fb.vir888.com/default.asp?545246#4700275 -->
             </p>
             <!-- <p
               v-if="phoneSubmitFail"
