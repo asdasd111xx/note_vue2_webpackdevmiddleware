@@ -141,7 +141,13 @@
               >{{
                 userVipInfo.downgrade_deposit_achieve
                   ? "已达条件"
-                  : `${userVipInfo.downgrade_own_deposit}(${userVipInfo.downgrade_own_deposit}/${userVipInfo.downgrade_deposit_range})`
+                  : `${formatThousandsCurrency(
+                      userVipInfo.downgrade_own_deposit
+                    )}(${formatThousandsCurrency(
+                      userVipInfo.downgrade_own_deposit
+                    )}/${formatThousandsCurrency(
+                      userVipInfo.downgrade_deposit_range
+                    )})`
               }}</span
             >
           </div>
@@ -155,7 +161,13 @@
               >{{
                 userVipInfo.downgrade_valid_bet_achieve
                   ? "已达条件"
-                  : `${userVipInfo.downgrade_own_valid_bet}(${userVipInfo.downgrade_own_valid_bet}/${userVipInfo.downgrade_valid_bet})`
+                  : `${formatThousandsCurrency(
+                      userVipInfo.downgrade_own_valid_bet
+                    )}(${formatThousandsCurrency(
+                      userVipInfo.downgrade_own_valid_bet
+                    )}/${formatThousandsCurrency(
+                      userVipInfo.downgrade_valid_bet
+                    )})`
               }}</span
             >
           </div>
@@ -177,7 +189,11 @@
             v-if="!userVipInfo.downgrade_members_achieve"
             :class="[$style['downgrade-value']]"
           >
-            {{ `(每位充值达${userVipInfo.downgrade_members_deposit}元)` }}
+            {{
+              `(每位充值达${formatThousandsCurrency(
+                userVipInfo.downgrade_members_deposit
+              )}元)`
+            }}
           </div>
         </div>
         <div
@@ -194,6 +210,7 @@
 <script>
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import { mapGetters } from "vuex";
+import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
@@ -280,6 +297,10 @@ export default {
     });
   },
   methods: {
+    formatThousandsCurrency(value) {
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
+    },
     onClickLevel(index) {
       const swiperCard = this.$refs.swiperCard.$swiper;
 
