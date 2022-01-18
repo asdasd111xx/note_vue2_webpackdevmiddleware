@@ -2,7 +2,10 @@
   <div :class="$style['mem-list']">
     <template v-for="listInfo in list">
       <div
-        v-if="listInfo.pageName !== 'super' || isShowSuper"
+        v-if="
+          (listInfo.pageName !== 'super' && listInfo.pageName !== 'host') ||
+            isShowSuper
+        "
         :key="`list-${listInfo.pageName}`"
         :class="[
           $style.list,
@@ -27,6 +30,35 @@
           <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
         </div>
       </div>
+      <!-- 成為主播 -->
+      <a
+        v-if="listInfo.pageName == 'host' || isShowSuper"
+        :key="`list-${listInfo.pageName}`"
+        :href="beHostUrl"
+        target="_blank"
+        :class="[
+          $style.list,
+          { [$style['list-part']]: listInfo.isPart },
+          { [$style['list-border-bottom']]: !listInfo.isPart }
+        ]"
+        @click="onListClick(listInfo)"
+      >
+        <div :class="$style['list-icon']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/sg1/mcenter/ic_${listInfo.image}.png`)
+            "
+          />
+        </div>
+        <span>{{ $text(listInfo.name, listInfo.initName) }}</span>
+
+        <div v-if="listInfo.info" :class="$style['list-info']">
+          {{ listInfo.info }}
+        </div>
+        <div :class="$style['btn-next']">
+          <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+        </div>
+      </a>
     </template>
 
     <!-- <div
@@ -79,7 +111,8 @@ export default {
       superAppUrl: "", // 超級簽URL
       superErrorMsg: "", // 超級簽錯誤訊息
       toggleShare: false,
-      isLoading: false
+      isLoading: false,
+      beHostUrl: ""
     };
   },
   computed: {
@@ -174,6 +207,25 @@ export default {
     }
   },
   created() {
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+      params: {
+        version: "2"
+      }
+    }).then(res => {
+      if (
+        res &&
+        res.data &&
+        res.data.data.case_data &&
+        res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+      ) {
+        this.beHostUrl =
+          res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+            "zh-cn"
+          ];
+      }
+    });
     if (localStorage.getItem("content_rating")) {
       this.pornSwitchState =
         localStorage.getItem("content_rating") === "1" ? true : false;
@@ -274,27 +326,27 @@ export default {
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetGlobalMessage"]),
     onListClick(item) {
-      if (item.pageName === "host") {
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
-          params: {
-            version: "2"
-          }
-        }).then(res => {
-          if (
-            res &&
-            res.data &&
-            res.data.data.case_data &&
-            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
-          ) {
-            window.open(
-              res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0]
-                .linkTo["zh-cn"]
-            );
-          }
-        });
-      }
+      // if (item.pageName === "host") {
+      //   goLangApiRequest({
+      //     method: "get",
+      //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+      //     params: {
+      //       version: "2"
+      //     }
+      //   }).then(res => {
+      //     if (
+      //       res &&
+      //       res.data &&
+      //       res.data.data.case_data &&
+      //       res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+      //     ) {
+      //       window.open(
+      //         res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0]
+      //           .linkTo["zh-cn"]
+      //       );
+      //     }
+      //   });
+      // }
 
       if (item.pageName === "super") {
         if (!this.loginStatus) {
@@ -402,6 +454,14 @@ export default {
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
+
+a {
+  color: #414655 !important;
+
+  &:hover {
+    color: #414655 !important;
+  }
+}
 
 .mem-list {
   background-color: #f8f8f8;
