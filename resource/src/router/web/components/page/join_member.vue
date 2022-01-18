@@ -773,7 +773,7 @@ export default {
         phone: ""
       },
       countryCode: "",
-      phoneVerifyModalShow: true,
+      phoneVerifyModalShow: false,
       mailVerifyModalShow: false,
       ttlCount: 10,
       timer: null,
