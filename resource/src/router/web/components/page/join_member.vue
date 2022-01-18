@@ -1769,7 +1769,6 @@ export default {
           cid: localStorage.getItem("guestCid")
         }
       }).then(res => {
-        console.log("res", res);
         if (res.status === "000") {
           this.guestAmount = res.data.totalAmount;
           this.getRedJackpot();
