@@ -143,13 +143,13 @@ export default {
 //   background: #fff;
 // }
 
-.join-tip-show {
-  display: inline-block;
-  position: absolute;
-  bottom: -24px;
-  padding: 0;
-  right: 0;
-}
+// .join-tip-show {
+//   display: inline-block;
+//   position: absolute;
+//   bottom: -24px;
+//   padding: 0;
+//   right: 0;
+// }
 
 .join-input:-webkit-autofill {
   &,
