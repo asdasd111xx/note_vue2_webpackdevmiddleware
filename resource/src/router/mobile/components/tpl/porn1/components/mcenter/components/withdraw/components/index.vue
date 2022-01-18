@@ -253,6 +253,7 @@
         </div>
 
         <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
+
         <span
           v-if="
             allWithdrawAccount &&
@@ -353,12 +354,30 @@
               epointSelectType
           "
         >
-          <div :class="[$style['bank-card-cell']]">
+          <div
+            :class="[
+              $style['bank-card-cell'],
+              {
+                [$style['disable']]:
+                  forceStatus === 2 ||
+                  (forceStatus === 1 &&
+                    userWithdrawCount === 0 &&
+                    isFirstWithdraw)
+              }
+            ]"
+          >
             <div
               :class="[
                 $style['check-box'],
                 $style[`image-${siteConfig.ROUTER_TPL}`],
-                $style['checked']
+                { [$style['checked']]: forceStatus !== 1 && forceStatus !== 2 },
+                {
+                  [$style['disable']]:
+                    forceStatus === 2 ||
+                    (forceStatus === 1 &&
+                      userWithdrawCount === 0 &&
+                      isFirstWithdraw)
+                }
               ]"
             />
             <span :class="[]">
@@ -420,110 +439,6 @@
         <img :src="$getCdnPath(`/static/image/${routerTPL}/mcenter/add.png`)" />
         &nbsp;
         <span>{{ "添加提现方式" }}</span>
-      </div>
-    </template>
-
-    <!-- 因按鈕顯示邏輯不同，所以獨立成兩份 -->
-    <!-- 億元 : 銀行卡列表 + 更多提現方式按鈕 -->
-    <template v-if="['ey1'].includes(themeTPL)">
-      <!-- 提現帳號 -->
-      <div
-        v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
-        :class="$style['bank-card-wrap']"
-      >
-        <div :class="$style['bank-card-cell']">
-          {{ $text("S_WITHDRAW_ACCOUNT02", "提现帐号") }}
-          <span v-if="forceStatus === 2" :class="$style['withdraw-status-tip']"
-            >（请使用 CGPay 出款）</span
-          >
-        </div>
-
-        <!-- 列出所有帳號-->
-        <div
-          v-for="(item, index) in allWithdrawAccount"
-          :key="index + '-' + item.id"
-          :class="[
-            $style['bank-card-cell'],
-            {
-              [$style['disable']]: forceStatus === 2 && !item.allow
-            }
-          ]"
-          @click="handleSelectCard(item)"
-        >
-          <div
-            :class="[
-              $style['check-box'],
-              { [$style['checked']]: item.id === selectedCard.id }
-            ]"
-          />
-          <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
-            {{ item.alias }}
-          </span>
-
-          <!-- CGPay USDT -->
-          <template v-if="item.bank_id === 2009">
-            <img
-              :class="$style['transfergo-img']"
-              :src="
-                $getCdnPath(
-                  `/static/image/common/mcenter/balanceTrans/ic_transfergo.png`
-                )
-              "
-              alt="ic_transfergo"
-            />
-
-            <div
-              :class="$style['currency-text']"
-              @click.stop="
-                () => {
-                  if (item.id !== selectedCard.id) {
-                    handleSelectCard(item);
-                  }
-                  setPopupStatus(true, 'currency');
-                }
-              "
-            >
-              {{ withdrawCurrency.alias }}
-            </div>
-          </template>
-        </div>
-      </div>
-
-      <!-- 添加银行卡 -->
-      <div
-        v-if="allWithdrawAccount.length === 0 && userLevelObj.bank"
-        :class="[$style['add-bank-card']]"
-        @click="checkAccountData('bankCard')"
-      >
-        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
-        &nbsp;
-        <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
-      </div>
-
-      <!-- 添加电子钱包 -->
-      <div
-        v-if="allWithdrawAccount.length === 0 && userLevelObj.virtual_bank"
-        :class="[$style['add-bank-card']]"
-        @click="checkAccountData('wallet')"
-      >
-        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
-        &nbsp;
-        <span>{{ $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包") }}</span>
-      </div>
-
-      <!-- 更多提现方式 -->
-      <div
-        v-if="
-          allWithdrawAccount &&
-            allWithdrawAccount.length > 0 &&
-            (moreMethodStatus.bankCard || moreMethodStatus.wallet)
-        "
-        :class="[$style['add-bank-card']]"
-        @click="setPopupStatus(true, 'moreMethod')"
-      >
-        <img :src="$getCdnPath(`/static/image/common/mcenter/add_2.png`)" />
-        &nbsp;
-        <span>{{ "更多提现方式" }}</span>
       </div>
     </template>
 
@@ -686,32 +601,6 @@
           </div>
         </div>
       </template>
-
-      <!-- 取款密碼＋Botton -->
-      <!-- 億元 -->
-      <!-- <template v-if="['ey1'].includes(themeTPL)">
-        <div :class="[$style['withdraw-pwd-input']]">
-          <input
-            v-model="withdrawPwd"
-            autocomplete="off"
-            placeholder="请输入提现密码(限定4码数字)"
-            type="tel"
-            maxlength="4"
-            @input="verification('withdrawPwd', $event.target.value)"
-          />
-        </div>
-
-        <div :class="[$style['btn-wrap']]">
-          <div
-            :class="[
-              $style['submit-btn'],
-              { [$style['disabled']]: lockSubmit }
-            ]"
-          >
-            <div @click="checkSubmit">立即提现</div>
-          </div>
-        </div>
-      </template> -->
     </template>
 
     <!-- Tips -->
@@ -1138,11 +1027,6 @@ export default {
         return true;
       }
 
-      // 億元：當提現密碼尚未輸入值
-      if (["ey1"].includes(this.themeTPL) && !this.withdrawPwd) {
-        return true;
-      }
-
       if (
         this.withdrawData &&
         this.withdrawData.payment_charge &&
@@ -1153,9 +1037,6 @@ export default {
         const allowWithdrawCount = Number(
           this.withdrawData.payment_charge.ret.allow_withdraw_count
         );
-        // const allowWithdrawLimit = Number(
-        //   this.withdrawData.payment_charge.ret.allow_withdraw_limit
-        // );
 
         // 非無限次數且有剩額度
         if (
@@ -1166,13 +1047,19 @@ export default {
           return true;
         }
 
-        // if (
-        //   ret.withdraw_limit &&
-        //   Number(ret.withdraw_limit) > 0 &&
-        //   allowWithdrawLimit <= 0
-        // ) {
-        //   return true;
-        // }
+        //e點富時(會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款))
+        if (
+          this.forceStatus === 1 &&
+          this.userWithdrawCount === 0 &&
+          this.isFirstWithdraw &&
+          this.epointSelectType
+        ) {
+          return true;
+        }
+        //e點富時(非首次出款 + 強制使用 CGPay 出款)
+        if (this.forceStatus === 2 && this.epointSelectType) {
+          return true;
+        }
       }
       return false;
     },
@@ -1726,6 +1613,8 @@ export default {
         methodId:
           this.selectedCard.bank_id === 2009
             ? this.withdrawCurrency.method_id
+            : this.selectedCard.bank_id === 2016
+            ? this.selectedCard.currency[0].method_id
             : ""
       };
       return goLangApiRequest({
@@ -1740,30 +1629,35 @@ export default {
           this.isCheckWithdraw = false;
           if (res.status === "000") {
             let check = true;
+            console.log(123);
+            if (
+              !res.data.name ||
+              !res.data.phone ||
+              !res.data.withdraw_password
+            ) {
+              this.actionSetGlobalMessage({
+                msg: "请先设定提现资料",
+                cb: () => {
+                  {
+                    this.$router.push(
+                      "/mobile/withdrawAccount?redirect=wallet"
+                    );
+                  }
+                }
+              });
+              check = false;
+              localStorage.removeItem("tmp_w_1");
+              return;
+            }
             //CGPay取款戶名核實機制
             if (!res.data.wallet) {
               this.actionSetGlobalMessage({
-                msg: "钱包注册姓名与真实姓名不符"
+                msg: res.data.wallet_error.msg
               });
               check = false;
+              localStorage.removeItem("tmp_w_1");
               return;
             }
-            Object.keys(res.data).forEach(i => {
-              if (i !== "bank" && !res.data[i]) {
-                this.actionSetGlobalMessage({
-                  msg: "请先设定提现资料",
-                  cb: () => {
-                    {
-                      this.$router.push(
-                        "/mobile/withdrawAccount?redirect=wallet"
-                      );
-                    }
-                  }
-                });
-                check = false;
-                return;
-              }
-            });
 
             if (check) {
               return "ok";
@@ -2356,7 +2250,10 @@ export default {
 
       this.epointSelectType =
         localStorage.getItem("tmp_w_epointSelectType") === "true";
-      if (localStorage.getItem("tmp_w_epointWallet")) {
+      if (
+        localStorage.getItem("tmp_w_epointWallet") &&
+        localStorage.getItem("tmp_w_epointWallet") != "undefined"
+      ) {
         this.defaultEpointWallet = JSON.parse(
           localStorage.getItem("tmp_w_epointWallet")
         );
@@ -2368,7 +2265,11 @@ export default {
           localStorage.getItem("tmp_w_1") &&
           localStorage.getItem("tmp_w_rule") !== "1"
         ) {
-          this.handleSubmit();
+          this.withdrawCheck().then(res => {
+            if (res === "ok") {
+              this.handleSubmit()
+              }
+            });
         }
         localStorage.removeItem("tmp_w_rule");
       });

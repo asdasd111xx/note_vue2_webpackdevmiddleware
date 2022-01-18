@@ -61,10 +61,23 @@ export default {
         show: false,
         bundleID: ""
       },
-      landingurl: ""
+      landingurl: "",
+      promotionHostnameCode: ""
     };
   },
   created() {
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
+      params: {
+        hostname: window.location.hostname
+      }
+    }).then(res => {
+      if (res && res.data && res.data !== "") {
+        this.promotionHostnameCode = res.data;
+      }
+    });
+
     if (
       ["porn1", "sg1", "sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
@@ -209,14 +222,17 @@ export default {
         return;
       }
 
-      const promotionCode = localStorage.getItem("x-code");
-      if (promotionCode && promotionCode != "" && !this.loginStatus) {
-        this.$router.push("/mobile/login");
-        return;
-      }
       sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
+
+      if (
+        !["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
+        !this.loginStatus
+      ) {
+        this.$router.push("/mobile/login");
+        return;
+      }
 
       const refCode = localStorage.getItem("x-code");
       const channelid = localStorage.getItem("x-channelid");
@@ -227,8 +243,9 @@ export default {
           : `https://${this.landingurl}`
       );
 
-      if (refCode) {
-        url.searchParams.append("code", refCode);
+      // 代理網址推廣代碼優先推廣代碼
+      if (this.promotionHostnameCode || refCode) {
+        url.searchParams.append("code", this.promotionHostnameCode || refCode);
       }
 
       if (channelid) {
@@ -236,7 +253,9 @@ export default {
       }
 
       // 落地頁直接下載
-      url.searchParams.append("action", "download");
+      if (["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
+        url.searchParams.append("action", "download");
+      }
 
       // safari
       setTimeout(() => {
