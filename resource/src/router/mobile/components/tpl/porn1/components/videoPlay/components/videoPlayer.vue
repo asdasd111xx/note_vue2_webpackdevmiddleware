@@ -442,8 +442,9 @@ export default {
           ).toFixed(2);
 
           // 可獲得中斷點數量
-          bonunsDialog.earnCellNum =
-            Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout);
+          bonunsDialog.earnCellNum = Math.floor(
+            Number(data.Active.LimitAmout) / Number(data.Active.BreakAmout)
+          );
 
           // 已獲得中斷點數量
           bonunsDialog.hadEarnNum = Number(data.BreakTimes);
