@@ -1531,12 +1531,8 @@ export default {
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
         code: localStorage.getItem("x-code") || "",
-        phone_keyring: this.register_phone_keyring !== ""
-          ? this.register_phone_keyring
-          : "",
-        email_keyring: this.register_email_keyring !== ""
-          ? this.register_email_keyring
-          : ""
+        phone_keyring: this.register_phone_keyring ,
+        email_keyring: this.register_email_keyring 
       };
 
       const self = this;
