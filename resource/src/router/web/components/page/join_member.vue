@@ -16,7 +16,7 @@
         <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
           <div
             :class="$style['visitor-get']"
-            :style="themeTPL == 'sg1' ? 'color:#000' : ''"
+            :style="themeTPL == 'sg1' ? 'display:none' : ''"
           >
             访客加入会员
           </div>
@@ -25,6 +25,13 @@
             :style="themeTPL == 'sg1' ? 'color:#000' : ''"
           >
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
+          </div>
+          <div
+            v-show="themeTPL == 'sg1'"
+            :class="$style['visitor-get']"
+            :style="themeTPL == 'sg1' ? 'color:#000' : ''"
+          >
+            注册即送 58.00 钻
           </div>
         </div>
         <!-- 錯誤訊息 -->
@@ -1763,6 +1770,7 @@ export default {
           cid: localStorage.getItem("guestCid")
         }
       }).then(res => {
+        console.log("res", res);
         if (res.status === "000") {
           this.guestAmount = res.data.totalAmount;
           this.getRedJackpot();
