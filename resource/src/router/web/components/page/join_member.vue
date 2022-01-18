@@ -1839,17 +1839,23 @@ export default {
       });
     },
     getPhoneVerifyCode() {
-      console.log(123);
       //寄出會員註冊驗證簡訊
-      axios({
+      // axios({
+      //   method: "post",
+      //   url: "/api/v1/c/player/register/phone",
+      //   data: {
+      //     phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+      //   }
+      // })
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/register/phone",
-        data: {
-          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
+        params: {
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
         }
       })
         .then(res => {
-          if (res && res.data.result !== "ok") {
+          if (res.status !== "000") {
             this.phoneSubmitFail = true;
             this.phoneSubmitFailMsg =
               res.msg + "(" + res.code + ")" || "phone error1";
@@ -1858,12 +1864,12 @@ export default {
             this.getPhoneTTL();
           }
         })
-        .catch(error => {
-          this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg =
-            error.response.data.msg + "(" + error.response.data.code + ")" ||
-            "phone error2";
-        });
+        // .catch(error => {
+        //   this.phoneSubmitFail = true;
+        //   this.phoneSubmitFailMsg =
+        //     error.response.data.msg + "(" + error.response.data.code + ")" ||
+        //     "phone error2";
+        // });
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
@@ -1889,15 +1895,22 @@ export default {
     },
     getMailVerifyCode() {
       //寄出mail會員註冊驗證碼
-      axios({
+      // axios({
+      //   method: "post",
+      //   url: "/api/v1/c/player/register/email",
+      //   data: {
+      //     email: this.allValue.email
+      //   }
+      // })
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/register/email",
-        data: {
-          email: this.allValue.email
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email`,
+        params: {
+          email: this.allValue.email,
         }
       })
         .then(res => {
-          if (res && res.data.result !== "ok") {
+          if (res.status !== "000") {
             this.mailSubmitFail = true;
             this.mailSubmitFailMsg =
               res.msg + "(" + res.code + ")" || "mail error1";
@@ -1906,12 +1919,12 @@ export default {
             this.getMailTTL();
           }
         })
-        .catch(error => {
-          this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            error.response.data.msg + "(" + error.response.data.code + ")" ||
-            "mail error2";
-        });
+        // .catch(error => {
+        //   this.mailSubmitFail = true;
+        //   this.mailSubmitFailMsg =
+        //     error.response.data.msg + "(" + error.response.data.code + ")" ||
+        //     "mail error2";
+        // });
     },
     submitMailVerify() {
       //會員註冊mail驗證
@@ -1923,7 +1936,6 @@ export default {
           keyring: this.mailVerifyCode
         }
       }).then(res => {
-        console.log(res);
         if (res.status === "000") {
           this.mailVerifyModalShow = false;
           this.showMailCheckIcon = true;
