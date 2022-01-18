@@ -73,14 +73,14 @@ export default {
   background-image: url("/static/image/sg1/common/bg.png");
 }
 
-.join-input {
-  background-color: unset !important;
-  border: unset;
-  border-radius: 75px;
-  &::placeholder {
-    color: #a5a5a5;
-  }
-}
+// .join-input {
+//   background-color: unset !important;
+//   border: unset;
+// border-radius: 0 75px 75px 0;
+//   &::placeholder {
+//     color: #a5a5a5;
+//   }
+// }
 
 .join-btn {
   margin: 0 auto;

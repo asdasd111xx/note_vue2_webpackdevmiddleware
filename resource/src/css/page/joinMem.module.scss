@@ -119,6 +119,9 @@
     padding: 10px 40% 10px 0.3%;
     text-overflow: ellipsis;
   }
+  &.sg1 {
+    border-radius: 0 75px 75px 0;
+  }
 }
 
 .join-input:-webkit-autofill {
@@ -515,7 +518,7 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
-  background: #fff;
+  // background: #fff;
 
   &.porn1 {
     border: 1px solid #d8d8d8;

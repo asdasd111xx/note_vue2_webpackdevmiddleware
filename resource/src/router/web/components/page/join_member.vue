@@ -262,7 +262,11 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -289,7 +293,11 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -316,7 +324,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -349,7 +361,11 @@
               <template v-else-if="field.key === 'email'">
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], $style[field.key]]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    $style[field.key]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('email', 'tip')"
                   type="text"
@@ -402,7 +418,11 @@
                 />
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], $style[field.key]]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    $style[field.key]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
@@ -509,7 +529,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue(field.key, 'tip')"
                   type="text"
@@ -521,7 +545,11 @@
                 v-else
                 :ref="field.key"
                 v-model="allValue[field.key]"
-                :class="[$style['join-input'], field.key]"
+                :class="[
+                  $style['join-input'],
+                  $style[siteConfig.ROUTER_TPL],
+                  field.key
+                ]"
                 :name="field.key"
                 :placeholder="placeholderKeyValue(field.key, 'tip')"
                 type="text"
