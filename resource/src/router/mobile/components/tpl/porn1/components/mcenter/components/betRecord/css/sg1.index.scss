@@ -1,1 +1,6 @@
 @import "./porn1.index.scss";
+.dropdown-wrap {
+  &.game {
+    min-height: calc(100vh - 93px);
+  }
+}
