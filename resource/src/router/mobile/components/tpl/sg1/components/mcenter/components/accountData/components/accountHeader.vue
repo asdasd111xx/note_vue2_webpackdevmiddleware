@@ -5,7 +5,7 @@
       :class="$style['btn-prev']"
       @click="headerConfig.onClick"
     >
-      <img :src="$getCdnPath(`/static/image/common/btn_close_black.png`)" />
+      <img :src="$getCdnPath(`/static/image/common/btn_back_black.png`)" />
     </div>
 
     <div v-if="headerConfig.title" :class="[$style.wrap, 'clearfix']">
