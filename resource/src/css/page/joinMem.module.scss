@@ -427,6 +427,10 @@
 .join-select-withdraw {
   composes: join-input-select;
 
+  &.sg1 {
+    border-radius: 75px;
+  }
+
   :global(.selected-tag) {
     display: block;
     float: none;

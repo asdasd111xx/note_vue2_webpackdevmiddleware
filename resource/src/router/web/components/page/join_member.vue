@@ -508,7 +508,10 @@
                   :options="selectData['withdraw_password'].options"
                   :clearable="false"
                   :searchable="false"
-                  :class="$style['join-select-withdraw']"
+                  :class="[
+                    $style['join-select-withdraw'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @input="changSelect('withdraw_password', index)"
                 ></v-select>
                 <!-- <input
