@@ -582,7 +582,7 @@ export default {
         })
         .catch(error => {
           const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
+          this.actionSetGlobalMessage({ msg, code });
         });
     },
     /*************************
@@ -642,7 +642,7 @@ export default {
         })
         .catch(error => {
           const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
+          this.actionSetGlobalMessage({ msg, code });
         });
     },
     // 取得使用者銀行卡列表(迅付)
@@ -687,7 +687,10 @@ export default {
           // console.log(response.data);
           this.offerInfo = response.data;
         } else {
-          this.actionSetGlobalMessage({ msg: response.msg });
+          this.actionSetGlobalMessage({
+            msg: response.msg,
+            code: response.code
+          });
         }
       });
     }

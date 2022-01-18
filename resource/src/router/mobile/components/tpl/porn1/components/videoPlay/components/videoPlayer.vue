@@ -523,6 +523,7 @@ export default {
               case "BREAK_WAIT":
                 let _mission = data.Mession;
                 this.mission = _mission;
+                bonunsProcess.isForceWait = true;
                 this.dialogType = "tips-break";
                 this.$nextTick(() => {
                   if (_mission)
