@@ -65,6 +65,7 @@ export default new Router({
           }
 
           next(`/mobile?code=${code}`);
+          return;
         }
 
         next("/mobile");
@@ -74,9 +75,13 @@ export default new Router({
     {
       path: "/a/:code",
       beforeEnter(to, from, next) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const channelid = urlParams.get("channelid");
         const code = to.params.code;
+
         if (code && code !== undefined) {
           localStorage.setItem("x-code", code || "");
+          localStorage.setItem("x-channelid", "");
 
           setCookie("cid", "");
           setCookie("aid", "");
@@ -84,7 +89,14 @@ export default new Router({
           window.RESET_LOCAL_SETTING();
           window.RESET_MEM_SETTING();
 
+          if (channelid && channelid !== undefined) {
+            localStorage.setItem("x-channelid", channelid);
+            next(`/mobile?code=${code}&channelid=${channelid}`);
+            return;
+          }
+
           next(`/mobile?code=${code}`);
+          return;
         }
 
         next("/mobile");
