@@ -343,24 +343,6 @@ export default {
       timeTitle: ""
     };
   },
-  watch: {
-    //判斷是否從禮金明細來
-    "$route.query.gifDetail": {
-      handler: function(item) {
-        this.setBackFunc(() => {
-          if (item) {
-            this.$route.replace(
-              "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
-            );
-          } else {
-            this.$router.back();
-          }
-        });
-      },
-      deep: true,
-      immediate: true
-    }
-  },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"

@@ -27,12 +27,12 @@
   height: 220px;
   margin: auto;
 
-  > img {
+  >img {
     display: block;
     width: 100%;
   }
 
-  > div {
+  >div {
     height: 20px;
     line-height: 20px;
     margin-top: 20px;
@@ -118,12 +118,15 @@
 
   &.active {
     @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+
     &.image-porn1 {
       @include check-ok("/static/image/porn1/mcenter/ic_check.png");
     }
+
     &.image-aobo1 {
       @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
     }
+
     &.image-sp1 {
       @include check-ok("/static/image/sp1/mcenter/ic_check.png");
     }
@@ -133,6 +136,7 @@
 .content-title {
   padding-left: 14px;
   border-bottom: 1px solid #eee;
+
   .icon-message {
     margin: 13px 0;
   }
@@ -159,12 +163,12 @@
   width: 32px;
   height: 32px;
 
-  > img {
+  >img {
     display: block;
     width: 100%;
   }
 
-  > span {
+  >span {
     position: absolute;
     top: 0;
     right: 0;
@@ -348,7 +352,7 @@
   margin: 0 auto;
   color: #9ca29f;
 
-  > svg {
+  >svg {
     display: block;
   }
 }
@@ -409,7 +413,7 @@
 .tips-button {
   border-top: 1px solid #f7f7f7;
 
-  > div {
+  >div {
     float: left;
     width: 50%;
     height: 50px;
@@ -421,8 +425,9 @@
   .delete-cancel {
     color: var(--popup_text_color3);
   }
+
   .delete-confirm {
-    color: var(--popup_text_color1);
+    color: var(--popup_text_color_confrim);
   }
 }
 
@@ -464,7 +469,7 @@
   height: 20px;
   margin: auto;
 
-  > img {
+  >img {
     display: block;
     width: 20px;
     height: 20px;
@@ -482,7 +487,7 @@
   color: #414655;
   font-size: 16px;
 
-  > img {
+  >img {
     display: block;
     width: 20px;
   }
