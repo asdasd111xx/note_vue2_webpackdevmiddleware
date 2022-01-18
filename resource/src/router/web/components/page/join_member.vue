@@ -13,18 +13,17 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
-          <div
-            :class="$style['visitor-get']"
-            :style="themeTPL == 'sg1' ? 'display:none' : ''"
-          >
+        <div v-if="themeTPL != 'sg1'" style="margin-top: 40px;">
+          <div :class="$style['visitor-get']">
             访客加入会员
           </div>
-          <div
-            :class="$style['visitor-get']"
-            :style="themeTPL == 'sg1' ? 'color:#000' : ''"
-          >
-            {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
+          <div :class="$style['visitor-get']" :style="'color:#000'">
+            {{ `领取彩金：${formatThousandsCurrency(guestAmount)} 元` }}
+          </div>
+        </div>
+        <div v-else style="margin-top: 40px;">
+          <div :class="$style['visitor-get']" :style="'color:#000'">
+            {{ `访客彩金 ${formatThousandsCurrency(guestAmount)} 元` }}
           </div>
           <div
             v-show="themeTPL == 'sg1'"
