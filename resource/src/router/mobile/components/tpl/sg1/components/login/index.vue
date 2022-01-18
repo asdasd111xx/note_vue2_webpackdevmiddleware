@@ -104,7 +104,9 @@
                 <div class="input-icon">
                   <img
                     :src="
-                      $getCdnPath(`/static/image/common/login/sign_captcha.png`)
+                      $getCdnPath(
+                        `/static/image/common/login/sign_captcha_paopao.png`
+                      )
                     "
                   />
                 </div>
