@@ -171,7 +171,9 @@
                 </div>
                 <div class="link-button ">
                   <span @click="handleClick('live')">
-                    {{ $text("S_JOINTOLIVERS", "成为主播") }}
+                    <a :href="beHostUrl" target="_blank" style="color:#000">
+                      {{ $text("S_JOINTOLIVERS", "成为主播") }}
+                    </a>
                   </span>
                 </div>
                 <div
@@ -234,7 +236,8 @@ export default {
   data() {
     return {
       thirdyCaptchaObj: null,
-      script: null
+      script: null,
+      beHostUrl: ""
     };
   },
   watch: {
@@ -280,35 +283,35 @@ export default {
       return false;
     }
   },
-  created() {},
+  created() {
+    this.getHostClick();
+  },
   methods: {
     ...mapActions([
       "actionGetLayeredURL",
       "actionGetActingURL",
       "actionGetRegisterURL"
     ]),
-    handleClick(target) {
-      if (target === "live") {
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
-          params: {
-            version: "2"
-          }
-        }).then(res => {
-          if (
-            res &&
-            res.data &&
-            res.data.data.case_data &&
-            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
-          ) {
-            window.open(
-              res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0]
-                .linkTo["zh-cn"]
-            );
-          }
-        });
-      }
+    getHostClick() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+        params: {
+          version: "2"
+        }
+      }).then(res => {
+        if (
+          res &&
+          res.data &&
+          res.data.data.case_data &&
+          res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+        ) {
+          this.beHostUrl =
+            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+              "zh-cn"
+            ];
+        }
+      });
     },
 
     slideLogin(loginInfo) {

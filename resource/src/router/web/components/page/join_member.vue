@@ -641,7 +641,7 @@
       </div>
       <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
         <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
-        <span @click.stop="beHost">成为主播</span>
+        <span><a :href="beHostUrl" target="_blank">成为主播</a></span>
         <span @click.stop="$router.push('/mobile')">访客进入</span>
       </div>
       <div
@@ -726,7 +726,7 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
-
+      beHostUrl: "",
       phoneVerifybtnActive: false,
       phoneVerifybtnSubmit: false,
       NeedCode: true,
@@ -970,6 +970,8 @@ export default {
     }
   },
   created() {
+    //取得成為主播網址
+    this.beHost();
     this.actionSetUserdata().then(() => {
       this.getCaptcha();
       let joinConfig = [];
@@ -1190,11 +1192,16 @@ export default {
           res.data.data.case_data &&
           res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
         ) {
-          window.open(
+          this.beHostUrl =
             res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
               "zh-cn"
-            ]
-          );
+            ];
+
+          // window.open(
+          //   res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+          //     "zh-cn"
+          //   ]
+          // );
         }
       });
     },
