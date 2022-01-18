@@ -171,7 +171,7 @@
                 </div>
                 <div class="link-button ">
                   <span @click="handleClick('live')">
-                    <a :href="beHostUrl" target="_blank" style="color:#000">
+                    <a :href="beHostUrl" target="_blank" style="color:#5E626D">
                       {{ $text("S_JOINTOLIVERS", "成为主播") }}
                     </a>
                   </span>
