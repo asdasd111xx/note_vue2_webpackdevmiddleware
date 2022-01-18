@@ -1554,7 +1554,7 @@ export default {
           host: window.location.host,
           deviceId: localStorage.getItem("uuidAccount") || "",
           lang: "zh-cn",
-          register_channel: localStorage.getItem("x-channelid") || ""
+          register_channel: Number(localStorage.getItem("x-channelid")) || 0
         }
       }).then(res => {
         setTimeout(() => {
