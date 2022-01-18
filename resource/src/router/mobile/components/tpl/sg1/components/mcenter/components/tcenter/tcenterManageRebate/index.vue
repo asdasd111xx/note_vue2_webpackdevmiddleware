@@ -22,7 +22,12 @@ export default {
         // Title 由各接口設定
         prev: true,
         onClick: () => {
-          this.$router.back();
+          //判斷是否從推廣賺錢來
+          if (this.$route.query.giftDetail) {
+            this.$router.replace("/mobile/mcenter/tcenterLobby");
+          } else {
+            this.$router.back();
+          }
         }
       }
     };
