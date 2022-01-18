@@ -480,13 +480,18 @@
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
-  &.sg1,
+
   &.porn1 {
     text-align: right;
     padding-right: 12px;
   }
 
+  &.sg1 {
+    border-radius: 75px 0 0 75px;
+  }
+
   &.aobo1,
+  &.sg1,
   &.sp1,
   &.ey1 {
     background-color: #ffffff;
@@ -510,12 +515,18 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
+  background: #fff;
 
   &.porn1 {
     border: 1px solid #d8d8d8;
   }
 
+  &.sg1 {
+    border-radius: 0 75px 75px 0;
+  }
+
   &.aobo1,
+  &.sg1,
   &.sp1,
   &.ey1 {
     border: 1px solid #e3e3e3;

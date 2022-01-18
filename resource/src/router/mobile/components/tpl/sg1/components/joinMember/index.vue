@@ -125,22 +125,23 @@ export default {
   }
 }
 
-.field-wrap {
-  margin-left: 12px;
-  margin-right: 12px;
-  background-color: #fff;
-  border: 1px solid #d8d8d8;
-  border-radius: 75px;
-  margin-bottom: 28px;
-}
-.field-text {
-  text-align: left;
-  padding-left: 10px;
-}
+// .field-wrap {
+//   margin-left: 12px;
+//   margin-right: 12px;
+//   background-color: #fff;
+//   border: 1px solid #d8d8d8;
+//   border-radius: 75px;
+//   margin-bottom: 28px;
+// }
+// .field-text {
+//   text-align: left;
+//   padding-left: 10px;
+// }
 
-.field-right {
-  width: calc(100% - 95px);
-}
+// .field-right {
+//   width: calc(100% - 95px);
+//   background: #fff;
+// }
 
 .join-tip-show {
   display: inline-block;
