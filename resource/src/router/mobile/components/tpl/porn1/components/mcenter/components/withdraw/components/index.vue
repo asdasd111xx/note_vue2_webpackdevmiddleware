@@ -843,6 +843,7 @@ export default {
     allWithdrawAccount(value) {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
+        this.getWithdrawOffer();
       }
       if (!localStorage.getItem("tmp_w_selectedCard")) {
         if (this.currencyList.length > 0) {
@@ -2266,9 +2267,9 @@ export default {
         ) {
           this.withdrawCheck().then(res => {
             if (res === "ok") {
-              this.handleSubmit()
-              }
-            });
+              this.handleSubmit();
+            }
+          });
         }
         localStorage.removeItem("tmp_w_rule");
       });
