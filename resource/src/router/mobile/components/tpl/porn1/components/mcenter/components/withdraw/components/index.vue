@@ -1336,7 +1336,7 @@ export default {
           +this.withdrawValue - +this.withdrawData.audit.total.total_deduction;
         this.actualMoney = _actualMoney;
         // 實際提現金額 < 0
-        if (_actualMoney <= 0) {
+        if (_actualMoney <= 0 && value !== "") {
           //http://fb.vir888.com/default.asp?535621#4619033
           this.errTips = "实际提现金额须大于0，请确认余额或点击详情";
 
