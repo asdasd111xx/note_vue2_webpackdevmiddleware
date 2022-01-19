@@ -2555,8 +2555,9 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
       if (res.data.maintain) {
         const maintain = res.data.maintain;
         if (
+          state.liveMaintain &&
           maintain.start === state.liveMaintain.start &&
-          maintain.end === state.liveMaintain.end
+            maintain.end === state.liveMaintain.end
         ) {
           return;
         }

@@ -364,7 +364,7 @@ export default {
           this.exchangeRateList = [];
         }
 
-        if (data.error_text !== "") {
+        if (data && data.error_text !== "") {
           this.actionSetGlobalMessage({
             msg: data.error_text
           });
