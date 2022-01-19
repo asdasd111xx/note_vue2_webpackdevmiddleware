@@ -240,6 +240,11 @@ export default {
         return;
       }
 
+      if (!this.landingurl || this.landingurl === "") {
+        return;
+      }
+
+      // 會員-推廣專用
       let url = new URL(
         this.landingurl.startsWith("http")
           ? this.landingurl
