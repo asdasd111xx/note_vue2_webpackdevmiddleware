@@ -591,7 +591,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: var(--visitor_money_color);
+    color: var(--visitor_money_get_color);
     margin: 0;
     padding: 0;
 
@@ -599,6 +599,7 @@ export default {
       max-width: 90px;
       word-break: break-word;
       text-align: right;
+      color: var(--visitor_money_color);
       @media screen and(max-width: 320px) {
         max-width: 85px;
       }

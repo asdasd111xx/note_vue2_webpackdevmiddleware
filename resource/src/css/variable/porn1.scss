@@ -56,6 +56,7 @@
   //首頁訪客彩金
   --visitor_title_color: #000000;
   --visitor_money_color: #fb7126;
+  --visitor_money_get_color: #fb7126;
 
   /***--- 會員中心 ----***/
   //底色(固定顏色)
@@ -150,12 +151,24 @@
   --video_popup_right_text_button: #f2f2f2; //影片裡面提示框右邊按鈕文字
   --video_popup_right_background_button: #5e626d; //影片裡面提示框右邊按鈕
   --video_search_button: #9ca3bf; //影片內部搜尋按鈕
-  --video_more_dropdown_text_color: var(--square_text_color); //影片分類下拉視窗 文字
-  --video_more_dropdown_border_color: var(--square_border_color); //影片分類下拉視窗 框線
-  --video_more_dropdown_background_color: var(--square_background_color); //影片分類下拉視窗 背景
-  --video_more_dropdown_text_active_color: var(--square_text_active_color); //影片分類下拉視窗 文字 active
-  --video_more_dropdown_border_active_color: var(--square_border_active_color); //影片分類下拉視窗 框線 active
-  --video_more_dropdown_background_active_color: var(--square_background_active_color); //影片分類下拉視窗 背景 active
+  --video_more_dropdown_text_color: var(
+    --square_text_color
+  ); //影片分類下拉視窗 文字
+  --video_more_dropdown_border_color: var(
+    --square_border_color
+  ); //影片分類下拉視窗 框線
+  --video_more_dropdown_background_color: var(
+    --square_background_color
+  ); //影片分類下拉視窗 背景
+  --video_more_dropdown_text_active_color: var(
+    --square_text_active_color
+  ); //影片分類下拉視窗 文字 active
+  --video_more_dropdown_border_active_color: var(
+    --square_border_active_color
+  ); //影片分類下拉視窗 框線 active
+  --video_more_dropdown_background_active_color: var(
+    --square_background_active_color
+  ); //影片分類下拉視窗 背景 active
   --video_guess_like_color: #5e626d; //影片猜你喜歡
   --video_introduction_icon_color: #5e626d; //影片簡介標題前面長方形
   --video_more_button: var(--main_button_color1); //影片更多按鈕

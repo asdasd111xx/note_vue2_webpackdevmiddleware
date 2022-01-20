@@ -557,12 +557,13 @@ export default {
   }
   .visitor-money {
     font-size: 12px;
-    color: var(--visitor_money_color);
+    color: var(--visitor_money_get_color);
     margin: 0;
     padding: 0;
     padding-right: 2px;
 
     &.just-money {
+      color: var(--visitor_money_color);
       max-width: 88px;
       word-break: break-word;
       text-align: right;
