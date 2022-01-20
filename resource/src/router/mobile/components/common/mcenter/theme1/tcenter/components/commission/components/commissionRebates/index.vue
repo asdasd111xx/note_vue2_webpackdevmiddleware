@@ -454,7 +454,7 @@ export default {
         this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = this.formatThousandsCurrency(
-            response.data.ret.dispatched_amount
+            response.data.dispatched_amount
           );
         }
       });
