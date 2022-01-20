@@ -185,6 +185,7 @@ export default {
           case "C50029":
           case "C50062":
           case "TM020143":
+          case "TM0200143":
           case "TM020058":
           case "TM020059":
           case "TM020060":

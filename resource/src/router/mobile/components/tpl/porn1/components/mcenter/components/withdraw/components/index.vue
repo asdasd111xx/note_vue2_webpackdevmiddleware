@@ -1629,7 +1629,6 @@ export default {
           this.isCheckWithdraw = false;
           if (res.status === "000") {
             let check = true;
-            console.log(123);
             if (
               !res.data.name ||
               !res.data.phone ||

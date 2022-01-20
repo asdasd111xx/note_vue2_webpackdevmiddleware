@@ -275,15 +275,14 @@ export default {
 
     locker() {
       this.countdownSec = this.ttl;
-      if (this.domainConfig && this.domainConfig.auto_keyring) {
-      } else {
+      if (!this.domainConfig || !this.domainConfig.auto_keyring) {
         this.actionSetGlobalMessage({
           msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
         });
-        this.tipMsg =
-          this.$text("S_SEND_CHECK_CODE_VALID_TIME_10") +
-          this.$text("S_FIND_TRASH");
       }
+      this.tipMsg =
+        this.$text("S_SEND_CHECK_CODE_VALID_TIME_10") +
+        this.$text("S_FIND_TRASH");
       this.timer = setInterval(() => {
         if (this.countdownSec <= 1) {
           this.countdownSec = 0;

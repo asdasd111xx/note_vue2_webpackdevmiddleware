@@ -113,7 +113,7 @@
           </div>
         </div>
       </div>
-      <div v-else-if="currentMessage" :class="$style['message-content']">
+      <div v-else-if="currentMessage" :class="$style['inner-message-content']">
         <div :class="[$style['content-title'], 'clearfix']">
           <div :class="$style['icon-message']">
             <img
@@ -124,12 +124,13 @@
               "
             />
           </div>
-          <div :class="$style.wrap">
+
+          <div :class="$style['inner-wrap']">
             <div
-              :class="$style.title"
+              :class="$style['inner-title']"
               v-html="setTitleContent(currentMessage.title)"
             />
-            <div :class="$style.time">
+            <div :class="$style['inner-time']">
               {{ currentMessage.sent_at | dateFormat }}
             </div>
           </div>

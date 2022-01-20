@@ -47,9 +47,47 @@ export default new Router({
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
         const channelid = urlParams.get("channelid");
+        const action = urlParams.get("action");
+        localStorage.removeItem("x-action");
 
         if (code && code !== undefined) {
           localStorage.setItem("x-code", code);
+          localStorage.removeItem("x-channelid");
+          localStorage.removeItem("x-action");
+          setCookie("cid", "");
+          setCookie("aid", "");
+          localStorage.removeItem("aid");
+          window.RESET_LOCAL_SETTING();
+          window.RESET_MEM_SETTING();
+
+          if (action && action !== undefined) {
+            localStorage.setItem("x-action", action);
+          }
+
+          if (channelid && channelid !== undefined) {
+            localStorage.setItem("x-channelid", channelid);
+            next(`/mobile?code=${code}&channelid=${channelid}`);
+            return;
+          }
+
+          next(`/mobile?code=${code}`);
+          return;
+        }
+
+        next("/mobile");
+        return;
+      }
+    },
+    {
+      path: "/a/:code",
+      beforeEnter(to, from, next) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const channelid = urlParams.get("channelid");
+        const code = to.params.code;
+
+        if (code && code !== undefined) {
+          localStorage.setItem("x-code", code || "");
+          localStorage.setItem("x-channelid", "");
 
           setCookie("cid", "");
           setCookie("aid", "");
@@ -64,26 +102,7 @@ export default new Router({
           }
 
           next(`/mobile?code=${code}`);
-        }
-
-        next("/mobile");
-        return;
-      }
-    },
-    {
-      path: "/a/:code",
-      beforeEnter(to, from, next) {
-        const code = to.params.code;
-        if (code && code !== undefined) {
-          localStorage.setItem("x-code", code || "");
-
-          setCookie("cid", "");
-          setCookie("aid", "");
-          localStorage.removeItem("aid");
-          window.RESET_LOCAL_SETTING();
-          window.RESET_MEM_SETTING();
-
-          next(`/mobile?code=${code}`);
+          return;
         }
 
         next("/mobile");

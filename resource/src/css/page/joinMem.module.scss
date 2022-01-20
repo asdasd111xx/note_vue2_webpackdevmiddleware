@@ -228,7 +228,7 @@
   z-index: 10;
 }
 
-//手機驗證彈窗
+//手機驗證錯誤訊息
 .verify-error-msg {
   width: 270px;
   height: 135px;
@@ -299,6 +299,7 @@
     line-height: 40px;
     margin: 10px 0;
   }
+  //手機驗證彈窗
   .phonenum-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -342,11 +343,12 @@
       font-size: 12px;
       border-radius: 3px;
       &.submit {
-        background: grey;
+        background: #cccccc;
       }
     }
   }
 
+  //mail驗證彈窗
   .mail-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -386,7 +388,7 @@
       font-size: 12px;
       border-radius: 3px;
       &.submit {
-        background: grey;
+        background: #cccccc;
       }
     }
   }
