@@ -163,11 +163,11 @@
     #bd9d7d 0%,
     #f9ddbd 100%
   ); //影片內部搜尋按鈕
-  --video_more_dropdown_text_color: #d1b79c; //影片分類下拉視窗 文字
-  --video_more_dropdown_border_color: #d1b79c; //影片分類下拉視窗 框線
+  --video_more_dropdown_text_color: #e42a30; //影片分類下拉視窗 文字
+  --video_more_dropdown_border_color: #e42a30; //影片分類下拉視窗 框線
   --video_more_dropdown_background_color: #ffffff; //影片分類下拉視窗 背景
-  --video_more_dropdown_text_active_color: #d1b79c; //影片分類下拉視窗 文字 active
-  --video_more_dropdown_border_active_color: #d1b79c; //影片分類下拉視窗 框線 active
+  --video_more_dropdown_text_active_color: #e42a30; //影片分類下拉視窗 文字 active
+  --video_more_dropdown_border_active_color: #e42a30; //影片分類下拉視窗 框線 active
   --video_more_dropdown_background_active_color: #ffffff; //影片分類下拉視窗 背景 active
   --video_guess_like_color: #bf8646; //影片猜你喜歡
   --video_introduction_icon_color: linear-gradient(
@@ -175,12 +175,8 @@
     #bd9d7d,
     #f9ddbd
   ); //影片簡介標題前面長方形
-  --video_more_button: linear-gradient(
-    to left,
-    #bd9d7d,
-    #f9ddbd
-  ); //影片更多按鈕
-  --game_bonus_amount: #aa7e28; //電子大廳 彩金金額
+  --video_more_button: var(--main_button_color1); //影片更多按鈕
+  --game_bonus_amount: #262626; //電子大廳 彩金金額
 
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框
@@ -196,7 +192,7 @@
   --popup_text_color1: #be9e7f; //彈窗確定
   --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
   --popup_text_color3: #414655; //彈窗取消
-  --marquee_text_color1: #9ca3bf; //大廳跑馬燈
+  --marquee_text_color1: #ff7171; //大廳跑馬燈
   --marquee_text_color2: #d1b79c; //提現、充值跑馬燈
   --vip_detail_color: #bbab98; //查看VIP详情
   --avatar-vip-icon-color: #d1b79c; //我的 vip等級 背景顏色
