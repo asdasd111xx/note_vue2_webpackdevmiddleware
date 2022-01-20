@@ -42,7 +42,8 @@ export default {
         onClick: () => {
           this.$router.push("/mobile/mcenter/home");
         },
-        title: this.paopaoMemberCardInfoTop.alias
+        title: ""
+        // title: this.paopaoMemberCardInfoTop.alias
       };
     }
   },
