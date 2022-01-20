@@ -10,6 +10,8 @@ html {
 
 body,
 .slider {
+  position: fixed;
+  overflow-y: auto;
   touch-action: pan-y;
   height: 100%;
   width: 100%;
@@ -30,7 +32,6 @@ body,
 }
 
 @media (orientation: landscape) {
-
   body,
   #footer,
   #header,
@@ -169,7 +170,10 @@ body,
     }
   }
 
-  .video-js .vjs-volume-panel .vjs-volume-control.vjs-slider-active.vjs-volume-vertical .vjs-volume-bar,
+  .video-js
+    .vjs-volume-panel
+    .vjs-volume-control.vjs-slider-active.vjs-volume-vertical
+    .vjs-volume-bar,
   .video-js .vjs-big-play-button,
   .vjs-flat-skin .vjs-fullscreen-control,
   .vjs-flat-skin .vjs-subtitles-button,
