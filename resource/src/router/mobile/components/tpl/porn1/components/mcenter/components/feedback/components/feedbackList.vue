@@ -7,9 +7,7 @@
             :src="`/static/image/${theme}/mcenter/feedback/no_feedback.png`"
           />
           <p>{{ $text("S_NO_FEEDBACK", "暂无反馈记录") }}</p>
-          <button
-            @click="$router.push('/mobile/mcenter/feedback/sendFeedback')"
-          >
+          <button @click="btnPre">
             {{ $text("S_SEND_FEEDBACK", "立即反馈") }}
           </button>
         </div>
@@ -186,7 +184,13 @@ export default {
 
     //  to do
     if (this.currentFeedback === null) {
-      this.$router.push(`/mobile/mcenter/feedback/feedbackList/`);
+      this.$router.push(
+        `/mobile/mcenter/feedback/feedbackList/${
+          this.$route.query.redirect === "sendFeedback"
+            ? "?redirect=sendFeedback"
+            : ""
+        }`
+      );
     }
   },
   methods: {
@@ -230,7 +234,13 @@ export default {
         this.repliedList.find(item => item.id === content.id) || content;
 
       this.setReplyReadAt(content.id);
-      this.$router.push(`/mobile/mcenter/feedback/feedbackList/${content.id}`);
+      this.$router.push(
+        `/mobile/mcenter/feedback/feedbackList/${content.id}${
+          this.$route.query.redirect === "sendFeedback"
+            ? "?redirect=sendFeedback"
+            : ""
+        }`
+      );
     },
     getRepliedList() {
       ajax({
@@ -355,6 +365,13 @@ export default {
             code
           });
         });
+    },
+    btnPre() {
+      if (this.$route.query.redirect === "sendFeedback") {
+        this.$router.back();
+      } else {
+        this.$router.replace("/mobile/mcenter/feedback/sendFeedback");
+      }
     }
   }
 };

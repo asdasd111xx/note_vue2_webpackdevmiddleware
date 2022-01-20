@@ -182,9 +182,6 @@ export default {
     //       this.$emit("showDetail", val);
     //     }
     //   }
-    noticeData() {
-      this.getData();
-    }
   },
   data() {
     const estToday = EST(new Date(), "", true);
@@ -223,8 +220,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig",
-      noticeData: "getNoticeData"
+      siteConfig: "getSiteConfig"
     }),
     isEmbedDetail() {
       // 共用紀錄

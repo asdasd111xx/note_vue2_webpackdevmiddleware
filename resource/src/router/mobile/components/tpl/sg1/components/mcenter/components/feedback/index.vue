@@ -34,14 +34,12 @@ export default {
             ? this.$text("S_MY_FEEDBACK", "我的反馈")
             : false,
         customLinkAction: () => {
-          this.$router.push("/mobile/mcenter/feedback/feedbackList");
+          this.$router.push(
+            "/mobile/mcenter/feedback/feedbackList?redirect=sendFeedback"
+          );
         },
         onClick: () => {
-          if (this.$route.params.page === "sendFeedback") {
-            this.$router.push("/mobile/service");
-          } else {
-            this.$router.back();
-          }
+          this.$router.back();
         }
       };
     }
