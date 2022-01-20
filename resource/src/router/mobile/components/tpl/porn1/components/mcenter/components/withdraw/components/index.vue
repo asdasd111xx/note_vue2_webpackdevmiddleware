@@ -2352,15 +2352,15 @@ export default {
     },
     //普通提現/e點富
     setWithdrawTypeIsNormal(type) {
+      this.epointSelectType = type;
       if (type === 0) {
         if (this.allWithdrawAccount.length > 0) {
           this.handleSelectCard(this.allWithdrawAccount[0]);
         }
-        this.epointSelectType = type;
       } else {
         if (this.withdrawUserData.account.length > 0) {
           this.handleSelectCard(this.epointSelectType ===1 ? this.epointWallet[0]:this.epointNewWallet[0]);
-          this.epointSelectType = type;
+          
         } else {
           this.actionSetGlobalMessage({
             msg: "请先绑定银行卡",

@@ -1290,7 +1290,7 @@ export default {
                   this.$router.replace(
                     `/mobile/iframe/${
                       this.$route.query.redirect === "deposit"
-                        ? "epointfromdeposit"
+                        ? "epoint2fromdeposit"
                         : "epoint"
                     }?func=false`
                   );
