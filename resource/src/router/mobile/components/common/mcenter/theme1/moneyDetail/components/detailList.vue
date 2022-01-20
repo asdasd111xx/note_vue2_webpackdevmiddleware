@@ -136,8 +136,12 @@ export default {
         // this.emptyImage = "img_default_no_data";
         this.noDataText = `暂时没有新的签到彩金`;
       } else {
+        if (this.currentCategory.key === "outer") {
+          this.noDataText = `暂时没有新的购买记录`;
+        } else {
+          this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
+        }
         this.emptyImage = "no_data";
-        this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
       }
     }
   },
@@ -150,8 +154,12 @@ export default {
       this.emptyImage = "img_default_no_data";
       this.noDataText = `暂时没有新的签到彩金`;
     } else {
+      if (this.currentCategory.key === "outer") {
+        this.noDataText = `暂时没有新的购买记录`;
+      } else {
+        this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
+      }
       this.emptyImage = "no_data";
-      this.noDataText = `暂时没有新的${this.currentCategory.text}记录`;
     }
   },
   methods: {
