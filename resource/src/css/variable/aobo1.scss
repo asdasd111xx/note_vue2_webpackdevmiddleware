@@ -158,11 +158,7 @@
     #bd9d7d 0%,
     #f9ddbd 100%
   ); //影片裡面提示框右邊按鈕
-  --video_search_button: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //影片內部搜尋按鈕
+  --video_search_button: #9ca3bf; //影片內部搜尋按鈕
   --video_more_dropdown_text_color: #e42a30; //影片分類下拉視窗 文字
   --video_more_dropdown_border_color: #e42a30; //影片分類下拉視窗 框線
   --video_more_dropdown_background_color: #ffffff; //影片分類下拉視窗 背景

@@ -251,7 +251,7 @@ export default {
 .title {
   height: 30px;
   line-height: 30px;
-  color: var(--main_color);
+  color: #5e626d;
   font-weight: 400;
   font-size: 12px;
   margin-left: 8px;
@@ -264,7 +264,7 @@ export default {
     left: 0px;
     top: 7px;
     border-radius: 2px;
-    background: var(--main_color);
+    background: #5e626d;
   }
 }
 
