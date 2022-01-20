@@ -220,7 +220,7 @@
 
                 <template>
                   <!-- 當返水金額符合最低返水金額才可領取 rebate 和 min_rebate -->
-                  <a
+                  <p
                     v-if="caculateList.operateStatus"
                     id="receive-button"
                     :class="[
@@ -233,7 +233,7 @@
                     @click="popReceive(listIndex)"
                   >
                     {{ $t("S_RECEIVE") }}
-                  </a>
+                  </p>
                   <button v-else :class="$style['unrebate-btn']">
                     {{ $t("S_UNABLE_PASS") }}
                   </button>
@@ -470,7 +470,8 @@ export default {
       this.isShowReceivePopup = false;
     },
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     }
   }
 };
