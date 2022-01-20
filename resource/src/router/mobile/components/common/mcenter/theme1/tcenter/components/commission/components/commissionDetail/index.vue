@@ -125,7 +125,7 @@ export default {
     setCurrentTab(index) {
       switch (index) {
         case 0:
-          this.$router.push({
+          this.$router.replace({
             params: {
               title: "record",
               item: "detail"
@@ -147,7 +147,7 @@ export default {
           break;
 
         case 1:
-          this.$router.push({
+          this.$router.replace({
             params: {
               title: "record",
               item: "detail"
