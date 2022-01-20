@@ -107,7 +107,7 @@
                 @blur="verification(item, $event.target.value)"
                 @input="verification(item, $event.target.value)"
                 :placeholder="item.placeholder"
-                type="text"
+                type="tel"
                 inputmode="decimal"
               />
               <input
