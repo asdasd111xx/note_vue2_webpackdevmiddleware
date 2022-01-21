@@ -214,6 +214,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
 
 export default {
   components: {
@@ -331,22 +332,24 @@ export default {
     },
     handleClickService() {
       if (this.loginStatus) {
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
-          params: {
-            version: "1"
-          }
-        }).then(res => {
-          if (
-            res &&
-            res.data &&
-            res.data.data &&
-            res.data.data.service["url"]
-          ) {
-            window.open(res.data.data.service["url"]);
-          }
-        });
+        lib_newWindowOpen(
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+            params: {
+              version: "1"
+            }
+          }).then(res => {
+            if (
+              res &&
+              res.data &&
+              res.data.data &&
+              res.data.data.service["url"]
+            ) {
+              return res.data.data.service["url"];
+            }
+          })
+        );
       } else {
         this.$router.push("/mobile/login");
       }
