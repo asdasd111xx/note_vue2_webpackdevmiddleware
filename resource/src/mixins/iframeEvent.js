@@ -14,7 +14,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("message", this.iframeOnListener);
-    if (redirectIframe !== true) {
+    if (this.redirectIframe !== true) {
       localStorage.removeItem("iframe-third-url-title");
       localStorage.removeItem("iframe-third-url");
     }
