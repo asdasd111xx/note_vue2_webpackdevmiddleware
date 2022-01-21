@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="isShow && isIos && platform !== 'H'"
+    v-if="isShow && isIos"
     :class="$style['app-tips']"
     :style="{ opacity: opacity }"
   >

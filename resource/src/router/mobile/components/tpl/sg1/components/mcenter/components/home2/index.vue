@@ -76,7 +76,10 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem("appTips") === "false") {
+    if (
+      !localStorage.getItem("appTips") ||
+      localStorage.getItem("appTips") === "false"
+    ) {
       this.listWrapHeight = 435;
     } else {
       this.listWrapHeight = 435 + 42;
