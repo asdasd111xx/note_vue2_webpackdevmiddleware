@@ -120,7 +120,7 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <template v-if="onActivity">
+        <template v-if="isActivity">
           <span :class="$style['visitor-title']" @click="checkLayeredURL"
             >访客彩金</span
           >
@@ -263,7 +263,7 @@ export default {
       source: this.$route.query.source,
       guestAmount: 0,
       remainBonus: 0,
-      onActivity: false
+      isActivity: false
     };
   },
   computed: {
@@ -373,14 +373,14 @@ export default {
 
       this.$router.push({ path: "search", query: { source: this.source } });
     },
+    //取得彩金活動開關
     getActivityStatus() {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
-          console.log(res);
-          this.onActivity =
+          this.isActivity =
             res.data.event_jackpot === "true" ||
             res.data.register_jackpot === "true" ||
             res.data.video_jackpot === "true";

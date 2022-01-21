@@ -12,8 +12,8 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
-        <!-- 訪客文案 -->
-        <div v-if="onActivity" style="margin-top: 40px;">
+        <!-- 訪客&&活動開啟文案 -->
+        <div v-if="isActivity" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
@@ -826,7 +826,7 @@ export default {
       placeholderResult: [],
       register_phone_keyring: "",
       register_email_keyring: "",
-      onActivity: false
+      isActivity: false
     };
   },
   computed: {
@@ -1676,14 +1676,14 @@ export default {
         return error;
       }
     },
+    //取得彩金活動開關
     getActivityStatus() {
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
-          console.log(res);
-          this.onActivity =
+          this.isActivity =
             res.data.event_jackpot === "true" ||
             res.data.register_jackpot === "true" ||
             res.data.video_jackpot === "true";

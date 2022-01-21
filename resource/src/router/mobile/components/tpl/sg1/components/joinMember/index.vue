@@ -44,7 +44,7 @@ export default {
           }
         },
         hasClose: true,
-        title: "领取彩金"
+        title: "访客注册"
       };
     }
   },
