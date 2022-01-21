@@ -1,6 +1,13 @@
 @import "./index.module.scss";
+
 .submit-btn {
-  > div {
+  >div {
     border-radius: 23px;
+  }
+}
+
+.check-container {
+  &.custom-color {
+    color: #BE9E7F;
   }
 }
