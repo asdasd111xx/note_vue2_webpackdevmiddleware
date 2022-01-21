@@ -52,6 +52,11 @@ export default {
 
         console.log("[EVENT]:", data.event);
         console.log("[DATA]:", data.data);
+        console.log("[from]:", data.from);
+
+        if (data.from) {
+          localStorage.setItem("live-iframe-event-from", data.from);
+        }
 
         switch (data.event) {
           // 舊有開啟遊戲連結事件
@@ -202,9 +207,9 @@ export default {
             return;
           case "EVENT_REDIRECT_PAGE":
             let _data = data.data.toUpperCase();
+
             switch (_data) {
               case "EXCHANGEDIAMOND":
-                localStorage.setItem("live-iframe-event-from", data.from);
                 this.$router.push(`/mobile/mcenter/live/diamond`);
                 return;
               case "DEPOSIT":
