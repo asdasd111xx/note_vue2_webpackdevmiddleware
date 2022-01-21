@@ -13,8 +13,8 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("message", this.iframeOnListener);
-    localStorage.removeItem("iframe-third-url-title");
-    localStorage.removeItem("iframe-third-url");
+    // localStorage.removeItem("iframe-third-url-title");
+    // localStorage.removeItem("iframe-third-url");
   },
   created() {
     // setTimeout(() => {
@@ -178,7 +178,28 @@ export default {
           case "EVENT_ADD_VALUE":
             this.$router.push(`/mobile/mcenter/deposit`);
             return;
-
+          //我的>任務>活動
+          case "EVENT_HTML":
+            goLangApiRequest({
+              method: "post",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+              params: {
+                code: "promotion",
+                clientUri: data.data
+              }
+            }).then(res => {
+              console.log("resres", res);
+              if (res && res.data && res.data.uri) {
+                localStorage.setItem("iframe-third-url", res.data.uri);
+                // localStorage.setItem("iframe-third-url-title", target.name);
+                localStorage.setItem(
+                  "iframe-third-origin",
+                  `/live/iframe/task_wall`
+                );
+                this.$router.push(`/mobile/iframe/promotion`);
+              }
+            });
+            return;
           case "EVENT_REDIRECT_PAGE":
             let _data = data.data.toUpperCase();
             switch (_data) {
