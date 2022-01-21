@@ -13,7 +13,7 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客文案 -->
-        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
+        <div v-if="onActivity" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
           <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
@@ -825,7 +825,8 @@ export default {
       redirect_url: "",
       placeholderResult: [],
       register_phone_keyring: "",
-      register_email_keyring: ""
+      register_email_keyring: "",
+      onActivity: false
     };
   },
   computed: {
@@ -1112,7 +1113,7 @@ export default {
             ];
           });
         });
-
+      this.getActivityStatus();
       if (!this.loginStatus) {
         this.getGuestBalance();
       }
@@ -1531,8 +1532,8 @@ export default {
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
         code: localStorage.getItem("x-code") || "",
-        phone_keyring: this.register_phone_keyring ,
-        email_keyring: this.register_email_keyring 
+        phone_keyring: this.register_phone_keyring,
+        email_keyring: this.register_email_keyring
       };
 
       const self = this;
@@ -1674,6 +1675,20 @@ export default {
       } catch (error) {
         return error;
       }
+    },
+    getActivityStatus() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+          console.log(res);
+          this.onActivity =
+            res.data.event_jackpot === "true" ||
+            res.data.register_jackpot === "true" ||
+            res.data.video_jackpot === "true";
+        }
+      });
     },
 
     // 取得訪客餘額
@@ -1847,25 +1862,24 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
         params: {
-          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
         }
-      })
-        .then(res => {
-          if (res.status !== "000") {
-            this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg =
-              res.msg + "(" + res.code + ")" || "phone error1";
-          } else {
-            //取得驗證碼倒數秒數
-            this.getPhoneTTL();
-          }
-        })
-        // .catch(error => {
-        //   this.phoneSubmitFail = true;
-        //   this.phoneSubmitFailMsg =
-        //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-        //     "phone error2";
-        // });
+      }).then(res => {
+        if (res.status !== "000") {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "phone error1";
+        } else {
+          //取得驗證碼倒數秒數
+          this.getPhoneTTL();
+        }
+      });
+      // .catch(error => {
+      //   this.phoneSubmitFail = true;
+      //   this.phoneSubmitFailMsg =
+      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
+      //     "phone error2";
+      // });
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
@@ -1902,25 +1916,24 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email`,
         params: {
-          email: this.allValue.email,
+          email: this.allValue.email
         }
-      })
-        .then(res => {
-          if (res.status !== "000") {
-            this.mailSubmitFail = true;
-            this.mailSubmitFailMsg =
-              res.msg + "(" + res.code + ")" || "mail error1";
-          } else {
-            //取得mail驗證碼倒數秒數
-            this.getMailTTL();
-          }
-        })
-        // .catch(error => {
-        //   this.mailSubmitFail = true;
-        //   this.mailSubmitFailMsg =
-        //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-        //     "mail error2";
-        // });
+      }).then(res => {
+        if (res.status !== "000") {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            res.msg + "(" + res.code + ")" || "mail error1";
+        } else {
+          //取得mail驗證碼倒數秒數
+          this.getMailTTL();
+        }
+      });
+      // .catch(error => {
+      //   this.mailSubmitFail = true;
+      //   this.mailSubmitFailMsg =
+      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
+      //     "mail error2";
+      // });
     },
     submitMailVerify() {
       //會員註冊mail驗證

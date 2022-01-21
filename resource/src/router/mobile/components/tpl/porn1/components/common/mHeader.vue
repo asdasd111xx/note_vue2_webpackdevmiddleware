@@ -133,7 +133,12 @@
             领取
           </span>
         </template>
-        <span v-else :class="$style['visitor-noactivity']">访客注册</span>
+        <span
+          v-else
+          :class="$style['visitor-noactivity']"
+          @click="checkLayeredURL"
+          >访客注册</span
+        >
 
         <span
           @click="
