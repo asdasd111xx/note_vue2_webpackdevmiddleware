@@ -217,6 +217,7 @@ export default {
   transition: margin 0.31s, height 0.31s;
   padding-bottom: 1px;
   overflow: hidden;
+  -webkit-overflow-scrolling: touch !important;
 
   &.fullScreen {
     margin-top: unset !important;
@@ -241,6 +242,8 @@ export default {
   min-width: 0;
   padding: 0;
   width: 100%;
+
+  -webkit-overflow-scrolling: touch !important;
 }
 
 .header {

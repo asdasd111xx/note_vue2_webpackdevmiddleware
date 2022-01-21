@@ -8,7 +8,6 @@
       { [$style['fullScreen']]: isFullScreen }
     ]"
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
-    style="overflow-y:scroll; -webkit-overflow-scrolling: touch;"
   >
     <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
     <transition name="fade">
@@ -804,7 +803,8 @@ export default {
   background-color: #fff;
   transition: margin 0.31s, height 0.31s;
 
-  // overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   &.fullScreen {
     margin-top: unset !important;
