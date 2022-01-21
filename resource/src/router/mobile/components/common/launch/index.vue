@@ -36,12 +36,7 @@ export default {
       if (this.sec === 0 && !this.$route.query.test) {
         clearInterval(this.timer);
         this.timer = null;
-
-        if (this.siteConfig.ROUTER_TPL === "sg1") {
-          this.$router.push("/mobile/live/iframe/home?hasFooter=true");
-        } else {
-          this.$router.push("/mobile");
-        }
+        this.goToMobile();
         return;
       }
       this.sec -= 1;
@@ -53,10 +48,17 @@ export default {
   },
   methods: {
     goToMobile() {
-      this.$router.push({
-        name: "home",
-        query: { ...this.$route.query }
-      });
+      if (this.siteConfig.ROUTER_TPL === "sg1") {
+        this.$router.push({
+          path: "live/iframe",
+          query: { ...this.$route.query, hasFooter: "true" }
+        });
+      } else {
+        this.$router.push({
+          name: "home",
+          query: { ...this.$route.query }
+        });
+      }
     },
     click() {
       clearInterval(this.timer);
