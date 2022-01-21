@@ -112,7 +112,8 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--addcard_popup_check_color);
+  // color: var(--addcard_popup_check_color);
+  color: #6dabf2;
   transform: translateY(-50%);
 }
 
@@ -148,11 +149,11 @@
   }
 
   &.is-current {
-    border: 1px solid var(--wallet_border_color);
-    color: var(--wallet_border_text_color);
-    background: linear-gradient(-45deg,
-        var(--wallet_border_color) 10px,
-        hsla(0, 0%, 100%, 0) 0);
+    // border: 1px solid var(--wallet_border_color);
+    border: 1px solid #6dabf2;
+    // color: var(--wallet_border_text_color);
+    color: #6dabf2;
+    background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
   }
 
   .pay-mode-tag {
@@ -248,7 +249,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -283,11 +284,15 @@
 
   &.is-current {
     background-color: #fff;
-    color: var(--wallet_border_text_color);
-    border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(-45deg,
-        var(--wallet_border_color) 12px,
-        hsla(0, 0%, 100%, 0) 0);
+    color: #6dabf2;
+    border: 1px solid #6dabf2;
+    // color: var(--wallet_border_text_color);
+    // border: 1px solid var(--wallet_border_color);
+    background: linear-gradient(
+      -45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0
+    );
   }
 }
 
@@ -793,11 +798,16 @@
 
 .current-data {
   background-color: #fff;
-  color: var(--wallet_border_text_color);
-  border: 1px solid var(--wallet_border_color);
-  background: linear-gradient(-45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0);
+  // color: var(--wallet_border_text_color);
+  color: #6dabf2;
+  border: 1px solid #6dabf2;
+  // border: 1px solid var(--wallet_border_color);
+  background: linear-gradient(-45deg, #6dabf2 12px, hsla(0, 0%, 100%, 0) 0);
+  // background: linear-gradient(
+  //   -45deg,
+  //   var(--wallet_border_color) 12px,
+  //   hsla(0, 0%, 100%, 0) 0
+  // );
 }
 
 .pop-message-mark {
@@ -882,7 +892,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1051,7 +1061,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1159,7 +1168,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 
