@@ -229,17 +229,7 @@ export default {
       const refCode = localStorage.getItem("x-code");
       const channelid = localStorage.getItem("x-channelid");
 
-      // 有帶推廣碼的需要登入
-      if (
-        !["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
-        !this.loginStatus &&
-        refCode &&
-        refCode !== ""
-      ) {
-        this.$router.push("/mobile/login");
-        return;
-      }
-
+      // 渠道移除 有帶推廣碼的需要登入
       if (!this.landingurl || this.landingurl === "") {
         return;
       }
@@ -251,23 +241,18 @@ export default {
           : `https://${this.landingurl}`
       );
 
-      if (["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
-        // 代理網址推廣代碼優先推廣代碼
-        if (this.promotionHostnameCode || refCode) {
-          url.searchParams.append(
-            "code",
-            this.promotionHostnameCode || refCode
-          );
-        }
+      // 代理網址推廣代碼優先推廣代碼
+      if (this.promotionHostnameCode || refCode) {
+        url.searchParams.append("code", this.promotionHostnameCode || refCode);
+      }
 
-        if (channelid) {
-          url.searchParams.append("channelid", channelid);
-        }
+      if (channelid) {
+        url.searchParams.append("channelid", channelid);
+      }
 
-        // 落地頁直接下載
-        if (localStorage.getItem("x-action") === "download") {
-          url.searchParams.append("action", "download");
-        }
+      // 落地頁直接下載
+      if (localStorage.getItem("x-action") === "download") {
+        url.searchParams.append("action", "download");
       }
 
       // safari
