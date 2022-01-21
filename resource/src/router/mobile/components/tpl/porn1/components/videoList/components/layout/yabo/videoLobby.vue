@@ -730,7 +730,7 @@ export default {
   border-radius: 3px;
   font-size: 12px;
   text-align: center;
-  background: var(--video_more_button);
+  background: var(--main_button_color1);
   color: var(--main_button_text_color1);
 
   &.gay {
