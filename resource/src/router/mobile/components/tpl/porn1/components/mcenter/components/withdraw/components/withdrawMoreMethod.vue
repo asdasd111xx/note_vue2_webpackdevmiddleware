@@ -32,11 +32,11 @@
                   :class="$style['add-block']"
                 >
                   <img
-                    v-if="routerTPL === 'porn1'"
+                    v-if="routerTPL !== 'sg1'"
                     :src="$getCdnPath(`/static/image/porn1/mcenter/add.png`)"
                     alt="add"
                   />
-                  <img
+                  <!-- <img
                     v-if="routerTPL === 'aobo1'"
                     :src="$getCdnPath(`/static/image/aobo1/mcenter/add.png`)"
                     alt="add"
@@ -45,7 +45,7 @@
                     v-if="routerTPL === 'sp1'"
                     :src="$getCdnPath(`/static/image/sp1/mcenter/add.png`)"
                     alt="add"
-                  />
+                  /> -->
 
                   <img
                     v-if="routerTPL === 'sg1'"
