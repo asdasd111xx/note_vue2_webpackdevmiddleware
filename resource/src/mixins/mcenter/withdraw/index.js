@@ -590,7 +590,7 @@ export default {
         })
         .catch(error => {
           const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
+          this.actionSetGlobalMessage({ msg, code });
         });
     },
     /*************************
@@ -650,7 +650,7 @@ export default {
         })
         .catch(error => {
           const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
+          this.actionSetGlobalMessage({ msg, code });
         });
     },
     // 取得使用者銀行卡列表(迅付)
@@ -677,11 +677,18 @@ export default {
       if (this.selectedCard.bank_id === 2009) {
         method_id = this.withdrawCurrency.method_id;
       } else {
-        method_id = this.selectedCard.offer_data
-          ? this.selectedCard.offer_data[0]
+        if (this.selectedCard.offer_data) {
+          method_id = this.selectedCard.offer_data[0]
             ? this.selectedCard.offer_data[0].method_id
-            : 0
-          : 0;
+            : 0;
+        } else if (this.selectedCard && this.selectedCard["currency"]) {
+          //僅綁定購寶錢包情況fb546335
+          method_id = this.selectedCard["currency"][0]
+            ? this.selectedCard["currency"][0].method_id
+            : 0;
+        } else {
+          method_id = 0;
+        }
       }
       //取得會員層級當日取款試算優惠、金額 C04.55
       return goLangApiRequest({
@@ -696,7 +703,10 @@ export default {
           // console.log(response.data);
           this.offerInfo = response.data;
         } else {
-          this.actionSetGlobalMessage({ msg: response.msg });
+          this.actionSetGlobalMessage({
+            msg: response.msg,
+            code: response.code
+          });
         }
       });
     }

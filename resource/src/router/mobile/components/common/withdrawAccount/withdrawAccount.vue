@@ -170,6 +170,8 @@ import { mapGetters, mapActions } from "vuex";
 import mixin from "@/mixins/mcenter/withdraw";
 import ajax from "@/lib/ajax";
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
+import { getCookie, setCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
@@ -578,62 +580,50 @@ export default {
     sendKeyring() {
       this.isSendKeyring = true;
       this.tipMsg = "";
-
-      axios({
+      goLangApiRequest({
         method: "post",
-        url: "/api/v1/c/player/verify/user_bank/sms",
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Verify/UserBank/Sms`,
+        params: {
+          lang: "zh-cn",
           phone: `${this.phoneHead.replace("+", "")}-${
             this.formData.phone.value
           }`,
-          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : ""
+          captcha_text: this.thirdyCaptchaObj ? this.thirdyCaptchaObj : "",
+          aid: getCookie("aid") || localStorage.getItem("aid") || ""
         }
-      })
-        .then(res => {
-          if (this.timer) return;
+      }).then(res => {
+        if (this.timer) return;
 
-          if (res && res.data && res.data.result === "ok") {
-            if (this.domainConfig && this.domainConfig.auto_keyring) {
-            } else {
-              this.actionSetGlobalMessage({
-                msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
-              });
-            }
-            this.getPhoneTTL().then(() => {
-              this.countdownSec = this.ttl;
-              this.timer = setInterval(() => {
-                if (this.countdownSec === 0) {
-                  clearInterval(this.timer);
-                  this.timer = null;
-                  return;
-                }
-                this.countdownSec -= 1;
-              }, 1500);
-            });
+        if (res && res.status === "000" && res.data === "operate success") {
+          if (this.domainConfig && this.domainConfig.auto_keyring) {
           } else {
-            if (res.data && res.data.msg) {
-              this.tipMsg = res.data.msg;
-            } else {
-              this.tipMsg = res.data;
-            }
+            this.actionSetGlobalMessage({
+              msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
+            });
           }
-
-          this.isSendKeyring = false;
-        })
-        .catch(error => {
-          this.countdownSec = "";
-          this.tipMsg = `${error.response.data ? error.response.data.msg : ""}`;
-          this.isSendKeyring = false;
-
-          if (error.response && error.response.status === 429) {
-            this.actionGetToManyRequestMsg(error.response.data.message).then(
-              res => {
-                this.tipMsg = res;
+          this.getPhoneTTL().then(() => {
+            this.countdownSec = this.ttl;
+            this.timer = setInterval(() => {
+              if (this.countdownSec === 0) {
+                clearInterval(this.timer);
+                this.timer = null;
+                return;
               }
-            );
-            return;
+              this.countdownSec -= 1;
+            }, 1500);
+          });
+        } else {
+          if (res && res.status === "506") {
+            this.actionGetToManyRequestMsg(res.msg).then(res => {
+              this.tipMsg = res;
+            });
+          } else if (res.msg) {
+            this.tipMsg = res.msg;
           }
-        });
+        }
+
+        this.isSendKeyring = false;
+      });
     },
     sendFormData() {
       this.isSendForm = true;

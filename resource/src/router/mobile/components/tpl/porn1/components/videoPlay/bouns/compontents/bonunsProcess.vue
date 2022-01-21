@@ -80,7 +80,8 @@ export default {
       curMin: 0,
       timer: null,
       playingCueTime: null,
-      isPause: false
+      isPause: false,
+      isForceWait: false
     };
   },
   watch: {

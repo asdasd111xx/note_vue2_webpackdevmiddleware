@@ -36,7 +36,7 @@ export default {
       if (this.sec === 0 && !this.$route.query.test) {
         clearInterval(this.timer);
         this.timer = null;
-        this.$router.push("/mobile");
+        this.goToMobile();
         return;
       }
       this.sec -= 1;
@@ -47,11 +47,17 @@ export default {
     this.timer = null;
   },
   methods: {
+    goToMobile() {
+      this.$router.push({
+        name: "home",
+        query: { ...this.$route.query }
+      });
+    },
     click() {
       clearInterval(this.timer);
       this.timer = null;
       this.$nextTick(() => {
-        this.$router.push("/mobile");
+        this.goToMobile();
       });
     }
   }

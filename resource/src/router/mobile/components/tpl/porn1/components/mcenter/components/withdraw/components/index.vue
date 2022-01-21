@@ -872,6 +872,7 @@ export default {
     allWithdrawAccount(value) {
       if (!this.selectedCard.id) {
         this.getDefaultCardData();
+        this.getWithdrawOffer();
       }
       if (!localStorage.getItem("tmp_w_selectedCard")) {
         if (this.currencyList.length > 0) {
@@ -1660,7 +1661,6 @@ export default {
           this.isCheckWithdraw = false;
           if (res.status === "000") {
             let check = true;
-            console.log(123);
             if (
               !res.data.name ||
               !res.data.phone ||

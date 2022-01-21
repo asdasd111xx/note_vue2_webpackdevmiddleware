@@ -7,6 +7,7 @@
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         html.fullscreen {
+            position: fixed;
             overflow-y: hidden;
             overflow-x: hidden;
         }
@@ -14,6 +15,7 @@
         html.fullscreen,
         body.fullscreen,
         iframe.fullscreen {
+            position: fixed;
             height: 100%;
             width: 100%;
             padding: 0;
@@ -23,6 +25,7 @@
             min-width: 0;
             background-color: #f2f2f2;
             margin: 0 auto;
+            overflow: auto;
         }
 
         @media (orientation: landscape) {
@@ -43,6 +46,19 @@
 </body>
 
 <script>
-    document.getElementById('main-iframe').src = `/mobile/launch?platform=pwa&t=${Date.now()}`;
+
+    let searchQuery = decodeURIComponent(window.location.search);
+    searchQuery = searchQuery.replace('platform=G', '');
+
+    let splitString = searchQuery.split('&');
+
+    let src = `/mobile/launch?platform=pwa&t=${Date.now()}`;
+    for (let i = 0; i < splitString.length; i++) {
+        if (splitString[i] && splitString[i] !== '' && splitString[i] !== '?') {
+            src += `&${splitString[i]}`
+        }
+    }
+
+    document.getElementById('main-iframe').src = src;
     document.cookie = `platform=pwa`;
 </script>
