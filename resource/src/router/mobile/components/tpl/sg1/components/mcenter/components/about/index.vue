@@ -5,14 +5,16 @@
     :hasFooter="false"
   >
     <div slot="content" :class="$style['content-wrap']">
+      <div :class="$style['info']">
+        <div :class="$style['icon']">
+          <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
+        </div>
+        <div :class="$style['version']">版本号 {{ version }}</div>
+      </div>
       <img
         :class="$style['bg']"
         :src="$getCdnPath(`/static/image/sg1/about/bg.png`)"
       />
-      <div :class="$style['icon']">
-        <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
-      </div>
-      <div :class="$style['version']">版本号 {{ version }}</div>
     </div>
   </mobile-container>
 </template>
@@ -63,15 +65,20 @@ export default {
 .bg {
   min-height: 100vh;
   width: 100%;
-  position: absolute;
-  top: 25px;
-  z-index: -1;
+  position: relative;
+  margin-top: -150px;
 }
 
 .content-wrap {
   overflow-y: auto;
+  position: relative;
 }
-
+.info {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  margin-top: 25px;
+}
 .icon {
   width: 80px;
   height: 80px;
