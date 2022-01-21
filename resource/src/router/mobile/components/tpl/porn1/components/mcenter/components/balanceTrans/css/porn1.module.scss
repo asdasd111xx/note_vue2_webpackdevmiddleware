@@ -251,11 +251,13 @@
 }
 
 .balance-redjackpot-text {
-  color: var(--mcenter_wallet_redpot_text_color);
+  // color: var(--mcenter_wallet_redpot_text_color);
+  color: #db6372;
   word-break: break-word;
 }
 .balance-redjackpot-money {
-  color: var(--mcenter_wallet_redpot_money_color);
+  // color: var(--mcenter_wallet_redpot_money_color);
+  color: #db6372;
   word-break: break-word;
 }
 
@@ -266,13 +268,8 @@
   width: 25px;
   height: 25px;
 
-  background: url("/static/image/aobo1/common/ic_event.png") center center /
+  background: url("/static/image/porn1/common/ic_event.png") center center /
     100% 100%;
-
-  &.porn1 {
-    background: url("/static/image/porn1/common/ic_event.png") center center /
-      100% 100%;
-  }
 }
 
 .balance-manual-wrap {
@@ -371,7 +368,8 @@
     span {
       position: absolute;
       left: 0;
-      color: var(--mcenter_wallet_text_color);
+      // color: var(--mcenter_wallet_text_color);
+      color: #6aaaf5;
     }
   }
 
