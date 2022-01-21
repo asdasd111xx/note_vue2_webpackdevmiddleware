@@ -8,13 +8,16 @@ import openGame from "@/lib/open_game";
 export default {
   data() {
     return {
-      originData: ""
+      originData: "",
+      redirectIframe: false
     };
   },
   beforeDestroy() {
     window.removeEventListener("message", this.iframeOnListener);
-    // localStorage.removeItem("iframe-third-url-title");
-    // localStorage.removeItem("iframe-third-url");
+    if (redirectIframe !== true) {
+      localStorage.removeItem("iframe-third-url-title");
+      localStorage.removeItem("iframe-third-url");
+    }
   },
   created() {
     // setTimeout(() => {
@@ -193,15 +196,44 @@ export default {
                 clientUri: data.data
               }
             }).then(res => {
-              console.log("resres", res);
+              //取得活動標題
+              goLangApiRequest({
+                method: "get",
+                // headers: header,
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+                params: {
+                  lang: "zh-cn"
+                }
+              }).then(res => {
+                if (res.status === "000") {
+                  let url = data.data;
+                  let promotionId = url.split("?")[0].split("/")[
+                    url.split("?")[0].split("/").length - 1
+                  ];
+
+                  res.data.ret.forEach(promo => {
+                    if (promo.link.includes(promotionId)) {
+                      this.giftTitle = promo.name;
+                      localStorage.setItem(
+                        "iframe-third-url-title",
+                        promo.name
+                      );
+                    }
+                  });
+                }
+              });
+
               if (res && res.data && res.data.uri) {
+                this.redirectIframe = true;
                 localStorage.setItem("iframe-third-url", res.data.uri);
-                // localStorage.setItem("iframe-third-url-title", target.name);
                 localStorage.setItem(
                   "iframe-third-origin",
                   `/live/iframe/task_wall`
                 );
-                this.$router.push(`/mobile/iframe/promotion`);
+
+                setTimeout(() => {
+                  this.$router.push(`/mobile/iframe/promotion`);
+                }, 1000);
               }
             });
             return;
