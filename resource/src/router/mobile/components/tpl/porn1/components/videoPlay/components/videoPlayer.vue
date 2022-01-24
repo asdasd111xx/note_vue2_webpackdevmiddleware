@@ -572,6 +572,13 @@ export default {
                 break;
               case "ADSTOP":
                 break;
+              case "NOACTIVE":
+                window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+                window.YABO_SOCKET_VIDEO_DISCONNECT = null;
+                window.YABO_SOCKET_VIDEO_CONNECT = null;
+                clearTimeout(this.reconnectTimer);
+                this.reconnectTimer = null;
+                break;
               default:
                 break;
             }
