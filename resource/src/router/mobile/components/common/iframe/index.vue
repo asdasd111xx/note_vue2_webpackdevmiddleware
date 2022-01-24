@@ -1045,11 +1045,13 @@ export default {
     width: 50%;
     padding: 10px 0;
     &.close {
-      color: var(--popup_tip_close_color);
+      // color: var(--popup_tip_close_color);
+      color: #6aaaf5;
       border-right: 1px solid #f7f8fb;
     }
     &.confirm {
-      color: var(--popup_tip_ok_color);
+      // color: var(--popup_tip_ok_color);
+      color: #6aaaf5;
     }
   }
 }

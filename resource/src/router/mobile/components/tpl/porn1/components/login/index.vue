@@ -415,10 +415,12 @@ export default {
   }
   .cancel {
     border-right: 1px solid #eeeeee;
-    color: var(--popup_tip_close_color);
+    // color: var(--popup_tip_close_color);
+    color: #6aaaf5;
   }
   .submit {
-    color: var(--popup_tip_ok_color);
+    // color: var(--popup_tip_ok_color);
+    color: #6aaaf5;
   }
 }
 

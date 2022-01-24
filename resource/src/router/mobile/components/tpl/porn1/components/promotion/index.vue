@@ -393,8 +393,10 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--promotion_gift_button_text_color);
-  background: var(--promotion_gift_button);
+  // color: var(--promotion_gift_button_text_color);
+  color: #fff;
+  // background: var(--promotion_gift_button);
+  background: #9ca3bf;
   &.right {
     right: 14px;
   }

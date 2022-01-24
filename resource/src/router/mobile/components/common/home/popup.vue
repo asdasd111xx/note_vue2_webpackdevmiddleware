@@ -387,12 +387,14 @@ export default {
   font-size: 18px;
 
   &:first-child {
-    color: var(--popup_tip_close_color);
+    // color: var(--popup_tip_close_color);
+    color: #6aaaf5;
     border-right: 1px solid #eee;
   }
 
   &:last-child {
-    color: var(--popup_tip_ok_color);
+    // color: var(--popup_tip_ok_color);
+    color: #6aaaf5;
   }
 }
 

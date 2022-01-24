@@ -186,10 +186,12 @@
     margin: 0 10px;
   }
   .link-join-mem {
-    color: var(--joinmember_left_text_color);
+    // color: var(--joinmember_left_text_color);
+    color: #5e626d;
   }
   .link-submit {
-    color: var(--joinmember_right_text_color);
+    // color: var(--joinmember_right_text_color);
+    color: #6aaaf5;
   }
 }
 

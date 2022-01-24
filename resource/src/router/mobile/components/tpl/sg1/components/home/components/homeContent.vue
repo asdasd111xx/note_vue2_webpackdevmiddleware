@@ -647,7 +647,8 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: var(--send_keyring);
+    // color: var(--send_keyring);
+    color: #6aaaf5;
   }
 }
 </style>
