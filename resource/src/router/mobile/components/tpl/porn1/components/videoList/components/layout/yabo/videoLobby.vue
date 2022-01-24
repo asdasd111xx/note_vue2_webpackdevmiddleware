@@ -712,6 +712,12 @@ export default {
       no-repeat;
     background-size: 15px 15px;
   }
+
+  &.sp1 {
+    background: url("/static/image/aobo1/common/icon_item_b.png") 0 50%
+      no-repeat;
+    background-size: 15px 15px;
+  }
   &.gay {
     color: #333;
   }
