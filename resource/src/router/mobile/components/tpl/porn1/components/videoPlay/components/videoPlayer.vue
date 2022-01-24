@@ -20,7 +20,7 @@
         @close="handleCloseDialog"
       />
       <bonuns-process
-        v-if="isActiveBouns"
+        v-show="isActiveBouns"
         ref="bonunsProcess"
         :type="dialogType"
         :is-unlogin-mode="isUnloginMode"
@@ -377,6 +377,7 @@ export default {
 
       const bonunsProcess = this.$refs.bonunsProcess;
       bonunsProcess.processType = "loading";
+      this.isActiveBouns = false;
     },
     checkTPL() {
       if (!["porn1", "sg1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
