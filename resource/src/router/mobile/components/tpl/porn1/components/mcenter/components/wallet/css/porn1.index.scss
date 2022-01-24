@@ -243,6 +243,9 @@
 
   .balance-item-vendor {
     display: block;
+    &.long {
+      font-size: 12px;
+    }
   }
 
   .balance-info-maintain {
