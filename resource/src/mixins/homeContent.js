@@ -676,7 +676,7 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus) {
+      if (!this.loginStatus && path !== "promotion") {
         this.$router.push("/mobile/login");
         return;
       }
