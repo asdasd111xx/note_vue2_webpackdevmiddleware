@@ -1284,7 +1284,7 @@ export default {
                 //   })
                 // );
                 this.getCustomerServiceUrl({
-                  urlName: "what_is_Epoint",
+                  urlName: "what_is_Epoint_new",
                   needToken: false
                 }).then(res => {
                   localStorage.setItem("iframe-third-url", res.uri);
