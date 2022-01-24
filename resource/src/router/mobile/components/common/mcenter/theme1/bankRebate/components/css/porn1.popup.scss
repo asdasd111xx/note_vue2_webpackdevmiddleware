@@ -8,35 +8,35 @@
   bottom: 0;
   z-index: 99;
 
-  &.porn1 {
-    .content-wrap {
-      padding: 13px 0 0 0;
-    }
-    .button-wrap {
-      height: 42px;
-      line-height: 41px;
-      border-top: 1px solid #eeeeee;
+  .content-wrap {
+    padding: 13px 0 0 0;
+  }
+  .button-wrap {
+    height: 42px;
+    line-height: 41px;
+    border-top: 1px solid #eeeeee;
 
-      .button-item {
-        border-radius: 0px;
+    .button-item {
+      border-radius: 0px;
 
-        &.close {
-          background: #f8f8f7;
-          color: var(--popup_text_color3);
-        }
+      &.close {
+        background: #f8f8f7;
+        // color: var(--popup_text_color3);
+        color: #6aaaf5;
+      }
 
-        &.confirm {
-          background: #f8f8f7;
-          color: var(--popup_text_color1);
-          border-left: 1px solid #eeeeee;
-        }
+      &.confirm {
+        background: #f8f8f7;
+        // color: var(--popup_text_color1);
+        color: #6aaaf5;
+        border-left: 1px solid #eeeeee;
       }
     }
-    .title {
-      background: #f8f8f7;
-      color: #000;
-      font-size: 17px;
-    }
+  }
+  .title {
+    background: #f8f8f7;
+    color: #000;
+    font-size: 17px;
   }
 }
 
