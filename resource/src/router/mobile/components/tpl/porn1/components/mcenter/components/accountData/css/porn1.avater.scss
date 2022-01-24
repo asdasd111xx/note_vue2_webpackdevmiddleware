@@ -75,21 +75,14 @@
 
       &.active {
         border: 2px solid transparent;
-        border-color: var(--mcenter_change_avatar_image);
+        // border-color: var(--mcenter_change_avatar_image);
+        border-color: #6aaaf5;
       }
     }
 
     .check {
-      @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
-      &.image-porn1 {
-        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
-      }
-      &.image-aobo1 {
-        @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
-      }
-      &.image-sp1 {
-        @include check-ok("/static/image/sp1/mcenter/ic_check.png");
-      }
+      @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+
       &.image-sg1 {
         @include check-ok("/static/image/sg1/mcenter/ic_check.png");
       }
@@ -187,8 +180,10 @@
 }
 
 .choose-btn {
-  background: var(--mcenter_upload_image_button);
-  color: var(--mcenter_button_text_color1);
+  // background: var(--mcenter_upload_image_button);
+  background: #5e626d;
+  // color: var(--mcenter_button_text_color1);
+  color: #fff;
   border-radius: 3px;
   font-size: 14px;
   font-weight: 400;
@@ -214,13 +209,17 @@
 }
 
 .cancel-btn {
-  background: var(--mcenter_upload_image_cancel_button);
-  color: var(--mcenter_upload_image_cancel_text_button);
+  // background: var(--mcenter_upload_image_cancel_button);
+  background: #a6a9b2;
+  // color: var(--mcenter_upload_image_cancel_text_button);
+  color: #fff;
   float: left;
 }
 
 .submit-btn {
-  background: var(--mcenter_upload_image_button);
-  color: var(--mcenter_button_text_color1);
+  // background: var(--mcenter_upload_image_button);
+  background: #5e626d;
+  // color: var(--mcenter_button_text_color1);
+  color: #fff;
   float: right;
 }
