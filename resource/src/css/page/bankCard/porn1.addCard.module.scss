@@ -281,14 +281,15 @@
   position: absolute;
   right: 0;
   top: -4px;
-  background: var(--mcenter_send_keyring);
+  // background: var(--mcenter_send_keyring);
+  background: #6aaaf5;
   color: #fff;
   border-radius: 3px;
 
   &.disabled {
-    background: var(--mcenter_send_keyring_disabled);
+    // background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.3;
   }
 }
 
