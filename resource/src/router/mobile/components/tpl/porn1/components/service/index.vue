@@ -449,12 +449,15 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: var(--service_text_color);
+  // color: var(--service_text_color);
+  color: #6aaaf5;
   font-weight: bold;
 
   .add-bottom {
-    color: var(--service_add_text_button);
-    background: var(--service_add_button);
+    // color: var(--service_add_text_button);
+    // background: var(--service_add_button);
+    color: #fff;
+    background: #6aaaf5;
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
