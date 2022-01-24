@@ -26,13 +26,13 @@
         :is-unlogin-mode="isUnloginMode"
         @click="handleClickProcess"
       />
-      <ad-dialog
-        v-if="isAdDialog && ['porn1', 'sg1'].includes(routerTPL)"
-        ref="adDialog"
-        :adData="adShowData"
-        @close="handleCloseAdDialog"
-      />
     </div>
+    <ad-dialog
+      v-if="isAdDialog && ['porn1', 'sg1'].includes(routerTPL)"
+      ref="adDialog"
+      :adData="adShowData"
+      @close="handleCloseAdDialog"
+    />
   </div>
 </template>
 
@@ -571,6 +571,13 @@ export default {
                 this.keepPlay = true;
                 break;
               case "ADSTOP":
+                break;
+              case "NOACTIVE":
+                window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+                window.YABO_SOCKET_VIDEO_DISCONNECT = null;
+                window.YABO_SOCKET_VIDEO_CONNECT = null;
+                clearTimeout(this.reconnectTimer);
+                this.reconnectTimer = null;
                 break;
               default:
                 break;
