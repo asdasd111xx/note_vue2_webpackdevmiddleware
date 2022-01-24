@@ -148,7 +148,7 @@ export default {
           });
 
           if (localStorage.getItem("live-iframe-event-from")) {
-            if (this.$route.params.page !== "home") {
+            if (this.$route.params.page === "home") {
               clientUri = localStorage.getItem("live-iframe-event-from");
             }
             localStorage.removeItem("live-iframe-event-from");

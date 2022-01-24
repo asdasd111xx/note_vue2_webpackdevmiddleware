@@ -285,6 +285,9 @@ export default {
             return;
 
           case "EVENT_QUEST":
+            if (!data.isUse) {
+              return;
+            }
             switch (data.data.toUpperCase()) {
               case "FIRSTBUYDIAMOND":
                 this.$router.push(`/mobile/mcenter/live/diamond`);
