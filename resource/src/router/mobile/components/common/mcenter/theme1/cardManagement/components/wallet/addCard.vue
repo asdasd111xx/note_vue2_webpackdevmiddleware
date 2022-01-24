@@ -266,7 +266,9 @@
           </ul>
         </template>
         <div
-          v-if="epointTimeCount > 0 && [47, 48].includes(selectTarget.walletId)"
+          v-if="
+            epointTimeCount > 0 && [47, 48, 49].includes(selectTarget.walletId)
+          "
           :class="$style['epoint-time']"
         >
           {{ `请于 ${epointTimeCount} 秒内绑定帐号` }}
@@ -282,7 +284,7 @@
                 (lockStatus &&
                   !selectTarget.oneClickBindingMode &&
                   selectTarget.walletId !== 37) ||
-                ([47, 48].includes(selectTarget.walletId) &&
+                ([47, 48, 49].includes(selectTarget.walletId) &&
                   epointTimeCount > 0)
             },
             {
@@ -300,7 +302,8 @@
                 checkWalletPhoneVerification &&
                 selectTarget.walletId !== 21 &&
                 selectTarget.walletId !== 47 &&
-                selectTarget.walletId !== 48
+                selectTarget.walletId !== 48 &&
+                selectTarget.walletId !== 49
             "
           >
             下一步
@@ -314,7 +317,7 @@
           <span v-else
             >{{
               selectTarget.oneClickBindingMode
-                ? [47, 48].includes(selectTarget.walletId)
+                ? [47, 48, 49].includes(selectTarget.walletId)
                   ? "绑定钱包"
                   : "一键绑定"
                 : checkWalletPhoneVerification
@@ -773,8 +776,8 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 // CGPay || 購寶，只能綁定過一次(不論存放常用 or 歷史)
-                if ([21, 37, 47, 48].includes(item.virtual_bank_id)) {
-                  return [21, 37, 47, 48].includes(item.virtual_bank_id);
+                if ([21, 37, 47, 48, 49].includes(item.virtual_bank_id)) {
+                  return [21, 37, 47, 48, 49].includes(item.virtual_bank_id);
                 } else if (
                   // 億元沒開限綁一組，則可添加多個同種類錢包，
                   // ["ey1"].includes(this.themeTPL) &&
@@ -942,6 +945,9 @@ export default {
         case 48:
           id = 5;
           break;
+        case 49:
+          id = 6;
+          break;
         default:
           return;
       }
@@ -994,7 +1000,7 @@ export default {
         } else {
           this.selectTarget.oneClickBindingMode = true;
         }
-      } else if ([47, 48].includes(this.selectTarget.walletId)) {
+      } else if ([47, 48, 49].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
       } else {
         this.selectTarget.oneClickBindingMode = false;
@@ -1435,7 +1441,7 @@ export default {
               console.log(uri);
             }
           };
-          if ([47, 48].includes(this.selectTarget.walletId)) {
+          if ([47, 48, 49].includes(this.selectTarget.walletId)) {
             this.epointTimeCount = 60;
             this.epointTimeStamp = setInterval(() => {
               if (this.epointTimeCount === 0) {

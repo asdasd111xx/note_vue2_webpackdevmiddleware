@@ -252,7 +252,7 @@
             </div>
             <!-- e點富銀行 -->
             <div
-              v-if="isSelectBindWallet(34) && this.curPassRoad.is_bind_wallet"
+              v-if="isSelectBindWallet(34,41) && this.curPassRoad.is_bind_wallet"
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
@@ -276,7 +276,7 @@
             <!-- v-if="showEpointWalletAddress" -->
             <div
               v-if="
-                isSelectBindWallet(34) &&
+                isSelectBindWallet(34,41) &&
                   curPassRoad.is_bind_wallet &&
                   showEpointWalletAddress
               "
@@ -371,7 +371,7 @@
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || E点付(34)-->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || E点付(34,41)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -388,7 +388,7 @@
                 <template v-else-if="isSelectBindWallet(32)">
                   充值前请先绑定{{ curPayInfo.payment_method_name }}
                 </template>
-                <template v-else-if="isSelectBindWallet(34)">
+                <template v-else-if="isSelectBindWallet(34,41)">
                   充值前请先绑定{{ curPayInfo.payment_method_name }}钱包
                 </template>
                 <template v-else>
@@ -1461,7 +1461,7 @@ export default {
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
-      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+      this.showEpointWalletAddress = this.isSelectBindWallet(34,41)
         ? this.defaultEpointWallet.account === "其他银行卡"
         : false;
     },
@@ -1965,7 +1965,7 @@ export default {
           );
           break;
         // e点富
-        case 40:
+        case 41:
           this.$router.push(
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epointNew&swift=${this.curPayInfo.swift_code}`
           );
@@ -2315,6 +2315,7 @@ export default {
         this.curPayInfo.payment_method_id === 22 ||
         this.curPayInfo.payment_method_id === 32 ||
         this.curPayInfo.payment_method_id === 34 ||
+        this.curPayInfo.payment_method_id === 41 ||
         this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404
       );
