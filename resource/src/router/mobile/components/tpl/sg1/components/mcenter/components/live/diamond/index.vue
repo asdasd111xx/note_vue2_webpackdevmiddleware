@@ -415,7 +415,7 @@ export default {
       if (this.isLoading || this.isMaintain || this.lockedSubmit) {
         return;
       }
-
+      this.lockedSubmit = true;
       this.isLoading = true;
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/diamond/buy/user",
@@ -428,19 +428,28 @@ export default {
         if (data && data.error_text) {
           this.actionSetGlobalMessage({
             msg: data.error_text,
-            code: error_code
+            code: error_code,
+            cb: () => {
+              this.lockedSubmit = false;
+            }
           });
         }
 
         if (data && data.result && data.result.result !== "ok") {
           this.actionSetGlobalMessage({
-            msg: data.msg
+            msg: data.msg,
+            cb: () => {
+              this.lockedSubmit = false;
+            }
           });
         }
 
         if (data && data.result && data.result.result === "success") {
           this.actionSetGlobalMessage({
-            msg: "兑换成功"
+            msg: "兑换成功",
+            cb: () => {
+              this.lockedSubmit = false;
+            }
           });
 
           //this.currentSelRate = {};
