@@ -20,7 +20,7 @@
         @close="handleCloseDialog"
       />
       <bonuns-process
-        v-if="isActiveBouns"
+        v-show="isActiveBouns"
         ref="bonunsProcess"
         :type="dialogType"
         :is-unlogin-mode="isUnloginMode"
@@ -173,7 +173,7 @@ export default {
           if (this.adSwitch && !this.firstPlay) {
             this.firstPlay = true;
             this.playerPause();
-            console.log("播放first AD");
+            // console.log("播放first AD");
             this.onSend("AD");
             return;
           }
@@ -200,7 +200,7 @@ export default {
           // 任務彈窗關閉後繼續播放
           if (window.YABO_SOCKET && !this.keepPlay) {
             this.onSend("PLAY");
-            console.log("播放");
+            // console.log("播放");
           }
           this.keepPlay = false;
 
@@ -226,7 +226,7 @@ export default {
       this.player.on("seeked", () => {});
 
       this.player.on("pause", () => {
-        console.log("暫停");
+        // console.log("暫停");
         if (this.disableVideo) {
           this.handleDisableVideoMode();
           return;
@@ -264,7 +264,7 @@ export default {
 
       this.player.on("play", () => {
         this.handleClickVideo();
-        console.log("播放?");
+        // console.log("播放?");
       });
     },
     // 點擊進圖條任務彈窗
@@ -377,6 +377,7 @@ export default {
 
       const bonunsProcess = this.$refs.bonunsProcess;
       bonunsProcess.processType = "loading";
+      this.isActiveBouns = false;
     },
     checkTPL() {
       if (!["porn1", "sg1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
@@ -561,7 +562,7 @@ export default {
                 break;
               case "AD":
                 // this.onSend("AD");
-                console.log(data);
+                // console.log(data);
                 this.adShowData = data.Ad;
                 this.isAdDialog = true;
                 this.playerPause();
@@ -570,6 +571,13 @@ export default {
                 this.keepPlay = true;
                 break;
               case "ADSTOP":
+                break;
+              case "NOACTIVE":
+                window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
+                window.YABO_SOCKET_VIDEO_DISCONNECT = null;
+                window.YABO_SOCKET_VIDEO_CONNECT = null;
+                clearTimeout(this.reconnectTimer);
+                this.reconnectTimer = null;
                 break;
               default:
                 break;
