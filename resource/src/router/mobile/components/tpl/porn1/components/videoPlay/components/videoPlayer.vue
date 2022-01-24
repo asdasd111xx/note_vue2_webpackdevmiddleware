@@ -4,6 +4,7 @@
     :style="!isInit ? { 'pointer-events': 'none' } : {}"
   >
     <video
+      x5-video-player-type="h5-page"
       id="video-play"
       ref="video-player"
       playsinline="playsinline"
