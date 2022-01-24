@@ -758,9 +758,10 @@ div.container {
 
     span {
       padding: 0 5px;
-      font-size: 12px;
+      font-size: 11px;
       color: #fff;
-      background: var(--service_tip_color);
+      // background: var(--service_tip_color);
+      background: #5e626d;
       border-radius: 9px 0 0 9px;
     }
   }
