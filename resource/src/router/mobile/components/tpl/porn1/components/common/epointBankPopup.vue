@@ -134,7 +134,8 @@ export default {
     position: absolute;
     text-align: center;
     width: 40px;
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 
   .title {
@@ -164,7 +165,8 @@ export default {
     top: 50%;
     width: 15px;
     height: 15px;
-    color: var(--addcard_popup_check_color);
+    // color: var(--addcard_popup_check_color);
+    color: #6aaaf5;
     transform: translateY(-50%);
   }
 }

@@ -238,7 +238,8 @@ input {
   height: 30px;
   border-radius: 3px;
   line-height: 30px;
-  background: var(--mcenter_send_keyring_disabled);
+  // background: var(--mcenter_send_keyring_disabled);
+  background: #cccccc;
   color: #fff;
   pointer-events: none;
   // 取消點擊特效
@@ -248,7 +249,8 @@ input {
   &.active {
     pointer-events: auto;
     color: #fff;
-    background: var(--mcenter_send_keyring);
+    // background: var(--mcenter_send_keyring);
+    background: #6aaaf5;
   }
 }
 
