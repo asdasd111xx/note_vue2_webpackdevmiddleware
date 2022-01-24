@@ -45,7 +45,7 @@ export default {
           if (this.$route.query.login === "1") {
             this.$router.replace(`/mobile/login`);
           } else {
-            this.$router.push(`/mobile/home`);
+            this.$router.push(`/mobile/live/iframe/home?hasFooter=true`);
           }
         },
         hasClose: true,
