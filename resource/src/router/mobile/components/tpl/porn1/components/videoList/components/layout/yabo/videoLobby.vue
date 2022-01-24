@@ -35,7 +35,7 @@
             $getCdnPath(
               `/static/image/_new/common/icon_more${
                 isShowAllTag ? '_close' : ''
-              }${siteConfig.ROUTER_TPL === 'porn1' ? '' : '_g'}.png`
+              }.png`
             )
           "
         />
