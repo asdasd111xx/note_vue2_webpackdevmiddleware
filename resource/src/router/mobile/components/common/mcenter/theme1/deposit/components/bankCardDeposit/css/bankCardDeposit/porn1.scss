@@ -792,7 +792,8 @@
   color: #cbced8;
 
   &.success {
-    color: var(--widthdraw_tip_text_color);
+    // color: var(--widthdraw_tip_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -1185,7 +1186,8 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
   margin: 0;
   padding: 0;
   height: 40px;

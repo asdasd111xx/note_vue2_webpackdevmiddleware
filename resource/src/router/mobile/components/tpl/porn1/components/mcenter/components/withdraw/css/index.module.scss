@@ -32,7 +32,8 @@
     }
 
     > div:last-child {
-      color: var(--mcenter_wallet_text_color);
+      // color: var(--mcenter_wallet_text_color);
+      color: #6aaaf5;
       text-align: center;
       font-size: 16px;
     }
@@ -303,8 +304,10 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid var(--mcenter_wallet_text_color);
-    color: var(--mcenter_wallet_text_color);
+    // border: 1px solid var(--mcenter_wallet_text_color);
+    border: 1px solid #6aaaf5;
+    // color: var(--mcenter_wallet_text_color);
+    color: #6aaaf5;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -577,7 +580,8 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    color: var(--mcenter_wallet_text_color);
+    // color: var(--mcenter_wallet_text_color);
+    color: #6aaaf5;
     text-align: center;
     bottom: 12px;
     width: 100%;
