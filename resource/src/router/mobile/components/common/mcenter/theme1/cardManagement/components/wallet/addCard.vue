@@ -289,8 +289,8 @@
                 (lockStatus &&
                   !selectTarget.oneClickBindingMode &&
                   selectTarget.walletId !== 37) ||
-                (selectTarget.walletId === 48 ? epointTimeCount > 0 : false) ||
-                (selectTarget.walletId === 47 ? bcTimeCount > 0 : false)
+                ([47, 48].includes(selectTarget.walletId) &&
+                  epointTimeCount > 0)
             },
             {
               [$style['hidden']]:
