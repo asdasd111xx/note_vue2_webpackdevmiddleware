@@ -152,7 +152,7 @@
     // border: 1px solid var(--wallet_border_color);
     border: 1px solid #6dabf2;
     // color: var(--wallet_border_text_color);
-    color: #6dabf2;
+    color: #414655;
     background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
   }
 
@@ -284,15 +284,11 @@
 
   &.is-current {
     background-color: #fff;
-    color: #6dabf2;
+    color: #414655;
     border: 1px solid #6dabf2;
     // color: var(--wallet_border_text_color);
     // border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg, #6dabf2 12px, hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -800,7 +796,7 @@
 .current-data {
   background-color: #fff;
   // color: var(--wallet_border_text_color);
-  color: #6dabf2;
+  color: #414655;
   border: 1px solid #6dabf2;
   // border: 1px solid var(--wallet_border_color);
   background: linear-gradient(-45deg, #6dabf2 12px, hsla(0, 0%, 100%, 0) 0);
