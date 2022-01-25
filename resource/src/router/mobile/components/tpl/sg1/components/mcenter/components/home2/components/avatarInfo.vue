@@ -34,7 +34,11 @@
     <div :class="$style['info-wrap']">
       <div>
         <template v-if="loginStatus">
-          <span v-for="(item, index) in badgesList" :key="index">
+          <span
+            v-for="(item, index) in badgesList"
+            :key="index"
+            @click="onListClick('my_style', true)"
+          >
             <img :class="$style['badge']" :src="item" />
           </span>
           <span
