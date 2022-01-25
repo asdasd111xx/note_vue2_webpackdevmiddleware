@@ -116,7 +116,11 @@
             v-for="video in videoData.list.slice(0, 2)"
             :key="`video-${video.id}`"
             :href="`/mobile/videoPlay/${video.id}`"
-            :class="[$style['video'], $style[source]]"
+            :class="[
+              $style['video'],
+              $style[source],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
             @click.stop="handleVideo(video)"
           >
             <img :src="defaultImg" :img-id="video.id" />
@@ -191,12 +195,13 @@ export default {
       };
     },
     defaultImg() {
-      const isYabo = this.source === "yabo" || this.source === "av";
-      return this.$getCdnPath(
-        `/static/image/${this.themeTPL}/default/${
-          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
-        }.png`
-      );
+      // const isYabo = this.source === "yabo" || this.source === "av";
+      // return this.$getCdnPath(
+      //   `/static/image/${this.themeTPL}/default/${
+      //     isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+      //   }.png`
+      // );
+      return "";
     },
     allVideoList() {
       const videoRecommand =
@@ -793,9 +798,38 @@ export default {
 .video {
   composes: wrap;
   height: 117px;
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
 
+  &::after {
+    content: "";
+    z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 72px;
+    height: 72px;
+    transform: translate(-50%, -50%);
+    background-image: url("/static/image/porn1/default/default_logo.png");
+  }
+
+  &.aobo1 {
+    background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+
+    &::after {
+      content: "";
+      z-index: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      transform: translate(-50%, -50%);
+      background-image: url("/static/image/aobo1/default/default_logo.png");
+    }
+  }
   > img {
     position: absolute;
+    z-index: 1;
     top: 0;
     right: 0;
     bottom: 0;
