@@ -9,7 +9,7 @@
       <div :class="$style['phone-image-wrap']">
         <img
           :src="`${info.image}`"
-          :class="$style['phone-image']"
+          :class="[$style['phone-image'], $style[themeTPL]]"
           :data-key="key"
         />
       </div>
@@ -146,9 +146,10 @@ export default {
         linkType: "nolink",
         linkTo: "",
         linkItem: "",
-        image: this.$getCdnPath(
-          `/static/image/${this.themeTPL}/default/bg_banner_d.png`
-        )
+        image: ""
+        // image: this.$getCdnPath(
+        //   `/static/image/${this.themeTPL}/default/bg_banner_d.png`
+        // )
         // image: {
         //   "zh-cn": `/static/image/${this.themeTPL}/default/bg_banner_d.png`
         // }
@@ -212,6 +213,35 @@ export default {
     border-radius: 7px;
     display: block;
     width: 100%;
+    height: 120px;
+    background: linear-gradient(108deg, #fdfeff, #e2e8fe);
+    z-index: 0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      width: 60px;
+      height: 60px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url("/static/image/porn1/default/default_logo.png");
+    }
+    &.aobo1 {
+      background: linear-gradient(108deg, #fdfeff, #fdf2f2);
+      &::after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        width: 60px;
+        height: 60px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-image: url("/static/image/aobo1/default/default_logo.png");
+      }
+    }
   }
 
   .pad-image {
