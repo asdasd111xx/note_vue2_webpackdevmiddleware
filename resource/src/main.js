@@ -69,6 +69,9 @@ window.RESET_LOCAL_SETTING = reload => {
   // 浮動推廣
   localStorage.removeItem("do-not-show-float-list");
   localStorage.removeItem("appTips");
+  localStorage.removeItem("trial-game-list");
+  // 泡泡直播轉導
+  localStorage.removeItem("live-iframe-event-from");
   if (reload) {
     window.location.reload();
   }
@@ -81,6 +84,8 @@ window.RESET_MEM_SETTING = reload => {
   localStorage.removeItem("do-not-show-withdraw-post");
   localStorage.removeItem("trial-game-list");
 
+  // 泡泡直播轉導
+  localStorage.removeItem("live-iframe-event-from");
   if (reload) {
     window.location.reload();
   }

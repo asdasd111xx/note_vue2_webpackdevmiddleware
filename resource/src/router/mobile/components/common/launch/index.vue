@@ -49,6 +49,8 @@ export default {
   methods: {
     goToMobile() {
       if (this.siteConfig.ROUTER_TPL === "sg1") {
+        // 泡泡直播轉導
+        localStorage.removeItem("live-iframe-event-from");
         this.$router.push({
           path: "live/iframe",
           query: { ...this.$route.query, hasFooter: "true" }
