@@ -89,7 +89,8 @@ export default {
   .block {
     width: 2.5px;
     height: 17px;
-    background: var(--deco_color);
+    // background: var(--deco_color);
+    background: #414655;
     border-radius: 1px;
     margin-left: 10px;
     margin-right: 10px;

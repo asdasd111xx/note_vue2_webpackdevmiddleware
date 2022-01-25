@@ -27,12 +27,12 @@
   height: 220px;
   margin: auto;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
 
-  >div {
+  > div {
     height: 20px;
     line-height: 20px;
     margin-top: 20px;
@@ -163,12 +163,12 @@
   width: 32px;
   height: 32px;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
 
-  >span {
+  > span {
     position: absolute;
     top: 0;
     right: 0;
@@ -352,7 +352,7 @@
   margin: 0 auto;
   color: #9ca29f;
 
-  >svg {
+  > svg {
     display: block;
   }
 }
@@ -413,7 +413,7 @@
 .tips-button {
   border-top: 1px solid #f7f7f7;
 
-  >div {
+  > div {
     float: left;
     width: 50%;
     height: 50px;
@@ -427,7 +427,8 @@
   }
 
   .delete-confirm {
-    color: var(--popup_text_color_confrim);
+    // color: var(--popup_text_color_confrim);
+    color: #6aaaf5;
   }
 }
 
@@ -469,7 +470,7 @@
   height: 20px;
   margin: auto;
 
-  >img {
+  > img {
     display: block;
     width: 20px;
     height: 20px;
@@ -487,7 +488,7 @@
   color: #414655;
   font-size: 16px;
 
-  >img {
+  > img {
     display: block;
     width: 20px;
   }
