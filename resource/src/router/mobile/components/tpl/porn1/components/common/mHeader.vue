@@ -138,7 +138,7 @@
               $router.push('/mobile/login');
             }
           "
-          >{{ $text("S_LOGON", "登录") }}</span
+          >{{ "| " + $text("S_LOGON", "登录") }}</span
         >
         <img
           :src="
