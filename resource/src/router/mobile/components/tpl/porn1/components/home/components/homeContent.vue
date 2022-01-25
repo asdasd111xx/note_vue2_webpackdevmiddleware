@@ -408,8 +408,8 @@ export default {
   overflow: hidden;
   position: relative;
   float: left;
-  width: 50%;
-  margin-bottom: 3px;
+  width: 48%;
+  margin: 0 2px 3px 2px;
   border-radius: 7px;
   box-sizing: border-box;
   // background: linear-gradient(180deg, #fdfeff, #fdf2f2);
@@ -419,7 +419,7 @@ export default {
   img[lazy="loading"]:first-child {
     display: block;
     width: 42%;
-    padding: 15px 2px;
+    padding: 25px 2px;
     margin: 0 auto;
   }
   > img:first-child {
