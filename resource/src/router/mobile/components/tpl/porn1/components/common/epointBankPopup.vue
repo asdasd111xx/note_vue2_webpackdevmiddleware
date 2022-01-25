@@ -151,7 +151,8 @@ export default {
   .cell {
     position: relative;
     background-color: #ffffff;
-    color: var(--addcard_popup_text_color);
+    // color: var(--addcard_popup_text_color);
+    color: #414655;
     height: 50px;
     line-height: 50px;
     font-size: 14px;

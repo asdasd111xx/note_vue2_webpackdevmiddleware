@@ -18,7 +18,8 @@
     font-weight: bold;
     width: 75px;
     border-radius: 4px;
-    background: var(--redpot_button_color);
+    // background: var(--redpot_button_color);
+    background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   }
 
   .option1 {
@@ -76,7 +77,8 @@
   text-align: center;
 
   .money-text {
-    color: var(--redpot_text_color);
+    // color: var(--redpot_text_color);
+    color: #6aaaf5;
     word-break: break-word;
   }
 }

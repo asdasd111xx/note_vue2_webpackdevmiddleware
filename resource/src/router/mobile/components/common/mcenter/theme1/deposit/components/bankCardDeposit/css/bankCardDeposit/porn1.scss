@@ -582,7 +582,8 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -1151,7 +1152,8 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 }
 
