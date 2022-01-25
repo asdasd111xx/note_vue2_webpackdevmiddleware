@@ -168,7 +168,7 @@
                   </span>
                 </div>
                 <div
-                  :class="['link-button', 'link-submit']"
+                  :class="['link-button', 'link-submit', `${routerTPL}`]"
                   @click="$router.push('/mobile/service')"
                 >
                   {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
