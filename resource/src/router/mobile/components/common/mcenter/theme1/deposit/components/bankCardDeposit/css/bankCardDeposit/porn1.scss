@@ -383,7 +383,8 @@
   color: var(--slider_text_color);
 
   .time {
-    color: var(--countdown_time_text_color);
+    // color: var(--countdown_time_text_color);
+    color: #db6372;
     margin: 0 5px 0 5px;
   }
 
@@ -403,7 +404,8 @@
     }
 
     .crypto-money {
-      color: var(--deposit_crypto_block_money_color);
+      // color: var(--deposit_crypto_block_money_color);
+      color: #414655;
       font-weight: 500;
     }
   }

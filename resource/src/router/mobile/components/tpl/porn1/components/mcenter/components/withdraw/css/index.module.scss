@@ -525,7 +525,8 @@
     }
 
     &.custom-color {
-      color: var(--countdown_time_text_color);
+      // color: var(--countdown_time_text_color);
+      color: #db6372;
 
       &.custom-color-background {
         background: #f3f3f3;
