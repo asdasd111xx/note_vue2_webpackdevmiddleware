@@ -394,11 +394,19 @@
                 }
               ]"
             />
-            <span :class="[]">
+            <span v-if="epointSelectType === 1" :class="[]">
               {{
                 parseCardName(
                   epointWallet[0].alias,
                   epointWallet[0].withdrawType
+                )
+              }}
+            </span>
+            <span v-if="epointSelectType === 2" :class="[]">
+              {{
+                parseCardName(
+                  epointNewWallet[0].alias,
+                  epointNewWallet[0].withdrawType
                 )
               }}
             </span>
