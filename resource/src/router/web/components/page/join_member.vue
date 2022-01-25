@@ -12,50 +12,23 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
-        <!-- 訪客文案 -->
-        <div v-if="themeTPL != 'sg1'" style="margin-top: 40px;">
+        <!-- 訪客&&活動開啟文案 -->
+        <div v-if="isActivity" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">
             访客加入会员
           </div>
-          <div :class="$style['visitor-get']" :style="'color:#000'">
+          <div :class="$style['visitor-get']">
             {{ `领取彩金：${formatThousandsCurrency(guestAmount)} 元` }}
           </div>
         </div>
-        <div v-else style="margin-top: 40px;">
-          <div :class="$style['visitor-get']" :style="'color:#000'">
-            {{ `访客彩金 ${formatThousandsCurrency(guestAmount)} 元` }}
-          </div>
-          <div
-            v-show="themeTPL == 'sg1'"
-            :class="$style['visitor-get']"
-            :style="themeTPL == 'sg1' ? 'color:#000' : ''"
-          >
-            注册即送 58.00 钻
-          </div>
+        <div
+          v-if="themeTPL === 'sg1'"
+          :class="$style['visitor-get']"
+          style="color:#000"
+        >
+          注册即送 300 钻
         </div>
-        <!-- 訪客&&活動開啟文案(新泡泡) -->
-        <!-- <template v-if="isActivity">
-          <div v-if="themeTPL != 'sg1'" style="margin-top: 40px;">
-            <div :class="$style['visitor-get']">
-              访客加入会员
-            </div>
-            <div :class="$style['visitor-get']" :style="'color:#000'">
-              {{ `领取彩金：${formatThousandsCurrency(guestAmount)} 元` }}
-            </div>
-          </div>
-          <div v-else style="margin-top: 40px;">
-            <div :class="$style['visitor-get']" :style="'color:#000'">
-              {{ `访客彩金 ${formatThousandsCurrency(guestAmount)} 元` }}
-            </div>
-            <div
-              v-show="themeTPL == 'sg1'"
-              :class="$style['visitor-get']"
-              :style="themeTPL == 'sg1' ? 'color:#000' : ''"
-            >
-              注册即送 58.00 钻
-            </div>
-          </div></template
-        > -->
+
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <!-- <div v-show="errMsg">
