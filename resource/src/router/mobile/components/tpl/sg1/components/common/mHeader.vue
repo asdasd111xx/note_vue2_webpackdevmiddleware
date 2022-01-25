@@ -111,17 +111,26 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <span :class="$style['visitor-title']" @click="checkLayeredURL"
-          >访客彩金</span
-        >
+        <template v-if="isActivity">
+          <span :class="$style['visitor-title']" @click="checkLayeredURL"
+            >访客彩金</span
+          >
+          <span
+            :class="[$style['visitor-money'], $style['just-money']]"
+            @click="checkLayeredURL"
+            >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
+          >
+          <span :class="$style['visitor-money']" @click="checkLayeredURL">
+            领取
+          </span>
+        </template>
         <span
-          :class="[$style['visitor-money'], $style['just-money']]"
+          v-else
+          :class="$style['visitor-noactivity']"
           @click="checkLayeredURL"
-          >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
+          >访客注册</span
         >
-        <span :class="$style['visitor-money']" @click="checkLayeredURL"
-          >领取</span
-        >
+
         <span
           @click="
             sendUmengEvent(3);
@@ -249,7 +258,8 @@ export default {
       msg: "",
       source: this.$route.query.source,
       guestAmount: 0,
-      remainBonus: 0
+      remainBonus: 0,
+      isActivity: false
     };
   },
   computed: {
@@ -288,6 +298,7 @@ export default {
     }
   },
   created() {
+    this.getActivityStatus();
     if (!this.loginStatus) {
       this.getGuestBalance();
     } else {
@@ -378,7 +389,20 @@ export default {
 
       this.$router.push({ path: "search", query: { source: this.source } });
     },
-
+    //取得彩金活動開關
+    getActivityStatus() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+          this.isActivity =
+            res.data.event_jackpot === "true" ||
+            res.data.register_jackpot === "true" ||
+            res.data.video_jackpot === "true";
+        }
+      });
+    },
     // 取得訪客餘額
     getGuestBalance() {
       return goLangApiRequest({
@@ -605,6 +629,9 @@ export default {
       word-break: break-word;
       text-align: right;
     }
+  }
+  .visitor-noactivity {
+    color: var(--visitor_money_color);
   }
 }
 
