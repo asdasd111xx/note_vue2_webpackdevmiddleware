@@ -135,7 +135,7 @@
   margin: 3px;
   border: 1px solid #eee;
   border-radius: 3px;
-  color: #aaa;
+  color: #414655;
   cursor: pointer;
   vertical-align: top;
 
@@ -150,11 +150,9 @@
   &.is-current {
     border: 1px solid var(--wallet_border_color);
     color: var(--wallet_border_text_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 10px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 10px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 
   .pay-mode-tag {
@@ -250,7 +248,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -287,11 +285,9 @@
     background-color: #fff;
     color: var(--wallet_border_text_color);
     border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 12px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -799,11 +795,9 @@
   background-color: #fff;
   color: var(--wallet_border_text_color);
   border: 1px solid var(--wallet_border_color);
-  background: linear-gradient(
-    -45deg,
-    var(--wallet_border_color) 12px,
-    hsla(0, 0%, 100%, 0) 0
-  );
+  background: linear-gradient(-45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0);
 }
 
 .pop-message-mark {
@@ -888,7 +882,7 @@
   display: flex;
   align-items: center;
 
-  > img {
+  >img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1056,6 +1050,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1163,7 +1158,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 
