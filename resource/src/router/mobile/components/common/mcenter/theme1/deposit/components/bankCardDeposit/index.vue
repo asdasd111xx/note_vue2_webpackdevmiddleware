@@ -1418,7 +1418,7 @@ export default {
       },
       initHeaderSetting: {},
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
-      tipTrans: { HOT: "recommend", EVENT: "event", FAST: "speed" },
+      tipTrans: { HOT: "recommend", EVENT: "event", FAST: "speed",HIGH:"high",LOW:"low" },
 
       nameCheckFail: false,
 
