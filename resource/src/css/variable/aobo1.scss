@@ -145,7 +145,7 @@
   //--send_keyring_disabled: #cccccc; //獲取驗證碼按鈕disabled
   //--popup_tip_ok_color: #6aaaf5; //溫馨提示彈窗 確認 & 大廳公告彈窗右
   //--popup_tip_close_color: #6aaaf5; //溫馨提示彈窗 關閉 & 大廳公告彈窗左邊
-  --apptip_title: #000000de; //大廳立即下載title
+  //--apptip_title: #000000de; //大廳立即下載title
   //--find_password_text_color: #a6a9b2; //找回密碼
   //--find_password_text_active_color: #5e626d; //找回密碼active
   --find_password_underline_active_color: #e42a30; //找回密碼active底線
@@ -172,7 +172,7 @@
     #f9ddbd
   ); //影片簡介標題前面長方形
   // --video_more_button: var(--main_button_color1); //影片更多按鈕
-  --game_bonus_amount: #262626; //電子大廳 彩金金額
+  //--game_bonus_amount: #262626; //電子大廳 彩金金額
 
   /***--- 會員中心 功能 ----***/
   --wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框
@@ -223,8 +223,8 @@
   //--mcenter_upload_image_text_button: #ffffff; //個人頭像 從相冊選取 文字
   //--mcenter_upload_image_cancel_button: #faf5f0; //個人頭像從相冊選取 取消
   //--mcenter_upload_image_cancel_text_button: #be9e7f; //個人頭像從相冊選取 取消文字
-  --mcenter_collect_app_text_color: #a6a9b2; //收藏我们随时下载APP 文字
-  --mcenter_collect_app_background_color: #ececf2; //收藏我们随时下载APP 背景
-  --mcenter_collect_app_button_color: #5e626d; //收藏我们随时下载APP 立即收藏
-  --tcenter_real_rebate_color: #6aaaf5; //實時返利詳情 當前
+  //--mcenter_collect_app_text_color: #a6a9b2; //收藏我们随时下载APP 文字
+  //--mcenter_collect_app_background_color: #ececf2; //收藏我们随时下载APP 背景
+  //--mcenter_collect_app_button_color: #5e626d; //收藏我们随时下载APP 立即收藏
+  //--tcenter_real_rebate_color: #6aaaf5; //實時返利詳情 當前
 }
