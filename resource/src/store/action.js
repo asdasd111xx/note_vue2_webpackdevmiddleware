@@ -766,9 +766,21 @@ export const actionSetUserdata = (
             configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
           params: {
             account: uuidAccount
+          },
+          headersData: (headers, data) => {
+            // console.log(headers);
+            // const prodVendor = ["67", "80", "41", "92", "94"];
+
+            if (headers["x-cdn-rdi"]) {
+              commit(
+                types.SETSLIDECDNDOMAIN,
+                `https://${headers["x-cdn-rdi"].split(",")[0]}`
+              );
+            }
           }
         })
           .then(res => {
+            console.log(123);
             if (res.status === "000") {
               let guestCid = res.data.cid;
               let guestUserid = res.data.userid;
@@ -822,7 +834,6 @@ export const actionSetUserdata = (
     },
     headers: (headers, data) => {
       let configInfo;
-
       if (state.webDomain) {
         configInfo =
           siteConfigTest[`site_${state.webDomain.domain}`] ||
@@ -836,14 +847,14 @@ export const actionSetUserdata = (
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
 
-      const prodVendor = ["67", "80", "41", "92", "94"];
+      // const prodVendor = ["67", "80", "41", "92", "94"];
 
-      if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
-        commit(
-          types.SETSLIDECDNDOMAIN,
-          `https://${headers["x-cdn"].split(",")[0]}`
-        );
-      }
+      // if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
+      //   commit(
+      //     types.SETSLIDECDNDOMAIN,
+      //     `https://${headers["x-cdn"].split(",")[0]}`
+      //   );
+      // }
 
       commit(types.SETCDNROOT, cdnRoot);
 
