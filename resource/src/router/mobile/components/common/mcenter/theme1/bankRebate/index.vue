@@ -422,7 +422,7 @@ export default {
         }
       ],
       isShowTip: true,
-      isShowReceivePopup: true,
+      isShowReceivePopup: false,
       currentType: "yesterday"
     };
   },
