@@ -278,6 +278,12 @@
         >
           {{ `请于 ${epointTimeCount} 秒内绑定帐号` }}
         </div>
+        <div
+          v-if="epointNewTimeCount > 0 && selectTarget.walletId === 49"
+          :class="$style['epoint-time']"
+        >
+          {{ `请于 ${epointNewTimeCount} 秒内绑定帐号` }}
+        </div>
         <!-- 確認鈕 -->
 
         <div
@@ -286,11 +292,10 @@
             {
               [$style['disabled']]:
                 (addBankCardStep === 'two' && !NextStepStatus) ||
-                (lockStatus &&
-                  !selectTarget.oneClickBindingMode &&
-                  selectTarget.walletId !== 37) ||
-                ([47, 48].includes(selectTarget.walletId) &&
-                  epointTimeCount > 0)
+                (lockStatus && !selectTarget.oneClickBindingMode) ||
+                (selectTarget.walletId === 47 && bcTimeCount > 0) ||
+                (selectTarget.walletId === 48 && epointTimeCount > 0) ||
+                (selectTarget.walletId === 49 && epointNewTimeCount > 0)
             },
             {
               [$style['hidden']]:
@@ -307,7 +312,8 @@
                 checkWalletPhoneVerification &&
                 selectTarget.walletId !== 21 &&
                 selectTarget.walletId !== 47 &&
-                selectTarget.walletId !== 48
+                selectTarget.walletId !== 48 &&
+                selectTarget.walletId !== 49
             "
           >
             下一步
@@ -321,7 +327,7 @@
           <span v-else
             >{{
               selectTarget.oneClickBindingMode
-                ? [47, 48].includes(selectTarget.walletId)
+                ? [47, 48, 49].includes(selectTarget.walletId)
                   ? "绑定钱包"
                   : "一键绑定"
                 : checkWalletPhoneVerification
@@ -493,6 +499,8 @@ export default {
 
       epointTimeCount: 0,
       epointTimeStamp: null,
+      epointNewTimeCount: 0,
+      epointNewTimeStamp: null,
       bcTimeCount: 0,
       bcTimeStamp: null
     };
@@ -783,8 +791,8 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 // CGPay || 購寶，只能綁定過一次(不論存放常用 or 歷史)
-                if ([21, 37, 47, 48].includes(item.virtual_bank_id)) {
-                  return [21, 37, 47, 48].includes(item.virtual_bank_id);
+                if ([21, 37, 47, 48, 49].includes(item.virtual_bank_id)) {
+                  return [21, 37, 47, 48, 49].includes(item.virtual_bank_id);
                 } else if (
                   // 億元沒開限綁一組，則可添加多個同種類錢包，
                   // ["ey1"].includes(this.themeTPL) &&
@@ -952,6 +960,9 @@ export default {
         case 48:
           id = 5;
           break;
+        case 49:
+          id = 6;
+          break;
         default:
           return;
       }
@@ -1005,7 +1016,7 @@ export default {
         } else {
           this.selectTarget.oneClickBindingMode = true;
         }
-      } else if ([47, 48].includes(this.selectTarget.walletId)) {
+      } else if ([47, 48, 49].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
       } else {
         this.selectTarget.oneClickBindingMode = false;
@@ -1189,7 +1200,7 @@ export default {
         ];
         return;
       }
-      //e點富
+      //E点付
       if (id === 48) {
         this.walletTipInfo = [
           {
@@ -1267,6 +1278,88 @@ export default {
           {
             key: "epoint",
             text: `建议您E点付户名同网站真实姓名，加速出款审核时间`
+          }
+        ];
+        return;
+      }
+      //e點富
+      if (id === 49) {
+        this.walletTipInfo = [
+          {
+            key: "epointNew",
+            text: ``,
+            hasCallback: true,
+            dataObj: {
+              cb: () => {
+                // lib_newWindowOpen(
+                //   this.getCustomerServiceUrl({
+                //     urlName: "what_is_Epoint",
+                //     needToken: false
+                //   }).then(res => {
+                //     return res.uri;
+                //   })
+                // );
+                this.getCustomerServiceUrl({
+                  urlName: "what_is_Epoint_new",
+                  needToken: false
+                }).then(res => {
+                  localStorage.setItem("iframe-third-url", res.uri);
+                  localStorage.setItem(
+                    "iframe-third-url-title",
+                    "e点富是什么?"
+                  );
+                  console.log(this.$route.query);
+                  this.$router.replace(
+                    `/mobile/iframe/${
+                      this.$route.query.redirect === "deposit"
+                        ? "epoint2fromdeposit"
+                        : "epoint"
+                    }?func=false`
+                  );
+                });
+              },
+              text: "e点富是什么?"
+            }
+          },
+          // {
+          //   key: "epoint",
+          //   text: ``,
+          //   hasCallback: true,
+          //   dataObj: {
+          //     cb: () => {
+          //       // lib_newWindowOpen(
+          //       //   this.getCustomerServiceUrl({
+          //       //     urlName: "game_wallet",
+          //       //     needToken: false
+          //       //   }).then(res => {
+          //       //     return res.uri;
+          //       //   })
+          //       // );
+          //     },
+          //     text: "如何使用e点富存款"
+          //   }
+          // },
+          // {
+          //   key: "epoint",
+          //   text: `没有e点富帐号?`,
+          //   hasCallback: true,
+          //   dataObj: {
+          //     cb: () => {
+          //       // lib_newWindowOpen(
+          //       //   this.getCustomerServiceUrl({
+          //       //     urlName: "game_wallet",
+          //       //     needToken: false
+          //       //   }).then(res => {
+          //       //     return res.uri;
+          //       //   })
+          //       // );
+          //     },
+          //     text: "立即申请"
+          //   }
+          // },
+          {
+            key: "epointNew",
+            text: `建议您e点富户名同网站真实姓名，加速出款审核时间`
           }
         ];
         return;
@@ -1381,6 +1474,15 @@ export default {
                 this.epointTimeStamp = null;
               }
               this.epointTimeCount -= 1;
+            }, 1000);
+          } else if (this.selectTarget.walletId === 49) {
+            this.epointNewTimeCount = 60;
+            this.epointNewTimeStamp = setInterval(() => {
+              if (this.epointNewTimeCount === 0) {
+                clearInterval(this.epointNewTimeStamp);
+                this.epointNewTimeStamp = null;
+              }
+              this.epointNewTimeCount -= 1;
             }, 1000);
           }
           this.getBindWalletInfo().then(url => {

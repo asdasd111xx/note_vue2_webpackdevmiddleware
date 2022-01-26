@@ -20,6 +20,16 @@
           @click="handleClickItem(item)"
         >
           {{ item.account }}
+          <img
+            v-if="item.account === bankSelected"
+            :class="$style['select-icon']"
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+              )
+            "
+            alt="sel"
+          />
         </div>
       </div>
     </div>
@@ -31,6 +41,10 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
+    bankSelected: {
+      type: String,
+      default: ""
+    },
     bankList: {
       type: Array,
       default: []
@@ -161,11 +175,9 @@ export default {
   .select-icon {
     position: absolute;
     right: 18px;
-    top: 50%;
+    top: 33%;
     width: 15px;
     height: 15px;
-    color: var(--addcard_popup_check_color);
-    transform: translateY(-50%);
   }
 }
 </style>

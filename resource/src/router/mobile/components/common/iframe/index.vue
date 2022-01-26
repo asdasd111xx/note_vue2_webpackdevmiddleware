@@ -194,6 +194,8 @@ export default {
           return `/mobile/mcenter/bankCard?redirect=epoint&type=wallet&wallet=epoint`;
         case "EPOINTFROMDEPOSIT":
           return `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`;
+        case "EPOINT2FROMDEPOSIT":
+          return `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN2`;
         default:
           return "/mobile";
       }

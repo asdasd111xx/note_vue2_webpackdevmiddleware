@@ -227,9 +227,9 @@
         <div
           :class="[
             $style['bank-type'],
-            { [$style['is-current']]: !epointSelectType }
+            { [$style['is-current']]: epointSelectType === 0 }
           ]"
-          @click="() => setWithdrawTypeIsNormal(true)"
+          @click="() => setWithdrawTypeIsNormal(0)"
         >
           普通提现
           <img
@@ -241,11 +241,25 @@
           v-if="epointWallet && epointWallet.length > 0"
           :class="[
             $style['bank-type'],
-            { [$style['is-current']]: epointSelectType }
+            { [$style['is-current']]: epointSelectType === 1 }
           ]"
-          @click="setWithdrawTypeIsNormal(false)"
+          @click="setWithdrawTypeIsNormal(1)"
         >
           E点付
+          <img
+            :class="$style['select']"
+            :src="$getCdnPath(`/static/image/common/select_active.png`)"
+          />
+        </div>
+        <div
+          v-if="epointNewWallet && epointNewWallet.length > 0"
+          :class="[
+            $style['bank-type'],
+            { [$style['is-current']]: epointSelectType === 2 }
+          ]"
+          @click="setWithdrawTypeIsNormal(2)"
+        >
+          e点富
           <img
             :class="$style['select']"
             :src="$getCdnPath(`/static/image/common/select_active.png`)"
@@ -290,7 +304,7 @@
           v-if="
             allWithdrawAccount &&
               allWithdrawAccount.length > 0 &&
-              !epointSelectType
+              epointSelectType === 0
           "
         >
           <div
@@ -349,9 +363,9 @@
         </div>
         <div
           v-if="
-            epointWallet.length > 0 &&
-              userBankOption.length > 0 &&
-              epointSelectType
+            ((epointWallet.length > 0 && epointSelectType === 1) ||
+              (epointNewWallet.length > 0 && epointSelectType === 2)) &&
+              userBankOption.length > 0
           "
         >
           <div
@@ -380,11 +394,19 @@
                 }
               ]"
             />
-            <span :class="[]">
+            <span v-if="epointSelectType === 1" :class="[]">
               {{
                 parseCardName(
                   epointWallet[0].alias,
                   epointWallet[0].withdrawType
+                )
+              }}
+            </span>
+            <span v-if="epointSelectType === 2" :class="[]">
+              {{
+                parseCardName(
+                  epointNewWallet[0].alias,
+                  epointNewWallet[0].withdrawType
                 )
               }}
             </span>
@@ -408,7 +430,7 @@
               :class="$style['select-epoint-bank-item']"
               @click="setPopupStatus(true, 'epointBank')"
             >
-              {{ defaultEpointWallet.account }}
+              {{ epointSelectType === 1 ? defaultEpointWallet.account : defaultEpointNewWallet.account }}
               <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
             </div>
           </div>
@@ -419,19 +441,28 @@
       <!-- 狀態由 withdrawMoreMethod 組件回傳 -->
       <div
         v-if="
-          (!epointSelectType &&
+          (epointSelectType === 0 &&
             (moreMethodStatus.bankCard || moreMethodStatus.wallet)) ||
-            (epointSelectType && epointWallet.length === 0)
+            (epointWallet.length === 0 && epointSelectType === 1) ||
+            (epointNewWallet.length === 0 && epointSelectType === 2)
         "
         :class="[$style['add-bank-card']]"
         @click="
           () => {
-            if (epointSelectType) {
-              $router.push(
-                `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`
-              );
-            } else {
-              setPopupStatus(true, 'moreMethod');
+            switch (epointSelectType) {
+              case 0:
+                setPopupStatus(true, 'moreMethod');
+                break;
+              case 1:
+                $router.push(
+                  `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`
+                );
+                break;
+              case 2:
+                $router.push(
+                  `/mobile/mcenter/bankcard?redirect=deposit&type=wallet&wallet=epointNew&swift=BBEPWACN2`
+                );
+                break;
             }
           }
         "
@@ -445,12 +476,15 @@
     <!-- 需有卡片時才出現 -->
     <template
       v-if="
-        (!epointSelectType &&
+        (epointSelectType === 0 &&
           allWithdrawAccount &&
           allWithdrawAccount.length > 0) ||
           (epointWallet.length > 0 &&
             userBankOption.length > 0 &&
-            epointSelectType)
+            epointSelectType === 1) ||
+          (epointNewWallet.length > 0 &&
+            userBankOption.length > 0 &&
+            epointSelectType === 2)
       "
     >
       <!-- 額度提示訊息 -->
@@ -539,7 +573,7 @@
         <span
           v-if="
             (selectedCard.name != 'CGPay' || withdrawCurrency.name != 'CGP') &&
-              !epointSelectType
+              epointSelectType === 0
           "
           :class="$style['money-currency']"
           >¥</span
@@ -548,7 +582,8 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
-        <span v-else-if="epointSelectType">E点</span>
+        <span v-else-if="epointSelectType === 1">E点</span>
+        <span v-else-if="epointSelectType === 2">e点</span>
 
         <span :class="[$style['serial']]" @click="toggleSerial">详情</span>
       </div>
@@ -610,8 +645,9 @@
         v-if="
           (allWithdrawAccount &&
             allWithdrawAccount.length > 0 &&
-            !epointSelectType) ||
-            (epointWallet.length > 0 && epointSelectType)
+            epointSelectType === 0) ||
+            (epointWallet.length > 0 && epointSelectType === 1) ||
+            (epointNewWallet.length > 0 && epointSelectType === 2)
         "
       >
         为了方便您快速提现，请先将所有场馆钱包金额回收至中心钱包
@@ -619,8 +655,9 @@
       </div>
       <div
         v-else-if="
-          !(epointWallet.length > 0 && userBankOption.length > 0) &&
-            epointSelectType
+          (!(epointWallet.length > 0 && epointSelectType === 1) ||
+            !(epointNewWallet.length > 0 && epointSelectType === 2)) &&
+            userBankOption.length > 0
         "
       >
         请先绑定钱包，用于收款
@@ -699,6 +736,7 @@
 
       <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
+          :bank-selected="epointSelectType === 1 ? defaultEpointWallet.account : defaultEpointNewWallet.account"
           :bank-list="userBankOption"
           :item-func="setEpointBank"
           @close="closePopup"
@@ -831,7 +869,7 @@ export default {
       marqueeList: [],
 
       displayWithdrawValue: "",
-      epointSelectType: false,
+      epointSelectType: 0,
       showRealStatus: false,
       updateBalance: null
     };
@@ -1053,12 +1091,12 @@ export default {
           this.forceStatus === 1 &&
           this.userWithdrawCount === 0 &&
           this.isFirstWithdraw &&
-          this.epointSelectType
+          this.epointSelectType !== 0
         ) {
           return true;
         }
         //e點富時(非首次出款 + 強制使用 CGPay 出款)
-        if (this.forceStatus === 2 && this.epointSelectType) {
+        if (this.forceStatus === 2 && this.epointSelectType !== 0) {
           return true;
         }
       }
@@ -1113,7 +1151,7 @@ export default {
 
       return (
         (withdrawType || cgpayCurrencyUSDT || useBcWallet) &&
-        !this.epointSelectType
+        this.epointSelectType === 0
       );
     },
     // 強制出款狀態
@@ -1209,9 +1247,11 @@ export default {
     },
 
     realWidthdrawText() {
-      if (this.epointSelectType) {
+      if (this.epointSelectType === 1) {
         return "E点付到帐";
-      } else if (this.selectedCard.name && !this.isSelectedUSDT) {
+      } else if (this.epointSelectType === 2) {
+        return "e点富到帐";
+      }else if (this.selectedCard.name && !this.isSelectedUSDT) {
         return `${this.selectedCard.name}到帐`;
       } else {
         return "实际提现金额";
@@ -1591,7 +1631,7 @@ export default {
       localStorage.setItem("tmp_w_epointSelectType", this.epointSelectType);
       localStorage.setItem(
         "tmp_w_epointWallet",
-        JSON.stringify(this.defaultEpointWallet)
+        JSON.stringify(this.epointSelectType === 1 ? this.defaultEpointWallet : this.defaultEpointNewWallet)
       );
     },
     removeCurrentValue(needDeleteRule) {
@@ -1763,18 +1803,14 @@ export default {
           swift_code: this.selectedCard.swift_code
         };
       }
-
-      // if (this.epointSelectType) {
-      //   this.selectedCard = {
-      //     id: this.epointWallet[0].id,
-      //     withdrawType: this.epointWallet[0].withdrawType,
-      //     bank_id: this.epointWallet[0].bank_id,
-      //     swift_code: this.epointWallet[0].swift_code,
-      //     offer_percent: this.epointWallet[0].offer_percent,
-      //     offer_limit: this.epointWallet[0].offer_limit,
-      //     offer_data:this.epointWallet[0].offer_data
-      //   };
-      // }
+      let epointBankId = "" 
+      if (this.epointSelectType === 1) {
+        epointBankId = this.defaultEpointWallet.id
+      }else if(this.epointSelectType === 2){
+        epointBankId = this.defaultEpointNewWallet.id
+      }else{
+        epointBankId = ""
+      }
 
       // console.log(_params);
       //目前第三方僅迅付先使用/xbb/Ext/Widthdraw/Inpay C02.232
@@ -1800,7 +1836,7 @@ export default {
             ? localStorage.getItem("tmp_w_1")
             : "",
           methodId: methonId.toString(),
-          bankCardId: this.epointSelectType ? this.defaultEpointWallet.id : ""
+          bankCardId: epointBankId
         }
       })
         .then(response => {
@@ -2066,7 +2102,11 @@ export default {
       this.closePopup();
     },
     setEpointBank(item) {
-      this.defaultEpointWallet = item;
+      if(this.epointSelectType === 1){
+        this.defaultEpointWallet = item;
+      }else{
+        this.defaultEpointNewWallet = item;
+      } 
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
@@ -2249,14 +2289,21 @@ export default {
         this.withdrawCurrency;
 
       this.epointSelectType =
-        localStorage.getItem("tmp_w_epointSelectType") === "true";
+        +localStorage.getItem("tmp_w_epointSelectType");
+        console.log(123);
       if (
         localStorage.getItem("tmp_w_epointWallet") &&
         localStorage.getItem("tmp_w_epointWallet") != "undefined"
       ) {
-        this.defaultEpointWallet = JSON.parse(
-          localStorage.getItem("tmp_w_epointWallet")
-        );
+        if(this.epointSelectType === 1){
+          this.defaultEpointWallet = JSON.parse(
+            localStorage.getItem("tmp_w_epointWallet")
+          );
+        }else if(this.epointSelectType === 2){
+          this.defaultEpointNewWallet = JSON.parse(
+            localStorage.getItem("tmp_w_epointWallet")
+          );
+        } 
       }
       setTimeout(() => {
         this.removeCurrentValue();
@@ -2315,15 +2362,15 @@ export default {
     },
     //普通提現/e點富
     setWithdrawTypeIsNormal(type) {
-      if (type) {
+      this.epointSelectType = type;
+      if (type === 0) {
         if (this.allWithdrawAccount.length > 0) {
           this.handleSelectCard(this.allWithdrawAccount[0]);
         }
-        this.epointSelectType = !type;
       } else {
         if (this.withdrawUserData.account.length > 0) {
-          this.handleSelectCard(this.epointWallet[0]);
-          this.epointSelectType = !type;
+          this.handleSelectCard(this.epointSelectType ===1 ? this.epointWallet[0]:this.epointNewWallet[0]);
+          
         } else {
           this.actionSetGlobalMessage({
             msg: "请先绑定银行卡",
