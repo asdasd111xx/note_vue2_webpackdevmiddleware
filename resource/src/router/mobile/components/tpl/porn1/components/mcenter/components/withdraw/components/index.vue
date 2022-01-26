@@ -443,8 +443,8 @@
         v-if="
           (epointSelectType === 0 &&
             (moreMethodStatus.bankCard || moreMethodStatus.wallet)) ||
-            (epointWallet.length > 0 && epointSelectType === 1) ||
-            (epointNewWallet.length > 0 && epointSelectType === 2)
+            (epointWallet.length === 0 && epointSelectType === 1) ||
+            (epointNewWallet.length === 0 && epointSelectType === 2)
         "
         :class="[$style['add-bank-card']]"
         @click="
