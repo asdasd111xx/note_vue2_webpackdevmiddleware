@@ -100,7 +100,10 @@
             >
               {{ phoneSubmitFailMsg }}
             </p> -->
-            <button @click="submitMailVerify">确认送出</button>
+            <div :class="[$style['btn-wrap']]">
+              <button @click="mailVerifyModalShow = false">取消</button>
+              <button @click="submitMailVerify">确认送出</button>
+            </div>
           </div>
         </div>
 
@@ -173,9 +176,12 @@
             >
               {{ phoneSubmitFailMsg }}
             </p> -->
-            <button @click="submitPhoneVerify">
-              确认送出
-            </button>
+            <div :class="[$style['btn-wrap']]">
+              <button @click="phoneVerifyModalShow = false">取消</button>
+              <button @click="submitPhoneVerify">
+                确认送出
+              </button>
+            </div>
           </div>
         </div>
 

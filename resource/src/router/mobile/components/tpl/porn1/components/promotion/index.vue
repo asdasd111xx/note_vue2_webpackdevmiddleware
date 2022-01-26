@@ -387,15 +387,16 @@ $fixed_spacing_height: 43px;
   position: absolute;
   top: 11px;
   z-index: 10;
-  border-radius: 3px;
+  border-radius: 11px;
   width: 70px;
-  height: 20px;
+  height: 21px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--promotion_gift_button_text_color);
-  background: var(--promotion_gift_button);
-  border-radius: var(--promotion_gift_button_border);
+  // color: var(--promotion_gift_button_text_color);
+  color: #fff;
+  // background: var(--promotion_gift_button);
+  background: #9ca3bf;
   &.right {
     right: 14px;
   }

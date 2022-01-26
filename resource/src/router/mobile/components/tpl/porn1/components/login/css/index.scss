@@ -21,6 +21,9 @@
   &.sp1 {
     background-image: url("/static/image/sp1/common/bg.png");
   }
+  &.aobo1 {
+    background-image: url("/static/image/aobo1/common/bg.png");
+  }
 }
 
 .login-logo {
@@ -138,6 +141,10 @@
       position: relative;
       margin-left: 6px;
       color: var(--slider_text_active_color);
+
+      &.aobo1 {
+        color: #5e626d;
+      }
     }
 
     .login-unit-link {
@@ -179,10 +186,15 @@
     margin: 0 10px;
   }
   .link-join-mem {
-    color: var(--joinmember_left_text_color);
+    // color: var(--joinmember_left_text_color);
+    color: #5e626d;
   }
   .link-submit {
-    color: var(--joinmember_right_text_color);
+    // color: var(--joinmember_right_text_color);
+    color: #6aaaf5;
+    &.aobo1 {
+      color: #9ca3bf;
+    }
   }
 }
 

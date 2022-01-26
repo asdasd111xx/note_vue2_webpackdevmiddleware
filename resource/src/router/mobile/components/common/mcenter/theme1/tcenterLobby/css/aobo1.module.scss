@@ -111,11 +111,12 @@
     .regist-title-bar {
       width: 3px;
       height: 18px;
-      background: linear-gradient(
-        to top,
-        var(--mcenter_main_color),
-        var(--mcenter_secondary_color)
-      );
+      // background: linear-gradient(
+      //   to top,
+      //   var(--mcenter_main_color),
+      //   var(--mcenter_secondary_color)
+      // );
+      background: #414655;
       border-radius: 1px;
       margin-left: 5px;
       margin-right: 5px;

@@ -385,7 +385,7 @@ div.container {
   background-image: url("/static/image/aobo1/service/header_bg.png");
   background-repeat: no-repeat;
   background-size: 100% auto;
-  background-position: 0 -70px;
+  // background-position: 0 -70px;
   background-repeat: no-repeat;
   position: relative;
   height: 100vh;
@@ -449,12 +449,15 @@ div.container {
   align-items: center;
   padding: 17px 15px;
   font-size: 12px;
-  color: var(--service_text_color);
+  // color: var(--service_text_color);
+  color: #6aaaf5;
   font-weight: bold;
 
   .add-bottom {
-    color: var(--service_add_text_button);
-    background: var(--service_add_button);
+    // color: var(--service_add_text_button);
+    // background: var(--service_add_button);
+    color: #fff;
+    background: #6aaaf5;
     border-radius: 36px;
     padding: 3px 12px;
     min-width: 72px;
@@ -758,9 +761,10 @@ div.container {
 
     span {
       padding: 0 5px;
-      font-size: 12px;
+      font-size: 11px;
       color: #fff;
-      background: var(--service_tip_color);
+      // background: var(--service_tip_color);
+      background: #5e626d;
       border-radius: 9px 0 0 9px;
     }
   }

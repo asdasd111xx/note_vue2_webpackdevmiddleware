@@ -12,8 +12,8 @@
       <img
         :src="
           $getCdnPath(
-            `/static/image/${themeTPL}/common/login/ic_verification_${
-              ret === 0 ? 'success' : 'check'
+            `/static/image/common/login/ic_verification_${
+              ret === 0 ? 'success' : 'check_gray'
             }.png`
           )
         "

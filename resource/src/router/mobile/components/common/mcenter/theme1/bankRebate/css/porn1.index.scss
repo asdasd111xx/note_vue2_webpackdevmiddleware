@@ -68,11 +68,13 @@
       color: #222;
 
       &.week {
-        color: var(--bankrebate_text_active_color);
+        // color: var(--bankrebate_text_active_color);
+        color: #6aaaf5;
       }
 
       &.is-current {
-        color: var(--bankrebate_text_active_color);
+        // color: var(--bankrebate_text_active_color);
+        color: #6aaaf5;
       }
     }
 
@@ -145,15 +147,18 @@
         height: 20px;
         line-height: 20px;
         color: #fff;
-        background: var(--bankrebate_receive_button1);
+        // background: var(--bankrebate_receive_button1);
+        background: #414655;
         border: 0;
         border-radius: 10px;
         outline: none;
         font-weight: 400;
 
         &.disable {
-          color: var(--bankrebate_receive_text_color);
-          background: var(--bankrebate_receive_button2);
+          // color: var(--bankrebate_receive_text_color);
+          // background: var(--bankrebate_receive_button2);
+          color: #a6a9b2;
+          background: #eaeaea;
         }
       }
     }
@@ -208,10 +213,12 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #a6a9b2;
+    color: var(--mcenter_button_text_color1);
 
     &.disable {
-      background: var(--bankrebate_receive_button2);
+      // background: var(--bankrebate_receive_button2);
+      background: #eaeaea;
+      color: #a6a9b2;
       height: 45px;
       border-radius: 3px;
     }
@@ -258,8 +265,10 @@
   background: var(--mcenter_button_color1);
 
   &.is-disabled {
-    background: var(--mcenter_button_color2);
-    color: var(--mcenter_button_text_color2);
+    // background: var(--mcenter_button_color2);
+    // color: var(--mcenter_button_text_color2);
+    background: #eaeaea;
+    color: #a6a9b2;
     pointer-events: none;
   }
 }
@@ -339,6 +348,7 @@
     text-align: center;
     padding: 15px 0;
     border-top: 2px solid #f9f9f8;
-    color: var(--popup_text_color1);
+    // color: var(--popup_text_color1);
+    color: #6aaaf5;
   }
 }

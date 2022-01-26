@@ -512,7 +512,7 @@ export default {
     font-family: Arial, Arial-Regular;
     font-weight: 400;
     text-align: right;
-    color: #aa7e28;
+    color: #262626;
   }
 }
 
@@ -528,7 +528,8 @@ export default {
     font-family: Arial, Arial-Regular;
     font-weight: 400;
     text-align: right;
-    color: var(--game_bonus_amount);
+    // color: var(--game_bonus_amount);
+    color: #262626;
   }
 }
 

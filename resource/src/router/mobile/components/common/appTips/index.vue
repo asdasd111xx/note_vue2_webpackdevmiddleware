@@ -326,7 +326,8 @@ export default {
     animation: slide-up 1s forwards;
   }
   .title {
-    color: var(--apptip_title);
+    // color: var(--apptip_title);
+    color: #262626;
   }
 
   // -webkit-animation-timing-function: forwards;

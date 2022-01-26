@@ -208,11 +208,13 @@ export default {
   font-size: 11px;
   line-height: 17px;
   height: 17px;
-  color: var(--mcenter_button_text_color1);
+  // color: var(--mcenter_button_text_color1);
+  color: #fff;
   text-align: center;
   font-weight: bold;
   width: 40px;
   border-radius: 4px;
-  background: var(--avatar-vip-icon-color);
+  // background: var(--avatar-vip-icon-color);
+  background: #9ca3bf;
 }
 </style>

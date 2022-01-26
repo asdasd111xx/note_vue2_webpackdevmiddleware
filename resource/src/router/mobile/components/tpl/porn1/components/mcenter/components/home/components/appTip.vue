@@ -68,7 +68,8 @@ export default {
   -o-transition: opacity 0.25s linear;
   transition: opacity 0.25s linear;
   opacity: 1;
-  background-color: var(--mcenter_collect_app_background_color);
+  // background-color: var(--mcenter_collect_app_background_color);
+  background-color: #ececf2;
   padding: 0 18px;
   font-size: 12px;
   display: flex;
@@ -77,7 +78,8 @@ export default {
   position: relative;
 
   > span:first-child {
-    color: var(--mcenter_collect_app_text_color);
+    // color: var(--mcenter_collect_app_text_color);
+    color: #a6a9b2;
   }
 
   img {
@@ -95,13 +97,15 @@ export default {
 
 .go-btn {
   height: 23px;
-  border: 1pt solid var(--mcenter_collect_app_button_color);
+  // border: 1pt solid var(--mcenter_collect_app_button_color);
+  border: 1px solid #5e626d;
   border-radius: 12px;
   text-align: center;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  color: var(--mcenter_collect_app_button_color);
+  // color: var(--mcenter_collect_app_button_color);
+  color: #5e626d;
   margin-right: 10px;
 }
 </style>

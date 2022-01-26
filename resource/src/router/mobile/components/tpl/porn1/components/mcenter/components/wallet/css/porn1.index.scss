@@ -116,7 +116,8 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: var(--mcenter_wallet_text_color);
+    // color: var(--mcenter_wallet_text_color);
+    color: #6aaaf5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -144,7 +145,7 @@
     flex: 1;
     font-size: 12px;
     font-weight: 700;
-    color: #000000;
+    color: #414655;
 
     img {
       width: 13px;
@@ -154,7 +155,8 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: var(--mcenter_wallet_text_color);
+      // color: var(--mcenter_wallet_text_color);
+      color: #6aaaf5;
     }
   }
 
@@ -162,7 +164,8 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: var(--mcenter_wallet_recycle_text_color);
+    // color: var(--mcenter_wallet_recycle_text_color);
+    color: #6aaaf5;
     font-weight: 700;
 
     &::before {
@@ -269,11 +272,11 @@
   }
 
   .balance-redjackpot-text {
-    color: var(--mcenter_wallet_redpot_text_color);
+    color: #db6372;
     word-break: break-word;
   }
   .balance-redjackpot-money {
-    color: var(--mcenter_wallet_redpot_money_color);
+    color: #db6372;
     word-break: break-word;
   }
 
@@ -283,13 +286,11 @@
     right: 0;
     width: 25px;
     height: 25px;
-    background: url("/static/image/aobo1/common/ic_event.png") center center /
-      100% 100%;
+    // background: url("/static/image/aobo1/common/ic_event.png") center center /
+    //   100% 100%;
 
-    &.porn1 {
-      background: url("/static/image/porn1/common/ic_event.png") center center /
-        100% 100%;
-    }
+    background: url("/static/image/porn1/common/ic_event.png") center center /
+      100% 100%;
 
     &.sg1 {
       background: url("/static/image/sg1/common/ic_event.png") center center /
@@ -361,7 +362,7 @@
     height: 15px;
     top: 2.5px;
     left: 0;
-    background: var(--deco_color);
+    background: #414655;
     border-radius: 2px;
   }
 

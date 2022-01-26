@@ -305,7 +305,7 @@
     justify-content: space-between;
     max-width: 240px;
     height: 100%;
-    margin: 10px 0;
+    margin: 0 0 20px 0;
     & input {
       background: #e3e3e3;
       outline: none;
@@ -354,7 +354,7 @@
     justify-content: space-between;
     max-width: 240px;
     height: 100%;
-    margin: 10px 0;
+    margin: 10px 0 15px 0;
     & input {
       background: #e3e3e3;
       outline: none;
@@ -391,12 +391,20 @@
       }
     }
   }
-  button {
+  .btn-wrap {
+    display: flex;
     width: 100%;
-    height: 50px;
-    background: transparent;
-    color: #6aaaf5;
-    font-size: 18px;
+    border-top: 0.5px solid #eeeeee;
+    button:first-child {
+      border-right: 1px solid #eeeeee;
+    }
+    button {
+      width: 50%;
+      height: 50px;
+      background: transparent;
+      color: #6aaaf5;
+      font-size: 18px;
+    }
   }
 }
 
@@ -748,7 +756,8 @@
 
 .visitor-get {
   margin-top: 5px;
-  color: var(--joinmember_title);
+  // color: var(--joinmember_title);
+  color: #5e626d;
   width: 100%;
   text-align: center;
   font-weight: 500;

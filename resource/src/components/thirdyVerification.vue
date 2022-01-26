@@ -11,22 +11,7 @@
       ]"
       @click="showCaptcha"
     >
-      <!-- 澳博、51国际 完整註冊樣式 拼圖驗證圖案不一樣-->
-      <div
-        v-if="['aobo1', 'sp1', 'sg1'].includes(siteConfig.ROUTER_TPL)"
-        :class="$style['icon']"
-      >
-        <img
-          :src="
-            $getCdnPath(
-              `/static/image/common/login/ic_verification_${
-                ret === 0 ? 'success' : 'check'
-              }.png`
-            )
-          "
-        />
-      </div>
-      <div v-else :class="$style['icon']">
+      <div :class="$style['icon']">
         <img
           :src="
             $getCdnPath(

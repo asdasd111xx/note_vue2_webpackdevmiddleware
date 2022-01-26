@@ -147,7 +147,7 @@
               $router.push('/mobile/login');
             }
           "
-          >{{ $text("S_LOGON", "登录") }}</span
+          >{{ "| " + $text("S_LOGON", "登录") }}</span
         >
         <img
           :src="
@@ -174,7 +174,7 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask2.png`
+                `/static/image/${siteConfig.ROUTER_TPL}/common/icon_ask.png`
               )
             "
             @click="handleClickAsk"
@@ -274,7 +274,7 @@ export default {
     }),
     mainClass() {
       const style = this.$style;
-      let disableBackgroundColor = !!["sp1"].includes(
+      let disableBackgroundColor = !!["sp1", "aobo1"].includes(
         this.siteConfig.ROUTER_TPL
       );
       return {
@@ -618,7 +618,7 @@ export default {
     height: 14px;
     line-height: 14px;
     vertical-align: middle;
-    color: var(--visitor_money_color);
+    color: var(--visitor_money_get_color);
     margin: 0;
     padding: 0;
 
@@ -626,6 +626,7 @@ export default {
       max-width: 90px;
       word-break: break-word;
       text-align: right;
+      color: var(--visitor_money_color);
       @media screen and(max-width: 320px) {
         max-width: 85px;
       }
@@ -811,7 +812,8 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: var(--video_search_button);
+  // background: var(--video_search_button);
+  background: #9ca3bf;
   color: white;
   margin: 0 auto;
   text-align: center;
@@ -923,7 +925,9 @@ export default {
     height: 100%;
     vertical-align: middle;
   }
-
+  &.aobo1 {
+    color: #ffffff;
+  }
   &.sp1 {
     color: #ffffff;
   }

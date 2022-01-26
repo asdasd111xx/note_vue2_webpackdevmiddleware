@@ -423,11 +423,13 @@
   }
 
   .delete-cancel {
-    color: var(--popup_text_color3);
+    // color: var(--popup_text_color3);
+    color: #6aaaf5;
   }
 
   .delete-confirm {
-    color: var(--popup_text_color_confrim);
+    // color: var(--popup_text_color_confrim);
+    color: #6aaaf5;
   }
 }
 

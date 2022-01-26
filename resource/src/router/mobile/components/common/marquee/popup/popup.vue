@@ -229,6 +229,7 @@ export default {
   line-height: 50px;
   text-align: center;
   font-size: 18px;
-  color: var(--popup_text_color1);
+  color: #6aaaf5;
+  // color: var(--popup_text_color1);
 }
 </style>
