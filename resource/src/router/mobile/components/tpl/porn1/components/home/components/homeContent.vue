@@ -418,7 +418,7 @@ export default {
   > img[lazy="error"]:first-child,
   img[lazy="loading"]:first-child {
     display: block;
-    width: 42%;
+    width: 75px;
     padding: 25px 2px;
     margin: 0 auto;
   }
