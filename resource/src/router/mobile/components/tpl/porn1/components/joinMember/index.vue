@@ -73,7 +73,8 @@ export default {
   background-size: cover;
   background-image: url("/static/image/porn1/common/bg.png");
 
-  &.aobo1 {
+  &.aobo1,
+  &.sp1 {
     background-image: url("/static/image/aobo1/common/bg.png");
   }
   // form {
