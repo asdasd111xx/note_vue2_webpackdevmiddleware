@@ -20,10 +20,15 @@
           @click="handleClickItem(item)"
         >
           {{ item.account }}
-          <icon
+          <img
             v-if="item.account === bankSelected"
-            :class="[$style['select-icon']]"
-            name="check"
+            :class="$style['select-icon']"
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+              )
+            "
+            alt="sel"
           />
         </div>
       </div>
@@ -170,11 +175,9 @@ export default {
   .select-icon {
     position: absolute;
     right: 18px;
-    top: 50%;
+    top: 33%;
     width: 15px;
     height: 15px;
-    color: var(--addcard_popup_check_color);
-    transform: translateY(-50%);
   }
 }
 </style>
