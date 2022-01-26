@@ -166,6 +166,7 @@ div.container {
 
   &.sp1 {
     background: url("/static/image/sp1/common/pic_top.png");
+    background-size: 100% 100%;
   }
   &.aobo1 {
     background: url("/static/image/aobo1/common/pic_top.png");
