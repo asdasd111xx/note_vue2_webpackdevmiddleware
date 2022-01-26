@@ -19,6 +19,7 @@
 .entry-message-confirm {
   color: var(--popup_text_color1);
 }
+
 .select-active {
   color: var(--addcard_popup_check_color);
 }
@@ -33,11 +34,9 @@
   &.is-current {
     border: 1px solid var(--wallet_border_color);
     color: var(--wallet_border_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 10px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 10px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -45,20 +44,16 @@
   &.is-current {
     color: var(--wallet_border_color);
     border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(
-      -45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0
-    );
+    background: linear-gradient(-45deg,
+        var(--wallet_border_color) 12px,
+        hsla(0, 0%, 100%, 0) 0);
   }
 }
 
 .current-data {
   color: var(--wallet_border_color);
   border: 1px solid var(--wallet_border_color);
-  background: linear-gradient(
-    -45deg,
-    var(--wallet_border_color) 12px,
-    hsla(0, 0%, 100%, 0) 0
-  );
+  background: linear-gradient(-45deg,
+      var(--wallet_border_color) 12px,
+      hsla(0, 0%, 100%, 0) 0);
 }
