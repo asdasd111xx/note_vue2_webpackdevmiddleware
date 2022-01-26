@@ -7,7 +7,15 @@
   >
     <swiper-slide v-for="(info, key) in slider" :key="key">
       <div :class="$style['phone-image-wrap']">
+        <!-- 輪播預設圖 -->
+        <div
+          v-if="`${info.image}` === ''"
+          :class="[$style['phone-image'], $style[themeTPL]]"
+          :data-key="key"
+        />
+        <!-- 輪播圖 -->
         <img
+          v-else
           :src="`${info.image}`"
           :class="[$style['phone-image'], $style[themeTPL]]"
           :data-key="key"
@@ -221,8 +229,8 @@ export default {
       content: "";
       position: absolute;
       z-index: 1;
-      width: 60px;
-      height: 60px;
+      width: 75px;
+      height: 75px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -232,13 +240,6 @@ export default {
       background: linear-gradient(108deg, #fdfeff, #fdf2f2);
       &::after {
         content: "";
-        position: absolute;
-        z-index: 1;
-        width: 60px;
-        height: 60px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
         background-image: url("/static/image/aobo1/default/default_logo.png");
       }
     }
