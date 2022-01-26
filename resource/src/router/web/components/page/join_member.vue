@@ -13,7 +13,7 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客&&活動開啟文案 -->
-        <div v-if="isActivity" style="margin-top: 40px;">
+        <div v-if="isActivity && guestAmount > 0" style="margin-top: 40px;">
           <div :class="$style['visitor-get']">
             访客加入会员
           </div>

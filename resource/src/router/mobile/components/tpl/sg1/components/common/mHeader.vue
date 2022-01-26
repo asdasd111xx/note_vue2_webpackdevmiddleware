@@ -111,7 +111,7 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <template v-if="isActivity">
+        <template v-if="isActivity && guestAmount > 0">
           <span :class="$style['visitor-title']" @click="checkLayeredURL"
             >访客彩金</span
           >
