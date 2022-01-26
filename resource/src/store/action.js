@@ -780,7 +780,6 @@ export const actionSetUserdata = (
           }
         })
           .then(res => {
-            console.log(123);
             if (res.status === "000") {
               let guestCid = res.data.cid;
               let guestUserid = res.data.userid;

@@ -7,8 +7,8 @@
     >
       <div
         v-if="isEditing"
-        :class="$style['btn-close']"
-        @click="isEditing = false"
+        :class="[$style['btn-close'], { [$style['active']]: isDelete }]"
+        @click="isDelete ? '' : (isEditing = false)"
       >
         <img
           :src="
@@ -366,6 +366,9 @@ export default {
       this.unReadMessage();
     },
     onSelectAll() {
+      if (this.isDelete) {
+        return;
+      }
       this.selectMessage = [...this.messageData.map(message => message.id)];
     },
     onRead() {
