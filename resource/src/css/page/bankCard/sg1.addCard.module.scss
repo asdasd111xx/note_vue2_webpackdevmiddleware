@@ -19,12 +19,14 @@
 
 .pop-title {
   span {
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #000;
   }
 }
 
 .select-icon {
-  color: var(--addcard_popup_check_color);
+  // color: var(--addcard_popup_check_color);
+  color: #e53266;
 }
 
 .phone-selected {

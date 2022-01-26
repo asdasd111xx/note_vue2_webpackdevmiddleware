@@ -3,7 +3,7 @@
     <div :class="$style['mask']"></div>
     <div :class="$style['container']">
       <div :class="$style['header']">
-        <div @click="close" :class="$style['prev']">
+        <div @click="close" :class="[$style['prev'], $style[routerTPL]]">
           {{ $text("S_CANCEL", "取消") }}
         </div>
 
@@ -65,6 +65,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     // $style() {
     //   return (
@@ -150,6 +153,9 @@ export default {
     width: 40px;
     // color: var(--addcard_popup_prev_text_color);
     color: #6aaaf5;
+    &.prev {
+      color: #000;
+    }
   }
 
   .title {
@@ -183,6 +189,10 @@ export default {
     // color: var(--addcard_popup_check_color);
     color: #6aaaf5;
     transform: translateY(-50%);
+
+    &.sg1 {
+      color: #e53266;
+    }
   }
 }
 </style>
