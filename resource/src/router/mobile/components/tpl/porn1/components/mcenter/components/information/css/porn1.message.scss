@@ -475,8 +475,20 @@
     display: block;
     width: 20px;
     height: 20px;
-    background: #fff;
   }
+  &.active {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.btn-close::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  z-index: -1;
 }
 
 .btn-more {
