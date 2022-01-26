@@ -77,7 +77,7 @@ export default {
   },
   created() {
     if (
-      !localStorage.getItem("appTips") ||
+      localStorage.getItem("appTips") &&
       localStorage.getItem("appTips") === "false"
     ) {
       this.listWrapHeight = 435;

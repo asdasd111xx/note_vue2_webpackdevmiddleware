@@ -1,6 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
 
-import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import mobileLinkOpen from "@/lib/mobile_link_open";
 import openGame from "@/lib/open_game";
@@ -228,12 +227,12 @@ export default {
                 localStorage.setItem("iframe-third-url", res.data.uri);
                 localStorage.setItem(
                   "iframe-third-origin",
-                  `/live/iframe/task_wall`
+                  `live/iframe/home?hasFooter=true`
                 );
 
                 setTimeout(() => {
                   this.$router.push(`/mobile/iframe/promotion`);
-                }, 1000);
+                }, 800);
               }
             });
             return;
