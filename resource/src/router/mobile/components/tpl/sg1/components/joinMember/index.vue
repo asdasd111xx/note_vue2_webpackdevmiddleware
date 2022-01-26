@@ -6,11 +6,11 @@
   >
     <div slot="content" class="content-wrap">
       <div :class="$style['join-member-wrap']">
-        <img
+        <!-- <img
           :class="$style['slide-banner']"
           src="/static/image/sg1/mcenter/tcenter/slidebanner.png"
           alt=""
-        />
+        /> -->
         <join-member :theme="$style">
           <template slot="join-header" />
         </join-member>
@@ -108,12 +108,12 @@ export default {
   width: 100%;
 }
 
-.slide-banner {
-  width: 85%;
-  border-radius: 5px;
-  display: block;
-  margin: 15px auto 0 auto;
-}
+// .slide-banner {
+//   width: 85%;
+//   border-radius: 5px;
+//   display: block;
+//   margin: 15px auto 0 auto;
+// }
 
 .has-visitor {
   span {
