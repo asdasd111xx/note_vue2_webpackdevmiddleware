@@ -71,9 +71,15 @@
         </div>
       </div>
 
-      <div v-if="!sitePostList" class="clearfix">
-        <div :class="$style['modal-button']" @click="closePop()">知道了</div>
-        <div :class="[$style['modal-button']]" @click="closePop(true)">
+      <div
+        v-if="!sitePostList"
+        :class="[$style['modal-button-wrap'], $style[siteConfig.ROUTER_TPL]]"
+        class="clearfix"
+      >
+        <div :class="$style['modal-button']" @click="closePop()">
+          知道了
+        </div>
+        <div :class="$style['modal-button']" @click="closePop(true)">
           查看详情
         </div>
       </div>
@@ -377,7 +383,13 @@ export default {
     width: 100%;
   }
 }
-
+.modal-button-wrap {
+  &.sg1 {
+    .modal-button {
+      color: #000000;
+    }
+  }
+}
 .modal-button {
   float: left;
   width: 50%;
