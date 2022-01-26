@@ -197,13 +197,13 @@
       #f6d2bd
     );
   }
-  &.image-sg1 {
-    @include info-card(
-      #fd5183,
-      #e53266,
-      "/static/image/common/service/bg_service01.png"
-    );
-  }
+  // &.image-sg1 {
+  //   @include info-card(
+  //     #fd5183,
+  //     #e53266,
+  //     "/static/image/common/service/bg_service01.png"
+  //   );
+  // }
   &.image-aobo1 {
     @include info-card(
       #f6d2bd,
@@ -229,13 +229,13 @@
       #cedff3
     );
   }
-  &.image-sg1 {
-    @include info-card(
-      #61d2eb,
-      #4cbed8,
-      "/static/image/common/service/bg_service02.png"
-    );
-  }
+  // &.image-sg1 {
+  //   @include info-card(
+  //     #61d2eb,
+  //     #4cbed8,
+  //     "/static/image/common/service/bg_service02.png"
+  //   );
+  // }
   &.image-aobo1 {
     @include info-card(
       #b4cfef,

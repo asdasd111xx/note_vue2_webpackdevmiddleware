@@ -530,10 +530,8 @@
     }
 
     &.custom-color {
-      <<<<<<<HEAD
-=======
       // color: var(--countdown_time_text_color);
->>>>>>> feature/aobo_newcolor
+
       color: #db6372;
 
       &.custom-color-background {
@@ -590,11 +588,9 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    <<<<<<<HEAD
-    color: var(--popup_text_color1);
-    =======// color: var(--mcenter_wallet_text_color);
+
+    //color: var(--mcenter_wallet_text_color);
     color: #6aaaf5;
-    >>>>>>>feature/aobo_newcolor
     text-align: center;
     bottom: 12px;
     width: 100%;
@@ -732,11 +728,9 @@
 .offer {
   height: 30px;
   background-color: #fefffe;
-  <<<<<<<HEAD
   color: #be9e7f;
-  =======// color: var(--widthdraw_tip_text_color);
+  //color: var(--widthdraw_tip_text_color);
   color: #6aaaf5;
-  >>>>>>>feature/aobo_newcolor
   padding: 5px 14px;
   width: 100%;
 
