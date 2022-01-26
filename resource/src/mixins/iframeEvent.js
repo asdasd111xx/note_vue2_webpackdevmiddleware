@@ -56,8 +56,13 @@ export default {
         console.log("[DATA]:", data.data);
         console.log("[from]:", data.from);
 
-        if (data.from) {
+        // 忽略事件不轉導
+        const ignoreEvents = ["EVENT_GUEST_REGISTER"];
+
+        if (data.from && !ignoreEvents.includes(data.event)) {
           localStorage.setItem("live-iframe-event-from", data.from);
+        } else {
+          localStorage.removeItem("live-iframe-event-from");
         }
 
         switch (data.event) {
