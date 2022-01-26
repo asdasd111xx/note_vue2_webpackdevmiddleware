@@ -1109,6 +1109,7 @@ export const actionAgentInit = ({ state, dispatch, commit }, next) => {
   axios
     .all([
       (async () => {
+        //??
         dispatch("actionSetSystemTime");
         await dispatch("actionSetAgentdata");
         if (!state.agentIsLogin) return;
@@ -2580,6 +2581,59 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
         commit(types.SET_LIVEMAINTAIN, null);
         return res.data;
       }
+    }
+  });
+};
+//取得彩金活動開關
+export const actionSetActivity = ({ state, commit }) => {
+  let temp = { totalAmount: 0 };
+  goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
+  }).then(res => {
+    if (res.errorCode === "00" && res.status === "000") {
+      temp = {
+        ...temp,
+        event_jackpot: res.data.event_jackpot === "true",
+        register_jackpot: res.data.register_jackpot === "true",
+        video_jackpot: res.data.video_jackpot === "true",
+        isActivity:
+          res.data.event_jackpot === "true" ||
+          res.data.register_jackpot === "true" ||
+          res.data.video_jackpot === "true"
+      };
+      commit(types.SET_ACTIVITY, temp);
+    }
+    if (temp.register_jackpot || temp.video_jackpot) {
+      goLangApiRequest({
+        method: "post",
+        url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
+        params: {
+          account: localStorage.getItem("uuidAccount"),
+          cid: localStorage.getItem("guestCid")
+        }
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+          temp.totalAmount += parseFloat(res.data.totalAmount);
+          commit(types.SET_ACTIVITY, temp);
+        }
+      });
+    }
+    if (temp.event_jackpot) {
+      goLangApiRequest({
+        method: "get",
+        url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+          if (res.data.enable) {
+            temp.totalAmount += parseFloat(res.data.personal_max_bonus);
+            commit(types.SET_ACTIVITY, temp);
+          }
+        }
+      });
     }
   });
 };

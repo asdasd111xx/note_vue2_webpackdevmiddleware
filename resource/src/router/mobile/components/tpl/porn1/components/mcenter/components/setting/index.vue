@@ -30,7 +30,7 @@
       </div>
       <div :class="$style['logout']" @click="logout">
         {{
-          $route.query.isActivity && $route.query.guestAmount > 0
+          activity.isActivity && activity.totalAmount > 0
             ? "退出(返回访客)"
             : "退出"
         }}
@@ -77,7 +77,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      version: "getVersion"
+      version: "getVersion",
+      activity: "getActivity"
     }),
     headerConfig() {
       return {

@@ -120,7 +120,7 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <template v-if="isActivity && guestAmount > 0">
+        <template v-if="activity.isActivity && guestAmount > 0">
           <span :class="$style['visitor-title']" @click="checkLayeredURL"
             >访客彩金</span
           >
@@ -261,16 +261,16 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
-      guestAmount: 0,
-      remainBonus: 0,
-      isActivity: false
+
+      remainBonus: 0
     };
   },
   computed: {
     ...mapGetters({
       membalance: "getMemBalance",
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      activity: "getActivity"
     }),
     mainClass() {
       const style = this.$style;
@@ -304,22 +304,22 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    guestAmount() {
+      return this.activity.totalAmount;
     }
   },
   created() {
-    this.getActivityStatus();
-    this.getGuestBalance();
-
-    if (this.loginStatus) {
-      this.getRedJackpot();
-    }
+    this.actionSetActivity();
+    if (this.loginStatus) this.getRedJackpot();
   },
   methods: {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetLayeredURL",
       "actionGetActingURL",
-      "actionGetRegisterURL"
+      "actionGetRegisterURL",
+      "actionSetActivity"
     ]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
@@ -357,10 +357,7 @@ export default {
     },
     handleClickSetting() {
       if (this.loginStatus) {
-        this.$router.push({
-          path: "/mobile/mcenter/setting",
-          query: { isActivity: this.isActivity, guestAmount: this.guestAmount }
-        });
+        this.$router.push("/mobile/mcenter/setting");
       } else {
         this.$router.push("/mobile/login");
       }
@@ -375,36 +372,6 @@ export default {
 
       this.$router.push({ path: "search", query: { source: this.source } });
     },
-    //取得彩金活動開關
-    getActivityStatus() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
-      }).then(res => {
-        if (res.errorCode === "00" && res.status === "000") {
-          this.isActivity =
-            res.data.event_jackpot === "true" ||
-            res.data.register_jackpot === "true" ||
-            res.data.video_jackpot === "true";
-        }
-      });
-    },
-    // 取得訪客餘額
-    getGuestBalance() {
-      return goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
-        params: {
-          account: localStorage.getItem("uuidAccount"),
-          cid: localStorage.getItem("guestCid")
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.guestAmount = res.data.totalAmount;
-          this.getRedJackpot();
-        }
-      });
-    },
 
     getRedJackpot() {
       goLangApiRequest({
@@ -416,14 +383,7 @@ export default {
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
           if (res.data.enable) {
-            if (this.loginStatus) {
-              this.remainBonus = res.data.remain_bonus;
-            } else {
-              this.guestAmount = Number(
-                parseFloat(this.guestAmount) +
-                  parseInt(res.data.personal_max_bonus)
-              );
-            }
+            if (this.loginStatus) this.remainBonus = res.data.remain_bonus;
           }
         }
       });

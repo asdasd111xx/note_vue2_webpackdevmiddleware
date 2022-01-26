@@ -13,20 +13,22 @@
       </slot>
       <div :class="$style['join-content']">
         <!-- 訪客&&活動開啟文案 -->
-        <div v-if="isActivity && guestAmount > 0" style="margin-top: 40px;">
-          <div :class="$style['visitor-get']">
-            访客加入会员
-          </div>
-          <div :class="$style['visitor-get']">
-            {{ `领取彩金：${formatThousandsCurrency(guestAmount)} 元` }}
-          </div>
-        </div>
-        <div
-          v-if="themeTPL === 'sg1'"
-          :class="$style['visitor-get']"
-          style="color:#000"
-        >
-          注册即送 300 钻
+        <div style="margin-top: 40px;">
+          <template v-if="activity.isActivity && activity.totalAmount > 0"
+            ><div :class="$style['visitor-get']">
+              访客加入会员
+            </div>
+            <div :class="$style['visitor-get']">
+              {{
+                `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元`
+              }}
+            </div></template
+          >
+          <template v-if="themeTPL === 'sg1'"
+            ><div :class="$style['visitor-get']" style="color:#000">
+              注册即送 300 钻
+            </div></template
+          >
         </div>
 
         <!-- 錯誤訊息 -->
@@ -750,7 +752,6 @@ export default {
       joinMemInfo,
       captchaImg: "",
       aid: "",
-      guestAmount: 0,
       allValue: {
         username: "",
         password: "",
@@ -876,8 +877,7 @@ export default {
       redirect_url: "",
       placeholderResult: [],
       register_phone_keyring: "",
-      register_email_keyring: "",
-      isActivity: false
+      register_email_keyring: ""
     };
   },
   computed: {
@@ -886,7 +886,8 @@ export default {
       webInfo: "getWebInfo",
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      version: "getVersion"
+      version: "getVersion",
+      activity: "getActivity" //訪客餘額+紅包彩金、活動開關
     }),
 
     fieldsData() {
@@ -1167,10 +1168,10 @@ export default {
             ];
           });
         });
-      this.getActivityStatus();
-      if (!this.loginStatus) {
-        this.getGuestBalance();
-      }
+
+      // if (!this.loginStatus) {
+      //   this.getGuestBalance();
+      // }
       this.getPlaceholderList();
     });
   },
@@ -1764,61 +1765,12 @@ export default {
         return error;
       }
     },
-    //取得彩金活動開關
-    getActivityStatus() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
-      }).then(res => {
-        if (res.errorCode === "00" && res.status === "000") {
-          this.isActivity =
-            res.data.event_jackpot === "true" ||
-            res.data.register_jackpot === "true" ||
-            res.data.video_jackpot === "true";
-        }
-      });
-    },
-
-    // 取得訪客餘額
-    getGuestBalance() {
-      return goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
-        params: {
-          account: localStorage.getItem("uuidAccount"),
-          cid: localStorage.getItem("guestCid")
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.guestAmount = res.data.totalAmount;
-          this.getRedJackpot();
-        }
-      });
-    },
 
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
       this.allTip["captcha_text"] = "";
     },
 
-    getRedJackpot() {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res.errorCode === "00" && res.status === "000") {
-          if (res.data.enable) {
-            this.guestAmount = Number(
-              parseFloat(this.guestAmount) +
-                parseFloat(res.data.personal_max_bonus)
-            ).toFixed(2);
-          }
-        }
-      });
-    },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
     },

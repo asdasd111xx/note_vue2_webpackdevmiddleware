@@ -632,5 +632,9 @@ export default {
   },
   [types.SET_LIVEMAINTAIN](state, data) {
     state.liveMaintain = data;
+  },
+  [types.SET_ACTIVITY](state, data) {
+    //取得彩金活動
+    state.activity = data;
   }
 };
