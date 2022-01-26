@@ -106,13 +106,15 @@
 
   > div:first-child {
     font-weight: 700;
-    color: var(--popup_text_color3);
+    // color: var(--popup_text_color3);
+    color: #6aaaf5;
     background: #ffffff;
   }
 
   > div:last-child {
     font-weight: 700;
-    color: var(--popup_text_color1);
+    // color: var(--popup_text_color1);
+    color: #6aaaf5;
     background: #ffffff;
   }
   > div:last-child::before {

@@ -215,7 +215,8 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: var(--video_search_button);
+  // background: var(--video_search_button);
+  background: #9ca3bf;
   color: white;
   margin: 0 auto;
   text-align: center;

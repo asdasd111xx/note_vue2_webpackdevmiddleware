@@ -40,7 +40,8 @@
   }
 
   .recycle-btn {
-    color: var(--mcenter_wallet_recycle_text_color);
+    // color: var(--mcenter_wallet_recycle_text_color);
+    color: #6aaaf5;
     text-align: center;
     font-size: 16px;
   }
@@ -721,7 +722,8 @@
 .offer {
   height: 30px;
   background-color: #fefffe;
-  color: var(--widthdraw_tip_text_color);
+  // color: var(--widthdraw_tip_text_color);
+  color: #6aaaf5;
   padding: 5px 14px;
   width: 100%;
 

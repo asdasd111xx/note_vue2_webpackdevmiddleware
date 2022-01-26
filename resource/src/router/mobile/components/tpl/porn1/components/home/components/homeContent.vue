@@ -676,7 +676,8 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: var(--popup_text_color1);
+    // color: var(--popup_text_color1);
+    color: #6aaaf5;
   }
 }
 </style>

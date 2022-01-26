@@ -177,7 +177,8 @@ export default {
 .like {
   line-height: 20px;
   margin-bottom: 15px;
-  color: var(--video_guess_like_color);
+  // color: var(--video_guess_like_color);
+  color: #5e626d;
   font-weight: 500;
 
   &.custom {
