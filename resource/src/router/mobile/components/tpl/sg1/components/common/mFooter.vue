@@ -174,18 +174,16 @@ export default {
   font-weight: 400;
   font-size: 15px;
 
+  img {
+    display: block;
+    width: 33px;
+    height: 33px;
+    margin: 6px auto 0;
+  }
+
   &.active {
     color: var(--footer_active_color);
     font-weight: 700;
-  }
-
-  > div {
-    img {
-      display: block;
-      width: 33px;
-      height: 33px;
-      margin: 6px auto 0;
-    }
   }
 
   > div:last-of-type {
