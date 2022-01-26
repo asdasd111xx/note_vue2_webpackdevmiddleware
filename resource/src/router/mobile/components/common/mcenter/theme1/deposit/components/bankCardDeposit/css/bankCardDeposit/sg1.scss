@@ -50,6 +50,12 @@
   }
 }
 
+.feature-tip-title {
+  &.success {
+    color: #000000;
+  }
+}
+
 .current-data {
   color: var(--wallet_border_color);
   border: 1px solid var(--wallet_border_color);

@@ -39,6 +39,7 @@
       </div>
 
       <iframe
+        v-if="!isMaintain"
         ref="iframe"
         id="iframe"
         :class="[$style['iframe']]"
@@ -50,6 +51,45 @@
         frameborder="0"
         crossorigin
       />
+
+      <div v-else :class="[$style['maintain-wrap']]">
+        <div :class="[$style['maintain-title']]">
+          直播互动升级中
+        </div>
+
+        <div :class="[$style['maintain-content']]">
+          <div v-for="(item, index) in maintainInfo" class="cell" :key="index">
+            <div :class="$style['time-title']">
+              {{ item.title }}
+            </div>
+            <div :class="$style['content']">
+              <div :class="$style['date']">
+                {{ getDate(item.startAt) }} <br />
+                {{ getTime(item.startAt) }}
+              </div>
+              <div :class="$style['to-img']">
+                <img
+                  :src="
+                    $getCdnPath(
+                      '/static/image/common/mcenter/balanceTrans/ic_transfergo_w.png'
+                    )
+                  "
+                />
+              </div>
+
+              <div :class="$style['times']">
+                {{ getDate(item.endAt) }} <br />
+                {{ getTime(item.endAt) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div :class="$style['go-button-wrap']">
+          <div @click="goToMobile">
+            前往更多游戏<span :class="$style['sec']">{{ sec }}</span>
+          </div>
+        </div>
+      </div>
       <!-- <page-loading :is-show="isLoading" /> -->
     </div>
   </mobile-container>
@@ -59,6 +99,7 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import iframeEvent from "@/mixins/iframeEvent";
+import moment from "moment";
 
 export default {
   mixins: [iframeEvent],
@@ -75,13 +116,17 @@ export default {
       src: "",
       isFullScreen: false,
       contentTitle: "",
-      hasFooter: true
+      hasFooter: true,
+      isMaintain: false,
+      maintainInfo: [],
+      sec: 5
     };
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      liveMaintain: "getLiveMaintain"
     }),
     pageType() {
       return this.$route.params.page;
@@ -118,6 +163,15 @@ export default {
     }
   },
   watch: {
+    liveMaintain(val) {
+      console.log(val);
+      if (val && val.start) {
+        this.showMaintainInfo();
+        this.isMaintain = true;
+      } else {
+        this.isMaintain = false;
+      }
+    },
     "$route.params.page"() {
       this.initPage();
     },
@@ -137,6 +191,7 @@ export default {
         api_uri: "/api/platform/v1/view-path",
         method: "get"
       }).then(res => {
+        console.log(res);
         if (res && res.result) {
           const list = res.result;
           Object.keys(list).some(key => {
@@ -169,6 +224,48 @@ export default {
             this.isLoading = false;
           });
         }
+      });
+    },
+    showMaintainInfo() {
+      const start = moment(this.liveMaintain.start * 1000)
+        .add(-12, "hours")
+        .format("YYYY-MM-DD HH:mm:ss");
+      const end = moment(this.liveMaintain.end * 1000)
+        .add(-12, "hours")
+        .format("YYYY-MM-DD HH:mm:ss");
+
+      this.maintainInfo = [
+        {
+          title: "-美东时间-",
+          startAt: start,
+          endAt: end
+        },
+        {
+          title: "-北京时间-",
+          startAt: moment(),
+          endAt: moment()
+        }
+      ];
+
+      this.timer = setInterval(() => {
+        if (this.sec === 0 && !this.$route.query.test) {
+          clearInterval(this.timer);
+          this.timer = null;
+          this.goToMobile();
+          return;
+        }
+        this.sec -= 1;
+      }, 1000);
+    },
+    getDate(date) {
+      return moment(date).format("YYYY-MM-DD");
+    },
+    getTime(date) {
+      return moment(date).format("HH:mm:ss");
+    },
+    goToMobile() {
+      this.$router.push({
+        name: "home"
       });
     },
     toggleFullScreen() {
@@ -356,6 +453,82 @@ export default {
     padding: 0 3px;
     height: 43px;
     line-height: 43px;
+  }
+}
+
+.maintain-wrap {
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.maintain-title {
+  font-size: 16px;
+  font-family: Microsoft JhengHei, Microsoft JhengHei-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+}
+
+.maintain-content {
+  color: #a2a2a2;
+  font-weight: 700;
+  margin-top: 12px;
+  padding: 0 15%;
+}
+
+.time-title {
+  min-width: 180px;
+}
+
+.content {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.date,
+.times {
+  flex: 2;
+  padding: 2px 0;
+  font-size: 12px;
+}
+
+.to-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  img {
+    width: 12px;
+    height: 9px;
+  }
+}
+
+.go-button-wrap {
+  margin-top: 25px;
+  text-align: center;
+  width: 100%;
+  font-weight: 700;
+
+  > div {
+    background: #000000;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+    opacity: 1;
+    width: 300px;
+  }
+
+  .sec {
+    color: #e53266;
+    margin-left: 6px;
   }
 }
 </style>

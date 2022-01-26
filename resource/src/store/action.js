@@ -2555,11 +2555,13 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
   }).then(res => {
     if (res && res.data) {
       // 測試維護
-      // res.data.maintain = {
-      //   end: 1641524279,
-      //   reason: "臨時維護",
-      //   start: 1641524039,
-      //   state: 1
+      // res.data = {
+      //   maintain: {
+      //     end: 1641524279,
+      //     reason: "臨時維護",
+      //     start: 1641524039,
+      //     state: 1
+      //   }
       // };
 
       if (res.data.maintain) {
@@ -2567,12 +2569,13 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
         if (
           state.liveMaintain &&
           maintain.start === state.liveMaintain.start &&
-            maintain.end === state.liveMaintain.end
+          maintain.end === state.liveMaintain.end
         ) {
           return;
         }
 
         commit(types.SET_LIVEMAINTAIN, res.data.maintain);
+        return res.data;
       } else {
         commit(types.SET_LIVEMAINTAIN, null);
         return res.data;

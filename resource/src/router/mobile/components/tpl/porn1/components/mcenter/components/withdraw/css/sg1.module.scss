@@ -7,8 +7,14 @@
 }
 
 .check-container {
-  &.custom-color {
-    color: #BE9E7F;
+  .check-cell {
+    &.custom-color {
+      color: #BE9E7F;
+    }
+  }
+
+  .check-button-wrap {
+    color: #000000;
   }
 }
 
@@ -23,4 +29,8 @@
           hsla(0, 0%, 100%, 0) 0);
     }
   }
+}
+
+.offer {
+  color: #be9e7f;
 }
