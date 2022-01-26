@@ -1772,7 +1772,8 @@ export default {
     },
 
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     },
 
     closeRedirect_url() {
