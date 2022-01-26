@@ -20,6 +20,11 @@
           @click="handleClickItem(item)"
         >
           {{ item.account }}
+          <icon
+            v-if="item.account === bankSelected"
+            :class="[$style['select-icon']]"
+            name="check"
+          />
         </div>
       </div>
     </div>
@@ -31,6 +36,10 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
+    bankSelected: {
+      type: String,
+      default: ""
+    },
     bankList: {
       type: Array,
       default: []

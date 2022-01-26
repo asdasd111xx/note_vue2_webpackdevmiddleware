@@ -1336,6 +1336,7 @@
       </template>
       <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
+          :bank-selected="defaultEpointWallet.account"
           :bank-list="userBankOption"
           :item-func="setEpointBank"
           @close="closePopup"
