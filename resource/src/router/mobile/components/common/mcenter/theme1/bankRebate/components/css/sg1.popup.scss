@@ -1,1 +1,20 @@
 @import "./porn1.popup.scss";
+
+@import "~@/css/variable.scss";
+
+.pop-wrap {
+  .button-wrap {
+    .button-item {
+      &.close {
+        background: #f8f8f7;
+        color: #000000;
+      }
+
+      &.confirm {
+        background: #f8f8f7;
+        color: #000000;
+        border-left: 1px solid #eeeeee;
+      }
+    }
+  }
+}

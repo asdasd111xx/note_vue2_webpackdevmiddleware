@@ -8,12 +8,23 @@
   bottom: 0;
   z-index: 99;
 
-  &.porn1,
-  &.sg1 {
-    .content-wrap {
-      padding: 13px 0 0 0;
-    }
+  .content-wrap {
+    padding: 13px 0 0 0;
+  }
+  .button-wrap {
+    height: 42px;
+    line-height: 41px;
+    border-top: 1px solid #eeeeee;
 
+    .button-item {
+      border-radius: 0px;
+      font-weight: bold;
+      &.close {
+        background: #f8f8f7;
+        // color: var(--popup_text_color3);
+        color: #6aaaf5;
+      }
+    }
     .pop-block {
       border-radius: 20px;
     }
@@ -40,14 +51,12 @@
         }
       }
     }
-    .title {
-      background: #f8f8f7;
-      color: #000;
-      font-size: 17px;
-      border-radius: 20px 20px 0 0;
-      font-weight: bold;
-      border-bottom: 1px solid #eeeeee;
-    }
+  }
+  .title {
+    background: #f8f8f7;
+    color: #000;
+    font-size: 17px;
+    font-weight: bold;
   }
 }
 
@@ -65,7 +74,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: #f8f8f7;
-  border-radius: 8px;
+  border-radius: 13px;
 }
 
 .close-img {
@@ -89,6 +98,7 @@
   color: #fff;
   font-size: 16px;
   text-align: center;
+  border-radius: 13px;
 }
 
 .content-wrap {
