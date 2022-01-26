@@ -1,12 +1,12 @@
 <template>
   <div :class="$style['mem-list']">
-    <template v-for="listInfo in list">
+    <template v-for="(listInfo, key) in list">
       <div
         v-if="
-          (listInfo.pageName !== 'super' && listInfo.pageName !== 'host') ||
-            isShowSuper
+          listInfo.pageName !== 'host' &&
+            (listInfo.pageName !== 'super' || isShowSuper)
         "
-        :key="`list-${listInfo.pageName}`"
+        :key="`list-${key}`"
         :class="[
           $style.list,
           { [$style['list-part']]: listInfo.isPart },
@@ -32,8 +32,8 @@
       </div>
       <!-- 成為主播 -->
       <a
-        v-if="listInfo.pageName == 'host' || isShowSuper"
-        :key="`list-${listInfo.pageName}`"
+        v-if="listInfo.pageName === 'host'"
+        :key="`list-host-${key}`"
         :href="beHostUrl"
         target="_blank"
         :class="[
