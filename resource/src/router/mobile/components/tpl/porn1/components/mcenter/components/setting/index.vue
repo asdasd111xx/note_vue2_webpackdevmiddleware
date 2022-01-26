@@ -29,7 +29,11 @@
         </template>
       </div>
       <div :class="$style['logout']" @click="logout">
-        退出(返回访客)
+        {{
+          $route.query.isActivity && $route.query.guestAmount > 0
+            ? "退出(返回访客)"
+            : "退出"
+        }}
       </div>
     </div>
   </mobile-container>

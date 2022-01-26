@@ -299,9 +299,9 @@ export default {
   },
   created() {
     this.getActivityStatus();
-    if (!this.loginStatus) {
-      this.getGuestBalance();
-    } else {
+    this.getGuestBalance();
+
+    if (this.loginStatus) {
       this.getRedJackpot();
     }
   },
@@ -374,7 +374,10 @@ export default {
     },
     handleClickSetting() {
       if (this.loginStatus) {
-        this.$router.push("/mobile/mcenter/setting");
+        this.$router.push({
+          path: "/mobile/mcenter/setting",
+          query: { isActivity: this.isActivity, guestAmount: this.guestAmount }
+        });
       } else {
         this.$router.push("/mobile/login");
       }
