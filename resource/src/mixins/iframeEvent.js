@@ -1,3 +1,4 @@
+import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -116,6 +117,7 @@ export default {
             return;
 
           case "EVENT_THIRDPARTY_LOGIN":
+            setCookie("cid", "");
             this.$router.push("/mobile/login");
             return;
 
