@@ -23,7 +23,7 @@
               $style['value'],
               {
                 [$style['match']]:
-                  item.method_id === 34 && item.status === 'process'
+                  [34, 41].includes(item.method_id) && item.status === 'process'
               }
             ]"
           >
@@ -35,7 +35,9 @@
               提交资料
             </div>
             <div
-              v-else-if="item.method_id === 34 && item.status === 'process'"
+              v-else-if="
+                [34, 41].includes(item.method_id) && item.status === 'process'
+              "
               @click="openMatchLink(item)"
             >
               搓合查询
