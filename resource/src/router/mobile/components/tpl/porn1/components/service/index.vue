@@ -741,10 +741,10 @@ div.container {
 
   .close {
     position: absolute;
-    top: -40px;
-    right: 0;
-    width: 21px;
-    height: 21px;
+    bottom: -50px;
+    right: calc(50% - 14px);
+    width: 28px;
+    height: 28px;
 
     img {
       width: 100%;

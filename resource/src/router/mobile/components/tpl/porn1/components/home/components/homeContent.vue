@@ -82,7 +82,10 @@
                     )
                   "
                 />
-                <div v-if="+currentLevel > 10" :class="$style['level-text']">
+                <div
+                  v-if="+currentLevel > 10"
+                  :class="[$style['level-text'], $style[siteConfig.ROUTER_TPL]]"
+                >
                   {{ currentLevel }}
                 </div>
                 <div>{{ info.text }}</div>
@@ -383,7 +386,16 @@ export default {
     left: 37%;
     position: absolute;
     font-weight: 700;
-    color: #906246;
+
+    &.porn1 {
+      color: #323943;
+    }
+    &.aobo1 {
+      color: #fd904a;
+    }
+    &.sp1 {
+      color: #be5a02;
+    }
   }
 }
 

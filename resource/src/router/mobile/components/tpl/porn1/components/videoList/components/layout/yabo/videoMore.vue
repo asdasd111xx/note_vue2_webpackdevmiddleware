@@ -42,7 +42,7 @@
           })
         "
       >
-        <div :class="$style['image-wrap']">
+        <div :class="[$style['image-wrap'], $style[siteConfig.ROUTER_TPL]]">
           <img :src="defaultImg" :img-id="info.id" />
         </div>
         <div :class="$style['title']">{{ info.title }}</div>
@@ -141,12 +141,13 @@ export default {
       };
     },
     defaultImg() {
-      const isYabo = this.source === "yabo" || this.source === "av";
-      return this.$getCdnPath(
-        `/static/image/${this.themeTPL}/default/${
-          isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
-        }.png`
-      );
+      // const isYabo = this.source === "yabo" || this.source === "av";
+      // return this.$getCdnPath(
+      //   `/static/image/${this.themeTPL}/default/${
+      //     isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
+      //   }.png`
+      // );
+      return "";
     }
   },
   methods: {
@@ -461,11 +462,36 @@ export default {
 .image-wrap {
   overflow: hidden;
   position: relative;
-  background-color: #161823;
-
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  &::after {
+    content: "";
+    z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 72px;
+    height: 72px;
+    transform: translate(-50%, -50%);
+    background-image: url("/static/image/porn1/default/default_logo.png");
+  }
+  &.aobo1 {
+    background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+    &::after {
+      content: "";
+      z-index: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      transform: translate(-50%, -50%);
+      background-image: url("/static/image/aobo1/default/default_logo.png");
+    }
+  }
   > img {
     display: block;
     position: absolute;
+    z-index: 1;
     top: 0;
     right: 0;
     bottom: 0;

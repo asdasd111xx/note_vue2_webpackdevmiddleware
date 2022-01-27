@@ -1909,7 +1909,8 @@ export default {
         if (res.status !== "000") {
           this.phoneSubmitFail = true;
           this.phoneSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "phone error1";
+            // res.msg + "(" + res.code + ")" || "phone error1";
+            res.msg || "phone error1";
         } else {
           //取得驗證碼倒數秒數
           this.getPhoneTTL();
@@ -1963,7 +1964,8 @@ export default {
         if (res.status !== "000") {
           this.mailSubmitFail = true;
           this.mailSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "mail error1";
+            // res.msg + "(" + res.code + ")" || "mail error1";
+            res.msg || "mail error1";
         } else {
           //取得mail驗證碼倒數秒數
           this.getMailTTL();

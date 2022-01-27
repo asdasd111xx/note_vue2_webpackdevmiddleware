@@ -157,7 +157,8 @@ export default {
   }
 
   .title {
-    color: var(--slider_text_active_color);
+    // color: var(--slider_text_active_color);
+    color: #5e626d;
     font-size: 12px;
     line-height: 14px;
     width: 80%;

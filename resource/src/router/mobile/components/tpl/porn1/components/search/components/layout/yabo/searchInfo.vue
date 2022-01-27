@@ -4,7 +4,7 @@
       <div :class="[$style['list-wrap'], 'clearfix']">
         <div v-for="info in searchList" :key="info.id" :class="$style.wrap">
           <div
-            :class="$style['image-wrap']"
+            :class="[$style['image-wrap'], $style[siteConfig.ROUTER_TPL]]"
             @click="
               $router.push({
                 name: 'videoPlay',
@@ -96,9 +96,10 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     img() {
-      return this.$getCdnPath(
-        `/static/image/${this.themeTPL}/default/bg_video03_1_d@3x.png`
-      );
+      // return this.$getCdnPath(
+      //   `/static/image/${this.themeTPL}/default/bg_video03_1_d@3x.png`
+      // );
+      return "";
     }
   },
   methods: {
@@ -222,12 +223,39 @@ export default {
   overflow: hidden;
   position: relative;
   height: 100%;
-  background-color: #161823;
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  &::after {
+    content: "";
+    z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 72px;
+    height: 72px;
+    transform: translate(-50%, -50%);
+    background-image: url("/static/image/porn1/default/default_logo.png");
+  }
+  &.aobo1 {
+    background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+    &::after {
+      content: "";
+      z-index: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      transform: translate(-50%, -50%);
+      background-image: url("/static/image/aobo1/default/default_logo.png");
+    }
+  }
 
   > img {
     width: 100%;
     min-height: 100%;
     margin: auto;
+    z-index: 1;
+    position: relative;
   }
 }
 

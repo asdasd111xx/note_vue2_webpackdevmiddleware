@@ -11,13 +11,19 @@
   .content-wrap {
     padding: 13px 0 0 0;
   }
+
   .button-wrap {
     height: 42px;
     line-height: 41px;
     border-top: 1px solid #eeeeee;
+    display: inline-block;
+    width: 100%;
 
     .button-item {
       border-radius: 0px;
+      display: inline-block;
+      width: 45%;
+
       &.close {
         background: #f8f8f7;
         // color: var(--popup_text_color3);
@@ -32,6 +38,7 @@
       }
     }
   }
+
   .title {
     background: #f8f8f7;
     color: #000;
@@ -86,6 +93,7 @@
   .content {
     text-align: center;
   }
+
   h1 {
     font-size: 16px;
     margin-bottom: 14px;
@@ -100,30 +108,30 @@
   }
 }
 
-.button-wrap {
-  text-align: center;
-  display: inline-block;
-  width: 100%;
-  height: 42px;
-  line-height: 42px;
+// .button-wrap {
+//   text-align: center;
+//   display: inline-block;
+//   width: 100%;
+//   height: 42px;
+//   line-height: 42px;
 
-  .button-item {
-    display: inline-block;
-    width: 45%;
-    color: #fff;
-    border-radius: 3px;
-    margin: 0 3px;
+//   .button-item {
+//     display: inline-block;
+//     width: 45%;
+//     color: #fff;
+//     border-radius: 3px;
+//     margin: 0 3px;
 
-    &.close {
-      color: #be9e7f;
-      background: #faf5f0;
-    }
+//     &.close {
+//       color: #be9e7f;
+//       background: #faf5f0;
+//     }
 
-    &.confirm {
-      background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-    }
-  }
-}
+//     &.confirm {
+//       background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+//     }
+//   }
+// }
 
 .tips {
   margin-top: 15px;

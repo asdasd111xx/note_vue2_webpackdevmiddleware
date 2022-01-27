@@ -196,13 +196,13 @@
 }
 
 .bank-wrap {
-  display: flex;
+  // display: flex;
   // height: 60px;
   margin-top: 10px;
   background-color: #fefffe;
   padding: 8px 18px;
   // min-height: 50px;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
 
   .bank-type {
     position: relative;
@@ -226,6 +226,7 @@
       //   hsla(0, 0%, 100%, 0) 0
       // );
       background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
+      margin-bottom: 5px;
     }
 
     .select {
@@ -239,7 +240,7 @@
 }
 
 .withdraw-status-tip {
-  padding: 0 0 0 10px;
+  // padding: 0 0 0 10px;
   width: 80%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -729,8 +730,8 @@
 .offer {
   height: 30px;
   background-color: #fefffe;
-  //color: var(--widthdraw_tip_text_color);
-  color: #DB6372;
+  // color: var(--widthdraw_tip_text_color);
+  color: #db6372;
   padding: 5px 14px;
   width: 100%;
 
