@@ -2554,7 +2554,7 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
     }
   }).then(res => {
     if (res && res.data) {
-      // 測試維護
+      // 測試維護;
       // res.data = {
       //   maintain: {
       //     end: 1641524279,
@@ -2566,15 +2566,7 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
 
       if (res.data.maintain) {
         const maintain = res.data.maintain;
-        if (
-          state.liveMaintain &&
-          maintain.start === state.liveMaintain.start &&
-          maintain.end === state.liveMaintain.end
-        ) {
-          return;
-        }
-
-        commit(types.SET_LIVEMAINTAIN, res.data.maintain);
+        commit(types.SET_LIVEMAINTAIN, maintain);
         return res.data;
       } else {
         commit(types.SET_LIVEMAINTAIN, null);

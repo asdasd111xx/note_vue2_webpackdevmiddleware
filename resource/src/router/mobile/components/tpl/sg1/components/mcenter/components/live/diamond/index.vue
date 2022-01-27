@@ -431,6 +431,7 @@ export default {
             code: error_code,
             cb: () => {
               this.lockedSubmit = false;
+              this.init();
             }
           });
         }

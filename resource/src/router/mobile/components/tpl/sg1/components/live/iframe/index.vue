@@ -119,8 +119,13 @@ export default {
       hasFooter: true,
       isMaintain: false,
       maintainInfo: [],
-      sec: 5
+      sec: 5,
+      timer: null
     };
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+    this.timer = null;
   },
   computed: {
     ...mapGetters({
@@ -191,7 +196,6 @@ export default {
         api_uri: "/api/platform/v1/view-path",
         method: "get"
       }).then(res => {
-        console.log(res);
         if (res && res.result) {
           const list = res.result;
           Object.keys(list).some(key => {
