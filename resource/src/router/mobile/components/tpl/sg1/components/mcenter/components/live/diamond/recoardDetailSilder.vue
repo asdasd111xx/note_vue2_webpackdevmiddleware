@@ -12,7 +12,7 @@
     <detailInfo
       v-if="opcodeList"
       :detail-info="detailInfo"
-      :current-category="{ text: '直播转帐' }"
+      :current-category="{ text: '泡泡直播' }"
       :opcode-list="opcodeList"
     />
     <page-loading :is-show="!opcodeList" />
