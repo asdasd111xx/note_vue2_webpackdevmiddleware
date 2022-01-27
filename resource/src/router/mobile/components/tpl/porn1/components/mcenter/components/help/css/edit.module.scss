@@ -74,16 +74,22 @@
     height: 36px;
     line-height: 36px;
     border-bottom: solid 1px #eaeaea;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 8px;
 
-    .title {
-      width: 45%;
-      float: left;
+    input {
+      text-align: right;
     }
+    // .title {
+    //   width: 45%;
+    //   float: left;
+    // }
 
-    .value {
-      width: 55%;
-      float: right;
-    }
+    // .value {
+    //   width: 55%;
+    //   float: right;
+    // }
   }
 }
 
@@ -168,20 +174,20 @@
   margin-bottom: 20px;
 }
 
-@media screen and (max-width: $phone) {
-  .alert-body-wrap {
-    font-size: 14px;
+// @media screen and (max-width: $phone) {
+//   .alert-body-wrap {
+//     font-size: 14px;
 
-    .detail-cell {
-      width: 315px;
+//     .detail-cell {
+//       width: 315px;
 
-      .value {
-        width: 85%;
-        margin-right: 35px;
-      }
-    }
-  }
-}
+//       .value {
+//         width: 85%;
+//         margin-right: 35px;
+//       }
+//     }
+//   }
+// }
 
 .speed-edit-value {
   input {
