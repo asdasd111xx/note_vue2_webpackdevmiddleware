@@ -470,8 +470,7 @@ export default {
       this.isShowReceivePopup = false;
     },
     formatThousandsCurrency(value) {
-      let _value = Number(value).toFixed(2);
-      return thousandsCurrency(_value);
+      return thousandsCurrency(value);
     }
   }
 };
