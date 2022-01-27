@@ -196,47 +196,53 @@
 }
 
 .bank-wrap {
-  // display: flex;
-  // height: 60px;
+  display: flex;
+  flex-direction: column;
   margin-top: 10px;
   background-color: #fefffe;
   padding: 8px 18px;
   // min-height: 50px;
   // flex-wrap: wrap;
 
-  .bank-type {
-    position: relative;
-    width: 100px;
-    height: 40px;
+  .bank-type-content {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    margin-right: 10px;
+    flex-direction: row;
 
-    &.is-current {
-      // border: 1px solid var(--wallet_border_color);
-      border: 1px solid #6dabf2;
-      // color: var(--wallet_border_text_color);
-      color: #414655;
-      // background: linear-gradient(
-      //   -45deg,
-      //   var(--wallet_border_color) 10px,
-      //   hsla(0, 0%, 100%, 0) 0
-      // );
-      background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
-      margin-bottom: 5px;
-    }
+    .bank-type {
+      position: relative;
+      width: 100px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      margin-right: 10px;
 
-    .select {
-      position: absolute;
-      width: 7px;
-      height: 5px;
-      right: 1px;
-      bottom: 2px;
+      &.is-current {
+        // border: 1px solid var(--wallet_border_color);
+        border: 1px solid #6dabf2;
+        // color: var(--wallet_border_text_color);
+        color: #414655;
+        // background: linear-gradient(
+        //   -45deg,
+        //   var(--wallet_border_color) 10px,
+        //   hsla(0, 0%, 100%, 0) 0
+        // );
+        background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
+        margin-bottom: 5px;
+      }
+
+      .select {
+        position: absolute;
+        width: 7px;
+        height: 5px;
+        right: 1px;
+        bottom: 2px;
+      }
     }
   }
+
 }
 
 .withdraw-status-tip {

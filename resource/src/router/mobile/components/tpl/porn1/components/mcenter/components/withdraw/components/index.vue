@@ -224,48 +224,49 @@
     <template v-if="['porn1', 'sg1'].includes(themeTPL)">
       <!-- 銀行卡 -->
       <div :class="$style['bank-wrap']">
-        <div
-          :class="[
-            $style['bank-type'],
-            { [$style['is-current']]: epointSelectType === 0 }
-          ]"
-          @click="() => setWithdrawTypeIsNormal(0)"
-        >
-          普通提现
-          <img
-            :class="$style['select']"
-            :src="$getCdnPath(`/static/image/common/select_active.png`)"
-          />
+        <div :class="[$style['bank-type-content']]">
+          <div
+            :class="[
+              $style['bank-type'],
+              { [$style['is-current']]: epointSelectType === 0 }
+            ]"
+            @click="() => setWithdrawTypeIsNormal(0)"
+          >
+            普通提现
+            <img
+              :class="$style['select']"
+              :src="$getCdnPath(`/static/image/common/select_active.png`)"
+            />
+          </div>
+          <div
+            v-if="epointWallet && epointWallet.length > 0"
+            :class="[
+              $style['bank-type'],
+              { [$style['is-current']]: epointSelectType === 1 }
+            ]"
+            @click="setWithdrawTypeIsNormal(1)"
+          >
+            E点付
+            <img
+              :class="$style['select']"
+              :src="$getCdnPath(`/static/image/common/select_active.png`)"
+            />
+          </div>
+          <div
+            v-if="epointNewWallet && epointNewWallet.length > 0"
+            :class="[
+              $style['bank-type'],
+              { [$style['is-current']]: epointSelectType === 2 }
+            ]"
+            @click="setWithdrawTypeIsNormal(2)"
+          >
+            e点富
+            <img
+              :class="$style['select']"
+              :src="$getCdnPath(`/static/image/common/select_active.png`)"
+            />
+          </div>
         </div>
-        <div
-          v-if="epointWallet && epointWallet.length > 0"
-          :class="[
-            $style['bank-type'],
-            { [$style['is-current']]: epointSelectType === 1 }
-          ]"
-          @click="setWithdrawTypeIsNormal(1)"
-        >
-          E点付
-          <img
-            :class="$style['select']"
-            :src="$getCdnPath(`/static/image/common/select_active.png`)"
-          />
-        </div>
-        <div
-          v-if="epointNewWallet && epointNewWallet.length > 0"
-          :class="[
-            $style['bank-type'],
-            { [$style['is-current']]: epointSelectType === 2 }
-          ]"
-          @click="setWithdrawTypeIsNormal(2)"
-        >
-          e点富
-          <img
-            :class="$style['select']"
-            :src="$getCdnPath(`/static/image/common/select_active.png`)"
-          />
-        </div>
-
         <!-- 會員首次出款 or 需用銀行卡提現一次(強制銀行卡出款) -->
 
         <span

@@ -20,13 +20,15 @@
 
 
 .bank-wrap {
-  .bank-type {
-    &.is-current {
-      color: #414655;
-      border: 1px solid var(--wallet_border_color);
-      background: linear-gradient(-45deg,
-          var(--wallet_border_color) 12px,
-          hsla(0, 0%, 100%, 0) 0);
+  .bank-type-content {
+    .bank-type {
+      &.is-current {
+        color: #414655;
+        border: 1px solid #e53266;
+        background: linear-gradient(-45deg,
+            #e53266 12px,
+            hsla(0, 0%, 100%, 0) 0);
+      }
     }
   }
 }
