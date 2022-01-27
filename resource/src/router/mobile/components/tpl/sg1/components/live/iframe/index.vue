@@ -207,10 +207,15 @@ export default {
           });
 
           if (localStorage.getItem("live-iframe-event-from")) {
-            if (this.pageType === "home") {
+            if (
+              this.pageType === "home" &&
+              (!localStorage.getItem("live-iframe-set-home") ||
+                localStorage.getItem("live-iframe-set-home") !== "true")
+            ) {
               clientUri = localStorage.getItem("live-iframe-event-from");
             }
             localStorage.removeItem("live-iframe-event-from");
+            localStorage.removeItem("live-iframe-set-home");
           }
 
           goLangApiRequest({

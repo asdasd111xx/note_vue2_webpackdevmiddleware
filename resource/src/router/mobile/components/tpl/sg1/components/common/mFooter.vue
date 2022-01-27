@@ -91,13 +91,18 @@ export default {
         this.$router.push("/mobile/login");
         return;
       }
-      if (path === this.$route.path && path == "/mobile/live/iframe/home") {
+
+      if (
+        path === this.$route.path ||
+        (this.$route.name === "liveIframe" && key == "home")
+      ) {
         // this.$router.push(`${path}?t=${new Date().toString()}`);
         return;
       }
 
       switch (key) {
         case "home":
+          localStorage.setItem("live-iframe-set-home", true);
           sendUmeng(19);
           break;
         case "promotion":
@@ -113,6 +118,7 @@ export default {
           sendUmeng(23);
           break;
       }
+
       this.$router.push(path);
     },
     isActive(info) {
