@@ -428,7 +428,7 @@ export default {
         if (data && data.error_text) {
           this.actionSetGlobalMessage({
             msg: data.error_text,
-            code: error_code,
+            code: data.error_code,
             cb: () => {
               this.lockedSubmit = false;
               this.init();
