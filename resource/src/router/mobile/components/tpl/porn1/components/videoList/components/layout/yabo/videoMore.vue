@@ -491,6 +491,7 @@ export default {
   > img {
     display: block;
     position: absolute;
+    z-index: 1;
     top: 0;
     right: 0;
     bottom: 0;
