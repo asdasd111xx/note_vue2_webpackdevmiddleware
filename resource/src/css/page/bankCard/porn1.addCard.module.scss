@@ -288,7 +288,8 @@
   &.disabled {
     // background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
-    opacity: 0.3;
+    // opacity: 0.3;
+    background: #cccccc;
   }
 }
 
