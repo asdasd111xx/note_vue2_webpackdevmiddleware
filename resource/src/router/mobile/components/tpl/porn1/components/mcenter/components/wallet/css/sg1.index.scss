@@ -2,6 +2,7 @@
 
 .invite-wrap {
   background: var(--mcenter_invite_background_color);
+
   .content {
     font-weight: 700;
     color: var(--mcenter_invite_text_color);
@@ -40,6 +41,7 @@
 .balance-wrap {
   .balance-total-item {
     color: var(--mcenter_wallet_redpot_text_color);
+
     .balance-item-money {
       color: var(--mcenter_wallet_text_color);
     }
@@ -47,5 +49,12 @@
 
   .recycle-btn {
     color: var(--mcenter_wallet_recycle_text_color);
+  }
+}
+
+.balance-item-wrap {
+  .balance-redjackpot-text {
+    color: var(--mcenter_wallet_redpot_text_color);
+    word-break: break-word;
   }
 }
