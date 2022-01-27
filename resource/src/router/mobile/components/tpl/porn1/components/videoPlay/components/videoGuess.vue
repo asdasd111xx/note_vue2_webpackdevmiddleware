@@ -12,7 +12,7 @@
             `/static/image/_new/video/icon_like${
               ['les', 'gay'].includes(source)
                 ? '_red'
-                : ['porn1'].includes(routerTPL)
+                : ['porn1', 'aobo1', 'sp1'].includes(routerTPL)
                 ? '_gray'
                 : ''
             }.png`
@@ -229,7 +229,7 @@ export default {
   padding-top: 1px;
   overflow: hidden;
   line-height: 14px;
-  color: var(--slider_text_active_color);
+  color: #5e626d;
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
