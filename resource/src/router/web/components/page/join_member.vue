@@ -646,7 +646,10 @@
       <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
         <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
         <span><a :href="beHostUrl" target="_blank">成为主播</a></span>
-        <span @click.stop="$router.push('/mobile')">访客进入</span>
+        <span
+          @click.stop="$router.push('/mobile/live/iframe/home?hasFooter=true')"
+          >访客进入</span
+        >
       </div>
       <div
         v-if="themeTPL != 'sg1' && themeTPL != 'ey1'"
