@@ -32,7 +32,8 @@ export default {
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      activity: "getActivity"
     }),
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
@@ -48,7 +49,10 @@ export default {
           }
         },
         hasClose: true,
-        title: "访客注册"
+        title:
+          this.activity.isActivity && this.activity.totalAmount > 0
+            ? "领取彩金"
+            : "访客注册"
       };
     }
   },

@@ -36,7 +36,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      activity: "getActivity"
     }),
     headerConfig() {
       return {
@@ -49,7 +50,10 @@ export default {
           }
         },
         hasClose: true,
-        title: "访客注册"
+        title:
+          this.activity.isActivity && this.activity.totalAmount > 0
+            ? "领取彩金"
+            : "访客注册"
       };
     }
   },
