@@ -222,7 +222,7 @@ export default {
     display: block;
     width: 100%;
     height: 120px;
-    background: linear-gradient(108deg, #fdfeff, #e2e8fe);
+    background: linear-gradient(180deg, #fdfeff, #e2e8fe);
     z-index: 0;
 
     &::after {
@@ -237,7 +237,7 @@ export default {
       background-image: url("/static/image/porn1/default/default_logo.png");
     }
     &.aobo1 {
-      background: linear-gradient(108deg, #fdfeff, #fdf2f2);
+      background: linear-gradient(180deg, #fdfeff, #fdf2f2);
       &::after {
         content: "";
         background-image: url("/static/image/aobo1/default/default_logo.png");
