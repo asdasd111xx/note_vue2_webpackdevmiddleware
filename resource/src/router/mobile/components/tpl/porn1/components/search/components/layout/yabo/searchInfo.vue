@@ -255,6 +255,7 @@ export default {
     min-height: 100%;
     margin: auto;
     z-index: 1;
+    position: relative;
   }
 }
 

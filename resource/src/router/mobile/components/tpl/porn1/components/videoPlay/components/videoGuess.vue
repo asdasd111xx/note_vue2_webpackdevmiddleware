@@ -27,8 +27,9 @@
       :class="[$style['video-wrap'], 'clearfix']"
       @click="onClick(video.id)"
     >
-      <div :class="$style['image-wrap']">
-        <img :src="img" :img-id="video.id" />
+      <div :class="[$style['image-wrap'], $style[siteConfig.ROUTER_TPL]]">
+        <div v-if="img === ''"></div>
+        <img v-else :src="img" :img-id="video.id" />
       </div>
       <div :class="$style['info-wrap']">
         <div
@@ -83,13 +84,14 @@ export default {
       return this.siteConfig.ROUTER_TPL;
     },
     img() {
-      return this.$getCdnPath(
-        `/static/image/${this.themeTPL}/default/${
-          this.source === "yabo" || this.source === "av"
-            ? "bg_video03_d"
-            : "bg_video03_1_d@3x"
-        }.png`
-      );
+      // return this.$getCdnPath(
+      //   `/static/image/${this.themeTPL}/default/${
+      //     this.source === "yabo" || this.source === "av"
+      //       ? "bg_video03_d"
+      //       : "bg_video03_1_d@3x"
+      //   }.png`
+      // );
+      return "";
     },
     siteId() {
       switch (this.source) {
@@ -203,13 +205,43 @@ export default {
 }
 
 .image-wrap {
+  position: relative;
   overflow: hidden;
   width: 40%;
+
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  &::after {
+    content: "";
+    z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 72px;
+    height: 72px;
+    transform: translate(-50%, -50%);
+    background-image: url("/static/image/porn1/default/default_logo.png");
+  }
+  &.aobo1 {
+    background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+    &::after {
+      content: "";
+      z-index: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      transform: translate(-50%, -50%);
+      background-image: url("/static/image/aobo1/default/default_logo.png");
+    }
+  }
 
   > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1;
+    position: relative;
   }
 }
 
