@@ -52,8 +52,8 @@ export default {
         // 泡泡直播轉導
         localStorage.removeItem("live-iframe-event-from");
         this.$router.push({
-          path: "live/iframe",
-          query: { ...this.$route.query, hasFooter: "true" }
+          name: "home",
+          query: { ...this.$route.query, toLive: "true" }
         });
       } else {
         this.$router.push({

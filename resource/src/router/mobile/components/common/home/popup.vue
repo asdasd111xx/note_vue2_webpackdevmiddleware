@@ -416,7 +416,11 @@ export default {
   line-height: 50px;
   text-align: center;
   font-size: 18px;
+  color: #6aaaf5;
 
+  &.sg1 {
+    color: #000000;
+  }
   // &.ey1 {
   //   color: #e42a30;
   // }

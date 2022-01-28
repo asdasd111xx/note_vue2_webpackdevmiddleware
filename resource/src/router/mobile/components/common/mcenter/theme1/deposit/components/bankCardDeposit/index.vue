@@ -1993,6 +1993,9 @@ export default {
       return;
     },
     modeChange(listItem, index) {
+      if (this.curModeGroup.payment_group_id === listItem.payment_group_id) {
+        return;
+      }
       if (this.submitStatus === "stepTwo") {
         this.submitStatus = "stepOne";
       }

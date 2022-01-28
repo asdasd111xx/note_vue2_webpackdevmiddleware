@@ -38,7 +38,6 @@ export default new Router({
         //   next();
         //   return;
         // }
-
         if (to.query.page && to.query.page === "pwdreset") {
           next(`/mobile/resetPwd?kr=${to.query.kr}&type=${to.query.type}`);
           return;
@@ -48,6 +47,8 @@ export default new Router({
         const code = urlParams.get("code");
         const channelid = urlParams.get("channelid");
         const action = urlParams.get("action");
+        const toLive = urlParams.get("toLive");
+
         localStorage.removeItem("x-action");
 
         if (code && code !== undefined) {
@@ -67,6 +68,11 @@ export default new Router({
           if (channelid && channelid !== undefined) {
             localStorage.setItem("x-channelid", channelid);
             next(`/mobile?code=${code}&channelid=${channelid}`);
+            return;
+          }
+
+          if (toLive && toLive === "true") {
+            next(`/mobile/live/iframe?hasFooter=true`);
             return;
           }
 
