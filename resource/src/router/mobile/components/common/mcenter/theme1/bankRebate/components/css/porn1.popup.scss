@@ -8,6 +8,11 @@
   bottom: 0;
   z-index: 99;
 
+  .title {
+    background: #f8f8f7;
+    color: #000;
+    font-size: 17px;
+  }
   .content-wrap {
     padding: 13px 0 0 0;
   }
@@ -36,11 +41,6 @@
         border-left: 1px solid #eeeeee;
       }
     }
-  }
-  .title {
-    background: #f8f8f7;
-    color: #000;
-    font-size: 17px;
   }
 }
 
