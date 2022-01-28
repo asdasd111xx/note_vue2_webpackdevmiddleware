@@ -197,15 +197,7 @@ export default {
         method: "get"
       }).then(res => {
         if (res && res.result) {
-          const list = res.result;
-          Object.keys(list).some(key => {
-            if (key === this.pageType) {
-              this.liveHomeSrc = list["home"];
-              clientUri = list[key];
-              return;
-            }
-          });
-
+          let isFrom = false;
           if (localStorage.getItem("live-iframe-event-from")) {
             if (
               this.pageType === "home" &&
@@ -213,9 +205,22 @@ export default {
                 localStorage.getItem("live-iframe-set-home") !== "true")
             ) {
               clientUri = localStorage.getItem("live-iframe-event-from");
+              isFrom = true;
             }
-            localStorage.removeItem("live-iframe-event-from");
-            localStorage.removeItem("live-iframe-set-home");
+          }
+
+          localStorage.removeItem("live-iframe-event-from");
+          localStorage.removeItem("live-iframe-set-home");
+
+          if (!isFrom) {
+            const list = res.result;
+            Object.keys(list).some(key => {
+              if (key === this.pageType) {
+                this.liveHomeSrc = list["home"];
+                clientUri = list[key];
+                return;
+              }
+            });
           }
 
           goLangApiRequest({
