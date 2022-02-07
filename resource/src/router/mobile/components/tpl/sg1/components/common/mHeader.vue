@@ -124,10 +124,7 @@
             领取
           </span>
         </template>
-        <span
-          v-else
-          :class="$style['visitor-noactivity']"
-          @click="checkLayeredURL"
+        <span v-else :class="$style['visitor-title']" @click="checkLayeredURL"
           >访客注册</span
         >
 
@@ -594,9 +591,6 @@ export default {
       word-break: break-word;
       text-align: right;
     }
-  }
-  .visitor-noactivity {
-    color: var(--visitor_money_color);
   }
 }
 
