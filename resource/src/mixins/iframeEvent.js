@@ -192,57 +192,6 @@ export default {
           case "EVENT_ADD_VALUE":
             this.$router.push(`/mobile/mcenter/deposit`);
             return;
-          //我的>任務>活動
-          case "EVENT_HTML":
-            goLangApiRequest({
-              method: "post",
-              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-              params: {
-                code: "promotion",
-                clientUri: data.data
-              }
-            }).then(res => {
-              //取得活動標題
-              goLangApiRequest({
-                method: "get",
-                // headers: header,
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-                params: {
-                  lang: "zh-cn"
-                }
-              }).then(res => {
-                if (res.status === "000") {
-                  let url = data.data;
-                  let promotionId = url.split("?")[0].split("/")[
-                    url.split("?")[0].split("/").length - 1
-                  ];
-
-                  res.data.ret.forEach(promo => {
-                    if (promo.link.includes(promotionId)) {
-                      this.giftTitle = promo.name;
-                      localStorage.setItem(
-                        "iframe-third-url-title",
-                        promo.name
-                      );
-                    }
-                  });
-                }
-              });
-
-              if (res && res.data && res.data.uri) {
-                this.redirectIframe = true;
-                localStorage.setItem("iframe-third-url", res.data.uri);
-                localStorage.setItem(
-                  "iframe-third-origin",
-                  `live/iframe/home?hasFooter=true`
-                );
-
-                setTimeout(() => {
-                  this.$router.push(`/mobile/iframe/promotion`);
-                }, 800);
-              }
-            });
-            return;
           case "EVENT_REDIRECT_PAGE":
             let _data = data.data.toUpperCase();
 
