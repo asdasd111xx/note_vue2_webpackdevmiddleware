@@ -221,7 +221,8 @@ export default {
           },
           fail: res => {
             this.isLoading = false;
-            console.log(res);
+            this.errMsg = res.data.msg;
+            // console.log(res);
           }
         });
         return;
