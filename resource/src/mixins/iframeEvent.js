@@ -200,7 +200,7 @@ export default {
                 this.$router.push(`/mobile/mcenter/live/diamond`);
                 return;
               case "DEPOSIT":
-                this.$router.push(`/mobile/mcenter/deposit`);
+                this.$router.push(`/mobile/mcenter/deposit?redirect=live`);
                 return;
               case "CUSTOMERSERVICE":
                 this.$router.push(`/mobile/service`);

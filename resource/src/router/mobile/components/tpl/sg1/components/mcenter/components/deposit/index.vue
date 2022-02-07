@@ -46,7 +46,7 @@ export default {
           } else {
             // 由直播間進入，需返回直播間
             if (["live"].includes(this.$route.query.redirect)) {
-              this.$router.push("/mobile/live/home");
+              this.$router.push("/mobile/live/iframe/home?hasFooter=true");
             } else if (["diamond"].includes(this.$route.query.redirect)) {
               this.$router.back();
             } else {
