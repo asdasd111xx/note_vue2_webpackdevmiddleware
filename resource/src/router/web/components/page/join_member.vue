@@ -25,7 +25,7 @@
             </div></template
           >
           <template v-if="themeTPL === 'sg1'"
-            ><div :class="$style['visitor-get']" style="color:#000">
+            ><div :class="$style['visitor-get']">
               注册即送 300 钻
             </div></template
           >
