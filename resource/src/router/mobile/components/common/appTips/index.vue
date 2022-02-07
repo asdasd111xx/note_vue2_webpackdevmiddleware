@@ -79,7 +79,6 @@ export default {
     });
 
     if (
-      ["porn1", "sg1", "sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
       !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
