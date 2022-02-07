@@ -347,7 +347,7 @@ export default {
             method: "get",
             url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
             params: {
-              version: "1"
+              version: "2"
             }
           }).then(res => {
             if (
