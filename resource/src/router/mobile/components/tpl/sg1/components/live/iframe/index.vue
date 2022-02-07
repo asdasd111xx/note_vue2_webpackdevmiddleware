@@ -45,9 +45,8 @@
         :class="[$style['iframe']]"
         :src="src"
         @load="onLoadiframe"
-        allow="geolocation"
+        allow="geolocation; fullscreen"
         scrolling="auto"
-        allowfullscreen="allowfullscreen"
         frameborder="0"
         crossorigin
       />
