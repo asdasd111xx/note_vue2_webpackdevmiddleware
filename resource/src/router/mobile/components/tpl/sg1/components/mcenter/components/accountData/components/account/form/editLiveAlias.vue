@@ -89,22 +89,14 @@ export default {
         funcBtnActive: !!this.value && !this.tipMsg
       };
     }
-    // checkSameName() {
-    //   if (this.paopaoMemberCardInfo.alias == this.value) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // }
   },
   created() {
     this.actionGetExtRedirect({
       api_uri: "/api/platform/v1/user/personal-info",
       method: "get"
     }).then(data => {
-      this.paopaoMemberCardInfo = data.result;
-      if (this.paopaoMemberCardInfo.alias) {
-        this.value = this.paopaoMemberCardInfo.alias;
+      if (data && data.result && data.result.alias) {
+        this.value = data.result.alias;
       }
     });
   },
@@ -117,7 +109,7 @@ export default {
     ]),
     onInput(e) {
       this.actionVerificationFormData({
-        target: "alias",
+        target: "live_alias",
         value: e.target.value
       }).then(val => {
         this.value = val;

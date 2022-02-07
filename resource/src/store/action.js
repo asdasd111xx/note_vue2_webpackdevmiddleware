@@ -1910,6 +1910,11 @@ export const actionVerificationFormData = (
       val = val.replace(regex, "").substring(0, 20);
       break;
 
+    case "live_alias":
+      regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+      val = val.replace(regex, "").substring(0, 8);
+      break;
+
     case "graphicVerification":
       regex = /[^0-9a-zA-Z]/g;
 
