@@ -15,17 +15,17 @@
         <!-- 訪客&&活動開啟文案 -->
         <div style="margin-top: 40px;">
           <template v-if="activity.isActivity && activity.totalAmount > 0"
-            ><div :class="$style['visitor-get']">
+            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
               访客加入会员
             </div>
-            <div :class="$style['visitor-get']">
+            <div :class="[$style['visitor-get'], $style[themeTPL]]">
               {{
                 `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元`
               }}
             </div></template
           >
           <template v-if="themeTPL === 'sg1'"
-            ><div :class="$style['visitor-get']">
+            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
               注册即送 300 钻
             </div></template
           >
