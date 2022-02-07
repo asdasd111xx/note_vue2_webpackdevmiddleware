@@ -103,6 +103,9 @@ export default {
       method: "get"
     }).then(data => {
       this.paopaoMemberCardInfo = data.result;
+      if (this.paopaoMemberCardInfo.alias) {
+        this.value = this.paopaoMemberCardInfo.alias;
+      }
     });
   },
   methods: {
