@@ -1,7 +1,7 @@
 @import "./index.module.scss";
 
 .submit-btn {
-  >div {
+  > div {
     border-radius: 23px;
   }
 }
@@ -9,7 +9,7 @@
 .check-container {
   .check-cell {
     &.custom-color {
-      color: #BE9E7F;
+      color: #be9e7f;
     }
   }
 
@@ -18,16 +18,17 @@
   }
 }
 
-
 .bank-wrap {
   .bank-type-content {
     .bank-type {
       &.is-current {
-        color: #414655;
+        color: #e53266;
         border: 1px solid #e53266;
-        background: linear-gradient(-45deg,
-            #e53266 12px,
-            hsla(0, 0%, 100%, 0) 0);
+        background: linear-gradient(
+          -45deg,
+          #e53266 12px,
+          hsla(0, 0%, 100%, 0) 0
+        );
       }
     }
   }
@@ -37,18 +38,15 @@
   color: #be9e7f;
 }
 
-
 .message-close {
   color: #000000;
 }
-
 
 .exchange-rate {
   .time {
     color: #000000;
   }
 }
-
 
 .balance-redjackpot-text {
   color: var(--mcenter_wallet_redpot_text_color);
