@@ -1221,7 +1221,17 @@ export default {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
-        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE", "该栏位不得为空");
+        switch (key) {
+          case "confirm_password":
+            this.allTip[key] = "";
+            break;
+          default:
+            this.allTip[key] = this.$text(
+              "S_JM_FIELD_REQUIRE",
+              "该栏位不得为空"
+            );
+            break;
+        }
       } else {
         if (this.allValue[key] !== "") {
           //進入驗證
