@@ -1364,7 +1364,10 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
 
   return goLangApiRequest({
     method: "get",
-    url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Common/Jackfruit/List"
+    url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Common/Jackfruit/List",
+    params: {
+      version: configInfo.MOBILE_WEB_TPL === "sg1" ? 2 : 1
+    }
   }).then(res => {
     const { result, data } = res.data;
     if (result === "ok") {
