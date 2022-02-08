@@ -417,6 +417,7 @@ export default {
       }
       this.lockedSubmit = true;
       this.isLoading = true;
+
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/diamond/buy/user",
         method: "post",
@@ -425,12 +426,15 @@ export default {
           ref_id: `${Date.now()}${this.memInfo.user.username}`
         }
       }).then(data => {
+        setTimeout(() => {
+          this.lockedSubmit = false;
+        }, 1500);
+
         if (data && data.error_text) {
           this.actionSetGlobalMessage({
             msg: data.error_text,
             code: data.error_code,
             cb: () => {
-              this.lockedSubmit = false;
               this.init();
             }
           });
@@ -439,21 +443,17 @@ export default {
         if (data && data.result && data.result.result !== "ok") {
           this.actionSetGlobalMessage({
             msg: data.msg,
-            cb: () => {
-              this.lockedSubmit = false;
-            }
+            cb: () => {}
           });
         }
 
         if (data && data.result && data.result.result === "success") {
+          this.diamondTotal = data.result.diamond_total;
+
           this.actionSetGlobalMessage({
             msg: "兑换成功",
-            cb: () => {
-              this.lockedSubmit = false;
-            }
+            cb: () => {}
           });
-
-          //this.currentSelRate = {};
         }
 
         this.isLoading = false;
