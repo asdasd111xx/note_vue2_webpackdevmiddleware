@@ -231,6 +231,10 @@ export default {
     }
   },
   created() {
+    // hideKeyboard
+    document.activeElement.blur();
+    $("input").blur();
+
     sendUmeng(1);
     if (localStorage.getItem("redirect_url")) {
       this.showRedirectJump = true;
