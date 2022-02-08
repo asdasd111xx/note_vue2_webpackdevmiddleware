@@ -21,7 +21,12 @@
           <div>
             Jackpot
           </div>
-          <div :class="$style['total-bonus-amount']">
+          <div
+            :class="[
+              $style['total-bonus-amount'],
+              $style[siteConfig.ROUTER_TPL]
+            ]"
+          >
             <animatedNumber
               v-if="animatedNumber.value !== '--'"
               :value="animatedNumber.value"
@@ -530,6 +535,12 @@ export default {
     text-align: right;
     // color: var(--game_bonus_amount);
     color: #262626;
+  }
+
+  &.sg1 {
+    > span {
+      color: #aa7e28;
+    }
   }
 }
 
