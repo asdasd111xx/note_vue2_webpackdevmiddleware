@@ -267,6 +267,9 @@ export default {
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
         this.captcha = "";
         if (res && res.data && res.data.cookie) {
+          document.activeElement.blur();
+          $("input").blur();
+
           if (res.data.cookie.cid != "") {
             try {
               let cookie = res.data.cookie;
