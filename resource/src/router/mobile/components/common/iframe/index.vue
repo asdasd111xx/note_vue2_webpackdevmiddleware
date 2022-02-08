@@ -808,12 +808,16 @@ export default {
   -webkit-overflow-scrolling: touch;
 
   &.fullScreen {
-    margin-top: unset !important;
-    height: 100vh !important;
+    > iframe {
+      margin-top: unset !important;
+      height: 100vh !important;
+    }
   }
 
   &.has-header {
-    margin-top: 43px;
+    > iframe {
+      margin-top: 43px;
+    }
   }
 }
 
@@ -838,7 +842,7 @@ export default {
 .header {
   margin: 0 auto;
   max-width: $mobile_max_width;
-  position: absolute;
+  position: fixed;
   top: 0;
   z-index: 10;
   width: 100%;
