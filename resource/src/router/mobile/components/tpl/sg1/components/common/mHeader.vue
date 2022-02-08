@@ -919,7 +919,7 @@ export default {
 }
 
 .normal-search {
-  background: url("/static/image/common/ic_search_gold.png");
+  background: url("/static/image/common/ic_search_grey3.png");
   width: 20px;
   height: 20px;
   background-size: contain;
