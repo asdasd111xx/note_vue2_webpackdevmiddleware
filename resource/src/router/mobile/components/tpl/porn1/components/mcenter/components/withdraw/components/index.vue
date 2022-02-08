@@ -2365,13 +2365,13 @@ export default {
     setWithdrawTypeIsNormal(type) {
       this.epointSelectType = type;
       if (type === 0) {
+        this.selectedCard = {}
         if (this.allWithdrawAccount.length > 0) {
           let useCard = this.allWithdrawAccount.findIndex((item)=>{return item.allow})
           if(useCard >= 0){
             this.handleSelectCard(this.allWithdrawAccount[useCard]);
           }
         }
-        this.selectedCard = {}
       } else {
         if (this.withdrawUserData.account.length > 0) {
           this.handleSelectCard(this.epointSelectType ===1 ? this.epointWallet[0]:this.epointNewWallet[0]);
