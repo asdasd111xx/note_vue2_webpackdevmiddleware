@@ -479,7 +479,7 @@
       v-if="
         (epointSelectType === 0 &&
           allWithdrawAccount &&
-          allWithdrawAccount.length > 0) ||
+          allWithdrawAccount.length > 0 && selectedCard.id != null) ||
           (epointWallet.length > 0 &&
             userBankOption.length > 0 &&
             epointSelectType === 1) ||
@@ -2366,8 +2366,12 @@ export default {
       this.epointSelectType = type;
       if (type === 0) {
         if (this.allWithdrawAccount.length > 0) {
-          this.handleSelectCard(this.allWithdrawAccount[0]);
+          let useCard = this.allWithdrawAccount.findIndex((item)=>{return item.allow})
+          if(useCard >= 0){
+            this.handleSelectCard(this.allWithdrawAccount[useCard]);
+          }
         }
+        this.selectedCard = {}
       } else {
         if (this.withdrawUserData.account.length > 0) {
           this.handleSelectCard(this.epointSelectType ===1 ? this.epointWallet[0]:this.epointNewWallet[0]);
