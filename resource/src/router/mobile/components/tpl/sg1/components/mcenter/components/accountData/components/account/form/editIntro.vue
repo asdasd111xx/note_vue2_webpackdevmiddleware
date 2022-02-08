@@ -90,7 +90,7 @@ export default {
     ]),
     onInput(e) {
       this.actionVerificationFormData({
-        target: "alias",
+        target: "intro",
         value: e.target.value
       }).then(val => {
         this.value = val;
