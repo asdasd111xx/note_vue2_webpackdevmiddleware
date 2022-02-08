@@ -414,7 +414,14 @@ export default {
                 // 強制修改密碼
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                    this.$router.replace("/mobile");
+                    //泡泡登入時重設密碼導向直播首頁
+                    if (this.siteConfig.ROUTER_TPL === "sg1") {
+                      window.location.href =
+                        "/mobile/live/iframe/home?hasFooter=true";
+                      return;
+                    } else {
+                      this.$router.replace("/mobile");
+                    }
                   });
                   return;
                 }
