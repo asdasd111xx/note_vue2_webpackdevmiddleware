@@ -28,7 +28,7 @@ const outputDirName = process.env.CDN_HOST
 // const domain = 'https://ey.688lg.com/';
 
 // 泡泡 500035
-// const domain = "https://sgtt.66boxing.com/";
+const domain = "https://sgtt.66boxing.com/";
 
 // Beta 100009
 // const domain ="https://sg.66apples.com";
@@ -39,7 +39,7 @@ const outputDirName = process.env.CDN_HOST
 // const domain = "https://5lpet08l.com/";
 
 // 澳博国际 QA 9999894
-const domain = "https://auqa1.66boxing.com/";
+//const domain = "https://auqa1.66boxing.com/";
 // const domain = "https://952t.66boxing.com/";
 // Beta
 // const domain = "";

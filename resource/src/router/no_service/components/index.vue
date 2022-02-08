@@ -1,12 +1,12 @@
 <template>
   <div
     v-if="themeTPL && !['ey1'].includes(themeTPL)"
-    :class="[$style['content'], $style[themeTPL]]"
+    :class="[$style['content'], $style['page403'], $style[themeTPL]]"
   >
     <div :class="$style['logo-header']">
       <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
     </div>
-    <div :class="[$style['title'], $style[themeTPL]]">
+    <div :class="[$style['title'], $style['page403'], $style[themeTPL]]">
       {{ $t("ROUTER_NO_SERVICE_TITLE") }}
     </div>
     <div :class="$style['text']">
@@ -44,7 +44,11 @@
         ]"
         @click="mailTo()"
       >
-        <span>{{ mailURL }}</span>
+        <div v-if="themeTPL == 'sg1'">
+          <span>paopao 客服邮箱 {{ mailURL }}</span> <br />
+          <span>paopao 主播邮箱 {{ liverMailURL }}</span>
+        </div>
+        <span v-else>{{ mailURL }}</span>
       </div>
 
       {{ $t("ROUTER_NO_SERVICE_TEXT2") }}
@@ -142,6 +146,11 @@ export default {
 
       if (this.themeTPL === "sp1") {
         return "senghout5151@gmail.com";
+      }
+    },
+    liverMailURL() {
+      if (this.themeTPL === "sg1") {
+        return "cs2@paocs.co";
       }
     }
   },

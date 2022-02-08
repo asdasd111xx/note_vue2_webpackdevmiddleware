@@ -15,9 +15,20 @@
     }
 
     .download {
-      background: var(--main_button_color1);
-      border: none;
-      color: var(--service_add_text_button);
+      background: var(--service_webview_button);
+      border-radius: 14px;
+      color: var(--service_webview_text_button);
     }
   }
+}
+
+.info-card {
+  background-image: -webkit-linear-gradient(196deg, #fd5183, #e53266);
+  background-image: linear-gradient(254deg, #fd5183, #e53266);
+}
+
+.info-card2 {
+  margin-top: 20px;
+  background-image: -webkit-linear-gradient(16deg, #61d2eb, #4cbed8);
+  background-image: linear-gradient(74deg, #61d2eb, #4cbed8);
 }

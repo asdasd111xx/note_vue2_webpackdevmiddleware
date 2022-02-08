@@ -3,7 +3,10 @@
     <div :class="$style['mask']"></div>
     <div :class="$style['container']">
       <div :class="$style['header']">
-        <div @click="close" :class="$style['prev']">
+        <div
+          @click="close"
+          :class="[$style['prev'], { [$style['sg1']]: themeTPL === 'sg1' }]"
+        >
           {{ $text("S_CANCEL", "取消") }}
         </div>
 
@@ -179,6 +182,10 @@ export default {
     text-align: center;
     width: 40px;
     color: #6aaaf5;
+
+    &.sg1 {
+      color: #000000;
+    }
   }
 
   .title {

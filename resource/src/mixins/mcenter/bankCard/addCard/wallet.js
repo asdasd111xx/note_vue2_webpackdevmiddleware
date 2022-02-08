@@ -55,6 +55,7 @@ export default {
         this.formData.keyring = "";
         this.errorMsg = "";
         this.checkData();
+        this.NextStepStatus = false;
       } else if (this.addBankCardStep === "two") {
         this.errorMsg = "";
       }
@@ -206,7 +207,9 @@ export default {
       this.NextStepStatus = Object.keys(this.formData).every(key => {
         if (this.addBankCardStep === "two") {
           if (key === "phone" || key === "keyring") {
-            this.errorMsg = "";
+            if (this.formData.phone.length >= 11) {
+              this.errorMsg = "";
+            }
             return this.formData[key];
           }
           return true;

@@ -13,25 +13,25 @@
   align-items: center;
   margin-top: 11px;
 
-  > div {
+  >div {
     width: 50%;
   }
 
-  > .balance-wrap {
-    > div:first-child {
+  >.balance-wrap {
+    >div:first-child {
       text-align: center;
 
-      > img {
+      >img {
         width: 14px;
         height: 14px;
       }
 
-      > span {
+      >span {
         color: #5e626d;
       }
     }
 
-    > div:last-child {
+    >div:last-child {
       // color: var(--mcenter_wallet_text_color);
       color: #6aaaf5;
       text-align: center;
@@ -68,7 +68,7 @@
   justify-content: center;
   font-weight: bold;
 
-  > img {
+  >img {
     width: 18px;
     height: 18px;
   }
@@ -99,12 +99,12 @@
     opacity: 0.5;
   }
 
-  > img {
+  >img {
     width: 25px;
     height: 25px;
   }
 
-  > span {
+  >span {
     padding: 0 0 0 10px;
     width: 80%;
     overflow: hidden;
@@ -133,7 +133,7 @@
     }
   }
 
-  > .check-box {
+  >.check-box {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -142,6 +142,7 @@
 
     &.checked {
       @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+
       &.image-porn1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }
@@ -152,6 +153,10 @@
 
       &.image-sp1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+      }
+
+      &.image-sg1 {
+        @include check-ok("/static/image/sg1/mcenter/ic_check.png");
       }
     }
 
@@ -191,47 +196,53 @@
 }
 
 .bank-wrap {
-  // display: flex;
-  // height: 60px;
+  display: flex;
+  flex-direction: column;
   margin-top: 10px;
   background-color: #fefffe;
   padding: 8px 18px;
   // min-height: 50px;
   // flex-wrap: wrap;
 
-  .bank-type {
-    position: relative;
-    width: 110px;
-    height: 40px;
+  .bank-type-content {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    margin-right: 10px;
+    flex-direction: row;
 
-    &.is-current {
-      // border: 1px solid var(--wallet_border_color);
-      border: 1px solid #6dabf2;
-      // color: var(--wallet_border_text_color);
-      color: #414655;
-      // background: linear-gradient(
-      //   -45deg,
-      //   var(--wallet_border_color) 10px,
-      //   hsla(0, 0%, 100%, 0) 0
-      // );
-      background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
-      margin-bottom: 5px;
-    }
+    .bank-type {
+      position: relative;
+      width: 100px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      margin-right: 10px;
 
-    .select {
-      position: absolute;
-      width: 7px;
-      height: 5px;
-      right: 1px;
-      bottom: 2px;
+      &.is-current {
+        // border: 1px solid var(--wallet_border_color);
+        border: 1px solid #6dabf2;
+        // color: var(--wallet_border_text_color);
+        color: #414655;
+        // background: linear-gradient(
+        //   -45deg,
+        //   var(--wallet_border_color) 10px,
+        //   hsla(0, 0%, 100%, 0) 0
+        // );
+        background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
+        margin-bottom: 5px;
+      }
+
+      .select {
+        position: absolute;
+        width: 7px;
+        height: 5px;
+        right: 1px;
+        bottom: 2px;
+      }
     }
   }
+
 }
 
 .withdraw-status-tip {
@@ -260,7 +271,7 @@
   margin-top: 5px;
   position: relative;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -338,7 +349,7 @@
   justify-content: center;
   float: right;
 
-  > span {
+  >span {
     font-size: 14px;
     background: var(--mcenter_button_color1);
     color: var(--mcenter_button_text_color1);
@@ -366,7 +377,7 @@
   margin-top: 15px;
   padding: 0 14px;
 
-  > div {
+  >div {
     margin: 0 auto;
     height: 45px;
     background: var(--mcenter_button_color1);
@@ -503,7 +514,7 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--mcenter_slider_text_active_color);
+      color: #414655;
       margin-bottom: 4px;
     }
   }
@@ -528,6 +539,7 @@
 
     &.custom-color {
       // color: var(--countdown_time_text_color);
+
       color: #db6372;
 
       &.custom-color-background {
@@ -540,7 +552,7 @@
       height: 66px;
     }
 
-    > span:last-child {
+    >span:last-child {
       float: right;
     }
 
@@ -584,14 +596,15 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    // color: var(--mcenter_wallet_text_color);
+
+    //color: var(--mcenter_wallet_text_color);
     color: #6aaaf5;
     text-align: center;
     bottom: 12px;
     width: 100%;
     border-top: 1px solid#F8F8F7;
     font-size: 16px;
-    margin-top: 30px;
+    // margin-top: 30px;
 
     .check-btn {
       font-weight: bold;
@@ -642,7 +655,7 @@
   margin-top: 5px;
   -webkit-text-security: disc;
 
-  > input {
+  >input {
     border: unset;
     box-shadow: none;
     outline: none;
@@ -666,8 +679,8 @@
 }
 
 @media screen and (min-width: $phone) {
-  > .balance-wrap {
-    > div:last-child {
+  >.balance-wrap {
+    >div:last-child {
       font-size: 17px;
     }
   }
@@ -689,7 +702,7 @@
   }
 
   .withdraw-input {
-    > input {
+    >input {
       font-size: 17px;
 
       &::placeholder {
@@ -704,7 +717,7 @@
   }
 
   .withdraw-max {
-    > span {
+    >span {
       font-size: 15px;
     }
   }
@@ -714,7 +727,7 @@
   }
 
   .submit-btn {
-    > div {
+    >div {
       font-size: 15px;
     }
   }

@@ -16,6 +16,7 @@
   .content-wrap {
     padding: 13px 0 0 0;
   }
+
   .button-wrap {
     height: 42px;
     line-height: 41px;
@@ -58,7 +59,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: #f8f8f7;
-  border-radius: 8px;
+  border-radius: 13px;
 }
 
 .close-img {
@@ -82,6 +83,7 @@
   color: #fff;
   font-size: 16px;
   text-align: center;
+  border-radius: 13px;
 }
 
 .content-wrap {
@@ -90,6 +92,7 @@
   .content {
     text-align: center;
   }
+
   h1 {
     font-size: 16px;
     margin-bottom: 14px;
@@ -131,6 +134,7 @@
 
 .tips {
   margin-top: 15px;
+  margin-bottom: 13px;
 }
 
 .tips-close {

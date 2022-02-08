@@ -53,7 +53,7 @@ export default {
         localStorage.removeItem("live-iframe-event-from");
         this.$router.push({
           name: "home",
-          query: { ...this.$route.query, toLive: "true" }
+          query: { toLive: "true", ...this.$route.query }
         });
       } else {
         this.$router.push({

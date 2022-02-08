@@ -16,11 +16,9 @@
         <div>
           <img :src="cell.iconUrl" />
         </div>
-        <div>
-          <div>
-            <div>{{ cell.name }}</div>
-            <div>{{ cell.value }}</div>
-          </div>
+        <div :class="$style['left-line']">
+          <div>{{ cell.name }}</div>
+          <div>{{ cell.value }}</div>
         </div>
         <div :class="$style['copy-btn']">
           <div @click="copy(cell.value)">{{ $text("S_COPY", "复制") }}</div>
@@ -96,8 +94,19 @@ export default {
     margin-right: 10px;
   }
 }
+
 .content {
   padding: 5px;
+
+  .cell:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    width: 95%;
+    height: 1px;
+    background-color: #eeeeee;
+    bottom: 0px;
+  }
+
   .cell {
     background-color: #fefffe;
     display: flex;
@@ -113,22 +122,25 @@ export default {
       justify-content: center;
       margin: 0 20px;
       border-right: #f8f8f7 solid 1px;
+
       img {
         width: 28px;
       }
     }
 
     > div:nth-child(2) {
-      margin-left: 20px;
+      // margin-left: 20px;
       width: 100%;
     }
 
     > .copy-btn {
-      color: var(--help_contact_copy);
       width: 120px;
       text-align: center;
+      background-color: #ededed;
+      font-size: 12px;
+
       > div {
-        border-radius: 5px;
+        border-radius: 15px;
         border: 1px solid var(--help_contact_copy);
         color: var(--help_contact_copy);
         padding: 2.5px 5px;
@@ -136,6 +148,13 @@ export default {
     }
   }
 }
+
+.content:not(:first-child) {
+  .cell .left-line > div:last-child {
+    color: rgba(65, 70, 85, 0.3);
+  }
+}
+
 .online-btn {
   height: 45px;
   margin-top: 30px;
@@ -146,7 +165,7 @@ export default {
   > div {
     color: var(--mcenter_button_text_color1);
     height: 45px;
-    border-radius: 5px;
+    border-radius: 23px;
     font-size: 16px;
     line-height: 45px;
     background: var(--mcenter_button_color1);

@@ -120,17 +120,26 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <span :class="$style['visitor-title']" @click="checkLayeredURL"
-          >访客彩金</span
-        >
+        <template v-if="activity.isActivity && guestAmount > 0">
+          <span :class="$style['visitor-title']" @click="checkLayeredURL"
+            >访客彩金</span
+          >
+          <span
+            :class="[$style['visitor-money'], $style['just-money']]"
+            @click="checkLayeredURL"
+            >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
+          >
+          <span :class="$style['visitor-money']" @click="checkLayeredURL">
+            领取
+          </span>
+        </template>
         <span
-          :class="[$style['visitor-money'], $style['just-money']]"
+          v-else
+          :class="$style['visitor-noactivity']"
           @click="checkLayeredURL"
-          >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
+          >访客注册</span
         >
-        <span :class="$style['visitor-money']" @click="checkLayeredURL"
-          >领取</span
-        >
+
         <span
           @click="
             () => {
@@ -252,7 +261,7 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
-      guestAmount: 0,
+
       remainBonus: 0
     };
   },
@@ -260,7 +269,8 @@ export default {
     ...mapGetters({
       membalance: "getMemBalance",
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      activity: "getActivity"
     }),
     mainClass() {
       const style = this.$style;
@@ -294,21 +304,22 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    guestAmount() {
+      return this.activity.totalAmount;
     }
   },
   created() {
-    if (!this.loginStatus) {
-      this.getGuestBalance();
-    } else {
-      this.getRedJackpot();
-    }
+    this.actionSetActivity();
+    if (this.loginStatus) this.getRedJackpot();
   },
   methods: {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetLayeredURL",
       "actionGetActingURL",
-      "actionGetRegisterURL"
+      "actionGetRegisterURL",
+      "actionSetActivity"
     ]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
@@ -362,23 +373,6 @@ export default {
       this.$router.push({ path: "search", query: { source: this.source } });
     },
 
-    // 取得訪客餘額
-    getGuestBalance() {
-      return goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
-        params: {
-          account: localStorage.getItem("uuidAccount"),
-          cid: localStorage.getItem("guestCid")
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.guestAmount = res.data.totalAmount;
-          this.getRedJackpot();
-        }
-      });
-    },
-
     getRedJackpot() {
       goLangApiRequest({
         method: "get",
@@ -389,14 +383,7 @@ export default {
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
           if (res.data.enable) {
-            if (this.loginStatus) {
-              this.remainBonus = res.data.remain_bonus;
-            } else {
-              this.guestAmount = Number(
-                parseFloat(this.guestAmount) +
-                  parseInt(res.data.personal_max_bonus)
-              );
-            }
+            if (this.loginStatus) this.remainBonus = res.data.remain_bonus;
           }
         }
       });
@@ -611,6 +598,9 @@ export default {
   }
   .visitor-border {
     border-right: 1px solid #9ca4be;
+  }
+  .visitor-noactivity {
+    color: var(--visitor_money_color);
   }
 }
 

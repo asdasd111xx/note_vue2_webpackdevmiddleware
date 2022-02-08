@@ -1,1 +1,54 @@
-@import './porn1.vipLevelCard.scss';
+@import "./porn1.vipLevelCard.scss";
+
+.card-level-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding: 30px 0 25px 0;
+
+  .level-slide {
+    width: 90px !important;
+
+    &:not(:last-of-type)::before {
+      content: "";
+      width: 105%;
+      height: 3px;
+      background: #e9e7e4;
+      position: absolute;
+      top: 50%;
+      z-index: -1;
+    }
+  }
+
+  .level-thumb-cell {
+    width: fit-content;
+    min-width: 35px;
+    padding: 0px 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #000;
+    background: #ededed;
+    border: 1px solid #bcc1ca;
+    border-radius: 15px;
+
+    &.active {
+      color: white;
+      background: #000;
+      border: 1px solid #bcc1ca;
+    }
+  }
+}
+
+.card-thumb-cell {
+  color: #000;
+
+  &img:first {
+    opacity: 0.1;
+  }
+}
+
+// VIP如何保級
+.card-level-downgrade {
+  color: #fff;
+  background: var(--vip_keeplevel_color);
+}

@@ -15,7 +15,19 @@
         <div>24小时为您服务</div>
       </div>
 
-      <div :class="$style['header-icon']">
+      <div :class="$style['header-icon']" v-if="themeTPL === 'sg1'">
+        <div
+          :class="$style['icon']"
+          v-for="(item, index) in iconListSg1"
+          :key="index"
+        >
+          <div :class="$style['img']">
+            <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
+          </div>
+          <div :class="[$style['text'], $style[themeTPL]]">{{ item.text }}</div>
+        </div>
+      </div>
+      <div :class="$style['header-icon']" v-else>
         <div
           :class="$style['icon']"
           v-for="(item, index) in iconList"
@@ -56,6 +68,10 @@
     >
       <div>
         <div>
+          <img
+            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
+          />
+          &nbsp;
           <span>在线客服1</span>
         </div>
         <div>Main Customer Support</div>
@@ -77,6 +93,10 @@
     >
       <div>
         <div>
+          <img
+            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
+          />
+          &nbsp;
           <span>在线客服2</span>
         </div>
         <div>Reserve Customer Support</div>
@@ -130,6 +150,20 @@ export default {
         {
           text: "专业客服",
           imgSrc: "/static/image/common/webview/ic_service05.png"
+        }
+      ],
+      iconListSg1: [
+        {
+          text: "多种玩法",
+          imgSrc: "/static/image/sg1/webview/ic_service03.png"
+        },
+        {
+          text: "存取便捷",
+          imgSrc: "/static/image/sg1/webview/ic_service04.png"
+        },
+        {
+          text: "专业客服",
+          imgSrc: "/static/image/sg1/webview/ic_service05.png"
         }
       ],
       yaboIconSrc: "/static/image/common/webview/appicon_yabo.png"

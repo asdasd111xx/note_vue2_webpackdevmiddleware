@@ -45,7 +45,8 @@ export default {
 
       promotionTips: "",
       updateBalance: null,
-      bonusList: null
+      bonusList: null,
+      amountFixType: false
     };
   },
   computed: {
@@ -227,13 +228,14 @@ export default {
       }
 
       if (item.key === "amount") {
+        this.amountFixType = true;
         const limit = Number(this.rechargeConfig.recharge_limit) || 0;
         const amount = Number(value);
 
         this.formData.amount = value.replace(/[^0-9]/g, "").substring(0, 16);
         this.displayAmount = thousandsCurrency(this.formData.amount);
 
-        if (value !== "" && amount === 0) {
+        if (amount === 0) {
           errorMessage = "请输入转让金额";
         }
 

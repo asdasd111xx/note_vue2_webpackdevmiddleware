@@ -29,7 +29,11 @@
         </template>
       </div>
       <div :class="$style['logout']" @click="logout">
-        退出(返回访客)
+        {{
+          activity.isActivity && activity.totalAmount > 0
+            ? "退出(返回访客)"
+            : "退出"
+        }}
       </div>
     </div>
   </mobile-container>
@@ -73,7 +77,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      version: "getVersion"
+      version: "getVersion",
+      activity: "getActivity"
     }),
     headerConfig() {
       return {

@@ -3,7 +3,11 @@
     <div
       v-if="newsTitleList"
       class="news-wrap"
-      :class="`${['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''}-wrap`"
+      :class="[
+        `${
+          ['withdraw', 'deposit'].includes(origin) ? 'fixed' : ''
+        }-wrap ,${themeTPL}`
+      ]"
     >
       <div class="news-icon">
         <img
@@ -19,10 +23,7 @@
         />
       </div>
 
-      <div
-        ref="container"
-        :class="['news-content', { notHome: !isDepositOrWithdraw }]"
-      >
+      <div ref="container" :class="['news-content', `${themeTPL}`]">
         <VTextMarquee
           :speed="35"
           :animate="paused"
@@ -252,9 +253,9 @@ export default {
   min-width: calc(100vw - 51px);
   -webkit-tap-highlight-color: transparent;
 
-  &.notHome {
-    // color: var(--marquee_text_color2);
-    color: #9ca3bf;
+  &.sg1 {
+    color: var(--marquee_text_color2);
+    // color: #9ca3bf;
   }
 }
 

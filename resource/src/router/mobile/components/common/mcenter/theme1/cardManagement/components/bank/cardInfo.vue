@@ -125,7 +125,11 @@
             {{ $text("S_TIPS", "温馨提示") }}
           </div>
 
-          <span>确定解除绑定该张卡片吗？</span>
+          <span>{{
+            ["sg1"].includes(this.routerTPL)
+              ? "确定解除绑定？"
+              : "确定解除绑定该张卡片吗？"
+          }}</span>
         </div>
 
         <div :class="[$style['button-block']]">
@@ -145,7 +149,7 @@
 <script>
 import bankMixin from "@/mixins/mcenter/bankCard/cardInfo/bank";
 import cardItem from "../cardItem";
-
+import { mapGetters } from "vuex";
 export default {
   components: {
     cardItem
@@ -171,6 +175,14 @@ export default {
   },
   created() {
     this.getUserBankList();
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    }
   }
 };
 </script>

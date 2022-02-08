@@ -15,9 +15,9 @@
             />
           </template>
         </div>
-        <span @click="downloadImage('')">
+        <!-- <span @click="downloadImage('')">
           {{ downloadText }}
-        </span>
+        </span> -->
 
         <div :class="$style['timer-block']">
           <div>
@@ -60,7 +60,7 @@
       </div>
 
       <div :class="[$style['button-block']]">
-        <span @click="closePopup">取消</span>
+        <span @click="closePopup">关闭</span>
         <span @click="downloadImage">
           {{ downloadText }}
         </span>
@@ -167,7 +167,8 @@ export default {
           // console.log("popupQrcode-res", res);
           const { result, ret } = res.data;
           if (result !== "ok") {
-            this.actionSetGlobalMessage({ msg: res.data.msg });
+            // this.actionSetGlobalMessage({ msg: res.data.msg });
+            this.errorMsg = res.data.msg;
 
             setTimeout(() => {
               this.closePopup();
@@ -194,6 +195,7 @@ export default {
         })
         .catch(error => {
           this.actionSetGlobalMessage({ msg: error.response.data.msg });
+          this.errorMsg = error.response.data.msg;
           this.closePopup();
         });
     },

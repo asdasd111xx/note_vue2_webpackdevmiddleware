@@ -8,7 +8,6 @@
       { [$style['fullScreen']]: isFullScreen }
     ]"
     :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
-    style="overflow-y:scroll; -webkit-overflow-scrolling: touch;"
   >
     <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
     <transition name="fade">
@@ -99,9 +98,8 @@
       :class="[$style['iframe'], $style[$route.params.page]]"
       :src="src"
       @load="onLoadiframe"
-      allow="geolocation"
+      allow="geolocation; fullscreen"
       scrolling="auto"
-      allowfullscreen="allowfullscreen"
       frameborder="0"
       crossorigin
       style="width: 1px !important; min-width: 100%"
@@ -195,6 +193,8 @@ export default {
           return `/mobile/mcenter/bankCard?redirect=epoint&type=wallet&wallet=epoint`;
         case "EPOINTFROMDEPOSIT":
           return `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN1`;
+        case "EPOINT2FROMDEPOSIT":
+          return `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=BBEPWACN2`;
         default:
           return "/mobile";
       }
@@ -607,6 +607,7 @@ export default {
         console.log("[DATA]:", data.data);
 
         switch (data.event) {
+          case "EVENT_GET_GAME_URL":
           case "EVENT_THIRDPARTY_SWITCH_GAME":
             if (this.loginStatus) {
               this.linkToGame(data.data);
@@ -803,7 +804,8 @@ export default {
   background-color: #fff;
   transition: margin 0.31s, height 0.31s;
 
-  // overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   &.fullScreen {
     margin-top: unset !important;

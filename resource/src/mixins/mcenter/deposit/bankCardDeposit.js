@@ -105,7 +105,7 @@ export default {
       this.showOuterCryptoAddress = this.defaultOuterCrypto === "其他位址";
     },
     defaultEpointWallet() {
-      this.showEpointWalletAddress = this.isSelectBindWallet(34)
+      this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
         ? this.defaultEpointWallet.account === "其他银行卡"
         : false;
     },
@@ -1029,7 +1029,10 @@ export default {
         }
       }
       //e點富
-      if (this.curPayInfo.payment_method_id === 34) {
+      if (
+        this.curPayInfo.payment_method_id === 34 ||
+        this.curPayInfo.payment_method_id === 41
+      ) {
         if (this.showEpointWalletAddress) {
           paramsData = {
             ...paramsData,

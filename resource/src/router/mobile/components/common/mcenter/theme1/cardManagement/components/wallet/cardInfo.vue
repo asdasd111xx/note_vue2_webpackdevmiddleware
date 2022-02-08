@@ -172,11 +172,7 @@
           </div>
 
           <span>
-            {{
-              ["ey1"].includes(themeTPL)
-                ? "确定删除该张卡片吗？"
-                : "确定解除绑定该钱包？"
-            }}
+            {{ removeCardMsg }}
           </span>
         </div>
 
@@ -224,6 +220,18 @@ export default {
   created() {
     this.getNowOpenWallet();
     this.getUserWalletList();
+  },
+  computed: {
+    removeCardMsg() {
+      switch (this.themeTPL) {
+        default:
+          return "确定解除绑定该钱包？";
+        case "ey1":
+          return "确定删除该张卡片吗？";
+        case "sg1":
+          return "确定解除绑定？";
+      }
+    }
   }
 };
 </script>

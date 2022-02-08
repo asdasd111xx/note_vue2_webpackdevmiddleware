@@ -1,18 +1,4 @@
 @import "./porn1.module.scss";
-
 .submit {
-  background: var(--mcenter_button_color1);
-  color: #fff;
-}
-
-.all-data {
-  .data-content-wrap {
-    .data-content {
-      .title {
-        &::before {
-          background-color: #e61938;
-        }
-      }
-    }
-  }
+  border-radius: 23px;
 }

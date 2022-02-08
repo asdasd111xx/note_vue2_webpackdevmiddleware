@@ -52,7 +52,7 @@ export default (params, success = () => {}, fail = () => {}) => {
     gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
   }
 
-  if (!embedGame && !isWebview) {
+  if (!embedGame && !isWebview && gameType !== "event") {
     newWindow = window.open("", "_blank", option);
     setTimeout(() => {
       newWindow.location = "/game/loading/true";
@@ -165,7 +165,7 @@ export default (params, success = () => {}, fail = () => {}) => {
             if (isWebview) {
               router.replace(link);
             } else {
-              if (embedGame) {
+              if (embedGame || gameType === "event") {
                 localStorage.setItem("iframe-third-url", link);
                 localStorage.setItem("iframe-third-url-title", gameTitle);
                 if (
@@ -183,9 +183,23 @@ export default (params, success = () => {}, fail = () => {}) => {
               }
             }
 
-            success();
+            success(response);
 
-            if (embedGame && !localStorage.getItem("reload-game")) {
+            if (
+              embedGame &&
+              !localStorage.getItem("reload-game") &&
+              gameType !== "event"
+            ) {
+              if (
+                store.state.siteConfig.ROUTER_TPL === "sg1" &&
+                vendor === "lg_sport"
+              ) {
+                router.push(
+                  `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}&hasFooter=true&hasHeader=false`
+                );
+                return;
+              }
+
               router.push(
                 `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`
               );

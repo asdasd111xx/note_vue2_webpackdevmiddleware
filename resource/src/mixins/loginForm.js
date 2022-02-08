@@ -280,6 +280,11 @@ export default {
             this.actionIsLogin(true);
             window.RESET_MEM_SETTING();
 
+            if (this.siteConfig.ROUTER_TPL === "sg1") {
+              window.location.href = "/mobile/live/iframe/home?hasFooter=true";
+              return;
+            }
+
             if (this.redirect) {
               window.location.href = this.redirect;
               return;

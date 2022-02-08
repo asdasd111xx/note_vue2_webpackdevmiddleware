@@ -5,7 +5,8 @@
     .name {
       // vip text
       span:last-of-type {
-        background: var(--mcenter_button_color2);
+        background: var(--mcenter_button_color1);
+        color: var(--mcenter_button_text_color1);
       }
     }
   }
@@ -14,7 +15,7 @@
 .user-desc-block {
   color: var(--vip_text_color1);
   .money {
-    color: #333333;
+    color: var(--vip_text_color2);
   }
 }
 
@@ -44,6 +45,6 @@
   background-repeat: no-repeat;
 
   img {
-    bottom: 1px;
+    bottom: 0px;
   }
 }

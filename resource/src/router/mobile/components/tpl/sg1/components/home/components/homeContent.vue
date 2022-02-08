@@ -50,7 +50,7 @@
           <!-- 會員中心連結 -->
           <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
             <div
-              v-for="(info, index) in mcenterList"
+              v-for="(info, index) in mcenterSg1List"
               :key="`mcenter-${index}`"
               :class="$style['mcenter-wrap']"
               @click="onGoToMcenter(info.path)"
@@ -649,6 +649,9 @@ export default {
   &:last-child {
     // color: var(--send_keyring);
     color: #6aaaf5;
+  }
+  &.sg1:last-child {
+    color: var(--member_color100);
   }
 }
 </style>

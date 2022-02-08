@@ -1,133 +1,54 @@
 @import "./index.module.scss";
 
-.add-bank-card {
-  color: #414655;
-}
-
-.bank-card-cell {
-  >.check-box {
-    &.checked {
-      background: url("/static/image/ey1/mcenter/ic_check.png") 0 0 no-repeat;
-      background-size: 100%;
-    }
-  }
-
-  >span {
-    &.rubbing-btn {
-      background: var(--mcenter_button_color1);
-    }
+.submit-btn {
+  > div {
+    border-radius: 23px;
   }
 }
 
 .check-container {
-  .check-header {
-    background: #333333;
-    color: #ffffff;
+  .check-cell {
+    &.custom-color {
+      color: #be9e7f;
+    }
   }
 
   .check-button-wrap {
-    color: #fff;
-    margin-bottom: 10px;
+    color: #000000;
+  }
+}
 
-    .check-btn {
-      border-radius: 3px;
-      background: #a2a2a2;
-
-      &.submit {
-        background: var(--mcenter_button_color1);
+.bank-wrap {
+  .bank-type-content {
+    .bank-type {
+      &.is-current {
+        color: #e53266;
+        border: 1px solid #e53266;
+        background: linear-gradient(
+          -45deg,
+          #e53266 12px,
+          hsla(0, 0%, 100%, 0) 0
+        );
       }
     }
   }
 }
 
-.withdraw-max {
-  >span {
-    background: var(--mcenter_button_color1);
-  }
-}
-
-.submit-btn {
-  >div {
-    background: var(--mcenter_button_color1);
-  }
-
-  &.disabled {
-    div {
-      background: var(--mcenter_button_color2);
-    }
-  }
-}
-
-.withdraw-input {
-  >input {
-    &::placeholder {
-      color: #a2a2a2;
-    }
-  }
-}
-
-.actual-money,
-.crypto-block {
-  color: #a2a2a2;
-}
-
-.tips {
-  color: #a2a2a2;
-}
-
-.check-container {
-  .check-cell {
-    color: #a2a2a2;
-
-    .money::after {
-      color: #a2a2a2;
-    }
-
-    // For Crypto
-    .crypto-money::after {
-      color: #a2a2a2;
-    }
-  }
-}
-
-.bank-wrap {
-  .bank-type {
-    &.is-current {
-      border: 1px solid var(--wallet_border_color);
-      color: var(--wallet_border_color);
-      background: linear-gradient(-45deg,
-          var(--wallet_border_color) 10px,
-          hsla(0, 0%, 100%, 0) 0);
-    }
-  }
-}
-
 .offer {
-  height: 30px;
-  color: var(--widthdraw_tip_text_color);
-  padding: 5px 14px;
-  width: 100%;
+  color: #be9e7f;
 }
 
-.exchange-rate,
-.actual-money,
-.crypto-block {
+.message-close {
+  color: #000000;
+}
+
+.exchange-rate {
   .time {
-    color: var(--wallet_border_color);
+    color: #000000;
   }
 }
 
-.check-header {
-  border-radius: 3px 3px 0 0;
-
-  .title {
-    width: 100%;
-    font-size: 17px;
-    font-weight: 400;
-    text-align: center;
-  }
-}
-
-.check-container {
-  border-radius: 3px;
+.balance-redjackpot-text {
+  color: var(--mcenter_wallet_redpot_text_color);
+  word-break: break-word;
 }

@@ -38,7 +38,8 @@
           $style['close'],
           {
             [$style['is-captcha-image']]: captchaType === 1
-          }
+          },
+          $style[themeTPL]
         ]"
         @click="$emit('show-captcha', false)"
       >
@@ -90,7 +91,10 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
-    })
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   created() {
     if ([3, 4, 5].includes(this.captchaType)) {
@@ -229,6 +233,9 @@ export default {
     color: #6aaaf5;
     display: inline-block;
     width: 48%;
+  }
+  &.sg1 {
+    color: #000000;
   }
 }
 

@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     puzzleObj: {
@@ -37,6 +39,14 @@ export default {
     return {
       ret: null
     };
+  },
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
     showCaptcha() {

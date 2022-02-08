@@ -8,10 +8,19 @@
 }
 
 .register-wrap {
-  background-color: #fff;
+  > button {
+    border-radius: 23px;
+  }
+}
 
-  button {
-    background: var(--mcenter_button_color1);
-    color: var(--mcenter_button_text_color1);
+.qrcode-wrap {
+  border: 1px solid #eeeeee;
+}
+
+.button-wrap {
+  > div {
+    border: 1px solid #000000;
+    border-radius: 23px;
+    background-color: #ededed;
   }
 }

@@ -7,9 +7,7 @@
             :src="`/static/image/${theme}/mcenter/feedback/no_feedback.png`"
           />
           <p>{{ $text("S_NO_FEEDBACK", "暂无反馈记录") }}</p>
-          <button
-            @click="$router.push('/mobile/mcenter/feedback/sendFeedback')"
-          >
+          <button @click="btnPre">
             {{ $text("S_SEND_FEEDBACK", "立即反馈") }}
           </button>
         </div>
@@ -117,13 +115,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import mcenter from "@/api/mcenter";
 import ajax from "@/lib/ajax";
 import { API_FEEDBACK_REPLIED_LIST } from "@/config/api";
 import EST from "@/lib/EST";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   filters: {
@@ -186,10 +184,17 @@ export default {
 
     //  to do
     if (this.currentFeedback === null) {
-      this.$router.push(`/mobile/mcenter/feedback/feedbackList/`);
+      this.$router.push(
+        `/mobile/mcenter/feedback/feedbackList/${
+          this.$route.query.redirect === "sendFeedback"
+            ? "?redirect=sendFeedback"
+            : ""
+        }`
+      );
     }
   },
   methods: {
+    ...mapActions(["actionGetExtRedirect"]),
     getShortConetent(content) {
       return content.replace(/<?\/?br ?\/?>/g, "\n");
     },
@@ -229,7 +234,13 @@ export default {
         this.repliedList.find(item => item.id === content.id) || content;
 
       this.setReplyReadAt(content.id);
-      this.$router.push(`/mobile/mcenter/feedback/feedbackList/${content.id}`);
+      this.$router.push(
+        `/mobile/mcenter/feedback/feedbackList/${content.id}${
+          this.$route.query.redirect === "sendFeedback"
+            ? "?redirect=sendFeedback"
+            : ""
+        }`
+      );
     },
     getRepliedList() {
       ajax({
@@ -269,6 +280,38 @@ export default {
     },
     getAvatarSrc() {
       if (!this.loginStatus) return;
+
+      if (this.siteConfig.ROUTER_TPL === "sg1") {
+        // 是否自訂上傳頭像
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/front-page",
+          method: "get"
+        }).then(data => {
+          if (data && data.result && data.result.head_photo) {
+            this.avatarSrc = data.result.head_photo;
+          }
+        });
+
+        if (this.avatarSrc) {
+          return;
+        }
+
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/head-photo/preset-list",
+          method: "get"
+        }).then(res => {
+          if (res && res.result && res.result.data) {
+            let currentImgID = res.result.use;
+            let defaultAvatarList = res.result.data;
+            if (currentImgID && defaultAvatarList) {
+              this.avatarSrc = defaultAvatarList.find(
+                i => i.image_id === currentImgID
+              ).link;
+            }
+          }
+        });
+        return;
+      }
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
@@ -322,6 +365,13 @@ export default {
             code
           });
         });
+    },
+    btnPre() {
+      if (this.$route.query.redirect === "sendFeedback") {
+        this.$router.back();
+      } else {
+        this.$router.replace("/mobile/mcenter/feedback/sendFeedback");
+      }
     }
   }
 };

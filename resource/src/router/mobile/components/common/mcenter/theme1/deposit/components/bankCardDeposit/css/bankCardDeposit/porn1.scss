@@ -132,11 +132,11 @@
   flex-direction: column;
   justify-content: center;
   width: 23%;
-  height: 62px;
+  height: 75px;
   margin: 3px;
   border: 1px solid #eee;
   border-radius: 3px;
-  color: #aaa;
+  color: #414655;
   cursor: pointer;
   vertical-align: top;
 
@@ -158,10 +158,10 @@
 
   .pay-mode-tag {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 26px;
-    height: 25px;
+    bottom: -3px;
+    left: -1px;
+    width: 47px;
+    height: 15px;
   }
 
   .pay-mode-img {
@@ -211,7 +211,7 @@
 .pay-mode-pass {
   display: inline-block;
   width: 18.5%;
-  height: 40px;
+  height: 44px;
   line-height: 40px;
   font-size: 12px;
   margin: 5px 6px 5px 0;
@@ -237,10 +237,10 @@
 
   .pay-mode-tag {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 26px;
-    height: 25px;
+    bottom: -3px;
+    left: -1px;
+    width: 47px;
+    height: 15px;
   }
 }
 

@@ -1,8 +1,13 @@
 <template>
-  <mobile-container :header-config="headerConfig">
+  <mobile-container :header-config="headerConfig" :has-footer="false">
     <div slot="content" :class="$style['promotion-wrap']">
-      <div v-if="loginStatus" :class="$style['promotion-gift-wrap']">
+      <div :class="$style['promotion-gift-wrap']">
+        <div :class="$style['btn-prev']" @click="$router.back()">
+          <img :src="$getCdnPath(`/static/image/common/btn_back_black.png`)" />
+        </div>
+
         <div
+          v-if="loginStatus"
           :class="[$style['promotion-gift'], $style['right']]"
           @click="onGiftClick(giftList[0])"
         >
@@ -11,6 +16,7 @@
         </div>
 
         <div
+          v-if="loginStatus"
           :class="[$style['promotion-gift'], $style['left']]"
           @click="onGiftClick(giftList[1])"
         >
@@ -297,7 +303,7 @@ $fixed_spacing_height: 43px;
   bottom: 1.5px;
   left: calc(50% - 25px);
   height: 2px;
-  background-color: #e61938;
+  background-color: #000000;
   width: 50px;
   transition: left 0.31s;
 }
@@ -370,7 +376,7 @@ $fixed_spacing_height: 43px;
 
 @media screen and (min-width: $pad) {
   .type-btn {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .time {
@@ -388,26 +394,44 @@ $fixed_spacing_height: 43px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #222222;
-  background: #ffefdd;
+  color: #e53266;
+  background: #ededed;
   border-radius: 32px;
   &.right {
     right: 14px;
   }
 
   &.left {
-    left: 14px;
+    left: 32px;
   }
 
   > .red-dot {
     position: absolute;
     right: -4px;
-    background: red;
+    background: #e42a30;
     border-radius: 50%;
     width: 9px;
     height: 9px;
     top: 0;
     border: 1px solid #ffffff;
+  }
+}
+
+.btn-prev {
+  bottom: 0;
+  height: 43px;
+  left: 12px;
+  margin: auto;
+  top: 0;
+  width: 20px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > img {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

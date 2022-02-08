@@ -1,11 +1,11 @@
 <template>
   <transition :name="'fade'">
-    <div :class="$style['detail-alert-wrap']">
+    <div :class="[$style['detail-alert-wrap']]">
       <div :class="[$style['alert-wrap'], $style['deposit']]">
         <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
           <div
-            v-if="['aobo1', 'sp1', 'sg1'].includes(this.routerTPL)"
+            v-if="['aobo1', 'sp1'].includes(this.routerTPL)"
             :class="$style['alert-close-wrap']"
             @click="closeFuc(false)"
           >
@@ -213,7 +213,7 @@ export default {
       }).then(response => {
         this.closeFuc(false);
 
-        if (response.result === "ok") {
+        if (response && response.result === "ok") {
           // 流量分析事件 - 成功
           window.dataLayer.push({
             event: "ga_click",

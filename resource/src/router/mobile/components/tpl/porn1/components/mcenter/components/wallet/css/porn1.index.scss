@@ -246,6 +246,9 @@
 
   .balance-item-vendor {
     display: block;
+    &.long {
+      font-size: 12px;
+    }
   }
 
   .balance-info-maintain {
@@ -286,10 +289,13 @@
     // background: url("/static/image/aobo1/common/ic_event.png") center center /
     //   100% 100%;
 
-    // &.porn1 {
     background: url("/static/image/porn1/common/ic_event.png") center center /
       100% 100%;
-    // }
+
+    &.sg1 {
+      background: url("/static/image/sg1/common/ic_event.png") center center /
+        100% 100%;
+    }
   }
 
   .item-fix {

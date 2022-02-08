@@ -272,6 +272,15 @@
 
   background: url("/static/image/porn1/common/ic_event.png") center center /
     100% 100%;
+
+  &.porn1 {
+    background: url("/static/image/porn1/common/ic_event.png") center center /
+      100% 100%;
+  }
+  &.sg1 {
+    background: url("/static/image/sg1/common/ic_event.png") center center /
+      100% 100%;
+  }
 }
 
 .balance-manual-wrap {
@@ -451,7 +460,7 @@
   text-align: center;
   font-size: 14px;
   border-radius: 3px;
-  color: #fff;
+  color: var(--mcenter_button_text_color1);
   background: var(--mcenter_button_color1);
 }
 

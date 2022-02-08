@@ -104,7 +104,7 @@
         :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
-          <img :src="$getCdnPath(`/static/image/sg1/common/appicon.png`)" />
+          <img :src="$getCdnPath(`/static/image/sg1/common/appicon_pao.png`)" />
         </div>
 
         <div :class="$style['tip-text']">永久网址</div>
@@ -280,7 +280,8 @@ export default {
       "actionSetGlobalMessage",
       "actionSetWebDomain",
       "actionSetWebInfo",
-      "actionGetMobileInfo"
+      "actionGetMobileInfo",
+      "actionGetExtRedirect"
     ]),
     handleBack() {
       const { query } = this.$route;
@@ -310,28 +311,36 @@ export default {
     getAvatarSrc() {
       if (!this.loginStatus || this.fromlanding) return;
 
-      const imgSrcIndex = this.memInfo.user.image;
-      if (this.memInfo.user && this.memInfo.user.custom) {
-        axios({
-          method: "get",
-          url: this.memInfo.user.custom_image
-        })
-          .then(res => {
-            if (res && res.data && res.data.result === "ok") {
-              this.avatarSrc = res.data.ret;
-            }
-          })
-          .catch(error => {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-            this.avatarSrc = this.$getCdnPath(
-              `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-            );
-          });
-      } else {
-        this.avatarSrc = this.$getCdnPath(
-          `/static/image/common/mcenter/default/avatar_${imgSrcIndex}.png`
-        );
+      // 是否自訂上傳頭像
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/front-page",
+        method: "get"
+      }).then(data => {
+        if (data && data.result && data.result.head_photo) {
+          this.avatarSrc = data.result.head_photo;
+        }
+      });
+
+      if (this.avatarSrc) {
+        return;
       }
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/head-photo/preset-list",
+        method: "get"
+      }).then(res => {
+        if (res && res.result && res.result.data) {
+          let currentImgID = res.result.use;
+          let defaultAvatarList = res.result.data;
+          if (currentImgID && defaultAvatarList) {
+            this.avatarSrc = defaultAvatarList.find(
+              i => i.image_id === currentImgID
+            ).link;
+          }
+        }
+      });
+      return;
+      Ｆ;
     }
   }
 };
@@ -432,8 +441,8 @@ div.container {
 .info-card,
 .info-card2 {
   color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
+  background-image: -webkit-linear-gradient(196deg, #fd5183, #e53266);
+  background-image: linear-gradient(254deg, #fd5183, #e53266);
   margin: 15px;
   height: 100px;
   border-radius: 10px;
@@ -475,8 +484,8 @@ div.container {
 
 .info-card2 {
   margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
+  background-image: -webkit-linear-gradient(16deg, #61d2eb, #4cbed8);
+  background-image: linear-gradient(74deg, #61d2eb, #4cbed8);
 
   > div:first-child {
     background: url("/static/image/common/service/bg_service02.png");
@@ -541,7 +550,7 @@ div.container {
   padding: 0 5px;
   font-size: 12px;
   color: #fff;
-  background: #fb4e74;
+  background: #000000;
   border-radius: 12px;
   box-shadow: 0pt 2px 5px 0pt rgba(0, 0, 0, 0.16);
 }
@@ -568,7 +577,7 @@ div.container {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #f8f8f7;
+  background: #ffffff;
   border-radius: 8px;
 
   .close {
