@@ -221,7 +221,8 @@ export default {
           },
           fail: res => {
             this.isLoading = false;
-            console.log(res);
+            this.errMsg = res.data.msg;
+            // console.log(res);
           }
         });
         return;
@@ -278,6 +279,11 @@ export default {
             this.handleSaveAccont();
             this.actionIsLogin(true);
             window.RESET_MEM_SETTING();
+
+            if (this.siteConfig.ROUTER_TPL === "sg1") {
+              window.location.href = "/mobile/live/iframe/home?hasFooter=true";
+              return;
+            }
 
             if (this.redirect) {
               window.location.href = this.redirect;

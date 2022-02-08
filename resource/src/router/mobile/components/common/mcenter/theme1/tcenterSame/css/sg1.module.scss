@@ -1,13 +1,5 @@
 @import "./porn1.module.scss";
 
-.link {
-  color: var(--mcenter_slider_text_color);
-
-  &.active {
-    color: var(--mcenter_main_color);
-  }
-}
-
 .search-tab {
   color: var(--mcenter_slider_text_color);
 
@@ -18,13 +10,7 @@
 
 .field-search-wrap {
   .btn-search {
-    background: var(--mcenter_button_color1);
-
-    color: var(--mcenter_button_text_color1);
-
-    &.disable {
-      background: var(--mcenter_button_color2);
-    }
+    border-radius: 23px;
   }
 }
 

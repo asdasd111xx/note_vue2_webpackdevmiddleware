@@ -12,13 +12,25 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
-        <!-- 訪客文案 -->
-        <div v-if="themeTPL != 'ey1'" style="margin-top: 40px;">
-          <div :class="$style['visitor-get']">{{ "访客加入会员" }}</div>
-          <div :class="$style['visitor-get']">
-            {{ `领取彩金：${formatThousandsCurrency(guestAmount)}元` }}
-          </div>
+        <!-- 訪客&&活動開啟文案 -->
+        <div style="margin-top: 40px;">
+          <template v-if="activity.isActivity && activity.totalAmount > 0"
+            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
+              访客加入会员
+            </div>
+            <div :class="[$style['visitor-get'], $style[themeTPL]]">
+              {{
+                `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元`
+              }}
+            </div></template
+          >
+          <template v-if="themeTPL === 'sg1'"
+            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
+              注册即送 300 钻
+            </div></template
+          >
         </div>
+
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <!-- <div v-show="errMsg">
@@ -90,7 +102,10 @@
             >
               {{ phoneSubmitFailMsg }}
             </p> -->
-            <button @click="submitMailVerify">确认送出</button>
+            <div :class="[$style['btn-wrap']]">
+              <button @click="mailVerifyModalShow = false">取消</button>
+              <button @click="submitMailVerify">确认送出</button>
+            </div>
           </div>
         </div>
 
@@ -163,9 +178,12 @@
             >
               {{ phoneSubmitFailMsg }}
             </p> -->
-            <button @click="submitPhoneVerify">
-              确认送出
-            </button>
+            <div :class="[$style['btn-wrap']]">
+              <button @click="phoneVerifyModalShow = false">取消</button>
+              <button @click="submitPhoneVerify">
+                确认送出
+              </button>
+            </div>
           </div>
         </div>
 
@@ -255,7 +273,11 @@
                 <input
                   id="pwd"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -282,7 +304,11 @@
                 <input
                   id="confirm_password"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="password"
@@ -309,7 +335,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="field.content.note1"
                   type="text"
@@ -342,7 +372,11 @@
               <template v-else-if="field.key === 'email'">
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], $style[field.key]]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    $style[field.key]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('email', 'tip')"
                   type="text"
@@ -395,7 +429,11 @@
                 />
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], $style[field.key]]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    $style[field.key]
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue('phone', 'tip')"
                   type="tel"
@@ -480,7 +518,10 @@
                   :options="selectData['withdraw_password'].options"
                   :clearable="false"
                   :searchable="false"
-                  :class="$style['join-select-withdraw']"
+                  :class="[
+                    $style['join-select-withdraw'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @input="changSelect('withdraw_password', index)"
                 ></v-select>
                 <!-- <input
@@ -502,7 +543,11 @@
                 <input
                   :ref="field.key"
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input'], field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
                   :name="field.key"
                   :placeholder="placeholderKeyValue(field.key, 'tip')"
                   type="text"
@@ -514,7 +559,11 @@
                 v-else
                 :ref="field.key"
                 v-model="allValue[field.key]"
-                :class="[$style['join-input'], field.key]"
+                :class="[
+                  $style['join-input'],
+                  $style[siteConfig.ROUTER_TPL],
+                  field.key
+                ]"
                 :name="field.key"
                 :placeholder="placeholderKeyValue(field.key, 'tip')"
                 type="text"
@@ -526,7 +575,7 @@
                 :class="$style['clear']"
                 v-if="
                   !noCancelButton.includes(field.key) &&
-                    allValue[field.key].length > 0
+                    allValue[field.key].length > 1
                 "
               >
                 <img
@@ -594,9 +643,16 @@
           {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
-
+      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
+        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
+        <span><a :href="beHostUrl" target="_blank">成为主播</a></span>
+        <span
+          @click.stop="$router.push('/mobile/live/iframe/home?hasFooter=true')"
+          >访客进入</span
+        >
+      </div>
       <div
-        v-if="themeTPL != 'ey1'"
+        v-if="themeTPL != 'sg1' && themeTPL != 'ey1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >
@@ -677,7 +733,7 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
-
+      beHostUrl: "",
       phoneVerifybtnActive: false,
       phoneVerifybtnSubmit: false,
       NeedCode: true,
@@ -699,7 +755,6 @@ export default {
       joinMemInfo,
       captchaImg: "",
       aid: "",
-      guestAmount: 0,
       allValue: {
         username: "",
         password: "",
@@ -834,8 +889,10 @@ export default {
       webInfo: "getWebInfo",
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      version: "getVersion"
+      version: "getVersion",
+      activity: "getActivity" //訪客餘額+紅包彩金、活動開關
     }),
+
     fieldsData() {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
@@ -920,6 +977,8 @@ export default {
     }
   },
   created() {
+    //取得成為主播網址
+    this.beHost();
     this.actionSetUserdata().then(() => {
       this.getCaptcha();
       let joinConfig = [];
@@ -1113,9 +1172,9 @@ export default {
           });
         });
 
-      if (!this.loginStatus) {
-        this.getGuestBalance();
-      }
+      // if (!this.loginStatus) {
+      //   this.getGuestBalance();
+      // }
       this.getPlaceholderList();
     });
   },
@@ -1126,6 +1185,33 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
+    beHost() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+        params: {
+          version: "2"
+        }
+      }).then(res => {
+        if (
+          res &&
+          res.data &&
+          res.data.data.case_data &&
+          res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+        ) {
+          this.beHostUrl =
+            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+              "zh-cn"
+            ];
+
+          // window.open(
+          //   res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+          //     "zh-cn"
+          //   ]
+          // );
+        }
+      });
+    },
     toggleDatePick() {
       this.$refs.thedatepicker[0].showYearView = !this.$refs.thedatepicker[0]
         .showYearView;
@@ -1215,7 +1301,17 @@ export default {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
-        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE", "该栏位不得为空");
+        switch (key) {
+          case "confirm_password":
+            this.allTip[key] = "";
+            break;
+          default:
+            this.allTip[key] = this.$text(
+              "S_JM_FIELD_REQUIRE",
+              "该栏位不得为空"
+            );
+            break;
+        }
       } else {
         if (this.allValue[key] !== "") {
           //進入驗證
@@ -1234,6 +1330,8 @@ export default {
             case "name":
             case "email":
             case "weixin":
+              this.allTip[key] = "";
+
               this.actionVerificationFormData({
                 target: key,
                 value: this.allValue[key]
@@ -1531,8 +1629,8 @@ export default {
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
         code: localStorage.getItem("x-code") || "",
-        phone_keyring: this.register_phone_keyring ,
-        email_keyring: this.register_email_keyring 
+        phone_keyring: this.register_phone_keyring,
+        email_keyring: this.register_email_keyring
       };
 
       const self = this;
@@ -1604,8 +1702,13 @@ export default {
                   localStorage.removeItem("password");
                 }
 
-                window.RESET_LOCAL_SETTING(true);
                 window.RESET_MEM_SETTING();
+                window.RESET_LOCAL_SETTING();
+                if (this.siteConfig.ROUTER_TPL === "sg1") {
+                  this.$router.push("/mobile/live/iframe/home?hasFooter=true");
+                } else {
+                  window.RESET_LOCAL_SETTING(true);
+                }
               }
             });
             return;
@@ -1676,48 +1779,14 @@ export default {
       }
     },
 
-    // 取得訪客餘額
-    getGuestBalance() {
-      return goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
-        params: {
-          account: localStorage.getItem("uuidAccount"),
-          cid: localStorage.getItem("guestCid")
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.guestAmount = res.data.totalAmount;
-          this.getRedJackpot();
-        }
-      });
-    },
-
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
       this.allTip["captcha_text"] = "";
     },
 
-    getRedJackpot() {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res.errorCode === "00" && res.status === "000") {
-          if (res.data.enable) {
-            this.guestAmount = Number(
-              parseFloat(this.guestAmount) +
-                parseFloat(res.data.personal_max_bonus)
-            ).toFixed(2);
-          }
-        }
-      });
-    },
     formatThousandsCurrency(value) {
-      return thousandsCurrency(value);
+      let _value = Number(value).toFixed(2);
+      return thousandsCurrency(_value);
     },
 
     closeRedirect_url() {
@@ -1847,25 +1916,25 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
         params: {
-          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`,
+          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
         }
-      })
-        .then(res => {
-          if (res.status !== "000") {
-            this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg =
-              res.msg + "(" + res.code + ")" || "phone error1";
-          } else {
-            //取得驗證碼倒數秒數
-            this.getPhoneTTL();
-          }
-        })
-        // .catch(error => {
-        //   this.phoneSubmitFail = true;
-        //   this.phoneSubmitFailMsg =
-        //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-        //     "phone error2";
-        // });
+      }).then(res => {
+        if (res.status !== "000") {
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            // res.msg + "(" + res.code + ")" || "phone error1";
+            res.msg || "phone error1";
+        } else {
+          //取得驗證碼倒數秒數
+          this.getPhoneTTL();
+        }
+      });
+      // .catch(error => {
+      //   this.phoneSubmitFail = true;
+      //   this.phoneSubmitFailMsg =
+      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
+      //     "phone error2";
+      // });
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
@@ -1902,25 +1971,25 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email`,
         params: {
-          email: this.allValue.email,
+          email: this.allValue.email
         }
-      })
-        .then(res => {
-          if (res.status !== "000") {
-            this.mailSubmitFail = true;
-            this.mailSubmitFailMsg =
-              res.msg + "(" + res.code + ")" || "mail error1";
-          } else {
-            //取得mail驗證碼倒數秒數
-            this.getMailTTL();
-          }
-        })
-        // .catch(error => {
-        //   this.mailSubmitFail = true;
-        //   this.mailSubmitFailMsg =
-        //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-        //     "mail error2";
-        // });
+      }).then(res => {
+        if (res.status !== "000") {
+          this.mailSubmitFail = true;
+          this.mailSubmitFailMsg =
+            // res.msg + "(" + res.code + ")" || "mail error1";
+            res.msg || "mail error1";
+        } else {
+          //取得mail驗證碼倒數秒數
+          this.getMailTTL();
+        }
+      });
+      // .catch(error => {
+      //   this.mailSubmitFail = true;
+      //   this.mailSubmitFailMsg =
+      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
+      //     "mail error2";
+      // });
     },
     submitMailVerify() {
       //會員註冊mail驗證

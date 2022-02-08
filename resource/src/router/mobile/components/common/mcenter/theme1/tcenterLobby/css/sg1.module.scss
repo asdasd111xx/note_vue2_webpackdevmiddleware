@@ -30,15 +30,15 @@
 }
 
 .title-commission {
-  border: 1px solid #ffafbe;
-  color: #ffafbe;
+  border: 1px solid var(--tcenter_color);
+  color: var(--tcenter_color);
   background: transparent;
 }
 
 .regist-data {
   .all-regist-title {
     .regist-title-bar {
-      background: linear-gradient(to top, #e61938, #fe593c);
+      background: var(--deco_color);
     }
   }
 }
@@ -60,10 +60,10 @@
 
   .today-bar {
     .background-bar {
-      background-color: #ffd68a;
+      background-color: var(--tcenter_progress_color2);
 
       .person-bar {
-        background-color: #e61938;
+        background-color: var(--tcenter_progress_color1);
       }
     }
   }

@@ -414,7 +414,14 @@ export default {
                 // 強制修改密碼
                 if (this.memInfo.user.password_reset) {
                   this.actionSetUserdata(true).then(() => {
-                    this.$router.replace("/mobile");
+                    //泡泡登入時重設密碼導向直播首頁
+                    if (this.siteConfig.ROUTER_TPL === "sg1") {
+                      window.location.href =
+                        "/mobile/live/iframe/home?hasFooter=true";
+                      return;
+                    } else {
+                      this.$router.replace("/mobile");
+                    }
                   });
                   return;
                 }
@@ -550,13 +557,13 @@ input {
   font-size: 14px;
   margin: 0 auto;
   margin-top: 21px;
-  border-radius: 23px;
-  background: var(--main_button_color2);
-  color: var(--main_button_text_color2);
+  border-radius: 5px;
+  background: var(--mcenter_button_color2);
+  color: var(--mcenter_button_text_color2);
 
   &.active {
-    background: var(--main_button_color1);
-    color: var(--main_button_text_color1);
+    background: var(--mcenter_button_color1);
+    color: var(--mcenter_button_text_color1);
   }
 }
 

@@ -219,7 +219,7 @@ export default {
         }
       }).then(response => {
         this.closeFuc(false);
-        if (response.result === "ok") {
+        if (response && response.result === "ok") {
           // 流量分析事件 - 成功
           window.dataLayer.push({
             event: "ga_click",

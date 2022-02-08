@@ -56,7 +56,8 @@
 
   .balance-item-money {
     font-size: 16px;
-    color: var(--mcenter_wallet_text_color);
+    // color: var(--mcenter_wallet_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -64,7 +65,8 @@
   position: relative;
   flex: 1;
   font-size: 16px;
-  color: var(--mcenter_wallet_recycle_text_color);
+  // color: var(--mcenter_wallet_recycle_text_color);
+  color: #6aaaf5;
   font-weight: 700;
 
   &::before {
@@ -251,11 +253,13 @@
 }
 
 .balance-redjackpot-text {
-  color: var(--mcenter_wallet_redpot_text_color);
+  // color: var(--mcenter_wallet_redpot_text_color);
+  color: #db6372;
   word-break: break-word;
 }
 .balance-redjackpot-money {
-  color: var(--mcenter_wallet_redpot_money_color);
+  // color: var(--mcenter_wallet_redpot_money_color);
+  color: #db6372;
   word-break: break-word;
 }
 
@@ -266,11 +270,15 @@
   width: 25px;
   height: 25px;
 
-  background: url("/static/image/aobo1/common/ic_event.png") center center /
+  background: url("/static/image/porn1/common/ic_event.png") center center /
     100% 100%;
 
   &.porn1 {
     background: url("/static/image/porn1/common/ic_event.png") center center /
+      100% 100%;
+  }
+  &.sg1 {
+    background: url("/static/image/sg1/common/ic_event.png") center center /
       100% 100%;
   }
 }
@@ -371,7 +379,8 @@
     span {
       position: absolute;
       left: 0;
-      color: var(--mcenter_wallet_text_color);
+      // color: var(--mcenter_wallet_text_color);
+      color: #6aaaf5;
     }
   }
 
@@ -451,7 +460,7 @@
   text-align: center;
   font-size: 14px;
   border-radius: 3px;
-  color: #fff;
+  color: var(--mcenter_button_text_color1);
   background: var(--mcenter_button_color1);
 }
 

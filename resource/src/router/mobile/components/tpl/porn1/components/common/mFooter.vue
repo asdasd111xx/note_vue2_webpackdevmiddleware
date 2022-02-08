@@ -44,7 +44,7 @@
 
   <div
     v-else-if="routerTPL === 'aobo1'"
-    :class="[$style.footer, 'clearfix']"
+    :class="[$style.footer, $style[siteConfig.ROUTER_TPL], 'clearfix']"
     id="footer"
   >
     <div
@@ -148,6 +148,8 @@ export default {
       switch (this.routerTPL) {
         default:
           return "_new";
+        case "aobo1":
+          return "aobo1";
         case "sp1":
           return "sp1";
         case "porn1":
@@ -299,6 +301,10 @@ export default {
   &.porn1 {
     background: url("/static/image/porn1/common/footer/bg_tabbar.png") 50% 40% /
       100% no-repeat;
+  }
+
+  &.aobo1 {
+    background: linear-gradient(to bottom, #f51818, #a11010);
   }
 
   border-radius: 20px 20px 0 0;

@@ -1,1 +1,10 @@
 @import "./porn1.cardInfo.module.scss";
+.button-block {
+  color: #000000;
+
+  span {
+    &:nth-child(2) {
+      color: #000000;
+    }
+  }
+}

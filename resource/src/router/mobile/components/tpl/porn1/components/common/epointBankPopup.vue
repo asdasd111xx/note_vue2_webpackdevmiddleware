@@ -3,7 +3,7 @@
     <div :class="$style['mask']"></div>
     <div :class="$style['container']">
       <div :class="$style['header']">
-        <div @click="close" :class="$style['prev']">
+        <div @click="close" :class="[$style['prev'], $style[routerTPL]]">
           {{ $text("S_CANCEL", "取消") }}
         </div>
 
@@ -20,6 +20,16 @@
           @click="handleClickItem(item)"
         >
           {{ item.account }}
+          <img
+            v-if="item.account === bankSelected"
+            :class="$style['select-icon']"
+            :src="
+              $getCdnPath(
+                `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+              )
+            "
+            alt="sel"
+          />
         </div>
       </div>
     </div>
@@ -31,6 +41,10 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {
+    bankSelected: {
+      type: String,
+      default: ""
+    },
     bankList: {
       type: Array,
       default: []
@@ -51,6 +65,9 @@ export default {
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     },
     // $style() {
     //   return (
@@ -134,7 +151,11 @@ export default {
     position: absolute;
     text-align: center;
     width: 40px;
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
+    &.prev {
+      color: #000;
+    }
   }
 
   .title {
@@ -150,7 +171,8 @@ export default {
   .cell {
     position: relative;
     background-color: #ffffff;
-    color: var(--addcard_popup_text_color);
+    // color: var(--addcard_popup_text_color);
+    color: #414655;
     height: 50px;
     line-height: 50px;
     font-size: 14px;
@@ -161,11 +183,16 @@ export default {
   .select-icon {
     position: absolute;
     right: 18px;
-    top: 50%;
+    top: 33%;
     width: 15px;
     height: 15px;
-    color: var(--addcard_popup_check_color);
+    // color: var(--addcard_popup_check_color);
+    color: #6aaaf5;
     transform: translateY(-50%);
+
+    &.sg1 {
+      color: #e53266;
+    }
   }
 }
 </style>

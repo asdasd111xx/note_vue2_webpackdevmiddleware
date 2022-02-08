@@ -4,18 +4,23 @@
   background: #ede2e2;
 
   .header-item {
-
     &:first-of-type {
-      background: #D3C3B4;
+      background: #d3c3b4;
     }
   }
 }
 
-
 .title {
-
   &::before {
     content: "";
-    background: linear-gradient(#fe593c, #e61938);
+    background: #000000;
+  }
+}
+
+.table-body {
+  .content {
+    &:nth-child(even) {
+      background: #fffaf9;
+    }
   }
 }

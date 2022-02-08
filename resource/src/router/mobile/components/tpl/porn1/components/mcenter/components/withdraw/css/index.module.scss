@@ -32,14 +32,16 @@
     }
 
     >div:last-child {
-      color: var(--mcenter_wallet_text_color);
+      // color: var(--mcenter_wallet_text_color);
+      color: #6aaaf5;
       text-align: center;
       font-size: 16px;
     }
   }
 
   .recycle-btn {
-    color: var(--mcenter_wallet_recycle_text_color);
+    // color: var(--mcenter_wallet_recycle_text_color);
+    color: #6aaaf5;
     text-align: center;
     font-size: 16px;
   }
@@ -53,7 +55,8 @@
 //增加銀行卡
 .add-bank-card {
   background-color: #fefffe;
-  color: var(--addcard_popup_text_color);
+  // color: var(--addcard_popup_text_color);
+  color: #414655;
   font-size: 15px;
   height: 50px;
   line-height: 50px;
@@ -138,17 +141,22 @@
     right: 16px;
 
     &.checked {
-      @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+      @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+
       &.image-porn1 {
         @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }
 
       &.image-aobo1 {
-        @include check-ok("/static/image/aobo1/mcenter/ic_check.png");
+        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
       }
 
       &.image-sp1 {
-        @include check-ok("/static/image/sp1/mcenter/ic_check.png");
+        @include check-ok("/static/image/porn1/mcenter/ic_check.png");
+      }
+
+      &.image-sg1 {
+        @include check-ok("/static/image/sg1/mcenter/ic_check.png");
       }
     }
 
@@ -189,44 +197,56 @@
 
 .bank-wrap {
   display: flex;
-  // height: 60px;
+  flex-direction: column;
   margin-top: 10px;
   background-color: #fefffe;
   padding: 8px 18px;
   // min-height: 50px;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
 
-  .bank-type {
-    position: relative;
-    width: 110px;
-    height: 40px;
+  .bank-type-content {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    margin-right: 10px;
+    flex-direction: row;
 
-    &.is-current {
-      border: 1px solid var(--wallet_border_color);
-      color: var(--wallet_border_text_color);
-      background: linear-gradient(-45deg,
-          var(--wallet_border_color) 10px,
-          hsla(0, 0%, 100%, 0) 0);
-    }
+    .bank-type {
+      position: relative;
+      width: 100px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      margin-right: 10px;
 
-    .select {
-      position: absolute;
-      width: 7px;
-      height: 5px;
-      right: 1px;
-      bottom: 2px;
+      &.is-current {
+        // border: 1px solid var(--wallet_border_color);
+        border: 1px solid #6dabf2;
+        // color: var(--wallet_border_text_color);
+        color: #414655;
+        // background: linear-gradient(
+        //   -45deg,
+        //   var(--wallet_border_color) 10px,
+        //   hsla(0, 0%, 100%, 0) 0
+        // );
+        background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
+        margin-bottom: 5px;
+      }
+
+      .select {
+        position: absolute;
+        width: 7px;
+        height: 5px;
+        right: 1px;
+        bottom: 2px;
+      }
     }
   }
+
 }
 
 .withdraw-status-tip {
-  padding: 0 0 0 10px;
+  // padding: 0 0 0 10px;
   width: 80%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -286,7 +306,8 @@
   }
 
   .time {
-    color: var(--countdown_time_text_color);
+    // color: var(--countdown_time_text_color);
+    color: #db6372;
   }
 
   .serial {
@@ -297,8 +318,10 @@
 
 .crypto-block {
   .conversion-btn {
-    border: 1px solid var(--mcenter_wallet_text_color);
-    color: var(--mcenter_wallet_text_color);
+    // border: 1px solid var(--mcenter_wallet_text_color);
+    border: 1px solid #6aaaf5;
+    // color: var(--mcenter_wallet_text_color);
+    color: #6aaaf5;
     width: 80px;
     height: 21px;
     line-height: 21px;
@@ -437,38 +460,38 @@
     }
   }
 
-  &.aobo1,
-  &.sp1 {
-    border-radius: 3px;
+  // &.aobo1,
+  // &.sp1 {
+  //   border-radius: 3px;
 
-    .check-header {
-      background: #be9e7f;
-      color: #ffffff;
-      border-radius: 3px 3px 0 0;
+  //   .check-header {
+  //     background: #be9e7f;
+  //     color: #ffffff;
+  //     border-radius: 3px 3px 0 0;
 
-      .title {
-        width: 100%;
-        font-size: 17px;
-        font-weight: 400;
-        text-align: center;
-      }
-    }
+  //     .title {
+  //       width: 100%;
+  //       font-size: 17px;
+  //       font-weight: 400;
+  //       text-align: center;
+  //     }
+  //   }
 
-    .check-button-wrap {
-      color: #be9e7f;
-      margin-bottom: 10px;
+  //   .check-button-wrap {
+  //     color: #be9e7f;
+  //     margin-bottom: 10px;
 
-      .check-btn {
-        border-radius: 3px;
-        background: #faf5f0;
+  //     .check-btn {
+  //       border-radius: 3px;
+  //       background: #faf5f0;
 
-        &.submit {
-          color: #ffffff;
-          background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
-        }
-      }
-    }
-  }
+  //       &.submit {
+  //         color: #ffffff;
+  //         background: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
+  //       }
+  //     }
+  //   }
+  // }
 
   .check-content {
     background-color: #ffffff;
@@ -491,7 +514,7 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      color: var(--mcenter_slider_text_active_color);
+      color: #414655;
       margin-bottom: 4px;
     }
   }
@@ -515,7 +538,9 @@
     }
 
     &.custom-color {
-      color: var(--countdown_time_text_color);
+      // color: var(--countdown_time_text_color);
+
+      color: #db6372;
 
       &.custom-color-background {
         background: #f3f3f3;
@@ -571,13 +596,15 @@
 
   .check-button-wrap {
     padding: 2px 0px;
-    color: var(--mcenter_wallet_text_color);
+
+    //color: var(--mcenter_wallet_text_color);
+    color: #6aaaf5;
     text-align: center;
     bottom: 12px;
     width: 100%;
     border-top: 1px solid#F8F8F7;
     font-size: 16px;
-    margin-top: 30px;
+    // margin-top: 30px;
 
     .check-btn {
       font-weight: bold;
@@ -709,12 +736,14 @@
 .offer {
   height: 30px;
   background-color: #fefffe;
-  color: var(--widthdraw_tip_text_color);
+  // color: var(--widthdraw_tip_text_color);
+  color: #db6372;
   padding: 5px 14px;
   width: 100%;
 
   .option {
-    color: var(--withdraw_tips_detail);
+    // color: var(--withdraw_tips_detail);
+    color: #6aaaf5;
     text-decoration: underline;
   }
 }
@@ -792,7 +821,8 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
 }
 
 .tip-list {

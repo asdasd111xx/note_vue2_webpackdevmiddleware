@@ -6,13 +6,66 @@
       .nc_scale {
         min-height: inherit;
         height: initial;
-        border-radius: 5px;
+        border-radius: 75px;
+        border: 1px solid #aaa;
+        overflow: hidden;
+        z-index: 0;
+        .nc_iconfont {
+          left: -1px;
+          top: -1px;
+        }
+
+        .btn_ok {
+          // color: red;
+          width: 40px;
+          height: 40px;
+          border-radius: 20px;
+          background: #fff;
+          box-shadow: -12px 0px 0px #34d158;
+        }
 
         .nc_bg {
           width: 0px;
-          border-top-left-radius: 5px;
-          border-bottom-left-radius: 5px;
-          background: linear-gradient(to right, #E61938, #FE593C);
+          border-top-left-radius: 75px;
+          border-bottom-left-radius: 75px;
+          // background: #000;
+        }
+
+        .btn_slide {
+          border-radius: 50px;
+          border: 1px solid #aaa;
+          box-shadow: -12px 0px 0px #34d158;
+        }
+      }
+
+      // 錯誤訊息
+      .errloading {
+        background-color: #ebebeb;
+        border-radius: 23px;
+        color: #000;
+        border: none;
+        text-align: center;
+        .icon_warn {
+          display: none;
+        }
+        span {
+          &::after {
+            content: "";
+            display: inline-block;
+            position: relative;
+            top: 4px;
+            left: 20px;
+            width: 17px;
+            height: 17px;
+            background: url("/static/image/sg1/common/icon_refresh.png");
+          }
+          a {
+            color: #000;
+          }
+        }
+        .nc-errcode {
+          // color: #000;
+          display: none;
         }
       }
     }

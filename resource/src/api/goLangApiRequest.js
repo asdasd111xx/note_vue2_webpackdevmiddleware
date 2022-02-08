@@ -8,6 +8,7 @@ export default ({
   urlParams = null,
   timeout = 20000,
   headers = {},
+  headersData = () => {},
   url = ""
 }) => {
   // YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
@@ -58,6 +59,9 @@ export default ({
 
   return axios(obj)
     .then(response => {
+      if (response.data.status === "000") {
+        headersData(response.headers, response.data);
+      }
       return response.data;
     })
     .catch(error => {

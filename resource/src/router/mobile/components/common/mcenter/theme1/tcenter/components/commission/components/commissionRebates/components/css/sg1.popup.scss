@@ -5,16 +5,33 @@
     background-color: #333333;
   }
 
+  .pop-block {
+    border-radius: 20px;
+  }
 
   .rebate-entry-button-wrap {
-
     .button-entry-history {
-      background: linear-gradient(to left, #E61938, #FE593C);
+      background: #000000;
     }
 
     .button-entry-close {
       background: #333333;
       color: white;
+    }
+  }
+
+  .path-bottom {
+    .path-back {
+      color: #000000;
+      border-left: 1px solid #f8f8f7;
+    }
+
+    .path-only-close {
+      color: #000000;
+    }
+
+    .path-close {
+      color: #000000;
     }
   }
 }

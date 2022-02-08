@@ -38,16 +38,18 @@ export default new Router({
         //   next();
         //   return;
         // }
-
         if (to.query.page && to.query.page === "pwdreset") {
           next(`/mobile/resetPwd?kr=${to.query.kr}&type=${to.query.type}`);
           return;
         }
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
-        const channelid = urlParams.get("channelid");
-        const action = urlParams.get("action");
+        const code = to.query.code;
+        const channelid = to.query.channelid;
+        const action = to.query.action;
+        const toLive = to.query.toLive;
+
+        // 直播PWA/launch
+        let isLive = toLive && toLive == "true";
         localStorage.removeItem("x-action");
 
         if (code && code !== undefined) {
@@ -66,15 +68,26 @@ export default new Router({
 
           if (channelid && channelid !== undefined) {
             localStorage.setItem("x-channelid", channelid);
-            next(`/mobile?code=${code}&channelid=${channelid}`);
-            return;
+
+            if (!isLive) {
+              next(`/mobile?code=${code}&channelid=${channelid}`);
+              return;
+            }
           }
 
-          next(`/mobile?code=${code}`);
+          if (isLive) {
+            next(`/mobile/live/iframe/home?hasFooter=true`);
+          } else {
+            next(`/mobile?code=${code}`);
+          }
           return;
         }
 
-        next("/mobile");
+        if (isLive) {
+          next(`/mobile/live/iframe/home?hasFooter=true`);
+        } else {
+          next(`/mobile`);
+        }
         return;
       }
     },

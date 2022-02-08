@@ -1,16 +1,34 @@
 @import "./porn1.index.scss";
 
 .invite-wrap {
+  background: var(--mcenter_invite_background_color);
+
   .content {
+    font-weight: 700;
     color: var(--mcenter_invite_text_color);
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 
 .wallet-info-wrap {
-  .goDeposit {
-    color: #fefffe !important;
-    background: var(--mcenter_button_color1) !important;
-    box-shadow: 0pt 3px 7px 0pt rgba(255, 0, 0, 0.3) !important;
+  .money-block {
+    .goDeposit {
+      color: var(--mcenter_button_text_color1);
+      background: var(--mcenter_button_color1);
+      box-shadow: 0pt 3px 7px 0pt rgba(131, 131, 131, 0.3);
+    }
   }
 }
 
@@ -22,6 +40,8 @@
 
 .balance-wrap {
   .balance-total-item {
+    color: var(--mcenter_wallet_redpot_text_color);
+
     .balance-item-money {
       color: var(--mcenter_wallet_text_color);
     }
@@ -29,5 +49,12 @@
 
   .recycle-btn {
     color: var(--mcenter_wallet_recycle_text_color);
+  }
+}
+
+.balance-item-wrap {
+  .balance-redjackpot-text {
+    color: var(--mcenter_wallet_redpot_text_color);
+    word-break: break-word;
   }
 }

@@ -98,9 +98,8 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['red-dot']">
-              <!-- <div :class="$style['information-dot']"> -->
-              <!-- <span>{{ unreadMessageCount }}</span> -->
+            <div :class="$style['information-dot']">
+              <span>{{ unreadMessageCount }}</span>
             </div>
           </div>
         </div>
@@ -112,17 +111,23 @@
           { [$style['more']]: String(guestAmount).length > 6 }
         ]"
       >
-        <span :class="$style['visitor-title']" @click="checkLayeredURL"
-          >访客彩金</span
+        <template v-if="activity.isActivity && guestAmount > 0">
+          <span :class="$style['visitor-title']" @click="checkLayeredURL"
+            >访客彩金</span
+          >
+          <span
+            :class="[$style['visitor-money'], $style['just-money']]"
+            @click="checkLayeredURL"
+            >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
+          >
+          <span :class="$style['visitor-money']" @click="checkLayeredURL">
+            领取
+          </span>
+        </template>
+        <span v-else :class="$style['visitor-title']" @click="checkLayeredURL"
+          >访客注册</span
         >
-        <span
-          :class="[$style['visitor-money'], $style['just-money']]"
-          @click="checkLayeredURL"
-          >{{ `${formatThousandsCurrency(guestAmount)} 元` }}</span
-        >
-        <span :class="$style['visitor-money']" @click="checkLayeredURL"
-          >领取</span
-        >
+
         <span
           @click="
             sendUmengEvent(3);
@@ -140,8 +145,8 @@
     <template v-if="headerConfig.isMCenter">
       <div :class="$style['mcenter-wrap']">
         <img
-          :src="$getCdnPath('/static/image/sg1/common/btn_setting.png')"
-          @click="handleClickSetting"
+          :src="$getCdnPath('/static/image/sg1/common/icon_service.png')"
+          @click="handleClickService"
         />
         <div>
           <img
@@ -149,12 +154,15 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['red-dot']">
-              <!-- <div :class="$style['information-dot']"> -->
-              <!-- <span>{{ unreadMessageCount }}</span> -->
+            <div :class="$style['information-dot']">
+              <span>{{ unreadMessageCount }}</span>
             </div>
           </div>
         </div>
+        <img
+          :src="$getCdnPath('/static/image/sg1/common/btn_setting.png')"
+          @click="handleClickSetting"
+        />
       </div>
     </template>
 
@@ -183,11 +191,22 @@
 
     <!-- 幫助中心連結 -->
     <template v-if="headerConfig.hasHelp">
-      <div :class="[$style['btn-help']]" @click="handleHelpLinkTo">
-        <span v-if="headerConfig.hasHelp.type === 'deposit'">
+      <div :class="[$style['btn-help']]">
+        <span
+          v-if="headerConfig.hasHelp.type === 'deposit'"
+          @click="handleHelpLinkTo"
+        >
           教程
         </span>
-        <div :class="$style['btn-icon']">
+        <div
+          v-else-if="headerConfig.hasHelp.type === 'diamond'"
+          :class="$style['btn-icon']"
+          style="margin-right: 12px;"
+          @click="handleClickService"
+        >
+          <img :src="$getCdnPath('/static/image/sg1/live/icon_service.png')" />
+        </div>
+        <div :class="$style['btn-icon']" @click="handleHelpLinkTo">
           <img :src="$getCdnPath('/static/image/sg1/common/btn_help.png')" />
         </div>
       </div>
@@ -201,6 +220,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
+import lib_newWindowOpen from "@/lib/newWindowOpen";
 
 export default {
   components: {
@@ -234,7 +254,6 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
-      guestAmount: 0,
       remainBonus: 0
     };
   },
@@ -242,7 +261,8 @@ export default {
     ...mapGetters({
       membalance: "getMemBalance",
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      activity: "getActivity"
     }),
     mainClass() {
       const style = this.$style;
@@ -271,21 +291,22 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    guestAmount() {
+      return this.activity.totalAmount;
     }
   },
   created() {
-    if (!this.loginStatus) {
-      this.getGuestBalance();
-    } else {
-      this.getRedJackpot();
-    }
+    this.actionSetActivity();
+    if (this.loginStatus) this.getRedJackpot();
   },
   methods: {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetLayeredURL",
       "actionGetActingURL",
-      "actionGetRegisterURL"
+      "actionGetRegisterURL",
+      "actionSetActivity"
     ]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
@@ -316,6 +337,30 @@ export default {
     setMenuState(value) {
       this.currentMenu = this.currentMenu === value ? "" : value;
     },
+    handleClickService() {
+      if (this.loginStatus) {
+        lib_newWindowOpen(
+          goLangApiRequest({
+            method: "get",
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+            params: {
+              version: "2"
+            }
+          }).then(res => {
+            if (
+              res &&
+              res.data &&
+              res.data.data &&
+              res.data.data.service["url"]
+            ) {
+              return res.data.data.service["url"];
+            }
+          })
+        );
+      } else {
+        this.$router.push("/mobile/login");
+      }
+    },
     handleClickAsk() {
       if (this.loginStatus) {
         this.$router.push({ name: "mcenter-information" });
@@ -341,23 +386,6 @@ export default {
       this.$router.push({ path: "search", query: { source: this.source } });
     },
 
-    // 取得訪客餘額
-    getGuestBalance() {
-      return goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
-        params: {
-          account: localStorage.getItem("uuidAccount"),
-          cid: localStorage.getItem("guestCid")
-        }
-      }).then(res => {
-        if (res.status === "000") {
-          this.guestAmount = res.data.totalAmount;
-          this.getRedJackpot();
-        }
-      });
-    },
-
     getRedJackpot() {
       goLangApiRequest({
         method: "get",
@@ -370,11 +398,6 @@ export default {
           if (res.data.enable) {
             if (this.loginStatus) {
               this.remainBonus = res.data.remain_bonus;
-            } else {
-              this.guestAmount = Number(
-                parseFloat(this.guestAmount) +
-                  parseInt(res.data.personal_max_bonus)
-              ).toFixed(2);
             }
           }
         }
@@ -497,7 +520,7 @@ export default {
   }
   > img {
     display: block;
-    height: 33px;
+    height: auto;
     width: 100%;
     @media screen and (max-width: 320px) {
       height: 24px;
@@ -557,12 +580,13 @@ export default {
   }
   .visitor-money {
     font-size: 12px;
-    color: var(--visitor_money_color);
+    color: var(--visitor_money_get_color);
     margin: 0;
     padding: 0;
     padding-right: 2px;
 
     &.just-money {
+      color: var(--visitor_money_color);
       max-width: 88px;
       word-break: break-word;
       text-align: right;
@@ -811,7 +835,7 @@ export default {
   position: absolute;
   right: 17px;
   top: 0;
-  color: #f9e8b4;
+  color: #ffffff;
   padding: 6px;
 
   > span {
@@ -854,18 +878,16 @@ export default {
 
 .information-dot {
   position: absolute;
-  left: 10px;
-  background: #fecb2f;
+  left: 13px;
+  background: red;
   border-radius: 20px;
-  border: 1px solid #f9e8b4;
-  width: 20px;
-  height: 12px;
-  line-height: 8px;
-  top: -5px;
-  padding: 0.5px 2px;
+  width: 18px;
+  height: 18px;
+  line-height: 16px;
+  top: -9px;
   span {
-    color: #731c25;
-    font-size: 7px;
+    color: #fff;
+    font-size: 12px;
     padding: 0;
   }
 }
@@ -897,7 +919,7 @@ export default {
 }
 
 .normal-search {
-  background: url("/static/image/common/ic_search_gold.png");
+  background: url("/static/image/common/ic_search_grey3.png");
   width: 20px;
   height: 20px;
   background-size: contain;

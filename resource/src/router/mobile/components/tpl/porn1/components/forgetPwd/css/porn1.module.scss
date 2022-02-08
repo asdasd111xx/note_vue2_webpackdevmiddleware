@@ -37,11 +37,13 @@
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: var(--find_password_text_color);
+  // color: var(--find_password_text_color);
+  color: #a6a9b2;
   position: relative;
 
   &.active {
-    color: var(--find_password_text_active_color);
+    // color: var(--find_password_text_active_color);
+    color: #5e626d;
   }
 }
 
@@ -127,7 +129,8 @@
   color: white;
   width: 100px;
   height: 30px;
-  background: var(--send_keyring_disabled);
+  // background: var(--send_keyring_disabled);
+  background: #cccccc;
   border-radius: 3px;
   pointer-events: none;
   right: 14px;
@@ -138,7 +141,8 @@
 
   &.active {
     pointer-events: unset;
-    background: var(--send_keyring);
+    background: #6aaaf5;
+    // background: var(--send_keyring);
   }
 }
 

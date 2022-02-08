@@ -1,4 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
+
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -177,10 +178,6 @@ export default {
                 switch (this.themeTPL) {
                   case "porn1":
                   case "sg1":
-                    this.actionSetGlobalMessage({ msg: "银行卡刪除成功" });
-                    break;
-
-                  case "ey1":
                     this.actionSetGlobalMessage({ msg: "刪除成功" });
                     break;
                 }

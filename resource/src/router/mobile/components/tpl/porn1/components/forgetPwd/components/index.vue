@@ -192,7 +192,13 @@
         @click="sendEmail($route.params.type)"
         :class="[
           $style['forget-submit'],
-          { [$style['active']]: username && email }
+          {
+            [$style['active']]:
+              username &&
+              email.match(
+                /^(?=.{12,100}$)(([A-Za-z0-9.\-_]{1,})+@([A-Za-z0-9.-]{1,}))+\.[A-Za-z]+$/
+              )
+          }
         ]"
       >
         <div>{{ $t("S_SUBMIT") }}</div>

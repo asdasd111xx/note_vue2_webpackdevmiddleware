@@ -215,7 +215,8 @@ export default {
   height: 35px;
   padding: 6px 0;
   border-radius: 0 5px 5px 0;
-  background: var(--video_search_button);
+  // background: var(--video_search_button);
+  background: #9ca3bf;
   color: white;
   margin: 0 auto;
   text-align: center;
@@ -251,7 +252,7 @@ export default {
 .title {
   height: 30px;
   line-height: 30px;
-  color: var(--main_color);
+  color: #5e626d;
   font-weight: 400;
   font-size: 12px;
   margin-left: 8px;
@@ -264,7 +265,7 @@ export default {
     left: 0px;
     top: 7px;
     border-radius: 2px;
-    background: var(--main_color);
+    background: #5e626d;
   }
 }
 

@@ -232,5 +232,25 @@ export default [
     path: "iframe/:page?/:type?",
     name: "iframe",
     component
+  },
+
+  // 泡泡
+  {
+    path: "live",
+    name: "live",
+    redirect: "/mobile/live/iframe/home",
+    component,
+    children: [
+      {
+        path: "home",
+        name: "liveHome",
+        component
+      },
+      {
+        path: "iframe/:page?",
+        name: "liveIframe",
+        component
+      }
+    ]
   }
 ];

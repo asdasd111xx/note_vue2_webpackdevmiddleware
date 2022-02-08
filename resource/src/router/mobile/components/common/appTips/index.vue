@@ -79,7 +79,6 @@ export default {
     });
 
     if (
-      ["porn1", "sg1", "sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
       this.$route.name === "home" &&
       !window.navigator.standalone &&
       (this.isMobileSafari() || this.isMobileAndroid())
@@ -229,40 +228,30 @@ export default {
       const refCode = localStorage.getItem("x-code");
       const channelid = localStorage.getItem("x-channelid");
 
-      // 有帶推廣碼的需要登入
-      if (
-        !["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL) &&
-        !this.loginStatus &&
-        refCode &&
-        refCode !== ""
-      ) {
-        this.$router.push("/mobile/login");
+      // 渠道移除 有帶推廣碼的需要登入
+      if (!this.landingurl || this.landingurl === "") {
         return;
       }
 
+      // 會員-推廣專用
       let url = new URL(
         this.landingurl.startsWith("http")
           ? this.landingurl
           : `https://${this.landingurl}`
       );
 
-      if (["sp1", "aobo1"].includes(this.siteConfig.ROUTER_TPL)) {
-        // 代理網址推廣代碼優先推廣代碼
-        if (this.promotionHostnameCode || refCode) {
-          url.searchParams.append(
-            "code",
-            this.promotionHostnameCode || refCode
-          );
-        }
+      // 代理網址推廣代碼優先推廣代碼
+      if (this.promotionHostnameCode || refCode) {
+        url.searchParams.append("code", this.promotionHostnameCode || refCode);
+      }
 
-        if (channelid) {
-          url.searchParams.append("channelid", channelid);
-        }
+      if (channelid) {
+        url.searchParams.append("channelid", channelid);
+      }
 
-        // 落地頁直接下載
-        if (localStorage.getItem("x-action") === "download") {
-          url.searchParams.append("action", "download");
-        }
+      // 落地頁直接下載
+      if (localStorage.getItem("x-action") === "download") {
+        url.searchParams.append("action", "download");
       }
 
       // safari
@@ -336,7 +325,8 @@ export default {
     animation: slide-up 1s forwards;
   }
   .title {
-    color: var(--apptip_title);
+    // color: var(--apptip_title);
+    color: #262626;
   }
 
   // -webkit-animation-timing-function: forwards;

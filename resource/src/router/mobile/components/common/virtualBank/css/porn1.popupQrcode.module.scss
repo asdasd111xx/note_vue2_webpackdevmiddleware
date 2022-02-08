@@ -105,9 +105,11 @@ a {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    color: var(--popup_text_color2);
+    // color: var(--popup_text_color2);
+    color: #6aaaf5;
     &:nth-child(2) {
-      color: var(--popup_text_color1);
+      // color: var(--popup_text_color1);
+      color: #6aaaf5;
     }
   }
 }

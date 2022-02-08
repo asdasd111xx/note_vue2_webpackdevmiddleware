@@ -112,7 +112,8 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--addcard_popup_check_color);
+  // color: var(--addcard_popup_check_color);
+  color: #6dabf2;
   transform: translateY(-50%);
 }
 
@@ -131,11 +132,11 @@
   flex-direction: column;
   justify-content: center;
   width: 23%;
-  height: 62px;
+  height: 75px;
   margin: 3px;
   border: 1px solid #eee;
   border-radius: 3px;
-  color: #aaa;
+  color: #414655;
   cursor: pointer;
   vertical-align: top;
 
@@ -148,19 +149,19 @@
   }
 
   &.is-current {
-    border: 1px solid var(--wallet_border_color);
-    color: var(--wallet_border_text_color);
-    background: linear-gradient(-45deg,
-        var(--wallet_border_color) 10px,
-        hsla(0, 0%, 100%, 0) 0);
+    // border: 1px solid var(--wallet_border_color);
+    border: 1px solid #6dabf2;
+    // color: var(--wallet_border_text_color);
+    color: #414655;
+    background: linear-gradient(-45deg, #6dabf2 10px, hsla(0, 0%, 100%, 0) 0);
   }
 
   .pay-mode-tag {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 26px;
-    height: 25px;
+    bottom: -3px;
+    left: -1px;
+    width: 47px;
+    height: 15px;
   }
 
   .pay-mode-img {
@@ -210,7 +211,7 @@
 .pay-mode-pass {
   display: inline-block;
   width: 18.5%;
-  height: 40px;
+  height: 44px;
   line-height: 40px;
   font-size: 12px;
   margin: 5px 6px 5px 0;
@@ -236,10 +237,10 @@
 
   .pay-mode-tag {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 26px;
-    height: 25px;
+    bottom: -3px;
+    left: -1px;
+    width: 47px;
+    height: 15px;
   }
 }
 
@@ -248,7 +249,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -283,11 +284,11 @@
 
   &.is-current {
     background-color: #fff;
-    color: var(--wallet_border_text_color);
-    border: 1px solid var(--wallet_border_color);
-    background: linear-gradient(-45deg,
-        var(--wallet_border_color) 12px,
-        hsla(0, 0%, 100%, 0) 0);
+    color: #414655;
+    border: 1px solid #6dabf2;
+    // color: var(--wallet_border_text_color);
+    // border: 1px solid var(--wallet_border_color);
+    background: linear-gradient(-45deg, #6dabf2 12px, hsla(0, 0%, 100%, 0) 0);
   }
 }
 
@@ -382,7 +383,8 @@
   color: var(--slider_text_color);
 
   .time {
-    color: var(--countdown_time_text_color);
+    // color: var(--countdown_time_text_color);
+    color: #db6372;
     margin: 0 5px 0 5px;
   }
 
@@ -402,7 +404,8 @@
     }
 
     .crypto-money {
-      color: var(--deposit_crypto_block_money_color);
+      // color: var(--deposit_crypto_block_money_color);
+      color: #414655;
       font-weight: 500;
     }
   }
@@ -579,7 +582,8 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -787,17 +791,23 @@
   color: #cbced8;
 
   &.success {
-    color: var(--widthdraw_tip_text_color);
+    // color: var(--widthdraw_tip_text_color);
+    color: #6aaaf5;
   }
 }
 
 .current-data {
   background-color: #fff;
-  color: var(--wallet_border_text_color);
-  border: 1px solid var(--wallet_border_color);
-  background: linear-gradient(-45deg,
-      var(--wallet_border_color) 12px,
-      hsla(0, 0%, 100%, 0) 0);
+  // color: var(--wallet_border_text_color);
+  color: #414655;
+  border: 1px solid #6dabf2;
+  // border: 1px solid var(--wallet_border_color);
+  background: linear-gradient(-45deg, #6dabf2 12px, hsla(0, 0%, 100%, 0) 0);
+  // background: linear-gradient(
+  //   -45deg,
+  //   var(--wallet_border_color) 12px,
+  //   hsla(0, 0%, 100%, 0) 0
+  // );
 }
 
 .pop-message-mark {
@@ -846,7 +856,8 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--mcenter_main_color);
+  // color: var(--mcenter_main_color);
+  color: #6aaaf5;
 }
 
 .money-tip-wrap {
@@ -882,7 +893,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1050,7 +1061,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1142,7 +1152,8 @@
   transform: translate(-50%, -50%);
 
   .close {
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -1158,7 +1169,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 
@@ -1175,7 +1186,8 @@
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
   margin: 0;
   padding: 0;
   height: 40px;
@@ -1202,7 +1214,8 @@
 
 .cgpay-promotion {
   background: #ffffff;
-  color: var(--widthdraw_tip_text_color);
+  // color: var(--widthdraw_tip_text_color);
+  color: #6aaaf5;
   font-family: Microsoft JhengHei, Microsoft JhengHei-Regular;
   font-size: 12px;
   font-weight: 400;

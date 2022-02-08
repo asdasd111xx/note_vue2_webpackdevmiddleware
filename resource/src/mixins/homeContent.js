@@ -48,6 +48,13 @@ export default {
         { name: "makemoney", text: "推广", path: "tcenterLobby" },
         { name: "vip", text: "VIP", path: "accountVip" }
       ],
+      mcenterSg1List: [
+        { name: "myWallet", text: "钱包", path: "wallet" },
+        { name: "withdraw", text: "提现", path: "withdraw" },
+        { name: "creditTrans", text: "转让", path: "creditTrans" },
+        { name: "grade", text: "等级", path: "accountVip" },
+        { name: "promotion", text: "优惠", path: "promotion" }
+      ],
       timer: null,
       isShowPop: false,
       sitePostList: null,
@@ -389,11 +396,17 @@ export default {
       }
       return {
         src: info.image,
+        // error: this.$getCdnPath(
+        //   `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+        // ),
+        // loading: this.$getCdnPath(
+        //   `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+        // )
         error: this.$getCdnPath(
-          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_logo.png`
         ),
         loading: this.$getCdnPath(
-          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_${imageType}.png`
+          `/static/image/${this.siteConfig.ROUTER_TPL}/default/default_logo.png`
         )
       };
     },
@@ -669,7 +682,7 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus) {
+      if (!this.loginStatus && path !== "promotion") {
         this.$router.push("/mobile/login");
         return;
       }
@@ -727,7 +740,9 @@ export default {
         case "tcenterLobby":
           this.$router.push("/mobile/mcenter/tcenterLobby");
           return;
-
+        case "promotion":
+          this.$router.push("/mobile/promotion");
+          return;
         case "wallet":
           sendUmeng(6);
           this.$router.push(`/mobile/mcenter/wallet?redirect=home`);

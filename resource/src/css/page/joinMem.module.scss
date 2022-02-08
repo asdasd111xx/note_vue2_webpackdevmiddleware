@@ -102,7 +102,9 @@
   padding: 10px 2.5%;
   width: 100%;
   height: 40px;
-  font-size: 14px;
+  // border: 1px solid #595959;
+  border-radius: 5px;
+  font-size: 12px;
   outline: 0;
   display: block;
   text-overflow: ellipsis;
@@ -116,6 +118,9 @@
   &.email {
     padding: 10px 40% 10px 0.3%;
     text-overflow: ellipsis;
+  }
+  &.sg1 {
+    border-radius: 0 75px 75px 0;
   }
 }
 
@@ -210,12 +215,6 @@
     background: #6aaaf5;
     color: #fff;
   }
-
-  &.sg1 {
-    &.active {
-      background: var(--mcenter_button_color1);
-    }
-  }
 }
 
 .modal-dark-bg {
@@ -281,12 +280,12 @@
   &.sg1 {
     .mail-wrap {
       button.get-verify {
-        background: var(--mcenter_button_color1);
+        border-radius: 29px;
       }
     }
     .phonenum-wrap {
       button.get-verify {
-        background: var(--mcenter_button_color1);
+        border-radius: 29px;
       }
     }
     button {
@@ -306,7 +305,7 @@
     justify-content: space-between;
     max-width: 240px;
     height: 100%;
-    margin: 10px 0;
+    margin: 0 0 20px 0;
     & input {
       background: #e3e3e3;
       outline: none;
@@ -355,7 +354,7 @@
     justify-content: space-between;
     max-width: 240px;
     height: 100%;
-    margin: 10px 0;
+    margin: 10px 0 15px 0;
     & input {
       background: #e3e3e3;
       outline: none;
@@ -392,12 +391,20 @@
       }
     }
   }
-  button {
+  .btn-wrap {
+    display: flex;
     width: 100%;
-    height: 50px;
-    background: transparent;
-    color: #6aaaf5;
-    font-size: 18px;
+    border-top: 0.5px solid #eeeeee;
+    button:first-child {
+      border-right: 1px solid #eeeeee;
+    }
+    button {
+      width: 50%;
+      height: 50px;
+      background: transparent;
+      color: #6aaaf5;
+      font-size: 18px;
+    }
   }
 }
 
@@ -427,6 +434,10 @@
 
 .join-select-withdraw {
   composes: join-input-select;
+
+  &.sg1 {
+    border-radius: 75px;
+  }
 
   :global(.selected-tag) {
     display: block;
@@ -486,13 +497,18 @@
   vertical-align: top;
   color: #5e626d;
   line-height: 40px;
-  &.sg1,
+
   &.porn1 {
     text-align: right;
     padding-right: 12px;
   }
 
+  &.sg1 {
+    border-radius: 75px 0 0 75px;
+  }
+
   &.aobo1,
+  &.sg1,
   &.sp1,
   &.ey1 {
     background-color: #ffffff;
@@ -516,13 +532,18 @@
   width: calc(100% - 95px);
   text-align: right;
   vertical-align: middle;
+  // background: #fff;
 
-  &.porn1,
-  &.sg1 {
+  &.porn1 {
     border: 1px solid #d8d8d8;
   }
 
+  &.sg1 {
+    border-radius: 0 75px 75px 0;
+  }
+
   &.aobo1,
+  &.sg1,
   &.sp1,
   &.ey1 {
     border: 1px solid #e3e3e3;
@@ -735,11 +756,15 @@
 
 .visitor-get {
   margin-top: 5px;
-  color: var(--joinmember_title);
+  // color: var(--joinmember_title);
+  color: #5e626d;
   width: 100%;
   text-align: center;
   font-weight: 500;
   font-size: 17px;
+  &.sg1 {
+    color: #000000;
+  }
 }
 
 .has-visitor {
@@ -869,6 +894,10 @@
     color: #6aaaf5;
   }
 
+  &.sg1:last-child {
+    color: var(--member_color100);
+  }
+
   &.ey1:last-child {
     color: #e42a30;
   }
@@ -883,8 +912,19 @@
   margin: 0 6px;
   text-align: right;
 
-  &.aobo1 {
+  &.aobo1,
+  &.sp1 {
     margin: auto;
+
+    .thirdy-block {
+      width: 100%;
+      margin: auto;
+    }
+  }
+
+  &.sg1 {
+    margin: auto;
+    padding: 0 12px;
 
     .thirdy-block {
       width: 100%;

@@ -6,13 +6,13 @@
       :class="[
         $style['footer-item'],
         $style[`${info.key}`],
-        { [$style.active]: isActive(info.key) }
+        { [$style.active]: isActive(info) }
       ]"
       @click="onClick(info)"
     >
       <div>
         <img
-          v-if="isActive(info.key)"
+          v-if="isActive(info)"
           :src="
             $getCdnPath(`/static/image/sg1/home/footer/icon_${info.key}_h.png`)
           "
@@ -52,27 +52,33 @@ export default {
       return [
         {
           key: "home",
+          routeName: "liveHome",
           name: this.$text("S_HOME", "首页"),
-          path: "/mobile"
+          path: "/mobile/live/iframe/home?hasFooter=true"
         },
         {
-          key: "promotion",
-          name: this.$text("S_PROMOTION", "优惠"),
-          path: "/mobile/promotion"
+          // 泡泡直播體育開啟BB體育
+          key: "sport",
+          routeName: "live-sport",
+          name: this.$text("S_SPORTS_SHORT", "体育"),
+          path: `/mobile/iframe/game?kind=1&vendor=lg_sport&hasFooter=true&hasHeader=false`
         },
         {
-          key: "service",
-          name: this.$text("S_SERVIEC", "客服"),
-          path: "/mobile/service?prev=false"
+          // 泡泡直播娛樂城
+          key: "game",
+          routeName: "home",
+          name: this.$text("S_GAME", "游戏"),
+          path: "/mobile/home"
         },
         {
-          key: "iframe",
-          name: this.$text("S_GIFT", "礼包"),
-          path:
-            "/mobile/iframe/gift?alias=specific_promotion&fullscreen=false&hasHeader=true&hasFooter=true&func=false"
+          key: "deposit",
+          routeName: "deposit",
+          name: this.$text("S_DEPOSIT_BTN", "充值"),
+          path: "/mobile/mcenter/deposit?prev=false&hasFooter=true"
         },
         {
-          key: "mcenter-home",
+          key: "my",
+          routeName: "mcenter-home",
           name: this.$text("S_INFORMATION", "我的"),
           path: "/mobile/mcenter/home"
         }
@@ -81,8 +87,22 @@ export default {
   },
   methods: {
     onClick({ key, path }) {
+      if (key == "sport" && !this.loginStatus) {
+        this.$router.push("/mobile/login");
+        return;
+      }
+
+      if (
+        path === this.$route.path ||
+        (this.$route.name === "liveIframe" && key == "home")
+      ) {
+        // this.$router.push(`${path}?t=${new Date().toString()}`);
+        return;
+      }
+
       switch (key) {
         case "home":
+          localStorage.setItem("live-iframe-set-home", true);
           sendUmeng(19);
           break;
         case "promotion":
@@ -94,17 +114,36 @@ export default {
         case "iframe":
           sendUmeng(22);
           break;
-        case "mcenter-home":
+        case "my":
           sendUmeng(23);
           break;
       }
+
       this.$router.push(path);
     },
-    isActive(key) {
-      // if (this.$route.name === "discover" && key === "sponsor") {
-      //   return true;
-      // }
-      return key === this.$route.name;
+    isActive(info) {
+      if (
+        this.$route.name.indexOf("mcenter-live") > -1 &&
+        info.routeName === "mcenter-home"
+      ) {
+        return true;
+      } else if (
+        this.$route.name.indexOf("live") > -1 &&
+        info.routeName === "liveHome"
+      ) {
+        return true;
+      } else if (
+        this.$route.name.indexOf("deposit") > -1 &&
+        info.routeName === "deposit"
+      ) {
+        return true;
+      } else if (
+        this.$route.name.indexOf("iframe") > -1 &&
+        info.routeName === "live-sport"
+      ) {
+        return true;
+      }
+      return info.routeName === this.$route.name;
     }
   }
 };
@@ -121,12 +160,12 @@ export default {
   bottom: 0;
   width: 100%;
   min-height: 66px;
-  z-index: 5;
+  z-index: 50;
 
-  background: -webkit-linear-gradient(bottom, #ffffff, #f8efe6);
-  background: -o-linear-gradient(bottom, #ffffff, #f8efe6);
-  background: -moz-linear-gradient(bottom, #ffffff, #f8efe6);
-  background: linear-gradient(to bottom, #ffffff, #f8efe6);
+  background: -webkit-linear-gradient(bottom, #ffffff, #f0f0f0);
+  background: -o-linear-gradient(bottom, #ffffff, #f0f0f0);
+  background: -moz-linear-gradient(bottom, #ffffff, #f0f0f0);
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
 
   border-radius: 20px 20px 0 0;
   box-shadow: 0pt -7px 7px 0 rgba(0, 0, 0, 0.05);
@@ -136,26 +175,27 @@ export default {
   float: left;
   width: 20%;
   height: 45px;
-  color: #731c25;
+  color: var(--footer_color);
   position: relative;
+  font-weight: 400;
+  font-size: 15px;
 
-  &.active {
-    color: #fe593c;
+  img {
+    display: block;
+    width: 33px;
+    height: 33px;
+    margin: 6px auto 0;
   }
 
-  > div {
-    img {
-      display: block;
-      width: 18px;
-      height: 18px;
-      margin: 6px auto 0;
-    }
+  &.active {
+    color: var(--footer_active_color);
+    font-weight: 700;
   }
 
   > div:last-of-type {
     overflow: hidden;
-    height: 21px;
-    line-height: 21px;
+    height: 18px;
+    line-height: 18px;
     padding: 0 3px;
     font-size: 12px;
     text-align: center;

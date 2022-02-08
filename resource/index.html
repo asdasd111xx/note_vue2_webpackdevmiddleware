@@ -130,7 +130,6 @@
     var ymkey = '';
     fetch(`/conf/domain`)
       .then(function (response) {
-        console.log(response);
         h = response.headers;
         return response.json();
       })

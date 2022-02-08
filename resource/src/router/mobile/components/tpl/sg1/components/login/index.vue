@@ -104,7 +104,9 @@
                 <div class="input-icon">
                   <img
                     :src="
-                      $getCdnPath(`/static/image/common/login/sign_captcha.png`)
+                      $getCdnPath(
+                        `/static/image/common/login/sign_captcha_paopao.png`
+                      )
                     "
                   />
                 </div>
@@ -167,6 +169,13 @@
                     {{ $text("S_FREE_REGISTER", "免费注册") }}
                   </span>
                 </div>
+                <div class="link-button ">
+                  <span @click="handleClick('live')">
+                    <a :href="beHostUrl" target="_blank" style="color:#5E626D">
+                      {{ $text("S_JOINTOLIVERS", "成为主播") }}
+                    </a>
+                  </span>
+                </div>
                 <div
                   class="link-button link-submit"
                   @click="$router.push('/mobile/service')"
@@ -198,6 +207,7 @@ import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 /**
  * 登入共用元件
@@ -226,7 +236,8 @@ export default {
   data() {
     return {
       thirdyCaptchaObj: null,
-      script: null
+      script: null,
+      beHostUrl: ""
     };
   },
   watch: {
@@ -257,7 +268,7 @@ export default {
                 return;
             }
           } else {
-            this.$router.push(`/mobile/home`);
+            this.$router.push(`/mobile/live/iframe/home?hasFooter=true`);
           }
         },
         hasClose: true,
@@ -272,13 +283,37 @@ export default {
       return false;
     }
   },
-  created() {},
+  created() {
+    this.getHostClick();
+  },
   methods: {
     ...mapActions([
       "actionGetLayeredURL",
       "actionGetActingURL",
       "actionGetRegisterURL"
     ]),
+    getHostClick() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
+        params: {
+          version: "2"
+        }
+      }).then(res => {
+        if (
+          res &&
+          res.data &&
+          res.data.data.case_data &&
+          res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
+        ) {
+          this.beHostUrl =
+            res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
+              "zh-cn"
+            ];
+        }
+      });
+    },
+
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
@@ -340,7 +375,7 @@ export default {
   border-radius: 4px;
   background: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  max-width: 340px;
+  max-width: 270px;
   color: #5e626d;
   font-size: 14px;
   border-radius: 10px;
@@ -349,8 +384,8 @@ export default {
 .title {
   padding: 20px 20% 10px 20%;
   width: 100%;
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 18px;
   text-align: center;
   color: #414655;
   text-overflow: ellipsis;
@@ -369,13 +404,13 @@ export default {
   input {
     display: block;
     background-color: #ffffff;
-    border: 1px solid #a5a5a5;
-    border-radius: 8px;
+    border: 1px solid #e3e3e3;
+    font-size: 12px;
     width: 100%;
     height: 40px;
     text-indent: 10px;
     outline: none;
-    color: #fff;
+    color: #000;
 
     &::-webkit-input-placeholder {
       color: #a5a5a5;
@@ -391,7 +426,7 @@ export default {
   width: 100%;
   height: 60px;
   line-height: 34px;
-  color: var(--popup_tip_ok_color);
+  color: #6aaaf5;
   cursor: pointer;
   text-align: center;
   font-size: 18px;
@@ -406,8 +441,7 @@ export default {
   right: 10px;
   width: 40px;
   height: 40px;
-  line-height: 36px;
-  font-size: 36px;
+  line-height: 40px;
   text-align: center;
   background: url("/static/image/_new/common/btn_close.png") 10px 10px no-repeat;
   cursor: pointer;
@@ -416,8 +450,8 @@ export default {
 
 .tip {
   margin: 20px auto 0;
-  width: 80%;
-  font-size: 15px;
+  width: 100%;
+  font-size: 12px;
   text-align: center;
   color: #a6a9b2;
   padding-bottom: 13px;

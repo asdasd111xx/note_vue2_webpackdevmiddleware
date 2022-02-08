@@ -97,7 +97,8 @@ input {
   justify-content: space-between;
   align-items: baseline;
   padding: 0px 14px;
-  color: var(--mcenter_promotion_tips);
+  // color: var(--mcenter_promotion_tips);
+  color: #be9e7f;
   font-size: 12px;
 }
 
@@ -200,7 +201,8 @@ input {
 .send-keyring {
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  background: var(--mcenter_send_keyring);
+  // background: var(--mcenter_send_keyring);
+  background: #6aaaf5;
   border-radius: 3px;
   color: #fff;
   font-weight: 400;
@@ -216,6 +218,7 @@ input {
     color: #fff;
     opacity: 0.5;
     // background: var(--mcenter_send_keyring_disabled);
+    background: #cccccc;
     pointer-events: none;
   }
 }

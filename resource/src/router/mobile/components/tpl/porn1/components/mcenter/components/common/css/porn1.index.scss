@@ -29,7 +29,8 @@
 
     .balance-item-money {
       font-size: 16px;
-      color: var(--mcenter_wallet_text_color);
+      color: #6aaaf5;
+      // color: var(--mcenter_wallet_text_color);
     }
   }
 
@@ -37,7 +38,8 @@
     position: relative;
     flex: 1;
     font-size: 16px;
-    color: var(--mcenter_wallet_recycle_text_color);
+    color: #6aaaf5;
+    // color: var(--mcenter_wallet_recycle_text_color);
     font-weight: 700;
 
     &::before {
@@ -67,6 +69,7 @@
   .credit-trans-link {
     flex: 1;
     font-size: 16px;
-    color: var(--mcenter_wallet_recycle_text_color);
+    // color: var(--mcenter_wallet_recycle_text_color);
+    color: #6aaaf5;
   }
 }

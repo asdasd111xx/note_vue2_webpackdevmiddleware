@@ -183,7 +183,7 @@
   bottom: 1.5px;
   left: calc(25% - 25px);
   height: 2px;
-  background-color: var(--deco_color2);
+  background-color: var(--mcenter_slider_underline_active_color);
   width: 45px;
   transition: left 0.31s;
 }
@@ -228,6 +228,17 @@
     overflow-x: hidden;
     overflow-y: hidden;
     white-space: nowrap;
+
+    &.match {
+      color: white;
+      background-color: #6aaaf5;
+      border: white 0px solid;
+      border-radius: 20px;
+      width: 70px;
+      height: 25px;
+      justify-content: center;
+      margin-top: 5px;
+    }
   }
 
   .edit,
@@ -288,7 +299,7 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--wallet_border_color);
+  color: var(--popup_text_color1);
   border-top: 1px solid #f8f8f7;
 }
 
@@ -356,7 +367,8 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--wallet_border_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #000;
   }
 }
 
@@ -393,7 +405,8 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--wallet_border_color);
+  // color: var(--addcard_popup_check_color);
+  color: #e53266;
   transform: translateY(-50%);
 }
 
@@ -527,11 +540,11 @@
   height: 42px;
   line-height: 42px;
   text-align: center;
-  color: #a6a9b2;
+  color: var(--mcenter_slider_text_color);
   width: 50%;
 
   &.is-current {
-    color: #5e626d;
+    color: var(--mcenter_slider_text_active_color);
   }
 }
 
@@ -541,7 +554,7 @@
   height: 2px;
   bottom: 1.5px;
   transform: translateX(-50%);
-  background: var(--deco_color2);
+  background: var(--mcenter_slider_underline_active_color);
   // left: calc(33% / 2 - 20px);
 
   transition: left 0.31s;

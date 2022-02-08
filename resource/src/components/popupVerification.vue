@@ -38,7 +38,8 @@
           $style['close'],
           {
             [$style['is-captcha-image']]: captchaType === 1
-          }
+          },
+          $style[themeTPL]
         ]"
         @click="$emit('show-captcha', false)"
       >
@@ -90,7 +91,10 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo"
-    })
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   created() {
     if ([3, 4, 5].includes(this.captchaType)) {
@@ -225,9 +229,13 @@ export default {
   border-top: 1px solid #f8f8f7;
 
   &.is-captcha-image {
-    color: var(--popup_text_color3);
+    // color: var(--popup_text_color3);
+    color: #6aaaf5;
     display: inline-block;
     width: 48%;
+  }
+  &.sg1 {
+    color: #000000;
   }
 }
 
@@ -237,7 +245,8 @@ export default {
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
   display: inline-block;
   width: 48%;
   border-top: 1px solid #f8f8f7;

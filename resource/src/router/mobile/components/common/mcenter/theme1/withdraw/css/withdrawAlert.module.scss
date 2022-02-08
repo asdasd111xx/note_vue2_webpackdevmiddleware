@@ -97,8 +97,13 @@
   text-align: center;
   cursor: pointer;
   border-radius: 4px;
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
   background: #fefffe;
   font-size: 18px;
   font-weight: bold;
+
+  &.sg1 {
+    color: #000;
+  }
 }

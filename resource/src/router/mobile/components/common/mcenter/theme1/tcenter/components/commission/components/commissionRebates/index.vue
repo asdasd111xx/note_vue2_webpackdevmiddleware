@@ -32,7 +32,9 @@
                 {{ caculateList.period | dateFormatNoTime }}
               </div>
               返利：{{
-                caculateList.amount
+                caculateList.state === 3 && caculateList.self_times === 0
+                  ? "--"
+                  : caculateList.amount
                   ? formatThousandsCurrency(caculateList.amount)
                   : "--"
               }}
@@ -86,7 +88,14 @@
                 {{ $text("S_VALID_BET", "有效投注") }}
               </span>
               <div :class="$style['content-right']">
-                <template v-if="caculateList.sub_valid_bet">
+                <template
+                  v-if="
+                    caculateList.state === 3 && caculateList.self_times === 0
+                  "
+                >
+                  --
+                </template>
+                <template v-else-if="caculateList.sub_valid_bet">
                   {{ formatThousandsCurrency(caculateList.sub_valid_bet) }}
                 </template>
 
@@ -107,7 +116,9 @@
                 ]"
               >
                 {{
-                  caculateList.sub_profit
+                  caculateList.state === 3 && caculateList.self_times === 0
+                    ? "--"
+                    : caculateList.sub_profit
                     ? formatThousandsCurrency(caculateList.sub_profit)
                     : "--"
                 }}
@@ -133,7 +144,9 @@
               </span>
               <div :class="$style['content-right']">
                 {{
-                  caculateList.self_min_limit
+                  caculateList.state === 3 && caculateList.self_times === 0
+                    ? "--"
+                    : caculateList.self_min_limit
                     ? formatThousandsCurrency(caculateList.self_min_limit)
                     : "--"
                 }}
@@ -454,7 +467,7 @@ export default {
         this.immediateData = [];
         if (response.status === "000") {
           this.amountResult = this.formatThousandsCurrency(
-            response.data.ret.dispatched_amount
+            response.data.dispatched_amount
           );
         }
       });

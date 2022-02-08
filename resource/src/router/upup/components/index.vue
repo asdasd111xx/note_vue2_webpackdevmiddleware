@@ -1,17 +1,29 @@
 <template>
   <div v-if="themeTPL" :class="[$style['content'], $style[`${themeTPL}`]]">
     <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
+      <img
+        :src="
+          `${themeTPL}` == 'sg1'
+            ? $getCdnPath(`/static/image/${themeTPL}/common/logo_w.png`)
+            : $getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)
+        "
+      />
     </div>
     <div :class="[$style['title'], $style[`${themeTPL}`]]">
       {{ $t("ROUTER_UPUP_TITLE") }}
     </div>
-    <div :class="$style['main-img']">
+    <div :class="$style['main-img']" v-if="themeTPL != 'sg1'">
       <img
         :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_maintain.png`)"
       />
     </div>
-    <div :class="[$style['desc'], $style['has-time']]">
+    <div
+      v-if="themeTPL == 'sg1'"
+      :class="[$style['sub-title'], $style[`${themeTPL}`]]"
+    >
+      PAOPAO直播 24小時大尺度開播
+    </div>
+    <div :class="[$style['desc'], $style[`${themeTPL}`], $style['has-time']]">
       {{ $t("ROUTER_UPUP_TEXT_1") }}
     </div>
     <template v-if="start && end">
@@ -23,7 +35,7 @@
       </div>
     </template>
 
-    <div :class="$style.tips">
+    <div :class="[$style.tips, $style[`${themeTPL}`]]">
       如需帮助，请
       <span @click="linkToService">&nbsp;联系客服</span>
     </div>

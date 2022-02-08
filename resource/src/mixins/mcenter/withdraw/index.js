@@ -43,8 +43,13 @@ export default {
       bank_card: [],
       wallet_card: [],
       epointWallet: {},
+      epointNewWallet: {},
       userBankOption: [],
       defaultEpointWallet: {
+        id: "",
+        account: ""
+      },
+      defaultEpointNewWallet: {
         id: "",
         account: ""
       },
@@ -90,11 +95,14 @@ export default {
 
       // 過濾e點富
       resulAccount = allAccount.filter(info => {
-        return info.bank_id != 2026;
+        return info.bank_id != 2026 && info.bank_id != 2030;
       });
 
       this.epointWallet = allAccount.filter(info => {
         return info.bank_id === 2026;
+      });
+      this.epointNewWallet = allAccount.filter(info => {
+        return info.bank_id === 2030;
       });
 
       // 目前應該進不來，沒有 isSupportCGPay 的欄位 ?
@@ -658,6 +666,7 @@ export default {
             this.userBankOption = [];
             this.userBankOption = response.data.ret;
             this.defaultEpointWallet = this.userBankOption[0];
+            this.defaultEpointNewWallet = this.userBankOption[0];
           }
         })
         .catch(error => {});
@@ -668,11 +677,18 @@ export default {
       if (this.selectedCard.bank_id === 2009) {
         method_id = this.withdrawCurrency.method_id;
       } else {
-        method_id = this.selectedCard.offer_data
-          ? this.selectedCard.offer_data[0]
+        if (this.selectedCard.offer_data) {
+          method_id = this.selectedCard.offer_data[0]
             ? this.selectedCard.offer_data[0].method_id
-            : 0
-          : 0;
+            : 0;
+        } else if (this.selectedCard && this.selectedCard["currency"]) {
+          //僅綁定購寶錢包情況fb546335
+          method_id = this.selectedCard["currency"][0]
+            ? this.selectedCard["currency"][0].method_id
+            : 0;
+        } else {
+          method_id = 0;
+        }
       }
       //取得會員層級當日取款試算優惠、金額 C04.55
       return goLangApiRequest({

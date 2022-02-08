@@ -214,5 +214,7 @@ export default {
   getWithdrawCheckStatus: state => state.withdrawCheckStatus,
   getDomainConfig: state => state.domainConfig,
   getSystemConfig: state => target => state.systemConfig[target],
-  getVersion: state => state.version
+  getVersion: state => state.version,
+  getLiveMaintain: state => state.liveMaintain,
+  getActivity: state => state.activity //取得彩金活動
 };

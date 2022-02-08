@@ -21,7 +21,7 @@
 
   //按鈕主色
   --main_button_color1: linear-gradient(to left, #ffbb00 0%, #ffbb00 100%);
-  --main_button_text_color1: #000;
+  --main_button_text_color1: #ffffff;
   --main_button_color2: linear-gradient(to left, #fcd571 0%, #fcd571 100%);
   --main_button_text_color2: #ffffff;
 
@@ -40,22 +40,23 @@
   //>底線模式
   --slider_text_color: #a6a9b2;
   --slider_text_active_color: #5e626d;
-  --slider_underline_active_color: #d1b79c;
+  --slider_underline_active_color: #222222;
   //>方塊模式
-  --square_text_color: #d1b79c;
-  --square_border_color: #d1b79c;
+  --square_text_color: #222222;
+  --square_border_color: #222222;
   --square_background_color: #ffffff;
   --square_text_active_color: #ffffff;
-  --square_border_active_color: #d1b79c;
-  --square_background_active_color: #d1b79c;
+  --square_border_active_color: #222222;
+  --square_background_active_color: #222222;
 
   //客服永久網址按鈕
   --service_bottom_text_button: #ffffff;
   --service_bottom_background_button: #222222;
 
   //首頁訪客彩金
-  --visitor_title_color: #feba2c;
-  --visitor_money_color: #ffffff;
+  --visitor_title_color: #ffffff;
+  --visitor_money_color: #feba2c;
+  --visitor_money_get_color: #feba2c;
 
   /***--- 會員中心 ----***/
   //底色(固定顏色)
@@ -71,7 +72,7 @@
   //按鈕主色
   --mcenter_button_color1: linear-gradient(to left, #bd9d7d 0%, #f9ddbd 100%);
   --mcenter_button_text_color1: #ffffff;
-  --mcenter_button_color2: linear-gradient(to left, #e9dacb 0%, #eee5db 100%);
+  --mcenter_button_color2: linear-gradient(to right, #e9dacb 0%, #eee5db 100%);
   --mcenter_button_text_color2: #ffffff;
 
   //第二層選單【主色】
@@ -98,8 +99,8 @@
   --mcenter_dropdown_cancel_background_color: var(--mcenter_button_color2);
 
   //邀請好友獲得現金獎勵
-  --mcenter_invite_background_color: #f2e2d1;
-  --mcenter_invite_text_color: #be9e7f;
+  --mcenter_invite_background_color: var(--mcenter_button_color2);
+  --mcenter_invite_text_color: #414655;
 
   //我的推廣（文字配色設定）
   //>领取/详情： 底色【輔色】
@@ -124,27 +125,27 @@
   /***---------------- 功能 ----------------***/
 
   /***--- 大廳 遊戲 功能 ---***/
-  --joinmember_title: #9b6b40; //註冊頁標題
-  --joinmember_left_text_color: #5e626d; //註冊頁左下文字
-  --joinmember_right_text_color: #fb0; //註冊頁右下文字
-  --promotion_gift_button: #fb0; //優惠上方按鈕背景
-  --promotion_gift_button_text_color: #000; //優惠上方按鈕文字
-  --promotion_gift_button_border: 32px; //優惠上方按鈕圓角
-  --service_webview_button: #6aaaf5; //webview我的客服下載按鈕
-  --service_webview_text_button: #6aaaf5; //webview我的客服下載按鈕文字
-  --webview_icon_text: #bf8646; //webview我的客服文字
-  --service_add_button: #6aaaf5; //我的客服立即添加按鈕
-  --service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
-  --service_text_color: #6aaaf5; //我的客服立即添加按鈕左邊的文字
-  --service_tip_color: #be9e7f; //我的客服彈窗 重要提醒
-  --send_keyring: #be9e7f; //獲取驗證碼按鈕
-  --send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
-  --popup_tip_ok_color: #d1b79c; //溫馨提示彈窗 確認 & 大廳公告彈窗右
-  --popup_tip_close_color: #d1b79c; //溫馨提示彈窗 關閉  & 大廳公告彈窗左
-  --apptip_title: #fb0; //大廳立即下載title
-  --find_password_text_color: #a6a9b2; //找回密碼
-  --find_password_text_active_color: #5e626d; //找回密碼active
-  --find_password_underline_active_color: #d1b79c; //找回密碼active底線
+  //--joinmember_title: #9b6b40; //註冊頁標題
+  //--joinmember_left_text_color: #5e626d; //註冊頁左下文字
+  //--joinmember_right_text_color: #fb0; //註冊頁右下文字
+  //--promotion_gift_button: #fb0; //優惠上方按鈕背景
+  //--promotion_gift_button_text_color: #000; //優惠上方按鈕文字
+  //--promotion_gift_button_border: 32px; //優惠上方按鈕圓角
+  --service_webview_button: #000000; //webview我的客服下載按鈕
+  --service_webview_text_button: #000000; //webview我的客服下載按鈕文字
+  --webview_icon_text: #fff; //webview我的客服文字
+  //--service_add_button: #6aaaf5; //我的客服立即添加按鈕
+  //--service_add_text_button: #ffffff; //我的客服立即添加按鈕文字
+  //--service_text_color: #6aaaf5; //我的客服立即添加按鈕左邊的文字
+  //--service_tip_color: #be9e7f; //我的客服彈窗 重要提醒
+  //--send_keyring: #be9e7f; //獲取驗證碼按鈕
+  //--send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
+  //--popup_tip_ok_color: #d1b79c; //溫馨提示彈窗 確認 & 大廳公告彈窗右
+  //--popup_tip_close_color: #d1b79c; //溫馨提示彈窗 關閉  & 大廳公告彈窗左
+  //--apptip_title: #fb0; //大廳立即下載title
+  //--find_password_text_color: #a6a9b2; //找回密碼
+  //--find_password_text_active_color: #5e626d; //找回密碼active
+  --find_password_underline_active_color: #000; //找回密碼active底線
   --video_popup_title_color: #be9e7f; //影片裡面提示框title
   --video_popup_left_text_button: #be9e7f; //影片裡面提示框左邊按鈕文字
   --video_popup_left_background_button: #faf5f0; //影片裡面提示框左邊按鈕
@@ -154,87 +155,59 @@
     #bd9d7d 0%,
     #f9ddbd 100%
   ); //影片裡面提示框右邊按鈕
-  --video_search_button: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //影片內部搜尋按鈕
+  // --video_search_button: linear-gradient(to left,#bd9d7d 0%,#f9ddbd 100%); //影片內部搜尋按鈕
   --video_more_dropdown_text_color: #d1b79c; //影片分類下拉視窗 文字
   --video_more_dropdown_border_color: #d1b79c; //影片分類下拉視窗 框線
   --video_more_dropdown_background_color: #ffffff; //影片分類下拉視窗 背景
   --video_more_dropdown_text_active_color: #d1b79c; //影片分類下拉視窗 文字 active
   --video_more_dropdown_border_active_color: #d1b79c; //影片分類下拉視窗 框線 active
   --video_more_dropdown_background_active_color: #ffffff; //影片分類下拉視窗 背景 active
-  --video_introduction_icon_color: linear-gradient(
-    to bottom,
-    #bd9d7d,
-    #f9ddbd
-  ); //影片簡介標題前面長方形
-  --video_guess_like_color: #bf8646; //影片猜你喜歡
-  --video_more_button: linear-gradient(
-    to left,
-    #bd9d7d,
-    #f9ddbd
-  ); //影片更多按鈕
-  --game_bonus_amount: #aa7e28; //電子大廳 彩金金額
+  // --video_introduction_icon_color: linear-gradient(to bottom,#bd9d7d,#f9ddbd); //影片簡介標題前面長方形
+  // --video_guess_like_color: #bf8646; //影片猜你喜歡
+  // --video_more_button: linear-gradient(to left,#bd9d7d,#f9ddbd); //影片更多按鈕
+  //--game_bonus_amount: #262626; //電子大廳 彩金金額
 
   /***--- 會員中心 功能 ----***/
-  --wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框
-  --wallet_border_text_color: #414655; //充值 選擇支付方式、支付通道框框的文字顏色
-  --deposit_crypto_block_money_color: #bf8646; //充值 轉入金額顏色
-  --deco_color: linear-gradient(
-    to bottom,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //前面長方形顏色(我的推廣 全部下級概況)
-  --deco_color2: #be9e7f; //盈虧返例、團隊概況 前面圓形的顏色
-  --popup_text_color_confrim: #be9e7f; //公告彈窗確定
-  --popup_text_color1: #be9e7f; //彈窗確定
-  --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
-  --popup_text_color3: #414655; //彈窗取消
-  --marquee_text_color1: #9ca3bf; //大廳跑馬燈
-  --marquee_text_color2: #d1b79c; //提現、充值跑馬燈
-  --vip_detail_color: #bbab98; //查看VIP详情
-  --avatar-vip-icon-color: var(--mcenter_button_color1); //我的 vip等級 背景顏色
-  --redpot_button_color: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //紅包彩金裡面領取按鈕
-  --redpot_text_color: #be9e7f; //紅包彩金頁面裡的文字
-  --addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
-  --addcard_popup_prev_text_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
-  --addcard_popup_check_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 打勾
-  --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
-  --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
-  --bankrebate_receive_button1: var(
-    --mcenter_button_color1
-  ); //我的返水 一鍵領取按鈕
-  --bankrebate_receive_button2: var(
-    --mcenter_button_color2
-  ); //我的返水 一鍵領取按鈕disable
-  --bankrebate_receive_text_color: #f3ede7; //我的返水 一鍵領取按鈕文字
-  --bankrebate_text_active_color: #be9e7f; //我的返水 active文字
-  --countdown_time_text_color: #be9e7f; //匯率試算倒數時間
-  --mcenter_send_keyring: #be9e7f; //獲取驗證碼按鈕
-  --mcenter_send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
+  //--wallet_border_color: #d1b79c; //充值 選擇支付方式、支付通道框框
+  //--wallet_border_text_color: #414655; //充值 選擇支付方式、支付通道框框的文字顏色
+  // --deposit_crypto_block_money_color: #bf8646; //充值 轉入金額顏色
+  // --deco_color: linear-gradient(to bottom,#bd9d7d 0%,#f9ddbd 100%); //前面長方形顏色(我的推廣 全部下級概況)
+  // --deco_color2: #be9e7f; //盈虧返例、團隊概況 前面圓形的顏色
+  // --popup_text_color_confrim: #be9e7f; //公告彈窗確定
+  // --popup_text_color1: #be9e7f; //彈窗確定
+  // --popup_text_color2: #414655; //彈窗取消(綁定銀行卡)
+  // --popup_text_color3: #414655; //彈窗取消
+  // --marquee_text_color1: #9ca3bf; //大廳跑馬燈
+  // --marquee_text_color2: #d1b79c; //提現、充值跑馬燈
+  // --vip_detail_color: #bbab98; //查看VIP详情
+  //--avatar-vip-icon-color: #d1b79c; //我的 vip等級 背景顏色
+  //--redpot_button_color: linear-gradient(to left,#bd9d7d 0%,#f9ddbd 100%); //紅包彩金裡面領取按鈕
+  //--redpot_text_color: #be9e7f; //紅包彩金頁面裡的文字
+  //--addcard_popup_text_color: #bbab98; //添加銀行卡&選擇轉出貨幣&選擇銀行 彈窗 文字
+  //--addcard_popup_prev_text_color: #6aaaf5; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 取消
+  // --addcard_popup_check_color: #be9e7f; //添加銀行卡彈窗&選擇轉出貨幣&選擇銀行 打勾
+  // --widthdraw_tip_text_color: #be9e7f; //使用USDT(ERC20)出款，额外赠送 & 实际到帐
+  // --withdraw_tips_detail: #6aaaf5; //提現優惠詳情按鈕
+  // --bankrebate_receive_button1: var(--mcenter_button_color1); //我的返水 一鍵領取按鈕
+  //--bankrebate_receive_button2: var(  --mcenter_button_color2); //我的返水 一鍵領取按鈕disable
+  //--bankrebate_receive_text_color: #f3ede7; //我的返水 一鍵領取按鈕文字
+  //--bankrebate_text_active_color: #be9e7f; //我的返水 active文字
+  //--countdown_time_text_color: #be9e7f; //匯率試算倒數時間
+  //--mcenter_send_keyring: #be9e7f; //獲取驗證碼按鈕
+  //--mcenter_send_keyring_disabled: #e9dacc; //獲取驗證碼按鈕disabled
   --help_contact_copy: #be9e7f; //幫助中心 聯繫我們 複製
-  --mcenter_wallet_text_color: #be9e7f; //中心錢包的錢 (額度轉讓＆錢包＆提現＆轉帳)
-  --mcenter_wallet_recycle_text_color: #be9e7f; //一鍵回收＆額度轉讓字 (額度轉讓＆錢包＆提現＆轉帳)
-  --mcenter_wallet_redpot_text_color: #be9e7f; //紅包彩金文字 (提現＆轉帳＆錢包)
-  --mcenter_wallet_redpot_money_color: #be9e7f; //紅包彩金的錢 (提現＆轉帳＆錢包)
-  --mcenter_promotion_tips: #be9e7f; //額度轉讓喜訊
-  --mcenter_change_avatar_image: #be9e7f; //編輯個人頭像
-  --mcenter_upload_image_button: linear-gradient(
-    to left,
-    #bd9d7d 0%,
-    #f9ddbd 100%
-  ); //個人頭像 從相冊選取
-  --mcenter_upload_image_text_button: #ffffff; //個人頭像 從相冊選取 文字
-  --mcenter_upload_image_cancel_button: #faf5f0; //個人頭像從相冊選取 取消
-  --mcenter_upload_image_cancel_text_button: #be9e7f; //個人頭像從相冊選取 取消文字
-  --mcenter_collect_app_text_color: #a6a9b2; //收藏我们随时下载APP 文字
-  --mcenter_collect_app_background_color: #ececf2; //收藏我们随时下载APP 背景
-  --mcenter_collect_app_button_color: #5e626d; //收藏我们随时下载APP 立即收藏
-  --tcenter_real_rebate_color: #6aaaf5; //實時返利詳情 當前
+  // --mcenter_wallet_text_color: #be9e7f; //中心錢包的錢 (額度轉讓＆錢包＆提現＆轉帳)
+  // --mcenter_wallet_recycle_text_color: #be9e7f; //一鍵回收＆額度轉讓字 (額度轉讓＆錢包＆提現＆轉帳)
+  // --mcenter_wallet_redpot_text_color: #be9e7f; //紅包彩金文字 (提現＆轉帳＆錢包)
+  // --mcenter_wallet_redpot_money_color: #be9e7f; //紅包彩金的錢 (提現＆轉帳＆錢包)
+  // --mcenter_promotion_tips: #be9e7f; //額度轉讓喜訊
+  //--mcenter_change_avatar_image: #be9e7f; //編輯個人頭像
+  //--mcenter_upload_image_button: linear-gradient(to left,#bd9d7d 0%,#f9ddbd 100%); //個人頭像 從相冊選取
+  //--mcenter_upload_image_text_button: #ffffff; //個人頭像 從相冊選取 文字
+  //--mcenter_upload_image_cancel_button: #faf5f0; //個人頭像從相冊選取 取消
+  //--mcenter_upload_image_cancel_text_button: #be9e7f; //個人頭像從相冊選取 取消文字
+  //--mcenter_collect_app_text_color: #a6a9b2; //收藏我们随时下载APP 文字
+  //--mcenter_collect_app_background_color: #ececf2; //收藏我们随时下载APP 背景
+  //--mcenter_collect_app_button_color: #5e626d; //收藏我们随时下载APP 立即收藏
+  //--tcenter_real_rebate_color: #6aaaf5; //實時返利詳情 當前
 }

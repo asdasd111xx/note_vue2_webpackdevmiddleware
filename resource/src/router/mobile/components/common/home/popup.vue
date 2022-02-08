@@ -71,9 +71,15 @@
         </div>
       </div>
 
-      <div v-if="!sitePostList" class="clearfix">
-        <div :class="$style['modal-button']" @click="closePop()">知道了</div>
-        <div :class="[$style['modal-button']]" @click="closePop(true)">
+      <div
+        v-if="!sitePostList"
+        :class="[$style['modal-button-wrap'], $style[siteConfig.ROUTER_TPL]]"
+        class="clearfix"
+      >
+        <div :class="$style['modal-button']" @click="closePop()">
+          知道了
+        </div>
+        <div :class="$style['modal-button']" @click="closePop(true)">
           查看详情
         </div>
       </div>
@@ -377,7 +383,13 @@ export default {
     width: 100%;
   }
 }
-
+.modal-button-wrap {
+  &.sg1 {
+    .modal-button {
+      color: #000000;
+    }
+  }
+}
 .modal-button {
   float: left;
   width: 50%;
@@ -387,12 +399,14 @@ export default {
   font-size: 18px;
 
   &:first-child {
-    color: var(--popup_tip_close_color);
+    // color: var(--popup_tip_close_color);
+    color: #6aaaf5;
     border-right: 1px solid #eee;
   }
 
   &:last-child {
-    color: var(--popup_tip_ok_color);
+    // color: var(--popup_tip_ok_color);
+    color: #6aaaf5;
   }
 }
 
@@ -402,7 +416,11 @@ export default {
   line-height: 50px;
   text-align: center;
   font-size: 18px;
+  color: #6aaaf5;
 
+  &.sg1 {
+    color: #000000;
+  }
   // &.ey1 {
   //   color: #e42a30;
   // }

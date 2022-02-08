@@ -460,5 +460,7 @@ export default {
     account: true
   },
   domainConfig: {},
-  systemConfig: {}
+  systemConfig: {},
+  liveMaintain: null,
+  activity: {} //取得彩金活動
 };

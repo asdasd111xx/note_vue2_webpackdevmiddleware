@@ -78,6 +78,26 @@ export default {
           component
         },
         {
+          path: "liveAlias",
+          name: "mcenter-accountData-liveAlias",
+          component
+        },
+        {
+          path: "hometown",
+          name: "mcenter-accountData-hometown",
+          component
+        },
+        {
+          path: "relationship",
+          name: "mcenter-accountData-relationship",
+          component
+        },
+        {
+          path: "intro",
+          name: "mcenter-accountData-intro",
+          component
+        },
+        {
           path: "skype",
           name: "mcenter-accountData-skype",
           component
@@ -356,6 +376,37 @@ export default {
       path: "newCommission",
       name: "mcenter-tcenterNewCommission",
       component
+    },
+    {
+      // 會員名片
+      path: "memberCard",
+      name: "mcenter-memberCard",
+      component
+    },
+
+    // 泡泡
+    {
+      path: "live",
+      name: "mcenter-live",
+      component,
+      redirect: "/mobile/mcenter/home",
+      children: [
+        {
+          path: "diamond",
+          name: "mcenter-live-diamond",
+          component
+        },
+        {
+          path: "shop",
+          name: "mcenter-live-shop",
+          component
+        },
+        {
+          path: "mission",
+          name: "mcenter-live-mission",
+          component
+        }
+      ]
     }
   ]
 };

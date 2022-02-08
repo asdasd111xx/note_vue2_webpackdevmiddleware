@@ -139,7 +139,8 @@ export default {
   width: 3px;
   height: 15px;
   vertical-align: middle;
-  background: var(--video_introduction_icon_color);
+  // background: var(--video_introduction_icon_color);
+  background: #5e626d;
 }
 
 .info-wrap {
@@ -156,7 +157,8 @@ export default {
   }
 
   .title {
-    color: var(--slider_text_active_color);
+    // color: var(--slider_text_active_color);
+    color: #5e626d;
     font-size: 12px;
     line-height: 14px;
     width: 80%;

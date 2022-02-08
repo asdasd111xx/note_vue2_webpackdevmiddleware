@@ -7,24 +7,36 @@
 </template>
 
 <script>
-import mobileContainer from '../../../common/mobileContainer';
+import mobileContainer from "../../../common/mobileContainer";
 
 export default {
   components: {
     mobileContainer,
-    feedback: () => import(/* webpackChunkName: 'sendFeedback' */ './components/index'),
+    feedback: () =>
+      import(/* webpackChunkName: 'sendFeedback' */ "./components/index")
   },
   computed: {
     headerConfig() {
       return {
         prev: true,
-        title: this.$route.params.page === 'sendFeedback'
-          ? this.$text('S_FEEDBACK', '意见反馈') : this.$text(...this.$route.params.id ? ['S_FEEDBACK_DETAIL', '反馈详情'] : ['S_MY_FEEDBACK', '我的反馈']),
-        customLinkTitle: this.$route.params.page === 'sendFeedback' ? this.$text("S_MY_FEEDBACK", "我的反馈") : false,
+        title:
+          this.$route.params.page === "sendFeedback"
+            ? this.$text("S_FEEDBACK", "意见反馈")
+            : this.$text(
+                ...(this.$route.params.id
+                  ? ["S_FEEDBACK_DETAIL", "反馈详情"]
+                  : ["S_MY_FEEDBACK", "我的反馈"])
+              ),
+        customLinkTitle:
+          this.$route.params.page === "sendFeedback"
+            ? this.$text("S_MY_FEEDBACK", "我的反馈")
+            : false,
         customLinkAction: () => {
-          this.$router.push('/mobile/mcenter/feedback/feedbackList')
+          this.$router.push("/mobile/mcenter/feedback/feedbackList");
         },
-        onClick: () => { this.$router.back(); }
+        onClick: () => {
+          this.$router.back();
+        }
       };
     }
   }

@@ -116,7 +116,8 @@ export default {
 }
 
 .confirm-btn-wrap {
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
   padding: 20px 0;
 }
 </style>

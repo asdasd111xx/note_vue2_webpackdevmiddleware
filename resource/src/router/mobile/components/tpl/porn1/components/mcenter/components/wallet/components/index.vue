@@ -144,9 +144,13 @@
                 }
               ]"
             >
-              <span :class="$style['balance-item-vendor']">{{
-                item.text
-              }}</span>
+              <span
+                :class="[
+                  $style['balance-item-vendor'],
+                  { [$style['long']]: item.text.length > 6 }
+                ]"
+                >{{ item.text }}</span
+              >
               <span
                 v-if="item.maintain"
                 :class="$style['balance-info-maintain']"
@@ -436,6 +440,8 @@ export default {
           return "porn1";
         case "sg1":
           return "sg1";
+        case "aobo1":
+          return "aobo1";
       }
     },
     birdIcons() {

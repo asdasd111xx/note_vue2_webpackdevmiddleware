@@ -48,10 +48,19 @@ export default {
   },
   methods: {
     goToMobile() {
-      this.$router.push({
-        name: "home",
-        query: { ...this.$route.query }
-      });
+      if (this.siteConfig.ROUTER_TPL === "sg1") {
+        // 泡泡直播轉導
+        localStorage.removeItem("live-iframe-event-from");
+        this.$router.push({
+          name: "home",
+          query: { toLive: "true", ...this.$route.query }
+        });
+      } else {
+        this.$router.push({
+          name: "home",
+          query: { ...this.$route.query }
+        });
+      }
     },
     click() {
       clearInterval(this.timer);

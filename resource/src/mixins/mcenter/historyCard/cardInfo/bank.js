@@ -1,5 +1,6 @@
-import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
+
+import axios from "axios";
 
 export default {
   data() {
@@ -109,10 +110,6 @@ export default {
             } else {
               switch (this.themeTPL) {
                 case "porn1":
-                  this.actionSetGlobalMessage({ msg: "银行卡刪除成功" });
-                  break;
-
-                case "ey1":
                   this.actionSetGlobalMessage({ msg: "刪除成功" });
                   break;
               }

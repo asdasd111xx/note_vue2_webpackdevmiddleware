@@ -53,7 +53,10 @@
             </li>
           </div> -->
           <hr style="background-color:#ddd; height:0.5px; border:none;" />
-          <div :class="[$style['confirm-btn']]" @click="closeFuc(false)">
+          <div
+            :class="[$style['confirm-btn'], $style[siteConfig.ROUTER_TPL]]"
+            @click="closeFuc(false)"
+          >
             知道了
           </div>
         </div>

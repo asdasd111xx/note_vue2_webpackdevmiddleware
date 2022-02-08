@@ -3,10 +3,10 @@
     <div :class="$style['tips-title']">
       <div :class="$style['hr']"><div /></div>
       <div :class="$style['title-tips']">
-        温馨提示，如需帮助
-        <span :class="$style['link']" @click="$router.push('/mobile/service')">
+        温馨提示
+        <!-- <span :class="$style['link']" @click="$router.push('/mobile/service')">
           请联系客服
-        </span>
+        </span> -->
       </div>
       <div :class="$style['hr']"><div /></div>
     </div>
@@ -25,8 +25,7 @@ import mixin from "@/mixins/mcenter/swag/swag";
 export default {
   mixins: [mixin],
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -36,8 +35,8 @@ export default {
       const style =
         this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
       return style;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>

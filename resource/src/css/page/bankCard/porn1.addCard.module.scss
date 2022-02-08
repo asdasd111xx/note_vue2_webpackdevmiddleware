@@ -21,7 +21,8 @@
   margin-bottom: 10px;
   line-height: 16px;
   font-size: 14px;
-  color: var(--slider_text_active_color);
+  // color: var(--slider_text_active_color);
+  color: #414655;
 }
 
 // 錢包類型
@@ -54,13 +55,11 @@
     cursor: pointer;
 
     &.is-current {
-      border: 1px solid var(--wallet_border_color);
-      color: var(--mcenter_slider_text_active_color);
-      background: linear-gradient(
-        -45deg,
-        var(--wallet_border_color) 10px,
-        hsla(0, 0%, 100%, 0) 0
-      );
+      // border: 1px solid var(--wallet_border_color);
+      border: 1px solid #6aaaf5;
+      // color: var(--mcenter_slider_text_active_color);
+      color: #414655;
+      background: linear-gradient(-45deg, #6aaaf5 10px, hsla(0, 0%, 100%, 0) 0);
     }
   }
 
@@ -281,14 +280,16 @@
   position: absolute;
   right: 0;
   top: -4px;
-  background: var(--mcenter_send_keyring);
+  // background: var(--mcenter_send_keyring);
+  background: #6aaaf5;
   color: #fff;
   border-radius: 3px;
 
   &.disabled {
-    background: var(--mcenter_send_keyring_disabled);
+    // background: var(--mcenter_send_keyring_disabled);
     pointer-events: none;
-    opacity: 0.5;
+    // opacity: 0.3;
+    background: #cccccc;
   }
 }
 
@@ -386,7 +387,8 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -424,6 +426,11 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--addcard_popup_check_color);
+  // color: var(--addcard_popup_check_color);
+  color: #6aaaf5;
   transform: translateY(-50%);
+
+  &.porn1 {
+    color: #6aaaf5;
+  }
 }

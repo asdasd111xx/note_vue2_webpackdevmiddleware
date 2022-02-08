@@ -57,7 +57,7 @@
     }
   }
 
-  &.support-cell>title {
+  &.support-cell > title {
     height: 20px;
     line-height: 20px;
     display: contents;
@@ -101,12 +101,12 @@
   &.full-block {
     display: block;
 
-    >.cell-title {
+    > .cell-title {
       font-size: 15px;
       font-weight: 500;
     }
 
-    >.cell-content {
+    > .cell-content {
       font-size: 12px;
     }
   }
@@ -130,7 +130,7 @@
   transition: transform 0.31s;
   width: 16px;
 
-  >img {
+  > img {
     bottom: 0;
     height: 16px;
     margin: auto;
@@ -254,7 +254,7 @@
     width: 22px;
     margin-left: 5px;
 
-    >img {
+    > img {
       width: 100%;
       height: 100%;
     }
@@ -299,7 +299,8 @@
   text-align: center;
   font-size: 18px;
   font-weight: 700;
-  color: var(--popup_text_color1);
+  // color: var(--popup_text_color1);
+  color: #6aaaf5;
   border-top: 1px solid #f8f8f7;
 }
 
@@ -367,7 +368,8 @@
     padding: 0 14px;
     position: absolute;
     left: 0;
-    color: var(--addcard_popup_prev_text_color);
+    // color: var(--addcard_popup_prev_text_color);
+    color: #6aaaf5;
   }
 }
 
@@ -404,7 +406,8 @@
   top: 50%;
   width: 15px;
   height: 15px;
-  color: var(--addcard_popup_check_color);
+  // color: var(--addcard_popup_check_color);
+  color: #6aaaf5;
   transform: translateY(-50%);
 }
 
@@ -413,7 +416,7 @@
   height: 292px;
   margin: 20% auto 0;
 
-  >img {
+  > img {
     display: block;
     width: 100%;
   }
@@ -450,7 +453,7 @@
   float: right;
   height: 100%;
 
-  >img {
+  > img {
     width: 100%;
     height: 100%;
   }
@@ -481,7 +484,7 @@
     align-items: center;
     background-color: #fefffe;
 
-    >span {
+    > span {
       width: 100%;
     }
 
@@ -492,7 +495,7 @@
       align-items: center;
       margin-right: 5px;
 
-      >img {
+      > img {
         height: 100%;
       }
     }
@@ -504,7 +507,7 @@
     display: flex;
     align-items: center;
 
-    >img {
+    > img {
       height: 14px;
       width: 14px;
     }
@@ -571,7 +574,7 @@
     width: 100%;
     height: 100%;
 
-    >span {
+    > span {
       color: #414655;
       margin-top: 14px;
       font-family: Microsoft JhengHei;
@@ -593,7 +596,7 @@
   position: relative;
   display: flex;
 
-  >img {
+  > img {
     position: fixed;
     bottom: 45px;
     right: 18px;
@@ -607,10 +610,10 @@
   border: 1px #000000 solid;
   border-collapse: collapse;
 
-  >tr {
+  > tr {
     border: 1px #000000 solid;
 
-    >td {
+    > td {
       border: 1px #000000 solid;
       text-align: center;
     }

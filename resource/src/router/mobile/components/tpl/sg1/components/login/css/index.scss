@@ -51,7 +51,7 @@
       height: 100%;
       padding: 0 38px;
       border: 1px solid rgba(128, 128, 128, 0.26);
-      border-radius: 3px;
+      border-radius: 60px;
       color: #000;
 
       &::placeholder {
@@ -145,7 +145,7 @@
       text-align: center;
       line-height: 50px;
       background: var(--main_button_color1);
-      border-radius: 3px;
+      border-radius: 25px;
       font-size: 13px;
       font-weight: 700;
       width: 100%;
@@ -163,15 +163,13 @@
   .link-button {
     display: inline-block;
     text-align: center;
-    margin: 0 10px;
+    margin: 0 8px;
 
     &.link-submit {
       color: var(--joinmember_right_text_color);
     }
 
-    a {
-      color: var(--joinmember_left_text_color);
-    }
+    color: var(--joinmember_left_text_color);
   }
 }
 

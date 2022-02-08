@@ -7,13 +7,17 @@
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         html.fullscreen {
+            position: fixed;
             overflow-y: hidden;
             overflow-x: hidden;
+
+            -webkit-overflow-scrolling: touch !important;
         }
 
         html.fullscreen,
         body.fullscreen,
         iframe.fullscreen {
+            position: fixed;
             height: 100%;
             width: 100%;
             padding: 0;
@@ -23,6 +27,7 @@
             min-width: 0;
             background-color: #f2f2f2;
             margin: 0 auto;
+            overflow: auto;
         }
 
         @media (orientation: landscape) {
@@ -37,8 +42,8 @@
 </head>
 
 <body class="fullscreen">
-    <iframe id="main-iframe" allowfullscreen="allowfullscreen" allow="fullscreen" id="webclip-iframe"
-        class="webclip fullscreen" style="width: 1px;min-width: 100%;" scrolling="no" src="">
+    <iframe id="main-iframe" allow="geolocation; fullscreen" id="webclip-iframe" class="webclip fullscreen"
+        style="width: 1px;min-width: 100%;" scrolling="no" src="">
     </iframe>
 </body>
 

@@ -766,6 +766,17 @@ export const actionSetUserdata = (
             configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
           params: {
             account: uuidAccount
+          },
+          headersData: (headers, data) => {
+            // console.log(headers);
+            // const prodVendor = ["67", "80", "41", "92", "94"];
+
+            if (headers["x-cdn-rdi"]) {
+              commit(
+                types.SETSLIDECDNDOMAIN,
+                `https://${headers["x-cdn-rdi"].split(",")[0]}`
+              );
+            }
           }
         })
           .then(res => {
@@ -822,7 +833,6 @@ export const actionSetUserdata = (
     },
     headers: (headers, data) => {
       let configInfo;
-
       if (state.webDomain) {
         configInfo =
           siteConfigTest[`site_${state.webDomain.domain}`] ||
@@ -836,14 +846,14 @@ export const actionSetUserdata = (
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
 
-      const prodVendor = ["67", "80", "41", "92", "94"];
+      // const prodVendor = ["67", "80", "41", "92", "94"];
 
-      if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
-        commit(
-          types.SETSLIDECDNDOMAIN,
-          `https://${headers["x-cdn"].split(",")[0]}`
-        );
-      }
+      // if (headers["x-cdn"] && prodVendor.includes(state.webDomain.domain)) {
+      //   commit(
+      //     types.SETSLIDECDNDOMAIN,
+      //     `https://${headers["x-cdn"].split(",")[0]}`
+      //   );
+      // }
 
       commit(types.SETCDNROOT, cdnRoot);
 
@@ -1354,20 +1364,16 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
 
   return goLangApiRequest({
     method: "get",
-    url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Common/Jackfruit/List"
-  })
-    .then(res => {
-      const { result, data } = res.data;
-      if (result === "ok") {
-        commit(types.SETMOBILEINFO, { ...data, alias: state.webDomain });
-      }
-    })
-    .catch(error => {
-      dispatch("actionSetGlobalMessage", {
-        msg: error.response?.data?.msg,
-        code: error.response?.data?.code
-      });
-    });
+    url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Common/Jackfruit/List",
+    params: {
+      version: configInfo.MOBILE_WEB_TPL === "sg1" ? 2 : 1
+    }
+  }).then(res => {
+    const { result, data } = res.data;
+    if (result === "ok") {
+      commit(types.SETMOBILEINFO, { ...data, alias: state.webDomain });
+    }
+  });
 };
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -1905,6 +1911,16 @@ export const actionVerificationFormData = (
     case "alias":
       regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
       val = val.replace(regex, "").substring(0, 20);
+      break;
+
+    case "intro":
+      regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+      val = val.replace(regex, "").substring(0, 32);
+      break;
+
+    case "live_alias":
+      regex = /[，:;！@#$%^&*?<>()+=`|[\]{}\\"/.~\-_']*/g;
+      val = val.replace(regex, "").substring(0, 8);
       break;
 
     case "graphicVerification":
@@ -2527,6 +2543,102 @@ export const actionSetLCFSystemConfig = (
   }).then(res => {
     if (res && res.data) {
       commit(types.SET_LCFSYSTEMCONFIG, res.data);
+    }
+  });
+};
+
+//  轉導第三方服務(不提供回傳資料客製化)C04.48
+export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
+  const {
+    externalID = "cubechat_master",
+    api_uri = "",
+    method = "get",
+    data = {}
+  } = params;
+
+  return goLangApiRequest({
+    method: "post",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Redirect/${externalID}`,
+    params: {
+      externalID,
+      api_uri,
+      method,
+      ...data
+    }
+  }).then(res => {
+    if (res && res.data) {
+      // 測試維護;
+      // res.data = {
+      //   maintain: {
+      //     end: 1641524279,
+      //     reason: "臨時維護",
+      //     start: 1641524039,
+      //     state: 1
+      //   }
+      // };
+
+      if (res.data.maintain) {
+        const maintain = res.data.maintain;
+        commit(types.SET_LIVEMAINTAIN, maintain);
+        return res.data;
+      } else {
+        commit(types.SET_LIVEMAINTAIN, null);
+        return res.data;
+      }
+    }
+  });
+};
+//取得彩金活動開關
+export const actionSetActivity = ({ state, commit }) => {
+  let temp = { totalAmount: 0 };
+  goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/User/Activity/Status`
+  }).then(res => {
+    if (res.errorCode === "00" && res.status === "000") {
+      temp = {
+        ...temp,
+        event_jackpot: res.data.event_jackpot === "true",
+        register_jackpot: res.data.register_jackpot === "true",
+        video_jackpot: res.data.video_jackpot === "true",
+        isActivity:
+          res.data.event_jackpot === "true" ||
+          res.data.register_jackpot === "true" ||
+          res.data.video_jackpot === "true"
+      };
+      commit(types.SET_ACTIVITY, temp);
+
+      if (res.data.register_jackpot || res.data.video_jackpot) {
+        goLangApiRequest({
+          method: "post",
+          url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/getAmount`,
+          params: {
+            account: localStorage.getItem("uuidAccount"),
+            cid: localStorage.getItem("guestCid")
+          }
+        }).then(res => {
+          if (res.errorCode === "00" && res.status === "000") {
+            temp.totalAmount += parseFloat(res.data.totalAmount);
+            commit(types.SET_ACTIVITY, temp);
+          }
+        });
+      }
+      if (res.data.event_jackpot) {
+        goLangApiRequest({
+          method: "get",
+          url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Event/Info`,
+          params: {
+            lang: "zh-cn"
+          }
+        }).then(res => {
+          if (res.errorCode === "00" && res.status === "000") {
+            if (res.data.enable) {
+              temp.totalAmount += parseFloat(res.data.personal_max_bonus);
+              commit(types.SET_ACTIVITY, temp);
+            }
+          }
+        });
+      }
     }
   });
 };

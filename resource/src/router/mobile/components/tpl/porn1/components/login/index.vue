@@ -130,7 +130,7 @@
                     "
                   />
                 </div>
-                <span class="deposit-text">{{
+                <span :class="['deposit-text', `${routerTPL}`]">{{
                   $text("S_SAVE_PASSWORD", "记住密码")
                 }}</span>
                 <!-- 忘記密碼 -->
@@ -168,7 +168,7 @@
                   </span>
                 </div>
                 <div
-                  :class="['link-button', 'link-submit']"
+                  :class="['link-button', 'link-submit', `${routerTPL}`]"
                   @click="$router.push('/mobile/service')"
                 >
                   {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
@@ -415,10 +415,12 @@ export default {
   }
   .cancel {
     border-right: 1px solid #eeeeee;
-    color: var(--popup_tip_close_color);
+    // color: var(--popup_tip_close_color);
+    color: #6aaaf5;
   }
   .submit {
-    color: var(--popup_tip_ok_color);
+    // color: var(--popup_tip_ok_color);
+    color: #6aaaf5;
   }
 }
 

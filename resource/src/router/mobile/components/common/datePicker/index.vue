@@ -134,23 +134,41 @@ export default {
     },
     // 日期資料
     dayData() {
-      const days = [];
+      let days = [];
 
-      if (this.currentMonth === this.maxLimitMonth) {
-        for (let i = 1; i <= this.maxLimitDay; i += 1) {
-          days.push(i);
-        }
-      } else {
-        const lastDay = Vue.moment(
-          new Date(this.currentYear, this.currentMonth, 0)
-        ).date();
-
-        if (this.currentMonth === this.minLimitMonth) {
-          for (let i = lastDay; this.minLimitDay <= i; i -= 1) {
-            days.unshift(i);
+      if (this.maxLimitYear === this.minLimitYear) {
+        if (this.currentMonth === this.maxLimitMonth) {
+          for (let i = 1; i <= this.maxLimitDay; i += 1) {
+            days.push(i);
           }
         } else {
-          for (let i = 1; i <= lastDay; i += 1) {
+          const lastDay = Vue.moment(
+            new Date(this.currentYear, this.currentMonth, 0)
+          ).date();
+
+          if (this.currentMonth === this.minLimitMonth) {
+            for (let i = lastDay; this.minLimitDay <= i; i -= 1) {
+              days.unshift(i);
+            }
+          } else {
+            for (let i = 1; i <= lastDay; i += 1) {
+              days.push(i);
+            }
+          }
+        }
+      } else {
+        if (this.currentYear === this.minLimitYear) {
+          days = [];
+          const lastDay = Vue.moment(
+            new Date(this.minLimitYear, this.minLimitMonth, 0)
+          ).date();
+          for (let i = this.minLimitDay; i <= lastDay; i += 1) {
+            days.push(i);
+          }
+        }
+        if (this.currentYear === this.maxLimitYear) {
+          days = [];
+          for (let i = 1; i <= this.maxLimitDay; i += 1) {
             days.push(i);
           }
         }
@@ -251,9 +269,17 @@ export default {
   methods: {
     setYear(index) {
       this.currentYear = this.yearData[index];
+      let month = this.currentMonth;
+      if (this.maxLimitYear !== this.minLimitYear) {
+        if (this.currentYear === this.minLimitYear) {
+          month = this.minLimitMonth;
+        } else if (this.currentYear === this.maxLimitYear) {
+          month = this.maxLimitMonth;
+        }
+      }
       this.$emit(
         "update:date",
-        new Date(this.yearData[index], this.currentMonth - 1, this.currentDay)
+        new Date(this.yearData[index], month - 1, this.currentDay)
       );
     },
     setMonth(index) {
@@ -265,9 +291,17 @@ export default {
     },
     setDay(index) {
       this.currentDay = this.dayData[index];
+      let month = this.currentMonth;
+      if (this.maxLimitYear !== this.minLimitYear) {
+        if (this.currentYear === this.minLimitYear) {
+          month = this.minLimitMonth;
+        } else if (this.currentYear === this.maxLimitYear) {
+          month = this.maxLimitMonth;
+        }
+      }
       this.$emit(
         "update:date",
-        new Date(this.currentYear, this.currentMonth - 1, this.dayData[index])
+        new Date(this.currentYear, month - 1, this.dayData[index])
       );
     }
   }

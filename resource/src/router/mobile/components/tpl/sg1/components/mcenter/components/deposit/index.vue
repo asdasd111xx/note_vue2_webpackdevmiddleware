@@ -1,7 +1,7 @@
 <template>
   <mobile-container
     :header-config="headerConfig"
-    :has-footer="false"
+    :has-footer="hasFooter"
     :class="$style.container"
   >
     <div slot="content" class="content-wrap">
@@ -23,9 +23,14 @@ export default {
     depsoit
   },
   computed: {
+    hasFooter() {
+      return this.$route.query.hasFooter
+        ? this.$route.query.hasFooter === "true"
+        : false;
+    },
     headerConfig() {
       return {
-        prev: true,
+        prev: !this.hasFooter,
         title: "充值",
         hasHelp: {
           type: "deposit",
@@ -39,7 +44,14 @@ export default {
             window.location.reload();
             this.$router.push("/mobile/mcenter/deposit");
           } else {
-            this.$router.push("/mobile/mcenter");
+            // 由直播間進入，需返回直播間
+            if (["live"].includes(this.$route.query.redirect)) {
+              this.$router.push("/mobile/live/iframe/home?hasFooter=true");
+            } else if (["diamond"].includes(this.$route.query.redirect)) {
+              this.$router.back();
+            } else {
+              this.$router.push("/mobile/mcenter");
+            }
           }
         }
       };

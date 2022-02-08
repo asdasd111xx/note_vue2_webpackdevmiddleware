@@ -50,7 +50,7 @@
           <!-- 會員中心連結 -->
           <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
             <div
-              v-for="(info, index) in mcenterList"
+              v-for="(info, index) in mcenterSg1List"
               :key="`mcenter-${index}`"
               :class="$style['mcenter-wrap']"
               @click="onGoToMcenter(info.path)"
@@ -383,7 +383,15 @@ export default {
   margin-bottom: 3px;
   border-radius: 7px;
   box-sizing: border-box;
-
+  background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  // 大廳遊戲預設圖logo樣式
+  > img[lazy="error"]:first-child,
+  img[lazy="loading"]:first-child {
+    display: block;
+    width: 42%;
+    padding: 15px 2px;
+    margin: 0 auto;
+  }
   > img:first-child {
     display: block;
     width: 100%;
@@ -639,7 +647,11 @@ export default {
   font-size: 18px;
 
   &:last-child {
-    color: var(--send_keyring);
+    // color: var(--send_keyring);
+    color: #6aaaf5;
+  }
+  &.sg1:last-child {
+    color: var(--member_color100);
   }
 }
 </style>

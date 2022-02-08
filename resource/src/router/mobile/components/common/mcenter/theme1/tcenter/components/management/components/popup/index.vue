@@ -31,7 +31,7 @@ import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import html2canvas from "html2canvas";
 import share from "@/router/mobile/components/tpl/porn1/components/mcenter/components/home/components/share";
 // import ey1Share from "@/router/mobile/components/tpl/ey1/components/mcenter/components/home/components/share";
-import sg1Share from "@/router/mobile/components/tpl/sg1/components/mcenter/components/home/components/share";
+import sg1Share from "@/router/mobile/components/tpl/sg1/components/mcenter/components/home2/components/share";
 
 /**
  * @param {String} type - 彈窗類型

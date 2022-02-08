@@ -1,32 +1,36 @@
 @import "./porn1.module.scss";
 
 .active-slider {
-  background-color: #e61938;
+  background-color: var(--find_password_underline_active_color);
 }
 
 .method-item {
+  color: var(--find_password_text_color);
   &.active {
-    color: #222222;
+    color: var(--find_password_text_active_color);
   }
 }
 
 .forget-submit {
   > div {
-    background: var(--mcenter_button_color2);
+    background: var(--main_button_color2);
+    color: var(--main_button_text_color2);
   }
 
   &.active {
     > div {
-      background: var(--mcenter_button_color1);
-      color: #ffffff;
+      color: var(--main_button_text_color1);
+      background: var(--main_button_color1);
     }
   }
 }
 
 .send-keyring {
-  background: var(--mcenter_button_color2);
-
+  border-radius: 15px;
+  background: var(--send_keyring_disabled);
+  color: var(--main_button_text_color2);
   &.active {
-    background: var(--mcenter_button_color1);
+    background: var(--send_keyring);
+    color: var(--main_button_text_color1);
   }
 }

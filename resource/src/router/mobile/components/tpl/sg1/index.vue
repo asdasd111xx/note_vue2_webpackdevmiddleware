@@ -41,11 +41,11 @@ export default {
 };
 </script>
 <style src="@/css/index.scss" lang="scss"></style>
-<style src="@/css/variable/sg1.scss" lang="scss"></style>
+<style src="@/css/variable/live.scss" lang="scss"></style>
 
 <style lang="scss" module>
 @import "~@/css/variable.scss";
-
+//
 .mobile-wrap {
   height: 100%;
   overflow-y: auto;

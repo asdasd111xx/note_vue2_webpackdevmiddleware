@@ -170,10 +170,10 @@ export default {
         _yesTEXT: this.$text(...this.slideText.yesText),
         _error300: `<a href=\"javascript:__nc.reset()\">${refreshIcon}${this.$text(
           ...this.slideText.error
-        )}</a>`,
-        _errorNetwork: `<a href=\"javascript:__nc.reset()\">${refreshIcon}${this.$text(
-          ...this.slideText.errorNetwork
         )}</a>`
+        // _errorNetwork: `<a href=\"javascript:__nc.reset()\">${refreshIcon}${this.$text(
+        //   ...this.slideText.errorNetwork
+        // )}</a>`
       });
       this.nc.reload();
     },
