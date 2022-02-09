@@ -36,7 +36,7 @@ const domain = "https://sgtt.66boxing.com/";
 // Demo 81
 // const domain = 'https://sgt.66relish.com/';
 // Prod 80
-// const domain = "https://paoapp05.com/";
+// const domain = "https://5lpet08l.com/";
 
 // 澳博国际 QA 9999894
 //const domain = "https://auqa1.66boxing.com/";

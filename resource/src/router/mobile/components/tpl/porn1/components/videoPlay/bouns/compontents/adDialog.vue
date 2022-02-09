@@ -3,6 +3,7 @@
     :class="
       isClose ? [$style['dialog'], $style['dialog-close']] : $style['dialog']
     "
+    @click="handleClose"
   >
     <div :class="[$style['earn-wrap'], $style['earn-wrap-ad']]">
       <div :class="[$style['title-coin'], $style['title-ad']]">
