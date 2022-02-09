@@ -238,7 +238,6 @@ export default {
         ...baseConfig,
         onClick: () => {
           const iframeThirdOrigin = localStorage.getItem("iframe-third-origin");
-
           let embedGame = getEmbedGameVendor(
             this.$route.query.vendor,
             this.$route.query.kind,
@@ -272,13 +271,14 @@ export default {
               this.$route.params.page.toUpperCase() === "DEPOSIT" ||
               this.$route.params.page.toUpperCase() === "BCWALLET" ||
               this.$route.params.page.toUpperCase() === "GAME" ||
-              this.$route.params.page.toUpperCase() === "USM") &&
+              this.$route.params.page.toUpperCase() === "USM" ||
+              this.$route.params.page.toUpperCase() === "LIVEPROMOTION") &&
             !iframeThirdOrigin
           ) {
             window.history.back();
             return;
           }
-
+          // console.log(this.originUrl);
           this.$router.replace(this.originUrl);
           return;
         }
@@ -431,6 +431,7 @@ export default {
         case "VIPINFO":
           this.showBack = false;
         case "PROMOTION":
+        case "LIVEPROMOTION":
           // 優小秘
           let url = localStorage.getItem("iframe-third-url") || "";
           if (url) {

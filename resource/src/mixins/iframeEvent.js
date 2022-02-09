@@ -266,7 +266,8 @@ export default {
           case "EVENT_SWIPER_LINK":
             mobileLinkOpen({
               ...data.data,
-              site: this.siteConfig.ROUTER_TPL
+              site: this.siteConfig.ROUTER_TPL,
+              linkBack: "live"
             });
             return;
           default:

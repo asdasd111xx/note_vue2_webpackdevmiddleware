@@ -15,6 +15,7 @@ export default target => {
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
+  const linkBack = target?.linkBack;
   localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
@@ -25,7 +26,9 @@ export default target => {
       "linkTo:",
       linkTo,
       "linkItem:",
-      linkItem
+      linkItem,
+      "linkBack:",
+      linkBack
     );
   }
 
@@ -76,8 +79,12 @@ export default target => {
         if (res && res.data && res.data.ret && res.data.ret.uri) {
           localStorage.setItem("iframe-third-url", res.data.ret.uri);
           localStorage.setItem("iframe-third-url-title", linkTitle);
-          localStorage.setItem("iframe-third-origin", `home`);
-          window.location.href = `/mobile/iframe/promotion`;
+          linkBack !== "live"
+            ? localStorage.setItem("iframe-third-origin", `home`)
+            : "";
+          window.location.href = `/mobile/iframe/${
+            linkBack === "live" ? "livepromotion" : "promotion"
+          }`;
         }
       })
       .catch(error => {
