@@ -124,7 +124,7 @@
             @click.stop="handleVideo(video)"
           >
             <img :src="defaultImg" :img-id="video.id" />
-            <div>{{ video.title }}</div>
+            <div :class="$style['video-title']">{{ video.title }}</div>
           </div>
         </div>
       </div>
@@ -793,6 +793,9 @@ export default {
     white-space: nowrap;
     opacity: 0.8;
   }
+}
+.video-title {
+  z-index: 1;
 }
 
 .video {
