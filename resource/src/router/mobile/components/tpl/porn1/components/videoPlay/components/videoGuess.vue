@@ -28,8 +28,7 @@
       @click="onClick(video.id)"
     >
       <div :class="[$style['image-wrap'], $style[siteConfig.ROUTER_TPL]]">
-        <div v-if="img === ''"></div>
-        <img v-else :src="img" :img-id="video.id" />
+        <img :src="img" :img-id="video.id" />
       </div>
       <div :class="$style['info-wrap']">
         <div
