@@ -127,8 +127,8 @@ export default {
         },
         {
           title: "-北京时间-",
-          startAt: moment(),
-          endAt: moment()
+          startAt: moment(this.liveMaintain.start),
+          endAt: moment(this.liveMaintain.end)
         }
       ];
     },
