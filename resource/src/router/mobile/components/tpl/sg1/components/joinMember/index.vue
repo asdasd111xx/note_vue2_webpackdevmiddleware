@@ -6,13 +6,14 @@
   >
     <div slot="content" class="content-wrap">
       <div :class="$style['join-member-wrap']">
-        <template
+        <!-- 註解banner相關邏輯 -->
+        <!-- <template
           v-if="this.activity.isActivity && this.activity.totalAmount > 0"
           ><img
             :class="$style['slide-banner']"
             src="/static/image/sg1/mcenter/tcenter/slidebanner.png"
             alt=""
-        /></template>
+        /></template> -->
 
         <join-member :theme="$style">
           <template slot="join-header" />
@@ -115,12 +116,13 @@ export default {
   width: 100%;
 }
 
-.slide-banner {
-  width: 85%;
-  border-radius: 5px;
-  display: block;
-  margin: 15px auto 0 auto;
-}
+//註解banner相關邏輯
+// .slide-banner {
+//   width: 85%;
+//   border-radius: 5px;
+//   display: block;
+//   margin: 15px auto 0 auto;
+// }
 
 .has-visitor {
   span {
