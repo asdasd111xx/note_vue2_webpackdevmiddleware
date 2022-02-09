@@ -45,7 +45,7 @@
       </div>
     </div>
     <div
-      v-if="hasReceive && messageData.length === 0"
+      v-if="!hasReceive && messageData.length === 0"
       :class="$style['no-data']"
     >
       <div :class="$style['no-data-wrap']">
@@ -291,8 +291,10 @@ export default {
       "actionSetGlobalMessage"
     ]),
     getMessgae() {
-      this.actionSetMcenterMsgCount();
-      this.hasReceive = true;
+      this.actionSetMcenterMsgCount().then(() => {
+        if (this.memInfo.msgCount) this.hasReceive = true;
+      });
+
       // mcenter.message({
       //   success: response => {
       //     this.messageData = response.ret;
