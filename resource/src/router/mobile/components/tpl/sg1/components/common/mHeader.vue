@@ -685,7 +685,7 @@ export default {
     border: none;
     border-radius: 5px;
     background-color: #eeeeee;
-    color: #ffffff;
+    color: #5e626d;
     font-size: 14px;
     outline: none;
 
