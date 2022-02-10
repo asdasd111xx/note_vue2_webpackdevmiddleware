@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
-      <app-tip @close="showTip = false" />
+      <app-tip v-if="routerTPL !== 'sp1'" @close="showTip = false" />
       <avatar-info />
       <shortcut-info />
       <mem-list />
@@ -32,13 +32,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     headerConfig() {
       return {
         isMCenter: true,
         title: this.$text("S_INFORMATION", "我的")
       };
+    },
+    routerTPL() {
+      return this.siteConfig.ROUTER_TPL;
     }
   },
   created() {
