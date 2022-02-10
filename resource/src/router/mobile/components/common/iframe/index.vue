@@ -596,7 +596,6 @@ export default {
         });
     },
     onListener(e) {
-      console.log(e);
       if (e.data) {
         let data = e.data;
         // console.log(data);
