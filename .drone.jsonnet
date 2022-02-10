@@ -365,9 +365,9 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     buildall("Prod","yaboxxx-web","all"),
 
     # istio-yiyuan
-    Pipeline("QA","yaboxxx-test","asia-east1-b"
-        ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
-        ,"yaboxxx-web","","yiyuan","istio","ey","env","qa"),
+    // Pipeline("QA","yaboxxx-test","asia-east1-b"
+    //     ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
+    //     ,"yaboxxx-web","","yiyuan","istio","ey","env","qa"),
     # istio-sp51
 
 
