@@ -41,12 +41,14 @@
 
         <div :class="$style['line']" />
 
-        <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
-          <span>添加桌面客服，随时享受一对一在线解答</span>
-          <span :class="$style['add-bottom']" @click="handleAddClick"
-            >立即添加</span
-          >
-        </div>
+        <template v-if="routerTPL !== 'sp1'">
+          <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
+            <span>添加桌面客服，随时享受一对一在线解答</span>
+            <span :class="$style['add-bottom']" @click="handleAddClick"
+              >立即添加</span
+            >
+          </div></template
+        >
       </div>
 
       <img
@@ -60,6 +62,13 @@
       />
 
       <img
+        v-if="routerTPL === 'sp1'"
+        :class="$style[`info-card`]"
+        @click="clickMixin"
+        :src="mixinImg"
+      />
+      <img
+        v-else
         :class="$style[`info-card`]"
         @click="clickService"
         :src="
@@ -68,7 +77,6 @@
           )
         "
       />
-
       <div
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
@@ -179,7 +187,9 @@ export default {
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      fromlanding: false
+      fromlanding: false,
+      mixinUri: "",
+      mixinImg: ""
     };
   },
   created() {
@@ -212,6 +222,7 @@ export default {
     } else {
       this.show = true;
     }
+    if (this.routerTPL === "sp1") this.getMixin();
   },
   mounted() {
     if (this.loginStatus && !this.fromlanding) {
@@ -268,6 +279,20 @@ export default {
       "actionSetWebInfo",
       "actionGetMobileInfo"
     ]),
+    getMixin() {
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: "corpMessage",
+          needToken: false
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.mixinUri = res.data.uri;
+          this.mixinImg = res.data.image_url;
+        }
+      });
+    },
     handleBack() {
       const { query } = this.$route;
       let redirect = query.redirect;
@@ -278,6 +303,9 @@ export default {
           this.$router.back();
           break;
       }
+    },
+    clickMixin() {
+      window.open("https://donw-app-mixin.goodapplink.com/");
     },
     clickService() {
       let url = this.mobileInfo.service.url;
@@ -299,6 +327,7 @@ export default {
       // return;
       // mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
+
     clickPopTip() {
       this.isShowPop = true;
     },
