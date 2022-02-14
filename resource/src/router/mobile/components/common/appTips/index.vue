@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { sendUmeng } from "@/lib/sendUmeng";
@@ -52,9 +51,6 @@ import { sendUmeng } from "@/lib/sendUmeng";
 export default {
   data() {
     return {
-      lang: {
-        C_WS_DEPOSIT: "您的款项已入帐，请前往查看"
-      },
       isDownloading: false,
       downloadConfigData: {
         platform: "",

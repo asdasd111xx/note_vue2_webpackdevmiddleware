@@ -27,7 +27,6 @@ import EST from "@/lib/EST";
 import gameName from "@/lib/game_name";
 import ajax from "@/lib/ajax";
 import * as apis from "@/config/api";
-import bbosRequest from "@/api/bbosRequest";
 
 export default {
   props: {
