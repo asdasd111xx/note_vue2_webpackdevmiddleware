@@ -61,56 +61,28 @@
         </div>
       </div>
     </div>
-
-    <div
-      :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
+    <img
+      :class="$style[`info-card`]"
       @click="clickService"
-    >
-      <div>
-        <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
-          />
-          &nbsp;
-          <span>在线客服1</span>
-        </div>
-        <div>Main Customer Support</div>
-        <div>7*24小时专线服务 贴心至上</div>
-      </div>
+      :src="
+        $getCdnPath(`/static/image/${themeTPL}/service/service_service01.png`)
+      "
+    />
 
-      <div :class="$style['btn-next']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-          "
-        />
-      </div>
-    </div>
-
-    <div
-      :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
+    <img
+      v-if="themeTPL === 'sp1'"
+      :class="$style[`info-card`]"
+      @click="clickMixin"
+      :src="mixinImg"
+    />
+    <img
+      v-else
+      :class="$style[`info-card`]"
       @click="clickService"
-    >
-      <div>
-        <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
-          />
-          &nbsp;
-          <span>在线客服2</span>
-        </div>
-        <div>Reserve Customer Support</div>
-        <div>7*24小时专线服务 贴心至上</div>
-      </div>
-
-      <div :class="$style['btn-next']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-          "
-        />
-      </div>
-    </div>
+      :src="
+        $getCdnPath(`/static/image/${themeTPL}/service/service_service02.png`)
+      "
+    />
   </div>
 </template>
 
@@ -166,7 +138,9 @@ export default {
           imgSrc: "/static/image/sg1/webview/ic_service05.png"
         }
       ],
-      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png"
+      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png",
+      mixinUri: "",
+      mixinImg: ""
     };
   },
   computed: {
@@ -253,6 +227,7 @@ export default {
           link: hBundleID.value
         }
       };
+      if (this.themeTPL === "sp1") this.getMixin();
     });
   },
   methods: {
@@ -260,6 +235,24 @@ export default {
     mobileLinkOpen,
     clickService() {
       this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
+    },
+    clickMixin() {
+      window.open(this.mixinUri);
+    },
+    getMixin() {
+      //企業密信
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: "corpMessage",
+          needToken: false
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.mixinUri = res.data.uri;
+          this.mixinImg = res.data.image_url;
+        }
+      });
     },
     download(platform = null, bundleID = "") {
       goLangApiRequest({
