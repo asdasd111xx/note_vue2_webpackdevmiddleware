@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <template v-if="routerTPL !== 'sp1'">
+        <template v-if="isService">
           <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
             <span>添加桌面客服，随时享受一对一在线解答</span>
             <span :class="$style['add-bottom']" @click="handleAddClick"
@@ -189,7 +189,8 @@ export default {
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
       fromlanding: false,
       mixinUri: "",
-      mixinImg: ""
+      mixinImg: "",
+      isService: true //立即收藏開關
     };
   },
   created() {
@@ -222,7 +223,10 @@ export default {
     } else {
       this.show = true;
     }
-    if (this.routerTPL === "sp1") this.getMixin();
+    if (this.routerTPL === "sp1") {
+      this.getMixin();
+      this.getService();
+    }
   },
   mounted() {
     if (this.loginStatus && !this.fromlanding) {
@@ -280,6 +284,7 @@ export default {
       "actionGetMobileInfo"
     ]),
     getMixin() {
+      //企業密信
       goLangApiRequest({
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
         params: {
@@ -290,6 +295,20 @@ export default {
         if (res && res.status === "000" && res.errorCode === "00") {
           this.mixinUri = res.data.uri;
           this.mixinImg = res.data.image_url;
+        }
+      });
+    },
+    getService() {
+      //立即收藏開關
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: "storeUpNow",
+          needToken: false
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.isService = res.data.open_flag === 1;
         }
       });
     },
@@ -305,7 +324,7 @@ export default {
       }
     },
     clickMixin() {
-      window.open("https://donw-app-mixin.goodapplink.com/");
+      window.open(this.mixinUri);
     },
     clickService() {
       let url = this.mobileInfo.service.url;
@@ -472,7 +491,7 @@ div.container {
 .info-card {
   display: block;
   margin: 5px auto;
-  width: 95%;
+  width: 100%;
 }
 
 .card-bg {

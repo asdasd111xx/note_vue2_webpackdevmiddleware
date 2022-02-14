@@ -1,7 +1,7 @@
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" :class="$style['content-wrap']">
-      <app-tip v-if="routerTPL !== 'sp1'" @close="showTip = false" />
+      <app-tip v-if="isService" @close="showTip = false" />
       <avatar-info />
       <shortcut-info />
       <mem-list />
@@ -17,6 +17,8 @@ import memList from "./components/memList";
 import avatarInfo from "./components/avatarInfo";
 import appTip from "./components/appTip";
 import { sendUmeng } from "@/lib/sendUmeng";
+import goLangApiRequest from "@/api/goLangApiRequest";
+
 export default {
   components: {
     mobileContainer,
@@ -27,7 +29,8 @@ export default {
   },
   data() {
     return {
-      isShowAppTip: true
+      isShowAppTip: true,
+      isService: true //立即收藏開關
     };
   },
   computed: {
@@ -47,6 +50,7 @@ export default {
   },
   created() {
     sendUmeng(24);
+    if (this.routerTPL === "sp1") this.getService();
   },
   methods: {
     goMessage() {
@@ -55,6 +59,20 @@ export default {
         return;
       }
       this.$router.push("/mobile/mcenter/information/message");
+    },
+    getService() {
+      //立即收藏開關
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: "myStoreUp",
+          needToken: false
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.isService = res.data.open_flag === 1;
+        }
+      });
     }
   }
 };
