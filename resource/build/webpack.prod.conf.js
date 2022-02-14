@@ -86,7 +86,18 @@ let webpackConfig = merge(baseWebpackConfig, {
     })
   ],
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+    minimizer: [
+      new TerserJSPlugin({}),
+      new OptimizeCSSAssetsPlugin({}),
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          safari10: true,
+          mangle: {
+            safari10: true
+          }
+        }
+      })
+    ]
   }
 });
 
