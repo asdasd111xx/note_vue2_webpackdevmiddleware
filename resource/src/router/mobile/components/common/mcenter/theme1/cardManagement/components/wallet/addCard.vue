@@ -386,11 +386,7 @@
       </template>
 
       <!-- USDT Tip 彈窗 -->
-      <template
-        v-if="
-          ['porn1', 'sg1'].includes(themeTPL) && showPopStatus.type === 'tip'
-        "
-      >
+      <template v-if="showPopStatus.type === 'tip'">
         <popup-tip
           :all-wallet-open-link="allWalletOpenLink"
           @close="closePopup"
@@ -1335,7 +1331,7 @@ export default {
         return;
       }
 
-      if (["BBUSDTCN1","BBUSDTCN3"].includes(this.selectTarget.swiftCode)) {
+      if (["BBUSDTCN1", "BBUSDTCN3"].includes(this.selectTarget.swiftCode)) {
         this.walletTipInfo = [
           {
             key: "USDT",
