@@ -6,7 +6,7 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 币发BIFA 500015
-// const domain = "https://yb01.66boxing.com/";
+const domain = "https://yb01.66boxing.com/";
 // Beta 100003
 // const domain = "https://ybbe1.777vendor.com/";
 // Demo 69
@@ -14,29 +14,14 @@ const outputDirName = process.env.CDN_HOST
 // Prod 67
 // const domain = "https://bf0168q.com/";
 
-// 亿元 500023
-// const domain = "https://eyt.66boxing.com/";
-// Beta 100004
-// const domain = 'https://eyd.66apples.com/';
-// Demo 74
-// const domain = 'https://eyd.688lg.com/';
-// const domain = 'https://ey01.66poo.com/';
-// Prod 41
-// const domain = 'https://ey6999.com/';
-// const domain = "https://ey0099.com/";
-// const domain = 'https://ey8866.com/';
-// const domain = 'https://ey.688lg.com/';
-
 // 泡泡 500035
-const domain = "https://sgtt.66boxing.com/";
-
+// const domain = "https://sgtt.66boxing.com/";
 // Beta 100009
 // const domain ="https://sg.66apples.com";
-
 // Demo 81
 // const domain = 'https://sgt.66relish.com/';
 // Prod 80
-// const domain = "https://5lpet08l.com/";
+// const domain = "https://pmlvpdep.com/";
 
 // 澳博国际 QA 9999894
 //const domain = "https://auqa1.66boxing.com/";

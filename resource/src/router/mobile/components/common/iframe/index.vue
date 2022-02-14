@@ -201,13 +201,14 @@ export default {
     },
     iframeHeight() {
       let result = [];
-      if (this.headerConfig.hasHeader) {
-        result.push(43);
-      }
+      // if (this.headerConfig.hasHeader && !this.isFullScreen) {
+      //   result.push(43);
+      // }
 
       if (this.headerConfig.hasFooter) {
         result.push(65);
       }
+
       return result.length > 0 ? result.reduce((a, b) => a + b) : 0;
     },
     themeTPL() {
@@ -595,7 +596,6 @@ export default {
         });
     },
     onListener(e) {
-      console.log(e);
       if (e.data) {
         let data = e.data;
         // console.log(data);

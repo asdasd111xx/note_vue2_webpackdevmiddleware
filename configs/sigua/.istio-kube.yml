@@ -58,10 +58,10 @@ spec:
         volumeMounts:
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
-        - mountPath: /usr/share/nginx/html/cdn
-          name: nfs-backend-upload
-        - mountPath: /usr/share/nginx/html/tpl
-          name: nfs-backend
+        # - mountPath: /usr/share/nginx/html/cdn
+        #   name: nfs-backend-upload
+        # - mountPath: /usr/share/nginx/html/tpl
+        #   name: nfs-backend
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -72,13 +72,13 @@ spec:
           defaultMode: 420
           name: {{.k8sNginxConfigMap}}
         name: nginx-config
-      - name: nfs-backend
-        nfs:
-          path: /exports/backend
-          server: {{.nfs}}
-      - name: nfs-backend-upload
-        nfs:
-          path: /exports/backend-upload
-          server: {{.nfs}}
+      # - name: nfs-backend
+      #   nfs:
+      #     path: /exports/backend
+      #     server: {{.nfs}}
+      # - name: nfs-backend-upload
+      #   nfs:
+      #     path: /exports/backend-upload
+      #     server: {{.nfs}}
       nodeSelector:
         {{.nodePool}}: {{.nodePoolName}} 

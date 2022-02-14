@@ -330,8 +330,12 @@ export default {
         },
         {
           title: "-北京时间-",
-          startAt: moment(this.liveMaintain.start),
-          endAt: moment(this.liveMaintain.end)
+          startAt: moment(this.liveMaintain.start * 1000).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          endAt: moment(this.liveMaintain.end * 1000).format(
+            "YYYY-MM-DD HH:mm:ss"
+          )
         }
       ];
     },
