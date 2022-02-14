@@ -1065,7 +1065,13 @@ export default {
             case "YV":
               this.$router.push({
                 name: "videoList",
-                query: { source: game.vendor === "YV" ? "yabo" : "av" }
+                query: {
+                  source:
+                    game.vendor === "YV" &&
+                    this.siteConfig.ROUTER_TPL === "aobo1"
+                      ? "av"
+                      : "yabo"
+                }
               });
               return;
 
