@@ -90,6 +90,10 @@ export default {
       type: String,
       default: ""
     },
+    allWalletOpenLink: {
+      type: Array,
+      default: []
+    },
     bindType: {
       type: String,
       default: "withdraw"
@@ -262,42 +266,22 @@ export default {
       }
     },
     handleClickLink(id) {
+      let newWindow;
       switch (id) {
         case 21:
-          if (["porn1", "sg1"].includes(this.themeTPL)) {
-            // "https://cgpayintroduction.azurewebsites.net/index.aspx"
-
-            lib_newWindowOpen(
-              this.getCustomerServiceUrl({
-                urlName: "cgp_introduce",
-                needToken: false
-              }).then(res => {
-                return res.uri;
-              })
-            );
-          }
-          if (["ey1"].includes(this.themeTPL)) {
-            // http://oinbox.io
-
-            lib_newWindowOpen(
-              this.getCustomerServiceUrl({
-                urlName: "cgp_apply",
-                needToken: false
-              }).then(res => {
-                return res.uri;
-              })
-            );
-          }
+          newWindow = window.open(
+            this.allWalletOpenLink.find(data => {
+              return data.position_key === "cgp_register";
+            }).url,
+            "_blank"
+          );
           break;
-
         case 37:
-          lib_newWindowOpen(
-            this.getCustomerServiceUrl({
-              urlName: "game_wallet",
-              needToken: false
-            }).then(res => {
-              return res.uri;
-            })
+          newWindow = window.open(
+            this.allWalletOpenLink.find(data => {
+              return data.position_key === "goubau_register";
+            }).url,
+            "_blank"
           );
           break;
 

@@ -399,6 +399,7 @@
           :virtualBankId="selectTarget.walletId"
           :phone="formData.phone"
           :keyring="formData.keyring"
+          :all-wallet-open-link="allWalletOpenLink"
           @close="closePopup"
         />
       </template>
