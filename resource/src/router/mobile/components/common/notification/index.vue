@@ -47,6 +47,7 @@ import { mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
+import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   data() {
@@ -189,6 +190,19 @@ export default {
           // 外接平台維護通知
           // case 'outer_maintain':
           case "maintain_notice":
+            console.log(123);
+            if (
+              (getCookie("platform") === "h" && temp.device === 2) ||
+              (getCookie("platform") === "pwa" && temp.device === 3) ||
+              temp.device === 0
+            ) {
+              this.noticeQueue.push({
+                ...temp,
+                timestamp: Date.now(),
+                showType: "show"
+              });
+            }
+            return;
           case "verification_code":
           case "service_maintain_notice":
             this.noticeQueue.push({
