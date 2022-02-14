@@ -9,7 +9,7 @@ const TerserJSPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
-
+const TerserWebpackPlugin = require("terser-webpack-plugin");
 let env =
   process.env.NODE_ENV === "testing"
     ? require("../config/test.env")
@@ -86,7 +86,18 @@ let webpackConfig = merge(baseWebpackConfig, {
     })
   ],
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
+    minimizer: [
+      new TerserJSPlugin({}),
+      new OptimizeCSSAssetsPlugin({}),
+      new TerserWebpackPlugin({
+        terserOptions: {
+          safari10: true,
+          mangle: {
+            safari10: true
+          }
+        }
+      })
+    ]
   }
 });
 

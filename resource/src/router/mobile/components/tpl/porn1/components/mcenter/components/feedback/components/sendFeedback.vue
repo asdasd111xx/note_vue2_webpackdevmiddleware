@@ -172,7 +172,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionGetToManyRequestMsg"]),
     getTypeList() {
       ajax({
         method: "get",
@@ -219,7 +219,11 @@ export default {
         },
         errorAlert: false,
         fail: res => {
-          this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
+          this.actionGetToManyRequestMsg(res.data.message).then(res => {
+            this.actionSetGlobalMessage({
+              msg: res
+            });
+          });
         }
       }).then(res => {
         this.isSend = false;
