@@ -508,10 +508,10 @@ export default {
     };
   },
   mounted() {
-    this.isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
-    if (this.isBackFromService) {
-      this.setBank(this.isBackFromService);
-    }
+    // this.isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
+    // if (this.isBackFromService) {
+    //   this.setBank(this.isBackFromService);
+    // }
   },
   computed: {
     ...mapGetters({
@@ -652,8 +652,12 @@ export default {
         this.phoneHeadOption = response.ret.config.phone.country_codes;
       }
     });
-    Promise.all([this.getUserBindList()]).then(() => {
+    Promise.all([this.getWalletAllLink(), this.getUserBindList()]).then(() => {
       this.getWalletList();
+      this.isBackFromService = JSON.parse(localStorage.getItem("selectTarget"));
+      if (this.isBackFromService) {
+        this.setBank(this.isBackFromService);
+      }
     });
 
     document.addEventListener("visibilitychange", () => {
@@ -688,7 +692,6 @@ export default {
         });
       }
     });
-    this.getWalletAllLink();
   },
   methods: {
     ...mapActions([
@@ -1483,7 +1486,7 @@ export default {
         type = this.allWalletOpenLink.find(data => {
           return data.position_key === value;
         });
-        return type.client_display;
+        return type ? type.client_display : false;
       }
     },
     getWalletOpenLink(value) {
