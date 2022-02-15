@@ -978,7 +978,10 @@ export default {
   },
   created() {
     //取得成為主播網址
-    this.beHost();
+    if (this.siteConfig.ROUTER_TPL === "sg1") {
+      this.getBeHostUrl();
+    }
+
     this.actionSetUserdata().then(() => {
       this.getCaptcha();
       let joinConfig = [];
@@ -1185,7 +1188,7 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
-    beHost() {
+    getBeHostUrl() {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
