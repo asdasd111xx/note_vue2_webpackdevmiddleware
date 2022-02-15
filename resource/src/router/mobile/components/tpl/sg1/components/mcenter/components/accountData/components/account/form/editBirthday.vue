@@ -33,10 +33,8 @@
 <script>
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
-import { format } from "date-fns";
 import datepickerLang from "@/lib/datepicker_lang";
 import mcenter from "@/api/mcenter";
-import { API_MCENTER_USER_CONFIG } from "@/config/api";
 export default {
   components: {},
   data() {
@@ -86,7 +84,8 @@ export default {
     ...mapActions([
       "actionSetUserdata",
       "actionSetGlobalMessage",
-      "actionSetSystemTime"
+      "actionSetSystemTime",
+      "actionGetExtRedirect"
     ]),
     handleClickText() {
       document.getElementById("birthday-input").click();
@@ -115,6 +114,12 @@ export default {
         this.value = "";
         return;
       }
+
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/update-birthday",
+        method: "put",
+        data: { birthday: Vue.moment(this.value).format() }
+      });
 
       mcenter.accountDataSet({
         params: {

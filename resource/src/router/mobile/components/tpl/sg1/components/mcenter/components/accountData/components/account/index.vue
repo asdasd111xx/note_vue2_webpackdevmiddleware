@@ -460,6 +460,15 @@ export default {
         this.birthdayValue = "";
       } else {
         this.isShowPop = false;
+
+        this.actionGetExtRedirect({
+          api_uri: "/api/platform/v1/user/update-birthday",
+          method: "put",
+          data: {
+            birthday: Vue.moment(this.birthdayValue).format("YYYY-MM-DD")
+          }
+        });
+
         mcenter.accountDataSet({
           params: {
             birthday: Vue.moment(this.birthdayValue).format()
