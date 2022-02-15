@@ -4,20 +4,16 @@
     <div :class="$style['pop-block']">
       <div :class="$style['content']">
         <div :class="$style['title']">全球数字货币交易所</div>
-
-        <div
-          v-for="(item, index) in list"
-          :key="index"
-          :class="$style['info-item']"
-          @click="item.onClick"
-        >
-          <div :class="$style['icon-block']">
-            <img :src="item.iconSrc" :alt="item.alias" />
-          </div>
-
-          <div :class="$style['text-block']">
-            <div>{{ item.name }}</div>
-            <div>{{ item.alias }}</div>
+        <div :class="$style['info-content']">
+          <div
+            v-for="(item, index) in exchangeList"
+            :key="index"
+            :class="$style['info-item']"
+            @click="getWalletOpenLink(item.url)"
+          >
+            <div :class="$style['text-block']">
+              {{ getExchangeName(item.position_key) }}
+            </div>
           </div>
         </div>
       </div>
@@ -35,41 +31,54 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   data() {
     return {
-      urls: [],
-      list: [
-        {
-          apiParams: "huobi",
-          alias: "Huobi Global",
-          name: "火币",
-          iconSrc: this.$getCdnPath(
-            `/static/image/common/mcenter/deposit/ic_huobi.png`
-          ),
-          onClick: () => {
-            // window.open("https://www.huobi.com/zh-cn/register");
-            window.open(this.urls[0]);
-          }
-        }
-        // {
-        //   alias: "58COIN",
-        //   // name: "58COIN",
-        //   iconSrc: this.$getCdnPath(
-        //     `/static/image/common/mcenter/deposit/ic_58coin.png`
-        //   ),
-        //   onClick: () => {
-        //     // window.open("https://accounts.binance.com/cn/register");
-        //     window.open(this.urls[1]);
-        //   }
-        // }
-      ]
+      exchangeList: []
+      // list: [
+      //   {
+      //     apiParams: "huobi",
+      //     alias: "Huobi Global",
+      //     name: "火币",
+      //     iconSrc: this.$getCdnPath(
+      //       `/static/image/common/mcenter/deposit/ic_huobi.png`
+      //     ),
+      //     showType: this.getWalletTipShowType("exchange_huobi"),
+      //     onClick: () => {
+      //       this.getWalletOpenLink("exchange_huobi");
+      //     }
+      //   },
+      //   {
+      //     apiParams: "huobi",
+      //     alias: "Huobi Global",
+      //     name: "币安",
+      //     iconSrc: this.$getCdnPath(
+      //       `/static/image/common/mcenter/deposit/ic_huobi.png`
+      //     ),
+      //     showType: this.getWalletTipShowType("exchange_binance"),
+      //     onClick: () => {
+      //       this.getWalletOpenLink("exchange_binance");
+      //     }
+      //   },
+      //   {
+      //     alias: "58COIN",
+      //     // name: "58COIN",
+      //     iconSrc: this.$getCdnPath(
+      //       `/static/image/common/mcenter/deposit/ic_58coin.png`
+      //     ),
+      //     showType: this.getWalletTipShowType("exchange_58coin"),
+      //     onClick: () => {
+      //       this.getWalletOpenLink("exchange_58coin");
+      //     }
+      //   }
+      // ]
     };
   },
+  props: {
+    allWalletOpenLink: {
+      type: Array,
+      default: []
+    }
+  },
   created() {
-    this.list.forEach((item, index) => {
-      this.getUrl({ urlName: item.apiParams }).then(url => {
-        if (!url) return;
-        this.urls[index] = url;
-      });
-    });
+    this.getWalletAllLink();
   },
   computed: {
     ...mapGetters({
@@ -77,27 +86,33 @@ export default {
     })
   },
   methods: {
-    getUrl({ urlName }) {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-        params: {
-          lang: "zh-cn",
-          needToken: false,
-          urlName
-        }
-      }).then(res => {
-        const { data, status, errorCode } = res;
-        if (status !== "000" || errorCode !== "00") {
-          return Promise.resolve(false);
-        }
-
-        const url = data.uri
-          ? data.uri
-          : "https://ey.italking.asia:5569/guest.php?gid=eyag";
-
-        return Promise.resolve(url);
+    getWalletAllLink() {
+      this.exchangeList = this.allWalletOpenLink.filter(data => {
+        return data.wallet_name === "交易所" && data.client_display;
       });
+      console.log(this.exchangeList);
+    },
+    getWalletTipShowType(value) {
+      let type = this.allWalletOpenLink.find(data => {
+        return data.position_key === value;
+      });
+      return type.client_display;
+    },
+    getWalletOpenLink(value) {
+      let newWindow;
+      newWindow = window.open(value, "_blank");
+    },
+    getExchangeName(value) {
+      switch (value) {
+        case "exchange_huobi":
+          return "火币";
+        case "exchange_binance":
+          return "币安";
+        case "exchange_58coin":
+          return "58COIN";
+        default:
+          return "";
+      }
     }
   }
 };
@@ -134,7 +149,7 @@ export default {
 
 .content {
   padding: 17px 13px;
-  color: #ffffff;
+  color: #000000;
   text-align: center;
 
   .title {
@@ -144,11 +159,17 @@ export default {
   }
 }
 
+.info-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .info-item {
   width: 45%;
   height: 43px;
   display: inline-flex;
-  text-align: left;
   border: 1px solid #eee;
   margin: 19px 3px 10px 3px;
   align-items: center;
@@ -166,6 +187,10 @@ export default {
   }
 }
 
+.text-block {
+  text-align: center;
+  width: 100%;
+}
 .button-block {
   position: relative;
   display: flex;
