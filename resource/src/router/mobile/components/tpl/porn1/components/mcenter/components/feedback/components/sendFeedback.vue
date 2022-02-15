@@ -69,6 +69,7 @@
         $style['submit'],
         {
           [$style['disabled']]:
+            !paramsData.title ||
             (contentLenght < 20 && !isSend) || contentLenght > 200
         }
       ]"
