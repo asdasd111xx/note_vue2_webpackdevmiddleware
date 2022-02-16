@@ -63,31 +63,30 @@
     </div>
     <img
       :class="$style[`info-card`]"
-      @click="clickService"
+      @click="clickService(0)"
       :src="
-        $getCdnPath(`/static/image/${themeTPL}/service/service_service01.png`)
+        serviceImg[0]
+          ? serviceImg[0]
+          : $getCdnPath(
+              `/static/image/${themeTPL}/service/service_service01.png`
+            )
       "
     />
-
     <img
-      v-if="themeTPL === 'sp1'"
       :class="$style[`info-card`]"
-      @click="clickMixin"
-      :src="mixinImg"
-    />
-    <img
-      v-else
-      :class="$style[`info-card`]"
-      @click="clickService"
+      @click="clickService(1)"
       :src="
-        $getCdnPath(`/static/image/${themeTPL}/service/service_service02.png`)
+        serviceImg[1]
+          ? serviceImg[1]
+          : $getCdnPath(
+              `/static/image/${themeTPL}/service/service_service02.png`
+            )
       "
     />
   </div>
 </template>
 
 <script>
-import mobileLinkOpen from "@/lib/mobile_link_open";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters, mapActions } from "vuex";
 
@@ -139,8 +138,8 @@ export default {
         }
       ],
       yaboIconSrc: "/static/image/common/webview/appicon_yabo.png",
-      mixinUri: "",
-      mixinImg: ""
+      serviceUrl: [],
+      serviceImg: []
     };
   },
   computed: {
@@ -227,30 +226,30 @@ export default {
           link: hBundleID.value
         }
       };
-      if (this.themeTPL === "sp1") this.getMixin();
+      this.getService();
     });
   },
   methods: {
     ...mapActions(["actionSetLCFSystemConfig"]),
-    mobileLinkOpen,
-    clickService() {
-      this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
+    clickService(idx) {
+      const url = this.serviceUrl[idx];
+      window.open(url);
+      // 在線客服流量分析事件
+      window.dataLayer.push({
+        dep: 2,
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
+      });
     },
-    clickMixin() {
-      window.open(this.mixinUri);
-    },
-    getMixin() {
-      //企業密信
+    getService() {
       goLangApiRequest({
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-        params: {
-          urlName: "corpMessage",
-          needToken: false
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.mixinUri = res.data.uri;
-          this.mixinImg = res.data.image_url;
+          this.serviceUrl = res.data.map(v => v.url);
+          this.serviceImg = res.data.map(v => v.image);
         }
       });
     },
