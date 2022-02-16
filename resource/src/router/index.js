@@ -43,8 +43,8 @@ export default new Router({
           return;
         }
 
-        const code = to.query.code;
-        const channelid = to.query.channelid;
+        const code = to.query.code || "";
+        const channelid = to.query.channelid || "";
         const action = to.query.action;
         const toLive = to.query.toLive;
 
@@ -52,35 +52,29 @@ export default new Router({
         let isLive = toLive && toLive == "true";
         localStorage.removeItem("x-action");
 
-        if (code && code !== undefined) {
-          localStorage.setItem("x-code", code);
+        // 渠道ID優先
+        if (channelid && channelid !== "undefined") {
+          localStorage.removeItem("x-code");
           localStorage.removeItem("x-channelid");
           localStorage.removeItem("x-action");
+
+          localStorage.setItem("x-channelid", channelid);
+          // localStorage.setItem("x-code", code || "");
+
           setCookie("cid", "");
           setCookie("aid", "");
+
           localStorage.removeItem("aid");
           window.RESET_LOCAL_SETTING();
           window.RESET_MEM_SETTING();
 
-          if (action && action !== undefined) {
+          if (action && action !== "undefined") {
             localStorage.setItem("x-action", action);
           }
+        }
 
-          if (channelid && channelid !== undefined) {
-            localStorage.setItem("x-channelid", channelid);
-
-            if (!isLive) {
-              next(`/mobile?code=${code}&channelid=${channelid}`);
-              return;
-            }
-          }
-
-          if (isLive) {
-            next(`/mobile/live/iframe/home?hasFooter=true`);
-          } else {
-            next(`/mobile?code=${code}`);
-          }
-          return;
+        if (code && code !== "undefined") {
+          localStorage.setItem("x-code", code);
         }
 
         if (isLive) {
