@@ -1582,7 +1582,6 @@ export default {
       };
 
       const self = this;
-      const platform = getCookie("platform");
 
       goLangApiRequest({
         method: "put",
