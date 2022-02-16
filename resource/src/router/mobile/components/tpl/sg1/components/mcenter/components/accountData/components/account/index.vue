@@ -218,7 +218,6 @@ import axios from "axios";
 import DatePicker from "vue2-datepicker";
 import Vue from "vue";
 import mcenter from "@/api/mcenter";
-import { API_MCENTER_USER_CONFIG } from "@/config/api";
 
 export default {
   components: {
@@ -234,8 +233,6 @@ export default {
       import(/* webpackChunkName: 'editEmail' */ "./form/editEmail"),
     editPhone: () =>
       import(/* webpackChunkName: 'editPhone' */ "./form/editPhone"),
-    editBirthday: () =>
-      import(/* webpackChunkName: 'editBirthday' */ "./form/editBirthday"),
     editGender: () =>
       import(/* webpackChunkName: 'editGender' */ "./form/editGender"),
     editLiveAlias: () =>

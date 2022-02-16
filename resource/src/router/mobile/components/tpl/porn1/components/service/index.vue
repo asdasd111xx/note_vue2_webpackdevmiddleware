@@ -330,14 +330,14 @@ export default {
       }
 
       // window.open(url);
-      // // 在線客服流量分析事件
-      // window.dataLayer.push({
-      //   dep: 2,
-      //   event: "ga_click",
-      //   eventCategory: "online_service",
-      //   eventAction: "online_service_contact",
-      //   eventLabel: "online_service_contact"
-      // });
+      // 在線客服流量分析事件
+      window.dataLayer.push({
+        dep: 2,
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
+      });
       // return;
       // mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
