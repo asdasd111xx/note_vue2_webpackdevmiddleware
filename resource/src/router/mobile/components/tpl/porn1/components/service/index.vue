@@ -51,30 +51,28 @@
         >
       </div>
 
-      <template v-if="showImg">
-        <img
-          :class="$style[`info-card`]"
-          @click="clickService(0)"
-          :src="
-            serviceImg[0]
-              ? serviceImg[0]
-              : $getCdnPath(
-                  `/static/image/${routerTPL}/service/service_service01.png`
-                )
-          "
-        />
-        <img
-          :class="$style[`info-card`]"
-          @click="clickService(1)"
-          :src="
-            serviceImg[1]
-              ? serviceImg[1]
-              : $getCdnPath(
-                  `/static/image/${routerTPL}/service/service_service02.png`
-                )
-          "
-        />
-      </template>
+      <img
+        :class="$style[`info-card`]"
+        @click="clickService(0)"
+        :src="
+          serviceImg[0]
+            ? serviceImg[0]
+            : $getCdnPath(
+                `/static/image/${routerTPL}/service/service_service01.png`
+              )
+        "
+      />
+      <img
+        :class="$style[`info-card`]"
+        @click="clickService(1)"
+        :src="
+          serviceImg[1]
+            ? serviceImg[1]
+            : $getCdnPath(
+                `/static/image/${routerTPL}/service/service_service02.png`
+              )
+        "
+      />
       <div
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
@@ -163,8 +161,6 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
-import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
-import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 
 export default {
   components: {
@@ -174,18 +170,16 @@ export default {
     isStatic: {
       type: Boolean,
       default: false
-    }
+    },
+    sourceSiteConfig: { type: Object, default: null }
   },
   data() {
     return {
-      showImg: false,
-      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-
       isService: true, //立即收藏開關,
       serviceUrl: [],
       serviceImg: []
@@ -197,28 +191,6 @@ export default {
       this.hasPrev = this.$route.query.prev === "true";
     }
 
-    if (this.isStatic) {
-      this.actionSetWebDomain().then(res => {
-        this.actionGetMobileInfo();
-        let configInfo = {};
-
-        if (res) {
-          configInfo =
-            siteConfigTest[`site_${res.domain}`] ||
-            siteConfigOfficial[`site_${res.domain}`];
-        }
-
-        this.sourceSiteConfig = configInfo;
-        this.template = `${res.site}Service`;
-        if (configInfo) {
-          this.showImg = true;
-          this.getServiceSwitch();
-          this.getService();
-        }
-      });
-    } else {
-      this.showImg = true;
-    }
     this.getServiceSwitch();
     this.getService();
   },

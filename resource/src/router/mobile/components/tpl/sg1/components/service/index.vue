@@ -1,6 +1,6 @@
 <template>
   <mobile-container :has-footer="!hasPrev" :class="$style['container']">
-    <div v-if="show" slot="content" :class="$style['content-wrap']">
+    <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
@@ -173,9 +173,6 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import axios from "axios";
-import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
-import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 
 export default {
   components: {
@@ -185,12 +182,11 @@ export default {
     isStatic: {
       type: Boolean,
       default: false
-    }
+    },
+    sourceSiteConfig: { type: Object, default: null }
   },
   data() {
     return {
-      show: false,
-      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
@@ -202,27 +198,6 @@ export default {
     // 跳轉頁面需要有返回及不顯示tabbar
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
-    }
-
-    if (this.isStatic) {
-      this.actionSetWebDomain().then(res => {
-        this.actionGetMobileInfo();
-        let configInfo = {};
-
-        if (res) {
-          configInfo =
-            siteConfigTest[`site_${res.domain}`] ||
-            siteConfigOfficial[`site_${res.domain}`];
-        }
-
-        this.sourceSiteConfig = configInfo;
-        this.template = `${res.site}Service`;
-        if (configInfo) {
-          this.show = true;
-        }
-      });
-    } else {
-      this.show = true;
     }
   },
   mounted() {
