@@ -71,6 +71,12 @@ export default {
           method: 1,
           password: "",
           placeholder: "请输入CGP安全防护码"
+        },
+        OSPay: {
+          balance: "", // 值由 api 回來之後再更新，配合 Watch
+          method: 1,
+          password: "",
+          placeholder: "请输入CGP安全防护码"
         }
       },
       // 傳遞給 depositInfo (訂單限時)
@@ -726,6 +732,9 @@ export default {
               this.isOuterCrypto = false;
               if (
                 this.curPayInfo.payment_method_id === 25 ||
+                this.curPayInfo.payment_method_id === 30 ||
+                this.curPayInfo.payment_method_id === 37 ||
+                this.curPayInfo.payment_method_id === 38 ||
                 this.curPayInfo.payment_method_id === 402 ||
                 this.curPayInfo.payment_method_id === 404
               ) {
@@ -919,6 +928,7 @@ export default {
       this.showEpointWalletAddress = false;
 
       this.walletData["CGPay"].password = "";
+      this.walletData["OSPay"].password = "";
       this.cryptoMoney = "--";
       // this.resetTimerStatus();
 
@@ -1012,6 +1022,16 @@ export default {
         paramsData = {
           ...paramsData,
           wallet_token: +this.walletData["CGPay"].password
+        };
+      }
+      // OSPay：選擇支付密碼
+      if (
+        this.curPayInfo.payment_method_id === 36 &&
+        this.walletData["OSPay"].method === 0
+      ) {
+        paramsData = {
+          ...paramsData,
+          wallet_token: +this.walletData["OSPay"].password
         };
       }
 
@@ -1168,7 +1188,10 @@ export default {
           }
 
           // CGPay 不需要進入詳細入款單
-          if (this.curPayInfo.payment_method_id === 16) {
+          if (
+            this.curPayInfo.payment_method_id === 16 ||
+            this.curPayInfo.payment_method_id === 36
+          ) {
             // 將「confirmOneBtn」彈窗打開
             this.setPopupStatus(true, "funcTips");
             this.confirmPopupObj = {
@@ -1395,9 +1418,10 @@ export default {
       })
         .then(response => {
           const { result, ret, msg, code } = response.data;
-
+          let paymode =
+            this.curPayInfo.payment_method_id === 16 ? "CGPay" : "OSPay";
           if (!response || result !== "ok") {
-            this.walletData["CGPay"].balance = "--";
+            this.walletData[paymode].balance = "--";
 
             this.actionSetGlobalMessage({
               msg,
@@ -1406,12 +1430,11 @@ export default {
             return;
           }
 
-          this.walletData["CGPay"].balance = ret.balance;
-          // this.walletData["CGPay"].balance = "--";
+          this.walletData[paymode].balance = ret.balance;
         })
         .catch(error => {
           const { msg, code } = error.response.data;
-          this.walletData["CGPay"].balance = "--";
+          this.walletData[paymode].balance = "--";
 
           this.actionSetGlobalMessage({
             msg,
@@ -1581,6 +1604,9 @@ export default {
       //選擇 CGPAY-USDT ,USDT
       if (
         this.curPayInfo.payment_method_id === 25 ||
+        this.curPayInfo.payment_method_id === 30 ||
+        this.curPayInfo.payment_method_id === 37 ||
+        this.curPayInfo.payment_method_id === 38 ||
         this.curPayInfo.payment_method_id === 402 ||
         this.curPayInfo.payment_method_id === 404
       ) {

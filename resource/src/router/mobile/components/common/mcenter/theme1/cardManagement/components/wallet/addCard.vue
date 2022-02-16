@@ -97,10 +97,7 @@
           </div>
 
           <div
-            v-if="
-              (['ey1'].includes(themeTPL) && selectTarget.walletId === 21) ||
-                (selectTarget.walletId === 37 && addBankCardStep === 'one')
-            "
+            v-if="selectTarget.walletId === 37 && addBankCardStep === 'one'"
             :class="$style['qrcode']"
             @click="
               checkWalletPhoneVerification
@@ -132,6 +129,22 @@
               :placeholder="formData['CGPPwd'].placeholder"
               @input="verification('CGPPwd')"
               @blur="verification('CGPPwd')"
+            />
+          </div>
+        </div>
+        <!-- OSPay 支付密碼欄位 -->
+        <div v-if="selectTarget.walletId === 50" :class="$style['info-item']">
+          <p :class="$style['input-title']">
+            {{ formData["OSPPwd"].title }}
+          </p>
+          <div :class="$style['input-wrap']">
+            <input
+              v-model="formData['OSPPwd'].value"
+              type="password"
+              inputmode="numeric"
+              :placeholder="formData['OSPPwd'].placeholder"
+              @input="verification('OSPPwd')"
+              @blur="verification('OSPPwd')"
             />
           </div>
         </div>
@@ -312,6 +325,7 @@
               addBankCardStep === 'one' &&
                 checkWalletPhoneVerification &&
                 selectTarget.walletId !== 21 &&
+                selectTarget.walletId !== 50 &&
                 selectTarget.walletId !== 47 &&
                 selectTarget.walletId !== 48 &&
                 selectTarget.walletId !== 49
@@ -480,6 +494,11 @@ export default {
           title: "CGP安全防护码",
           value: "",
           placeholder: "请输入CGP安全防护码"
+        },
+        OSPPwd: {
+          title: "OSP安全防护码",
+          value: "",
+          placeholder: "请输入OSP安全防护码"
         }
       },
 
@@ -538,6 +557,7 @@ export default {
     "selectTarget.walletId"(value) {
       // 不確定點擊相同錢包時，是否要清除資料?假如有，將以下 code 搬至 setBank
       this.formData["CGPPwd"].value = "";
+      this.formData["OSPPwd"].value = "";
       this.formData["walletAddress"].value = "";
       this.walletTipInfo = [];
 
@@ -550,6 +570,16 @@ export default {
             text = "请输入CGP邮箱/手机号";
           } else {
             text = "请输入CGP邮箱/手机号或扫扫二维码";
+          }
+
+          this.getWalletTipInfo();
+          break;
+        case 50:
+          if (["porn1", "sg1"].includes(this.themeTPL)) {
+            // text = "请输入CGPay邮箱/手机号或扫扫二维码";
+            text = "请输入OSP邮箱/手机号";
+          } else {
+            text = "请输入OSP邮箱/手机号或扫扫二维码";
           }
 
           this.getWalletTipInfo();
@@ -614,13 +644,6 @@ export default {
     walletList() {
       // 在有指定選擇特定錢包的狀況下
       if (this.$route.query.swift) {
-        // let wallet = this.$route.query.wallet;
-        // let mapping = {
-        //   CGPay: 21,
-        //   goBao: 37,
-        //   usdt: 39 // USDT(ERC20)
-        // };
-
         this.filterWalletList = this.walletList.filter(item => {
           return item.swift_code === this.$route.query.swift;
         });
@@ -719,7 +742,7 @@ export default {
         target.value = target.value.replace(" ", "").trim();
       }
 
-      if (key === "CGPPwd") {
+      if (key === "CGPPwd" || key === "OSPPwd") {
         target.value = target.value
           .replace(" ", "")
           .trim()
@@ -744,6 +767,10 @@ export default {
 
       // 針對 CGpay
       if (this.selectTarget.walletId === 21 && !this.formData["CGPPwd"].value) {
+        lock = true;
+      }
+      // 針對 OSpay
+      if (this.selectTarget.walletId === 50 && !this.formData["OSPPwd"].value) {
         lock = true;
       }
 
@@ -797,8 +824,10 @@ export default {
             ...new Set(
               this.userBindWalletList.filter(item => {
                 // CGPay || 購寶，只能綁定過一次(不論存放常用 or 歷史)
-                if ([21, 37, 47, 48, 49].includes(item.virtual_bank_id)) {
-                  return [21, 37, 47, 48, 49].includes(item.virtual_bank_id);
+                if ([21, 50, 37, 47, 48, 49].includes(item.virtual_bank_id)) {
+                  return [21, 50, 37, 47, 48, 49].includes(
+                    item.virtual_bank_id
+                  );
                 } else if (
                   // 億元沒開限綁一組，則可添加多個同種類錢包，
                   // ["ey1"].includes(this.themeTPL) &&
@@ -890,7 +919,7 @@ export default {
           this.errorMsg = msg;
         });
     },
-    submitByToken() {
+    submitByToken(valueId) {
       if (this.isReceive) {
         return;
       }
@@ -903,10 +932,12 @@ export default {
         url: "/api/v1/c/ext/inpay",
         data: {
           api_uri: "/api/trade/v2/c/withdraw/bind_wallet_by_token",
-          // bind_type: "withdraw",
-          wallet_gateway_id: 3, // 3 為CGpay
+          wallet_gateway_id: valueId === 50 ? 7 : 3, // 3 為CGpay
           wallet_account: this.formData["walletAddress"].value,
-          wallet_token: this.formData["CGPPwd"].value,
+          wallet_token:
+            valueId === 50
+              ? this.formData["OSPPwd"].value
+              : this.formData["CGPPwd"].value,
           phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
           keyring: this.formData.keyring
         }
@@ -959,6 +990,9 @@ export default {
           break;
         case 21:
           id = 3;
+          break;
+        case 50:
+          id = 7;
           break;
         case 47:
           id = 4;
@@ -1015,7 +1049,7 @@ export default {
       this.lockStatus = true;
       this.showBindingFormat = localStorage.getItem("oneClickBindingMode");
       // 僅 CGpay 有一鍵綁定 (購寶等之後才有)
-      if ([21].includes(this.selectTarget.walletId)) {
+      if ([21, 50].includes(this.selectTarget.walletId)) {
         this.selectTarget.oneClickBindingMode = true;
         if (this.showBindingFormat) {
           this.selectTarget.oneClickBindingMode = false;
@@ -1126,6 +1160,51 @@ export default {
             dataObj: {
               cb: () => {
                 this.getWalletOpenLink("cgp_register");
+              },
+              text: "立即申请"
+            }
+          }
+        ];
+
+        return;
+      }
+
+      // CGPay
+      if (id === 50) {
+        let _data = {
+          key: "OSPay",
+          text: bindingMode
+            ? `试试`
+            : `可输入${this.selectTarget.walletName}帐号、扫码绑定或试试`,
+          hasCallback: true,
+          showType: true,
+          dataObj: {
+            text: bindingMode ? `其它绑定方式` : `一键绑定`,
+            cb: () => {
+              if (bindingMode) {
+                this.selectTarget.oneClickBindingMode = false;
+                localStorage.setItem(
+                  "oneClickBindingMode",
+                  this.selectTarget.oneClickBindingMode
+                );
+              } else {
+                this.selectTarget.oneClickBindingMode = true;
+                localStorage.removeItem("oneClickBindingMode");
+              }
+            }
+          }
+        };
+
+        this.walletTipInfo = [
+          _data,
+          {
+            key: "OSPay",
+            text: `没有${this.selectTarget.walletName}帐号？`,
+            hasCallback: true,
+            showType: this.getWalletTipShowType("osp_register"),
+            dataObj: {
+              cb: () => {
+                this.getWalletOpenLink("osp_register");
               },
               text: "立即申请"
             }
@@ -1438,8 +1517,11 @@ export default {
           });
         } else {
           // CGPay
-          if (this.selectTarget.walletId === 21) {
-            this.submitByToken();
+          if (
+            this.selectTarget.walletId === 21 ||
+            this.selectTarget.walletId === 50
+          ) {
+            this.submitByToken(this.selectTarget.walletId);
           } else {
             this.submitByNormal();
           }

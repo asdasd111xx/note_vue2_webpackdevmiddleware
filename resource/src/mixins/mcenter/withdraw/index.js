@@ -25,6 +25,12 @@ export default {
         alias: "CGP",
         method_id: 15
       },
+      withdrawCurrencyOSP: {
+        // 預設為 CGP
+        name: "OSP",
+        alias: "OSP",
+        method_id: 15
+      },
       isAlertTip: false,
       isAjaxUse: false,
       alertData: {
@@ -290,6 +296,30 @@ export default {
       if (this.allWithdrawAccount && this.allWithdrawAccount.length > 0) {
         target = this.allWithdrawAccount.find(item => {
           return item.bank_id === 2009;
+        });
+        if (target) {
+          // 新增 alias : 選單顯示用
+          list = target.currency.map(item => {
+            return {
+              ...item,
+              currency_alias: item.currency_name
+            };
+          });
+        }
+      }
+      return list;
+    },
+    /**
+     * OSPay Currency
+     *
+     * @return Array
+     */
+    currencyListForOSP() {
+      let target = [];
+      let list = [];
+      if (this.allWithdrawAccount && this.allWithdrawAccount.length > 0) {
+        target = this.allWithdrawAccount.find(item => {
+          return item.bank_id === 2029;
         });
         if (target) {
           // 新增 alias : 選單顯示用
@@ -676,6 +706,8 @@ export default {
       let method_id = 0;
       if (this.selectedCard.bank_id === 2009) {
         method_id = this.withdrawCurrency.method_id;
+      }else if (this.selectedCard.bank_id === 2029) {
+        method_id = this.withdrawCurrencyOSP.method_id;
       } else {
         if (this.selectedCard.offer_data) {
           method_id = this.selectedCard.offer_data[0]
