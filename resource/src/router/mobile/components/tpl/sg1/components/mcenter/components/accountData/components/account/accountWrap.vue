@@ -35,7 +35,7 @@ export default {
               btnShow: true,
               isShow: true,
               placeholder: "添加日期，确保您已满18岁",
-              sglive: false
+              sglive: true
             },
             gender: {
               key: "gender",
@@ -446,6 +446,17 @@ export default {
               status: paopaoConfig.relationship !== "" ? "already" : "yet",
               value: paopaoConfig.relationship || itemNow.placeholder,
               btnShow: true,
+              isShow: true
+            };
+          } else if (
+            key === "birthday" &&
+            (paopaoConfig.birth === "" || paopaoConfig.birth)
+          ) {
+            itemNow = {
+              ...itemNow,
+              status: paopaoConfig.birth !== "" ? "already" : "yet",
+              value: paopaoConfig.birth || itemNow.placeholder,
+              btnShow: !paopaoConfig.birth,
               isShow: true
             };
           } else {
