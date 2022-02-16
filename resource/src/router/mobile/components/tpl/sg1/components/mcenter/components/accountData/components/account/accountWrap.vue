@@ -35,7 +35,7 @@ export default {
               btnShow: true,
               isShow: true,
               placeholder: "添加日期，确保您已满18岁",
-              sglive: false
+              sglive: true
             },
             gender: {
               key: "gender",
@@ -346,25 +346,25 @@ export default {
               }
             }
 
-            const isBtnShow = false;
+            let isBtnShow = false;
             if (this.mcenterUserField.config[key].editable) {
               //修改開
-              this.isBtnShow = true;
+              isBtnShow = true;
             } else {
               if (
                 !this.mcenterUserField.config[key].code &&
                 !this.memInfo[key][key]
               ) {
                 //修改關 驗證關 沒資料
-                this.isBtnShow = true;
+                isBtnShow = true;
               } else if (
                 !this.mcenterUserField.user[key] &&
                 this.mcenterUserField.config[key].code
               ) {
                 //修改關 沒驗證過信箱或電話 驗證開
-                this.isBtnShow = true;
+                isBtnShow = true;
               } else {
-                this.isBtnShow = false;
+                isBtnShow = false;
               }
             }
 
@@ -379,7 +379,7 @@ export default {
               //   (key === 'email' && this.mcenterUserField.config.email.code)
               // ,
               //!keyValue || !userConfig.user[key], // 未驗證 或者 未填 可修改
-              btnShow: this.isBtnShow,
+              btnShow: isBtnShow,
               verification: this.verification[key],
               isShow: userConfig.config[key].display
             };
@@ -446,6 +446,17 @@ export default {
               status: paopaoConfig.relationship !== "" ? "already" : "yet",
               value: paopaoConfig.relationship || itemNow.placeholder,
               btnShow: true,
+              isShow: true
+            };
+          } else if (
+            key === "birthday" &&
+            (paopaoConfig.birth === "" || paopaoConfig.birth)
+          ) {
+            itemNow = {
+              ...itemNow,
+              status: paopaoConfig.birth !== "" ? "already" : "yet",
+              value: paopaoConfig.birth || itemNow.placeholder,
+              btnShow: !paopaoConfig.birth,
               isShow: true
             };
           } else {

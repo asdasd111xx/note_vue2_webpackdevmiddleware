@@ -759,7 +759,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        introducer: localStorage.getItem("code") || "",
+        code: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
@@ -784,7 +784,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        introducer: "",
+        code: "",
         name: "",
         email: "",
         phone: "",
@@ -1432,6 +1432,14 @@ export default {
             } else {
               this.phoneVerifybtnActive = false;
             }
+
+            if(this.allValue[key].length < 10){
+              this.allTip[key] = this.$text(
+                "S_FORM_PHONE_ERROR",
+                "请输入7-15码，仅允许输入数字（开头可输入+）"
+              );
+              return;
+            }
           }
 
           this.allTip[key] = "";
@@ -1569,6 +1577,10 @@ export default {
         return;
       }
 
+      const promotionCode = !localStorage.getItem("x-channelid")
+        ? localStorage.getItem("x-code") || ""
+        : this.allValue.code;
+
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -1576,9 +1588,13 @@ export default {
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
-        code: localStorage.getItem("x-code") || "",
         phone_keyring: this.register_phone_keyring,
-        email_keyring: this.register_email_keyring
+        email_keyring: this.register_email_keyring,
+        host: window.location.host,
+        deviceId: localStorage.getItem("uuidAccount") || "",
+
+        register_channel: Number(localStorage.getItem("x-channelid")) || 0,
+        code: promotionCode
       };
 
       const self = this;
@@ -1589,14 +1605,7 @@ export default {
         headers: {
           Vendor: this.memInfo.user.domain
         },
-        params: {
-          ...params,
-          introducer: localStorage.getItem("x-code") || "",
-          host: window.location.host,
-          deviceId: localStorage.getItem("uuidAccount") || "",
-          lang: "zh-cn",
-          register_channel: Number(localStorage.getItem("x-channelid")) || 0
-        }
+        params: params
       }).then(res => {
         setTimeout(() => {
           this.isLoading = false;
@@ -1698,7 +1707,7 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (item === "introducer" && localStorage.getItem("x-code")) {
+              if (item === "code" && localStorage.getItem("x-code")) {
                 this.errMsg = res.errors[item];
               }
             });
