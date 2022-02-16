@@ -1,8 +1,5 @@
 <template>
-  <mobile-container
-    :has-footer="!hasPrev && !fromlanding"
-    :class="$style['container']"
-  >
+  <mobile-container :has-footer="!hasPrev" :class="$style['container']">
     <div v-if="show" slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
@@ -11,7 +8,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding && !isStatic"
+          v-if="!isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -101,7 +98,7 @@
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
+        :style="hasPrev ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img :src="$getCdnPath(`/static/image/sg1/common/appicon_pao.png`)" />
@@ -198,18 +195,13 @@ export default {
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      fromlanding: false
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
   created() {
     // 跳轉頁面需要有返回及不顯示tabbar
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
-    }
-
-    if (this.$route.query.fromlanding !== undefined) {
-      this.fromlanding = this.$route.query.fromlanding === "true";
     }
 
     if (this.isStatic) {
@@ -234,7 +226,7 @@ export default {
     }
   },
   mounted() {
-    if (this.loginStatus && !this.fromlanding) {
+    if (this.loginStatus) {
       this.actionSetUserdata(true).then(() => {
         this.getAvatarSrc();
       });
@@ -266,7 +258,7 @@ export default {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
     name() {
-      if (this.loginStatus && !this.fromlanding) {
+      if (this.loginStatus) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -296,11 +288,7 @@ export default {
     },
     clickService() {
       let url = this.mobileInfo.service.url;
-      if (this.fromlanding) {
-        window.location.href = url;
-      } else {
-        window.open(url);
-      }
+      window.open(url);
     },
     clickPopTip() {
       this.isShowPop = true;
@@ -309,7 +297,7 @@ export default {
       this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
-      if (!this.loginStatus || this.fromlanding) return;
+      if (!this.loginStatus) return;
 
       // 是否自訂上傳頭像
       this.actionGetExtRedirect({

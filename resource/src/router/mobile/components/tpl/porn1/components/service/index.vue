@@ -1,7 +1,7 @@
 <template>
   <mobile-container
     :class="[$style.container, $style[routerTPL]]"
-    :has-footer="!hasPrev && !fromlanding"
+    :has-footer="!hasPrev"
   >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
@@ -10,7 +10,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding && !isStatic"
+          v-if="!isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -79,7 +79,7 @@
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
+        :style="hasPrev ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img
@@ -185,7 +185,7 @@ export default {
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      fromlanding: false,
+
       isService: true, //立即收藏開關,
       serviceUrl: [],
       serviceImg: []
@@ -195,10 +195,6 @@ export default {
     // 跳轉頁面需要有返回及不顯示tabbar
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
-    }
-
-    if (this.$route.query.fromlanding !== undefined) {
-      this.fromlanding = this.$route.query.fromlanding === "true";
     }
 
     if (this.isStatic) {
@@ -227,7 +223,7 @@ export default {
     this.getService();
   },
   mounted() {
-    if (this.loginStatus && !this.fromlanding) {
+    if (this.loginStatus) {
       this.actionSetUserdata(true).then(() => {
         this.getAvatarSrc();
       });
@@ -259,7 +255,7 @@ export default {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
     name() {
-      if (this.loginStatus && !this.fromlanding) {
+      if (this.loginStatus) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -319,24 +315,17 @@ export default {
 
     clickService(idx) {
       let url = this.serviceUrl[idx];
-
-      if (this.fromlanding) {
-        window.location.href = url;
-      } else {
-        window.open(url);
-      }
-
-      // window.open(url);
-      // // 在線客服流量分析事件
-      // window.dataLayer.push({
-      //   dep: 2,
-      //   event: "ga_click",
-      //   eventCategory: "online_service",
-      //   eventAction: "online_service_contact",
-      //   eventLabel: "online_service_contact"
-      // });
-      // return;
-      // mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
+      window.open(url);
+      // 在線客服流量分析事件
+      window.dataLayer.push({
+        dep: 2,
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
+      });
+      return;
+      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
 
     clickPopTip() {
@@ -346,7 +335,7 @@ export default {
       this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
-      if (!this.loginStatus || this.fromlanding) return;
+      if (!this.loginStatus) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
