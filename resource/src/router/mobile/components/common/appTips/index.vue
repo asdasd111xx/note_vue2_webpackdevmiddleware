@@ -62,6 +62,10 @@ export default {
     };
   },
   created() {
+    if (this.$route.path === "/custom/service") {
+      return;
+    }
+
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
