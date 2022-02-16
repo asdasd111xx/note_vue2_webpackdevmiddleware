@@ -273,7 +273,7 @@ export default {
 .views {
   height: 12px;
   line-height: 12px;
-  color: #ffffff;
+  color: #a9acb4;
   font-size: 9px;
   display: flex;
   align-items: center;
