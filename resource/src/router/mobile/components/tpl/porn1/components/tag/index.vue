@@ -303,7 +303,7 @@ export default {
 .views {
   display: flex;
   align-items: center;
-  color: #ffffff;
+  color: #a9acb4;
   height: 13px;
   line-height: 13px;
   font-size: 10px;

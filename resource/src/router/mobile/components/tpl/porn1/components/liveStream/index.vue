@@ -238,7 +238,7 @@ export default {
 @import "~@/css/variable.scss";
 
 .live-stream-wrap {
-  background-color: #fefffe;
+  background-color: linear-gradient(90deg, #ffc954, #fee084);
   position: relative;
   height: 100%;
 }
@@ -251,9 +251,9 @@ export default {
   width: 50%;
   text-align: center;
   font-size: 16px;
-  color: #ffffff;
+  color: #b05a0d;
   &.is-current {
-    color: var(--slider_text_active_color);
+    color: #222;
   }
 }
 
