@@ -119,12 +119,16 @@ export default {
       isMaintain: false,
       maintainInfo: [],
       sec: 5,
-      timer: null
+      maintainTimer: null
     };
   },
+
   beforeDestroy() {
-    clearInterval(this.timer);
-    this.timer = null;
+    clearInterval(this.updateBalanceTimer);
+    this.updateBalanceTimer = null;
+
+    clearInterval(this.maintainTimer);
+    this.maintainTimer = null;
   },
   computed: {
     ...mapGetters({
@@ -186,9 +190,22 @@ export default {
   created() {},
   mounted() {
     this.initPage();
+
+    this.updateBalanceTimer = setInterval(() => {
+      if (!this.loginStatus) {
+        clearInterval(this.updateBalanceTimer);
+        this.updateBalanceTimer = null;
+      } else {
+        this.actionSetUserBalance();
+      }
+    }, 30000);
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionGetExtRedirect",
+      "actionSetUserBalance"
+    ]),
     initPage() {
       let clientUri = "";
       this.actionGetExtRedirect({
@@ -264,10 +281,10 @@ export default {
         }
       ];
 
-      this.timer = setInterval(() => {
+      this.maintainTimer = setInterval(() => {
         if (this.sec === 0 && !this.$route.query.test) {
-          clearInterval(this.timer);
-          this.timer = null;
+          clearInterval(this.maintainTimer);
+          this.maintainTimer = null;
           this.goToMobile();
           return;
         }

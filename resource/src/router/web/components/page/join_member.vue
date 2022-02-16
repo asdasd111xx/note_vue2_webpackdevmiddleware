@@ -978,7 +978,10 @@ export default {
   },
   created() {
     //取得成為主播網址
-    this.beHost();
+    if (this.siteConfig.ROUTER_TPL === "sg1") {
+      this.getBeHostUrl();
+    }
+
     this.actionSetUserdata().then(() => {
       this.getCaptcha();
       let joinConfig = [];
@@ -1108,68 +1111,13 @@ export default {
           }
         })
         .then(() => {
-          const preview = this.$route.name === "preview" ? "View" : "";
-          const status = this.$cookie.get("newsite") ? "New" : "";
-
-          ajax({
-            method: "get",
-            url: `/tpl/${this.memInfo.user.domain}/playerRegister${preview}${status}.json`,
-            params: {
-              v: Date.parse(new Date())
-            },
-            success: response => {
-              response.data.forEach(item => {
-                Object.keys(item).forEach(key => {
-                  const content = JSON.parse(item[key][this.$i18n.locale]);
-
-                  joinReminder = {
-                    ...joinReminder,
-                    [key]: {
-                      note1: content.note1 || "",
-                      note2: content.note2 || ""
-                    }
-                  };
-
-                  // if (key === "gender" && joinReminder[key].note1) {
-                  //   this.selectData.gender.options[0].label =
-                  //     joinReminder[key].note1;
-                  //   this.selectData.gender.selected.label =
-                  //     joinReminder[key].note1;
-                  // }
-                  if (key === "gender") {
-                    let tip = this.placeholderKeyValue("gender", "tip");
-                    if (tip) {
-                      this.selectData.gender.options[0].label = tip;
-                      this.selectData.gender.selected.label = tip;
-                    } else if (joinReminder[key].note1) {
-                      this.selectData.gender.options[0].label =
-                        joinReminder[key].note1;
-                      this.selectData.gender.selected.label =
-                        joinReminder[key].note1;
-                    }
-                  }
-                });
-              });
-
-              joinConfig.map(item => {
-                const info = item;
-                info.content = {
-                  ...item.content,
-                  ...joinReminder[item.key]
-                };
-
-                return info;
-              });
-            }
-          }).then(() => {
-            this.registerData = [
-              username,
-              password,
-              confirmPassword,
-              ...joinConfig,
-              captchaText
-            ];
-          });
+          this.registerData = [
+            username,
+            password,
+            confirmPassword,
+            ...joinConfig,
+            captchaText
+          ];
         });
 
       // if (!this.loginStatus) {
@@ -1185,7 +1133,7 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
-    beHost() {
+    getBeHostUrl() {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
@@ -1634,7 +1582,6 @@ export default {
       };
 
       const self = this;
-      const platform = getCookie("platform");
 
       goLangApiRequest({
         method: "put",

@@ -324,8 +324,6 @@ export default {
         eventAction: "online_service_contact",
         eventLabel: "online_service_contact"
       });
-      return;
-      mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
 
     clickPopTip() {

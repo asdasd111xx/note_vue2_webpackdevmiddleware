@@ -186,10 +186,6 @@ export default {
       import(
         /* webpackChunkName: 'accountDataWeixinSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editWeixin"
       ),
-    accountDataBirthdaySg1: () =>
-      import(
-        /* webpackChunkName: 'accountDataBirthdaySg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editBirthday"
-      ),
     accountDataWithdrawpwdSg1: () =>
       import(
         /* webpackChunkName: 'accountDataWithdrawpwdSg1' */ "../../tpl/sg1/components/mcenter/components/accountData/components/account/form/editWithdrawPwd"

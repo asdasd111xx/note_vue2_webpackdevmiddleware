@@ -2,7 +2,7 @@
   <div>
     <template v-if="!$route.params.id">
       <template v-if="isReceive">
-        <div v-if="feedbackList.length === 0" :class="[$style['no-feedback']]">
+        <div v-if="repliedList.length === 0" :class="[$style['no-feedback']]">
           <img
             :src="`/static/image/${theme}/mcenter/feedback/no_feedback.png`"
           />
@@ -12,18 +12,20 @@
           </button>
         </div>
         <ul v-else :class="$style['feedback-list']">
-          <template v-for="message in feedbackAddReply">
+          <template v-for="message in repliedList">
             <li
               :class="[$style['feedback-item'], 'clearfix']"
               :key="message.id"
               @click="getCurrentMassage(message)"
             >
               <div :class="$style['feedback-icon']">
-                <template v-if="typeList && typeList.length > 0">
+                <template v-if="typeList && Object.keys(typeList).length > 0">
                   <img
                     :src="
-                      message.imageId
-                        ? `/static/image/${theme}/mcenter/feedback/question_${message.imageId}.png`
+                      typeList[message.type_id]
+                        ? `/static/image/${theme}/mcenter/feedback/question_${
+                            typeList[message.type_id].imageId
+                          }.png`
                         : `/static/image/${theme}/mcenter/feedback/question_8.png`
                     "
                   />
@@ -39,7 +41,7 @@
 
                 <p
                   :class="$style['question']"
-                  v-html="getShortConetent(message.content)"
+                  v-html="getShortConetent(message.reply_content)"
                 ></p>
               </div>
             </li>
@@ -51,14 +53,12 @@
       <div :class="$style['feedback-detail']">
         <div :class="$style['detail-content']">
           <div :class="[$style['detail-title'], 'clearfix']">
-            <template v-if="typeList && typeList.length > 0">
+            <template v-if="typeList && Object.keys(typeList).length > 0">
               <img
                 :src="
-                  typeList.find(i => i.id === String(currentFeedback.type_id))
+                  typeList[currentFeedback.type_id]
                     ? `/static/image/${theme}/mcenter/feedback/question_${
-                        typeList.find(
-                          i => i.id === String(currentFeedback.type_id)
-                        ).imageId
+                        typeList[currentFeedback.type_id].imageId
                       }.png`
                     : `/static/image/${theme}/mcenter/feedback/question_8.png`
                 "
@@ -142,13 +142,12 @@ export default {
   },
   data() {
     return {
-      feedbackAddReply: [],
-      feedbackList: [],
+      //feedbackList: [],
       currentFeedback: null,
       unReadCount: 0,
       repliedList: [],
       isReceive: false,
-      typeList: null,
+      typeList: {},
       avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
@@ -172,8 +171,8 @@ export default {
   },
   created() {
     const params = [
-      this.getFeedbackRecord(),
-      //this.getRepliedList(),
+      //this.getFeedbackRecord(),
+      this.getRepliedList(),
       this.getAvatarSrc(),
       this.getTypeList()
     ];
@@ -204,13 +203,17 @@ export default {
         url: "/api/v1/c/feedback_type/list",
         errorAlert: false
       }).then(res => {
-        this.typeList = res.ret.map((item, index) => {
-          return {
-            id: item.id,
-            content: item.content,
-            imageId: index + 1 < 8 ? index + 1 : 8
-          };
-        });
+        this.typeList = res.ret.reduce(
+          (results, item, index) => ({
+            ...results,
+            [item.id]: {
+              id: item.id,
+              content: item.content,
+              imageId: index + 1 < 8 ? index + 1 : 8
+            }
+          }),
+          {}
+        );
       });
     },
     setContent(content) {
@@ -220,14 +223,14 @@ export default {
       //   return '<a href="' + url + '" target="_blank">' + url + '</a>';
       // })
     },
-    getFeedbackRecord() {
-      mcenter.feedbackRecord({
-        success: response => {
-          this.feedbackList = response.ret;
-          this.getRepliedList();
-        }
-      });
-    },
+    // getFeedbackRecord() {
+    //   mcenter.feedbackRecord({
+    //     success: response => {
+    //       this.feedbackList = response.ret;
+    //       this.getRepliedList();
+    //     }
+    //   });
+    // },
     getCurrentMassage(content) {
       console.log(content);
       this.currentFeedback =
@@ -252,32 +255,9 @@ export default {
           return;
         }
         this.repliedList = response.ret;
-        this.getFeedbackAddReply();
       });
     },
-    getFeedbackAddReply() {
-      //反饋列表客服有回覆則顯示回覆的內容
 
-      this.feedbackAddReply = this.feedbackList;
-      for (let i in this.feedbackAddReply) {
-        for (let j in this.repliedList) {
-          if (this.feedbackAddReply[i].id == this.repliedList[j].id) {
-            this.feedbackAddReply[i].content = this.repliedList[
-              j
-            ].reply_content;
-          }
-        }
-      }
-
-      //反饋列表客服圖片
-      for (let i in this.typeList) {
-        for (let j in this.feedbackAddReply) {
-          if (this.feedbackAddReply[j].type_id == this.typeList[i].id) {
-            this.feedbackAddReply[j].imageId = this.typeList[i].imageId;
-          }
-        }
-      }
-    },
     getAvatarSrc() {
       if (!this.loginStatus) return;
 
