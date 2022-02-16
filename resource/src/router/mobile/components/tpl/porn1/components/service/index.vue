@@ -51,32 +51,30 @@
         >
       </div>
 
-      <img
-        :class="$style[`info-card`]"
-        @click="clickService"
-        :src="
-          $getCdnPath(
-            `/static/image/${routerTPL}/service/service_service01.png`
-          )
-        "
-      />
-
-      <img
-        v-if="routerTPL === 'sp1'"
-        :class="$style[`info-card`]"
-        @click="clickMixin"
-        :src="mixinImg"
-      />
-      <img
-        v-else
-        :class="$style[`info-card`]"
-        @click="clickService"
-        :src="
-          $getCdnPath(
-            `/static/image/${routerTPL}/service/service_service02.png`
-          )
-        "
-      />
+      <template v-if="showImg">
+        <img
+          :class="$style[`info-card`]"
+          @click="clickService(0)"
+          :src="
+            serviceImg[0]
+              ? serviceImg[0]
+              : $getCdnPath(
+                  `/static/image/${routerTPL}/service/service_service01.png`
+                )
+          "
+        />
+        <img
+          :class="$style[`info-card`]"
+          @click="clickService(1)"
+          :src="
+            serviceImg[1]
+              ? serviceImg[1]
+              : $getCdnPath(
+                  `/static/image/${routerTPL}/service/service_service02.png`
+                )
+          "
+        />
+      </template>
       <div
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
@@ -180,7 +178,7 @@ export default {
   },
   data() {
     return {
-      show: false,
+      showImg: false,
       sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
@@ -188,9 +186,9 @@ export default {
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
       fromlanding: false,
-      mixinUri: "",
-      mixinImg: "",
-      isService: true //立即收藏開關
+      isService: true, //立即收藏開關,
+      serviceUrl: [],
+      serviceImg: []
     };
   },
   created() {
@@ -217,16 +215,16 @@ export default {
         this.sourceSiteConfig = configInfo;
         this.template = `${res.site}Service`;
         if (configInfo) {
-          this.show = true;
+          this.showImg = true;
+          this.getServiceSwitch();
+          this.getService();
         }
       });
     } else {
-      this.show = true;
+      this.showImg = true;
     }
-    if (this.routerTPL === "sp1") {
-      this.getMixin();
-      this.getService();
-    }
+    this.getServiceSwitch();
+    this.getService();
   },
   mounted() {
     if (this.loginStatus && !this.fromlanding) {
@@ -283,22 +281,17 @@ export default {
       "actionSetWebInfo",
       "actionGetMobileInfo"
     ]),
-    getMixin() {
-      //企業密信
+    getService() {
       goLangApiRequest({
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
-        params: {
-          urlName: "corpMessage",
-          needToken: false
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.mixinUri = res.data.uri;
-          this.mixinImg = res.data.image_url;
+          this.serviceUrl = res.data.map(v => v.url);
+          this.serviceImg = res.data.map(v => v.image);
         }
       });
     },
-    getService() {
+    getServiceSwitch() {
       //立即收藏開關
       goLangApiRequest({
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
@@ -323,11 +316,10 @@ export default {
           break;
       }
     },
-    clickMixin() {
-      window.open(this.mixinUri);
-    },
-    clickService() {
-      let url = this.mobileInfo.service.url;
+
+    clickService(idx) {
+      let url = this.serviceUrl[idx];
+
       if (this.fromlanding) {
         window.location.href = url;
       } else {
@@ -492,10 +484,6 @@ div.container {
   display: block;
   margin: 5px auto;
   width: 100%;
-}
-
-.card-bg {
-  height: 100%;
 }
 
 .btn-prev {
