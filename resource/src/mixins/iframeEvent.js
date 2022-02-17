@@ -223,6 +223,9 @@ export default {
               case "EDITLIVEALIAS":
                 this.$router.push(`/mobile/mcenter/accountData/liveAlias`);
                 return;
+              case "LIVEMALL":
+                this.$router.push(`/mobile/live/iframe/mall?hasfooter=false`);
+                return;
             }
             return;
 
