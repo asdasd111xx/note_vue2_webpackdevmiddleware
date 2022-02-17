@@ -53,13 +53,16 @@ export default new Router({
         localStorage.removeItem("x-action");
 
         // 渠道ID優先
-        if (channelid && channelid !== "undefined") {
+        if (
+          (channelid && channelid !== "undefined") ||
+          (code && code !== "undefined")
+        ) {
           localStorage.removeItem("x-code");
           localStorage.removeItem("x-channelid");
           localStorage.removeItem("x-action");
 
           localStorage.setItem("x-channelid", channelid);
-          // localStorage.setItem("x-code", code || "");
+          localStorage.setItem("x-code", code);
 
           setCookie("cid", "");
           setCookie("aid", "");
@@ -71,10 +74,6 @@ export default new Router({
           if (action && action !== "undefined") {
             localStorage.setItem("x-action", action);
           }
-        }
-
-        if (code && code !== "undefined") {
-          localStorage.setItem("x-code", code);
         }
 
         if (isLive) {
