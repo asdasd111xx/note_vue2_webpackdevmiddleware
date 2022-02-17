@@ -96,8 +96,8 @@ export default {
     regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
     errorMsg: i18n.t("S_PASSWORD_ERROR")
   },
-  code: {
-    key: "code",
+  introducer: {
+    key: "introducer",
     text: "S_INTRODUCER",
     type: "text",
     isRequired: false,

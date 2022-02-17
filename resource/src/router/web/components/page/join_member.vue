@@ -691,14 +691,12 @@
 <script>
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import ajax from "@/lib/ajax";
 import axios from "axios";
 import appEvent from "@/lib/appEvent";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
 import joinMemInfo from "@/config/joinMemInfo";
-import member from "@/api/member";
 import thirdyVerification from "@/components/thirdyVerification";
 import slideVerification from "@/components/slideVerification";
 import vSelect from "vue-select";
@@ -759,7 +757,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        code: localStorage.getItem("code") || "",
+        introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
@@ -784,7 +782,7 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        code: "",
+        introducer: "",
         name: "",
         email: "",
         phone: "",
@@ -1033,96 +1031,93 @@ export default {
         }
       };
 
-      member
-        .joinConfig({
-          success: ({ result, ret }) => {
-            if (result !== "ok") {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
+      }).then(res => {
+        console.log(res);
+        if (res && res.status === "000") {
+          const data = res.data;
+
+          //是否顯示mail驗證按鈕
+          if (data.email.code_register == true) {
+            this.mailNeedCode = true;
+          } else {
+            this.mailNeedCode = false;
+          }
+
+          //是否顯示手機驗證按鈕
+          if (data.phone.code_register == true) {
+            this.NeedCode = true;
+          } else {
+            this.NeedCode = false;
+          }
+
+          Object.keys(this.joinMemInfo).forEach(key => {
+            if (
+              key === "captcha_text" &&
+              this.memInfo.config.register_captcha_type !== 1
+            ) {
+              this.joinMemInfo[key].show = false;
               return;
             }
-            //是否顯示mail驗證按鈕
-            if (ret.email.code_register == true) {
-              this.mailNeedCode = true;
-            } else {
-              this.mailNeedCode = false;
+
+            if (!data[key]) {
+              return;
             }
 
-            //是否顯示手機驗證按鈕
-            if (ret.phone.code_register == true) {
-              this.NeedCode = true;
-            } else {
-              this.NeedCode = false;
-            }
-            Object.keys(this.joinMemInfo).forEach(key => {
-              if (
-                key === "captcha_text" &&
-                this.memInfo.config.register_captcha_type !== 1
-              ) {
-                this.joinMemInfo[key].show = false;
-                return;
-              }
-
-              if (!ret[key]) {
-                return;
-              }
-
-              if (key === "introducer" && localStorage.getItem("x-code")) {
-                this.joinMemInfo[key] = {
-                  ...this.joinMemInfo[key],
-                  isRequired: true,
-                  show: false,
-                  hasVerify: ret[key].code_register
-                };
-                return;
-              }
-
-              if (key === "gender") {
-                let tip = this.placeholderKeyValue("gender", "tip");
-                if (tip) {
-                  this.selectData.gender.options[0].label = tip;
-                  this.selectData.gender.selected.label = tip;
-                }
-              }
-
-              if (key === "phone") {
-                this.selectData.phone.options = [
-                  ...this.selectData.phone.options,
-                  ...ret[key].country_codes.map(label => ({
-                    label,
-                    value: label
-                  }))
-                ];
-
-                [
-                  this.selectData.phone.selected
-                ] = this.selectData.phone.options;
-              }
-
+            if (key === "introducer" && localStorage.getItem("x-code")) {
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
-                isRequired: ret[key].required,
-                show: !ret[key].none,
-                hasVerify: ret[key].code_register
+                isRequired: true,
+                show: false,
+                hasVerify: data[key].code_register
               };
-              joinConfig = [
-                ...joinConfig,
-                { key, content: { note1: "", note2: "" } }
-              ];
-            });
-          }
-        })
-        .then(() => {
-          this.registerData = [
-            username,
-            password,
-            confirmPassword,
-            ...joinConfig,
-            captchaText
-          ];
-        });
+              return;
+            }
 
-      // if (!this.loginStatus) {
-      //   this.getGuestBalance();
-      // }
+            if (key === "gender") {
+              let tip = this.placeholderKeyValue("gender", "tip");
+              if (tip) {
+                this.selectData.gender.options[0].label = tip;
+                this.selectData.gender.selected.label = tip;
+              }
+            }
+
+            if (key === "phone") {
+              this.selectData.phone.options = [
+                ...this.selectData.phone.options,
+                ...data[key].country_codes.map(label => ({
+                  label,
+                  value: label
+                }))
+              ];
+
+              [this.selectData.phone.selected] = this.selectData.phone.options;
+            }
+
+            this.joinMemInfo[key] = {
+              ...this.joinMemInfo[key],
+              isRequired: data[key].required,
+              show: !data[key].none,
+              hasVerify: data[key].code_register
+            };
+            joinConfig = [
+              ...joinConfig,
+              { key, content: { note1: "", note2: "" } }
+            ];
+
+            this.registerData = [
+              username,
+              password,
+              confirmPassword,
+              ...joinConfig,
+              captchaText
+            ];
+          });
+        }
+      });
+
       this.getPlaceholderList();
     });
   },
@@ -1433,7 +1428,7 @@ export default {
               this.phoneVerifybtnActive = false;
             }
 
-            if(this.allValue[key].length < 10){
+            if (this.allValue[key].length < 10) {
               this.allTip[key] = this.$text(
                 "S_FORM_PHONE_ERROR",
                 "请输入7-15码，仅允许输入数字（开头可输入+）"
@@ -1707,7 +1702,7 @@ export default {
               }
 
               //msg: "无此介绍人"
-              if (item === "code" && localStorage.getItem("x-code")) {
+              if (item === "introducer" && localStorage.getItem("x-code")) {
                 this.errMsg = res.errors[item];
               }
             });
@@ -1902,7 +1897,6 @@ export default {
           keyring: this.phoneVerifyCode
         }
       }).then(res => {
-        console.log(res);
         if (res.status === "000") {
           this.phoneVerifyModalShow = false;
           this.showPhoneCheckIcon = true;
