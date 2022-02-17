@@ -1572,9 +1572,7 @@ export default {
         return;
       }
 
-      const promotionCode = !localStorage.getItem("x-channelid")
-        ? localStorage.getItem("x-code") || ""
-        : this.allValue.code;
+      const promotionCode = localStorage.getItem("x-code") || "";
 
       const params = {
         ...this.allValue,
@@ -1588,10 +1586,14 @@ export default {
         host: window.location.host,
         deviceId: localStorage.getItem("uuidAccount") || "",
 
-        register_channel: Number(localStorage.getItem("x-channelid")) || 0,
-        code: promotionCode
+        code: promotionCode,
       };
 
+      if (Number(localStorage.getItem("x-channelid"))) {
+        params["register_channel"] = Number(
+          localStorage.getItem("x-channelid")
+        );
+      }
       const self = this;
 
       goLangApiRequest({
@@ -1706,7 +1708,10 @@ export default {
                 this.errMsg = res.errors[item];
               }
             });
-            return;
+          } else {
+            if (res && res.msg) {
+              this.errMsg = res.msg;
+            }
           }
         } else {
           if (res && res.msg) {
