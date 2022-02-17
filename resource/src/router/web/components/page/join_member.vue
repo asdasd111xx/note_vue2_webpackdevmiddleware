@@ -1066,7 +1066,11 @@ export default {
               return;
             }
 
-            if (key === "introducer" && localStorage.getItem("x-code")) {
+            if (
+              key === "introducer" &&
+              (localStorage.getItem("x-code") ||
+                localStorage.getItem("x-channelid"))
+            ) {
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
                 isRequired: true,
