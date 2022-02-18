@@ -428,7 +428,7 @@
   "S_FORM_CONTACT": "联络事项",
   "S_FORM_NAME_ERROR": "请勿输入数字、空白及特殊符号",
   "S_FORM_ACCOUNT_ERROR": "请输入4-20位英文小写、数字，首字不得为数字",
-  "S_FORM_PHONE_ERROR": "请输入7-15码，仅允许输入数字（开头可输入+）",
+  "S_FORM_PHONE_ERROR": "请输入7-15码，仅允许输入数字",
   "S_FORM_QQ_ERROR": "仅允许输入数字",
   "S_FORM_WECHAT_ERROR": "请输入6-20位字母、数字、下划线、减号, 首字须为字母",
   "S_FORM_MAIL_ERROR": "E-mail 格式不正确",
