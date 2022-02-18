@@ -1576,9 +1576,12 @@ export default {
         return;
       }
 
-      const promotionCode = !localStorage.getItem("x-channelid")
-        ? localStorage.getItem("x-code") || ""
-        : this.allValue.code;
+      const promotionCode =
+        !localStorage.getItem("x-channelid") ||
+        !Number(localStorage.getItem("x-channelid")) ||
+        localStorage.getItem("x-channelid") === "undefined"
+          ? localStorage.getItem("x-code") || ""
+          : this.allValue.code;
 
       const params = {
         ...this.allValue,
