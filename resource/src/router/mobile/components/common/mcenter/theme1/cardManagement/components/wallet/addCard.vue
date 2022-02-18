@@ -1259,7 +1259,7 @@ export default {
                   "iframe-third-url",
                   this.getWalletOpenLink("epoints_register", false)
                 );
-                localStorage.setItem("iframe-third-url-title", "");
+                localStorage.setItem("iframe-third-url-title", "立即申请");
                 this.$router.replace(
                   `/mobile/iframe/${
                     this.$route.query.redirect === "deposit"
@@ -1342,7 +1342,7 @@ export default {
                   "iframe-third-url",
                   this.getWalletOpenLink("epointsesb_register", false)
                 );
-                localStorage.setItem("iframe-third-url-title", "");
+                localStorage.setItem("iframe-third-url-title", "立即申请");
                 this.$router.replace(
                   `/mobile/iframe/${
                     this.$route.query.redirect === "deposit"
