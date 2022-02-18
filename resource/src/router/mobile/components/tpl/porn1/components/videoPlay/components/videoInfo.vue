@@ -146,7 +146,7 @@ export default {
 .info-wrap {
   padding: 0 14px;
   position: relative;
-  color: #ffffff;
+  color: #a9acb4;
   border-top: 1px solid #eee;
   border-bottom: solid 1px #eee;
 
