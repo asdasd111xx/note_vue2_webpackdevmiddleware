@@ -10,7 +10,11 @@
       <div :class="$style['menu-wrap-right']">
         <p :class="$style['small']">未兑现红利总计</p>
         <p :class="$style['big']">
-          {{ info !== null ? formatThousandsCurrency(total.amount) : "0.00" }}
+          {{
+            info !== null
+              ? formatThousandsCurrency(Math.ceil(total.amount))
+              : "0.00"
+          }}
         </p>
       </div>
     </div>
