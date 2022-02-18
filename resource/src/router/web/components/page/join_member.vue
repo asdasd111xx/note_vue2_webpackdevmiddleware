@@ -1689,6 +1689,10 @@ export default {
           this.getCaptcha();
 
           this.registerSubmitFail = true;
+          //註冊失敗重置信箱驗證狀態
+          this.showMailCheckIcon = false;
+          this.mailNeedCode = true;
+          this.mailVerifyCode = "";
 
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
