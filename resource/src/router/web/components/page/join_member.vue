@@ -1829,14 +1829,14 @@ export default {
       }
     },
     getPhoneTTL() {
-      axios({
+      goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/register/phone/ttl"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone/TTL`
       }).then(res => {
-        if (res && res.data.result == "ok") {
+        if (res.status === "000") {
           this.phoneVerifybtnSubmit = true;
           this.phoneSubmitSuccess = true;
-          this.ttlCount = res.data.ret;
+          this.ttlCount = res.data;
           this.timer = setInterval(() => {
             if (this.ttlCount <= 1) {
               this.ttlCount = 0;
@@ -1849,20 +1849,19 @@ export default {
           }, 1500);
         } else {
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "ttl error";
+          this.phoneSubmitFailMsg = res.msg || "ttl error";
         }
       });
     },
     getMailTTL() {
-      axios({
+      goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/register/email/ttl"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email/TTL`
       }).then(res => {
-        if (res && res.data.result == "ok") {
+        if (res.status === "000") {
           this.mailVerifybtnSubmit = true;
           this.mailSubmitSuccess = true;
-          this.ttlCount = res.data.ret;
+          this.ttlCount = res.data;
           this.timer = setInterval(() => {
             if (this.ttlCount <= 1) {
               this.ttlCount = 0;
@@ -1875,20 +1874,12 @@ export default {
           }, 1500);
         } else {
           this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "ttl error";
+          this.mailSubmitFailMsg = res.msg || "ttl error";
         }
       });
     },
     getPhoneVerifyCode() {
       //寄出會員註冊驗證簡訊
-      // axios({
-      //   method: "post",
-      //   url: "/api/v1/c/player/register/phone",
-      //   data: {
-      //     phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
-      //   }
-      // })
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
@@ -1906,12 +1897,6 @@ export default {
           this.getPhoneTTL();
         }
       });
-      // .catch(error => {
-      //   this.phoneSubmitFail = true;
-      //   this.phoneSubmitFailMsg =
-      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-      //     "phone error2";
-      // });
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
@@ -1936,13 +1921,6 @@ export default {
     },
     getMailVerifyCode() {
       //寄出mail會員註冊驗證碼
-      // axios({
-      //   method: "post",
-      //   url: "/api/v1/c/player/register/email",
-      //   data: {
-      //     email: this.allValue.email
-      //   }
-      // })
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email`,
@@ -1960,12 +1938,6 @@ export default {
           this.getMailTTL();
         }
       });
-      // .catch(error => {
-      //   this.mailSubmitFail = true;
-      //   this.mailSubmitFailMsg =
-      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-      //     "mail error2";
-      // });
     },
     submitMailVerify() {
       //會員註冊mail驗證
@@ -1987,33 +1959,6 @@ export default {
           this.mailSubmitFailMsg = res.msg;
         }
       });
-      // axios({
-      //   method: "put",
-      //   url: "/api/v1/c/player/register/email/verify",
-      //   data: {
-      //     email: this.allValue.email,
-      //     keyring: this.mailVerifyCode
-      //   }
-      // })
-      //   .then(res => {
-      //     if (res && res.data.result !== "ok") {
-      //       this.mailSubmitFail = true;
-      //       this.mailSubmitFailMsg =
-      //         res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
-      //     } else {
-      //       // this.mailSubmitFailMsg = "验证OK";
-      //       this.mailVerifyModalShow = false;
-      //       this.showMailCheckIcon = true;
-      //       this.mailNeedCode = false;
-      //       this.register_email_keyring = res.data.ret.keyring;
-      //     }
-      //   })
-      //   .catch(error => {
-      //     this.mailSubmitFail = true;
-      //     this.mailSubmitFailMsg =
-      //       error.response.data.msg + "(" + error.response.data.code + ")" ||
-      //       "mailverify error2";
-      //   });
     }
   }
 };
