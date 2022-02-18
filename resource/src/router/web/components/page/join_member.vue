@@ -1689,10 +1689,6 @@ export default {
           this.getCaptcha();
 
           this.registerSubmitFail = true;
-          //註冊失敗重置信箱驗證狀態
-          this.showMailCheckIcon = false;
-          this.mailNeedCode = true;
-          this.mailVerifyCode = "";
 
           if (res.errors && Object.keys(res.errors)) {
             Object.keys(res.errors).forEach(item => {
@@ -1716,6 +1712,18 @@ export default {
               //msg: "无此介绍人"
               if (item === "introducer" && localStorage.getItem("x-code")) {
                 this.errMsg = res.errors[item];
+              }
+              //註冊失敗重置驗證狀態
+
+              if (item === "email") {
+                this.showMailCheckIcon = false;
+                this.mailNeedCode = true;
+                this.mailVerifyCode = "";
+              }
+              if (item === "phone") {
+                this.showPhoneCheckIcon = false;
+                this.NeedCode = true;
+                this.phoneVerifyCode = "";
               }
             });
           } else {
