@@ -78,7 +78,7 @@
                 ]"
                 @click="getMailVerifyCode"
               >
-                {{ mailVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
+                {{ mailVerifybtnSubmit ? mailTtlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="mailVerifyCode"
@@ -88,7 +88,7 @@
             </div>
             <p
               v-if="
-                mailSubmitSuccess && mailSubmitFail == false && ttlCount > 0
+                mailSubmitSuccess && mailSubmitFail == false && mailTtlCount > 0
               "
               style="color:#5E626D"
             >
@@ -153,7 +153,7 @@
                 ]"
                 @click="getPhoneVerifyCode"
               >
-                {{ phoneVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? mailTtlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="phoneVerifyCode"
@@ -163,7 +163,7 @@
             </div>
             <p
               v-if="
-                phoneSubmitSuccess && phoneSubmitFail == false && ttlCount > 0
+                phoneSubmitSuccess && phoneSubmitFail == false && mailTtlCount > 0
               "
               style="color:#5E626D"
             >
@@ -828,7 +828,8 @@ export default {
       countryCode: "",
       phoneVerifyModalShow: false,
       mailVerifyModalShow: false,
-      ttlCount: 10,
+      mailTtlCount: 10,
+      phoneTtlCount: 10,
       timer: null,
       verifyTips: "",
       lock: false,
@@ -1836,16 +1837,16 @@ export default {
         if (res.status === "000") {
           this.phoneVerifybtnSubmit = true;
           this.phoneSubmitSuccess = true;
-          this.ttlCount = res.data;
+          this.mailTtlCount = res.data;
           this.timer = setInterval(() => {
-            if (this.ttlCount <= 1) {
-              this.ttlCount = 0;
+            if (this.mailTtlCount <= 1) {
+              this.mailTtlCount = 0;
               clearInterval(this.timer);
               this.phoneVerifybtnSubmit = false;
               this.timer = null;
               return;
             }
-            this.ttlCount -= 1;
+            this.mailTtlCount -= 1;
           }, 1500);
         } else {
           this.phoneSubmitFail = true;
@@ -1861,16 +1862,16 @@ export default {
         if (res.status === "000") {
           this.mailVerifybtnSubmit = true;
           this.mailSubmitSuccess = true;
-          this.ttlCount = res.data;
+          this.mailTtlCount = res.data;
           this.timer = setInterval(() => {
-            if (this.ttlCount <= 1) {
-              this.ttlCount = 0;
+            if (this.mailTtlCount <= 1) {
+              this.mailTtlCount = 0;
               clearInterval(this.timer);
               this.mailVerifybtnSubmit = false;
               this.timer = null;
               return;
             }
-            this.ttlCount -= 1;
+            this.mailTtlCount -= 1;
           }, 1500);
         } else {
           this.mailSubmitFail = true;
