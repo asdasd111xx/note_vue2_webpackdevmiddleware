@@ -47,7 +47,7 @@
           <template v-if="virtualBankId === 37">
             <div>● 请使用扫描器扫描二维码</div>
             <div>● 成功绑定钱包后，此视窗自动关闭</div>
-            <div>
+            <div v-if="getWalletTipShowType('goubau_register')">
               ● 没有购宝钱包帐号?
               <span
                 :class="$style['url']"
@@ -89,6 +89,10 @@ export default {
     keyring: {
       type: String,
       default: ""
+    },
+    allWalletOpenLink: {
+      type: Array,
+      default: []
     },
     bindType: {
       type: String,
@@ -262,47 +266,42 @@ export default {
       }
     },
     handleClickLink(id) {
+      let newWindow;
       switch (id) {
         case 21:
-          if (["porn1", "sg1"].includes(this.themeTPL)) {
-            // "https://cgpayintroduction.azurewebsites.net/index.aspx"
-
-            lib_newWindowOpen(
-              this.getCustomerServiceUrl({
-                urlName: "cgp_introduce",
-                needToken: false
-              }).then(res => {
-                return res.uri;
-              })
-            );
-          }
-          if (["ey1"].includes(this.themeTPL)) {
-            // http://oinbox.io
-
-            lib_newWindowOpen(
-              this.getCustomerServiceUrl({
-                urlName: "cgp_apply",
-                needToken: false
-              }).then(res => {
-                return res.uri;
-              })
-            );
-          }
+          newWindow = window.open(
+            this.allWalletOpenLink.find(data => {
+              return data.position_key === "cgp_register";
+            }).url,
+            "_blank"
+          );
           break;
-
         case 37:
-          lib_newWindowOpen(
-            this.getCustomerServiceUrl({
-              urlName: "game_wallet",
-              needToken: false
-            }).then(res => {
-              return res.uri;
-            })
+          newWindow = window.open(
+            this.allWalletOpenLink.find(data => {
+              return data.position_key === "goubau_register";
+            }).url,
+            "_blank"
           );
           break;
 
         default:
           break;
+      }
+    },
+    getWalletTipShowType(value) {
+      let type;
+      if (value === "usdt") {
+        let bankList = this.allWalletOpenLink.filter(data => {
+          return data.wallet_name === "交易所" && data.client_display;
+        });
+        // console.log(bankList);
+        return bankList.length > 0;
+      } else {
+        type = this.allWalletOpenLink.find(data => {
+          return data.position_key === value;
+        });
+        return type ? type.client_display : false;
       }
     }
   },
