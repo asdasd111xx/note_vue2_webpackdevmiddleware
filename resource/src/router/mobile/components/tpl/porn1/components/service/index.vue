@@ -1,7 +1,7 @@
 <template>
   <mobile-container
     :class="[$style.container, $style[routerTPL]]"
-    :has-footer="!hasPrev && !fromlanding"
+    :has-footer="!hasPrev"
   >
     <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['service-header']">
@@ -10,7 +10,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding && !isStatic"
+          v-if="!isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -41,81 +41,43 @@
 
         <div :class="$style['line']" />
 
-        <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
-          <span>添加桌面客服，随时享受一对一在线解答</span>
-          <span :class="$style['add-bottom']" @click="handleAddClick"
-            >立即添加</span
-          >
-        </div>
+        <template v-if="isService">
+          <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
+            <span>添加桌面客服，随时享受一对一在线解答</span>
+            <span :class="$style['add-bottom']" @click="handleAddClick"
+              >立即添加</span
+            >
+          </div></template
+        >
       </div>
 
-      <div
-        :class="
-          routerTPL === 'porn1'
-            ? $style['info-card']
-            : $style[`info-card-${routerTPL}`]
+      <img
+        :class="$style[`info-card`]"
+        @click="clickService(0)"
+        :src="
+          serviceImg[0]
+            ? serviceImg[0]
+            : $getCdnPath(
+                `/static/image/${routerTPL}/service/service_service01.png`
+              )
         "
-        @click="clickService"
-      >
-        <div>
-          <div>
-            <img
-              :src="
-                $getCdnPath(`/static/image/common/service/ic_service01.png`)
-              "
-            />
-            &nbsp;
-            <span>在线客服1</span>
-          </div>
-          <div>Main Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
-
-        <div :class="$style['btn-next']">
-          <img
-            :src="
-              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-            "
-          />
-        </div>
-      </div>
-
-      <div
-        :class="
-          routerTPL === 'porn1'
-            ? $style['info-card2']
-            : $style[`info-card2-${routerTPL}`]
+      />
+      <img
+        :class="$style[`info-card`]"
+        @click="clickService(1)"
+        :src="
+          serviceImg[1]
+            ? serviceImg[1]
+            : $getCdnPath(
+                `/static/image/${routerTPL}/service/service_service02.png`
+              )
         "
-        @click="clickService"
-      >
-        <div>
-          <div>
-            <img
-              :src="
-                $getCdnPath(`/static/image/common/service/ic_service02.png`)
-              "
-            />
-            &nbsp;
-            <span>在线客服2</span>
-          </div>
-          <div>Reserve Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
-
-        <div :class="$style['btn-next']">
-          <img
-            :src="
-              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-            "
-          />
-        </div>
-      </div>
-
+      />
       <div
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
+        :style="hasPrev ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img
@@ -199,8 +161,6 @@ import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
-import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
-import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 
 export default {
   components: {
@@ -210,18 +170,19 @@ export default {
     isStatic: {
       type: Boolean,
       default: false
-    }
+    },
+    sourceSiteConfig: { type: Object, default: null }
   },
   data() {
     return {
-      show: false,
-      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      fromlanding: false
+      isService: true, //立即收藏開關,
+      serviceUrl: [],
+      serviceImg: []
     };
   },
   created() {
@@ -230,33 +191,11 @@ export default {
       this.hasPrev = this.$route.query.prev === "true";
     }
 
-    if (this.$route.query.fromlanding !== undefined) {
-      this.fromlanding = this.$route.query.fromlanding === "true";
-    }
-
-    if (this.isStatic) {
-      this.actionSetWebDomain().then(res => {
-        this.actionGetMobileInfo();
-        let configInfo = {};
-
-        if (res) {
-          configInfo =
-            siteConfigTest[`site_${res.domain}`] ||
-            siteConfigOfficial[`site_${res.domain}`];
-        }
-
-        this.sourceSiteConfig = configInfo;
-        this.template = `${res.site}Service`;
-        if (configInfo) {
-          this.show = true;
-        }
-      });
-    } else {
-      this.show = true;
-    }
+    this.getServiceSwitch();
+    this.getService();
   },
   mounted() {
-    if (this.loginStatus && !this.fromlanding) {
+    if (this.loginStatus) {
       this.actionSetUserdata(true).then(() => {
         this.getAvatarSrc();
       });
@@ -288,7 +227,7 @@ export default {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
     name() {
-      if (this.loginStatus && !this.fromlanding) {
+      if (this.loginStatus) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -310,6 +249,30 @@ export default {
       "actionSetWebInfo",
       "actionGetMobileInfo"
     ]),
+    getService() {
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.serviceUrl = res.data.map(v => v.url);
+          this.serviceImg = res.data.map(v => v.image);
+        }
+      });
+    },
+    getServiceSwitch() {
+      //立即收藏開關
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url`,
+        params: {
+          urlName: "storeUpNow",
+          needToken: false
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.isService = res.data.open_flag === 1;
+        }
+      });
+    },
     handleBack() {
       const { query } = this.$route;
       let redirect = query.redirect;
@@ -321,15 +284,10 @@ export default {
           break;
       }
     },
-    clickService() {
-      let url = this.mobileInfo.service.url;
-      if (this.fromlanding) {
-        window.location.href = url;
-      } else {
-        window.open(url);
-      }
 
-      // window.open(url);
+    clickService(idx) {
+      let url = this.serviceUrl[idx];
+      window.open(url);
       // 在線客服流量分析事件
       window.dataLayer.push({
         dep: 2,
@@ -338,9 +296,8 @@ export default {
         eventAction: "online_service_contact",
         eventLabel: "online_service_contact"
       });
-      // return;
-      // mobileLinkOpen({ linkType: "static", linkTo: `service${type}` });
     },
+
     clickPopTip() {
       this.isShowPop = true;
     },
@@ -348,7 +305,7 @@ export default {
       this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
-      if (!this.loginStatus || this.fromlanding) return;
+      if (!this.loginStatus) return;
 
       const imgSrcIndex = this.memInfo.user.image;
       if (this.memInfo.user && this.memInfo.user.custom) {
@@ -482,192 +439,10 @@ div.container {
   }
 }
 
-.info-card,
-.info-card2 {
-  color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
-  margin: 15px;
-  height: 100px;
-  border-radius: 10px;
-  position: relative;
-
-  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-
-  > div:first-child {
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    background-image: url("/static/image/porn1/service/service_card.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-
-    > div {
-      height: 25px;
-      line-height: 25px;
-    }
-
-    > div:first-child {
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
-    }
-
-    > div > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-}
-
-.info-card2 {
-  margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
-
-  > div:first-child {
-    background: url("/static/image/porn1/service/service_card.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-  }
-}
-//澳博客服
-.info-card-aobo1,
-.info-card2-aobo1 {
-  color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
-  margin: 15px;
-  height: 100px;
-  border-radius: 10px;
-  position: relative;
-
-  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-
-  > div:first-child {
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    background-image: url("/static/image/aobo1/service/service_card.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-
-    > div {
-      height: 25px;
-      line-height: 25px;
-    }
-
-    > div:first-child {
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
-    }
-
-    > div > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-}
-
-.info-card2-aobo1 {
-  margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
-
-  > div:first-child {
-    background: url("/static/image/aobo1/service/service_card.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-  }
-}
-
-//51客服
-.info-card-sp1,
-.info-card2-sp1 {
-  color: white;
-  background-image: -webkit-linear-gradient(196deg, #f8d5c0, #ce8a70);
-  background-image: linear-gradient(254deg, #f8d5c0, #ce8a70);
-  margin: 15px;
-  height: 100px;
-  border-radius: 10px;
-  position: relative;
-
-  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-
-  > div:first-child {
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    background-image: url("/static/image/sp1/service/service_card.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-
-    > div {
-      height: 25px;
-      line-height: 25px;
-    }
-
-    > div:first-child {
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
-    }
-
-    > div > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-}
-
-.info-card2-sp1 {
-  margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #8ab3e2, #b5d0ef);
-  background-image: linear-gradient(74deg, #8ab3e2, #b5d0ef);
-
-  > div:first-child {
-    background: url("/static/image/sp1/service/service_card.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-  }
-}
-
-.btn-next {
-  position: absolute;
-  height: 100%;
-  top: calc(50% - 7px);
-  right: 14px;
-
-  > img {
-    height: 14px;
-    width: 14px;
-  }
-}
-
-.card-bg {
-  height: 100%;
+.info-card {
+  display: block;
+  margin: 5px auto;
+  width: 100%;
 }
 
 .btn-prev {

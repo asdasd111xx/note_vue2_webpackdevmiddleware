@@ -61,61 +61,32 @@
         </div>
       </div>
     </div>
-
-    <div
-      :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
-      @click="clickService"
-    >
-      <div>
-        <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
-          />
-          &nbsp;
-          <span>在线客服1</span>
-        </div>
-        <div>Main Customer Support</div>
-        <div>7*24小时专线服务 贴心至上</div>
-      </div>
-
-      <div :class="$style['btn-next']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-          "
-        />
-      </div>
-    </div>
-
-    <div
-      :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
-      @click="clickService"
-    >
-      <div>
-        <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
-          />
-          &nbsp;
-          <span>在线客服2</span>
-        </div>
-        <div>Reserve Customer Support</div>
-        <div>7*24小时专线服务 贴心至上</div>
-      </div>
-
-      <div :class="$style['btn-next']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-          "
-        />
-      </div>
-    </div>
+    <img
+      :class="$style[`info-card`]"
+      @click="clickService(0)"
+      :src="
+        serviceImg[0]
+          ? serviceImg[0]
+          : $getCdnPath(
+              `/static/image/${themeTPL}/service/service_service01.png`
+            )
+      "
+    />
+    <img
+      :class="$style[`info-card`]"
+      @click="clickService(1)"
+      :src="
+        serviceImg[1]
+          ? serviceImg[1]
+          : $getCdnPath(
+              `/static/image/${themeTPL}/service/service_service02.png`
+            )
+      "
+    />
   </div>
 </template>
 
 <script>
-import mobileLinkOpen from "@/lib/mobile_link_open";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters, mapActions } from "vuex";
 
@@ -166,7 +137,9 @@ export default {
           imgSrc: "/static/image/sg1/webview/ic_service05.png"
         }
       ],
-      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png"
+      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png",
+      serviceUrl: [],
+      serviceImg: []
     };
   },
   computed: {
@@ -253,13 +226,32 @@ export default {
           link: hBundleID.value
         }
       };
+      this.getService();
     });
   },
   methods: {
     ...mapActions(["actionSetLCFSystemConfig"]),
-    mobileLinkOpen,
-    clickService() {
-      this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
+    clickService(idx) {
+      const url = this.serviceUrl[idx];
+      window.open(url);
+      // 在線客服流量分析事件
+      window.dataLayer.push({
+        dep: 2,
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
+      });
+    },
+    getService() {
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.serviceUrl = res.data.map(v => v.url);
+          this.serviceImg = res.data.map(v => v.image);
+        }
+      });
     },
     download(platform = null, bundleID = "") {
       goLangApiRequest({
