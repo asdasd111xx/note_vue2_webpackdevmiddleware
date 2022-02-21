@@ -249,7 +249,17 @@ export default {
             }
           }).then(res => {
             if (res && res.data && res.data.uri) {
-              this.src = res.data.uri;
+              let url = res.data.uri;
+
+              if (
+                !localStorage.getItem("live-iframe-launch-home") &&
+                this.pageType === "home"
+              ) {
+                url += "&isLaunch=true";
+                localStorage.setItem("live-iframe-launch-home", true);
+              }
+
+              this.src = url;
             }
             this.isLoading = false;
           });
