@@ -32,9 +32,10 @@
         <span> 彩金分分送 </span>
       </div> -->
       <div v-if="routerTPL === 'porn1'" :class="$style['porn-wrap']">
-        <span> 观影60秒计时奖励 </span>
+        <span> VIP尊享 每月爽领红包 </span>
         <span :class="$style['money-symbol']">¥</span>
-        <span> 彩金无上限 </span>
+        <span> 8-80,000 </span>
+        <span></span>
       </div>
     </div>
     <div :class="$style['btn-next']">
@@ -187,7 +188,7 @@ export default {
   }
 
   .porn-wrap {
-    color: #9ca3bf;
+    color: #bd9d7d;
     font-size: 12px;
     height: 50%;
 

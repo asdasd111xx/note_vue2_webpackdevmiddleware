@@ -62,6 +62,10 @@ export default {
     };
   },
   created() {
+    if (this.$route.path === "/custom/service") {
+      return;
+    }
+
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
@@ -236,14 +240,14 @@ export default {
           : `https://${this.landingurl}`
       );
 
-      // 代理網址推廣代碼優先推廣代碼
-      if (this.promotionHostnameCode || refCode) {
-        url.searchParams.append("code", this.promotionHostnameCode || refCode);
-      }
-
       if (channelid) {
         url.searchParams.append("channelid", channelid);
       }
+
+      // 代理網址推廣代碼 推廣代碼 this.promotionHostnameCode
+      // if (refCode) {
+      //   url.searchParams.append("code", refCode);
+      // }
 
       // 落地頁直接下載
       if (localStorage.getItem("x-action") === "download") {

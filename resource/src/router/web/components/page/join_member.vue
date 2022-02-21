@@ -78,7 +78,7 @@
                 ]"
                 @click="getMailVerifyCode"
               >
-                {{ mailVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
+                {{ mailVerifybtnSubmit ? mailTtlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="mailVerifyCode"
@@ -88,7 +88,7 @@
             </div>
             <p
               v-if="
-                mailSubmitSuccess && mailSubmitFail == false && ttlCount > 0
+                mailSubmitSuccess && mailSubmitFail == false && mailTtlCount > 0
               "
               style="color:#5E626D"
             >
@@ -153,7 +153,7 @@
                 ]"
                 @click="getPhoneVerifyCode"
               >
-                {{ phoneVerifybtnSubmit ? ttlCount + "s后重发" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? phoneTtlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="phoneVerifyCode"
@@ -163,7 +163,7 @@
             </div>
             <p
               v-if="
-                phoneSubmitSuccess && phoneSubmitFail == false && ttlCount > 0
+                phoneSubmitSuccess && phoneSubmitFail == false && phoneTtlCount > 0
               "
               style="color:#5E626D"
             >
@@ -691,14 +691,12 @@
 <script>
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import ajax from "@/lib/ajax";
 import axios from "axios";
 import appEvent from "@/lib/appEvent";
 import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
 import joinMemInfo from "@/config/joinMemInfo";
-import member from "@/api/member";
 import thirdyVerification from "@/components/thirdyVerification";
 import slideVerification from "@/components/slideVerification";
 import vSelect from "vue-select";
@@ -830,7 +828,8 @@ export default {
       countryCode: "",
       phoneVerifyModalShow: false,
       mailVerifyModalShow: false,
-      ttlCount: 10,
+      mailTtlCount: 10,
+      phoneTtlCount: 10,
       timer: null,
       verifyTips: "",
       lock: false,
@@ -978,7 +977,10 @@ export default {
   },
   created() {
     //取得成為主播網址
-    this.beHost();
+    if (this.siteConfig.ROUTER_TPL === "sg1") {
+      this.getBeHostUrl();
+    }
+
     this.actionSetUserdata().then(() => {
       this.getCaptcha();
       let joinConfig = [];
@@ -1030,138 +1032,86 @@ export default {
         }
       };
 
-      member
-        .joinConfig({
-          success: ({ result, ret }) => {
-            if (result !== "ok") {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
+      }).then(res => {
+        console.log(res);
+        if (res && res.status === "000") {
+          const data = res.data;
+
+          //是否顯示mail驗證按鈕
+          if (data.email.code_register == true) {
+            this.mailNeedCode = true;
+          } else {
+            this.mailNeedCode = false;
+          }
+
+          //是否顯示手機驗證按鈕
+          if (data.phone.code_register == true) {
+            this.NeedCode = true;
+          } else {
+            this.NeedCode = false;
+          }
+
+          Object.keys(this.joinMemInfo).forEach(key => {
+            if (
+              key === "captcha_text" &&
+              this.memInfo.config.register_captcha_type !== 1
+            ) {
+              this.joinMemInfo[key].show = false;
               return;
             }
-            //是否顯示mail驗證按鈕
-            if (ret.email.code_register == true) {
-              this.mailNeedCode = true;
-            } else {
-              this.mailNeedCode = false;
+
+            if (!data[key]) {
+              return;
             }
 
-            //是否顯示手機驗證按鈕
-            if (ret.phone.code_register == true) {
-              this.NeedCode = true;
-            } else {
-              this.NeedCode = false;
-            }
-            Object.keys(this.joinMemInfo).forEach(key => {
-              if (
-                key === "captcha_text" &&
-                this.memInfo.config.register_captcha_type !== 1
-              ) {
-                this.joinMemInfo[key].show = false;
-                return;
-              }
-
-              if (!ret[key]) {
-                return;
-              }
-
-              if (key === "introducer" && localStorage.getItem("x-code")) {
-                this.joinMemInfo[key] = {
-                  ...this.joinMemInfo[key],
-                  isRequired: true,
-                  show: false,
-                  hasVerify: ret[key].code_register
-                };
-                return;
-              }
-
-              if (key === "gender") {
-                let tip = this.placeholderKeyValue("gender", "tip");
-                if (tip) {
-                  this.selectData.gender.options[0].label = tip;
-                  this.selectData.gender.selected.label = tip;
-                }
-              }
-
-              if (key === "phone") {
-                this.selectData.phone.options = [
-                  ...this.selectData.phone.options,
-                  ...ret[key].country_codes.map(label => ({
-                    label,
-                    value: label
-                  }))
-                ];
-
-                [
-                  this.selectData.phone.selected
-                ] = this.selectData.phone.options;
-              }
-
+            if (
+              key === "introducer" &&
+              (localStorage.getItem("x-code") ||
+                localStorage.getItem("x-channelid"))
+            ) {
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
-                isRequired: ret[key].required,
-                show: !ret[key].none,
-                hasVerify: ret[key].code_register
+                isRequired: true,
+                show: false,
+                hasVerify: data[key].code_register
               };
-              joinConfig = [
-                ...joinConfig,
-                { key, content: { note1: "", note2: "" } }
-              ];
-            });
-          }
-        })
-        .then(() => {
-          const preview = this.$route.name === "preview" ? "View" : "";
-          const status = this.$cookie.get("newsite") ? "New" : "";
-
-          ajax({
-            method: "get",
-            url: `/tpl/${this.memInfo.user.domain}/playerRegister${preview}${status}.json`,
-            params: {
-              v: Date.parse(new Date())
-            },
-            success: response => {
-              response.data.forEach(item => {
-                Object.keys(item).forEach(key => {
-                  const content = JSON.parse(item[key][this.$i18n.locale]);
-
-                  joinReminder = {
-                    ...joinReminder,
-                    [key]: {
-                      note1: content.note1 || "",
-                      note2: content.note2 || ""
-                    }
-                  };
-
-                  // if (key === "gender" && joinReminder[key].note1) {
-                  //   this.selectData.gender.options[0].label =
-                  //     joinReminder[key].note1;
-                  //   this.selectData.gender.selected.label =
-                  //     joinReminder[key].note1;
-                  // }
-                  if (key === "gender") {
-                    let tip = this.placeholderKeyValue("gender", "tip");
-                    if (tip) {
-                      this.selectData.gender.options[0].label = tip;
-                      this.selectData.gender.selected.label = tip;
-                    } else if (joinReminder[key].note1) {
-                      this.selectData.gender.options[0].label =
-                        joinReminder[key].note1;
-                      this.selectData.gender.selected.label =
-                        joinReminder[key].note1;
-                    }
-                  }
-                });
-              });
-
-              joinConfig.map(item => {
-                const info = item;
-                info.content = {
-                  ...item.content,
-                  ...joinReminder[item.key]
-                };
-
-                return info;
-              });
+              return;
             }
-          }).then(() => {
+
+            if (key === "gender") {
+              let tip = this.placeholderKeyValue("gender", "tip");
+              if (tip) {
+                this.selectData.gender.options[0].label = tip;
+                this.selectData.gender.selected.label = tip;
+              }
+            }
+
+            if (key === "phone") {
+              this.selectData.phone.options = [
+                ...this.selectData.phone.options,
+                ...data[key].country_codes.map(label => ({
+                  label,
+                  value: label
+                }))
+              ];
+
+              [this.selectData.phone.selected] = this.selectData.phone.options;
+            }
+
+            this.joinMemInfo[key] = {
+              ...this.joinMemInfo[key],
+              isRequired: data[key].required,
+              show: !data[key].none,
+              hasVerify: data[key].code_register
+            };
+            joinConfig = [
+              ...joinConfig,
+              { key, content: { note1: "", note2: "" } }
+            ];
+
             this.registerData = [
               username,
               password,
@@ -1170,11 +1120,9 @@ export default {
               captchaText
             ];
           });
-        });
+        }
+      });
 
-      // if (!this.loginStatus) {
-      //   this.getGuestBalance();
-      // }
       this.getPlaceholderList();
     });
   },
@@ -1185,7 +1133,7 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
-    beHost() {
+    getBeHostUrl() {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
@@ -1484,6 +1432,14 @@ export default {
             } else {
               this.phoneVerifybtnActive = false;
             }
+
+            if (this.allValue[key].length < 10) {
+              this.allTip[key] = this.$text(
+                "S_FORM_PHONE_ERROR",
+                "请输入7-15码，仅允许输入数字"
+              );
+              return;
+            }
           }
 
           this.allTip[key] = "";
@@ -1621,6 +1577,13 @@ export default {
         return;
       }
 
+      const promotionCode =
+        !localStorage.getItem("x-channelid") ||
+        !Number(localStorage.getItem("x-channelid")) ||
+        localStorage.getItem("x-channelid") === "undefined"
+          ? localStorage.getItem("x-code") || ""
+          : this.allValue.code;
+
       const params = {
         ...this.allValue,
         captchaText: this.allValue.captcha_text,
@@ -1628,13 +1591,20 @@ export default {
         withdraw_password: this.allValue.withdraw_password.value.join(""),
         aid: this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
         speedy: false, //檢查是否唯一
-        code: localStorage.getItem("x-code") || "",
         phone_keyring: this.register_phone_keyring,
-        email_keyring: this.register_email_keyring
+        email_keyring: this.register_email_keyring,
+        host: window.location.host,
+        deviceId: localStorage.getItem("uuidAccount") || "",
+
+        code: promotionCode
       };
 
+      if (Number(localStorage.getItem("x-channelid"))) {
+        params["register_channel"] = Number(
+          localStorage.getItem("x-channelid")
+        );
+      }
       const self = this;
-      const platform = getCookie("platform");
 
       goLangApiRequest({
         method: "put",
@@ -1642,14 +1612,7 @@ export default {
         headers: {
           Vendor: this.memInfo.user.domain
         },
-        params: {
-          ...params,
-          introducer: localStorage.getItem("x-code") || "",
-          host: window.location.host,
-          deviceId: localStorage.getItem("uuidAccount") || "",
-          lang: "zh-cn",
-          register_channel: Number(localStorage.getItem("x-channelid")) || 0
-        }
+        params: params
       }).then(res => {
         setTimeout(() => {
           this.isLoading = false;
@@ -1754,8 +1717,23 @@ export default {
               if (item === "introducer" && localStorage.getItem("x-code")) {
                 this.errMsg = res.errors[item];
               }
+              //註冊失敗重置驗證狀態
+
+              if (item === "email") {
+                this.showMailCheckIcon = false;
+                this.mailNeedCode = true;
+                this.mailVerifyCode = "";
+              }
+              if (item === "phone") {
+                this.showPhoneCheckIcon = false;
+                this.NeedCode = true;
+                this.phoneVerifyCode = "";
+              }
             });
-            return;
+          } else {
+            if (res && res.msg) {
+              this.errMsg = res.msg;
+            }
           }
         } else {
           if (res && res.msg) {
@@ -1852,66 +1830,57 @@ export default {
       }
     },
     getPhoneTTL() {
-      axios({
+      goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/register/phone/ttl"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone/TTL`
       }).then(res => {
-        if (res && res.data.result == "ok") {
+        if (res.status === "000") {
           this.phoneVerifybtnSubmit = true;
           this.phoneSubmitSuccess = true;
-          this.ttlCount = res.data.ret;
+          this.phoneTtlCount = res.data;
           this.timer = setInterval(() => {
-            if (this.ttlCount <= 1) {
-              this.ttlCount = 0;
+            if (this.phoneTtlCount <= 1) {
+              this.phoneTtlCount = 0;
               clearInterval(this.timer);
               this.phoneVerifybtnSubmit = false;
               this.timer = null;
               return;
             }
-            this.ttlCount -= 1;
+            this.phoneTtlCount -= 1;
           }, 1500);
         } else {
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "ttl error";
+          this.phoneSubmitFailMsg = res.msg || "ttl error";
         }
       });
     },
     getMailTTL() {
-      axios({
+      goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/player/register/email/ttl"
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email/TTL`
       }).then(res => {
-        if (res && res.data.result == "ok") {
+        if (res.status === "000") {
           this.mailVerifybtnSubmit = true;
           this.mailSubmitSuccess = true;
-          this.ttlCount = res.data.ret;
+          this.mailTtlCount = res.data;
           this.timer = setInterval(() => {
-            if (this.ttlCount <= 1) {
-              this.ttlCount = 0;
+            if (this.mailTtlCount <= 1) {
+              this.mailTtlCount = 0;
               clearInterval(this.timer);
               this.mailVerifybtnSubmit = false;
               this.timer = null;
               return;
             }
-            this.ttlCount -= 1;
+            this.mailTtlCount -= 1;
           }, 1500);
         } else {
           this.mailSubmitFail = true;
-          this.mailSubmitFailMsg =
-            res.msg + "(" + res.code + ")" || "ttl error";
+          this.mailSubmitFailMsg = res.msg || "ttl error";
         }
       });
     },
     getPhoneVerifyCode() {
       //寄出會員註冊驗證簡訊
-      // axios({
-      //   method: "post",
-      //   url: "/api/v1/c/player/register/phone",
-      //   data: {
-      //     phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
-      //   }
-      // })
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
@@ -1929,12 +1898,6 @@ export default {
           this.getPhoneTTL();
         }
       });
-      // .catch(error => {
-      //   this.phoneSubmitFail = true;
-      //   this.phoneSubmitFailMsg =
-      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-      //     "phone error2";
-      // });
     },
     submitPhoneVerify() {
       //會員註冊手機簡訊驗證
@@ -1946,7 +1909,6 @@ export default {
           keyring: this.phoneVerifyCode
         }
       }).then(res => {
-        console.log(res);
         if (res.status === "000") {
           this.phoneVerifyModalShow = false;
           this.showPhoneCheckIcon = true;
@@ -1960,13 +1922,6 @@ export default {
     },
     getMailVerifyCode() {
       //寄出mail會員註冊驗證碼
-      // axios({
-      //   method: "post",
-      //   url: "/api/v1/c/player/register/email",
-      //   data: {
-      //     email: this.allValue.email
-      //   }
-      // })
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Email`,
@@ -1984,12 +1939,6 @@ export default {
           this.getMailTTL();
         }
       });
-      // .catch(error => {
-      //   this.mailSubmitFail = true;
-      //   this.mailSubmitFailMsg =
-      //     error.response.data.msg + "(" + error.response.data.code + ")" ||
-      //     "mail error2";
-      // });
     },
     submitMailVerify() {
       //會員註冊mail驗證
@@ -2011,33 +1960,6 @@ export default {
           this.mailSubmitFailMsg = res.msg;
         }
       });
-      // axios({
-      //   method: "put",
-      //   url: "/api/v1/c/player/register/email/verify",
-      //   data: {
-      //     email: this.allValue.email,
-      //     keyring: this.mailVerifyCode
-      //   }
-      // })
-      //   .then(res => {
-      //     if (res && res.data.result !== "ok") {
-      //       this.mailSubmitFail = true;
-      //       this.mailSubmitFailMsg =
-      //         res.data.msg + "(" + res.data.code + ")" || "mailverify error1";
-      //     } else {
-      //       // this.mailSubmitFailMsg = "验证OK";
-      //       this.mailVerifyModalShow = false;
-      //       this.showMailCheckIcon = true;
-      //       this.mailNeedCode = false;
-      //       this.register_email_keyring = res.data.ret.keyring;
-      //     }
-      //   })
-      //   .catch(error => {
-      //     this.mailSubmitFail = true;
-      //     this.mailSubmitFailMsg =
-      //       error.response.data.msg + "(" + error.response.data.code + ")" ||
-      //       "mailverify error2";
-      //   });
     }
   }
 };

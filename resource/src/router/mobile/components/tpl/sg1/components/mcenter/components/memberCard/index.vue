@@ -54,7 +54,7 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionGetExtRedirect"]),
     init() {
-      //取得個人信息資料 暱稱,地區,感情
+      //取得個人信息資料- 暱稱,地區,感情,生日
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/personal-info",
         method: "get"
