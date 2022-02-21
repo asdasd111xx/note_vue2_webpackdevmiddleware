@@ -642,13 +642,15 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       });
     }
     await dispatch("actionSetSiteConfig", configInfo);
+    await dispatch("actionSetSystemDomain");
+
     dispatch("actionSetNews");
     dispatch("actionGetMemInfoV3");
 
     if (["porn1", "sg1"].includes(state.webDomain.site)) {
       dispatch("actionSetRechargeConfig");
     }
-    dispatch("actionSetSystemDomain");
+
     dispatch("actionSetDomainConfigV2");
     dispatch("actionSetVersion");
 
