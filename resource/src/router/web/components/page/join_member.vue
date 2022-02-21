@@ -153,7 +153,7 @@
                 ]"
                 @click="getPhoneVerifyCode"
               >
-                {{ phoneVerifybtnSubmit ? mailTtlCount + "s后重发" : "获取验证码" }}
+                {{ phoneVerifybtnSubmit ? phoneTtlCount + "s后重发" : "获取验证码" }}
               </button>
               <input
                 v-model="phoneVerifyCode"
@@ -163,7 +163,7 @@
             </div>
             <p
               v-if="
-                phoneSubmitSuccess && phoneSubmitFail == false && mailTtlCount > 0
+                phoneSubmitSuccess && phoneSubmitFail == false && phoneTtlCount > 0
               "
               style="color:#5E626D"
             >
@@ -1837,16 +1837,16 @@ export default {
         if (res.status === "000") {
           this.phoneVerifybtnSubmit = true;
           this.phoneSubmitSuccess = true;
-          this.mailTtlCount = res.data;
+          this.phoneTtlCount = res.data;
           this.timer = setInterval(() => {
-            if (this.mailTtlCount <= 1) {
-              this.mailTtlCount = 0;
+            if (this.phoneTtlCount <= 1) {
+              this.phoneTtlCount = 0;
               clearInterval(this.timer);
               this.phoneVerifybtnSubmit = false;
               this.timer = null;
               return;
             }
-            this.mailTtlCount -= 1;
+            this.phoneTtlCount -= 1;
           }, 1500);
         } else {
           this.phoneSubmitFail = true;
