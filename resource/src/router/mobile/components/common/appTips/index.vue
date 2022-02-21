@@ -74,7 +74,8 @@ export default {
       }
     }).then(res => {
       if (res && res.data && res.data !== "") {
-        this.promotionHostnameCode = res.data;
+        this.promotionHostnameCode =
+          res.data && res.data.code ? res.data.code : "";
       }
     });
 
