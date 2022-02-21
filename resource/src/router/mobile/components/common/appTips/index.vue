@@ -245,9 +245,9 @@ export default {
       }
 
       // 代理網址推廣代碼 推廣代碼 this.promotionHostnameCode
-      // if (refCode) {
-      //   url.searchParams.append("code", refCode);
-      // }
+      if (refCode) {
+        url.searchParams.append("code", refCode);
+      }
 
       // 落地頁直接下載
       if (localStorage.getItem("x-action") === "download") {
