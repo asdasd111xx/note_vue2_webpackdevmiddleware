@@ -1159,7 +1159,7 @@ export default {
             showType: this.getWalletTipShowType("cgp_register"),
             dataObj: {
               cb: () => {
-                this.getWalletOpenLink("cgp_register");
+                this.getWalletOpenLink("cgp_register", true);
               },
               text: "立即申请"
             }
@@ -1254,7 +1254,8 @@ export default {
 
         let _data = {
           key: "goBao",
-          text: `请使用扫码绑定`
+          text: `请使用扫码绑定`,
+          showType: true
         };
 
         this.walletTipInfo = [
@@ -1266,7 +1267,7 @@ export default {
             showType: this.getWalletTipShowType("goubau_register"),
             dataObj: {
               cb: () => {
-                this.getWalletOpenLink("goubau_register");
+                this.getWalletOpenLink("goubau_register", true);
               },
               text: "立即申请"
             }
@@ -1284,13 +1285,9 @@ export default {
             showType: this.getWalletTipShowType("epoints_is_what"),
             dataObj: {
               cb: () => {
-                // this.getCustomerServiceUrl({
-                //   urlName: "what_is_Epoint",
-                //   needToken: false
-                // }).then(res => {
                 localStorage.setItem(
                   "iframe-third-url",
-                  this.getWalletOpenLink("epoints_is_what")
+                  this.getWalletOpenLink("epoints_is_what", false)
                 );
                 localStorage.setItem("iframe-third-url-title", "E点付是什么?");
                 this.$router.replace(
@@ -1300,14 +1297,63 @@ export default {
                       : "epoint"
                   }?func=false`
                 );
-                // });
               },
               text: "E点付是什么?"
             }
           },
           {
             key: "epoint",
-            text: `建议您E点付户名同网站真实姓名，加速出款审核时间`
+            text: ``,
+            hasCallback: true,
+            showType: this.getWalletTipShowType("epoints_deposit"),
+            dataObj: {
+              cb: () => {
+                localStorage.setItem(
+                  "iframe-third-url",
+                  this.getWalletOpenLink("epoints_deposit", false)
+                );
+                localStorage.setItem(
+                  "iframe-third-url-title",
+                  "如何使用E点付存款"
+                );
+                this.$router.replace(
+                  `/mobile/iframe/${
+                    this.$route.query.redirect === "deposit"
+                      ? "epoint2fromdeposit"
+                      : "epoint"
+                  }?func=false`
+                );
+              },
+              text: "如何使用E点付存款"
+            }
+          },
+          {
+            key: "epoint",
+            text: `没有E点付帐号?`,
+            hasCallback: true,
+            showType: this.getWalletTipShowType("epoints_register"),
+            dataObj: {
+              cb: () => {
+                localStorage.setItem(
+                  "iframe-third-url",
+                  this.getWalletOpenLink("epoints_register", false)
+                );
+                localStorage.setItem("iframe-third-url-title", "立即申请");
+                this.$router.replace(
+                  `/mobile/iframe/${
+                    this.$route.query.redirect === "deposit"
+                      ? "epoint2fromdeposit"
+                      : "epoint"
+                  }?func=false`
+                );
+              },
+              text: "立即申请"
+            }
+          },
+          {
+            key: "epoint",
+            text: `建议您E点付户名同网站真实姓名，加速出款审核时间`,
+            showType: true
           }
         ];
         return;
@@ -1324,7 +1370,7 @@ export default {
               cb: () => {
                 localStorage.setItem(
                   "iframe-third-url",
-                  this.getWalletOpenLink("epointsesb_is_what")
+                  this.getWalletOpenLink("epointsesb_is_what", false)
                 );
                 localStorage.setItem("iframe-third-url-title", "e点富是什么?");
                 this.$router.replace(
@@ -1339,7 +1385,7 @@ export default {
             }
           },
           {
-            key: "epoint",
+            key: "epointNew",
             text: ``,
             hasCallback: true,
             showType: this.getWalletTipShowType("epointsesb_deposit"),
@@ -1347,7 +1393,7 @@ export default {
               cb: () => {
                 localStorage.setItem(
                   "iframe-third-url",
-                  this.getWalletOpenLink("epointsesb_deposit")
+                  this.getWalletOpenLink("epointsesb_deposit", false)
                 );
                 localStorage.setItem(
                   "iframe-third-url-title",
@@ -1365,7 +1411,7 @@ export default {
             }
           },
           {
-            key: "epoint",
+            key: "epointNew",
             text: `没有e点富帐号?`,
             hasCallback: true,
             showType: this.getWalletTipShowType("epointsesb_register"),
@@ -1373,9 +1419,9 @@ export default {
               cb: () => {
                 localStorage.setItem(
                   "iframe-third-url",
-                  this.getWalletOpenLink("epointsesb_register")
+                  this.getWalletOpenLink("epointsesb_register", false)
                 );
-                localStorage.setItem("iframe-third-url-title", "");
+                localStorage.setItem("iframe-third-url-title", "立即申请");
                 this.$router.replace(
                   `/mobile/iframe/${
                     this.$route.query.redirect === "deposit"
@@ -1389,7 +1435,8 @@ export default {
           },
           {
             key: "epointNew",
-            text: `建议您e点富户名同网站真实姓名，加速出款审核时间`
+            text: `建议您e点富户名同网站真实姓名，加速出款审核时间`,
+            showType: true
           }
         ];
         return;
@@ -1405,7 +1452,7 @@ export default {
             showType: this.getWalletTipShowType("btse_register"),
             dataObj: {
               cb: () => {
-                this.getWalletOpenLink("btse_register");
+                this.getWalletOpenLink("btse_register", true);
               },
               text: "立即申请"
             }
@@ -1553,7 +1600,7 @@ export default {
           return;
         }
         this.allWalletOpenLink = response.data;
-        console.log(this.allWalletOpenLink);
+        // console.log(this.allWalletOpenLink);
       });
     },
     getWalletTipShowType(value) {
@@ -1571,15 +1618,21 @@ export default {
         return type ? type.client_display : false;
       }
     },
-    getWalletOpenLink(value) {
-      console.log(value);
-      let newWindow;
-      newWindow = window.open(
-        this.allWalletOpenLink.find(data => {
+    getWalletOpenLink(value, newOpen) {
+      // console.log(value);
+      if (newOpen) {
+        let newWindow;
+        newWindow = window.open(
+          this.allWalletOpenLink.find(data => {
+            return data.position_key === value;
+          }).url,
+          "_blank"
+        );
+      } else {
+        return this.allWalletOpenLink.find(data => {
           return data.position_key === value;
-        }).url,
-        "_blank"
-      );
+        }).url;
+      }
     }
   }
 };
