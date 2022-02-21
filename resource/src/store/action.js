@@ -2590,6 +2590,11 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
     }
   });
 };
+
+export const actionSetLiveFooterMask = ({ commit }, data) => {
+  commit(types.SET_LIVEFOOTERMASK, data);
+};
+
 //取得彩金活動開關
 export const actionSetActivity = ({ state, commit }) => {
   let temp = { totalAmount: 0 };

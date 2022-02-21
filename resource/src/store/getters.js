@@ -216,5 +216,6 @@ export default {
   getSystemConfig: state => target => state.systemConfig[target],
   getVersion: state => state.version,
   getLiveMaintain: state => state.liveMaintain,
-  getActivity: state => state.activity //取得彩金活動
+  getActivity: state => state.activity,
+  getLiveFooterMask: state => state.liveFooterMask
 };

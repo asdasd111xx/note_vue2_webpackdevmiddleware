@@ -462,5 +462,6 @@ export default {
   domainConfig: {},
   systemConfig: {},
   liveMaintain: null,
+  liveFooterMask: false,
   activity: {} //取得彩金活動
 };

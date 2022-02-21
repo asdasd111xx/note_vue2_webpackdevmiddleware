@@ -38,7 +38,11 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionSetAgentLink",
+      "actionSetLiveFooterMask"
+    ]),
     onLoadiframe() {
       window.addEventListener("message", this.iframeOnListener);
       window.scrollTo(0, 0);
@@ -276,6 +280,12 @@ export default {
               linkBack: "live"
             });
             return;
+
+          case "EVENT_MASK_FOOTER":
+            const toogle = data && data.data ? Boolean(data.data) : false;
+            this.actionSetLiveFooterMask(toogle);
+            return;
+
           default:
             return;
         }
