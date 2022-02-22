@@ -1208,7 +1208,7 @@ export default {
       // OSPay-USDT
       let ospayCurrencyUSDT =
         this.selectedCard.bank_id === 2029 &&
-        this.withdrawCurrency.method_id === 39;
+        this.withdrawCurrencyOSP.method_id === 39;
       //幣希錢包
       let useBcWallet = this.selectedCard.bank_id === 2025;
 
@@ -2017,7 +2017,7 @@ export default {
 
       if (
         this.selectedCard.bank_id === 2029 &&
-        this.withdrawCurrency.method_id === 39
+        this.withdrawCurrencyOSP.method_id === 39
       ) {
         _params.method_id = this.withdrawCurrencyOSP.method_id;
       }
