@@ -73,7 +73,7 @@ export default {
         hostname: window.location.hostname
       }
     }).then(res => {
-      if (res && res.data && res.data !== "") {
+      if (res && res.data) {
         this.promotionHostnameCode =
           res.data && res.data.code ? res.data.code : "";
       }
@@ -226,7 +226,7 @@ export default {
       this.isDownloading = true;
       this.setGAObj();
 
-      const refCode = localStorage.getItem("x-code");
+      const refCode = this.promotionHostnameCode || refCode;
       const channelid = localStorage.getItem("x-channelid");
 
       // 渠道移除 有帶推廣碼的需要登入
