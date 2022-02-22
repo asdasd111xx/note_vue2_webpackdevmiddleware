@@ -1067,7 +1067,7 @@ export default {
                 name: "videoList",
                 query: {
                   source:
-                    game.vendor === "YV" &&
+                    game.vendor === "YV" ||
                     this.siteConfig.ROUTER_TPL === "aobo1"
                       ? "av"
                       : "yabo"
