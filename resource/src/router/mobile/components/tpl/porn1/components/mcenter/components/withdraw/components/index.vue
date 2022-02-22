@@ -607,9 +607,8 @@
         </span>
         <span
           v-if="
-            (selectedCard.name != 'CGPay' ||
-              withdrawCurrency.name != 'CGP' ||
-              withdrawCurrencyOSP.name != 'OSP') &&
+            (selectedCard.name != 'CGPay' &&
+              selectedCard.name != 'OSPay' ) &&
               epointSelectType === 0
           "
           :class="$style['money-currency']"
