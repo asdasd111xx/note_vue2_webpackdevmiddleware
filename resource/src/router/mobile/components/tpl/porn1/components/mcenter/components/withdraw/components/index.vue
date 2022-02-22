@@ -619,6 +619,7 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
+        <span v-else-if="selectedCard.name === 'OSPay' && !isSelectedUSDT">OSP</span>
         <span v-else-if="epointSelectType === 1">E点</span>
         <span v-else-if="epointSelectType === 2">e点</span>
 
@@ -638,8 +639,9 @@
             ? formatThousandsCurrencyFix(cryptoMoney)
             : formatThousandsCurrency(cryptoMoney)
         }}</span>
-        <span v-if="selectedCard.name === 'CGPay'">USDT</span>
+        <span v-if="selectedCard.bank_id === 2009">{{withdrawCurrency.name}}</span>
         <span v-else-if="selectedCard.bank_id === 2025">USDT</span>
+        <span v-else-if="selectedCard.bank_id === 2029">{{withdrawCurrencyOSP.name}}</span>
       </div>
 
       <!-- 參考匯率 -->
