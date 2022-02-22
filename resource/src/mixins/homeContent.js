@@ -1062,15 +1062,19 @@ export default {
               return;
 
             case "AV":
+              this.$router.push({
+                name: "videoList",
+                query: {
+                  source: "av"
+                }
+              });
+              return;
+
             case "YV":
               this.$router.push({
                 name: "videoList",
                 query: {
-                  source:
-                    game.vendor === "YV" ||
-                    this.siteConfig.ROUTER_TPL === "aobo1"
-                      ? "av"
-                      : "yabo"
+                  source: "yabo"
                 }
               });
               return;
