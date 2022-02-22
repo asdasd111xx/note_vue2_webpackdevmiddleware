@@ -226,7 +226,8 @@ export default {
       this.isDownloading = true;
       this.setGAObj();
 
-      const refCode = this.promotionHostnameCode || refCode;
+      const refCode =
+        this.promotionHostnameCode || localStorage.getItem("x-code");
       const channelid = localStorage.getItem("x-channelid");
 
       // 渠道移除 有帶推廣碼的需要登入
