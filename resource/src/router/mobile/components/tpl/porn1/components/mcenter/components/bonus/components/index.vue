@@ -12,7 +12,7 @@
         <p :class="$style['big']">
           {{
             info !== null
-              ? formatThousandsCurrency(Math.ceil(total.amount))
+              ? formatThousandsCurrency(Math.ceil(total.amount).toFixed(2))
               : "0.00"
           }}
         </p>
