@@ -1169,7 +1169,7 @@ export default {
         return;
       }
 
-      // CGPay
+      // OSPay
       if (id === 50) {
         let _data = {
           key: "OSPay",
@@ -1204,7 +1204,7 @@ export default {
             showType: this.getWalletTipShowType("osp_register"),
             dataObj: {
               cb: () => {
-                this.getWalletOpenLink("osp_register");
+                this.getWalletOpenLink("osp_register", true);
               },
               text: "立即申请"
             }
