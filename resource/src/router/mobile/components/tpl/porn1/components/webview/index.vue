@@ -61,28 +61,83 @@
         </div>
       </div>
     </div>
-    <img
-      :class="$style[`info-card`]"
-      @click="clickService(0)"
-      :src="
-        serviceImg[0]
-          ? serviceImg[0]
-          : $getCdnPath(
-              `/static/image/${themeTPL}/service/service_service01.png`
-            )
-      "
-    />
-    <img
-      :class="$style[`info-card`]"
-      @click="clickService(1)"
-      :src="
-        serviceImg[1]
-          ? serviceImg[1]
-          : $getCdnPath(
-              `/static/image/${themeTPL}/service/service_service02.png`
-            )
-      "
-    />
+    <template v-if="themeTPL !== 'sg1'">
+      <img
+        :class="$style[`info-card`]"
+        @click="clickService(0)"
+        :src="
+          serviceImg[0]
+            ? serviceImg[0]
+            : $getCdnPath(
+                `/static/image/${themeTPL}/service/service_service01.png`
+              )
+        "/>
+      <img
+        :class="$style[`info-card`]"
+        @click="clickService(1)"
+        :src="
+          serviceImg[1]
+            ? serviceImg[1]
+            : $getCdnPath(
+                `/static/image/${themeTPL}/service/service_service02.png`
+              )
+        "
+    /></template>
+    <template v-else
+      ><div
+        :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
+        @click="clickService(3)"
+      >
+        <div>
+          <div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+              "
+            />
+            &nbsp;
+            <span>在线客服1</span>
+          </div>
+          <div>Main Customer Support</div>
+          <div>7*24小时专线服务 贴心至上</div>
+        </div>
+
+        <div :class="$style['btn-next']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
+            "
+          />
+        </div>
+      </div>
+
+      <div
+        :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
+        @click="clickService(3)"
+      >
+        <div>
+          <div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+              "
+            />
+            &nbsp;
+            <span>在线客服2</span>
+          </div>
+          <div>Reserve Customer Support</div>
+          <div>7*24小时专线服务 贴心至上</div>
+        </div>
+
+        <div :class="$style['btn-next']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
+            "
+          />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -146,7 +201,8 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      systemConfig: "getSystemConfig"
+      systemConfig: "getSystemConfig",
+      mobileInfo: "getMobileInfo"
     }),
     $style() {
       const style =
@@ -232,7 +288,13 @@ export default {
   methods: {
     ...mapActions(["actionSetLCFSystemConfig"]),
     clickService(idx) {
-      const url = this.serviceUrl[idx];
+      let url = "";
+      if (idx === 3) {
+        //sg1
+        url = this.mobileInfo.service.url;
+      } else {
+        url = this.serviceUrl[idx];
+      }
       window.open(url);
       // 在線客服流量分析事件
       window.dataLayer.push({
