@@ -368,6 +368,28 @@ steps:
   depends_on:
   - push2GCR-Prod
 
+- name: siguaGKE-demo(istio)
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/sigua/.istio-kube.yml
+    vars:
+      deployName: sigua-frontend-proxy-demo
+      env: demo
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
+      k8sNginxSSL: ""
+      nfs: 10.17.1.94
+      nodePool: env
+      nodePoolName: prod
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+  depends_on:
+  - push2GCR-Prod
+
 - name: siguaGKE-prod(istio)
   image: nytimes/drone-gke
   settings:

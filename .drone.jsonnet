@@ -324,9 +324,9 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
         //     ,"yaboxxx-web","10.17.1.94","yiyuan","istio","env","prod"),
 
         # istio-sigua
-        // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-        //     ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-        //     ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
             ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
