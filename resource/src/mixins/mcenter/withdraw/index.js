@@ -29,7 +29,7 @@ export default {
         // 預設為 CGP
         name: "OSP",
         alias: "OSP",
-        method_id: 15
+        method_id: 35
       },
       isAlertTip: false,
       isAjaxUse: false,
@@ -706,7 +706,7 @@ export default {
       let method_id = 0;
       if (this.selectedCard.bank_id === 2009) {
         method_id = this.withdrawCurrency.method_id;
-      }else if (this.selectedCard.bank_id === 2029) {
+      } else if (this.selectedCard.bank_id === 2029) {
         method_id = this.withdrawCurrencyOSP.method_id;
       } else {
         if (this.selectedCard.offer_data) {
