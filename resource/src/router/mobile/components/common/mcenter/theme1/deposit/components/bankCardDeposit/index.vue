@@ -727,7 +727,8 @@
                       >1 {{ selectBcCoin.currency }} ≈ {{ rate }} CNY (
                       <span
                         :class="[
-                          $style['time']
+                          $style['time'],
+                          $style[themeTPL]
                         ]"
                         >{{ timeUSDT() }}</span
                       >
