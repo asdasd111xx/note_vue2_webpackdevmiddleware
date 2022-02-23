@@ -51,28 +51,21 @@
         >
       </div>
 
-      <img
-        :class="$style[`info-card`]"
-        @click="clickService(0)"
-        :src="
-          serviceImg[0]
-            ? serviceImg[0]
-            : $getCdnPath(
-                `/static/image/${routerTPL}/service/service_service01.png`
-              )
-        "
-      />
-      <img
-        :class="$style[`info-card`]"
-        @click="clickService(1)"
-        :src="
-          serviceImg[1]
-            ? serviceImg[1]
-            : $getCdnPath(
-                `/static/image/${routerTPL}/service/service_service02.png`
-              )
-        "
-      />
+      <template v-for="(item, index) in service">
+        <img
+          :key="index"
+          :class="$style[`info-card`]"
+          @click="clickService(item)"
+          :src="
+            item.image
+              ? item.image
+              : $getCdnPath(
+                  `/static/image/${routerTPL}/service/service_service0${index +
+                    1}.png`
+                )
+          "
+        />
+      </template>
       <div
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
@@ -181,8 +174,7 @@ export default {
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
       isService: true, //立即收藏開關,
-      serviceUrl: [],
-      serviceImg: []
+      service: []
     };
   },
   created() {
@@ -254,8 +246,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.serviceUrl = res.data.map(v => v.url);
-          this.serviceImg = res.data.map(v => v.image);
+          this.service = res.data;
         }
       });
     },
@@ -285,8 +276,8 @@ export default {
       }
     },
 
-    clickService(idx) {
-      let url = this.serviceUrl[idx];
+    clickService(item) {
+      let url = item.url;
       window.open(url);
       // 在線客服流量分析事件
       window.dataLayer.push({

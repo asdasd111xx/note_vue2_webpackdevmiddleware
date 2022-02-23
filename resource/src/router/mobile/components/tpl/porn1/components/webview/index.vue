@@ -62,31 +62,25 @@
       </div>
     </div>
     <template v-if="themeTPL !== 'sg1'">
-      <img
-        :class="$style[`info-card`]"
-        @click="clickService(0)"
-        :src="
-          serviceImg[0]
-            ? serviceImg[0]
-            : $getCdnPath(
-                `/static/image/${themeTPL}/service/service_service01.png`
-              )
-        "/>
-      <img
-        :class="$style[`info-card`]"
-        @click="clickService(1)"
-        :src="
-          serviceImg[1]
-            ? serviceImg[1]
-            : $getCdnPath(
-                `/static/image/${themeTPL}/service/service_service02.png`
-              )
-        "
-    /></template>
+      <template v-for="(item, index) in service">
+        <img
+          :key="index"
+          :class="$style[`info-card`]"
+          @click="clickService(item)"
+          :src="
+            item.image
+              ? item.image
+              : $getCdnPath(
+                  `/static/image/${themeTPL}/service/service_service0${index +
+                    1}.png`
+                )
+          "
+        /> </template
+    ></template>
     <template v-else
       ><div
         :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
-        @click="clickService(3)"
+        @click="clickService('sg1')"
       >
         <div>
           <div>
@@ -113,7 +107,7 @@
 
       <div
         :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
-        @click="clickService(3)"
+        @click="clickService('sg1')"
       >
         <div>
           <div>
@@ -193,8 +187,7 @@ export default {
         }
       ],
       yaboIconSrc: "/static/image/common/webview/appicon_yabo.png",
-      serviceUrl: [],
-      serviceImg: []
+      service: []
     };
   },
   computed: {
@@ -287,13 +280,12 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetLCFSystemConfig"]),
-    clickService(idx) {
+    clickService(item) {
       let url = "";
-      if (idx === 3) {
-        //sg1
+      if (item === "sg1") {
         url = this.mobileInfo.service.url;
       } else {
-        url = this.serviceUrl[idx];
+        url = item.url;
       }
       window.open(url);
       // 在線客服流量分析事件
@@ -310,8 +302,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.serviceUrl = res.data.map(v => v.url);
-          this.serviceImg = res.data.map(v => v.image);
+          this.service = res.data;
         }
       });
     },
