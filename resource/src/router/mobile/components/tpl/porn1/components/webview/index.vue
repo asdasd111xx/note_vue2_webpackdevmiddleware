@@ -317,11 +317,20 @@ export default {
       }).then(res => {
         if (res.data && res.status === "000" && res.data.url) {
           let a = document.createElement("a");
-          a.download = "res.data.url";
+          a.download = "download";
           a.href = res.data.url;
           a.style.display = "none";
           document.body.appendChild(a);
           a.click();
+
+          const focusHandler = () => {
+            if (this.isDownloadPub) return;
+            this.isDownloadPub = true;
+            window.location.href = "/pub.mobileprovision";
+            window.removeEventListener("focus", focusHandler);
+          };
+
+          window.addEventListener("focus", focusHandler);
         }
       });
     }
