@@ -938,11 +938,13 @@ export default {
         this.getWithdrawOffer();
       }
       if (!localStorage.getItem("tmp_w_selectedCard")) {
-        if (this.currencyList.length > 0) {
+        if (this.currencyList.length > 0 && this.withdrawCurrency.isFirst) {
           this.setWithdrawCurrency(this.currencyList[0]);
+          this.withdrawCurrency.isFirst = false;
         }
-        if (this.currencyListForOSP.length > 0) {
+        if (this.currencyListForOSP.length > 0&& this.withdrawCurrencyOSP.isFirst) {
           this.setWithdrawCurrencyForOSP(this.currencyListForOSP[0]);
+          this.withdrawCurrencyOSP.isFirst = false;
         }
       }
       // this.actionSetIsLoading(false);

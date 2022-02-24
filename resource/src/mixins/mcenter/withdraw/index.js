@@ -21,12 +21,14 @@ export default {
       withdrawPwd: "",
       withdrawCurrency: {
         // 預設為 CGP
+        isFirst: true,
         name: "CGP",
         alias: "CGP",
         method_id: 15
       },
       withdrawCurrencyOSP: {
-        // 預設為 CGP
+        // 預設為 OSP
+        isFirst: true,
         name: "OSP",
         alias: "OSP",
         method_id: 35
