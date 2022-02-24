@@ -368,7 +368,8 @@ export default {
           this.exchangeRateList = [];
         }
 
-        if (data && data.error_text !== "") {
+        // Maintenance
+        if (data && data.error_text !== "" && data.error_code !== "116020025") {
           this.actionSetGlobalMessage({
             msg: data.error_text
           });

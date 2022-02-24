@@ -92,13 +92,6 @@ export default {
       }).then(data => {
         if (data && data.result) {
           this.paopaoUserInfo = data.result;
-        } else {
-          if (data && data.error_text) {
-            this.actionSetGlobalMessage({
-              msg: data.error_text,
-              code: data.error_code
-            });
-          }
         }
       });
     }
