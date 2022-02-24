@@ -348,7 +348,7 @@
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,3) ||購寶(22) || USDT(402) || E点付(34,41)-->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,38) ||購寶(22) || USDT(402) || E点付(34,41)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&

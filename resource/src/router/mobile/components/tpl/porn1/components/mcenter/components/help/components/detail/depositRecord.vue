@@ -48,6 +48,8 @@
                 () => {
                   item.method_id === 25 ||
                   item.method_id === 30 ||
+                  item.method_id === 37 ||
+                  item.method_id === 38 ||
                   item.method_id === 402 ||
                   item.method_id === 404
                     ? showDetailPop(item)
@@ -62,6 +64,8 @@
               v-if="
                 item.method_id === 25 ||
                   item.method_id === 30 ||
+                  item.method_id === 37 ||
+                  item.method_id === 38 ||
                   item.method_id === 402 ||
                   item.method_id === 404
               "
