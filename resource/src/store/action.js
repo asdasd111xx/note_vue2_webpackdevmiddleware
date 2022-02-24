@@ -1937,6 +1937,10 @@ export const actionVerificationFormData = (
       val = val.replace(/[^0-9]/g, "").substring(0, 6);
       break;
 
+    case "safeCode":
+      val = val.replace(/[^0-9]/g, "");
+      break;
+
     case "money":
       val = val.replace(/[^0-9]/g, "").substring(0, 13);
       // 輸入金額轉千分位
