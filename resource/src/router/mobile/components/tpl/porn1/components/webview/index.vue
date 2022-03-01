@@ -282,7 +282,8 @@ export default {
     ...mapActions(["actionSetLCFSystemConfig"]),
     clickService(item) {
       let url = "";
-      if (item === "sg1") {
+      if (idx === 3 || this.themeTPL !== "sp1") {
+        //sg1
         url = this.mobileInfo.service.url;
       } else {
         url = item.url;
