@@ -560,7 +560,7 @@
         </span>
       </div>
       <!-- 優惠提示 -->
-      <div v-if="offerInfo.offer_enable" :class="[$style['offer']]">
+      <div v-if="offerInfo && offerInfo.offer_enable" :class="[$style['offer']]">
         <span>
           {{
             `加送 ${formatThousandsCurrency(offerInfo.offer_percent)} %提现优惠`
