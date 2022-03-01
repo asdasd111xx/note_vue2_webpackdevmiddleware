@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <template v-if="isService">
+        <template v-if="isShowServiceDownload">
           <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
             <span>添加桌面客服，随时享受一对一在线解答</span>
             <span :class="$style['add-bottom']" @click="handleAddClick"
@@ -180,7 +180,7 @@ export default {
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      isService: true, //立即收藏開關,
+      isShowServiceDownload: true,
       serviceUrl: [],
       serviceImg: []
     };
@@ -269,7 +269,7 @@ export default {
         }
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.isService = res.data.open_flag === 1;
+          this.isShowServiceDownload = res.data.open_flag === 1;
         }
       });
     },
@@ -286,8 +286,13 @@ export default {
     },
 
     clickService(idx) {
-      let url = this.serviceUrl[idx];
-      window.open(url);
+      if (this.routerTPL === "sp1") {
+        let url = this.serviceUrl[idx];
+        window.open(url);
+      } else {
+        window.open(this.mobileInfo.service.url);
+      }
+
       // 在線客服流量分析事件
       window.dataLayer.push({
         dep: 2,
