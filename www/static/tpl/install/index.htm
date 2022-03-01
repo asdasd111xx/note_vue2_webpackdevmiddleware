@@ -552,8 +552,9 @@
     <script src="../src/jquery.min.js"></script>
 
     <script>
+        let isDownloadPub = false;
+
         $(document).ready(function () {
-            var appID = 96;
             // var apiUrl = 'https://vapi.vipwheresign.com/api';
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -606,7 +607,17 @@
                 url: `${domain}/xbb/App/Download`,
                 async: false,
                 success: function (res) {
-                    $('#url').attr('href', res.data.url);
+                    $('#url').click(() => {
+                        const focusHandler = () => {
+                            if (isDownloadPub) return;
+                            isDownloadPub = true;
+                            window.location.href = "/pub.mobileprovision";
+                            window.removeEventListener("focus", focusHandler);
+                        };
+
+                        window.addEventListener("focus", focusHandler);
+                        window.location.href = res.data.url;
+                    });
                 }
             });
 
