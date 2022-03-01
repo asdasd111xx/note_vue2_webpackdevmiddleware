@@ -41,7 +41,7 @@
 
         <div :class="$style['line']" />
 
-        <template v-if="isService">
+        <template v-if="isShowServiceDownload">
           <div v-if="isIos && !isStatic" :class="$style['add-wrap']">
             <span>添加桌面客服，随时享受一对一在线解答</span>
             <span :class="$style['add-bottom']" @click="handleAddClick"
@@ -51,11 +51,11 @@
         >
       </div>
 
-      <template v-for="(item, index) in service">
+      <template v-for="(item, index) in serviceList">
         <img
           :key="index"
           :class="$style[`info-card`]"
-          @click="clickService(item)"
+          @click="clickService(index)"
           :src="
             item.image
               ? item.image
@@ -173,8 +173,8 @@ export default {
       isShowPop: false,
       linkArray: [],
       avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      isService: true, //立即收藏開關,
-      service: []
+      isShowServiceDownload: true,
+      serviceList: []
     };
   },
   created() {
@@ -246,7 +246,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.service = res.data;
+          this.serviceList = res.data;
         }
       });
     },
@@ -260,7 +260,7 @@ export default {
         }
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.isService = res.data.open_flag === 1;
+          this.isShowServiceDownload = res.data.open_flag === 1;
         }
       });
     },
@@ -277,8 +277,12 @@ export default {
     },
 
     clickService(item) {
-      let url = item.url;
-      window.open(url);
+      if (this.routerTPL === "sp1") {
+        window.open(this.serviceList[item].url);
+      } else {
+        window.open(this.mobileInfo.service.url);
+      }
+
       // 在線客服流量分析事件
       window.dataLayer.push({
         dep: 2,
