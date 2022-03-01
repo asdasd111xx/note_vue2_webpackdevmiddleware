@@ -491,14 +491,14 @@ export default {
           placeholder: ""
         },
         CGPPwd: {
-          title: "CGP安全防护码",
+          title: "CGPay安全防护码",
           value: "",
-          placeholder: "请输入CGP安全防护码"
+          placeholder: "请输入CGPay安全防护码"
         },
         OSPPwd: {
-          title: "OSP安全防护码",
+          title: "OSPay安全防护码",
           value: "",
-          placeholder: "请输入OSP安全防护码"
+          placeholder: "请输入OSPay安全防护码"
         }
       },
 
