@@ -243,6 +243,13 @@ export default {
         background-image: url("/static/image/aobo1/default/default_logo.png");
       }
     }
+    &.sp1 {
+      background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+      &::after {
+        content: "";
+        background-image: url("/static/image/sp1/default/default_logo.png");
+      }
+    }
   }
 
   .pad-image {
