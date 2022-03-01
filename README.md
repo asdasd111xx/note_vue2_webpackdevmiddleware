@@ -158,7 +158,7 @@
     </tr>
 </table>
 
-#### 51 国际
+#### 51 体育
 
 <table border="1">
     <tr>
@@ -200,17 +200,19 @@
 
 ## 同時佈署方式
 
-- 佈署到 QA  站，觸發條件：下 tag，tag 名稱前綴需為 【 allQA- 】（大小寫需一致）
+- 佈署到 QA 站，觸發條件：下 tag，tag 名稱前綴需為 【 allQA- 】（大小寫需一致）
 
   - git tag -a "allQA-v1.3.57" -m "allQA-v1.3.57"
   - git push origin master --tags
 
-- 佈署到  Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 allBeta- 】（大小寫需一致）
+- 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 allBeta- 】（大小寫需一致）
 
   - git tag -a "allQA-v1.3.57" -m "allBeta-v1.3.57"
   - git push origin master --tags
-  - 
+  -
+
 - 佈署到 Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 allDemo- 】（大小寫需一致）
+
   - git tag -a "allDemo-v1.3.57" -m "allDemo-v1.3.57"
   - git push origin master --tags
 
@@ -220,8 +222,6 @@
 
 ## yabo 佈署方式
 
-
-
 - 佈署到 QA，觸發條件：下 tag，tag 名稱前綴需為 【 ybQA- 】（大小寫需一致）
   - git tag -a "ybQA-v1.3.57" -m "ybQA-v1.3.57"
   - git push origin master --tags
@@ -229,6 +229,7 @@
   - git tag -a "ybBeta-v1.3.57" -m "ybBeta-v1.3.57"
   - git push origin master --tags
 - 佈署到 Demo tag，tag 名稱前綴需為 【 ybDemo- 】（大小寫需一致）
+
   - git tag -a "ybDemo-v1.3.57" -m "ybDemo-v1.3.57"
   - git push origin master --tags
 
@@ -242,10 +243,12 @@
   - git tag -a "eyQA-v1.3.57" -m "eyQA-v1.3.57"
   - git push origin master --tags
 - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 eyBeta- 】（大小寫需一致）
+
   - git tag -a "eyBeta-v1.3.57" -m "eyBeta-v1.3.57"
   - git push origin master --tags
 
 - 佈署到 Demo 站，觸發條件：下 tag，tag 名稱前綴需為 【 eyDemo- 】（大小寫需一致）
+
   - git tag -a "eyDemo-v1.3.57" -m "eyDemo-v1.3.57"
   - git push origin master --tags
 
@@ -255,22 +258,24 @@
 
 ## sigua 佈署方式
 
+- 佈署到 QA 站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA- 】（大小寫需一致）
 
-- 佈署到 QA  站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA- 】（大小寫需一致）
   - git tag -a "sgQA-v1.3.57" -m "sgQA-v1.3.57"
   - git push origin master --tags
 
+- 佈署到 QA2 站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA2- 】（大小寫需一致）
 
-- 佈署到 QA2  站，觸發條件：下 tag，tag 名稱前綴需為 【 sgQA2- 】（大小寫需一致）
-  - 網址為： eyqa1-io.77rd7.com（12/1供Demo用)
+  - 網址為： eyqa1-io.77rd7.com（12/1 供 Demo 用)
   - git tag -a "sgQA2-v1.3.57" -m "sgQA2-v1.3.57"
   - git push origin master --tags
 
 - 佈署到 Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 sgBeta- 】（大小寫需一致）
+
   - git tag -a "sgBeta-v1.3.57" -m "sgBeta-v1.3.57"
   - git push origin master --tags
 
 - 佈署到 Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 sgDemo- 】（大小寫需一致）
+
   - git tag -a "sgDemo-v0.1" -m "sgProd-v0.0.1"
   - git push origin master --sgDemo
 
@@ -281,10 +286,12 @@
 ## aubo 佈署方式
 
 - 佈署到 QA & Beta 站，觸發條件：下 tag，tag 名稱前綴需為 【 abQA- 】（大小寫需一致）
+
   - git tag -a "abQA-v1.3.57" -m "abQA-v1.3.57"
   - git push origin master --tags
 
-- 佈署到  Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 abDemo- 】（大小寫需一致）
+- 佈署到 Demo, 觸發條件：下 tag，tag 名稱前綴需為 【 abDemo- 】（大小寫需一致）
+
   - git tag -a "abDemo-v0.1" -m "abDemo-v0.0.1"
   - git push origin master --tags
 
@@ -292,14 +299,15 @@
   - git tag -a "abProd-v0.1" -m "abProd-v0.0.1"
   - git push origin master --tags
 
-
 ## SP51 佈署方式
 
 - 佈署到 QA，觸發條件：下 tag，tag 名稱前綴需為 【 spQA- 】（大小寫需一致）
+
   - git tag -a "spQA-v1.3.57" -m "spQA-v1.3.57"
   - git push origin master --tags
 
 - 佈署到 Demo , 觸發條件：下 tag，tag 名稱前綴需為 【 spDemo- 】（大小寫需一致）
+
   - git tag -a "spDemo-v0.1" -m "spDemo-v0.0.1"
   - git push origin master --tags
 
