@@ -289,7 +289,7 @@ export default {
     ...mapActions(["actionSetLCFSystemConfig"]),
     clickService(idx) {
       let url = "";
-      if (idx === 3) {
+      if (idx === 3 || this.themeTPL !== "sp1") {
         //sg1
         url = this.mobileInfo.service.url;
       } else {
