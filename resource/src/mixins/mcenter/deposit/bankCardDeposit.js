@@ -70,13 +70,13 @@ export default {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
           method: 1,
           password: "",
-          placeholder: "请输入CGP安全防护码"
+          placeholder: "请输入CGPay安全防护码"
         },
         OSPay: {
           balance: "", // 值由 api 回來之後再更新，配合 Watch
           method: 1,
           password: "",
-          placeholder: "请输入OSP安全防护码"
+          placeholder: "请输入OSPay安全防护码"
         }
       },
       // 傳遞給 depositInfo (訂單限時)

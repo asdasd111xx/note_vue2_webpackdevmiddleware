@@ -760,7 +760,7 @@
                   ]"
                   @click="() => (walletData['CGPay'].method = 0)"
                 >
-                  CGP安全防护码
+                  CGPay安全防护码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
@@ -847,7 +847,7 @@
                   ]"
                   @click="() => (walletData['OSPay'].method = 0)"
                 >
-                  OSP安全防护码
+                  OSPay安全防护码
                   <img
                     v-if="walletData['OSPay'].method === 0"
                     :class="$style['pay-active']"
