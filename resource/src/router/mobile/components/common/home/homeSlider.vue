@@ -248,6 +248,7 @@ export default {
       &::after {
         content: "";
         background-image: url("/static/image/sp1/default/default_logo.png");
+        background-size: cover;
       }
     }
   }
