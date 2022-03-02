@@ -414,10 +414,10 @@
               <div :class="$style['CGPay-money']">
                 {{isSelectBindWallet(36)? "OS" : "CG"}}P
                 <span v-if="isSelectBindWallet(36)">
-                  {{ walletData["OSPay"].balance !== undefined ? formatThousandsCurrency(walletData["OSPay"].balance.toFixed(2)) : "--" }}
+                  {{ walletData["OSPay"].balance !== undefined ? formatThousandsCurrency(walletData["OSPay"].balance) : "--" }}
                 </span>
                 <span v-else>
-                  {{ walletData["CGPay"].balance !== undefined  ? formatThousandsCurrency(walletData["CGPay"].balance.toFixed(2)) : "--"  }}
+                  {{ walletData["CGPay"].balance !== undefined  ? formatThousandsCurrency(walletData["CGPay"].balance) : "--"  }}
                 </span>
               </div>
             </div>
