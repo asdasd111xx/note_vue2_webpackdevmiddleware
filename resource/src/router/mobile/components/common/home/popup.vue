@@ -378,6 +378,7 @@ export default {
   width: 100%;
   position: relative;
   overflow: scroll;
+  word-break: break-all;
 
   img {
     width: 100%;
