@@ -9,7 +9,6 @@
       ref="video-player"
       playsinline="playsinline"
       :webkit-playsinline="playsinline"
-      type="application/x-mpegURL"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
