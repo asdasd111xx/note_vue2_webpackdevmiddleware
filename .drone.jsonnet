@@ -41,6 +41,7 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",nodePool="",nodePoolName="",
 env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="",shortProduct="yb",nodePool2="",nodePoolName2="")={
     kind: "pipeline",
+    type: "kubernetes",
     name: "Build"+product+"Pipeline("+origin+ name +")",
     steps:[
         {

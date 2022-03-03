@@ -610,6 +610,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: Buildsp51Pipeline(istioProd)
 
 platform:
@@ -787,6 +788,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: BuildauboPipeline(istioProd)
 
 platform:
@@ -1062,6 +1064,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: BuildsiguaPipeline(istioProd)
 
 platform:
@@ -1288,6 +1291,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: BuildyaboPipeline(istioProd)
 
 platform:
