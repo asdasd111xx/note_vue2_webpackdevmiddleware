@@ -2171,7 +2171,9 @@ export default {
 
       this.resetTimerStatus();
       this.cryptoMoney = "--";
-      this.closePopup();
+      if(!this.showPopStatus.isShow && this.showPopStatus.type !== "check"){
+         this.closePopup();
+      }
     },
     setWithdrawCurrencyForOSP(item) {
       this.withdrawCurrencyOSP.method_id = item.method_id;
@@ -2187,7 +2189,9 @@ export default {
 
       this.resetTimerStatus();
       this.cryptoMoney = "--";
-      this.closePopup();
+      if(!this.showPopStatus.isShow && this.showPopStatus.type !== "check"){
+         this.closePopup();
+      }
     },
     setEpointBank(item) {
       if(this.epointSelectType === 1){
