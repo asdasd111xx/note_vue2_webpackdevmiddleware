@@ -259,6 +259,10 @@ export default {
                 localStorage.setItem("live-iframe-launch-home", true);
               }
 
+              if (!this.loginStatus) {
+                url += `&gcid=${localStorage.getItem("guestCid") || ""}`;
+              }
+
               this.src = url;
             }
             this.isLoading = false;
