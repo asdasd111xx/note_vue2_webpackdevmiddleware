@@ -19,7 +19,7 @@
       </div>
 
       <div :class="$style['button-block']">
-        <span @click="$emit('close')">知道了</span>
+        <span :class="$style[themeTPL]" @click="$emit('close')">知道了</span>
       </div>
     </div>
   </div>
@@ -32,43 +32,6 @@ export default {
   data() {
     return {
       exchangeList: []
-      // list: [
-      //   {
-      //     apiParams: "huobi",
-      //     alias: "Huobi Global",
-      //     name: "火币",
-      //     iconSrc: this.$getCdnPath(
-      //       `/static/image/common/mcenter/deposit/ic_huobi.png`
-      //     ),
-      //     showType: this.getWalletTipShowType("exchange_huobi"),
-      //     onClick: () => {
-      //       this.getWalletOpenLink("exchange_huobi");
-      //     }
-      //   },
-      //   {
-      //     apiParams: "huobi",
-      //     alias: "Huobi Global",
-      //     name: "币安",
-      //     iconSrc: this.$getCdnPath(
-      //       `/static/image/common/mcenter/deposit/ic_huobi.png`
-      //     ),
-      //     showType: this.getWalletTipShowType("exchange_binance"),
-      //     onClick: () => {
-      //       this.getWalletOpenLink("exchange_binance");
-      //     }
-      //   },
-      //   {
-      //     alias: "58COIN",
-      //     // name: "58COIN",
-      //     iconSrc: this.$getCdnPath(
-      //       `/static/image/common/mcenter/deposit/ic_58coin.png`
-      //     ),
-      //     showType: this.getWalletTipShowType("exchange_58coin"),
-      //     onClick: () => {
-      //       this.getWalletOpenLink("exchange_58coin");
-      //     }
-      //   }
-      // ]
     };
   },
   props: {
@@ -83,7 +46,10 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    })
+    }),
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    }
   },
   methods: {
     getWalletAllLink() {
@@ -203,8 +169,11 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-    // color: var(--popup_text_color1);
     color: #6aaaf5;
+
+    &.sg1 {
+      color: #000000;
+    }
   }
 }
 </style>
