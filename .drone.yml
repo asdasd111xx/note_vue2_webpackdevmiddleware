@@ -1,5 +1,6 @@
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(QA)
 
 platform:
@@ -116,6 +117,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(Beta)
 
 platform:
@@ -188,6 +190,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(Demo)
 
 platform:
@@ -304,6 +307,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(Prod)
 
 platform:
@@ -508,6 +512,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sp51-frontend-qaPipeline(istioQA)
 
 platform:
@@ -557,6 +562,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sp51-frontend-demoPipeline(istioDemo)
 
 platform:
@@ -686,6 +692,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: aubo-frontend-qaPipeline(istioQA)
 
 platform:
@@ -735,6 +742,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: aubo-frontend-demoPipeline(istioDemo)
 
 platform:
@@ -864,6 +872,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-qaPipeline(istioQA)
 
 platform:
@@ -913,6 +922,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
@@ -962,6 +972,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-qa2Pipeline(istioQA)
 
 platform:
@@ -1011,6 +1022,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-demoPipeline(istioDemo)
 
 platform:
@@ -1140,6 +1152,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: yabo-frontend-proxy-qaPipeline(istioQA)
 
 platform:
@@ -1189,6 +1202,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: yabo-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
@@ -1238,6 +1252,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: yabo-frontend-proxy-demoPipeline(istioDemo)
 
 platform:

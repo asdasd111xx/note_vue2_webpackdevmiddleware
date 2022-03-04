@@ -127,6 +127,7 @@ local Pipeline(name="QA",cluster="xbb-common",zone="asia-east1-a",
 env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",shortProduct="yb",nodePool="",nodePoolName="") = {
     kind: "pipeline",
+    type: "kubernetes",
     name: deployName+"Pipeline("+origin+ name +")",
     steps:[
         {
@@ -221,6 +222,7 @@ local onlyGKE(name="QA",cluster="xbb-common",zone="asia-east1-a"
 
 local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     kind: "pipeline",
+    type: "kubernetes",
     name: "AllPipeline("+ name +")",
     steps:[
         {
