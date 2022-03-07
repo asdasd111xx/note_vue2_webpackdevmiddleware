@@ -190,6 +190,8 @@ export default {
   created() {},
   mounted() {
     this.initPage();
+    this.actionSetUserBalance();
+    this.actionMemInit();
 
     this.updateBalanceTimer = setInterval(() => {
       if (!this.loginStatus) {
@@ -204,7 +206,8 @@ export default {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetExtRedirect",
-      "actionSetUserBalance"
+      "actionSectUserBalance",
+      "actionMemInit"
     ]),
     initPage() {
       let clientUri = "";
