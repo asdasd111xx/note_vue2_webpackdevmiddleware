@@ -206,7 +206,7 @@ export default {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetExtRedirect",
-      "actionSectUserBalance",
+      "actionSetUserBalance",
       "actionMemInit"
     ]),
     initPage() {
