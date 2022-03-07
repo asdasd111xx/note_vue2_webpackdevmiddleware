@@ -36,8 +36,7 @@ export default {
       );
       return {
         prev: true,
-        // title: target ? target.alias : "",
-        title: localStorage.getItem("iframe-third-url-title"),
+        title: this.$route.query.title || target.alias,
         hasSearchBtn: true,
         onClick: () => {
           if (localStorage.getItem("_iframe-back-route")) {

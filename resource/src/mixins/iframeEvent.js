@@ -38,7 +38,11 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetAgentLink"]),
+    ...mapActions([
+      "actionSetGlobalMessage",
+      "actionSetAgentLink",
+      "actionSetLiveFooterMask"
+    ]),
     onLoadiframe() {
       window.addEventListener("message", this.iframeOnListener);
       window.scrollTo(0, 0);
@@ -172,6 +176,12 @@ export default {
             );
             return;
 
+          case "EVENT_BIND_BANK":
+            this.$router.push(
+              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+            );
+            return;
+
           case "EVENT_SWITCH_CUSTOMER_SERVICE":
             this.$router.push(`/mobile/mcenter/service`);
             return;
@@ -190,8 +200,13 @@ export default {
             return;
 
           case "EVENT_ADD_VALUE":
-            this.$router.push(`/mobile/mcenter/deposit`);
+            this.$router.push(`/mobile/mcenter/deposit?redirect=live`);
             return;
+
+          case "EVENT_WITHDRAWAL_INFORMATION":
+            this.$router.push(`/mobile/withdrawAccount?redirect=live`);
+            return;
+
           case "EVENT_REDIRECT_PAGE":
             let _data = data.data.toUpperCase();
 
@@ -276,6 +291,12 @@ export default {
               linkBack: "live"
             });
             return;
+
+          case "EVENT_MASK_FOOTER":
+            const toogle = data && data.data ? Boolean(data.data) : false;
+            this.actionSetLiveFooterMask(toogle);
+            return;
+
           default:
             return;
         }

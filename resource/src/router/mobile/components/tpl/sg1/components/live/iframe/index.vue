@@ -190,6 +190,8 @@ export default {
   created() {},
   mounted() {
     this.initPage();
+    this.actionSetUserBalance();
+    this.actionMemInit();
 
     this.updateBalanceTimer = setInterval(() => {
       if (!this.loginStatus) {
@@ -204,7 +206,8 @@ export default {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionGetExtRedirect",
-      "actionSetUserBalance"
+      "actionSetUserBalance",
+      "actionMemInit"
     ]),
     initPage() {
       let clientUri = "";
@@ -249,7 +252,21 @@ export default {
             }
           }).then(res => {
             if (res && res.data && res.data.uri) {
-              this.src = res.data.uri;
+              let url = res.data.uri;
+
+              if (
+                !localStorage.getItem("live-iframe-launch-home") &&
+                this.pageType === "home"
+              ) {
+                url += "&isLaunch=true";
+                localStorage.setItem("live-iframe-launch-home", true);
+              }
+
+              if (!this.loginStatus) {
+                url += `&gcid=${localStorage.getItem("guestCid") || ""}`;
+              }
+
+              this.src = url;
             }
             this.isLoading = false;
           });

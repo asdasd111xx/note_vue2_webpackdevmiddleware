@@ -33,7 +33,7 @@ const domain = "https://yb01.66boxing.com/";
 // Prod 92
 // const domain = "https://7959vip001.com/";
 
-// 51国际 QA 9999905
+// 51体育 QA 9999905
 // const domain = "https://spqa1.66boxing.com/";
 // Beta
 // const domain = "";

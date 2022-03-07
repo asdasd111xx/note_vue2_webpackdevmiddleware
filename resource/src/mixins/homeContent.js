@@ -1062,15 +1062,19 @@ export default {
               return;
 
             case "AV":
+              this.$router.push({
+                name: "videoList",
+                query: {
+                  source: "av"
+                }
+              });
+              return;
+
             case "YV":
               this.$router.push({
                 name: "videoList",
                 query: {
-                  source:
-                    game.vendor === "YV" &&
-                    this.siteConfig.ROUTER_TPL === "aobo1"
-                      ? "av"
-                      : "yabo"
+                  source: "yabo"
                 }
               });
               return;
@@ -1145,8 +1149,8 @@ export default {
           if ([3, 5, 6].includes(game.kind)) {
             const trans = { 3: "casino", 5: "card", 6: "mahjong" };
             this.$router.push(
-              `/mobile/${trans[game.kind]}/${game.vendor}${
-                hasTrial ? "?label=trial" : ""
+              `/mobile/${trans[game.kind]}/${game.vendor}?title=${game.name}${
+                hasTrial ? "&label=trial" : ""
               }`
             );
             return;

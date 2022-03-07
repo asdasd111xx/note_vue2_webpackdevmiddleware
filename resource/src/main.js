@@ -72,6 +72,7 @@ window.RESET_LOCAL_SETTING = reload => {
   localStorage.removeItem("trial-game-list");
   // 泡泡直播轉導
   localStorage.removeItem("live-iframe-event-from");
+
   if (reload) {
     window.location.reload();
   }

@@ -40,7 +40,7 @@ export default {
       ),
     installSg1: () =>
       import(
-        /* webpackChunkName: 'installSg1' */ "../../tpl/sg1/components/install"
+        /* webpackChunkName: 'installSp1' */ "../../tpl/porn1/components/install"
       ),
     resetPwdSg1: () =>
       import(

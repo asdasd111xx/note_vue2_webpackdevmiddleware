@@ -1,9 +1,6 @@
 <template>
-  <mobile-container
-    :has-footer="!hasPrev && !fromlanding"
-    :class="$style['container']"
-  >
-    <div v-if="show" slot="content" :class="$style['content-wrap']">
+  <mobile-container :has-footer="!hasPrev" :class="$style['container']">
+    <div slot="content" :class="$style['content-wrap']">
       <div :class="$style['top-bg']" />
       <div :class="$style['service-header']">
         <div v-if="hasPrev" :class="$style['btn-prev']" @click="handleBack()">
@@ -11,7 +8,7 @@
         </div>
         <div :class="$style.title">我的客服</div>
         <div
-          v-if="!fromlanding && !isStatic"
+          v-if="!isStatic"
           :class="$style.feedback"
           @click="
             $router.push(
@@ -101,7 +98,7 @@
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
         @click="clickPopTip"
-        :style="hasPrev || fromlanding ? { bottom: '15px' } : {}"
+        :style="hasPrev ? { bottom: '15px' } : {}"
       >
         <div :class="$style['tip-img']">
           <img :src="$getCdnPath(`/static/image/sg1/common/appicon_pao.png`)" />
@@ -176,9 +173,6 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import axios from "axios";
-import * as siteConfigOfficial from "@/config/siteConfig/siteConfigOfficial";
-import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
 
 export default {
   components: {
@@ -188,18 +182,16 @@ export default {
     isStatic: {
       type: Boolean,
       default: false
-    }
+    },
+    sourceSiteConfig: { type: Object, default: null }
   },
   data() {
     return {
-      show: false,
-      sourceSiteConfig: null,
       hasPrev: true,
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/common/default/avatar_nologin.png`,
-      fromlanding: false
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`
     };
   },
   created() {
@@ -207,34 +199,9 @@ export default {
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
     }
-
-    if (this.$route.query.fromlanding !== undefined) {
-      this.fromlanding = this.$route.query.fromlanding === "true";
-    }
-
-    if (this.isStatic) {
-      this.actionSetWebDomain().then(res => {
-        this.actionGetMobileInfo();
-        let configInfo = {};
-
-        if (res) {
-          configInfo =
-            siteConfigTest[`site_${res.domain}`] ||
-            siteConfigOfficial[`site_${res.domain}`];
-        }
-
-        this.sourceSiteConfig = configInfo;
-        this.template = `${res.site}Service`;
-        if (configInfo) {
-          this.show = true;
-        }
-      });
-    } else {
-      this.show = true;
-    }
   },
   mounted() {
-    if (this.loginStatus && !this.fromlanding) {
+    if (this.loginStatus) {
       this.actionSetUserdata(true).then(() => {
         this.getAvatarSrc();
       });
@@ -266,7 +233,7 @@ export default {
       return !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     },
     name() {
-      if (this.loginStatus && !this.fromlanding) {
+      if (this.loginStatus) {
         return this.memInfo.user.show_alias
           ? this.memInfo.user.alias
           : this.memInfo.user.username;
@@ -296,11 +263,7 @@ export default {
     },
     clickService() {
       let url = this.mobileInfo.service.url;
-      if (this.fromlanding) {
-        window.location.href = url;
-      } else {
-        window.open(url);
-      }
+      window.open(url);
     },
     clickPopTip() {
       this.isShowPop = true;
@@ -309,7 +272,7 @@ export default {
       this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
-      if (!this.loginStatus || this.fromlanding) return;
+      if (!this.loginStatus) return;
 
       // 是否自訂上傳頭像
       this.actionGetExtRedirect({

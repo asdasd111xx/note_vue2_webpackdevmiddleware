@@ -88,14 +88,14 @@ export const site_9999894 = {
 };
 
 /**
- * 51国际 測試站
+ * 51体育 測試站
  */
 export const site_9999905 = {
   ...preset,
   ROUTER_TPL: "sp1",
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
-  SITE_NAME: "51国际",
+  SITE_NAME: "51体育",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",

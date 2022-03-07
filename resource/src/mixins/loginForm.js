@@ -262,7 +262,6 @@ export default {
         }
       }).then(res => {
         this.isLoading = false;
-
         // 重置驗證碼
         if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
         this.captcha = "";
@@ -302,6 +301,19 @@ export default {
           ) {
             localStorage.setItem("redirect_url", res.data.redirect_url);
             this.$router.push("/mobile/home");
+          }
+        }
+
+        if (res.code !== "C10004" || res.code !== "C10006") {
+          //已經登入
+          if (this.siteConfig.ROUTER_TPL === "sg1") {
+            window.location.href = "/mobile/live/iframe/home?hasFooter=true";
+            return;
+          }
+
+          if (this.redirect) {
+            window.location.href = this.redirect;
+            return;
           }
         }
 

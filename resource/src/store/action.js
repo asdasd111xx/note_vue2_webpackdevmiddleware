@@ -642,13 +642,15 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       });
     }
     await dispatch("actionSetSiteConfig", configInfo);
+    await dispatch("actionSetSystemDomain");
+
     dispatch("actionSetNews");
     dispatch("actionGetMemInfoV3");
 
     if (["porn1", "sg1"].includes(state.webDomain.site)) {
       dispatch("actionSetRechargeConfig");
     }
-    dispatch("actionSetSystemDomain");
+
     dispatch("actionSetDomainConfigV2");
     dispatch("actionSetVersion");
 
@@ -2592,6 +2594,11 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
     }
   });
 };
+
+export const actionSetLiveFooterMask = ({ commit }, data) => {
+  commit(types.SET_LIVEFOOTERMASK, data);
+};
+
 //取得彩金活動開關
 export const actionSetActivity = ({ state, commit }) => {
   let temp = { totalAmount: 0 };

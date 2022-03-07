@@ -73,8 +73,9 @@ export default {
         hostname: window.location.hostname
       }
     }).then(res => {
-      if (res && res.data && res.data !== "") {
-        this.promotionHostnameCode = res.data;
+      if (res && res.data) {
+        this.promotionHostnameCode =
+          res.data && res.data.code ? res.data.code : "";
       }
     });
 
@@ -225,7 +226,8 @@ export default {
       this.isDownloading = true;
       this.setGAObj();
 
-      const refCode = localStorage.getItem("x-code");
+      const refCode =
+        this.promotionHostnameCode || localStorage.getItem("x-code");
       const channelid = localStorage.getItem("x-channelid");
 
       // 渠道移除 有帶推廣碼的需要登入
@@ -245,9 +247,9 @@ export default {
       }
 
       // 代理網址推廣代碼 推廣代碼 this.promotionHostnameCode
-      // if (refCode) {
-      //   url.searchParams.append("code", refCode);
-      // }
+      if (refCode) {
+        url.searchParams.append("code", refCode);
+      }
 
       // 落地頁直接下載
       if (localStorage.getItem("x-action") === "download") {

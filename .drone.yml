@@ -1,5 +1,6 @@
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(QA)
 
 platform:
@@ -116,6 +117,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(Beta)
 
 platform:
@@ -188,6 +190,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(Demo)
 
 platform:
@@ -304,6 +307,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: AllPipeline(Prod)
 
 platform:
@@ -357,6 +361,28 @@ steps:
       env: prod
       imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
       k8sNginxConfigMap: yabo-frontend-proxy-nginx-config-prod
+      k8sNginxSSL: ""
+      nfs: 10.17.1.94
+      nodePool: env
+      nodePoolName: prod
+    zone: asia-east1-b
+  environment:
+    TOKEN:
+      from_secret: GOOGLE_CREDENTIALS
+  depends_on:
+  - push2GCR-Prod
+
+- name: siguaGKE-demo(istio)
+  image: nytimes/drone-gke
+  settings:
+    cluster: yaboxxx-prod
+    project: rd7-project
+    template: configs/sigua/.istio-kube.yml
+    vars:
+      deployName: sigua-frontend-proxy-demo
+      env: demo
+      imageName: gcr.io/rd7-project/yaboxxx-web:${DRONE_TAG}
+      k8sNginxConfigMap: sigua-frontend-proxy-nginx-config-demo
       k8sNginxSSL: ""
       nfs: 10.17.1.94
       nodePool: env
@@ -486,6 +512,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sp51-frontend-qaPipeline(istioQA)
 
 platform:
@@ -535,6 +562,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sp51-frontend-demoPipeline(istioDemo)
 
 platform:
@@ -588,6 +616,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: Buildsp51Pipeline(istioProd)
 
 platform:
@@ -663,6 +692,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: aubo-frontend-qaPipeline(istioQA)
 
 platform:
@@ -712,6 +742,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: aubo-frontend-demoPipeline(istioDemo)
 
 platform:
@@ -765,6 +796,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: BuildauboPipeline(istioProd)
 
 platform:
@@ -840,6 +872,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-qaPipeline(istioQA)
 
 platform:
@@ -889,6 +922,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
@@ -938,6 +972,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-qa2Pipeline(istioQA)
 
 platform:
@@ -987,6 +1022,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: sigua-frontend-proxy-demoPipeline(istioDemo)
 
 platform:
@@ -1040,6 +1076,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: BuildsiguaPipeline(istioProd)
 
 platform:
@@ -1115,6 +1152,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: yabo-frontend-proxy-qaPipeline(istioQA)
 
 platform:
@@ -1164,6 +1202,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: yabo-frontend-proxy-betaPipeline(istioBeta)
 
 platform:
@@ -1213,6 +1252,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: yabo-frontend-proxy-demoPipeline(istioDemo)
 
 platform:
@@ -1266,6 +1306,7 @@ trigger:
 
 ---
 kind: pipeline
+type: kubernetes
 name: BuildyaboPipeline(istioProd)
 
 platform:

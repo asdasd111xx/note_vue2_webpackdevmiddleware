@@ -41,6 +41,7 @@ env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",nodePool="",nodePoolName="",
 env2="",cluster2="",deployName2="",nginxssl2="",nginxConfig2="",nfs2="",shortProduct="yb",nodePool2="",nodePoolName2="")={
     kind: "pipeline",
+    type: "kubernetes",
     name: "Build"+product+"Pipeline("+origin+ name +")",
     steps:[
         {
@@ -126,6 +127,7 @@ local Pipeline(name="QA",cluster="xbb-common",zone="asia-east1-a",
 env="qa",deployName="yaboxxx-landing-page-qa",nginxssl="nginx-ssl",nginxConfig="yaboxxx-landing-page-nginx"
 ,imageName="yaboxxx-landingpage",nfs="10.27.1.218",product="yabo",origin="origin",shortProduct="yb",nodePool="",nodePoolName="") = {
     kind: "pipeline",
+    type: "kubernetes",
     name: deployName+"Pipeline("+origin+ name +")",
     steps:[
         {
@@ -220,6 +222,7 @@ local onlyGKE(name="QA",cluster="xbb-common",zone="asia-east1-a"
 
 local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     kind: "pipeline",
+    type: "kubernetes",
     name: "AllPipeline("+ name +")",
     steps:[
         {
@@ -324,9 +327,9 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
         //     ,"yaboxxx-web","10.17.1.94","yiyuan","istio","env","prod"),
 
         # istio-sigua
-        // onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
-        //     ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
-        //     ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"demo","sigua-frontend-proxy-demo","","sigua-frontend-proxy-nginx-config-demo"
+            ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),
         onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
             ,"prod","sigua-frontend-proxy-prod","","sigua-frontend-proxy-nginx-config-prod"
             ,"yaboxxx-web","10.17.1.94","sigua","istio","env","prod"),

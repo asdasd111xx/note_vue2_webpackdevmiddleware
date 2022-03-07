@@ -1,5 +1,6 @@
 <template>
   <div :class="[$style.footer, 'clearfix']" id="footer">
+    <div v-show="liveFooterMask" :class="$style['mask']" />
     <div
       v-for="info in list"
       :key="info.key"
@@ -44,10 +45,15 @@ export default {
       default: false
     }
   },
+  watch: {
+    liveFooterMask() {}
+  },
   computed: {
     ...mapGetters({
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      liveFooterMask: "getLiveFooterMask"
     }),
+
     list() {
       return [
         {
@@ -228,5 +234,17 @@ export default {
       font-size: 15px;
     }
   }
+}
+
+.mask {
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  margin: 0 auto;
+  max-width: $mobile_max_width;
+  min-height: 67px;
+  position: fixed;
+  transition: unset !important;
+  width: 100%;
+  z-index: 51;
 }
 </style>

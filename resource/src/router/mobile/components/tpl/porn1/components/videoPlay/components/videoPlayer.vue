@@ -9,6 +9,7 @@
       ref="video-player"
       playsinline="playsinline"
       :webkit-playsinline="playsinline"
+      type="application/x-mpegURL"
       class="video-js vjs-default-skin vjs-fluid vjs-big-play-centered"
     ></video>
     <!-- 彩金活動 -->
@@ -107,8 +108,7 @@ export default {
     let obj = {
       sources: [
         {
-          src: this.videoInfo.url,
-          type: "application/x-mpegURL"
+          src: this.videoInfo.url
         }
       ],
       autoplay: false,
@@ -171,12 +171,14 @@ export default {
       //活動開關
       if (this.isActiveBouns) {
         this.player.on("playing", () => {
-          if (this.adSwitch && !this.firstPlay) {
+          if (!this.firstPlay) {
             this.firstPlay = true;
-            this.playerPause();
-            // console.log("播放first AD");
-            this.onSend("AD");
-            return;
+            if (this.adSwitch) {
+              this.playerPause();
+              // console.log("播放first AD");
+              this.onSend("AD");
+              return;
+            }
           }
           // 不得訪客觀影
           if (this.disableVideo) {
@@ -270,6 +272,7 @@ export default {
     },
     // 點擊進圖條任務彈窗
     handleClickProcess() {
+      console.log("click");
       if (
         window.YABO_SOCKET.readyState !== 1 ||
         !this.isInit ||

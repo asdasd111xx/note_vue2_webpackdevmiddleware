@@ -1477,7 +1477,7 @@ export default {
         : false;
     },
     curPassRoad() {
-      console.log("passRoad", this.curPassRoad);
+      console.log("passRoad", this.curPassRoad);      
       if (this.curPassRoad.tip != undefined) {
         if (this.curPassRoad.tip === "" && this.curPassRoadTipText != "") {
           //有到無因特效需delay
@@ -1487,13 +1487,13 @@ export default {
               "<br>"
             );
             this.curPassRoadTipTextShowMore =
-              this.curPassRoadTipText.length > 45 ||
+              this.curPassRoadTipText.replace(/[^\x00-\xff]/g,"**").length > 45 ||
               this.curPassRoadTipText.indexOf("<br>") != -1;
           }, 500);
         } else {
           this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
           this.curPassRoadTipTextShowMore =
-            this.curPassRoadTipText.length > 45 ||
+            this.curPassRoadTipText.replace(/[^\x00-\xff]/g,"**").length > 45 ||
             this.curPassRoadTipText.indexOf("<br>") != -1;
         }
       }

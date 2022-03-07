@@ -3,8 +3,8 @@ import { getCookie } from "@/lib/cookie";
 import querystring from "querystring";
 import store from "@/store";
 
-// 币发BIFA色站 api domain
-let localDomain = localStorage.getItem("p-domain")
+// 色站 api domain
+const localDomain = localStorage.getItem("p-domain")
   ? `${localStorage.getItem("p-domain")}/api/v1`
   : "";
 const PORN_DOMAIN =
@@ -25,7 +25,7 @@ export default ({
   url = "",
   fail = () => {}
 }) => {
-  if (!PORN_DOMAIN) {
+  if (!PORN_DOMAIN || PORN_DOMAIN === "" || PORN_DOMAIN === "/") {
     return new Promise(resolve => {
       resolve("error");
     });

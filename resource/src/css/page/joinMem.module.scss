@@ -218,12 +218,12 @@
 }
 
 .modal-dark-bg {
-  width: 100vw;
-  height: 100vh;
   background: rgba(0, 0, 0, 0.4);
-  position: absolute;
-  top: 0;
+  height: 100%;
   left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
   z-index: 10;
 }
 

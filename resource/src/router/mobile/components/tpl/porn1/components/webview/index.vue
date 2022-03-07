@@ -61,61 +61,81 @@
         </div>
       </div>
     </div>
-
-    <div
-      :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
-      @click="clickService"
-    >
-      <div>
-        <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
-          />
-          &nbsp;
-          <span>在线客服1</span>
-        </div>
-        <div>Main Customer Support</div>
-        <div>7*24小时专线服务 贴心至上</div>
-      </div>
-
-      <div :class="$style['btn-next']">
+    <template v-if="themeTPL !== 'sg1'">
+      <template v-for="(item, index) in service">
         <img
+          :key="index"
+          :class="$style[`info-card`]"
+          @click="clickService(item)"
           :src="
-            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
+            item.image
+              ? item.image
+              : $getCdnPath(
+                  `/static/image/${themeTPL}/service/service_service0${index +
+                    1}.png`
+                )
           "
-        />
-      </div>
-    </div>
-
-    <div
-      :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
-      @click="clickService"
-    >
-      <div>
+        /> </template
+    ></template>
+    <template v-else
+      ><div
+        :class="[$style['customer_service1'], $style[`image-${themeTPL}`]]"
+        @click="clickService('sg1')"
+      >
         <div>
-          <img
-            :src="$getCdnPath(`/static/image/common/service/ic_service01.png`)"
-          />
-          &nbsp;
-          <span>在线客服2</span>
+          <div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+              "
+            />
+            &nbsp;
+            <span>在线客服1</span>
+          </div>
+          <div>Main Customer Support</div>
+          <div>7*24小时专线服务 贴心至上</div>
         </div>
-        <div>Reserve Customer Support</div>
-        <div>7*24小时专线服务 贴心至上</div>
+
+        <div :class="$style['btn-next']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
+            "
+          />
+        </div>
       </div>
 
-      <div :class="$style['btn-next']">
-        <img
-          :src="
-            $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-          "
-        />
+      <div
+        :class="[$style['customer_service2'], $style[`image-${themeTPL}`]]"
+        @click="clickService('sg1')"
+      >
+        <div>
+          <div>
+            <img
+              :src="
+                $getCdnPath(`/static/image/common/service/ic_service01.png`)
+              "
+            />
+            &nbsp;
+            <span>在线客服2</span>
+          </div>
+          <div>Reserve Customer Support</div>
+          <div>7*24小时专线服务 贴心至上</div>
+        </div>
+
+        <div :class="$style['btn-next']">
+          <img
+            :src="
+              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
+            "
+          />
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
-import mobileLinkOpen from "@/lib/mobile_link_open";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { mapGetters, mapActions } from "vuex";
 
@@ -166,14 +186,16 @@ export default {
           imgSrc: "/static/image/sg1/webview/ic_service05.png"
         }
       ],
-      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png"
+      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png",
+      service: []
     };
   },
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      systemConfig: "getSystemConfig"
+      systemConfig: "getSystemConfig",
+      mobileInfo: "getMobileInfo"
     }),
     $style() {
       const style =
@@ -253,13 +275,37 @@ export default {
           link: hBundleID.value
         }
       };
+      this.getService();
     });
   },
   methods: {
     ...mapActions(["actionSetLCFSystemConfig"]),
-    mobileLinkOpen,
-    clickService() {
-      this.mobileLinkOpen({ linkType: "static", linkTo: "service" });
+    clickService(item) {
+      let url = "";
+      if (this.themeTPL !== "sp1") {
+        //sg1
+        url = this.mobileInfo.service.url;
+      } else {
+        url = item.url;
+      }
+      window.open(url);
+      // 在線客服流量分析事件
+      window.dataLayer.push({
+        dep: 2,
+        event: "ga_click",
+        eventCategory: "online_service",
+        eventAction: "online_service_contact",
+        eventLabel: "online_service_contact"
+      });
+    },
+    getService() {
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.service = res.data;
+        }
+      });
     },
     download(platform = null, bundleID = "") {
       goLangApiRequest({
@@ -272,11 +318,20 @@ export default {
       }).then(res => {
         if (res.data && res.status === "000" && res.data.url) {
           let a = document.createElement("a");
-          a.download = "res.data.url";
+          a.download = "download";
           a.href = res.data.url;
           a.style.display = "none";
           document.body.appendChild(a);
           a.click();
+
+          const focusHandler = () => {
+            if (this.isDownloadPub) return;
+            this.isDownloadPub = true;
+            window.location.href = "/pub.mobileprovision";
+            window.removeEventListener("focus", focusHandler);
+          };
+
+          window.addEventListener("focus", focusHandler);
         }
       });
     }

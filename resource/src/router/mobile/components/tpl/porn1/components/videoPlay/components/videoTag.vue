@@ -48,7 +48,7 @@ export default {
   align-items: center;
   color: #adafb8;
   display: flex;
-  overflow-x: auto;
+  // overflow-x: auto;
   width: 100%;
   height: 40px;
 
@@ -64,7 +64,7 @@ export default {
     font-size: 12px;
     line-height: 18px;
     font-weight: 400;
-    margin: 0 10px;
+    margin: 0 5px;
     text-overflow: ellipsis;
     white-space: nowrap;
 
