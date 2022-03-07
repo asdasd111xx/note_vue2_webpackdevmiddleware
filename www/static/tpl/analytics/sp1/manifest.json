@@ -1,10 +1,10 @@
 {
-  "name": "51国际",
-  "short_name": "51国际",
+  "name": "51体育",
+  "short_name": "51体育",
   "start_url": "/mobile/launch",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "51国际",
+  "description": "51体育",
   "scope": "/",
   "icons": [
     {

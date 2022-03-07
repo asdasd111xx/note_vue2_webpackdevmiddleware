@@ -558,12 +558,12 @@ input {
   margin: 0 auto;
   margin-top: 21px;
   border-radius: 5px;
-  background: var(--mcenter_button_color2);
+  background: var(--main_button_color2);
   color: var(--mcenter_button_text_color2);
 
   &.active {
-    background: var(--mcenter_button_color1);
-    color: var(--mcenter_button_text_color1);
+    background: var(--main_button_color1);
+    color: var(--main_button_text_color1);
   }
 }
 
