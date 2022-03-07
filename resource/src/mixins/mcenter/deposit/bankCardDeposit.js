@@ -1422,7 +1422,6 @@ export default {
             this.curPayInfo.payment_method_id === 16 ? "CGPay" : "OSPay";
           if (!response || result !== "ok") {
             this.walletData[paymode].balance = "--";
-
             this.actionSetGlobalMessage({
               msg,
               code
@@ -1434,8 +1433,9 @@ export default {
         })
         .catch(error => {
           const { msg, code } = error.response.data;
+          let paymode =
+            this.curPayInfo.payment_method_id === 16 ? "CGPay" : "OSPay";
           this.walletData[paymode].balance = "--";
-
           this.actionSetGlobalMessage({
             msg,
             code
