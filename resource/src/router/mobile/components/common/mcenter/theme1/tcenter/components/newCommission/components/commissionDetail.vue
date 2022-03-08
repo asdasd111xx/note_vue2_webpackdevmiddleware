@@ -17,7 +17,6 @@
       }}</span>
     </div>
     <div :class="[$style['time-range']]">{{ timeTitle }}</div>
-
     <div v-if="detailPage === 1" :class="[$style['total-friend-layout']]">
       <div
         v-for="(friend, index) in allLevelFriendArray"
@@ -326,11 +325,38 @@ export default {
             }
             this.totalCount = response.data[dataKey].total_count;
             this.totalAmount = response.data[dataKey].total_amount;
-
-            this.allLevelFriendArray.forEach((element, index) => {
-              element.total_per_depth =
-                response.data.total_per_depth[index + 1];
-            });
+            this.allLevelFriendArray = [];
+            Object.values(response.data.total_per_depth).forEach(
+              (element, index) => {
+                let frienfLevel = "";
+                switch (index) {
+                  case 0:
+                    frienfLevel = "一级好友";
+                    break;
+                  case 1:
+                    frienfLevel = "二级好友";
+                    break;
+                  case 2:
+                    frienfLevel = "三级好友";
+                    break;
+                  case 3:
+                    frienfLevel = "四级好友";
+                    break;
+                  case 4:
+                    frienfLevel = "五级好友";
+                    break;
+                }
+                this.allLevelFriendArray.push({
+                  title: frienfLevel,
+                  total_per_depth: element
+                });
+              }
+            );
+            // this.allLevelFriendArray.forEach((element, index) => {
+            //   element.total_per_depth =
+            //     response.data.total_per_depth[index + 1];
+            // });
+            console.log(this.allLevelFriendArray);
           } else {
             this.totalCount = response.data.total_per_depth[level].total_count;
             this.totalAmount =
