@@ -2582,8 +2582,8 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
       //     state: 1
       //   }
       // };
-
       if (res.data.maintain) {
+        localStorage.removeItem("live-iframe-event-from");
         const maintain = res.data.maintain;
         commit(types.SET_LIVEMAINTAIN, maintain);
         return res.data;

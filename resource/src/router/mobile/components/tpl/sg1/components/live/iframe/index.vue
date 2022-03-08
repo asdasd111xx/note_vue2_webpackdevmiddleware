@@ -172,7 +172,6 @@ export default {
   },
   watch: {
     liveMaintain(val) {
-      console.log(val);
       if (val && val.start) {
         this.showMaintainInfo();
         this.isMaintain = true;
@@ -191,7 +190,6 @@ export default {
   mounted() {
     this.initPage();
     this.actionSetUserBalance();
-    this.actionMemInit();
 
     this.updateBalanceTimer = setInterval(() => {
       if (!this.loginStatus) {
@@ -210,6 +208,12 @@ export default {
       "actionMemInit"
     ]),
     initPage() {
+      // check maintain
+      this.actionGetExtRedirect({
+        api_uri: "/api/platform/v1/user/front-page",
+        method: "get"
+      }).then();
+
       let clientUri = "";
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/view-path",
