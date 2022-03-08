@@ -188,8 +188,11 @@ export default {
   },
   created() {},
   mounted() {
-    this.initPage();
-    this.actionSetUserBalance();
+    // check maintain
+    this.actionGetExtRedirect({
+      api_uri: "/api/platform/v1/user/front-page?check=1",
+      method: "get"
+    }).then(() => this.initPage());
 
     this.updateBalanceTimer = setInterval(() => {
       if (!this.loginStatus) {
@@ -208,13 +211,12 @@ export default {
       "actionMemInit"
     ]),
     initPage() {
-      // check maintain
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/user/front-page",
-        method: "get"
-      }).then();
-
       let clientUri = "";
+
+      if (this.liveMaintain && this.liveMaintain.start) {
+        return;
+      }
+
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/view-path",
         method: "get"
