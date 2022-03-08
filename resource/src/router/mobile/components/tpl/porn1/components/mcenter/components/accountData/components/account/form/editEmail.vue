@@ -103,7 +103,6 @@ import member from "@/api/member";
 import mcenter from "@/api/mcenter";
 import serviceTips from "../../serviceTips";
 import accountHeader from "../../accountHeader";
-import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -416,14 +415,4 @@ export default {
   lang="scss"
   src="../../../css/index.module.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="../../../css/ey1.module.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
-  src="../../../css/sg1.module.scss"
-  module="$style_sg1"
 ></style>

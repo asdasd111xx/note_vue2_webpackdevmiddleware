@@ -719,13 +719,3 @@ export default {
   src="../../../css/index.module.scss"
   module="$style_porn1"
 ></style>
-<style
-  lang="scss"
-  src="../../../css/ey1.module.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
-  src="../../../css/sg1.module.scss"
-  module="$style_sg1"
-></style>

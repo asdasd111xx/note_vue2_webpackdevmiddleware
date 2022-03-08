@@ -18,8 +18,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import account from "./account/index";
-import mcenter from "@/api/mcenter";
-import member from "@/api/member";
 import serviceTips from "./serviceTips";
 import axios from "axios";
 import avatarDialog from "./avatarDialog";

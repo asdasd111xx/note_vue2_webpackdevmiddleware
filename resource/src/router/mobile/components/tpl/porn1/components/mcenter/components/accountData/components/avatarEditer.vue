@@ -239,8 +239,6 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.avater.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.avater.scss" module="$style_ey1"></style>
-<style lang="scss" src="../css/sg1.avater.scss" module="$style_sg1"></style>
 <style>
 /* 複寫套件 */
 .vue-cropper {

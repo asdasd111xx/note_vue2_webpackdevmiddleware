@@ -91,6 +91,7 @@ let webpackConfig = merge(baseWebpackConfig, {
       new OptimizeCSSAssetsPlugin({}),
       new TerserWebpackPlugin({
         terserOptions: {
+          extractComments: false,
           safari10: true,
           mangle: {
             safari10: true

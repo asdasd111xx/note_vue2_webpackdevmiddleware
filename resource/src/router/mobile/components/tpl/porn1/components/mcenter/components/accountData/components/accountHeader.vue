@@ -88,4 +88,3 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.header.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.header.scss" module="$style_ey1"></style>
