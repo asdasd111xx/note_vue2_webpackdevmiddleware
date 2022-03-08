@@ -304,7 +304,7 @@ export default {
           }
         }
 
-        if (res.code !== "C10004" || res.code !== "C10006") {
+        if (res.code === "C10004" || res.code === "C10006") {
           //已經登入
           if (this.siteConfig.ROUTER_TPL === "sg1") {
             window.location.href = "/mobile/live/iframe/home?hasFooter=true";
