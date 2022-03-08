@@ -293,6 +293,16 @@
           :class="$style['withdraw-status-tip']"
           >仅限使用 CGPay 出款</span
         >
+        <!-- 非首次出款 + 強制使用 OSPay 出款 -->
+        <span
+          v-else-if="
+            allWithdrawAccount &&
+              allWithdrawAccount.length > 0 &&
+              forceStatus === 3
+          "
+          :class="$style['withdraw-status-tip']"
+          >仅限使用 OSPay 出款</span
+        >
       </div>
       <div
         v-if="allWithdrawAccount && allWithdrawAccount.length > 0"
@@ -330,12 +340,19 @@
               ]"
             />
             <!-- <img v-lazy="getBankImage(item.swift_code)" /> -->
-            <span :class="[{ [$style['hasOption']]: item.bank_id === 2009 }]">
+            <span
+              :class="[
+                {
+                  [$style['hasOption']]:
+                    item.bank_id === 2009 || item.bank_id === 2029
+                }
+              ]"
+            >
               {{ parseCardName(item.alias, item.withdrawType) }}
             </span>
 
             <!-- CGPay USDT -->
-            <template v-if="item.bank_id === 2009">
+            <template v-if="item.bank_id === 2009 || item.bank_id === 2029">
               <img
                 :class="$style['transfergo-img']"
                 :src="
@@ -353,11 +370,18 @@
                     if (item.id !== selectedCard.id) {
                       handleSelectCard(item);
                     }
-                    setPopupStatus(true, 'currency');
+                    setPopupStatus(
+                      true,
+                      item.bank_id === 2009 ? 'currency' : 'currencyOSP'
+                    );
                   }
                 "
               >
-                {{ withdrawCurrency.alias }}
+                {{
+                  item.bank_id === 2009
+                    ? withdrawCurrency.alias
+                    : withdrawCurrencyOSP.alias
+                }}
               </div>
             </template>
           </div>
@@ -375,6 +399,7 @@
               {
                 [$style['disable']]:
                   forceStatus === 2 ||
+                  forceStatus === 3 ||
                   (forceStatus === 1 &&
                     userWithdrawCount === 0 &&
                     isFirstWithdraw)
@@ -385,10 +410,14 @@
               :class="[
                 $style['check-box'],
                 $style[`image-${siteConfig.ROUTER_TPL}`],
-                { [$style['checked']]: forceStatus !== 1 && forceStatus !== 2 },
+                {
+                  [$style['checked']]:
+                    forceStatus !== 1 && forceStatus !== 2 && forceStatus !== 3
+                },
                 {
                   [$style['disable']]:
                     forceStatus === 2 ||
+                    forceStatus === 3 ||
                     (forceStatus === 1 &&
                       userWithdrawCount === 0 &&
                       isFirstWithdraw)
@@ -431,7 +460,11 @@
               :class="$style['select-epoint-bank-item']"
               @click="setPopupStatus(true, 'epointBank')"
             >
-              {{ epointSelectType === 1 ? defaultEpointWallet.account : defaultEpointNewWallet.account }}
+              {{
+                epointSelectType === 1
+                  ? defaultEpointWallet.account
+                  : defaultEpointNewWallet.account
+              }}
               <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
             </div>
           </div>
@@ -479,7 +512,8 @@
       v-if="
         (epointSelectType === 0 &&
           allWithdrawAccount &&
-          allWithdrawAccount.length > 0 && selectedCard.id != null) ||
+          allWithdrawAccount.length > 0 &&
+          selectedCard.id != null) ||
           (epointWallet.length > 0 &&
             userBankOption.length > 0 &&
             epointSelectType === 1) ||
@@ -526,7 +560,7 @@
         </span>
       </div>
       <!-- 優惠提示 -->
-      <div v-if="offerInfo.offer_enable" :class="[$style['offer']]">
+      <div v-if="offerInfo && offerInfo.offer_enable" :class="[$style['offer']]">
         <span>
           {{
             `加送 ${formatThousandsCurrency(offerInfo.offer_percent)} %提现优惠`
@@ -573,7 +607,8 @@
         </span>
         <span
           v-if="
-            (selectedCard.name != 'CGPay' || withdrawCurrency.name != 'CGP') &&
+            (selectedCard.name != 'CGPay' &&
+              selectedCard.name != 'OSPay' ) &&
               epointSelectType === 0
           "
           :class="$style['money-currency']"
@@ -583,6 +618,7 @@
           {{ actualMoneyPlusOffer(true) }}
         </span>
         <span v-if="selectedCard.name === 'CGPay' && !isSelectedUSDT">CGP</span>
+        <span v-else-if="selectedCard.name === 'OSPay' && !isSelectedUSDT">OSP</span>
         <span v-else-if="epointSelectType === 1">E点</span>
         <span v-else-if="epointSelectType === 2">e点</span>
 
@@ -602,8 +638,9 @@
             ? formatThousandsCurrencyFix(cryptoMoney)
             : formatThousandsCurrency(cryptoMoney)
         }}</span>
-        <span v-if="selectedCard.name === 'CGPay'">USDT</span>
+        <span v-if="selectedCard.bank_id === 2009">{{withdrawCurrency.name}}</span>
         <span v-else-if="selectedCard.bank_id === 2025">USDT</span>
+        <span v-else-if="selectedCard.bank_id === 2029">{{withdrawCurrencyOSP.name}}</span>
       </div>
 
       <!-- 參考匯率 -->
@@ -735,9 +772,25 @@
         />
       </template>
 
+      <!-- OSP Currency 列表 -->
+      <template v-if="showPopStatus.type === 'currencyOSP'">
+        <withdraw-currency
+          :type="'withdraw-currency'"
+          :title="'选择转出货币'"
+          :render-list="currencyListForOSP"
+          :current-obj="withdrawCurrencyOSP"
+          :item-func="setWithdrawCurrencyForOSP"
+          @close="closePopup"
+        />
+      </template>
+
       <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
-          :bank-selected="epointSelectType === 1 ? defaultEpointWallet.account : defaultEpointNewWallet.account"
+          :bank-selected="
+            epointSelectType === 1
+              ? defaultEpointWallet.account
+              : defaultEpointNewWallet.account
+          "
           :bank-list="userBankOption"
           :item-func="setEpointBank"
           @close="closePopup"
@@ -885,8 +938,13 @@ export default {
         this.getWithdrawOffer();
       }
       if (!localStorage.getItem("tmp_w_selectedCard")) {
-        if (this.currencyList.length > 0) {
+        if (this.currencyList.length > 0 && this.withdrawCurrency.isFirst) {
           this.setWithdrawCurrency(this.currencyList[0]);
+          this.withdrawCurrency.isFirst = false;
+        }
+        if (this.currencyListForOSP.length > 0&& this.withdrawCurrencyOSP.isFirst) {
+          this.setWithdrawCurrencyForOSP(this.currencyListForOSP[0]);
+          this.withdrawCurrencyOSP.isFirst = false;
         }
       }
       // this.actionSetIsLoading(false);
@@ -896,6 +954,9 @@ export default {
       // When the option = CGPay
       if (value === 2009) {
         this.selectedCard.name = "CGPay";
+      }
+      if (value === 2029) {
+        this.selectedCard.name = "OSPay";
       }
     },
     actualMoney(value) {
@@ -1097,7 +1158,7 @@ export default {
           return true;
         }
         //e點富時(非首次出款 + 強制使用 CGPay 出款)
-        if (this.forceStatus === 2 && this.epointSelectType !== 0) {
+        if ((this.forceStatus === 2 || this.forceStatus === 3 )&& this.epointSelectType !== 0) {
           return true;
         }
       }
@@ -1147,11 +1208,15 @@ export default {
       let cgpayCurrencyUSDT =
         this.selectedCard.bank_id === 2009 &&
         this.withdrawCurrency.method_id === 28;
+      // OSPay-USDT
+      let ospayCurrencyUSDT =
+        this.selectedCard.bank_id === 2029 &&
+        this.withdrawCurrencyOSP.method_id === 39;
       //幣希錢包
       let useBcWallet = this.selectedCard.bank_id === 2025;
 
       return (
-        (withdrawType || cgpayCurrencyUSDT || useBcWallet) &&
+        (withdrawType || cgpayCurrencyUSDT || ospayCurrencyUSDT || useBcWallet) &&
         this.epointSelectType === 0
       );
     },
@@ -1225,17 +1290,6 @@ export default {
         return obj;
       }
     },
-    // hasOffer() {
-    //   return this.selectedCard.offer_data[0].offer_enable
-    //   // return (
-    //   //   (this.isSelectedUSDT ||
-    //   //     this.selectedCard.bank_id == 2009 ||
-    //   //     this.selectedCard.bank_id == 2016 ||
-    //   //     this.selectedCard.bank_id == 2025 ||
-    //   //     this.selectedCard.bank_id == 2026) &&
-    //   //   this.selectedCard.offer_percent > 0
-    //   // );
-    // },
 
     marqueeTitle() {
       let arr = this.marqueeList.map(item => {
@@ -1322,6 +1376,7 @@ export default {
       if (
         this.withdrawCurrency.method_id === 28 ||
         this.withdrawCurrency.method_id === 32 ||
+        this.withdrawCurrencyOSP.method_id === 39 ||
         this.selectedCard.bank_id === 3002 ||
         this.selectedCard.bank_id === 2025
       ) {
@@ -1619,6 +1674,11 @@ export default {
         JSON.stringify(this.withdrawCurrency)
       );
 
+      localStorage.setItem(
+        "tmp_w_withdrawCurrencyOSP",
+        JSON.stringify(this.withdrawCurrencyOSP)
+      );
+
       localStorage.setItem("tmp_w_amount", this.withdrawValue);
       localStorage.setItem(
         "tmp_w_actualAmount",
@@ -1638,6 +1698,7 @@ export default {
     removeCurrentValue(needDeleteRule) {
       localStorage.removeItem("tmp_w_selectedCard");
       localStorage.removeItem("tmp_w_withdrawCurrency");
+      localStorage.removeItem("tmp_w_withdrawCurrencyOSP");
       localStorage.removeItem("tmp_w_amount");
       localStorage.removeItem("tmp_w_actualAmount");
       localStorage.removeItem("tmp_w_withdrawPwd");
@@ -1649,15 +1710,18 @@ export default {
       }
     },
     withdrawCheck() {
+      let mid = ""
+      if(this.selectedCard.bank_id === 2009){
+        mid = this.withdrawCurrency.method_id
+      }else if(this.selectedCard.bank_id === 2029){
+        mid = this.withdrawCurrencyOSP.method_id
+      }else if(this.selectedCard.bank_id === 2016){
+        mid = this.selectedCard.currency[0].method_id
+      }
       //CGPay出款前檢查設定
       const params = {
         walletId: this.selectedCard.id,
-        methodId:
-          this.selectedCard.bank_id === 2009
-            ? this.withdrawCurrency.method_id
-            : this.selectedCard.bank_id === 2016
-            ? this.selectedCard.currency[0].method_id
-            : ""
+        methodId: mid
       };
       return goLangApiRequest({
         method: "get",
@@ -1788,6 +1852,8 @@ export default {
           .method_id;
       } else if (this.selectedCard.bank_id === 2009) {
         methonId = this.withdrawCurrency.method_id;
+      } else if (this.selectedCard.bank_id === 2029) {
+        methonId = this.withdrawCurrencyOSP.method_id;
       } else if (this.selectedCard.bank_id === 2025) {
         methonId = this.selectedCard.currency[0].method_id;
       } else {
@@ -1804,7 +1870,7 @@ export default {
           swift_code: this.selectedCard.swift_code
         };
       }
-      let epointBankId = "" 
+      let epointBankId = ""
       if (this.epointSelectType === 1) {
         epointBankId = this.defaultEpointWallet.id
       }else if(this.epointSelectType === 2){
@@ -1952,6 +2018,13 @@ export default {
         _params.method_id = this.withdrawCurrency.method_id;
       }
 
+      if (
+        this.selectedCard.bank_id === 2029 &&
+        this.withdrawCurrencyOSP.method_id === 39
+      ) {
+        _params.method_id = this.withdrawCurrencyOSP.method_id;
+      }
+
       if (this.selectedCard.bank_id === 2025) {
         _params.method_id = this.selectedCard.currency[0].method_id;
       }
@@ -2085,8 +2158,6 @@ export default {
         });
     },
     setWithdrawCurrency(item) {
-      // console.log("setWithdrawCurrency");
-      // console.log(item);
       this.withdrawCurrency.method_id = item.method_id;
       this.withdrawCurrency.name = item.currency_name;
       this.withdrawCurrency.alias = item.currency_alias;
@@ -2100,14 +2171,34 @@ export default {
 
       this.resetTimerStatus();
       this.cryptoMoney = "--";
-      this.closePopup();
+      if(!this.showPopStatus.isShow && this.showPopStatus.type !== "check"){
+         this.closePopup();
+      }
+    },
+    setWithdrawCurrencyForOSP(item) {
+      this.withdrawCurrencyOSP.method_id = item.method_id;
+      this.withdrawCurrencyOSP.name = item.currency_name;
+      this.withdrawCurrencyOSP.alias = item.currency_alias;
+      this.chooseUSDT();
+      this.getWithdrawOffer();
+
+      // 選項停留在 USDT 時，不執行重新刷新匯率動作
+      if (this.isSelectedUSDT) {
+        return;
+      }
+
+      this.resetTimerStatus();
+      this.cryptoMoney = "--";
+      if(!this.showPopStatus.isShow && this.showPopStatus.type !== "check"){
+         this.closePopup();
+      }
     },
     setEpointBank(item) {
       if(this.epointSelectType === 1){
         this.defaultEpointWallet = item;
       }else{
         this.defaultEpointNewWallet = item;
-      } 
+      }
     },
     setPopupStatus(isShow, type) {
       this.showPopStatus = {
@@ -2289,6 +2380,11 @@ export default {
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrency")) ||
         this.withdrawCurrency;
 
+      // OSPay Currency
+      this.withdrawCurrencyOSP =
+        JSON.parse(localStorage.getItem("tmp_w_withdrawCurrencyOSP")) ||
+        this.withdrawCurrencyOSP;
+
       this.epointSelectType =
         +localStorage.getItem("tmp_w_epointSelectType");
         console.log(123);
@@ -2304,7 +2400,7 @@ export default {
           this.defaultEpointNewWallet = JSON.parse(
             localStorage.getItem("tmp_w_epointWallet")
           );
-        } 
+        }
       }
       setTimeout(() => {
         this.removeCurrentValue();
@@ -2375,7 +2471,6 @@ export default {
       } else {
         if (this.withdrawUserData.account.length > 0) {
           this.handleSelectCard(this.epointSelectType ===1 ? this.epointWallet[0]:this.epointNewWallet[0]);
-          
         } else {
           this.actionSetGlobalMessage({
             msg: "请先绑定银行卡",

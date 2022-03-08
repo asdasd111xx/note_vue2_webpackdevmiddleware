@@ -269,7 +269,6 @@ export default {
                   key: "isAudit",
                   value: true
                 });
-                return;
               } else {
                 this.actionSetGlobalMessage({ msg: "刪除成功" });
                 this.$emit("update:statusList", {
@@ -277,8 +276,11 @@ export default {
                   value: false
                 });
                 this.setPageStatus(1, "walletCardInfo", true);
-                return;
               }
+              this.$emit("update:statusList", {
+                key: "editDetail",
+                value: false
+              });
             });
         })
         .catch(error => {

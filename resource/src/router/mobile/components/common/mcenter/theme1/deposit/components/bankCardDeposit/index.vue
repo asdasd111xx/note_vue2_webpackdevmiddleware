@@ -88,29 +88,6 @@
                   }}
                 </div>
 
-                <!-- <div :class="$style['pay-sub-title']">
-                  <template
-                    v-if="
-                      [5, 6].includes(info.payment_type_id) ||
-                      (themeTPL === 'porn1' &&
-                        [16, 25, 22, 402].includes(info.payment_method_id))
-                    "
-                  >
-                    返利1%无上限
-                  </template>
-                </div> -->
-
-                <!-- <template
-                  v-if="
-                    ['ey1'].includes(themeTPL) &&
-                      [5, 6].includes(info.payment_type_id)
-                  "
-                >
-                  <div :class="$style['pay-sub-title']">
-                    返利1%无上限
-                  </div>
-                </template> -->
-
                 <img
                   v-if="
                     curPayInfo.payment_method_id === info.payment_method_id &&
@@ -371,7 +348,7 @@
             </div>
 
             <!-- Yabo -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) || E点付(34,41)-->
+            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,38) ||購寶(22) || USDT(402) || E点付(34,41)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
@@ -391,12 +368,14 @@
                 <template v-else-if="isSelectBindWallet(34,41)">
                   充值前请先绑定{{ curPayInfo.payment_method_name }}钱包
                 </template>
+                <template v-else-if="isSelectBindWallet(16, 25, 30)">
+                  充值前请先绑定CGPay钱包
+                </template>
+                <template v-else-if="isSelectBindWallet(36, 37, 38)">
+                  充值前请先绑定OSPay钱包
+                </template>
                 <template v-else>
-                  充值前请先绑定{{
-                    isSelectBindWallet(16, 25, 30)
-                      ? "CGPay"
-                      : curPayInfo.payment_method_name
-                  }}帐号
+                  充值前请先绑定{{curPayInfo.payment_method_name}}帐号
                 </template>
 
                 <div :class="$style['no-bind-wallet']">
@@ -412,50 +391,18 @@
               </span>
             </div>
 
-            <!-- 億元 -->
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25) || 購寶(22) || USDT(402) -->
-            <div
-              v-if="
-                ['ey1'].includes(themeTPL) &&
-                  isSelectBindWallet() &&
-                  !this.curPassRoad.is_bind_wallet
-              "
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <!-- 億元: 尚未綁定會彈窗 -->
-              <!-- CGPay -->
-              <template v-if="isSelectBindWallet(16, 25, 30)">
-                <span :class="$style['bank-card-title']"> 验证方式 </span>
-
-                <div :class="$style['no-bind-wallet']">
-                  尚未绑定CGPay钱包
-                  <span @click="handleBindWallet"> 立即绑定 </span>
-                </div>
-              </template>
-
-              <template v-if="isSelectBindWallet(22, 402, 404)">
-                <span :class="$style['bank-card-title']"> 充值金额 </span>
-
-                <div :class="$style['no-bind-wallet']">
-                  充值前请先绑定钱包
-                  <span @click="handleBindWallet"> 立即绑定 </span>
-                </div>
-              </template>
-            </div>
-
             <!-- Yabo：顯示 CGPay 餘額 -->
             <!-- IF 選擇 CGPay 且 已綁定 -->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
-                  isSelectBindWallet(16) &&
+                  isSelectBindWallet(16, 36) &&
                   curPassRoad.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">
-                CG币余额
-
+                {{isSelectBindWallet(36)? "OS" : "CG"}}币余额
                 <img
                   :class="$style['CGPay-update-img']"
                   :src="$getCdnPath(`/static/image/common/btn_update.png`)"
@@ -465,16 +412,19 @@
               </span>
 
               <div :class="$style['CGPay-money']">
-                CGP
-                <span>
-                  {{ walletData["CGPay"].balance }}
+                {{isSelectBindWallet(36)? "OS" : "CG"}}P
+                <span v-if="isSelectBindWallet(36)">
+                  {{ walletData["OSPay"].balance !== undefined ? formatThousandsCurrency(walletData["OSPay"].balance) : "--" }}
+                </span>
+                <span v-else>
+                  {{ walletData["CGPay"].balance !== undefined  ? formatThousandsCurrency(walletData["CGPay"].balance) : "--"  }}
                 </span>
               </div>
             </div>
 
             <div
               v-if="
-                isSelectBindWallet(25, 30, 402, 404) &&
+                isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
                   this.curPassRoad.is_outer_crypto &&
                   this.curPassRoad.is_bind_wallet
               "
@@ -556,39 +506,7 @@
                 'clearfix'
               ]"
             >
-              <!-- 億元：顯示 CGPay 餘額 -->
-              <!-- If 選擇 CGPay 且 已綁定 -->
-              <template
-                v-if="
-                  ['ey1'].includes(themeTPL) &&
-                    isSelectBindWallet(16) &&
-                    curPassRoad.is_bind_wallet
-                "
-              >
-                <div :class="$style['CGPay-money']">
-                  <div>CGPay余额：{{ walletData.CGPay.balance }}</div>
-
-                  <div :class="$style['money-update']" @click="getCGPayBalance">
-                    <img
-                      :src="$getCdnPath(`/static/image/common/btn_update.png`)"
-                      alt="update"
-                    />
-                  </div>
-                </div>
-              </template>
-
               <div :class="$style['bank-card-title']">充值金额</div>
-
-              <!-- <div
-                v-if="isDepositAi"
-                :class="[
-                  $style['bank-card-title'],
-                  { [$style['is-error']]: isErrorMoney }
-                ]"
-              >
-                提交订单时，系统自动调配最佳充值金额
-              </div> -->
-
               <!-- 選擇金額區塊 -->
               <div
                 v-if="curPassRoad.is_recommend_amount"
@@ -606,7 +524,7 @@
                     () => {
                       changeMoney(item);
                       if (
-                        isSelectBindWallet(25, 30, 32, 402, 404) &&
+                        isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
                         isClickCoversionBtn &&
                         moneyValue > 0
                       ) {
@@ -642,7 +560,7 @@
                       () => {
                         changeMoney('', true);
                         if (
-                          isSelectBindWallet(25, 30, 32, 402, 404) &&
+                          isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue > 0
                         ) {
@@ -709,7 +627,7 @@
                       $event => {
                         verification('money', $event.target.value);
                         if (
-                          isSelectBindWallet(25, 30, 32, 402, 404) &&
+                          isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -721,7 +639,7 @@
                     @keyup="
                       $event => {
                         if (
-                          isSelectBindWallet(25, 30, 32, 402, 404) &&
+                          isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
                           isClickCoversionBtn &&
                           moneyValue
                         ) {
@@ -746,7 +664,7 @@
               </div>
 
               <!-- USDT 匯率試算 -->
-              <template v-if="isSelectBindWallet(25, 30, 402, 404)">
+              <template v-if="isSelectBindWallet(25, 30, 37, 38, 402, 404)">
                 <div :class="$style['crypto-block']">
                   <span>转入数量</span>
                   <div :class="[$style['content']]">
@@ -810,7 +728,7 @@
                       <span
                         :class="[
                           $style['time'],
-                          { [$style['ey']]: themeTPL === 'ey1' }
+                          $style[themeTPL]
                         ]"
                         >{{ timeUSDT() }}</span
                       >
@@ -842,7 +760,7 @@
                   ]"
                   @click="() => (walletData['CGPay'].method = 0)"
                 >
-                  CGP安全防护码
+                  CGPay安全防护码
                   <img
                     v-if="walletData['CGPay'].method === 0"
                     :class="$style['pay-active']"
@@ -884,7 +802,7 @@
                     :src="
                       $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
                     "
-                    @click="toggleEye"
+                    @click="toggleEye('cg')"
                   />
                 </div>
                 <div
@@ -903,7 +821,94 @@
                     :src="
                       $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
                     "
-                    @click="toggleEye"
+                    @click="toggleEye('cg')"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- If 選擇 OSPay且已綁定 : 顯示 OSPay 餘額 -->
+            <div
+              v-if="isSelectBindWallet(36) && curPassRoad.is_bind_wallet"
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <span :class="$style['bank-card-title']">验证方式</span>
+              <div :class="$style['bank-feature-wrap']">
+                <!-- 支付密碼 -->
+                <div
+                  :class="[
+                    $style['pay-auth-method'],
+                    {
+                      [$style['current-data']]: walletData['OSPay'].method === 0
+                    },
+                    {
+                      [$style['disable']]: walletData['OSPay'].balance === '--'
+                    }
+                  ]"
+                  @click="() => (walletData['OSPay'].method = 0)"
+                >
+                  OSPay安全防护码
+                  <img
+                    v-if="walletData['OSPay'].method === 0"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+
+                <div
+                  :class="[
+                    $style['pay-auth-method'],
+                    {
+                      [$style['current-data']]: walletData['OSPay'].method === 1
+                    }
+                  ]"
+                  @click="walletData['OSPay'].method = 1"
+                >
+                  扫码支付
+                  <img
+                    v-if="walletData['OSPay'].method === 1"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+
+                <!-- OSP 安全防護碼 -->
+                <div
+                  v-show="walletData['OSPay'].method === 0 && isShowOSPPwd"
+                  :class="$style['input-wrap']"
+                >
+                  <input
+                    id="osp-password"
+                    :class="$style['wallet-password']"
+                    v-model="walletData['OSPay'].password"
+                    type="text"
+                    :placeholder="walletData['OSPay'].placeholder"
+                    @input="verification('OSPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
+                    "
+                    @click="toggleEye('os')"
+                  />
+                </div>
+                <div
+                  v-show="walletData['OSPay'].method === 0 && !isShowOSPPwd"
+                  :class="$style['input-wrap']"
+                >
+                  <input
+                    id="osp-password"
+                    :class="$style['wallet-password']"
+                    v-model="walletData['OSPay'].password"
+                    type="password"
+                    :placeholder="walletData['OSPay'].placeholder"
+                    @input="verification('OSPPwd', $event.target.value)"
+                  />
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
+                    "
+                    @click="toggleEye('os')"
                   />
                 </div>
               </div>
@@ -1211,11 +1216,14 @@
                   !isBlockChecked ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
-                  (isSelectBindWallet(25, 30, 402, 404) &&
+                  (isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
                     !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
                     walletData['CGPay'].method === 0 &&
                     !walletData['CGPay'].password) ||
+                  (isSelectBindWallet(36) &&
+                    walletData['OSPay'].method === 0 &&
+                    !walletData['OSPay'].password) ||
                   (showOuterCryptoAddress && outerCryptoAddress === '') ||
                   (showEpointWalletAddress &&
                     (epointBankName === '' || epointBankAccount === '')) ||
@@ -1456,6 +1464,7 @@ export default {
       marqueeList: [],
       displayMoneyValue: "",
       isShowCGPPwd: false,
+      isShowOSPPwd: false,
       bcMoneyShowType: false
     };
   },
@@ -1520,7 +1529,7 @@ export default {
       }
 
       // 選到 CGPay 時，取得 CGPay balance 的 func
-      if (this.isSelectBindWallet(16)) {
+      if (this.isSelectBindWallet(16, 36)) {
         this.getCGPayBalance();
       }
     },
@@ -1552,6 +1561,19 @@ export default {
         // 正常得到值時，選擇改為"CGP支付密碼"
         default:
           this.walletData["CGPay"].method = 0;
+          break;
+      }
+    },
+    "walletData.OSPay.balance"(value) {
+      switch (value) {
+        // 尚未得到值時，選擇改為"掃碼支付"(同Android邏輯)
+        case "--":
+          this.walletData["OSPay"].method = 1;
+          break;
+
+        // 正常得到值時，選擇改為"CGP支付密碼"
+        default:
+          this.walletData["OSPay"].method = 0;
           break;
       }
     },
@@ -1954,6 +1976,16 @@ export default {
             `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=CGPay&swift=BBCGWACN1`
           );
           break;
+        // OSPay
+        case 36:
+        // OSPay-USDT(ERC20)
+        case 37:
+        // OSPay-USDT(TRC20)
+        case 38:
+          this.$router.push(
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=OSPay&swift=BBOSWACN1`
+          );
+          break;
         // 幣希
         case 32:
           this.$router.push(
@@ -2095,7 +2127,7 @@ export default {
       this.closePopup();
 
       //USDT充值前檢查匯率異動
-      if (this.isSelectBindWallet(25, 30, 32, 402, 404)) {
+      if (this.isSelectBindWallet(25, 30, 37, 38, 32, 402, 404)) {
         let oldrate = this.rate;
         this.convertCryptoMoney();
         if (this.rate !== oldrate) {
@@ -2267,10 +2299,18 @@ export default {
     verification(target, value, isSpeedField) {
       if (target === "CGPPwd") {
         this.actionVerificationFormData({
-          target: "code",
+          target: "safeCode",
           value: value
         }).then(val => {
           this.walletData["CGPay"].password = val;
+        });
+      }
+      if (target === "OSPPwd") {
+        this.actionVerificationFormData({
+          target: "safeCode",
+          value: value
+        }).then(val => {
+          this.walletData["OSPay"].password = val;
         });
       }
 
@@ -2317,6 +2357,9 @@ export default {
         this.curPayInfo.payment_method_id === 16 ||
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 30 ||
+        this.curPayInfo.payment_method_id === 36 || //OSPay-CGP 
+        this.curPayInfo.payment_method_id === 37 || //OSPay-USDT(ERC20)
+        this.curPayInfo.payment_method_id === 38 || //OSPay-USDT(TRC20)
         this.curPayInfo.payment_method_id === 22 ||
         this.curPayInfo.payment_method_id === 32 ||
         this.curPayInfo.payment_method_id === 34 ||
@@ -2409,13 +2452,12 @@ export default {
     setEpointBank(item) {
       this.defaultEpointWallet = item;
     },
-    toggleEye() {
-      // if (this.isShowCGPPwd) {
-      //   document.getElementById("cgp-password").type = "password";
-      // } else {
-      //   document.getElementById("cgp-password").type = "text";
-      // }
-      this.isShowCGPPwd = !this.isShowCGPPwd;
+    toggleEye(value) {
+      if(value === 'cg'){
+        this.isShowCGPPwd = !this.isShowCGPPwd;
+      }else{
+        this.isShowOSPPwd = !this.isShowOSPPwd;
+      }
     },
     getWalletCurrencyBalanceList() {
       goLangApiRequest({
