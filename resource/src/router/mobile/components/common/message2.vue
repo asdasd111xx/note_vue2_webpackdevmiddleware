@@ -98,13 +98,16 @@ export default {
             " origin:",
             msgObj.origin,
             " code:",
-            msgObj.code
+            msgObj.code,
+            " errorCode:",
+            msgObj.errorCode
           );
         }
 
         const code = String(msgObj.code);
         const callback = msgObj.cb;
         const redirect = msgObj.origin;
+        const errorCode = msgObj.errorCode;
 
         this.actionSetGlobalMessage(null);
 
@@ -221,6 +224,14 @@ export default {
           // 充值/提現相關，有開維護
           case "M00009":
             this.$router.push("/mobile/mcenter");
+            break;
+
+          default:
+            break;
+        }
+        switch (errorCode) {
+          case "11":
+            this.$router.push("/mobile/mcenter/deposit");
             break;
 
           default:

@@ -1026,7 +1026,10 @@ export default {
 
                   if (res && res.status !== "000") {
                     if (res.msg) {
-                      this.actionSetGlobalMessage({ msg: res.msg });
+                      this.actionSetGlobalMessage({
+                        msg: res.msg,
+                        errorCode: res.errorCode
+                      });
                     }
                     return;
                   } else {
