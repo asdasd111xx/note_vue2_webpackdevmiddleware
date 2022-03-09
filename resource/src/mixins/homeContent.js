@@ -1028,7 +1028,7 @@ export default {
                     if (res.msg) {
                       this.actionSetGlobalMessage({
                         msg: res.msg,
-                        errorCode: res.errorCode
+                        code: res.errorCode
                       });
                     }
                     return;
