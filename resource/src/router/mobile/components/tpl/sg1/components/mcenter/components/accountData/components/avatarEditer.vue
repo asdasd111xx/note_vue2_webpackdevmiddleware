@@ -65,8 +65,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import goLangApiRequest from "@/api/goLangApiRequest";
 import axios from "axios";
+
 export default {
   components: {
     pageLoading: () =>
@@ -156,15 +156,6 @@ export default {
       try {
         this.$refs.cropper.getCropBlob(data => {
           if (data) {
-            let liveFormData = new FormData();
-            liveFormData.append("image_file", data);
-
-            this.actionGetExtRedirect({
-              api_uri: "/api/platform/v1/user/head-photo",
-              method: "put",
-              data: liveFormData
-            });
-
             let formData = new FormData();
             formData.append("custom_image", data);
             axios({
@@ -252,7 +243,200 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/sg1.avater.scss" module></style>
+<style lang="scss" module>
+@import "~@/css/variable.scss";
+
+// editer
+.container {
+  background-color: #ffffff;
+}
+
+.avater-editer-header {
+  z-index: 3;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  background: #ffffff;
+  text-align: center;
+  position: relative;
+  color: #ffffff;
+
+  .title {
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+    line-height: 43px;
+    font-weight: 700;
+    color: #000000;
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/image/common/btn_back_black.png");
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+.cropper {
+  height: 294px;
+  margin: 5px auto;
+  max-width: 100%;
+  width: 375px;
+  background-image: url("/static/image/common/default/avatar_nologin.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 250px 250px;
+  border: dashed #cacaca 1px;
+  position: relative;
+  text-align: center;
+
+  &.active {
+    background-image: unset;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.avater-editer-func {
+  margin-top: 50px;
+  padding: 0 10px;
+}
+
+.choose-btn {
+  background: #000;
+  color: #ffffff;
+  border-radius: 23px;
+  font-size: 14px;
+  font-weight: 400;
+  height: 45px;
+  line-height: 45px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.func-btn {
+  margin: 15px 0;
+
+  > div {
+    width: 48%;
+    display: inline-block;
+    font-weight: 400;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 23px;
+  }
+}
+
+.cancel-btn {
+  background: #ededed;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.submit-btn {
+  background: #000;
+  color: #ffffff;
+  float: right;
+}
+
+.account-header {
+  margin: 0 auto;
+  max-width: $mobile_max_width;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 43px;
+  padding: 0 17px;
+  color: #ffffff;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  background: #fefffe;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
+
+.btn-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  z-index: 2;
+
+  > img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.title {
+  height: 43px;
+  line-height: 43px;
+  color: #000000;
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0 auto;
+}
+
+.save-wrap {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+  box-shadow: none;
+  color: #a6a9b2;
+  font-size: 15px;
+  height: 100%;
+  line-height: 43px;
+  outline: none;
+  position: absolute;
+  right: 14px;
+  top: 0;
+  border: unset;
+
+  > .active {
+    color: #414655;
+  }
+}
+
+.img-input {
+  display: none;
+  border: unset;
+  outline: unset;
+}
+</style>
+
 <style>
 /* 複寫套件 */
 .vue-cropper {

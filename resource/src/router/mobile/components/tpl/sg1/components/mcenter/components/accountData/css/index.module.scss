@@ -290,18 +290,25 @@ input {
 }
 
 .btn-send {
-  right: 14px;
-  width: 100px;
-  text-align: center;
+  background: var(--main_button_color2);
+  border-radius: 23px;
+  color: var(--main_button_text_color2);
+  font-size: 14px;
   height: 30px;
-  border-radius: 3px;
   line-height: 30px;
-  background-color: #e9dacc;
-  color: white;
   pointer-events: none;
+  right: 14px;
+  text-align: center;
+  width: 110px;
+
   // 取消點擊特效
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  &.active {
+    color: var(--main_button_text_color1);
+    background: var(--main_button_color1);
+  }
 
   &.active {
     pointer-events: auto;

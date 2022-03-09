@@ -168,11 +168,6 @@ export default {
       siteConfig: "getSiteConfig",
       domainConfig: "getDomainConfig"
     }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
     fieldValue() {
       return this.memInfo.email.email;
     },
@@ -375,14 +370,4 @@ export default {
 };
 </script>
 
-<style
-  lang="scss"
-  src="../../../css/index.module.scss"
-  module="$style_porn1"
-></style>
-
-<style
-  lang="scss"
-  src="../../../css/sg1.module.scss"
-  module="$style_sg1"
-></style>
+<style lang="scss" src="../../../css/index.module.scss"></style>

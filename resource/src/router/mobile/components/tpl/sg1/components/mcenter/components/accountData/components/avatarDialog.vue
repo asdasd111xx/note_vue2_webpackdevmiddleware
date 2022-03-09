@@ -193,4 +193,107 @@ export default {
   }
 };
 </script>
-<style lang="scss" src="../css/sg1.avater.scss" module></style>
+<style lang="scss">
+@import "~@/css/variable.scss";
+
+// avatar dialog
+.dialog {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  background-color: rgba($color: #161616, $alpha: 0.4);
+}
+
+.dialog-wrap {
+  background-color: #f8f8f8;
+  border-radius: 20px 20px 0 0;
+  bottom: 0;
+  max-width: $mobile_max_width;
+  min-height: 540px;
+  padding-top: 14px;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+
+  .dialog-func {
+    text-align: center;
+    color: #5e626d;
+    font-size: 17px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    > div:first {
+      padding-top: 1px;
+    }
+
+    > div {
+      color: #5e626d;
+      background-color: #fefffe;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    > div:last-child {
+      margin-top: 20px;
+      color: black;
+    }
+  }
+
+  .avatar-cell {
+    width: 65px;
+    position: relative;
+    margin: 0 auto;
+
+    img {
+      border-radius: 50%;
+      width: 98%;
+
+      &.active {
+        border: 2px solid transparent;
+        border-color: var(--mcenter_change_avatar_image);
+      }
+    }
+
+    .check {
+      position: absolute;
+      bottom: 10%;
+      right: -10px;
+      width: 18px;
+      height: 18px;
+      -webkit-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+      background: url("/static/image/sg1/mcenter/ic_check.png") 0 0 no-repeat;
+      background-size: 100%;
+    }
+  }
+
+  .avatar-wrap {
+    position: relative;
+    display: inline-block;
+    width: 25%;
+    margin-top: 14px;
+    text-align: center;
+  }
+}
+
+@media (orientation: landscape) {
+  .dialog-wrap {
+    max-width: $mobile_max_landscape_width !important;
+  }
+}
+
+.img-input {
+  display: none;
+  border: unset;
+  outline: unset;
+}
+</style>
