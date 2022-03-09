@@ -19,7 +19,6 @@
 import { mapGetters, mapActions } from "vuex";
 import account from "./account/index";
 import serviceTips from "./serviceTips";
-import axios from "axios";
 import avatarDialog from "./avatarDialog";
 
 export default {

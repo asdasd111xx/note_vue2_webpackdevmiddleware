@@ -57,4 +57,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="../css/sg1.avater.scss" module></style>
+<style lang="scss" module></style>
