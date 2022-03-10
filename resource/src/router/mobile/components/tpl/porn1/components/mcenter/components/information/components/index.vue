@@ -115,7 +115,6 @@ export default {
     },
     headerConfig() {
       const trans = { message: "通知", news: "活动", post: "公告" };
-
       return {
         prev: true,
         title: this.$route.query.pid ? trans[this.currentTemplate] : "消息中心",
@@ -146,8 +145,5 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
+<<<<<<< Updated upstream ======= >>>>>>> Stashed changes
 <style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>
