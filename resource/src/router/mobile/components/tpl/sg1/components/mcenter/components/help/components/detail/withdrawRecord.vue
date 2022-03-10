@@ -1,10 +1,7 @@
 <template>
   <div
     :class="[
-      $style['detail-wrap'],
-      {
-        [$style['ey1']]: theme === 'ey1',
-      },
+      $style['detail-wrap']
     ]"
   >
     <!-- 狀態暫時移除 -->
@@ -29,7 +26,7 @@
       />
     </div> -->
     <div v-if="data" :class="$style['detail-content-wrap']">
-      <div v-for="(item, index) in data" :class="$style['detail-block']">
+      <div :key="item" v-for="(item) in data" :class="$style['detail-block']">
         <div :class="[$style['detail-cell'], $style['item-status']]">
           <div :class="[$style['title']]">
             {{ $text("S_STATUS", "状态") }}
@@ -73,6 +70,7 @@
         <div :class="$style['item-status-border']" />
         <template v-for="(col, index) in columns">
           <div
+          :key="index"
             v-if="item.hasOwnProperty(col.key)"
             :class="$style['detail-cell']"
           >

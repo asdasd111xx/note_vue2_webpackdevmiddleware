@@ -758,51 +758,46 @@ export const actionSetUserdata = (
     script.setAttribute("data-name", "esabgnixob");
     script.onload = e => {
       //訪客註冊
-      if (state.webDomain.site === "ey1" && hasLogin) {
-        dispatch("actionSetUserWithdrawCheck");
-      }
-      if (state.webDomain.site != "ey1") {
-        goLangApiRequest({
-          method: "put",
-          url:
-            configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
-          params: {
-            account: uuidAccount
-          },
-          headersData: (headers, data) => {
-            // console.log(headers);
-            // const prodVendor = ["67", "80", "41", "92", "94"];
 
-            if (headers["x-cdn-rdi"]) {
-              commit(
-                types.SETSLIDECDNDOMAIN,
-                `https://${headers["x-cdn-rdi"].split(",")[0]}`
-              );
-            }
+      goLangApiRequest({
+        method: "put",
+        url: configInfo.YABO_GOLANG_API_DOMAIN + "/cxbb/Account/guestregister",
+        params: {
+          account: uuidAccount
+        },
+        headersData: (headers, data) => {
+          // console.log(headers);
+          // const prodVendor = ["67", "80", "41", "92", "94"];
+
+          if (headers["x-cdn-rdi"]) {
+            commit(
+              types.SETSLIDECDNDOMAIN,
+              `https://${headers["x-cdn-rdi"].split(",")[0]}`
+            );
+          }
+        }
+      })
+        .then(res => {
+          if (res.status === "000") {
+            let guestCid = res.data.cid;
+            let guestUserid = res.data.userid;
+            localStorage.setItem("guestCid", guestCid);
+            localStorage.setItem("guestUserid", guestUserid);
+          } else {
+            dispatch("actionSetGlobalMessage", {
+              msg: res.msg,
+              code: res.code
+            });
           }
         })
-          .then(res => {
-            if (res.status === "000") {
-              let guestCid = res.data.cid;
-              let guestUserid = res.data.userid;
-              localStorage.setItem("guestCid", guestCid);
-              localStorage.setItem("guestUserid", guestUserid);
-            } else {
-              dispatch("actionSetGlobalMessage", {
-                msg: res.msg,
-                code: res.code
-              });
-            }
-          })
-          .catch(error => {
-            if (error.status != "000") {
-              dispatch("actionSetGlobalMessage", {
-                msg: error.msg,
-                code: res.code
-              });
-            }
-          });
-      }
+        .catch(error => {
+          if (error.status != "000") {
+            dispatch("actionSetGlobalMessage", {
+              msg: error.msg,
+              code: res.code
+            });
+          }
+        });
     };
 
     if (window.location.host.includes("localhost")) {
@@ -1871,9 +1866,6 @@ export const actionVerificationFormData = (
     case "phone":
       let maxLength = 11;
       switch (site) {
-        case "ey1":
-          maxLength = 0;
-          break;
         case "porn1":
         default:
           maxLength = 11;

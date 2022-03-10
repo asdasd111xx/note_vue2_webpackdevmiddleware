@@ -660,7 +660,7 @@
         >
       </div>
       <div
-        v-if="themeTPL != 'sg1' && themeTPL != 'ey1'"
+        v-if="themeTPL != 'sg1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >

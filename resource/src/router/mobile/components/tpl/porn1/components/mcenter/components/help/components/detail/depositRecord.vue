@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="[
-      $style['detail-wrap'],
-      {
-        [$style['ey1']]: theme === 'ey1'
-      }
-    ]"
-  >
+  <div :class="[$style['detail-wrap']]">
     <div v-if="data" :class="$style['detail-content-wrap']">
       <div
         v-for="(item, index) in data"
