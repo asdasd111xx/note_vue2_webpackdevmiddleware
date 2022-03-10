@@ -478,7 +478,7 @@ export default {
     height: 25%;
     position: relative;
     min-height: 126px;
-    background-image: url("/static/image/ey1/game/pic_gamebg.png");
+    background-image: url("/static/image/sg1/game/pic_gamebg.png");
     background-size: 100% 100%;
     background-position: center;
     background-size: auto;
@@ -589,7 +589,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  background-image: url("/static/image/ey1/game/pic_gamebg.png") no-repeat
+  background-image: url("/static/image/sg1/game/pic_gamebg.png") no-repeat
     center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;

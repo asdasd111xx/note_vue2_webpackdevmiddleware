@@ -16,8 +16,6 @@
               `/static/image/common/btn_close_${
                 themeTPL === 'porn1'
                   ? 'grey'
-                  : themeTPL === 'ey1'
-                  ? 'white'
                   : themeTPL === 'sg1'
                   ? 'black'
                   : null
