@@ -209,11 +209,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/css/variable.scss";
-.news-container {
-  &.ey1 {
-    background: linear-gradient(#ffffff, #cbd8ff);
-  }
-}
+
 .news-wrap {
   display: flex;
   align-content: center;

@@ -258,23 +258,6 @@ export default {
     display: none;
     width: 100%;
   }
-
-  &.ey1 {
-    // height: 200px;
-
-    .phone-image-wrap {
-      padding: 0;
-    }
-
-    .phone-image,
-    .pad-image {
-      border-radius: unset;
-      // position: absolute;
-      // top: 0;
-      // bottom: 0;
-      // margin: auto;
-    }
-  }
 }
 
 :global {

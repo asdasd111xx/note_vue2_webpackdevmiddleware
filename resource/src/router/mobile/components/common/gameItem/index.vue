@@ -211,18 +211,10 @@ export default {
      * @returns {object} 圖片路徑
      */
     getImg() {
-      const ey1_default_img = "/static/image/ey1/default/bg_gamecard_d.png";
-
       return {
         src: this.gameInfo.image_url,
-        error:
-          this.themeTPL === "ey1"
-            ? ey1_default_img
-            : this.$getCdnPath("/static/image/game_loading_s.gif"),
-        loading:
-          this.themeTPL === "ey1"
-            ? ey1_default_img
-            : this.$getCdnPath("/static/image/game_loading_s.gif")
+        error: this.$getCdnPath("/static/image/game_loading_s.gif"),
+        loading: this.$getCdnPath("/static/image/game_loading_s.gif")
       };
     },
     getJackpotImg() {
@@ -406,35 +398,27 @@ export default {
         if (res && res.data) {
           let data = res.data;
 
-          if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
-            if (data.code === "C50101" || data.code === "C50100") {
-              goLangApiRequest({
-                method: "get",
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
-                params: {
-                  cid: getCookie("cid")
+          if (data.code === "C50101" || data.code === "C50100") {
+            goLangApiRequest({
+              method: "get",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+              params: {
+                cid: getCookie("cid")
+              }
+            }).then(res => {
+              console.log(res);
+              if (res.status === "000") {
+                if (res.data.status != -1) {
+                  this.actionSetShowRedEnvelope(res.data);
+                } else {
+                  this.actionSetGlobalMessage({
+                    msg: data.msg,
+                    code: data.code,
+                    origin: this.redirectCard()
+                  });
                 }
-              }).then(res => {
-                console.log(res);
-                if (res.status === "000") {
-                  if (res.data.status != -1) {
-                    this.actionSetShowRedEnvelope(res.data);
-                  } else {
-                    this.actionSetGlobalMessage({
-                      msg: data.msg,
-                      code: data.code,
-                      origin: this.redirectCard()
-                    });
-                  }
-                }
-              });
-            } else {
-              this.actionSetGlobalMessage({
-                msg: data.msg,
-                code: data.code,
-                origin: this.redirectCard()
-              });
-            }
+              }
+            });
           } else {
             this.actionSetGlobalMessage({
               msg: data.msg,
@@ -485,5 +469,4 @@ export default {
 </script>
 
 <style lang="scss" src="./css/porn1.module.scss" module="$style_porn1"></style>
-<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
