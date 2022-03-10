@@ -2387,7 +2387,6 @@ export default {
 
       this.epointSelectType =
         +localStorage.getItem("tmp_w_epointSelectType");
-        console.log(123);
       if (
         localStorage.getItem("tmp_w_epointWallet") &&
         localStorage.getItem("tmp_w_epointWallet") != "undefined"
