@@ -10,8 +10,6 @@
                 themeTPL === 'aobo1' ||
                 themeTPL === 'sp1'
                   ? 'grey'
-                  : themeTPL === 'ey1'
-                  ? 'white'
                   : themeTPL === 'sg1'
                   ? 'black'
                   : null
@@ -41,22 +39,6 @@
           alt="more"
         />
       </div>
-
-      <!-- 歷史錢包按鈕 -->
-      <template v-if="['ey1'].includes(themeTPL)">
-        <div
-          v-if="showHistoryButton"
-          :class="$style['header-icon']"
-          @click="goToHistory"
-        >
-          <img
-            :src="
-              $getCdnPath('/static/image/ey1/mcenter/bankCard/ic_history.png')
-            "
-            alt="history"
-          />
-        </div>
-      </template>
     </div>
 
     <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
@@ -167,9 +149,6 @@ export default {
           case "aobo1":
           case "sp1":
             return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
-
-          case "ey1":
-            return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
         }
       }
 
@@ -195,13 +174,6 @@ export default {
                 : !isCommon
                 ? this.$text("S_HISTORY_ACCOUNT", "历史帐号")
                 : this.$text("S_CARD_MANAGEMENT", "卡片管理");
-
-            case "ey1":
-              return showDetail
-                ? this.$text("S_VIRTUAL_BANKCARD", "电子钱包")
-                : !isCommon
-                ? this.$text("S_HISTORY_ACCOUNT", "历史帐号")
-                : this.$text("S_CARD_MANAGEMENT", "卡片管理");
           }
 
           break;
@@ -218,9 +190,6 @@ export default {
             case "aobo1":
             case "sp1":
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
-
-            case "ey1":
-              return this.$text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包");
           }
           break;
       }
@@ -248,15 +217,7 @@ export default {
           return showButton;
 
         case "walletCardInfo":
-          // 億元因還有「停用」與「移至歷史錢包」的選項，故不在此先判斷 delete_bank_card
-          // 0419-億元 唯一不會出現的情況，單組開關 + 只有一張時
-          return ["ey1"].includes(themeTPL)
-            ? showDetail &&
-                !isAudit &&
-                (memInfo.config.delete_bank_card ||
-                  !userLevelObj.virtual_bank_single ||
-                  hasSameTypeWallet)
-            : showButton;
+          return showButton;
       }
     },
     showHistoryButton() {
@@ -452,11 +413,6 @@ export default {
   lang="scss"
   src="@/css/page/bankCard/porn1.index.module.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="@/css/page/bankCard/ey1.index.module.scss"
-  module="$style_ey1"
 ></style>
 <style
   lang="scss"
