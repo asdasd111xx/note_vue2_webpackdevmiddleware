@@ -59,9 +59,6 @@
               <div :class="[$style['check-cell'], $style['offer-twoline']]">
                 <div :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
-                  <template v-if="['ey1'].includes(themeTPL)">
-                    (行政费用:{{ `${serialNumberData.administrative_rate}%` }})
-                  </template>
                 </div>
                 <span :class="$style['money']">
                   {{

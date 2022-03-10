@@ -21,11 +21,7 @@
         @click="$router.replace('/mobile/mcenter/tcenter/management/friends')"
       >
         <span>
-          <template v-if="themeTPL === 'ey1'">
-            {{ $text("S_FIRST_LEVEL_FRIEND", "一级好友") }}
-          </template>
-
-          <template v-else>
+          <template>
             下级好友
           </template>
         </span>

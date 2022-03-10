@@ -152,27 +152,12 @@ export default {
           case "C50103":
           case "C50105":
           case "bindVirtualBank":
-            if (["ey1"].includes(this.themeTPL)) {
-              // 億元
-              // this.$router.push(
-              //   `/mobile/withdrawAccount?redirect=${
-              //     redirect ? redirect : "home"
-              //   }`
-              // );
+            this.$router.push(
+              `/mobile/mcenter/bankCard?redirect=${
+                redirect ? redirect : "home"
+              }&type=bankCard`
+            );
 
-              // 0514 如果有收到 Error code 表示該提現資料已經完成填寫，直接導向綁定卡片頁面
-              this.$router.push(
-                `/mobile/mcenter/bankCard?redirect=${
-                  redirect ? redirect : "home"
-                }&type=wallet`
-              );
-            } else {
-              this.$router.push(
-                `/mobile/mcenter/bankCard?redirect=${
-                  redirect ? redirect : "home"
-                }&type=bankCard`
-              );
-            }
             break;
 
           // 停權

@@ -273,16 +273,8 @@ export default {
     }
 
     // 額度轉讓 porn1/sg1
-    if (this.siteConfig.MOBILE_WEB_TPL === "ey1") {
-      this.categoryOpt = this.categoryOptions.filter(
-        i =>
-          i.key !== "ingroup_transfer" &&
-          i.key !== "outer" &&
-          i.key !== "internal_memo"
-      );
-    } else {
-      this.categoryOpt = this.categoryOptions;
-    }
+
+    this.categoryOpt = this.categoryOptions;
 
     common.opcode({
       success: ({ result, ret }) => {

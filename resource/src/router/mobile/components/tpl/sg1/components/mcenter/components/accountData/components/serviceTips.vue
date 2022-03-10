@@ -1,9 +1,5 @@
 <template>
   <div :class="$style['service-tip']">
-    <!-- <template v-if="theme === 'ey1' || type !== 'phone'">
-      为了你的隐私安全，信息在确认后将无法修改
-    </template> -->
-
     <template v-if="!edit">
       为了你的隐私安全，信息在确认后将无法修改
     </template>

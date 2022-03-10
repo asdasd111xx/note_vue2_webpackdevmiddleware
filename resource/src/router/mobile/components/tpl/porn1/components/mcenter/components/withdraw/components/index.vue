@@ -20,13 +20,6 @@
       :has-link="true"
       :hasTopSpace="false"
     />
-    <!-- 億元 -->
-    <balance-back
-      v-if="['ey1'].includes(themeTPL)"
-      :has-link="false"
-      :hasTopSpace="false"
-      :back-router="'mcenter/withdraw'"
-    />
 
     <balance-tran :class="[$style['balance-tran-container'], 'clearfix']">
       <!-- 個別餘額 -->
@@ -85,10 +78,6 @@
             <span :class="$style['balance-item-vendor']">
               <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 {{ $text("S_BONUS", "红利彩金") }}
-              </template>
-
-              <template v-if="['ey1'].includes(themeTPL)">
-                {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
               </template>
             </span>
 
@@ -596,15 +585,7 @@
         </div>
       </div>
       <!-- 到帳金額 -->
-      <div
-        :class="[
-          $style['actual-money'],
-          {
-            [$style['error']]:
-              ['ey1'].includes(themeTPL) && withdrawValue && actualMoney <= 0
-          }
-        ]"
-      >
+      <div :class="$style['actual-money']">
         <span :class="$style['money-currency']">
           {{ `${realWidthdrawText}` }}
         </span>
@@ -1653,12 +1634,6 @@ export default {
                 } else {
                   this.handleSubmit();
                 }
-                break;
-
-              // 一律顯示溫馨
-              case "ey1":
-                this.widthdrawTipsType = "tips";
-                this.setPopupStatus(true, "check");
                 break;
             }
           }

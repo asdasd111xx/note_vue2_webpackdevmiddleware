@@ -2,38 +2,6 @@
   <div>
     <template v-if="$route.params.date">
       <div :class="[$style['date-wrap'], 'clearfix']">
-        <!-- 億元 -->
-        <template v-if="['ey1'].includes(themeTPL)">
-          <div
-            :class="{ [$style.active]: $route.params.date === 'week' }"
-            @click="
-              $router.replace('/mobile/mcenter/tcenter/management/member/week')
-            "
-          >
-            <span>{{ $text("THIS_WEEK", "本周") }}</span>
-          </div>
-          <div
-            :class="{ [$style.active]: $route.params.date === 'last' }"
-            @click="
-              $router.replace('/mobile/mcenter/tcenter/management/member/last')
-            "
-          >
-            <span>{{ $text("S_LAST_WEEK", "上周") }}</span>
-          </div>
-          <div
-            :class="{
-              [$style.active]: $route.params.date === 'thirty'
-            }"
-            @click="
-              $router.replace(
-                '/mobile/mcenter/tcenter/management/member/thirty'
-              )
-            "
-          >
-            <span>{{ $text("S_NEARLY_THIRTY_DAYS", "近30天") }}</span>
-          </div>
-        </template>
-
         <!-- 鴨博/絲瓜 -->
         <template v-if="['porn1', 'sg1'].includes(themeTPL)">
           <div
@@ -303,17 +271,10 @@ export default {
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     onCheck() {
-      if (this.themeTPL === "ey1") {
-        this.$router.replace({
-          name: "mcenter-tcenter-management",
-          params: { page: "member", date: "week" }
-        });
-      } else {
-        this.$router.replace({
-          name: "mcenter-tcenter-management",
-          params: { page: "member", date: "today" }
-        });
-      }
+      this.$router.replace({
+        name: "mcenter-tcenter-management",
+        params: { page: "member", date: "today" }
+      });
     }
   }
 };

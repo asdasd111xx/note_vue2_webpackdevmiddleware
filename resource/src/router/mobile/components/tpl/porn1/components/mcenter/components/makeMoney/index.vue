@@ -5,7 +5,7 @@
     :class="$style.container"
   >
     <div slot="content">
-      <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL) && showOldVersion">
+      <div v-if="['porn1', 'sg1'].includes(routerTPL) && showOldVersion">
         <div :class="$style['img-wrap']">
           <img
             :class="$style['img-wrap']"

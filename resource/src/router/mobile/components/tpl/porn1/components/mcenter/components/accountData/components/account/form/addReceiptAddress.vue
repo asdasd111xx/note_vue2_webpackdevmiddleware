@@ -300,7 +300,7 @@ export default {
         );
 
         // 億元 不客端判斷手機號碼位數
-        if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
+        if (value.length >= 11) {
           this.tipMsg = "";
         }
       } else if (target === "name") {

@@ -69,10 +69,6 @@
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $text("S_NO_BONUS", "暂时没有新的红利彩金") }}
           </template>
-
-          <template v-if="themeTPL === 'ey1'">
-            {{ $text("S_NO_BONUS_ACCOUNT", "暂时没有新的红利帐户") }}
-          </template>
         </p>
       </div>
     </template>

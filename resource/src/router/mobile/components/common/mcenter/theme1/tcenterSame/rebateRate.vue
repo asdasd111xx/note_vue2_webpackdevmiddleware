@@ -92,9 +92,6 @@ export default {
         case "porn1":
           color = "black";
           break;
-        case "ey1":
-          color = "white";
-          break;
       }
       return `/static/image/common/btn_close_${color}.png`;
     }

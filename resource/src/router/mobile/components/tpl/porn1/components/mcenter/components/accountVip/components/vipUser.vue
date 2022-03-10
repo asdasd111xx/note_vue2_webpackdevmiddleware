@@ -256,10 +256,6 @@ export default {
     this.avatarSrc = `/static/image/common/default/avatar_nologin.png`;
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
-
-      if (this.themeTPL === "ey1") {
-        // this.getDowngradeData();
-      }
     });
 
     this.$nextTick(() => {
