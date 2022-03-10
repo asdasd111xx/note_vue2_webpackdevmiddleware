@@ -137,34 +137,33 @@ export default {
 
           if (res && res.data) {
             let data = res.data;
-            if (this.siteConfig.MOBILE_WEB_TPL != "ey1") {
-              if (data.code === "C50101" || data.code === "C50100") {
-                goLangApiRequest({
-                  method: "get",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
-                  params: {
-                    cid: getCookie("cid")
+
+            if (data.code === "C50101" || data.code === "C50100") {
+              goLangApiRequest({
+                method: "get",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Drawing/GetDrawing`,
+                params: {
+                  cid: getCookie("cid")
+                }
+              }).then(res => {
+                if (res.status === "000") {
+                  if (res.data.status != -1) {
+                    this.actionSetShowRedEnvelope(res.data);
+                  } else {
+                    this.actionSetGlobalMessage({
+                      msg: data.msg,
+                      code: data.code,
+                      origin: `activity-${this.$route.params.vendor}`
+                    });
                   }
-                }).then(res => {
-                  if (res.status === "000") {
-                    if (res.data.status != -1) {
-                      this.actionSetShowRedEnvelope(res.data);
-                    } else {
-                      this.actionSetGlobalMessage({
-                        msg: data.msg,
-                        code: data.code,
-                        origin: `activity-${this.$route.params.vendor}`
-                      });
-                    }
-                  }
-                });
-              } else {
-                this.actionSetGlobalMessage({
-                  msg: data.msg,
-                  code: data.code,
-                  origin: `activity-${this.$route.params.vendor}`
-                });
-              }
+                }
+              });
+            } else {
+              this.actionSetGlobalMessage({
+                msg: data.msg,
+                code: data.code,
+                origin: `activity-${this.$route.params.vendor}`
+              });
             }
           } else {
             this.actionSetGlobalMessage({

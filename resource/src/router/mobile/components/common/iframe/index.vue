@@ -74,8 +74,6 @@
               `/static/image/common/btn_back_${
                 themeTPL === 'porn1'
                   ? 'grey'
-                  : themeTPL === 'ey1'
-                  ? 'white'
                   : themeTPL === 'sg1'
                   ? 'black'
                   : null
@@ -861,10 +859,6 @@ export default {
     top: -43px;
   }
 
-  &.ey1 {
-    background: linear-gradient(#fe2a2a, #b60303);
-  }
-
   &.porn1 {
     background: white;
   }
@@ -891,10 +885,6 @@ export default {
   margin: auto;
   z-index: 2;
   color: black;
-
-  &.ey1 {
-    color: white;
-  }
 
   &.porn1 {
     color: black;
@@ -932,10 +922,6 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 60%;
-
-  &.ey1 {
-    color: white;
-  }
 
   &.porn1 {
     color: black;
@@ -978,10 +964,6 @@ export default {
     padding: 0 3px;
     height: 43px;
     line-height: 43px;
-  }
-
-  &.ey1 {
-    color: white;
   }
 
   &.porn1 {
