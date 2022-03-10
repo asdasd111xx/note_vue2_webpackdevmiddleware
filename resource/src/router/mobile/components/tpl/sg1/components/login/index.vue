@@ -338,7 +338,6 @@ export default {
         //   }
         // });
         this.actionGetRegisterURL().then(res => {
-          console.log(res);
           if (res.redirect_url) {
             window.location.replace(
               res.redirect_url + "/mobile/joinmember?login=1"

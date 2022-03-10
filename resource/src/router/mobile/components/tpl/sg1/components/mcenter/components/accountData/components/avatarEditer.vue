@@ -409,27 +409,6 @@ export default {
   margin: 0 auto;
 }
 
-.save-wrap {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
-  box-shadow: none;
-  color: #a6a9b2;
-  font-size: 15px;
-  height: 100%;
-  line-height: 43px;
-  outline: none;
-  position: absolute;
-  right: 14px;
-  top: 0;
-  border: unset;
-
-  > .active {
-    color: #414655;
-  }
-}
-
 .img-input {
   display: none;
   border: unset;

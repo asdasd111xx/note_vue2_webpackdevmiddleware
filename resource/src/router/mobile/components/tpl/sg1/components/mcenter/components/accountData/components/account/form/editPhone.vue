@@ -761,5 +761,4 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" src="../../../css/index.module.scss"></style>
+<style lang="scss" src="../../../css/index.module.scss" module></style>
