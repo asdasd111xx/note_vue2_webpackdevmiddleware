@@ -585,7 +585,7 @@
         </div>
       </div>
       <!-- 到帳金額 -->
-      <div :class="$style['actual-money']">
+      <div :class="[$style['actual-money']]">
         <span :class="$style['money-currency']">
           {{ `${realWidthdrawText}` }}
         </span>
@@ -741,7 +741,8 @@
       </template>
 
       <!-- 更多提现方式 -->
-      <template v-if="showPopStatus.type === 'moreMethod'">
+      <template v-if="showPopStatus.type === 'moreMethod'"
+        >@@
         <withdraw-more-method
           :withdraw-user-data="withdrawUserData"
           :check-account-data="checkAccountData"

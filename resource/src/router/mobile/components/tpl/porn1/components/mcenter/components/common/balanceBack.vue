@@ -133,22 +133,6 @@ export default {
           }
         });
       return;
-    },
-    birdMoney() {
-      let cid = getCookie("cid");
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Member/Info`,
-        headers: {
-          cid: cid
-        },
-        params: {
-          lang: "zh-cn",
-          account: this.memInfo.user.username
-        }
-      }).then(res => {
-        this.birdBalance = res.data ? res.data.credits2 : "--";
-      });
     }
   }
 };
