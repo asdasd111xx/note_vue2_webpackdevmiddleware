@@ -445,14 +445,7 @@ export default {
       );
     },
     giftTitle() {
-      switch (this.siteConfig.ROUTER_TPL) {
-        default:
-          return "推广赚钱";
-        case "ey1":
-          return "一键快赚";
-        // case "sg1":
-        //   return "我的推广";
-      }
+      return "推广赚钱";
     },
     cardItemList() {
       let data = this.mainListData?.map(info => {

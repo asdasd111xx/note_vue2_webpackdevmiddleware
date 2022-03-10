@@ -13,8 +13,6 @@
                 `/static/image/common/btn_back_${
                   themeTPL === 'porn1'
                     ? 'grey'
-                    : themeTPL === 'ey1'
-                    ? 'white'
                     : themeTPL === 'sg1'
                     ? 'black'
                     : null
@@ -89,17 +87,6 @@
             {{ formData["phone"].title }}
           </div>
           <div :class="$style['form-input']">
-            <template v-if="themeTPL === 'ey1'">
-              <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option
-                  v-for="(option, key) in phoneHeadOption"
-                  v-bind:value="option"
-                  :key="key"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </template>
             <input
               v-model="formData['phone'].value"
               @input="verification('phone')"
