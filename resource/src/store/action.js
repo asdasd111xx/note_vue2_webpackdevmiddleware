@@ -736,8 +736,8 @@ export const actionSetUserdata = (
   const hasLogin = getCookie("cid");
   if (hasLogin) {
     goLangApiRequest({
-      method: "post",
-      url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
+      method: "get",
+      url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`
     }).then(res => {
       commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
     });
@@ -1666,8 +1666,8 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
 
       if (bank_required) {
         const user_bank = goLangApiRequest({
-          method: "post",
-          url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Payment/UserBank/List`
+          method: "get",
+          url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`
         }).then(res => {
           if (res && res.data && res.status === "000" && res.data.length > 0) {
             bank_required_result = {
