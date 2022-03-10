@@ -24,10 +24,6 @@
 import { mapGetters } from "vuex";
 export default {
   props: {
-    cssStyle: {
-      type: Object,
-      default: () => {}
-    },
     successFuc: {
       type: Function,
       default: () => {}
@@ -190,6 +186,12 @@ export default {
   module="$style_porn1"
 ></style>
 
+<style
+  lang="scss"
+  src="@/css/page/sliderbg/sg1.module.scss"
+  module="$style_sg1"
+></style>
+
 <style lang="scss">
 #slide-verification-unable-wrap {
   -webkit-background-clip: text;
@@ -198,9 +200,3 @@ export default {
   -webkit-text-size-adjust: none;
 }
 </style>
-
-<style
-  lang="scss"
-  src="@/css/page/sliderbg/sg1.module.scss"
-  module="$style_sg1"
-></style>

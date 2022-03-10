@@ -699,14 +699,12 @@
 <script>
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
 import appEvent from "@/lib/appEvent";
-import capitalize from "lodash/capitalize";
 import datepicker from "vuejs-datepicker";
 import datepickerLang from "@/lib/datepicker_lang";
 import joinMemInfo from "@/config/joinMemInfo";
-import thirdyVerification from "@/components/thirdyVerification";
 import slideVerification from "@/components/slideVerification";
+import thirdyVerification from "@/components/thirdyVerification";
 import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -714,14 +712,14 @@ import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
   components: {
-    slideVerification,
-    thirdyVerification,
     vSelect,
     datepicker,
     pageLoading: () =>
       import(
         /* webpackChunkName: 'pageLoading' */ "@/router/mobile/components/common/pageLoading"
-      )
+      ),
+    slideVerification,
+    thirdyVerification
   },
   props: {
     theme: {
@@ -912,17 +910,6 @@ export default {
           this.joinMemInfo[field.key] && this.joinMemInfo[field.key].required
       );
     },
-    $style() {
-      if (this.theme) {
-        return this.theme;
-      }
-
-      if (this.siteConfig.JOIN_MEMBER_THEME) {
-        return this[`$style${capitalize(this.siteConfig.JOIN_MEMBER_THEME)}`];
-      }
-
-      return this.$styleDefault;
-    },
     isSlideAble() {
       return this.registerData
         .filter(field => this.joinMemInfo[field.key].show)
@@ -1045,7 +1032,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
       }).then(res => {
-        console.log(res);
         if (res && res.status === "000") {
           const data = res.data;
 
@@ -1677,7 +1663,8 @@ export default {
                 window.RESET_MEM_SETTING();
                 window.RESET_LOCAL_SETTING();
                 if (this.siteConfig.ROUTER_TPL === "sg1") {
-                  window.location.href = "/mobile/live/iframe/home?hasFooter=true";
+                  window.location.href =
+                    "/mobile/live/iframe/home?hasFooter=true";
                 } else {
                   window.RESET_LOCAL_SETTING(true);
                 }
@@ -1974,8 +1961,4 @@ export default {
 };
 </script>
 
-<style
-  lang="scss"
-  src="@/css/page/joinMem.module.scss"
-  module="$styleDefault"
-/>
+<style lang="scss" src="@/css/page/joinMem.module.scss" module />
