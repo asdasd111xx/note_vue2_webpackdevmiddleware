@@ -8,8 +8,6 @@
               `/static/image/common/btn_back_${
                 themeTPL === 'porn1'
                   ? 'grey'
-                  : themeTPL === 'ey1'
-                  ? 'white'
                   : themeTPL === 'sg1'
                   ? 'black'
                   : null
