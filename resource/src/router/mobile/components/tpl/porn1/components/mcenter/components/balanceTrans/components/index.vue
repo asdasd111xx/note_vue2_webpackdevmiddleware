@@ -829,11 +829,7 @@ export default {
       });
     },
     handleSubmit() {
-      // if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
-      //   lib_useGlobalWithdrawCheck("balanceTrans");
-      // } else {
       this.sendBalanceTran();
-      // }
     },
     sendBalanceTran() {
       // 阻擋連續點擊
