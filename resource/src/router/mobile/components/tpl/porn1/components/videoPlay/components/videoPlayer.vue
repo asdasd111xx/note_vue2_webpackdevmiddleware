@@ -407,7 +407,7 @@ export default {
         // 彩金開關
         // 預設連線中
         this.isActiveBouns = !!data.HasActivity;
-        if (!data.HasActivity) {
+        if (!data.HasActivity && !this.adSwitch) {
           return;
         }
 
