@@ -1966,17 +1966,6 @@ export default {
       });
     },
     handleBindWallet() {
-      // 億元 USDT 的部份仍以彈窗顯示
-      if (
-        ["ey1"].includes(this.themeTPL) &&
-        (this.curPayInfo.payment_method_id === 402 ||
-          this.curPayInfo.payment_method_id === 404)
-      ) {
-        this.bindWalletType = "USDT";
-        this.eyBindWalletData = this.curPayInfo;
-        this.setPopupStatus(true, "bindWallet");
-        return;
-      }
       switch (this.curPayInfo.payment_method_id) {
         // CGPay
         case 16:

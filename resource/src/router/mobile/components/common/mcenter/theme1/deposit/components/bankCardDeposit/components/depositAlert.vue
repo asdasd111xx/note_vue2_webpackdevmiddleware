@@ -1,7 +1,7 @@
 <template>
   <transition :name="'fade'">
     <div :class="[$style['deposit-alert-wrap']]">
-      <template v-if="['sg1', 'ey1', 'porn1'].includes(themeTPL)">
+      <template v-if="['sg1', 'porn1'].includes(themeTPL)">
         <div :class="$style['alert-wrap']">
           <div :class="$style['alert-body-wrap']">
             <div :class="$style['success-icon-wrap']">
