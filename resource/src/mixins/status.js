@@ -20,7 +20,7 @@ export default {
       if (res && res.site) {
         this.domain = res;
 
-        if (["sg1", "ey1", "aobo1", "sp1"].includes(res.site)) {
+        if (["sg1", "aobo1", "sp1"].includes(res.site)) {
           this.themeTPL = res.site;
         } else {
           this.themeTPL = "porn1";

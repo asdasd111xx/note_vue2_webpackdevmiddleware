@@ -1,4 +1,5 @@
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
 import CommonDate from "@/lib/commonDate";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
@@ -68,10 +69,7 @@ export default {
     }
   },
   created() {
-    this.date =
-      this.themeTPL === "ey1"
-        ? [...this.commonDate.week]
-        : [this.commonDate.today_start, this.commonDate.today_end];
+    this.date = [this.commonDate.today_start, this.commonDate.today_end];
 
     this.getLevelList();
   },

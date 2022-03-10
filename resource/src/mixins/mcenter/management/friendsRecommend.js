@@ -213,35 +213,6 @@ export default {
         this.isSend = false;
       }, 1200);
 
-      // let registFc;
-
-      // if (this.themeTPL === "ey1") {
-      //   registFc = axios({
-      //     method: "post",
-      //     url: API_FIRST_LEVEL_REGISTER,
-      //     errorAlert: false,
-      //     data: {
-      //       ...this.allValue,
-      //       captcha_text: this.allValue["captcha_text"],
-      //       code: this.agentCode,
-      //       created_by: 2
-      //     }
-      //   });
-      // } else {
-      //   registFc = goLangApiRequest({
-      //     method: "post",
-      //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/ByUpper`,
-      //     params: {
-      //       ...this.allValue,
-      //       aid: getCookie("aid") || "",
-      //       confirmPassword: this.allValue["confirm_password"],
-      //       captchaText: this.allValue["captcha_text"],
-      //       code: this.agentCode,
-      //       created_by: 2,
-      //       lang: "zh-cn"
-      //     }
-      //   });
-      // }
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/ByUpper`,
