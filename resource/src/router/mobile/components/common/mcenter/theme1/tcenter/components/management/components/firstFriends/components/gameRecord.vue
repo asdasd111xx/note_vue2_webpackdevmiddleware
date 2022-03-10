@@ -210,5 +210,4 @@ export default {
   src="./css/porn1.gameReord.scss"
   module="$style_porn1"
 ></style>
-<style lang="scss" src="./css/ey1.gameReord.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.gameReord.scss" module="$style_sg1"></style>

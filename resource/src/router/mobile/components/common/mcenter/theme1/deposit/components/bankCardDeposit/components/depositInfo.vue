@@ -365,11 +365,6 @@ export default {
 ></style>
 <style
   lang="scss"
-  src="../css/depositInfo/ey1.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
   src="../css/depositInfo/sg1.scss"
   module="$style_sg1"
 ></style>

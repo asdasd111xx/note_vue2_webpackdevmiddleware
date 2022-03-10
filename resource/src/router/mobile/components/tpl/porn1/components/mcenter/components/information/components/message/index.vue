@@ -434,5 +434,4 @@ export default {
   src="../../css/porn1.message.scss"
   module="$style_porn1"
 ></style>
-<style lang="scss" src="../../css/ey1.message.scss" module="$style_ey1"></style>
 <style lang="scss" src="../../css/sg1.message.scss" module="$style_sg1"></style>

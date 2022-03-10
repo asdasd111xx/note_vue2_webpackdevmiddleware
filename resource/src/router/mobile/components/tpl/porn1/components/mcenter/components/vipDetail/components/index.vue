@@ -383,11 +383,6 @@ export default {
 ></style>
 <style
   lang="scss"
-  src="@/css/page/vipDetail/ey1.index.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
   src="@/css/page/vipDetail/sg1.index.scss"
   module="$style_sg1"
 ></style>

@@ -221,11 +221,6 @@ export default {
 ></style>
 <style
   lang="scss"
-  src="../css/withdrawMoreMethod/ey1.index.module.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
   src="../css/withdrawMoreMethod/sg1.index.module.scss"
   module="$style_sg1"
 ></style>

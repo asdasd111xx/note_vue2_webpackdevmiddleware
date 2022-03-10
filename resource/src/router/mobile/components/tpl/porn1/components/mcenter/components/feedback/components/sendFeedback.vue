@@ -70,7 +70,8 @@
         {
           [$style['disabled']]:
             !paramsData.title ||
-            (contentLenght < 20 && !isSend) || contentLenght > 200
+            (contentLenght < 20 && !isSend) ||
+            contentLenght > 200
         }
       ]"
       @click="submitFeedback"
@@ -264,11 +265,6 @@ export default {
   lang="scss"
   src="./css/sendFeedback.module.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="./css/ey1.sendFeedback.scss"
-  module="$style_ey1"
 ></style>
 <style
   lang="scss"
