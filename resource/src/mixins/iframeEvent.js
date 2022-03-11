@@ -430,7 +430,8 @@ export default {
 
       console.log("iframeOnSendMessage:", event, data);
       if (event === "EVENT_GET_GAME_URL_TOKEN") {
-        if (data && data.data && data.data.result === "error") {
+        const isError = data && data.data && data.data.result === "error";
+        if (isError) {
           this.actionSetGlobalMessage({
             msg: data.data.msg,
             code: data.data.code,
@@ -441,7 +442,7 @@ export default {
         iframe.contentWindow.postMessage(
           {
             event: "EVENT_GAME_URI",
-            data: data,
+            data: isError ? data.data : data,
             title: localStorage.getItem("iframe-third-url-title"),
             origin: this.originData
           },
