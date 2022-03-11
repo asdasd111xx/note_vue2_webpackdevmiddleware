@@ -99,7 +99,7 @@
           />
           <div v-show="hasUnreadMessage">
             <div :class="$style['information-dot']">
-              <span>{{ unreadMessageCount }}</span>
+              <span>{{ UnreadMsgCount }}</span>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@
           />
           <div v-show="hasUnreadMessage">
             <div :class="$style['information-dot']">
-              <span>{{ unreadMessageCount }}</span>
+              <span>{{ UnreadMsgCount }}</span>
             </div>
           </div>
         </div>
@@ -264,6 +264,12 @@ export default {
       siteConfig: "getSiteConfig",
       activity: "getActivity"
     }),
+    UnreadMsgCount() {
+      if (this.unreadMessageCount >= 100) {
+        return "99+";
+      }
+      return this.unreadMessageCount;
+    },
     mainClass() {
       const style = this.$style;
 
@@ -878,17 +884,17 @@ export default {
 
 .information-dot {
   position: absolute;
-  left: 13px;
+  left: 11px;
   background: red;
   border-radius: 20px;
-  width: 18px;
-  height: 18px;
-  line-height: 16px;
+  // width: 18px;
+  // height: 18px;
+  line-height: 14px;
   top: -9px;
   span {
     color: #fff;
     font-size: 12px;
-    padding: 0;
+    padding: 0 2px;
   }
 }
 

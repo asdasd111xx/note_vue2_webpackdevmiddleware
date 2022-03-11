@@ -24,7 +24,7 @@
             v-if="item.hasMsgCount && memInfo.msgCount"
             :class="$style['menu-tips']"
           >
-            {{ memInfo.msgCount }}
+            {{ UnreadMsgCount }}
           </div>
         </div>
         <div
@@ -160,6 +160,12 @@ export default {
           }
         ];
       }
+    },
+    UnreadMsgCount() {
+      if (this.memInfo.msgCount >= 100) {
+        return "99+";
+      }
+      return this.memInfo.msgCount;
     }
   }
 };
