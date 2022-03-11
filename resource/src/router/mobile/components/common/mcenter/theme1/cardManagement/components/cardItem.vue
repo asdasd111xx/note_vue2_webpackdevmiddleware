@@ -9,15 +9,6 @@
           'card--shape-square',
           `card--bg-repeat-gradient-${colorRepeatIndex}`
         )]: isSquare
-      },
-      {
-        [getClass(
-          'card--shape-rectangle',
-          'card--bg-common-gradient'
-        )]: isRectangle
-      },
-      {
-        [$style['card--bg-history-gradient']]: isRectangle && !isCommon
       }
     ]"
     @click="handleItem"
@@ -28,9 +19,6 @@
         $style['card__logo'],
         {
           [$style['card__logo--top-20']]: isSquare
-        },
-        {
-          [$style['card__logo--top-15']]: isRectangle
         }
       ]"
     >
@@ -66,9 +54,7 @@
         {
           [$style[`card__number--color-${colorRepeatIndex}`]]: isSquare
         },
-        {
-          [getClass('card__number--small', 'mt-3')]: isRectangle
-        },
+
         {
           [$style['mt-10']]: data.type
         },
@@ -109,9 +95,6 @@
         $style['card__status-audit'],
         {
           [$style['card__status-audit--theme-square']]: isSquare
-        },
-        {
-          [$style['card__status-audit--theme-rectangle']]: isRectangle
         }
       ]"
     >
