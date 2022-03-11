@@ -223,11 +223,6 @@ export default {
             this.$router.push("/mobile/mcenter");
             break;
 
-          //5APP首充觀影
-          case "11":
-            this.$router.push("/mobile/mcenter/deposit");
-            break;
-
           default:
             break;
         }

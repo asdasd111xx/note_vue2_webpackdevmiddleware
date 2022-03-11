@@ -59,7 +59,8 @@ export default {
       isShowPop: false,
       sitePostList: null,
       trialList: [],
-      isNotLoopTypeList: false
+      isNotLoopTypeList: false,
+      notFirstDeposit: false //首儲
     };
   },
   watch: {
@@ -246,6 +247,7 @@ export default {
       // 顯示過公告 localStorage.getItem('is-shown-announcement')
       // 不在提示 localStorage.getItem('do-not-show-home-post')
       if (this.loginStatus) {
+        this.getFirstDeposit(); //鴨脖視頻要判斷首儲
         localStorage.setItem("is-shown-announcement", true);
         axios({
           method: "get",
@@ -1074,12 +1076,46 @@ export default {
               return;
 
             case "YV":
-              this.$router.push({
-                name: "videoList",
-                query: {
-                  source: "yabo"
-                }
-              });
+              //判斷首儲觀影開關
+              if (["porn1", "sg1"].includes(this.routerTPL)) {
+                this.isLoading = true;
+                localStorage.setItem("is-open-game", true);
+                this.actionSetYaboConfig().then(() => {
+                  this.isLoading = false;
+                  localStorage.removeItem("is-open-game");
+                  let noFirstSavingsVideoSwitch = true;
+
+                  if (this.yaboConfig) {
+                    noFirstSavingsVideoSwitch =
+                      this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      ).value === "true";
+                  }
+                  if (!noFirstSavingsVideoSwitch) {
+                    if (!this.notFirstDeposit) {
+                      this.actionSetGlobalMessage({
+                        msg: "充值一次 立即解锁VIP影片",
+                        code: "recharge_deposit"
+                      });
+                      return;
+                    }
+                  }
+                  this.$router.push({
+                    name: "videoList",
+                    query: {
+                      source: "yabo"
+                    }
+                  });
+                });
+              } else {
+                this.$router.push({
+                  name: "videoList",
+                  query: {
+                    source: "yabo"
+                  }
+                });
+              }
+
               return;
 
             case "PV":
@@ -1289,7 +1325,17 @@ export default {
           : 0;
       });
     },
-
+    getFirstDeposit() {
+      //取首儲狀態
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/UserState/Deposit/Withdraw`
+      }).then(res => {
+        if (res.data && res.status === "000") {
+          this.notFirstDeposit = res.data.deposit_count > 0;
+        }
+      });
+    },
     getMaintainList() {
       if (this.loginStatus) {
         //取維護狀態
