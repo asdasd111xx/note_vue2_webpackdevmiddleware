@@ -116,10 +116,7 @@ export default {
       delete this.formData["accountName"];
     }
 
-    if (
-      ["porn1", "sg1"].includes(this.themeTPL) ||
-      (this.memInfo.config.player_user_bank && ["ey1"].includes(this.themeTPL))
-    ) {
+    if (["porn1", "sg1"].includes(this.themeTPL)) {
       delete this.formData["city"];
       delete this.formData["province"];
     }
@@ -308,17 +305,6 @@ export default {
         if (this.addBankCardStep === "one") {
           if (key === "account") {
             return this.formData[key].length > 15;
-          }
-
-          if (["ey1"].includes(this.themeTPL)) {
-            if (
-              !this.memInfo.config.player_user_bank &&
-              key === "city" &&
-              !this.memInfo.config.player_user_bank &&
-              key === "province"
-            ) {
-              return this.formData[key];
-            }
           }
 
           // 需要填入時才檢查
