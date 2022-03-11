@@ -94,10 +94,6 @@
       <span slot="no-more" />
       <span slot="no-results" />
     </infinite-loading>
-
-    <!-- <template v-if="themeTPL !== 'ey1'">
-      <page-loading :is-show="isReceive" />
-    </template> -->
   </div>
   <!-- 我的推廣 -->
   <div v-else :class="[$style['first-friends-table'], $style[themeTPL]]">
@@ -145,10 +141,6 @@
       <span slot="no-more" />
       <span slot="no-results" />
     </infinite-loading>
-
-    <!-- <template v-if="themeTPL !== 'ey1'">
-      <page-loading :is-show="isReceive" />
-    </template> -->
   </div>
 </template>
 
