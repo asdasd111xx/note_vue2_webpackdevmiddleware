@@ -855,46 +855,6 @@ input {
   .ui.toggle.checkbox input:focus:checked ~ label:before {
     background-color: #7d87a3 !important;
   }
-
-  /* only for ey */
-  .ui.toggle.checkbox.field-checkbox.ey1 input {
-    width: 48px;
-    height: 29px;
-  }
-
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:after {
-    left: 20px;
-    top: 1px;
-    box-shadow: none;
-  }
-
-  .ui.toggle.checkbox.field-checkbox.ey1 input ~ .box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 input ~ label:after {
-    left: 1px;
-    top: 1px;
-    box-shadow: none;
-  }
-
-  .ui.toggle.checkbox.field-checkbox.ey1 .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 label:before {
-    width: 48px;
-    height: 29px;
-  }
-
-  .ui.toggle.checkbox.field-checkbox.ey1 .box:after,
-  .ui.toggle.checkbox.field-checkbox.ey1 label:after {
-    width: 27px;
-    height: 27px;
-  }
-
-  .ui.toggle.checkbox.field-checkbox.ey1 .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:checked ~ label:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ .box:before,
-  .ui.toggle.checkbox.field-checkbox.ey1 input:focus:checked ~ label:before {
-    background-color: #6aaaf5 !important;
-  }
 }
 
 // 日期套件
