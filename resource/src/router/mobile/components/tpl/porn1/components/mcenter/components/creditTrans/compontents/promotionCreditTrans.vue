@@ -1,6 +1,6 @@
 <template>
   <div class="clearfix">
-    <!-- <div v-if="['porn1', 'ey1', 'sg1'].includes(routerTPL)">
+    <!-- <div v-if="['porn1','sg1'].includes(routerTPL)">
       <div
         v-for="(item, index) in imgList"
         :class="$style['discount-item']"
@@ -43,7 +43,7 @@ export default {
     }
   },
   mounted() {
-    // if (["porn1", "ey1", "sg1"].includes(this.routerTPL)) {
+    // if (["porn1", "sg1"].includes(this.routerTPL)) {
     //   goLangApiRequest({
     //     method: "get",
     //     url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/cxbb/System/quotaad"
