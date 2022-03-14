@@ -1076,45 +1076,53 @@ export default {
               return;
 
             case "YV":
-              //判斷首儲觀影開關
-              if (["porn1", "sg1"].includes(this.routerTPL)) {
-                this.isLoading = true;
-                localStorage.setItem("is-open-game", true);
-                this.actionSetYaboConfig().then(() => {
-                  this.isLoading = false;
-                  localStorage.removeItem("is-open-game");
-                  let noFirstSavingsVideoSwitch = true;
-
-                  if (this.yaboConfig) {
-                    noFirstSavingsVideoSwitch =
-                      this.yaboConfig.find(
-                        i => i.name === "NoFirstSavingsVideoSwitch"
-                      ).value === "true";
-                  }
-                  if (!noFirstSavingsVideoSwitch) {
-                    if (!this.notFirstDeposit) {
-                      this.actionSetGlobalMessage({
-                        msg: "充值一次 立即解锁VIP影片",
-                        code: "recharge_deposit"
-                      });
-                      return;
-                    }
-                  }
+              this.actionSetYaboConfig().then(() => {
+                let noFirstSavingsVideoSwitch;
+                let noLoginVideoSwitch;
+                const routerPush = () => {
                   this.$router.push({
                     name: "videoList",
                     query: {
                       source: "yabo"
                     }
                   });
-                });
-              } else {
-                this.$router.push({
-                  name: "videoList",
-                  query: {
-                    source: "yabo"
+                };
+                if (this.yaboConfig) {
+                  noFirstSavingsVideoSwitch =
+                    this.yaboConfig.find(
+                      i => i.name === "NoFirstSavingsVideoSwitch"
+                    ).value === "true";
+                  noLoginVideoSwitch =
+                    this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch")
+                      .value === "true";
+                }
+                // 未登入開關 開啟時未登入可進入
+                if (noLoginVideoSwitch) {
+                  routerPush();
+                  return;
+                }
+                // 未登入開關 未開啟時需登入可進入
+                if (!this.loginStatus) {
+                  this.$router.push("/mobile/login");
+                  return;
+                }
+                if (["porn1", "sg1"].includes(this.routerTPL)) {
+                  // 需首儲開關 開啟時無需首儲可進入
+                  if (noFirstSavingsVideoSwitch) {
+                    routerPush();
+                    return;
                   }
-                });
-              }
+                  // 需首儲開關 未開啟時需首儲可進入
+                  if (!this.notFirstDeposit) {
+                    this.actionSetGlobalMessage({
+                      msg: "充值一次 立即解锁VIP影片",
+                      code: "recharge_deposit"
+                    });
+                    return;
+                  }
+                }
+                routerPush();
+              });
 
               return;
 
