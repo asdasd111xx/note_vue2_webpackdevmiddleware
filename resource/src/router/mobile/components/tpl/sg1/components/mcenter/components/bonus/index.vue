@@ -7,9 +7,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import mobileContainer from "../../../common/mobileContainer";
-import bonus from '@/router/mobile/components/tpl/porn1/components/mcenter/components/bonus/components/index';
+import bonus from "@/router/mobile/components/tpl/porn1/components/mcenter/components/bonus/components/index";
 
 export default {
   components: {
@@ -30,7 +29,7 @@ export default {
       };
     }
   },
-  created() { }
+  created() {}
 };
 </script>
 <style lang="scss" module>

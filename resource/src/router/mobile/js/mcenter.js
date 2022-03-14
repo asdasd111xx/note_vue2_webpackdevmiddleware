@@ -171,11 +171,6 @@ export default {
       name: "mcenter-betRecord",
       component
     },
-    // { // 紅利帳戶
-    //     path: 'bonusAccount',
-    //     name: 'mcenter-bonusAccount',
-    //     component
-    // },
     {
       // 資金明細
       path: "moneyDetail/:page?",

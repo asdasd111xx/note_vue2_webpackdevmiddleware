@@ -108,7 +108,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -120,6 +121,11 @@ export default {
     }
   },
   created() {
+    if (!this.loginStatus) {
+      this.$router.back();
+      return;
+    }
+
     this.isLoading = true;
     this.getCredit();
   },
