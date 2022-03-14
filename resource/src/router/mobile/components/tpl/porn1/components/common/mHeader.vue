@@ -109,7 +109,9 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['red-dot']" />
+            <div :class="$style['information-dot']">
+              <span>{{ UnreadMsgCount }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -179,7 +181,11 @@
             "
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage" :class="$style['red-dot']" />
+          <div v-show="hasUnreadMessage">
+            <div :class="$style['information-dot']">
+              <span>{{ UnreadMsgCount }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -251,6 +257,10 @@ export default {
       type: Boolean,
       default: false
     },
+    unreadMessageCount: {
+      type: Number,
+      default: 0
+    },
     hasAppTips: {
       type: Boolean,
       default: false
@@ -272,6 +282,12 @@ export default {
       siteConfig: "getSiteConfig",
       activity: "getActivity"
     }),
+    UnreadMsgCount() {
+      if (this.unreadMessageCount >= 100) {
+        return "99+";
+      }
+      return this.unreadMessageCount;
+    },
     mainClass() {
       const style = this.$style;
       let disableBackgroundColor = !!["sp1", "aobo1"].includes(
@@ -901,6 +917,20 @@ export default {
   width: 6px;
   height: 6px;
   top: -2px;
+}
+
+.information-dot {
+  position: absolute;
+  left: 9px;
+  background: red;
+  border-radius: 20px;
+  line-height: 14px;
+  top: -9px;
+  span {
+    color: #fff;
+    font-size: 12px;
+    padding: 0 2px;
+  }
 }
 
 @media screen and (min-width: $pad) {
