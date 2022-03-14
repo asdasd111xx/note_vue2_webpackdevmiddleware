@@ -622,7 +622,7 @@ export default {
 
 .mcenter-wrap {
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 0;
   height: 43px;
   display: flex;
