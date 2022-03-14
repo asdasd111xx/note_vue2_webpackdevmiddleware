@@ -69,60 +69,12 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 @import "~@/css/page/joinMem.module.scss";
-@import "~@/css/variable.scss";
-
-.join-member-wrap {
-  min-height: calc(100vh - 43px);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/static/image/porn1/common/bg.png");
-
-  &.aobo1,
-  &.sp1 {
-    background-image: url("/static/image/aobo1/common/bg.png");
-  }
-  // form {
-  //   width: 90vw;
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: center;
-  // }
-}
 
 .join-input {
   background-color: #fff;
 
   &::placeholder {
     color: #a5a5a5;
-  }
-}
-
-.join-withdraw-password-help-show {
-  width: 290px;
-  font-size: 12px;
-  text-align: start;
-  position: relative;
-  left: -90px;
-}
-
-.join-btn {
-  margin: 0 auto;
-  background: var(--main_button_color1);
-  border-radius: 30px;
-  height: 50px;
-  line-height: 50px;
-  width: 100%;
-  max-width: 300px;
-  font-size: 13px;
-  font-family: Segoe UI, Segoe UI-Bold;
-  font-weight: 700;
-  text-align: center;
-  color: var(--main_button_text_color1);
-
-  &.disable {
-    background: var(--main_button_color2);
-    color: var(--main_button_text_color2);
-    pointer-events: none;
   }
 }
 
