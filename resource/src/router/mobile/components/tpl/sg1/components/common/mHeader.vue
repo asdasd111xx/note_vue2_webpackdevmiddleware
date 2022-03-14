@@ -885,7 +885,7 @@ export default {
 .information-dot {
   position: absolute;
   left: 11px;
-  background: red;
+  background: #e42a30;
   border-radius: 20px;
   // width: 18px;
   // height: 18px;

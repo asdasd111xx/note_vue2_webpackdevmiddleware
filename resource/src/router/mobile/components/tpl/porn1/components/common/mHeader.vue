@@ -922,13 +922,13 @@ export default {
 .information-dot {
   position: absolute;
   left: 9px;
-  background: red;
+  background: #fb4e74;
   border-radius: 20px;
   line-height: 14px;
   top: -9px;
   span {
     color: #fff;
-    font-size: 12px;
+    font-size: 10px;
     padding: 0 2px;
   }
 }
