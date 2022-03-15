@@ -486,8 +486,11 @@ export default {
                     Number(this.mission.ActionType) === 6;
                 }
                 this.isFULL = true;
-                if (data.FullMode === 1 && this.adSwitch) {
-                  this.onSend("ADSTART");
+                if (data.FullMode === 1) {
+                  this.$nextTick(() => bonunsProcess.playCueTime("stop"));
+                  if (this.adSwitch) {
+                    this.onSend("ADSTART");
+                  }
                 }
                 // bonunsDialog.isShow = true;
                 // this.dialogType = 'tips-full';
