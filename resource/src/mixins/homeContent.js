@@ -1076,7 +1076,13 @@ export default {
               return;
 
             case "YV":
+              this.isLoading = true;
+              localStorage.setItem("is-open-game", true);
+
               this.actionSetYaboConfig().then(() => {
+                this.isLoading = false;
+                localStorage.removeItem("is-open-game");
+
                 let noFirstSavingsVideoSwitch;
                 let noLoginVideoSwitch;
                 const routerPush = () => {
