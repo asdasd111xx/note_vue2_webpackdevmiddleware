@@ -109,9 +109,10 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['information-dot']">
+            <div :class="$style['red-dot']"></div>
+            <!-- <div :class="$style['information-dot']">
               <span>{{ UnreadMsgCount }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -182,9 +183,10 @@
             @click="handleClickAsk"
           />
           <div v-show="hasUnreadMessage">
-            <div :class="$style['information-dot']">
+            <div :class="$style['red-dot']"></div>
+            <!-- <div :class="$style['information-dot']">
               <span>{{ UnreadMsgCount }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
