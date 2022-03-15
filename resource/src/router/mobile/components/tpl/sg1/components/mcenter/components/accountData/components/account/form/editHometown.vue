@@ -8,7 +8,6 @@
             :class="$style['city']"
             v-model="thecity"
             id="selectcity"
-            autofocus
           >
             <option
               v-for="(item, index) in theCityList"

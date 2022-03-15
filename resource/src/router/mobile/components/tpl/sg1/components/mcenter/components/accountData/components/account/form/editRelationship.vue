@@ -38,7 +38,7 @@ export default {
   },
   mounted() {
     this.getRelationshipData();
-    this.$refs.input.focus();
+    // this.$refs.input.focus();
     
   },
   methods: {
