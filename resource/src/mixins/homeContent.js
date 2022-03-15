@@ -1096,16 +1096,16 @@ export default {
                     this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch")
                       .value === "true";
                 }
-                // 未登入開關 開啟時未登入可進入
-                if (noLoginVideoSwitch) {
-                  routerPush();
-                  return;
-                }
-                // 未登入開關 未開啟時需登入可進入
+                // 未登入觀影開關
                 if (!this.loginStatus) {
+                  if (noLoginVideoSwitch) {
+                    routerPush();
+                    return;
+                  }
                   this.$router.push("/mobile/login");
                   return;
                 }
+
                 if (["porn1", "sg1"].includes(this.routerTPL)) {
                   // 需首儲開關 開啟時無需首儲可進入
                   if (noFirstSavingsVideoSwitch) {
