@@ -269,7 +269,7 @@ export default {
               }
 
               if (!this.loginStatus) {
-                url += `&gcid=${localStorage.getItem("guestCid") || ""}`;
+                url += `&gcid=${localStorage.getItem("uuidAccount") || ""}`;
               }
 
               this.src = url;
