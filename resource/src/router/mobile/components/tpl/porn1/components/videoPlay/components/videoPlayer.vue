@@ -229,7 +229,7 @@ export default {
       this.player.on("seeked", () => {});
 
       this.player.on("pause", () => {
-        console.log("暫停");
+        // console.log("暫停");
         if (this.disableVideo) {
           this.handleDisableVideoMode();
           return;
