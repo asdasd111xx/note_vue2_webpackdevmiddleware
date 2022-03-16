@@ -229,23 +229,21 @@ export default {
       this.player.on("seeked", () => {});
 
       this.player.on("pause", () => {
-        // console.log("暫停");
+        console.log("暫停");
         if (this.disableVideo) {
           this.handleDisableVideoMode();
           return;
         }
 
         if (this.player.seeking()) return;
-        if (window.YABO_SOCKET && !this.keepPlay) {
-          if (
-            this.adSwitch &&
-            (this.dialogType === "tips-wait" || this.isFULL)
-          ) {
-            this.onSend("ADSTOP");
-          } else {
-            this.onSend("STOP");
-          }
-          this.$refs.bonunsProcess.playCueTime("stop");
+        if (
+          window.YABO_SOCKET &&
+          this.adSwitch &&
+          (this.dialogType === "tips-wait" || this.isFULL || this.keepPlay)
+        ) {
+          this.onSend("ADSTOP");
+        } else if (window.YABO_SOCKET && !this.keepPlay) {
+          this.onSend("STOP");
         }
         this.keepPlay = false;
 
@@ -586,6 +584,7 @@ export default {
                 window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
                 window.YABO_SOCKET_VIDEO_DISCONNECT = null;
                 window.YABO_SOCKET_VIDEO_CONNECT = null;
+                clearTimeout(this.checkTimer);
                 clearTimeout(this.reconnectTimer);
                 this.reconnectTimer = null;
                 break;
