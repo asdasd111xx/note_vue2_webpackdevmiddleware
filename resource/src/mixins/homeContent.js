@@ -1084,7 +1084,6 @@ export default {
                 localStorage.removeItem("is-open-game");
 
                 let noFirstSavingsVideoSwitch;
-                let noLoginVideoSwitch;
                 const routerPush = () => {
                   this.$router.push({
                     name: "videoList",
@@ -1098,17 +1097,9 @@ export default {
                     this.yaboConfig.find(
                       i => i.name === "NoFirstSavingsVideoSwitch"
                     ).value === "true";
-                  noLoginVideoSwitch =
-                    this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch")
-                      .value === "true";
                 }
-                // 未登入觀影開關
                 if (!this.loginStatus) {
-                  if (noLoginVideoSwitch) {
-                    routerPush();
-                    return;
-                  }
-                  this.$router.push("/mobile/login");
+                  routerPush();
                   return;
                 }
 
