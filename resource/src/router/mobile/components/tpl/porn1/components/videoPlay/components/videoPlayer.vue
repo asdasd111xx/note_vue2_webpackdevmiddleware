@@ -406,6 +406,7 @@ export default {
         // 預設連線中
         this.isActiveBouns = !!data.HasActivity;
         if (!data.HasActivity && !this.adSwitch) {
+          clearTimeout(this.checkTimer);
           return;
         }
 
@@ -584,7 +585,6 @@ export default {
                 window.YABO_SOCKET_VIDEO_ONMESSAGE = null;
                 window.YABO_SOCKET_VIDEO_DISCONNECT = null;
                 window.YABO_SOCKET_VIDEO_CONNECT = null;
-                clearTimeout(this.checkTimer);
                 clearTimeout(this.reconnectTimer);
                 this.reconnectTimer = null;
                 break;
