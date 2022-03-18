@@ -17,7 +17,6 @@
             :placeholder="`请输入签名`"
             :class="$style.input"
             @input="onInput"
-            :maxlength="20"
             type="text"
           />
           <div :class="$style['clear-input']" v-if="value">
@@ -101,7 +100,7 @@ export default {
       const setIntro = this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/user/update-intro",
         method: "put",
-        data: { intro: this.value.substring(0, 20) }
+        data: { intro: this.value }
       });
 
       return Promise.all([setIntro]).then(response => {
