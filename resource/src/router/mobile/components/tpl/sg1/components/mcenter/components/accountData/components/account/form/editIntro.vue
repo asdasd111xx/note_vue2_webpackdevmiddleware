@@ -11,11 +11,11 @@
       <div :class="$style.block">
         <div :class="$style.title">签名</div>
         <div :class="$style['input-wrap']">
-          <input
+          <textarea
             ref="input"
             v-model="value"
             :placeholder="`请输入签名`"
-            :class="$style.input"
+            :class="$style.textarea"
             @input="onInput"
             type="text"
           />
