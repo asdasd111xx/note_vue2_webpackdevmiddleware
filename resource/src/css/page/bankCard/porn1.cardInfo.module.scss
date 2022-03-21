@@ -19,6 +19,14 @@
   }
 }
 
+.fix-bottom {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  background-color: #F8F8F7;
+  padding-top: 5px;
+}
+
 // -----添加區塊-----
 .add-wrap {
   margin-bottom: 10px;
