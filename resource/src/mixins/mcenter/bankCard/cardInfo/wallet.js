@@ -1,4 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
+
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -55,12 +56,6 @@ export default {
       return false;
     },
     isShowAddCardButton() {
-      // switch (this.themeTPL) {
-      //   case "porn1":
-      //   case "sg1":
-      //     return !this.isBindNowOpenAllWallets;
-
-      //   case "ey1":
       return (
         (!this.userLevelObj.virtual_bank_single &&
           this.wallet_card.length < this.userLevelObj.virtual_bank_max) ||
@@ -259,10 +254,6 @@ export default {
                   case "porn1":
                   case "sg1":
                     this.actionSetGlobalMessage({ msg: "钱包删除审核中" });
-                    break;
-
-                  case "ey1":
-                    this.actionSetGlobalMessage({ msg: "删除审核中" });
                     break;
                 }
                 this.$emit("update:statusList", {

@@ -16,8 +16,6 @@
               `/static/image/common/btn_close_${
                 themeTPL === 'porn1'
                   ? 'grey'
-                  : themeTPL === 'ey1'
-                  ? 'white'
                   : themeTPL === 'sg1'
                   ? 'black'
                   : null
@@ -434,5 +432,8 @@ export default {
   src="../../css/porn1.message.scss"
   module="$style_porn1"
 ></style>
-<style lang="scss" src="../../css/ey1.message.scss" module="$style_ey1"></style>
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 <style lang="scss" src="../../css/sg1.message.scss" module="$style_sg1"></style>

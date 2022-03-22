@@ -593,4 +593,3 @@ export default {
 <style lang="scss" src="./css/aobo1.module.scss" module="$style_aobo1"></style>
 <style lang="scss" src="./css/sp1.module.scss" module="$style_sp1"></style>
 <style lang="scss" src="./css/sg1.module.scss" module="$style_sg1"></style>
-<style lang="scss" src="./css/ey1.module.scss" module="$style_ey1"></style>

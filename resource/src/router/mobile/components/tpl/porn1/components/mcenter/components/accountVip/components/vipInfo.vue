@@ -158,25 +158,6 @@
             <div>生日礼金</div>
           </div>
         </div>
-
-        <div v-if="['ey1'].includes(themeTPL)" :class="$style['cell']">
-          <div :class="$style['cell-icon']">
-            <img
-              :src="$getCdnPath(`/static/image/common/vip/pic_vip_4.png`)"
-              alt="icon"
-            />
-          </div>
-          <div :class="$style['cell-text']">
-            <div>
-              {{
-                currentLevelData.monthly_gift == ""
-                  ? "--"
-                  : formatThousandsCurrency(currentLevelData.monthly_gift)
-              }}
-            </div>
-            <div>每月红包(月初自动派发)</div>
-          </div>
-        </div>
       </div>
       <div
         :class="[$style['vip-detail']]"
@@ -248,11 +229,6 @@ export default {
   lang="scss"
   src="@/css/page/vip/porn1.vipInfo.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="@/css/page/vip/ey1.vipInfo.scss"
-  module="$style_ey1"
 ></style>
 <style
   lang="scss"

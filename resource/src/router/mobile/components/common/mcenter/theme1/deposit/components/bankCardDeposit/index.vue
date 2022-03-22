@@ -229,7 +229,9 @@
             </div>
             <!-- e點富銀行 -->
             <div
-              v-if="isSelectBindWallet(34,41) && this.curPassRoad.is_bind_wallet"
+              v-if="
+                isSelectBindWallet(34, 41) && this.curPassRoad.is_bind_wallet
+              "
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
@@ -253,7 +255,7 @@
             <!-- v-if="showEpointWalletAddress" -->
             <div
               v-if="
-                isSelectBindWallet(34,41) &&
+                isSelectBindWallet(34, 41) &&
                   curPassRoad.is_bind_wallet &&
                   showEpointWalletAddress
               "
@@ -365,7 +367,7 @@
                 <template v-else-if="isSelectBindWallet(32)">
                   充值前请先绑定{{ curPayInfo.payment_method_name }}
                 </template>
-                <template v-else-if="isSelectBindWallet(34,41)">
+                <template v-else-if="isSelectBindWallet(34, 41)">
                   充值前请先绑定{{ curPayInfo.payment_method_name }}钱包
                 </template>
                 <template v-else-if="isSelectBindWallet(16, 25, 30)">
@@ -375,7 +377,7 @@
                   充值前请先绑定OSPay钱包
                 </template>
                 <template v-else>
-                  充值前请先绑定{{curPayInfo.payment_method_name}}帐号
+                  充值前请先绑定{{ curPayInfo.payment_method_name }}帐号
                 </template>
 
                 <div :class="$style['no-bind-wallet']">
@@ -402,7 +404,7 @@
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">
-                {{isSelectBindWallet(36)? "OS" : "CG"}}币余额
+                {{ isSelectBindWallet(36) ? "OS" : "CG" }}币余额
                 <img
                   :class="$style['CGPay-update-img']"
                   :src="$getCdnPath(`/static/image/common/btn_update.png`)"
@@ -412,12 +414,20 @@
               </span>
 
               <div :class="$style['CGPay-money']">
-                {{isSelectBindWallet(36)? "OS" : "CG"}}P
+                {{ isSelectBindWallet(36) ? "OS" : "CG" }}P
                 <span v-if="isSelectBindWallet(36)">
-                  {{ walletData["OSPay"].balance !== undefined ? formatThousandsCurrency(walletData["OSPay"].balance) : "--" }}
+                  {{
+                    walletData["OSPay"].balance !== undefined
+                      ? formatThousandsCurrency(walletData["OSPay"].balance)
+                      : "--"
+                  }}
                 </span>
                 <span v-else>
-                  {{ walletData["CGPay"].balance !== undefined  ? formatThousandsCurrency(walletData["CGPay"].balance) : "--"  }}
+                  {{
+                    walletData["CGPay"].balance !== undefined
+                      ? formatThousandsCurrency(walletData["CGPay"].balance)
+                      : "--"
+                  }}
                 </span>
               </div>
             </div>
@@ -725,13 +735,9 @@
                   <div :class="[$style['content']]">
                     <span :class="[$style['rate']]"
                       >1 {{ selectBcCoin.currency }} ≈ {{ rate }} CNY (
-                      <span
-                        :class="[
-                          $style['time'],
-                          $style[themeTPL]
-                        ]"
-                        >{{ timeUSDT() }}</span
-                      >
+                      <span :class="[$style['time'], $style[themeTPL]]">{{
+                        timeUSDT()
+                      }}</span>
                       后更新 )</span
                     >
                   </div>
@@ -1428,7 +1434,13 @@ export default {
       },
       initHeaderSetting: {},
       tagTrans: { 2: "general", 3: "recommend", 4: "speed" },
-      tipTrans: { HOT: "recommend", EVENT: "event", FAST: "speed",HIGH:"high",LOW:"low" },
+      tipTrans: {
+        HOT: "recommend",
+        EVENT: "event",
+        FAST: "speed",
+        HIGH: "high",
+        LOW: "low"
+      },
 
       nameCheckFail: false,
 
@@ -1472,12 +1484,12 @@ export default {
     //   channel
     passRoad() {
       console.log("all passRoad", this.passRoad);
-      this.showEpointWalletAddress = this.isSelectBindWallet(34,41)
+      this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
         ? this.defaultEpointWallet.account === "其他银行卡"
         : false;
     },
     curPassRoad() {
-      console.log("passRoad", this.curPassRoad);      
+      console.log("passRoad", this.curPassRoad);
       if (this.curPassRoad.tip != undefined) {
         if (this.curPassRoad.tip === "" && this.curPassRoadTipText != "") {
           //有到無因特效需delay
@@ -1487,14 +1499,14 @@ export default {
               "<br>"
             );
             this.curPassRoadTipTextShowMore =
-              this.curPassRoadTipText.replace(/[^\x00-\xff]/g,"**").length > 45 ||
-              this.curPassRoadTipText.indexOf("<br>") != -1;
+              this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
+                45 || this.curPassRoadTipText.indexOf("<br>") != -1;
           }, 500);
         } else {
           this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
           this.curPassRoadTipTextShowMore =
-            this.curPassRoadTipText.replace(/[^\x00-\xff]/g,"**").length > 45 ||
-            this.curPassRoadTipText.indexOf("<br>") != -1;
+            this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
+              45 || this.curPassRoadTipText.indexOf("<br>") != -1;
         }
       }
     },
@@ -1954,17 +1966,6 @@ export default {
       });
     },
     handleBindWallet() {
-      // 億元 USDT 的部份仍以彈窗顯示
-      if (
-        ["ey1"].includes(this.themeTPL) &&
-        (this.curPayInfo.payment_method_id === 402 ||
-          this.curPayInfo.payment_method_id === 404)
-      ) {
-        this.bindWalletType = "USDT";
-        this.eyBindWalletData = this.curPayInfo;
-        this.setPopupStatus(true, "bindWallet");
-        return;
-      }
       switch (this.curPayInfo.payment_method_id) {
         // CGPay
         case 16:
@@ -2357,7 +2358,7 @@ export default {
         this.curPayInfo.payment_method_id === 16 ||
         this.curPayInfo.payment_method_id === 25 ||
         this.curPayInfo.payment_method_id === 30 ||
-        this.curPayInfo.payment_method_id === 36 || //OSPay-CGP 
+        this.curPayInfo.payment_method_id === 36 || //OSPay-CGP
         this.curPayInfo.payment_method_id === 37 || //OSPay-USDT(ERC20)
         this.curPayInfo.payment_method_id === 38 || //OSPay-USDT(TRC20)
         this.curPayInfo.payment_method_id === 22 ||
@@ -2453,9 +2454,9 @@ export default {
       this.defaultEpointWallet = item;
     },
     toggleEye(value) {
-      if(value === 'cg'){
+      if (value === "cg") {
         this.isShowCGPPwd = !this.isShowCGPPwd;
-      }else{
+      } else {
         this.isShowOSPPwd = !this.isShowOSPPwd;
       }
     },
@@ -2536,11 +2537,6 @@ export default {
   lang="scss"
   src="./css/bankCardDeposit/porn1.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="./css/bankCardDeposit/ey1.scss"
-  module="$style_ey1"
 ></style>
 <style
   lang="scss"

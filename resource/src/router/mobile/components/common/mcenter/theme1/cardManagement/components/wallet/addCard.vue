@@ -40,37 +40,6 @@
         </div>
       </template>
 
-      <!-- 億元 -->
-      <!-- <template v-if="['ey1'].includes(themeTPL) && addBankCardStep === 'one'">
-        <div :class="$style['info-item']">
-          <p :class="$style['input-title']">
-            {{ $text("S_WALLET_TYPE", "钱包类型") }}
-          </p>
-          <div
-            :class="[
-              $style['select-bank'],
-              { [$style['disable']]: selectTarget.fixed }
-            ]"
-            @click="setPopupStatus(true, 'bank-list')"
-          >
-            <span
-              :class="{ [$style['select-active']]: selectTarget.walletName }"
-            >
-              {{
-                selectTarget.walletName
-                  ? selectTarget.walletName
-                  : $text("S_SELECT_WALLET_TYPE", "请选择钱包类型")
-              }}
-            </span>
-            <img
-              v-if="!selectTarget.fixed"
-              :class="$style['arrow-icon']"
-              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-            />
-          </div>
-        </div>
-      </template> -->
-
       <template
         v-if="!selectTarget.oneClickBindingMode && addBankCardStep === 'one'"
       >
@@ -150,36 +119,11 @@
         </div>
       </template>
 
-      <!-- 億元：確認鈕上方text -->
-      <template
-        v-if="
-          ['ey1'].includes(themeTPL) &&
-            !selectTarget.oneClickBindingMode &&
-            selectTarget.walletName &&
-            addBankCardStep === 'one'
-        "
-      >
-        <p :class="$style['wallet-tip']">
-          请认真校对钱包地址，地址错误资金将无法到帐
-        </p>
-      </template>
-
       <!-- 手機驗證 -->
       <template v-if="addBankCardStep === 'two'">
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">手机号码</p>
           <div :class="$style['input-wrap']">
-            <template v-if="['ey1'].includes(themeTPL)">
-              <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option
-                  v-for="option in phoneHeadOption"
-                  v-bind:value="option"
-                  :key="option"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </template>
             <input
               v-model="formData.phone"
               type="tel"
@@ -366,39 +310,6 @@
     </p>
 
     <template v-if="showPopStatus.isShow">
-      <!-- 銀行列表選單 -->
-      <template
-        v-if="['ey1'].includes(themeTPL) && showPopStatus.type === 'bank-list'"
-      >
-        <div :class="$style['pop-wrap']">
-          <div :class="$style['pop-mask']" @click="closePopup" />
-          <div :class="[$style['pop-menu'], $style['custom1']]">
-            <div :class="$style['pop-title']">
-              <span @click="closePopup">
-                {{ $text("S_CANCEL", "取消") }}
-              </span>
-              请选择钱包类型
-            </div>
-
-            <ul :class="$style['pop-list']">
-              <li
-                v-for="item in walletList"
-                :key="item.id"
-                @click="setBank(item)"
-              >
-                <img v-lazy="getBankImage(item.image_url)" />
-                {{ item.name }}
-                <icon
-                  v-if="item.id === selectTarget.walletId"
-                  :class="$style['select-icon']"
-                  name="check"
-                />
-              </li>
-            </ul>
-          </div>
-        </div>
-      </template>
-
       <!-- USDT Tip 彈窗 -->
       <template v-if="showPopStatus.type === 'tip'">
         <popup-tip
@@ -828,15 +739,9 @@ export default {
                   return [21, 50, 37, 47, 48, 49].includes(
                     item.virtual_bank_id
                   );
-                } else if (
-                  // 億元沒開限綁一組，則可添加多個同種類錢包，
-                  // ["ey1"].includes(this.themeTPL) &&
-                  !this.userLevelObj.virtual_bank_single
-                ) {
+                } else if (!this.userLevelObj.virtual_bank_single) {
                   return;
                 } else {
-                  // 億元開限綁一組的情況，在常用底下已有綁定過該種類，則不可重複綁(目前先不考慮歷史)
-                  // 鴨博/絲瓜亦同
                   return item.common;
                 }
               })
@@ -1643,11 +1548,7 @@ export default {
   src="@/css/page/bankCard/porn1.addCard.module.scss"
   module="$style_porn1"
 ></style>
-<style
-  lang="scss"
-  src="@/css/page/bankCard/ey1.addCard.module.scss"
-  module="$style_ey1"
-></style>
+
 <style
   lang="scss"
   src="@/css/page/bankCard/sg1.addCard.module.scss"

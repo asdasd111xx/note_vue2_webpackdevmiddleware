@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="themeTPL && !['ey1'].includes(themeTPL)"
+    v-if="themeTPL"
     :class="[$style['content'], $style['page403'], $style[themeTPL]]"
   >
     <div :class="$style['logo-header']">
@@ -63,37 +63,6 @@
         @click="linkToService"
         >&nbsp;联系客服</span
       >
-    </div>
-    <message v-if="msg" @close="msg = ''">
-      <div slot="msg">{{ msg }}</div>
-    </message>
-  </div>
-
-  <div
-    v-else-if="['ey1'].includes(themeTPL)"
-    :class="[$style['content'], $style['ey1']]"
-  >
-    <div :class="$style['logo-header']">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/common/logo_b.png`)" />
-    </div>
-    <div :class="$style['title']">{{ $t("ROUTER_NO_SERVICE_TITLE") }}</div>
-    <div :class="$style['text']">
-      {{ topmsg }}
-    </div>
-    <!-- <div :class="$style['text']">IP：{{ ip }}({{ code }})</div> -->
-    <div :class="$style['main-img']">
-      <img :src="$getCdnPath(`/static/image/${themeTPL}/status/pic_403.png`)" />
-    </div>
-    <div :class="$style['desc']">
-      尊敬的用户，由于相关法规限制，您所在的地区无法使用亿元产品，如有任何疑问，请通过在线客服，或发邮件至
-      <a :class="$style['mail-link']" @click="mailTo('ey888@ur188.net')">
-        <span>ey888@ur188.net</span>
-      </a>
-      我们将第一时间给您回复，对您造成的不便，我们深表歉意，感谢您的理解与支持！
-    </div>
-    <div :class="$style.tips">
-      如需帮助，请
-      <span @click="linkToService">&nbsp;联系客服</span>
     </div>
     <message v-if="msg" @close="msg = ''">
       <div slot="msg">{{ msg }}</div>

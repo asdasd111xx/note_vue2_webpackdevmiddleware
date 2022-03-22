@@ -8,20 +8,6 @@
   align-items: center;
 }
 
-.join-member-wrap {
-  min-height: calc(100vh - 43px);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("/static/image/porn1/common/bg.png");
-
-  &.aobo1 {
-    background-image: url("/static/image/aobo1/common/bg.png");
-  }
-  &.sp1 {
-    background-image: url("/static/image/sp1/common/bg.png");
-  }
-}
-
 .title {
   color: black;
   font-size: 16px;
@@ -516,8 +502,7 @@
 
   &.aobo1,
   &.sg1,
-  &.sp1,
-  &.ey1 {
+  &.sp1 {
     background-color: #ffffff;
     border: 1px solid #e3e3e3;
     border-right: none;
@@ -551,8 +536,7 @@
 
   &.aobo1,
   &.sg1,
-  &.sp1,
-  &.ey1 {
+  &.sp1 {
     border: 1px solid #e3e3e3;
     border-left: none;
   }
@@ -909,10 +893,6 @@
 
   &.sg1:last-child {
     color: var(--member_color100);
-  }
-
-  &.ey1:last-child {
-    color: #e42a30;
   }
 
   &.porn1:last-child {

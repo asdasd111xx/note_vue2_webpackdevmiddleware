@@ -22,23 +22,6 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     }
   }
 
-  &--shape-rectangle {
-    height: 70px;
-    padding: 15px 16px 15px 64px;
-    margin-bottom: 10px;
-    color: var(--slider_text_color);
-  }
-
-  &--bg-common-gradient {
-    background-image: -webkit-linear-gradient(top, #ffe0e2, #eaa8ab);
-    background-image: linear-gradient(top, #ffe0e2, #eaa8ab);
-  }
-
-  &--bg-history-gradient {
-    background-image: -webkit-linear-gradient(top, #fde6e7, #f4dbdc);
-    background-image: linear-gradient(top, #fde6e7, #f4dbdc);
-  }
-
   @for $i from 0 to 3 {
     &--bg-repeat-gradient-#{$i} {
       background-image: linear-gradient(
@@ -75,10 +58,6 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
       top: 20px;
     }
 
-    &--top-15 {
-      top: 15px;
-    }
-
     &-img {
       width: 25px;
       height: 25px;
@@ -94,12 +73,6 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     font-size: 18px;
     letter-spacing: 1px;
     font-weight: 700;
-
-    &--small {
-      font-size: 14px;
-      letter-spacing: 0;
-      font-weight: 400;
-    }
 
     &--color-pointer {
       color: #fefffe;
@@ -122,30 +95,6 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     }
   }
 
-  // 刪除審核中for ey
-  &__status-audit-ey {
-    position: absolute;
-    font-size: 12px;
-    width: 100%;
-    left: 0;
-    background: #000000;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    height: 40%;
-    bottom: 0;
-    opacity: 0.8;
-    text-align: center;
-    padding-top: 5px;
-
-    &--theme-square-ey {
-      color: #eee;
-    }
-
-    &--theme-rectangle-ey {
-      color: #db6372;
-    }
-  }
-
   // 停用
   &__status-stopped {
     position: absolute;
@@ -160,10 +109,6 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     font-weight: 700;
     text-align: center;
   }
-}
-
-.mt-3 {
-  margin-top: 3px;
 }
 
 .mt-10 {

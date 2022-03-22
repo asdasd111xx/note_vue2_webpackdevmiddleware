@@ -18,9 +18,7 @@
       @click="headerConfig.onClick"
     >
       <img
-        v-if="
-          source === 'gay' || source === 'les' || siteConfig.ROUTER_TPL == 'ey1'
-        "
+        v-if="source === 'gay' || source === 'les'"
         :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
@@ -491,11 +489,6 @@ export default {
     background: unset;
     background-color: unset;
   }
-
-  &.ey1 {
-    background: linear-gradient(#fe2a2a, #b60303);
-    color: #ffffff;
-  }
 }
 
 @media screen and (max-width: 374px) {
@@ -683,10 +676,6 @@ export default {
   &.gay {
     color: #fff;
   }
-
-  &.ey1 {
-    color: #ffffff;
-  }
 }
 
 .btn-game-list {
@@ -775,10 +764,6 @@ export default {
     font-size: 14px;
     font-weight: 500;
     text-align: center;
-
-    &.ey1 {
-      color: #ffffff;
-    }
   }
 }
 

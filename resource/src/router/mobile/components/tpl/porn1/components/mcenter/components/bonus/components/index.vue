@@ -69,10 +69,6 @@
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $text("S_NO_BONUS", "暂时没有新的红利彩金") }}
           </template>
-
-          <template v-if="themeTPL === 'ey1'">
-            {{ $text("S_NO_BONUS_ACCOUNT", "暂时没有新的红利帐户") }}
-          </template>
         </p>
       </div>
     </template>
@@ -176,5 +172,4 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.index.scss" module="$style_ey1"></style>
 <style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>

@@ -348,11 +348,6 @@ export default {
 ></style>
 <style
   lang="scss"
-  src="@/css/page/vip/ey1.vipLevelCard.scss"
-  module="$style_ey1"
-></style>
-<style
-  lang="scss"
   src="@/css/page/vip/sg1.vipLevelCard.scss"
   module="$style_sg1"
 ></style>

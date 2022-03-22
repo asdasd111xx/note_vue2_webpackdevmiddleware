@@ -7,11 +7,7 @@
         <div>{{ parseType }}功能无法使用，请联系在线客服</div>
       </div>
       <div
-        :class="[
-          $style['close'],
-          { [$style['sg']]: themeTPL === 'sg1' },
-          { [$style['ey']]: themeTPL === 'ey1' }
-        ]"
+        :class="[$style['close'], { [$style['sg']]: themeTPL === 'sg1' }]"
         @click="closeTips"
       >
         关闭

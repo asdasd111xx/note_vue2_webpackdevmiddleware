@@ -256,10 +256,6 @@ export default {
     this.avatarSrc = `/static/image/common/default/avatar_nologin.png`;
     this.actionSetUserdata(true).then(() => {
       this.getAvatarSrc();
-
-      if (this.themeTPL === "ey1") {
-        // this.getDowngradeData();
-      }
     });
 
     this.$nextTick(() => {
@@ -359,11 +355,6 @@ export default {
   lang="scss"
   src="@/css/page/vip/porn1.vipUser.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="@/css/page/vip/ey1.vipUser.scss"
-  module="$style_ey1"
 ></style>
 <style
   lang="scss"

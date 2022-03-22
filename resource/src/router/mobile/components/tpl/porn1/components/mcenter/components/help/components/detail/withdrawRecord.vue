@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="[
-      $style['detail-wrap'],
-      {
-        [$style['ey1']]: theme === 'ey1'
-      }
-    ]"
-  >
+  <div :class="[$style['detail-wrap']]">
     <!-- 狀態暫時移除 -->
     <!-- <div :class="$style['status-wrap']">
       <div

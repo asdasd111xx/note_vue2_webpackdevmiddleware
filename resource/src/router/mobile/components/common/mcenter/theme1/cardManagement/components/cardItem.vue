@@ -9,15 +9,6 @@
           'card--shape-square',
           `card--bg-repeat-gradient-${colorRepeatIndex}`
         )]: isSquare
-      },
-      {
-        [getClass(
-          'card--shape-rectangle',
-          'card--bg-common-gradient'
-        )]: isRectangle
-      },
-      {
-        [$style['card--bg-history-gradient']]: isRectangle && !isCommon
       }
     ]"
     @click="handleItem"
@@ -28,9 +19,6 @@
         $style['card__logo'],
         {
           [$style['card__logo--top-20']]: isSquare
-        },
-        {
-          [$style['card__logo--top-15']]: isRectangle
         }
       ]"
     >
@@ -66,9 +54,7 @@
         {
           [$style[`card__number--color-${colorRepeatIndex}`]]: isSquare
         },
-        {
-          [getClass('card__number--small', 'mt-3')]: isRectangle
-        },
+
         {
           [$style['mt-10']]: data.type
         },
@@ -104,14 +90,11 @@
     </div>
 
     <div
-      v-if="!isDetailPage && data.auditing && !['ey1'].includes(themeTPL)"
+      v-if="!isDetailPage && data.auditing"
       :class="[
         $style['card__status-audit'],
         {
           [$style['card__status-audit--theme-square']]: isSquare
-        },
-        {
-          [$style['card__status-audit--theme-rectangle']]: isRectangle
         }
       ]"
     >
@@ -120,20 +103,6 @@
 
     <div v-if="isStopped" :class="[$style['card__status-stopped']]">
       停用
-    </div>
-    <div
-      v-if="!isDetailPage && data.auditing && ['ey1'].includes(themeTPL)"
-      :class="[
-        $style['card__status-audit-ey'],
-        {
-          [$style['card__status-audit-ey--theme-square-ey']]: isSquare
-        },
-        {
-          [$style['card__status-audit-ey--theme-rectangle-ey']]: isRectangle
-        }
-      ]"
-    >
-      删除审核中
     </div>
   </div>
 </template>
@@ -201,9 +170,6 @@ export default {
       return (
         ["porn1", "sg1"].includes(this.themeTPL) || this.type === "bankCard"
       );
-    },
-    isRectangle() {
-      return ["ey1"].includes(this.themeTPL) && this.type === "wallet";
     }
   },
   methods: {

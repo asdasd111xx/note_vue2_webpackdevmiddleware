@@ -162,11 +162,7 @@ export default {
   },
   methods: {
     chooseColor(val) {
-      if (this.themeTPL == "ey1") {
-        return val < 0 ? "red" : "black";
-      } else {
-        return val > 0 ? "red" : "black";
-      }
+      return val > 0 ? "red" : "black";
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
@@ -210,5 +206,4 @@ export default {
   src="./css/porn1.gameReord.scss"
   module="$style_porn1"
 ></style>
-<style lang="scss" src="./css/ey1.gameReord.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.gameReord.scss" module="$style_sg1"></style>

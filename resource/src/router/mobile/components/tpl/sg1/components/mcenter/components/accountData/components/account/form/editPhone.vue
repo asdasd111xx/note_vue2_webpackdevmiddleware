@@ -14,17 +14,6 @@
             {{ oldPhone.label }}
           </div>
           <div :class="$style['input-wrap']">
-            <template v-if="themeTPL === 'ey1'">
-              <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option
-                  v-for="option in phoneHeadOption"
-                  :key="option.option"
-                  v-bind:value="option"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </template>
             <input
               v-model="oldValue"
               :placeholder="oldPhone.placeholerLabel"
@@ -48,17 +37,6 @@
             {{ newPhone.label }}
           </div>
           <div :class="$style['input-wrap']">
-            <template v-if="themeTPL === 'ey1'">
-              <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option
-                  v-for="option in phoneHeadOption"
-                  :key="option.option"
-                  v-bind:value="option"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </template>
             <input
               v-model="newValue"
               :placeholder="
@@ -388,15 +366,14 @@ export default {
 
         // 舊手機號碼
         if (target === "oldValue") {
-          if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
+          if (value.length >= 11) {
             this.isVerifyOldPhone = true;
           } else {
             this.isVerifyOldPhone = false;
           }
         }
 
-        // 億元 不客端判斷手機號碼位數
-        if (this.siteConfig.MOBILE_WEB_TPL === "ey1" || value.length >= 11) {
+        if (value.length >= 11) {
           this.tipMsg = "";
 
           if (this.isfromWithdraw || this.isfromSWAG) {

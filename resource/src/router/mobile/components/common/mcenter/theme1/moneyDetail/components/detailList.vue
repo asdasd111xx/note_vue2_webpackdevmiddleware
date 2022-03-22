@@ -188,5 +188,4 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.list.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.list.scss" module="$style_ey1"></style>
 <style lang="scss" src="../css/sg1.list.scss" module="$style_sg1"></style>

@@ -124,48 +124,6 @@
               </div>
             </template>
           </div>
-          <div
-            v-if="item.title === 'receiptAddress' && themeTPL === 'ey1'"
-            :key="index"
-            :class="[
-              $style['account-data-field'],
-              $style['address-border'],
-              'clearfix'
-            ]"
-            @click="handleClick(item)"
-          >
-            <span :class="$style['field-title']">{{
-              $text("S_RECEIPT_ADDRESS", "收货地址")
-            }}</span>
-            <div :class="$style['field-value']">
-              <template v-if="addressInfo.id === ''">
-                <span :class="[$style['field-text'], $style.yet]"
-                  >尚未设定
-                </span>
-              </template>
-
-              <template v-else>
-                <div :class="$style['address-detail']">
-                  <div :class="$style['line-up']">
-                    <div :class="$style['text']">{{ addressInfo.name }}</div>
-                    <div :class="$style['text']">{{ addressInfo.phone }}</div>
-                    <div :class="$style['default-icon']">默认</div>
-                  </div>
-                  <div :class="$style['line-down']">
-                    {{ addressInfo.address }}
-                  </div>
-                </div>
-              </template>
-
-              <div v-if="item.btnShow" :class="$style['feature-btn']">
-                <div :class="$style['btn-next']">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </template>
       </template>
     </account-wrap>

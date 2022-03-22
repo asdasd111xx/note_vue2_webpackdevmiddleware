@@ -53,10 +53,6 @@
           <template v-if="['porn1', 'sg1'].includes(themeTPL)">
             {{ $text("S_BONUS", "红利彩金") }}
           </template>
-
-          <template v-if="['ey1'].includes(themeTPL)">
-            {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
-          </template>
         </span>
 
         <span :class="[$style['balance-item-money'], $style['more']]">
@@ -165,41 +161,7 @@
         </div>
       </template>
     </div>
-    <!-- 億元：自動免轉 -->
-    <template v-if="['ey1'].includes(themeTPL) && isNeedShowAutotransferSwitch">
-      <div v-if="isReceiveAuto" :class="[$style['balance-wrap'], 'clearfix']">
-        <div :class="$style['balance-tip-wrap']">
-          {{ $text("S_AUTO_FREE_TRANSFER", "自动免转") }}
-          <span :class="$style['balance-auto-tip']"
-            >({{
-              $text("S_AUTOSWTICH_HINT_GAME", "开启后余额自动转入游戏场馆")
-            }})</span
-          >
-        </div>
 
-        <div
-          v-if="isNeedShowManualtransferSwitch"
-          :class="`ui fitted toggle checkbox field-checkbox ${themeTPL}`"
-        >
-          <input
-            :checked="isAutotransfer"
-            type="checkbox"
-            @click="
-              () => {
-                if (isReceiveAuto) {
-                  if (isAutotransfer) {
-                    closeAutotransfer();
-                  } else {
-                    enableAutotransfer();
-                  }
-                }
-              }
-            "
-          />
-          <label />
-        </div>
-      </div>
-    </template>
     <!-- 鴨博：自動免轉 -->
     <template
       v-if="['porn1'].includes(themeTPL) && isNeedShowAutotransferSwitch"
@@ -295,12 +257,6 @@
     <!-- 手動轉換功能 -->
     <template v-if="!isAutotransfer && isNeedShowManualtransferSwitch">
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
-        <template v-if="['ey1'].includes(themeTPL)">
-          <span :class="$style['wallet-title']">
-            {{ $text("S_CHANGE_WALLET", "选择转帐钱包") }}
-          </span>
-        </template>
-
         <div :class="[$style['balance-transfer-wrap'], 'clearfix']">
           <div :class="$style['balance-select-wrap']">
             <div :class="$style['select-title']">
@@ -401,12 +357,6 @@
       </div>
 
       <div :class="[$style['balance-manual-wrap'], 'clearfix']">
-        <template v-if="['ey1'].includes(themeTPL)">
-          <span :class="$style['wallet-title']">
-            {{ $text("S_TRANSFER_MONEY", "转帐金额") }}
-          </span>
-        </template>
-
         <div :class="[$style['balance-input-wrap'], 'clearfix']">
           <span :class="$style['transfer-money']">
             <span>¥</span>
@@ -879,11 +829,7 @@ export default {
       });
     },
     handleSubmit() {
-      if (this.themeTPL === "ey1" && !this.withdrawCheckStatus.account) {
-        lib_useGlobalWithdrawCheck("balanceTrans");
-      } else {
-        this.sendBalanceTran();
-      }
+      this.sendBalanceTran();
     },
     sendBalanceTran() {
       // 阻擋連續點擊
@@ -922,10 +868,7 @@ export default {
         return;
       }
 
-      if (
-        this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
-        !this.RedEnvelopeTouchType
-      ) {
+      if (!this.RedEnvelopeTouchType) {
         mcenter.balanceTran(
           {
             params: {
@@ -1078,5 +1021,4 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.module.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.module.scss" module="$style_ey1"></style>
 <style lang="scss" src="../css/sg1.module.scss" module="$style_sg1"></style>

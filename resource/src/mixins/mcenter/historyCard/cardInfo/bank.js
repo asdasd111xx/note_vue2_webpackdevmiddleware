@@ -102,10 +102,6 @@ export default {
                 case "porn1":
                   this.actionSetGlobalMessage({ msg: "银行卡删除审核中" });
                   break;
-
-                case "ey1":
-                  this.actionSetGlobalMessage({ msg: "删除审核中" });
-                  break;
               }
             } else {
               switch (this.themeTPL) {

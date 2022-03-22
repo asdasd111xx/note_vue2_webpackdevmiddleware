@@ -117,10 +117,6 @@
                 <template>
                   {{ $text("S_BONUS", "红利彩金") }}
                 </template>
-
-                <!-- <template v-if="['ey1'].includes(routerTPL)">
-                  {{ $text("S_BONUS_ACCOUNT", "红利帐户") }}
-                </template> -->
               </span>
 
               <span :class="[$style['balance-item-money'], $style['more']]">
@@ -175,31 +171,6 @@
       </template>
     </balance-tran>
 
-    <template v-if="['ey1'].includes(routerTPL)">
-      <div :class="$style['swag-wrap']">
-        <div :class="$style['title']">蜂鸟钱包</div>
-        <div :class="$style['icon-block']">
-          <div :class="$style['icon-cell']">
-            <div :class="$style['balance']">
-              {{ birdBalance }}
-            </div>
-            {{ $t("S_BIRD_BALANCE") }}
-          </div>
-
-          <div
-            v-for="(item, index) in birdIcons"
-            :key="'icon-' + index"
-            :class="$style['icon-cell']"
-            @click="item.onClick"
-          >
-            <div :class="$style['image']">
-              <img :src="$getCdnPath(item.imgSrc)" alt="icon" />
-            </div>
-            {{ item.text }}
-          </div>
-        </div>
-      </div>
-    </template>
     <template v-if="bcWalletEnableType">
       <div :class="$style['bc-wrap']">
         <div :class="$style['bc-title']">币希钱包</div>
@@ -281,13 +252,6 @@
       <template v-if="['porn1', 'sg1'].includes(themeTPL)">
         <div :class="$style['content']">
           <div>邀请好友获得现金奖励</div>
-        </div>
-      </template>
-
-      <template v-if="['ey1'].includes(themeTPL)">
-        <div :class="$style['content']">
-          <div>日薪月薪不如推荐加薪</div>
-          <div :class="$style['sub']">分享入金稳拿奖金</div>
         </div>
       </template>
 
@@ -492,7 +456,6 @@ export default {
             switch (this.themeTPL) {
               case "porn1":
               case "sg1":
-              case "ey1":
                 this.$router.push("/mobile/mcenter/balanceTrans?title=wallet");
                 break;
 
@@ -514,13 +477,8 @@ export default {
 
             const routerPush = "/mobile/mcenter/withdraw";
 
-            if (this.themeTPL === "ey1") {
-              lib_useLocalWithdrawCheck("withdraw", routerPush);
-              return;
-            } else {
-              this.$router.push(routerPush);
-              return;
-            }
+            this.$router.push(routerPush);
+            return;
           }
         },
         {
@@ -554,13 +512,8 @@ export default {
 
             const routerPush = "/mobile/mcenter/bankCard";
 
-            if (this.themeTPL === "ey1") {
-              lib_useLocalWithdrawCheck("bankCard", routerPush);
-              return;
-            } else {
-              this.$router.push(routerPush);
-              return;
-            }
+            this.$router.push(routerPush);
+            return;
           }
         }
       ];
@@ -576,13 +529,6 @@ export default {
       } else {
         this.loginMoney = "";
       }
-    }
-    if (["ey1"].includes(this.themeTPL)) {
-      this.loginMoney =
-        this.membalance && this.membalance.total
-          ? `${thousandsCurrency(+this.membalance.total)}`
-          : "";
-      this.birdMoney();
     }
 
     this.startTime = Vue.moment(this.estToday)
@@ -619,16 +565,7 @@ export default {
       }
     }, 30000);
   },
-  watch: {
-    membalance() {
-      if (["ey1"].includes(this.themeTPL)) {
-        this.loginMoney =
-          this.membalance && this.membalance.total
-            ? `${thousandsCurrency(this.membalance.total)}`
-            : "";
-      }
-    }
-  },
+
   methods: {
     ...mapActions([
       "actionSetGlobalMessage",
@@ -1002,5 +939,4 @@ export default {
 </script>
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.index.scss" module="$style_ey1"></style>
 <style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>

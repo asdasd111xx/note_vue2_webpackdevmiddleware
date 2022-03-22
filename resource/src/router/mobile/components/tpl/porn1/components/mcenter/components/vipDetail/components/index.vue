@@ -39,12 +39,6 @@
       </template>
 
       <!-- Content -->
-      <template v-if="['ey1'].includes(this.themeTPL)">
-        <div :class="$style['title']">活动内容</div>
-        <div :class="$style['title-desc']">
-          活动期间内，满足累积存款额与全产品累积总有效投注的等级门槛，即可获得晋级金！达指定等级，每周每月再领奖！！
-        </div>
-      </template>
 
       <!-- 返水比例表格 -->
       <div :class="$style['table-wrap']">
@@ -125,7 +119,6 @@
 import { mapGetters } from "vuex";
 import mobileContainer from "../../../../common/mobileContainer";
 import yaboData from "./json/yabo.json";
-import eyData from "./json/ey.json";
 import sgData from "./json/sg.json";
 import aoboData from "./json/aobo.json";
 
@@ -305,64 +298,6 @@ export default {
             }
           ];
           break;
-
-        case "ey1":
-          data.titleList = eyData.titleList;
-          data.vipList = eyData.vipList;
-          data.ruleList = [
-            {
-              number: "❶",
-              title: "晋级标准",
-              content:
-                "累积全产品总有效投注达相对应级别门槛，即可晋级相对应的VIP等级，等级更新时间为北京时间每日下午4点。"
-            },
-            {
-              number: "❷",
-              title: "晋级顺序",
-              content: "VIP等级可越级晋级。"
-            },
-            {
-              number: "❸",
-              title: "当日存款计算区间",
-              content: "北京时间当日中午12点-隔日中午12点。"
-            },
-            {
-              number: "❹",
-              title: "保级要求",
-              content:
-                "会员在达到该VIP等级后，90天内需达到保级投注门槛，在此期间完成晋级保级要求。"
-            },
-            {
-              number: "❺",
-              title: "降级标准",
-              content:
-                "如未在90天内完成相对应保级要求，系统会自动降级一个等级，每周、每月红包也会调整至降级后的等级。"
-            },
-            {
-              number: "❻",
-              title: "晋级礼金",
-              content:
-                "会员在达到该VIP等级后系统自动派发，每个级别的晋级礼金仅能领取1次。可使用【亿元】任何游戏，打码3倍即可出款。"
-            },
-            {
-              number: "❼",
-              title: "每周红包",
-              content:
-                "会员当周达该等级门槛，于隔周一下午6点后系统自动派发，可使用【亿元】任何游戏，打码3倍即可出款。"
-            },
-            {
-              number: "❽",
-              title: "每月红包",
-              content:
-                "会员当月达该等级门槛，于每月1号下午6点后系统自动派发，可使用【亿元】任何游戏，打码3倍即可出款。"
-            },
-            {
-              number: "❾",
-              title: `${this.siteConfig.SITE_NAME}保有本活动执行、修正、解释及终止等权力。`,
-              content: ""
-            }
-          ];
-          break;
       }
 
       return data;
@@ -380,11 +315,6 @@ export default {
   lang="scss"
   src="@/css/page/vipDetail/porn1.index.scss"
   module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="@/css/page/vipDetail/ey1.index.scss"
-  module="$style_ey1"
 ></style>
 <style
   lang="scss"

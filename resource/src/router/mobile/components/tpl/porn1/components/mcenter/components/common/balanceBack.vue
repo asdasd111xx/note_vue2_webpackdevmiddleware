@@ -43,40 +43,6 @@
             {{ $text("S_ONE_CLICK_TO_ACCOUNT") }}
           </div>
         </div>
-
-        <!-- 億元：鸟蛋余额 -->
-        <div v-if="themeTPL === 'ey1'" :class="$style['bird-wrap']">
-          <div :class="[$style['item'], $style['wallet']]">
-            <img
-              :src="
-                $getCdnPath(
-                  '/static/image/common/mcenter/balanceTrans/ic_wallet_center.png'
-                )
-              "
-            />
-            <span>鸟蛋余额</span>
-            <div :class="$style['bird-block']">
-              {{ birdBalance }}
-            </div>
-          </div>
-
-          <div
-            :class="$style['item']"
-            @click="$router.push('/mobile/mcenter/help/bird?key=0')"
-          >
-            {{ $text("S_WHAT_BIRD", "什么是鸟蛋") }}
-          </div>
-
-          <div
-            :class="$style['item']"
-            @click="$router.push('/mobile/mcenter/help/bird?key=1')"
-          >
-            {{ $text("S_TO_USE", "如何使用") }}
-          </div>
-          <div :class="$style['item']" @click="goBirdUrl()">
-            {{ $text("S_GO_BIRD", "前往蜂鸟") }}
-          </div>
-        </div>
       </div>
     </template>
   </balance-tran>
@@ -110,11 +76,6 @@ export default {
   },
   components: {
     balanceTran
-  },
-  created() {
-    if (["ey1"].includes(this.themeTPL)) {
-      this.birdMoney();
-    }
   },
   computed: {
     ...mapGetters({
@@ -172,27 +133,10 @@ export default {
           }
         });
       return;
-    },
-    birdMoney() {
-      let cid = getCookie("cid");
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Member/Info`,
-        headers: {
-          cid: cid
-        },
-        params: {
-          lang: "zh-cn",
-          account: this.memInfo.user.username
-        }
-      }).then(res => {
-        this.birdBalance = res.data ? res.data.credits2 : "--";
-      });
     }
   }
 };
 </script>
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
-<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

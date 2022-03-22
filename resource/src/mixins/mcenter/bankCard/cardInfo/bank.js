@@ -164,10 +164,6 @@ export default {
                   case "sg1":
                     this.actionSetGlobalMessage({ msg: "银行卡删除审核中" });
                     break;
-
-                  case "ey1":
-                    this.actionSetGlobalMessage({ msg: "删除审核中" });
-                    break;
                 }
                 this.$emit("update:statusList", {
                   key: "isAudit",

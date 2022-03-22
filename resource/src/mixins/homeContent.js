@@ -42,12 +42,6 @@ export default {
         { name: "creditTrans", text: "转让", path: "creditTrans" },
         { name: "grade", text: "等级", path: "accountVip" }
       ],
-      mcenterEy1List: [
-        { name: "deposit", text: "充值", path: "deposit" },
-        { name: "balanceTrans", text: "转帐", path: "balanceTrans" },
-        { name: "makemoney", text: "推广", path: "tcenterLobby" },
-        { name: "vip", text: "VIP", path: "accountVip" }
-      ],
       mcenterSg1List: [
         { name: "myWallet", text: "钱包", path: "wallet" },
         { name: "withdraw", text: "提现", path: "withdraw" },

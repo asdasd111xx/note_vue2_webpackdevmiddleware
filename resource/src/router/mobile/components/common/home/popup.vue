@@ -422,9 +422,6 @@ export default {
   &.sg1 {
     color: #000000;
   }
-  // &.ey1 {
-  //   color: #e42a30;
-  // }
 }
 
 .post-header {

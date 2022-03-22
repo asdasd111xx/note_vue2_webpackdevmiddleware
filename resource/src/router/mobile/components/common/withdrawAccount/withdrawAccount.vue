@@ -13,8 +13,6 @@
                 `/static/image/common/btn_back_${
                   themeTPL === 'porn1'
                     ? 'grey'
-                    : themeTPL === 'ey1'
-                    ? 'white'
                     : themeTPL === 'sg1'
                     ? 'black'
                     : null
@@ -89,17 +87,6 @@
             {{ formData["phone"].title }}
           </div>
           <div :class="$style['form-input']">
-            <template v-if="themeTPL === 'ey1'">
-              <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option
-                  v-for="(option, key) in phoneHeadOption"
-                  v-bind:value="option"
-                  :key="key"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </template>
             <input
               v-model="formData['phone'].value"
               @input="verification('phone')"
@@ -279,20 +266,7 @@ export default {
         !this.formData.withdraw_password.show
       ) {
         this.getDomainConfig().then(() => {
-          // For 億元
-          if (
-            !this.checkBankSwitch &&
-            this.ub_before_bet_mode !== 0 &&
-            this.themeTPL === "ey1"
-          ) {
-            this.$router.replace(
-              `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=${
-                this.ub_before_bet_mode === 1 ? "bankCard" : "wallet"
-              }`
-            );
-          } else {
-            this.$router.back();
-          }
+          this.$router.back();
         });
       }
       this.isLoading = false;
@@ -391,35 +365,6 @@ export default {
         const _redirect = this.redirect;
 
         this.getDomainConfig().then(() => {
-          // 億元：如果沒有開啟「投注/轉帳前需設定提現資料」
-          if (this.themeTPL === "ey1" && !this.withdraw_info_before_bet) {
-            // 改強制跳銀行卡
-            // http://fb.vir888.com/default.asp?494542#4261984
-            if (!this.checkBankSwitch || this.ub_before_bet_mode !== 0) {
-              // 卡片管理
-              if (_redirect === "bankCard") {
-                this.$router.replace(`/mobile/mcenter/bankCard`);
-                return;
-              }
-
-              // http://192.168.151.161/T2O8MV/#id=jih6sg&p=%E5%84%84%E5%85%83%E5%AE%A2%E7%AB%AF&g=1
-              // 系統端 設定投注/轉帳前 需綁定 銀行卡/電子錢包擇一 跳轉到綁電子錢包
-              this.$router.replace(
-                `/mobile/mcenter/bankCard?redirect=${this.redirect}&type=${
-                  this.themeTPL === "ey1" && this.ub_before_bet_mode === 1
-                    ? "bankCard"
-                    : "wallet"
-                }`
-              );
-
-              return;
-            } else {
-              this.$router.back();
-              return;
-            }
-          }
-
-          // 億元：如果有開
           // 鴨/絲：只有投注/轉帳前需設定提現資料為 true 才會進到帳戶資料頁面
           this.$router.back();
           return;
@@ -492,11 +437,8 @@ export default {
 
       if (key === "phone") {
         // this.isVerifyPhone = target.value.length >= 11;
-        // 億元 不客端判斷手機號碼位數
-        if (
-          this.siteConfig.MOBILE_WEB_TPL === "ey1" ||
-          target.value.length >= 11
-        ) {
+
+        if (target.value.length >= 11) {
           this.isVerifyPhone = true;
         } else {
           this.isVerifyPhone = false;
@@ -677,5 +619,4 @@ export default {
 </script>
 
 <style lang="scss" src="./css/porn1.index.scss" module="$style_porn1"></style>
-<style lang="scss" src="./css/ey1.index.scss" module="$style_ey1"></style>
 <style lang="scss" src="./css/sg1.index.scss" module="$style_sg1"></style>

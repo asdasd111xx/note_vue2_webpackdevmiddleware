@@ -115,9 +115,6 @@ export default {
     },
     headerConfig() {
       const trans = { message: "通知", news: "活动", post: "公告" };
-      if (this.themeTPL === "ey1") {
-        trans.news == "消息";
-      }
       return {
         prev: true,
         title: this.$route.query.pid ? trans[this.currentTemplate] : "消息中心",
@@ -127,6 +124,7 @@ export default {
       };
     },
     tabItem() {
+<<<<<<< HEAD
       if (this.themeTPL === "ey1") {
         return [
           {
@@ -166,11 +164,28 @@ export default {
         return "99+";
       }
       return this.memInfo.msgCount;
+=======
+      return [
+        {
+          key: "message",
+          text: "通知",
+          hasMsgCount: true
+        },
+        {
+          key: "news",
+          text: "活动"
+        },
+        {
+          key: "post",
+          text: "公告"
+        }
+      ];
+>>>>>>> feature/delete_ey1
     }
   }
 };
 </script>
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
-<style lang="scss" src="../css/ey1.index.scss" module="$style_ey1"></style>
+<<<<<<< Updated upstream ======= >>>>>>> Stashed changes
 <style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>

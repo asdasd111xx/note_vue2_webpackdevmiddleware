@@ -52,48 +52,6 @@
           </div>
         </div>
 
-        <template
-          v-if="['ey1'].includes(themeTPL) && !memInfo.config.player_user_bank"
-        >
-          <div :class="$style['info-item']">
-            <p :class="$style['input-title']">省/直辖市</p>
-            <div :class="$style['input-wrap']">
-              <input
-                v-model.trim="formData.province"
-                type="text"
-                placeholder="请输入省/直辖市"
-                maxlength="36"
-                @input="checkData($event.target.value, 'province')"
-              />
-              <div :class="$style['clear-input']" v-if="formData.province">
-                <img
-                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                  @click="formData.province = ''"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div :class="$style['info-item']">
-            <p :class="$style['input-title']">县/市</p>
-            <div :class="$style['input-wrap']">
-              <input
-                v-model.trim="formData.city"
-                type="text"
-                placeholder="请输入县/市"
-                maxlength="36"
-                @input="checkData($event.target.value, 'city')"
-              />
-              <div :class="$style['clear-input']" v-if="formData.city">
-                <img
-                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                  @click="formData.city = ''"
-                />
-              </div>
-            </div>
-          </div>
-        </template>
-
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
           <div :class="$style['input-wrap']">
@@ -138,17 +96,6 @@
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">手机号码</p>
           <div :class="$style['input-wrap']">
-            <template v-if="['ey1'].includes(themeTPL)">
-              <select v-model="phoneHead" :class="$style['phone-selected']">
-                <option
-                  v-for="option in phoneHeadOption"
-                  v-bind:value="option"
-                  :key="option"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </template>
             <input
               v-model="formData.phone"
               type="text"
@@ -256,7 +203,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import message from "@/router/mobile/components/common/message";
 import popupVerification from "@/components/popupVerification";
 import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
@@ -400,11 +347,7 @@ export default {
   src="@/css/page/bankCard/porn1.addCard.module.scss"
   module="$style_porn1"
 ></style>
-<style
-  lang="scss"
-  src="@/css/page/bankCard/ey1.addCard.module.scss"
-  module="$style_ey1"
-></style>
+
 <style
   lang="scss"
   src="@/css/page/bankCard/sg1.addCard.module.scss"

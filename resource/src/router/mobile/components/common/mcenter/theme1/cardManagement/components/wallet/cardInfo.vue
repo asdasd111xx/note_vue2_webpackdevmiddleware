@@ -18,11 +18,7 @@
             </template>
 
             <template v-else>
-              {{
-                ["ey1"].includes(themeTPL)
-                  ? $text("S_MY_VIRTUAL_BANKCARD", "我的电子钱包")
-                  : $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包")
-              }}
+              {{ $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包") }}
             </template>
           </span>
 
@@ -76,11 +72,7 @@
           >
             <img :src="`/static/image/common/mcenter/add_2.png`" />
             <span>
-              {{
-                ["ey1"].includes(themeTPL)
-                  ? $text("S_ADD_VIRTUAL_BANKCARD", "添加电子钱包")
-                  : $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币")
-              }}
+              {{ $text("S_ADD_DIGITAL_CURRENCY", "添加数字货币") }}
             </span>
           </div>
         </div>
@@ -116,39 +108,12 @@
       <div v-if="statusList.editDetail" :class="$style['edit-bankcard']">
         <div :class="$style['edit-mask']" />
         <div :class="$style['edit-button']">
-          <template v-if="['ey1'].includes(themeTPL)">
-            <div
-              v-if="
-                userLevelObj.virtual_bank_single ||
-                  userLevelObj.virtual_bank_max === 1
-              "
-              :class="$style['edit-option-item']"
-              @click="moveCard(true)"
-            >
-              停用
-            </div>
-
-            <div
-              v-if="
-                !userLevelObj.virtual_bank_single &&
-                  userLevelObj.virtual_bank_max > 1
-              "
-              :class="$style['edit-option-item']"
-              @click="moveCard(false)"
-            >
-              {{ isCommon ? "移至历史帐号" : "移至我的电子钱包" }}
-            </div>
-          </template>
-
           <div
             v-if="memInfo.config.delete_bank_card"
-            :class="[
-              $style['edit-option-item'],
-              { [$style['confirm']]: !['ey1'].includes(themeTPL) }
-            ]"
+            :class="[$style['edit-option-item'], $style['confirm']]"
             @click="isShowPop = true"
           >
-            {{ ["ey1"].includes(themeTPL) ? "删除电子钱包" : "解除绑定" }}
+            {{ "解除绑定" }}
           </div>
 
           <div
@@ -226,8 +191,7 @@ export default {
       switch (this.themeTPL) {
         default:
           return "确定解除绑定该钱包？";
-        case "ey1":
-          return "确定删除该张卡片吗？";
+
         case "sg1":
           return "确定解除绑定？";
       }
@@ -241,11 +205,7 @@ export default {
   src="@/css/page/bankCard/porn1.cardInfo.module.scss"
   module="$style_porn1"
 ></style>
-<style
-  lang="scss"
-  src="@/css/page/bankCard/ey1.cardInfo.module.scss"
-  module="$style_ey1"
-></style>
+
 <style
   lang="scss"
   src="@/css/page/bankCard/sg1.cardInfo.module.scss"
