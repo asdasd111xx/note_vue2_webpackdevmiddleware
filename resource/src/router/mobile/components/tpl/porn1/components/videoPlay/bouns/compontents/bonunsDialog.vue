@@ -175,10 +175,7 @@
             </div>
           </div>
         </div>
-        <div
-          @click="handleClose"
-          :class="[$style['earn-keep-btn'], $style['active-btn']]"
-        >
+        <div @click="handleClose" :class="[$style['earn-keep-btn']]">
           {{ $text("S_ACTIVITY_KEEP", "继续看片") }}
         </div>
       </template>
