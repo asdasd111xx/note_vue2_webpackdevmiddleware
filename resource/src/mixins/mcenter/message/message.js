@@ -30,8 +30,9 @@ export default {
       if (!content) {
         return;
       }
-      let urlRegex = /\<p\>|\<\/p\>|\n|\<\/br\>/g;
-      return content.replace(urlRegex, "");
+      // let urlRegex = /\<p\>|\<\/p\>|\n|\<\/br\>/g;
+      // return content.replace(urlRegex, "");
+      return content;
     },
     getImage(imageID) {
       return goLangApiRequest({
