@@ -8,18 +8,30 @@
         </div>
 
         <div :class="$style['title']">
-          选择银行
+          挂单银行
         </div>
       </div>
 
       <div :class="$style['content']">
+        <div :class="$style['tab-wrap']">
+          <div :class="$style['tab-item']" @click="currentTab = orderBankList">
+            挂单银行卡
+          </div>
+          <div
+            v-if="bankList"
+            :class="$style['tab-item']"
+            @click="currentTab = bankList"
+          >
+            常用银行卡
+          </div>
+        </div>
         <div
-          v-for="(item, index) in bankList"
+          v-for="(item, index) in currentTab"
           :key="index"
           :class="$style['cell']"
           @click="handleClickItem(item)"
         >
-          {{ item.account }}
+          {{ item.order ? item.order : item.account }}
           <img
             v-if="item.account === bankSelected"
             :class="$style['select-icon']"
@@ -49,6 +61,10 @@ export default {
       type: Array,
       default: []
     },
+    orderBankList: {
+      type: Array,
+      default: []
+    },
     itemFunc: {
       type: Function,
       default: () => {}
@@ -56,7 +72,8 @@ export default {
   },
   data() {
     return {
-      activeIndex: 0
+      activeIndex: 0,
+      currentTab: this.orderBankList
     };
   },
   computed: {
@@ -133,7 +150,6 @@ export default {
   background-color: #f8f8f7;
   border-radius: 20px 20px 0px 0px;
   bottom: 0;
-  height: 312px;
   overflow: hidden;
   position: absolute;
   width: 100%;
@@ -167,6 +183,21 @@ export default {
 .content {
   background-color: #f8f8f7;
   margin-top: 10px;
+
+  .tab-wrap {
+    height: 50px;
+    width: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    .tab-item {
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: #ffffff;
+    }
+  }
 
   .cell {
     position: relative;

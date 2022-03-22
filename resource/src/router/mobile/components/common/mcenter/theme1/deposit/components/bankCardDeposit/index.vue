@@ -239,13 +239,17 @@
               ]"
             >
               <span :class="$style['select-bank-title']">
-                您的银行
+                挂单银行
               </span>
               <div
                 :class="$style['select-epoint-bank-item']"
                 @click="setPopupStatus(true, 'epointBank')"
               >
-                {{ defaultEpointWallet.account }}
+                {{
+                  defaultEpointWallet.order
+                    ? defaultEpointWallet.order
+                    : defaultEpointWallet.account
+                }}
                 <img
                   :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
                 />
@@ -1354,6 +1358,7 @@
           :bank-selected="defaultEpointWallet.account"
           :bank-list="userBankOption"
           :item-func="setEpointBank"
+          :order-bank-list="userOrderBankOption"
           @close="closePopup"
         />
       </template>
@@ -1485,7 +1490,7 @@ export default {
     passRoad() {
       console.log("all passRoad", this.passRoad);
       this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
-        ? this.defaultEpointWallet.account === "其他银行卡"
+        ? this.defaultEpointWallet.account === "新增挂单银行卡"
         : false;
     },
     curPassRoad() {
