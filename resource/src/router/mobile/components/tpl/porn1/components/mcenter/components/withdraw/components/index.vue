@@ -2383,13 +2383,7 @@ export default {
         JSON.parse(localStorage.getItem("tmp_w_withdrawCurrencyOSP")) ||
         this.withdrawCurrencyOSP;
 
-<<<<<<< HEAD
-      this.epointSelectType =
-        +localStorage.getItem("tmp_w_epointSelectType");
-=======
       this.epointSelectType = +localStorage.getItem("tmp_w_epointSelectType");
-      console.log(123);
->>>>>>> feature/delete_ey1
       if (
         localStorage.getItem("tmp_w_epointWallet") &&
         localStorage.getItem("tmp_w_epointWallet") != "undefined"

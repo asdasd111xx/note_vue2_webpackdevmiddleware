@@ -432,8 +432,4 @@ export default {
   src="../../css/porn1.message.scss"
   module="$style_porn1"
 ></style>
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 <style lang="scss" src="../../css/sg1.message.scss" module="$style_sg1"></style>

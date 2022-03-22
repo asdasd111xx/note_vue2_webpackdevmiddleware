@@ -124,47 +124,6 @@ export default {
       };
     },
     tabItem() {
-<<<<<<< HEAD
-      if (this.themeTPL === "ey1") {
-        return [
-          {
-            key: "message",
-            text: "通知",
-            hasMsgCount: true
-          },
-          {
-            key: "news",
-            text: "消息"
-          },
-          {
-            key: "post",
-            text: "公告"
-          }
-        ];
-      } else {
-        return [
-          {
-            key: "message",
-            text: "通知",
-            hasMsgCount: true
-          },
-          {
-            key: "news",
-            text: "活动"
-          },
-          {
-            key: "post",
-            text: "公告"
-          }
-        ];
-      }
-    },
-    UnreadMsgCount() {
-      if (this.memInfo.msgCount >= 100) {
-        return "99+";
-      }
-      return this.memInfo.msgCount;
-=======
       return [
         {
           key: "message",
@@ -180,12 +139,10 @@ export default {
           text: "公告"
         }
       ];
->>>>>>> feature/delete_ey1
     }
   }
 };
 </script>
 
 <style lang="scss" src="../css/porn1.index.scss" module="$style_porn1"></style>
-<<<<<<< Updated upstream ======= >>>>>>> Stashed changes
 <style lang="scss" src="../css/sg1.index.scss" module="$style_sg1"></style>
