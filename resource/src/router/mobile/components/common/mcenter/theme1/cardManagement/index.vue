@@ -109,9 +109,7 @@ export default {
     themeTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
-    isCommon() {
-      return this.$route.meta.common;
-    },
+
     tabItem() {
       return [
         {
@@ -128,7 +126,7 @@ export default {
     },
     headerTitle() {
       const { type, redirect } = this.$route.query;
-      const { hasRedirect, currentPage, themeTPL, isCommon } = this;
+      const { hasRedirect, currentPage, themeTPL } = this;
       const { showDetail } = this.statusList;
 
       // 非提現頁面跳轉過來 & 類型為銀行卡
@@ -158,8 +156,6 @@ export default {
         case "bankCardInfo":
           return showDetail
             ? this.$text("S_BANKCARD", "银行卡")
-            : !isCommon
-            ? this.$text("S_HISTORY_ACCOUNT", "历史帐号")
             : this.$text("S_CARD_MANAGEMENT", "卡片管理");
 
         // 卡片管理-錢包
@@ -171,8 +167,6 @@ export default {
             case "sp1":
               return showDetail
                 ? this.$text("S_DIGITAL_CURRENCY", "数字货币")
-                : !isCommon
-                ? this.$text("S_HISTORY_ACCOUNT", "历史帐号")
                 : this.$text("S_CARD_MANAGEMENT", "卡片管理");
           }
 
@@ -195,19 +189,11 @@ export default {
       }
     },
     isOneTab() {
-      // 常用錢包
-      if (this.isCommon) {
-        return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
-      }
-
-      // 歷史錢包
-      if (!this.isCommon) {
-        return this.userLevelObj.virtual_bank_single;
-      }
+      return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
     },
     showDetailButton() {
-      const { memInfo, themeTPL, currentPage, userLevelObj } = this;
-      const { showDetail, isAudit, hasSameTypeWallet } = this.statusList;
+      const { memInfo, currentPage } = this;
+      const { showDetail, isAudit } = this.statusList;
 
       const showButton =
         showDetail && !isAudit && memInfo.config.delete_bank_card;
@@ -219,19 +205,6 @@ export default {
         case "walletCardInfo":
           return showButton;
       }
-    },
-    showHistoryButton() {
-      const { isCommon, userLevelObj, currentPage } = this;
-      const { showDetail } = this.statusList;
-
-      const walletHistory =
-        ["walletCardInfo"].includes(currentPage) &&
-        !userLevelObj.virtual_bank_single &&
-        userLevelObj.virtual_bank_max > 1;
-
-      const showButton = isCommon && !showDetail && walletHistory;
-
-      return showButton;
     }
   },
   created() {
@@ -269,7 +242,7 @@ export default {
       }
 
       // 銀行卡/電子錢包，其中有一方關閉(在常用錢包頁面)
-      if (this.isCommon && this.isOneTab) {
+      if (this.isOneTab) {
         if (this.userLevelObj.bank) {
           this.setPageStatus(0, "bankCardInfo", false);
           return;
@@ -281,18 +254,8 @@ export default {
         }
       }
 
-      // 銀行卡/電子錢包，其中有一方開啟多組開關(在歷史錢包頁面)
-      if (!this.isCommon && this.isOneTab) {
-        if (!this.userLevelObj.virtual_bank_single) {
-          this.setPageStatus(1, "walletCardInfo", false);
-          return;
-        }
-      }
-
       // 預設頁面(預設為銀行卡頁面)
-      // 常用：銀行卡 ＆ 歷史：電子錢包（因無歷史銀行卡）
-      if (this.isCommon) this.setPageStatus(0, "bankCardInfo", true);
-      if (!this.isCommon) this.setPageStatus(1, "walletCardInfo", false);
+      this.setPageStatus(0, "bankCardInfo", true);
     });
   },
   methods: {

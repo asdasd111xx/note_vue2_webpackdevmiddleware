@@ -144,10 +144,7 @@ export default {
     colorRepeatIndex() {
       return this.index % 3;
     },
-    isCommon() {
-      // 是否為常用(true) or 歷史(false)
-      return this.$route.meta.common;
-    },
+
     isStopped() {
       let isStop = false;
 

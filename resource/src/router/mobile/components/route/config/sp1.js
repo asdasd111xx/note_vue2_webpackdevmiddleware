@@ -293,10 +293,6 @@ export default {
       import(
         /* webpackChunkName: 'tcenterNewCommissionSp1' */ "../../tpl/porn1/components/mcenter/components/tcenter/components/newCommission"
       )
-    // historyCardSg1: () =>
-    //   import(
-    //     /* webpackChunkName: 'historyCardSg1' */ "../../tpl/sg1/components/mcenter/components/historyCard"
-    //   )
   },
   agcenter: {
     homeSp1: () =>

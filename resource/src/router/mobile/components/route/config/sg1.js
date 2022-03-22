@@ -310,9 +310,5 @@ export default {
       import(
         /* webpackChunkName: 'liveShopSg1' */ "../../tpl/sg1/components/mcenter/components/live/shop"
       )
-    // historyCardSg1: () =>
-    //   import(
-    //     /* webpackChunkName: 'historyCardSg1' */ "../../tpl/sg1/components/mcenter/components/historyCard"
-    //   ),
   }
 };

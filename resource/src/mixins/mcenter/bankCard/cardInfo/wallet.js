@@ -29,9 +29,7 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
-    isCommon() {
-      return this.$route.meta.common;
-    },
+
     isBindNowOpenAllWallets() {
       // 根據目前已綁定的 ID 與目前有開放的所有銀行 ID 做比對
       let nowBindWalletCount = 0;
@@ -108,7 +106,7 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Virtual/Bank/List`,
         params: {
           lang: "zh-cn",
-          common: this.isCommon
+          common: true
         }
       })
         .then(response => {
@@ -167,53 +165,6 @@ export default {
         });
         return;
       }
-    },
-    moveCard(isStop) {
-      const { address, virtual_bank_id } = this.wallet_cardDetail;
-
-      // 編輯會員電子錢包 C02.240 (取代C02.145)
-      goLangApiRequest({
-        method: "put",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/VirtualBank/Edit`,
-        params: {
-          lang: "zh-cn",
-          oldAddress: address,
-          virtualBankId: String(virtual_bank_id),
-          common: !this.isCommon
-        }
-      })
-        .then(response => {
-          const { status, errorCode } = response;
-
-          if (errorCode !== "00" || status !== "000") {
-            return;
-          }
-
-          this.actionSetGlobalMessage({
-            msg: isStop
-              ? "停用成功"
-              : this.isCommon
-              ? "移至历史帐号 成功"
-              : "移至我的电子钱包 成功"
-          });
-
-          this.getUserWalletList().then(() => {
-            // 切換當前頁面狀態
-            this.$emit("update:statusList", {
-              key: "showDetail",
-              value: false
-            });
-            this.$emit("update:statusList", {
-              key: "editStatus",
-              value: false
-            });
-            this.setPageStatus(1, "walletCardInfo", true);
-          });
-        })
-        .catch(error => {
-          const { msg } = error.response.data;
-          this.actionSetGlobalMessage({ msg });
-        });
     },
     onDelete() {
       // 申請刪除會員電子錢包 C02.244
