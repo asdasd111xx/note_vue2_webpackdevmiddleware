@@ -286,7 +286,8 @@ export default {
       }
 
       // 預設頁面(預設為銀行卡頁面)
-      this.setPageStatus(0, "bankCardInfo", true);
+      // this.setPageStatus(0, "bankCardInfo", true);
+      this.setPageStatus(2, "orderCardInfo", true);
     });
   },
   methods: {
