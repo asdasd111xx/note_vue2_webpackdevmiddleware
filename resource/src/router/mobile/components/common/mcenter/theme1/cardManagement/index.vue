@@ -42,20 +42,22 @@
     </div>
 
     <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
-      <div
-        v-for="(item, index) in tabItem"
-        :key="`tab-${item.key}`"
-        :class="[
-          $style['tab-item'],
-          { [$style['is-current']]: currentTab === index }
-        ]"
-        @click="setCurrentTab(index)"
-      >
-        {{ item.text }}
-      </div>
+      <template v-for="(item, index) in tabItem">
+        <div
+          v-if="item.isShow"
+          :key="`tab-${item.key}`"
+          :class="[
+            $style['tab-item'],
+            { [$style['is-current']]: currentTab === index }
+          ]"
+          @click="setCurrentTab(index)"
+        >
+          {{ item.text }}
+        </div>
+      </template>
       <div
         :class="[$style['active-slider']]"
-        :style="{ left: `calc(25% + 50% * ${currentTab})` }"
+        :style="{ left: `${tabLeft}%` }"
       />
     </div>
 
@@ -73,6 +75,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import entryMixin from "@/mixins/mcenter/bankCard/index";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -82,6 +85,14 @@ export default {
       ),
     addBankCard: () =>
       import(/* webpackChunkName: 'addBankCard' */ "./components/bank/addCard"),
+    orderCardInfo: () =>
+      import(
+        /* webpackChunkName: 'bankCardInfo' */ "./components/order/cardInfo"
+      ),
+    addOrderCard: () =>
+      import(
+        /* webpackChunkName: 'addBankCard' */ "./components/order/addCard"
+      ),
     walletCardInfo: () =>
       import(
         /* webpackChunkName: 'walletCardInfo' */ "./components/wallet/cardInfo"
@@ -114,15 +125,28 @@ export default {
       return [
         {
           key: "bank",
-          text: "银行卡"
+          text: "银行卡",
+          isShow: true
         },
         {
           key: "wallet",
           text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
             ? "数字货币"
-            : "电子钱包"
+            : "电子钱包",
+          isShow: true
+        },
+        {
+          key: "order",
+          text: "挂单银行卡",
+          isShow: false
         }
       ];
+    },
+    tabLeft() {
+      return (
+        100 / this.tabItem.filter(v => v.isShow).length / 2 +
+        (100 / this.tabItem.filter(v => v.isShow).length) * this.currentTab
+      );
     },
     headerTitle() {
       const { type, redirect } = this.$route.query;
@@ -171,6 +195,9 @@ export default {
           }
 
           break;
+        // 卡片管理-掛單
+        case "orderCardInfo":
+          return this.$text("S_ORDERCARD", "挂单银行卡");
 
         // 添加銀行卡
         case "addBankCard":
@@ -186,6 +213,9 @@ export default {
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
           }
           break;
+        // 添加掛單銀行卡
+        case "addOrderCard":
+          return this.$text("S_ADD_ORDERCARD", "添加挂单银行卡");
       }
     },
     isOneTab() {
@@ -220,6 +250,7 @@ export default {
     this.actionSetUserdata(true);
 
     // 以下處理頁面設定
+    this.getNowOpenWallet();
     this.actionSetUserLevels().then(() => {
       let type = this.$route.query.type;
       let tempType = localStorage.getItem("bankCardType");
@@ -260,6 +291,27 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetUserLevels"]),
+    getNowOpenWallet() {
+      // C02.141 取得廳主支援的電子錢包列表
+      // Get 錢包類型
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/VirtualBank/List`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          if (
+            res.data.filter(
+              v => v.swift_code === "BBEPWACN2" || v.swift_code === "BBEPWACN1"
+            ).length > 0
+          ) {
+            this.tabItem[2].isShow = true;
+          }
+        }
+      });
+    },
     setPageStatus(tabIndex, pageName, isShowTab) {
       this.isReceive = false;
       this.currentTab = tabIndex;
@@ -280,9 +332,11 @@ export default {
         case 0:
           this.currentPage = "bankCardInfo";
           break;
-
         case 1:
           this.currentPage = "walletCardInfo";
+          break;
+        case 2:
+          this.currentPage = "orderCardInfo";
           break;
       }
     },
