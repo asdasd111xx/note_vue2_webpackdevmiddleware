@@ -432,7 +432,10 @@
                   v-model="selectData[field.key].selected"
                   :options="selectData[field.key].options"
                   :searchable="false"
-                  :class="$style['join-select-phone']"
+                  :class="[
+                    $style['join-select-phone'],
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   @input="changSelect(field.key)"
                 />
                 <input
