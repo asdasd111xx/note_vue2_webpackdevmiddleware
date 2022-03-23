@@ -250,7 +250,11 @@ export default {
   },
   methods: {
     backPre() {
-      this.$router.back();
+      if (history.length) {
+        this.$router.back();
+      } else {
+        window.close();
+      }
     },
 
     download() {
