@@ -778,6 +778,25 @@
   }
 }
 
+.has-visitor-sg {
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+  color: #5e626d;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0px auto;
+  margin-top: 32px;
+
+  a {
+    text-decoration: none;
+    color: #5e626d;
+  }
+  .visitor {
+    color: #6aaaf5;
+  }
+}
+
 .has-visitor {
   color: #5e626d;
   margin-top: 40px;

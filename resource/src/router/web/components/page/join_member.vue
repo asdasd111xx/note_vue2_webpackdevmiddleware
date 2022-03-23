@@ -651,16 +651,17 @@
           {{ $text("S_REGISTER", "注册") }}
         </div>
       </div>
-      <div v-if="themeTPL == 'sg1'" :class="$style['has-visitor']">
+      <div v-if="themeTPL === 'sg1'" :class="$style['has-visitor-sg']">
         <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
         <span><a :href="beHostUrl" target="_blank">成为主播</a></span>
         <span
+          :class="$style['visitor']"
           @click.stop="$router.push('/mobile/live/iframe/home?hasFooter=true')"
           >访客进入</span
         >
       </div>
       <div
-        v-if="themeTPL != 'sg1'"
+        v-if="themeTPL !== 'sg1'"
         :class="$style['has-visitor']"
         @click.stop="$router.push('/mobile/login')"
       >

@@ -124,16 +124,6 @@ export default {
 //   margin: 15px auto 0 auto;
 // }
 
-.has-visitor {
-  span {
-    padding: 0 10px;
-  }
-
-  span:nth-child(3) {
-    color: #6aaaf5;
-  }
-}
-
 // .field-wrap {
 //   margin-left: 12px;
 //   margin-right: 12px;
