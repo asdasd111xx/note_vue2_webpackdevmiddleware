@@ -8,11 +8,10 @@
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div class="err-msg">
-              <div v-show="errMsg">
-                {{ errMsg }}
-              </div>
+            <div v-show="errMsg" class="err-msg">
+              {{ errMsg }}
             </div>
+
             <form>
               <!-- 帳號 -->
               <span class="login-unit login-unit-username">
