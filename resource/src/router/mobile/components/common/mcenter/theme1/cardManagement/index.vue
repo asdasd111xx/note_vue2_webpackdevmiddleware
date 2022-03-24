@@ -39,6 +39,17 @@
           alt="more"
         />
       </div>
+      <!-- 掛單銀行卡-完成 -->
+      <div
+        v-if="currentPage === 'addOrderCard'"
+        :class="[
+          $style['order-confirm'],
+          { [$style['active']]: orderConfirmBtnActive }
+        ]"
+        @click="orderConfirmBtnActive ? handleClickOrderConfirmBtn() : ''"
+      >
+        完成
+      </div>
     </div>
 
     <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
@@ -68,6 +79,8 @@
       :status-list.sync="statusList"
       :add-bank-card-step.sync="addBankCardStep"
       :user-level-obj="userLevelObj"
+      ref="component"
+      @update="handleEmitOrderConfirmBtn"
     />
   </div>
 </template>
@@ -104,7 +117,7 @@ export default {
   },
   mixins: [entryMixin],
   data() {
-    return {};
+    return { orderConfirmBtnActive: false };
   },
   computed: {
     ...mapGetters({
@@ -425,6 +438,13 @@ export default {
           return;
       }
       this.$router.back();
+    },
+    handleEmitOrderConfirmBtn(boolen) {
+      this.orderConfirmBtnActive = boolen;
+    },
+    handleClickOrderConfirmBtn() {
+      this.$refs.component.addOrderCard();
+      this.orderConfirmBtnActive = false;
     }
   }
 };

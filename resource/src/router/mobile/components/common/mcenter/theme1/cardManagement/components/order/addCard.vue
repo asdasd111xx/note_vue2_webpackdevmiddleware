@@ -78,11 +78,18 @@ export default {
   computed: {
     ...mapGetters({
       siteConfig: "getSiteConfig"
-    })
+    }),
+    orderConfirmBtnActive() {
+      return this.formData.bank && this.formData.account;
+    }
   },
   methods: {
     handleType() {
       this.errorMsg = "";
+      this.$emit(
+        "update",
+        Boolean(this.formData.bank && this.formData.account)
+      );
     },
     addOrderCard() {
       goLangApiRequest({
