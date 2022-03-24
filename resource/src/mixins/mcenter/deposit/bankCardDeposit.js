@@ -1592,8 +1592,6 @@ export default {
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
           let temp = res.data.map(v => {
-            //a+'-'+b.slice(0,4)+'****'+b.slice(-4)
-
             return {
               ...v,
               order:

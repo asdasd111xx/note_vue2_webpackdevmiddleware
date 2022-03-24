@@ -152,7 +152,6 @@ export default {
       const { type, redirect } = this.$route.query;
       const { hasRedirect, currentPage, themeTPL } = this;
       const { showDetail } = this.statusList;
-
       // 非提現頁面跳轉過來 & 類型為銀行卡
       if (hasRedirect && type === "bankCard" && redirect !== "withdraw") {
         return "提现银行卡";
@@ -267,6 +266,9 @@ export default {
             this.$router.replace("/mobile/mcenter/bankCard");
           }
         }
+        if ((type && type === "orderCard") || tempType === "orderCard") {
+          this.setPageStatus(2, "addOrderCard", false);
+        }
 
         localStorage.removeItem("bankCardType");
         return;
@@ -286,8 +288,7 @@ export default {
       }
 
       // 預設頁面(預設為銀行卡頁面)
-      // this.setPageStatus(0, "bankCardInfo", true);
-      this.setPageStatus(2, "orderCardInfo", true);
+      this.setPageStatus(0, "bankCardInfo", true);
     });
   },
   methods: {
@@ -416,9 +417,11 @@ export default {
         case "addBankCard":
           this.setPageStatus(0, "bankCardInfo", true);
           return;
-
         case "addWalletCard":
           this.setPageStatus(1, "walletCardInfo", true);
+          return;
+        case "addOrderCard":
+          this.setPageStatus(2, "orderCardInfo", true);
           return;
       }
       this.$router.back();
