@@ -457,7 +457,9 @@ export default {
 
           this.actionSetGlobalMessage({
             msg: "兑换成功",
-            cb: () => {}
+            cb: () => {
+              this.init();
+            }
           });
         }
 
