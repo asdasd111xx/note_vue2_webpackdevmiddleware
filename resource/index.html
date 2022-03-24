@@ -129,11 +129,7 @@
     })(window, document, 'script', 'dataLayer', 'GTM-MNTWRH2');
     //友盟
     var ymkey = '';
-    var platform = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('platform='))
-      .split('=')[1]
-    console.log("platform is " + platform);
+
     fetch(`/conf/domain`)
       .then(function (response) {
         h = response.headers;

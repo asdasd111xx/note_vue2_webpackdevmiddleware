@@ -62,7 +62,7 @@ export default {
         console.log("[from]:", data.from);
 
         // 忽略事件不轉導
-        const ignoreEvents = ["EVENT_GUEST_REGISTER"];
+        const ignoreEvents = ["EVENT_GUEST_REGISTER", "STREAMROOM"];
 
         if (data.from && !ignoreEvents.includes(data.event)) {
           localStorage.setItem("live-iframe-event-from", data.from);
@@ -240,6 +240,11 @@ export default {
                 return;
               case "LIVEMALL":
                 this.$router.push(`/mobile/live/iframe/mall?hasfooter=false`);
+                return;
+              case "STREAMROOM":
+                this.$router.push(
+                  `/mobile/live/iframe/home?hasfooter=false&roomId=${data.roomId}`
+                );
                 return;
             }
             return;

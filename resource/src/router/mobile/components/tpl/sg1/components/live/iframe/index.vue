@@ -212,7 +212,7 @@ export default {
     ]),
     initPage() {
       let clientUri = "";
-
+      let roomId = this.$route.query.roomId;
       if (this.liveMaintain && this.liveMaintain.start) {
         return;
       }
@@ -223,7 +223,7 @@ export default {
       }).then(res => {
         if (res && res.result) {
           let isFrom = false;
-          if (localStorage.getItem("live-iframe-event-from")) {
+          if (localStorage.getItem("live-iframe-event-from") && !roomId) {
             if (
               this.pageType === "home" &&
               (!localStorage.getItem("live-iframe-set-home") ||
@@ -243,11 +243,13 @@ export default {
               if (key === this.pageType) {
                 this.liveHomeSrc = list["home"];
                 clientUri = list[key];
+                if (roomId) {
+                  clientUri += "/chatroom/" + roomId;
+                }
                 return;
               }
             });
           }
-
           goLangApiRequest({
             method: "post",
             url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,

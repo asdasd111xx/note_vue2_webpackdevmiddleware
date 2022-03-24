@@ -68,7 +68,7 @@
             </span>
 
             <span v-else>
-              {{ `最多支持添加${userLevelObj.virtual_bank_max}个钱包?` }}
+              {{ `最多支持添加${userLevelObj.virtual_bank_max}个钱包` }}
             </span>
           </template>
         </p>

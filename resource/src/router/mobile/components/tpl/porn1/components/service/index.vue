@@ -297,7 +297,8 @@ export default {
       this.isShowPop = true;
     },
     handleAddClick() {
-      this.$router.push("/mobile/install");
+      window.open("/mobile/install");
+      // this.$router.push("/mobile/install");
     },
     getAvatarSrc() {
       if (!this.loginStatus) return;
