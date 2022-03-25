@@ -126,6 +126,7 @@
       :detail-list="detailList"
       :detail-info.sync="detailInfo"
       :page-type="pageType"
+      :category-list="categoryList"
       @openSlider="openSlider"
     />
     <!-- 捲動加載 -->
@@ -215,6 +216,7 @@ export default {
       categoryOpt: [],
       screenWidthSize: null,
       isCustomTime: false,
+      categoryList: [],
       bufferCurrentDate: { key: "today", text: this.$text("S_TODDAY", "今日") }
     };
   },
@@ -239,7 +241,7 @@ export default {
     },
     categoryOptions() {
       return [
-        // { key: "", text: "全部" },
+        { key: "", text: "全部" },
         { key: "deposit", text: "充值" },
         { key: "vendor", text: "转帐" },
         { key: "withdraw", text: "提现" },
@@ -265,6 +267,7 @@ export default {
       return;
     }
 
+    this.getCategoryList();
     if (this.routerTPL === "sg1") {
       sendUmeng(44);
     } else {
@@ -306,6 +309,16 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    getCategoryList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Cash/Category`
+      }).then(res => {
+        if (res && res.data && res.data.ret) {
+          this.categoryList = res.data.ret;
+        }
+      });
+    },
     onResize() {
       this.screenWidthSize = document.body.offsetWidth;
     },
@@ -445,15 +458,14 @@ export default {
 
       this.changeCondition("");
       this.changeDatePicker("");
-      if (this.$refs.infiniteLoading) {
-        this.$refs.infiniteLoading.stateChanger.reset();
-      }
 
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.isEmbedDetail
       ) {
-        this.getData();
+        if (this.$refs.infiniteLoading) {
+          this.$refs.infiniteLoading.stateChanger.reset();
+        }
       }
     },
     setDate(value) {
@@ -493,15 +505,14 @@ export default {
 
       this.changeCondition("");
       this.changeDatePicker("");
-      if (this.$refs.infiniteLoading) {
-        this.$refs.infiniteLoading.stateChanger.reset();
-      }
 
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.isEmbedDetail
       ) {
-        this.getData();
+        if (this.$refs.infiniteLoading) {
+          this.$refs.infiniteLoading.stateChanger.reset();
+        }
       }
     },
     changeCondition(value) {

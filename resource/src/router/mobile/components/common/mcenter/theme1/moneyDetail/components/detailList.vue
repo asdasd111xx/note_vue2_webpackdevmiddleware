@@ -25,7 +25,7 @@
         <div :class="[$style['detail-info'], 'clearfix']">
           <div :class="$style.wrap">
             <div class="title-wrap">
-              <span :class="$style.title">{{ currentCategory.text }}</span>
+              <span :class="$style.title">{{ getCategoryName(item) }}</span>
               <span :class="$style.tips">{{ opcodeList[item.opcode] }}</span>
             </div>
             <div :class="$style.time">
@@ -126,6 +126,10 @@ export default {
     },
     pageType: {
       default: ""
+    },
+    categoryList: {
+      type: Array,
+      default: []
     }
   },
   watch: {
@@ -161,6 +165,16 @@ export default {
     }
   },
   methods: {
+    getCategoryName(item) {
+      let name = this.currentCategory.text;
+      if (this.categoryList && this.categoryList.length) {
+        const target = this.categoryList.find(i => i.tag === item.category[0]);
+        if (target) {
+          name = target.display || target.diaplay;
+        }
+      }
+      return name;
+    },
     getCategory(item) {
       if (item.category[0] === "rebate") {
         return "activity";
