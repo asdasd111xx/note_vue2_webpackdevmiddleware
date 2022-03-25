@@ -4,33 +4,46 @@
     :class="['normal-page', $style['join-wrap'], 'clearfix']"
   >
     <slot name="top-content" />
-    <div :class="$style.join">
-      <slot name="join-header">
-        <div :class="$style['join-banner']">
-          <div :class="$style['join-banner-icon']" />
-          {{ $t("S_JOIN_MEMBER") }}
-        </div>
-      </slot>
-      <div :class="$style['join-content']">
-        <!-- 訪客&&活動開啟文案 -->
-        <div style="margin-top: 40px;">
-          <template v-if="activity.isActivity && activity.totalAmount > 0"
-            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-              访客加入会员
-            </div>
-            <div :class="[$style['visitor-get'], $style[themeTPL]]">
-              {{
-                `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元`
-              }}
-            </div></template
-          >
-          <template v-if="themeTPL === 'sg1'"
-            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-              注册即送 300 钻
-            </div></template
-          >
-        </div>
 
+    <div :class="$style['join-tabs-wrap']">
+      <span
+        v-for="(tab, index) in tabs"
+        :key="`${tab}-${index}`"
+        @click="currentTab(index)"
+        :class="{ [$style.active]: currentJoin === tab.page }"
+      >
+        {{ tab.name }}
+      </span>
+    </div>
+    <slot name="join-header">
+      <div :class="$style['join-banner']">
+        <div :class="$style['join-banner-icon']" />
+        {{ $t("S_JOIN_MEMBER") }}
+      </div>
+    </slot>
+    <!-- 訪客&&活動開啟文案 -->
+    <div style="margin-top: 40px;">
+      <template v-if="activity.isActivity && activity.totalAmount > 0"
+        ><div :class="[$style['visitor-get'], $style[themeTPL]]">
+          访客加入会员
+        </div>
+        <div :class="[$style['visitor-get'], $style[themeTPL]]">
+          {{ `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元` }}
+        </div></template
+      >
+      <template v-if="themeTPL === 'sg1'"
+        ><div :class="[$style['visitor-get'], $style[themeTPL]]">
+          注册即送 300 钻
+        </div></template
+      >
+    </div>
+
+    <!-- ******帳號註冊/手機註冊****** -->
+    <div
+      v-if="currentJoin === 'accountjoin' || currentJoin === 'mobilejoin'"
+      :class="$style.join"
+    >
+      <div :class="$style['join-content']">
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <!-- <div v-show="errMsg">
@@ -592,6 +605,7 @@
                 />
               </div>
             </div>
+
             <!-- </div> -->
             <div
               :class="
@@ -608,6 +622,9 @@
               "
               v-html="allTip[field.key]"
             />
+          </div>
+          <div v-if="currentJoin === 'mobilejoin'">
+            <a href="/mobile/mcenter/help/support">{{ "收不到验证码？" }}</a>
           </div>
         </form>
 
@@ -734,6 +751,11 @@ export default {
 
   data() {
     return {
+      tabs: [
+        { name: "帳號註冊", page: "accountjoin" },
+        { name: "手機註冊", page: "mobilejoin" }
+      ],
+      currentJoin: "mobilejoin",
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
@@ -900,6 +922,18 @@ export default {
     }),
 
     fieldsData() {
+      //******手機註冊欄位******
+      if (this.currentJoin === "mobilejoin") {
+        return this.registerData.filter(
+          field =>
+            (this.joinMemInfo[field.key] &&
+              field.key === "phone" &&
+              this.joinMemInfo[field.key].hasVerify) ||
+            field.key === "password" ||
+            field.key === "confirm_password"
+        );
+      }
+      //******完整註冊欄位******
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
       );
@@ -1128,6 +1162,16 @@ export default {
       "actionVerificationFormData",
       "actionGetToManyRequestMsg"
     ]),
+    currentTab(index) {
+      if (index === 0) {
+        this.currentJoin = "accountjoin";
+        return;
+      }
+      if (index === 1) {
+        this.currentJoin = "mobilejoin";
+        return;
+      }
+    },
     getBeHostUrl() {
       goLangApiRequest({
         method: "get",
@@ -1659,7 +1703,6 @@ export default {
                   localStorage.removeItem("username");
                   localStorage.removeItem("password");
                 }
-
                 window.RESET_MEM_SETTING();
                 window.RESET_LOCAL_SETTING();
                 if (this.siteConfig.ROUTER_TPL === "sg1") {

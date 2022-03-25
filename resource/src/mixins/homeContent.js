@@ -54,7 +54,8 @@ export default {
       sitePostList: null,
       trialList: [],
       isNotLoopTypeList: false,
-      notFirstDeposit: false //首儲
+      notFirstDeposit: false, //首儲
+      joinmemberPop: false //首次手機註冊登入彈窗
     };
   },
   watch: {
@@ -281,6 +282,18 @@ export default {
     }
   },
   mounted() {
+    // 會員首次註冊登入彈窗
+    let joinmemberdate = Vue.moment(this.memInfo.user.created_at).format(
+      "YYYY-MM-DD HH:mm"
+    );
+    let now = Vue.moment(Date.now()).format("YYYY-MM-DD HH:mm");
+
+    if (this.loginStatus && joinmemberdate === now) {
+      setTimeout(() => {
+        this.joinmemberPop = true;
+      }, 2500);
+    }
+
     window.addEventListener("resize", this.onResize);
 
     if (this.siteConfig.ROUTER_TPL === "ey1") {

@@ -9,6 +9,37 @@
   font-size: 16px;
 }
 
+.login-tabs-wrap {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  color: #5e626d;
+  font-size: 17px;
+
+  span {
+    width: 50%;
+    line-height: 50px;
+    position: relative;
+
+    &.active {
+      color: #d1b79c;
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 65px;
+        height: 3px;
+        background: #d1b79c;
+      }
+    }
+  }
+}
+
 .login-wrap {
   background-image: url("/static/image/porn1/common/bg.png");
   background-repeat: no-repeat;
@@ -54,7 +85,6 @@
 
 .login-form-wrap {
   margin: 0 41px;
-
   .login-unit {
     display: block;
     height: 40px;
@@ -92,6 +122,42 @@
         height: 18px;
       }
     }
+  }
+
+  .login-unit-phone {
+    display: flex;
+    max-width: 100%;
+    position: relative;
+
+    // .contrycode-select {
+    //   width: 30%;
+    //   padding: 0;
+    //   border: 1px solid #e3e3e3;
+    //   margin-right: 5px;
+    //   position: relative;
+    //   float: left;
+    //   overflow: hidden;
+    // }
+
+    .getkeyring {
+      position: absolute;
+      right: 5px;
+      top: 4px;
+      padding: 8px;
+      border-radius: 4px;
+      outline: hidden;
+      background: #cccccc;
+      color: #fff;
+      &.active {
+        background: #6aaaf5;
+      }
+    }
+  }
+
+  .not-receive-code {
+    text-decoration: none;
+    float: right;
+    color: #5e626d;
   }
 
   .login-unit-captcha {

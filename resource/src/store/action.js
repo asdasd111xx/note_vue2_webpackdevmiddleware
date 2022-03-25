@@ -1879,7 +1879,14 @@ export const actionVerificationFormData = (
       }
 
       break;
+    case "phone_validation_code":
+      let maxCodeLength = 6;
+      val = val.replace(/[^0-6]/g, "");
 
+      if (maxCodeLength) {
+        val = val.substring(0, maxCodeLength);
+      }
+      break;
     case "login_password":
       val = val.replace(/[^A-Za-z0-9._\-!@#$&+=|*]/g, "").substring(0, 12);
       break;

@@ -23,6 +23,8 @@ export default {
       password: "",
       rememberPwd: false,
       username: "",
+      phone: "",
+      phone_validation_code: "",
       isShowPwd: false,
       isGetCaptcha: false // 重新取得驗證碼
     };

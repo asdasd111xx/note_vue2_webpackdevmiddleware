@@ -2,11 +2,21 @@
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
+        <div :class="['login-tabs-wrap']">
+          <span
+            v-for="(tab, index) in tabs"
+            :key="`${tab}-${index}`"
+            @click="currentTab(index)"
+            :class="[{ active: currentLogin === tab.page }]"
+          >
+            {{ tab.name }}
+          </span>
+        </div>
         <div :class="['login-wrap', this.siteConfig.ROUTER_TPL]">
           <div class="login-logo">
             <img :src="`/static/image/${routerTPL}/common/logo_b.png`" />
           </div>
-          <div class="login-form-wrap">
+          <div v-if="currentLogin === 'accountlogin'" class="login-form-wrap">
             <!-- 錯誤訊息 -->
             <div class="err-msg">
               <div v-show="errMsg">
@@ -176,6 +186,123 @@
               </div>
             </form>
           </div>
+          <div v-if="currentLogin === 'mobilelogin'" class="login-form-wrap">
+            <!-- 錯誤訊息 -->
+            <div class="err-msg">
+              <div v-show="errMsg">
+                {{ errMsg }}
+              </div>
+            </div>
+            <form>
+              <!-- 手機號碼 -->
+              <span class="login-unit login-unit-phone">
+                <!-- <v-select
+                  v-model="selectData['countryCode'].selected"
+                  :options="selectData['countryCode'].options"
+                  :searchable="false"
+                  :class="['contrycode-select']"
+                /> -->
+                <input
+                  ref="phone"
+                  v-model="phone"
+                  :title="$text('S_MOBILE_NUMBER', '手机号码')"
+                  :placeholder="$text('S_MOBILE_NUMBER', '手机号码')"
+                  :class="['login-input']"
+                  maxlength="15"
+                  tabindex="1"
+                  @keydown.13="keyDownSubmit()"
+                  @input="verification('phone', $event.target.value)"
+                />
+                <div class="input-icon">
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/icon_phone.png`)
+                    "
+                  />
+                </div>
+                <div class="clear" v-if="phone">
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="phone = ''"
+                  />
+                </div>
+              </span>
+              <!-- 手機驗證碼 -->
+              <span class="login-unit login-unit-phone">
+                <input
+                  ref="phone_validation_code"
+                  v-model="phone_validation_code"
+                  :title="$text('S_MOBILE_VERIFICATION', '手机验证')"
+                  :placeholder="$text('S_ENABLE_KEYRING', '输入验证码')"
+                  :class="['login-input']"
+                  maxlength="15"
+                  tabindex="1"
+                  @keydown.13="keyDownSubmit()"
+                  @input="
+                    verification('phone_validation_code', $event.target.value)
+                  "
+                />
+                <div class="input-icon">
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/icon_code.png`)
+                    "
+                  />
+                </div>
+                <button
+                  :class="[
+                    'getkeyring',
+                    `${phone_validation_code}` ? 'active' : ''
+                  ]"
+                >
+                  获取验证码
+                </button>
+                <!-- <div class="clear" v-if="phone_validation_code">
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="phone_validation_code = ''"
+                  />
+                </div> -->
+              </span>
+              <a href="/mobile/login" :class="['not-receive-code']"
+                >收不到验证码？</a
+              >
+              <div class="login-bottom-wrap">
+                <!-- 手機登入 滑動驗證 -->
+                <slide-verification
+                  v-if="memInfo.config.login_captcha_type === 2"
+                  ref="slide-verification"
+                  :is-enable="isSlideAble"
+                  :success-fuc="slideLogin"
+                  page-status="login"
+                />
+                <!-- 手機登入 登入鈕 -->
+                <div
+                  v-else
+                  :class="['login-button', 'login-submit']"
+                  @click="handleClickLogin"
+                >
+                  <div>
+                    {{ $text("S_LOGIN_TITLE", "登录") }}
+                  </div>
+                </div>
+              </div>
+              <div class="login-link-wrap">
+                <!-- 手機登入 加入會員 -->
+                <div :class="['link-button', 'link-join-mem']">
+                  <span @click="checkLayeredURL">
+                    {{ $text("S_FREE_REGISTER", "免费注册") }}
+                  </span>
+                </div>
+                <div
+                  :class="['link-button', 'link-submit', `${routerTPL}`]"
+                  @click="$router.push('/mobile/service')"
+                >
+                  {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
+                </div>
+              </div>
+            </form>
+          </div>
           <security-check
             v-if="checkItem"
             :check-item.sync="checkItem"
@@ -198,12 +325,13 @@ import slideVerification from "@/components/slideVerification";
 import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
-
+import vSelect from "vue-select";
 /**
  * 登入共用元件
  */
 export default {
   components: {
+    vSelect,
     securityCheck: () =>
       import(
         /* webpackChunkName: 'securityCheck' */ "@/router/web/components/common/securityCheck"
@@ -226,7 +354,18 @@ export default {
   data() {
     return {
       thirdyCaptchaObj: null,
-      script: null
+      script: null,
+      tabs: [
+        { name: "帳號登入", page: "accountlogin" },
+        { name: "手機登入", page: "mobilelogin" }
+      ],
+      currentLogin: "mobilelogin"
+      // selectData: {
+      //   countryCode: {
+      //     options: [{ label: "+86", value: "1" }],
+      //     selected: { label: "+86", value: "1" }
+      //   }
+      // }
     };
   },
   watch: {
@@ -281,6 +420,16 @@ export default {
       "actionGetActingURL",
       "actionGetRegisterURL"
     ]),
+    currentTab(index) {
+      if (index === 0) {
+        this.currentLogin = "accountlogin";
+        return;
+      }
+      if (index === 1) {
+        this.currentLogin = "mobilelogin";
+        return;
+      }
+    },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
     },
