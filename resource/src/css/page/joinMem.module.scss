@@ -1003,3 +1003,13 @@
     }
   }
 }
+
+.not-receive-code {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  a {
+    color: #5e626d;
+    text-decoration: none;
+  }
+}

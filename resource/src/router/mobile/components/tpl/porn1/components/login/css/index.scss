@@ -156,8 +156,10 @@
 
   .not-receive-code {
     text-decoration: none;
-    float: right;
     color: #5e626d;
+    width: 100%;
+    display: flex;
+    justify-content: end;
   }
 
   .login-unit-captcha {

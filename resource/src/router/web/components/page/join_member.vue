@@ -626,7 +626,10 @@
               v-html="allTip[field.key]"
             />
           </div>
-          <div v-if="currentJoin === 'mobilejoin'">
+          <div
+            v-if="currentJoin === 'mobilejoin'"
+            :class="$style['not-receive-code']"
+          >
             <a href="/mobile/mcenter/help/support">{{ "收不到验证码？" }}</a>
           </div>
         </form>
