@@ -208,7 +208,7 @@ export default {
       type: ["deposit"], // 交易類型 預設開啟存款
       sort: "desc", // 排序方式
       firstResult: 0, // 每頁起始筆數
-      maxResults: 5, // 每頁顯示幾筆
+      maxResults: 20, // 每頁顯示幾筆
       pageNow: 1, // 當前頁
       pageAll: 1, // 總頁數
       isLoading: true,
