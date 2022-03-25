@@ -246,8 +246,8 @@
                 @click="setPopupStatus(true, 'epointBank')"
               >
                 {{
-                  defaultEpointWallet.order
-                    ? defaultEpointWallet.order
+                  defaultEpointWallet.orderBankFormat
+                    ? defaultEpointWallet.orderBankFormat
                     : defaultEpointWallet.account
                 }}
                 <img
@@ -1355,7 +1355,7 @@
       </template>
       <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
-          :bank-selected="defaultEpointWallet.account"
+          :bank-selected="defaultEpointWallet"
           :bank-list="userBankOption"
           :item-func="setEpointBank"
           :order-bank-list="userOrderBankOption"

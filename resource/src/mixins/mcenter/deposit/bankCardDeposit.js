@@ -1054,30 +1054,35 @@ export default {
         this.curPayInfo.payment_method_id === 34 ||
         this.curPayInfo.payment_method_id === 41
       ) {
-        if (this.defaultEpointWallet.order) {
-          paramsData = {
-            ...paramsData,
-            pay_account: this.defaultEpointWallet.account,
-            pay_bank_name: this.defaultEpointWallet.bank
-          };
-        } else if (this.showEpointWalletAddress) {
-          paramsData = {
-            ...paramsData,
-            pay_account: this.epointBankAccount,
-            pay_bank_name: this.epointBankName
-          };
+        if (this.defaultEpointWallet.orderBankFormat) {
+          if (!this.showEpointWalletAddress) {
+            //掛單銀行卡
+            paramsData = {
+              ...paramsData,
+              pay_account: this.defaultEpointWallet.account,
+              pay_bank_name: this.defaultEpointWallet.bank
+            };
+          } else {
+            //新增的掛單銀行卡
+            paramsData = {
+              ...paramsData,
+              pay_account: this.epointBankAccount,
+              pay_bank_name: this.epointBankName
+            };
 
-          goLangApiRequest({
-            method: "post",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Transfer/Account`,
-            params: {
-              bank: this.epointBankName,
-              account: this.epointBankAccount
-            }
-          }).then(() => {
-            this.getUserBankList();
-          });
+            goLangApiRequest({
+              method: "post",
+              url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Transfer/Account`,
+              params: {
+                bank: this.epointBankName,
+                account: this.epointBankAccount
+              }
+            }).then(() => {
+              this.getUserBankList();
+            });
+          }
         } else {
+          //綁定的銀行卡
           paramsData = {
             ...paramsData,
             pay_account_id: this.defaultEpointWallet.id
@@ -1580,7 +1585,6 @@ export default {
       })
         .then(response => {
           if (response && response.data && response.data.result === "ok") {
-            // console.log(response);
             this.userBankOption = [];
             this.userBankOption = response.data.ret;
           }
@@ -1594,7 +1598,7 @@ export default {
           let temp = res.data.map(v => {
             return {
               ...v,
-              order:
+              orderBankFormat:
                 v.bank +
                 "-" +
                 v.account.slice(0, 4) +
@@ -1603,10 +1607,13 @@ export default {
             };
           });
           this.userOrderBankOption = temp;
-          this.userOrderBankOption.push({ account: "新增挂单银行卡" });
+          this.userOrderBankOption.push({
+            account: "新增挂单银行卡",
+            orderBankFormat: "新增挂单银行卡"
+          });
         }
       });
-      this.defaultEpointWallet = //????上一張使用的銀行卡怎麼來
+      this.defaultEpointWallet =
         this.userOrderBankOption.length > 1
           ? this.userOrderBankOption[0]
           : "" || this.userBankOption[0] || this.userOrderBankOption[0];

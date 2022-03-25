@@ -6,7 +6,6 @@
         <div @click="close" :class="[$style['prev'], $style[routerTPL]]">
           {{ $text("S_CANCEL", "取消") }}
         </div>
-
         <div :class="$style['title']">
           挂单银行
         </div>
@@ -14,34 +13,93 @@
 
       <div :class="$style['content']">
         <div :class="$style['tab-wrap']">
-          <div :class="$style['tab-item']" @click="currentTab = orderBankList">
+          <div
+            :class="[
+              $style['tab-item'],
+              { [$style['active']]: currentTab === 'orderBankList' }
+            ]"
+            @click="currentTab = 'orderBankList'"
+          >
             挂单银行卡
           </div>
           <div
             v-if="bankList"
-            :class="$style['tab-item']"
-            @click="currentTab = bankList"
+            :class="[
+              $style['tab-item'],
+              { [$style['active']]: currentTab === 'bankList' }
+            ]"
+            @click="currentTab = 'bankList'"
           >
             常用银行卡
           </div>
         </div>
-        <div
-          v-for="(item, index) in currentTab"
-          :key="index"
-          :class="$style['cell']"
-          @click="handleClickItem(item)"
-        >
-          {{ item.order ? item.order : item.account }}
-          <img
-            v-if="item.account === bankSelected"
-            :class="$style['select-icon']"
-            :src="
-              $getCdnPath(
-                `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
-              )
-            "
-            alt="sel"
-          />
+
+        <!-- 挂单银行卡 -->
+        <template v-if="currentTab === 'orderBankList'">
+          <div
+            v-for="(item, index) in orderBankList"
+            :key="index"
+            :class="$style['cell']"
+            @click="handleClickItem(item)"
+          >
+            {{ item.orderBankFormat }}
+            <img
+              v-if="item.account === bankSelected.account"
+              :class="$style['select-icon']"
+              :src="
+                $getCdnPath(
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                )
+              "
+              alt="sel"
+            />
+          </div>
+        </template>
+
+        <!-- 常用银行卡 -->
+        <template v-if="currentTab === 'bankList'">
+          <div
+            v-for="(item, index) in bankList"
+            :key="index"
+            :class="$style['cell']"
+            @click="handleClickItem(item)"
+          >
+            {{ item.account }}
+            <img
+              v-if="item.account === bankSelected.account"
+              :class="$style['select-icon']"
+              :src="
+                $getCdnPath(
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                )
+              "
+              alt="sel"
+            />
+          </div>
+        </template>
+        <!-- 掛單銀行卡已達上限彈窗 -->
+        <div v-if="isShowPop" :class="$style['pop-wrap']">
+          <div :class="$style['pop-mask']" />
+          <div :class="$style['pop-block']">
+            <div :class="$style['confirm-content']">
+              <div :class="$style['title']">
+                挂单银行卡已达上限
+              </div>
+
+              <p>您所保留的挂单银行卡已达上限10笔</p>
+              <p>新的银行卡将覆盖最旧的银行卡</p>
+            </div>
+
+            <div :class="[$style['button-block']]">
+              <span @click="isShowPop = false">
+                {{ $text("S_CANCEL", "取消") }}
+              </span>
+
+              <span @click="confirmClick">
+                {{ $text("S_CONFIRM_2", "确定") }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -52,10 +110,13 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  created() {
+    if (!this.bankSelected.orderBankFormat) this.currentTab = "bankList";
+  },
   props: {
     bankSelected: {
-      type: String,
-      default: ""
+      type: Object,
+      default: {}
     },
     bankList: {
       type: Array,
@@ -72,8 +133,8 @@ export default {
   },
   data() {
     return {
-      activeIndex: 0,
-      currentTab: this.orderBankList
+      currentTab: "orderBankList",
+      isShowPop: false
     };
   },
   computed: {
@@ -108,7 +169,21 @@ export default {
       this.$emit("close");
     },
     handleClickItem(item) {
+      console.log(item);
+      if (item.account === "新增挂单银行卡") {
+        if (this.orderBankList.length === 11) {
+          this.isShowPop = true;
+          return;
+        }
+      }
       this.itemFunc(item);
+      this.close();
+    },
+    confirmClick() {
+      this.itemFunc({
+        account: "新增挂单银行卡",
+        orderBankFormat: "新增挂单银行卡"
+      });
       this.close();
     }
   }
@@ -182,20 +257,24 @@ export default {
 
 .content {
   background-color: #f8f8f7;
-  margin-top: 10px;
 
   .tab-wrap {
     height: 50px;
     width: 100%;
+    padding: 10px 18px;
     background-color: #f5f5f5;
     display: flex;
     align-items: center;
     .tab-item {
-      width: 80px;
-      height: 30px;
-      line-height: 30px;
+      padding: 7px 10px;
+      margin: 10px 5px;
       text-align: center;
       background-color: #ffffff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      &.active {
+        border: 1px solid #6dabf2;
+      }
     }
   }
 
@@ -223,6 +302,81 @@ export default {
 
     &.sg1 {
       color: #e53266;
+    }
+  }
+}
+
+// Popup Style
+.pop-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.pop-mask {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.pop-block {
+  position: absolute;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fefffe;
+  border-radius: 20px;
+
+  .confirm-content {
+    padding: 17px 18px;
+    color: var(--mcenter_slider_text_color);
+    text-align: center;
+
+    .title {
+      color: var(--mcenter_slider_text_active_color);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.button-block {
+  position: relative;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  border-top: 1px solid #f7f8fb;
+  // color: var(--popup_text_color2);
+  color: #6aaaf5;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f7f8fb;
+  }
+
+  span {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+
+    &:nth-child(2) {
+      // color: var(--popup_text_color1);
+      color: #6aaaf5;
     }
   }
 }
