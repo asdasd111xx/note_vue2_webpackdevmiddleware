@@ -268,7 +268,12 @@
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input-captcha'], field.key]"
+                  :class="[
+                    $style['join-input-captcha'],
+                    field.key,
+                    ,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -637,7 +642,11 @@
         <!-- 3拼圖驗證/4手繪/5行為驗證 -->
         <div
           v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
-          :class="[$style['thirdy-block-wrap'], $style[siteConfig.ROUTER_TPL]]"
+          :class="[
+            $style['thirdy-block-wrap'],
+            $style[siteConfig.ROUTER_TPL],
+            'clearfix'
+          ]"
         >
           <thirdy-verification
             ref="thirdyCaptchaObj"

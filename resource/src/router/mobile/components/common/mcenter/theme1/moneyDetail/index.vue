@@ -126,6 +126,7 @@
       :detail-list="detailList"
       :detail-info.sync="detailInfo"
       :page-type="pageType"
+      :category-list="categoryList"
       @openSlider="openSlider"
     />
     <!-- 捲動加載 -->
@@ -147,9 +148,9 @@ import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import common from "@/api/common";
-import mcenter from "@/api/mcenter";
 import EST from "@/lib/EST";
 import { sendUmeng } from "@/lib/sendUmeng";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   props: {
@@ -215,12 +216,14 @@ export default {
       categoryOpt: [],
       screenWidthSize: null,
       isCustomTime: false,
+      categoryList: [],
       bufferCurrentDate: { key: "today", text: this.$text("S_TODDAY", "今日") }
     };
   },
   computed: {
     ...mapGetters({
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      loginStatus: "getLoginStatus"
     }),
     isEmbedDetail() {
       // 共用紀錄
@@ -238,6 +241,7 @@ export default {
     },
     categoryOptions() {
       return [
+        // { key: "", text: "全部" },
         { key: "deposit", text: "充值" },
         { key: "vendor", text: "转帐" },
         { key: "withdraw", text: "提现" },
@@ -258,6 +262,12 @@ export default {
     }
   },
   created() {
+    if (!this.loginStatus) {
+      this.$router.push("/mobile/login");
+      return;
+    }
+
+    this.getCategoryList();
     if (this.routerTPL === "sg1") {
       sendUmeng(44);
     } else {
@@ -299,6 +309,16 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
+    getCategoryList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Cash/Category`
+      }).then(res => {
+        if (res && res.data && res.data.ret) {
+          this.categoryList = res.data.ret;
+        }
+      });
+    },
     onResize() {
       this.screenWidthSize = document.body.offsetWidth;
     },
@@ -310,14 +330,14 @@ export default {
         params = cacheParams;
       } else {
         params = {
-          start_at: Vue.moment(this.startTime).format(
+          startAt: Vue.moment(this.startTime).format(
             "YYYY-MM-DD 00:00:00-04:00"
           ),
-          end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+          endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
           category: this.type,
           order: this.sort,
-          first_result: this.firstResult,
-          max_results: this.maxResults
+          firstResult: this.firstResult,
+          maxResults: this.maxResults
         };
       }
 
@@ -352,51 +372,54 @@ export default {
         JSON.stringify(this.currentDate)
       );
 
-      return mcenter.moneyDetail({
-        params: params,
-        success: ({ result, pagination, ret }) => {
-          this.isLoading = false;
-
-          if (result !== "ok" || ret.length === 0) {
-            return;
-          }
-          if (this.detailList) {
-            return;
-          } else {
-            this.detailList = ret.reduce(
-              (init, info) => {
-                const date = EST(info.created_at, "YYYY-MM-DD");
-
-                if (!init[date]) {
-                  return { ...init, [date]: [info] };
-                }
-
-                return { ...init, [date]: [...init[date], info] };
-              },
-              { ...this.detailList }
-            );
-          }
-          if (pagination.total === "0") {
-            return;
-          }
-
-          this.pageAll = Math.ceil(+pagination.total / this.maxResults);
-
-          // 從聯繫客服返回預設開啟交易詳請
-          if (localStorage.getItem("money-detail-params-service")) {
-            let id =
-              this.$route.query.id || localStorage.getItem("money-detail-id");
-            this.detailInfo = ret.find(i => i.id === id);
-            setTimeout(() => {
-              localStorage.removeItem("money-detail-params-service");
-              localStorage.removeItem("money-detail-id");
-            }, 100);
-          }
-        },
-        fail: res => {
-          this.isLoading = false;
-          this.actionSetGlobalMessage({ msg: `${res.data.msg}` });
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Cash/Entry`,
+        params: { ...params }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.msg) {
+          this.actionSetGlobalMessage({ msg: `${res.msg}`, code: res.code });
+          return;
         }
+
+        if (!res || !res.data || !res.data.ret || res.data.ret.length === 0) {
+          return;
+        }
+
+        const result = res.data.ret;
+
+        this.detailList = result.reduce(
+          (init, info) => {
+            const date = EST(info.created_at, "YYYY-MM-DD");
+
+            if (!init[date]) {
+              return { ...init, [date]: [info] };
+            }
+
+            return { ...init, [date]: [...init[date], info] };
+          },
+          { ...this.detailList }
+        );
+
+        if (+res.data.pagination.total === 0) {
+          return;
+        }
+
+        this.pageAll = Math.ceil(+res.data.pagination.total / this.maxResults);
+
+        // 從聯繫客服返回預設開啟交易詳請
+        if (localStorage.getItem("money-detail-params-service")) {
+          let id =
+            this.$route.query.id || localStorage.getItem("money-detail-id");
+          this.detailInfo = result.find(i => i.id === id);
+          setTimeout(() => {
+            localStorage.removeItem("money-detail-params-service");
+            localStorage.removeItem("money-detail-id");
+          }, 100);
+        }
+
+        return res;
       });
     },
     setDefaultCommonPageType() {
@@ -435,11 +458,14 @@ export default {
 
       this.changeCondition("");
       this.changeDatePicker("");
+
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.isEmbedDetail
       ) {
-        this.getData();
+        if (this.$refs.infiniteLoading) {
+          this.$refs.infiniteLoading.stateChanger.reset();
+        }
       }
     },
     setDate(value) {
@@ -479,11 +505,14 @@ export default {
 
       this.changeCondition("");
       this.changeDatePicker("");
+
       if (
         !localStorage.getItem("money-detail-params-service") ||
         this.isEmbedDetail
       ) {
-        this.getData();
+        if (this.$refs.infiniteLoading) {
+          this.$refs.infiniteLoading.stateChanger.reset();
+        }
       }
     },
     changeCondition(value) {
@@ -555,10 +584,10 @@ export default {
         );
       }
 
-      this.getData(_params).then(({ result }) => {
+      this.getData(_params).then(result => {
         this.isReceive = false;
 
-        if (result !== "ok") {
+        if (result && result.status !== "000") {
           return;
         }
 
@@ -569,7 +598,6 @@ export default {
 
         this.pageNow += 1;
         this.firstResult += this.maxResults;
-
         $state.loaded();
       });
     }
