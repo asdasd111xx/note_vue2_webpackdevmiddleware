@@ -250,7 +250,11 @@ export default {
   },
   methods: {
     backPre() {
-      this.$router.back();
+      if (history.length) {
+        this.$router.back();
+      } else {
+        window.close();
+      }
     },
 
     download() {
@@ -262,9 +266,8 @@ export default {
         }
       }).then(res => {
         if (res.errorCode === "00" && res.status === "000") {
-          let a = document.createElement("a");
-          a.href = res.data.url;
-          a.click();
+          window.location.href = res.data.url;
+
           const focusHandler = () => {
             if (this.isDownloadPub) return;
             this.isDownloadPub = true;
