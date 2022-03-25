@@ -15,11 +15,9 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${
-                  currentCategory.key == 'outer'
-                    ? 'vendor'
-                    : currentCategory.key
-                }.png`
+                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${getCategory(
+                  item
+                )}.png`
               )
             "
           />
@@ -163,6 +161,16 @@ export default {
     }
   },
   methods: {
+    getCategory(item) {
+      if (item.category[0] === "rebate") {
+        return "activity";
+      }
+
+      if (this.currentCategory.key === "outer") {
+        return "vendor";
+      }
+      return item.category[0];
+    },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
     },
