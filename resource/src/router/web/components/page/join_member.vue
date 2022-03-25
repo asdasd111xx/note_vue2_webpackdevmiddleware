@@ -5,7 +5,7 @@
   >
     <slot name="top-content" />
 
-    <div :class="$style['join-tabs-wrap']">
+    <div v-if="mobileJoinSwitch" :class="$style['join-tabs-wrap']">
       <span
         v-for="(tab, index) in tabs"
         :key="`${tab}-${index}`"
@@ -762,7 +762,7 @@ export default {
         { name: "帳號註冊", page: "accountjoin" },
         { name: "手機註冊", page: "mobilejoin" }
       ],
-      currentJoin: "mobilejoin",
+      currentJoin: "accountjoin",
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
@@ -925,9 +925,13 @@ export default {
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
       version: "getVersion",
-      activity: "getActivity" //訪客餘額+紅包彩金、活動開關
+      activity: "getActivity", //訪客餘額+紅包彩金、活動開關
+      domainConfig: "getDomainConfig"
     }),
-
+    mobileJoinSwitch() {
+      // 手機註冊開關-簡訊快速註冊
+      return this.domainConfig.sms_speedy_register;
+    },
     fieldsData() {
       //******手機註冊欄位******
       if (this.currentJoin === "mobilejoin") {
@@ -1013,6 +1017,7 @@ export default {
     }
   },
   created() {
+    console.log("domainConfig", this.domainConfig);
     //取得成為主播網址
     if (this.siteConfig.ROUTER_TPL === "sg1") {
       this.getBeHostUrl();

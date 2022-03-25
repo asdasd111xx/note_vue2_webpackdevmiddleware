@@ -378,7 +378,8 @@ export default {
       cdnDomain: "getCdnDomain",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      onlineService: "getOnlineService"
+      onlineService: "getOnlineService",
+      domainConfig: "getDomainConfig"
     }),
     headerConfig() {
       return {
@@ -412,7 +413,9 @@ export default {
       return this.siteConfig.ROUTER_TPL;
     }
   },
-  created() {},
+  created() {
+    console.log("domainConfig", this.domainConfig);
+  },
   methods: {
     ...mapActions([
       "actionGetLayeredURL",

@@ -2438,9 +2438,9 @@ export const actionGetToManyRequestMsg = ({ state }, message) => {
 
 // 取得廳設定 C02.233
 export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
-  if (!state.loginStatus) {
-    return;
-  }
+  // if (!state.loginStatus) {
+  //   return;
+  // }
 
   return goLangApiRequest({
     method: "get",
