@@ -544,7 +544,7 @@
   position: relative;
   display: inline-block;
   float: right;
-  width: calc(100% - 95px);
+  width: calc(100% - 90px);
   text-align: right;
   vertical-align: middle;
   // background: #fff;
@@ -740,7 +740,6 @@
 }
 
 .thirdy-block {
-  margin: 0 12px;
   max-width: 100%;
   border-radius: 5px;
   .click-unit {
@@ -948,7 +947,6 @@
 
 .thirdy-block-wrap {
   width: 100%;
-  margin: 0 6px;
   text-align: right;
 
   &.aobo1,
@@ -963,7 +961,6 @@
 
   &.sg1 {
     margin: auto;
-    padding: 0 12px;
 
     .thirdy-block {
       width: 100%;
