@@ -2,7 +2,7 @@
   <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" class="content-wrap">
       <div class="container">
-        <div :class="['login-tabs-wrap']">
+        <div v-if="mobileLoginSwitch" :class="['login-tabs-wrap']">
           <span
             v-for="(tab, index) in tabs"
             :key="`${tab}-${index}`"
@@ -227,7 +227,10 @@
                 </div>
               </span>
               <!-- 手機驗證碼 -->
-              <span class="login-unit login-unit-phone">
+              <span
+                v-if="mobileLoginTyepSwitch === 1"
+                class="login-unit login-unit-phone"
+              >
                 <input
                   ref="phone_validation_code"
                   v-model="phone_validation_code"
@@ -263,9 +266,48 @@
                   />
                 </div> -->
               </span>
-              <a href="/mobile/login" :class="['not-receive-code']"
+              <a
+                v-if="mobileLoginTyepSwitch === 1"
+                href="/mobile/login"
+                :class="['not-receive-code']"
                 >收不到验证码？</a
               >
+
+              <!-- 密碼 -->
+              <span
+                v-if="mobileLoginTyepSwitch === 2"
+                class="login-unit login-unit-password"
+              >
+                <input
+                  ref="password"
+                  id="pwd"
+                  v-model="password"
+                  :title="$text('S_PASSWORD', '密码')"
+                  :placeholder="$text('S_PASSWORD', '密码')"
+                  class="login-input"
+                  type="password"
+                  maxlength="12"
+                  tabindex="2"
+                  @input="verification('login_password', $event.target.value)"
+                  @keydown.13="keyDownSubmit()"
+                  autocomplete="password"
+                />
+                <div class="input-icon">
+                  <img
+                    :src="
+                      $getCdnPath(`/static/image/common/login/icon_code.png`)
+                    "
+                  />
+                </div>
+
+                <div class="clear" v-if="phone_validation_code">
+                  <img
+                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                    @click="phone_validation_code = ''"
+                  />
+                </div>
+              </span>
+
               <div class="login-bottom-wrap">
                 <!-- 手機登入 滑動驗證 -->
                 <slide-verification
@@ -358,7 +400,7 @@ export default {
         { name: "帳號登入", page: "accountlogin" },
         { name: "手機登入", page: "mobilelogin" }
       ],
-      currentLogin: "mobilelogin"
+      currentLogin: "accountlogin"
       // selectData: {
       //   countryCode: {
       //     options: [{ label: "+86", value: "1" }],
@@ -411,6 +453,27 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    mobileLoginSwitch() {
+      // 手機登入開關-簡訊驗證登入
+      //0: 關, 1:簡訊, 2:密碼
+      if (
+        this.domainConfig.sms_login_type &&
+        this.domainConfig.sms_login_type !== 0
+      ) {
+        return true;
+      }
+      return false;
+    },
+    mobileLoginTyepSwitch() {
+      if (
+        this.domainConfig.sms_login_type &&
+        this.domainConfig.sms_login_type !== 0
+      ) {
+        return this.domainConfig.sms_login_type;
+      }
+      //預設為1簡訊驗證
+      return 1;
     }
   },
   created() {
