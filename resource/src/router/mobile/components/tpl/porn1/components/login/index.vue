@@ -23,7 +23,7 @@
             </div>
 
             <form>
-              <!-- 帳號 -->
+              <!-- ***帳號登入*** -->
               <span class="login-unit login-unit-username">
                 <input
                   ref="username"
@@ -187,13 +187,13 @@
           </div>
           <div v-if="currentLogin === 'mobilelogin'" class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div class="err-msg">
-              <div v-show="errMsg">
-                {{ errMsg }}
-              </div>
+
+            <div v-show="errMsg" class="err-msg">
+              {{ errMsg }}
             </div>
+
             <form>
-              <!-- 手機號碼 -->
+              <!-- ***手機號碼登入*** -->
               <span class="login-unit login-unit-phone">
                 <!-- <v-select
                   v-model="selectData['countryCode'].selected"
@@ -228,7 +228,7 @@
               </span>
               <!-- 手機驗證碼 -->
               <span
-                v-if="mobileLoginTyepSwitch === 1"
+                v-if="mobileLoginTyepSwitch == 1"
                 class="login-unit login-unit-phone"
               >
                 <input
@@ -252,19 +252,10 @@
                   />
                 </div>
                 <button
-                  :class="[
-                    'getkeyring',
-                    `${phone_validation_code}` ? 'active' : ''
-                  ]"
+                  :class="['getkeyring', phone.length > 10 ? 'active' : '']"
                 >
                   获取验证码
                 </button>
-                <!-- <div class="clear" v-if="phone_validation_code">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="phone_validation_code = ''"
-                  />
-                </div> -->
               </span>
               <a
                 v-if="mobileLoginTyepSwitch === 1"
@@ -295,19 +286,45 @@
                 <div class="input-icon">
                   <img
                     :src="
-                      $getCdnPath(`/static/image/common/login/icon_code.png`)
+                      $getCdnPath(
+                        `/static/image/common/login/icon_password.png`
+                      )
                     "
                   />
                 </div>
-
-                <div class="clear" v-if="phone_validation_code">
+                <div class="eye">
                   <img
-                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="phone_validation_code = ''"
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
                   />
                 </div>
               </span>
-
+              <div class="login-deposit-username clearfix">
+                <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
+                  <img
+                    :src="
+                      `/static/image/common/icon_${
+                        rememberPwd ? '' : 'no'
+                      }remember.png`
+                    "
+                  />
+                </div>
+                <span :class="['deposit-text', `${routerTPL}`]">{{
+                  $text("S_SAVE_PASSWORD", "记住密码")
+                }}</span>
+                <!-- 忘記密碼 -->
+                <span
+                  class="login-unit-link"
+                  @click="$router.push('/mobile/forgetpwd/member')"
+                  >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
+                >
+              </div>
               <div class="login-bottom-wrap">
                 <!-- 手機登入 滑動驗證 -->
                 <slide-verification
@@ -472,7 +489,7 @@ export default {
       ) {
         return this.domainConfig.sms_login_type;
       }
-      //預設為1簡訊驗證
+      //開啟時 預設為1簡訊
       return 1;
     }
   },

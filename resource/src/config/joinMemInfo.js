@@ -152,6 +152,18 @@ export default {
     regExp: /^[0-9]+$/,
     errorMsg: i18n.t("S_JM_PHONE_RMB")
   },
+  phonettl: {
+    key: "phonettl",
+    text: "簡訊驗證碼",
+    type: "text",
+    isRequired: false,
+    hasVerify: false,
+    show: true,
+    minimum: 7,
+    maximum: 12,
+    regExp: /^[0-6]+$/,
+    errorMsg: "驗證碼錯誤"
+  },
   birthday: {
     key: "birthday",
     text: "S_BIRTHDAY_DATE",

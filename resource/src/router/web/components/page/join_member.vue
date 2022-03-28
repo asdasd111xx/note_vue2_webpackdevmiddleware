@@ -38,12 +38,9 @@
       >
     </div>
 
-    <!-- ******帳號註冊/手機註冊****** -->
-    <div
-      v-if="currentJoin === 'accountjoin' || currentJoin === 'mobilejoin'"
-      :class="$style.join"
-    >
-      <div :class="$style['join-content']">
+    <div :class="$style.join">
+      <!-- ******帳號註冊****** -->
+      <div v-if="currentJoin === 'accountjoin'" :class="$style['join-content']">
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <!-- <div v-show="errMsg">
@@ -631,79 +628,352 @@
               v-html="allTip[field.key]"
             />
           </div>
+        </form>
+      </div>
+      <!-- ******手機註冊****** -->
+      <div v-if="currentJoin === 'mobilejoin'" :class="$style['join-content']">
+        <!-- 錯誤訊息 -->
+        <div :class="$style['err-msg']">
+          <!-- <div v-show="errMsg">
+            {{ errMsg }}
+          </div> -->
+        </div>
+
+        <!-- 註冊回傳錯誤訊息彈窗 -->
+        <div
+          v-if="errMsg"
+          :class="$style['modal-dark-bg']"
+          @click.self="errMsg = ''"
+        >
           <div
-            v-if="currentJoin === 'mobilejoin'"
-            :class="$style['not-receive-code']"
+            :class="[$style['verify-error-msg'], $style[siteConfig.ROUTER_TPL]]"
           >
-            <a href="/mobile/mcenter/help/support">{{ "收不到验证码？" }}</a>
+            {{ errMsg }}
+            <button @click="errMsg = ''">关闭</button>
+          </div>
+        </div>
+
+        <form>
+          <div :class="[$style['field-wrap'], 'clearfix']">
+            <!-- 簡訊註冊 手機欄位 -->
+            <label
+              for="mobile"
+              title="手机号码"
+              :class="[$style['field-title'], 'clearfix']"
+              @click="
+                () => {
+                  onLabelClick('phone');
+                }
+              "
+              ><span :class="[$style['field-text'], 'clearfix']">手机号码</span>
+            </label>
+            <div
+              :class="[
+                $style['field-right'],
+                $style[siteConfig.ROUTER_TPL],
+                'clearfix'
+              ]"
+            >
+              <input
+                ref="phone"
+                v-model="allValue['phone']"
+                name="mobile"
+                placeholder="请输入手机号码"
+                type="tel"
+                @input="verification('phone')"
+                maxlength="11"
+                :class="$style['join-input']"
+              />
+            </div>
+          </div>
+          <!-- 簡訊註冊 驗證碼欄位 -->
+          <div :class="[$style['field-wrap'], 'clearfix']">
+            <label
+              for="mobilettl"
+              title="验证码"
+              :class="[$style['field-title'], 'clearfix']"
+              @click="
+                () => {
+                  onLabelClick('phonettl');
+                }
+              "
+              ><span :class="[$style['field-text'], 'clearfix']">验证码</span>
+            </label>
+            <div
+              :class="[
+                $style['field-right'],
+                $style[siteConfig.ROUTER_TPL],
+                'clearfix'
+              ]"
+            >
+              <input
+                v-model="allValue['phonettl']"
+                name="mobilettl"
+                placeholder="请输入验证码"
+                type="tel"
+                maxlength="11"
+                :class="$style['join-input']"
+              />
+            </div>
+            <span
+              :class="[
+                $style['get-keyring'],
+                { [$style.active]: allValue['phone'].length > 10 }
+              ]"
+            >
+              获取验证码
+            </span>
+            <div :class="$style['not-receive-code']">
+              <a href="/mobile/mcenter/help/support">{{ "收不到验证码？" }}</a>
+            </div>
+          </div>
+          <!-- 簡訊註冊 密碼欄位 -->
+          <div
+            v-for="field in fieldsData"
+            :key="field.key"
+            :class="[$style['field-wrap'], 'clearfix']"
+          >
+            <label
+              :for="field.key"
+              :title="$t(joinMemInfo[field.key].text)"
+              :class="[
+                $style['field-title'],
+                $style[siteConfig.ROUTER_TPL],
+                $style[`field-${field.key}`],
+                {
+                  [$style[`show-red-star-${siteConfig.ROUTER_TPL}`]]:
+                    joinMemInfo[field.key].isRequired
+                },
+                'clearfix'
+              ]"
+              @click="
+                () => {
+                  onLabelClick(field.key);
+                }
+              "
+            >
+              <span :class="$style['field-text']">
+                {{ $t(joinMemInfo[field.key].text) }}</span
+              >
+            </label>
+            <div
+              :class="[
+                $style['field-right'],
+                $style[siteConfig.ROUTER_TPL],
+                'clearfix'
+              ]"
+            >
+              <div
+                v-if="field.key === 'captcha_text'"
+                :class="$style['captchaText-wrap']"
+              >
+                <input
+                  v-model="allValue[field.key]"
+                  :class="[
+                    $style['join-input-captcha'],
+                    field.key,
+                    ,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
+                  type="text"
+                  :ref="'captcha'"
+                  id="captcha"
+                  name="join-captcha"
+                  maxlength="4"
+                  placeholder="请填写验证码"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                />
+                <img
+                  v-if="captchaImg"
+                  :src="captchaImg"
+                  :class="$style['captcha-img']"
+                />
+                <div :class="$style['captchaText-refresh']" @click="getCaptcha">
+                  <img
+                    :src="'/static/image/common/ic_verification_reform.png'"
+                  />
+                </div>
+              </div>
+
+              <template v-else-if="field.key === 'password'">
+                <input
+                  id="pwd"
+                  v-model="allValue[field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
+                  :name="field.key"
+                  :placeholder="field.content.note1"
+                  type="password"
+                  maxlength="12"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                  autocomplete="password"
+                />
+                <div :class="$style['eye']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
+                  />
+                </div>
+              </template>
+
+              <template v-else-if="field.key === 'confirm_password'">
+                <input
+                  id="confirm_password"
+                  v-model="allValue[field.key]"
+                  :class="[
+                    $style['join-input'],
+                    $style[siteConfig.ROUTER_TPL],
+                    field.key
+                  ]"
+                  :name="field.key"
+                  :placeholder="field.content.note1"
+                  type="password"
+                  maxlength="12"
+                  @input="verification(field.key)"
+                  @keydown.13="keyDownSubmit()"
+                  autocomplete="password"
+                />
+                <div :class="$style['eye']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="toggleEye('confPwd')"
+                  />
+                </div>
+              </template>
+
+              <input
+                v-else
+                :ref="field.key"
+                v-model="allValue[field.key]"
+                :class="[
+                  $style['join-input'],
+                  $style[siteConfig.ROUTER_TPL],
+                  field.key
+                ]"
+                :name="field.key"
+                :placeholder="placeholderKeyValue(field.key, 'tip')"
+                type="text"
+                @blur="verification(field.key)"
+                @keydown.13="keyDownSubmit()"
+              />
+
+              <div
+                :class="$style['clear']"
+                v-if="
+                  !noCancelButton.includes(field.key) &&
+                    allValue[field.key].length > 1
+                "
+              >
+                <img
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                  @click="(allValue[field.key] = ''), (allTip[field.key] = '')"
+                />
+              </div>
+            </div>
+
+            <div
+              :class="
+                placeholderKeyValue(field.key, 'help')
+                  ? $style['join-help-show']
+                  : $style['join-help']
+              "
+              v-html="placeholderKeyValue(field.key, 'help')"
+            />
+
+            <div
+              :class="
+                allTip[field.key] ? $style['join-tip-show'] : $style['join-tip']
+              "
+              v-html="allTip[field.key]"
+            />
           </div>
         </form>
-
-        <!-- 3拼圖驗證/4手繪/5行為驗證 -->
-        <div
-          v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
-          :class="[
-            $style['thirdy-block-wrap'],
-            $style[siteConfig.ROUTER_TPL],
-            'clearfix'
-          ]"
-        >
-          <thirdy-verification
-            ref="thirdyCaptchaObj"
-            @set-captcha="setCaptcha"
-            :class="[$style['thirdy-block'], $style['field-right']]"
-            :page-type="'register'"
-          />
-
-          <div
-            :class="
-              allTip['captcha_text']
-                ? $style['join-tip-show']
-                : $style['join-tip']
-            "
-            v-html="allTip['captcha_text']"
-          />
-        </div>
       </div>
 
-      <!-- :is-enable="isSlideAble" -->
-      <slide-verification
-        v-if="memInfo.config.register_captcha_type === 2"
-        :class="$style['join-btn-wrap']"
-        :style="isSlideAble ? {} : { 'pointer-events': 'none' }"
-        :success-fuc="joinSubmit"
-        page-status="register"
-      />
-
-      <div v-else :class="[$style['join-btn-wrap']]">
-        <div
-          :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
-          @click="joinSubmit()"
-        >
-          {{ $text("S_REGISTER", "注册") }}
-        </div>
-      </div>
-      <div v-if="themeTPL === 'sg1'" :class="$style['has-visitor-sg']">
-        <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
-        <span><a :href="beHostUrl" target="_blank">成为主播</a></span>
-        <span
-          :class="$style['visitor']"
-          @click.stop="$router.push('/mobile/live/iframe/home?hasFooter=true')"
-          >访客进入</span
-        >
-      </div>
+      <!-- 註冊頁下半部start -->
+      <!-- 3拼圖驗證/4手繪/5行為驗證 -->
       <div
-        v-if="themeTPL !== 'sg1'"
-        :class="$style['has-visitor']"
-        @click.stop="$router.push('/mobile/login')"
+        v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
+        :class="[
+          $style['thirdy-block-wrap'],
+          $style[siteConfig.ROUTER_TPL],
+          'clearfix'
+        ]"
       >
-        <a>若有会员帐号，<span>去登录＞</span></a>
+        <thirdy-verification
+          ref="thirdyCaptchaObj"
+          @set-captcha="setCaptcha"
+          :class="[$style['thirdy-block'], $style['field-right']]"
+          :page-type="'register'"
+        />
+
+        <div
+          :class="
+            allTip['captcha_text']
+              ? $style['join-tip-show']
+              : $style['join-tip']
+          "
+          v-html="allTip['captcha_text']"
+        />
       </div>
-      <div :class="$style['version']">
-        {{ version }}
-      </div>
-      <slot name="bottom-content" />
     </div>
+
+    <!-- :is-enable="isSlideAble" -->
+    <slide-verification
+      v-if="memInfo.config.register_captcha_type === 2"
+      :class="$style['join-btn-wrap']"
+      :style="isSlideAble ? {} : { 'pointer-events': 'none' }"
+      :success-fuc="joinSubmit"
+      page-status="register"
+    />
+
+    <div v-else :class="[$style['join-btn-wrap']]">
+      <div
+        :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
+        @click="joinSubmit()"
+      >
+        {{ $text("S_REGISTER", "注册") }}
+      </div>
+    </div>
+    <div v-if="themeTPL === 'sg1'" :class="$style['has-visitor-sg']">
+      <span @click.stop="$router.push('/mobile/login')">已有帐号</span>
+      <span><a :href="beHostUrl" target="_blank">成为主播</a></span>
+      <span
+        :class="$style['visitor']"
+        @click.stop="$router.push('/mobile/live/iframe/home?hasFooter=true')"
+        >访客进入</span
+      >
+    </div>
+    <div
+      v-if="themeTPL !== 'sg1'"
+      :class="$style['has-visitor']"
+      @click.stop="$router.push('/mobile/login')"
+    >
+      <a>若有会员帐号，<span>去登录＞</span></a>
+    </div>
+    <div :class="$style['version']">
+      {{ version }}
+    </div>
+    <slot name="bottom-content" />
+
+    <!-- 註冊頁下半部end -->
     <page-loading :is-show="isLoading" />
     <div v-if="showRedirectJump">
       <div :class="$style['mask']" />
@@ -805,6 +1075,7 @@ export default {
         name: "",
         email: "",
         phone: "",
+        phonettl: "",
         alias: "",
         birthday: "",
         gender: 0,
@@ -927,6 +1198,25 @@ export default {
       register_email_keyring: ""
     };
   },
+  watch: {
+    currentJoin() {
+      switch (this.currentJoin) {
+        case "mobilejoin":
+          console.log("mo");
+          this.allValue["username"] = "";
+          this.allValue["password"] = "";
+          this.allValue["confirm_password"] = "";
+          break;
+
+        case "accountjoin":
+          console.log("ac");
+
+          break;
+        default:
+          break;
+      }
+    }
+  },
   computed: {
     ...mapGetters({
       isWebview: "getIsWebview",
@@ -942,15 +1232,10 @@ export default {
       return this.domainConfig.sms_speedy_register;
     },
     fieldsData() {
-      //******手機註冊欄位******
+      //******手機註冊欄位 取得密碼欄位******
       if (this.currentJoin === "mobilejoin") {
         return this.registerData.filter(
-          field =>
-            (this.joinMemInfo[field.key] &&
-              field.key === "phone" &&
-              this.joinMemInfo[field.key].hasVerify) ||
-            field.key === "password" ||
-            field.key === "confirm_password"
+          field => field.key === "password" || field.key === "confirm_password"
         );
       }
       //******完整註冊欄位******
@@ -1583,6 +1868,15 @@ export default {
       return true;
     },
     joinSubmit(captchaInfo) {
+      if (this.currentJoin === "mobilejoin") {
+        console.log("it's mobilejoin");
+        console.log(this.allValue);
+        console.log(Object.keys(this.allValue));
+        var result = Object.filter(this.allValue, function(key) {
+          return key !== "";
+        });
+        console.log("result", result);
+      }
       this.isLoading = true;
 
       Object.keys(this.allValue).forEach(item => {
