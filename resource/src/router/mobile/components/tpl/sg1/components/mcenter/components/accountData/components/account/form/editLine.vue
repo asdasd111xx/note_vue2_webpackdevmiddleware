@@ -29,8 +29,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { API_MCENTER_USER_CONFIG } from "@/config/api";
-import member from "@/api/member";
 import mcenter from "@/api/mcenter";
 import serviceTips from "../../serviceTips";
 import accountHeader from "../../accountHeader";
