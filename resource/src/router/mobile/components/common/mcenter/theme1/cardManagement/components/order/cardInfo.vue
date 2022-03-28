@@ -96,10 +96,10 @@ export default {
     }
   },
   created() {
-    this.getUserOrderBankList();
+    this.getUserOrderCardList();
   },
   methods: {
-    getUserOrderBankList() {
+    getUserOrderCardList() {
       this.isRevice = false;
       return goLangApiRequest({
         method: "get",

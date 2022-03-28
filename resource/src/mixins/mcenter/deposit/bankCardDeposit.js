@@ -53,7 +53,7 @@ export default {
       defaultEpointWallet: "",
       outerCryptoOption: [],
       userBankOption: [],
-      userOrderBankOption: [], //掛單銀行卡
+      orderCardList: [], //掛單銀行卡
       bcCurrencyData: null,
       selectBcCoin: {
         balance: "",
@@ -113,7 +113,7 @@ export default {
     },
     defaultEpointWallet() {
       this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
-        ? this.defaultEpointWallet.account === "新增挂单银行卡"
+        ? this.defaultEpointWallet.orderCardFormat === "新增挂单银行卡"
         : false;
     },
     depositData(val) {
@@ -1054,7 +1054,7 @@ export default {
         this.curPayInfo.payment_method_id === 34 ||
         this.curPayInfo.payment_method_id === 41
       ) {
-        if (this.defaultEpointWallet.orderBankFormat) {
+        if (this.defaultEpointWallet.orderCardFormat) {
           if (!this.showEpointWalletAddress) {
             //掛單銀行卡
             paramsData = {
@@ -1598,7 +1598,7 @@ export default {
           let temp = res.data.map(v => {
             return {
               ...v,
-              orderBankFormat:
+              orderCardFormat:
                 v.bank +
                 "-" +
                 v.account.slice(0, 4) +
@@ -1606,17 +1606,16 @@ export default {
                 v.account.slice(-4)
             };
           });
-          this.userOrderBankOption = temp;
-          this.userOrderBankOption.push({
-            account: "新增挂单银行卡",
-            orderBankFormat: "新增挂单银行卡"
+          this.orderCardList = temp;
+          this.orderCardList.push({
+            orderCardFormat: "新增挂单银行卡"
           });
         }
       });
       this.defaultEpointWallet =
-        this.userOrderBankOption.length > 1
-          ? this.userOrderBankOption[0]
-          : "" || this.userBankOption[0] || this.userOrderBankOption[0];
+        this.orderCardList.length > 1
+          ? this.orderCardList[0]
+          : "" || this.userBankOption[0] || this.orderCardList[0];
 
       return;
     },

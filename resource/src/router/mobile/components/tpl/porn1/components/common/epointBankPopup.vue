@@ -16,9 +16,9 @@
           <div
             :class="[
               $style['tab-item'],
-              { [$style['active']]: currentTab === 'orderBankList' }
+              { [$style['active']]: currentTab === 'orderCardList' }
             ]"
-            @click="currentTab = 'orderBankList'"
+            @click="currentTab = 'orderCardList'"
           >
             挂单银行卡
           </div>
@@ -35,14 +35,14 @@
         </div>
 
         <!-- 挂单银行卡 -->
-        <template v-if="currentTab === 'orderBankList'">
+        <template v-if="currentTab === 'orderCardList'">
           <div
-            v-for="(item, index) in orderBankList"
+            v-for="(item, index) in orderCardList"
             :key="index"
             :class="$style['cell']"
             @click="handleClickItem(item)"
           >
-            {{ item.orderBankFormat }}
+            {{ item.orderCardFormat }}
             <img
               v-if="item.account === bankSelected.account"
               :class="$style['select-icon']"
@@ -111,7 +111,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   created() {
-    if (!this.bankSelected.orderBankFormat) this.currentTab = "bankList";
+    if (!this.bankSelected.orderCardFormat) this.currentTab = "bankList";
   },
   props: {
     bankSelected: {
@@ -122,7 +122,7 @@ export default {
       type: Array,
       default: []
     },
-    orderBankList: {
+    orderCardList: {
       type: Array,
       default: []
     },
@@ -133,7 +133,7 @@ export default {
   },
   data() {
     return {
-      currentTab: "orderBankList",
+      currentTab: "orderCardList",
       isShowPop: false
     };
   },
@@ -169,9 +169,8 @@ export default {
       this.$emit("close");
     },
     handleClickItem(item) {
-      console.log(item);
-      if (item.account === "新增挂单银行卡") {
-        if (this.orderBankList.length === 11) {
+      if (item.orderCardFormat === "新增挂单银行卡") {
+        if (this.orderCardList.length === 11) {
           this.isShowPop = true;
           return;
         }
@@ -181,8 +180,7 @@ export default {
     },
     confirmClick() {
       this.itemFunc({
-        account: "新增挂单银行卡",
-        orderBankFormat: "新增挂单银行卡"
+        orderCardFormat: "新增挂单银行卡"
       });
       this.close();
     }
