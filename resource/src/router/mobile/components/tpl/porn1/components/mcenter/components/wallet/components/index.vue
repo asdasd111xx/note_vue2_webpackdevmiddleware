@@ -171,7 +171,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="bcWalletEnableType">
+    <template v-if="bcWalletEnableType && fastPlaySwitch">
       <div :class="$style['bc-wrap']">
         <div :class="$style['bc-title']">币希钱包</div>
         <div :class="$style['bc-content']">
@@ -372,7 +372,8 @@ export default {
         bind: false,
         total_balance: "",
         currency_list: []
-      }
+      },
+      fastPlaySwitch: false
     };
   },
   computed: {
@@ -536,7 +537,10 @@ export default {
     this.actionSetUserBalance().then(() => {
       this.getRedJackpot();
     });
-    this.getWalletCurrencyBalanceList();
+
+    Promise.all([this.getFastPlaySwitch()]).then(res => {
+      this.getWalletCurrencyBalanceList();
+    });
   },
   beforeUnmount() {
     clearInterval(this.updateBalance);
@@ -875,6 +879,21 @@ export default {
           //     }
           //   ]
           // };
+        }
+      });
+    },
+    getFastPlaySwitch() {
+      //迅付存取款開關
+      axios({
+        method: "get",
+        url: "/api/v2/c/domain-config"
+      }).then(res => {
+        if (res && res.data && res.data.ret) {
+          const deposit = res.data.ret.deposit.some(
+            item => item.name === "迅付"
+          );
+          const withdraw = res.data.ret.withdraw.name === "迅付";
+          this.fastPlaySwitch = deposit && withdraw;
         }
       });
     },
