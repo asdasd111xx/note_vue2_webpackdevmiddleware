@@ -752,11 +752,18 @@
               <span
                 :class="[
                   $style['get-keyring'],
-                  { [$style.active]: allValue['phone'].length > 10 }
+                  {
+                    [$style.active]:
+                      allValue['phone'].length > 10 && !phoneVerifybtnSubmit
+                  }
                 ]"
                 @click="mobileJoinGetCode"
               >
-                获取验证码
+                {{
+                  phoneVerifybtnSubmit
+                    ? phoneTtlCount + "s后重发"
+                    : "获取验证码"
+                }}
               </span>
               <div :class="$style['not-receive-code']">
                 <a href="/mobile/mcenter/help/support">{{
