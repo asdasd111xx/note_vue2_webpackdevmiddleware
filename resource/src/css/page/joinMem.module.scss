@@ -150,7 +150,7 @@
 
   &.phone {
     border: 1px solid #e3e3e3;
-    margin: 0 8px;
+    margin-left: 8px;
     text-overflow: ellipsis;
     padding: 10px 22.5% 10px 3.5%;
   }
@@ -731,7 +731,7 @@
   width: 100%;
   max-width: 300px;
   padding: 0;
-  margin: 0 auto;
+  margin: 30px auto 0 auto;
 }
 
 .join-btn {
