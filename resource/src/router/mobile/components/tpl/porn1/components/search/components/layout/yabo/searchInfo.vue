@@ -101,7 +101,7 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/searchbywords`,
-        getFreeSpace: this.source === "free-yv",
+        getFreeSpace: this.$route.query.source === "free-yv",
         data: {
           keyWords: this.keyWord,
           page: page
