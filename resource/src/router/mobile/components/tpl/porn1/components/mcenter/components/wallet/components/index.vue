@@ -171,7 +171,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="bcWalletEnableType && fastPlaySwitch">
+    <template v-if="bcWalletEnableType && fastPaySwitch">
       <div :class="$style['bc-wrap']">
         <div :class="$style['bc-title']">币希钱包</div>
         <div :class="$style['bc-content']">
@@ -373,7 +373,7 @@ export default {
         total_balance: "",
         currency_list: []
       },
-      fastPlaySwitch: false
+      fastPaySwitch: false
     };
   },
   computed: {
@@ -383,7 +383,8 @@ export default {
       gameData: "getGameData",
       siteConfig: "getSiteConfig",
       rechargeConfig: "getRechargeConfig",
-      withdrawCheckStatus: "getWithdrawCheckStatus"
+      withdrawCheckStatus: "getWithdrawCheckStatus",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =
@@ -538,8 +539,17 @@ export default {
       this.getRedJackpot();
     });
 
-    Promise.all([this.getFastPlaySwitch()]).then(res => {
-      this.getWalletCurrencyBalanceList();
+    this.actionSetDomainConfigV2().then(() => {
+      //迅付存取款開關
+      const deposit = this.domainConfig.deposit.some(
+        item => item.name === "迅付"
+      );
+      const withdraw = this.domainConfig.withdraw.name === "迅付";
+      this.fastPaySwitch = deposit && withdraw;
+
+      if (this.fastPaySwitch) {
+        this.getWalletCurrencyBalanceList();
+      }
     });
   },
   beforeUnmount() {
@@ -566,7 +576,8 @@ export default {
       "actionGetRechargeStatus",
       "actionGetMemInfoV3",
       "actionSetUserBalance",
-      "getCustomerServiceUrl"
+      "getCustomerServiceUrl",
+      "actionSetDomainConfigV2"
     ]),
     mobileLinkOpen,
     dialogMessage(msg) {
@@ -879,21 +890,6 @@ export default {
           //     }
           //   ]
           // };
-        }
-      });
-    },
-    getFastPlaySwitch() {
-      //迅付存取款開關
-      axios({
-        method: "get",
-        url: "/api/v2/c/domain-config"
-      }).then(res => {
-        if (res && res.data && res.data.ret) {
-          const deposit = res.data.ret.deposit.some(
-            item => item.name === "迅付"
-          );
-          const withdraw = res.data.ret.withdraw.name === "迅付";
-          this.fastPlaySwitch = deposit && withdraw;
         }
       });
     },

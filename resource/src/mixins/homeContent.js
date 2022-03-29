@@ -116,7 +116,8 @@ export default {
       yaboConfig: "getYaboConfig",
       noticeData: "getNoticeData",
       withdrawCheckStatus: "getWithdrawCheckStatus",
-      post: "getPost"
+      post: "getPost",
+      domainConfig: "getDomainConfig"
     }),
     isAdult() {
       return true;
@@ -364,7 +365,8 @@ export default {
       "actionGetMemInfoV3",
       "actionSetYaboConfig",
       "actionSetShowRedEnvelope",
-      "actionSetPost"
+      "actionSetPost",
+      "actionSetDomainConfigV2"
     ]),
     getTrialList() {
       goLangApiRequest({
@@ -1478,25 +1480,14 @@ export default {
           return;
       }
 
-      //迅付存取款開關
-      const fastpay = () => {
-        return new Promise(resolve => {
-          axios({
-            method: "get",
-            url: "/api/v2/c/domain-config"
-          }).then(res => {
-            if (res && res.data && res.data.ret) {
-              const deposit = res.data.ret.deposit.some(
-                item => item.name === "迅付"
-              );
-              const withdraw = res.data.ret.withdraw.name === "迅付";
-              resolve(deposit && withdraw);
-            } else {
-              resolve(false);
-            }
-          });
-        });
-      };
+      //迅付存取款開關 C02.233
+      const fastpay = this.actionSetDomainConfigV2().then(() => {
+        const deposit = this.domainConfig.deposit.some(
+          item => item.name === "迅付"
+        );
+        const withdraw = this.domainConfig.withdraw.name === "迅付";
+        return deposit && withdraw;
+      });
 
       //取得電子錢包錢包餘額列表(幣希專用) C04.54
       const bcWalletEnableType = () => {
@@ -1518,12 +1509,17 @@ export default {
       };
 
       //幣希錢包UI>判斷廳設定v2中的deposit以及withdraw是否為迅付 && C04.54中的enable有開啟才會顯示
-      Promise.all([fastpay(), bcWalletEnableType()]).then(res => {
-        res = res.every(data => data === true);
-        if (!res) {
+      Promise.all([fastpay, bcWalletEnableType()]).then(
+        res => {
+          res = res.every(data => data === true);
+          if (!res) {
+            this.mcenterList = this.mcenterList.filter(i => i.name != "btse");
+          }
+        },
+        err => {
           this.mcenterList = this.mcenterList.filter(i => i.name != "btse");
         }
-      });
+      );
     }
   }
 };
