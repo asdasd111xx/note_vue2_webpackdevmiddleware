@@ -10,7 +10,6 @@
         :is="currentLayout.videoMore"
         :set-header-title="setHeaderTitle"
         :set-has-search-btn="setHasSearchBtn"
-        :siteId="currentLayout.siteId"
       />
     </template>
 
@@ -19,7 +18,6 @@
         :is="currentLayout.videoLobby"
         :set-header-title="setHeaderTitle"
         :set-has-search-btn="setHasSearchBtn"
-        :siteId="currentLayout.siteId"
       />
     </template>
   </div>
@@ -45,7 +43,7 @@ export default {
   props: {
     source: {
       type: String,
-      default: "yabo"
+      default: "yv"
     },
     setHeaderTitle: {
       type: Function,
@@ -67,56 +65,53 @@ export default {
     })
   },
   created() {
+    this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
+
     switch (this.source) {
+      case "free-yv":
+      case "yv":
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YV"]);
+        break;
       case "av":
-      case "yabo":
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["AV"]);
+        break;
+
+      default:
         setCookie(
           "s_id",
-          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
+          this.siteConfig.PORN_CONFIG.ID[this.source.toUpperCase()]
         );
+        break;
+    }
+
+    switch (this.source) {
+      case "free-yv":
+      case "av":
+      case "yv":
         this.currentLayout = {
-          siteId: 1,
           videoLobby: "yaboVideoLobby",
-          videoMore: "yaboVideoMore",
-          setHeaderTitle: () => {
-            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-          }
+          videoMore: "yaboVideoMore"
         };
         break;
 
       case "smallPig":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
         this.currentLayout = {
-          siteId: 2,
           videoLobby: "smallPigVideoLobby",
-          videoMore: "smallPigVideoMore",
-          setHeaderTitle: () => {
-            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-          }
+          videoMore: "smallPigVideoMore"
         };
         break;
 
       case "gay":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
         this.currentLayout = {
-          siteId: 3,
           videoLobby: "gayVideoLobby",
-          videoMore: "gayVideoMore",
-          setHeaderTitle: () => {
-            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-          }
+          videoMore: "gayVideoMore"
         };
         break;
 
       case "les":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
         this.currentLayout = {
-          siteId: 4,
           videoLobby: "lesVideoLobby",
-          videoMore: "lesVideoMore",
-          setHeaderTitle: () => {
-            this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-          }
+          videoMore: "lesVideoMore"
         };
         break;
     }
@@ -127,8 +122,6 @@ export default {
         this.setHeaderTitle(this.$text("S_FULL_HD_MOVIE", "全部高清影片"));
         return;
       }
-
-      this.currentLayout.setHeaderTitle();
     }
   }
 };

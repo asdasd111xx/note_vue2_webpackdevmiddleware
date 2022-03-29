@@ -4,7 +4,7 @@
     :style="{ background: bgColor }"
     :has-footer="false"
   >
-    <div slot="content" :class="$style['content-wrap']">
+    <div slot="content">
       <platform-layout
         :source="source"
         :set-header-title="setHeaderTitle"
@@ -41,25 +41,23 @@ export default {
       memInfo: "getMemInfo"
     }),
     source() {
-      /* source Type
-         yabo => 鴨脖視頻
-         smallPig => 小豬視頻
-         gay => 男男視頻
-         les => 女女視頻
-      */
-      let source = this.$route.query.source || "yabo";
+      let source = this.$route.query.source;
+
+      // 轉換舊版參數yabo,yv
+      if (this.$route.query === "yabo") {
+        source = "yv";
+      }
+
       return source;
     },
     bgColor() {
       if (this.source) {
         switch (this.source) {
-          case "yabo":
+          case "yv":
             return "#eee";
-            break;
 
-          case "smallPig":
+          case "sp":
             return "#333";
-            break;
 
           default:
             break;
@@ -73,10 +71,9 @@ export default {
       if (localStorage.getItem("content_rating") !== "1") {
         this.$router.push("/mobile");
       }
-    } else if (
-      !this.memInfo.config.content_rating ||
-      !this.memInfo.user.content_rating
-    ) {
+    }
+
+    if (!this.$route.query.source || !this.source) {
       this.$router.push("/mobile");
     }
   },
@@ -91,7 +88,4 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
-.content-wrap {
-}
-</style>
+<style lang="scss" module></style>

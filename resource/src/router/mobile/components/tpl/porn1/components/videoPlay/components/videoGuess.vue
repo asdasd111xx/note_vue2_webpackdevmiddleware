@@ -34,7 +34,7 @@
         <div
           :class="[
             $style['video-title'],
-            { [$style['custom']]: ['smallPig'].includes(source) }
+            { [$style['custom']]: ['sp'].includes(source) }
           ]"
         >
           {{ video.title }}
@@ -54,7 +54,6 @@ import videoTag from "./videoTag";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
-import { setCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -91,32 +90,6 @@ export default {
       //   }.png`
       // );
       return "";
-    },
-    siteId() {
-      switch (this.source) {
-        case "av":
-        case "yabo":
-          setCookie(
-            "s_id",
-            this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
-          );
-          return 1;
-
-        case "smallPig":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
-          return 2;
-
-        case "gay":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
-          return 3;
-
-        case "les":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
-          return 4;
-
-        default:
-          break;
-      }
     }
   },
   created() {
@@ -126,12 +99,12 @@ export default {
     getGuessVideo() {
       const obj = {
         url: `/video/guess`,
+        getFreeSpace: this.source === "free-yv",
         params: {
-          siteId: this.siteId,
           tags: this.tags
         }
       };
-      // if (this.$route.query.source === 'smallPig') { obj['smallPig'] = true }
+
       pornRequest(obj).then(response => {
         if (response.status !== 200) {
           return;

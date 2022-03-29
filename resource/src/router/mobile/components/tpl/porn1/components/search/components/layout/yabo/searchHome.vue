@@ -92,10 +92,6 @@ export default {
     setKeyWord: {
       type: Function,
       required: true
-    },
-    siteId: {
-      type: Number,
-      required: true
     }
   },
   data() {
@@ -112,7 +108,7 @@ export default {
     pornRequest({
       method: "get",
       url: `/video/getsearchkey`,
-      params: { siteId: this.siteId }
+      getFreeSpace: this.source === "free-yv"
     }).then(response => {
       if (response.status !== 200) {
         this.hotList = [];
@@ -127,7 +123,6 @@ export default {
   methods: {
     ...mapActions(["actionVerificationFormData"]),
     verification(key, value) {
-      console.log(value);
       this.actionVerificationFormData({
         target: key,
         value: value

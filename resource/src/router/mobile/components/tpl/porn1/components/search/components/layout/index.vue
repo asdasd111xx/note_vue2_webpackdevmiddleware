@@ -1,17 +1,15 @@
 <template>
   <div>
-    <template v-if="['yabo', 'av'].includes(source)">
+    <template v-if="['yv', 'av', 'free-yv'].includes(source)">
       <component
         v-if="$route.query.key"
         :is="currentLayout.searchInfo"
         :key-word="currentLayout.keyWord"
-        :siteId="currentLayout.siteId"
       />
       <component
         v-else
         :is="currentLayout.searchHome"
         :set-key-word="setKeyWord"
-        :siteId="currentLayout.siteId"
       />
     </template>
 
@@ -20,7 +18,6 @@
         ref="searchInfo"
         :is="currentLayout.searchInfo"
         :key-word="currentLayout.keyWord"
-        :siteId="currentLayout.siteId"
       />
     </template>
   </div>
@@ -43,10 +40,6 @@ export default {
     lesSearchInfo: () => import("../layout/custom/searchInfo")
   },
   props: {
-    headerConfig: {
-      type: Object,
-      required: true
-    },
     source: {
       type: String,
       required: true
@@ -85,47 +78,51 @@ export default {
     };
 
     switch (this.source) {
-      case "smallPig":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
+      case "free-yv":
+      case "yv":
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YV"]);
+        break;
+      case "av":
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["AV"]);
+        break;
+
+      default:
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source.toUpperCase()]
+        );
+        break;
+    }
+
+    switch (this.source) {
+      case "sp":
         params.isSmallPigSearch = "smallPigSearch";
         this.currentLayout = {
           ...params,
-          searchInfo: "smallPigSearchInfo",
-          siteId: 2
+          searchInfo: "smallPigSearchInfo"
         };
         break;
 
       case "gay":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
         this.currentLayout = {
           ...params,
-          searchInfo: "gaySearchInfo",
-          siteId: 3
+          searchInfo: "gaySearchInfo"
         };
         break;
 
       case "les":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
         this.currentLayout = {
           ...params,
-          searchInfo: "lesSearchInfo",
-          siteId: 4
+          searchInfo: "lesSearchInfo"
         };
         break;
-      case "av":
-      case "yabo":
-        setCookie(
-          "s_id",
-          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
-        );
 
-        console.log(
-          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
-        );
+      case "free-yv":
+      case "yv":
+      case "av":
         this.currentLayout = {
           searchHome: "yaboSearchHome",
           searchInfo: "yaboSearchInfo",
-          siteId: 1,
           keyWord: this.$route.query.key,
           headerInfo: {
             home: {
@@ -159,7 +156,7 @@ export default {
         };
 
         this.$emit(
-          "update:headerConfig",
+          "setHeader",
           this.$route.query.key
             ? this.currentLayout.headerInfo.info
             : this.currentLayout.headerInfo.home
@@ -167,8 +164,8 @@ export default {
         break;
     }
 
-    if (this.source !== "yabo" && this.source !== "av") {
-      this.$emit("update:headerConfig", this.currentLayout);
+    if (!["yv", "free-yv", "av"].includes(this.source)) {
+      this.$emit("setHeader", this.currentLayout);
     }
 
     // Local 有文字預先做搜索
@@ -185,17 +182,15 @@ export default {
   },
   watch: {
     "$route.query"() {
-      if (["yabo", "av"].includes(this.source)) {
-        this.$emit(
-          "update:headerConfig",
-          this.$route.query.key
-            ? this.currentLayout.headerInfo.info
-            : this.currentLayout.headerInfo.home
-        );
+      this.$emit(
+        "setHeader",
+        this.$route.query.key
+          ? this.currentLayout.headerInfo.info
+          : this.currentLayout.headerInfo.home
+      );
 
-        if (this.$route.query.key) {
-          this.currentLayout.headerInfo.info.keyWord = this.$route.query.key;
-        }
+      if (this.$route.query.key) {
+        this.currentLayout.headerInfo.info.keyWord = this.$route.query.key;
       }
     }
   }

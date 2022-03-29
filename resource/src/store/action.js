@@ -644,6 +644,13 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetSiteConfig", configInfo);
     await dispatch("actionSetSystemDomain");
 
+    // 取得免費區影片token
+    if (["porn1", "sg1"].includes(configInfo.MOBILE_WEB_TPL)) {
+      await dispatch("actionSetSystemDomain", { isGetFreeSpace: true });
+    }
+
+    await dispatch("actionSetSystemDomain");
+
     dispatch("actionSetNews");
     dispatch("actionGetMemInfoV3");
 
@@ -1982,6 +1989,7 @@ export const actionVerificationFormData = (
 
 export const actionSetSystemDomain = ({ commit, state }, data) => {
   let configInfo;
+  const isGetFreeSpace = data && data.isGetFreeSpace;
 
   if (state.webDomain) {
     configInfo =
@@ -1997,11 +2005,20 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   const getV2Token = uri => {
     let bodyFormData = new FormData();
-    let spaceID =
-      (configInfo.PORN_CONFIG &&
-        configInfo.PORN_CONFIG.ID &&
-        configInfo.PORN_CONFIG.ID.SPACE) ||
-      "";
+    let spaceID = "";
+    if (isGetFreeSpace) {
+      spaceID =
+        (configInfo.PORN_CONFIG &&
+          configInfo.PORN_CONFIG.ID &&
+          configInfo.PORN_CONFIG.ID.FREE_SPACE) ||
+        "";
+    } else {
+      spaceID =
+        (configInfo.PORN_CONFIG &&
+          configInfo.PORN_CONFIG.ID &&
+          configInfo.PORN_CONFIG.ID.SPACE) ||
+        "";
+    }
 
     bodyFormData.append("spaceId", spaceID);
     bodyFormData.append(
@@ -2017,13 +2034,22 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
       .then(function(res) {
         if (res.data && res.data.result && res.data.status === 100) {
-          Vue.cookie.set("s_jwt", res.data.result);
+          if (isGetFreeSpace) {
+            Vue.cookie.set("s_f_jwt", res.data.result);
+          } else {
+            Vue.cookie.set("s_jwt", res.data.result);
+          }
         }
       })
       .catch(function(error) {
         console.log(error);
       });
   };
+
+  if (isGetFreeSpace) {
+    getV2Token(state.pornDomain);
+    return;
+  }
 
   return goLangApiRequest({
     method: "get",
