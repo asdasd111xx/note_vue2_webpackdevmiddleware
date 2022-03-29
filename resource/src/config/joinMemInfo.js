@@ -154,15 +154,15 @@ export default {
   },
   phonettl: {
     key: "phonettl",
-    text: "簡訊驗證碼",
+    text: "S_CHECK_CODE",
     type: "text",
     isRequired: false,
     hasVerify: false,
     show: true,
-    minimum: 7,
-    maximum: 12,
+    minimum: 3,
+    maximum: 6,
     regExp: /^[0-6]+$/,
-    errorMsg: "驗證碼錯誤"
+    errorMsg: "验证码错误"
   },
   birthday: {
     key: "birthday",

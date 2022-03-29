@@ -776,14 +776,14 @@
                   "收不到验证码？"
                 }}</a>
               </div>
-              <!-- <div
+              <div
                 :class="
                   allTip['phonettl']
                     ? $style['join-tip-show']
                     : $style['join-tip']
                 "
                 v-html="allTip['phonettl']"
-              /> -->
+              />
             </div>
             <!-- 簡訊註冊 密碼欄位 -->
             <div
@@ -1170,6 +1170,7 @@ export default {
         name: "",
         email: "",
         phone: "",
+        phonettl: "",
         alias: "",
         birthday: "",
         gender: "",
@@ -1699,6 +1700,7 @@ export default {
             case "password":
             case "username":
             case "phone":
+            case "phonettl":
             case "qq_num":
             case "telegram":
             case "kakaotalk":
@@ -1873,7 +1875,12 @@ export default {
               return;
             }
           }
-
+          if (key === "phonettl") {
+            if (this.allValue[key].length < 6) {
+              this.allTip[key] = "验证码错误";
+              return;
+            }
+          }
           this.allTip[key] = "";
         }
         return;
@@ -1953,6 +1960,7 @@ export default {
         Object.keys(this.allTip).forEach(key => {
           if (
             this.allTip["phone"] !== "" ||
+            this.allTip["phonettl"] !== "" ||
             this.allTip["password"] !== "" ||
             this.allTip["confirm_password"] !== ""
           ) {
@@ -2048,7 +2056,7 @@ export default {
             this.mobileJoinErrMag = res.msg;
 
             if (res.errors && res.errors.phone) {
-              this.actionSetGlobalMessage({ msg: res.errors.phone });
+              this.allTip["phone"] = res.errors.phone;
             }
           } else {
             this.actionSetGlobalMessage({
