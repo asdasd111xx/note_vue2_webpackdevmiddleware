@@ -42,6 +42,7 @@ import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
 import axios from "axios";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   props: {
@@ -86,6 +87,10 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage", "actionSetShowRedEnvelope"]),
     onEnter() {
+      sendUmeng(
+        76,
+        `${this.eventData.alias}_${this.eventData.name}_${this.eventData.id}`
+      );
       if (localStorage.getItem("is-open-game")) {
         return;
       }

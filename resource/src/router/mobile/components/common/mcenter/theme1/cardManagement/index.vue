@@ -73,6 +73,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import entryMixin from "@/mixins/mcenter/bankCard/index";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -107,6 +108,9 @@ export default {
       return style;
     },
     themeTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
+    routerTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
     isCommon() {
@@ -319,6 +323,9 @@ export default {
           break;
 
         case 1:
+          if (this.routerTPL === "porn1") {
+            sendUmeng(75);
+          }
           this.currentPage = "walletCardInfo";
           break;
       }

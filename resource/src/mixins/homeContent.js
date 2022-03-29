@@ -838,6 +838,9 @@ export default {
           case "PPV":
             sendUmeng(64);
             break;
+          case "FREE":
+            sendUmeng(78);
+            break;
         }
       } else {
         switch (game.vendor) {
@@ -880,6 +883,9 @@ export default {
           // 币发影视;
           case "PPV":
             sendUmeng(64);
+            break;
+          case "FREE":
+            sendUmeng(78);
             break;
         }
       }
@@ -1100,7 +1106,6 @@ export default {
                 }
               });
               return;
-
             case "YV":
               this.isLoading = true;
               localStorage.setItem("is-open-game", true);
