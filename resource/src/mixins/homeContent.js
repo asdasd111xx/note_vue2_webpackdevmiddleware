@@ -1101,6 +1101,15 @@ export default {
               });
               return;
 
+            case "FREE":
+              this.$router.push({
+                name: "videoList",
+                query: {
+                  source: "free-yv"
+                }
+              });
+              return;
+
             case "YV":
               this.isLoading = true;
               localStorage.setItem("is-open-game", true);
@@ -1114,7 +1123,7 @@ export default {
                   this.$router.push({
                     name: "videoList",
                     query: {
-                      source: "yabo"
+                      source: "yv"
                     }
                   });
                 };
@@ -1152,7 +1161,7 @@ export default {
             case "PV":
               this.$router.push({
                 name: "videoList",
-                query: { source: "smallPig" }
+                query: { source: "sp" }
               });
               return;
 

@@ -23,6 +23,7 @@ export default ({
   timeout = 10000,
   reqHeaders = {},
   url = "",
+  getFreeSpace = false,
   fail = () => {}
 }) => {
   if (!PORN_DOMAIN || PORN_DOMAIN === "" || PORN_DOMAIN === "/") {
@@ -32,10 +33,14 @@ export default ({
   }
 
   const host = PORN_DOMAIN;
-  const args = {
+  let args = {
     jwt: getCookie("s_jwt") || "",
     videoSpaceId: getCookie("s_id") || ""
   };
+
+  if (getFreeSpace) {
+    args["jwt"] = getCookie("s_f_jwt");
+  }
 
   let _data = {
       ...args,
@@ -46,30 +51,22 @@ export default ({
       ...params
     };
 
-  if (enableNewApi) {
-    if (method && method.toLocaleUpperCase() === "post") {
-      // _data["tagId"] = _data.tag;
-      // delete _data["siteId"];
-      // delete _data["tag"];
-    } else {
-      // _params["tag"] = params.tagId;
-      // delete _params["siteId"];
-      // delete _params["tagId"];
-    }
-  }
-
   const obj = {
     method,
     url: host + url,
     timeout,
     headers: {
       ...reqHeaders
-    },
-    params: {
-      ..._params
-    },
-    data: querystring.stringify(_data)
+    }
   };
+
+  if (method === "post" || method === "put" || method === "delete") {
+    obj.data = querystring.stringify(_data);
+  } else {
+    obj.params = {
+      ..._params
+    };
+  }
 
   if (enableNewApi && method && method.toLocaleUpperCase() === "post") {
     obj["data"] = data;

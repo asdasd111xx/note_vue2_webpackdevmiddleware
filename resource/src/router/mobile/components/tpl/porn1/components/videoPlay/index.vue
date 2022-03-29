@@ -21,7 +21,7 @@
       >
         <video-info v-if="info" :video-info="info" />
         <video-tag
-          v-if="!['smallPig', 'gay', 'les'].includes(source)"
+          v-if="!['sp', 'gay', 'les'].includes(source)"
           :tag="info.tag"
           :padding="true"
         />
@@ -65,33 +65,7 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
-    }),
-    siteId() {
-      switch (this.source) {
-        case "av":
-        case "yabo":
-          setCookie(
-            "s_id",
-            this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
-          );
-          return 1;
-
-        case "smallPig":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
-          return 2;
-
-        case "gay":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
-          return 3;
-
-        case "les":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
-          return 4;
-
-        default:
-          break;
-      }
-    }
+    })
   },
   watch: {
     info() {
@@ -117,7 +91,8 @@ export default {
       pornRequest({
         method: "post",
         url: `/video/videoinfo`,
-        data: { videoId: this.$route.params.id, siteId: this.siteId }
+        data: { videoId: this.$route.params.id },
+        getFreeSpace: this.source === "free-yv"
       }).then(res => {
         if (res.status !== 200) {
           return;
@@ -130,6 +105,23 @@ export default {
     this.getVideoInfo();
   },
   created() {
+    switch (this.source) {
+      case "free-yv":
+      case "yv":
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YV"]);
+        break;
+      case "av":
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["AV"]);
+        break;
+
+      default:
+        setCookie(
+          "s_id",
+          this.siteConfig.PORN_CONFIG.ID[this.source.toUpperCase()]
+        );
+        break;
+    }
+
     if (localStorage.getItem("content_rating")) {
       if (localStorage.getItem("content_rating") !== "1") {
         this.$router.push("/mobile");
@@ -142,7 +134,7 @@ export default {
     //   this.$router.push("/mobile");
     // }
 
-    if (this.$route.query.source === "smallPig") {
+    if (this.$route.query.source === "sp") {
       axios({
         method: "post",
         url: "https://api.pv123.app/v1/device/verify",
@@ -203,5 +195,6 @@ div.container {
 .info-wrap {
   height: 400px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>
