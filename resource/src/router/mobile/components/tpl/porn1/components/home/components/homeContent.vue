@@ -358,6 +358,8 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
   transition: all 0.5s;
 }
 
