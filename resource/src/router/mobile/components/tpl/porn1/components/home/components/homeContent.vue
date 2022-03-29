@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 首次註冊登入成功彈窗 -->
+    <!-- 會員首次手機註冊成功彈窗 -->
     <div
       v-if="joinmemberPop"
       :class="[$style['home-joinmem-pop-darkbg']]"

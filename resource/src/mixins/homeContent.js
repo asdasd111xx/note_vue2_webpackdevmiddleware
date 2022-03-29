@@ -298,7 +298,11 @@ export default {
     );
     let now = Vue.moment(Date.now()).format("YYYY-MM-DD HH:mm");
 
-    if (this.loginStatus && joinmemberdate === now) {
+    if (
+      this.loginStatus &&
+      joinmemberdate === now &&
+      localStorage.getItem("mobilejoin")
+    ) {
       setTimeout(() => {
         this.joinmemberPop = true;
       }, 2500);

@@ -719,6 +719,12 @@
                   :class="$style['join-input']"
                 />
               </div>
+              <div
+                :class="
+                  allTip['phone'] ? $style['join-tip-show'] : $style['join-tip']
+                "
+                v-html="allTip['phone']"
+              />
             </div>
             <!-- 簡訊註冊 驗證碼欄位 -->
             <div :class="[$style['field-wrap'], 'clearfix']">
@@ -770,6 +776,14 @@
                   "收不到验证码？"
                 }}</a>
               </div>
+              <!-- <div
+                :class="
+                  allTip['phonettl']
+                    ? $style['join-tip-show']
+                    : $style['join-tip']
+                "
+                v-html="allTip['phonettl']"
+              /> -->
             </div>
             <!-- 簡訊註冊 密碼欄位 -->
             <div
@@ -1927,6 +1941,7 @@ export default {
       }
 
       let hasError = false;
+      //帳號註冊按鈕阻擋
       if (this.currentJoin === "accountjoin") {
         Object.keys(this.allTip).forEach(key => {
           if (this.allTip[key] !== "") {
@@ -1934,8 +1949,13 @@ export default {
           }
         });
       } else {
+        //手機註冊按鈕阻擋
         Object.keys(this.allTip).forEach(key => {
-          if (this.allTip["captcha_text"] !== "") {
+          if (
+            this.allTip["phone"] !== "" ||
+            this.allTip["password"] !== "" ||
+            this.allTip["confirm_password"] !== ""
+          ) {
             hasError = true;
           }
         });
@@ -2016,6 +2036,7 @@ export default {
             password: this.allValue["password"],
             confirmPassword: this.allValue["confirm_password"],
             keyring: this.allValue["phonettl"],
+            captchaText: this.allValue.captcha_text,
             smsSpeedyRegister: this.domainConfig.sms_speedy_register
           }
         }).then(res => {
@@ -2033,6 +2054,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: "注册成功",
               cb: () => {
+                localStorage.setItem("mobilejoin", true);
                 if (localStorage.getItem("rememberPwd")) {
                   localStorage.setItem("username", this.allValue.username);
                   localStorage.setItem("password", this.allValue.password);
