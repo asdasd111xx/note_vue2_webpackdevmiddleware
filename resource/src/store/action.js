@@ -649,9 +649,8 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       await dispatch("actionSetSystemDomain", { isGetFreeSpace: true });
     }
 
-    await dispatch("actionSetSystemDomain");
-
     dispatch("actionSetNews");
+    dispatch("actionSetMcenterMsgCount");
     dispatch("actionGetMemInfoV3");
 
     if (["porn1", "sg1"].includes(state.webDomain.site)) {
@@ -1248,17 +1247,23 @@ export const actionSetMcenterMsgCount = ({ state, commit }) => {
 
   let num = 0;
   let messageData = [];
-  mcenter.message({
-    success: response => {
-      messageData = response.ret;
-      Object.keys(response.ret).forEach(index => {
-        if (!response.ret[index].read) {
+
+  goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Messages`
+  }).then(res => {
+    if (res && res.data && res.data.ret) {
+      messageData = res.data.ret;
+
+      Object.keys(res.data.ret).forEach(index => {
+        if (!res.data.ret[index].read) {
           num += 1;
         }
       });
-      commit(types.SETMCENTERMSGCOUNT, num);
-      commit(types.MESSAGEDATA, messageData); //所有訊息
     }
+
+    commit(types.SETMCENTERMSGCOUNT, num);
+    commit(types.MESSAGEDATA, messageData);
   });
 };
 // 會員中心-設定我的返水-當前頁籤 (返水歷史/實時返水)
