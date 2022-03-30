@@ -839,7 +839,7 @@ export default {
             sendUmeng(64);
             break;
           case "FREE":
-            sendUmeng(78);
+            sendUmeng(81);
             break;
         }
       } else {
@@ -885,7 +885,7 @@ export default {
             sendUmeng(64);
             break;
           case "FREE":
-            sendUmeng(78);
+            sendUmeng(81);
             break;
         }
       }
