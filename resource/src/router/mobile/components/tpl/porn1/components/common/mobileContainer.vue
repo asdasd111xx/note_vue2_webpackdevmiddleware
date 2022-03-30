@@ -17,15 +17,10 @@
       v-if="headerConfig && !isApp"
       :header-config="headerConfig"
       :update-search-status="updateSearchStatus"
-      :has-unread-message="hasUnreadMessage"
-      :unread-message-count="UnreadMessageCount"
       :has-app-tips="showApptips"
     />
     <slot name="content" />
-    <m-footer
-      v-if="hasFooter && !isApp && path[1] !== 'agcenter'"
-      :has-unread-message="hasUnreadMessage"
-    />
+    <m-footer v-if="hasFooter && !isApp && path[1] !== 'agcenter'" />
     <!-- <ele-pop /> -->
     <!-- 會員中心彈窗 -->
     <div
@@ -39,9 +34,7 @@
 </template>
 
 <script>
-import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
-import axios from "axios";
 import appTips from "@/router/mobile/components/common/appTips";
 
 export default {
@@ -56,7 +49,6 @@ export default {
   },
   data() {
     return {
-      hasUnreadMessage: false,
       UnreadMessageCount: 0,
       showApptips: false
     };
@@ -96,49 +88,13 @@ export default {
       default: false
     }
   },
-  mounted() {
-    if (this.loginStatus && getCookie("cid")) {
-      axios({
-        method: "get",
-        url: "/api/v1/c/player/messages"
-      })
-        .then(res => {
-          if (res && res.data) {
-            const data = res.data;
-            if (data && res.data.ret) {
-              const ret = res.data.ret;
-              ret.forEach(i => {
-                if (i.read === false) {
-                  this.hasUnreadMessage = true;
-                }
-              });
-              //取得未讀數量
-              const unreadList = ret.filter(i => {
-                return i.read === false;
-              });
-              if (unreadList) {
-                this.UnreadMessageCount = unreadList.length;
-              }
-            }
-
-            if (data && data.msg && data.code) {
-              this.actionSetGlobalMessage({ msg: data.msg, code: data.code });
-            }
-          }
-        })
-        .catch(e => {
-          const data = e.response && e.response.data;
-          if (data && data.msg && data.code) {
-            this.actionSetGlobalMessage({ msg: data.msg, code: data.code });
-          }
-        });
-    }
-  },
+  mounted() {},
   computed: {
     ...mapGetters({
       popType: "getPopType",
       popData: "getPopData",
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      siteConfig: "getSiteConfig"
     }),
     hasHeader() {
       return this.headerConfig;

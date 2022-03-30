@@ -60,7 +60,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.query.page);
     if (["message", "news", "post"].includes(this.$route.query.page)) {
       this.currentTemplate = this.$route.query.page;
       this.$emit("update:currentTemplate", this.$route.query.page);

@@ -106,10 +106,10 @@
             "
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage">
+          <div v-show="unreadMsgCount">
             <div :class="$style['red-dot']"></div>
             <!-- <div :class="$style['information-dot']">
-              <span>{{ UnreadMsgCount }}</span>
+              <span>{{ unreadMsgCount }}</span>
             </div> -->
           </div>
         </div>
@@ -180,10 +180,10 @@
             "
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage">
+          <div v-show="unreadMsgCount">
             <div :class="$style['red-dot']"></div>
             <!-- <div :class="$style['information-dot']">
-              <span>{{ UnreadMsgCount }}</span>
+              <span>{{ unreadMsgCount }}</span>
             </div> -->
           </div>
         </div>
@@ -235,7 +235,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { getCookie, setCookie } from "@/lib/cookie";
+import { getCookie } from "@/lib/cookie";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
 
@@ -253,14 +253,6 @@ export default {
       type: Function,
       default: () => {}
     },
-    hasUnreadMessage: {
-      type: Boolean,
-      default: false
-    },
-    unreadMessageCount: {
-      type: Number,
-      default: 0
-    },
     hasAppTips: {
       type: Boolean,
       default: false
@@ -271,22 +263,26 @@ export default {
       currentMenu: "",
       msg: "",
       source: this.$route.query.source,
-
       remainBonus: 0
     };
   },
   computed: {
     ...mapGetters({
-      membalance: "getMemBalance",
+      activity: "getActivity",
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig",
-      activity: "getActivity"
+      membalance: "getMemBalance",
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig"
     }),
-    UnreadMsgCount() {
-      if (this.unreadMessageCount >= 100) {
-        return "99+";
+    unreadMsgCount() {
+      if (this.memInfo && this.memInfo.msgCount) {
+        if (this.memInfo.msgCount >= 100) {
+          return "99+";
+        }
+        return +this.memInfo.msgCount;
       }
-      return this.unreadMessageCount;
+
+      return 0;
     },
     mainClass() {
       const style = this.$style;

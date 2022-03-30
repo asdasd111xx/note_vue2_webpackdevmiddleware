@@ -97,9 +97,9 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage">
+          <div v-show="unreadMsgCount">
             <div :class="$style['information-dot']">
-              <span>{{ UnreadMsgCount }}</span>
+              <span>{{ unreadMsgCount }}</span>
             </div>
           </div>
         </div>
@@ -153,9 +153,9 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask_my.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage">
+          <div v-show="unreadMsgCount">
             <div :class="$style['information-dot']">
-              <span>{{ UnreadMsgCount }}</span>
+              <span>{{ unreadMsgCount }}</span>
             </div>
           </div>
         </div>
@@ -236,14 +236,6 @@ export default {
       type: Function,
       default: () => {}
     },
-    hasUnreadMessage: {
-      type: Boolean,
-      default: false
-    },
-    unreadMessageCount: {
-      type: Number,
-      default: 0
-    },
     hasAppTips: {
       type: Boolean,
       default: false
@@ -262,13 +254,18 @@ export default {
       membalance: "getMemBalance",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
       activity: "getActivity"
     }),
-    UnreadMsgCount() {
-      if (this.unreadMessageCount >= 100) {
-        return "99+";
+    unreadMsgCount() {
+      if (this.memInfo && this.memInfo.msgCount) {
+        if (this.memInfo.msgCount >= 100) {
+          return "99+";
+        }
+        return +this.memInfo.msgCount;
       }
-      return this.unreadMessageCount;
+
+      return 0;
     },
     mainClass() {
       const style = this.$style;

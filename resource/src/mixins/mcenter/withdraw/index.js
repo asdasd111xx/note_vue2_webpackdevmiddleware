@@ -10,6 +10,7 @@ import ajax from "@/lib/ajax";
 import axios from "axios";
 import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { getCookie } from "@/lib/cookie";
 
 export default {
   data() {
@@ -539,28 +540,28 @@ export default {
      * @method getUserLevel
      */
     getUserLevel() {
-      axios({
+      //取得會員層級 C02.126
+      goLangApiRequest({
         method: "get",
-        url: API_AGCENTER_USER_LEVELS
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`,
+        params: {
+          cid: getCookie("cid")
+        }
       })
         .then(res => {
-          const { ret, result, msg, code } = res.data;
+          const { status, errorCode, msg } = res;
 
-          if (!res || result !== "ok") {
-            this.actionSetGlobalMessage({
-              msg,
-              code
-            });
+          if (errorCode !== "00" || status !== "000") {
+            this.actionSetGlobalMessage({ code: errorCode, msg: msg });
             return;
           }
 
-          this.userLevelObj = ret;
+          this.userLevelObj = res;
         })
         .catch(error => {
-          const { msg, code } = error.response.data;
-          this.actionSetGlobalMessage({
-            msg,
-            code
+          dispatch("actionSetGlobalMessage", {
+            msg: error.res?.data?.msg,
+            code: error.res?.data?.code
           });
         });
     },
