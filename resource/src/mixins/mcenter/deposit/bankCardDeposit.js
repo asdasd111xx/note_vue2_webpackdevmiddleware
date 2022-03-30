@@ -1577,47 +1577,56 @@ export default {
     },
     // 取得使用者銀行卡列表(迅付)
     getUserBankList() {
-      //取得一般銀行卡
-      axios({
-        method: "get",
-        url: API_MCENTER_DEPOSIT_BANK,
-        params: {}
-      })
-        .then(response => {
-          if (response && response.data && response.data.result === "ok") {
-            this.userBankOption = [];
-            this.userBankOption = response.data.ret;
-          }
-        })
-        .catch(error => {});
-      // 取得掛單銀行卡
-      goLangApiRequest({
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Transfer/Account/List`
-      }).then(res => {
-        if (res && res.status === "000" && res.errorCode === "00") {
-          let temp = res.data.map(v => {
-            return {
-              ...v,
-              orderCardFormat:
-                v.bank +
-                "-" +
-                v.account.slice(0, 4) +
-                "**** ****" +
-                v.account.slice(-4)
-            };
-          });
-          this.orderCardList = temp;
-          this.orderCardList.push({
-            orderCardFormat: "新增挂单银行卡"
-          });
-        }
-      });
-      this.defaultEpointWallet =
-        this.orderCardList.length > 1
-          ? this.orderCardList[0]
-          : "" || this.userBankOption[0] || this.orderCardList[0];
+      const _this = this;
+      let reqs = [getbankList(), getorderCardList()];
 
-      return;
+      function getbankList() {
+        //取得一般銀行卡
+        return axios({
+          method: "get",
+          url: API_MCENTER_DEPOSIT_BANK,
+          params: {}
+        })
+          .then(response => {
+            if (response && response.data && response.data.result === "ok") {
+              _this.userBankOption = [];
+              _this.userBankOption = response.data.ret;
+            }
+          })
+          .catch(error => {});
+      }
+      function getorderCardList() {
+        // 取得掛單銀行卡
+        return goLangApiRequest({
+          url: `${_this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Transfer/Account/List`
+        }).then(res => {
+          if (res && res.status === "000" && res.errorCode === "00") {
+            let temp = res.data.map(v => {
+              return {
+                ...v,
+                orderCardFormat:
+                  v.bank +
+                  "-" +
+                  v.account.slice(0, 4) +
+                  "**** ****" +
+                  v.account.slice(-4)
+              };
+            });
+            _this.orderCardList = temp;
+            _this.orderCardList.push({
+              orderCardFormat: "新增挂单银行卡"
+            });
+          }
+        });
+      }
+      axios.all(reqs).then(() => {
+        this.defaultEpointWallet =
+          this.orderCardList.length > 1
+            ? this.orderCardList[0]
+            : "" || this.userBankOption[0] || this.orderCardList[0];
+
+        return;
+      });
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);
