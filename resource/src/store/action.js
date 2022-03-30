@@ -1785,19 +1785,20 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     });
 };
 
-export const actionSetUserLevels = ({ commit, dispatch }) => {
-  return axios({
+export const actionSetUserLevels = ({ state, commit, dispatch }) => {
+  //取得會員層級 C02.126
+  return goLangApiRequest({
     method: "get",
-    url: "/api/v1/c/levels/by_user"
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`,
+    params: {
+      cid: getCookie("cid")
+    }
   })
-    .then(response => {
-      const { ret, result } = response.data;
-
-      if (!response || result !== "ok") {
+    .then(res => {
+      if (res && res.status !== "000") {
         return;
       }
-
-      commit(types.SET_USER_LEVELS, ret);
+      commit(types.SET_USER_LEVELS, res);
     })
     .catch(error => {
       dispatch("actionSetGlobalMessage", {
