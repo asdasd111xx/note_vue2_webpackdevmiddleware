@@ -167,12 +167,23 @@ export default {
   methods: {
     getCategoryName(item) {
       let name = this.currentCategory.text;
-      if (this.categoryList && this.categoryList.length) {
-        const target = this.categoryList.find(i => i.tag === item.category[0]);
-        if (target) {
-          name = target.display || target.diaplay;
+      let itemCategory = item.category[0];
+
+      if (!this.currentCategory.key) {
+        // 返水,活動歸類在優惠
+        if (["activity"].includes(item.category[0])) {
+          itemCategory = "rebate";
+        }
+
+        if (this.categoryList && this.categoryList.length) {
+          const target = this.categoryList.find(i => i.tag === itemCategory);
+
+          if (target) {
+            name = target.display;
+          }
         }
       }
+
       return name;
     },
     getCategory(item) {
@@ -183,6 +194,7 @@ export default {
       if (this.currentCategory.key === "outer") {
         return "vendor";
       }
+
       return item.category[0];
     },
     formatThousandsCurrency(value) {

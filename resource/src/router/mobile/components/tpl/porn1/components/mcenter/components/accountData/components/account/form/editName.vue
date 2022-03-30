@@ -35,9 +35,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { API_MCENTER_USER_CONFIG } from '@/config/api';
-import ajax from '@/lib/ajax';
-import member from '@/api/member';
 import serviceTips from '../../serviceTips';
 import mcenter from '@/api/mcenter';
 import accountHeader from '../../accountHeader';

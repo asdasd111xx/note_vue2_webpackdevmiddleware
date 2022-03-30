@@ -272,14 +272,17 @@ export default {
   [types.SETNEWS](state, obj) {
     const apiData = [];
 
-    Object.keys(obj).forEach(index => {
-      apiData[index] = {
-        // time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
-        id: obj[index].id,
-        title: obj[index].created_at,
-        content: obj[index].content
-      };
-    });
+    if (obj) {
+      Object.keys(obj).forEach(index => {
+        apiData[index] = {
+          // time: EST(obj[index].created_at, 'YYYY-MM-DD HH:mm:ss'),
+          id: obj[index].id,
+          title: obj[index].created_at,
+          content: obj[index].content
+        };
+      });
+    }
+
     state.news = apiData;
   },
   // 會員端-設定跑馬燈 (充值/提現)

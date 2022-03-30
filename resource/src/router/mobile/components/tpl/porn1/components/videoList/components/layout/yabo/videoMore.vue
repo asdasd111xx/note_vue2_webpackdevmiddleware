@@ -86,10 +86,6 @@ export default {
     setHasSearchBtn: {
       type: Function,
       required: true
-    },
-    siteId: {
-      type: Number,
-      required: true
     }
   },
   data() {
@@ -155,9 +151,9 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/videolist`,
+        getFreeSpace: this.source === "free-yv",
         data: {
           tag: this.queryTitle === "全部" ? "" : this.queryTitle,
-          siteId: this.siteId,
           page: 1
         }
       }).then(response => {
@@ -179,10 +175,10 @@ export default {
       return pornRequest({
         method: "get",
         url: `/video/sort`,
+        getFreeSpace: this.source === "free-yv",
         params: {
           tag: this.$route.query.tag,
-          tagId: this.tagId || "",
-          siteId: this.siteId
+          tagId: this.tagId || ""
         }
       }).then(response => {
         if (response.status !== 200) {
@@ -234,11 +230,11 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/list`,
+        getFreeSpace: this.source === "free-yv",
         data: {
           tagId: this.tagId,
           sortId: this.sortId,
-          page: page,
-          siteId: this.siteId
+          page: page
         }
       });
     },
@@ -386,7 +382,7 @@ export default {
     display: block;
   }
 
-  &.yabo.active .line {
+  &.yv.active .line {
     background-color: var(--slider_underline_active_color);
   }
 

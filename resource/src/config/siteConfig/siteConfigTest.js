@@ -26,7 +26,8 @@ export const site_500015 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
-      YB: "9",
+      FREE_SPACE: "123",
+      YV: "9",
       SP: "113",
       GAY: "7",
       LES: "8"
@@ -61,7 +62,8 @@ export const site_500035 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "112",
-      YB: "9",
+      FREE_SPACE: "123",
+      YV: "9",
       SP: "113",
       GAY: "7",
       LES: "8"
@@ -81,7 +83,7 @@ export const site_9999894 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "119",
-      YB: "9",
+      YV: "9",
       AV: "120"
     }
   }
@@ -99,7 +101,7 @@ export const site_9999905 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
-      YB: "9"
+      YV: "9"
     }
   }
 };

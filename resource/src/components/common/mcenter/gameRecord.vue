@@ -296,7 +296,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/Friends/WagerReport/ByDayGame`,
         params: {
-          lang: "zh-cn",
           username: this.selectedUser,
           startAt: Vue.moment(this.currentStart).format(
             "YYYY-MM-DD 00:00:00-04:00"

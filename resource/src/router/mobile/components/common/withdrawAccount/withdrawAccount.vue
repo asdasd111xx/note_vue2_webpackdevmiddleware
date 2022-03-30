@@ -98,10 +98,7 @@
           </div>
         </div>
 
-        <div
-          v-if="formData['phone'].show && showKeyring"
-          :class="$style['cell']"
-        >
+        <div v-if="formData['phone'].show" :class="$style['cell']">
           <div :class="$style['err-msg']">
             {{ formData["keyring"].msg }}
           </div>
@@ -241,6 +238,7 @@ export default {
         if (this.formData[i]) {
           if (i === "phone") {
             this.formData["keyring"].show = !data.ret[i];
+
             // 無手機欄位時候不需要驗證
             this.isVerifyPhone = data.ret[i];
           }
@@ -253,7 +251,6 @@ export default {
             this.formData["withdraw_password"].show = false;
             return;
           }
-
           this.formData[i].show = !data.ret[i];
         }
       });
@@ -296,9 +293,6 @@ export default {
     },
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    showKeyring() {
-      return this.memInfo.config.player_user_bank_mobile;
     },
     redirect() {
       let redirect = this.$route.query.redirect || "home";
