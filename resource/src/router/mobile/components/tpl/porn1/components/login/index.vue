@@ -16,78 +16,197 @@
           <div class="login-logo">
             <img :src="`/static/image/${routerTPL}/common/logo_b.png`" />
           </div>
-          <div v-if="currentLogin === 'accountlogin'" class="login-form-wrap">
+          <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
             <div v-show="errMsg" class="err-msg">
               {{ errMsg }}
             </div>
 
             <form>
-              <!-- ***帳號登入*** -->
-              <span class="login-unit login-unit-username">
-                <input
-                  ref="username"
-                  v-model="username"
-                  :title="$text('S_ACCOUNT', '帐号')"
-                  :placeholder="$text('S_ACCOUNT', '帐号')"
-                  class="login-input"
-                  maxlength="20"
-                  tabindex="1"
-                  @keydown.13="keyDownSubmit()"
-                  @input="verification('username', $event.target.value)"
-                />
-                <div class="input-icon">
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/icon_account.png`)
+              <template v-if="currentLogin === 'accountlogin'">
+                <!-- ***帳號登入*** -->
+                <span class="login-unit login-unit-username">
+                  <input
+                    ref="username"
+                    v-model="username"
+                    :title="$text('S_ACCOUNT', '帐号')"
+                    :placeholder="$text('S_ACCOUNT', '帐号')"
+                    class="login-input"
+                    maxlength="20"
+                    tabindex="1"
+                    @keydown.13="keyDownSubmit()"
+                    @input="verification('username', $event.target.value)"
+                  />
+                  <div class="input-icon">
+                    <img
+                      :src="
+                        $getCdnPath(
+                          `/static/image/common/login/icon_account.png`
+                        )
+                      "
+                    />
+                  </div>
+                  <div class="clear" v-if="username">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                      @click="username = ''"
+                    />
+                  </div>
+                </span>
+                <!-- 密碼 -->
+                <span class="login-unit login-unit-password">
+                  <input
+                    ref="password"
+                    id="pwd"
+                    v-model="password"
+                    :title="$text('S_PASSWORD', '密码')"
+                    :placeholder="$text('S_PASSWORD', '密码')"
+                    class="login-input"
+                    type="password"
+                    maxlength="12"
+                    tabindex="2"
+                    @input="verification('login_password', $event.target.value)"
+                    @keydown.13="keyDownSubmit()"
+                    autocomplete="password"
+                  />
+                  <div class="eye">
+                    <img
+                      :src="
+                        $getCdnPath(
+                          `/static/image/common/login/btn_eye_${
+                            isShowPwd ? 'n' : 'd'
+                          }.png`
+                        )
+                      "
+                      @click="toggleEye('confPwd')"
+                    />
+                  </div>
+                  <div class="input-icon">
+                    <img
+                      :src="
+                        $getCdnPath(
+                          `/static/image/common/login/icon_password.png`
+                        )
+                      "
+                    />
+                  </div>
+                </span>
+              </template>
+              <template v-if="currentLogin === 'mobilelogin'">
+                <!-- ***手機號碼登入*** -->
+                <span class="login-unit login-unit-phone">
+                  <!-- <v-select
+                  v-model="selectData['countryCode'].selected"
+                  :options="selectData['countryCode'].options"
+                  :searchable="false"
+                  :class="['contrycode-select']"
+                /> -->
+                  <input
+                    ref="phone"
+                    v-model="phone"
+                    :title="$text('S_MOBILE_NUMBER', '手机号码')"
+                    :placeholder="$text('S_MOBILE_NUMBER', '手机号码')"
+                    :class="['login-input']"
+                    maxlength="15"
+                    tabindex="1"
+                    @keydown.13="keyDownSubmit()"
+                    @input="verification('phone', $event.target.value)"
+                  />
+                  <div class="input-icon">
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/common/login/icon_phone.png`)
+                      "
+                    />
+                  </div>
+                  <div class="clear" v-if="phone">
+                    <img
+                      :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                      @click="phone = ''"
+                    />
+                  </div>
+                </span>
+                <!-- 手機驗證碼 -->
+                <span
+                  v-if="mobileLoginTypeSwitch == 1"
+                  class="login-unit login-unit-phone"
+                >
+                  <input
+                    ref="phone_validation_code"
+                    v-model="phone_validation_code"
+                    :title="$text('S_MOBILE_VERIFICATION', '手机验证')"
+                    :placeholder="$text('S_ENABLE_KEYRING', '输入验证码')"
+                    :class="['login-input']"
+                    maxlength="15"
+                    tabindex="1"
+                    @keydown.13="keyDownSubmit()"
+                    @input="
+                      verification('phone_validation_code', $event.target.value)
                     "
                   />
-                </div>
-                <div class="clear" v-if="username">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="username = ''"
+                  <div class="input-icon">
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/common/login/icon_code.png`)
+                      "
+                    />
+                  </div>
+                  <button
+                    :class="['getkeyring', phone.length > 10 ? 'active' : '']"
+                    @click.prevent="getKeyring"
+                  >
+                    获取验证码
+                  </button>
+                </span>
+                <a
+                  v-if="mobileLoginTypeSwitch === 1"
+                  href="/mobile/login"
+                  :class="['not-receive-code']"
+                  >收不到验证码？</a
+                >
+
+                <!-- 密碼 -->
+                <span
+                  v-if="mobileLoginTypeSwitch === 2"
+                  class="login-unit login-unit-password"
+                >
+                  <input
+                    ref="password"
+                    id="pwd"
+                    v-model="password"
+                    :title="$text('S_PASSWORD', '密码')"
+                    :placeholder="$text('S_PASSWORD', '密码')"
+                    class="login-input"
+                    type="password"
+                    maxlength="12"
+                    tabindex="2"
+                    @input="verification('login_password', $event.target.value)"
+                    @keydown.13="keyDownSubmit()"
+                    autocomplete="password"
                   />
-                </div>
-              </span>
-              <!-- 密碼 -->
-              <span class="login-unit login-unit-password">
-                <input
-                  ref="password"
-                  id="pwd"
-                  v-model="password"
-                  :title="$text('S_PASSWORD', '密码')"
-                  :placeholder="$text('S_PASSWORD', '密码')"
-                  class="login-input"
-                  type="password"
-                  maxlength="12"
-                  tabindex="2"
-                  @input="verification('login_password', $event.target.value)"
-                  @keydown.13="keyDownSubmit()"
-                  autocomplete="password"
-                />
-                <div class="eye">
-                  <img
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/login/btn_eye_${
-                          isShowPwd ? 'n' : 'd'
-                        }.png`
-                      )
-                    "
-                    @click="toggleEye('confPwd')"
-                  />
-                </div>
-                <div class="input-icon">
-                  <img
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/login/icon_password.png`
-                      )
-                    "
-                  />
-                </div>
-              </span>
+                  <div class="input-icon">
+                    <img
+                      :src="
+                        $getCdnPath(
+                          `/static/image/common/login/icon_password.png`
+                        )
+                      "
+                    />
+                  </div>
+                  <div class="eye">
+                    <img
+                      :src="
+                        $getCdnPath(
+                          `/static/image/common/login/btn_eye_${
+                            isShowPwd ? 'n' : 'd'
+                          }.png`
+                        )
+                      "
+                      @click="toggleEye('confPwd')"
+                    />
+                  </div>
+                </span>
+              </template>
               <!-- 3拼圖驗證/4手繪/5行為驗證 -->
               <thirdy-verification
                 v-if="[3, 4, 5].includes(memInfo.config.login_captcha_type)"
@@ -129,7 +248,13 @@
                   />
                 </div>
               </div>
-              <div class="login-deposit-username clearfix">
+              <div
+                class="login-deposit-username clearfix"
+                v-if="
+                  this.currentLogin === 'accountlogin' ||
+                    this.mobileLoginTypeSwitch === 2
+                "
+              >
                 <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                   <img
                     :src="
@@ -185,182 +310,7 @@
               </div>
             </form>
           </div>
-          <div v-if="currentLogin === 'mobilelogin'" class="login-form-wrap">
-            <!-- 錯誤訊息 -->
 
-            <div v-show="errMsg" class="err-msg">
-              {{ errMsg }}
-            </div>
-
-            <form>
-              <!-- ***手機號碼登入*** -->
-              <span class="login-unit login-unit-phone">
-                <!-- <v-select
-                  v-model="selectData['countryCode'].selected"
-                  :options="selectData['countryCode'].options"
-                  :searchable="false"
-                  :class="['contrycode-select']"
-                /> -->
-                <input
-                  ref="phone"
-                  v-model="phone"
-                  :title="$text('S_MOBILE_NUMBER', '手机号码')"
-                  :placeholder="$text('S_MOBILE_NUMBER', '手机号码')"
-                  :class="['login-input']"
-                  maxlength="15"
-                  tabindex="1"
-                  @keydown.13="keyDownSubmit()"
-                  @input="verification('phone', $event.target.value)"
-                />
-                <div class="input-icon">
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/icon_phone.png`)
-                    "
-                  />
-                </div>
-                <div class="clear" v-if="phone">
-                  <img
-                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="phone = ''"
-                  />
-                </div>
-              </span>
-              <!-- 手機驗證碼 -->
-              <span
-                v-if="mobileLoginTyepSwitch == 1"
-                class="login-unit login-unit-phone"
-              >
-                <input
-                  ref="phone_validation_code"
-                  v-model="phone_validation_code"
-                  :title="$text('S_MOBILE_VERIFICATION', '手机验证')"
-                  :placeholder="$text('S_ENABLE_KEYRING', '输入验证码')"
-                  :class="['login-input']"
-                  maxlength="15"
-                  tabindex="1"
-                  @keydown.13="keyDownSubmit()"
-                  @input="
-                    verification('phone_validation_code', $event.target.value)
-                  "
-                />
-                <div class="input-icon">
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/icon_code.png`)
-                    "
-                  />
-                </div>
-                <button
-                  :class="['getkeyring', phone.length > 10 ? 'active' : '']"
-                >
-                  获取验证码
-                </button>
-              </span>
-              <a
-                v-if="mobileLoginTyepSwitch === 1"
-                href="/mobile/login"
-                :class="['not-receive-code']"
-                >收不到验证码？</a
-              >
-
-              <!-- 密碼 -->
-              <span
-                v-if="mobileLoginTyepSwitch === 2"
-                class="login-unit login-unit-password"
-              >
-                <input
-                  ref="password"
-                  id="pwd"
-                  v-model="password"
-                  :title="$text('S_PASSWORD', '密码')"
-                  :placeholder="$text('S_PASSWORD', '密码')"
-                  class="login-input"
-                  type="password"
-                  maxlength="12"
-                  tabindex="2"
-                  @input="verification('login_password', $event.target.value)"
-                  @keydown.13="keyDownSubmit()"
-                  autocomplete="password"
-                />
-                <div class="input-icon">
-                  <img
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/login/icon_password.png`
-                      )
-                    "
-                  />
-                </div>
-                <div class="eye">
-                  <img
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/login/btn_eye_${
-                          isShowPwd ? 'n' : 'd'
-                        }.png`
-                      )
-                    "
-                    @click="toggleEye('confPwd')"
-                  />
-                </div>
-              </span>
-              <div class="login-deposit-username clearfix">
-                <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
-                  <img
-                    :src="
-                      `/static/image/common/icon_${
-                        rememberPwd ? '' : 'no'
-                      }remember.png`
-                    "
-                  />
-                </div>
-                <span :class="['deposit-text', `${routerTPL}`]">{{
-                  $text("S_SAVE_PASSWORD", "记住密码")
-                }}</span>
-                <!-- 忘記密碼 -->
-                <span
-                  class="login-unit-link"
-                  @click="$router.push('/mobile/forgetpwd/member')"
-                  >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
-                >
-              </div>
-              <div class="login-bottom-wrap">
-                <!-- 手機登入 滑動驗證 -->
-                <slide-verification
-                  v-if="memInfo.config.login_captcha_type === 2"
-                  ref="slide-verification"
-                  :is-enable="isSlideAble"
-                  :success-fuc="slideLogin"
-                  page-status="login"
-                />
-                <!-- 手機登入 登入鈕 -->
-                <div
-                  v-else
-                  :class="['login-button', 'login-submit']"
-                  @click="handleClickLogin"
-                >
-                  <div>
-                    {{ $text("S_LOGIN_TITLE", "登录") }}
-                  </div>
-                </div>
-              </div>
-              <div class="login-link-wrap">
-                <!-- 手機登入 加入會員 -->
-                <div :class="['link-button', 'link-join-mem']">
-                  <span @click="checkLayeredURL">
-                    {{ $text("S_FREE_REGISTER", "免费注册") }}
-                  </span>
-                </div>
-                <div
-                  :class="['link-button', 'link-submit', `${routerTPL}`]"
-                  @click="$router.push('/mobile/service')"
-                >
-                  {{ $text("S_CUSTOMER_SERVICE_ONLINE", "在线客服") }}
-                </div>
-              </div>
-            </form>
-          </div>
           <security-check
             v-if="checkItem"
             :check-item.sync="checkItem"
@@ -384,6 +334,7 @@ import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
 import vSelect from "vue-select";
+import goLangApiRequest from "@/api/goLangApiRequest";
 /**
  * 登入共用元件
  */
@@ -417,7 +368,8 @@ export default {
         { name: "帳號登入", page: "accountlogin" },
         { name: "手機登入", page: "mobilelogin" }
       ],
-      currentLogin: "accountlogin"
+      currentLogin: "accountlogin",
+      ttlCountDown: "60"
       // selectData: {
       //   countryCode: {
       //     options: [{ label: "+86", value: "1" }],
@@ -472,17 +424,19 @@ export default {
       return this.siteConfig.ROUTER_TPL;
     },
     mobileLoginSwitch() {
-      // 手機登入開關-簡訊驗證登入
-      //0: 關, 1:簡訊, 2:密碼
+      // 手機登入開關-簡訊驗證登入 0: 關, 1:簡訊, 2:密碼
       if (
         this.domainConfig.sms_login_type &&
         this.domainConfig.sms_login_type !== 0
       ) {
+        //開
         return true;
       }
+      //預設關閉
       return false;
     },
-    mobileLoginTyepSwitch() {
+    mobileLoginTypeSwitch() {
+      // 手機登入開關-簡訊驗證登入 0: 關, 1:簡訊, 2:密碼
       if (
         this.domainConfig.sms_login_type &&
         this.domainConfig.sms_login_type !== 0
@@ -511,6 +465,39 @@ export default {
         this.currentLogin = "mobilelogin";
         return;
       }
+    },
+    getKeyring() {
+      console.log("keyring");
+      this.getPhoneVerifyCode();
+    },
+    getPhoneTTL() {
+      ///xbb/Player/Phone/TTL
+      //會員登入手機簡訊倒數秒數
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Phone/TTL`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        console.log("loginphonettl", res);
+      });
+    },
+    getPhoneVerifyCode() {
+      ///xbb/Login/Phone/Verify
+      //會員登入手機簡訊驗證
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Login/Phone/Verify`,
+        params: {
+          phone: `86-${this.phone}`
+        }
+      }).then(res => {
+        this.getPhoneTTL().then(() => {
+          console.log("ttl");
+        });
+        console.log("loginphone", res);
+      });
     },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);

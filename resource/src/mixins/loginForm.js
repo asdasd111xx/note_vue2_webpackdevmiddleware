@@ -123,7 +123,7 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     handleClickLogin() {
-      if (!this.username) {
+      if (this.currentLogin === "accountlogin" && !this.username) {
         this.errMsg = "帐号不得为空";
         return;
       }
@@ -244,8 +244,15 @@ export default {
       this.isLoading = true;
       const platform = getCookie("platform");
       let params = {
-        username: this.username,
-        password: this.password,
+        username:
+          this.currentLogin === "accountlogin" ? this.username : this.phone,
+        password:
+          this.currentLogin === "accountlogin" ||
+          this.mobileLoginTypeSwitch === 2
+            ? this.password
+            : "",
+        keyring:
+          this.mobileLoginTypeSwitch === 1 ? this.phone_validation_code : "",
         captchaText: this.captcha || validate.captcha,
         host: window.location.host,
         ...validate
