@@ -1007,12 +1007,11 @@ export const actionSetAppQrcode = ({ commit }) =>
   });
 
 // 會員端-設定跑馬燈 (首頁)
-export const actionSetNews = ({ commit }) =>
-  member.news({
-    success: response => {
-      commit(types.SETNEWS, response.ret);
-    }
-  });
+export const actionSetNews = ({ commit, state }) =>
+  goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/News/List`
+  }).then(res => commit(types.SETNEWS, res && res.data && res.data.ret));
 
 // 會員端-設定跑馬燈 (充值/提現)
 export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
