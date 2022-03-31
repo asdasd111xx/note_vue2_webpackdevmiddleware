@@ -40,9 +40,9 @@
             v-for="(item, index) in orderCardList"
             :key="index"
             :class="$style['cell']"
-            @click="handleClickItem(item)"
+            @click="handleClickItemCheck(item)"
           >
-            {{ item.orderCardFormat }}
+            {{ item.account }}
             <img
               v-if="item.account === bankSelected.account"
               :class="$style['select-icon']"
@@ -62,7 +62,7 @@
             v-for="(item, index) in bankList"
             :key="index"
             :class="$style['cell']"
-            @click="handleClickItem(item)"
+            @click="handleClickItemCheck(item)"
           >
             {{ item.account }}
             <img
@@ -111,7 +111,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   created() {
-    if (!this.bankSelected.orderCardFormat) this.currentTab = "bankList";
+    if (!this.bankSelected.is_transfer_account) this.currentTab = "bankList";
   },
   props: {
     bankSelected: {
@@ -168,8 +168,8 @@ export default {
     close() {
       this.$emit("close");
     },
-    handleClickItem(item) {
-      if (item.orderCardFormat === "新增挂单银行卡") {
+    handleClickItemCheck(item) {
+      if (item.account === "新增挂单银行卡") {
         if (this.orderCardList.length === 11) {
           this.isShowPop = true;
           return;
@@ -180,7 +180,8 @@ export default {
     },
     confirmClick() {
       this.itemFunc({
-        orderCardFormat: "新增挂单银行卡"
+        account: "新增挂单银行卡",
+        is_transfer_account: true
       });
       this.close();
     }

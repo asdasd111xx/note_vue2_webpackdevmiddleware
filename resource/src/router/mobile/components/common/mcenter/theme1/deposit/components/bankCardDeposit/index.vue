@@ -245,11 +245,7 @@
                 :class="$style['select-epoint-bank-item']"
                 @click="setPopupStatus(true, 'epointBank')"
               >
-                {{
-                  defaultEpointWallet.orderCardFormat
-                    ? defaultEpointWallet.orderCardFormat
-                    : defaultEpointWallet.account
-                }}
+                {{ defaultEpointWallet.account }}
                 <img
                   :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
                 />
@@ -1490,7 +1486,7 @@ export default {
     passRoad() {
       console.log("all passRoad", this.passRoad);
       this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
-        ? this.defaultEpointWallet.orderCardFormat === "新增挂单银行卡"
+        ? this.defaultEpointWallet.account === "新增挂单银行卡"
         : false;
     },
     curPassRoad() {
