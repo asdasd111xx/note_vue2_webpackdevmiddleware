@@ -22,7 +22,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import detailInfo from "@/router/mobile/components/common/mcenter/theme1/moneyDetail/components/detailInfo/";
-import common from "@/api/common";
 
 export default {
   props: {

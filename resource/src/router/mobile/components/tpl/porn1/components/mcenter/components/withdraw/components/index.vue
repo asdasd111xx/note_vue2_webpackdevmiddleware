@@ -826,7 +826,6 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 import { API_CRYPTO_MONEY } from "@/config/api";
-import common from "@/api/common";
 
 export default {
   components: {

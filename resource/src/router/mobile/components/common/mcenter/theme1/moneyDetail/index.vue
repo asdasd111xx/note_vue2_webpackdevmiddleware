@@ -147,7 +147,6 @@
 import Vue from "vue";
 import { mapGetters, mapActions } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
-import common from "@/api/common";
 import EST from "@/lib/EST";
 import { sendUmeng } from "@/lib/sendUmeng";
 import goLangApiRequest from "@/api/goLangApiRequest";
