@@ -758,10 +758,7 @@ export default {
               //紅利帳戶api C02.112
               goLangApiRequest({
                 method: "get",
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`,
-                params: {
-                  cid: getCookie("cid")
-                }
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`
               }).then(res => {
                 if (res && res.status === "000") {
                   this.bonus = res.data.total;

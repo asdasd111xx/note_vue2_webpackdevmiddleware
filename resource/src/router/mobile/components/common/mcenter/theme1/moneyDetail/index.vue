@@ -131,7 +131,7 @@
     />
     <!-- 捲動加載 -->
     <infinite-loading
-      v-if="showInfinite && !isEmbedDetail"
+      v-if="showInfinite"
       ref="infiniteLoading"
       @infinite="infiniteHandler"
     >
@@ -286,13 +286,15 @@ export default {
 
     this.categoryOpt = this.categoryOptions;
 
-    common.opcode({
-      success: ({ result, ret }) => {
-        if (result !== "ok") {
-          return;
-        }
-        this.opcodeList = ret;
+    //取得所有Opcode C02.124
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Opcode/Info`
+    }).then(res => {
+      if (res && res.status !== "000") {
+        return;
       }
+      this.opcodeList = res;
     });
 
     // 共用額度轉移紀錄
@@ -354,7 +356,7 @@ export default {
       }
 
       if (this.type.find(i => i === "internal_memo")) {
-        params["category"] = null;
+        params["category"] = "";
         params["opcode"] = ["5028"];
       }
 

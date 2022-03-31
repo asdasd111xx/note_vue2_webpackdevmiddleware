@@ -49,13 +49,15 @@ export default {
     detailInfo
   },
   mounted() {
-    common.opcode({
-      success: ({ result, ret }) => {
-        if (result !== "ok") {
-          return;
-        }
-        this.opcodeList = ret;
+    //取得所有Opcode C02.124
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Opcode/Info`
+    }).then(res => {
+      if (res && res.status !== "000") {
+        return;
       }
+      this.opcodeList = res;
     });
   },
   data() {
@@ -64,7 +66,11 @@ export default {
       opcodeList: null
     };
   },
-
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
+  },
   methods: {
     onClose() {
       this.$nextTick(() => {
