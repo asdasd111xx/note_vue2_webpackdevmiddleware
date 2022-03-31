@@ -8,7 +8,6 @@ import { mapActions, mapGetters } from "vuex";
 import Vue from "vue";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import mcenter from "@/api/mcenter";
 import openGame from "@/lib/open_game";
 import { sendUmeng } from "@/lib/sendUmeng";
 
@@ -117,7 +116,8 @@ export default {
       noticeData: "getNoticeData",
       withdrawCheckStatus: "getWithdrawCheckStatus",
       post: "getPost",
-      domainConfig: "getDomainConfig"
+      domainConfig: "getDomainConfig",
+      allVip: "getAllVip"
     }),
     isAdult() {
       return true;
@@ -341,16 +341,10 @@ export default {
       return;
     }
 
-    mcenter.vipUserDetail({
-      success: ({ result, ret }) => {
-        if (result !== "ok") {
-          return;
-        }
-        this.currentLevel = ret.find(item => item.complex).now_level_seq;
-
-        this.userViplevelId = ret.find(item => item.complex).now_level_id;
-        this.getFilterList();
-      }
+    this.actionSetVip().then(() => {
+      this.currentLevel = this.allVip.find(item => item.complex).now_level_seq;
+      this.userViplevelId = this.allVip.find(item => item.complex).now_level_id;
+      this.getFilterList();
     });
   },
   beforeDestroy() {
@@ -366,7 +360,8 @@ export default {
       "actionSetYaboConfig",
       "actionSetShowRedEnvelope",
       "actionSetPost",
-      "actionSetDomainConfigV2"
+      "actionSetDomainConfigV2",
+      "actionSetVip"
     ]),
     getTrialList() {
       goLangApiRequest({
