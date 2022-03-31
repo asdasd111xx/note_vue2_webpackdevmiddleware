@@ -985,34 +985,28 @@ export default {
                       });
 
                     if (["porn1", "sg1"].includes(this.routerTPL)) {
-                      // 需首儲開關 開啟時無需首儲可進入
-                      if (noFirstSavingsVideoSwitch) {
+                      if (!this.loginStatus) {
                         getThridUrl();
-                        return;
-                      }
-                      // 需首儲開關 未開啟時需首儲可進入
-                      if (!this.notFirstDeposit) {
-                        this.actionSetGlobalMessage({
-                          msg: "充值一次 立即解锁VIP影片",
-                          code: "recharge_deposit"
-                        });
-                        return;
+                      } else {
+                        // 需首儲開關 未開啟時需首儲可進入
+                        if (
+                          !noFirstSavingsVideoSwitch &&
+                          !this.notFirstDeposit
+                        ) {
+                          this.actionSetGlobalMessage({
+                            msg: "充值一次 立即解锁VIP影片",
+                            code: "recharge_deposit"
+                          });
+                        }
                       }
                       getThridUrl();
-                    }
-
-                    // 未登入開關 開啟時未登入可進入
-                    if (noLoginVideoSwitch === "true") {
-                      getThridUrl();
-                      return;
-                    }
-
-                    // 未登入開關 未開啟時需登入可進入
-                    if (!this.loginStatus) {
-                      this.$router.push("/mobile/login");
-                      return;
                     } else {
-                      getThridUrl();
+                      // 未登入開關 未開啟時需登入可進入
+                      if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+                        this.$router.push("/mobile/login");
+                      } else {
+                        getThridUrl();
+                      }
                     }
                   });
                   return;
@@ -1022,31 +1016,18 @@ export default {
           } else {
             this.actionSetYaboConfig().then(() => {
               let noLoginVideoSwitch;
+              let noFirstSavingsVideoSwitch;
 
               if (this.yaboConfig) {
                 noLoginVideoSwitch = this.yaboConfig.find(
                   i => i.name === "NoLoginVideoSwitch"
                 ).value;
+                noFirstSavingsVideoSwitch =
+                  this.yaboConfig.find(
+                    i => i.name === "NoFirstSavingsVideoSwitch"
+                  ).value === "true";
               }
 
-              // // 第三方開啟有問題時 可調整iframe內嵌
-              // let newWindow = window.open('');
-              // goLangApiRequest({
-              //     method: 'get',
-              //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
-              //     headers: {
-              //         'x-domain': this.memInfo.user.domain
-              //     },
-              // }).then(res => {
-              //     if (res.data) {
-              //         newWindow.location.href = res.data;
-              //     } else {
-              //         newWindow.close();
-              //     }
-              // }).catch(error => {
-              //     newWindow.close();
-              // })
-              // return;
               let cid = !this.loginStatus
                 ? localStorage.getItem("guestCid")
                 : getCookie("cid");
@@ -1079,18 +1060,26 @@ export default {
                   }
                 });
 
-              // 未登入開關 開啟時未登入可進入
-              if (noLoginVideoSwitch === "true") {
+              if (["porn1", "sg1"].includes(this.routerTPL)) {
+                if (!this.loginStatus) {
+                  getThridUrl();
+                } else {
+                  // 需首儲開關 未開啟時需首儲可進入
+                  if (!noFirstSavingsVideoSwitch && !this.notFirstDeposit) {
+                    this.actionSetGlobalMessage({
+                      msg: "充值一次 立即解锁VIP影片",
+                      code: "recharge_deposit"
+                    });
+                  }
+                }
                 getThridUrl();
-                return;
-              }
-
-              // 未登入開關 未開啟時需登入可進入
-              if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
-                return;
               } else {
-                getThridUrl();
+                // 未登入開關 未開啟時需登入可進入
+                if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+                  this.$router.push("/mobile/login");
+                } else {
+                  getThridUrl();
+                }
               }
             });
           }
