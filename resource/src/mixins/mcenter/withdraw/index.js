@@ -696,7 +696,9 @@ export default {
           if (response && response.data && response.data.result === "ok") {
             // console.log(response);
             this.userBankOption = [];
-            this.userBankOption = response.data.ret;
+            this.userBankOption = response.data.ret.filter(
+              v => !v.is_transfer_account
+            );
             this.defaultEpointWallet = this.userBankOption[0];
             this.defaultEpointNewWallet = this.userBankOption[0];
           }

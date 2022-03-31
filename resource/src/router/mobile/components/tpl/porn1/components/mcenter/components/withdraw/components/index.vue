@@ -443,7 +443,11 @@
           </div>
           <div :class="[$style['feature-wrap']]">
             <span :class="$style['select-bank-title']">
-              您的银行
+              {{
+                epointSelectType === 1 || epointSelectType === 2
+                  ? "挂单银行"
+                  : "您的银行"
+              }}
             </span>
             <div
               :class="$style['select-epoint-bank-item']"
@@ -779,11 +783,12 @@
         <epoint-bank-popup
           :bank-selected="
             epointSelectType === 1
-              ? defaultEpointWallet.account
-              : defaultEpointNewWallet.account
+              ? defaultEpointWallet
+              : defaultEpointNewWallet
           "
           :bank-list="userBankOption"
           :item-func="setEpointBank"
+          :open-type="'withdraw'"
           @close="closePopup"
         />
       </template>

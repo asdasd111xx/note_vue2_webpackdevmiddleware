@@ -1355,6 +1355,7 @@
           :bank-list="userBankOption"
           :item-func="setEpointBank"
           :orderCardList="orderCardList"
+          :open-type="'deposit'"
           @close="closePopup"
         />
       </template>
