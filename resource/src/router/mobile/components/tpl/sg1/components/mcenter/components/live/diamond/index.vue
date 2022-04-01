@@ -343,7 +343,7 @@ export default {
       this.isShowMaintainInfo = false;
       this.maintainInfo = null;
     },
-    init() {
+    init(refresh = true) {
       this.actionGetExtRedirect({
         api_uri: "/api/platform/v1/diamond/remind",
         method: "get"
@@ -363,7 +363,7 @@ export default {
 
         if (data && data.result && data.result.exchange_rate_list) {
           this.exchangeRateList = data.result.exchange_rate_list;
-          this.selectedRate(this.exchangeRateList[0]);
+          refresh ? this.selectedRate(this.exchangeRateList[0]) : "";
         } else {
           this.exchangeRateList = [];
         }
@@ -438,17 +438,13 @@ export default {
         if (data && data.error_text) {
           this.actionSetGlobalMessage({
             msg: data.error_text,
-            code: data.error_code,
-            cb: () => {
-              this.init();
-            }
+            code: data.error_code
           });
         }
 
         if (data && data.result && data.result.result !== "ok") {
           this.actionSetGlobalMessage({
-            msg: data.msg,
-            cb: () => {}
+            msg: data.msg
           });
         }
 
@@ -456,13 +452,11 @@ export default {
           this.diamondTotal = data.result.diamond_total;
 
           this.actionSetGlobalMessage({
-            msg: "兑换成功",
-            cb: () => {
-              this.init();
-            }
+            msg: "兑换成功"
           });
         }
 
+        this.init(false);
         this.isLoading = false;
         this.getBalance();
       });
