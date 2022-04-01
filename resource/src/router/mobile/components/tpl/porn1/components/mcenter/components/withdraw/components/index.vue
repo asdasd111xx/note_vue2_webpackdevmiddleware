@@ -826,7 +826,6 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 import { API_CRYPTO_MONEY } from "@/config/api";
-import common from "@/api/common";
 
 export default {
   components: {
@@ -2141,10 +2140,7 @@ export default {
               //紅利帳戶api C02.112
               goLangApiRequest({
                 method: "get",
-                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`,
-                params: {
-                  cid: getCookie("cid")
-                }
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`
               }).then(res => {
                 if (res && res.status === "000") {
                   this.bonus = res.data.total;

@@ -22,7 +22,6 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import detailInfo from "@/router/mobile/components/common/mcenter/theme1/moneyDetail/components/detailInfo/";
-import common from "@/api/common";
 
 export default {
   props: {
@@ -49,13 +48,15 @@ export default {
     detailInfo
   },
   mounted() {
-    common.opcode({
-      success: ({ result, ret }) => {
-        if (result !== "ok") {
-          return;
-        }
-        this.opcodeList = ret;
+    //取得所有Opcode C02.124
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Opcode/Info`
+    }).then(res => {
+      if (res && res.status !== "000") {
+        return;
       }
+      this.opcodeList = res.data.ret;
     });
   },
   data() {
@@ -64,7 +65,11 @@ export default {
       opcodeList: null
     };
   },
-
+  computed: {
+    ...mapGetters({
+      siteConfig: "getSiteConfig"
+    })
+  },
   methods: {
     onClose() {
       this.$nextTick(() => {

@@ -87,7 +87,6 @@ import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
-import { getCookie } from "@/lib/cookie";
 
 export default {
   components: {
@@ -134,10 +133,7 @@ export default {
       //紅利帳戶api C02.112
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`,
-        params: {
-          cid: getCookie("cid")
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`
       }).then(res => {
         if (res && res.status === "000") {
           this.info = res.data.ret;
