@@ -383,9 +383,14 @@ export default {
   float: left;
   width: 50%;
   margin-bottom: 3px;
-  border-radius: 7px;
+  border-radius: 10px;
   box-sizing: border-box;
+
   background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
+  background-position: center;
+
   // 大廳遊戲預設圖logo樣式
   > img[lazy="error"]:first-child,
   img[lazy="loading"]:first-child {
@@ -394,10 +399,11 @@ export default {
     padding: 15px 2px;
     margin: 0 auto;
   }
+
   > img:first-child {
     display: block;
     width: 100%;
-    padding: 0 2px;
+    padding: 0 1.5px;
   }
 
   > span {
