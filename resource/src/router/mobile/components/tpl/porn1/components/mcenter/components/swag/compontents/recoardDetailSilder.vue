@@ -56,7 +56,7 @@ export default {
       if (res && res.status !== "000") {
         return;
       }
-      this.opcodeList = res;
+      this.opcodeList = res.data.ret;
     });
   },
   data() {

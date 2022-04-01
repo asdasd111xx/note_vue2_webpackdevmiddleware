@@ -293,7 +293,7 @@ export default {
       if (res && res.status !== "000") {
         return;
       }
-      this.opcodeList = res;
+      this.opcodeList = res.data.ret;
     });
 
     // 共用額度轉移紀錄
