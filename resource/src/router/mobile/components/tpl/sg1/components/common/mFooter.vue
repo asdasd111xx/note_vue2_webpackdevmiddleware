@@ -25,7 +25,7 @@
           "
         />
         <div
-          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          v-if="unreadMsgCount && info.routeName === 'mcenter-home'"
           :class="$style['red-dot']"
         />
       </div>
@@ -39,21 +39,26 @@ import { mapGetters } from "vuex";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
-  props: {
-    hasUnreadMessage: {
-      type: Boolean,
-      default: false
-    }
-  },
   watch: {
     liveFooterMask() {}
   },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      liveFooterMask: "getLiveFooterMask"
+      liveFooterMask: "getLiveFooterMask",
+      memInfo: "getMemInfo"
     }),
+    unreadMsgCount() {
+      console.log();
+      if (this.memInfo && this.memInfo.msgCount) {
+        if (this.memInfo.msgCount >= 100) {
+          return "99+";
+        }
+        return +this.memInfo.msgCount;
+      }
 
+      return 0;
+    },
     list() {
       return [
         {

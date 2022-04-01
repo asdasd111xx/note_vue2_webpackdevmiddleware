@@ -27,6 +27,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      loginStatus: "getLoginStatus",
       memInfo: "getMemInfo"
     }),
     headerConfig() {
@@ -38,6 +39,11 @@ export default {
           this.$router.back();
         }
       };
+    }
+  },
+  created() {
+    if (!this.loginStatus) {
+      this.$router.push("/mobile");
     }
   }
 };

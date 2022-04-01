@@ -644,7 +644,13 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     await dispatch("actionSetSiteConfig", configInfo);
     await dispatch("actionSetSystemDomain");
 
+    // 取得免費區影片token
+    if (["porn1", "sg1"].includes(configInfo.MOBILE_WEB_TPL)) {
+      await dispatch("actionSetSystemDomain", { isGetFreeSpace: true });
+    }
+
     dispatch("actionSetNews");
+    dispatch("actionSetMcenterMsgCount");
     dispatch("actionGetMemInfoV3");
 
     if (["porn1", "sg1"].includes(state.webDomain.site)) {
@@ -1000,12 +1006,11 @@ export const actionSetAppQrcode = ({ commit }) =>
   });
 
 // 會員端-設定跑馬燈 (首頁)
-export const actionSetNews = ({ commit }) =>
-  member.news({
-    success: response => {
-      commit(types.SETNEWS, response.ret);
-    }
-  });
+export const actionSetNews = ({ commit, state }) =>
+  goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/News/List`
+  }).then(res => commit(types.SETNEWS, res && res.data && res.data.ret));
 
 // 會員端-設定跑馬燈 (充值/提現)
 export const actionSetAnnouncementList = ({ commit, state }, { type }) => {
@@ -1242,17 +1247,23 @@ export const actionSetMcenterMsgCount = ({ state, commit }) => {
 
   let num = 0;
   let messageData = [];
-  mcenter.message({
-    success: response => {
-      messageData = response.ret;
-      Object.keys(response.ret).forEach(index => {
-        if (!response.ret[index].read) {
+
+  goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Messages`
+  }).then(res => {
+    if (res && res.data && res.data.ret) {
+      messageData = res.data.ret;
+
+      Object.keys(res.data.ret).forEach(index => {
+        if (!res.data.ret[index].read) {
           num += 1;
         }
       });
-      commit(types.SETMCENTERMSGCOUNT, num);
-      commit(types.MESSAGEDATA, messageData); //所有訊息
     }
+
+    commit(types.SETMCENTERMSGCOUNT, num);
+    commit(types.MESSAGEDATA, messageData);
   });
 };
 // 會員中心-設定我的返水-當前頁籤 (返水歷史/實時返水)
@@ -1425,11 +1436,16 @@ export const actionNoticeData = ({ commit }, data) => {
   commit(types.SETNOTICEDATA, data);
 };
 
-export const actionSetVip = ({ commit }) => {
-  mcenter.accountVIP({
-    success: response => {
-      commit(types.SET_VIP, response.ret);
+//取得vip使用者詳細資料 C02.203
+export const actionSetVip = ({ state, commit }) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vip/User`
+  }).then(res => {
+    if (res && res.status !== "000") {
+      return;
     }
+    commit(types.SET_VIP, res.data);
   });
 };
 
@@ -1779,19 +1795,20 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
     });
 };
 
-export const actionSetUserLevels = ({ commit, dispatch }) => {
-  return axios({
+export const actionSetUserLevels = ({ state, commit, dispatch }) => {
+  //取得會員層級 C02.126
+  return goLangApiRequest({
     method: "get",
-    url: "/api/v1/c/levels/by_user"
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`,
+    params: {
+      cid: getCookie("cid")
+    }
   })
-    .then(response => {
-      const { ret, result } = response.data;
-
-      if (!response || result !== "ok") {
+    .then(res => {
+      if (res && res.status !== "000") {
         return;
       }
-
-      commit(types.SET_USER_LEVELS, ret);
+      commit(types.SET_USER_LEVELS, res);
     })
     .catch(error => {
       dispatch("actionSetGlobalMessage", {
@@ -1975,6 +1992,7 @@ export const actionVerificationFormData = (
 
 export const actionSetSystemDomain = ({ commit, state }, data) => {
   let configInfo;
+  const isGetFreeSpace = data && data.isGetFreeSpace;
 
   if (state.webDomain) {
     configInfo =
@@ -1990,11 +2008,20 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
 
   const getV2Token = uri => {
     let bodyFormData = new FormData();
-    let spaceID =
-      (configInfo.PORN_CONFIG &&
-        configInfo.PORN_CONFIG.ID &&
-        configInfo.PORN_CONFIG.ID.SPACE) ||
-      "";
+    let spaceID = "";
+    if (isGetFreeSpace) {
+      spaceID =
+        (configInfo.PORN_CONFIG &&
+          configInfo.PORN_CONFIG.ID &&
+          configInfo.PORN_CONFIG.ID.FREE_SPACE) ||
+        "";
+    } else {
+      spaceID =
+        (configInfo.PORN_CONFIG &&
+          configInfo.PORN_CONFIG.ID &&
+          configInfo.PORN_CONFIG.ID.SPACE) ||
+        "";
+    }
 
     bodyFormData.append("spaceId", spaceID);
     bodyFormData.append(
@@ -2010,13 +2037,22 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
       .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
       .then(function(res) {
         if (res.data && res.data.result && res.data.status === 100) {
-          Vue.cookie.set("s_jwt", res.data.result);
+          if (isGetFreeSpace) {
+            Vue.cookie.set("s_f_jwt", res.data.result);
+          } else {
+            Vue.cookie.set("s_jwt", res.data.result);
+          }
         }
       })
       .catch(function(error) {
         console.log(error);
       });
   };
+
+  if (isGetFreeSpace) {
+    getV2Token(state.pornDomain);
+    return;
+  }
 
   return goLangApiRequest({
     method: "get",

@@ -46,8 +46,6 @@
 
 <script>
 import InfiniteLoading from "vue-infinite-loading";
-import axios from "axios";
-import querystring from "querystring";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
 import { mapActions, mapGetters } from "vuex";
@@ -63,10 +61,6 @@ export default {
   props: {
     keyWord: {
       type: String,
-      required: true
-    },
-    siteId: {
-      type: Number,
       required: true
     }
   },
@@ -107,10 +101,10 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/searchbywords`,
+        getFreeSpace: this.$route.query.source === "free-yv",
         data: {
           keyWords: this.keyWord,
-          page: page,
-          siteId: this.siteId
+          page: page
         }
       });
     },

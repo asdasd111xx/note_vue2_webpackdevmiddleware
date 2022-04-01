@@ -50,7 +50,7 @@
           <!-- 會員中心連結 -->
           <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
             <div
-              v-for="(info, index) in mcenterSg1List"
+              v-for="(info, index) in mcenterList"
               :key="`mcenter-${index}`"
               :class="$style['mcenter-wrap']"
               @click="onGoToMcenter(info.path)"
@@ -336,6 +336,8 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
   transition: all 0.5s;
 }
 

@@ -144,10 +144,7 @@ export default {
 
       goLangApiRequest({
         method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`,
-        params: {
-          lang: "zh-cn"
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Captcha`
       }).then(res => {
         if (res.data && res.status === "000") {
           setTimeout(() => {
