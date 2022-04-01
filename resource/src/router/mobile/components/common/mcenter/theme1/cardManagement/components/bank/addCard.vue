@@ -293,7 +293,7 @@ export default {
       this.smsTimer = null;
 
       if (!redirect) {
-        this.setPageStatus(0, "bankCardInfo", true);
+        this.setPageStatus("bankCardInfo", true);
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "one");
         return;

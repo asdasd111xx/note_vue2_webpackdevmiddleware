@@ -106,7 +106,7 @@ export default {
             this.errorMsg = msg;
             return;
           }
-          this.setPageStatus(2, "orderCardInfo", true);
+          this.setPageStatus("orderCardInfo", true);
         })
         .catch(err => {
           const { msg } = err.response.data;

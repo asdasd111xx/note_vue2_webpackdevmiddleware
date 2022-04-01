@@ -64,7 +64,7 @@
             {{ $text("S_CANCEL", "取消") }}
           </span>
 
-          <span @click="setPageStatus(0, 'addOrderCard', false)">
+          <span @click="setPageStatus('addOrderCard', false)">
             {{ $text("S_CONFIRM_2", "确定") }}
           </span>
         </div>
@@ -134,7 +134,7 @@ export default {
         this.isShowPop = true;
         return;
       }
-      this.setPageStatus(0, "addOrderCard", false);
+      this.setPageStatus("addOrderCard", false);
     }
   }
 };

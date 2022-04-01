@@ -216,7 +216,7 @@ export default {
                   key: "showDetail",
                   value: false
                 });
-                this.setPageStatus(1, "walletCardInfo", true);
+                this.setPageStatus("walletCardInfo", true);
               }
               this.$emit("update:statusList", {
                 key: "editDetail",

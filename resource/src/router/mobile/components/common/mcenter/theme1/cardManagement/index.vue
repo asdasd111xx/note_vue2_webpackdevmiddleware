@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
+    <div v-if="isReceive && showTabHandler" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -60,7 +60,7 @@
           $style['tab-item'],
           { [$style['is-current']]: currentTab === index }
         ]"
-        @click="setCurrentTab(index)"
+        @click="setCurrentTab(item, index)"
       >
         {{ item.text }}
       </div>
@@ -72,7 +72,7 @@
 
     <component
       :is="currentPage"
-      :is-show-tab="isShowTab"
+      :is-show-tab="showTabHandler"
       :set-page-status="setPageStatus"
       :status-list.sync="statusList"
       :add-bank-card-step.sync="addBankCardStep"
@@ -117,25 +117,7 @@ export default {
   data() {
     return {
       orderConfirmBtnActive: false,
-      tabItemData: [
-        {
-          key: "bank",
-          text: "银行卡",
-          isShow: true
-        },
-        {
-          key: "wallet",
-          text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
-            ? "数字货币"
-            : "电子钱包",
-          isShow: true
-        },
-        {
-          key: "order",
-          text: "挂单银行卡",
-          isShow: false
-        }
-      ]
+      isSupportEpoint: false
     };
   },
   computed: {
@@ -154,12 +136,30 @@ export default {
     },
 
     tabItem() {
-      return this.tabItemData.filter(item => item.isShow);
+      return [
+        {
+          key: "bank",
+          text: "银行卡",
+          isShow: this.userLevelObj.bank
+        },
+        {
+          key: "wallet",
+          text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
+            ? "数字货币"
+            : "电子钱包",
+          isShow: this.userLevelObj.virtual_bank
+        },
+        {
+          key: "order",
+          text: "挂单银行卡",
+          isShow: this.isSupportEpoint
+        }
+      ].filter(item => item.isShow);
     },
     tabLeft() {
       return (
-        100 / this.tabItemData.filter(v => v.isShow).length / 2 +
-        (100 / this.tabItemData.filter(v => v.isShow).length) * this.currentTab
+        100 / this.tabItem.filter(v => v.isShow).length / 2 +
+        (100 / this.tabItem.filter(v => v.isShow).length) * this.currentTab
       );
     },
     headerTitle() {
@@ -231,8 +231,16 @@ export default {
           return this.$text("S_ADD_ORDERCARD", "添加挂单银行卡");
       }
     },
-    isOneTab() {
-      return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
+    showTabHandler() {
+      //迅付-會員層級管理-可綁定取款類型
+      //當銀行卡關閉且epoint關閉||電子錢包關閉||!this.isShowTab 時 不顯示頁籤
+      if (
+        (!this.userLevelObj.bank && !this.isSupportEpoint) ||
+        !this.userLevelObj.virtual_bank ||
+        !this.isShowTab
+      )
+        return false;
+      else return true;
     },
     showDetailButton() {
       const { memInfo, currentPage } = this;
@@ -271,38 +279,28 @@ export default {
       // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
       if (this.hasRedirect || tempType) {
         if ((type && type === "bankCard") || tempType === "bankCard") {
-          this.setPageStatus(0, "addBankCard", false);
+          this.setPageStatus("addBankCard", false);
         }
 
         if ((type && type === "wallet") || tempType === "wallet") {
-          this.setPageStatus(1, "addWalletCard", false);
+          this.setPageStatus("addWalletCard", false);
           if (this.$route.query.redirect === "epoint") {
             this.$router.replace("/mobile/mcenter/bankCard");
           }
         }
         if ((type && type === "orderCard") || tempType === "orderCard") {
-          this.setPageStatus(2, "addOrderCard", false);
+          this.setPageStatus("addOrderCard", false);
         }
 
         localStorage.removeItem("bankCardType");
         return;
       }
 
-      // 銀行卡/電子錢包，其中有一方關閉(在常用錢包頁面)
-      if (this.isOneTab) {
-        if (this.userLevelObj.bank) {
-          this.setPageStatus(0, "bankCardInfo", false);
-          return;
-        }
-
-        if (this.userLevelObj.virtual_bank) {
-          this.setPageStatus(1, "walletCardInfo", false);
-          return;
-        }
-      }
-
       // 預設頁面(預設為銀行卡頁面)
-      this.setPageStatus(0, "bankCardInfo", true);
+      this.setPageStatus(
+        this.userLevelObj.bank ? "bankCardInfo" : "walletCardInfo",
+        true
+      );
     });
   },
   methods: {
@@ -317,37 +315,22 @@ export default {
         }
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          this.tabItemData[2].isShow = res.data.ret;
+          this.isSupportEpoint = res.data.ret;
         }
       });
     },
-    setPageStatus(tabIndex, pageName, isShowTab) {
+    setPageStatus(pageName, isShowTab) {
       this.isReceive = false;
-      this.currentTab = tabIndex;
+      this.currentTab = this.tabItem.findIndex(v => pageName.includes(v.key));
       this.currentPage = pageName;
 
       // 當 Tab 在某些頁面不用顯示，this.isShowTab = false
-      if (!isShowTab) {
-        this.isShowTab = false;
-      } else {
-        this.isShowTab = this.isOneTab ? false : true;
-      }
-
+      this.isShowTab = isShowTab;
       this.isReceive = true;
     },
-    setCurrentTab(index) {
+    setCurrentTab(item, index) {
       this.currentTab = index;
-      switch (index) {
-        case 0:
-          this.currentPage = "bankCardInfo";
-          break;
-        case 1:
-          this.currentPage = "walletCardInfo";
-          break;
-        case 2:
-          this.currentPage = "orderCardInfo";
-          break;
-      }
+      this.currentPage = `${item.key}CardInfo`;
     },
     backPre() {
       //刪除數字貨幣路徑 刪除選擇卡片
@@ -410,7 +393,6 @@ export default {
             this.statusList.showDetail = false;
 
             this.setPageStatus(
-              this.currentTab,
               this.currentPage,
               this.$route.name != "mcenter-historyCard"
             );
@@ -422,13 +404,13 @@ export default {
 
         // 當頁面停留在添加卡片
         case "addBankCard":
-          this.setPageStatus(0, "bankCardInfo", true);
+          this.setPageStatus("bankCardInfo", true);
           return;
         case "addWalletCard":
-          this.setPageStatus(1, "walletCardInfo", true);
+          this.setPageStatus("walletCardInfo", true);
           return;
         case "addOrderCard":
-          this.setPageStatus(2, "orderCardInfo", true);
+          this.setPageStatus("orderCardInfo", true);
           return;
       }
       this.$router.back();

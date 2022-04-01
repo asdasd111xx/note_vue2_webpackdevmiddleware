@@ -30,7 +30,7 @@
             :isDetailPage="false"
             :type="'wallet'"
             @onClick="onClickDetail(item, index)"
-            @setPageStatus="setPageStatus(1, 'walletCardInfo', false)"
+            @setPageStatus="setPageStatus('walletCardInfo', false)"
           />
         </div>
       </div>
@@ -52,7 +52,7 @@
         <div v-if="isShowAddCardButton" :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"
-            @click="setPageStatus(1, 'addWalletCard', false)"
+            @click="setPageStatus('addWalletCard', false)"
           >
             <img :src="`/static/image/common/mcenter/add_2.png`" />
             <span>
