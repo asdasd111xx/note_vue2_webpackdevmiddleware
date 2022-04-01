@@ -1808,7 +1808,7 @@ export const actionSetUserLevels = ({ state, commit, dispatch }) => {
       if (res && res.status !== "000") {
         return;
       }
-      commit(types.SET_USER_LEVELS, res);
+      commit(types.SET_USER_LEVELS, res.data);
     })
     .catch(error => {
       dispatch("actionSetGlobalMessage", {

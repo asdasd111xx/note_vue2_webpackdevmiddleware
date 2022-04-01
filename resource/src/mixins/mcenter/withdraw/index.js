@@ -551,7 +551,7 @@ export default {
             return;
           }
 
-          this.userLevelObj = res;
+          this.userLevelObj = res.data;
         })
         .catch(error => {
           dispatch("actionSetGlobalMessage", {
