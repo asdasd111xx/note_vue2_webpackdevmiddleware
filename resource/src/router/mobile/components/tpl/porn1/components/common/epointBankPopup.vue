@@ -7,13 +7,58 @@
           {{ $text("S_CANCEL", "取消") }}
         </div>
         <div :class="$style['title']">
-          {{ openType === "wthdraw" ? "选择银行" : "挂单银行" }}
+          {{ openType === "deposit" ? "挂单银行" : "选择银行" }}
         </div>
       </div>
 
-      <!-- 從提現頁進來 -->
-      <template v-if="openType === 'withdraw'">
-        <div :class="$style['content']" :style="'margin-top:10px'">
+      <div :class="$style['content']">
+        <div :class="$style['tab-wrap']">
+          <div
+            v-if="orderCardList.length > 0"
+            :class="[
+              $style['tab-item'],
+              { [$style['active']]: currentTab === 'orderCardList' }
+            ]"
+            @click="currentTab = 'orderCardList'"
+          >
+            挂单银行卡
+          </div>
+          <div
+            v-if="bankList.length > 0"
+            :class="[
+              $style['tab-item'],
+              { [$style['active']]: currentTab === 'bankList' }
+            ]"
+            @click="currentTab = 'bankList'"
+          >
+            常用银行卡
+          </div>
+        </div>
+
+        <!-- 挂单银行卡 -->
+        <template v-if="currentTab === 'orderCardList'">
+          <div
+            v-for="(item, index) in orderCardList"
+            :key="index"
+            :class="$style['cell']"
+            @click="handleClickItemCheck(item)"
+          >
+            {{ item.account }}
+            <img
+              v-if="item.account === bankSelected.account"
+              :class="$style['select-icon']"
+              :src="
+                $getCdnPath(
+                  `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
+                )
+              "
+              alt="sel"
+            />
+          </div>
+        </template>
+
+        <!-- 常用银行卡 -->
+        <template v-if="currentTab === 'bankList'">
           <div
             v-for="(item, index) in bankList"
             :key="index"
@@ -32,104 +77,32 @@
               alt="sel"
             />
           </div>
-        </div>
-      </template>
-
-      <!-- 從充值頁進來 -->
-      <template v-if="openType === 'deposit'">
-        <div :class="$style['content']">
-          <div :class="$style['tab-wrap']">
-            <div
-              v-if="orderCardList.length > 0"
-              :class="[
-                $style['tab-item'],
-                { [$style['active']]: currentTab === 'orderCardList' }
-              ]"
-              @click="currentTab = 'orderCardList'"
-            >
-              挂单银行卡
-            </div>
-            <div
-              v-if="bankList.length > 0"
-              :class="[
-                $style['tab-item'],
-                { [$style['active']]: currentTab === 'bankList' }
-              ]"
-              @click="currentTab = 'bankList'"
-            >
-              常用银行卡
-            </div>
-          </div>
-
-          <!-- 挂单银行卡 -->
-          <template v-if="currentTab === 'orderCardList'">
-            <div
-              v-for="(item, index) in orderCardList"
-              :key="index"
-              :class="$style['cell']"
-              @click="handleClickItemCheck(item)"
-            >
-              {{ item.account }}
-              <img
-                v-if="item.account === bankSelected.account"
-                :class="$style['select-icon']"
-                :src="
-                  $getCdnPath(
-                    `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
-                  )
-                "
-                alt="sel"
-              />
-            </div>
-          </template>
-
-          <!-- 常用银行卡 -->
-          <template v-if="currentTab === 'bankList'">
-            <div
-              v-for="(item, index) in bankList"
-              :key="index"
-              :class="$style['cell']"
-              @click="handleClickItemCheck(item)"
-            >
-              {{ item.account }}
-              <img
-                v-if="item.account === bankSelected.account"
-                :class="$style['select-icon']"
-                :src="
-                  $getCdnPath(
-                    `/static/image/${themeTPL}/mcenter/balanceTrans/ic_transfer_sel.png`
-                  )
-                "
-                alt="sel"
-              />
-            </div>
-          </template>
-          <!-- 掛單銀行卡已達上限彈窗 -->
-          <div v-if="isShowPop" :class="$style['pop-wrap']">
-            <div :class="$style['pop-mask']" />
-            <div :class="$style['pop-block']">
-              <div :class="$style['confirm-content']">
-                <div :class="$style['title']">
-                  挂单银行卡已达上限
-                </div>
-
-                <p>您所保留的挂单银行卡已达上限10笔</p>
-                <p>新的银行卡将覆盖最旧的银行卡</p>
+        </template>
+        <!-- 掛單銀行卡已達上限彈窗 -->
+        <div v-if="isShowPop" :class="$style['pop-wrap']">
+          <div :class="$style['pop-mask']" />
+          <div :class="$style['pop-block']">
+            <div :class="$style['confirm-content']">
+              <div :class="$style['title']">
+                挂单银行卡已达上限
               </div>
 
-              <div :class="[$style['button-block']]">
-                <span @click="isShowPop = false">
-                  {{ $text("S_CANCEL", "取消") }}
-                </span>
+              <p>您所保留的挂单银行卡已达上限10笔</p>
+              <p>新的银行卡将覆盖最旧的银行卡</p>
+            </div>
 
-                <span @click="confirmClick">
-                  {{ $text("S_CONFIRM_2", "确定") }}
-                </span>
-              </div>
+            <div :class="[$style['button-block']]">
+              <span @click="isShowPop = false">
+                {{ $text("S_CANCEL", "取消") }}
+              </span>
+
+              <span @click="confirmClick">
+                {{ $text("S_CONFIRM_2", "确定") }}
+              </span>
             </div>
           </div>
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
