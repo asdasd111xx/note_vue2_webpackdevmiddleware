@@ -775,7 +775,7 @@ export default {
               this.getPromotionList(data.uri);
             } else {
               this.actionSetGlobalMessage({
-                msg: "抱歉，此活动不存在"
+                msg: "正在上線，敬請期待"
               });
             }
           });
@@ -1467,7 +1467,7 @@ export default {
             this.$router.replace(`/mobile/iframe/btse?func=false`);
           } else {
             this.actionSetGlobalMessage({
-              msg: "抱歉，此活动不存在"
+              msg: "正在上線，敬請期待"
             });
           }
         }
