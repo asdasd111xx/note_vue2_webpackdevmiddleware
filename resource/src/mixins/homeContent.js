@@ -238,8 +238,6 @@ export default {
     document.activeElement.blur();
     $("input").blur();
 
-    this.getBtseSwitch();
-
     sendUmeng(1);
     if (localStorage.getItem("redirect_url")) {
       this.showRedirectJump = true;
@@ -292,6 +290,10 @@ export default {
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
+
+    if (this.siteConfig.ROUTER_TPL === "porn1") {
+      this.mcenterList = this.mcenterPorn1List;
+    }
 
     if (this.siteConfig.ROUTER_TPL === "ey1") {
       this.getAllGame();
@@ -688,7 +690,7 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus && path !== "promotion") {
+      if (!this.loginStatus && path !== "btse") {
         this.$router.push("/mobile/login");
         return;
       }
@@ -773,7 +775,7 @@ export default {
               this.getPromotionList(data.uri);
             } else {
               this.actionSetGlobalMessage({
-                msg: "正在上线，敬请期待"
+                msg: "抱歉，此活动不存在"
               });
             }
           });
@@ -1465,65 +1467,11 @@ export default {
             this.$router.replace(`/mobile/iframe/btse?func=false`);
           } else {
             this.actionSetGlobalMessage({
-              msg: "正在上线，敬请期待"
+              msg: "抱歉，此活动不存在"
             });
           }
         }
       });
-    },
-    getBtseSwitch() {
-      switch (this.siteConfig.ROUTER_TPL) {
-        case "porn1":
-          this.mcenterList = this.mcenterPorn1List;
-          break;
-        case "sg1":
-          this.mcenterList = this.mcenterSg1List;
-          break;
-        default:
-          this.mcenterList = this.mcenterList;
-          return;
-      }
-
-      //迅付存取款開關 C02.233
-      const fastpay = this.actionSetDomainConfigV2().then(() => {
-        const deposit = this.domainConfig.deposit.some(
-          item => item.name === "迅付"
-        );
-        const withdraw = this.domainConfig.withdraw.name === "迅付";
-        return deposit && withdraw;
-      });
-
-      //取得電子錢包錢包餘額列表(幣希專用) C04.54
-      const bcWalletEnableType = () => {
-        return new Promise(resolve => {
-          goLangApiRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/Currency/Balance/List`,
-            params: {
-              lang: "zh-cn"
-            }
-          }).then(res => {
-            if (res && res.data) {
-              resolve(res.data.enable);
-            } else {
-              resolve(false);
-            }
-          });
-        });
-      };
-
-      //幣希錢包UI>判斷廳設定v2中的deposit以及withdraw是否為迅付 && C04.54中的enable有開啟才會顯示
-      Promise.all([fastpay, bcWalletEnableType()]).then(
-        res => {
-          res = res.every(data => data === true);
-          if (!res) {
-            this.mcenterList = this.mcenterList.filter(i => i.name != "btse");
-          }
-        },
-        err => {
-          this.mcenterList = this.mcenterList.filter(i => i.name != "btse");
-        }
-      );
     }
   }
 };
