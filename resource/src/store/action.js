@@ -1893,7 +1893,7 @@ export const actionVerificationFormData = (
       break;
     case "phone_validation_code":
       let maxCodeLength = 6;
-      val = val.replace(/[^0-6]/g, "");
+      val = val.replace(/[^0-9]/g, "");
 
       if (maxCodeLength) {
         val = val.substring(0, maxCodeLength);

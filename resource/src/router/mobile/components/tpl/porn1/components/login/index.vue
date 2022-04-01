@@ -160,7 +160,7 @@
                 </span>
                 <a
                   v-if="mobileLoginTypeSwitch === 1"
-                  href="/mobile/login"
+                  href="/mobile/mcenter/help/support"
                   :class="['not-receive-code']"
                   >收不到验证码？</a
                 >
@@ -335,6 +335,8 @@ import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
 import vSelect from "vue-select";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import axios from "axios";
+
 /**
  * 登入共用元件
  */
@@ -467,20 +469,20 @@ export default {
       }
     },
     getKeyring() {
-      console.log("keyring");
+      console.log("getkeyring");
       this.getPhoneVerifyCode();
     },
     getPhoneTTL() {
-      ///xbb/Player/Phone/TTL
+      //xbb/Player/Login/Phone/TTL
       //會員登入手機簡訊倒數秒數
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Phone/TTL`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Login/Phone/TTL`,
         params: {
-          lang: "zh-cn"
+          username: this.phone
         }
       }).then(res => {
-        console.log("loginphonettl", res);
+        console.log("ttl000", res);
       });
     },
     getPhoneVerifyCode() {
@@ -488,15 +490,13 @@ export default {
       //會員登入手機簡訊驗證
       goLangApiRequest({
         method: "put",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Login/Phone/Verify`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Login/Phone/Verify`,
         params: {
           phone: `86-${this.phone}`
         }
       }).then(res => {
-        this.getPhoneTTL().then(() => {
-          console.log("ttl");
-        });
-        console.log("loginphone", res);
+        this.getPhoneTTL();
+        console.log("verifycode", res);
       });
     },
     slideLogin(loginInfo) {

@@ -240,19 +240,12 @@ export default {
       if (this.isBackEnd) {
         return null;
       }
-
       this.isLoading = true;
+
       const platform = getCookie("platform");
       let params = {
-        username:
-          this.currentLogin === "accountlogin" ? this.username : this.phone,
-        password:
-          this.currentLogin === "accountlogin" ||
-          this.mobileLoginTypeSwitch === 2
-            ? this.password
-            : "",
-        keyring:
-          this.mobileLoginTypeSwitch === 1 ? this.phone_validation_code : "",
+        username: this.username,
+        password: this.password,
         captchaText: this.captcha || validate.captcha,
         host: window.location.host,
         ...validate
@@ -261,36 +254,149 @@ export default {
       if (this.memInfo.config.login_captcha_type === 1) {
         params["aid"] = getCookie("aid") || localStorage.getItem("aid") || "";
       }
+      //手機登入submit
+      if (this.currentLogin === "mobilelogin") {
+        goLangApiRequest({
+          method: "put",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Phone/Verify/Login`,
+          params: {
+            phone: `86-${this.phone}`,
+            keyring:
+              this.mobileLoginTypeSwitch === 1
+                ? this.phone_validation_code
+                : "",
+            password: this.mobileLoginTypeSwitch === 2 ? this.password : "",
+            captchaText: this.captcha || validate.captcha,
+            ...validate
+          }
+        }).then(res => {
+          this.isLoading = false;
+          console.log("VerifyPhoneLoginSubmit", res);
+          if (res && res.status === "000") {
+            alert("驗證成功");
+          }
+          // 重置驗證碼
+          if (this.$refs.thirdyCaptchaObj)
+            this.$refs.thirdyCaptchaObj.ret = null;
+          this.captcha = "";
+          if (res && res.data && res.data.cookie) {
+            document.activeElement.blur();
+            $("input").blur();
 
-      return goLangApiRequest({
-        method: "put",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Login`,
-        params: {
-          lang: "zh-cn",
-          ...params
-        }
-      }).then(res => {
-        this.isLoading = false;
-        // 重置驗證碼
-        if (this.$refs.thirdyCaptchaObj) this.$refs.thirdyCaptchaObj.ret = null;
-        this.captcha = "";
-        if (res && res.data && res.data.cookie) {
-          document.activeElement.blur();
-          $("input").blur();
-
-          if (res.data.cookie.cid != "") {
-            try {
-              let cookie = res.data.cookie;
-              for (let [key, value] of Object.entries(cookie)) {
-                setCookie(key, value);
+            if (res.data.cookie.cid != "") {
+              try {
+                let cookie = res.data.cookie;
+                for (let [key, value] of Object.entries(cookie)) {
+                  setCookie(key, value);
+                }
+              } catch (e) {
+                setCookie("cid", res.data.cookie.cid);
               }
-            } catch (e) {
-              setCookie("cid", res.data.cookie.cid);
-            }
-            this.handleSaveAccont();
-            this.actionIsLogin(true);
-            window.RESET_MEM_SETTING();
+              this.handleSaveAccont();
+              this.actionIsLogin(true);
+              window.RESET_MEM_SETTING();
 
+              if (this.siteConfig.ROUTER_TPL === "sg1") {
+                window.location.href =
+                  "/mobile/live/iframe/home?hasFooter=true";
+                return;
+              }
+
+              if (this.redirect) {
+                window.location.href = this.redirect;
+                return;
+              }
+
+              window.location.reload();
+              return;
+            } else if (
+              res.data.redirect &&
+              res.data.redirect_url &&
+              getCookie("platform") === "h"
+            ) {
+              localStorage.setItem("redirect_url", res.data.redirect_url);
+              this.$router.push("/mobile/home");
+            }
+          }
+
+          if (res && res.status !== "000") {
+            this.getCaptcha();
+            this.checkItem = "";
+            if (this.memInfo.config.login_captcha_type === 2) {
+              this.$refs["slide-verification"].ncReload();
+            }
+            if (res.msg) {
+              this.errMsg = res.msg;
+              // msg: "验证码错误"
+              if (res.code === "C00024") {
+                this.$refs.captcha.focus();
+              }
+              return;
+            }
+            this.errMsg = res.status;
+          }
+
+          if (callBackFuc) {
+            callBackFuc.reset();
+          }
+        });
+      } else {
+        //帳號登入submit
+        goLangApiRequest({
+          method: "put",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Login`,
+          params: {
+            lang: "zh-cn",
+            ...params
+          }
+        }).then(res => {
+          this.isLoading = false;
+          // 重置驗證碼
+          if (this.$refs.thirdyCaptchaObj)
+            this.$refs.thirdyCaptchaObj.ret = null;
+          this.captcha = "";
+          if (res && res.data && res.data.cookie) {
+            document.activeElement.blur();
+            $("input").blur();
+
+            if (res.data.cookie.cid != "") {
+              try {
+                let cookie = res.data.cookie;
+                for (let [key, value] of Object.entries(cookie)) {
+                  setCookie(key, value);
+                }
+              } catch (e) {
+                setCookie("cid", res.data.cookie.cid);
+              }
+              this.handleSaveAccont();
+              this.actionIsLogin(true);
+              window.RESET_MEM_SETTING();
+
+              if (this.siteConfig.ROUTER_TPL === "sg1") {
+                window.location.href =
+                  "/mobile/live/iframe/home?hasFooter=true";
+                return;
+              }
+
+              if (this.redirect) {
+                window.location.href = this.redirect;
+                return;
+              }
+
+              window.location.reload();
+              return;
+            } else if (
+              res.data.redirect &&
+              res.data.redirect_url &&
+              getCookie("platform") === "h"
+            ) {
+              localStorage.setItem("redirect_url", res.data.redirect_url);
+              this.$router.push("/mobile/home");
+            }
+          }
+
+          if (res.code === "C10004" || res.code === "C10006") {
+            //已經登入
             if (this.siteConfig.ROUTER_TPL === "sg1") {
               window.location.href = "/mobile/live/iframe/home?hasFooter=true";
               return;
@@ -300,58 +406,35 @@ export default {
               window.location.href = this.redirect;
               return;
             }
-
-            window.location.reload();
-            return;
-          } else if (
-            res.data.redirect &&
-            res.data.redirect_url &&
-            getCookie("platform") === "h"
-          ) {
-            localStorage.setItem("redirect_url", res.data.redirect_url);
-            this.$router.push("/mobile/home");
-          }
-        }
-
-        if (res.code === "C10004" || res.code === "C10006") {
-          //已經登入
-          if (this.siteConfig.ROUTER_TPL === "sg1") {
-            window.location.href = "/mobile/live/iframe/home?hasFooter=true";
-            return;
           }
 
-          if (this.redirect) {
-            window.location.href = this.redirect;
-            return;
-          }
-        }
-
-        if (res && res.status !== "000") {
-          this.getCaptcha();
-          this.checkItem = "";
-          if (this.memInfo.config.login_captcha_type === 2) {
-            this.$refs["slide-verification"].ncReload();
-          }
-          if (res.msg) {
-            this.errMsg = res.msg;
-            // msg: "验证码错误"
-            if (res.code === "C00024") {
-              this.$refs.captcha.focus();
+          if (res && res.status !== "000") {
+            this.getCaptcha();
+            this.checkItem = "";
+            if (this.memInfo.config.login_captcha_type === 2) {
+              this.$refs["slide-verification"].ncReload();
             }
-            return;
+            if (res.msg) {
+              this.errMsg = res.msg;
+              // msg: "验证码错误"
+              if (res.code === "C00024") {
+                this.$refs.captcha.focus();
+              }
+              return;
+            }
+            this.errMsg = res.status;
           }
-          this.errMsg = res.status;
-        }
 
-        // network error
-        if (res && res.message) {
-          this.errMsg = `网路异常(${res.message})`;
-        }
+          // network error
+          if (res && res.message) {
+            this.errMsg = `网路异常(${res.message})`;
+          }
 
-        if (callBackFuc) {
-          callBackFuc.reset();
-        }
-      });
+          if (callBackFuc) {
+            callBackFuc.reset();
+          }
+        });
+      }
     },
     handleSaveAccont() {
       if (!this.rememberPwd) {
