@@ -53,19 +53,17 @@
     </div>
 
     <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
-      <template v-for="(item, index) in tabItem">
-        <div
-          v-if="item.isShow"
-          :key="`tab-${item.key}`"
-          :class="[
-            $style['tab-item'],
-            { [$style['is-current']]: currentTab === index }
-          ]"
-          @click="setCurrentTab(index)"
-        >
-          {{ item.text }}
-        </div>
-      </template>
+      <div
+        v-for="(item, index) in tabItem"
+        :key="`tab-${item.key}`"
+        :class="[
+          $style['tab-item'],
+          { [$style['is-current']]: currentTab === index }
+        ]"
+        @click="setCurrentTab(index)"
+      >
+        {{ item.text }}
+      </div>
       <div
         :class="[$style['active-slider']]"
         :style="{ left: `${tabLeft}%` }"
@@ -117,25 +115,9 @@ export default {
   },
   mixins: [entryMixin],
   data() {
-    return { orderConfirmBtnActive: false };
-  },
-  computed: {
-    ...mapGetters({
-      memInfo: "getMemInfo",
-      userLevelObj: "getUserLevels",
-      siteConfig: "getSiteConfig"
-    }),
-    $style() {
-      const style =
-        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
-      return style;
-    },
-    themeTPL() {
-      return this.siteConfig.ROUTER_TPL;
-    },
-
-    tabItem() {
-      return [
+    return {
+      orderConfirmBtnActive: false,
+      tabItemData: [
         {
           key: "bank",
           text: "银行卡",
@@ -153,12 +135,31 @@ export default {
           text: "挂单银行卡",
           isShow: false
         }
-      ];
+      ]
+    };
+  },
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo",
+      userLevelObj: "getUserLevels",
+      siteConfig: "getSiteConfig"
+    }),
+    $style() {
+      const style =
+        this[`$style_${this.siteConfig.MOBILE_WEB_TPL}`] || this.$style_porn1;
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
+
+    tabItem() {
+      return this.tabItemData.filter(item => item.isShow);
     },
     tabLeft() {
       return (
-        100 / this.tabItem.filter(v => v.isShow).length / 2 +
-        (100 / this.tabItem.filter(v => v.isShow).length) * this.currentTab
+        100 / this.tabItemData.filter(v => v.isShow).length / 2 +
+        (100 / this.tabItemData.filter(v => v.isShow).length) * this.currentTab
       );
     },
     headerTitle() {
@@ -262,7 +263,7 @@ export default {
     this.actionSetUserdata(true);
 
     // 以下處理頁面設定
-    this.getNowOpenWallet();
+    this.getIsSupportEpoint();
     this.actionSetUserLevels().then(() => {
       let type = this.$route.query.type;
       let tempType = localStorage.getItem("bankCardType");
@@ -306,24 +307,17 @@ export default {
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetUserLevels"]),
-    getNowOpenWallet() {
-      // C02.141 取得廳主支援的電子錢包列表
-      // Get 錢包類型
-      goLangApiRequest({
+    getIsSupportEpoint() {
+      // 取得是否支援e点富/E点付 C04.58
+      return goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Payment/VirtualBank/List`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Is/Support/Epoints`,
         params: {
           lang: "zh-cn"
         }
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
-          if (
-            res.data.filter(
-              v => v.swift_code === "BBEPWACN2" || v.swift_code === "BBEPWACN1"
-            ).length > 0
-          ) {
-            this.tabItem[2].isShow = true;
-          }
+          this.tabItemData[2].isShow = res.data.ret;
         }
       });
     },
