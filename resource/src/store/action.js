@@ -1436,11 +1436,16 @@ export const actionNoticeData = ({ commit }, data) => {
   commit(types.SETNOTICEDATA, data);
 };
 
-export const actionSetVip = ({ commit }) => {
-  mcenter.accountVIP({
-    success: response => {
-      commit(types.SET_VIP, response.ret);
+//取得vip使用者詳細資料 C02.203
+export const actionSetVip = ({ state, commit }) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vip/User`
+  }).then(res => {
+    if (res && res.status !== "000") {
+      return;
     }
+    commit(types.SET_VIP, res.data);
   });
 };
 
@@ -1803,7 +1808,7 @@ export const actionSetUserLevels = ({ state, commit, dispatch }) => {
       if (res && res.status !== "000") {
         return;
       }
-      commit(types.SET_USER_LEVELS, res);
+      commit(types.SET_USER_LEVELS, res.data);
     })
     .catch(error => {
       dispatch("actionSetGlobalMessage", {

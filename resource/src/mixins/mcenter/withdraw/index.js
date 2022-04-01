@@ -1,5 +1,4 @@
 import {
-  API_AGCENTER_USER_LEVELS,
   API_WITHDRAW_CGPAY_BINDING,
   API_WITHDRAW_INFO,
   API_MCENTER_DEPOSIT_BANK
@@ -10,7 +9,6 @@ import ajax from "@/lib/ajax";
 import axios from "axios";
 import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { getCookie } from "@/lib/cookie";
 
 export default {
   data() {
@@ -543,10 +541,7 @@ export default {
       //取得會員層級 C02.126
       goLangApiRequest({
         method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`,
-        params: {
-          cid: getCookie("cid")
-        }
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`
       })
         .then(res => {
           const { status, errorCode, msg } = res;
@@ -556,7 +551,7 @@ export default {
             return;
           }
 
-          this.userLevelObj = res;
+          this.userLevelObj = res.data;
         })
         .catch(error => {
           dispatch("actionSetGlobalMessage", {
