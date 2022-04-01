@@ -394,7 +394,7 @@ export default {
   img[lazy="loading"]:first-child {
     display: block;
     width: 42%;
-    padding: 15px 2px;
+    padding: 18px 2px;
     margin: 0 auto;
   }
 
