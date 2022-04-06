@@ -994,9 +994,10 @@ export default {
                             msg: "充值一次 立即解锁VIP影片",
                             code: "recharge_deposit"
                           });
+                        } else {
+                          getThridUrl();
                         }
                       }
-                      getThridUrl();
                     } else {
                       // 未登入開關 未開啟時需登入可進入
                       if (noLoginVideoSwitch === "false" && !this.loginStatus) {
@@ -1067,9 +1068,10 @@ export default {
                       msg: "充值一次 立即解锁VIP影片",
                       code: "recharge_deposit"
                     });
+                  } else {
+                    getThridUrl();
                   }
                 }
-                getThridUrl();
               } else {
                 // 未登入開關 未開啟時需登入可進入
                 if (noLoginVideoSwitch === "false" && !this.loginStatus) {
