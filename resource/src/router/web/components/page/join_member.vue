@@ -691,7 +691,11 @@
               <label
                 for="mobile"
                 title="手机号码"
-                :class="[$style['field-title'], 'clearfix']"
+                :class="[
+                  $style['field-title'],
+                  $style[siteConfig.ROUTER_TPL],
+                  'clearfix'
+                ]"
                 @click="
                   () => {
                     onLabelClick('phone');
@@ -731,7 +735,11 @@
               <label
                 for="mobilettl"
                 title="验证码"
-                :class="[$style['field-title'], 'clearfix']"
+                :class="[
+                  $style['field-title'],
+                  $style[siteConfig.ROUTER_TPL],
+                  'clearfix'
+                ]"
                 @click="
                   () => {
                     onLabelClick('phonettl');
