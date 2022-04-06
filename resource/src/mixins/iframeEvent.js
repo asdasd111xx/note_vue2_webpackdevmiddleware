@@ -187,6 +187,9 @@ export default {
             return;
 
           case "EVENT_USER_SESSION_ERROR":
+            setCookie("cid", "");
+            window.RESET_LOCAL_SETTING();
+
             this.actionSetGlobalMessage({
               msg: "请重新登入",
               cb: () => {
