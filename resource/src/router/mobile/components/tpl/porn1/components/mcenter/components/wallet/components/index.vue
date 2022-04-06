@@ -545,7 +545,7 @@ export default {
         item => item.name === "迅付"
       );
       const withdraw = this.domainConfig.withdraw.name === "迅付";
-      this.fastPaySwitch = deposit && withdraw;
+      this.fastPaySwitch = deposit || withdraw;
 
       if (this.fastPaySwitch) {
         this.getWalletCurrencyBalanceList();
