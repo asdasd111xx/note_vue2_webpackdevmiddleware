@@ -2045,7 +2045,8 @@ export default {
             confirmPassword: this.allValue["confirm_password"],
             keyring: this.allValue["phonettl"],
             captchaText: this.allValue.captcha_text,
-            smsSpeedyRegister: this.domainConfig.sms_speedy_register
+            smsSpeedyRegister: this.domainConfig.sms_speedy_register,
+            registerChannel: localStorage.getItem("x-channelid") || 0
           }
         }).then(res => {
           setTimeout(() => {
