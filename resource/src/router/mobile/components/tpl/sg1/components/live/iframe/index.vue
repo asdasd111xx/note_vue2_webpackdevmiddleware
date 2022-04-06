@@ -339,7 +339,7 @@ export default {
       }
     },
     redirectLive(target = "home") {
-      this.$router.push(`/mobile/live/iframe/${target}?hasFooter=true`);
+      // this.$router.push(`/mobile/live/iframe/${target}?hasFooter=true`);
 
       switch (target) {
         case "home":
