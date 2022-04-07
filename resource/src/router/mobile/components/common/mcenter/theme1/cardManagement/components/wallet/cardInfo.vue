@@ -2,13 +2,24 @@
   <div :class="$style['my-card']">
     <!-- 卡片管理列表 -->
     <template v-if="!statusList.showDetail">
-      <div v-if="isRevice && wallet_card.length > 0">
+      <div
+        v-if="
+          (isRevice && wallet_card.length > 0 && isCommon) ||
+            (isRevice && !isCommon)
+        "
+      >
         <div
           :class="[$style['card-count'], 'clearfix']"
           :style="isShowTab ? {} : { top: '43px' }"
         >
           <span :class="$style['title']">
-            {{ $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包") }}
+            <template v-if="!isCommon">
+              {{ $text("S_HISTORY_WALLET", "历史钱包") }}
+            </template>
+
+            <template v-else>
+              {{ $text("S_MY_DIGITAL_CURRENCY_WALLET", "我的数字货币钱包") }}
+            </template>
           </span>
 
           <span :class="$style['count']">
@@ -38,7 +49,12 @@
       <!-- 無資料時 -->
       <div
         v-if="!isRevice || wallet_card.length === 0"
-        :class="[$style['no-data']]"
+        :class="[
+          $style['no-data'],
+          {
+            [$style['history']]: !isCommon
+          }
+        ]"
       >
         <div :class="$style['no-bankcard']">
           <img
@@ -49,7 +65,7 @@
 
       <!-- 添加卡片按鈕區塊 -->
       <div :class="{ [$style['fix-bottom']]: wallet_card.length > 3 }">
-        <div v-if="isShowAddCardButton" :class="$style['add-wrap']">
+        <div v-if="isCommon && isShowAddCardButton" :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"
             @click="setPageStatus('addWalletCard', false)"
@@ -61,7 +77,7 @@
           </div>
         </div>
 
-        <p :class="$style['remind']">
+        <p v-if="isCommon" :class="$style['remind']">
           <template>
             <span v-if="userLevelObj.virtual_bank_single">
               每个货币支持添加1个钱包

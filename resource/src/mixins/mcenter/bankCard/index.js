@@ -75,6 +75,9 @@ export default {
   methods: {
     changePage(value) {
       this.currentPage = value;
+    },
+    goToHistory() {
+      this.$router.push("/mobile/mcenter/historyCard");
     }
   }
 };

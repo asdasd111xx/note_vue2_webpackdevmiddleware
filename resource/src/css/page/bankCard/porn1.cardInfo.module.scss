@@ -4,6 +4,10 @@
 .no-data {
   padding-top: 125px;
 
+  &.history {
+    padding-top: 95px;
+  }
+
   .no-bankcard {
     width: 180px;
     margin: 0 auto 25px;
@@ -19,7 +23,7 @@
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
-  background-color: #f8f8f7;
+  background-color: #F8F8F7;
   padding-top: 5px;
 }
 

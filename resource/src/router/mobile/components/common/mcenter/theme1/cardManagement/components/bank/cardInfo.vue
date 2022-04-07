@@ -49,7 +49,9 @@
       <!-- 添加卡片按鈕區塊 -->
       <template>
         <div
-          v-if="isRevice && bank_card.length < userLevelObj.bank_max"
+          v-if="
+            isRevice && isCommon && bank_card.length < userLevelObj.bank_max
+          "
           :class="$style['add-wrap']"
         >
           <div
