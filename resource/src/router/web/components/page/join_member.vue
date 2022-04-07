@@ -759,8 +759,9 @@
                   name="mobilettl"
                   placeholder="请输入验证码"
                   type="tel"
-                  maxlength="11"
+                  maxlength="6"
                   :class="$style['join-input']"
+                  @input="verification('phonettl')"
                 />
               </div>
               <span
@@ -1880,12 +1881,6 @@ export default {
                 "S_FORM_PHONE_ERROR",
                 "请输入7-15码，仅允许输入数字"
               );
-              return;
-            }
-          }
-          if (key === "phonettl") {
-            if (this.allValue[key].length < 6) {
-              this.allTip[key] = "验证码错误";
               return;
             }
           }
