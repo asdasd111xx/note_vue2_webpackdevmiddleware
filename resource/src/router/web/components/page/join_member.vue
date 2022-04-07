@@ -2047,8 +2047,14 @@ export default {
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/PhoneRegister`,
           params: {
             lang: "zh-cn",
-            phone: this.allValue["phone"],
-            username: this.allValue["phone"],
+            phone:
+              this.countryCode === ""
+                ? `86-${this.allValue["phone"]}`
+                : this.allValue["phone"],
+            username:
+              this.countryCode === ""
+                ? `86-${this.allValue["phone"]}`
+                : this.allValue["phone"],
             password: this.allValue["password"],
             confirmPassword: this.allValue["confirm_password"],
             keyring: this.allValue["phonettl"],
@@ -2403,7 +2409,10 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
         params: {
-          phone: `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+          phone:
+            this.countryCode === ""
+              ? `86-${this.allValue.phone}`
+              : `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
         }
       }).then(res => {
         if (res.status !== "000") {
