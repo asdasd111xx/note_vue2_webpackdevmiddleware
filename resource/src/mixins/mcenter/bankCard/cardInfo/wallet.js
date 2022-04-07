@@ -207,7 +207,7 @@ export default {
               key: "editStatus",
               value: false
             });
-            this.setPageStatus(1, "walletCardInfo", true);
+            this.setPageStatus("walletCardInfo", true);
           });
         })
         .catch(error => {
