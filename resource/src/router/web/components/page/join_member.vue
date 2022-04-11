@@ -2036,26 +2036,34 @@ export default {
         // console.log("it's mobilejoin");
         // console.log(this.allValue);
         // console.log(Object.keys(this.allValue));
-
+        const params = {
+          lang: "zh-cn",
+          aid:
+            this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
+          phone:
+            this.countryCode === ""
+              ? `86-${this.allValue["phone"]}`
+              : this.allValue["phone"],
+          username:
+            this.countryCode === ""
+              ? `86-${this.allValue["phone"]}`
+              : this.allValue["phone"],
+          password: this.allValue["password"],
+          confirmPassword: this.allValue["confirm_password"],
+          keyring: this.allValue["phonettl"],
+          captchaText: this.allValue.captcha_text,
+          smsSpeedyRegister: this.domainConfig.sms_speedy_register
+        };
+        if (Number(localStorage.getItem("x-channelid"))) {
+          params["register_channel"] = Number(
+            localStorage.getItem("x-channelid")
+          );
+        }
         goLangApiRequest({
           method: "post",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/PhoneRegister`,
           params: {
-            lang: "zh-cn",
-            phone:
-              this.countryCode === ""
-                ? `86-${this.allValue["phone"]}`
-                : this.allValue["phone"],
-            username:
-              this.countryCode === ""
-                ? `86-${this.allValue["phone"]}`
-                : this.allValue["phone"],
-            password: this.allValue["password"],
-            confirmPassword: this.allValue["confirm_password"],
-            keyring: this.allValue["phonettl"],
-            captchaText: this.allValue.captcha_text,
-            smsSpeedyRegister: this.domainConfig.sms_speedy_register,
-            registerChannel: localStorage.getItem("x-channelid") || 0
+            ...params
           }
         }).then(res => {
           setTimeout(() => {
