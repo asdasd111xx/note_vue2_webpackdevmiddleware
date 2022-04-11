@@ -260,6 +260,7 @@ export default {
           method: "put",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Phone/Verify/Login`,
           params: {
+            aid: getCookie("aid") || localStorage.getItem("aid") || "",
             phone: `86-${this.phone}`,
             keyring:
               this.mobileLoginTypeSwitch === 1
