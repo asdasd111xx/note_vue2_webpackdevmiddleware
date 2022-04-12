@@ -1156,7 +1156,7 @@ export default {
 
               return;
 
-            case "PV":
+            case "PV": //????什麼情況
               this.$router.push({
                 name: "videoList",
                 query: { source: "sp" }

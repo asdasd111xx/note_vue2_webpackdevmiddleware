@@ -3,6 +3,7 @@ let cdnHost = "";
 let h;
 // nignx F5 DC x-cdn header
 function getCDNHost() {
+  //
   fetch(`/conf/domain`)
     .then(function(response) {
       console.log(response);

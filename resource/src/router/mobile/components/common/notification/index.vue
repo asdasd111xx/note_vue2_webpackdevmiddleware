@@ -1,3 +1,11 @@
+<script>
+//臨時驗證碼(上方彈窗)
+//main.js line:109 的script.setAttribute("src", "/api/v1/ws/front_file"); 建立ws連線
+//1.ws改變noticeData
+//2.watch noticeData 根據noticeData的event 去改變noticeQueue
+//3.noticeQueue的showToast去判斷要秀畫面中間吐司訊息(setGlobalMessage(會由message2接手)）或是上方彈窗(本標籤的內容)
+//v-html="getText()" 相當於把getText回傳值綁定到標籤上，有watch特性
+</script>
 <template>
   <transition name="fade">
     <div
@@ -123,7 +131,17 @@ export default {
       }
 
       if (this.noticeData && this.noticeData.length > 0) {
-        let _noticeData = this.noticeData.slice();
+        console.log(this.noticeData);
+        //[{…}, __ob__: Observer]原本的????為什麼本來console跟看不到東西
+        // length: 0
+        // __ob__: Observer {value: Array(0), dep: Dep, vmCount: 0}
+        // [[Prototype]]: Array
+        let _noticeData = this.noticeData.slice(); //淺拷貝
+        console.log(_noticeData);
+        //[{…}].slice過後的
+        // 0: {…}
+        // length: 1
+        // [[Prototype]]: Array(0)
         let temp = _noticeData[this.noticeData.length - 1];
         if (temp.event === "trade_bind_wallet") {
           return;

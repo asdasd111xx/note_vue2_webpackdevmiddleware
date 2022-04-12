@@ -1,3 +1,6 @@
+<script>
+//timeout
+</script>
 <template>
   <div class="no-service">
     <div>
@@ -17,9 +20,9 @@
 </template>
 
 <script>
-import * as axios from 'axios';
-import member from '@/api/member';
-import store from '@/store';
+import * as axios from "axios";
+import member from "@/api/member";
+import store from "@/store";
 
 export default {
   beforeRouteEnter(to, from, next) {
@@ -27,26 +30,30 @@ export default {
       timeout: 10000,
       success: () => {
         // 測試模式
-        if (to.params.mode && to.params.mode === 'test') {
-          axios.all([(async () => {
-            await store.dispatch('actionMemInit');
-            next();
-          })()]);
+        if (to.params.mode && to.params.mode === "test") {
+          axios.all([
+            (async () => {
+              await store.dispatch("actionMemInit");
+              next();
+            })()
+          ]);
           next();
         } else {
-          next({ path: '/' });
+          next({ path: "/" });
         }
       },
-      fail: (response) => {
-        if (typeof response === 'string') {
-          axios.all([(async () => {
-            await store.dispatch('actionMemInit');
-            next();
-          })()]);
+      fail: response => {
+        if (typeof response === "string") {
+          axios.all([
+            (async () => {
+              await store.dispatch("actionMemInit");
+              next();
+            })()
+          ]);
           console.log(response);
           next();
         } else {
-          next({ path: '/' });
+          next({ path: "/" });
         }
       }
     });

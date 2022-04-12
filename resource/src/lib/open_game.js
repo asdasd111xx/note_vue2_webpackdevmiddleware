@@ -1,3 +1,19 @@
+//首頁的福利，遊戲，泡泡的體育，都會用到
+//????什麼情況   let isWebview = getCookie("platform") === "H";
+
+//打開方式
+//內嵌 1.gameType===event  1.泡泡直播間開遊戲
+//內嵌 2.gameType!==event  直接router.push( `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`);
+//外開 newWindow = window.open("", "_blank", option);
+
+//jdb電子-幸運龍為例
+//<game-item> 按遊戲圖標觸發 openGame({vendor: 'jdb', kind: 3, code: '39001', gameName: '幸运龙'})
+//會先經過內嵌檢查 embedGame = {alias: "JDB电子", category: "slots", kind: 3, vendor: "jdb", vendor_abridge: "JDB"}
+//(line:116) return game.gameLink( 取得遊戲連結 -> localStorage.setItem("open-game-link", ret.url + query);
+//line:213  router.push(`/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`);
+//進入後再開啟本專案的iframe <iframe :src=localStorage.getItem("iframe-third-url");> （resource/src/router/game/components/index.vue）
+//拿localStorage.getItem("open-game-link") ->location.replace('url')
+
 import axios from "axios";
 import game from "@/api/game";
 import { getCookie } from "@/lib/cookie";
@@ -21,6 +37,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   console.log("[OPEN GAME]", params);
 
   const { vendor, kind, code, gameType, gameName, getGames } = params;
+
   // IM電競 在 IE 瀏覽器最小寬度要 1280
   // if (params.kind === 1 && params.vendor === "tgp") {
   //   width = 1280;
@@ -49,7 +66,7 @@ export default (params, success = () => {}, fail = () => {}) => {
   let embedGame = getEmbedGameVendor(vendor, kind, code);
 
   if (embedGame) {
-    gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
+    gameTitle = embedGame.alias || vendor.toUpperCase();
   }
 
   if (!embedGame && !isWebview && gameType !== "event") {
@@ -162,6 +179,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
           setTimeout(() => {
             let isWebview = getCookie("platform") === "H";
+
             if (isWebview) {
               router.replace(link);
             } else {
@@ -183,7 +201,8 @@ export default (params, success = () => {}, fail = () => {}) => {
               }
             }
 
-            success(response);
+            success(response); //以jdb為例，若玩家直接輸入網址進入common/iframe 會拿不到localStorage.getItem("iframe-third-url");
+            //那就會在common/iframe 呼叫open_game.js 在successFun直接 this.src = localStorage.getItem("iframe-third-url");
 
             if (
               embedGame &&

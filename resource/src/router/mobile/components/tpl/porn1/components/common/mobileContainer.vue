@@ -1,3 +1,6 @@
+<script>
+//mobileContainer:共用元件 本身放app-tips, header,slot, footer引用他的人會在slot裡面放東西
+</script>
 <template>
   <div
     id="mobile-container"

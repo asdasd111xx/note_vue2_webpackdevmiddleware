@@ -1,0 +1,2 @@
+Vue.loadScript(`//g.alicdn.com/sd/ncpc/nc.js?t=${Date.now()}`);
+https://www.modb.pro/db/137305

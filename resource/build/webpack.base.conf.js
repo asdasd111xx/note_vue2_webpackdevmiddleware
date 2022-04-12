@@ -15,12 +15,13 @@ const cssLoader = {
   }
 };
 
-const cssModulesLoader = JSON.parse(JSON.stringify(cssLoader));
+const cssModulesLoader = JSON.parse(JSON.stringify(cssLoader)); // 深拷贝console.log(cssLoader===JSON.parse(JSON.stringify(cssLoader))) #false
 cssModulesLoader.options.modules = {
   localIdentName: "[local]__[hash:base64:5]"
 };
 
 const postcssLoader = {
+  //use:[css-loader,postcssLoader]先用postcssLoader對css做兼容性處理，在透過css-loader添加到main.js (透過autoprefixer 指定browsers["last 2 versions"] 指定為最近的兩個版本)
   loader: "postcss-loader",
   options: {
     plugins: () => [require("autoprefixer")({ browsers: ["last 2 versions"] })]
@@ -52,7 +53,8 @@ const enableMiniCssExtract =
 if (enableMiniCssExtract) {
   plugins.push(
     new MiniCssExtractPlugin({
-      filename: utils.assetsPath("css/[name].[contenthash].css")
+      //1.css-loader將css檔整合到js 2.MiniCssExtractPlugin在把js中的css轉為獨立的css
+      filename: utils.assetsPath("css/[name].[contenthash].css") //會輸出到localhost:8000/static/css/[name].[contenthash].css
     })
   );
 }
@@ -63,19 +65,20 @@ const mainCssLoader = enableMiniCssExtract
 
 module.exports = {
   entry: {
+    //指定chunk的名稱
     app:
       process.env.NODE_ENV === "development"
-        ? ["./src/main.js"]
+        ? ["./src/a.js"] //HMR加入"webpack-hot-middleware/client"
         : ["./src/cdn-entry-index.js"]
   },
   output: {
-    path: config.build.assetsRoot,
-    filename: "[name].js",
-    chunkFilename: "[id].[name].js",
+    path: config.build.assetsRoot, //儲存你所有輸出檔案的本地檔案目錄。（絕對路徑）
+    filename: "[name].js", //打包後的名稱([name] (對應到entry的key(app)) )
+    chunkFilename: "[id].[name].js", //分開打包
     publicPath:
       process.env.NODE_ENV === "production"
-        ? config.build.assetsPublicPath
-        : config.dev.assetsPublicPath
+        ? config.build.assetsPublicPath // `${process.env.CDN_HOST}/`
+        : config.dev.assetsPublicPath //"/"
   },
   resolve: {
     extensions: [".js", ".vue", ".json"],
@@ -125,7 +128,7 @@ module.exports = {
           // this matches `<style module>`
           {
             resourceQuery: /module/,
-            use: [mainCssLoader, cssModulesLoader, postcssLoader]
+            use: [mainCssLoader, cssModulesLoader, postcssLoader] //use的引入順序是從最後一個開始
           },
           // this matches plain `<style>` or `<style scoped>`
           {

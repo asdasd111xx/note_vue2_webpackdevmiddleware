@@ -2,6 +2,7 @@
 //localStorage.setItem("service-app-bundleID",
 //我的｜客服-> 立即收藏｜下載客服->連iframe到 www/static/tpl/install/index.html
 //index.html getItem("service-app-bundleID"  發送/xbb/App/Download請求取得桌面客服的連結並下載
+//bundleID對應到vipsign的綁定ID
 </script>
 <template>
   <div :class="$style['container']">
@@ -272,6 +273,12 @@ export default {
             if (this.isDownloadPub) return;
             this.isDownloadPub = true;
             window.location.href = "/pub.mobileprovision";
+            // 開新視窗進行下載動作 (如 <a target='_blank'> / window.open(''))
+            // 優點：運氣好時，檔案會直接開在 Browser 視窗中上。
+            // 缺點：有時後檔案下載了，但是視窗會殘留！
+            // 在本頁直接下載 (如 window.location.href / <a> /window.open('','_self')
+            // 優點：運氣好時，檔案會直接下載。
+            // 缺點：若遇到檔案會直接在 User 的瀏覽器直接開啟的狀況，有可能會讓 User 等到檔案下載完才會開啟，例如有些 PDF 檔非常大，下載的這段時間 Browser 會卡死不能動。
             window.removeEventListener("focus", focusHandler);
           };
 

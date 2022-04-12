@@ -1,4 +1,8 @@
 <template>
+  <!-- <div>
+    <div class="go" @click="go">123</div>
+    <router-view />
+  </div> -->
   <router-view />
 </template>
 
@@ -50,7 +54,8 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus",
-      videoBounsPageStatus: "getVideoBounsPageStatus"
+      videoBounsPageStatus: "getVideoBounsPageStatus",
+      getAll: "getAll"
     }),
     isDebug() {
       return (
@@ -109,6 +114,22 @@ export default {
     document.removeEventListener("pageshow", () => {}, false);
   },
   created() {
+    setTimeout(() => {
+      console.log(
+        "%c [this.state]:",
+        "background: #222; color: yellow; font-size:14px",
+        {
+          ...this.getAll
+        }
+      );
+    }, 3000);
+    console.log(
+      "%c [process.env]:",
+      "background: #222; color: yellow; font-size:14px",
+      {
+        ...process.env
+      }
+    );
     if (
       this.$cookie.get("IS_BB_APP") !== null &&
       this.$cookie.get("IS_BB_APP") === "Y"
@@ -155,6 +176,18 @@ export default {
     window.YABO_SOCKET_RECONNECT = this.reconnectYaboWS;
   },
   methods: {
+    go() {
+      const a = document.createElement("a");
+      // a.href = "prefs:root";
+      a.href = "https://www.google.com";
+      a.click();
+    },
+    time() {
+      setTimeout(() => {
+        console.log("time");
+        return "return";
+      }, 1000);
+    },
     ...mapActions(["actionSetWebview"]),
     /* 推播中心 websocket */
     connectNotifyWS() {
@@ -635,5 +668,13 @@ export default {
 body,
 html {
   height: 100%;
+}
+.go {
+  width: 30px;
+  height: 30px;
+  background-color: brown;
+  z-index: 500;
+  position: fixed;
+  top: 50px;
 }
 </style>

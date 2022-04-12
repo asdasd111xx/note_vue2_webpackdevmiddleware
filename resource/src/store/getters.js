@@ -1,4 +1,5 @@
 export default {
+  getAll: state => state,
   getVersion: state => state.version,
   // 判斷極速版、pwa、webclip
   getIsPwa: state => state.isPwa,

@@ -1,3 +1,6 @@
+<script>
+//點立即收藏->進入客服下載頁->免費安裝->安裝描述檔 ->透過桌面應用(PWA????)進入本頁(看一下描述檔的detail 裡面的web clip URL:https://yb01.66boxing.com/mobile/webview)
+</script>
 <template>
   <div :class="$style['content']">
     <div :class="$style['header']">
@@ -186,7 +189,7 @@ export default {
           imgSrc: "/static/image/sg1/webview/ic_service05.png"
         }
       ],
-      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png",
+      yaboIconSrc: "/static/image/common/webview/appicon_yabo.png", //刪????
       service: []
     };
   },

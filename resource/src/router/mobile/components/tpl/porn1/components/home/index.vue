@@ -1,3 +1,6 @@
+<script>
+//30秒call一次actionSetUserBalance（取得餘額）
+</script>
 <template>
   <mobile-container :header-config="headerConfig" :class="$style.container">
     <div slot="content" class="content-wrap">

@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node --max_old_space_size=2048 build/dev-server.js",
+    "abc": "node abc.js",
     "devcss": "DEV_MINI_CSS_EXTRACT=true node --max_old_space_size=2048 build/dev-server.js",
     "start": "yarn dev",
     "build": "node --max_old_space_size=2048 build/build.js",

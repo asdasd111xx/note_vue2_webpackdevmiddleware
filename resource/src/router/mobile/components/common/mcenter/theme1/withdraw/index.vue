@@ -1,3 +1,6 @@
+<script>
+//no use????
+</script>
 <template>
   <div v-if="mobileCheck" :class="[$style['bank-withdraw'], colorClass]">
     <mcenter-header :header-setting="headerSetting" />

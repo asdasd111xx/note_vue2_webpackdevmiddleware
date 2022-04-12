@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="box1">
+    <h1>iframe</h1>
+    <input type="text">
+    <button onclick="send()">send</button>
+    <h1 id="text"></h1>
+
+
+  </div>
+
+  <script>
+
+    //init
+    var text = document.getElementById('text')
+    text.innerText = '原始文字'
+
+    window.addEventListener('message', (e) => { text.innerText = e.data; })//iframe端接收
+
+
+    function send() {//main端傳送
+      input = document.querySelector('input').value
+      parent.postMessage('iframe傳：' + input, 'http://127.0.0.1:5500/')
+      var oReq = new XMLHttpRequest();
+      oReq.open("GET", "http://localhost:3000/a");
+      oReq.send();
+      // ajax({
+      //   url: 'https://www.google.com/',
+      //   method: 'get', dataType: 'html'
+      // })
+    }
+
+  </script>
+  <style>
+    .box1 {
+      width: 100vw;
+      height: 100vh;
+      background-color: green;
+    }
+
+    html {
+      color: white;
+    }
+  </style>
+</body>
+
+</html>

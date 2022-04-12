@@ -59,8 +59,9 @@ export default {
       get() {
         return this.step;
       },
-      set(value) {
-        this.step = value;
+      set(newValue) {
+        //當computed設定set屬性時，運行此computed set會被調用
+        this.step = newValue;
       }
     }
   },

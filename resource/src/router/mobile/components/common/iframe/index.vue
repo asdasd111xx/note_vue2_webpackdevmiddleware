@@ -1,3 +1,11 @@
+<script>
+//一定是內嵌才會進來（if ( embedGame &&!localStorage.getItem("reload-game") &&gameType !== "event")）
+//initiframe() 取得src 放進iframe裡
+//src為/game/lg_sport/1 其實連到內部的 path: 'game/:vendor/:kind/:code?'的檔案（resource/src/router/game/components/index.vue）
+//進入該檔案後再連一層iframe進入遊戲
+
+//headerConfig 控制標題
+</script>
 <template>
   <div
     :class="[
@@ -88,10 +96,11 @@
       </div>
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
-        <!-- <div @click="reload">刷新</div> -->
+        <div @click="reload">刷新</div>
       </div>
     </div>
     <iframe
+      id="iframe"
       :ref="'iframe'"
       :class="[$style['iframe'], $style[$route.params.page]]"
       :src="src"
@@ -102,6 +111,7 @@
       crossorigin
       style="width: 1px !important; min-width: 100%"
     />
+    <!-- @load ->iframe載入後，被觸發（應用在父層） -->
     <page-loading :is-show="isLoading" />
   </div>
 </template>
@@ -216,6 +226,9 @@ export default {
       const query = this.$route.query;
       const origin = this.$route.params.page.toUpperCase();
 
+      let vendor = this.$route.query.vendor;
+      const target = this.memInfo.vendors.find(item => item.vendor === vendor);
+
       this.isFullScreen =
         query.fullscreen === undefined ? false : query.fullscreen === "true";
 
@@ -290,6 +303,16 @@ export default {
     localStorage.removeItem("iframe-third-url");
   },
   methods: {
+    reload() {
+      //reload實現
+      // 1.會cross
+      // document.getElementById("iframe").contentWindow.location.reload();
+
+      //2.會增加歷史紀錄
+      const iframe = document.getElementById("iframe");
+      iframe.src = iframe.src;
+    },
+
     ...mapActions(["actionSetGlobalMessage"]),
     closePop() {
       this.exitCheck = false;
@@ -366,7 +389,7 @@ export default {
 
           goLangApiRequest({
             method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}`
+            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${vendor}/${userId}?123`
           }).then(res => {
             if (res && res.status !== "000") {
               // 維護非即時更新狀態
@@ -594,6 +617,7 @@ export default {
         });
     },
     onListener(e) {
+      // console.log(window.document);//應用在父層
       if (e.data) {
         let data = e.data;
         // console.log(data);

@@ -25,7 +25,7 @@ let webpackConfig = merge(baseWebpackConfig, {
   bail: true,
   devtool: config.build.productionSourceMap ? "#source-map" : false,
   output: {
-    path: config.build.assetsRoot,
+    path: config.build.assetsRoot, //yarn build = node build/build.js (等於是走prod webpack.prod.conf.js有定義過path了)
     filename: utils.assetsPath("[name].[chunkhash].js"),
     chunkFilename: config.build.bundleAnalyzerReport
       ? utils.assetsPath("[id].[name].[chunkhash].js")

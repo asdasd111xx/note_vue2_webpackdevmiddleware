@@ -1,3 +1,9 @@
+<script>
+//影片的src blob:http/localhost:8000/... (google:"blob:http 地址的原理及生成方法")
+//network'm3u8'
+//m3u8格式的視頻是將文件分成一小段一小段的ts文件，播放完一個在播放下一個，由於每次請求的ts文件都很小，所以基本可以做到無延時播放。
+</script>
+
 <template>
   <div
     :class="$style['video-player-wrap']"

@@ -1,3 +1,9 @@
+<script>
+//由此進入resource/src/router/mobile/components/tpl/porn1/components/videoList/components/layout/index.vue
+//getVideoTag 取得影片標籤並往下發展
+//^^^^(pornRequest 帶入siteId:1 ,jwt:(搜尋“getV2Token”帶入configInfo.PORN_CONFIG.ID.SPACE取得的token） , videoSpaceId:9)
+</script>
+
 <template>
   <div :class="$style['video-lobby-container']">
     <div :class="[$style['tag-wrap'], $style[source]]">

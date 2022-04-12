@@ -1,0 +1,24 @@
+https://mark-lin.com/posts/20190921/
+
+這就是 CDN 最一開始要解決的問題 :將資源放到離用戶更近一點的地方
+
+
+1.entry: {
+  app:
+  process.env.NODE_ENV === "development"
+    ? ["./src/main.js"]
+    : ["./src/cdn-entry-index.js"]
+},
+正式環境會getCDNHost()(目的是取得cdn(ex."ya.jingliangjiu.cn")資料夾的jquery、semantic...)
+
+2.在actionsetuserdata() 會type.SETCDNROOT 是for圖片的，很多圖檔會<img src:$getcdn(...)> 在正式站會指向cnd的資料夾
+
+
+
+
+
+
+
+
+ＱＡ: 
+1.哪裏把例如jquery，圖檔存進CDN的????

@@ -16,7 +16,7 @@ body,
   height: 100%;
   width: 100%;
   padding: 0;
-  border: none;
+  border: 3px solid;
   display: block;
   max-width: $mobile_max_width;
   min-width: 0;
@@ -47,10 +47,13 @@ body,
 }
 
 /* clear float */
+//https://www.programfarmer.com/articles/style/css-float-and-flex
+//在因周圍float元素而推高（父層失去高度）的情況  clear:both可讓其 獲得float元素的高度(總結來說)     ////Ｗ3Ｃ解釋(該clear屬性控制浮動元素旁邊的流。該clear屬性指定浮動元素旁邊的元素應該發生什麼。)
+//透過在父層添加偽元素，並clear: both;在父層直接解決(省去為每個被推高的元素作設定)
 .clearfix {
   &:before {
     content: "";
-    display: table;
+    display: table; //預設是 display: inline-block，因此要做更改
   }
 
   &:after {

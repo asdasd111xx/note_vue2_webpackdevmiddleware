@@ -211,7 +211,8 @@ export default {
             let _data = data.data.toUpperCase();
 
             switch (_data) {
-              case "EXCHANGEDIAMOND":
+              case "EXCHANGEDIAMOND": //當接收到EXCHANGEDIAMOND會拿到直播廳網址，存起來
+                localStorage.setItem("live-iframe-event-from", data.from);
                 this.$router.push(`/mobile/mcenter/live/diamond`);
                 return;
               case "DEPOSIT":

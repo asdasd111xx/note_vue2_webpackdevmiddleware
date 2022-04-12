@@ -1,3 +1,11 @@
+<script>
+//影片入口
+//以鴨脖視頻為例
+//首頁開啟遊戲時，game.type===link_to 且 game.vendor===YB 會this.$router.push({name: "videoList", query: { source: "yabo" }});
+//進來之後用source去判斷是哪種影片
+//傳入參數進入 /layout/yabo/videoLobby
+</script>
+
 <template>
   <div>
     <template
@@ -94,7 +102,8 @@ export default {
         };
         break;
 
-      case "smallPig":
+      case "smallPig": //????好像曾經是我們做的，現在不會走進來了 (homeContent game.vendor === PV)
+        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
         this.currentLayout = {
           videoLobby: "smallPigVideoLobby",
           videoMore: "smallPigVideoMore"

@@ -1,3 +1,9 @@
+<script>
+// checkWalletPhoneVerification
+//-----true:會員綁定電子錢包前需手機驗證 為每次(memInfo.config.player_user_virtual_bank_phone===1) ||會員電話未驗證(memInfo.phone.confirm===0)
+//-----false:不用驗證了
+//-----=true 才會進到第二階段
+</script>
 <template>
   <div :class="$style['add-bankcard']">
     <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
@@ -638,7 +644,7 @@ export default {
     goToPhoneCheck() {
       if (this.addBankCardStep === "one" && this.checkWalletPhoneVerification) {
         this.NextStepStatus = false;
-        this.$emit("update:addBankCardStep", "two");
+        this.$emit("update:addBankCardStep", "two"); //更新父層的addBankCardStep 為two
         return;
       }
     },

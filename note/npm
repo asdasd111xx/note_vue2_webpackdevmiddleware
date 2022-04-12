@@ -1,0 +1,1 @@
+npm i webpack -g(安裝在/Users/jason_tsai/.nvm/versions/node/v8.17.0/bin/webpack)(這種情況可引用webpack做為終端機command)

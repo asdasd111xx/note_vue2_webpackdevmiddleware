@@ -22,7 +22,7 @@ export default {
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     後台(mangosteen_front)共用
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  isBackEnd: false,
+  isBackEnd: false, //誰去設定他????
   nowtpl: null,
   curLang: i18n.locale,
   languageIndex: {},

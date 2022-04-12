@@ -23,7 +23,6 @@ export default ({
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
-
   if (method === "post" || method === "put" || method === "delete") {
     obj.data = querystring.stringify(params);
   } else {
@@ -34,7 +33,6 @@ export default ({
   if (!cache) {
     obj.headers["If-Modified-Since"] = "0";
   }
-
   return axios(obj)
     .then(response => {
       if (response.data.result === "ok") {

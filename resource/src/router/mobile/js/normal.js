@@ -83,10 +83,11 @@ export default [
   },
   {
     // 加入會員
-    path: "joinmember",
+    path: "joinmember/:type?",
     name: "joinMember",
     component
   },
+
   {
     // 登入
     path: "login",

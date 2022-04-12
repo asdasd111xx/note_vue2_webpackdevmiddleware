@@ -1,3 +1,6 @@
+<script>
+//這個元件好像沒在用了
+</script>
 <template>
   <div
     :class="`${!select.verification ? 'no-verification' : ''} account-pop-bind`"

@@ -147,6 +147,7 @@
               <template v-else>
                 <template>
                   <img v-lazy="getImg(game)" :alt="game.name" />
+                  <!-- v-lazy懶載入＝src -->
                   <img
                     v-if="
                       ['game_lobby', 'game'].includes(game.type) &&

@@ -1,3 +1,6 @@
+<script>
+//slider每個物件會存兩種尺寸img(後台-應用-前台設置-輪播圖)
+</script>
 <template>
   <swiper
     id="home-slider"

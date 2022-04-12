@@ -1,3 +1,11 @@
+//友盟事件(note/友盟.js)
+//發送post /web_logs
+//將表單資料轉成base64傳送 ("cusp":{"category":"首页","action":"进入","label":"")
+//新增事件：
+//https://mp.umeng.com/
+//創建事件id(eventCode)
+//進去自定義事件(action/category/label)
+//網頁會統計前一天的事件觸發
 export const sendUmeng = (
   eventCode,
   action_value,
@@ -34,6 +42,7 @@ export const sendUmeng = (
     case 52:
       action = "进入";
       break;
+
     default:
       action = "点击";
   }
@@ -123,3 +132,21 @@ export const sendUmeng = (
     ]
   });
 };
+// record 用于发送一条事件日志，其 API 定义如下：
+
+// const {aplus_queue} = window;
+// aplus_queue.push({
+//  action: 'aplus.record',
+//   arguments: [eventCode, eventType, eventParams]
+// });
+// 其中，
+
+// eventCode：事件ID 或 事件编码，字符串类型
+
+// eventType：'CLK'
+
+// eventParams 为本次事件中上报的事件参数。其取值为一个JSON对象（平铺的简单对象，不能多层嵌套）
+
+// 调用 record api 上报参数时，该次赋值仅对该条事件有效
+
+// SDK保留属性：uid, aplus, spm-url, spm-pre, spm-cnt, pvid,dev_id,anony_id,user_id,user_nick, _session_id

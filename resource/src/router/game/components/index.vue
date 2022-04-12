@@ -1,3 +1,9 @@
+<script>
+//內嵌的iframe，透過common/iframe <iframe src=localhost:8787/game/lg_sport/1> 調用他
+//進到這頁後(本身是iframe  jdb電子會getlocalstorage('open-game-link') 去做iframe內的畫面跳轉
+//進到這樣拿到open-game-link，就會直接location.replace
+//如果沒拿到就轉loading圈圈（ kent: this.$route.params 在這裡應該都用不到，都是舊專案的東西）
+</script>
 <template>
   <!-- pc版 mg遊戲嵌iframe -->
   <div>
@@ -78,7 +84,7 @@ export default {
 
     if (localStorage.getItem("open-game-link")) {
       let openGameLink = localStorage.getItem("open-game-link");
-      localStorage.removeItem("open-game-link");
+      // localStorage.removeItem("open-game-link");
       this.isLoading = false;
       location.replace(openGameLink);
       localStorage.removeItem("iframe-third-url");

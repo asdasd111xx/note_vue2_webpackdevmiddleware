@@ -1,0 +1,3 @@
+連到推廣碼網址/a/:code domain/a/33069581 
+按去逛逛 herf:domain?code=33069581
+進到home URLSearchParams 拿到code並localStorage.setItem("x-code", code);

@@ -6,7 +6,7 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 币发BIFA 500015
-const domain = "https://yb01.66boxing.com/";
+// const domain = "https://yb01.66boxing.com/";
 // Beta 100003
 // const domain = "https://ybbe1.777vendor.com/";
 // Demo 69
@@ -15,7 +15,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = "https://bf0168q.com/";
 
 // 泡泡 500035
-// const domain = "https://sgtt.66boxing.com/";
+const domain = "https://sgtt.66boxing.com/";
 // Beta 100009
 // const domain ="https://sg.66apples.com";
 // Demo 81
@@ -46,9 +46,9 @@ module.exports = {
   build: {
     env: require("./prod.env"),
     index: path.resolve(__dirname, `../../${outputDirName}/index.html`),
-    assetsRootBase: path.resolve(__dirname, "../../www"),
+    assetsRootBase: path.resolve(__dirname, "../../www"), //如果直接 yarn build 會打包在這個目錄底下
     assetsRoot: path.resolve(__dirname, `../../${outputDirName}`),
-    assetsSubDirectory: "static/js",
+    assetsSubDirectory: "static/js", //進一步指定資料夾 (www/static/js)
     assetsPublicPath: `${process.env.CDN_HOST}/`,
     productionSourceMap: false,
     productionGzip: false,
@@ -57,12 +57,23 @@ module.exports = {
   },
   dev: {
     env: require("./dev.env"),
-    port: 8787,
+    port: 8000,
     transportMode: "ws",
     autoOpenBrowser: true,
     assetsSubDirectory: "static",
-    assetsPublicPath: "/",
+    assetsPublicPath: "/", //代表打包后，index.html里面引用资源的的相对地址
     proxyTable: {
+      //發送請求有兩種
+      //1. goland，axios 有完整的域名http://... 就是向該域名發送請求，有後續的展開
+      //
+      //2.1 "/conf/domain" (以bifa為例)(開發環境下)
+      //    1.找到dev.porxyTable.['conf'].target 的domain // https://yb01.66boxing.com/  (是一個nginx伺服器)
+      //    2.連到該domain的nginx伺服器（ 可以看檔案 dev-server.js 裡面搜尋 app.use(proxyMiddleware(options.filter || context, options));）
+      //    3.對endpoint '/conf/domain' 回應 {"domain":"500015", "site": "porn1"} （可以看note/幣發nginx文件)
+      //   ps.如果是nginx沒有設的endpoint 就會走本地的路徑 (ex./static 是本地的圖片資料夾)
+      //
+      //2.2 除了dev 會需要用到這個方式 (因為是devsever 會是localhost:8787)
+      //    1.其他情況(舉例bifa測試站)，發送請求為https://yb01.66boxing.com/conf/domain 就不會經過proxytable了(本來就已經連到nginx了)
       "/api": {
         target: domain,
         changeOrigin: true,

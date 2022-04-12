@@ -12,25 +12,6 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
-        <!-- 訪客&&活動開啟文案 -->
-        <div style="margin-top: 40px;">
-          <template v-if="activity.isActivity && activity.totalAmount > 0"
-            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-              访客加入会员
-            </div>
-            <div :class="[$style['visitor-get'], $style[themeTPL]]">
-              {{
-                `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元`
-              }}
-            </div></template
-          >
-          <template v-if="themeTPL === 'sg1'"
-            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-              注册即送 300 钻
-            </div></template
-          >
-        </div>
-
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <!-- <div v-show="errMsg">
@@ -303,12 +284,10 @@
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/common/login/btn_eye_${
-                          isShowPwd ? 'n' : 'd'
-                        }.png`
+                        `/static/image/common/login/btn_eye_${toggleEye}.png`
                       )
                     "
-                    @click="toggleEye('confPwd')"
+                    @click="isShowPwd = !isShowPwd"
                   />
                 </div>
               </template>
@@ -334,12 +313,10 @@
                   <img
                     :src="
                       $getCdnPath(
-                        `/static/image/common/login/btn_eye_${
-                          isShowPwd ? 'n' : 'd'
-                        }.png`
+                        `/static/image/common/login/btn_eye_${toggleEye}.png`
                       )
                     "
-                    @click="toggleEye('confPwd')"
+                    @click="isShowPwd = !isShowPwd"
                   />
                 </div>
               </template>
@@ -682,6 +659,12 @@
       >
         <a>若有会员帐号，<span>去登录＞</span></a>
       </div>
+      <div
+        :class="$style['has-visitor']"
+        @click="$router.push('/mobile/joinPhone')"
+      >
+        手機註冊
+      </div>
       <div :class="$style['version']">
         {{ version }}
       </div>
@@ -907,13 +890,27 @@ export default {
     };
   },
   computed: {
+    toggleEye() {
+      if (this.isShowPwd) {
+        if (document.getElementById("pwd")) {
+          document.getElementById("pwd").type = "text";
+          document.getElementById("confirm_password").type = "text";
+        }
+        return "n";
+      } else {
+        if (document.getElementById("pwd")) {
+          document.getElementById("pwd").type = "password";
+          document.getElementById("confirm_password").type = "password";
+        }
+        return "d";
+      }
+    },
     ...mapGetters({
       isWebview: "getIsWebview",
       webInfo: "getWebInfo",
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      version: "getVersion",
-      activity: "getActivity" //訪客餘額+紅包彩金、活動開關
+      version: "getVersion"
     }),
 
     fieldsData() {
@@ -926,6 +923,16 @@ export default {
         field =>
           this.joinMemInfo[field.key] && this.joinMemInfo[field.key].required
       );
+    },
+    $style() {
+      if (this.theme) {
+        return this.theme;
+      }
+      if (this.siteConfig.JOIN_MEMBER_THEME) {
+        return this[`$style${capitalize(this.siteConfig.JOIN_MEMBER_THEME)}`];
+      }
+
+      return this.$styleDefault;
     },
     isSlideAble() {
       return this.registerData
@@ -1156,9 +1163,11 @@ export default {
         if (
           res &&
           res.data &&
+          res.data.data &&
           res.data.data.case_data &&
           res.data.data.case_data["LINK_H5_STREAMER_SERVICE"]
         ) {
+          console.log(1);
           this.beHostUrl =
             res.data.data.case_data["LINK_H5_STREAMER_SERVICE"].data[0].linkTo[
               "zh-cn"
@@ -1182,17 +1191,17 @@ export default {
       }
       this.joinSubmit();
     },
-    toggleEye() {
-      if (this.isShowPwd) {
-        document.getElementById("pwd").type = "password";
-        document.getElementById("confirm_password").type = "password";
-      } else {
-        document.getElementById("pwd").type = "text";
-        document.getElementById("confirm_password").type = "text";
-      }
+    // toggleEye() {
+    //   if (this.isShowPwd) {
+    //     document.getElementById("pwd").type = "password";
+    //     document.getElementById("confirm_password").type = "password";
+    //   } else {
+    //     document.getElementById("pwd").type = "text";
+    //     document.getElementById("confirm_password").type = "text";
+    //   }
 
-      this.isShowPwd = !this.isShowPwd;
-    },
+    //   this.isShowPwd = !this.isShowPwd;
+    // },
     getCaptcha() {
       if (
         this.isGetCaptcha ||
@@ -1246,6 +1255,7 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
+      console.log(data);
 
       //欄位為空不顯示提示訊息
       this.allTip[key] = "";
@@ -1620,7 +1630,7 @@ export default {
 
       goLangApiRequest({
         method: "put",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Account/register`, //比對帳號，密碼...
         headers: {
           Vendor: this.memInfo.user.domain
         },
@@ -1904,8 +1914,7 @@ export default {
         if (res.status !== "000") {
           this.phoneSubmitFail = true;
           this.phoneSubmitFailMsg =
-            // res.msg + "(" + res.code + ")" || "phone error1";
-            res.msg || "phone error1";
+            res.msg + "(" + res.code + ")" || "phone error1";
         } else {
           //取得驗證碼倒數秒數
           this.getPhoneTTL();
@@ -1945,8 +1954,7 @@ export default {
         if (res.status !== "000") {
           this.mailSubmitFail = true;
           this.mailSubmitFailMsg =
-            // res.msg + "(" + res.code + ")" || "mail error1";
-            res.msg || "mail error1";
+            res.msg + "(" + res.code + ")" || "mail error1";
         } else {
           //取得mail驗證碼倒數秒數
           this.getMailTTL();

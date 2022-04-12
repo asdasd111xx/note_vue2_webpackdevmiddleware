@@ -275,6 +275,7 @@ export default {
     locker() {
       this.countdownSec = this.ttl;
       if (!this.domainConfig || !this.domainConfig.auto_keyring) {
+        //auto_keyring 臨時驗證碼打開為true
         this.actionSetGlobalMessage({
           msg: this.$text("S_SEND_CHECK_CODE_VALID_TIME_10")
         });

@@ -1,3 +1,8 @@
+<script>
+//點擊casino 列表的其中一個遊戲
+//openGame({ vendor, kind, code, gameName: this.gameInfo.name }) 傳入vendor廠商(jdb) kind類型(3為電子) code遊戲代碼 gameName(遊戲名稱(幸运龙))
+</script>
+
 <template>
   <div
     :class="

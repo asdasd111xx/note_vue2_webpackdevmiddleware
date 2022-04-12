@@ -1,3 +1,4 @@
+//cid放在header裡面傳（network要看header）
 import axios from "axios";
 import { getCookie } from "@/lib/cookie";
 import store from "@/store";

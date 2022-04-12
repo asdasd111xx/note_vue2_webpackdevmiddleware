@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- <iframe src="./iframe.html" frameborder="0" id="iframe"></iframe> -->
+  <iframe src="http://localhost:3000" frameborder="0" id="iframe"></iframe>
+  <div class="box">
+    <h1>main</h1>
+    <input type="text">
+    <button onclick="send()">send</button>
+    <h1 id="text"></h1>
+  </div>
+
+
+  <script>
+    //init
+    var text = document.getElementById('text')
+    text.innerText = '原始文字'
+    var iframe = document.getElementById('iframe').contentWindow
+    var iframe2 = document.getElementById('iframe')
+
+    window.addEventListener('message', (e) => {
+      text.innerText = e.data;
+      console.log(e);
+    })//main端接收
+
+
+    function send() {//main端傳送
+      input = document.querySelector('input').value
+      iframe.postMessage('main傳：' + input, 'http://localhost:3000')//iframe.postMessage('__',[網址])
+    }
+
+  </script>
+
+  <style>
+    body {
+      display: flex;
+    }
+
+    iframe {
+      width: 50vw;
+      height: 50vh;
+    }
+
+    .box {
+      width: 50vw;
+      height: 50vh;
+      background-color: brown
+    }
+
+    html {
+      color: white;
+
+    }
+  </style>
+</body>
+
+</html>

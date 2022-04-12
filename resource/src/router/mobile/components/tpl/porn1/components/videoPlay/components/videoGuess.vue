@@ -1,3 +1,9 @@
+<script>
+//api拿到videolist之後 拿到裡面的img = xxx.aes(一種加密檔案)
+//經過getEncryptImage 複雜的解密得到data:base64xxx 檔案 (圖片檔案格式，可離線瀏覽)
+//放到<img>
+</script>
+
 <template>
   <div :class="$style['video-guess-wrap']">
     <div

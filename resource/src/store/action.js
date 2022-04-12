@@ -748,7 +748,8 @@ export const actionSetUserdata = (
       commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
     });
   }
-  //判斷uuid
+  //判斷uuid //依據產生的方式不同，產生的字串有五種版本（v4為完全的随机数。这个牵扯到概率学的问题了，理论上这种方式生成2.71万亿个UUID产生重复的概率只有50%。）
+  //本專案guestid是後台給的會改變，uuid則不會變(除非清local)
   let uuidAccount = "";
   let getUuidAccountCookie = localStorage.getItem("uuidAccount");
   if (getUuidAccountCookie) {
@@ -842,9 +843,10 @@ export const actionSetUserdata = (
           siteConfigOfficial[`site_${state.webDomain.domain}`] ||
           siteConfigOfficial.preset;
       }
+      console.log(configInfo);
 
       // 設置正式環境cdn圖片路徑
-      let cdnRoot = "";
+      let cdnRoot = ""; //正式站會根據/player 這支ＡＰＩ的responces headers["x-cdn-yb"](bifa就是CDN_HEADER: "x-cdn-yb")去commit(types.SETCDNROOT, cdnRoot);
       if (headers[configInfo.CDN_HEADER]) {
         cdnRoot = `https://${headers[configInfo.CDN_HEADER].split(",")[0]}`;
       }
@@ -1362,6 +1364,10 @@ export const actionGetMobileInfo = ({ commit, state, dispatch }, datatpl) => {
   }
   document.title = configInfo.SITE_NAME;
   let manifest = document.createElement("link");
+
+  // Web App Manifest就是一個json文件，當browser載入文件後，可以幫助我們安裝Web到手機的螢幕上，在網頁中會感覺和外觀就像一般原生APP一樣，我們可以像打開任何手機APP一樣打開它。
+  // 為什麼我們要這樣做呢？
+  // 主要的原因還是因為用戶在手機上使用我們的網頁時，必須在瀏覽器
   manifest.rel = "manifest";
   manifest.href = `/static/tpl/analytics/${state.webDomain.site}/manifest.json`;
   manifest.setAttribute("data-name", "manifest");
@@ -1471,6 +1477,12 @@ export const actionSetＭcenterBindMessage = ({ commit }, data) => {
 };
 
 // 設定推廣連結
+
+//1.先找到siteConfig的預設值 ROUTER_TPL、MOBILE_WEB_TPL、VERSION: SITE_NAME: BBOS_DOMIAN: YABO_API_DOMAIN:YABO_GOLANG_API_DOMAIN: ACTIVES_BOUNS_WEBSOCKET: PORN_CONFIG: 等等等
+//2.接收呼叫本函式的參數，reqHeaders["cid"]
+//3.把reqHeaders、clinetType為落地頁，放進'Hostnames/V2'ＡＰＩ，取得domain網址
+//4.把reqHeaders、clinetType為會員推廣頁，放進'Player/Promotion'ＡＰＩ，取得取得推廣code(35609638)推廣連結https://ybqa6.777vendor.com/a/35609638 並且SET_PROMOTION_LINK設定推廣連結
+//5.在3、4完成後SET_AGENTLINK 將domain網址、推廣code放入
 export const actionSetAgentLink = ({ state, commit }, data) => {
   let configInfo = {};
   if (state.webDomain) {
@@ -1498,7 +1510,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
       }
     }).then(res => {
       if (res && res.data) {
-        return resolve(res.data[0]);
+        return resolve(res.data[0]); //該promise 執行成功 回傳domain網址
       } else {
         return resolve("");
       }
@@ -1528,6 +1540,7 @@ export const actionSetAgentLink = ({ state, commit }, data) => {
   });
 
   Promise.all([domain, agentCode]).then(([domain, agentCode]) => {
+    //Promise.all -> 多個 Promise 行為同時執行，全部完成後統一回傳。
     commit(types.SET_AGENTLINK, { domain, agentCode });
   });
 };
@@ -1991,6 +2004,13 @@ export const actionVerificationFormData = (
 };
 
 export const actionSetSystemDomain = ({ commit, state }, data) => {
+  //影響兩個狀態
+  //1.pornDomain( 在pornRequest.js會用它來取得看影片的token (s_jwt))
+  //2.systemDomain(目前看起來沒有用途)
+
+  //1.撈取domain list ct.a.12.03
+  //2.XXX-DOMAIN-URL-V2 || XX-DOMAIN-URL 優先用v2的domain 去 commit(types.SET_PORNDOMAIN, value);
+
   let configInfo;
   const isGetFreeSpace = data && data.isGetFreeSpace;
 
@@ -2003,6 +2023,7 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
   }
 
   if (!["porn1", "sg1"].includes(configInfo.MOBILE_WEB_TPL)) {
+    //ey1就return掉
     return;
   }
 

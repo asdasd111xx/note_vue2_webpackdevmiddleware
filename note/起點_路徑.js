@@ -1,0 +1,1 @@
+1. router/mobile/components 外層路由{path: "/",name: "home",} 進來會actionMemInit若是靜態頁面就不會進來

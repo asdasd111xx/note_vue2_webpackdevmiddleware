@@ -76,6 +76,7 @@ export default {
       import(
         /* webpackChunkName: 'joinMemberPorn1' */ "../../tpl/porn1/components/joinMember"
       ),
+
     liveStreamPorn1: () =>
       import(
         /* webpackChunkName: 'liveStreamPorn1' */ "../../tpl/porn1/components/liveStream"

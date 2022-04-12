@@ -211,6 +211,10 @@ export default {
       "actionMemInit"
     ]),
     initPage() {
+      //actionGetExtRedirect 主要拿list的值，提供給第一次對customize發送請求的clineturi
+      //customize回應帶token的src放入iframe中
+      // 觀察network，每次導轉rd1頁面，都會觸發‘jwt-compare’都需要新的src(帶token)，否則回傳token無效，所以init()會call'/xbb/Link/Customize'拿新的src
+
       let clientUri = "";
       let roomId = this.$route.query.roomId;
       if (this.liveMaintain && this.liveMaintain.start) {
@@ -223,6 +227,7 @@ export default {
       }).then(res => {
         if (res && res.result) {
           let isFrom = false;
+
           if (localStorage.getItem("live-iframe-event-from") && !roomId) {
             if (
               this.pageType === "home" &&
@@ -239,6 +244,7 @@ export default {
 
           if (!isFrom) {
             const list = res.result;
+            //array.some(函式) 陣列代進函式中 看有沒有符合該函式且有回傳值的 有一個就return true
             Object.keys(list).some(key => {
               if (key === this.pageType) {
                 this.liveHomeSrc = list["home"];

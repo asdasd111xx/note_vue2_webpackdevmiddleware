@@ -11,7 +11,11 @@
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="no" />
   <meta http-equiv="x-dns-prefetch-control" content="on" />
-  <meta id="referrer" name="referrer" content="always" />
+  <meta id="referrer" name="referrer" content="never" />
+  <!-- document.referrer -->
+  <!-- 比如，你點選A頁面中連結到B頁面的URL地址，當你從瀏覽器進入B頁面時，會向伺服器傳送請求，在這個請求的報頭中會帶上一個referrer，包含了A頁面的URL地址； -->
+  <!-- 為避免盜連影片，會判斷request的header裡面的reffer -->
+  <!-- 可能有瀏覽器會禁用referrer，ˊ這邊加個always ，不然後端判斷不到就沒辦法播影片了 -->
   <!-- <link rel="dns-prefetch" href="https://b1.xf0371.com/" /> -->
   <!-- <link rel="dns-prefetch" href="https://b1.alwm03.cn" /> -->
   <link rel="dns-prefetch" href="https://bbos.bbin-asia.com">
@@ -36,7 +40,7 @@
   </style>
 </head>
 
-<body class="body">
+<body class="body">1
   <div id="app"></div>
   <div id="main-loading">
     <div id="loading-wrap">
@@ -136,7 +140,7 @@
         return response.json();
       })
       .then(function (data) {
-        if (data.site === "porn1" && data.domain === "67") {
+        if (data.site === "porn1" && data.domain === "67") {//67是幣發正式站的domain，500015是測試站
           ymkey = "61833ac7e0f9bb492b4be074";
         } else if (data.site === "sg1" && data.domain === "80") {
           ymkey = "61833b35e0f9bb492b4be284";
@@ -195,6 +199,7 @@
       })
 
   </script>
+
   <!-- End Google Tag Manager -->
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MNTWRH2" height="0" width="0"

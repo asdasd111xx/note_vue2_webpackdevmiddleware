@@ -10,6 +10,8 @@
       @click="headerConfig.onClick"
     >
       <img :src="$getCdnPath(`/static/image/${routerTPL}/common/logo.png`)" />
+      <!-- ${rootUrl}/static/image/${routerTPL}/common/logo.png?v=${process.env.TIMESTAMP} -->
+      <!-- https://ya.jingliangjiu.cn/static/image/porn1/common/logo.png?v=44976302.1 -->
     </div>
 
     <div
@@ -322,6 +324,8 @@ export default {
   created() {
     this.actionSetActivity();
     if (this.loginStatus) this.getRedJackpot();
+
+    // this.go();
   },
   methods: {
     ...mapActions([

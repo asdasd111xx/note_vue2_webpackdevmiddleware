@@ -1,3 +1,7 @@
+<script>
+//充值頁面
+//mobile-container 傳header-config定義行為
+</script>
 <template>
   <mobile-container
     :header-config="headerConfig"

@@ -1,3 +1,6 @@
+<script>
+//錢包明細
+</script>
 <template>
   <div :class="$style['my-wallet-wrap']">
     <div :class="$style['wallet-info-wrap']">

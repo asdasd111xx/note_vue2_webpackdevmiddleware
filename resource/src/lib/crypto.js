@@ -2,6 +2,7 @@ import aesjs from "aes-js";
 import axios from "axios";
 function getImageType(data) {
   if (data.charAt(0) == "/") {
+    //charAt(0)字串的第0位
     return "image/jpeg";
   } else if (data.charAt(0) == "R") {
     return "image/gif";
@@ -34,7 +35,7 @@ export const getEncryptImage = info => {
   return axios({
     url: data.image.includes("?") ? data.image.split("?")[0] : data.image,
     method: "GET",
-    responseType: "blob"
+    responseType: "blob" //拿的是圖片，所以要先指定(network看不到要console出來)
   }).then(response => {
     if (!document.querySelector(`img[img-id="${info.id}"]`)) {
       return info.image;

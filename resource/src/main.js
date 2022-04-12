@@ -39,13 +39,19 @@ import store from "./store";
 import text from "./lib/text";
 import vStyle from "./lib/vStyle";
 
+//這裡是指這份iframe => game/components/index.vue
+//當open_game時會push(`/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}`) 開啟這份檔案components/common/iframe
+//裡面會調用iframe 那麼對iframe的這份main.js檔案來說 parent 就是components/common/iframe這份檔案
+//在iframe傳送{ event: "SELF_INTO", data: { msg: "iframe loaded." } }
 if (window && window.parent) {
   window.parent.postMessage(
     { event: "SELF_INTO", data: { msg: "iframe loaded." } },
     "*"
   );
 }
+console.log(1222);
 window.RESET_LOCAL_SETTING = reload => {
+  //beforeEnter最外層router時，登出時，launch倒數頁時，註冊成功時（舉例getlocalstorge("live-iframe-launch-home（判斷是否為首次進入首頁，是則iframe的src+=&islaunch=true並setlocolstorge））
   // 首頁選單選單
   localStorage.removeItem("default-home-menu-type");
   // 遊戲開啟暫存
@@ -104,10 +110,15 @@ const urlParams = new URLSearchParams(window.location.search);
 const isApp = urlParams.get("isApp") || urlParams.get("app");
 
 if (cid && !isApp) {
+  //載入front_file.js(有複製一份在筆記)
+  //裡面有連ＷＳ 並呼叫notice({event:'',message:{}}) (直接修改state.noticeData)
+  //Q1:為什麼建立兩次連線????
+
   const script = document.createElement("script");
   script.setAttribute("src", "/api/v1/ws/front_file");
   script.setAttribute("data-id", "ws-bc");
   script.setAttribute("data-msg-func", "notice");
+
   document.body.appendChild(script);
   window.notice = data => {
     const date = new Date();
@@ -138,6 +149,7 @@ if (cid && !isApp) {
 //   }, 1500);
 // };
 if (process.env.NODE_ENV === "development") {
+  //dev應該不會有window.SCRIPT_CDN_HOST ????
   console.log("build loadscript:", window.SCRIPT_CDN_HOST);
 }
 const script_cdn_host = window.SCRIPT_CDN_HOST ? window.SCRIPT_CDN_HOST : "/";
