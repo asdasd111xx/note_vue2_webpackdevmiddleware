@@ -1018,7 +1018,10 @@
 
         <div v-else :class="[$style['join-btn-wrap']]">
           <div
-            :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
+            :class="[
+              $style['join-btn'],
+              { [$style.disabled]: submitBtnLock || isLoading }
+            ]"
             @click="joinSubmit()"
           >
             {{ $text("S_REGISTER", "注册") }}
@@ -1270,6 +1273,7 @@ export default {
       },
       isGetCaptcha: false,
       isLoading: false,
+      submitBtnLock: true,
       showRedirectJump: false,
       redirect_url: "",
       placeholderResult: [],
@@ -1281,15 +1285,10 @@ export default {
     currentJoin() {
       switch (this.currentJoin) {
         case "mobilejoin":
-          this.allValue["username"] = "";
-          this.allValue["password"] = "";
-          this.allValue["confirm_password"] = "";
+          this.submitBtnLock = true;
           break;
-
         case "accountjoin":
-          this.allValue["password"] = "";
-          this.allValue["confirm_password"] = "";
-
+          this.submitBtnLock = true;
           break;
         default:
           break;
@@ -1676,13 +1675,47 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
+      //帳號註冊按鈕禁能
+      if (this.currentJoin === "accountjoin") {
+        if (data.isRequired) {
+          if (this.allTip[key] !== "" || this.allValue[key] === "") {
+            this.submitBtnLock = true;
+          } else {
+            this.submitBtnLock = false;
+          }
+        } else {
+          if (this.allTip[key] === "") {
+            this.submitBtnLock = false;
+          }
+        }
+      }
+      //手機註冊按鈕禁能
+      if (this.currentJoin === "mobilejoin") {
+        if (
+          this.allValue["phone"] === "" ||
+          this.allValue["phonettl"] === "" ||
+          this.allValue["password"] === "" ||
+          this.allValue["confirm_password"] === "" ||
+          this.allValue["captcha_text"] === ""
+        ) {
+          this.submitBtnLock = true;
+        } else if (
+          this.allTip["phone"] !== "" ||
+          this.allTip["phonettl"] !== "" ||
+          this.allTip["password"] !== "" ||
+          this.allTip["confirm_password"] !== ""
+        ) {
+          this.submitBtnLock = true;
+        } else {
+          this.submitBtnLock = false;
+        }
+      }
 
       //欄位為空不顯示提示訊息
       this.allTip[key] = "";
       if (!data.show) {
         return;
       }
-
       if (
         key === "gender" &&
         this.joinMemInfo["gender"].isRequired &&
@@ -1951,6 +1984,7 @@ export default {
       }
 
       let hasError = false;
+      /** 
       //帳號註冊按鈕阻擋
       if (this.currentJoin === "accountjoin") {
         Object.keys(this.allTip).forEach(key => {
@@ -1970,7 +2004,7 @@ export default {
             hasError = true;
           }
         });
-      }
+      } */
       if (hasError) {
         this.isLoading = false;
         return false;
@@ -1979,7 +2013,6 @@ export default {
     },
     joinSubmit(captchaInfo) {
       this.isLoading = true;
-
       Object.keys(this.allValue).forEach(item => {
         this.allTip[item] = "";
         if (item === "withdraw_password") {

@@ -748,9 +748,10 @@
   text-align: center;
   color: var(--main_button_text_color1);
 
-  &.disable {
+  &.disabled {
     background: var(--main_button_color2);
     color: var(--main_button_text_color2);
+    opacity: 0.8;
     pointer-events: none;
   }
 }

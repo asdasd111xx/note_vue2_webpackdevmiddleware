@@ -156,12 +156,12 @@ export default {
     key: "phonettl",
     text: "S_CHECK_CODE",
     type: "text",
-    isRequired: false,
+    isRequired: true,
     hasVerify: false,
     show: true,
     minimum: 3,
     maximum: 6,
-    regExp: /^[0-6]+$/,
+    regExp: /^[0-9]+$/,
     errorMsg: "验证码错误"
   },
   birthday: {
