@@ -257,7 +257,11 @@ export default {
     SwiperSlide,
     popup
   },
-  mounted() {}
+  mounted() {
+    this.$Lazyload.$on("loaded", function(el) {
+      el.el.offsetParent.setAttribute("lazy", "loadedok");
+    });
+  }
 };
 </script>
 
@@ -421,7 +425,9 @@ export default {
   background-size: 90% 90%;
   background-position: center;
 }
-
+.wrap[lazy="loadedok"] {
+  background: none;
+}
 .wrap {
   overflow: hidden;
   position: relative;
