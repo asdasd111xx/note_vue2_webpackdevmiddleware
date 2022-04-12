@@ -236,7 +236,11 @@ export default {
     SwiperSlide,
     popup
   },
-  mounted() {}
+  mounted() {
+    this.$Lazyload.$on("loaded", function(el) {
+      el.el.offsetParent.setAttribute("lazy", "loadedok");
+    });
+  }
 };
 </script>
 
@@ -374,7 +378,9 @@ export default {
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
   min-height: 260px;
 }
-
+.wrap[lazy="loadedok"] {
+  background: none;
+}
 .wrap {
   overflow: hidden;
   position: relative;
@@ -388,7 +394,6 @@ export default {
   background-repeat: no-repeat;
   background-size: 90% 90%;
   background-position: center;
-
   // 大廳遊戲預設圖logo樣式
   > img[lazy="error"]:first-child,
   img[lazy="loading"]:first-child {
