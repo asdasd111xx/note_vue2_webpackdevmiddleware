@@ -6,7 +6,7 @@
       :key="`tag-${index}`"
       :class="[
         $style['tag'],
-        { [$style['custom']]: $route.query.source === 'smallPig' },
+        { [$style['custom']]: $route.query.source === 'sp' },
         { [$style['custom-dialog']]: isDialog }
       ]"
       :style="index == 0 ? { margin: '0 0 0 -5px' } : {}"

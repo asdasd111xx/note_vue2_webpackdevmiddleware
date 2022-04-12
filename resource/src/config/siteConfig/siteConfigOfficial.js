@@ -42,7 +42,8 @@ export const site_67 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
-      YB: "9",
+      FREE_SPACE: "18",
+      YV: "9",
       SP: "13",
       GAY: "7",
       LES: "8"
@@ -65,7 +66,8 @@ export const site_69 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
-      YB: "9",
+      FREE_SPACE: "18",
+      YV: "9",
       SP: "13",
       GAY: "7",
       LES: "8"
@@ -89,7 +91,8 @@ export const site_100003 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
-      YB: "9",
+      FREE_SPACE: "18",
+      YV: "9",
       SP: "13",
       GAY: "7",
       LES: "8"
@@ -114,16 +117,6 @@ export const site_41 = {
 /**
  * 亿元 正式站Demo環境
  */
-// cxbb.chesspink.com
-// cxbb.casterchess.com
-// cxbb.chessrunroll.com
-// cxbb.sdkchess.com
-// cxbb.jellychess.com
-// cxbb.mangochess.com
-// cxbb.lemonchess.com
-// cxbb.pomelochess.com
-// cxbb.litchichess.com
-// cxbb.pearchess.com
 export const site_74 = {
   ...preset,
   ROUTER_TPL: "ey1",
@@ -162,7 +155,8 @@ export const site_80 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
-      YB: "9",
+      FREE_SPACE: "18",
+      YV: "9",
       SP: "13",
       GAY: "7",
       LES: "8"
@@ -185,7 +179,8 @@ export const site_81 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
-      YB: "9",
+      FREE_SPACE: "18",
+      YV: "9",
       SP: "13",
       GAY: "7",
       LES: "8"
@@ -210,7 +205,8 @@ export const site_100009 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
-      YB: "9",
+      FREE_SPACE: "18",
+      YV: "9",
       SP: "13",
       GAY: "7",
       LES: "8"
@@ -231,7 +227,7 @@ export const site_92 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
-      YB: "9",
+      YV: "9",
       AV: "17"
     }
   },
@@ -252,7 +248,7 @@ export const site_93 = {
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
-      YB: "9",
+      YV: "9",
       AV: "17"
     }
   }
@@ -268,12 +264,6 @@ export const site_94 = {
   VERSION: getVersion("sp1"),
   SITE_NAME: "51体育",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
-  // PORN_CONFIG: {
-  //   ID: {
-  //     SPACE: "16",
-  //     YB: "17"
-  //   }
-  // }
   CDN_HEADER: "x-cdn-sp51"
 };
 
@@ -288,10 +278,4 @@ export const site_95 = {
   SITE_NAME: "51体育",
   YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2"
-  // PORN_CONFIG: {
-  //   ID: {
-  //     SPACE: "16",
-  //     YB: "17"
-  //   }
-  // }
 };

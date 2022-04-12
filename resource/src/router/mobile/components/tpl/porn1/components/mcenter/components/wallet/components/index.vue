@@ -171,7 +171,7 @@
       </template>
     </balance-tran>
 
-    <template v-if="bcWalletEnableType">
+    <template v-if="bcWalletEnableType && fastPaySwitch">
       <div :class="$style['bc-wrap']">
         <div :class="$style['bc-title']">币希钱包</div>
         <div :class="$style['bc-content']">
@@ -336,7 +336,6 @@ import mixin from "@/mixins/mcenter/swag/swag";
 import maintainBlock from "@/router/mobile/components/common/maintainBlock";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import bcWalletPopup from "./bcWalletPopup";
-import { lib_useLocalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { sendUmeng } from "@/lib/sendUmeng";
 import mobileLinkOpen from "@/lib/mobile_link_open";
@@ -373,7 +372,8 @@ export default {
         bind: false,
         total_balance: "",
         currency_list: []
-      }
+      },
+      fastPaySwitch: false
     };
   },
   computed: {
@@ -383,7 +383,8 @@ export default {
       gameData: "getGameData",
       siteConfig: "getSiteConfig",
       rechargeConfig: "getRechargeConfig",
-      withdrawCheckStatus: "getWithdrawCheckStatus"
+      withdrawCheckStatus: "getWithdrawCheckStatus",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =
@@ -426,15 +427,6 @@ export default {
           imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_howtouse.png`,
           onClick: () => {
             this.$router.push("/mobile/mcenter/help/bird?key=1");
-          }
-        },
-        {
-          key: "goBird",
-          show: true,
-          text: this.$text("S_GO_BIRD", "前往蜂鸟"),
-          imgSrc: `/static/image/common/mcenter/wallet/ic_wallter_bird_go.png`,
-          onClick: () => {
-            this.goBirdUrl();
           }
         }
       ].filter(item => item.show);
@@ -546,7 +538,19 @@ export default {
     this.actionSetUserBalance().then(() => {
       this.getRedJackpot();
     });
-    this.getWalletCurrencyBalanceList();
+
+    this.actionSetDomainConfigV2().then(() => {
+      //迅付存取款開關
+      const deposit = this.domainConfig.deposit.some(
+        item => item.name === "迅付"
+      );
+      const withdraw = this.domainConfig.withdraw.name === "迅付";
+      this.fastPaySwitch = deposit || withdraw;
+
+      if (this.fastPaySwitch) {
+        this.getWalletCurrencyBalanceList();
+      }
+    });
   },
   beforeUnmount() {
     clearInterval(this.updateBalance);
@@ -572,7 +576,8 @@ export default {
       "actionGetRechargeStatus",
       "actionGetMemInfoV3",
       "actionSetUserBalance",
-      "getCustomerServiceUrl"
+      "getCustomerServiceUrl",
+      "actionSetDomainConfigV2"
     ]),
     mobileLinkOpen,
     dialogMessage(msg) {
@@ -623,26 +628,23 @@ export default {
     },
     getRecordList() {
       const params = {
-        start_at: Vue.moment(this.startTime).format(
-          "YYYY-MM-DD 00:00:00-04:00"
-        ),
-        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+        maxResults: 20,
+        firstResult: 0
       };
 
-      // 各遊戲注單統計資料(依投注日期)
-      ajax({
-        method: "get",
-        url: "/api/v1/c/stats/wager-report/by-day-game",
-        params,
-        success: response => {
-          if (response.ret.length === 0) {
-            this.mainListData = [];
-            this.mainNoData = true;
-            return;
-          }
-
-          this.mainListData = response.ret;
+      goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/WagerReport/ByDayGame`,
+        params
+      }).then(res => {
+        if (res && res.data && res.data.ret && res.data.ret.length !== 0) {
+          this.mainListData = res.data.ret;
           this.mainNoData = false;
+        } else {
+          this.mainListData = [];
+          this.mainNoData = true;
         }
       });
     },
@@ -667,33 +669,6 @@ export default {
       return this.memInfo.vendors.find(
         item => item.vendor === vendor && item.kind === kind
       ).alias;
-    },
-    goBirdUrl() {
-      let cid = getCookie("cid");
-      let newWindow = "";
-      newWindow = window.open();
-      this.isLoading = true;
-      let target = "forum_benefits";
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/External/Url?lang=zh-cn&urlName=${target}&needToken=true&externalCode=fengniao`,
-        headers: {
-          cid: cid
-        }
-      }).then(res => {
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 1500);
-        if (res && res.data && res.data.uri) {
-          newWindow.location = res.data.uri + "&cors=embed";
-          return;
-        } else {
-          newWindow.close();
-          this.dialogMessage(res.msg);
-          return;
-        }
-      });
-      return;
     },
     onClickMaintain(value) {
       this.msg = `美东时间：
@@ -780,10 +755,13 @@ export default {
         .then(res => {
           if (res && res.data && res.data.ret) {
             if (res.data.ret.gift_card) {
-              //紅利帳戶api
-              axios.get("/api/v1/c/gift-card").then(response => {
-                if (response.data.result === "ok") {
-                  this.bonus = response.data.total;
+              //紅利帳戶api C02.112
+              goLangApiRequest({
+                method: "get",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`
+              }).then(res => {
+                if (res && res.status === "000") {
+                  this.bonus = res.data.total;
                 }
               });
             }
@@ -807,11 +785,17 @@ export default {
           this.getWalletUserReceiveCode();
           break;
         case "bind":
+          if (this.routerTPL === "porn1") {
+            sendUmeng(71);
+          }
           this.$router.push(
             `/mobile/mcenter/bankcard?redirect=wallet&type=wallet&wallet=bcwallet&swift=BBBTSECN1`
           );
           break;
         case "inter":
+          if (this.routerTPL === "porn1") {
+            sendUmeng(73);
+          }
           lib_newWindowOpen(
             this.getCustomerServiceUrl({
               urlName: "btse_login",
@@ -822,6 +806,9 @@ export default {
           );
           break;
         case "use":
+          if (this.routerTPL === "porn1") {
+            sendUmeng(74);
+          }
           // this.getCustomerServiceUrl({
           //   urlName: "btse_wallet",
           //   needToken: false

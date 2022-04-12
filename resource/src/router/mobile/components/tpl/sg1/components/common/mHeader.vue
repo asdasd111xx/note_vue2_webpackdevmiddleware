@@ -22,7 +22,7 @@
         :src="$getCdnPath(`/static/image/common/btn_back_white.png`)"
       />
       <img
-        v-else-if="source === 'smallPig'"
+        v-else-if="source === 'sp'"
         :src="
           $getCdnPath(
             `/static/image/common/btn_${
@@ -73,7 +73,7 @@
 
     <template v-if="headerConfig.hasSearchBtn">
       <div :class="$style['btn-search-wrap']" @click="goSearch">
-        <div v-if="source === 'smallPig'" :class="$style['sp-search']" />
+        <div v-if="source === 'sp'" :class="$style['sp-search']" />
 
         <div
           v-else-if="source === 'gay' || source === 'les'"
@@ -97,9 +97,9 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage">
+          <div v-show="unreadMsgCount">
             <div :class="$style['information-dot']">
-              <span>{{ UnreadMsgCount }}</span>
+              <span>{{ unreadMsgCount }}</span>
             </div>
           </div>
         </div>
@@ -153,9 +153,9 @@
             :src="$getCdnPath('/static/image/sg1/common/icon_ask_my.png')"
             @click="handleClickAsk"
           />
-          <div v-show="hasUnreadMessage">
+          <div v-show="unreadMsgCount">
             <div :class="$style['information-dot']">
-              <span>{{ UnreadMsgCount }}</span>
+              <span>{{ unreadMsgCount }}</span>
             </div>
           </div>
         </div>
@@ -236,14 +236,6 @@ export default {
       type: Function,
       default: () => {}
     },
-    hasUnreadMessage: {
-      type: Boolean,
-      default: false
-    },
-    unreadMessageCount: {
-      type: Number,
-      default: 0
-    },
     hasAppTips: {
       type: Boolean,
       default: false
@@ -262,13 +254,18 @@ export default {
       membalance: "getMemBalance",
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo",
       activity: "getActivity"
     }),
-    UnreadMsgCount() {
-      if (this.unreadMessageCount >= 100) {
-        return "99+";
+    unreadMsgCount() {
+      if (this.memInfo && this.memInfo.msgCount) {
+        if (this.memInfo.msgCount >= 100) {
+          return "99+";
+        }
+        return +this.memInfo.msgCount;
       }
-      return this.unreadMessageCount;
+
+      return 0;
     },
     mainClass() {
       const style = this.$style;
@@ -278,9 +275,7 @@ export default {
         [style.agent]: this.path[1] === "agcenter",
         [style["is-home"]]: this.$route.name === "home",
         [style[this.source]]: this.source ? this.source : "",
-        [style["search-page"]]: this.headerConfig.isSmallPigSearch
-          ? true
-          : false,
+        [style["search-page"]]: this.headerConfig.isspSearch ? true : false,
         [style["no-border-bottom"]]: this.headerConfig.noBottomBorder,
         clearfix: true
       };
@@ -677,7 +672,7 @@ export default {
   width: calc(100% - 10% - 24px);
   margin: 6px 0 0 24px;
 
-  &.smallPig,
+  &.sp,
   &.gay,
   &.les {
     border-radius: 18px;
@@ -695,13 +690,13 @@ export default {
     font-size: 14px;
     outline: none;
 
-    &.smallPig,
+    &.sp,
     &.gay,
     &.les {
       border-radius: 18px;
     }
 
-    &.smallPig {
+    &.sp {
       background-color: #333;
     }
 
@@ -761,14 +756,14 @@ export default {
   margin: 0 auto;
   text-align: center;
 
-  &.smallPig,
+  &.sp,
   &.gay,
   &.les {
     width: 85px;
     border-radius: 0 18px 18px 0;
   }
 
-  &.smallPig {
+  &.sp {
     background: #1e1e1e;
   }
 

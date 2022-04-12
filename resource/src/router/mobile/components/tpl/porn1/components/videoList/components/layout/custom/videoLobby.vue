@@ -4,7 +4,7 @@
       <span @click="msg = '正在上线 敬请期待'">频道</span>
       <div
         :class="$style['search-block']"
-        @click="$router.push({ path: 'search', query: { source: 'smallPig' } })"
+        @click="$router.push({ path: 'search', query: { source: 'sp' } })"
       >
         <p>请输入关键词找片源</p>
       </div>
@@ -141,7 +141,7 @@ export default {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
     defaultImg() {
-      const isYabo = this.source === "yabo" || this.source === "av";
+      const isYabo = this.source === "yv" || this.source === "av";
       return this.$getCdnPath(
         `/static/image/${this.themeTPL}/default/${
           isYabo ? "bg_video03_d" : "bg_video03_1_d@3x"
@@ -179,8 +179,6 @@ export default {
     }
   },
   created() {
-    setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
-
     this.setHeaderTitle("小猪视频");
     this.setHasSearchBtn(false);
     this.initData();

@@ -21,11 +21,15 @@
       >
         <video-info v-if="info" :video-info="info" />
         <video-tag
-          v-if="!['smallPig', 'gay', 'les'].includes(source)"
+          v-if="!['sp', 'gay', 'les'].includes(source)"
           :tag="info.tag"
           :padding="true"
         />
-        <video-guess :tags="info.tag" @leave="handleLeavePage" />
+        <video-guess
+          :style="{ height: `calc(100vh - ${videoHeight}px)` }"
+          :tags="info.tag"
+          @leave="handleLeavePage"
+        />
       </div>
     </div>
   </mobile-container>
@@ -34,7 +38,6 @@
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
-import querystring from "querystring";
 import videoPlayer from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoPlayer";
 import videoInfo from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoInfo";
 import videoGuess from "@/router/mobile/components/tpl/porn1/components/videoPlay/components/videoGuess";
@@ -53,7 +56,7 @@ export default {
   },
   data() {
     return {
-      source: this.$route.query.source,
+      source: this.$route.query === "yabo" ? "yv" : this.$route.query,
       info: null,
       videoHeight: 220
     };
@@ -62,33 +65,7 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig"
-    }),
-    siteId() {
-      switch (this.source) {
-        case "av":
-        case "yabo":
-          setCookie(
-            "s_id",
-            this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
-          );
-          return 1;
-
-        case "smallPig":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["SP"]);
-          return 2;
-
-        case "gay":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
-          return 3;
-
-        case "les":
-          setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
-          return 4;
-
-        default:
-          break;
-      }
-    }
+    })
   },
   watch: {
     info() {
@@ -114,7 +91,8 @@ export default {
       pornRequest({
         method: "post",
         url: `/video/videoinfo`,
-        data: { videoId: this.$route.params.id, siteId: this.siteId }
+        data: { videoId: this.$route.params.id },
+        getFreeSpace: this.source === "free-yv"
       }).then(res => {
         if (res.status !== 200) {
           return;
@@ -131,14 +109,15 @@ export default {
       if (localStorage.getItem("content_rating") !== "1") {
         this.$router.push("/mobile");
       }
-    } else if (
-      !this.memInfo.config.content_rating ||
-      !this.memInfo.user.content_rating
-    ) {
-      this.$router.push("/mobile");
     }
+    // else if (
+    //   !this.memInfo.config.content_rating ||
+    //   !this.memInfo.user.content_rating
+    // ) {
+    //   this.$router.push("/mobile");
+    // }
 
-    if (this.$route.query.source === "smallPig") {
+    if (this.$route.query.source === "sp") {
       axios({
         method: "post",
         url: "https://api.pv123.app/v1/device/verify",
@@ -199,5 +178,6 @@ div.container {
 .info-wrap {
   height: 400px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

@@ -35,7 +35,7 @@
           :class="[
             $style['title'],
             { [$style['custom']]: isCustom },
-            { [$style['smallPig']]: source === 'smallPig' }
+            { [$style['sp']]: source === 'sp' }
           ]"
         >
           {{ videoInfo.title }}
@@ -51,7 +51,7 @@
           :class="[
             $style['desc'],
             { [$style['custom']]: isCustom },
-            { [$style['smallPig']]: source === 'smallPig' }
+            { [$style['sp']]: source === 'sp' }
           ]"
         >
           <span> {{ videoInfo.desc }}</span>
@@ -108,7 +108,7 @@ export default {
       return [{ key: 0, name: "简介" }];
     },
     isCustom() {
-      return ["smallPig", "gay", "les"].includes(this.source);
+      return ["sp", "gay", "les"].includes(this.source);
     },
     isShowDialog: {
       get() {
@@ -169,7 +169,7 @@ export default {
       line-height: 17px;
     }
 
-    &.smallPig {
+    &.sp {
       color: #fff;
     }
   }
@@ -222,7 +222,7 @@ export default {
       }
     }
 
-    &.smallPig {
+    &.sp {
       background: #414141;
       color: #bfbfbf;
     }

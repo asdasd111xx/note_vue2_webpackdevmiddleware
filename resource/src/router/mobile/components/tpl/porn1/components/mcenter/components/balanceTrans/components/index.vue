@@ -996,10 +996,13 @@ export default {
         .then(res => {
           if (res && res.data && res.data.ret) {
             if (res.data.ret.gift_card) {
-              //紅利帳戶api
-              axios.get("/api/v1/c/gift-card").then(response => {
-                if (response.data.result === "ok") {
-                  this.bonus = response.data.total;
+              // 紅利帳戶api C02.112
+              goLangApiRequest({
+                method: "get",
+                url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`
+              }).then(res => {
+                if (res && res.status === "000") {
+                  this.bonus = res.data.total;
                 }
               });
             }

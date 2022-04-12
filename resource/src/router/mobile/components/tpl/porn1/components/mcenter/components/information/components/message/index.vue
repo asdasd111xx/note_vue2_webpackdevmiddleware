@@ -223,12 +223,13 @@
 </template>
 
 <script>
+import { API_MCENTER_MESSAGES_CONTENT } from "@/config/api";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import find from "lodash/find";
-import mcenter from "@/api/mcenter";
-import { API_MCENTER_MESSAGES_CONTENT } from "@/config/api";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import mixin from "@/mixins/mcenter/message/message";
+
 export default {
   mixins: [mixin],
   data() {
@@ -300,27 +301,24 @@ export default {
       //   }
       // });
     },
-    getContent({ id, read }, isSetRead) {
+    getContent({ id, read }) {
       if (read) {
         return;
       }
-      return mcenter.messageContent(
-        {
-          success: ({ result }) => {
-            if (result !== "ok") {
-              return;
+
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Message/${id}`
+      }).then(res => {
+        if (res.data && res.status === "000") {
+          this.messageData = this.messageData.map(message => {
+            if (message.id === id) {
+              return { ...message, read: true };
             }
-            // if (!isSetRead) this.actionSetMcenterMsgCount();
-            this.messageData = this.messageData.map(message => {
-              if (message.id === id) {
-                return { ...message, read: true };
-              }
-              return message;
-            });
-          }
-        },
-        id
-      );
+            return message;
+          });
+        }
+      });
     },
     onShowFunction(value) {
       this.showFunctionButton = value;

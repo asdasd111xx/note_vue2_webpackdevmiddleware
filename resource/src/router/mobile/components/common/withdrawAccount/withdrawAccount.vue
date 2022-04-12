@@ -589,7 +589,8 @@ export default {
         .then(res => {
           this.isSendForm = false;
           if (res && res.data && res.data.result !== "ok") {
-            this.tipMsg = res.data.msg;
+            this.tipMsg =
+              Object.keys(res.data.errors).length === 0 ? res.data.msg : "";
             Object.keys(res.data.errors).forEach(item => {
               this.formData[item].msg = res.data.errors[item];
             });

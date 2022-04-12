@@ -268,6 +268,7 @@ import EST from "@/lib/EST";
 import ajax from "@/lib/ajax";
 import datePicker from "@/router/mobile/components/common/datePicker";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
   components: {
@@ -457,12 +458,10 @@ export default {
     },
     getGameDetail() {
       const params = {
-        start_at: Vue.moment(this.startTime).format(
-          "YYYY-MM-DD 00:00:00-04:00"
-        ),
-        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
-        max_results: this.maxResults,
-        first_result: this.maxResults * this.showPage
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+        maxResults: this.maxResults,
+        firstResult: this.maxResults * this.showPage
       };
 
       if (this.selectType.kind) {
@@ -472,22 +471,25 @@ export default {
 
       this.startTime = Vue.moment(this.startTime).format("YYYY-MM-DD");
       this.endTime = Vue.moment(this.endTime).format("YYYY-MM-DD");
-
       // 各遊戲注單統計資料(依投注日期)
-      return ajax({
-        method: "get",
-        url: "/api/v1/c/stats/wager-report/by-day-game",
-        params,
-        success: response => {
-          this.isLoading = false;
-          if (response.ret.length === 0) {
-            return;
-          }
-          this.mainListData.push(...response.ret);
-          this.mainTotal = response.total;
-          this.pagination = response.pagination;
+
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/WagerReport/ByDayGame`,
+        params
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.data && res.data.ret && res.data.ret.length !== 0) {
+          this.mainListData.push(...res.data.ret);
+          this.mainTotal = res.data.total;
+          this.pagination = res.data.pagination;
           this.mainNoData = false;
+        } else {
+          this.mainListData = [];
+          this.mainNoData = true;
         }
+
+        return res;
       });
     },
     updateGame() {
@@ -580,10 +582,11 @@ export default {
       }
 
       this.isReceive = true;
-      this.getGameDetail().then(({ result }) => {
+      this.getGameDetail().then(result => {
         this.isLoading = false;
         this.isReceive = false;
-        if (result !== "ok") {
+
+        if (result && result.status !== "000") {
           return;
         }
 

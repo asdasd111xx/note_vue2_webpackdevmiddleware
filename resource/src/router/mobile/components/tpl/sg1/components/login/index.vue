@@ -8,10 +8,8 @@
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div class="err-msg">
-              <div v-show="errMsg">
-                {{ errMsg }}
-              </div>
+            <div v-show="errMsg" class="err-msg">
+              {{ errMsg }}
             </div>
             <form>
               <!-- 帳號 -->
@@ -208,6 +206,7 @@ import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 /**
  * 登入共用元件
@@ -321,6 +320,7 @@ export default {
       this.thirdyCaptchaObj = obj;
     },
     checkLayeredURL() {
+      sendUmeng(69);
       if (getCookie("platform") === "h") {
         // this.actionGetActingURL().then(res => {
         //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {

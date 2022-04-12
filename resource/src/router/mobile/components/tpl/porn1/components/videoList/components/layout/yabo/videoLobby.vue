@@ -133,12 +133,9 @@
 </template>
 
 <script>
-import axios from "axios";
-import find from "lodash/find";
 import pornRequest from "@/api/pornRequest";
 import { getEncryptImage } from "@/lib/crypto";
-import { mapActions, mapGetters } from "vuex";
-import { setCookie } from "@/lib/cookie";
+import { mapGetters } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
@@ -147,16 +144,8 @@ export default {
     SwiperSlide
   },
   props: {
-    setHeaderTitle: {
-      type: Function,
-      required: true
-    },
     setHasSearchBtn: {
       type: Function,
-      required: true
-    },
-    siteId: {
-      type: Number,
       required: true
     }
   },
@@ -234,29 +223,6 @@ export default {
     }
   },
   created() {
-    switch (this.source) {
-      case "av":
-      case "yabo":
-        setCookie(
-          "s_id",
-          this.siteConfig.PORN_CONFIG.ID[this.source === "yabo" ? "YB" : "AV"]
-        );
-        this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-        break;
-
-      case "gay":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["GAY"]);
-        this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-        break;
-
-      case "les":
-        setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["LES"]);
-        this.setHeaderTitle(localStorage.getItem("iframe-third-url-title"));
-        break;
-
-      default:
-        break;
-    }
     if (this.$route.query.id && this.$route.query.title) {
       this.videoType.id = this.$route.query.id;
       this.videoType.title = this.$route.query.title;
@@ -282,7 +248,6 @@ export default {
   methods: {
     initData() {
       this.getVideoTag();
-      // this.getVideoSort();
       this.getVideoRecommand();
       this.getVideoList();
     },
@@ -315,7 +280,7 @@ export default {
       });
     },
     getImg(img) {
-      const isYabo = this.source === "yabo" || this.source === "av";
+      const isYabo = this.source === "yv" || this.source === "av";
       return {
         src: img,
         error: this.$getCdnPath(
@@ -334,9 +299,7 @@ export default {
       return pornRequest({
         url: "/video/tag",
         method: "get",
-        params: {
-          siteId: this.siteId
-        }
+        getFreeSpace: this.source === "free-yv"
       }).then(response => {
         if (response.status !== 200 || !response.result) {
           return;
@@ -382,18 +345,14 @@ export default {
       });
       swiper.slideTo(initIndex, time, false);
     },
-    // 開啟影片分類選單
     onShowAllTag(value) {
       this.isShowAllTag = value;
     },
-    // 取得影片排序
     getVideoSort() {
       return pornRequest({
         method: "get",
         url: "/video/sort",
-        params: {
-          siteId: this.siteId
-        }
+        getFreeSpace: this.source === "free-yv"
       }).then(response => {
         if (response.status !== 200) {
           return;
@@ -402,13 +361,10 @@ export default {
         this.videoSort = [...response.result];
       });
     },
-    // 取得熱門推薦影片
     getVideoRecommand() {
       return pornRequest({
         url: `/video/recommand`,
-        params: {
-          siteId: this.siteId
-        }
+        getFreeSpace: this.source === "free-yv"
       }).then(response => {
         if (response.status !== 200) {
           return;
@@ -422,9 +378,9 @@ export default {
       return pornRequest({
         method: "post",
         url: `/video/videolist`,
+        getFreeSpace: this.source === "free-yv",
         data: {
           tag: this.videoType.title === "全部" ? "" : this.videoType.title,
-          siteId: this.siteId,
           page: 1
         }
       }).then(response => {

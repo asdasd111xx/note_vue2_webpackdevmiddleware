@@ -255,7 +255,12 @@
               >
                 <input
                   v-model="allValue[field.key]"
-                  :class="[$style['join-input-captcha'], field.key]"
+                  :class="[
+                    $style['join-input-captcha'],
+                    field.key,
+                    ,
+                    $style[siteConfig.ROUTER_TPL]
+                  ]"
                   type="text"
                   :ref="'captcha'"
                   id="captcha"
@@ -617,7 +622,11 @@
         <!-- 3拼圖驗證/4手繪/5行為驗證 -->
         <div
           v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
-          :class="[$style['thirdy-block-wrap'], $style[siteConfig.ROUTER_TPL]]"
+          :class="[
+            $style['thirdy-block-wrap'],
+            $style[siteConfig.ROUTER_TPL],
+            'clearfix'
+          ]"
         >
           <thirdy-verification
             ref="thirdyCaptchaObj"
@@ -649,7 +658,10 @@
       <div v-else :class="[$style['join-btn-wrap']]">
         <div
           :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
-          @click="joinSubmit()"
+          @click="()=>{
+            joinSubmit()
+            sendUmengEvent(70)
+            }"
         >
           {{ $text("S_REGISTER", "注册") }}
         </div>
@@ -713,6 +725,7 @@ import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -1960,6 +1973,9 @@ export default {
           this.mailSubmitFailMsg = res.msg;
         }
       });
+    },
+    sendUmengEvent(event){
+      sendUmeng(event);
     }
   }
 };

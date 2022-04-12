@@ -15,11 +15,9 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${
-                  currentCategory.key == 'outer'
-                    ? 'vendor'
-                    : currentCategory.key
-                }.png`
+                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${getCategory(
+                  item
+                )}.png`
               )
             "
           />
@@ -27,7 +25,7 @@
         <div :class="[$style['detail-info'], 'clearfix']">
           <div :class="$style.wrap">
             <div class="title-wrap">
-              <span :class="$style.title">{{ currentCategory.text }}</span>
+              <span :class="$style.title">{{ getCategoryName(item) }}</span>
               <span :class="$style.tips">{{ opcodeList[item.opcode] }}</span>
             </div>
             <div :class="$style.time">
@@ -128,6 +126,10 @@ export default {
     },
     pageType: {
       default: ""
+    },
+    categoryList: {
+      type: Array,
+      default: []
     }
   },
   watch: {
@@ -163,6 +165,38 @@ export default {
     }
   },
   methods: {
+    getCategoryName(item) {
+      let name = this.currentCategory.text;
+      let itemCategory = item.category[0];
+
+      if (!this.currentCategory.key) {
+        // 返水,活動歸類在優惠
+        if (["activity"].includes(item.category[0])) {
+          itemCategory = "rebate";
+        }
+
+        if (this.categoryList && this.categoryList.length) {
+          const target = this.categoryList.find(i => i.tag === itemCategory);
+
+          if (target) {
+            name = target.display;
+          }
+        }
+      }
+
+      return name;
+    },
+    getCategory(item) {
+      if (item.category[0] === "rebate") {
+        return "activity";
+      }
+
+      if (this.currentCategory.key === "outer") {
+        return "vendor";
+      }
+
+      return item.category[0];
+    },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
     },

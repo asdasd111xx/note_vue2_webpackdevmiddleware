@@ -190,7 +190,7 @@ export default {
   mounted() {
     // check maintain
     this.actionGetExtRedirect({
-      api_uri: "/api/platform/v1/user/front-page?check=1",
+      api_uri: "/api/platform/v1/user/front-page",
       method: "get"
     }).then(() => this.initPage());
 
@@ -250,6 +250,7 @@ export default {
               }
             });
           }
+
           goLangApiRequest({
             method: "post",
             url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
@@ -339,7 +340,7 @@ export default {
       }
     },
     redirectLive(target = "home") {
-      this.$router.push(`/mobile/live/iframe/${target}?hasFooter=true`);
+      // this.$router.push(`/mobile/live/iframe/${target}?hasFooter=true`);
 
       switch (target) {
         case "home":

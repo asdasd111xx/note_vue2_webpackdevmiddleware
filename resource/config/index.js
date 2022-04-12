@@ -24,7 +24,7 @@ const domain = "https://yb01.66boxing.com/";
 // const domain = "https://pmlvpdep.com/";
 
 // 澳博国际 QA 9999894
-//const domain = "https://auqa1.66boxing.com/";
+// const domain = "https://auqa1.66boxing.com/";
 // const domain = "https://952t.66boxing.com/";
 // Beta
 // const domain = "";

@@ -85,7 +85,7 @@
 <script>
 import { mapGetters } from "vuex";
 import InfiniteLoading from "vue-infinite-loading";
-import axios from "axios";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
 
 export default {
@@ -130,9 +130,15 @@ export default {
       return thousandsCurrency(value);
     },
     getCredit() {
-      axios.get("/api/v1/c/gift-card").then(response => {
-        this.info = response.data.ret;
-        this.total = response.data.total;
+      //紅利帳戶api C02.112
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Gift/Card`
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.info = res.data.ret;
+          this.total = res.data.total;
+        }
       });
     },
     /**

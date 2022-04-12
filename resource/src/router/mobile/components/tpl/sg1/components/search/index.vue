@@ -1,7 +1,7 @@
 <template>
-  <mobile-container :header-config="headerConfig" :has-footer="false">
+  <mobile-container :header-config="headerConfig" :hasFooter="false">
     <div slot="content" :class="[$style['content-wrap']]">
-      <platform-layout :headerConfig.sync="headerConfig" :source="source" />
+      <platform-layout @setHeader="setHeader" :source="source" />
     </div>
   </mobile-container>
 </template>
@@ -26,16 +26,17 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo"
     }),
-    headerConfig: {
-      get() {
-        return this.headerObj;
-      },
-      set(value) {
-        this.headerObj = value;
-      }
+    headerConfig() {
+      return this.headerObj;
     },
     source() {
-      let source = this.$route.query.source || "yabo";
+      let source = this.$route.query.source;
+
+      // 轉換舊版參數yabo,yv
+      if (this.$route.query === "yabo") {
+        source = "yv";
+      }
+
       return source;
     }
   },
@@ -54,13 +55,15 @@ export default {
     if (!this.$route.query.source) {
       this.$router.replace({
         path: "search",
-        query: { source: "yabo" },
+        query: { source: "yv" },
         replace: true
       });
     }
   },
-  mounted() {
-    this.divHeight = document.body.offsetHeight - 103;
+  methods: {
+    setHeader(obj) {
+      this.headerObj = obj;
+    }
   }
 };
 </script>

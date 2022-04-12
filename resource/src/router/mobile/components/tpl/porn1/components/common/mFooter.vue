@@ -21,7 +21,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/${imagePath}/common/footer/icon_${info.key}_h.png`
+              `/static/image/${routerTPL}/common/footer/icon_${info.key}_h.png`
             )
           "
         />
@@ -29,12 +29,12 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/${imagePath}/common/footer/icon_${info.key}_n.png`
+              `/static/image/${routerTPL}/common/footer/icon_${info.key}_n.png`
             )
           "
         />
         <div
-          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          v-if="unreadMsgCount && info.key === 'mcenter-home'"
           :class="$style['red-dot']"
         />
       </div>
@@ -62,7 +62,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/${imagePath}/common/footer/icon_${info.key}_h.png`
+              `/static/image/${routerTPL}/common/footer/icon_${info.key}_h.png`
             )
           "
         />
@@ -70,12 +70,12 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/${imagePath}/common/footer/icon_${info.key}_n.png`
+              `/static/image/${routerTPL}/common/footer/icon_${info.key}_n.png`
             )
           "
         />
         <div
-          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          v-if="unreadMsgCount && info.key === 'mcenter-home'"
           :class="$style['red-dot']"
         />
       </div>
@@ -103,7 +103,7 @@
           v-if="isActive(info.key)"
           :src="
             $getCdnPath(
-              `/static/image/${imagePath}/common/footer/icon_${info.key}_h.png`
+              `/static/image/${routerTPL}/common/footer/icon_${info.key}_h.png`
             )
           "
         />
@@ -111,12 +111,12 @@
           v-else
           :src="
             $getCdnPath(
-              `/static/image/${imagePath}/common/footer/icon_${info.key}_n.png`
+              `/static/image/${routerTPL}/common/footer/icon_${info.key}_n.png`
             )
           "
         />
         <div
-          v-if="hasUnreadMessage && info.key === 'mcenter-home'"
+          v-if="unreadMsgCount && info.key === 'mcenter-home'"
           :class="$style['red-dot']"
         />
       </div>
@@ -130,31 +130,24 @@ import { mapGetters } from "vuex";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
-  props: {
-    hasUnreadMessage: {
-      type: Boolean,
-      default: false
-    }
-  },
   computed: {
     ...mapGetters({
       loginStatus: "getLoginStatus",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      memInfo: "getMemInfo"
     }),
+    unreadMsgCount() {
+      if (this.memInfo && this.memInfo.msgCount) {
+        if (this.memInfo.msgCount >= 100) {
+          return "99+";
+        }
+        return +this.memInfo.msgCount;
+      }
+
+      return 0;
+    },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
-    },
-    imagePath() {
-      switch (this.routerTPL) {
-        default:
-          return "_new";
-        case "aobo1":
-          return "aobo1";
-        case "sp1":
-          return "sp1";
-        case "porn1":
-          return "porn1";
-      }
     },
     list() {
       return [
