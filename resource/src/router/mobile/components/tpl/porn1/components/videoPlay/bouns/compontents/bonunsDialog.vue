@@ -43,7 +43,7 @@
             v-if="['porn1', 'sg1'].includes(routerTPL)"
             style="margin-top: 12%;display: block;font-size: 20px;"
           >
-            {{ $text("S_ACTIVITY_SLOGAN", "看视频送现金 看越久送越多") }}
+            {{ $text("S_ACTIVITY_SLOGAN2", "海量精彩视频 任意充值永久观看") }}
           </span>
           <span v-else style="margin-top: 12%;display: block;font-size: 20px;">
             观看视频&nbsp;请先登录

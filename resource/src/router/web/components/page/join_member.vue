@@ -658,7 +658,10 @@
       <div v-else :class="[$style['join-btn-wrap']]">
         <div
           :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
-          @click="joinSubmit()"
+          @click="()=>{
+            joinSubmit()
+            sendUmengEvent(70)
+            }"
         >
           {{ $text("S_REGISTER", "注册") }}
         </div>
@@ -722,6 +725,7 @@ import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -1969,6 +1973,9 @@ export default {
           this.mailSubmitFailMsg = res.msg;
         }
       });
+    },
+    sendUmengEvent(event){
+      sendUmeng(event);
     }
   }
 };
