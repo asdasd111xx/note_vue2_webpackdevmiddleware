@@ -68,7 +68,7 @@ module.exports = {
     //指定chunk的名稱
     app:
       process.env.NODE_ENV === "development"
-        ? ["./src/a.js"] //HMR加入"webpack-hot-middleware/client"
+        ? ["./src/main.js"] //HMR加入"webpack-hot-middleware/client"
         : ["./src/cdn-entry-index.js"]
   },
   output: {
