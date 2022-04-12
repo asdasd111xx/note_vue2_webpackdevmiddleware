@@ -939,17 +939,25 @@ export default {
                 } else {
                   this.isLoading = true;
                   this.actionSetYaboConfig().then(() => {
-                    let noLoginVideoSwitch;
-                    let noFirstSavingsVideoSwitch;
+                    let noLoginVideoSwitch = false;
+                    let noFirstSavingsVideoSwitch = false;
 
                     if (this.yaboConfig) {
-                      noLoginVideoSwitch = this.yaboConfig.find(
-                        i => i.name === "NoLoginVideoSwitch"
-                      ).value;
-                      noFirstSavingsVideoSwitch =
-                        this.yaboConfig.find(
-                          i => i.name === "NoFirstSavingsVideoSwitch"
-                        ).value === "true";
+                      const noLoginSwitch = this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      );
+
+                      noLoginVideoSwitch = noLoginSwitch
+                        ? noLoginSwitch.value === "true"
+                        : false;
+
+                      const savingSwitch = this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      );
+
+                      noFirstSavingsVideoSwitch = savingSwitch
+                        ? savingSwitch.value === "true"
+                        : false;
                     }
 
                     let cid = !this.loginStatus
@@ -1013,17 +1021,25 @@ export default {
             });
           } else {
             this.actionSetYaboConfig().then(() => {
-              let noLoginVideoSwitch;
-              let noFirstSavingsVideoSwitch;
+              let noLoginVideoSwitch = false;
+              let noFirstSavingsVideoSwitch = false;
 
               if (this.yaboConfig) {
-                noLoginVideoSwitch = this.yaboConfig.find(
-                  i => i.name === "NoLoginVideoSwitch"
-                ).value;
-                noFirstSavingsVideoSwitch =
-                  this.yaboConfig.find(
-                    i => i.name === "NoFirstSavingsVideoSwitch"
-                  ).value === "true";
+                const noLoginSwitch = this.yaboConfig.find(
+                  i => i.name === "NoFirstSavingsVideoSwitch"
+                );
+
+                noLoginVideoSwitch = noLoginSwitch
+                  ? noLoginSwitch.value.value === "true"
+                  : false;
+
+                const savingSwitch = this.yaboConfig.find(
+                  i => i.name === "NoFirstSavingsVideoSwitch"
+                );
+
+                noFirstSavingsVideoSwitch = savingSwitch
+                  ? savingSwitch.value === "true"
+                  : false;
               }
 
               let cid = !this.loginStatus
@@ -1125,11 +1141,15 @@ export default {
                     }
                   });
                 };
+
                 if (this.yaboConfig) {
-                  noFirstSavingsVideoSwitch =
-                    this.yaboConfig.find(
-                      i => i.name === "NoFirstSavingsVideoSwitch"
-                    ).value === "true";
+                  const savingSwitch = this.yaboConfig.find(
+                    i => i.name === "NoFirstSavingsVideoSwitch"
+                  );
+
+                  noFirstSavingsVideoSwitch = savingSwitch
+                    ? savingSwitch.value === "true"
+                    : false;
                 }
                 if (!this.loginStatus) {
                   routerPush();
