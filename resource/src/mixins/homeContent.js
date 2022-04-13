@@ -690,9 +690,15 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus && (path !== "promotion" || path !== "btse")) {
-        this.$router.push("/mobile/login");
-        return;
+      if (!this.loginStatus) {
+        switch (path) {
+          case "promotion":
+          case "btse":
+            break;
+          default:
+            this.$router.push("/mobile/login");
+            return;
+        }
       }
       switch (path) {
         case "deposit":
