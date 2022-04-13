@@ -777,6 +777,7 @@ export const actionSetUserdata = (
           // const prodVendor = ["67", "80", "41", "92", "94"];
 
           if (headers["x-cdn-rdi"]) {
+            ///cxbb/Account/guestregister回傳的header[x-cdn-rdi] 當作輪播圖的domain
             commit(
               types.SETSLIDECDNDOMAIN,
               `https://${headers["x-cdn-rdi"].split(",")[0]}`

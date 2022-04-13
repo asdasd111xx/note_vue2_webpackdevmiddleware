@@ -1,5 +1,6 @@
 <script>
 //slider每個物件會存兩種尺寸img(後台-應用-前台設置-輪播圖)
+//載入網站時串接cxbb/Account/guestregister回傳的header[x-cdn-rdi] 當作輪播圖的domain，line:110 再去判斷後續要怎麼接到rdi(nfs or gcs)
 </script>
 <template>
   <swiper
