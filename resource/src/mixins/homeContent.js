@@ -690,7 +690,7 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus && path !== "btse") {
+      if (!this.loginStatus && (path !== "promotion" || path !== "btse")) {
         this.$router.push("/mobile/login");
         return;
       }
