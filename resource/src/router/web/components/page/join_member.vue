@@ -1991,7 +1991,7 @@ export default {
       }
 
       let hasError = false;
-      /** 
+      /**
       //帳號註冊按鈕阻擋
       if (this.currentJoin === "accountjoin") {
         Object.keys(this.allTip).forEach(key => {
@@ -2464,6 +2464,7 @@ export default {
             // res.msg + "(" + res.code + ")" || "phone error1";
             res.msg || "phone error1";
         } else {
+          this.actionSetGlobalMessage({ msg: "验证码已发送 有效时间为10分钟" });
           //取得驗證碼倒數秒數
           this.getPhoneTTL();
         }
