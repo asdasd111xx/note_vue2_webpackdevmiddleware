@@ -707,9 +707,15 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus && path !== "btse") {
-        this.$router.push("/mobile/login");
-        return;
+      if (!this.loginStatus) {
+        switch (path) {
+          case "promotion":
+          case "btse":
+            break;
+          default:
+            this.$router.push("/mobile/login");
+            return;
+        }
       }
       switch (path) {
         case "deposit":
@@ -852,6 +858,9 @@ export default {
           case "PPV":
             sendUmeng(64);
             break;
+          case "FREE":
+            sendUmeng(81);
+            break;
         }
       } else {
         switch (game.vendor) {
@@ -894,6 +903,9 @@ export default {
           // 币发影视;
           case "PPV":
             sendUmeng(64);
+            break;
+          case "FREE":
+            sendUmeng(81);
             break;
         }
       }
@@ -950,32 +962,27 @@ export default {
                 } else {
                   this.isLoading = true;
                   this.actionSetYaboConfig().then(() => {
-                    let noLoginVideoSwitch;
+                    let noLoginVideoSwitch = false;
+                    let noFirstSavingsVideoSwitch = false;
 
                     if (this.yaboConfig) {
-                      noLoginVideoSwitch = this.yaboConfig.find(
-                        i => i.name === "NoLoginVideoSwitch"
-                      ).value;
+                      const noLoginSwitch = this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      );
+
+                      noLoginVideoSwitch = noLoginSwitch
+                        ? noLoginSwitch.value === "true"
+                        : false;
+
+                      const savingSwitch = this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      );
+
+                      noFirstSavingsVideoSwitch = savingSwitch
+                        ? savingSwitch.value === "true"
+                        : false;
                     }
 
-                    // // 第三方開啟有問題時 可調整iframe內嵌
-                    // let newWindow = window.open('');
-                    // goLangApiRequest({
-                    //     method: 'get',
-                    //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
-                    //     headers: {
-                    //         'x-domain': this.memInfo.user.domain
-                    //     },
-                    // }).then(res => {
-                    //     if (res.data) {
-                    //         newWindow.location.href = res.data;
-                    //     } else {
-                    //         newWindow.close();
-                    //     }
-                    // }).catch(error => {
-                    //     newWindow.close();
-                    // })
-                    // return;
                     let cid = !this.loginStatus
                       ? localStorage.getItem("guestCid")
                       : getCookie("cid");
@@ -1005,18 +1012,30 @@ export default {
                         }
                       });
 
-                    // 未登入開關 開啟時未登入可進入
-                    if (noLoginVideoSwitch === "true") {
-                      getThridUrl();
-                      return;
-                    }
-
-                    // 未登入開關 未開啟時需登入可進入
-                    if (!this.loginStatus) {
-                      this.$router.push("/mobile/login");
-                      return;
+                    if (["porn1", "sg1"].includes(this.routerTPL)) {
+                      if (!this.loginStatus) {
+                        getThridUrl();
+                      } else {
+                        // 需首儲開關 未開啟時需首儲可進入
+                        if (
+                          !noFirstSavingsVideoSwitch &&
+                          !this.notFirstDeposit
+                        ) {
+                          this.actionSetGlobalMessage({
+                            msg: "充值一次 立即解锁VIP影片",
+                            code: "recharge_deposit"
+                          });
+                        } else {
+                          getThridUrl();
+                        }
+                      }
                     } else {
-                      getThridUrl();
+                      // 未登入開關 未開啟時需登入可進入
+                      if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+                        this.$router.push("/mobile/login");
+                      } else {
+                        getThridUrl();
+                      }
                     }
                   });
                   return;
@@ -1025,32 +1044,27 @@ export default {
             });
           } else {
             this.actionSetYaboConfig().then(() => {
-              let noLoginVideoSwitch;
+              let noLoginVideoSwitch = false;
+              let noFirstSavingsVideoSwitch = false;
 
               if (this.yaboConfig) {
-                noLoginVideoSwitch = this.yaboConfig.find(
-                  i => i.name === "NoLoginVideoSwitch"
-                ).value;
+                const noLoginSwitch = this.yaboConfig.find(
+                  i => i.name === "NoFirstSavingsVideoSwitch"
+                );
+
+                noLoginVideoSwitch = noLoginSwitch
+                  ? noLoginSwitch.value.value === "true"
+                  : false;
+
+                const savingSwitch = this.yaboConfig.find(
+                  i => i.name === "NoFirstSavingsVideoSwitch"
+                );
+
+                noFirstSavingsVideoSwitch = savingSwitch
+                  ? savingSwitch.value === "true"
+                  : false;
               }
 
-              // // 第三方開啟有問題時 可調整iframe內嵌
-              // let newWindow = window.open('');
-              // goLangApiRequest({
-              //     method: 'get',
-              //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
-              //     headers: {
-              //         'x-domain': this.memInfo.user.domain
-              //     },
-              // }).then(res => {
-              //     if (res.data) {
-              //         newWindow.location.href = res.data;
-              //     } else {
-              //         newWindow.close();
-              //     }
-              // }).catch(error => {
-              //     newWindow.close();
-              // })
-              // return;
               let cid = !this.loginStatus
                 ? localStorage.getItem("guestCid")
                 : getCookie("cid");
@@ -1083,18 +1097,27 @@ export default {
                   }
                 });
 
-              // 未登入開關 開啟時未登入可進入
-              if (noLoginVideoSwitch === "true") {
-                getThridUrl();
-                return;
-              }
-
-              // 未登入開關 未開啟時需登入可進入
-              if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
-                return;
+              if (["porn1", "sg1"].includes(this.routerTPL)) {
+                if (!this.loginStatus) {
+                  getThridUrl();
+                } else {
+                  // 需首儲開關 未開啟時需首儲可進入
+                  if (!noFirstSavingsVideoSwitch && !this.notFirstDeposit) {
+                    this.actionSetGlobalMessage({
+                      msg: "充值一次 立即解锁VIP影片",
+                      code: "recharge_deposit"
+                    });
+                  } else {
+                    getThridUrl();
+                  }
+                }
               } else {
-                getThridUrl();
+                // 未登入開關 未開啟時需登入可進入
+                if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+                  this.$router.push("/mobile/login");
+                } else {
+                  getThridUrl();
+                }
               }
             });
           }
@@ -1141,11 +1164,15 @@ export default {
                     }
                   });
                 };
+
                 if (this.yaboConfig) {
-                  noFirstSavingsVideoSwitch =
-                    this.yaboConfig.find(
-                      i => i.name === "NoFirstSavingsVideoSwitch"
-                    ).value === "true";
+                  const savingSwitch = this.yaboConfig.find(
+                    i => i.name === "NoFirstSavingsVideoSwitch"
+                  );
+
+                  noFirstSavingsVideoSwitch = savingSwitch
+                    ? savingSwitch.value === "true"
+                    : false;
                 }
                 if (!this.loginStatus) {
                   routerPush();

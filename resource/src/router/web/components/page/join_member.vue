@@ -1042,6 +1042,12 @@
           v-if="themeTPL !== 'sg1'"
           :class="$style['has-visitor']"
           @click.stop="$router.push('/mobile/login')"
+          @click="
+            () => {
+              joinSubmit();
+              sendUmengEvent(70);
+            }
+          "
         >
           <a>若有会员帐号，<span>去登录＞</span></a>
         </div>
@@ -1092,6 +1098,7 @@ import vSelect from "vue-select";
 import Vue from "vue";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -2523,6 +2530,9 @@ export default {
           this.mailSubmitFailMsg = res.msg;
         }
       });
+    },
+    sendUmengEvent(event) {
+      sendUmeng(event);
     }
   }
 };

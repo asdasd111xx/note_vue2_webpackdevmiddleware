@@ -197,8 +197,8 @@ export default {
       showCondition: "",
       showDatePicker: false,
       currentCategory: {
-        key: "deposit",
-        text: this.$text("S_DEPOSIT", "充值")
+        key: "",
+        text: "全部"
       },
       currentDate: { key: "today", text: this.$text("S_TODDAY", "今日") },
       currentDatePicker: "",
@@ -240,7 +240,7 @@ export default {
     },
     categoryOptions() {
       return [
-        // { key: "", text: "全部" },
+        { key: "", text: "全部" },
         { key: "deposit", text: "充值" },
         { key: "vendor", text: "转帐" },
         { key: "withdraw", text: "提现" },

@@ -346,6 +346,7 @@ import lib_newWindowOpen from "@/lib/newWindowOpen";
 // import bankMixin from "@/mixins/mcenter/bankCard/addCard/bank";
 import walletMixin from "@/mixins/mcenter/bankCard/addCard/wallet";
 import popupVerification from "@/components/popupVerification";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -1432,6 +1433,9 @@ export default {
             }
           };
           if (this.selectTarget.walletId === 47) {
+            if (this.routerTPL === "porn1") {
+              sendUmeng(72);
+            }
             this.bcTimeCount = 60;
             this.bcTimeStamp = setInterval(() => {
               if (this.bcTimeCount === 0) {

@@ -1,4 +1,9 @@
-export const sendUmeng = eventCode => {
+export const sendUmeng = (
+  eventCode,
+  action_value,
+  category_value,
+  label_value
+) => {
   if (!localStorage.getItem("YMKey")) return;
   // console.log(`YM Code ` + eventCode);
   let category = "";
@@ -31,6 +36,10 @@ export const sendUmeng = eventCode => {
       break;
     default:
       action = "点击";
+  }
+  if (eventCode === 76 || eventCode === 77) {
+    action = action_value;
+    category = "";
   }
   // switch (eventCode) {
   //   case 2:
