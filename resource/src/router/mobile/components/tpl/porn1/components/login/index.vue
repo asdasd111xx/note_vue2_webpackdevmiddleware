@@ -473,7 +473,6 @@ export default {
       this.getPhoneVerifyCode();
     },
     getPhoneTTL() {
-      //xbb/Player/Login/Phone/TTL
       //會員登入手機簡訊倒數秒數
       goLangApiRequest({
         method: "get",
@@ -486,7 +485,6 @@ export default {
       });
     },
     getPhoneVerifyCode() {
-      ///xbb/Login/Phone/Verify
       //會員登入手機簡訊驗證
       goLangApiRequest({
         method: "put",
