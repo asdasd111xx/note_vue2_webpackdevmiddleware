@@ -720,7 +720,7 @@
                   type="tel"
                   @input="verification('phone')"
                   maxlength="11"
-                  :class="$style['join-input']"
+                  :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
                 />
               </div>
               <div
@@ -760,7 +760,7 @@
                   placeholder="请输入验证码"
                   type="tel"
                   maxlength="6"
-                  :class="$style['join-input']"
+                  :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
                   @input="verification('phonettl')"
                 />
               </div>
