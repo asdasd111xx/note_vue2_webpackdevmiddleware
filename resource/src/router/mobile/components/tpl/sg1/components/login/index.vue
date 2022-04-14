@@ -206,6 +206,7 @@ import thirdyVerification from "@/components/thirdyVerification";
 import mobileContainer from "../common/mobileContainer";
 import { getCookie, setCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 /**
  * 登入共用元件
@@ -319,6 +320,7 @@ export default {
       this.thirdyCaptchaObj = obj;
     },
     checkLayeredURL() {
+      sendUmeng(69);
       if (getCookie("platform") === "h") {
         // this.actionGetActingURL().then(res => {
         //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {

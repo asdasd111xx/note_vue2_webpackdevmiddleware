@@ -545,7 +545,7 @@ export default {
         item => item.name === "迅付"
       );
       const withdraw = this.domainConfig.withdraw.name === "迅付";
-      this.fastPaySwitch = deposit && withdraw;
+      this.fastPaySwitch = deposit || withdraw;
 
       if (this.fastPaySwitch) {
         this.getWalletCurrencyBalanceList();
@@ -785,11 +785,17 @@ export default {
           this.getWalletUserReceiveCode();
           break;
         case "bind":
+          if (this.routerTPL === "porn1") {
+            sendUmeng(71);
+          }
           this.$router.push(
             `/mobile/mcenter/bankcard?redirect=wallet&type=wallet&wallet=bcwallet&swift=BBBTSECN1`
           );
           break;
         case "inter":
+          if (this.routerTPL === "porn1") {
+            sendUmeng(73);
+          }
           lib_newWindowOpen(
             this.getCustomerServiceUrl({
               urlName: "btse_login",
@@ -800,6 +806,9 @@ export default {
           );
           break;
         case "use":
+          if (this.routerTPL === "porn1") {
+            sendUmeng(74);
+          }
           // this.getCustomerServiceUrl({
           //   urlName: "btse_wallet",
           //   needToken: false

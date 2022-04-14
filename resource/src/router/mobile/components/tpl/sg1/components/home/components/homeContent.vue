@@ -50,7 +50,7 @@
           <!-- 會員中心連結 -->
           <div :class="[$style['mcenter-func-wrap'], 'clearfix']">
             <div
-              v-for="(info, index) in mcenterList"
+              v-for="(info, index) in mcenterSg1List"
               :key="`mcenter-${index}`"
               :class="$style['mcenter-wrap']"
               @click="onGoToMcenter(info.path)"
@@ -236,7 +236,11 @@ export default {
     SwiperSlide,
     popup
   },
-  mounted() {}
+  mounted() {
+    this.$Lazyload.$on("loaded", function(el) {
+      el.el.offsetParent.setAttribute("lazy", "loadedok");
+    });
+  }
 };
 </script>
 
@@ -336,8 +340,6 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
   transition: all 0.5s;
 }
 
@@ -376,28 +378,35 @@ export default {
   -webkit-overflow-scrolling: touch; // 誤刪，維持touchmove滾動順暢
   min-height: 260px;
 }
-
+.wrap[lazy="loadedok"] {
+  background: none;
+}
 .wrap {
   overflow: hidden;
   position: relative;
   float: left;
   width: 50%;
   margin-bottom: 3px;
-  border-radius: 7px;
+  border-radius: 10px;
   box-sizing: border-box;
+
   background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
+  background-position: center;
   // 大廳遊戲預設圖logo樣式
   > img[lazy="error"]:first-child,
   img[lazy="loading"]:first-child {
     display: block;
     width: 42%;
-    padding: 15px 2px;
+    padding: 18px 2px;
     margin: 0 auto;
   }
+
   > img:first-child {
     display: block;
     width: 100%;
-    padding: 0 2px;
+    padding: 0 1.5px;
   }
 
   > span {

@@ -190,7 +190,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: "请重新登入",
               cb: () => {
-                this.$router.push("/mobile/login");
+                window.location.href = "/mobile/login";
               }
             });
             return;

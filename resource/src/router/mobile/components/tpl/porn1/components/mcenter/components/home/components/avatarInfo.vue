@@ -34,7 +34,7 @@
       <div v-if="routerTPL === 'porn1'" :class="$style['porn-wrap']">
         <span> VIP尊享 每月爽领红包 </span>
         <span :class="$style['money-symbol']">¥</span>
-        <span> 8-80,000 </span>
+        <span> 8-30,000 </span>
         <span></span>
       </div>
     </div>

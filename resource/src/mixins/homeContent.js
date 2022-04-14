@@ -238,8 +238,6 @@ export default {
     document.activeElement.blur();
     $("input").blur();
 
-    this.getBtseSwitch();
-
     sendUmeng(1);
     if (localStorage.getItem("redirect_url")) {
       this.showRedirectJump = true;
@@ -292,6 +290,10 @@ export default {
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
+
+    if (this.siteConfig.ROUTER_TPL === "porn1") {
+      this.mcenterList = this.mcenterPorn1List;
+    }
 
     if (this.siteConfig.ROUTER_TPL === "ey1") {
       this.getAllGame();
@@ -688,9 +690,15 @@ export default {
     },
     // 前往會員中心
     onGoToMcenter(path) {
-      if (!this.loginStatus && path !== "promotion") {
-        this.$router.push("/mobile/login");
-        return;
+      if (!this.loginStatus) {
+        switch (path) {
+          case "promotion":
+          case "btse":
+            break;
+          default:
+            this.$router.push("/mobile/login");
+            return;
+        }
       }
       switch (path) {
         case "deposit":
@@ -773,7 +781,7 @@ export default {
               this.getPromotionList(data.uri);
             } else {
               this.actionSetGlobalMessage({
-                msg: "正在上线，敬请期待"
+                msg: "正在上線，敬請期待"
               });
             }
           });
@@ -833,6 +841,9 @@ export default {
           case "PPV":
             sendUmeng(64);
             break;
+          case "FREE":
+            sendUmeng(81);
+            break;
         }
       } else {
         switch (game.vendor) {
@@ -875,6 +886,9 @@ export default {
           // 币发影视;
           case "PPV":
             sendUmeng(64);
+            break;
+          case "FREE":
+            sendUmeng(81);
             break;
         }
       }
@@ -931,32 +945,27 @@ export default {
                 } else {
                   this.isLoading = true;
                   this.actionSetYaboConfig().then(() => {
-                    let noLoginVideoSwitch;
+                    let noLoginVideoSwitch = false;
+                    let noFirstSavingsVideoSwitch = false;
 
                     if (this.yaboConfig) {
-                      noLoginVideoSwitch = this.yaboConfig.find(
-                        i => i.name === "NoLoginVideoSwitch"
-                      ).value;
+                      const noLoginSwitch = this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      );
+
+                      noLoginVideoSwitch = noLoginSwitch
+                        ? noLoginSwitch.value === "true"
+                        : false;
+
+                      const savingSwitch = this.yaboConfig.find(
+                        i => i.name === "NoFirstSavingsVideoSwitch"
+                      );
+
+                      noFirstSavingsVideoSwitch = savingSwitch
+                        ? savingSwitch.value === "true"
+                        : false;
                     }
 
-                    // // 第三方開啟有問題時 可調整iframe內嵌
-                    // let newWindow = window.open('');
-                    // goLangApiRequest({
-                    //     method: 'get',
-                    //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
-                    //     headers: {
-                    //         'x-domain': this.memInfo.user.domain
-                    //     },
-                    // }).then(res => {
-                    //     if (res.data) {
-                    //         newWindow.location.href = res.data;
-                    //     } else {
-                    //         newWindow.close();
-                    //     }
-                    // }).catch(error => {
-                    //     newWindow.close();
-                    // })
-                    // return;
                     let cid = !this.loginStatus
                       ? localStorage.getItem("guestCid")
                       : getCookie("cid");
@@ -986,18 +995,30 @@ export default {
                         }
                       });
 
-                    // 未登入開關 開啟時未登入可進入
-                    if (noLoginVideoSwitch === "true") {
-                      getThridUrl();
-                      return;
-                    }
-
-                    // 未登入開關 未開啟時需登入可進入
-                    if (!this.loginStatus) {
-                      this.$router.push("/mobile/login");
-                      return;
+                    if (["porn1", "sg1"].includes(this.routerTPL)) {
+                      if (!this.loginStatus) {
+                        getThridUrl();
+                      } else {
+                        // 需首儲開關 未開啟時需首儲可進入
+                        if (
+                          !noFirstSavingsVideoSwitch &&
+                          !this.notFirstDeposit
+                        ) {
+                          this.actionSetGlobalMessage({
+                            msg: "充值一次 立即解锁VIP影片",
+                            code: "recharge_deposit"
+                          });
+                        } else {
+                          getThridUrl();
+                        }
+                      }
                     } else {
-                      getThridUrl();
+                      // 未登入開關 未開啟時需登入可進入
+                      if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+                        this.$router.push("/mobile/login");
+                      } else {
+                        getThridUrl();
+                      }
                     }
                   });
                   return;
@@ -1006,32 +1027,27 @@ export default {
             });
           } else {
             this.actionSetYaboConfig().then(() => {
-              let noLoginVideoSwitch;
+              let noLoginVideoSwitch = false;
+              let noFirstSavingsVideoSwitch = false;
 
               if (this.yaboConfig) {
-                noLoginVideoSwitch = this.yaboConfig.find(
-                  i => i.name === "NoLoginVideoSwitch"
-                ).value;
+                const noLoginSwitch = this.yaboConfig.find(
+                  i => i.name === "NoFirstSavingsVideoSwitch"
+                );
+
+                noLoginVideoSwitch = noLoginSwitch
+                  ? noLoginSwitch.value.value === "true"
+                  : false;
+
+                const savingSwitch = this.yaboConfig.find(
+                  i => i.name === "NoFirstSavingsVideoSwitch"
+                );
+
+                noFirstSavingsVideoSwitch = savingSwitch
+                  ? savingSwitch.value === "true"
+                  : false;
               }
 
-              // // 第三方開啟有問題時 可調整iframe內嵌
-              // let newWindow = window.open('');
-              // goLangApiRequest({
-              //     method: 'get',
-              //     url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/ThirdParty/${game.vendor}/${this.memInfo.user.id}`,
-              //     headers: {
-              //         'x-domain': this.memInfo.user.domain
-              //     },
-              // }).then(res => {
-              //     if (res.data) {
-              //         newWindow.location.href = res.data;
-              //     } else {
-              //         newWindow.close();
-              //     }
-              // }).catch(error => {
-              //     newWindow.close();
-              // })
-              // return;
               let cid = !this.loginStatus
                 ? localStorage.getItem("guestCid")
                 : getCookie("cid");
@@ -1064,18 +1080,27 @@ export default {
                   }
                 });
 
-              // 未登入開關 開啟時未登入可進入
-              if (noLoginVideoSwitch === "true") {
-                getThridUrl();
-                return;
-              }
-
-              // 未登入開關 未開啟時需登入可進入
-              if (!this.loginStatus) {
-                this.$router.push("/mobile/login");
-                return;
+              if (["porn1", "sg1"].includes(this.routerTPL)) {
+                if (!this.loginStatus) {
+                  getThridUrl();
+                } else {
+                  // 需首儲開關 未開啟時需首儲可進入
+                  if (!noFirstSavingsVideoSwitch && !this.notFirstDeposit) {
+                    this.actionSetGlobalMessage({
+                      msg: "充值一次 立即解锁VIP影片",
+                      code: "recharge_deposit"
+                    });
+                  } else {
+                    getThridUrl();
+                  }
+                }
               } else {
-                getThridUrl();
+                // 未登入開關 未開啟時需登入可進入
+                if (noLoginVideoSwitch === "false" && !this.loginStatus) {
+                  this.$router.push("/mobile/login");
+                } else {
+                  getThridUrl();
+                }
               }
             });
           }
@@ -1122,11 +1147,15 @@ export default {
                     }
                   });
                 };
+
                 if (this.yaboConfig) {
-                  noFirstSavingsVideoSwitch =
-                    this.yaboConfig.find(
-                      i => i.name === "NoFirstSavingsVideoSwitch"
-                    ).value === "true";
+                  const savingSwitch = this.yaboConfig.find(
+                    i => i.name === "NoFirstSavingsVideoSwitch"
+                  );
+
+                  noFirstSavingsVideoSwitch = savingSwitch
+                    ? savingSwitch.value === "true"
+                    : false;
                 }
                 if (!this.loginStatus) {
                   routerPush();
@@ -1465,65 +1494,11 @@ export default {
             this.$router.replace(`/mobile/iframe/btse?func=false`);
           } else {
             this.actionSetGlobalMessage({
-              msg: "正在上线，敬请期待"
+              msg: "正在上線，敬請期待"
             });
           }
         }
       });
-    },
-    getBtseSwitch() {
-      switch (this.siteConfig.ROUTER_TPL) {
-        case "porn1":
-          this.mcenterList = this.mcenterPorn1List;
-          break;
-        case "sg1":
-          this.mcenterList = this.mcenterSg1List;
-          break;
-        default:
-          this.mcenterList = this.mcenterList;
-          return;
-      }
-
-      //迅付存取款開關 C02.233
-      const fastpay = this.actionSetDomainConfigV2().then(() => {
-        const deposit = this.domainConfig.deposit.some(
-          item => item.name === "迅付"
-        );
-        const withdraw = this.domainConfig.withdraw.name === "迅付";
-        return deposit && withdraw;
-      });
-
-      //取得電子錢包錢包餘額列表(幣希專用) C04.54
-      const bcWalletEnableType = () => {
-        return new Promise(resolve => {
-          goLangApiRequest({
-            method: "get",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Wallet/Currency/Balance/List`,
-            params: {
-              lang: "zh-cn"
-            }
-          }).then(res => {
-            if (res && res.data) {
-              resolve(res.data.enable);
-            } else {
-              resolve(false);
-            }
-          });
-        });
-      };
-
-      //幣希錢包UI>判斷廳設定v2中的deposit以及withdraw是否為迅付 && C04.54中的enable有開啟才會顯示
-      Promise.all([fastpay, bcWalletEnableType()]).then(
-        res => {
-          res = res.every(data => data === true);
-          if (!res) {
-            this.mcenterList = this.mcenterList.filter(i => i.name != "btse");
-          }
-        },
-        err => {
-          this.mcenterList = this.mcenterList.filter(i => i.name != "btse");
-        }
-      );
     }
   }
 };

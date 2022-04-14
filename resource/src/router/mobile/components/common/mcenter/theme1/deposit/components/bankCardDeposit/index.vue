@@ -344,7 +344,7 @@
                   :class="$style['pay-mode-tip-more']"
                   @click="setPopupStatus(true, 'payTip')"
                 >
-                  more
+                  查看更多
                 </div>
               </div>
             </div>

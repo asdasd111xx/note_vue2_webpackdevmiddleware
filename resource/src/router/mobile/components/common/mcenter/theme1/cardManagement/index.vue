@@ -87,6 +87,7 @@
 import { mapGetters, mapActions } from "vuex";
 import entryMixin from "@/mixins/mcenter/bankCard/index";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
   components: {
@@ -132,6 +133,9 @@ export default {
       return style;
     },
     themeTPL() {
+      return this.siteConfig.ROUTER_TPL;
+    },
+    routerTPL() {
       return this.siteConfig.ROUTER_TPL;
     },
     isCommon() {
@@ -356,6 +360,9 @@ export default {
     setCurrentTab(item, index) {
       this.currentTab = index;
       this.currentPage = `${item.key}CardInfo`;
+      if (this.routerTPL === "porn1") {
+        sendUmeng(75);
+      }
     },
     backPre() {
       //刪除數字貨幣路徑 刪除選擇卡片

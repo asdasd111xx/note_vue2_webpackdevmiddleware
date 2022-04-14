@@ -186,6 +186,7 @@ export default {
       );
     },
     onClick(target) {
+      sendUmeng(77, `${target.name}_${target.id}`);
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,

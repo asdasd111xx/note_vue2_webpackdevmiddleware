@@ -257,7 +257,11 @@ export default {
     SwiperSlide,
     popup
   },
-  mounted() {}
+  mounted() {
+    this.$Lazyload.$on("loaded", function(el) {
+      el.el.offsetParent.setAttribute("lazy", "loadedok");
+    });
+  }
 };
 </script>
 
@@ -358,8 +362,6 @@ export default {
 
 .mcenter-func-wrap {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
   transition: all 0.5s;
 }
 
@@ -412,34 +414,45 @@ export default {
 .wrap[data-config="porn1"],
 .wrap[data-config="sp1"] {
   background: linear-gradient(180deg, #fdfeff, #e2e8fe);
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
+  background-position: center;
 }
 
 .wrap[data-config="aobo1"] {
   background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
+  background-position: center;
 }
-
+.wrap[lazy="loadedok"] {
+  background: none;
+}
 .wrap {
   overflow: hidden;
   position: relative;
   float: left;
   width: 48%;
   margin: 0 2px 3px 2px;
-  border-radius: 7px;
+  border-radius: 10px;
   box-sizing: border-box;
-  // background: linear-gradient(180deg, #fdfeff, #fdf2f2);
+
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
+  background-position: center;
 
   // 大廳遊戲預設圖logo樣式
   > img[lazy="error"]:first-child,
   img[lazy="loading"]:first-child {
     display: block;
     width: 75px;
-    padding: 25px 2px;
+    padding: 18px 2px;
     margin: 0 auto;
   }
   > img:first-child {
     display: block;
     width: 100%;
-    padding: 0 2px;
+    padding: 0 1.5px;
   }
 
   > span {
