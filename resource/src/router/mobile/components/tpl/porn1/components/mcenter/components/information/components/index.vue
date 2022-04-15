@@ -24,7 +24,7 @@
             v-if="item.hasMsgCount && memInfo.msgCount"
             :class="$style['menu-tips']"
           >
-            {{ memInfo.msgCount >= 99 ? 99 : memInfo.msgCount }}
+            {{ memInfo.msgCount >= 99 ? "99+" : memInfo.msgCount }}
           </div>
         </div>
         <div
