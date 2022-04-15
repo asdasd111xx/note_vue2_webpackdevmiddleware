@@ -155,7 +155,11 @@
                     :class="['getkeyring', phone.length > 10 ? 'active' : '']"
                     @click.prevent="getKeyring"
                   >
-                    获取验证码
+                    {{
+                      phoneVerifybtnSubmit
+                        ? ttlCountDown + "s后重发"
+                        : "获取验证码"
+                    }}
                   </button>
                 </span>
                 <a
@@ -372,7 +376,9 @@ export default {
         { name: "手機登入", page: "mobilelogin" }
       ],
       currentLogin: "accountlogin",
-      ttlCountDown: "60"
+      phoneVerifybtnSubmit: false,
+      ttlCountDown: 0,
+      phoneTimer: null
       // selectData: {
       //   countryCode: {
       //     options: [{ label: "+86", value: "1" }],
@@ -482,7 +488,20 @@ export default {
           phone: `86-${this.phone}`
         }
       }).then(res => {
-        console.log("ttl000", res);
+        if (res && res.status === "000") {
+          this.ttlCountDown = res.data;
+          this.phoneVerifybtnSubmit = true;
+          this.phoneTimer = setInterval(() => {
+            if (this.ttlCountDown <= 1) {
+              this.ttlCountDown = 0;
+              clearInterval(this.phoneTimer);
+              this.phoneVerifybtnSubmit = false;
+              this.phoneTimer = null;
+              return;
+            }
+            this.ttlCountDown -= 1;
+          }, 1500);
+        }
       });
     },
     getPhoneVerifyCode() {
@@ -494,8 +513,11 @@ export default {
           phone: `86-${this.phone}`
         }
       }).then(res => {
-        this.getPhoneTTL();
-        console.log("verifycode", res);
+        if (res && res.status === "000") {
+          this.getPhoneTTL();
+        } else {
+          this.errMsg = res.msg;
+        }
       });
     },
     slideLogin(loginInfo) {
