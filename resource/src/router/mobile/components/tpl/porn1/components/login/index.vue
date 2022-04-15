@@ -479,7 +479,7 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Login/Phone/TTL`,
         params: {
-          username: this.phone
+          phone: `86-${this.phone}`
         }
       }).then(res => {
         console.log("ttl000", res);
