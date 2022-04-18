@@ -271,6 +271,7 @@
                   v-model="epointBankName"
                   :class="$style['input-cgpay-address']"
                   type="text"
+                  maxlength="36"
                   :placeholder="'请输入银行名称'"
                 />
               </div>
