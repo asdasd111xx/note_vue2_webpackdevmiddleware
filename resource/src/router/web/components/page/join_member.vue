@@ -1702,8 +1702,8 @@ export default {
           this.allValue["phone"] === "" ||
           this.allValue["phonettl"] === "" ||
           this.allValue["password"] === "" ||
-          this.allValue["confirm_password"] === "" ||
-          this.allValue["captcha_text"] === ""
+          this.allValue["confirm_password"] === ""
+          // this.allValue["captcha_text"] === ""
         ) {
           this.submitBtnLock = true;
         } else if (
