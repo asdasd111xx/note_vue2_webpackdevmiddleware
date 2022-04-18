@@ -197,8 +197,8 @@ export default {
       showCondition: "",
       showDatePicker: false,
       currentCategory: {
-        key: "",
-        text: "全部"
+        key: "deposit",
+        text: "充值"
       },
       currentDate: { key: "today", text: this.$text("S_TODDAY", "今日") },
       currentDatePicker: "",

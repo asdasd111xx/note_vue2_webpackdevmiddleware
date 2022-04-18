@@ -427,10 +427,8 @@ export default {
     },
     getTotalTime() {
       const params = {
-        start_at: Vue.moment(this.startTime).format(
-          "YYYY-MM-DD 00:00:00-04:00"
-        ),
-        end_at: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+        startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
       };
 
       if (this.selectType.kind) {
@@ -439,21 +437,25 @@ export default {
       }
 
       // 注單統計總資料(依投注日期)
-      return ajax({
-        method: "get",
-        url: "/api/v1/c/stats/wager-report/by-day",
-        params,
-        success: response => {
-          this.mainTime = response.ret.map(item => ({
-            bet: item.bet,
-            count: item.count,
-            day: item.day,
-            payoff: item.payoff,
-            valid_bet: item.valid_bet,
-            list: []
-          }));
-          this.updateGame();
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/WagerReport/ByDayGame`,
+        params
+      }).then(res => {
+        this.updateGame();
+
+        if (!res || !res.data || !res.data.ret || res.data.ret.length === 0) {
+          return;
         }
+
+        this.mainTime = res.data.ret.map(item => ({
+          bet: item.bet,
+          count: item.count,
+          day: item.day,
+          payoff: item.payoff,
+          valid_bet: item.valid_bet,
+          list: []
+        }));
       });
     },
     getGameDetail() {
@@ -479,10 +481,22 @@ export default {
         params
       }).then(res => {
         this.isLoading = false;
-        if (res && res.data && res.data.ret && res.data.ret.length !== 0) {
-          this.mainListData.push(...res.data.ret);
-          this.mainTotal = res.data.total;
-          this.pagination = res.data.pagination;
+
+        if (res && res.msg) {
+          this.actionSetGlobalMessage({ msg: `${res.msg}`, code: res.code });
+          return;
+        }
+
+        if (!res || !res.data || !res.data.ret || res.data.ret.length === 0) {
+          return;
+        }
+
+        const data = res.data;
+
+        if (data) {
+          this.mainListData.push(...data.ret);
+          this.mainTotal = data.total;
+          this.pagination = data.pagination;
           this.mainNoData = false;
         } else {
           this.mainListData = [];
