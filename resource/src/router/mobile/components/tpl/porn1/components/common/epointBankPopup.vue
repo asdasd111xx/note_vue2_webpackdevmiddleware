@@ -40,7 +40,7 @@
           <div
             v-for="(item, index) in orderCardList"
             :key="index"
-            :class="$style['cell']"
+            :class="[$style['cell'], $style['order']]"
             @click="handleClickItemCheck(item)"
           >
             {{ item.account }}
@@ -248,7 +248,7 @@ export default {
     width: 40px;
     // color: var(--addcard_popup_prev_text_color);
     color: #6aaaf5;
-    &.prev {
+    &.sg1 {
       color: #000;
     }
   }
@@ -256,6 +256,7 @@ export default {
   .title {
     width: 100%;
     text-align: center;
+    color: #414655;
   }
 }
 
@@ -292,6 +293,21 @@ export default {
     font-size: 14px;
     padding-left: 23px;
     margin-bottom: 1px;
+    &.order:last-child {
+      padding-left: 45px;
+      &:before {
+        content: "";
+        background-image: url("/static/image/common/mcenter/add_2.png");
+        background-size: 18px 18px;
+        background-position: center;
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        left: 20px;
+        top: 15px;
+        border: 1px dashed #ddd;
+      }
+    }
   }
 
   .select-icon {
