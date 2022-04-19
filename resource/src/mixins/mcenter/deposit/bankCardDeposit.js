@@ -1061,17 +1061,6 @@ export default {
             pay_account: this.epointBankAccount,
             pay_bank_name: this.epointBankName
           };
-
-          goLangApiRequest({
-            method: "post",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Transfer/Account`,
-            params: {
-              bank: this.epointBankName,
-              account: this.epointBankAccount
-            }
-          }).then(() => {
-            this.getUserBankList();
-          });
         } else {
           //綁定的銀行卡
           paramsData = {
@@ -1133,6 +1122,8 @@ export default {
             eventAction: "pay",
             eventLabel: "success"
           });
+
+          if (this.showEpointWalletAddress) this.getUserBankList(); //call這支時 後端的列表好像還沒更新
 
           // console.log(ret, _isWebview);
 
