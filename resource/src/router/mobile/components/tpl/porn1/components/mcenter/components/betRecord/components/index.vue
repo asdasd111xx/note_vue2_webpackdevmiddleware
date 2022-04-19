@@ -442,8 +442,6 @@ export default {
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/WagerReport/ByDayGame`,
         params
       }).then(res => {
-        this.updateGame();
-
         if (!res || !res.data || !res.data.ret || res.data.ret.length === 0) {
           return;
         }
@@ -456,6 +454,8 @@ export default {
           valid_bet: item.valid_bet,
           list: []
         }));
+
+        this.updateGame();
       });
     },
     getGameDetail() {

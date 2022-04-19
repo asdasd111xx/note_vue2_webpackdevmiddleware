@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import mobileContainer from "../../../common/mobileContainer";
 import betRecoard from "./components/index";
 
