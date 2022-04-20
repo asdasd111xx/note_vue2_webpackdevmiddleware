@@ -17,7 +17,8 @@
             v-if="orderCardList.length > 0"
             :class="[
               $style['tab-item'],
-              { [$style['active']]: currentTab === 'orderCardList' }
+              { [$style['active']]: currentTab === 'orderCardList' },
+              $style[routerTPL]
             ]"
             @click="currentTab = 'orderCardList'"
           >
@@ -279,6 +280,10 @@ export default {
       border-radius: 3px;
       &.active {
         border: 1px solid #6dabf2;
+        &.sg1 {
+          border: 1px solid #e53266;
+          color: #e53266;
+        }
       }
     }
   }
@@ -305,7 +310,6 @@ export default {
         position: absolute;
         left: 20px;
         top: 15px;
-        border: 1px dashed #ddd;
       }
     }
   }

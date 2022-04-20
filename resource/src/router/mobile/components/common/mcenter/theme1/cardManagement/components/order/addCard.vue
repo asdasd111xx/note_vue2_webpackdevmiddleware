@@ -29,6 +29,7 @@
             v-model="formData.account"
             type="tel"
             placeholder="请输入银行卡卡号"
+            maxlength="36"
             @input="handleType"
           />
           <div :class="$style['clear-input']" v-if="formData.account">
