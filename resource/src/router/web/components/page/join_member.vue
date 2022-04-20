@@ -1289,18 +1289,9 @@ export default {
     };
   },
   watch: {
-    // currentJoin() {
-    //   switch (this.currentJoin) {
-    //     case "mobilejoin":
-    //       this.submitBtnLock = true;
-    //       break;
-    //     case "accountjoin":
-    //       this.submitBtnLock = true;
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
+    currentJoin() {
+      this.submitBtnLock = true;
+    }
   },
   computed: {
     ...mapGetters({
@@ -1410,7 +1401,7 @@ export default {
     }
   },
   created() {
-    console.log("domainConfig", this.domainConfig);
+    this.submitBtnLock = true;
     //取得成為主播網址
     if (this.siteConfig.ROUTER_TPL === "sg1") {
       this.getBeHostUrl();
@@ -1682,10 +1673,13 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
+
       //帳號註冊按鈕禁能
       if (this.currentJoin === "accountjoin") {
         if (data.isRequired) {
-          if (this.allTip[key] !== "" || this.allValue[key] === "") {
+          if (this.allTip[key] !== "") {
+            this.submitBtnLock = true;
+          } else if (this.allValue[key] === "") {
             this.submitBtnLock = true;
           } else {
             this.submitBtnLock = false;
@@ -1693,6 +1687,8 @@ export default {
         } else {
           if (this.allTip[key] === "") {
             this.submitBtnLock = false;
+          } else {
+            this.submitBtnLock = true;
           }
         }
       }
@@ -1703,7 +1699,6 @@ export default {
           this.allValue["phonettl"] === "" ||
           this.allValue["password"] === "" ||
           this.allValue["confirm_password"] === ""
-          // this.allValue["captcha_text"] === ""
         ) {
           this.submitBtnLock = true;
         } else if (
@@ -2073,9 +2068,6 @@ export default {
       }
       //手機註冊submit
       if (this.currentJoin === "mobilejoin") {
-        // console.log("it's mobilejoin");
-        // console.log(this.allValue);
-        // console.log(Object.keys(this.allValue));
         const params = {
           lang: "zh-cn",
           aid:
@@ -2156,7 +2148,16 @@ export default {
                 }
               }
             }
-
+            // GA流量統計
+            window.dataLayer.push({
+              dep: 2,
+              event: "ga_click",
+              eventCategory: "sign_up",
+              eventAction: "sign_up",
+              eventLabel: "sign_up",
+              ga_hall_id: 3820325,
+              ga_domain_id: this.memInfo.user.domain
+            });
             if (this.isWebview) {
               appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
               return;
@@ -2282,7 +2283,7 @@ export default {
                   }
                   window.RESET_MEM_SETTING();
                   window.RESET_LOCAL_SETTING();
-                  alert("stop");
+
                   if (this.siteConfig.ROUTER_TPL === "sg1") {
                     window.location.href =
                       "/mobile/live/iframe/home?hasFooter=true";
