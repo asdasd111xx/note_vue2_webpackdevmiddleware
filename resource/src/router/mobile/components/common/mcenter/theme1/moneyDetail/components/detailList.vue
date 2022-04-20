@@ -172,7 +172,7 @@ export default {
       if (!this.currentCategory.key) {
         // 返水,活動歸類在優惠
         if (["activity", "rebate"].includes(item.category[0])) {
-          itemCategory = "bonus";
+          itemCategory = "rebate";
         }
 
         if (this.categoryList && this.categoryList.length) {
@@ -188,7 +188,7 @@ export default {
     },
     getCategory(item) {
       if (["activity", "rebate"].includes(item.category[0])) {
-        return "bonus";
+        return "activity";
       }
 
       if (this.currentCategory.key === "outer") {
