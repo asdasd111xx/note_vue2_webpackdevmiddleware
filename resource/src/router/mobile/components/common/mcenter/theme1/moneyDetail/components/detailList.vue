@@ -15,9 +15,9 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${getCategory(
-                  item
-                )}.png`
+                `/static/image/${
+                  routerTPL === 'sg1' ? 'sg1' : 'common'
+                }/mcenter/moneyDetail/icon_${getCategory(item)}.png`
               )
             "
           />
@@ -171,8 +171,8 @@ export default {
 
       if (!this.currentCategory.key) {
         // 返水,活動歸類在優惠
-        if (["activity"].includes(item.category[0])) {
-          itemCategory = "rebate";
+        if (["activity", "rebate"].includes(item.category[0])) {
+          itemCategory = "bonus";
         }
 
         if (this.categoryList && this.categoryList.length) {
@@ -187,8 +187,8 @@ export default {
       return name;
     },
     getCategory(item) {
-      if (item.category[0] === "rebate") {
-        return "activity";
+      if (["activity", "rebate"].includes(item.category[0])) {
+        return "bonus";
       }
 
       if (this.currentCategory.key === "outer") {
