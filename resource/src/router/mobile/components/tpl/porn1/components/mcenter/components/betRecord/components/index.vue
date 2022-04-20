@@ -428,7 +428,9 @@ export default {
     getTotalTime() {
       const params = {
         startAt: Vue.moment(this.startTime).format("YYYY-MM-DD 00:00:00-04:00"),
-        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00")
+        endAt: Vue.moment(this.endTime).format("YYYY-MM-DD 23:59:59-04:00"),
+        maxResults: this.maxResults,
+        firstResult: this.maxResults * this.showPage
       };
 
       if (this.selectType.kind) {
@@ -439,16 +441,16 @@ export default {
       // 注單統計總資料(依投注日期)
       return goLangApiRequest({
         method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/WagerReport/ByDayGame`,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Stats/WagerReport/ByDay`,
         params
       }).then(res => {
         this.updateGame();
 
-        if (!res || !res.data || !res.data.ret || res.data.ret.length === 0) {
+        if (!res || !res.data || !res.data || res.data.length === 0) {
           return;
         }
 
-        this.mainTime = res.data.ret.map(item => ({
+        this.mainTime = res.data.map(item => ({
           bet: item.bet,
           count: item.count,
           day: item.day,
