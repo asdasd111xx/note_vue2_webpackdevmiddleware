@@ -15,9 +15,9 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${getCategory(
-                  item
-                )}.png`
+                `/static/image/${
+                  routerTPL === 'sg1' ? 'sg1' : 'common'
+                }/mcenter/moneyDetail/icon_${getCategory(item)}.png`
               )
             "
           />
