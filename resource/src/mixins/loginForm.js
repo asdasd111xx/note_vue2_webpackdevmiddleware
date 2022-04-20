@@ -78,6 +78,7 @@ export default {
   },
   created() {
     this.getCaptcha();
+    this.phone = localStorage.getItem("mobileusername") || "";
     this.username = localStorage.getItem("username") || "";
     this.password = localStorage.getItem("password") || "";
     this.rememberPwd = localStorage.getItem("rememberPwd") === "true";
@@ -272,10 +273,6 @@ export default {
           }
         }).then(res => {
           this.isLoading = false;
-          console.log("VerifyPhoneLoginSubmit", res);
-          if (res && res.status === "000") {
-            alert("驗證成功");
-          }
           // 重置驗證碼
           if (this.$refs.thirdyCaptchaObj)
             this.$refs.thirdyCaptchaObj.ret = null;
@@ -445,9 +442,15 @@ export default {
         return;
       }
 
-      localStorage.setItem("username", this.username);
-      localStorage.setItem("password", this.password);
-      localStorage.setItem("rememberPwd", this.rememberPwd);
+      if (this.currentLogin === "accountlogin") {
+        localStorage.setItem("username", this.username);
+        localStorage.setItem("password", this.password);
+        localStorage.setItem("rememberPwd", this.rememberPwd);
+      } else {
+        localStorage.setItem("mobileusername", this.phone);
+        localStorage.setItem("password", this.password);
+        localStorage.setItem("rememberPwd", this.rememberPwd);
+      }
     }
   }
 };

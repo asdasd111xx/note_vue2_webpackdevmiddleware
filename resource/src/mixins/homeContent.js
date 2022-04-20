@@ -290,20 +290,12 @@ export default {
     }
   },
   mounted() {
-    // 會員首次註冊登入彈窗
-    let joinmemberdate = Vue.moment(this.memInfo.user.created_at).format(
-      "YYYY-MM-DD HH:mm"
-    );
-    let now = Vue.moment(Date.now()).format("YYYY-MM-DD HH:mm");
-
-    if (
-      this.loginStatus &&
-      joinmemberdate === now &&
-      localStorage.getItem("mobilejoin")
-    ) {
+    // 會員首次以手機註冊登入彈窗
+    if (localStorage.getItem("first_time_login")) {
       setTimeout(() => {
         this.joinmemberPop = true;
-      }, 2500);
+        localStorage.removeItem("first_time_login");
+      }, 1000);
     }
 
     window.addEventListener("resize", this.onResize);

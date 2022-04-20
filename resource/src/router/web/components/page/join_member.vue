@@ -1289,18 +1289,18 @@ export default {
     };
   },
   watch: {
-    currentJoin() {
-      switch (this.currentJoin) {
-        case "mobilejoin":
-          this.submitBtnLock = true;
-          break;
-        case "accountjoin":
-          this.submitBtnLock = true;
-          break;
-        default:
-          break;
-      }
-    }
+    // currentJoin() {
+    //   switch (this.currentJoin) {
+    //     case "mobilejoin":
+    //       this.submitBtnLock = true;
+    //       break;
+    //     case "accountjoin":
+    //       this.submitBtnLock = true;
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
   },
   computed: {
     ...mapGetters({
@@ -2071,7 +2071,7 @@ export default {
       if (!this.checkField()) {
         return;
       }
-
+      //手機註冊submit
       if (this.currentJoin === "mobilejoin") {
         // console.log("it's mobilejoin");
         // console.log(this.allValue);
@@ -2094,6 +2094,7 @@ export default {
           captchaText: this.allValue.captcha_text,
           smsSpeedyRegister: this.domainConfig.sms_speedy_register
         };
+        const self = this;
         if (Number(localStorage.getItem("x-channelid"))) {
           params["register_channel"] = Number(
             localStorage.getItem("x-channelid")
@@ -2102,6 +2103,9 @@ export default {
         goLangApiRequest({
           method: "post",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/PhoneRegister`,
+          headers: {
+            Vendor: this.memInfo.user.domain
+          },
           params: {
             ...params
           }
@@ -2109,6 +2113,13 @@ export default {
           setTimeout(() => {
             this.isLoading = false;
           }, 1000);
+          if (this.$refs.thirdyCaptchaObj)
+            this.$refs.thirdyCaptchaObj.ret = null;
+
+          if (captchaInfo && captchaInfo.slideFuc) {
+            captchaInfo.slideFuc.reset();
+          }
+          this.allValue.captcha_text = "";
 
           if (res.status !== "000") {
             this.mobileJoinErrMag = res.msg;
@@ -2116,16 +2127,54 @@ export default {
             if (res.errors && res.errors.phone) {
               this.allTip["phone"] = res.errors.phone;
             }
+
+            if (res.response && res.status === "506") {
+              this.actionGetToManyRequestMsg(res.msg).then(res => {
+                this.registerSubmitFail = true;
+                this.errMsg = res;
+              });
+              return;
+            }
           } else {
+            let cookieData;
+            if (res.data) {
+              cookieData = res.data;
+            }
+            if (cookieData && res.data && cookieData.session) {
+              if (
+                cookieData.redirect &&
+                cookieData.redirect_url &&
+                getCookie("platform") === "h"
+              ) {
+                this.redirect_url = cookieData.redirect_url;
+                this.showRedirectJump = true;
+              } else {
+                try {
+                  setCookie("cid", cookieData.session.id);
+                } catch (e) {
+                  setCookie("cid", cookieData.session.id);
+                }
+              }
+            }
+
+            if (this.isWebview) {
+              appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
+              return;
+            }
+
+            self.actionSetUserdata(true);
             this.actionSetGlobalMessage({
               msg: "注册成功",
               cb: () => {
-                localStorage.setItem("mobilejoin", true);
+                if (res && res.data.user.first_time_login) {
+                  localStorage.setItem("first_time_login", true);
+                }
+
                 if (localStorage.getItem("rememberPwd")) {
-                  localStorage.setItem("username", this.allValue.username);
+                  localStorage.setItem("mobileusername", this.allValue.phone);
                   localStorage.setItem("password", this.allValue.password);
                 } else {
-                  localStorage.removeItem("username");
+                  localStorage.removeItem("mobileusername");
                   localStorage.removeItem("password");
                 }
                 window.RESET_MEM_SETTING();
@@ -2141,6 +2190,7 @@ export default {
           }
         });
       } else {
+        //帳號註冊submit
         const promotionCode =
           !localStorage.getItem("x-channelid") ||
           !Number(localStorage.getItem("x-channelid")) ||
@@ -2232,6 +2282,7 @@ export default {
                   }
                   window.RESET_MEM_SETTING();
                   window.RESET_LOCAL_SETTING();
+                  alert("stop");
                   if (this.siteConfig.ROUTER_TPL === "sg1") {
                     window.location.href =
                       "/mobile/live/iframe/home?hasFooter=true";
