@@ -15,9 +15,9 @@
           <img
             :src="
               $getCdnPath(
-                `/static/image/${routerTPL}/mcenter/moneyDetail/icon_${getCategory(
-                  item
-                )}.png`
+                `/static/image/${
+                  routerTPL === 'sg1' ? 'sg1' : 'common'
+                }/mcenter/moneyDetail/icon_${getCategory(item)}.png`
               )
             "
           />
@@ -165,14 +165,16 @@ export default {
     }
   },
   methods: {
+    // 顯示名稱
     getCategoryName(item) {
+      // 預設分類名稱
       let name = this.currentCategory.text;
       let itemCategory = item.category[0];
 
-      if (!this.currentCategory.key) {
+      if (!this.currentCategory.key || name === "全部") {
         // 返水,活動歸類在優惠
         if (["activity", "rebate"].includes(item.category[0])) {
-          itemCategory = "bonus";
+          itemCategory = "rebate";
         }
 
         if (this.categoryList && this.categoryList.length) {
@@ -186,9 +188,10 @@ export default {
 
       return name;
     },
+    // icon
     getCategory(item) {
       if (["activity", "rebate"].includes(item.category[0])) {
-        return "bonus";
+        return "activity";
       }
 
       if (this.currentCategory.key === "outer") {
@@ -201,6 +204,7 @@ export default {
       return thousandsCurrency(value);
     },
     onClick(info) {
+      info.displayCategoryName = this.getCategoryName(info);
       this.$emit("update:detailInfo", info);
       this.$emit("openSlider");
       localStorage.setItem("money-detail-id", info.id);
