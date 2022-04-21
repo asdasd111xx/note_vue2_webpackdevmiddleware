@@ -1123,7 +1123,11 @@ export default {
             eventLabel: "success"
           });
 
-          if (this.showEpointWalletAddress) this.getUserBankList(); //call這支時 後端的列表好像還沒更新
+          if (this.showEpointWalletAddress) {
+            this.getUserBankList();
+            this.epointBankName = "";
+            this.epointBankAccount = "";
+          }
 
           // console.log(ret, _isWebview);
 

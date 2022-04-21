@@ -59,7 +59,7 @@
           <p>新的银行卡将覆盖最旧的银行卡</p>
         </div>
 
-        <div :class="[$style['button-block']]">
+        <div :class="[$style['button-block'], $style[routerTPL]]">
           <span @click="isShowPop = false">
             {{ $text("S_CANCEL", "取消") }}
           </span>
@@ -263,6 +263,7 @@ export default {
     margin-bottom: 10px;
   }
   p {
+    text-align: left;
     margin: 0;
   }
 }
@@ -291,11 +292,9 @@ export default {
     text-align: center;
     font-size: 18px;
     font-weight: 700;
-
-    &:nth-child(2) {
-      // color: var(--popup_text_color1);
-      color: #6aaaf5;
-    }
+  }
+  &.sg1 {
+    color: #000;
   }
 }
 </style>

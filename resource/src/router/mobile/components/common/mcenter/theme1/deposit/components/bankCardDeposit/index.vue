@@ -273,6 +273,7 @@
                   type="text"
                   maxlength="36"
                   :placeholder="'请输入银行名称'"
+                  @input="replaceEpointWhiteSpace"
                 />
               </div>
               <div :class="[$style['other-bank-input-text'], $style['border']]">
@@ -280,8 +281,9 @@
                 <input
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
-                  type="tel"
+                  type="text"
                   :placeholder="'请输入银行帐号'"
+                  @input="replaceEpointWhiteSpace"
                 />
               </div>
               <div :class="[$style['wallet-address-text'], $style['less']]">
@@ -2455,6 +2457,10 @@ export default {
     },
     setEpointBank(item) {
       this.defaultEpointWallet = item;
+    },
+    replaceEpointWhiteSpace() {
+      this.epointBankName = this.epointBankName.replace(/\s+/, "");
+      this.epointBankAccount = this.epointBankAccount.replace(/\s+/, "");
     },
     toggleEye(value) {
       if (value === "cg") {

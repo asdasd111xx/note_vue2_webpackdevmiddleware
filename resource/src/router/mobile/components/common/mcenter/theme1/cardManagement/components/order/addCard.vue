@@ -27,7 +27,7 @@
         <div :class="$style['input-wrap']">
           <input
             v-model="formData.account"
-            type="tel"
+            type="text"
             placeholder="请输入银行卡卡号"
             maxlength="36"
             @input="handleType"
@@ -85,6 +85,8 @@ export default {
   },
   methods: {
     handleType() {
+      this.formData.bank = this.formData.bank.replace(/\s+/, "");
+      this.formData.account = this.formData.account.replace(/\s+/, "");
       this.errorMsg = "";
       this.$emit(
         "update",

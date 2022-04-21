@@ -289,12 +289,14 @@ export default {
   }
 
   .cell {
+    display: flex;
+    align-items: center;
+    padding-right: 35px;
     position: relative;
     background-color: #ffffff;
     // color: var(--addcard_popup_text_color);
     color: #414655;
     height: 50px;
-    line-height: 50px;
     font-size: 14px;
     padding-left: 23px;
     margin-bottom: 1px;
