@@ -49,7 +49,6 @@ if (window && window.parent) {
     "*"
   );
 }
-console.log(1222);
 window.RESET_LOCAL_SETTING = reload => {
   //beforeEnter最外層router時，登出時，launch倒數頁時，註冊成功時（舉例getlocalstorge("live-iframe-launch-home（判斷是否為首次進入首頁，是則iframe的src+=&islaunch=true並setlocolstorge））
   // 首頁選單選單

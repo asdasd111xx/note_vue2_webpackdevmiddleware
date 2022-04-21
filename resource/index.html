@@ -133,8 +133,7 @@
     })(window, document, 'script', 'dataLayer', 'GTM-MNTWRH2');
     //友盟
     var ymkey = '';
-
-    fetch(`/conf/domain`)
+    fetch(`/conf/domain`)//這邊取的domain  for ga，友盟
       .then(function (response) {
         h = response.headers;
         return response.json();

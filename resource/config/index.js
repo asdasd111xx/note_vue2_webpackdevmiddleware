@@ -6,7 +6,7 @@ const outputDirName = process.env.CDN_HOST
   : "www";
 
 // 币发BIFA 500015
-// const domain = "https://yb01.66boxing.com/";
+const domain = "https://yb01.66boxing.com/";
 // Beta 100003
 // const domain = "https://ybbe1.777vendor.com/";
 // Demo 69
@@ -15,7 +15,7 @@ const outputDirName = process.env.CDN_HOST
 // const domain = "https://bf0168q.com/";
 
 // 泡泡 500035
-const domain = "https://sgtt.66boxing.com/";
+// const domain = "https://sgtt.66boxing.com/";
 // Beta 100009
 // const domain ="https://sg.66apples.com";
 // Demo 81
@@ -66,6 +66,7 @@ module.exports = {
       //發送請求有兩種
       //1. goland，axios 有完整的域名http://... 就是向該域名發送請求，有後續的展開
       //
+      //2.0順序 ('/conf/domain') 找到'/conf' -> 找到'/conf'.target(是一組domain(https://yb01.66boxing.com/這邊就進到enginx了) -> 再進到nginx找 endpoint'/conf/domain'
       //2.1 "/conf/domain" (以bifa為例)(開發環境下)
       //    1.找到dev.porxyTable.['conf'].target 的domain // https://yb01.66boxing.com/  (是一個nginx伺服器)
       //    2.連到該domain的nginx伺服器（ 可以看檔案 dev-server.js 裡面搜尋 app.use(proxyMiddleware(options.filter || context, options));）
@@ -73,11 +74,12 @@ module.exports = {
       //   ps.如果是nginx沒有設的endpoint 就會走本地的路徑 (ex./static 是本地的圖片資料夾)
       //
       //2.2 除了dev 會需要用到這個方式 (因為是devsever 會是localhost:8787)
-      //    1.其他情況(舉例bifa測試站)，發送請求為https://yb01.66boxing.com/conf/domain 就不會經過proxytable了(本來就已經連到nginx了)
+      //    1.其他情況(舉例bifa測試站)，發送請求為https://yb01.66boxing.com/conf/domain 就不會經過proxytable了(本來就在nginx了)
+
       "/api": {
-        target: domain,
-        changeOrigin: true,
-        ws: true,
+        target: domain, // 传递给http(s)请求的对象
+        changeOrigin: true, // 是否将主机头的源更改为目标URL
+        ws: true, // 是否代理websocket
         secure: false
         // onProxyRes(proxyRes, req, res) {
         //     RD5 如果要看 cookie，就解放下面這行就可以了
@@ -102,6 +104,12 @@ module.exports = {
         target: domain,
         changeOrigin: true,
         secure: false
+        //pathRewrite 的作用為：當"/conf"僅作為key值專接後並非實際endpoint接口時（e.g. 開發接口:https://localhost:8787/conf/domain 實際nginx的目的接口為 https://yb01.66boxing.com/domain）(/conf僅為替換用途)
+        //實際情形在本專案 https://localhost:8787/conf/domain 就是對應到 https://yb01.66boxing.com/conf/domain ，“所以用不到pathRewrite”
+        // pathRewrite: {
+        // "^/conf": "/conf" // 这种接口配置出来     http://XX.XX.XX.XX:8083/conf/login
+        // "^/conf": "/" //这种接口配置出来     http://XX.XX.XX.XX:8083/login
+        // }
       },
       "/exsport": {
         target: domain,

@@ -1,3 +1,8 @@
+//build 在gitlab下allQa 後台行為 === node --max_old_space_size=2048 build/build.js 有後續展開（可參考Drone.CI）
+//
+//
+//
+
 require("./check-versions")();
 
 process.env.NODE_ENV = "production";
