@@ -7,12 +7,15 @@
           {{ $text("S_CANCEL", "取消") }}
         </div>
         <div :class="$style['title']">
-          {{ openType === "deposit" ? "挂单银行" : "选择银行" }}
+          挂单银行
         </div>
       </div>
 
-      <div :class="$style['content']">
-        <div :class="$style['tab-wrap']">
+      <div
+        :class="$style['content']"
+        :style="{ marginTop: openType === 'withdraw' ? '10px' : '' }"
+      >
+        <div v-if="openType === 'deposit'" :class="$style['tab-wrap']">
           <div
             v-if="orderCardList.length > 0"
             :class="[
