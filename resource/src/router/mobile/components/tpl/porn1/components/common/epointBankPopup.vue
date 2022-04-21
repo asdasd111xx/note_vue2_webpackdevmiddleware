@@ -28,7 +28,8 @@
             v-if="bankList.length > 0"
             :class="[
               $style['tab-item'],
-              { [$style['active']]: currentTab === 'bankList' }
+              { [$style['active']]: currentTab === 'bankList' },
+              $style[routerTPL]
             ]"
             @click="currentTab = 'bankList'"
           >
