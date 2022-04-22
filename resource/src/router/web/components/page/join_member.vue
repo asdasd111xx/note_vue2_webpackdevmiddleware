@@ -2276,12 +2276,10 @@ export default {
                 appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
                 return;
               }
-              console.log(res);
-              // self.actionSetUserdata(true);
+              self.actionSetUserdata(true);
               this.actionSetGlobalMessage({
                 msg: "注册成功",
                 cb: () => {
-                  alert("stop");
                   if (localStorage.getItem("rememberPwd")) {
                     localStorage.setItem("username", this.allValue.username);
                     localStorage.setItem("password", this.allValue.password);
