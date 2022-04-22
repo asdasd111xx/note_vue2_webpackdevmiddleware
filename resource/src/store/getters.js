@@ -217,5 +217,6 @@ export default {
   getVersion: state => state.version,
   getLiveMaintain: state => state.liveMaintain,
   getActivity: state => state.activity,
-  getLiveFooterMask: state => state.liveFooterMask
+  getLiveFooterMask: state => state.liveFooterMask,
+  getLiveViewPath: state => state.liveViewPath
 };

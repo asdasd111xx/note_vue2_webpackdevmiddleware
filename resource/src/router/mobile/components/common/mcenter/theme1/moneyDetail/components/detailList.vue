@@ -165,11 +165,13 @@ export default {
     }
   },
   methods: {
+    // 顯示名稱
     getCategoryName(item) {
+      // 預設分類名稱
       let name = this.currentCategory.text;
       let itemCategory = item.category[0];
 
-      if (!this.currentCategory.key) {
+      if (!this.currentCategory.key || name === "全部") {
         // 返水,活動歸類在優惠
         if (["activity", "rebate"].includes(item.category[0])) {
           itemCategory = "rebate";
@@ -186,21 +188,29 @@ export default {
 
       return name;
     },
+    // icon
     getCategory(item) {
-      if (["activity", "rebate"].includes(item.category[0])) {
+      const categoryText =
+        this.currentCategory.text === "全部"
+          ? item.category[0]
+          : this.currentCategory.key;
+
+      if (["activity", "rebate"].includes(categoryText)) {
         return "activity";
       }
 
-      if (this.currentCategory.key === "outer") {
+      // 泡泡
+      if (categoryText === "outer") {
         return "vendor";
       }
 
-      return item.category[0];
+      return categoryText;
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
     },
     onClick(info) {
+      info.displayCategoryName = this.getCategoryName(info);
       this.$emit("update:detailInfo", info);
       this.$emit("openSlider");
       localStorage.setItem("money-detail-id", info.id);
