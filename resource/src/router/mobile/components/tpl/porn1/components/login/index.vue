@@ -236,7 +236,7 @@
                 <div class="input-icon">
                   <img
                     :src="
-                      $getCdnPath(`/static/image/common/login/sign_captcha.png`)
+                      $getCdnPath(`/static/image/common/login/icon_code.png`)
                     "
                   />
                 </div>
@@ -372,8 +372,8 @@ export default {
       thirdyCaptchaObj: null,
       script: null,
       tabs: [
-        { name: "帳號登入", page: "accountlogin" },
-        { name: "手機登入", page: "mobilelogin" }
+        { name: "帐号登录", page: "accountlogin" },
+        { name: "手机登录", page: "mobilelogin" }
       ],
       currentLogin: "accountlogin",
       phoneVerifybtnSubmit: false,

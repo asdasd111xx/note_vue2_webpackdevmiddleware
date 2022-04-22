@@ -694,6 +694,7 @@
                 :class="[
                   $style['field-title'],
                   $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
                   'clearfix'
                 ]"
                 @click="
@@ -709,6 +710,7 @@
                 :class="[
                   $style['field-right'],
                   $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
                   'clearfix'
                 ]"
               >
@@ -738,6 +740,7 @@
                 :class="[
                   $style['field-title'],
                   $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
                   'clearfix'
                 ]"
                 @click="
@@ -751,6 +754,7 @@
                 :class="[
                   $style['field-right'],
                   $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
                   'clearfix'
                 ]"
               >
@@ -806,6 +810,7 @@
                 :class="[
                   $style['field-title'],
                   $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
                   $style[`field-${field.key}`],
                   {
                     [$style[`show-red-star-${siteConfig.ROUTER_TPL}`]]:
@@ -827,6 +832,7 @@
                 :class="[
                   $style['field-right'],
                   $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
                   'clearfix'
                 ]"
               >
@@ -1125,8 +1131,8 @@ export default {
   data() {
     return {
       tabs: [
-        { name: "帳號註冊", page: "accountjoin" },
-        { name: "手機註冊", page: "mobilejoin" }
+        { name: "帐号注册", page: "accountjoin" },
+        { name: "手机注册", page: "mobilejoin" }
       ],
       currentJoin: "accountjoin",
       dateLang: datepickerLang(this.$i18n.locale),
@@ -2270,10 +2276,12 @@ export default {
                 appEvent.jsToAppMessage("PLAYER_REGIST_SUCCESS");
                 return;
               }
-              self.actionSetUserdata(true);
+              console.log(res);
+              // self.actionSetUserdata(true);
               this.actionSetGlobalMessage({
                 msg: "注册成功",
                 cb: () => {
+                  alert("stop");
                   if (localStorage.getItem("rememberPwd")) {
                     localStorage.setItem("username", this.allValue.username);
                     localStorage.setItem("password", this.allValue.password);
