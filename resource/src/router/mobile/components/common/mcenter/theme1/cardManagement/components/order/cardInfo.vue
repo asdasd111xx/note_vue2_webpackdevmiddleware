@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -99,6 +99,7 @@ export default {
     this.getUserOrderCardList();
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserOrderCardList() {
       this.isRevice = false;
       return goLangApiRequest({
@@ -126,6 +127,7 @@ export default {
       }).then(res => {
         if (res && res.status === "000" && res.errorCode === "00") {
           this.order_card = this.order_card.filter(v => v.id !== id);
+          this.actionSetGlobalMessage({ msg: "删除成功" });
         }
       });
     },
