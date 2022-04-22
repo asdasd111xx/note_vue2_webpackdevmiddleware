@@ -7,7 +7,7 @@
       id="screenshot"
     >
       <div :class="[$style['home-joinmem-pop']]">
-        <h1>{{ siteConfig.SITE_NAME }}，註冊成功</h1>
+        <h1>{{ siteConfig.SITE_NAME }}，注册成功</h1>
         <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
         <div :class="[$style['content']]">
           <p :class="[$style['account']]">
@@ -19,7 +19,7 @@
         </div>
         <div :class="[$style['btn-wrap']]">
           <button @click="downloadImage">保存至相簿</button>
-          <button @click="joinmemberPop = false">進首頁</button>
+          <button @click="joinmemberPop = false">进首页</button>
         </div>
       </div>
     </div>
