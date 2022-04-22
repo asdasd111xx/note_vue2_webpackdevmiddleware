@@ -190,15 +190,21 @@ export default {
     },
     // icon
     getCategory(item) {
-      if (["activity", "rebate"].includes(item.category[0])) {
+      const categoryText =
+        this.currentCategory.text === "全部"
+          ? item.category[0]
+          : this.currentCategory.key;
+
+      if (["activity", "rebate"].includes(categoryText)) {
         return "activity";
       }
 
-      if (this.currentCategory.key === "outer") {
+      // 泡泡
+      if (categoryText === "outer") {
         return "vendor";
       }
 
-      return item.category[0];
+      return categoryText;
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
