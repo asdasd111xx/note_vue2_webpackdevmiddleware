@@ -300,6 +300,7 @@ export default {
   created() {
     this.actionSetActivity();
     if (this.loginStatus) this.getRedJackpot();
+    this.actionSetMcenterMsgCount();
   },
   methods: {
     ...mapActions([
@@ -307,7 +308,8 @@ export default {
       "actionGetLayeredURL",
       "actionGetActingURL",
       "actionGetRegisterURL",
-      "actionSetActivity"
+      "actionSetActivity",
+      "actionSetMcenterMsgCount"
     ]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
@@ -880,7 +882,7 @@ export default {
 .information-dot {
   position: absolute;
   left: 11px;
-  background: #e42a30;
+  background: #fb4e74;
   border-radius: 20px;
   // width: 18px;
   // height: 18px;
