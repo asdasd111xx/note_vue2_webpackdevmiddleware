@@ -37,8 +37,35 @@ export default {
       version: "getVersion"
     }),
     isSlideAble() {
-      if (!this.username || !this.password) {
-        return false;
+      // 簡訊驗證登入 0: 關, 1:簡訊, 2:密碼
+      if (this.mobileLoginTypeSwitch === 0) {
+        if (!this.username || !this.password) {
+          return false;
+        }
+      }
+
+      if (this.mobileLoginTypeSwitch === 1) {
+        if (this.currentLogin === "accountlogin") {
+          if (this.username === "" || this.password === "") {
+            return false;
+          }
+        } else {
+          if (this.phone === "" || this.phone_validation_code === "") {
+            return false;
+          }
+        }
+      }
+
+      if (this.mobileLoginTypeSwitch === 2) {
+        if (this.currentLogin === "accountlogin") {
+          if (this.username === "" || this.password === "") {
+            return false;
+          }
+        } else {
+          if (this.phone === "" || this.password === "") {
+            return false;
+          }
+        }
       }
 
       return true;
@@ -205,21 +232,21 @@ export default {
       if (this.isBackEnd) {
         return;
       }
-      
+
       if (this.memInfo.config.login_security) {
-      let params ={};
-      switch (this.currentLogin) {
-        case "accountlogin":
-          params = {username: this.username};
-          break;
-        case "mobilelogin":
-          params = {phone: `86-${this.phone}`};
-          break;
-      }
+        let params = {};
+        switch (this.currentLogin) {
+          case "accountlogin":
+            params = { username: this.username };
+            break;
+          case "mobilelogin":
+            params = { phone: `86-${this.phone}` };
+            break;
+        }
         ajax({
           method: "put",
           url: apis.API_LOGIN_CHECK,
-          params: {...params},
+          params: { ...params },
           errorAlert: false,
           success: res => {
             this.isLoading = false;
