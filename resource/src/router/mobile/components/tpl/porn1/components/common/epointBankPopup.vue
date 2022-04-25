@@ -304,6 +304,7 @@ export default {
     font-size: 14px;
     padding-left: 23px;
     margin-bottom: 1px;
+    word-break: break-all;
     &.order:last-child {
       padding-left: 45px;
       &:before {
@@ -374,6 +375,7 @@ export default {
       margin-bottom: 10px;
     }
     p {
+      text-align: left;
       margin: 0;
     }
   }

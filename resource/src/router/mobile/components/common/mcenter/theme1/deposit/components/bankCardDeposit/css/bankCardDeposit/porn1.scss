@@ -524,13 +524,9 @@
 .select-epoint-bank-item {
   height: 23px;
   margin-left: 100px;
+  margin-right: 20px;
   font-size: 14px;
-
-  img {
-    height: 19px;
-    right: 10px;
-    float: right;
-  }
+  word-break: break-all;
 }
 
 .select-bank-icon {

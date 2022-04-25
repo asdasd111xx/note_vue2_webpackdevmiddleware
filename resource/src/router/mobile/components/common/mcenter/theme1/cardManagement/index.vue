@@ -220,7 +220,7 @@ export default {
           break;
         // 卡片管理-掛單
         case "orderCardInfo":
-          return this.$text("S_ORDERCARD", "挂单银行卡");
+          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
 
         // 添加銀行卡
         case "addBankCard":

@@ -246,10 +246,11 @@
                 @click="setPopupStatus(true, 'epointBank')"
               >
                 {{ defaultEpointWallet.account }}
-                <img
-                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                />
               </div>
+              <img
+                :class="$style['select-bank-icon']"
+                :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+              />
             </div>
 
             <!-- v-if="showEpointWalletAddress" -->
