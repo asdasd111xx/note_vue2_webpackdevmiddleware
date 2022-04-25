@@ -155,9 +155,7 @@
                     @click.prevent="getKeyring"
                   >
                     {{
-                      phoneVerifybtnSubmit
-                        ? ttlCountDown + "s后重发"
-                        : "获取验证码"
+                      phoneVerifybtnSubmit ? ttlCountDown + "s" : "获取验证码"
                     }}
                   </button>
                 </span>
@@ -476,8 +474,8 @@ export default {
       }
     },
     getKeyring() {
-      if(this.phone.length > 10 ){
-       this.getPhoneVerifyCode(); 
+      if (this.phone.length > 10) {
+        this.getPhoneVerifyCode();
       }
       return;
     },

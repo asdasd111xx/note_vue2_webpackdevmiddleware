@@ -779,11 +779,7 @@
                 ]"
                 @click="mobileJoinGetCode"
               >
-                {{
-                  phoneVerifybtnSubmit
-                    ? phoneTtlCount + "s后重发"
-                    : "获取验证码"
-                }}
+                {{ phoneVerifybtnSubmit ? phoneTtlCount + "s" : "获取验证码" }}
               </span>
               <div :class="$style['not-receive-code']">
                 <a href="/mobile/mcenter/help/support">{{
