@@ -321,6 +321,12 @@ textarea {
     color: #ffffff;
     background-color: #d1b79c;
   }
+  &.from-edit {
+    background-color: #d2d2d2;
+    &.active {
+      background-color: #000;
+    }
+  }
 }
 
 .top-tips {

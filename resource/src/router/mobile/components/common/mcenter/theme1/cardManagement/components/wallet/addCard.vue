@@ -571,7 +571,7 @@ export default {
             query: { type: "wallet" },
             replace: true
           });
-          this.setPageStatus(1, "walletCardInfo", true);
+          this.setPageStatus("walletCardInfo", true);
         }
       }
     }
@@ -975,7 +975,7 @@ export default {
       let redirect = _redirect || query?.redirect;
       this.$emit("update:addBankCardStep", "one");
       if (!redirect) {
-        this.setPageStatus(1, "walletCardInfo", true);
+        this.setPageStatus("walletCardInfo", true);
         return;
       }
 

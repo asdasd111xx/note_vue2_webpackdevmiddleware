@@ -76,6 +76,17 @@
     width: 100%;
   }
 }
+.order-confirm {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 12px;
+  line-height: 43px;
+  color: var(--mcenter_slider_text_color);
+  &.active {
+    color: var(--mcenter_slider_text_active_color);
+  }
+}
 
 .tab-wrap {
   position: fixed;
