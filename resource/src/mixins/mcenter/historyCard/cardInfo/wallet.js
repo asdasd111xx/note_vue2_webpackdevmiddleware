@@ -82,7 +82,7 @@ export default {
           // 切換當前頁面狀態
           this.$emit("update:showDetail", false);
           this.$emit("update:editStatus", false);
-          this.setPageStatus(1, "walletCardInfo", true);
+          this.setPageStatus("walletCardInfo", true);
         });
       });
     },
@@ -118,7 +118,7 @@ export default {
             } else {
               this.actionSetGlobalMessage({ msg: "刪除成功" });
               this.$emit("update:showDetail", false);
-              this.setPageStatus(1, "walletCardInfo", true);
+              this.setPageStatus("walletCardInfo", true);
             }
           });
       });

@@ -113,7 +113,7 @@ export default {
               key: "editStatus",
               value: false
             });
-            this.setPageStatus(0, "bankCardInfo", true);
+            this.setPageStatus("bankCardInfo", true);
           });
         })
         .catch(error => {
@@ -181,7 +181,7 @@ export default {
                   key: "showDetail",
                   value: false
                 });
-                this.setPageStatus(0, "bankCardInfo", true);
+                this.setPageStatus("bankCardInfo", true);
                 return;
               }
             });

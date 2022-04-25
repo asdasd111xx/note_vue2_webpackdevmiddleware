@@ -39,9 +39,20 @@
           alt="more"
         />
       </div>
+      <!-- 掛單銀行卡-完成 -->
+      <div
+        v-if="currentPage === 'addOrderCard'"
+        :class="[
+          $style['order-confirm'],
+          { [$style['active']]: orderConfirmBtnActive }
+        ]"
+        @click="orderConfirmBtnActive ? handleClickOrderConfirmBtn() : ''"
+      >
+        完成
+      </div>
     </div>
 
-    <div v-if="isReceive && isShowTab" :class="$style['tab-wrap']">
+    <div v-if="isReceive && showTabHandler" :class="$style['tab-wrap']">
       <div
         v-for="(item, index) in tabItem"
         :key="`tab-${item.key}`"
@@ -49,23 +60,25 @@
           $style['tab-item'],
           { [$style['is-current']]: currentTab === index }
         ]"
-        @click="setCurrentTab(index)"
+        @click="setCurrentTab(item, index)"
       >
         {{ item.text }}
       </div>
       <div
         :class="[$style['active-slider']]"
-        :style="{ left: `calc(25% + 50% * ${currentTab})` }"
+        :style="{ left: `${tabLeft}%` }"
       />
     </div>
 
     <component
       :is="currentPage"
-      :is-show-tab="isShowTab"
+      :is-show-tab="showTabHandler"
       :set-page-status="setPageStatus"
       :status-list.sync="statusList"
       :add-bank-card-step.sync="addBankCardStep"
       :user-level-obj="userLevelObj"
+      ref="component"
+      @update="handleEmitOrderConfirmBtn"
     />
   </div>
 </template>
@@ -73,6 +86,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import entryMixin from "@/mixins/mcenter/bankCard/index";
+import goLangApiRequest from "@/api/goLangApiRequest";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
@@ -83,6 +97,14 @@ export default {
       ),
     addBankCard: () =>
       import(/* webpackChunkName: 'addBankCard' */ "./components/bank/addCard"),
+    orderCardInfo: () =>
+      import(
+        /* webpackChunkName: 'bankCardInfo' */ "./components/order/cardInfo"
+      ),
+    addOrderCard: () =>
+      import(
+        /* webpackChunkName: 'addBankCard' */ "./components/order/addCard"
+      ),
     walletCardInfo: () =>
       import(
         /* webpackChunkName: 'walletCardInfo' */ "./components/wallet/cardInfo"
@@ -94,7 +116,10 @@ export default {
   },
   mixins: [entryMixin],
   data() {
-    return {};
+    return {
+      orderConfirmBtnActive: false,
+      isSupportEpoint: false
+    };
   },
   computed: {
     ...mapGetters({
@@ -120,21 +145,33 @@ export default {
       return [
         {
           key: "bank",
-          text: "银行卡"
+          text: "银行卡",
+          isShow: this.userLevelObj.bank
         },
         {
           key: "wallet",
           text: ["porn1", "sg1", "aobo1", "sp1"].includes(this.themeTPL)
             ? "数字货币"
-            : "电子钱包"
+            : "电子钱包",
+          isShow: this.userLevelObj.virtual_bank
+        },
+        {
+          key: "order",
+          text: "挂单银行卡",
+          isShow: this.isSupportEpoint
         }
-      ];
+      ].filter(item => item.isShow);
+    },
+    tabLeft() {
+      return (
+        100 / this.tabItem.filter(v => v.isShow).length / 2 +
+        (100 / this.tabItem.filter(v => v.isShow).length) * this.currentTab
+      );
     },
     headerTitle() {
       const { type, redirect } = this.$route.query;
       const { hasRedirect, currentPage, themeTPL, isCommon } = this;
       const { showDetail } = this.statusList;
-
       // 非提現頁面跳轉過來 & 類型為銀行卡
       if (hasRedirect && type === "bankCard" && redirect !== "withdraw") {
         return "提现银行卡";
@@ -181,6 +218,9 @@ export default {
           }
 
           break;
+        // 卡片管理-掛單
+        case "orderCardInfo":
+          return this.$text("S_CARD_MANAGEMENT", "卡片管理");
 
         // 添加銀行卡
         case "addBankCard":
@@ -196,18 +236,24 @@ export default {
               return this.$text("S_ADD_DIGITAL_CURRENCY", "添加数字货币");
           }
           break;
+        // 添加掛單銀行卡
+        case "addOrderCard":
+          return this.$text("S_ADD_ORDERCARD", "添加挂单银行卡");
       }
     },
-    isOneTab() {
+    showTabHandler() {
+      //迅付-會員層級管理-可綁定取款類型
+      //當銀行卡關閉且epoint關閉||電子錢包關閉||!this.isShowTab 時 不顯示頁籤
       // 常用錢包
-      if (this.isCommon) {
-        return !this.userLevelObj.bank || !this.userLevelObj.virtual_bank;
-      }
+      if (this.isCommon)
+        return !(
+          (!this.userLevelObj.bank && !this.isSupportEpoint) ||
+          !this.userLevelObj.virtual_bank ||
+          !this.isShowTab
+        );
 
       // 歷史錢包
-      if (!this.isCommon) {
-        return this.userLevelObj.virtual_bank_single;
-      }
+      if (!this.isCommon) return !this.userLevelObj.virtual_bank_single;
     },
     showDetailButton() {
       const { memInfo, themeTPL, currentPage, userLevelObj } = this;
@@ -251,6 +297,7 @@ export default {
     this.actionSetUserdata(true);
 
     // 以下處理頁面設定
+    this.getIsSupportEpoint();
     this.actionSetUserLevels().then(() => {
       let type = this.$route.query.type;
       let tempType = localStorage.getItem("bankCardType");
@@ -258,76 +305,63 @@ export default {
       // 如果是從其它頁導轉過來，會進到添加卡片頁面，不用判斷開關(已 Set 為 False)
       if (this.hasRedirect || tempType) {
         if ((type && type === "bankCard") || tempType === "bankCard") {
-          this.setPageStatus(0, "addBankCard", false);
+          this.setPageStatus("addBankCard", false);
         }
 
         if ((type && type === "wallet") || tempType === "wallet") {
-          this.setPageStatus(1, "addWalletCard", false);
+          this.setPageStatus("addWalletCard", false);
           if (this.$route.query.redirect === "epoint") {
             this.$router.replace("/mobile/mcenter/bankCard");
           }
+        }
+        if ((type && type === "orderCard") || tempType === "orderCard") {
+          this.setPageStatus("addOrderCard", false);
         }
 
         localStorage.removeItem("bankCardType");
         return;
       }
 
-      // 銀行卡/電子錢包，其中有一方關閉(在常用錢包頁面)
-      if (this.isCommon && this.isOneTab) {
-        if (this.userLevelObj.bank) {
-          this.setPageStatus(0, "bankCardInfo", false);
-          return;
-        }
-
-        if (this.userLevelObj.virtual_bank) {
-          this.setPageStatus(1, "walletCardInfo", false);
-          return;
-        }
-      }
-
-      // 銀行卡/電子錢包，其中有一方開啟多組開關(在歷史錢包頁面)
-      if (!this.isCommon && this.isOneTab) {
-        if (!this.userLevelObj.virtual_bank_single) {
-          this.setPageStatus(1, "walletCardInfo", false);
-          return;
-        }
-      }
-
       // 預設頁面(預設為銀行卡頁面)
-      // 常用：銀行卡 ＆ 歷史：電子錢包（因無歷史銀行卡）
-      if (this.isCommon) this.setPageStatus(0, "bankCardInfo", true);
-      if (!this.isCommon) this.setPageStatus(1, "walletCardInfo", false);
+      if (this.isCommon)
+        this.setPageStatus(
+          this.userLevelObj.bank ? "bankCardInfo" : "walletCardInfo",
+          true
+        );
+
+      if (!this.isCommon) this.setPageStatus("walletCardInfo", false);
     });
   },
   methods: {
     ...mapActions(["actionSetUserdata", "actionSetUserLevels"]),
-    setPageStatus(tabIndex, pageName, isShowTab) {
+    getIsSupportEpoint() {
+      // 取得是否支援e点富/E点付 C04.58
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Is/Support/Epoints`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.isSupportEpoint = res.data.ret;
+        }
+      });
+    },
+    setPageStatus(pageName, isShowTab) {
       this.isReceive = false;
-      this.currentTab = tabIndex;
+      this.currentTab = this.tabItem.findIndex(v => pageName.includes(v.key));
       this.currentPage = pageName;
 
       // 當 Tab 在某些頁面不用顯示，this.isShowTab = false
-      if (!isShowTab) {
-        this.isShowTab = false;
-      } else {
-        this.isShowTab = this.isOneTab ? false : true;
-      }
-
+      this.isShowTab = isShowTab;
       this.isReceive = true;
     },
-    setCurrentTab(index) {
+    setCurrentTab(item, index) {
       this.currentTab = index;
-      switch (index) {
-        case 0:
-          this.currentPage = "bankCardInfo";
-          break;
-
-        case 1:
-          if (this.routerTPL === "porn1") {
-            sendUmeng(75);
-          }
-          this.currentPage = "walletCardInfo";
-          break;
+      this.currentPage = `${item.key}CardInfo`;
+      if (this.routerTPL === "porn1") {
+        sendUmeng(75);
       }
     },
     backPre() {
@@ -391,7 +425,6 @@ export default {
             this.statusList.showDetail = false;
 
             this.setPageStatus(
-              this.currentTab,
               this.currentPage,
               this.$route.name != "mcenter-historyCard"
             );
@@ -403,14 +436,23 @@ export default {
 
         // 當頁面停留在添加卡片
         case "addBankCard":
-          this.setPageStatus(0, "bankCardInfo", true);
+          this.setPageStatus("bankCardInfo", true);
           return;
-
         case "addWalletCard":
-          this.setPageStatus(1, "walletCardInfo", true);
+          this.setPageStatus("walletCardInfo", true);
+          return;
+        case "addOrderCard":
+          this.setPageStatus("orderCardInfo", true);
           return;
       }
       this.$router.back();
+    },
+    handleEmitOrderConfirmBtn(boolen) {
+      this.orderConfirmBtnActive = boolen;
+    },
+    handleClickOrderConfirmBtn() {
+      this.$refs.component.addOrderCard();
+      this.orderConfirmBtnActive = false;
     }
   }
 };

@@ -56,7 +56,6 @@ export default ({
   } else {
     obj.params = { ...yaboParams, ...params };
   }
-
   return axios(obj)
     .then(response => {
       if (response.data.status === "000") {
