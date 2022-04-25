@@ -1576,13 +1576,12 @@ export default {
       }
     },
     mobileJoinGetCode() {
-      if(this.allValue.phone.length > 10){
+      if (this.allValue.phone.length > 10) {
         this.getPhoneTTL();
         this.getPhoneVerifyCode();
-      }else{
+      } else {
         return;
       }
-      
     },
     getBeHostUrl() {
       goLangApiRequest({
@@ -1686,43 +1685,12 @@ export default {
     verification(key, index) {
       const data = this.joinMemInfo[key];
 
-      //帳號註冊按鈕禁能
-      if (this.currentJoin === "accountjoin") {
-        if (data.isRequired) {
-          if (this.allTip[key] !== "") {
-            this.submitBtnLock = true;
-          } else if (this.allValue[key] === "") {
-            this.submitBtnLock = true;
-          } else {
-            this.submitBtnLock = false;
-          }
-        } else {
-          if (this.allTip[key] === "") {
-            this.submitBtnLock = false;
-          } else {
-            this.submitBtnLock = true;
-          }
-        }
-      }
-      //手機註冊按鈕禁能
-      if (this.currentJoin === "mobilejoin") {
-        if (
-          this.allValue["phone"] === "" ||
-          this.allValue["phonettl"] === "" ||
-          this.allValue["password"] === "" ||
-          this.allValue["confirm_password"] === ""
-        ) {
-          this.submitBtnLock = true;
-        } else if (
-          this.allTip["phone"] !== "" ||
-          this.allTip["phonettl"] !== "" ||
-          this.allTip["password"] !== "" ||
-          this.allTip["confirm_password"] !== ""
-        ) {
-          this.submitBtnLock = true;
-        } else {
-          this.submitBtnLock = false;
-        }
+      //帳號&手機註冊按鈕禁能
+
+      if (this.allValue[key] === "") {
+        this.submitBtnLock = true;
+      } else {
+        this.submitBtnLock = false;
       }
 
       //欄位為空不顯示提示訊息
