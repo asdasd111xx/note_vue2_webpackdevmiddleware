@@ -476,7 +476,10 @@ export default {
       }
     },
     getKeyring() {
-      this.getPhoneVerifyCode();
+      if(this.phone.length > 10 ){
+       this.getPhoneVerifyCode(); 
+      }
+      return;
     },
     getPhoneTTL() {
       //會員登入手機簡訊倒數秒數

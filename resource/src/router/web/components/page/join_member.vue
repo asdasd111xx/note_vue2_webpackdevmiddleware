@@ -1576,8 +1576,13 @@ export default {
       }
     },
     mobileJoinGetCode() {
-      this.getPhoneTTL();
-      this.getPhoneVerifyCode();
+      if(this.allValue.phone.length > 10){
+        this.getPhoneTTL();
+        this.getPhoneVerifyCode();
+      }else{
+        return;
+      }
+      
     },
     getBeHostUrl() {
       goLangApiRequest({
