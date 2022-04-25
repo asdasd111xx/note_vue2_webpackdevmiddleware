@@ -476,7 +476,6 @@ export default {
       }
     },
     getKeyring() {
-      console.log("getkeyring");
       this.getPhoneVerifyCode();
     },
     getPhoneTTL() {

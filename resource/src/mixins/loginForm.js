@@ -205,14 +205,21 @@ export default {
       if (this.isBackEnd) {
         return;
       }
-
+      
       if (this.memInfo.config.login_security) {
+      let params ={};
+      switch (this.currentLogin) {
+        case "accountlogin":
+          params = {username: this.username};
+          break;
+        case "mobilelogin":
+          params = {phone: `86-${this.phone}`};
+          break;
+      }
         ajax({
           method: "put",
           url: apis.API_LOGIN_CHECK,
-          params: {
-            username: this.username
-          },
+          params: {...params},
           errorAlert: false,
           success: res => {
             this.isLoading = false;

@@ -771,6 +771,7 @@
               <span
                 :class="[
                   $style['get-keyring'],
+                  $style[siteConfig.ROUTER_TPL],
                   {
                     [$style.active]:
                       allValue['phone'].length > 10 && !phoneVerifybtnSubmit
