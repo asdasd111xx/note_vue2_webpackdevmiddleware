@@ -282,6 +282,7 @@
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
                   type="text"
+                  maxlength="36"
                   :placeholder="'请输入银行帐号'"
                   @input="replaceEpointWhiteSpace"
                 />
