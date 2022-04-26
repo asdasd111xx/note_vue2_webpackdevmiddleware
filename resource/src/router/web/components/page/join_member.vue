@@ -1570,6 +1570,7 @@ export default {
         return;
       }
     },
+    //手機註冊獲取驗證碼
     mobileJoinGetCode() {
       if (this.allValue.phone.length > 10) {
         this.getPhoneTTL();
@@ -2468,8 +2469,12 @@ export default {
             this.mailTtlCount -= 1;
           }, 1500);
         } else {
-          this.mailSubmitFail = true;
-          this.mailSubmitFailMsg = res.msg || "ttl error";
+          if (this.currentJoin === "mobilejoin") {
+            this.allTip["phonettl"] = res.msg;
+          } else {
+            this.mailSubmitFail = true;
+            this.mailSubmitFailMsg = res.msg || "ttl error";
+          }
         }
       });
     },
@@ -2486,10 +2491,14 @@ export default {
         }
       }).then(res => {
         if (res.status !== "000") {
-          this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg =
-            // res.msg + "(" + res.code + ")" || "phone error1";
-            res.msg || "phone error1";
+          if (this.currentJoin === "mobilejoin") {
+            this.allTip["phonettl"] = res.msg;
+          } else {
+            this.phoneSubmitFail = true;
+            this.phoneSubmitFailMsg =
+              // res.msg + "(" + res.code + ")" || "phone error1";
+              res.msg || "phone error1";
+          }
         } else {
           this.actionSetGlobalMessage({ msg: "验证码已发送 有效时间为10分钟" });
           //取得驗證碼倒數秒數
