@@ -16,7 +16,7 @@
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  color: #5e626d;
+  color: var(--mcenter_slider_text_color);
   font-size: 17px;
 
   span {
@@ -25,7 +25,7 @@
     position: relative;
 
     &.active {
-      color: #d1b79c;
+      color: var(--main_color);
       &::after {
         content: "";
         position: absolute;
@@ -34,7 +34,7 @@
         transform: translateX(-50%);
         width: 65px;
         height: 3px;
-        background: #d1b79c;
+        background: var(--main_color);
       }
     }
   }

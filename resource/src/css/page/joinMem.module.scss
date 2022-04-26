@@ -17,7 +17,8 @@
     position: relative;
 
     &.active {
-      color: var(--mcenter_slider_text_active_color);
+      color: var(--main_color);
+
       &::after {
         content: "";
         position: absolute;
@@ -26,7 +27,22 @@
         transform: translateX(-50%);
         width: 65px;
         height: 3px;
-        background: var(--mcenter_slider_underline_active_color);
+        background: var(--main_color);
+      }
+
+      &.sg1 {
+        color: var(--mcenter_main_color);
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 65px;
+          height: 3px;
+          background: var(--mcenter_main_color);
+        }
       }
     }
   }

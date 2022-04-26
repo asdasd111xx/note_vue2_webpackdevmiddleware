@@ -10,7 +10,10 @@
         v-for="(tab, index) in tabs"
         :key="`${tab}-${index}`"
         @click="currentTab(index)"
-        :class="{ [$style.active]: currentJoin === tab.page }"
+        :class="[
+          $style[siteConfig.ROUTER_TPL],
+          { [$style.active]: currentJoin === tab.page }
+        ]"
       >
         {{ tab.name }}
       </span>
@@ -809,10 +812,6 @@
                   $style[siteConfig.ROUTER_TPL],
                   $style['full'],
                   $style[`field-${field.key}`],
-                  {
-                    [$style[`show-red-star-${siteConfig.ROUTER_TPL}`]]:
-                      joinMemInfo[field.key].isRequired
-                  },
                   'clearfix'
                 ]"
                 @click="
