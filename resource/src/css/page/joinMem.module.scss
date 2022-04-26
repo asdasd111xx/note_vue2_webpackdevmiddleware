@@ -49,11 +49,14 @@
 }
 
 .err-msg {
-  padding: 2px 0;
-  color: #db6372;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
+  display: inline-block;
+  line-height: initial;
+  max-width: 375px;
+  padding: 2px 6px;
+  margin: 6px auto;
+  color: #fff;
+  background-color: #db6372;
+  border-radius: 3px;
 }
 
 .join-member-wrap {

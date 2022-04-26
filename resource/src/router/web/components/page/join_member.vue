@@ -46,8 +46,8 @@
         <!-- ******帳號註冊****** -->
         <div v-if="currentJoin === 'accountjoin'">
           <!-- 錯誤訊息 -->
-          <div :class="$style['err-msg']">
-            <!-- <div v-show="errMsg">
+          <div v-show="errMsg" :class="$style['err-msg']">
+            <!-- <div >
             {{ errMsg }}
           </div> -->
           </div>
@@ -654,10 +654,10 @@
         <!-- ******手機註冊****** -->
         <div v-if="currentJoin === 'mobilejoin'">
           <!-- 錯誤訊息 -->
-          <div :class="$style['err-msg']">
-            <!-- <div v-show="errMsg">
-            {{ errMsg }}
-          </div> -->
+          <div v-show="mobileJoinErrMag" :class="$style['err-msg']">
+            <div>
+              {{ mobileJoinErrMag }}
+            </div>
           </div>
           <!-- 手機驗證錯誤訊息 -->
           <div
@@ -672,7 +672,7 @@
           </div>
 
           <!-- 註冊回傳錯誤訊息彈窗 -->
-          <div
+          <!-- <div
             v-if="mobileJoinErrMag"
             :class="$style['modal-dark-bg']"
             @click.self="mobileJoinErrMag = ''"
@@ -686,7 +686,7 @@
               {{ mobileJoinErrMag }}
               <button @click="mobileJoinErrMag = ''">关闭</button>
             </div>
-          </div>
+          </div> -->
 
           <form>
             <div :class="[$style['field-wrap'], 'clearfix']">
