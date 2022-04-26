@@ -290,10 +290,8 @@ export default {
       let ImgScope = document.getElementById("screenshot");
       html2canvas(ImgScope).then(function(canvas) {
         ImgScope.appendChild(canvas);
-        var a = document.createElement("a");
-        a.href = canvas
-          .toDataURL("image/jpeg")
-          .replace("image/jpeg", "image/octet-stream");
+        let a = document.createElement("a");
+        a.href = canvas.toDataURL("image/jpeg");
         a.download = "image.jpg";
         a.click();
       });
