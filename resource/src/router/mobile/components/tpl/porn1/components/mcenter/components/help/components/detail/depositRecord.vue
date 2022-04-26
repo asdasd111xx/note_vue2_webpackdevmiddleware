@@ -172,6 +172,7 @@ export default {
   },
   data() {
     return {
+      allData: [],
       data: [],
       detailRate: null,
       editOpen: false,
@@ -199,7 +200,9 @@ export default {
     };
   },
   mounted() {
-    this.getData();
+    this.getData().then(() => {
+      this.data = this.allData;
+    });
     document.title = "8日内充值记录";
   },
   computed: {
@@ -218,19 +221,19 @@ export default {
       this.detailRate = item;
     },
     setCategory(option) {
-      console.log("setCategory");
       this.currentCategory = option;
-      this.getData(option.key).then(() => {
-        this.showCondition = false;
-      });
+      this.showCondition = false;
+      if (option.key === "all") {
+        this.data = this.allData;
+        return;
+      }
+      this.data = this.allData.filter(v => v[option.key] === true);
     },
-    getData(key) {
+    getData() {
       let params = {
         firstResult: 0,
         maxResults: 10
       };
-      if (key !== "all") params[key] = true;
-
       let cid = getCookie("cid");
       if (!cid) return;
       return goLangApiRequest({
@@ -240,7 +243,7 @@ export default {
       })
         .then(res => {
           if (res.status === "000" && res.errorCode === "00") {
-            this.data = res.data.ret;
+            this.allData = res.data.ret;
             this.total = res.data.pagination.total; //????
           }
         })
