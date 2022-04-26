@@ -291,7 +291,9 @@ export default {
       html2canvas(ImgScope).then(function(canvas) {
         ImgScope.appendChild(canvas);
         let a = document.createElement("a");
-        a.href = canvas.toDataURL("image/jpeg");
+        a.href = canvas
+          .toDataURL("image/jpeg")
+          .replace("image/jpeg", "image/octet-stream");
         a.download = "image.jpg";
         a.click();
       });
