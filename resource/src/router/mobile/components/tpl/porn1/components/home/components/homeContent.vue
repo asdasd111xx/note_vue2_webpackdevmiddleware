@@ -18,7 +18,7 @@
             <span>用户名</span> {{ memInfo.user.username }}
           </p>
           <p :class="[$style['phonenum']]">
-            <span>手机号</span> 86-{{ memInfo.user.phone }}
+            <span>手机号</span> {{ phonenum }}
           </p>
         </div>
         <div :class="[$style['btn-wrap']]">
@@ -303,6 +303,11 @@ export default {
     this.$Lazyload.$on("loaded", function(el) {
       el.el.offsetParent.setAttribute("lazy", "loadedok");
     });
+  },
+  computed: {
+    phonenum() {
+      return `86-${this.memInfo.user.username.replace(/[a-z]/g, "")}`;
+    }
   }
 };
 </script>
