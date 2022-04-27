@@ -285,25 +285,30 @@ export default {
         host: window.location.host,
         ...validate
       };
-
       if (this.memInfo.config.login_captcha_type === 1) {
         params["aid"] = getCookie("aid") || localStorage.getItem("aid") || "";
       }
+
+      let params_m = {
+        aid: getCookie("aid") || localStorage.getItem("aid") || "",
+        keyring:
+          this.mobileLoginTypeSwitch === 1 ? this.phone_validation_code : "",
+        password: this.mobileLoginTypeSwitch === 2 ? this.password : "",
+        captchaText: this.captcha || validate.captcha,
+        ...validate
+      };
+
+      if (this.phone) {
+        params_m["phone"] = `86-${this.phone}`;
+      }
+
       //手機登入submit
       if (this.currentLogin === "mobilelogin") {
         goLangApiRequest({
           method: "put",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Phone/Verify/Login`,
           params: {
-            aid: getCookie("aid") || localStorage.getItem("aid") || "",
-            phone: `86-${this.phone}`,
-            keyring:
-              this.mobileLoginTypeSwitch === 1
-                ? this.phone_validation_code
-                : "",
-            password: this.mobileLoginTypeSwitch === 2 ? this.password : "",
-            captchaText: this.captcha || validate.captcha,
-            ...validate
+            ...params_m
           }
         }).then(res => {
           this.isLoading = false;
