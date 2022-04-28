@@ -2149,10 +2149,10 @@ export default {
 
                 if (localStorage.getItem("rememberPwd")) {
                   localStorage.setItem("mobileusername", this.allValue.phone);
-                  localStorage.setItem("password", this.allValue.password);
+                  localStorage.setItem("mpassword", this.allValue.password);
                 } else {
                   localStorage.removeItem("mobileusername");
-                  localStorage.removeItem("password");
+                  localStorage.removeItem("mpassword");
                 }
                 window.RESET_MEM_SETTING();
                 window.RESET_LOCAL_SETTING();

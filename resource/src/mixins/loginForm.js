@@ -106,6 +106,7 @@ export default {
   created() {
     this.getCaptcha();
     this.phone = localStorage.getItem("mobileusername") || "";
+    this.mpassword = localStorage.getItem("mpassword") || "";
     this.username = localStorage.getItem("username") || "";
     this.password = localStorage.getItem("password") || "";
     this.rememberPwd = localStorage.getItem("rememberPwd") === "true";
@@ -293,12 +294,12 @@ export default {
         aid: getCookie("aid") || localStorage.getItem("aid") || "",
         keyring:
           this.mobileLoginTypeSwitch === 1 ? this.phone_validation_code : "",
-        password: this.mobileLoginTypeSwitch === 2 ? this.password : "",
+        password: this.mobileLoginTypeSwitch === 2 ? this.mpassword : "",
         captchaText: this.captcha || validate.captcha,
         ...validate
       };
 
-      if (this.phone) {
+      if (this.phone !== "") {
         params_m["phone"] = `86-${this.phone}`;
       }
 
@@ -485,9 +486,11 @@ export default {
         localStorage.setItem("username", this.username);
         localStorage.setItem("password", this.password);
         localStorage.setItem("rememberPwd", this.rememberPwd);
-      } else {
+      }
+
+      if (this.currentLogin === "mobilelogin") {
         localStorage.setItem("mobileusername", this.phone);
-        localStorage.setItem("password", this.password);
+        localStorage.setItem("mpassword", this.mpassword);
         localStorage.setItem("rememberPwd", this.rememberPwd);
       }
     }

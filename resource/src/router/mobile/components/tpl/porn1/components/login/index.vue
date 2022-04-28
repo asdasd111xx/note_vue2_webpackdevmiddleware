@@ -173,7 +173,7 @@
                   class="login-unit login-unit-password"
                 >
                   <input
-                    ref="password"
+                    ref="mpassword"
                     id="pwd"
                     v-model="password"
                     :title="$text('S_PASSWORD', '密码')"
@@ -288,7 +288,11 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  :class="['login-button', 'login-submit']"
+                  :class="[
+                    'login-button',
+                    'login-submit',
+                    { disabled: submitBtnLock || isLoading }
+                  ]"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -399,6 +403,19 @@ export default {
       onlineService: "getOnlineService",
       domainConfig: "getDomainConfig"
     }),
+    submitBtnLock() {
+      if (this.currentLogin === "accountlogin") {
+        if (this.username || this.password) {
+          return false;
+        }
+      }
+      if (this.currentLogin === "mobilelogin") {
+        if (this.phone || this.mpassword || this.phone_validation_code) {
+          return false;
+        }
+      }
+      return true;
+    },
     headerConfig() {
       return {
         prev: true,
@@ -453,9 +470,6 @@ export default {
       //開啟時 預設為1簡訊
       return 1;
     }
-  },
-  created() {
-    console.log("domainConfig", this.domainConfig);
   },
   methods: {
     ...mapActions([

@@ -239,6 +239,9 @@
       width: 100%;
       max-width: 375px;
     }
+    &.disabled {
+      opacity: 0.5;
+    }
   }
 }
 
