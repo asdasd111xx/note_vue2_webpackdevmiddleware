@@ -1570,15 +1570,6 @@ export default {
         return;
       }
     },
-    //手機註冊獲取驗證碼
-    mobileJoinGetCode() {
-      if (this.allValue.phone.length > 10) {
-        this.getPhoneTTL();
-        this.getPhoneVerifyCode();
-      } else {
-        return;
-      }
-    },
     getBeHostUrl() {
       goLangApiRequest({
         method: "get",
@@ -2478,8 +2469,40 @@ export default {
         }
       });
     },
+    //手機註冊獲取驗證碼
+    mobileJoinGetCode() {
+      if (this.allValue.phone.length > 10) {
+        //寄出手機註冊驗證簡訊
+        goLangApiRequest({
+          method: "post",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/PhoneRegister/Sms`,
+          params: {
+            phone:
+              this.countryCode === ""
+                ? `86-${this.allValue.phone}`
+                : `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+          }
+        }).then(res => {
+          if (res.status !== "000") {
+            if (res.errors.phone) {
+              this.allTip["phone"] = res.errors.phone;
+            } else {
+              this.allTip["phonettl"] = res.msg;
+            }
+          } else {
+            this.actionSetGlobalMessage({
+              msg: "验证码已发送 有效时间为10分钟"
+            });
+            //取得驗證碼倒數秒數
+            this.getPhoneTTL();
+          }
+        });
+      } else {
+        return;
+      }
+    },
     getPhoneVerifyCode() {
-      //寄出會員註冊驗證簡訊
+      //寄出一般註冊驗證簡訊
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Phone`,
@@ -2491,14 +2514,10 @@ export default {
         }
       }).then(res => {
         if (res.status !== "000") {
-          if (this.currentJoin === "mobilejoin") {
-            this.allTip["phonettl"] = res.msg;
-          } else {
-            this.phoneSubmitFail = true;
-            this.phoneSubmitFailMsg =
-              // res.msg + "(" + res.code + ")" || "phone error1";
-              res.msg || "phone error1";
-          }
+          this.phoneSubmitFail = true;
+          this.phoneSubmitFailMsg =
+            // res.msg + "(" + res.code + ")" || "phone error1";
+            res.msg || "phone error1";
         } else {
           this.actionSetGlobalMessage({ msg: "验证码已发送 有效时间为10分钟" });
           //取得驗證碼倒數秒數
