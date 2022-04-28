@@ -151,7 +151,10 @@
                     />
                   </div>
                   <button
-                    :class="['getkeyring', phone.length > 10 ? 'active' : '']"
+                    :class="[
+                      'getkeyring',
+                      phone.length > 10 && !phoneVerifybtnSubmit ? 'active' : ''
+                    ]"
                     @click.prevent="getKeyring"
                   >
                     {{
@@ -412,13 +415,20 @@ export default {
           return false;
         }
       }
-      if (this.currentLogin === "mobilelogin") {
-        if (
-          this.phone ||
-          this.mpassword ||
-          this.phone_validation_code ||
-          this.captcha
-        ) {
+      if (
+        this.currentLogin === "mobilelogin" &&
+        this.mobileLoginTypeSwitch === 1
+      ) {
+        if (this.phone || this.phone_validation_code || this.captcha) {
+          return false;
+        }
+      }
+
+      if (
+        this.currentLogin === "mobilelogin" &&
+        this.mobileLoginTypeSwitch === 2
+      ) {
+        if (this.phone || this.phone_validation_code || this.captcha) {
           return false;
         }
       }
