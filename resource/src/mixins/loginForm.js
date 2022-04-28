@@ -152,6 +152,9 @@ export default {
       this.isShowPwd = !this.isShowPwd;
     },
     handleClickLogin() {
+      if (this.submitBtnLock) {
+        return;
+      }
       if (this.currentLogin === "accountlogin" && !this.username) {
         this.errMsg = "帐号不得为空";
         return;
@@ -228,6 +231,9 @@ export default {
       });
     },
     loginCheck(loginInfo, callBackFuc) {
+      if (this.submitBtnLock) {
+        return;
+      }
       this.isLoading = true;
 
       if (this.isBackEnd) {
@@ -241,7 +247,7 @@ export default {
             params = { username: this.username };
             break;
           case "mobilelogin":
-            params = { phone: `86-${this.phone}` };
+            params = { phone: this.phone ? `86-${this.phone}` : "" };
             break;
         }
         ajax({
@@ -273,6 +279,9 @@ export default {
      * @method login
      */
     login(validate = {}, callBackFuc) {
+      if (this.submitBtnLock) {
+        return;
+      }
       if (this.isBackEnd) {
         return null;
       }
