@@ -36,7 +36,7 @@
       >
       <template v-if="themeTPL === 'sg1'"
         ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-          注册即送 300 钻
+          注册即送 123 钻
         </div></template
       >
     </div>
