@@ -175,7 +175,7 @@
                   <input
                     ref="mpassword"
                     id="pwd"
-                    v-model="password"
+                    v-model="mpassword"
                     :title="$text('S_PASSWORD', '密码')"
                     :placeholder="$text('S_PASSWORD', '密码')"
                     class="login-input"
