@@ -289,7 +289,11 @@
                 <!-- 登入鈕 -->
                 <div
                   v-else
-                  class="login-button login-submit"
+                  :class="[
+                    'login-button',
+                    'login-submit',
+                    { disabled: submitBtnLock || isLoading }
+                  ]"
                   @click="handleClickLogin"
                 >
                   <div>
@@ -387,6 +391,9 @@ export default {
   watch: {
     thirdyCaptchaObj() {
       this.errMsg = "";
+    },
+    currentLogin() {
+      this.captcha = "";
     }
   },
   computed: {
@@ -399,6 +406,24 @@ export default {
       version: "getVersion",
       domainConfig: "getDomainConfig"
     }),
+    submitBtnLock() {
+      if (this.currentLogin === "accountlogin") {
+        if (this.username || this.password || this.captcha) {
+          return false;
+        }
+      }
+      if (this.currentLogin === "mobilelogin") {
+        if (
+          this.phone ||
+          this.mpassword ||
+          this.phone_validation_code ||
+          this.captcha
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
     headerConfig() {
       return {
         prev: true,

@@ -220,6 +220,13 @@
       width: 100%;
       max-width: 375px;
     }
+    &.disabled {
+      opacity: 0.8;
+      > div {
+        background: var(--main_button_color2);
+        color: var(--main_button_text_color2);
+      }
+    }
   }
 }
 

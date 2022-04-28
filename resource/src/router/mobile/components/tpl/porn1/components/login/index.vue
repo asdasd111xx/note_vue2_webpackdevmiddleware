@@ -392,6 +392,9 @@ export default {
   watch: {
     thirdyCaptchaObj() {
       this.errMsg = "";
+    },
+    currentLogin() {
+      this.captcha = "";
     }
   },
   computed: {
@@ -405,12 +408,17 @@ export default {
     }),
     submitBtnLock() {
       if (this.currentLogin === "accountlogin") {
-        if (this.username || this.password) {
+        if (this.username || this.password || this.captcha) {
           return false;
         }
       }
       if (this.currentLogin === "mobilelogin") {
-        if (this.phone || this.mpassword || this.phone_validation_code) {
+        if (
+          this.phone ||
+          this.mpassword ||
+          this.phone_validation_code ||
+          this.captcha
+        ) {
           return false;
         }
       }
