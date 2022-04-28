@@ -379,8 +379,8 @@ export default {
       script: null,
       beHostUrl: "",
       tabs: [
-        { name: "帳號登入", page: "accountlogin" },
-        { name: "手機登入", page: "mobilelogin" }
+        { name: "帐号登录", page: "accountlogin" },
+        { name: "手机登录", page: "mobilelogin" }
       ],
       currentLogin: "accountlogin",
       phoneVerifybtnSubmit: false,
