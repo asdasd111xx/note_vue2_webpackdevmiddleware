@@ -12,6 +12,25 @@
         </div>
       </slot>
       <div :class="$style['join-content']">
+        <!-- 訪客&&活動開啟文案 -->
+        <div style="margin-top: 40px;">
+          <template v-if="activity.isActivity && activity.totalAmount > 0"
+            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
+              访客加入会员
+            </div>
+            <div :class="[$style['visitor-get'], $style[themeTPL]]">
+              {{
+                `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元`
+              }}
+            </div></template
+          >
+          <template v-if="themeTPL === 'sg1'"
+            ><div :class="[$style['visitor-get'], $style[themeTPL]]">
+              注册即送 123 钻
+            </div></template
+          >
+        </div>
+
         <!-- 錯誤訊息 -->
         <div :class="$style['err-msg']">
           <!-- <div v-show="errMsg">
@@ -635,10 +654,12 @@
       <div v-else :class="[$style['join-btn-wrap']]">
         <div
           :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
-          @click="()=>{
-            joinSubmit()
-            sendUmengEvent(70)
-            }"
+          @click="
+            () => {
+              joinSubmit();
+              sendUmengEvent(70);
+            }
+          "
         >
           {{ $text("S_REGISTER", "注册") }}
         </div>
@@ -1982,7 +2003,7 @@ export default {
         }
       });
     },
-    sendUmengEvent(event){
+    sendUmengEvent(event) {
       sendUmeng(event);
     }
   }

@@ -172,13 +172,13 @@ export default {
           // 绑定银行卡
           case "EVENT_THIRDPARTY_BANKCARD":
             this.$router.push(
-              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+              `/mobile/mcenter/bankCard?redirect=live&type=bankCard`
             );
             return;
 
           case "EVENT_BIND_BANK":
             this.$router.push(
-              `/mobile/mcenter/bankCard?redirect=home&type=bankCard`
+              `/mobile/mcenter/bankCard?redirect=live&type=bankCard`
             );
             return;
 

@@ -53,6 +53,7 @@ export default {
       defaultEpointWallet: "",
       outerCryptoOption: [],
       userBankOption: [],
+      orderCardList: [], //掛單銀行卡
       bcCurrencyData: null,
       selectBcCoin: {
         balance: "",
@@ -112,7 +113,7 @@ export default {
     },
     defaultEpointWallet() {
       this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
-        ? this.defaultEpointWallet.account === "其他银行卡"
+        ? this.defaultEpointWallet.account === "新增挂单银行卡"
         : false;
     },
     depositData(val) {
@@ -1054,12 +1055,14 @@ export default {
         this.curPayInfo.payment_method_id === 41
       ) {
         if (this.showEpointWalletAddress) {
+          //新增的掛單銀行卡
           paramsData = {
             ...paramsData,
             pay_account: this.epointBankAccount,
             pay_bank_name: this.epointBankName
           };
         } else {
+          //綁定的銀行卡
           paramsData = {
             ...paramsData,
             pay_account_id: this.defaultEpointWallet.id
@@ -1119,6 +1122,12 @@ export default {
             eventAction: "pay",
             eventLabel: "success"
           });
+
+          if (this.showEpointWalletAddress) {
+            this.getUserBankList();
+            this.epointBankName = "";
+            this.epointBankAccount = "";
+          }
 
           // console.log(ret, _isWebview);
 
@@ -1554,22 +1563,25 @@ export default {
     },
     // 取得使用者銀行卡列表(迅付)
     getUserBankList() {
-      // console.log("API_MCENTER_DEPOSIT_BANK");
-      return axios({
-        method: "get",
-        url: API_MCENTER_DEPOSIT_BANK,
-        params: {}
-      })
-        .then(response => {
-          if (response && response.data && response.data.result === "ok") {
-            // console.log(response);
-            this.userBankOption = [];
-            this.userBankOption = response.data.ret;
-            this.userBankOption.push({ account: "其他银行卡" });
-            this.defaultEpointWallet = this.userBankOption[0];
-          }
-        })
-        .catch(error => {});
+      return goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/User/Bank`
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          console.log(res);
+          this.userBankOption = res.data.filter(v => !v.is_transfer_account);
+          this.orderCardList = res.data.filter(v => v.is_transfer_account);
+          this.orderCardList.push({
+            account: "新增挂单银行卡",
+            is_transfer_account: true
+          });
+
+          this.defaultEpointWallet =
+            res.data.find(v => v.is_default) ||
+            (this.orderCardList.length > 1 ? this.orderCardList[0] : "") ||
+            this.userBankOption[0] ||
+            this.orderCardList[0];
+        }
+      });
     },
     formatCountdownSec() {
       let minutes = Math.floor(this.countdownSec / 60);

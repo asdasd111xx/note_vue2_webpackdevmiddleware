@@ -239,17 +239,18 @@
               ]"
             >
               <span :class="$style['select-bank-title']">
-                您的银行
+                挂单银行
               </span>
               <div
                 :class="$style['select-epoint-bank-item']"
                 @click="setPopupStatus(true, 'epointBank')"
               >
                 {{ defaultEpointWallet.account }}
-                <img
-                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                />
               </div>
+              <img
+                :class="$style['select-bank-icon']"
+                :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+              />
             </div>
 
             <!-- v-if="showEpointWalletAddress" -->
@@ -271,7 +272,9 @@
                   v-model="epointBankName"
                   :class="$style['input-cgpay-address']"
                   type="text"
+                  maxlength="36"
                   :placeholder="'请输入银行名称'"
+                  @input="replaceEpointWhiteSpace"
                 />
               </div>
               <div :class="[$style['other-bank-input-text'], $style['border']]">
@@ -279,8 +282,10 @@
                 <input
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
-                  type="tel"
+                  type="text"
+                  maxlength="36"
                   :placeholder="'请输入银行帐号'"
+                  @input="replaceEpointWhiteSpace"
                 />
               </div>
               <div :class="[$style['wallet-address-text'], $style['less']]">
@@ -1219,7 +1224,7 @@
               {
                 [$style.disabled]:
                   !checkSuccess ||
-                  !isBlockChecked ||
+                  isBlockChecking ||
                   nameCheckFail ||
                   (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
                   (isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
@@ -1351,9 +1356,11 @@
       </template>
       <template v-if="showPopStatus.type === 'epointBank'">
         <epoint-bank-popup
-          :bank-selected="defaultEpointWallet.account"
+          :bank-selected="defaultEpointWallet"
           :bank-list="userBankOption"
           :item-func="setEpointBank"
+          :orderCardList="orderCardList"
+          :open-type="'deposit'"
           @close="closePopup"
         />
       </template>
@@ -1445,7 +1452,7 @@ export default {
       nameCheckFail: false,
 
       entryBlockStatusData: null,
-      isBlockChecked: false,
+      isBlockChecking: false,
 
       bindWalletType: "CGPay",
       eyBindWalletData: {},
@@ -1485,7 +1492,7 @@ export default {
     passRoad() {
       console.log("all passRoad", this.passRoad);
       this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
-        ? this.defaultEpointWallet.account === "其他银行卡"
+        ? this.defaultEpointWallet.account === "新增挂单银行卡"
         : false;
     },
     curPassRoad() {
@@ -1913,7 +1920,6 @@ export default {
         const params = [
           this.getPayGroup(),
           this.getUserBankList(),
-          this.checkEntryBlockStatus(),
           this.actionSetRechargeConfig(),
           this.actionSetAnnouncementList({ type: 1 }),
           this.getWalletCurrencyBalanceList()
@@ -2033,7 +2039,6 @@ export default {
         this.submitStatus = "stepOne";
       }
 
-      this.checkEntryBlockStatus();
       this.changeMode(listItem);
 
       if (this.allBanks && this.allBanks.length > 0) {
@@ -2048,58 +2053,55 @@ export default {
       this.paySelectType = payType;
     },
     clickSubmit() {
-      if (this.routerTPL === "sg1") {
-        sendUmeng(49);
-      } else {
-        sendUmeng(50);
-      }
-      // 代客充值
-      if (
-        this.curPayInfo.payment_method_id === 20 &&
-        this.entryBlockStatusData.status < 3
-      ) {
-        this.submitInfo();
-        return;
-      }
-
-      // 重新檢查狀態
-      if (this.entryBlockStatusData === null) {
-        this.checkEntryBlockStatus(true);
-        return;
-      }
-      //幣希檢查餘額
-      if (this.curPayInfo.payment_method_id === 32) {
-        if (+this.cryptoMoney > +this.selectBcCoin.balance) {
-          this.actionSetGlobalMessage({
-            msg: "币希钱包余额不足"
-          });
+      this.checkEntryBlockStatus().then(() => {
+        if (this.routerTPL === "sg1") {
+          sendUmeng(49);
+        } else {
+          sendUmeng(50);
+        }
+        // 代客充值
+        if (
+          this.curPayInfo.payment_method_id === 20 &&
+          this.entryBlockStatusData.status < 3
+        ) {
+          this.submitInfo();
           return;
         }
-      }
-
-      // 使用者存款封鎖狀態
-      //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
-      switch (this.entryBlockStatusData.status) {
-        case 0:
-          this.submitInfo();
-          break;
-
-        case 4:
-          this.actionSetGlobalMessage({
-            msg: this.entryBlockStatusData.custom_point
-          });
-
-          setTimeout(() => {
-            window.open(this.entryBlockStatusData.external_url);
+        //幣希檢查餘額
+        if (this.curPayInfo.payment_method_id === 32) {
+          if (+this.cryptoMoney > +this.selectBcCoin.balance) {
+            this.actionSetGlobalMessage({
+              msg: "币希钱包余额不足"
+            });
             return;
-          }, 700);
+          }
+        }
 
-          break;
+        // 使用者存款封鎖狀態
+        //  0為正常, 1為提示, 2為代客充值提示, 3為封鎖阻擋, 4為跳轉網址, 5為封鎖阻擋與跳轉網址
+        switch (this.entryBlockStatusData.status) {
+          case 0:
+            this.submitInfo();
+            break;
 
-        default:
-          this.setPopupStatus(true, "blockStatus");
-          break;
-      }
+          case 4:
+            this.actionSetGlobalMessage({
+              msg: this.entryBlockStatusData.custom_point
+            });
+
+            setTimeout(() => {
+              window.open(this.entryBlockStatusData.external_url);
+              return;
+            }, 700);
+
+            break;
+
+          default:
+            this.setPopupStatus(true, "blockStatus");
+
+            break;
+        }
+      });
     },
     /**
      * 提交訂單
@@ -2140,7 +2142,6 @@ export default {
       }
       this.submitList().then(response => {
         // 重置阻擋狀態
-        this.checkEntryBlockStatus();
         this.entryBlockStatusData = null;
 
         if (response) {
@@ -2229,9 +2230,9 @@ export default {
         index
       ];
     },
-    checkEntryBlockStatus(showMsg = false) {
+    checkEntryBlockStatus() {
       // 使用者存款封鎖狀態
-      this.isBlockChecked = false;
+      this.isBlockChecking = true;
       return goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/CreateEntryBlock/User/Check`,
@@ -2241,17 +2242,15 @@ export default {
         }
       })
         .then(res => {
-          this.isBlockChecked = true;
+          this.isBlockChecking = false;
           if (res.status === "000" && res.data) {
             this.entryBlockStatusData = res.data;
           } else {
             // 存款功能無法使用
-            if (res.code !== "TM020074" || showMsg) {
-              this.actionSetGlobalMessage({
-                msg: res.msg,
-                code: res.code
-              });
-            }
+            this.actionSetGlobalMessage({
+              msg: res.msg,
+              code: res.code
+            });
           }
         })
         .catch(error => {
@@ -2452,6 +2451,10 @@ export default {
     },
     setEpointBank(item) {
       this.defaultEpointWallet = item;
+    },
+    replaceEpointWhiteSpace() {
+      this.epointBankName = this.epointBankName.replace(/\s+/, "");
+      this.epointBankAccount = this.epointBankAccount.replace(/\s+/, "");
     },
     toggleEye(value) {
       if (value === "cg") {

@@ -463,5 +463,6 @@ export default {
   systemConfig: {},
   liveMaintain: null,
   liveFooterMask: false,
-  activity: {} //取得彩金活動
+  activity: {},
+  liveViewPath: {}
 };

@@ -70,7 +70,7 @@ export default {
       localStorage.getItem("click-notification") &&
       localStorage.getItem("add-bank-form")
     ) {
-      this.setPageStatus(0, "addBankCard", false);
+      this.setPageStatus("addBankCard", false);
     }
   },
   methods: {

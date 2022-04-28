@@ -198,7 +198,7 @@ export default {
       showDatePicker: false,
       currentCategory: {
         key: "deposit",
-        text: this.$text("S_DEPOSIT", "充值")
+        text: "充值"
       },
       currentDate: { key: "today", text: this.$text("S_TODDAY", "今日") },
       currentDatePicker: "",
@@ -240,11 +240,11 @@ export default {
     },
     categoryOptions() {
       return [
-        // { key: "", text: "全部" },
+        { key: "", text: "全部" },
         { key: "deposit", text: "充值" },
         { key: "vendor", text: "转帐" },
         { key: "withdraw", text: "提现" },
-        { key: "bonus", text: "优惠" },
+        { key: "activity", text: "优惠" },
         { key: "manual", text: "人工" },
         { key: "wage", text: "返利" },
         { key: "ingroup_transfer", text: "转让" }
@@ -388,7 +388,23 @@ export default {
           return;
         }
 
-        const result = res.data.ret;
+        let result = res.data.ret;
+
+        if (this.currentCategory.text === "全部") {
+          result = result.filter(i =>
+            [
+              "deposit",
+              "vendor",
+              "withdraw",
+              "bonus",
+              "activity",
+              "manual",
+              "wage",
+              "ingroup_transfer",
+              "rebate"
+            ].includes(i.category[0])
+          );
+        }
 
         this.detailList = result.reduce(
           (init, info) => {
@@ -450,7 +466,8 @@ export default {
     },
     setCategory(value) {
       this.currentCategory = value;
-      this.type = value.key === "bonus" ? ["activity", "rebate"] : [value.key];
+      this.type =
+        value.key === "activity" ? ["activity", "rebate"] : [value.key];
 
       this.detailList = null;
       this.firstResult = 0;

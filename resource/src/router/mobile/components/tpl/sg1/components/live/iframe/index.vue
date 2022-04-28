@@ -134,7 +134,8 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      liveMaintain: "getLiveMaintain"
+      liveMaintain: "getLiveMaintain",
+      liveViewPath: "getLiveViewPath"
     }),
     pageType() {
       return this.$route.params.page;
@@ -208,7 +209,8 @@ export default {
       "actionSetGlobalMessage",
       "actionGetExtRedirect",
       "actionSetUserBalance",
-      "actionMemInit"
+      "actionMemInit",
+      "actionSetLiveViewPath"
     ]),
     initPage() {
       //actionGetExtRedirect 主要拿list的值，提供給第一次對customize發送請求的clineturi
@@ -221,72 +223,68 @@ export default {
         return;
       }
 
-      this.actionGetExtRedirect({
-        api_uri: "/api/platform/v1/view-path",
-        method: "get"
-      }).then(res => {
-        if (res && res.result) {
-          let isFrom = false;
-
-          if (localStorage.getItem("live-iframe-event-from") && !roomId) {
-            if (
-              this.pageType === "home" &&
-              (!localStorage.getItem("live-iframe-set-home") ||
-                localStorage.getItem("live-iframe-set-home") !== "true")
-            ) {
-              clientUri = localStorage.getItem("live-iframe-event-from");
-              isFrom = true;
-            }
+      if (this.liveViewPath) {
+        let isFrom = false;
+        if (localStorage.getItem("live-iframe-event-from") && !roomId) {
+          if (
+            this.pageType === "home" &&
+            (!localStorage.getItem("live-iframe-set-home") ||
+              localStorage.getItem("live-iframe-set-home") !== "true")
+          ) {
+            clientUri = localStorage.getItem("live-iframe-event-from");
+            isFrom = true;
           }
+        }
 
-          localStorage.removeItem("live-iframe-event-from");
-          localStorage.removeItem("live-iframe-set-home");
+        localStorage.removeItem("live-iframe-event-from");
+        localStorage.removeItem("live-iframe-set-home");
 
-          if (!isFrom) {
-            const list = res.result;
+        if (!isFrom) {
+          const list = this.liveViewPath;
+          Object.keys(list).some(key => {
             //array.some(函式) 陣列代進函式中 看有沒有符合該函式且有回傳值的 有一個就return true
-            Object.keys(list).some(key => {
-              if (key === this.pageType) {
-                this.liveHomeSrc = list["home"];
-                clientUri = list[key];
-                if (roomId) {
-                  clientUri += "/chatroom/" + roomId;
-                }
-                return;
+            if (key === this.pageType) {
+              this.liveHomeSrc = list["home"];
+              clientUri = list[key];
+              if (roomId) {
+                clientUri += "/chatroom/" + roomId;
               }
-            });
-          }
-
-          goLangApiRequest({
-            method: "post",
-            url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-            params: {
-              code: "cubechat_master",
-              clientUri: clientUri
-              // clientUri: "https://client-dev.cubechat.asia/"
+              return;
             }
-          }).then(res => {
-            if (res && res.data && res.data.uri) {
-              let url = res.data.uri;
-
-              if (
-                !localStorage.getItem("live-iframe-launch-home") &&
-                this.pageType === "home"
-              ) {
-                url += "&isLaunch=true";
-                localStorage.setItem("live-iframe-launch-home", true);
-              }
-
-              if (!this.loginStatus) {
-                url += `&gcid=${localStorage.getItem("uuidAccount") || ""}`;
-              }
-
-              this.src = url;
-            }
-            this.isLoading = false;
           });
         }
-      });
+
+        goLangApiRequest({
+          method: "post",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+          params: {
+            code: "cubechat_master",
+            clientUri: clientUri
+            // clientUri: "https://client-dev.cubechat.asia/"
+          }
+        }).then(res => {
+          if (res && res.data && res.data.uri) {
+            let url = res.data.uri;
+
+            if (
+              !localStorage.getItem("live-iframe-launch-home") &&
+              this.pageType === "home"
+            ) {
+              url += "&isLaunch=true";
+              localStorage.setItem("live-iframe-launch-home", true);
+            }
+
+            if (!this.loginStatus) {
+              url += `&gcid=${localStorage.getItem("uuidAccount") || ""}`;
+            }
+
+            this.src = url;
+          }
+          this.isLoading = false;
+        });
+      } else {
+        // this.actionSetLiveViewPath().then(this.initPage());
+      }
     },
     showMaintainInfo() {
       const start = moment(this.liveMaintain.start * 1000)

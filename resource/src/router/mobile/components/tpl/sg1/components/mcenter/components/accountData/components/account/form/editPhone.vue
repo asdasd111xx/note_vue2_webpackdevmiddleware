@@ -82,7 +82,8 @@
                 $style['btn-send'],
                 {
                   [$style.active]: isActive()
-                }
+                },
+                $style['from-edit']
               ]"
               @click="showCaptchaPopup"
             >
