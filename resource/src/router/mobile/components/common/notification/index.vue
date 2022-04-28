@@ -3,8 +3,7 @@
 //main.js line:109 的script.setAttribute("src", "/api/v1/ws/front_file"); 建立ws連線
 //1.ws改變noticeData
 //2.watch noticeData 根據noticeData的event 去改變noticeQueue
-//3.noticeQueue的showToast去判斷要秀畫面中間吐司訊息(setGlobalMessage(會由message2接手)）或是上方彈窗(本標籤的內容)
-//v-html="getText()" 相當於把getText回傳值綁定到標籤上，有watch特性
+//3.noticeQueue的showType去判斷要秀畫面中間吐司訊息(showType:showToast)(setGlobalMessage(會由message2接手)）或是上方彈窗(showType:show)(本標籤的內容)
 </script>
 <template>
   <transition name="fade">

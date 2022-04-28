@@ -1,7 +1,7 @@
 <script>
 //內嵌的iframe，透過common/iframe <iframe src=localhost:8787/game/lg_sport/1> 調用他
 //進到這頁後(本身是iframe  jdb電子會getlocalstorage('open-game-link') 去做iframe內的畫面跳轉
-//進到這樣拿到open-game-link，就會直接location.replace
+//進到這樣拿到open-game-link，就會直接location.replace，就離開這個vue了(iframe的src原本是這個vue，卻轉走了)
 //如果沒拿到就轉loading圈圈（ kent: this.$route.params 在這裡應該都用不到，都是舊專案的東西）
 </script>
 <template>

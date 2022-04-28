@@ -2,7 +2,6 @@
 //一定是內嵌才會進來（if ( embedGame &&!localStorage.getItem("reload-game") &&gameType !== "event")）
 //initiframe() 取得src 放進iframe裡
 //src為/game/lg_sport/1 其實連到內部的 path: 'game/:vendor/:kind/:code?'的檔案（resource/src/router/game/components/index.vue）
-//進入該檔案後再連一層iframe進入遊戲
 
 //headerConfig 控制標題
 </script>
