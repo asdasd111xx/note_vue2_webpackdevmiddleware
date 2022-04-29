@@ -725,10 +725,10 @@
           </div> -->
 
           <form>
+            <!-- 簡訊註冊 手機欄位 -->
             <div :class="[$style['field-wrap'], 'clearfix']">
-              <!-- 簡訊註冊 手機欄位 -->
               <label
-                for="mobile"
+                for="mphone"
                 title="手机号码"
                 :class="[
                   $style['field-title'],
@@ -738,7 +738,7 @@
                 ]"
                 @click="
                   () => {
-                    onLabelClick('phone');
+                    onLabelClick('mphone');
                   }
                 "
                 ><span :class="[$style['field-text'], 'clearfix']"
@@ -754,21 +754,23 @@
                 ]"
               >
                 <input
-                  ref="phone"
-                  v-model="allValue['phone']"
-                  name="mobile"
+                  ref="mphone"
+                  v-model="allValue['mphone']"
+                  name="mphone"
                   placeholder="请输入手机号码"
                   type="tel"
-                  @input="verification('phone')"
+                  @input="verification('mphone')"
                   maxlength="11"
                   :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
                 />
               </div>
               <div
                 :class="
-                  allTip['phone'] ? $style['join-tip-show'] : $style['join-tip']
+                  allTip['mphone']
+                    ? $style['join-tip-show']
+                    : $style['join-tip']
                 "
-                v-html="allTip['phone']"
+                v-html="allTip['mphone']"
               />
             </div>
             <!-- 簡訊註冊 驗證碼欄位 -->
@@ -813,7 +815,7 @@
                   $style[siteConfig.ROUTER_TPL],
                   {
                     [$style.active]:
-                      allValue['phone'].length > 10 && !phoneVerifybtnSubmit
+                      allValue['mphone'].length > 10 && !phoneVerifybtnSubmit
                   }
                 ]"
                 @click="mobileJoinGetCode"
@@ -835,7 +837,152 @@
               />
             </div>
             <!-- 簡訊註冊 密碼欄位 -->
-            <div
+            <div :class="[$style['field-wrap'], 'clearfix']">
+              <label
+                for="mpassword"
+                title="密码"
+                :class="[
+                  $style['field-title'],
+                  $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
+                  'clearfix'
+                ]"
+                @click="
+                  () => {
+                    onLabelClick('mpassword');
+                  }
+                "
+                ><span :class="[$style['field-text'], 'clearfix']">密码</span>
+              </label>
+              <div
+                :class="[
+                  $style['field-right'],
+                  $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
+                  'clearfix'
+                ]"
+              >
+                <input
+                  v-if="m_isShowPwd"
+                  ref="mpassword"
+                  v-model="allValue['mpassword']"
+                  name="mpassword"
+                  placeholder="请输入6-12位字母及数字"
+                  type="text"
+                  @input="verification('mpassword')"
+                  maxlength="11"
+                  :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
+                  autocomplete
+                />
+                <input
+                  v-else
+                  ref="mpassword"
+                  v-model="allValue['mpassword']"
+                  name="mpassword"
+                  placeholder="请输入6-12位字母及数字"
+                  type="password"
+                  @input="verification('mpassword')"
+                  maxlength="11"
+                  :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
+                  autocomplete
+                />
+                <div :class="$style['eye']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          m_isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="m_isShowPwd = !m_isShowPwd"
+                  />
+                </div>
+              </div>
+              <div
+                :class="
+                  allTip['mpassword']
+                    ? $style['join-tip-show']
+                    : $style['join-tip']
+                "
+                v-html="allTip['mpassword']"
+              />
+            </div>
+            <!-- 簡訊註冊 確認密碼欄位 -->
+            <div :class="[$style['field-wrap'], 'clearfix']">
+              <label
+                for="mconfirm_password"
+                title="确认密码"
+                :class="[
+                  $style['field-title'],
+                  $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
+                  'clearfix'
+                ]"
+                @click="
+                  () => {
+                    onLabelClick('mconfirm_password');
+                  }
+                "
+                ><span :class="[$style['field-text'], 'clearfix']"
+                  >确认密码</span
+                >
+              </label>
+              <div
+                :class="[
+                  $style['field-right'],
+                  $style[siteConfig.ROUTER_TPL],
+                  $style['full'],
+                  'clearfix'
+                ]"
+              >
+                <input
+                  v-if="m_isShowPwd"
+                  ref="mconfirm_password"
+                  v-model="allValue['mconfirm_password']"
+                  name="mconfirm_password"
+                  placeholder="请再次输入设置密码"
+                  type="text"
+                  @input="verification('mconfirm_password')"
+                  maxlength="11"
+                  :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
+                  autocomplete
+                />
+                <input
+                  v-else
+                  ref="mconfirm_password"
+                  v-model="allValue['mconfirm_password']"
+                  name="mconfirm_password"
+                  placeholder="请再次输入设置密码"
+                  type="password"
+                  @input="verification('mconfirm_password')"
+                  maxlength="11"
+                  :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
+                  autocomplete
+                />
+                <div :class="$style['eye']">
+                  <img
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/login/btn_eye_${
+                          m_isShowPwd ? 'n' : 'd'
+                        }.png`
+                      )
+                    "
+                    @click="m_isShowPwd = !m_isShowPwd"
+                  />
+                </div>
+              </div>
+              <div
+                :class="
+                  allTip['mconfirm_password']
+                    ? $style['join-tip-show']
+                    : $style['join-tip']
+                "
+                v-html="allTip['mconfirm_password']"
+              />
+            </div>
+            <!-- <div
               v-for="field in fieldsData"
               :key="field.key"
               :class="[$style['field-wrap'], 'clearfix']"
@@ -904,103 +1051,6 @@
                   </div>
                 </div>
 
-                <template v-else-if="field.key === 'password'">
-                  <input
-                    v-if="m_isShowPwd"
-                    id="mpwd"
-                    v-model="allValue[field.key]"
-                    :class="[
-                      $style['join-input'],
-                      $style[siteConfig.ROUTER_TPL],
-                      field.key
-                    ]"
-                    :name="field.key"
-                    :placeholder="field.content.note1"
-                    type="text"
-                    maxlength="12"
-                    @input="verification(field.key)"
-                    @keydown.13="keyDownSubmit()"
-                    autocomplete="password"
-                  />
-                  <input
-                    v-else
-                    id="mpwd"
-                    v-model="allValue[field.key]"
-                    :class="[
-                      $style['join-input'],
-                      $style[siteConfig.ROUTER_TPL],
-                      field.key
-                    ]"
-                    :name="field.key"
-                    :placeholder="field.content.note1"
-                    type="password"
-                    maxlength="12"
-                    @input="verification(field.key)"
-                    @keydown.13="keyDownSubmit()"
-                    autocomplete="password"
-                  />
-                  <div :class="$style['eye']">
-                    <img
-                      :src="
-                        $getCdnPath(
-                          `/static/image/common/login/btn_eye_${
-                            m_isShowPwd ? 'n' : 'd'
-                          }.png`
-                        )
-                      "
-                      @click="m_isShowPwd = !m_isShowPwd"
-                    />
-                  </div>
-                </template>
-
-                <template v-else-if="field.key === 'confirm_password'">
-                  <input
-                    v-if="m_isShowPwd"
-                    id="mconfirm_password"
-                    v-model="allValue[field.key]"
-                    :class="[
-                      $style['join-input'],
-                      $style[siteConfig.ROUTER_TPL],
-                      field.key
-                    ]"
-                    :name="field.key"
-                    :placeholder="field.content.note1"
-                    type="text"
-                    maxlength="12"
-                    @input="verification(field.key)"
-                    @keydown.13="keyDownSubmit()"
-                    autocomplete="password"
-                  />
-                  <input
-                    v-else
-                    id="mconfirm_password"
-                    v-model="allValue[field.key]"
-                    :class="[
-                      $style['join-input'],
-                      $style[siteConfig.ROUTER_TPL],
-                      field.key
-                    ]"
-                    :name="field.key"
-                    :placeholder="field.content.note1"
-                    type="password"
-                    maxlength="12"
-                    @input="verification(field.key)"
-                    @keydown.13="keyDownSubmit()"
-                    autocomplete="password"
-                  />
-                  <div :class="$style['eye']">
-                    <img
-                      :src="
-                        $getCdnPath(
-                          `/static/image/common/login/btn_eye_${
-                            m_isShowPwd ? 'n' : 'd'
-                          }.png`
-                        )
-                      "
-                      @click="m_isShowPwd = !m_isShowPwd"
-                    />
-                  </div>
-                </template>
 
                 <input
                   v-else
@@ -1051,7 +1101,7 @@
                 "
                 v-html="allTip[field.key]"
               />
-            </div>
+            </div> -->
           </form>
         </div>
 
@@ -1234,6 +1284,9 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
+        mphone: "",
+        mpassword: "",
+        mconfirm_password: "",
         introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
@@ -1260,6 +1313,9 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
+        mphone: "",
+        mpassword: "",
+        mconfirm_password: "",
         introducer: "",
         name: "",
         email: "",
@@ -1384,15 +1440,13 @@ export default {
     },
     fieldsData() {
       //******手機註冊欄位 取得密碼欄位******
-      if (this.currentJoin === "mobilejoin") {
-        return this.registerData.filter(
-          field =>
-            field.key === "password" ||
-            field.key === "confirm_password" ||
-            (field.key === "captcha_text" &&
-              this.domainConfig.register_captcha_type === 1)
-        );
-      }
+      // if (this.currentJoin === "mobilejoin") {
+      //   return this.registerData.filter(
+      //     field =>
+      //       field.key === "captcha_text" &&
+      //       this.domainConfig.register_captcha_type === 1
+      //   );
+      // }
       //******完整註冊欄位******
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
@@ -1409,7 +1463,7 @@ export default {
         if (this.allValue.phone === "" || this.allValue.phonettl === "") {
           return false;
         }
-        if (this.allValue.password !== this.allValue.confirm_password) {
+        if (this.allValue.mpassword !== this.allValue.mconfirm_password) {
           return false;
         }
         return true;
@@ -1784,6 +1838,9 @@ export default {
             case "skype":
             case "zalo":
             case "confirm_password":
+            case "mphone":
+            case "mpassword":
+            case "mconfirm_password":
             case "name":
             case "email":
             case "weixin":
@@ -1822,6 +1879,23 @@ export default {
                     }
                     break;
 
+                  case "mpassword":
+                    this.allTip["mconfirm_password"] = "";
+                    if (
+                      this.allValue["mpassword"] !==
+                      this.allValue["mconfirm_password"]
+                    ) {
+                      this.allTip["mconfirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
+                      );
+                    }
+
+                    if (!val.match(regex)) {
+                      this.allTip[key] = msg;
+                    }
+                    break;
+
                   case "email":
                     if (!val.match(regex)) {
                       this.allTip[key] = msg;
@@ -1842,6 +1916,24 @@ export default {
                       this.allValue["confirm_password"]
                     ) {
                       this.allTip["confirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
+                      );
+                    }
+                    break;
+
+                  case "mconfirm_password":
+                    // if (!val) {
+                    //   this.allTip[key] = "";
+                    //   return;
+                    // }
+
+                    this.allTip["mconfirm_password"] = "";
+                    if (
+                      this.allValue["mpassword"] !==
+                      this.allValue["mconfirm_password"]
+                    ) {
+                      this.allTip["mconfirm_password"] = this.$text(
                         "S_PASSWD_CONFIRM_ERROR",
                         "确认密码预设要跟密码一致"
                       );
@@ -1933,6 +2025,25 @@ export default {
           }
 
           if (key === "phone") {
+            this.allValue[key] = `${this.countryCode.replace("+", "")}-${
+              this.allValue[key]
+            }`;
+            if (this.allValue[key].length > 13) {
+              this.phoneVerifybtnActive = true;
+            } else {
+              this.phoneVerifybtnActive = false;
+            }
+
+            if (this.allValue[key].length < 10) {
+              this.allTip[key] = this.$text(
+                "S_FORM_PHONE_ERROR",
+                "请输入7-15码，仅允许输入数字"
+              );
+              return;
+            }
+          }
+
+          if (key === "mphone") {
             this.allValue[key] = `${this.countryCode.replace("+", "")}-${
               this.allValue[key]
             }`;
@@ -2105,14 +2216,14 @@ export default {
             this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
           phone:
             this.countryCode === ""
-              ? `86-${this.allValue["phone"]}`
-              : this.allValue["phone"],
+              ? `86-${this.allValue["mphone"]}`
+              : this.allValue["mphone"],
           username:
             this.countryCode === ""
-              ? `86-${this.allValue["phone"]}`
-              : this.allValue["phone"],
-          password: this.allValue["password"],
-          confirmPassword: this.allValue["confirm_password"],
+              ? `86-${this.allValue["mphone"]}`
+              : this.allValue["mphone"],
+          password: this.allValue["mpassword"],
+          confirmPassword: this.allValue["mconfirm_password"],
           keyring: this.allValue["phonettl"],
           captchaText: this.allValue.captcha_text,
           smsSpeedyRegister: this.domainConfig.sms_speedy_register
@@ -2148,7 +2259,7 @@ export default {
             this.mobileJoinErrMag = res.msg;
 
             if (res.errors && res.errors.phone) {
-              this.allTip["phone"] = res.errors.phone;
+              this.allTip["mphone"] = res.errors.phone;
             }
 
             if (res.response && res.status === "506") {
@@ -2203,8 +2314,8 @@ export default {
                 }
 
                 if (localStorage.getItem("m_rememberPwd")) {
-                  localStorage.setItem("mobileusername", this.allValue.phone);
-                  localStorage.setItem("mpassword", this.allValue.password);
+                  localStorage.setItem("mobileusername", this.allValue.mphone);
+                  localStorage.setItem("mpassword", this.allValue.mpassword);
                 } else {
                   localStorage.removeItem("mobileusername");
                   localStorage.removeItem("mpassword");
@@ -2535,7 +2646,7 @@ export default {
     },
     //手機註冊獲取驗證碼
     mobileJoinGetCode() {
-      if (this.allValue.phone.length > 10) {
+      if (this.allValue.mphone.length > 10) {
         //寄出手機註冊驗證簡訊
         goLangApiRequest({
           method: "post",
@@ -2543,13 +2654,13 @@ export default {
           params: {
             phone:
               this.countryCode === ""
-                ? `86-${this.allValue.phone}`
-                : `${this.countryCode.replace("+", "")}-${this.allValue.phone}`
+                ? `86-${this.allValue.mphone}`
+                : `${this.countryCode.replace("+", "")}-${this.allValue.mphone}`
           }
         }).then(res => {
           if (res.status !== "000") {
             if (res.errors.phone) {
-              this.allTip["phone"] = res.errors.phone;
+              this.allTip["mphone"] = res.errors.phone;
             } else {
               this.allTip["phonettl"] = res.msg;
             }
