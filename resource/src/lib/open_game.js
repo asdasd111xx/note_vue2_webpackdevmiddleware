@@ -1,5 +1,6 @@
 //首頁的福利，遊戲，泡泡的體育，都會用到
 //????什麼情況   let isWebview = getCookie("platform") === "H";
+//vender:遊戲商，kind:種類(gameCategory.js)
 
 //打開方式
 //內嵌 1.gameType===event  1.泡泡直播間開遊戲
