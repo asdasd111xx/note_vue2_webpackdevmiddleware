@@ -64,7 +64,7 @@ export default {
             return false;
           }
         } else {
-          if (this.phone === "" || this.password === "") {
+          if (this.phone === "" || this.mpassword === "") {
             return false;
           }
         }
@@ -162,6 +162,11 @@ export default {
 
       if (this.currentLogin === "accountlogin" && !this.password) {
         this.errMsg = "密码不得为空";
+        return;
+      }
+
+      if (this.currentLogin === "mobilelogin" && !this.phone) {
+        this.errMsg = "手机号不得为空";
         return;
       }
 
