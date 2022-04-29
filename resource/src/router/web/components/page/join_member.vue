@@ -311,6 +311,24 @@
 
                 <template v-else-if="field.key === 'password'">
                   <input
+                    v-if="isShowPwd"
+                    id="pwd"
+                    v-model="allValue[field.key]"
+                    :class="[
+                      $style['join-input'],
+                      $style[siteConfig.ROUTER_TPL],
+                      field.key
+                    ]"
+                    :name="field.key"
+                    :placeholder="field.content.note1"
+                    type="text"
+                    maxlength="12"
+                    @input="verification(field.key)"
+                    @keydown.13="keyDownSubmit()"
+                    autocomplete="password"
+                  />
+                  <input
+                    v-else
                     id="pwd"
                     v-model="allValue[field.key]"
                     :class="[
@@ -335,13 +353,31 @@
                           }.png`
                         )
                       "
-                      @click="toggleEye('confPwd')"
+                      @click="isShowPwd = !isShowPwd"
                     />
                   </div>
                 </template>
 
                 <template v-else-if="field.key === 'confirm_password'">
                   <input
+                    v-if="isShowPwd"
+                    id="confirm_password"
+                    v-model="allValue[field.key]"
+                    :class="[
+                      $style['join-input'],
+                      $style[siteConfig.ROUTER_TPL],
+                      field.key
+                    ]"
+                    :name="field.key"
+                    :placeholder="field.content.note1"
+                    type="text"
+                    maxlength="12"
+                    @input="verification(field.key)"
+                    @keydown.13="keyDownSubmit()"
+                    autocomplete="password"
+                  />
+                  <input
+                    v-else
                     id="confirm_password"
                     v-model="allValue[field.key]"
                     :class="[
@@ -366,7 +402,7 @@
                           }.png`
                         )
                       "
-                      @click="toggleEye('confPwd')"
+                      @click="isShowPwd = !isShowPwd"
                     />
                   </div>
                 </template>
@@ -870,7 +906,25 @@
 
                 <template v-else-if="field.key === 'password'">
                   <input
-                    id="pwd"
+                    v-if="m_isShowPwd"
+                    id="mpwd"
+                    v-model="allValue[field.key]"
+                    :class="[
+                      $style['join-input'],
+                      $style[siteConfig.ROUTER_TPL],
+                      field.key
+                    ]"
+                    :name="field.key"
+                    :placeholder="field.content.note1"
+                    type="text"
+                    maxlength="12"
+                    @input="verification(field.key)"
+                    @keydown.13="keyDownSubmit()"
+                    autocomplete="password"
+                  />
+                  <input
+                    v-else
+                    id="mpwd"
                     v-model="allValue[field.key]"
                     :class="[
                       $style['join-input'],
@@ -890,18 +944,36 @@
                       :src="
                         $getCdnPath(
                           `/static/image/common/login/btn_eye_${
-                            isShowPwd ? 'n' : 'd'
+                            m_isShowPwd ? 'n' : 'd'
                           }.png`
                         )
                       "
-                      @click="toggleEye('confPwd')"
+                      @click="m_isShowPwd = !m_isShowPwd"
                     />
                   </div>
                 </template>
 
                 <template v-else-if="field.key === 'confirm_password'">
                   <input
-                    id="confirm_password"
+                    v-if="m_isShowPwd"
+                    id="mconfirm_password"
+                    v-model="allValue[field.key]"
+                    :class="[
+                      $style['join-input'],
+                      $style[siteConfig.ROUTER_TPL],
+                      field.key
+                    ]"
+                    :name="field.key"
+                    :placeholder="field.content.note1"
+                    type="text"
+                    maxlength="12"
+                    @input="verification(field.key)"
+                    @keydown.13="keyDownSubmit()"
+                    autocomplete="password"
+                  />
+                  <input
+                    v-else
+                    id="mconfirm_password"
                     v-model="allValue[field.key]"
                     :class="[
                       $style['join-input'],
@@ -921,11 +993,11 @@
                       :src="
                         $getCdnPath(
                           `/static/image/common/login/btn_eye_${
-                            isShowPwd ? 'n' : 'd'
+                            m_isShowPwd ? 'n' : 'd'
                           }.png`
                         )
                       "
-                      @click="toggleEye('confPwd')"
+                      @click="m_isShowPwd = !m_isShowPwd"
                     />
                   </div>
                 </template>
@@ -1134,6 +1206,7 @@ export default {
       dateLang: datepickerLang(this.$i18n.locale),
       ageLimit: new Date(Vue.moment(new Date()).add(-18, "year")),
       isShowPwd: false,
+      m_isShowPwd: false,
       beHostUrl: "",
       phoneVerifybtnActive: false,
       phoneVerifybtnSubmit: false,
@@ -1606,17 +1679,6 @@ export default {
         return;
       }
       this.joinSubmit();
-    },
-    toggleEye() {
-      if (this.isShowPwd) {
-        document.getElementById("pwd").type = "password";
-        document.getElementById("confirm_password").type = "password";
-      } else {
-        document.getElementById("pwd").type = "text";
-        document.getElementById("confirm_password").type = "text";
-      }
-
-      this.isShowPwd = !this.isShowPwd;
     },
     getCaptcha() {
       if (
