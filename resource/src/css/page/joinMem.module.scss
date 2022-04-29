@@ -17,7 +17,7 @@
     position: relative;
 
     &.active {
-      color: var(--main_color);
+      color: var(--mcenter_main_color);
 
       &::after {
         content: "";
@@ -27,11 +27,11 @@
         transform: translateX(-50%);
         width: 65px;
         height: 3px;
-        background: var(--main_color);
+        background: var(--mcenter_main_color);
       }
 
-      &.sg1 {
-        color: var(--mcenter_main_color);
+      &.sp1 {
+        color: #ffbb00;
 
         &::after {
           content: "";
@@ -41,7 +41,7 @@
           transform: translateX(-50%);
           width: 65px;
           height: 3px;
-          background: var(--mcenter_main_color);
+          background: #ffbb00;
         }
       }
     }

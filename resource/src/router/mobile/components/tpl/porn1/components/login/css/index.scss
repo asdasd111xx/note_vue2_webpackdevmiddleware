@@ -25,7 +25,7 @@
     position: relative;
 
     &.active {
-      color: var(--main_color);
+      color: var(--mcenter_main_color);
       &::after {
         content: "";
         position: absolute;
@@ -34,7 +34,21 @@
         transform: translateX(-50%);
         width: 65px;
         height: 3px;
-        background: var(--main_color);
+        background: var(--mcenter_main_color);
+      }
+
+      &.sp1 {
+        color: #ffbb00;
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 65px;
+          height: 3px;
+          background: #ffbb00;
+        }
       }
     }
   }

@@ -7,7 +7,10 @@
             v-for="(tab, index) in tabs"
             :key="`${tab}-${index}`"
             @click="currentTab(index)"
-            :class="[{ active: currentLogin === tab.page }]"
+            :class="[
+              siteConfig.ROUTER_TPL,
+              { active: currentLogin === tab.page }
+            ]"
           >
             {{ tab.name }}
           </span>
