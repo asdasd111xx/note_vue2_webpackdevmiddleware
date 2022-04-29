@@ -982,7 +982,7 @@
                 v-html="allTip['mconfirm_password']"
               />
             </div>
-            <!-- <div
+            <div
               v-for="field in fieldsData"
               :key="field.key"
               :class="[$style['field-wrap'], 'clearfix']"
@@ -1050,38 +1050,6 @@
                     />
                   </div>
                 </div>
-
-
-                <input
-                  v-else
-                  :ref="field.key"
-                  v-model="allValue[field.key]"
-                  :class="[
-                    $style['join-input'],
-                    $style[siteConfig.ROUTER_TPL],
-                    field.key
-                  ]"
-                  :name="field.key"
-                  :placeholder="placeholderKeyValue(field.key, 'tip')"
-                  type="text"
-                  @blur="verification(field.key)"
-                  @keydown.13="keyDownSubmit()"
-                />
-
-                <div
-                  :class="$style['clear']"
-                  v-if="
-                    !noCancelButton.includes(field.key) &&
-                      allValue[field.key].length > 1
-                  "
-                >
-                  <img
-                    :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                    @click="
-                      (allValue[field.key] = ''), (allTip[field.key] = '')
-                    "
-                  />
-                </div>
               </div>
 
               <div
@@ -1101,7 +1069,7 @@
                 "
                 v-html="allTip[field.key]"
               />
-            </div> -->
+            </div>
           </form>
         </div>
 
@@ -1440,13 +1408,13 @@ export default {
     },
     fieldsData() {
       //******手機註冊欄位 取得密碼欄位******
-      // if (this.currentJoin === "mobilejoin") {
-      //   return this.registerData.filter(
-      //     field =>
-      //       field.key === "captcha_text" &&
-      //       this.domainConfig.register_captcha_type === 1
-      //   );
-      // }
+      if (this.currentJoin === "mobilejoin") {
+        return this.registerData.filter(
+          field =>
+            field.key === "captcha_text" &&
+            this.domainConfig.register_captcha_type === 1
+        );
+      }
       //******完整註冊欄位******
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
