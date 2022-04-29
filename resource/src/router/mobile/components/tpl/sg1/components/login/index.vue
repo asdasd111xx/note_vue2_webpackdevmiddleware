@@ -55,8 +55,7 @@
                 <!-- 密碼 -->
                 <span class="login-unit login-unit-password">
                   <input
-                    ref="password"
-                    id="pwd"
+                    v-if="!isShowPwd"
                     v-model="password"
                     :title="$text('S_PASSWORD', '密码')"
                     :placeholder="$text('S_PASSWORD', '密码')"
@@ -66,7 +65,18 @@
                     tabindex="2"
                     @input="verification('login_password', $event.target.value)"
                     @keydown.13="keyDownSubmit()"
-                    autocomplete="password"
+                  />
+                  <input
+                    v-else
+                    v-model="password"
+                    :title="$text('S_PASSWORD', '密码')"
+                    :placeholder="$text('S_PASSWORD', '密码')"
+                    class="login-input"
+                    type="text"
+                    maxlength="12"
+                    tabindex="2"
+                    @input="verification('login_password', $event.target.value)"
+                    @keydown.13="keyDownSubmit()"
                   />
                   <div class="eye">
                     <img
@@ -77,7 +87,7 @@
                           }.png`
                         )
                       "
-                      @click="toggleEye('confPwd')"
+                      @click="isShowPwd = !isShowPwd"
                     />
                   </div>
                   <div class="input-icon">
@@ -175,8 +185,21 @@
                   class="login-unit login-unit-password"
                 >
                   <input
-                    ref="mpassword"
-                    id="pwd"
+                    v-if="m_isShowPwd"
+                    v-model="mpassword"
+                    :title="$text('S_PASSWORD', '密码')"
+                    :placeholder="$text('S_PASSWORD', '密码')"
+                    class="login-input"
+                    type="text"
+                    maxlength="12"
+                    tabindex="2"
+                    @input="
+                      verification('m_login_password', $event.target.value)
+                    "
+                    @keydown.13="keyDownSubmit()"
+                  />
+                  <input
+                    v-else
                     v-model="mpassword"
                     :title="$text('S_PASSWORD', '密码')"
                     :placeholder="$text('S_PASSWORD', '密码')"
@@ -184,9 +207,10 @@
                     type="password"
                     maxlength="12"
                     tabindex="2"
-                    @input="verification('login_password', $event.target.value)"
+                    @input="
+                      verification('m_login_password', $event.target.value)
+                    "
                     @keydown.13="keyDownSubmit()"
-                    autocomplete="password"
                   />
                   <div class="input-icon">
                     <img
@@ -202,11 +226,11 @@
                       :src="
                         $getCdnPath(
                           `/static/image/common/login/btn_eye_${
-                            isShowPwd ? 'n' : 'd'
+                            m_isShowPwd ? 'n' : 'd'
                           }.png`
                         )
                       "
-                      @click="toggleEye('confPwd')"
+                      @click="m_isShowPwd = !m_isShowPwd"
                     />
                   </div>
                 </span>

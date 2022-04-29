@@ -27,6 +27,7 @@ export default {
       phone: "",
       phone_validation_code: "",
       isShowPwd: false,
+      m_isShowPwd: false,
       isGetCaptcha: false // 重新取得驗證碼
     };
   },
@@ -132,7 +133,10 @@ export default {
           this.password = val;
           return;
         }
-
+        if (key === "m_login_password") {
+          this.mpassword = val;
+          return;
+        }
         this[key] = val;
       });
     },
@@ -147,15 +151,6 @@ export default {
       }
       this.handleClickLogin();
     },
-    toggleEye() {
-      if (this.isShowPwd) {
-        document.getElementById("pwd").type = "password";
-      } else {
-        document.getElementById("pwd").type = "text";
-      }
-
-      this.isShowPwd = !this.isShowPwd;
-    },
     handleClickLogin() {
       if (this.submitBtnLock) {
         return;
@@ -166,6 +161,11 @@ export default {
       }
 
       if (!this.password) {
+        this.errMsg = "密码不得为空";
+        return;
+      }
+
+      if (!this.mpassword) {
         this.errMsg = "密码不得为空";
         return;
       }
