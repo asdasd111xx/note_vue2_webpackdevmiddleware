@@ -160,12 +160,12 @@ export default {
         return;
       }
 
-      if (!this.password) {
+      if (this.currentLogin === "accountlogin" && !this.password) {
         this.errMsg = "密码不得为空";
         return;
       }
 
-      if (!this.mpassword) {
+      if (this.currentLogin === "mobilelogin" && !this.mpassword) {
         this.errMsg = "密码不得为空";
         return;
       }
