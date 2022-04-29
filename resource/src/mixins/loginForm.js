@@ -22,6 +22,7 @@ export default {
       isLoading: false,
       password: "",
       rememberPwd: false,
+      m_rememberPwd: false,
       username: "",
       phone: "",
       phone_validation_code: "",
@@ -74,6 +75,9 @@ export default {
   watch: {
     rememberPwd(val) {
       localStorage.setItem("rememberPwd", val);
+    },
+    m_rememberPwd(val) {
+      localStorage.setItem("m_rememberPwd", val);
     }
   },
   beforeCreate() {
@@ -110,6 +114,7 @@ export default {
     this.username = localStorage.getItem("username") || "";
     this.password = localStorage.getItem("password") || "";
     this.rememberPwd = localStorage.getItem("rememberPwd") === "true";
+    this.m_rememberPwd = localStorage.getItem("m_rememberPwd") === "true";
   },
   methods: {
     ...mapActions([
@@ -491,6 +496,12 @@ export default {
         return;
       }
 
+      if (!this.m_rememberPwd) {
+        localStorage.removeItem("password");
+        localStorage.removeItem("m_rememberPwd");
+        return;
+      }
+
       if (this.currentLogin === "accountlogin") {
         localStorage.setItem("username", this.username);
         localStorage.setItem("password", this.password);
@@ -500,7 +511,7 @@ export default {
       if (this.currentLogin === "mobilelogin") {
         localStorage.setItem("mobileusername", this.phone);
         localStorage.setItem("mpassword", this.mpassword);
-        localStorage.setItem("rememberPwd", this.rememberPwd);
+        localStorage.setItem("m_rememberPwd", this.m_rememberPwd);
       }
     }
   }

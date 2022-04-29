@@ -253,12 +253,10 @@
                   />
                 </div>
               </div>
+              <!-- 帳號登入記住密碼忘記密碼 -->
               <div
                 class="login-deposit-username clearfix"
-                v-if="
-                  this.currentLogin === 'accountlogin' ||
-                    this.mobileLoginTypeSwitch === 2
-                "
+                v-if="this.currentLogin === 'accountlogin'"
               >
                 <div class="icon-wrap" @click="rememberPwd = !rememberPwd">
                   <img
@@ -272,7 +270,33 @@
                 <span :class="['deposit-text', `${routerTPL}`]">{{
                   $text("S_SAVE_PASSWORD", "记住密码")
                 }}</span>
-                <!-- 忘記密碼 -->
+
+                <span
+                  class="login-unit-link"
+                  @click="$router.push('/mobile/forgetpwd/member')"
+                  >{{ $text("S_PASSWORD_FORGET", "忘记密码") }}?</span
+                >
+              </div>
+              <!-- 手機登入記住密碼忘記密碼 -->
+              <div
+                class="login-deposit-username clearfix"
+                v-if="
+                  this.currentLogin === 'mobilelogin' &&
+                    this.mobileLoginTypeSwitch === 2
+                "
+              >
+                <div class="icon-wrap" @click="m_rememberPwd = !m_rememberPwd">
+                  <img
+                    :src="
+                      `/static/image/common/icon_${
+                        m_rememberPwd ? '' : 'no'
+                      }remember.png`
+                    "
+                  />
+                </div>
+                <span :class="['deposit-text', `${routerTPL}`]">{{
+                  $text("S_SAVE_PASSWORD", "记住密码")
+                }}</span>
                 <span
                   class="login-unit-link"
                   @click="$router.push('/mobile/forgetpwd/member')"

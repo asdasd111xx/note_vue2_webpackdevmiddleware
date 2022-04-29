@@ -2138,7 +2138,7 @@ export default {
                   localStorage.setItem("first_time_login", true);
                 }
 
-                if (localStorage.getItem("rememberPwd")) {
+                if (localStorage.getItem("m_rememberPwd")) {
                   localStorage.setItem("mobileusername", this.allValue.phone);
                   localStorage.setItem("mpassword", this.allValue.password);
                 } else {
