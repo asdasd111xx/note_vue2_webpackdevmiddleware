@@ -57,14 +57,14 @@ module.exports = {
   },
   dev: {
     env: require("./dev.env"),
-    port: 8000,
+    port: 8787,
     transportMode: "ws",
     autoOpenBrowser: true,
     assetsSubDirectory: "static",
     assetsPublicPath: "/", //代表打包后，index.html里面引用资源的的相对地址
     proxyTable: {
       //發送請求有兩種
-      //1. goland，axios 有完整的域名http://... 就是向該域名發送請求，有後續的展開
+      //1. golang，axios 有完整的域名http://... 就是向該域名發送請求，有後續的展開
       //
       //2.0順序 ('/conf/domain') 找到'/conf' -> 找到'/conf'.target(是一組domain(https://yb01.66boxing.com/這邊就進到enginx了) -> 再進到nginx找 endpoint'/conf/domain'
       //2.1 "/conf/domain" (以bifa為例)(開發環境下)

@@ -209,7 +209,7 @@ export default {
           case "maintain_notice":
           // 分廳維護 - 全廳 - 增加可單獨掛撤維護APP端口功能（C-2342）
           // if (
-          //   (getCookie("platform") === "h" && temp.device === 2) ||
+          //   (getCookie("platform") === "h" && temp.device === 2) ||device: 不分裝置(0), iOS/Android/APP(1), PC/H5/PWA/馬甲(2)
           //   (getCookie("platform") === "pwa" && temp.device === 3) ||
           //   temp.device === 0
           // ) {
