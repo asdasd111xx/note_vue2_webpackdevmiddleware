@@ -190,7 +190,7 @@ export default {
       ],
       categoryOpt: [
         { key: "all", text: "全部" },
-        { key: "confirm", text: "成功" },
+        { key: "complete", text: "成功" },
         { key: "process", text: "处理中" },
         { key: "cancel", text: "取消" }
       ],
@@ -224,7 +224,7 @@ export default {
         this.showCondition = false;
       });
     },
-    getData(key) {
+    getData(key = "all") {
       let params = {
         firstResult: 0,
         maxResults: 10
