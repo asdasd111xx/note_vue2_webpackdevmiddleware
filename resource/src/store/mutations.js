@@ -641,5 +641,8 @@ export default {
   },
   [types.SET_LIVEFOOTERMASK](state, data) {
     state.liveFooterMask = data;
+  },
+  [types.SET_LIVEVIEWPATH](state, data) {
+    state.liveViewPath = data;
   }
 };

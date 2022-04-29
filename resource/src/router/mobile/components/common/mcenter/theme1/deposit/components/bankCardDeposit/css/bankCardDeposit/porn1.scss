@@ -249,7 +249,7 @@
   color: #979797;
   margin-left: 10px;
 
-  >span {
+  > span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -523,14 +523,10 @@
 
 .select-epoint-bank-item {
   height: 23px;
-  margin-left: 80px;
+  margin-left: 100px;
+  margin-right: 20px;
   font-size: 14px;
-
-  img {
-    height: 19px;
-    right: 10px;
-    float: right;
-  }
+  word-break: break-all;
 }
 
 .select-bank-icon {
@@ -893,7 +889,7 @@
   display: flex;
   align-items: center;
 
-  >img {
+  > img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1061,7 +1057,6 @@
 }
 
 .qrcode-item {
-
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1170,7 +1165,7 @@
     font-weight: 700;
   }
 
-  >div {
+  > div {
     line-height: 22px;
   }
 

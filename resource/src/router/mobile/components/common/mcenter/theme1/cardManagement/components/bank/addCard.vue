@@ -293,7 +293,7 @@ export default {
       this.smsTimer = null;
 
       if (!redirect) {
-        this.setPageStatus(0, "bankCardInfo", true);
+        this.setPageStatus("bankCardInfo", true);
         this.NextStepStatus = false;
         this.$emit("update:addBankCardStep", "one");
         return;
@@ -324,7 +324,8 @@ export default {
         case "home":
           this.$router.replace(`/mobile/${redirect}`);
           return;
-
+        case "live":
+          this.$router.back();
         case "iframe":
           let path = localStorage.getItem("bank-card-back-redirect");
           localStorage.removeItem("bank-card-back-redirect");

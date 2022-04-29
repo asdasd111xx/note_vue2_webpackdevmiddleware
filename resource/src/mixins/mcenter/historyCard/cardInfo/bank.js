@@ -110,7 +110,7 @@ export default {
                   break;
               }
               this.$emit("update:showDetail", false);
-              this.setPageStatus(1, "walletCardInfo", true);
+              this.setPageStatus("walletCardInfo", true);
             }
           });
       });

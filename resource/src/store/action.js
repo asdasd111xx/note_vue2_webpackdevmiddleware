@@ -649,6 +649,11 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       await dispatch("actionSetSystemDomain", { isGetFreeSpace: true });
     }
 
+    // 直播連結
+    if (["sg1"].includes(state.webDomain.site)) {
+      await dispatch("actionSetLiveViewPath");
+    }
+
     dispatch("actionSetNews");
     dispatch("actionSetMcenterMsgCount");
     dispatch("actionGetMemInfoV3");
@@ -2625,6 +2630,17 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
 
 export const actionSetLiveFooterMask = ({ commit }, data) => {
   commit(types.SET_LIVEFOOTERMASK, data);
+};
+
+export const actionSetLiveViewPath = ({ state, dispatch, commit }) => {
+  return dispatch("actionGetExtRedirect", {
+    api_uri: "/api/platform/v1/view-path",
+    method: "get"
+  }).then(response => {
+    if (response && response.result) {
+      commit(types.SET_LIVEVIEWPATH, response.result);
+    }
+  });
 };
 
 //取得彩金活動開關

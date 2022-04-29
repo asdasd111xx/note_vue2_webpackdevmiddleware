@@ -322,6 +322,7 @@ export default {
   created() {
     this.actionSetActivity();
     if (this.loginStatus) this.getRedJackpot();
+    this.actionSetMcenterMsgCount();
   },
   methods: {
     ...mapActions([
@@ -329,7 +330,8 @@ export default {
       "actionGetLayeredURL",
       "actionGetActingURL",
       "actionGetRegisterURL",
-      "actionSetActivity"
+      "actionSetActivity",
+      "actionSetMcenterMsgCount"
     ]),
     formatThousandsCurrency(value) {
       let _value = Number(value).toFixed(2);
@@ -611,7 +613,7 @@ export default {
 
 .mcenter-wrap {
   position: absolute;
-  right: 12px;
+  right: 15px;
   top: 0;
   height: 43px;
   display: flex;
@@ -853,7 +855,7 @@ export default {
   display: flex;
   align-items: center;
   position: absolute;
-  right: 17px;
+  right: 22px;
   top: 0;
   color: #000000;
 

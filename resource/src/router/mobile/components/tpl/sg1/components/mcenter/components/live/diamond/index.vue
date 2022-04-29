@@ -456,7 +456,7 @@ export default {
           });
         }
 
-        this.init(false);
+        this.init();
         this.isLoading = false;
         this.getBalance();
       });

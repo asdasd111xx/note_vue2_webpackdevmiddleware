@@ -26,7 +26,7 @@
           >
           <template v-if="themeTPL === 'sg1'"
             ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-              注册即送 300 钻
+              注册即送 123 钻
             </div></template
           >
         </div>
@@ -658,10 +658,12 @@
       <div v-else :class="[$style['join-btn-wrap']]">
         <div
           :class="[$style['join-btn'], { [$style.disabled]: isLoading }]"
-          @click="()=>{
-            joinSubmit()
-            sendUmengEvent(70)
-            }"
+          @click="
+            () => {
+              joinSubmit();
+              sendUmengEvent(70);
+            }
+          "
         >
           {{ $text("S_REGISTER", "注册") }}
         </div>
@@ -1974,7 +1976,7 @@ export default {
         }
       });
     },
-    sendUmengEvent(event){
+    sendUmengEvent(event) {
       sendUmeng(event);
     }
   }

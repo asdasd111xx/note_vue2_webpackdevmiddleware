@@ -29,7 +29,7 @@
             :isDetailPage="false"
             :type="'bankCard'"
             @onClick="onClickDetail(item, index)"
-            @setPageStatus="setPageStatus(0, 'bankCardInfo', false)"
+            @setPageStatus="setPageStatus('bankCardInfo', false)"
           />
         </div>
       </div>
@@ -56,7 +56,7 @@
         >
           <div
             :class="$style['add-btn']"
-            @click="setPageStatus(0, 'addBankCard', false)"
+            @click="setPageStatus('addBankCard', false)"
           >
             <img :src="`/static/image/common/mcenter/add_2.png`" />
             <span>{{ $text("S_ADD_BANKCARD", "添加银行卡") }}</span>
