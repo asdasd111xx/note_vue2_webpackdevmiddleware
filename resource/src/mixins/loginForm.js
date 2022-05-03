@@ -324,15 +324,19 @@ export default {
 
       let params_m = {
         aid: getCookie("aid") || localStorage.getItem("aid") || "",
-        keyring:
-          this.mobileLoginTypeSwitch === 1 ? this.phone_validation_code : "",
-        password: this.mobileLoginTypeSwitch === 2 ? this.mpassword : "",
         captchaText: this.captcha || validate.captcha,
         ...validate
       };
 
       if (this.phone !== "") {
         params_m["phone"] = `86-${this.phone}`;
+      }
+
+      if (this.mobileLoginTypeSwitch === 1) {
+        params_m["keyring"] = this.phone_validation_code;
+      }
+      if (this.mobileLoginTypeSwitch === 2) {
+        params_m["password"] = this.mpassword;
       }
 
       //手機登入submit
