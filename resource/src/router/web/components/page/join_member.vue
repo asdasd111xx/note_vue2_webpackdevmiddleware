@@ -2164,11 +2164,11 @@ export default {
             this.aid || getCookie("aid") || localStorage.getItem("aid") || "",
           phone:
             this.countryCode === ""
-              ? `86-${this.allValue["mphone"]}`
+              ? `86${this.allValue["mphone"]}`
               : this.allValue["mphone"],
           username:
             this.countryCode === ""
-              ? `86-${this.allValue["mphone"]}`
+              ? `86${this.allValue["mphone"]}`
               : this.allValue["mphone"],
           password: this.allValue["mpassword"],
           confirmPassword: this.allValue["mconfirm_password"],
