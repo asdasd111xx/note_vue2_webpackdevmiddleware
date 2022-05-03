@@ -927,7 +927,9 @@ export default {
       this.checkSuccess = false;
       this.showOuterCryptoAddress = false;
       this.showEpointWalletAddress = false;
+      this.curPassRoadTipTextShowMore = true;
 
+      this.curPassRoadTipText = "";
       this.walletData["CGPay"].password = "";
       this.walletData["OSPay"].password = "";
       this.cryptoMoney = "--";
