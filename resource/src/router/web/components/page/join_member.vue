@@ -1830,6 +1830,15 @@ export default {
                     // }
 
                     this.allTip["confirm_password"] = "";
+                    if (
+                      this.allValue["password"] !==
+                      this.allValue["confirm_password"]
+                    ) {
+                      this.allTip["confirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
+                      );
+                    }
 
                     if (!val.match(regex)) {
                       this.allTip[key] = msg;
@@ -1838,6 +1847,16 @@ export default {
 
                   case "mpassword":
                     this.allTip["mconfirm_password"] = "";
+
+                    if (
+                      this.allValue["mpassword"] !==
+                      this.allValue["mconfirm_password"]
+                    ) {
+                      this.allTip["mconfirm_password"] = this.$text(
+                        "S_PASSWD_CONFIRM_ERROR",
+                        "确认密码预设要跟密码一致"
+                      );
+                    }
 
                     if (!val.match(regex)) {
                       this.allTip[key] = msg;
