@@ -78,7 +78,7 @@ const embedGamesList = [
     kind: 3
   },
   {
-    vendor: "lg_sport",
+    vendor: "ai",
     kind: 1
   }
 
