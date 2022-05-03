@@ -168,13 +168,13 @@ export default {
       if (
         this.currentLogin === "mobilelogin" &&
         this.mobileLoginTypeSwitch === 1 &&
-        !this.phone_validation_cod
+        !this.phone_validation_code
       ) {
         this.errMsg = "未指定验证码";
         return;
       }
 
-      if (this.currentLogin === "mobilelogin" && !this.phonettl) {
+      if (this.currentLogin === "mobilelogin" && !this.phone) {
         this.errMsg = "手机号不得为空";
         return;
       }
