@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-show="fieldsData.length"
-    :class="['normal-page', $style['join-wrap'], 'clearfix']"
-  >
+  <div :class="['normal-page', $style['join-wrap'], 'clearfix']">
     <slot name="top-content" />
 
     <div v-if="mobileJoinSwitch" :class="$style['join-tabs-wrap']">
