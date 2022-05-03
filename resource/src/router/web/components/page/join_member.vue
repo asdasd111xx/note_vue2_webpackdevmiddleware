@@ -1390,6 +1390,7 @@ export default {
   watch: {
     currentJoin() {
       this.submitBtnLock = true;
+      this.allValue['captcha_text'] = "";
     }
   },
   computed: {
