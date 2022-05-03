@@ -165,12 +165,25 @@ export default {
         return;
       }
 
-      if (this.currentLogin === "mobilelogin" && !this.phone) {
+      if (
+        this.currentLogin === "mobilelogin" &&
+        this.mobileLoginTypeSwitch === 1 &&
+        !this.phone_validation_cod
+      ) {
+        this.errMsg = "未指定验证码";
+        return;
+      }
+
+      if (this.currentLogin === "mobilelogin" && !this.phonettl) {
         this.errMsg = "手机号不得为空";
         return;
       }
 
-      if (this.currentLogin === "mobilelogin" && !this.mpassword) {
+      if (
+        this.currentLogin === "mobilelogin" &&
+        this.mobileLoginTypeSwitch === 2 &&
+        !this.mpassword
+      ) {
         this.errMsg = "密码不得为空";
         return;
       }
