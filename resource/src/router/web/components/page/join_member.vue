@@ -2024,14 +2024,6 @@ export default {
             } else {
               this.phoneVerifybtnActive = false;
             }
-
-            if (this.allValue[key].length < 10) {
-              this.allTip[key] = this.$text(
-                "S_FORM_PHONE_ERROR",
-                "请输入7-15码，仅允许输入数字"
-              );
-              return;
-            }
           }
           this.allTip[key] = "";
         }
