@@ -107,7 +107,7 @@ export default {
         // }
 
         // const isShow = this.show(this.getDefaultCondition(item.condition));
-        let cdn = this.slideCDNDomain
+        let cdn = !this.slideCDNDomain
           ? `${this.slideCDNDomain}/upload-image`
           : "/cdn";
         list.push({
