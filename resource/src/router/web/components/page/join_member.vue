@@ -758,7 +758,6 @@
                   v-model="allValue['mphone']"
                   name="mphone"
                   placeholder="请输入手机号码"
-                  type="number"
                   @input="verification('mphone')"
                   maxlength="11"
                   :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
@@ -1828,7 +1827,7 @@ export default {
               this.allTip[key] = "";
 
               this.actionVerificationFormData({
-                target: key,
+                target: key === "mphone" ? "phone" : key,
                 value: this.allValue[key]
               }).then(val => {
                 this.allValue[key] = val;
