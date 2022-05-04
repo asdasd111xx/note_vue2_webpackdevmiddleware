@@ -638,10 +638,10 @@
 
     p {
       margin: 0px;
-      a {
-        color: #6aaaf5;
-        text-decoration: underline;
-      }
+    }
+    a {
+      color: #6aaaf5 !important;
+      text-decoration: underline;
     }
   }
 }
@@ -1099,6 +1099,13 @@
     padding: 0 0 0 10px;
     text-align: left;
     color: #222;
+  }
+  p {
+    margin: 0px;
+  }
+  a {
+    color: #6aaaf5 !important;
+    text-decoration: underline;
   }
 }
 
