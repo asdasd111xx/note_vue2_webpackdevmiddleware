@@ -758,7 +758,7 @@
                   v-model="allValue['mphone']"
                   name="mphone"
                   placeholder="请输入手机号码"
-                  type="tel"
+                  type="number"
                   @input="verification('mphone')"
                   maxlength="11"
                   :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"

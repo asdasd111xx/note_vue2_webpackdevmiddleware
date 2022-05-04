@@ -178,7 +178,7 @@ export default {
   mphone: {
     key: "mphone",
     text: "S_TEL",
-    type: "text",
+    type: "number",
     isRequired: false,
     hasVerify: false,
     show: true,
