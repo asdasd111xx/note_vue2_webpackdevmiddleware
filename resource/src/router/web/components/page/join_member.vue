@@ -2639,10 +2639,9 @@ export default {
           }
         }).then(res => {
           if (res.status !== "000") {
+            this.mobileJoinErrMag = res.msg;
             if (res.errors.phone) {
               this.allTip["mphone"] = res.errors.phone;
-            } else {
-              this.allTip["phonettl"] = res.msg;
             }
           } else {
             this.actionSetGlobalMessage({
