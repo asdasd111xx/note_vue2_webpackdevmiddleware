@@ -1077,6 +1077,7 @@
           v-if="[3, 4, 5].includes(memInfo.config.register_captcha_type)"
           :class="[
             $style['thirdy-block-wrap'],
+            currentJoin === 'mobilejoin' ? $style['full'] : '',
             $style[siteConfig.ROUTER_TPL],
             'clearfix'
           ]"
