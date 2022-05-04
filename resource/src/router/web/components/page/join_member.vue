@@ -2195,14 +2195,16 @@ export default {
           smsSpeedyRegister: this.domainConfig.sms_speedy_register
         };
         const self = this;
-        if (
-          Number(localStorage.getItem("x-channelid")) ||
-          Number(localStorage.getItem("code"))
-        ) {
-          params["register_channel"] =
-            Number(localStorage.getItem("x-channelid")) ||
-            Number(localStorage.getItem("code"));
+        if (Number(localStorage.getItem("x-channelid"))) {
+          params["register_channel"] = Number(
+            localStorage.getItem("x-channelid")
+          );
         }
+
+        if (Number(localStorage.getItem("x-code"))) {
+          params["code"] = Number(localStorage.getItem("x-code"));
+        }
+
         goLangApiRequest({
           method: "post",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/PhoneRegister`,
