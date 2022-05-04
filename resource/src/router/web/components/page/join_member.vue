@@ -420,12 +420,15 @@
                     @keydown.13="keyDownSubmit()"
                     @input="verification(field.key)"
                   />
-                  <div :class="$style['clear']" v-if="field.key === 'username'">
+                  <div
+                    :class="$style['clear']"
+                    v-if="
+                      field.key === 'username' && allValue[field.key].length > 0
+                    "
+                  >
                     <img
                       :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                      @click="
-                        (allValue[field.key] = ''), (allTip[field.key] = '')
-                      "
+                      @click="clearValue(field.key)"
                     />
                   </div>
                 </template>
@@ -647,7 +650,7 @@
                   @keydown.13="keyDownSubmit()"
                 />
 
-                <div
+                <!-- <div
                   :class="$style['clear']"
                   v-if="
                     !noCancelButton.includes(field.key) &&
@@ -660,7 +663,7 @@
                       (allValue[field.key] = ''), (allTip[field.key] = '')
                     "
                   />
-                </div>
+                </div> -->
               </div>
 
               <!-- </div> -->
@@ -1749,6 +1752,11 @@ export default {
       }
 
       // 驗證輸入值
+      this.verification(key);
+    },
+    clearValue(key) {
+      this.allValue[key] = "";
+      this.allTip[key] = "";
       this.verification(key);
     },
     verification(key, index) {
