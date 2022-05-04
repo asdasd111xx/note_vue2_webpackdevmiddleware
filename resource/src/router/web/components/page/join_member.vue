@@ -1778,11 +1778,13 @@ export default {
         switch (key) {
           case "password":
             this.allTip["confirm_password"] = "";
+            break;
           case "confirm_password":
             this.allTip[key] = "";
             break;
           case "mpassword":
             this.allTip["mconfirm_password"] = "";
+            break;
           case "mconfirm_password":
             this.allTip[key] = "";
             break;
@@ -2193,10 +2195,13 @@ export default {
           smsSpeedyRegister: this.domainConfig.sms_speedy_register
         };
         const self = this;
-        if (Number(localStorage.getItem("x-channelid"))) {
-          params["register_channel"] = Number(
-            localStorage.getItem("x-channelid")
-          );
+        if (
+          Number(localStorage.getItem("x-channelid")) ||
+          Number(localStorage.getItem("code"))
+        ) {
+          params["register_channel"] =
+            Number(localStorage.getItem("x-channelid")) ||
+            Number(localStorage.getItem("code"));
         }
         goLangApiRequest({
           method: "post",
