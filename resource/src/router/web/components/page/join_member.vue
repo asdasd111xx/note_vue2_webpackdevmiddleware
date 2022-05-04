@@ -802,7 +802,6 @@
                   v-model="allValue['phonettl']"
                   name="mobilettl"
                   placeholder="请输入验证码"
-                  type="tel"
                   maxlength="6"
                   :class="[$style['join-input'], $style[siteConfig.ROUTER_TPL]]"
                   @input="verification('phonettl')"
@@ -1827,7 +1826,7 @@ export default {
               this.allTip[key] = "";
 
               this.actionVerificationFormData({
-                target: key === "mphone" ? "phone" : key,
+                target: key,
                 value: this.allValue[key]
               }).then(val => {
                 this.allValue[key] = val;

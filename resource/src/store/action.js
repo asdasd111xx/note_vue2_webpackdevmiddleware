@@ -1886,6 +1886,7 @@ export const actionVerificationFormData = (
       break;
 
     case "phone":
+    case "mphone":
       let maxLength = 11;
       switch (site) {
         case "porn1":
@@ -1902,6 +1903,7 @@ export const actionVerificationFormData = (
 
       break;
     case "phone_validation_code":
+    case "phonettl":
       let maxCodeLength = 6;
       val = val.replace(/[^0-9]/g, "");
 

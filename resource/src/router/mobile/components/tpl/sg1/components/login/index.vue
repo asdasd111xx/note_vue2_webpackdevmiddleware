@@ -146,7 +146,7 @@
                     :title="$text('S_MOBILE_VERIFICATION', '手机验证')"
                     :placeholder="$text('S_ENABLE_KEYRING', '输入验证码')"
                     :class="['login-input']"
-                    maxlength="15"
+                    maxlength="6"
                     tabindex="1"
                     @keydown.13="keyDownSubmit()"
                     @input="
