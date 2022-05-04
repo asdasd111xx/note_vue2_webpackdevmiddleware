@@ -1776,13 +1776,18 @@ export default {
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
         switch (key) {
+           case "username":
+            this.allTip[key] = "";
+            break;
           case "password":
             this.allTip["confirm_password"] = "";
+            break;
           case "confirm_password":
             this.allTip[key] = "";
             break;
           case "mpassword":
             this.allTip["mconfirm_password"] = "";
+            break;
           case "mconfirm_password":
             this.allTip[key] = "";
             break;
