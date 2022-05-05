@@ -167,18 +167,18 @@ export default {
     initPlayerEvent() {
       //活動開關
       if (this.isActiveBouns) {
-        this.player.on("loadstart", e => {
-          this.player.tech().hls.xhr.beforeRequest = function(options) {
-            console.log(options.uri);
+        // this.player.on("loadstart", e => {
+        //   this.player.tech().hls.xhr.beforeRequest = function(options) {
+        //     console.log(options.uri);
 
-            if (!options.uri.includes("getvdokey")) {
-              return;
-            }
+        //     if (!options.uri.includes("getvdokey")) {
+        //       return;
+        //     }
 
-            options.headers = options.headers || {};
-            options.headers["Custom-Header"] = "aaaa";
-          };
-        });
+        //     options.headers = options.headers || {};
+        //     options.headers["Custom-Header"] = "test-key";
+        //   };
+        // });
 
         this.player.on("playing", () => {
           if (!this.firstPlay) {
