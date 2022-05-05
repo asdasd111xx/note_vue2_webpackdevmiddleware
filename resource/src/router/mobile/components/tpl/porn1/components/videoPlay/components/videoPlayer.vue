@@ -54,9 +54,6 @@ export default {
     videoInfo: {
       type: Object,
       required: true
-    },
-    source: {
-      type: String
     }
   },
   data() {
@@ -170,6 +167,19 @@ export default {
     initPlayerEvent() {
       //活動開關
       if (this.isActiveBouns) {
+        this.player.on("loadstart", e => {
+          this.player.tech().hls.xhr.beforeRequest = function(options) {
+            console.log(options.uri);
+
+            if (!options.uri.includes("getvdokey")) {
+              return;
+            }
+
+            options.headers = options.headers || {};
+            options.headers["Custom-Header"] = "aaaa";
+          };
+        });
+
         this.player.on("playing", () => {
           if (!this.firstPlay) {
             this.firstPlay = true;
