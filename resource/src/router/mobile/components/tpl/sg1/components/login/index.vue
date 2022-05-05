@@ -476,7 +476,7 @@ export default {
         this.currentLogin === "mobilelogin" &&
         this.mobileLoginTypeSwitch === 2
       ) {
-        if (this.phone || this.phone_validation_code || this.captcha) {
+        if (this.phone || this.mpassword || this.captcha) {
           return false;
         }
       }

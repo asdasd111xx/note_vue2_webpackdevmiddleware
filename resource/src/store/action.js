@@ -1912,6 +1912,7 @@ export const actionVerificationFormData = (
       }
       break;
     case "login_password":
+    case "m_login_password":
       val = val.replace(/[^A-Za-z0-9._\-!@#$&+=|*]/g, "").substring(0, 12);
       break;
 

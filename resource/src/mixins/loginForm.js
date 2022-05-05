@@ -21,6 +21,7 @@ export default {
       errMsg: "",
       isLoading: false,
       password: "",
+      mpassword: "",
       rememberPwd: false,
       m_rememberPwd: false,
       username: "",
