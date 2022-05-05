@@ -9,7 +9,6 @@
       <video-player
         v-if="info"
         :video-info="info"
-        :source="this.source"
         :key="info.id"
         ref="player"
         id="videoPlayer"
