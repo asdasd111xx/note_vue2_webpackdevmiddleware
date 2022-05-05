@@ -1378,7 +1378,7 @@ export default {
       },
       isGetCaptcha: false,
       isLoading: false,
-      submitBtnLock: true,
+      // submitBtnLock: true,
       showRedirectJump: false,
       redirect_url: "",
       placeholderResult: [],
@@ -1388,7 +1388,6 @@ export default {
   },
   watch: {
     currentJoin() {
-      this.submitBtnLock = true;
       this.allValue["captcha_text"] = "";
     }
   },
@@ -1419,6 +1418,32 @@ export default {
       return this.registerData.filter(
         field => this.joinMemInfo[field.key] && this.joinMemInfo[field.key].show
       );
+    },
+    submitBtnLock() {
+      //帳號註冊按鈕禁能
+      if (this.currentJoin === "accountjoin") {
+        let arr = [];
+        this.fieldsData.forEach(item => {
+          arr.push(this.allValue[item.key]);
+        });
+        let cancelBtnLock = arr.some(item => item !== "");
+        if (cancelBtnLock) {
+          return false;
+        }
+      }
+      //手機註冊按鈕禁能
+      if (this.currentJoin === "mobilejoin") {
+        if (
+          this.allValue["mphone"] ||
+          this.allValue["mpassword"] ||
+          this.allValue["phonettl"] ||
+          this.allValue["mconfirm_password"] ||
+          this.allValue["captcha_text"]
+        ) {
+          return false;
+        }
+      }
+      return true;
     },
     requireTrueData() {
       return this.registerData.filter(
@@ -1498,7 +1523,7 @@ export default {
     }
   },
   created() {
-    this.submitBtnLock = true;
+    // this.submitBtnLock = true;
     //取得成為主播網址
     if (this.siteConfig.ROUTER_TPL === "sg1") {
       this.getBeHostUrl();
@@ -1760,14 +1785,6 @@ export default {
     },
     verification(key, index) {
       const data = this.joinMemInfo[key];
-
-      //帳號&手機註冊按鈕禁能
-
-      if (this.allValue[key] === "") {
-        this.submitBtnLock = true;
-      } else {
-        this.submitBtnLock = false;
-      }
 
       //欄位為空不顯示提示訊息
       this.allTip[key] = "";
