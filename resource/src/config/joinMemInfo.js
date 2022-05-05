@@ -185,7 +185,7 @@ export default {
     minimum: 7,
     maximum: 15,
     regExp: /^[0-9]+$/,
-    errorMsg: i18n.t("S_JM_PHONE_RMB")
+    errorMsg: ""
   },
   phonettl: {
     key: "phonettl",
