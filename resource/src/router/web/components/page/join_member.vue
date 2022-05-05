@@ -2659,6 +2659,7 @@ export default {
             this.mobileJoinErrMag = res.msg;
             if (res.errors.phone) {
               this.allTip["mphone"] = res.errors.phone;
+              this.mobileJoinErrMag = "";
             }
           } else {
             this.actionSetGlobalMessage({
