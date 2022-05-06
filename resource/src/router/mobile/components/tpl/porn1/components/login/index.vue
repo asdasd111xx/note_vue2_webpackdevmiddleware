@@ -3,7 +3,7 @@
     <div slot="content" class="content-wrap">
       <div class="container">
         <div v-if="mobileLoginSwitch" :class="['login-tabs-wrap']">
-          <span
+          <div
             v-for="(tab, index) in tabs"
             :key="`${tab}-${index}`"
             @click="currentTab(index)"
@@ -13,7 +13,7 @@
             ]"
           >
             {{ tab.name }}
-          </span>
+          </div>
         </div>
         <div :class="['login-wrap', this.siteConfig.ROUTER_TPL]">
           <div class="login-logo">

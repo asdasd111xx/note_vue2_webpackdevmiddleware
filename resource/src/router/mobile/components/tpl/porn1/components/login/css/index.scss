@@ -19,10 +19,10 @@
   color: var(--mcenter_slider_text_color);
   font-size: 17px;
 
-  span {
-    width: 50%;
+  div {
     line-height: 50px;
     position: relative;
+    display: block;
 
     &.active {
       color: var(--mcenter_main_color);
