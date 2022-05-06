@@ -1427,11 +1427,18 @@ export default {
           if (item.key === "gender" && this.allValue[item.key] === "0") {
             this.allValue["gender"] = "";
           }
+          if (item.key === "withdraw_password") {
+            return;
+          }
           arr.push(this.allValue[item.key]);
         });
-        console.log(arr);
+        // console.log(arr);
+        // console.log(this.allValue["withdraw_password"].value);
+        let wp_cancelBtnLock = this.allValue["withdraw_password"].value.some(
+          item => item !== ""
+        );
         let cancelBtnLock = arr.some(item => item !== "");
-        if (cancelBtnLock) {
+        if (cancelBtnLock || wp_cancelBtnLock) {
           return false;
         }
       }
