@@ -1389,6 +1389,7 @@ export default {
   watch: {
     currentJoin() {
       this.allValue["captcha_text"] = "";
+      this.allTip["captcha_text"] = "";
     }
   },
   computed: {
