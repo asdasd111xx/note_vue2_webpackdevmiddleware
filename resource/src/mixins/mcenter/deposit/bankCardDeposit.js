@@ -29,7 +29,7 @@ export default {
       curPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
       curPassRoadTipText: "",
-      curPassRoadTipTextShowMore: false,
+      curPassRoadTipTextShowMore: true,
       offerInfo: {},
       moneyValue: "",
       isShow: true,
@@ -927,7 +927,9 @@ export default {
       this.checkSuccess = false;
       this.showOuterCryptoAddress = false;
       this.showEpointWalletAddress = false;
+      this.curPassRoadTipTextShowMore = true;
 
+      this.curPassRoadTipText = "";
       this.walletData["CGPay"].password = "";
       this.walletData["OSPay"].password = "";
       this.cryptoMoney = "--";

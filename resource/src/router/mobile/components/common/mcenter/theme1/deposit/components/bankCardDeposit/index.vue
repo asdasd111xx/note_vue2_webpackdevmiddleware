@@ -332,24 +332,40 @@
                 </div>
               </div>
               <div
+                v-if="curPassRoad.tip != ''"
                 :class="[
-                  curPassRoad.tip != ''
-                    ? [$style['pay-mode-tip-show']]
-                    : [$style['pay-mode-tip-close']]
+                  $style['pass-road-text'],
+                  [
+                    curPassRoadTipTextShowMore
+                      ? [$style['pay-mode-tip-show']]
+                      : [$style['pay-mode-tip-close']]
+                  ]
                 ]"
               >
                 <div
-                  :class="$style['pay-mode-tip']"
+                  :class="[$style['pay-mode-tip'], $style[themeTPL]]"
                   v-html="curPassRoadTipText"
                 ></div>
-                <div
-                  v-if="curPassRoadTipTextShowMore"
-                  :class="$style['pay-mode-tip-more']"
-                  @click="setPopupStatus(true, 'payTip')"
-                >
-                  查看更多
-                </div>
               </div>
+            </div>
+
+            <div
+              v-if="
+                passRoad.length > 0 &&
+                  curPassRoadTipText != '' &&
+                  !isSelectBindWallet(402) &&
+                  !isSelectBindWallet(404)
+              "
+              @click="curPassRoadTipTextShowMore = !curPassRoadTipTextShowMore"
+              :class="$style['show-more-header']"
+            >
+              <span>通道提示详情</span>
+              <div
+                :class="[
+                  $style['collapse-img'],
+                  { [$style.active]: curPassRoadTipTextShowMore }
+                ]"
+              />
             </div>
 
             <!-- Yabo -->
@@ -1503,15 +1519,15 @@ export default {
               "\n",
               "<br>"
             );
-            this.curPassRoadTipTextShowMore =
-              this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
-                45 || this.curPassRoadTipText.indexOf("<br>") != -1;
+            // this.curPassRoadTipTextShowMore =
+            //   this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
+            //     45 || this.curPassRoadTipText.indexOf("<br>") != -1;
           }, 500);
         } else {
           this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
-          this.curPassRoadTipTextShowMore =
-            this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
-              45 || this.curPassRoadTipText.indexOf("<br>") != -1;
+          // this.curPassRoadTipTextShowMore =
+          //   this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
+          //     45 || this.curPassRoadTipText.indexOf("<br>") != -1;
         }
       }
     },
@@ -2037,6 +2053,8 @@ export default {
         this.submitStatus = "stepOne";
       }
 
+      this.curPassRoadTipText = "";
+      this.curPassRoadTipTextShowMore = true;
       this.changeMode(listItem);
 
       if (this.allBanks && this.allBanks.length > 0) {
