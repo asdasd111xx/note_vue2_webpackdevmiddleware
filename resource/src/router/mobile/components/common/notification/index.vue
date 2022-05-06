@@ -93,6 +93,7 @@ export default {
     //   this.data = {
     //     content: "maintain_notice",
     //     event: "maintain_notice",
+    //     countdown: 1,
     //     message: {
     //       countdown: 978
     //     },
@@ -292,7 +293,7 @@ export default {
       let string = "";
       switch (event) {
         case "maintain_notice":
-          string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
+          string = ` <span>${this.data.countdown}</span>分钟后进行系统升级`;
           return string;
 
         case "verification_code":
