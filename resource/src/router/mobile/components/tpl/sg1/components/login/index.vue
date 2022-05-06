@@ -18,8 +18,17 @@
           </div>
           <div class="login-form-wrap">
             <!-- 錯誤訊息 -->
-            <div v-show="errMsg" class="err-msg">
+            <div
+              v-show="errMsg && currentLogin === 'accountlogin'"
+              class="err-msg"
+            >
               {{ errMsg }}
+            </div>
+            <div
+              v-show="mobileLoginErrMsg && currentLogin === 'mobilelogin'"
+              class="err-msg"
+            >
+              {{ mobileLoginErrMsg }}
             </div>
             <form>
               <template v-if="currentLogin === 'accountlogin'">
@@ -600,7 +609,7 @@ export default {
           this.actionSetGlobalMessage({ msg: "验证码已发送 有效时间为10分钟" });
           this.getPhoneTTL();
         } else {
-          this.errMsg = res.msg;
+          this.mobileLoginErrMsg = res.msg;
         }
       });
     },

@@ -19,6 +19,7 @@ export default {
       captchaImg: "",
       checkItem: "",
       errMsg: "",
+      mobileLoginErrMsg: "",
       isLoading: false,
       password: "",
       mpassword: "",
@@ -126,6 +127,7 @@ export default {
     ]),
     verification(key, value) {
       this.errMsg = "";
+      this.mobileLoginErrMsg = "";
       this.actionVerificationFormData({
         target: key,
         value: value
@@ -171,12 +173,12 @@ export default {
         this.mobileLoginTypeSwitch === 1 &&
         !this.phone_validation_code
       ) {
-        this.errMsg = "未指定验证码";
+        this.mobileLoginErrMsg = "未指定验证码";
         return;
       }
 
       if (this.currentLogin === "mobilelogin" && !this.phone) {
-        this.errMsg = "手机号不得为空";
+        this.mobileLoginErrMsg = "手机号不得为空";
         return;
       }
 
@@ -185,7 +187,7 @@ export default {
         this.mobileLoginTypeSwitch === 2 &&
         !this.mpassword
       ) {
-        this.errMsg = "密码不得为空";
+        this.mobileLoginErrMsg = "密码不得为空";
         return;
       }
 
@@ -205,7 +207,12 @@ export default {
         case 4:
         case 5:
           if (!this.thirdyCaptchaObj) {
-            this.errMsg = "请先点击按钮进行验证";
+            if (this.currentLogin === "accountlogin") {
+              this.errMsg = "请先点击按钮进行验证";
+            }
+            if (this.currentLogin === "mobilelogin") {
+              this.mobileLoginErrMsg = "请先点击按钮进行验证";
+            }
             return;
           }
           this.loginCheck({ captchaText: this.thirdyCaptchaObj });
@@ -289,7 +296,12 @@ export default {
           },
           fail: res => {
             this.isLoading = false;
-            this.errMsg = res.data.msg;
+            if (this.currentLogin === "accountlogin") {
+              this.errMsg = res.data.msg;
+            }
+            if (this.currentLogin === "mobilelogin") {
+              this.mobileLoginErrMsg = res.data.msg;
+            }
             // console.log(res);
           }
         });
@@ -401,14 +413,19 @@ export default {
               this.$refs["slide-verification"].ncReload();
             }
             if (res.msg) {
-              this.errMsg = res.msg;
+              this.mobileLoginErrMsg = res.msg;
               // msg: "验证码错误"
               if (res.code === "C00024") {
                 this.$refs.captcha.focus();
               }
               return;
             }
-            this.errMsg = res.status;
+            this.mobileLoginErrMsg = res.status;
+          }
+
+          // network error
+          if (res && res.message) {
+            this.mobileLoginErrMsg = `网路异常(${res.message})`;
           }
 
           if (callBackFuc) {
