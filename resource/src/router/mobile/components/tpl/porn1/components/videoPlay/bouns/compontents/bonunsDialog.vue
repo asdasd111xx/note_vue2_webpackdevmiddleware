@@ -43,7 +43,12 @@
             v-if="['porn1', 'sg1'].includes(routerTPL)"
             style="margin-top: 12%;display: block;font-size: 20px;"
           >
-            {{ $text("S_ACTIVITY_SLOGAN2", "海量精彩视频 任意充值永久观看") }}
+            <template v-if="source === 'free-yv'">
+              {{ $text("S_ACTIVITY_SLOGAN3", "立即注册 免费观看火热视频") }}
+            </template>
+            <template v-else>
+              {{ $text("S_ACTIVITY_SLOGAN2", "海量精彩视频 任意充值永久观看") }}
+            </template>
           </span>
           <span v-else style="margin-top: 12%;display: block;font-size: 20px;">
             观看视频&nbsp;请先登录
@@ -232,7 +237,8 @@ export default {
       missionActionType: 0, //任務動作 去充值 去綁定 去推廣
       isFinishMissio: false, //是否完成今年任務,
       tagId: 0,
-      unlocked: false
+      unlocked: false,
+      source: this.$route.query.source || "yv"
     };
   },
   computed: {
