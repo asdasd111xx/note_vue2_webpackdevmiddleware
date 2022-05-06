@@ -178,7 +178,7 @@ export default {
       }
 
       if (this.currentLogin === "mobilelogin" && !this.phone) {
-        this.mobileLoginErrMsg = "手机号不得为空";
+        this.mobileLoginErrMsg = "手机号码不得为空";
         return;
       }
 
