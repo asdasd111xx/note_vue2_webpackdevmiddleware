@@ -1261,7 +1261,7 @@ export default {
         phonettl: "",
         alias: "",
         birthday: "",
-        gender: 0,
+        gender: "",
         qq_num: "",
         weixin: "",
         line: "",
@@ -1424,13 +1424,18 @@ export default {
       if (this.currentJoin === "accountjoin") {
         let arr = [];
         this.fieldsData.forEach(item => {
+          if (item.key === "gender" && this.allValue[item.key] === "0") {
+            this.allValue["gender"] = "";
+          }
           arr.push(this.allValue[item.key]);
         });
+        console.log(arr);
         let cancelBtnLock = arr.some(item => item !== "");
         if (cancelBtnLock) {
           return false;
         }
       }
+
       //手機註冊按鈕禁能
       if (this.currentJoin === "mobilejoin") {
         if (
@@ -1794,7 +1799,7 @@ export default {
       if (
         key === "gender" &&
         this.joinMemInfo["gender"].isRequired &&
-        this.allValue["gender"] === "0"
+        this.allValue["gender"] === ""
       ) {
         this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
       } else if (data.isRequired && this.allValue[key] === "") {
