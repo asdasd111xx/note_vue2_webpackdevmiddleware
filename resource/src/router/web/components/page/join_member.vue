@@ -2272,6 +2272,16 @@ export default {
               this.mobileJoinErrMag = res.msg;
             }
 
+            //維護導向
+            if (res.code === "M00002") {
+              this.mobileJoinErrMag = "";
+              this.actionSetGlobalMessage({
+                msg: res.msg,
+                cb: () => {
+                  this.$router.push("/upup");
+                }
+              });
+            }
             if (res.response && res.status === "506") {
               this.actionGetToManyRequestMsg(res.msg).then(res => {
                 this.registerSubmitFail = true;
@@ -2503,6 +2513,17 @@ export default {
             } else {
               if (res && res.msg) {
                 this.errMsg = res.msg;
+              }
+
+              //維護導向
+              if (res.code === "M00002") {
+                this.errMsg = "";
+                this.actionSetGlobalMessage({
+                  msg: res.msg,
+                  cb: () => {
+                    this.$router.push("/upup");
+                  }
+                });
               }
             }
           } else {
