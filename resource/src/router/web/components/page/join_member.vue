@@ -1465,7 +1465,7 @@ export default {
     },
     isSlideAble() {
       if (this.currentJoin === "mobilejoin") {
-        if (this.allValue.phone === "" || this.allValue.phonettl === "") {
+        if (this.allValue.mphone === "" || this.allValue.phonettl === "") {
           return false;
         }
         if (this.allValue.mpassword !== this.allValue.mconfirm_password) {
