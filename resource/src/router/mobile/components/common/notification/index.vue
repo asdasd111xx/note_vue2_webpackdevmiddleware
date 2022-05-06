@@ -191,11 +191,7 @@ export default {
           // case 'outer_maintain':
           case "maintain_notice":
             // 分廳維護 - 全廳 - 增加可單獨掛撤維護APP端口功能（C-2342）
-            if (
-              (getCookie("platform") === "h" && temp.device === 2) ||
-              (getCookie("platform") === "pwa" && temp.device === 3) ||
-              temp.device === 0
-            ) {
+            if (temp.device === 0 || temp.device === 2) {
               this.noticeQueue.push({
                 ...temp,
                 timestamp: Date.now(),
