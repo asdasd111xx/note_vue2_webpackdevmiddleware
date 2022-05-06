@@ -573,7 +573,7 @@
                     name="birthday"
                     format="yyyy/MM/dd"
                     initial-view="year"
-                    @cleared="verification(field.key)"
+                    @cleared="clearValue(field.key)"
                     @input="verification(field.key)"
                     ref="thedatepicker"
                   />
