@@ -280,7 +280,7 @@
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
                   type="text"
-                  :placeholder="'请输入银行卡卡号/钱包'"
+                  :placeholder="'请输入银行卡号/钱包'"
                   @input="
                     verification('order-bank-account', $event.target.value)
                   "

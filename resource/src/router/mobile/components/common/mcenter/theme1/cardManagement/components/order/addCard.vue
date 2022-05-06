@@ -27,7 +27,7 @@
           <input
             v-model="formData.account"
             type="text"
-            placeholder="请输入银行卡卡号/钱包"
+            placeholder="请输入银行卡号/钱包"
             @input="handleType($event.target.value, 'order-bank-account')"
           />
           <div :class="$style['clear-input']" v-if="formData.account">
