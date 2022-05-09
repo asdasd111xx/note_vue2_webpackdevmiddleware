@@ -1,6 +1,9 @@
 <template>
   <div :class="$style['content-wrap']">
-    <div :class="$style['category-wrap']">
+    <div
+      :class="$style['category-wrap']"
+      :style="{ top: isApp ? '0px' : '43px' }"
+    >
       <div @click="showCondition = !showCondition">
         {{ currentCategory.text
         }}<span :class="{ [$style['arrow-up']]: showCondition }" />
