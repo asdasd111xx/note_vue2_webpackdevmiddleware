@@ -41,7 +41,8 @@ export default {
     ...mapActions([
       "actionSetGlobalMessage",
       "actionSetAgentLink",
-      "actionSetLiveFooterMask"
+      "actionSetLiveFooterMask",
+      "actionSetLiveFooter"
     ]),
     onLoadiframe() {
       window.addEventListener("message", this.iframeOnListener);

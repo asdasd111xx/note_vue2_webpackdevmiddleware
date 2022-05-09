@@ -653,7 +653,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     if (["sg1"].includes(state.webDomain.site)) {
       await dispatch("actionSetLiveViewPath");
     }
-
     dispatch("actionSetNews");
     dispatch("actionSetMcenterMsgCount");
     dispatch("actionGetMemInfoV3");
@@ -1955,8 +1954,13 @@ export const actionVerificationFormData = (
       val = val.replace(regex, "").substring(0, 4);
       break;
 
+    case "order-bank": //掛單銀行卡名稱
+    case "order-bank-account": //掛單銀行卡帳號
+      val = val.replace(/\s+/g, "").substring(0, 36);
+      break;
+
     case "bankCard":
-      val = val.replace(/[^0-9a-zA-Z]/g, "").substring(0, 36);
+      val = val.replace(/[^A-Za-z0-9]/g, "").substring(0, 36);
       break;
 
     case "code":
@@ -2640,6 +2644,10 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
 
 export const actionSetLiveFooterMask = ({ commit }, data) => {
   commit(types.SET_LIVEFOOTERMASK, data);
+};
+
+export const actionSetLiveFooter = ({ commit }, data) => {
+  commit(types.SET_LIVEFOOTER, data);
 };
 
 export const actionSetLiveViewPath = ({ state, dispatch, commit }) => {
