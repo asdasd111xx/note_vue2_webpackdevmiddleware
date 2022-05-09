@@ -463,6 +463,7 @@ export default {
   systemConfig: {},
   liveMaintain: null,
   liveFooterMask: false,
+  liveFooter: null,
   activity: {},
   liveViewPath: {}
 };

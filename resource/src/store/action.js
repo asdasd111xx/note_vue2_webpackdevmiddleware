@@ -2636,6 +2636,10 @@ export const actionSetLiveFooterMask = ({ commit }, data) => {
   commit(types.SET_LIVEFOOTERMASK, data);
 };
 
+export const actionSetLiveFooter = ({ commit }, data) => {
+  commit(types.SET_LIVEFOOTER, data);
+};
+
 export const actionSetLiveViewPath = ({ state, dispatch, commit }) => {
   return dispatch("actionGetExtRedirect", {
     api_uri: "/api/platform/v1/view-path",
