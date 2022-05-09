@@ -14,21 +14,19 @@
       ]"
     >
       <!-- 會員首次手機註冊成功彈窗 -->
-      <div
-        v-if="joinmemberPop"
-        :class="[$style['home-joinmem-pop-darkbg']]"
-        id="screenshot"
-      >
+      <div v-if="joinmemberPop" :class="[$style['home-joinmem-pop-darkbg']]">
         <div :class="[$style['home-joinmem-pop']]">
-          <h1>{{ domainName }}，注册成功</h1>
-          <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
-          <div :class="[$style['content']]">
-            <p :class="[$style['account']]">
-              <span>用户名</span> {{ memInfo.user.username }}
-            </p>
-            <p :class="[$style['phonenum']]">
-              <span>手机号</span> {{ phonenum }}
-            </p>
+          <div :class="[$style['imgscope']]" id="imgscope">
+            <h1>{{ domainName }}，注册成功</h1>
+            <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
+            <div :class="[$style['content']]">
+              <p :class="[$style['account']]">
+                <span>用户名</span> {{ memInfo.user.username }}
+              </p>
+              <p :class="[$style['phonenum']]">
+                <span>手机号</span> {{ phonenum }}
+              </p>
+            </div>
           </div>
           <div :class="[$style['btn-wrap']]">
             <button @click="downloadImage">保存至相簿</button>
@@ -400,9 +398,10 @@ export default {
       this.iframeOnSendMessage(e);
     },
     downloadImage() {
-      let ImgScope = document.getElementById("screenshot");
+      let ImgScope = document.getElementById("imgscope");
       html2canvas(ImgScope).then(function(canvas) {
         ImgScope.appendChild(canvas);
+        canvas.style.display = "none";
         let a = document.createElement("a");
         a.href = canvas
           .toDataURL("image/jpeg")
@@ -656,7 +655,6 @@ export default {
   z-index: 200;
   transform: translate(-50%, -50%);
   width: 270px;
-  height: 330px;
   background-color: #fff;
   border-radius: 15px;
   display: flex;
@@ -664,6 +662,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
+
+  .imgscope {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 20px;
+  }
 
   h1 {
     margin-top: 20px;
