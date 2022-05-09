@@ -2636,6 +2636,17 @@ export const actionSetLiveFooterMask = ({ commit }, data) => {
   commit(types.SET_LIVEFOOTERMASK, data);
 };
 
+export const actionSetLiveViewPath = ({ state, dispatch, commit }) => {
+  return dispatch("actionGetExtRedirect", {
+    api_uri: "/api/platform/v1/view-path",
+    method: "get"
+  }).then(response => {
+    if (response && response.result) {
+      commit(types.SET_LIVEVIEWPATH, response.result);
+    }
+  });
+};
+
 //取得彩金活動開關
 export const actionSetActivity = ({ state, commit }) => {
   let temp = { totalAmount: 0 };
