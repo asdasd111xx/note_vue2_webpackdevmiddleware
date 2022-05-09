@@ -872,6 +872,8 @@ export default {
      * @param {Object} info - 支付方式資訊
      */
     changePassRoad(info) {
+      this.curPassRoadTipText = "";
+      this.curPassRoadTipTextShowMore = true;
       this.curPassRoad = info;
       this.PassRoadOrAi();
       this.changeMoney(
