@@ -218,7 +218,6 @@ export default {
       this.detailRate = item;
     },
     setCategory(option) {
-      console.log("setCategory");
       this.currentCategory = option;
       this.getData(option.key).then(() => {
         this.showCondition = false;
@@ -226,8 +225,7 @@ export default {
     },
     getData(key = "all") {
       let params = {
-        firstResult: 0,
-        maxResults: 10
+        firstResult: 0
       };
       if (key !== "all") params[key] = true;
 
@@ -268,7 +266,6 @@ export default {
     openEdit(info) {
       // this.editOpen = true;
       this.getSingleInfo(info.order_number);
-      this.getData();
     },
     openMatchLink(item) {
       axios({
