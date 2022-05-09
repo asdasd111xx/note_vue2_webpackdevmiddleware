@@ -77,7 +77,7 @@
             <input
               v-model="formData.account"
               type="text"
-              placeholder="请输入银行卡卡号/钱包（限定16位以上）"
+              placeholder="请输入银行卡号/钱包（限定16位以上）"
               minlength="16"
               maxlength="36"
               @input="checkData($event.target.value, 'account')"
