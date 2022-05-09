@@ -1956,7 +1956,7 @@ export const actionVerificationFormData = (
       break;
 
     case "bankCard":
-      val = val.replace(/[^0-9]/g, "").substring(0, 36);
+      val = val.replace(/[^0-9a-zA-Z]/g, "").substring(0, 36);
       break;
 
     case "code":
