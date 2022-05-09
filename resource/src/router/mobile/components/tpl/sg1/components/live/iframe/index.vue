@@ -20,7 +20,7 @@
         id="screenshot"
       >
         <div :class="[$style['home-joinmem-pop']]">
-          <h1>{{ siteConfig.SITE_NAME }}，注册成功</h1>
+          <h1>{{ domainName }}，注册成功</h1>
           <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
           <div :class="[$style['content']]">
             <p :class="[$style['account']]">
@@ -160,8 +160,12 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       liveMaintain: "getLiveMaintain",
-      liveViewPath: "getLiveViewPath"
+      liveViewPath: "getLiveViewPath",
+      memInfo: "getMemInfo"
     }),
+    domainName() {
+      return this.memInfo.config.domain_name[this.$i18n.locale];
+    },
     phonenum() {
       return `86-${this.memInfo.user.username.replace(/[a-z]/g, "")}`;
     },

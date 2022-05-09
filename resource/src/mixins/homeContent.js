@@ -232,6 +232,9 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    domainName() {
+      return this.memInfo.config.domain_name[this.$i18n.locale];
     }
   },
   created() {

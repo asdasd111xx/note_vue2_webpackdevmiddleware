@@ -7,11 +7,7 @@
       id="screenshot"
     >
       <div :class="[$style['home-joinmem-pop']]">
-        <h1>
-          {{
-            siteConfig.ROUTER_TPL === "porn1" ? "币发" : siteConfig.SITE_NAME
-          }}，注册成功
-        </h1>
+        <h1>{{ domainName }}，注册成功</h1>
         <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
         <div :class="[$style['content']]">
           <p :class="[$style['account']]">
