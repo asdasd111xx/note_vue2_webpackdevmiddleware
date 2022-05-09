@@ -610,7 +610,17 @@ export default {
           this.actionSetGlobalMessage({ msg: "验证码已发送 有效时间为10分钟" });
           this.getPhoneTTL();
         } else {
-          this.mobileLoginErrMsg = res.msg;
+          if (
+            res.http === "429" &&
+            res.msg === "Please try again after 24 hours."
+          ) {
+            this.mobileLoginErrMsg = this.$text(
+              "PLEASE_TRY_AGAIN_AFTER_24_HOURS",
+              "请等待24小时后操作尝试"
+            );
+          } else {
+            this.mobileLoginErrMsg = res.msg;
+          }
         }
       });
     },
