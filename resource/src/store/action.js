@@ -649,6 +649,11 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       await dispatch("actionSetSystemDomain", { isGetFreeSpace: true });
     }
 
+    // 直播連結
+    if (["sg1"].includes(state.webDomain.site)) {
+      await dispatch("actionSetLiveViewPath");
+    }
+
     dispatch("actionSetNews");
     dispatch("actionSetMcenterMsgCount");
     dispatch("actionGetMemInfoV3");
@@ -1940,13 +1945,8 @@ export const actionVerificationFormData = (
       val = val.replace(regex, "").substring(0, 4);
       break;
 
-    case "order-bank": //掛單銀行卡名稱
-    case "order-bank-account": //掛單銀行卡帳號
-      val = val.replace(/\s+/g, "").substring(0, 36);
-      break;
-
     case "bankCard":
-      val = val.replace(/[^A-Za-z0-9]/g, "").substring(0, 36);
+      val = val.replace(/[^0-9a-zA-Z]/g, "").substring(0, 36);
       break;
 
     case "code":
@@ -2630,6 +2630,17 @@ export const actionGetExtRedirect = ({ state, dispatch, commit }, params) => {
 
 export const actionSetLiveFooterMask = ({ commit }, data) => {
   commit(types.SET_LIVEFOOTERMASK, data);
+};
+
+export const actionSetLiveViewPath = ({ state, dispatch, commit }) => {
+  return dispatch("actionGetExtRedirect", {
+    api_uri: "/api/platform/v1/view-path",
+    method: "get"
+  }).then(response => {
+    if (response && response.result) {
+      commit(types.SET_LIVEVIEWPATH, response.result);
+    }
+  });
 };
 
 //取得彩金活動開關

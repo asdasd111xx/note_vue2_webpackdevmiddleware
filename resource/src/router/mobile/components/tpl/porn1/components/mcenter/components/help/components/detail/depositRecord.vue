@@ -1,151 +1,126 @@
 <template>
-  <div :class="$style['content-wrap']">
-    <div :class="$style['category-wrap']">
-      <div @click="showCondition = !showCondition">
-        {{ currentCategory.text
-        }}<span :class="{ [$style['arrow-up']]: showCondition }" />
-      </div>
-    </div>
-    <div v-if="showCondition" :class="$style['list-mask']">
-      <div :class="$style['list-wrap']">
-        <div
-          v-for="option in categoryOpt"
-          :key="option.key"
-          :class="[
-            $style['item'],
-            { [$style['active']]: currentCategory.key === option.key }
-          ]"
-          @click="setCategory(option)"
-        >
-          <span>{{ option.text }}</span>
-        </div>
-      </div>
-    </div>
+  <div :class="[$style['detail-wrap']]">
+    <div v-if="data" :class="$style['detail-content-wrap']">
+      <div
+        v-for="(item, index) in data"
+        :class="$style['detail-block']"
+        :key="index"
+      >
+        <div :class="[$style['detail-cell'], $style['item-status']]">
+          <div :class="[$style['title']]">
+            {{ $text("S_STATUS", "状态") }}
+          </div>
 
-    <div :class="[$style['detail-wrap']]" style="margin-top: calc(50px + 10px)">
-      <div v-if="data" :class="$style['detail-content-wrap']">
-        <div
-          v-for="(item, index) in data"
-          :class="$style['detail-block']"
-          :key="index"
-        >
-          <div :class="[$style['detail-cell'], $style['item-status']]">
-            <div :class="[$style['title']]">
-              {{ $text("S_STATUS", "状态") }}
-            </div>
-
-            <div
-              :class="[
-                $style['value'],
-                {
-                  [$style['match']]:
-                    [34, 41].includes(item.method_id) &&
-                    item.status === 'process'
-                }
-              ]"
-            >
-              <div
-                v-if="item.status === 'submit_data'"
-                :class="$style['edit']"
-                @click="openEdit(item)"
-              >
-                提交资料
-              </div>
-              <div
-                v-else-if="
+          <div
+            :class="[
+              $style['value'],
+              {
+                [$style['match']]:
                   [34, 41].includes(item.method_id) && item.status === 'process'
-                "
-                @click="openMatchLink(item)"
-              >
-                搓合查询
-              </div>
-              <div
-                v-else
-                @click="
-                  () => {
-                    item.method_id === 25 ||
-                    item.method_id === 30 ||
-                    item.method_id === 37 ||
-                    item.method_id === 38 ||
-                    item.method_id === 402 ||
-                    item.method_id === 404
-                      ? showDetailPop(item)
-                      : '';
-                  }
-                "
-                :class="[{ [$style['processing']]: item.status === 'process' }]"
-              >
-                {{ getStatus(item.status) }}
-              </div>
-              <div
-                v-if="
-                  item.method_id === 25 ||
-                    item.method_id === 30 ||
-                    item.method_id === 37 ||
-                    item.method_id === 38 ||
-                    item.method_id === 402 ||
-                    item.method_id === 404
-                "
-                :class="$style['processing-icon']"
-                @click="showDetailPop(item)"
-              >
-                <img :src="`/static/image/${theme}/mcenter/ic_remark.png`" />
-              </div>
-            </div>
-          </div>
-
-          <div :class="$style['item-status-border']" />
-          <template v-for="(col, index) in columns">
+              }
+            ]"
+          >
             <div
-              v-if="item.hasOwnProperty(col.key)"
-              :class="$style['detail-cell']"
-              :key="`col-'${index}`"
+              v-if="item.status === 'submit_data'"
+              :class="$style['edit']"
+              @click="openEdit(item)"
             >
-              <div :class="$style['title']">
-                {{ $text(col.title) }}
-              </div>
-              <div :class="$style['value']">
-                {{ item[col.key] }}
-              </div>
+              提交资料
             </div>
-          </template>
+            <div
+              v-else-if="
+                [34, 41].includes(item.method_id) && item.status === 'process'
+              "
+              @click="openMatchLink(item)"
+            >
+              搓合查询
+            </div>
+            <div
+              v-else
+              @click="
+                () => {
+                  item.method_id === 25 ||
+                  item.method_id === 30 ||
+                  item.method_id === 37 ||
+                  item.method_id === 38 ||
+                  item.method_id === 402 ||
+                  item.method_id === 404
+                    ? showDetailPop(item)
+                    : '';
+                }
+              "
+              :class="[{ [$style['processing']]: item.status === 'process' }]"
+            >
+              {{ getStatus(item.status) }}
+            </div>
+            <div
+              v-if="
+                item.method_id === 25 ||
+                  item.method_id === 30 ||
+                  item.method_id === 37 ||
+                  item.method_id === 38 ||
+                  item.method_id === 402 ||
+                  item.method_id === 404
+              "
+              :class="$style['processing-icon']"
+              @click="showDetailPop(item)"
+            >
+              <img :src="`/static/image/${theme}/mcenter/ic_remark.png`" />
+            </div>
+          </div>
         </div>
+
+        <div :class="$style['item-status-border']" />
+        <template v-for="(col, index) in columns">
+          <div
+            v-if="item.hasOwnProperty(col.key)"
+            :class="$style['detail-cell']"
+            :key="`col-'${index}`"
+          >
+            <div :class="$style['title']">
+              {{ $text(col.title) }}
+            </div>
+            <div :class="$style['value']">
+              {{ item[col.key] }}
+            </div>
+          </div>
+        </template>
       </div>
+    </div>
 
-      <div v-if="detailRate" :class="$style['tips-wrap']">
-        <div :class="$style['tips-mask']" @click="detailRate = null" />
+    <div v-if="detailRate" :class="$style['tips-wrap']">
+      <div :class="$style['tips-mask']" @click="detailRate = null" />
 
-        <div :class="$style['tips-block']">
-          <div :class="$style['tips-cell']">
-            实际汇率：&nbsp;{{ detailRate && detailRate.crypto_rate }}
-          </div>
-          <div :class="$style['tips-cell']">
-            入帐数量：&nbsp;{{ detailRate && detailRate.crypto_num }}
-          </div>
-          <div v-if="detailRate.memo" :class="$style['tips-cell']">
-            <span>备注：</span>
-            <div :class="$style['tips-content']" v-html="detailRate.memo" />
-          </div>
-
-          <div :class="[$style['close']]" @click="detailRate = null">关闭</div>
+      <div :class="$style['tips-block']">
+        <div :class="$style['tips-cell']">
+          实际汇率：&nbsp;{{ detailRate && detailRate.crypto_rate }}
         </div>
-      </div>
+        <div :class="$style['tips-cell']">
+          入帐数量：&nbsp;{{ detailRate && detailRate.crypto_num }}
+        </div>
+        <div v-if="detailRate.memo" :class="$style['tips-cell']">
+          <span>备注：</span>
+          <div :class="$style['tips-content']" v-html="detailRate.memo" />
+        </div>
 
-      <edit-deposit-field
-        v-if="editOpen"
-        :required-fields="requiredFields"
-        :depositData="singleDeposit"
-        :close-fuc="
-          () => {
-            editOpen = false;
-          }
-        "
-      />
-
-      <div v-if="!data.length" :class="$style['no-data-wrap']">
-        <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
-        <div :class="$style['tips']">暂时没有新的充值记录</div>
+        <div :class="[$style['close']]" @click="detailRate = null">关闭</div>
       </div>
+    </div>
+
+    <edit-deposit-field
+      v-if="editOpen"
+      :required-fields="requiredFields"
+      :depositData="singleDeposit"
+      :close-fuc="
+        () => {
+          editOpen = false;
+        }
+      "
+    />
+
+    <div v-if="!data.length" :class="$style['no-data-wrap']">
+      <img :src="$getCdnPath(`/static/image/${theme}/mcenter/no_data.png`)" />
+      <div :class="$style['tips']">暂时没有新的充值记录</div>
     </div>
   </div>
 </template>
@@ -157,7 +132,6 @@ import editDepositField from "./editDepositField";
 import member from "@/api/member";
 import mixin from "@/mixins/mcenter/deposit/recordDeposit";
 import axios from "axios";
-import goLangApiRequest from "@/api/goLangApiRequest.js";
 
 export default {
   mixins: [mixin],
@@ -187,15 +161,7 @@ export default {
         { key: "amount", title: "S_APPLICATION_AMOUNT" },
         // 实际到帐
         { key: "actual_deposit", title: "S_REAL_ENTER" }
-      ],
-      categoryOpt: [
-        { key: "all", text: "全部" },
-        { key: "complete", text: "成功" },
-        { key: "process", text: "处理中" },
-        { key: "cancel", text: "取消" }
-      ],
-      currentCategory: { key: "all", text: "全部" },
-      showCondition: false
+      ]
     };
   },
   mounted() {
@@ -217,37 +183,31 @@ export default {
     showDetailPop(item) {
       this.detailRate = item;
     },
-    setCategory(option) {
-      console.log("setCategory");
-      this.currentCategory = option;
-      this.getData(option.key).then(() => {
-        this.showCondition = false;
-      });
-    },
-    getData(key = "all") {
+    getData() {
       let params = {
-        firstResult: 0,
-        maxResults: 10
+        first_result: 0,
+        max_results: 10
       };
-      if (key !== "all") params[key] = true;
 
       let cid = getCookie("cid");
       if (!cid) return;
-      return goLangApiRequest({
-        method: "post",
-        url: this.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Ext/Stat/List",
-        params
+
+      axios({
+        method: "get",
+        url: "/api/v1/c/ext/inpay?api_uri=/api/trade/v2/c/stat/list",
+        errorAlert: false,
+        params: params
       })
         .then(res => {
-          if (res.status === "000" && res.errorCode === "00") {
+          if (res && res.data && res.data.result === "ok") {
             this.data = res.data.ret;
-            this.total = res.data.pagination.total; //????
+            this.total = res.data.pagination.total;
           }
         })
-        .catch(err => {
+        .catch(error => {
           this.actionSetGlobalMessage({
-            msg: err.response.data.msg,
-            code: err.response.data.code
+            msg: error.response.data.msg,
+            code: error.response.data.code
           });
         });
     },

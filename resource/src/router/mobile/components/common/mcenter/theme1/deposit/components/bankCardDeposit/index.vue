@@ -237,12 +237,14 @@
                 $style['select-card-wrap'],
                 'clearfix'
               ]"
-              @click="setPopupStatus(true, 'epointBank')"
             >
               <span :class="$style['select-bank-title']">
                 挂单银行
               </span>
-              <div :class="$style['select-epoint-bank-item']">
+              <div
+                :class="$style['select-epoint-bank-item']"
+                @click="setPopupStatus(true, 'epointBank')"
+              >
                 {{ defaultEpointWallet.account }}
               </div>
               <img
@@ -270,8 +272,9 @@
                   v-model="epointBankName"
                   :class="$style['input-cgpay-address']"
                   type="text"
+                  maxlength="36"
                   :placeholder="'请输入银行名称'"
-                  @input="verification('order-bank', $event.target.value)"
+                  @input="replaceEpointWhiteSpace"
                 />
               </div>
               <div :class="[$style['other-bank-input-text'], $style['border']]">
@@ -280,10 +283,9 @@
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
                   type="text"
-                  :placeholder="'请输入银行卡号/钱包'"
-                  @input="
-                    verification('order-bank-account', $event.target.value)
-                  "
+                  maxlength="36"
+                  :placeholder="'请输入银行帐号'"
+                  @input="replaceEpointWhiteSpace"
                 />
               </div>
               <div :class="[$style['wallet-address-text'], $style['less']]">
@@ -2347,20 +2349,6 @@ export default {
           this.checkOrderData();
         });
       }
-      if (target === "order-bank")
-        this.actionVerificationFormData({
-          target: "order-bank",
-          value: value
-        }).then(val => {
-          this.epointBankName = val;
-        });
-      if (target === "order-bank-account")
-        this.actionVerificationFormData({
-          target: "order-bank-account",
-          value: value
-        }).then(val => {
-          this.epointBankAccount = val;
-        });
 
       // 如果是迅付欄位
       if (isSpeedField) {
