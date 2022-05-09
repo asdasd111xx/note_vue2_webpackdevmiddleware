@@ -2642,7 +2642,13 @@ export default {
           }, 1500);
         } else {
           this.phoneSubmitFail = true;
-          this.phoneSubmitFailMsg = res.msg || "ttl error";
+
+          if (this.currentJoin === "accountjoin") {
+            this.phoneSubmitFailMsg = res.msg || "ttl error";
+          }
+          if (this.currentJoin === "mobilejoin") {
+            this.allTip["phonettl"] = res.msg;
+          }
         }
       });
     },
@@ -2690,9 +2696,10 @@ export default {
           }
         }).then(res => {
           if (res.status !== "000") {
-            this.mobileJoinErrMag = res.msg;
+            this.mobileJoinErrMag = "";
+            this.allTip["phonettl"] = res.msg;
             if (res.errors.phone) {
-              this.allTip["mphone"] = res.errors.phone;
+              this.allTip["phonettl"] = res.errors.phone;
               this.mobileJoinErrMag = "";
             }
           } else {
