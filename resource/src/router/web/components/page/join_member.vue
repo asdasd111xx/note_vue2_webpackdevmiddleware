@@ -2229,7 +2229,9 @@ export default {
           confirmPassword: this.allValue["mconfirm_password"],
           keyring: this.allValue["phonettl"],
           captchaText: this.allValue.captcha_text,
-          smsSpeedyRegister: this.domainConfig.sms_speedy_register
+          smsSpeedyRegister: this.domainConfig.sms_speedy_register,
+          host: window.location.host,
+          deviceId: localStorage.getItem("uuidAccount") || ""
         };
         const self = this;
         if (Number(localStorage.getItem("x-channelid"))) {
