@@ -13,6 +13,27 @@
         { [$style['fullScreen']]: isFullScreen }
       ]"
     >
+      <!-- 會員首次手機註冊成功彈窗 -->
+      <div v-if="joinmemberPop" :class="[$style['home-joinmem-pop-darkbg']]">
+        <div :class="[$style['home-joinmem-pop']]">
+          <div :class="[$style['imgscope']]" id="imgscope">
+            <h1>{{ domainName }}，注册成功</h1>
+            <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
+            <div :class="[$style['content']]">
+              <p :class="[$style['account']]">
+                <span>用户名</span> {{ memInfo.user.username }}
+              </p>
+              <p :class="[$style['phonenum']]">
+                <span>手机号</span> {{ phonenum }}
+              </p>
+            </div>
+          </div>
+          <div :class="[$style['btn-wrap']]">
+            <button @click="downloadImage">保存至相簿</button>
+            <button @click="joinmemberPop = false">进首页</button>
+          </div>
+        </div>
+      </div>
       <div
         v-if="headerConfig.hasHeader"
         id="header"
@@ -99,6 +120,7 @@ import mobileContainer from "../../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import iframeEvent from "@/mixins/iframeEvent";
 import moment from "moment";
+import html2canvas from "html2canvas";
 
 export default {
   mixins: [iframeEvent],
@@ -118,7 +140,8 @@ export default {
       isMaintain: false,
       maintainInfo: [],
       sec: 5,
-      maintainTimer: null
+      maintainTimer: null,
+      joinmemberPop: false //首次手機註冊登入彈窗
     };
   },
 
@@ -135,8 +158,15 @@ export default {
       siteConfig: "getSiteConfig",
       liveMaintain: "getLiveMaintain",
       liveViewPath: "getLiveViewPath",
+      memInfo: "getMemInfo",
       hasFooter: "getLiveFooter"
     }),
+    domainName() {
+      return this.memInfo.config.domain_name[this.$i18n.locale];
+    },
+    phonenum() {
+      return `86-${this.memInfo.user.username.replace(/[a-z]/g, "")}`;
+    },
     pageType() {
       return this.$route.params.page;
     },
@@ -189,6 +219,14 @@ export default {
     );
   },
   mounted() {
+    // 會員首次以手機註冊登入彈窗
+    if (localStorage.getItem("first_time_login")) {
+      setTimeout(() => {
+        this.joinmemberPop = true;
+        localStorage.removeItem("first_time_login");
+      }, 1000);
+    }
+
     // check maintain
     this.actionGetExtRedirect({
       api_uri: "/api/platform/v1/user/front-page",
@@ -358,6 +396,19 @@ export default {
     },
     onSendMessage() {
       this.iframeOnSendMessage(e);
+    },
+    downloadImage() {
+      let ImgScope = document.getElementById("imgscope");
+      html2canvas(ImgScope).then(function(canvas) {
+        ImgScope.appendChild(canvas);
+        canvas.style.display = "none";
+        let a = document.createElement("a");
+        a.href = canvas
+          .toDataURL("image/jpeg")
+          .replace("image/jpeg", "image/octet-stream");
+        a.download = "image.jpg";
+        a.click();
+      });
     }
   }
 };
@@ -585,6 +636,79 @@ export default {
   .sec {
     color: #e53266;
     margin-left: 6px;
+  }
+}
+
+.home-joinmem-pop-darkbg {
+  background: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 199;
+}
+.home-joinmem-pop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 200;
+  transform: translate(-50%, -50%);
+  width: 270px;
+  background-color: #fff;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+
+  .imgscope {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 20px;
+  }
+
+  h1 {
+    margin-top: 20px;
+    font-size: 17px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      color: #5e626d;
+
+      &.account {
+        color: #6aaaf5;
+      }
+
+      span {
+        color: #5e626d;
+        padding: 0 15px;
+      }
+    }
+  }
+
+  .btn-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 50%;
+      padding: 15px 0;
+      color: #6aaaf5;
+      background: #fff;
+      border-top: 1px solid #eeeeee;
+      &:nth-child(1) {
+        border-right: 1px solid #eeeeee;
+      }
+    }
   }
 }
 </style>

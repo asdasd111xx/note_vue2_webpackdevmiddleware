@@ -1,5 +1,26 @@
 <template>
   <div>
+    <!-- 會員首次手機註冊成功彈窗 -->
+    <div v-if="joinmemberPop" :class="[$style['home-joinmem-pop-darkbg']]">
+      <div :class="[$style['home-joinmem-pop']]">
+        <div :class="[$style['imagescope']]" id="imagescope">
+          <h1>{{ domainName }}，注册成功</h1>
+          <img :src="$getCdnPath(`/static/image/common/home/ic_gift.png`)" />
+          <div :class="[$style['content']]">
+            <p :class="[$style['account']]">
+              <span>用户名</span> {{ memInfo.user.username }}
+            </p>
+            <p :class="[$style['phonenum']]">
+              <span>手机号</span> {{ phonenum }}
+            </p>
+          </div>
+        </div>
+        <div :class="[$style['btn-wrap']]">
+          <button @click="downloadImage">保存至相簿</button>
+          <button @click="joinmemberPop = false">进首页</button>
+        </div>
+      </div>
+    </div>
     <popup v-if="isShowPop" @close="closePop" :sitePostList="sitePostList" />
     <div
       v-if="isReceive"
@@ -245,6 +266,7 @@
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
 import popup from "@/router/mobile/components/common/home/popup";
+import html2canvas from "html2canvas";
 
 export default {
   mixins: [mixin],
@@ -257,10 +279,30 @@ export default {
     SwiperSlide,
     popup
   },
+  methods: {
+    downloadImage() {
+      let ImgScope = document.getElementById("imagescope");
+      html2canvas(ImgScope).then(function(canvas) {
+        ImgScope.appendChild(canvas);
+        canvas.style.display = "none";
+        let a = document.createElement("a");
+        a.href = canvas
+          .toDataURL("image/jpeg")
+          .replace("image/jpeg", "image/octet-stream");
+        a.download = "image.jpg";
+        a.click();
+      });
+    }
+  },
   mounted() {
     this.$Lazyload.$on("loaded", function(el) {
       el.el.offsetParent.setAttribute("lazy", "loadedok");
     });
+  },
+  computed: {
+    phonenum() {
+      return `86-${this.memInfo.user.username.replace(/[a-z]/g, "")}`;
+    }
   }
 };
 </script>
@@ -705,6 +747,78 @@ export default {
   &:last-child {
     // color: var(--popup_text_color1);
     color: #6aaaf5;
+  }
+}
+.home-joinmem-pop-darkbg {
+  background: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 199;
+}
+.home-joinmem-pop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 200;
+  transform: translate(-50%, -50%);
+  width: 270px;
+  background-color: #fff;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+
+  .imagescope {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 20px;
+  }
+
+  h1 {
+    margin-top: 20px;
+    font-size: 17px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      color: #5e626d;
+
+      &.account {
+        color: #6aaaf5;
+      }
+
+      span {
+        color: #5e626d;
+        padding: 0 15px;
+      }
+    }
+  }
+
+  .btn-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      width: 50%;
+      padding: 15px 0;
+      color: #6aaaf5;
+      background: #fff;
+      border-top: 1px solid #eeeeee;
+      &:nth-child(1) {
+        border-right: 1px solid #eeeeee;
+      }
+    }
   }
 }
 </style>
