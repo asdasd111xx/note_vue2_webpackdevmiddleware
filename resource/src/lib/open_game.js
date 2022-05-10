@@ -192,7 +192,7 @@ export default (params, success = () => {}, fail = () => {}) => {
             ) {
               if (
                 store.state.siteConfig.ROUTER_TPL === "sg1" &&
-                vendor === "ai"
+                vendor === "lg_sport"
               ) {
                 router.push(
                   `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}&hasFooter=true&hasHeader=false`
