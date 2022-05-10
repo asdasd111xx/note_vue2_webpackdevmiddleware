@@ -9,7 +9,11 @@
         }}<span :class="{ [$style['arrow-up']]: showCondition }" />
       </div>
     </div>
-    <div v-if="showCondition" :class="$style['list-mask']">
+    <div
+      v-if="showCondition"
+      :class="$style['list-mask']"
+      :style="{ top: isApp ? 'calc(50px)' : 'calc(43px + 50px)' }"
+    >
       <div :class="$style['list-wrap']">
         <div
           v-for="option in categoryOpt"
