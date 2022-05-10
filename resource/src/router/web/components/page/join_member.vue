@@ -2701,8 +2701,15 @@ export default {
             this.mobileJoinErrMag = "";
             this.allTip["phonettl"] = res.msg;
             if (res.errors.phone) {
-              this.allTip["phonettl"] = res.errors.phone;
-              this.mobileJoinErrMag = "";
+              //该电话已经注册过
+              if (res.code === "C20115") {
+                this.allTip["mphone"] = res.errors.phone;
+                this.mobileJoinErrMag = "";
+                this.allTip["phonettl"] = "";
+              } else {
+                this.allTip["phonettl"] = res.errors.phone;
+                this.mobileJoinErrMag = "";
+              }
             }
           } else {
             this.actionSetGlobalMessage({
