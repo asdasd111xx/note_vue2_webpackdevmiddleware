@@ -9,6 +9,51 @@
   font-size: 16px;
 }
 
+.login-tabs-wrap {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  color: var(--mcenter_slider_text_color);
+  font-size: 17px;
+
+  div {
+    line-height: 50px;
+    position: relative;
+    display: block;
+
+    &.active {
+      color: var(--mcenter_main_color);
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 65px;
+        height: 3px;
+        background: var(--mcenter_main_color);
+      }
+
+      &.sp1 {
+        color: #ffbb00;
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 65px;
+          height: 3px;
+          background: #ffbb00;
+        }
+      }
+    }
+  }
+}
+
 .login-wrap {
   background-image: url("/static/image/porn1/common/bg.png");
   background-repeat: no-repeat;
@@ -54,7 +99,6 @@
 
 .login-form-wrap {
   margin: 0 41px;
-
   .login-unit {
     display: block;
     height: 40px;
@@ -92,6 +136,44 @@
         height: 18px;
       }
     }
+  }
+
+  .login-unit-phone {
+    display: flex;
+    max-width: 100%;
+    position: relative;
+
+    // .contrycode-select {
+    //   width: 30%;
+    //   padding: 0;
+    //   border: 1px solid #e3e3e3;
+    //   margin-right: 5px;
+    //   position: relative;
+    //   float: left;
+    //   overflow: hidden;
+    // }
+
+    .getkeyring {
+      position: absolute;
+      right: 5px;
+      top: 6px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      outline: hidden;
+      background: #cccccc;
+      color: #fff;
+      &.active {
+        background: #6aaaf5;
+      }
+    }
+  }
+
+  .not-receive-code {
+    text-decoration: none;
+    color: #5e626d;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .login-unit-captcha {
@@ -170,6 +252,13 @@
       font-weight: 700;
       width: 100%;
       max-width: 375px;
+    }
+    &.disabled {
+      opacity: 0.8;
+      > div {
+        background: var(--main_button_color2);
+        color: var(--main_button_text_color2);
+      }
     }
   }
 }

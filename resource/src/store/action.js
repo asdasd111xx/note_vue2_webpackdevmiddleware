@@ -1885,6 +1885,7 @@ export const actionVerificationFormData = (
       break;
 
     case "phone":
+    case "mphone":
       let maxLength = 11;
       switch (site) {
         case "porn1":
@@ -1900,8 +1901,17 @@ export const actionVerificationFormData = (
       }
 
       break;
+    case "phone_validation_code":
+    case "phonettl":
+      let maxCodeLength = 6;
+      val = val.replace(/[^0-9]/g, "");
 
+      if (maxCodeLength) {
+        val = val.substring(0, maxCodeLength);
+      }
+      break;
     case "login_password":
+    case "m_login_password":
       val = val.replace(/[^A-Za-z0-9._\-!@#$&+=|*]/g, "").substring(0, 12);
       break;
 
@@ -2476,9 +2486,9 @@ export const actionGetToManyRequestMsg = ({ state }, message) => {
 
 // 取得廳設定 C02.233
 export const actionSetDomainConfigV2 = ({ state, dispatch, commit }, data) => {
-  if (!state.loginStatus) {
-    return;
-  }
+  // if (!state.loginStatus) {
+  //   return;
+  // }
 
   return goLangApiRequest({
     method: "get",

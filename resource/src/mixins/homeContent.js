@@ -60,7 +60,8 @@ export default {
       sitePostList: null,
       trialList: [],
       isNotLoopTypeList: false,
-      notFirstDeposit: false //首儲
+      notFirstDeposit: false, //首儲
+      joinmemberPop: false //首次手機註冊登入彈窗
     };
   },
   watch: {
@@ -231,6 +232,9 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    domainName() {
+      return this.memInfo.config.domain_name[this.$i18n.locale];
     }
   },
   created() {
@@ -289,6 +293,14 @@ export default {
     }
   },
   mounted() {
+    // 會員首次以手機註冊登入彈窗
+    if (localStorage.getItem("first_time_login")) {
+      setTimeout(() => {
+        this.joinmemberPop = true;
+        localStorage.removeItem("first_time_login");
+      }, 1000);
+    }
+
     window.addEventListener("resize", this.onResize);
 
     if (this.siteConfig.ROUTER_TPL === "porn1") {

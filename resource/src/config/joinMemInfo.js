@@ -85,6 +85,29 @@ export default {
     errorMsg: i18n.t("S_PASSWORD_ERROR")
     // errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
   },
+  mpassword: {
+    key: "mpassword",
+    text: "S_PASSWORD",
+    type: "password",
+    placeholder: "请输入6-12位字母及数字",
+    isRequired: true,
+    hasVerify: false,
+    show: true,
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
+    errorMsg: i18n.t("S_PASSWORD_ERROR")
+  },
+  mconfirm_password: {
+    key: "mconfirm_password",
+    text: "S_PWD_CONFIRM",
+    type: "password",
+    placeholder: "请输入6-12位字母及数字",
+    isRequired: true,
+    hasVerify: false,
+    show: true,
+    regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
+    errorMsg: i18n.t("S_PASSWORD_ERROR")
+    // errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
+  },
   new_password: {
     key: "new_password",
     text: "S_PASSWORD",
@@ -151,6 +174,30 @@ export default {
     maximum: 15,
     regExp: /^[0-9]+$/,
     errorMsg: i18n.t("S_JM_PHONE_RMB")
+  },
+  mphone: {
+    key: "mphone",
+    text: "S_TEL",
+    type: "number",
+    isRequired: false,
+    hasVerify: false,
+    show: true,
+    minimum: 7,
+    maximum: 15,
+    regExp: /^[0-9]+$/,
+    errorMsg: ""
+  },
+  phonettl: {
+    key: "phonettl",
+    text: "S_CHECK_CODE",
+    type: "text",
+    isRequired: true,
+    hasVerify: false,
+    show: true,
+    minimum: 3,
+    maximum: 6,
+    regExp: /^[0-9]+$/,
+    errorMsg: "验证码错误"
   },
   birthday: {
     key: "birthday",

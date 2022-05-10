@@ -70,7 +70,7 @@ export default {
   background: #fefefe;
   border: 1px solid rgba(128, 128, 128, 0.26);
   border-radius: 3px;
-
+  margin: 5px 0 10px 0;
   &.sg1 {
     border-radius: 20px;
   }
