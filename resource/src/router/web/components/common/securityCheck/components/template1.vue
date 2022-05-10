@@ -15,6 +15,9 @@
             type="text"
             @keydown.13="submit"
           />
+          <div v-if="checkErrMsg" :class="$style.checkerr">
+            {{ checkErrMsg }}
+          </div>
         </div>
         <template v-if="['sg1'].includes(themeTPL)">
           <div :class="$style.tip">
@@ -69,7 +72,8 @@ export default {
         }
       },
       inputVal: "",
-      lock: false
+      lock: false,
+      checkErrMsg: ""
     };
   },
   computed: {
@@ -88,9 +92,14 @@ export default {
       this.$emit("update:checkItem", "");
     },
     submit() {
+      if (this.inputVal === "") {
+        this.checkErrMsg = "请输入真实姓名";
+        return;
+      }
       if (this.lock) {
         return;
       }
+
       this.lock = true;
       this.onLogin({ [this.checkItem]: this.inputVal }).then(() => {
         this.lock = false;

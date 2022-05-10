@@ -791,6 +791,18 @@ export default {
   width: 80%;
   font-size: 15px;
   color: #a5a5a5;
+  clear: both;
+}
+
+.checkerr {
+  line-height: initial;
+  max-width: 375px;
+  padding: 2px 6px;
+  margin: 6px auto;
+  color: #fff;
+  background-color: #db6372;
+  border-radius: 3px;
+  float: right;
 }
 
 .mask {
