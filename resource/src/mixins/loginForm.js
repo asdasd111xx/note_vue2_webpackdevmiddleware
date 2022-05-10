@@ -379,7 +379,7 @@ export default {
               } catch (e) {
                 setCookie("cid", res.data.cookie.cid);
               }
-              this.handleSaveAccont();
+              this.handleSaveMobileAccont();
               this.actionIsLogin(true);
               window.RESET_MEM_SETTING();
 
@@ -536,23 +536,20 @@ export default {
         return;
       }
 
+      localStorage.setItem("username", this.username);
+      localStorage.setItem("password", this.password);
+      localStorage.setItem("rememberPwd", this.rememberPwd);
+    },
+    handleSaveMobileAccont() {
       if (!this.m_rememberPwd) {
         localStorage.removeItem("password");
         localStorage.removeItem("m_rememberPwd");
         return;
       }
 
-      if (this.currentLogin === "accountlogin") {
-        localStorage.setItem("username", this.username);
-        localStorage.setItem("password", this.password);
-        localStorage.setItem("rememberPwd", this.rememberPwd);
-      }
-
-      if (this.currentLogin === "mobilelogin") {
-        localStorage.setItem("mobileusername", this.phone);
-        localStorage.setItem("mpassword", this.mpassword);
-        localStorage.setItem("m_rememberPwd", this.m_rememberPwd);
-      }
+      localStorage.setItem("mobileusername", this.phone);
+      localStorage.setItem("mpassword", this.mpassword);
+      localStorage.setItem("m_rememberPwd", this.m_rememberPwd);
     }
   }
 };
