@@ -237,14 +237,12 @@
                 $style['select-card-wrap'],
                 'clearfix'
               ]"
+              @click="setPopupStatus(true, 'epointBank')"
             >
               <span :class="$style['select-bank-title']">
                 挂单银行
               </span>
-              <div
-                :class="$style['select-epoint-bank-item']"
-                @click="setPopupStatus(true, 'epointBank')"
-              >
+              <div :class="$style['select-epoint-bank-item']">
                 {{ defaultEpointWallet.account }}
               </div>
               <img
@@ -272,9 +270,8 @@
                   v-model="epointBankName"
                   :class="$style['input-cgpay-address']"
                   type="text"
-                  maxlength="36"
                   :placeholder="'请输入银行名称'"
-                  @input="replaceEpointWhiteSpace"
+                  @input="verification('order-bank', $event.target.value)"
                 />
               </div>
               <div :class="[$style['other-bank-input-text'], $style['border']]">
@@ -283,9 +280,10 @@
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
                   type="text"
-                  maxlength="36"
-                  :placeholder="'请输入银行帐号'"
-                  @input="replaceEpointWhiteSpace"
+                  :placeholder="'请输入银行卡号/钱包'"
+                  @input="
+                    verification('order-bank-account', $event.target.value)
+                  "
                 />
               </div>
               <div :class="[$style['wallet-address-text'], $style['less']]">
@@ -334,24 +332,40 @@
                 </div>
               </div>
               <div
+                v-if="curPassRoad.tip != ''"
                 :class="[
-                  curPassRoad.tip != ''
-                    ? [$style['pay-mode-tip-show']]
-                    : [$style['pay-mode-tip-close']]
+                  $style['pass-road-text'],
+                  [
+                    curPassRoadTipTextShowMore
+                      ? [$style['pay-mode-tip-show']]
+                      : [$style['pay-mode-tip-close']]
+                  ]
                 ]"
               >
                 <div
-                  :class="$style['pay-mode-tip']"
+                  :class="[$style['pay-mode-tip'], $style[themeTPL]]"
                   v-html="curPassRoadTipText"
                 ></div>
-                <div
-                  v-if="curPassRoadTipTextShowMore"
-                  :class="$style['pay-mode-tip-more']"
-                  @click="setPopupStatus(true, 'payTip')"
-                >
-                  查看更多
-                </div>
               </div>
+            </div>
+
+            <div
+              v-if="
+                passRoad.length > 0 &&
+                  curPassRoadTipText != '' &&
+                  !isSelectBindWallet(402) &&
+                  !isSelectBindWallet(404)
+              "
+              @click="curPassRoadTipTextShowMore = !curPassRoadTipTextShowMore"
+              :class="$style['show-more-header']"
+            >
+              <span>通道提示详情</span>
+              <div
+                :class="[
+                  $style['collapse-img'],
+                  { [$style.active]: curPassRoadTipTextShowMore }
+                ]"
+              />
             </div>
 
             <!-- Yabo -->
@@ -1505,15 +1519,15 @@ export default {
               "\n",
               "<br>"
             );
-            this.curPassRoadTipTextShowMore =
-              this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
-                45 || this.curPassRoadTipText.indexOf("<br>") != -1;
+            // this.curPassRoadTipTextShowMore =
+            //   this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
+            //     45 || this.curPassRoadTipText.indexOf("<br>") != -1;
           }, 500);
         } else {
           this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
-          this.curPassRoadTipTextShowMore =
-            this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
-              45 || this.curPassRoadTipText.indexOf("<br>") != -1;
+          // this.curPassRoadTipTextShowMore =
+          //   this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
+          //     45 || this.curPassRoadTipText.indexOf("<br>") != -1;
         }
       }
     },
@@ -2039,6 +2053,8 @@ export default {
         this.submitStatus = "stepOne";
       }
 
+      this.curPassRoadTipText = "";
+      this.curPassRoadTipTextShowMore = true;
       this.changeMode(listItem);
 
       if (this.allBanks && this.allBanks.length > 0) {
@@ -2331,6 +2347,20 @@ export default {
           this.checkOrderData();
         });
       }
+      if (target === "order-bank")
+        this.actionVerificationFormData({
+          target: "order-bank",
+          value: value
+        }).then(val => {
+          this.epointBankName = val;
+        });
+      if (target === "order-bank-account")
+        this.actionVerificationFormData({
+          target: "order-bank-account",
+          value: value
+        }).then(val => {
+          this.epointBankAccount = val;
+        });
 
       // 如果是迅付欄位
       if (isSpeedField) {

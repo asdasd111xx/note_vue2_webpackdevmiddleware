@@ -523,10 +523,11 @@
 
 .select-epoint-bank-item {
   height: 23px;
-  margin-left: 100px;
+  margin-left: 45px;
   margin-right: 20px;
   font-size: 14px;
   word-break: break-all;
+  float: left;
 }
 
 .select-bank-icon {
@@ -616,17 +617,61 @@
   width: 100%;
 }
 
-.pay-mode-tip {
+.pass-road-text {
   float: left;
-  width: 80%;
-  height: 20px;
-  margin-top: 10px;
-  color: #6aaaf5;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  max-height: 100vh;
+  transition: all 0.5s ease;
+
+  .pay-mode-tip {
+    padding: 8px 4px;
+    word-break: break-all;
+    white-space: pre-wrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    &.porn1 {
+      color: #bbbbbb;
+    }
+
+    &.sg1 {
+      color: #a2a2a2;
+    }
+
+    p {
+      margin: 0px;
+    }
+    a {
+      color: #6aaaf5 !important;
+      text-decoration: underline;
+    }
+  }
+}
+
+.show-more-header {
+  float: left;
+  width: 100%;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  color: #4a4a4a;
+  background-color: #f5f5f5;
+  margin-top: -8px;
+  margin-bottom: 9px;
+  text-align: center;
+
+  .collapse-img {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    vertical-align: text-bottom;
+    transition: transform 0.5s ease;
+    background: url("/static/image/common/ic_arrow_expand.png") 0 0 / contain
+      no-repeat;
+    &.active {
+      transform: rotate(-180deg);
+    }
+  }
 }
 
 .pay-mode-tip-show {
@@ -637,7 +682,13 @@
 
 .pay-mode-tip-close {
   float: left;
-  animation: fade-out 0.5s;
+  max-height: 0px;
+  overflow: hidden;
+  padding: 0px;
+  // animation: fade-out 0.5s;
+  // position: absolute;
+  // opacity: 0;
+  // animation-fill-mode: forwards;
 }
 
 @keyframes fade-in {
@@ -1050,6 +1101,13 @@
     text-align: left;
     color: #222;
   }
+  p {
+    margin: 0px;
+  }
+  a {
+    color: #6aaaf5 !important;
+    text-decoration: underline;
+  }
 }
 
 .qrcode-wrap {
@@ -1133,6 +1191,10 @@
 
   p {
     margin: 0;
+  }
+  a {
+    color: #6aaaf5 !important;
+    text-decoration: underline;
   }
 }
 

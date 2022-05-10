@@ -76,8 +76,8 @@
           <div :class="$style['input-wrap']">
             <input
               v-model="formData.account"
-              type="tel"
-              placeholder="请输入银行卡卡号(限定16位以上数字)"
+              type="text"
+              placeholder="请输入银行卡号/钱包（限定16位以上）"
               minlength="16"
               maxlength="36"
               @input="checkData($event.target.value, 'account')"

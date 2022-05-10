@@ -189,10 +189,7 @@
           </div>
           <div>推广赚钱</div>
         </div>
-        <div
-          :class="$style['cell']"
-          @click="onListClick('creditTrans?tab=1', false)"
-        >
+        <div :class="$style['cell']" @click="onListClick('creditTrans', false)">
           <div>
             <img
               :src="$getCdnPath('/static/image/sg1/mcenter/icon_transfer.png')"
@@ -310,7 +307,9 @@ export default {
       "actionSetUserdata",
       "actionSetGlobalMessage",
       "actionGetExtRedirect",
-      "actionSetUserBalance"
+      "actionSetUserBalance",
+      "actionGetMemInfoV3",
+      "actionGetRechargeStatus"
     ]),
     formatThousandsCurrency(value, point) {
       return thousandsCurrency(value.toFixed(point));
@@ -339,6 +338,11 @@ export default {
         case "bankRebate":
           sendUmeng(31);
           break;
+        case "creditTrans":
+          this.actionGetMemInfoV3().then(() => {
+            this.actionGetRechargeStatus("home");
+          });
+          return;
 
         default:
           break;

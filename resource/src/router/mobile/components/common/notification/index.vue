@@ -93,6 +93,7 @@ export default {
     //   this.data = {
     //     content: "maintain_notice",
     //     event: "maintain_notice",
+    //     countdown: 1,
     //     message: {
     //       countdown: 978
     //     },
@@ -190,19 +191,15 @@ export default {
           // 外接平台維護通知
           // case 'outer_maintain':
           case "maintain_notice":
-          // 分廳維護 - 全廳 - 增加可單獨掛撤維護APP端口功能（C-2342）
-          // if (
-          //   (getCookie("platform") === "h" && temp.device === 2) ||
-          //   (getCookie("platform") === "pwa" && temp.device === 3) ||
-          //   temp.device === 0
-          // ) {
-          //   this.noticeQueue.push({
-          //     ...temp,
-          //     timestamp: Date.now(),
-          //     showType: "show"
-          //   });
-          // }
-          // return;
+            // 分廳維護 - 全廳 - 增加可單獨掛撤維護APP端口功能（C-2342）
+            if (temp.device === 0 || temp.device === 2) {
+              this.noticeQueue.push({
+                ...temp,
+                timestamp: Date.now(),
+                showType: "show"
+              });
+            }
+            return;
           case "verification_code":
           case "service_maintain_notice":
             this.noticeQueue.push({
@@ -296,7 +293,7 @@ export default {
       let string = "";
       switch (event) {
         case "maintain_notice":
-          string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
+          string = ` <span>${this.data.countdown}</span>分钟后进行系统升级`;
           return string;
 
         case "verification_code":

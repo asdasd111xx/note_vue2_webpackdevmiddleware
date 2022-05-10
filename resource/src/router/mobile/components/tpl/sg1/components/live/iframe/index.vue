@@ -8,7 +8,7 @@
           [$style['has-header']]: headerConfig.hasHeader
         },
         {
-          [$style['has-footer']]: headerConfig.hasFooter
+          [$style['has-footer']]: hasFooter
         },
         { [$style['fullScreen']]: isFullScreen }
       ]"
@@ -115,7 +115,6 @@ export default {
       src: "",
       isFullScreen: false,
       contentTitle: "",
-      hasFooter: true,
       isMaintain: false,
       maintainInfo: [],
       sec: 5,
@@ -135,7 +134,8 @@ export default {
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
       liveMaintain: "getLiveMaintain",
-      liveViewPath: "getLiveViewPath"
+      liveViewPath: "getLiveViewPath",
+      hasFooter: "getLiveFooter"
     }),
     pageType() {
       return this.$route.params.page;
@@ -146,14 +146,9 @@ export default {
       this.isFullScreen =
         query.fullscreen === undefined ? false : query.fullscreen === "true";
 
-      this.hasFooter =
-        query.hasFooter === undefined ? false : query.hasFooter === "true";
-
       let baseConfig = {
         hasHeader:
           query.hasHeader === undefined ? false : query.hasHeader === "true",
-        hasFooter:
-          query.hasFooter === undefined ? false : query.hasFooter === "true",
         prev: query.prev === undefined ? true : query.prev,
         hasFunc: query.func === undefined ? true : query.func === "true",
         title:
@@ -184,10 +179,15 @@ export default {
       this.initPage();
     },
     "$route.query.hasFooter"(value) {
-      this.hasFooter = value === undefined ? true : value === "true";
+      this.actionSetLiveFooter(value === undefined ? true : value === "true");
     }
   },
-  created() {},
+  created() {
+    const query = this.$route.query;
+    this.actionSetLiveFooter(
+      query.hasFooter === undefined ? false : query.hasFooter === "true"
+    );
+  },
   mounted() {
     // check maintain
     this.actionGetExtRedirect({
@@ -210,7 +210,8 @@ export default {
       "actionGetExtRedirect",
       "actionSetUserBalance",
       "actionMemInit",
-      "actionSetLiveViewPath"
+      "actionSetLiveViewPath",
+      "actionSetLiveFooter"
     ]),
     initPage() {
       let clientUri = "";
@@ -332,11 +333,7 @@ export default {
     },
     toogleFooter(data = {}) {
       const show = data.data === true || data.data === "true";
-      if (show) {
-        this.$router.push({ query: { hasFooter: "true" } });
-      } else {
-        this.$router.push({ query: { hasFooter: "false" } });
-      }
+      this.actionSetLiveFooter(show);
     },
     redirectLive(target = "home") {
       // this.$router.push(`/mobile/live/iframe/${target}?hasFooter=true`);
