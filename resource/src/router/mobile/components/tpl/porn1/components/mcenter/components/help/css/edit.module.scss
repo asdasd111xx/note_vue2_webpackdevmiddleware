@@ -63,11 +63,53 @@
 }
 
 :global {
+  //一定要global ， !import也沒用，吃不到
   .mx-datepicker {
-    width: 100% !important;
+    width: 100%;
+
+    .mx-input {
+      height: 33px;
+      line-height: 33px;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      background: transparent;
+
+      // Chrome/Opera/Safari
+      &::-webkit-input-placeholder {
+        color: #cbced8;
+      }
+
+      // Firefox 19+
+      &::-moz-placeholder {
+        color: #cbced8;
+      }
+
+      // IE 10+
+      &:-ms-input-placeholder {
+        color: #cbced8;
+      }
+
+      // Firefox 18-
+      &:-moz-placeholder {
+        color: #cbced8;
+      }
+    }
+  }
+
+  .mx-icon-calendar {
+    right: 0;
+    display: none;
+  }
+
+  .mx-icon-clear {
+    right: 0;
+    display: none;
+  }
+  .mx-input-wrapper:hover .mx-icon-clear {
+    display: none;
   }
 }
-
 .alert-body-wrap {
   background: #ffffff;
   color: #414655;
@@ -82,10 +124,13 @@
     > div {
       display: inline-block;
     }
-
+    .value {
+      width: 100%;
+    }
     input {
       text-align: right;
       width: 100%;
+      padding: 0;
     }
   }
 }
