@@ -183,6 +183,7 @@ export default {
       detailRate: null,
       editOpen: false,
       isShowDepositInfo: false,
+      isLoading: false,
       columns: [
         // 日期
         { key: "created_at", title: "S_DATE" },
@@ -225,9 +226,12 @@ export default {
       this.detailRate = item;
     },
     setCategory(option) {
+      if (this.isLoading) return;
+      this.showCondition = false;
+      this.isLoading = true;
       this.currentCategory = option;
       this.getData(option.key).then(() => {
-        this.showCondition = false;
+        this.isLoading = false;
       });
     },
     getData(key = "all") {
