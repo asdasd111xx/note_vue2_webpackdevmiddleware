@@ -195,23 +195,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-}
-.item {
-  width: 78px;
-  line-height: 35px;
-  text-align: center;
 
-  border: 1px solid #eeeeee;
-  border-radius: 5px;
+  .item {
+    width: 78px;
+    line-height: 35px;
+    text-align: center;
 
-  background: var(--mcenter_dropdown_background_color);
-  color: var(--mcenter_dropdown_text_color);
-}
-.active {
-  background: var(--mcenter_dropdown_background_active_color);
-  color: var(--mcenter_dropdown_text_active_color);
-}
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
 
+    background: var(--mcenter_dropdown_background_color);
+    color: var(--mcenter_dropdown_text_color);
+  }
+  .active {
+    background: var(--mcenter_dropdown_background_active_color);
+    color: var(--mcenter_dropdown_text_active_color);
+  }
+}
 .detail-wrap {
   background-color: #f8f8f8;
 }
