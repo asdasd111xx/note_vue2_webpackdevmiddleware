@@ -154,6 +154,7 @@
         <div :class="$style['tips']">暂时没有新的充值记录</div>
       </div>
     </div>
+    <infinite-loading v-if="isLoading" />
   </div>
 </template>
 
@@ -165,11 +166,13 @@ import member from "@/api/member";
 import mixin from "@/mixins/mcenter/deposit/recordDeposit";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest.js";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   mixins: [mixin],
   components: {
-    editDepositField
+    editDepositField,
+    InfiniteLoading
   },
   props: {
     isApp: {
@@ -312,5 +315,17 @@ export default {
   }
 };
 </script>
-
+<style scoped>
+.infinite-loading-container {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+</style>
 <style src="../../css/index.module.scss" lang="scss" module />
