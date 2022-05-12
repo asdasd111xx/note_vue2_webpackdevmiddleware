@@ -195,6 +195,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  .active {
+    background: var(--mcenter_dropdown_background_active_color);
+    color: var(--mcenter_dropdown_text_active_color);
+  }
 }
 .item {
   width: 78px;
@@ -206,10 +210,6 @@
 
   background: var(--mcenter_dropdown_background_color);
   color: var(--mcenter_dropdown_text_color);
-}
-.active {
-  background: var(--mcenter_dropdown_background_active_color);
-  color: var(--mcenter_dropdown_text_active_color);
 }
 
 .detail-wrap {
