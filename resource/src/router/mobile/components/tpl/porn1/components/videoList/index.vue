@@ -1,3 +1,11 @@
+<script>
+//影片入口
+//以鴨脖視頻為例
+//首頁開啟遊戲時，game.type===link_to 且 game.vendor===YB 會this.$router.push({name: "videoList", query: { source: "yabo" }}); 進來本vue
+//進入<platform-layout :source="source"
+//進入之後用source去判斷是哪種影片(並對應去 setCookie("s_id", this.siteConfig.PORN_CONFIG.ID["YV"]);)
+//傳入參數進入 /layout/yabo/videoLobby
+</script>
 <template>
   <mobile-container
     :header-config="headerConfig"

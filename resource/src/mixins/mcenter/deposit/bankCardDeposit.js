@@ -885,6 +885,7 @@ export default {
      * @param {String} money - 金額
      */
     changeMoney(money, canCustomMoney) {
+      //把金額轉換為通到給的選項
       this.cryptoMoney = "--";
       this.isSelectedCustomMoney = !!canCustomMoney;
       this.isDisableDepositInput = !canCustomMoney;

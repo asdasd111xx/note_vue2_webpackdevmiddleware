@@ -1,7 +1,8 @@
 <script>
-//由此進入resource/src/router/mobile/components/tpl/porn1/components/videoList/components/layout/index.vue
+//這裡是form  resource/src/router/mobile/components/tpl/porn1/components/videoList/components/layout/index.vue
 //getVideoTag 取得影片標籤並往下發展
-//^^^^(pornRequest 帶入siteId:1 ,jwt:(搜尋“getV2Token”帶入configInfo.PORN_CONFIG.ID.SPACE取得的token） , videoSpaceId:9)
+//^^^^(pornRequest.js 帶入siteId:1 ,jwt:(搜尋“getV2Token”帶入configInfo.PORN_CONFIG.ID.SPACE取得的token） , videoSpaceId:9)
+//以chrome network 就是api :https://hightide.app/api/v1/video/tag
 </script>
 
 <template>
