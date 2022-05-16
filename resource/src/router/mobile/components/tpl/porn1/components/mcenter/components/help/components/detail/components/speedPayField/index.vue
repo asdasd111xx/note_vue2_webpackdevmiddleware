@@ -28,7 +28,23 @@
             />
           </template>
         </div>
-        <!-- icon -->
+        <!-- icon1 -->
+        <div
+          v-if="info.copyShow_t"
+          :class="$style['icon-wrap-text']"
+          @click="handleCopy(info)"
+        >
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/common/ic_copy_${
+                  info.value === '通道建置中' ? 'd' : 'n'
+                }.png`
+              )
+            "
+          />
+        </div>
+        <!-- icon2 -->
         <div
           v-if="info.copyShow"
           :class="$style['icon-wrap']"
@@ -312,7 +328,7 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "manualCardBankBranch",
@@ -324,7 +340,7 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "manualCardAccount",
@@ -378,6 +394,10 @@ export default {
   },
   methods: {
     handleCopy(info) {
+      if (info.value === "通道建置中") {
+        return;
+      }
+
       let copy = info.value;
       this.msg = "已复制到剪贴板";
       this.copyInfo(copy);

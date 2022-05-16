@@ -156,9 +156,20 @@
     }
 
     .icon-wrap {
+      display: flex;
+      align-items: center;
+
       > img {
         width: 20px;
-        height: 20px;
+      }
+    }
+
+    .icon-wrap-text {
+      display: flex;
+      align-items: center;
+
+      > img {
+        width: 23px;
       }
     }
   }
@@ -193,6 +204,10 @@
     // color: var(--popup_text_color1);
     color: #6aaaf5;
     background: #ffffff;
+
+    &.disabled {
+      color: #cccccc;
+    }
   }
   > div:last-child::before {
     position: absolute;

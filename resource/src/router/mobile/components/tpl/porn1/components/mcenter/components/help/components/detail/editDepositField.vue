@@ -66,7 +66,9 @@
             <div
               :class="[
                 $style['confirm-btn'],
-                { [$style.disabled]: isSubmitDisabled },
+                {
+                  [$style['disabled']]: isSubmitDisabled
+                },
                 $style[siteConfig.ROUTER_TPL]
               ]"
               @click="saveDepositData"
@@ -209,6 +211,11 @@ export default {
       }
     },
     isSubmitDisabled() {
+      //手動配卡 通道配置中（未配卡） 時按鈕禁能
+      if (this.depositData.manual_card.account === "") {
+        return true;
+      }
+
       const checkItemMap = {
         method: {
           key: "bankBranch"
