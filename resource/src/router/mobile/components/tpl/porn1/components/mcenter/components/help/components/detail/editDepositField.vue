@@ -1,6 +1,84 @@
 <template>
   <transition :name="'fade'">
-    <div :class="[$style['detail-alert-wrap']]">
+    <!-- 手動配卡提交資料彈窗 -->
+    <div
+      v-if="depositData.is_manual_card"
+      :class="[$style['detail-alert-wrap']]"
+    >
+      <div :class="[$style['alert-wrap'], $style['deposit']]">
+        <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
+          {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
+          <div
+            v-if="['aobo1', 'sp1'].includes(this.routerTPL)"
+            :class="$style['alert-close-wrap']"
+            @click="closeFuc(false)"
+          >
+            <icon name="times" width="20" height="20" />
+          </div>
+        </div>
+        <div :class="$style['alert-body-wrap']">
+          <div :class="$style['detail-block']">
+            <div :class="[$style['detail-cell']]">
+              <div :class="[$style['title']]">
+                {{ $text("S_ORDER_NUMBER_2", "订单号") }}
+              </div>
+              <div :class="$style['value']">{{ depositData.id }}</div>
+            </div>
+            <!-- <div :class="[$style['detail-cell']]">
+              <div :class="[$style['title']]">
+                {{
+                  depositData.type_id === 6
+                    ? $text("S_PAY_MODE", "支付方式")
+                    : $text("S_YOUR_BANK", "您的银行")
+                }}
+              </div>
+              <div :class="$style['value']">
+                {{ depositData.bank_name }}
+              </div>
+            </div> -->
+            <speed-pay-field
+              :class-style="$style"
+              :required-fields="requiredFields"
+              :speed-field.sync="resultSpeedField"
+              :method-id="depositData.method_id"
+              :type-id="depositData.type_id"
+              :manual-card="depositData.is_manual_card"
+            />
+            <div :class="[$style['detail-cell']]">
+              <div :class="[$style['title']]">
+                {{ $text("S_LAST_SUBMIT_TIME", "上次提交时间") }}
+              </div>
+              <div :class="$style['value']">
+                {{
+                  depositData.submit_at ||
+                    $text("S_NOT_ENTER_SHORT", "尚未提交")
+                }}
+              </div>
+            </div>
+          </div>
+          <div :class="$style['tip-time']">
+            {{ $text("S_RECORD_TIP01", "将以您最后提交时的存款资料做审核") }}
+          </div>
+          <div :class="[$style['btn-wrap'], $style[siteConfig.ROUTER_TPL]]">
+            <div :class="$style['cancel-btn']" @click="closeFuc(false)">
+              {{ $text("S_CANCEL", "取消") }}
+            </div>
+            <div
+              :class="[
+                $style['confirm-btn'],
+                { [$style.disabled]: isSubmitDisabled },
+                $style[siteConfig.ROUTER_TPL]
+              ]"
+              @click="saveDepositData"
+            >
+              {{ $text("S_ENTER_SHORT", "提交") }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 一般提交資料彈窗 -->
+    <div v-else :class="[$style['detail-alert-wrap']]">
       <div :class="[$style['alert-wrap'], $style['deposit']]">
         <div :class="[$style['alert-title'], $style[siteConfig.ROUTER_TPL]]">
           {{ $text("S_SUBMIT_DEPOSIT", "提交资料") }}
@@ -189,7 +267,9 @@ export default {
       depositName: this.depositData.pay_username,
       depositMethod: String(this.depositData.method) || "1",
       bankBranch: this.depositData.branch,
-      serialNumber: this.depositData.sn
+      serialNumber: this.depositData.sn,
+      manualCard: this.depositData.manual_card,
+      payUrl: this.depositData.pay_url
     };
   },
   methods: {
@@ -197,19 +277,31 @@ export default {
       if (this.isSubmitDisabled) {
         return { status: "ok" };
       }
+
+      const params = {
+        api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
+        deposit_at: this.speedField.depositTime,
+        pay_account: this.speedField.depositAccount,
+        pay_username: this.speedField.depositName,
+        method: this.speedField.depositMethod,
+        branch: this.speedField.bankBranch,
+        sn: this.speedField.serialNumber
+      };
+      const m_params = {
+        api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
+        deposit_at: this.speedField.depositTime,
+        pay_account: this.speedField.manualCard.account,
+        pay_username: this.speedField.manualCard.account_name,
+        method: this.speedField.depositMethod,
+        branch: this.speedField.manualCard.account_branch,
+        pay_url: this.speedField.payUrl
+      };
+
       return ajax({
         method: "put",
         url: API_TRADE_RELAY,
         errorAlert: true,
-        params: {
-          api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
-          deposit_at: this.speedField.depositTime,
-          pay_account: this.speedField.depositAccount,
-          pay_username: this.speedField.depositName,
-          method: this.speedField.depositMethod,
-          branch: this.speedField.bankBranch,
-          sn: this.speedField.serialNumber
-        }
+        params: this.depositData.manual_card ? m_params : params
       }).then(response => {
         this.closeFuc(false);
 

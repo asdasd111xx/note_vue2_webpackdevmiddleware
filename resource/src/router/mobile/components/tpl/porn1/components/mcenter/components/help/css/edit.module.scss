@@ -132,6 +132,23 @@
       width: 100%;
       padding: 0;
     }
+    &.manualCardPayUrl {
+      display: flex;
+      flex-direction: column;
+      height: 70px;
+      > div {
+        display: block;
+      }
+      .value {
+        max-width: 100%;
+      }
+      input {
+        text-align: left;
+        padding: 3px;
+        border: 1px solid #bbb;
+        border-radius: 5px;
+      }
+    }
   }
 }
 

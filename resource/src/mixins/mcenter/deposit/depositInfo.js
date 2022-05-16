@@ -326,7 +326,8 @@ export default {
           pay_username: this.speedField.depositName,
           method: this.speedField.depositMethod,
           branch: this.speedField.bankBranch,
-          sn: this.speedField.serialNumber
+          sn: this.speedField.serialNumber,
+          pay_url: ""
         };
         return axios({
           method: "put",

@@ -99,7 +99,8 @@ export default {
       cgPromotionMessage: "",
 
       // 充值上方跑馬燈&支付方式高度
-      depositWrapMarignTop: 70
+      depositWrapMarignTop: 70,
+      manualCard: false //極速存款-手動配卡
     };
   },
   watch: {
@@ -1100,6 +1101,11 @@ export default {
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
+          if (ret.remit.is_manual_card) {
+            this.manualCard = true;
+            alert("手動配卡提交成功彈窗");
+          }
+
           if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -1219,7 +1225,10 @@ export default {
             };
             return { status: "third" };
           }
-
+          //手動配卡不需顯示depositinfo
+          if (this.curPaInfo.bank_id === "464") {
+            return;
+          }
           return { status: "local" };
 
           // 停權？

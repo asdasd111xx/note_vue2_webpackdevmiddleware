@@ -1,5 +1,52 @@
 <template>
-  <div :class="[$style['speed-field-wrap'], 'clearfix']">
+  <!-- 手動配卡提交欄位 -->
+  <div v-if="manualCard" :class="[$style['speed-field-wrap'], 'clearfix']">
+    <template v-for="info in manualInputData">
+      <div
+        v-if="info.showCondition"
+        :key="`field-${info.objKey}`"
+        :class="[$style['detail-cell'], $style[`${info.objKey}`]]"
+      >
+        <div v-if="info.objKey === 'manualCardPayUrl'" :class="$style['title']">
+          <a href="https://imgbb.com/" target="_blank"> {{ info.title }}</a>
+        </div>
+        <div v-else :class="$style['title']">
+          {{ info.title }}
+        </div>
+        <div :class="($style['speed-edit-value'], $style['value'])">
+          <template>
+            <template v-if="info.objKey === 'manualCardPayUrl'">
+              <input
+                v-model="info.value"
+                :class="[$style['speed-deposit-input']]"
+                :placeholder="info.placeholderText"
+                @input="submitInput($event.target.value, info.objKey)"
+              />
+            </template>
+            <input
+              v-else
+              v-model="info.value"
+              :class="$style['speed-deposit-input']"
+              :placeholder="info.placeholderText"
+              @input="submitInput($event.target.value, info.objKey)"
+            />
+          </template>
+        </div>
+      </div>
+      <!-- <div
+        v-if="info.isError"
+        :key="`field-error-${info.objKey}`"
+        :class="[
+          $style['detail-cell'],
+          $style['speed-deposit-input-error-messgae']
+        ]"
+      >
+        {{ info.placeholderText }}
+      </div> -->
+    </template>
+  </div>
+  <!-- 一般提交欄位 -->
+  <div v-else :class="[$style['speed-field-wrap'], 'clearfix']">
     <template v-for="info in allInputData">
       <div
         v-if="info.showCondition"
@@ -112,6 +159,10 @@ export default {
     typeId: {
       type: Number,
       default: 0
+    },
+    manualCard: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -249,6 +300,63 @@ export default {
             ) &&
             !this.speedField.bankBranch &&
             ["2", "4"].includes(this.speedField.depositMethod)
+        }
+      ];
+    },
+    manualInputData() {
+      return [
+        {
+          objKey: "manualCardBankName",
+          title: "收款银行",
+          value:
+            this.speedField.manualCard.bank_name === ""
+              ? "通道建置中"
+              : this.speedField.manualCard.bank_name,
+          placeholderText: "通道建置中",
+          showCondition: true,
+          isError: this.showError
+        },
+        {
+          objKey: "manualCardBankBranch",
+          title: "收款支行",
+          value:
+            this.speedField.manualCard.account_branch === ""
+              ? "通道建置中"
+              : this.speedField.manualCard.account_branch,
+          placeholderText: "通道建置中",
+          showCondition: true,
+          isError: this.showError
+        },
+        {
+          objKey: "manualCardAccount",
+          title: "收款帐号",
+          value:
+            this.speedField.manualCard.account === ""
+              ? "通道建置中"
+              : this.speedField.manualCard.account,
+          placeholderText: "通道建置中",
+          showCondition: true,
+          isError: this.showError
+        },
+
+        {
+          objKey: "manualCardAccountName",
+          title: "收款人姓名",
+          value:
+            this.speedField.manualCard.account_name === ""
+              ? "通道建置中"
+              : this.speedField.manualCard.account_name,
+          placeholderText: "请输入充值人姓名",
+          showCondition: true,
+          isError: this.showError
+        },
+        {
+          objKey: "manualCardPayUrl",
+          title: "上传图片",
+          value: this.speedField.payUrl,
+          placeholderText: "请贴上图片网址",
+          showCondition: true,
+          isError: this.showError
         }
       ];
     },
