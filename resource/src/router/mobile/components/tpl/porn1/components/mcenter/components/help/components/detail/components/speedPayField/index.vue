@@ -1,6 +1,11 @@
 <template>
   <!-- 手動配卡提交欄位 -->
   <div v-if="manualCard" :class="[$style['speed-field-wrap'], 'clearfix']">
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">
+        {{ msg }}
+      </div>
+    </message>
     <template v-for="info in manualInputData">
       <div
         v-if="info.showCondition"
@@ -23,17 +28,15 @@
             />
           </template>
         </div>
+        <!-- icon -->
+        <div
+          v-if="info.copyShow"
+          :class="$style['icon-wrap']"
+          @click="handleCopy(info)"
+        >
+          <img :src="$getCdnPath(`/static/image/common/ic_copy.png`)" />
+        </div>
       </div>
-      <!-- <div
-        v-if="info.isError"
-        :key="`field-error-${info.objKey}`"
-        :class="[
-          $style['detail-cell'],
-          $style['speed-deposit-input-error-messgae']
-        ]"
-      >
-        {{ info.placeholderText }}
-      </div> -->
     </template>
   </div>
   <!-- 一般提交欄位 -->
@@ -113,9 +116,11 @@
 
 <script>
 import DatePicker from "vue2-datepicker";
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
+    message,
     selectBox: () =>
       import(
         /* webpackChunkName: 'selectBox' */ "@/router/mobile/components/common/mcenter/theme1/deposit/components/common/selectBox"
@@ -158,6 +163,7 @@ export default {
   },
   data() {
     return {
+      msg: "",
       isSelectShow: false,
       // 只有show必填欄位的狀況下不顯示錯誤提示
       showError: !this.showByRequiredFields
@@ -305,7 +311,8 @@ export default {
               : this.speedField.manualCard.bank_name,
           placeholderText: "通道建置中",
           showCondition: true,
-          isError: this.showError
+          isError: this.showError,
+          copyShow: true
         },
         {
           objKey: "manualCardBankBranch",
@@ -316,7 +323,8 @@ export default {
               : this.speedField.manualCard.account_branch,
           placeholderText: "通道建置中",
           showCondition: true,
-          isError: this.showError
+          isError: this.showError,
+          copyShow: true
         },
         {
           objKey: "manualCardAccount",
@@ -327,7 +335,8 @@ export default {
               : this.speedField.manualCard.account,
           placeholderText: "通道建置中",
           showCondition: true,
-          isError: this.showError
+          isError: this.showError,
+          copyShow: true
         },
 
         {
@@ -339,7 +348,8 @@ export default {
               : this.speedField.manualCard.account_name,
           placeholderText: "请输入充值人姓名",
           showCondition: true,
-          isError: this.showError
+          isError: this.showError,
+          copyShow: true
         },
         {
           objKey: "payUrl",
@@ -347,7 +357,8 @@ export default {
           value: this.speedField.payUrl,
           placeholderText: "请贴上图片网址",
           showCondition: true,
-          isError: this.showError
+          isError: this.showError,
+          copyShow: false
         }
       ];
     },
@@ -366,6 +377,15 @@ export default {
     }
   },
   methods: {
+    handleCopy(info) {
+      let copy = info.value;
+      this.msg = "已复制到剪贴板";
+      this.copyInfo(copy);
+    },
+    copyInfo(text) {
+      this.$copyText(text);
+      this.msg = "已复制到剪贴板";
+    },
     submitInput(data, objKey) {
       this.$emit("update:speedField", { data, objKey });
     },

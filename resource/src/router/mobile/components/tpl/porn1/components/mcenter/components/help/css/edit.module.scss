@@ -139,6 +139,11 @@
       > div {
         display: block;
       }
+      .title {
+        > a {
+          text-decoration: underline;
+        }
+      }
       .value {
         max-width: 100%;
       }
@@ -147,6 +152,13 @@
         padding: 3px;
         border: 1px solid #bbb;
         border-radius: 5px;
+      }
+    }
+
+    .icon-wrap {
+      > img {
+        width: 20px;
+        height: 20px;
       }
     }
   }
