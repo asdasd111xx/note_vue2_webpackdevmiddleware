@@ -10,7 +10,7 @@
       <div
         v-if="info.showCondition"
         :key="`field-${info.objKey}`"
-        :class="[$style['detail-cell'], $style[`${info.objKey}`]]"
+        :class="[$style['detail-cell-manual'], $style[`${info.objKey}`]]"
       >
         <div v-if="info.objKey === 'payUrl'" :class="$style['title']">
           <a href="https://imgbb.com/" target="_blank"> {{ info.title }}</a>

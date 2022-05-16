@@ -21,7 +21,7 @@
   max-height: 90vh;
   background: #ffffff;
   border-radius: 8px;
-  margin: 0 auto;
+  margin: 60px auto 0 auto;
   overflow-y: scroll;
   overflow-x: hidden;
 
@@ -110,11 +110,13 @@
     display: none;
   }
 }
+
 .alert-body-wrap {
   background: #ffffff;
   color: #414655;
   font-size: 14px;
 
+  //一般提交欄位
   .detail-cell {
     height: 36px;
     line-height: 36px;
@@ -132,6 +134,29 @@
       width: 100%;
       padding: 0;
     }
+  }
+
+  //手動配卡提交欄位
+  .detail-cell-manual {
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    line-height: 36px;
+    border-bottom: solid 1px #eaeaea;
+    margin: 0 8px;
+
+    > div {
+      display: inline-block;
+      &.title {
+        width: 75px;
+      }
+    }
+
+    &input {
+      text-align: left;
+      width: 100%;
+    }
+
     &.payUrl {
       display: flex;
       flex-direction: column;
@@ -152,22 +177,19 @@
         padding: 3px;
         border: 1px solid #bbb;
         border-radius: 5px;
+        width: 100%;
       }
     }
 
     .icon-wrap {
-      display: flex;
-      align-items: center;
-
+      text-align: end;
       > img {
         width: 20px;
       }
     }
 
     .icon-wrap-text {
-      display: flex;
-      align-items: center;
-
+      text-align: end;
       > img {
         width: 23px;
       }
