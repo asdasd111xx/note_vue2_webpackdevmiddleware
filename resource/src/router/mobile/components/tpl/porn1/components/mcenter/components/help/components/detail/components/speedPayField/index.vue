@@ -7,7 +7,7 @@
         :key="`field-${info.objKey}`"
         :class="[$style['detail-cell'], $style[`${info.objKey}`]]"
       >
-        <div v-if="info.objKey === 'manualCardPayUrl'" :class="$style['title']">
+        <div v-if="info.objKey === 'payUrl'" :class="$style['title']">
           <a href="https://imgbb.com/" target="_blank"> {{ info.title }}</a>
         </div>
         <div v-else :class="$style['title']">
@@ -15,16 +15,7 @@
         </div>
         <div :class="($style['speed-edit-value'], $style['value'])">
           <template>
-            <template v-if="info.objKey === 'manualCardPayUrl'">
-              <input
-                v-model="info.value"
-                :class="[$style['speed-deposit-input']]"
-                :placeholder="info.placeholderText"
-                @input="submitInput($event.target.value, info.objKey)"
-              />
-            </template>
             <input
-              v-else
               v-model="info.value"
               :class="$style['speed-deposit-input']"
               :placeholder="info.placeholderText"
@@ -351,7 +342,7 @@ export default {
           isError: this.showError
         },
         {
-          objKey: "manualCardPayUrl",
+          objKey: "payUrl",
           title: "上传图片",
           value: this.speedField.payUrl,
           placeholderText: "请贴上图片网址",
