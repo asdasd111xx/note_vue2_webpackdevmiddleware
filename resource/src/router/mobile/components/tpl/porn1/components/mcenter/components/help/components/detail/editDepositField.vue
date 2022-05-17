@@ -297,10 +297,6 @@ export default {
       const m_params = {
         api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
         deposit_at: this.speedField.depositTime,
-        pay_account: this.speedField.manualCard.account,
-        pay_username: this.speedField.manualCard.account_name,
-        method: this.speedField.depositMethod,
-        branch: this.speedField.manualCard.account_branch,
         pay_url: this.speedField.payUrl
       };
 
