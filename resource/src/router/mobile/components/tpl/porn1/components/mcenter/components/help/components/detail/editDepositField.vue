@@ -294,6 +294,7 @@ export default {
         branch: this.speedField.bankBranch,
         sn: this.speedField.serialNumber
       };
+      //手動配卡提交資料
       const m_params = {
         api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
         deposit_at: this.speedField.depositTime,
