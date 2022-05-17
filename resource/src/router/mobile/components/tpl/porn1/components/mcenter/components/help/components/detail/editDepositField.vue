@@ -304,7 +304,7 @@ export default {
         method: "put",
         url: API_TRADE_RELAY,
         errorAlert: true,
-        params: this.depositData.manual_card ? m_params : params
+        params: this.depositData.is_manual_card ? m_params : params
       }).then(response => {
         this.closeFuc(false);
 
