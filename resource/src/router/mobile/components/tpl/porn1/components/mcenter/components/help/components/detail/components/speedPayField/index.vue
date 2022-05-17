@@ -22,7 +22,7 @@
           :class="[
             $style['speed-edit-value'],
             $style['value'],
-            { [$style['waiting']]: info.value === '通道建置中' }
+            { [$style['waiting']]: manualCardProcessing }
           ]"
         >
           <template>
@@ -49,7 +49,7 @@
             :src="
               $getCdnPath(
                 `/static/image/common/ic_copy_${
-                  info.value === '通道建置中' ? 'd' : 'n'
+                  manualCardProcessing ? 'd' : 'n'
                 }.png`
               )
             "
@@ -65,7 +65,7 @@
             :src="
               $getCdnPath(
                 `/static/image/common/ic_copy${
-                  info.value === '通道建置中' ? '_d2' : ''
+                  manualCardProcessing ? '_d2' : ''
                 }.png`
               )
             "
@@ -335,15 +335,26 @@ export default {
         }
       ];
     },
+    //手動配卡通道建置中
+    manualCardProcessing() {
+      if (
+        this.speedField.manualCard.account === "" ||
+        this.speedField.manualCard.account_branch === "" ||
+        this.speedField.manualCard.account_name === "" ||
+        this.speedField.manualCard.bank_name === ""
+      ) {
+        return true;
+      }
+      return false;
+    },
     manualInputData() {
       return [
         {
           objKey: "manualCardBankName",
           title: "收款银行",
-          value:
-            this.speedField.manualCard.bank_name === ""
-              ? "通道建置中"
-              : this.speedField.manualCard.bank_name,
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.bank_name,
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
@@ -353,10 +364,9 @@ export default {
         {
           objKey: "manualCardBankBranch",
           title: "收款支行",
-          value:
-            this.speedField.manualCard.account_branch === ""
-              ? "通道建置中"
-              : this.speedField.manualCard.account_branch,
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.account_branch,
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
@@ -366,10 +376,9 @@ export default {
         {
           objKey: "manualCardAccount",
           title: "收款帐号",
-          value:
-            this.speedField.manualCard.account === ""
-              ? "通道建置中"
-              : this.speedField.manualCard.account,
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.account,
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
@@ -379,10 +388,9 @@ export default {
         {
           objKey: "manualCardAccountName",
           title: "收款人姓名",
-          value:
-            this.speedField.manualCard.account_name === ""
-              ? "通道建置中"
-              : this.speedField.manualCard.account_name,
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.account_name,
           placeholderText: "请输入充值人姓名",
           showCondition: true,
           isError: this.showError,
@@ -415,7 +423,7 @@ export default {
   },
   methods: {
     handleCopy(info) {
-      if (info.value === "通道建置中") {
+      if (this.manualCardProcessing) {
         return;
       }
 

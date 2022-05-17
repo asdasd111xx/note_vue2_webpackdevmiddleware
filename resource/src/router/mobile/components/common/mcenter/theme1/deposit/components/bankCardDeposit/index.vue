@@ -123,8 +123,9 @@
           </div>
 
           <!-- 選擇銀行 or 選擇點卡 -->
+          <!-- 極速存款bank_id=464（手動配卡）不需顯示 -->
           <div
-            v-if="allBanks && allBanks.length > 0"
+            v-if="allBanks && allBanks.length > 0 && curPayInfo.bank_id !== 464"
             :class="[
               $style['feature-wrap'],
               $style['select-card-wrap'],

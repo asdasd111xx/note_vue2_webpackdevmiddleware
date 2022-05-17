@@ -396,6 +396,11 @@ export default {
      * @return string
      */
     receiptInfo() {
+      //極速存款bank_id=464（手動配卡）不需顯示
+      if (this.curPayInfo.bank_id === 464) {
+        return;
+      }
+
       if (this.curPassRoad.safe_account === false) {
         // 支付轉帳
         if (
