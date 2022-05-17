@@ -211,13 +211,6 @@ export default {
       }
     },
     isSubmitDisabled() {
-      //手動配卡 通道配置中（未配卡）時提交按鈕禁能
-      if (
-        this.depositData.is_manual_card &&
-        this.depositData.manual_card.account === ""
-      ) {
-        return true;
-      }
       //手動配卡 圖片欄位未填寫時提交按鈕禁能
       if (this.depositData.is_manual_card && this.speedField.payUrl === "") {
         return true;
