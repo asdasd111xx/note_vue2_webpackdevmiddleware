@@ -30,6 +30,9 @@
     </div>
 
     <div :class="[$style['detail-wrap']]" style="margin-top: calc(50px + 10px)">
+      <div :class="[$style['deposit-detail-help']]">
+        如需帮助，请<a href="/mobile/service?prev=true">联系客服</a>
+      </div>
       <div v-if="data" :class="$style['detail-content-wrap']">
         <div
           v-for="(item, index) in data"

@@ -146,6 +146,18 @@
 
 // 詳細資料--存款 & 提現
 
+.deposit-detail-help {
+  text-align: right;
+  padding: 0px 10px 0 0;
+  font-size: 14px;
+  color: #a6a9b2;
+  a {
+    color: #6aaaf5;
+    text-decoration: underline;
+    padding: 0 5px;
+  }
+}
+
 .category-wrap {
   background-color: #ffffff;
   padding: 8px 14px;
