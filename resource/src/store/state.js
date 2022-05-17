@@ -446,6 +446,7 @@ export default {
   rechargeConfig: {},
   rechargeBonusConfig: {},
   hasBank: false,
+  notMyBank: {},
   videoBounsPageStatus: false,
   systemDomain: {},
   pornDomain: "",

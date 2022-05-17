@@ -109,6 +109,30 @@ $linear_end_color: (#6bd9b7, #f6aaad, #85b9f7);
     font-weight: 700;
     text-align: center;
   }
+
+  //非本人
+  &__status-other {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 20px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px 0px 10px 0px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+
+    &--theme-enable {
+      width: 88px;
+    }
+  }
+
+  //非本人(停用)
+  &__status-other-stop {
+    color: #db6372;
+  }
 }
 
 .mt-10 {

@@ -578,6 +578,10 @@ export default {
   [types.SET_HASBANK](state, data) {
     state.hasBank = data;
   },
+  // 非本人銀行卡開關
+  [types.SET_NOTMYBANK](state, data) {
+    state.notMyBank = data;
+  },
   [types.SET_VIDEO_BOUNS_PAGE_STATUS](state, data) {
     state.videoBounsPageStatus = data;
   },

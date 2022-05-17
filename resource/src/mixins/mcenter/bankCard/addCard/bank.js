@@ -3,7 +3,6 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
 import ajax from "@/lib/ajax";
-import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -34,14 +33,32 @@ export default {
       smsTimer: null,
       thirdyCaptchaObj: null,
       isShowCaptcha: false,
-      isClickedCaptcha: false
+      isClickedCaptcha: false,
+      chooseName: [
+        {
+          key: 0,
+          title: "本人",
+          name: "",
+          placehoder: "",
+          disabled: true
+        },
+        {
+          key: 1,
+          title: "非本人",
+          name: "",
+          placeholder: "请输入持卡人姓名",
+          disabled: false
+        }
+      ],
+      chooseNameResult: {}
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      domainConfig: "getDomainConfig"
+      domainConfig: "getDomainConfig",
+      notMyBank: "getNotMyBank"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -148,6 +165,13 @@ export default {
         this.phoneHeadOption = response.ret.config.phone.country_codes;
       }
     });
+
+    if (this.notMyBank.switch) {
+      this.chooseName[0].name = this.username + "**";
+      this.chooseNameResult = this.chooseName[0];
+      delete this.formData["accountName"];
+      delete this.formData["otherUserBank"];
+    }
   },
   beforeDestroy() {
     if (localStorage.getItem("click-notification")) {
@@ -181,8 +205,8 @@ export default {
 
       this.lockStatus = true;
 
-      // 已經有真實姓名時不送該欄位
-      if (this.memInfo.user.name) {
+      // 已經有真實姓名且是本人銀行卡時不送該欄位
+      if (this.memInfo.user.name && !this.formData.otherUserBank) {
         delete this.formData["accountName"];
       }
 
@@ -192,6 +216,7 @@ export default {
         phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
       };
 
+      //新增會員出款帳號資料(有驗證功能)C02.223
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank`,
@@ -269,6 +294,17 @@ export default {
             this.formData.accountName = val;
           }
         );
+      }
+
+      if (key === "notMyBankName") {
+        const regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+        value = value.replace(regex, "").substring(0, 20);
+
+        //accountName開戶姓名 (非本人銀行卡時必填)
+        this.formData.accountName = this.chooseNameResult.name = value;
+
+        //otherUserBank是否為非本人銀行卡
+        this.formData.otherUserBank = this.formData.accountName ? true : false;
       }
 
       if (key === "province" || key === "city") {

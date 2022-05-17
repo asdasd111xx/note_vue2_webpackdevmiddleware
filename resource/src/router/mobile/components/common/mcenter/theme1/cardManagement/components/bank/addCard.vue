@@ -1,13 +1,56 @@
 <template>
   <div :class="$style['add-bankcard']">
-    <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+    <p
+      v-if="!notMyBank.switch || addBankCardStep === 'two'"
+      :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]"
+    >
       {{ errorMsg }}
     </p>
-
     <template v-if="addBankCardStep === 'one'">
+      <div v-if="notMyBank.switch" :class="$style['notMyBank-wrap']">
+        <span :class="$style['username']">您好，{{ username }}**</span>
+        <p :class="$style['username-tip']">
+          请填写跟持卡人一致的银行卡信息。
+        </p>
+      </div>
       <div :class="$style['username-wrap']">
         <p :class="$style['input-title']">持卡人姓名</p>
-        <div :class="$style['input-wrap']">
+        <div v-if="notMyBank.switch" :class="$style['select-name-wrap']">
+          <div :class="$style['select-wrap']">
+            <select
+              :class="$style['choose-name']"
+              :value="chooseNameResult.title"
+              @change="changeBankName($event)"
+            >
+              <option
+                v-for="(item, index) in chooseName"
+                :key="index"
+                :class="$style['cell']"
+              >
+                {{ item.title }}
+              </option>
+            </select>
+          </div>
+
+          <input
+            type="text"
+            v-model="chooseNameResult.name"
+            :placeholder="chooseNameResult.placeholder"
+            :disabled="chooseNameResult.disabled"
+            @input="checkData($event.target.value, 'notMyBankName')"
+          />
+          <div :class="$style['clear-input']" v-if="formData.accountName">
+            <img
+              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+              @click="clearNotMyBankName"
+            />
+          </div>
+          <div
+            :class="$style['line']"
+            :style="{ width: chooseNameResult.placeholder ? '100%' : '115px' }"
+          ></div>
+        </div>
+        <div v-else :class="$style['input-wrap']">
           <div
             v-if="memInfo.user.name"
             :class="[
@@ -229,6 +272,7 @@ export default {
     // 真實姓名不送
     // this.formData.accountName = this.memInfo.user.name;
 
+    //取得廳主支援的出款銀行列表 C02.146
     goLangApiRequest({
       method: "get",
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Withdraw/Bank/List`,
@@ -267,6 +311,23 @@ export default {
     handleClickService() {
       localStorage.setItem("bankCardType", "bankCard");
       this.$router.push("/mobile/service?redirect=bankCard");
+    },
+    changeBankName(event) {
+      const selectedIndex = event.target.selectedIndex;
+      this.chooseNameResult = this.chooseName[selectedIndex];
+
+      if (selectedIndex === 1) {
+        this.formData.accountName = this.chooseNameResult.name;
+        this.formData.otherUserBank = this.formData.accountName ? true : false;
+      } else {
+        delete this.formData["accountName"];
+        delete this.formData["otherUserBank"];
+      }
+      this.checkData();
+    },
+    clearNotMyBankName() {
+      this.formData.accountName = this.chooseNameResult.name = "";
+      this.checkData();
     },
     verification(key) {
       if (key === "phone") {

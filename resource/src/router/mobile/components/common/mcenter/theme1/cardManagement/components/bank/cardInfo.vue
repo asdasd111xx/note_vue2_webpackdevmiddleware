@@ -168,6 +168,7 @@ export default {
     }
   },
   created() {
+    this.actionSetNotMyBankSwitch();
     this.getUserBankList();
   },
   computed: {

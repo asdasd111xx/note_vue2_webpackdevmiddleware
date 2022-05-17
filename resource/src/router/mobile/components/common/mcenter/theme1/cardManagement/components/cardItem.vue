@@ -104,6 +104,21 @@
     <div v-if="isStopped" :class="[$style['card__status-stopped']]">
       停用
     </div>
+
+    <div
+      v-if="isOther.other"
+      :class="[
+        $style['card__status-other'],
+        {
+          [$style['card__status-other--theme-enable']]: isOther.enable
+        }
+      ]"
+    >
+      非本人
+      <span v-if="isOther.enable" :class="[$style['card__status-other-stop']]"
+        >(停用)</span
+      >
+    </div>
   </div>
 </template>
 
@@ -153,7 +168,7 @@ export default {
 
       switch (this.type) {
         case "bankCard":
-          isStop = !this.data?.enable;
+          isStop = !this.data?.enable && this.data?.other_receiver === "";
           break;
 
         case "wallet":
@@ -165,6 +180,21 @@ export default {
       }
 
       return isStop || this.data?.banned;
+    },
+    isOther() {
+      let isOther = { other: false, enable: false };
+
+      switch (this.type) {
+        case "bankCard":
+          isOther.other = this.data?.other_receiver;
+          isOther.enable = !this.data?.enable;
+          break;
+
+        default:
+          break;
+      }
+
+      return isOther;
     },
     isSquare() {
       return (
