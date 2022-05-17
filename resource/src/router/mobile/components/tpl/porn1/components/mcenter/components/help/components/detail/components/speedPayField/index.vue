@@ -61,7 +61,15 @@
           :class="$style['icon-wrap']"
           @click="handleCopy(info)"
         >
-          <img :src="$getCdnPath(`/static/image/common/ic_copy.png`)" />
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/common/ic_copy${
+                  info.value === '通道建置中' ? '_d2' : ''
+                }.png`
+              )
+            "
+          />
         </div>
       </div>
     </template>
