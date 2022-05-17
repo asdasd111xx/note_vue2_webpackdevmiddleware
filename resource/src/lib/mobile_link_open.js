@@ -16,6 +16,7 @@ export default target => {
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
   const linkBack = target?.linkBack;
+  const eventRedirect = target.eventRedirect || "";
   localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
@@ -163,11 +164,15 @@ export default target => {
 
   if (linkType === "internal") {
     switch (linkTo) {
+      case "login":
+        if (store.state.loginStatus) return;
+        router.replace("/mobile/login");
+        return;
       case "join":
         if (store.state.loginStatus) {
           return;
         }
-        if (getCookie("platform") === "h") {
+        if (getCookie("platform") === "h" && eventRedirect !== "promotion") {
           // store.dispatch("actionGetActingURL").then(res => {
           //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {
           //     this.$router.push(`/mobile/joinmember`);
@@ -196,11 +201,30 @@ export default target => {
         return;
       case "discount":
       case "promotion":
+        if (eventRedirect === "promotion" && linkItem) {
+          localStorage.removeItem("iframe-third-url");
+
+          switch (linkItem) {
+            case "verify":
+              router.push(
+                `/mobile/iframe/promotion?alias=verify_promotion&fullscreen=true`
+              );
+              break;
+            case "collect":
+              router.push(
+                `/mobile/iframe/promotion?alias=self_collect_promotion&fullscreen=true`
+              );
+              break;
+            default:
+              break;
+          }
+          return;
+        }
         router.push("/mobile/promotion");
         return;
       // ?
       case "home":
-        // router.push("/mobile/home");
+        if (eventRedirect === "promotion") router.push("/mobile/home");
         return;
 
       case "service":
@@ -227,8 +251,27 @@ export default target => {
         router.push(`/mobile/mcenter/wallet?redirect=home`);
         return;
 
-      case "cgPay":
+      case "cgpay": //CGP教程
+        router.push("/mobile/mcenter/help/deposit");
+        return;
+      case "message":
+        router.push("/mobile/mcenter/information");
+        return;
+      case "binding-card":
+        router.push(
+          `/mobile/mcenter/bankCard?redirect=promotion&type=bankCard`
+        );
+        return;
+      case "account-vip":
+        router.push("/mobile/mcenter/accountVip");
+        return;
+
+      case "join-agent": //代理登入
+      case "agent-login":
+      case "mobile-bet": //手機下注
       case "mobileBet":
+      case "ubb": //寰宇瀏覽器
+      case "domain":
       default:
         return;
     }
