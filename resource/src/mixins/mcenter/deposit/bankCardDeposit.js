@@ -100,7 +100,8 @@ export default {
 
       // 充值上方跑馬燈&支付方式高度
       depositWrapMarignTop: 70,
-      manualCard: false //極速存款-手動配卡
+      manualCard: false, //極速存款-手動配卡
+      successAlert: false
     };
   },
   watch: {
@@ -1101,9 +1102,10 @@ export default {
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
+          //手動配卡提交成功顯示彈窗
           if (ret.remit.is_manual_card) {
             this.manualCard = true;
-            alert("手動配卡提交成功彈窗");
+            this.successAlert = true;
           }
 
           if (result !== "ok") {
@@ -1649,6 +1651,11 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    goBack() {
+      this.successAlert = false;
+      this.$emit("update:submitStatus", "stepOne");
+      window.scrollTo(0, 0);
     }
   }
 };

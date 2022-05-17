@@ -1306,6 +1306,12 @@
 
     <!-- 彈窗 -->
     <template>
+      <!-- 手動配卡成功彈窗 -->
+      <deposit-alert
+        :manualcard="manualCard"
+        v-if="successAlert"
+        :close-fuc="goBack"
+      />
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1426,6 +1432,10 @@ export default {
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
+      ),
+    depositAlert: () =>
+      import(
+        /* webpackChunkName: 'depositAlert' */ "./components/depositAlert"
       ),
     Swiper,
     SwiperSlide,

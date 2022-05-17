@@ -4,6 +4,10 @@
       <template v-if="['sg1', 'porn1'].includes(themeTPL)">
         <div :class="$style['alert-wrap']">
           <div :class="$style['alert-body-wrap']">
+            <!-- 手動配卡成功彈窗標題 -->
+            <div :class="$style['deposit-title']">
+              {{ manualcard ? "存款申请" : "" }}
+            </div>
             <div :class="$style['success-icon-wrap']">
               <img
                 :class="$style['success-icon']"
@@ -20,11 +24,23 @@
             </div>
 
             <div :class="$style['tip-wrap']">
+              <!-- 手動配卡成功彈窗文案/一般充值成功彈窗文案 -->
               <li>
-                {{ $text("S_DEPOSIT_TIP02", "财务将尽快为您添加额度,请稍后") }}
+                {{
+                  manualcard
+                    ? $text("S_DEPOSIT_TIP08", "极速存款通道建置中")
+                    : $text("S_DEPOSIT_TIP02", "财务将尽快为您添加额度,请稍后")
+                }}
               </li>
               <li>
-                {{ $text("S_DEPOSIT_TIP03", "若长时间未到帐请联络客服") }}
+                {{
+                  manualcard
+                    ? $text(
+                        "S_DEPOSIT_TIP09",
+                        "请5分钟后至充值纪录查看汇款帐号"
+                      )
+                    : $text("S_DEPOSIT_TIP03", "若长时间未到帐请联络客服")
+                }}
               </li>
             </div>
             <hr style="background-color:#ddd; height:0.5px; border:none;" />
@@ -85,6 +101,10 @@ export default {
     closeFuc: {
       type: Function,
       default: () => {}
+    },
+    manualcard: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

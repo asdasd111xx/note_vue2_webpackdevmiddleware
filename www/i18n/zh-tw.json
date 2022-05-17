@@ -1110,6 +1110,8 @@
   "S_SCANNING_TIP01": "扫一扫添加好友",
   "S_SCANNING_TIP02": "扫一扫转帐",
   "S_DEPOSIT_TIP05": "提醒事项",
+  "S_DEPOSIT_TIP08": "极速存款通道建置中",
+  "S_DEPOSIT_TIP09": "请5分钟后至充值纪录查看汇款帐号",
   "S_WITHDRAW_BANK": "收款银行",
   "S_WITHDRAW_BRANCH": "收款支行",
   "S_WITHDRAW_NAME": "收款人姓名",

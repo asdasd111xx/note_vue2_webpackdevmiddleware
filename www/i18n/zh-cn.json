@@ -1048,6 +1048,8 @@
   "S_ENTER_SUCCESS": "提交成功",
   "S_DEPOSIT_TIP02": "财务将尽快为您添加额度,请稍后",
   "S_DEPOSIT_TIP03": "若长时间未到帐请联络客服",
+  "S_DEPOSIT_TIP08": "极速存款通道建置中",
+  "S_DEPOSIT_TIP09": "请5分钟后至充值纪录查看汇款帐号",
   "S_ENTER01": "我知道了",
   "S_WITHDRAW_ACCOUNT": "收款帐号",
   "S_APPLICATION_INFORMATION": "您的申请资料",
