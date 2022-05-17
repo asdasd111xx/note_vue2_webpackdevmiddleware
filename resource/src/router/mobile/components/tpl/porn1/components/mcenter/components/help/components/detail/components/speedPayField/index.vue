@@ -339,7 +339,8 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow_t: true
+          copyShow: true
+          // copyShow_t: true
         },
         {
           objKey: "manualCardBankBranch",
@@ -351,7 +352,8 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow_t: true
+          copyShow: true
+          // copyShow_t: true
         },
         {
           objKey: "manualCardAccount",
