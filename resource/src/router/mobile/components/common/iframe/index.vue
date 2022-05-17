@@ -389,6 +389,8 @@ export default {
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
+            this.contentTitle = localStorage.getItem("iframe-third-url-title");
+
             return;
           }
 
