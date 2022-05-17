@@ -251,9 +251,6 @@ export default target => {
         router.push(`/mobile/mcenter/wallet?redirect=home`);
         return;
 
-      case "cgpay": //CGP教程
-        router.push("/mobile/mcenter/help/deposit");
-        return;
       case "message":
         router.push("/mobile/mcenter/information");
         return;
@@ -265,13 +262,83 @@ export default target => {
       case "account-vip":
         router.push("/mobile/mcenter/accountVip");
         return;
+      case "mobile-bet": //手機下注
+        let landingurl = "";
+        let promotionHostnameCode = "";
+
+        function getLandingurl() {
+          return goLangApiRequest({
+            method: "get",
+            url:
+              store.state.siteConfig.YABO_GOLANG_API_DOMAIN +
+              "/xbb/Domain/Hostnames/V2?lang=zh-cn",
+            params: {
+              // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
+              clientType: 3
+            }
+          }).then(res => {
+            if (res && res.data && res.data[0]) {
+              landingurl = `${res.data[0]}`;
+            }
+          });
+        }
+        function getPromotionHostnameCode() {
+          goLangApiRequest({
+            method: "get",
+            url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
+            params: {
+              hostname: window.location.hostname
+            }
+          }).then(res => {
+            if (res && res.data) {
+              promotionHostnameCode =
+                res.data && res.data.code ? res.data.code : "";
+            }
+          });
+        }
+        Promise.all([getLandingurl(), getPromotionHostnameCode()]).then(() => {
+          const refCode =
+            promotionHostnameCode || localStorage.getItem("x-code");
+          const channelid = localStorage.getItem("x-channelid");
+
+          // 渠道移除 有帶推廣碼的需要登入
+          if (!landingurl || landingurl === "") {
+            return;
+          }
+
+          // 會員-推廣專用
+          let url = new URL(
+            landingurl.startsWith("http") ? landingurl : `https://${landingurl}`
+          );
+
+          if (channelid) {
+            url.searchParams.append("channelid", channelid);
+          }
+
+          // 代理網址推廣代碼 推廣代碼 this.promotionHostnameCode
+          if (refCode) {
+            url.searchParams.append("code", refCode);
+          }
+
+          // 落地頁直接下載
+          if (localStorage.getItem("x-action") === "download") {
+            url.searchParams.append("action", "download");
+          }
+
+          // safari
+          setTimeout(() => {
+            location.href = url.href;
+          }, 250);
+        });
+
+        return;
 
       case "join-agent": //代理登入
       case "agent-login":
-      case "mobile-bet": //手機下注
-      case "mobileBet":
       case "ubb": //寰宇瀏覽器
+      case "cgpay": //CGP教程
       case "domain":
+      case "mobileBet":
       default:
         return;
     }
@@ -538,7 +605,7 @@ export default target => {
         });
       }
     };
-
+    console.log(1);
     openGame(
       {
         kind: kind,
