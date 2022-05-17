@@ -148,7 +148,14 @@
     > div {
       display: inline-block;
       &.title {
-        width: 75px;
+        width: 30%;
+      }
+      &.value {
+        width: 65%;
+        padding: 0 0 0 10px;
+      }
+      &.waiting {
+        color: #a6a9b2;
       }
     }
 
@@ -170,7 +177,8 @@
         }
       }
       .value {
-        max-width: 100%;
+        width: 100%;
+        padding: 0;
       }
       input {
         text-align: left;

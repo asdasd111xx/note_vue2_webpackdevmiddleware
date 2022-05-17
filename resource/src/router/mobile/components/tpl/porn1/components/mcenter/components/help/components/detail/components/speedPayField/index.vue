@@ -18,14 +18,24 @@
         <div v-else :class="$style['title']">
           {{ info.title }}
         </div>
-        <div :class="($style['speed-edit-value'], $style['value'])">
+        <div
+          :class="[
+            $style['speed-edit-value'],
+            $style['value'],
+            { [$style['waiting']]: info.value === '通道建置中' }
+          ]"
+        >
           <template>
             <input
+              v-if="info.objKey === 'payUrl'"
               v-model="info.value"
               :class="$style['speed-deposit-input']"
               :placeholder="info.placeholderText"
               @input="submitInput($event.target.value, info.objKey)"
             />
+            <div v-else :class="$style['speed-deposit-input']">
+              {{ info.value }}
+            </div>
           </template>
         </div>
         <!-- icon1 -->
