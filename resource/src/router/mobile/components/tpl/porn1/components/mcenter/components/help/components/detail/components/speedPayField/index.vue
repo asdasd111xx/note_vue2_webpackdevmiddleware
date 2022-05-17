@@ -26,11 +26,12 @@
           ]"
         >
           <template>
-            <input
+            <textarea
               v-if="info.objKey === 'payUrl'"
               v-model="info.value"
               :class="$style['speed-deposit-input']"
               :placeholder="info.placeholderText"
+              maxlength="50"
               @input="submitInput($event.target.value, info.objKey)"
             />
             <div v-else :class="$style['speed-deposit-input']">
