@@ -2131,7 +2131,7 @@ export default {
       }
 
       let hasError = false;
-      /**
+
       //帳號註冊按鈕阻擋
       if (this.currentJoin === "accountjoin") {
         Object.keys(this.allTip).forEach(key => {
@@ -2149,9 +2149,10 @@ export default {
             this.allTip["confirm_password"] !== ""
           ) {
             hasError = true;
+            this.allTip[key] = this.joinMemInfo[key].errorMsg;
           }
         });
-      } */
+      }
       if (hasError) {
         this.isLoading = false;
         return false;
