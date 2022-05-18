@@ -156,9 +156,8 @@
 </template>
 
 <script>
-import ajax from "@/lib/ajax";
-import { API_TRADE_RELAY } from "@/config/api";
-import { mapGetters } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import { mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 
 export default {
@@ -280,36 +279,38 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["actionSetGlobalMessage"]),
     saveDepositData() {
       if (this.isSubmitDisabled) {
         return { status: "ok" };
       }
-
+      //一般充值
       const params = {
-        api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
-        deposit_at: this.speedField.depositTime,
-        pay_account: this.speedField.depositAccount,
-        pay_username: this.speedField.depositName,
+        remitEntryID: this.depositData.id,
+        lang: "zh-cn",
+        depositAt: this.speedField.depositTime,
+        payAccount: this.speedField.depositAccount,
+        payUsername: this.speedField.depositName,
         method: this.speedField.depositMethod,
         branch: this.speedField.bankBranch,
         sn: this.speedField.serialNumber
       };
-      //手動配卡提交資料
+      //手動配卡
       const m_params = {
-        api_uri: `/api/trade/v2/c/entry/${this.depositData.id}/submit`,
-        deposit_at: this.speedField.depositTime,
+        remitEntryID: this.depositData.id,
+        lang: "zh-cn",
+        depositAt: this.speedField.depositTime,
         pay_url: this.speedField.payUrl
       };
 
-      return ajax({
+      //充值明細彈窗提交資料
+      goLangApiRequest({
         method: "put",
-        url: API_TRADE_RELAY,
-        errorAlert: true,
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Entry/${this.depositData.id}/Submit`,
         params: this.depositData.is_manual_card ? m_params : params
-      }).then(response => {
+      }).then(res => {
         this.closeFuc(false);
-
-        if (response && response.result === "ok") {
+        if (res && res.status === "000") {
           // 流量分析事件 - 成功
           window.dataLayer.push({
             event: "ga_click",
@@ -318,15 +319,16 @@ export default {
             eventLabel: "success"
           });
           return;
+        } else {
+          this.actionSetGlobalMessage({ msg: res.msg });
+          // 流量分析事件 - 失敗
+          window.dataLayer.push({
+            event: "ga_click",
+            eventCategory: "deposit",
+            eventAction: "submit",
+            eventLabel: "failure"
+          });
         }
-
-        // 流量分析事件 - 失敗
-        window.dataLayer.push({
-          event: "ga_click",
-          eventCategory: "deposit",
-          eventAction: "submit",
-          eventLabel: "failure"
-        });
       });
     }
   }
