@@ -170,7 +170,6 @@ export default {
       this.chooseName[0].name = this.username + "**";
       this.chooseNameResult = this.chooseName[0];
       delete this.formData["accountName"];
-      delete this.formData["otherUserBank"];
     }
   },
   beforeDestroy() {
@@ -206,12 +205,13 @@ export default {
       this.lockStatus = true;
 
       // 已經有真實姓名且是本人銀行卡時不送該欄位
-      if (this.memInfo.user.name && !this.formData.otherUserBank) {
+      if (this.memInfo.user.name && this.chooseNameResult.key === 0) {
         delete this.formData["accountName"];
       }
 
       const params = {
         ...this.formData,
+        otherUserBank: this.chooseNameResult.key === 1 ? true : false,
         lang: "zh-cn",
         phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
       };
@@ -302,9 +302,6 @@ export default {
 
         //accountName開戶姓名 (非本人銀行卡時必填)
         this.formData.accountName = this.chooseNameResult.name = value;
-
-        //otherUserBank是否為非本人銀行卡
-        this.formData.otherUserBank = this.formData.accountName ? true : false;
       }
 
       if (key === "province" || key === "city") {

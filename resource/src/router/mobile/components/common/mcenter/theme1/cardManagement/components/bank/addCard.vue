@@ -318,10 +318,8 @@ export default {
 
       if (selectedIndex === 1) {
         this.formData.accountName = this.chooseNameResult.name;
-        this.formData.otherUserBank = this.formData.accountName ? true : false;
       } else {
         delete this.formData["accountName"];
-        delete this.formData["otherUserBank"];
       }
       this.checkData();
     },
