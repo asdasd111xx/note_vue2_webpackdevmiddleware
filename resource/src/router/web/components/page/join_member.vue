@@ -2266,9 +2266,7 @@ export default {
           this.allValue.captcha_text = "";
 
           if (res.status !== "000") {
-            if (res.code === "C20077") {
-              this.allTip["phonettl"] = res.msg;
-            } else if (res.errors && res.errors.phone) {
+            if (res.errors && res.errors.phone) {
               this.allTip["mphone"] = res.errors.phone;
             } else {
               this.mobileJoinErrMag = res.msg;
