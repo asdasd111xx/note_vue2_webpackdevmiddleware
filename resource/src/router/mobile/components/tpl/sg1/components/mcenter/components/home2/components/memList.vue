@@ -455,16 +455,15 @@ export default {
 <style lang="scss" module>
 @import "~@/css/variable.scss";
 
-a {
-  color: #414655 !important;
-
-  &:hover {
-    color: #414655 !important;
-  }
-}
-
 .mem-list {
   background-color: #f8f8f8;
+  > a {
+    color: #414655;
+
+    &:hover {
+      color: #414655;
+    }
+  }
 }
 
 .list-part {
