@@ -187,7 +187,7 @@ export default {
       switch (this.type) {
         case "bankCard":
           isOther.other = this.data?.other_receiver;
-          isOther.enable = !this.data?.enable;
+          isOther.enable = !this.data?.enable || this.data?.banned;
           break;
 
         default:

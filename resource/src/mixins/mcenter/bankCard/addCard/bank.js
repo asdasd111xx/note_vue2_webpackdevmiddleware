@@ -50,7 +50,8 @@ export default {
           disabled: false
         }
       ],
-      chooseNameResult: {}
+      chooseNameResult: {},
+      notMyBankSwitch: false
     };
   },
   computed: {
@@ -128,6 +129,20 @@ export default {
     }
   },
   created() {
+    this.chooseName[0].name = this.username ? this.username + "**" : "";
+    this.chooseNameResult = this.chooseName[0];
+
+    this.actionSetNotMyBankSwitch().then(() => {
+      if (this.notMyBank.otherUbEdit && this.notMyBank.otherUserBank) {
+        this.getWidthdrawList().then(data => {
+          if (data.length > 0) {
+            this.notMyBankSwitch = true;
+            delete this.formData["accountName"];
+          }
+        });
+      }
+    });
+
     // 已經有真實姓名時不送該欄位
     if (this.memInfo.user.name) {
       delete this.formData["accountName"];
@@ -165,12 +180,6 @@ export default {
         this.phoneHeadOption = response.ret.config.phone.country_codes;
       }
     });
-
-    if (this.notMyBank.switch) {
-      this.chooseName[0].name = this.username + "**";
-      this.chooseNameResult = this.chooseName[0];
-      delete this.formData["accountName"];
-    }
   },
   beforeDestroy() {
     if (localStorage.getItem("click-notification")) {
@@ -183,10 +192,30 @@ export default {
       "actionVerificationFormData",
       "actionSetGlobalMessage",
       "actionGetToManyRequestMsg",
-      "actionSetDomainConfigV2"
+      "actionSetDomainConfigV2",
+      "actionSetNotMyBankSwitch"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+    },
+    getWidthdrawList() {
+      //回傳銀行卡清單與狀態/查詢會員出款銀行 C02.221
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`
+      })
+        .then(response => {
+          const { data, status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
+            return;
+          }
+          return data;
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
     showCaptcha() {
       this.isShowCaptcha = !this.isShowCaptcha;

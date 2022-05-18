@@ -2719,59 +2719,20 @@ export const actionSetActivity = ({ state, commit }) => {
 // 非本人銀行卡開關
 export const actionSetNotMyBankSwitch = ({ state, commit }) => {
   //取得會員設定
-  goLangApiRequest({
+  return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Config`
-  })
-    .then(res => {
-      if (res && res.data) {
-        const { data } = res;
-        //允許客端新增/編輯非本人銀行 && 允許非本人銀行卡
-        if (data.other_ub_edit && data.other_user_bank) {
-          return Promise.resolve(true);
-        } else {
-          commit(types.SET_NOTMYBANK, {
-            otherUbEdit: data.other_ub_edit,
-            otherUserBank: data.other_user_bank,
-            switch: false
-          });
-          return Promise.resolve(false);
-        }
-      }
-    })
-    .then(result => {
-      if (result) {
-        //查詢會員出款銀行 C02.221
-        goLangApiRequest({
-          method: "get",
-          url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`
-        })
-          .then(response => {
-            const { data, status, errorCode } = response;
-
-            if (errorCode !== "00" || status !== "000") {
-              return;
-            }
-            if (data.length > 0) {
-              commit(types.SET_NOTMYBANK, {
-                otherUbEdit: data.other_ub_edit,
-                otherUserBank: data.other_user_bank,
-                switch: true
-              });
-              return;
-            }
-            commit(types.SET_NOTMYBANK, {
-              otherUbEdit: data.other_ub_edit,
-              otherUserBank: data.other_user_bank,
-              switch: false
-            });
-            return;
-          })
-          .catch(error => {
-            const { msg } = error.response.data;
-            this.actionSetGlobalMessage({ msg });
-          });
+  }).then(res => {
+    if (res && res.data) {
+      const { data } = res;
+      //允許客端新增/編輯非本人銀行 && 允許非本人銀行卡
+      if (data) {
+        commit(types.SET_NOTMYBANK, {
+          otherUbEdit: data.other_ub_edit,
+          otherUserBank: data.other_user_bank
+        });
       }
       return;
-    });
+    }
+  });
 };

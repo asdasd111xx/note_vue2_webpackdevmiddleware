@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionSetNotMyBankSwitch"]),
+    ...mapActions(["actionSetGlobalMessage"]),
     getUserBankList() {
       this.isRevice = false;
 
