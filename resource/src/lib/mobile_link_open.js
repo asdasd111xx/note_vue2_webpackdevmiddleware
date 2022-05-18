@@ -506,10 +506,12 @@ export default target => {
       default:
         break;
     }
+
     if (
       vendor != "sigua_ly" &&
       vendor != "sigua2_ly" &&
-      vendor != "sigua3_ly"
+      vendor != "sigua3_ly" &&
+      localStorage.getItem("needFilterGameData")
     ) {
       let notVipGame = JSON.parse(
         localStorage.getItem("needFilterGameData")
