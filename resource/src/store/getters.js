@@ -218,5 +218,7 @@ export default {
   getLiveMaintain: state => state.liveMaintain,
   getActivity: state => state.activity,
   getLiveFooterMask: state => state.liveFooterMask,
-  getLiveViewPath: state => state.liveViewPath
+  getLiveFooter: state => state.liveFooter,
+  getLiveViewPath: state => state.liveViewPath,
+  getLandingObject: state => state.landingObject
 };

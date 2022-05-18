@@ -464,5 +464,6 @@ export default {
   liveMaintain: null,
   liveFooterMask: false,
   activity: {},
-  liveViewPath: {}
+  liveViewPath: {},
+  landingObject: {}
 };

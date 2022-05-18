@@ -2571,6 +2571,41 @@ export const actionGetRegisterURL = ({ state }) => {
       });
     });
 };
+export const actionGetLandingURL = ({ state, commit }) => {
+  let landingurl = "";
+  let promotionHostnameCode = "";
+  function getLandingurl() {
+    return goLangApiRequest({
+      method: "get",
+      url:
+        state.siteConfig.YABO_GOLANG_API_DOMAIN +
+        "/xbb/Domain/Hostnames/V2?lang=zh-cn",
+      params: {
+        clientType: 3
+      }
+    }).then(res => {
+      if (res && res.data && res.data[0]) {
+        landingurl = `${res.data[1]}`;
+      }
+    });
+  }
+  function getPromotionHostnameCode() {
+    return goLangApiRequest({
+      method: "get",
+      url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
+      params: {
+        hostname: window.location.hostname
+      }
+    }).then(res => {
+      if (res && res.data) {
+        promotionHostnameCode = res.data && res.data.code ? res.data.code : "";
+      }
+    });
+  }
+  return Promise.all([getLandingurl(), getPromotionHostnameCode()]).then(() => {
+    commit(types.SET_LANDINGOBJECT, { landingurl, promotionHostnameCode });
+  });
+};
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (
   { state, dispatch, commit },
