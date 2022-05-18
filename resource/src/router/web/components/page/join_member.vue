@@ -2139,17 +2139,21 @@ export default {
             hasError = true;
           }
         });
-      } else {
-        //手機註冊按鈕阻擋
-        Object.keys(this.allTip).forEach(key => {
+      }
+
+      //手機註冊按鈕阻擋
+      if (this.currentJoin === "mobilejoin") {
+        Object.keys(this.allValue).forEach(key => {
           if (
-            this.allTip["phone"] !== "" ||
-            this.allTip["phonettl"] !== "" ||
-            this.allTip["password"] !== "" ||
-            this.allTip["confirm_password"] !== ""
+            key === "mphone" ||
+            key === "phonettl" ||
+            key === "mpassword" ||
+            key === "mconfirm_password"
           ) {
-            hasError = true;
-            this.allTip[key] = this.joinMemInfo[key].errorMsg;
+            if (this.allValue[key] === "") {
+              hasError = true;
+              this.allTip[key] = this.joinMemInfo[key].errorMsg;
+            }
           }
         });
       }
