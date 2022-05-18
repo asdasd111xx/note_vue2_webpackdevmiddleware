@@ -3,7 +3,6 @@ import * as apis from "@/config/api";
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
-import ajax from "@/lib/ajax";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -281,20 +280,28 @@ export default {
             params = { phone: this.phone ? `86-${this.phone}` : "" };
             break;
         }
-        ajax({
+
+        //個資核實驗證機制（開關 this.memInfo.config.login_security）
+        //1.輸入資料正確時api回傳check為flase，接著會直接打login api登入；
+        //2.連續輸入資料錯誤達三次回傳check為true，為true時將跳出輸入真實姓名彈窗；
+        //3.輸入真實姓名彈窗需一次就輸入正確才能成功登入，若錯誤則帳號會被限制。
+        goLangApiRequest({
           method: "put",
-          url: apis.API_LOGIN_CHECK,
-          params: { ...params },
-          errorAlert: false,
-          success: res => {
-            this.isLoading = false;
-            if (res.ret && res.ret.check) {
-              this.checkItem = res.ret.check_item;
-              return;
-            }
-            this.login(loginInfo, callBackFuc);
-          },
-          fail: res => {
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Login/Check`,
+          params: {
+            lang: "zh-cn",
+            ...params
+          }
+        }).then(res => {
+          this.isLoading = false;
+
+          if (res.data && res.data.check) {
+            this.checkItem = res.data.check_item;
+            return;
+          }
+          this.login(loginInfo, callBackFuc);
+
+          if (res.status !== "000") {
             this.isLoading = false;
             if (this.currentLogin === "accountlogin") {
               this.errMsg = res.data.msg;
@@ -302,7 +309,6 @@ export default {
             if (this.currentLogin === "mobilelogin") {
               this.mobileLoginErrMsg = res.data.msg;
             }
-            // console.log(res);
           }
         });
         return;
