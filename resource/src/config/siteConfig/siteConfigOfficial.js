@@ -7,11 +7,11 @@ import { basic, getVersion } from "./basic";
 export const preset = {
   ...basic,
   BBOS_DOMIAN: "https://bbos.canarycherrytart.com/elibomApi/WebService",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
 
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api-v2",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api-v2",
   // YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.canarycherrytart.com",
+  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.armadillobrulee.com",
   CDN_HEADER: ""
 };
 
@@ -26,7 +26,7 @@ export const preset = {
 // yaboapi.duckbillcaramel.com
 // yaboapi.quailtortillas.com
 // yaboapi.parrotbostonpie.com
-// yaboapi.canarycherrytart.com
+// yaboapi.armadillobrulee.com
 // yaboapi.iguanagingercake.com
 
 /**
@@ -61,7 +61,7 @@ export const site_69 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "币发BIFA",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
@@ -174,7 +174,7 @@ export const site_81 = {
   MOBILE_WEB_TPL: "sg1",
   VERSION: getVersion("sg1"),
   SITE_NAME: "泡泡直播",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
@@ -243,7 +243,7 @@ export const site_93 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
@@ -276,6 +276,6 @@ export const site_95 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
   SITE_NAME: "51体育",
-  YABO_API_DOMAIN: "https://yaboapi.canarycherrytart.com/api",
+  YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2"
 };

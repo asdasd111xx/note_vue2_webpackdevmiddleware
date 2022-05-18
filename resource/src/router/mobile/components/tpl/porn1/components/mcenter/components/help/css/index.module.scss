@@ -151,7 +151,6 @@
   padding: 8px 14px;
   width: 100%;
   position: fixed;
-  top: calc(43px);
   z-index: 100;
   > div {
     display: inline-block;
@@ -196,6 +195,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  .active {
+    background: var(--mcenter_dropdown_background_active_color);
+    color: var(--mcenter_dropdown_text_active_color);
+  }
 }
 .item {
   width: 78px;
@@ -207,10 +210,6 @@
 
   background: var(--mcenter_dropdown_background_color);
   color: var(--mcenter_dropdown_text_color);
-}
-.active {
-  background: var(--mcenter_dropdown_background_active_color);
-  color: var(--mcenter_dropdown_text_active_color);
 }
 
 .detail-wrap {
@@ -285,7 +284,7 @@
     display: inline-flex;
     align-items: center;
     color: #222222;
-    max-width: 55%;
+    max-width: 60%;
     text-align: right;
     text-overflow: ellipsis;
     overflow-x: hidden;

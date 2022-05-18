@@ -11,7 +11,7 @@ export default ({
   url = ""
 }) => {
   // YABO_API_DOMAIN: 'https://yaboapi.bbin-asia.com/api',
-  // YABO_API_DOMAIN: 'https://yaboapi.canarycherrytart.com/api',
+  // YABO_API_DOMAIN: 'https://yaboapi.armadillobrulee.com/api',
 
   const yaboParams = {
     // "lang": "zh-cn"

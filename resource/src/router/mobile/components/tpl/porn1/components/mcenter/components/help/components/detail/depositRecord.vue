@@ -1,12 +1,19 @@
 <template>
   <div :class="$style['content-wrap']">
-    <div :class="$style['category-wrap']">
+    <div
+      :class="$style['category-wrap']"
+      :style="{ top: isApp ? '0px' : '43px' }"
+    >
       <div @click="showCondition = !showCondition">
         {{ currentCategory.text
         }}<span :class="{ [$style['arrow-up']]: showCondition }" />
       </div>
     </div>
-    <div v-if="showCondition" :class="$style['list-mask']">
+    <div
+      v-if="showCondition"
+      :class="$style['list-mask']"
+      :style="{ top: isApp ? 'calc(50px)' : 'calc(43px + 50px)' }"
+    >
       <div :class="$style['list-wrap']">
         <div
           v-for="option in categoryOpt"
@@ -147,6 +154,7 @@
         <div :class="$style['tips']">暂时没有新的充值记录</div>
       </div>
     </div>
+    <infinite-loading v-if="isLoading" />
   </div>
 </template>
 
@@ -158,11 +166,13 @@ import member from "@/api/member";
 import mixin from "@/mixins/mcenter/deposit/recordDeposit";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest.js";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   mixins: [mixin],
   components: {
-    editDepositField
+    editDepositField,
+    InfiniteLoading
   },
   props: {
     isApp: {
@@ -176,6 +186,7 @@ export default {
       detailRate: null,
       editOpen: false,
       isShowDepositInfo: false,
+      isLoading: false,
       columns: [
         // 日期
         { key: "created_at", title: "S_DATE" },
@@ -218,9 +229,12 @@ export default {
       this.detailRate = item;
     },
     setCategory(option) {
+      if (this.isLoading) return;
+      this.showCondition = false;
+      this.isLoading = true;
       this.currentCategory = option;
       this.getData(option.key).then(() => {
-        this.showCondition = false;
+        this.isLoading = false;
       });
     },
     getData(key = "all") {
@@ -301,5 +315,17 @@ export default {
   }
 };
 </script>
-
+<style scoped>
+.infinite-loading-container {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+</style>
 <style src="../../css/index.module.scss" lang="scss" module />

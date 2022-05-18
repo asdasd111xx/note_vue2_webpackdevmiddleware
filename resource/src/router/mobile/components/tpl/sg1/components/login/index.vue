@@ -553,7 +553,8 @@ export default {
     ...mapActions([
       "actionGetLayeredURL",
       "actionGetActingURL",
-      "actionGetRegisterURL"
+      "actionGetRegisterURL",
+      "actionGetToManyRequestMsg"
     ]),
     currentTab(index) {
       if (index === 0) {
@@ -609,7 +610,13 @@ export default {
           this.actionSetGlobalMessage({ msg: "验证码已发送 有效时间为10分钟" });
           this.getPhoneTTL();
         } else {
-          this.mobileLoginErrMsg = res.msg;
+          if (res && res.status === "506") {
+            this.actionGetToManyRequestMsg(res.msg).then(res => {
+              this.mobileLoginErrMsg = res;
+            });
+          } else {
+            this.mobileLoginErrMsg = res.msg;
+          }
         }
       });
     },
