@@ -575,7 +575,6 @@ export default target => {
         });
       }
     };
-    console.log(1);
     openGame(
       {
         kind: kind,

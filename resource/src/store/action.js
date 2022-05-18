@@ -2585,7 +2585,7 @@ export const actionGetLandingURL = ({ state, commit }) => {
       }
     }).then(res => {
       if (res && res.data && res.data[0]) {
-        landingurl = `${res.data[1]}`;
+        landingurl = `${res.data[0]}`;
       }
     });
   }
