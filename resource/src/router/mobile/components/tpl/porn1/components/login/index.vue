@@ -784,8 +784,8 @@ export default {
 }
 
 .tip {
-  margin: 0 auto 22px auto;
-  width: 80%;
+  margin: 40px auto 0;
+  width: 100%;
   font-size: 15px;
   color: #a5a5a5;
   clear: both;

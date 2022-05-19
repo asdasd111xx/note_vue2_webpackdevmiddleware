@@ -1231,7 +1231,7 @@ export default {
       phoneSubmitSuccess: false,
       phoneSubmitFail: false,
       phoneSubmitFailMsg: "",
-      phoneVerifyCode: "",
+      phoneVerifyCode: "", //一般註冊簡訊驗證碼
       showMailCheckIcon: false,
       showPhoneCheckIcon: false,
       mailVerifybtnActive: false,
@@ -1251,14 +1251,14 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        mphone: "",
-        mpassword: "",
-        mconfirm_password: "",
+        mphone: "", //手機註冊 電話號碼
+        phonettl: "", //手機註冊 簡訊驗證碼
+        mpassword: "", //手機註冊 密碼
+        mconfirm_password: "", //手機註冊 確認密碼
         introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
-        phonettl: "",
         alias: "",
         birthday: "",
         gender: "",
@@ -1280,14 +1280,14 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        mphone: "",
-        mpassword: "",
-        mconfirm_password: "",
+        mphone: "", //手機註冊 電話號碼
+        mpassword: "", //手機註冊 密碼
+        mconfirm_password: "", //手機註冊 確認密碼
+        phonettl: "", //手機註冊 簡訊驗證碼
         introducer: "",
         name: "",
         email: "",
         phone: "",
-        phonettl: "",
         alias: "",
         birthday: "",
         gender: "",
@@ -1809,7 +1809,7 @@ export default {
         this.joinMemInfo["gender"].isRequired &&
         this.allValue["gender"] === ""
       ) {
-        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE", "该栏位不得为空");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
         switch (key) {
@@ -2172,7 +2172,10 @@ export default {
             this.joinMemInfo["withdraw_password"].isRequired &&
             this.allValue.withdraw_password.value.join("").length === 0
           ) {
-            this.allTip[item] = this.$text("S_JM_FIELD_REQUIRE");
+            this.allTip[item] = this.$text(
+              "S_JM_FIELD_REQUIRE",
+              "该栏位不得为空"
+            );
           } else if (
             this.allValue.withdraw_password.value.join("").length > 1
           ) {
@@ -2194,7 +2197,10 @@ export default {
       // 拼圖
       else if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
         if (!this.thirdyCaptchaObj) {
-          this.allTip["captcha_text"] = this.$text("S_PLS_CLICK_CAPTCHA_FIRST");
+          this.allTip["captcha_text"] = this.$text(
+            "S_PLS_CLICK_CAPTCHA_FIRST",
+            "请先点击按钮进行验证"
+          );
           this.isLoading = false;
         } else {
           this.allTip["captcha_text"] = "";
@@ -2206,16 +2212,21 @@ export default {
       // 圖形
       else if (this.memInfo.config.register_captcha_type === 1) {
         if (!this.allValue.captcha_text) {
-          this.allTip["captcha_text"] = this.$text("S_ENABLE_KEYRING");
+          this.allTip["captcha_text"] = this.$text(
+            "S_ENABLE_KEYRING",
+            "请输入验证码"
+          );
           this.isLoading = false;
         } else {
           this.allTip["captcha_text"] = "";
         }
       }
 
+      //欄位驗證hasError 就不發送api
       if (!this.checkField()) {
         return;
       }
+
       //手機註冊submit
       if (this.currentJoin === "mobilejoin") {
         const params = {

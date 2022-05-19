@@ -777,7 +777,7 @@ export default {
 }
 
 .tip {
-  margin: 20px auto 0;
+  margin: 40px auto 0;
   width: 100%;
   font-size: 12px;
   text-align: center;
@@ -792,5 +792,16 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
+}
+
+.checkerr {
+  line-height: initial;
+  max-width: 375px;
+  padding: 2px 6px;
+  margin: 6px auto;
+  color: #fff;
+  background-color: #db6372;
+  border-radius: 3px;
+  float: right;
 }
 </style>
