@@ -343,7 +343,7 @@ export default {
 
       let params_m = {
         aid: getCookie("aid") || localStorage.getItem("aid") || "",
-        captchaText: this.captcha || validate.captcha,
+        captchaText: this.captcha || validate.captcha || null,
         ...validate
       };
 
@@ -423,6 +423,14 @@ export default {
               // msg: "验证码错误"
               if (res.code === "C00024") {
                 this.$refs.captcha.focus();
+              }
+
+              if (
+                res.code === "C00011" &&
+                validate.captcha == null &&
+                this.memInfo.config.login_security
+              ) {
+                this.mobileLoginErrMsg = "帐号或密码不正确";
               }
               return;
             }
