@@ -526,6 +526,13 @@ export default {
               if (res.code === "C00024") {
                 this.$refs.captcha.focus();
               }
+              if (
+                res.code === "C00011" &&
+                validate.captcha == null &&
+                this.memInfo.config.login_security
+              ) {
+                this.errMsg = "帐号或密码不正确";
+              }
               return;
             }
             this.errMsg = res.status;
