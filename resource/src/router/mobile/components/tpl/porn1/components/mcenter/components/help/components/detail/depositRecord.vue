@@ -31,7 +31,7 @@
 
     <div :class="[$style['detail-wrap']]" style="margin-top: calc(50px + 10px)">
       <div :class="[$style['deposit-detail-help']]">
-        如需帮助，请<a href="/mobile/service?prev=true">联系客服</a>
+        如需帮助，请<a @click="toService">联系客服</a>
       </div>
       <div v-if="data" :class="$style['detail-content-wrap']">
         <div
@@ -230,6 +230,19 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     showDetailPop(item) {
       this.detailRate = item;
+    },
+    toService() {
+      // document.addEventListener("manual_card_to_service", value => {
+      //   console.log(value);
+      // });
+      var event = new Event("manual_card_to_service");
+
+      // 發送事件給app
+      document.dispatchEvent(event);
+
+      setTimeout(() => {
+        this.$router.push("/mobile/service?prev=true");
+      }, 500);
     },
     setCategory(option) {
       if (this.isLoading) return;
