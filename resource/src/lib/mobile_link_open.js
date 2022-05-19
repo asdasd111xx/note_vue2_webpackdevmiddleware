@@ -9,9 +9,13 @@ import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
-import { actionGetLandingURL } from "@/store/action";
+import {
+  actionGetLandingURL,
+  actionGetTrialList,
+  actionGetFilterGameList
+} from "@/store/action";
 
-export default target => {
+export default async target => {
   const curLang = store.state.curLang || "zh-cn";
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
@@ -424,25 +428,22 @@ export default target => {
   }
 
   const hasHall = [3, 5, 6];
-  function getTrialList() {
-    if (hasHall.includes(kind) && !linkItem) {
-      let trialList = JSON.parse(localStorage.getItem("trial-game-list")) || [];
-      hasTrial = trialList.find(i => i.vendor === vendor && i.mobile_trial);
-    }
-
-    // return  goLangApiRequest({
-    //   method: "get",
-    //   url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
-    // }).then(res => {
-    //   let trialList = res.data;
-    //   hasTrial = trialList.find(
-    //     i => i.vendor === vendor && +i.kind === +game.kind && i.mobile_trial
-    //   );
-    // });
-  }
-
   if (!store.state.loginStatus) {
-    getTrialList();
+    if (eventRedirect === "promotion") {
+      await actionGetTrialList(store).then(() => {
+        if (hasHall.includes(kind) && !linkItem) {
+          hasTrial = store.state.trialList.find(
+            i => i.vendor === vendor && i.mobile_trial
+          );
+        }
+      });
+    } else {
+      if (hasHall.includes(kind) && !linkItem) {
+        hasTrial = store.state.trialList.find(
+          i => i.vendor === vendor && i.mobile_trial
+        );
+      }
+    }
   }
 
   // 有遊戲大廳的遊戲
@@ -507,15 +508,15 @@ export default target => {
         break;
     }
 
+    if (eventRedirect === "promotion") await actionGetFilterGameList(store);
+
     if (
       vendor != "sigua_ly" &&
       vendor != "sigua2_ly" &&
       vendor != "sigua3_ly" &&
-      localStorage.getItem("needFilterGameData")
+      store.state.needFilterGameData
     ) {
-      let notVipGame = JSON.parse(
-        localStorage.getItem("needFilterGameData")
-      ).find(filterData => {
+      let notVipGame = store.state.needFilterGameData.find(filterData => {
         return filterData.gameCode === code;
       });
 
