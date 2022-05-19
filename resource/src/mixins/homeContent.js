@@ -1444,12 +1444,15 @@ export default {
         params: {
           vipId: this.userViplevelId
         }
-      }).then(response => {
-        // console.log(`needFilterGameData is ${response}`);
-        localStorage.setItem(
-          "needFilterGameData",
-          JSON.stringify(response.data)
-        );
+      }).then(res => {
+        if (res.errorCode === "00" && res.status === "000") {
+          // console.log(`needFilterGameData is ${response}`);
+          if (res.data)
+            localStorage.setItem(
+              "needFilterGameData",
+              JSON.stringify(res.data)
+            );
+        }
       });
     },
     getTaskCheck() {

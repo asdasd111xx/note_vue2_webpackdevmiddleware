@@ -56,28 +56,13 @@ export default {
         platform: "",
         show: false,
         bundleID: ""
-      },
-      landingurl: "",
-      promotionHostnameCode: ""
+      }
     };
   },
   created() {
     if (this.$route.path === "/custom/service") {
       return;
     }
-
-    goLangApiRequest({
-      method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
-      params: {
-        hostname: window.location.hostname
-      }
-    }).then(res => {
-      if (res && res.data) {
-        this.promotionHostnameCode =
-          res.data && res.data.code ? res.data.code : "";
-      }
-    });
 
     if (
       this.$route.name === "home" &&
@@ -131,21 +116,7 @@ export default {
 
         if (this.downloadConfigData.show) {
           this.$emit("toogleAppTips", true);
-
-          goLangApiRequest({
-            method: "get",
-            url:
-              this.siteConfig.YABO_GOLANG_API_DOMAIN +
-              "/xbb/Domain/Hostnames/V2?lang=zh-cn",
-            params: {
-              // 1:代理獨立網址, 2:會員pwa, 3:會員推廣頁, 4:代理登入頁, 5:代理pwa, 6:落地頁, 7:前導頁
-              clientType: 3
-            }
-          }).then(res => {
-            if (res && res.data && res.data[0]) {
-              this.landingurl = `${res.data[0]}`;
-            }
-          });
+          this.actionGetLandingURL();
         } else {
           this.$emit("toogleAppTips", false);
         }
@@ -159,7 +130,8 @@ export default {
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus",
-      systemConfig: "getSystemConfig"
+      systemConfig: "getSystemConfig",
+      landingObject: "getLandingObject"
     }),
     siteName() {
       switch (this.siteConfig.ROUTER_TPL) {
@@ -178,7 +150,8 @@ export default {
     ...mapActions([
       "actionNoticeData",
       "actionSetGlobalMessage",
-      "actionSetLCFSystemConfig"
+      "actionSetLCFSystemConfig",
+      "actionGetLandingURL"
     ]),
     setGAObj() {
       if (typeof ga === "undefined") {
@@ -218,48 +191,50 @@ export default {
       console.log("Download Click:", gaObj);
     },
     handleClickToLanding() {
-      if (!this.downloadConfigData.show) {
+      if (!this.downloadConfigData.show || this.isDownloading) {
         return;
       }
 
       sendUmeng(105);
       this.isDownloading = true;
       this.setGAObj();
+      this.actionGetLandingURL().then(() => {
+        this.isDownloading = false;
+        const refCode =
+          this.landingObject.promotionHostnameCode ||
+          localStorage.getItem("x-code");
+        const channelid = localStorage.getItem("x-channelid");
 
-      const refCode =
-        this.promotionHostnameCode || localStorage.getItem("x-code");
-      const channelid = localStorage.getItem("x-channelid");
+        // 渠道移除 有帶推廣碼的需要登入
+        if (
+          !this.landingObject.landingurl ||
+          this.landingObject.landingurl === ""
+        ) {
+          return;
+        }
 
-      // 渠道移除 有帶推廣碼的需要登入
-      if (!this.landingurl || this.landingurl === "") {
-        return;
-      }
+        let url = new URL(
+          this.landingObject.landingurl.startsWith("http")
+            ? this.landingObject.landingurl
+            : `https://${this.landingObject.landingurl}`
+        );
 
-      // 會員-推廣專用
-      let url = new URL(
-        this.landingurl.startsWith("http")
-          ? this.landingurl
-          : `https://${this.landingurl}`
-      );
+        if (channelid) {
+          url.searchParams.append("channelid", channelid);
+        }
 
-      if (channelid) {
-        url.searchParams.append("channelid", channelid);
-      }
+        if (refCode) {
+          url.searchParams.append("code", refCode);
+        }
 
-      // 代理網址推廣代碼 推廣代碼 this.promotionHostnameCode
-      if (refCode) {
-        url.searchParams.append("code", refCode);
-      }
+        if (localStorage.getItem("x-action") === "download") {
+          url.searchParams.append("action", "download");
+        }
 
-      // 落地頁直接下載
-      if (localStorage.getItem("x-action") === "download") {
-        url.searchParams.append("action", "download");
-      }
-
-      // safari
-      setTimeout(() => {
-        location.href = url.href;
-      }, 250);
+        setTimeout(() => {
+          location.href = url.href;
+        }, 250);
+      });
     },
     handleClickDownload() {
       if (this.isDownloading || !this.downloadConfigData.show) {
