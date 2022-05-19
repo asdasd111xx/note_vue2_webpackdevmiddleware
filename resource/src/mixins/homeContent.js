@@ -28,7 +28,6 @@ export default {
       maintainList: [],
       selectedIndex: 0,
       currentLevel: 0,
-      userViplevelId: 0,
       showPromotion: false,
       isLoading: false,
       isCheckWithdraw: false,
@@ -58,7 +57,6 @@ export default {
       timer: null,
       isShowPop: false,
       sitePostList: null,
-      trialList: [],
       isNotLoopTypeList: false,
       notFirstDeposit: false //首儲
     };
@@ -117,7 +115,8 @@ export default {
       withdrawCheckStatus: "getWithdrawCheckStatus",
       post: "getPost",
       domainConfig: "getDomainConfig",
-      allVip: "getAllVip"
+      allVip: "getAllVip",
+      trialList: "getTrialList"
     }),
     isAdult() {
       return true;
@@ -157,6 +156,7 @@ export default {
         slideClass: this.$style.tag
       };
     },
+
     allGameList() {
       if (this.maintainList.length > 0) {
         // console.log("存入維護狀態");
@@ -345,8 +345,7 @@ export default {
 
     this.actionSetVip().then(() => {
       this.currentLevel = this.allVip.find(item => item.complex).now_level_seq;
-      this.userViplevelId = this.allVip.find(item => item.complex).now_level_id;
-      this.getFilterList();
+      this.actionGetFilterGameList();
     });
   },
   beforeDestroy() {
@@ -363,22 +362,11 @@ export default {
       "actionSetShowRedEnvelope",
       "actionSetPost",
       "actionSetDomainConfigV2",
-      "actionSetVip"
+      "actionSetVip",
+      "actionGetTrialList",
+      "actionGetFilterGameList"
     ]),
-    getTrialList() {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`,
-        params: {
-          kind: 3
-        }
-      }).then(res => {
-        if (res && res.status === "000") {
-          localStorage.setItem("trial-game-list", JSON.stringify(res.data));
-          this.trialList = res.data;
-        }
-      });
-    },
+
     // 關閉彈跳公告後是否顯示公告
     closePop(isFromSitePost) {
       this.isShowPop = false;
@@ -436,7 +424,7 @@ export default {
     // 取得所有遊戲
     getAllGame() {
       if (!this.loginStatus) {
-        this.getTrialList();
+        this.actionGetTrialList();
       }
 
       return goLangApiRequest({
@@ -1424,24 +1412,6 @@ export default {
             // console.log("取維護狀態XXXX");
           });
       }
-    },
-    getFilterList() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Vip/Filter`,
-        params: {
-          vipId: this.userViplevelId
-        }
-      }).then(res => {
-        if (res.errorCode === "00" && res.status === "000") {
-          // console.log(`needFilterGameData is ${response}`);
-          if (res.data)
-            localStorage.setItem(
-              "needFilterGameData",
-              JSON.stringify(res.data)
-            );
-        }
-      });
     },
     getTaskCheck() {
       goLangApiRequest({
