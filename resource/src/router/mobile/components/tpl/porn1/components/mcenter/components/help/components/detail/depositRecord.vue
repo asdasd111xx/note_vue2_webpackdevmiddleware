@@ -232,9 +232,9 @@ export default {
       this.detailRate = item;
     },
     toService() {
-      // document.addEventListener("manual_card_to_service", value => {
-      //   console.log(value);
-      // });
+      document.addEventListener("manual_card_to_service", value => {
+        console.log(value);
+      });
       var event = new Event("manual_card_to_service");
 
       // 發送事件給app
