@@ -214,8 +214,12 @@ export default {
       if (this.depositData.is_manual_card && this.speedField.payUrl === "") {
         return true;
       }
+      return false;
     },
     isSubmitDisabled() {
+      if (!this.manualCardSubmitDisabled) {
+        return;
+      }
       const checkItemMap = {
         method: {
           key: "bankBranch"

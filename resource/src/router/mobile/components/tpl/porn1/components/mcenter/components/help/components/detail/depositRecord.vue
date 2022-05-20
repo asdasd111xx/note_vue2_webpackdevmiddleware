@@ -232,17 +232,12 @@ export default {
       this.detailRate = item;
     },
     toService() {
-      document.addEventListener("manual_card_to_service", value => {
-        console.log(value);
-      });
-      var event = new Event("manual_card_to_service");
-
       // 發送事件給app
-      document.dispatchEvent(event);
+      appEvent.jsToAppMessage("TO_SERVICE");
 
       setTimeout(() => {
         if (this.isApp) {
-          this.$router.push(`/mobile/service?prev=false&app=true`);
+          this.$router.push(`/mobile/service?prev=true&app=true`);
         } else {
           this.$router.push("/mobile/service?prev=true");
         }
