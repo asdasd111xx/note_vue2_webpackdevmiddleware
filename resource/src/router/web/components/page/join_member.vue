@@ -2146,7 +2146,6 @@ export default {
         Object.keys(this.allValue).forEach(key => {
           if (
             key === "mphone" ||
-            key === "phonettl" ||
             key === "mpassword" ||
             key === "mconfirm_password"
           ) {
