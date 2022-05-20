@@ -1908,7 +1908,6 @@ export default {
     }
   },
   created() {
-    console.log("123??");
     if (this.routerTPL === "sg1") {
       sendUmeng(46);
     } else {

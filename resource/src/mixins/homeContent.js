@@ -1084,7 +1084,7 @@ export default {
                     }
                     return;
                   } else {
-                    localStorage.setItem("iframe-third-url", "123");
+                    localStorage.setItem("iframe-third-url", "res.data");
                     this.$router.push(
                       `/mobile/iframe/thirdParty?vendor=${game.vendor}`
                     );
