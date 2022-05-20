@@ -1,11 +1,5 @@
 <template>
   <div :class="[$style['mode-wrap']]">
-    <!-- <div
-      v-if="['porn1', 'sg1'].includes(themeTPL) && topPromotionMessage"
-      :class="$style['top-promotion']"
-    >
-      {{ topPromotionMessage }}
-    </div> -->
     <div :class="[$style['header-wrap']]">
       <marquee
         v-if="marqueeList && marqueeList.length > 0 && isDoneMarquee"
@@ -13,35 +7,13 @@
         :titleList="marqueeTitle"
         :origin="'deposit'"
       />
-
-      <swiper
-        v-if="depositData.length > 1"
-        :options="categoryOptions"
-        :class="$style['swiper-wrap']"
-      >
-        <swiper-slide
-          v-for="(listItem, index) in depositData"
-          :key="`swiper-data-${index}`"
-          :class="[
-            $style['swiper-item'],
-            {
-              [$style['is-current']]:
-                listItem.payment_group_id === curModeGroup.payment_group_id
-            }
-          ]"
-        >
-          <span @click="modeChange(listItem, index)">{{
-            listItem.payment_group_name || listItem.name
-          }}</span>
-        </swiper-slide>
-      </swiper>
     </div>
+
     <div
       v-if="depositData.length > 0 && submitStatus === 'stepOne'"
       :class="$style['deposit-edit-wrap']"
-      :style="{ 'margin-top': `${depositWrapMarignTop}px` }"
     >
-      <template v-if="Object.keys(curModeGroup).length > 0">
+      <template v-if="depositData.length > 0">
         <div :class="$style['bank-card-wrap']">
           <!-- 支付方式 -->
           <div :class="[$style['feature-wrap'], 'clearfix']">
@@ -49,18 +21,16 @@
 
             <div :class="[$style['pay-mode-item-wrap'], 'clearfix']">
               <div
-                v-for="(info, index) in curModeGroup.payment_group_content"
-                :key="`pay-mode-${info.payment_method_id}-${info.bank_id}`"
+                v-for="(info, index) in depositData"
+                :key="`pay-mode-${info.id}`"
                 :class="[
                   $style['pay-mode-item'],
-
                   {
                     [$style['is-current']]:
-                      curPayInfo.payment_method_id === info.payment_method_id &&
-                      curPayInfo.bank_id === info.bank_id
+                      simpleCurPayInfo.id === info.id
                   }
                 ]"
-                @click="changePayMode(info, index)"
+                @click="changeSimplePayMode(info, index)"
               >
                 <img
                   v-if="tagTrans[info.tag]"
@@ -80,18 +50,13 @@
 
                 <div :class="$style['pay-main-title']">
                   {{
-                    info.short_name
-                      ? info.short_name
-                      : info.bank_name
-                      ? info.bank_name
-                      : info.payment_method_name
+                    info.name
                   }}
                 </div>
 
                 <img
                   v-if="
-                    curPayInfo.payment_method_id === info.payment_method_id &&
-                      curPayInfo.bank_id === info.bank_id
+                    simpleCurPayInfo.id === info.id 
                   "
                   :class="$style['pay-active']"
                   :src="$getCdnPath(`/static/image/common/select_active.png`)"
@@ -973,14 +938,14 @@
                         ]"
                         @click="isShowMethodsPop = true"
                       >
-                        {{
+                        <!-- {{
                           speedField.depositMethod
                             ? info.selectData.find(
                                 item =>
                                   speedField.depositMethod === item.selectId
                               ).mainTitle
                             : info.selectTitle
-                        }}
+                        }} -->
                       </div>
 
                       <!-- 充值方式選單 -->
@@ -1422,7 +1387,7 @@ import { sendUmeng } from "@/lib/sendUmeng";
 export default {
   components: {
     depositInfo: () =>
-      import(/* webpackChunkName: 'depositInfo' */ "./components/depositInfo"),
+      import(/* webpackChunkName: 'depositInfo' */ "../bankCardDeposit/components/depositInfo"),
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
@@ -1685,7 +1650,7 @@ export default {
       },
       set(value) {
         if (this.paySelectType === "payMethod") {
-          this.changePayMode(value);
+          this.changeSimplePayMode(value);
           this.curSelectedBank = this.allBanks[0] || {};
           return;
         }
@@ -1713,7 +1678,7 @@ export default {
         if (value === "stepOne") {
           this.$emit("update:headerSetting", this.initHeaderSetting);
           this.resetStatus();
-          this.getPayGroup();
+          this.getSimplePaymentGroups();
         }
 
         this.submitStatus = value;
@@ -1908,7 +1873,12 @@ export default {
     }
   },
   created() {
-    console.log("123??");
+    document.addEventListener("testevent", (value)=>{console.log(value);});
+    var event = new Event('testevent');;
+
+// Dispatch the event.
+document.dispatchEvent(event);
+
     if (this.routerTPL === "sg1") {
       sendUmeng(46);
     } else {
@@ -1933,7 +1903,7 @@ export default {
       .then(() => {
         // 沒有維護則跑原本流程
         const params = [
-          this.getPayGroup(),
+          this.getSimplePaymentGroups(),
           this.getUserBankList(),
           this.actionSetRechargeConfig(),
           this.actionSetAnnouncementList({ type: 1 }),
@@ -2569,11 +2539,11 @@ export default {
 
 <style
   lang="scss"
-  src="./css/bankCardDeposit/porn1.scss"
+  src="./css/porn1.scss"
   module="$style_porn1"
 ></style>
 <style
   lang="scss"
-  src="./css/bankCardDeposit/sg1.scss"
+  src="./css/sg1.scss"
   module="$style_sg1"
 ></style>

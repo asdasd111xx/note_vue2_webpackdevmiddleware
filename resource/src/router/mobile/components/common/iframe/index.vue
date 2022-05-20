@@ -311,6 +311,7 @@ export default {
       switch (params.page.toUpperCase()) {
         case "THIRD":
         case "THIRDPARTY":
+          console.log(123);
           if (localStorage.getItem("iframe-third-url")) {
             const vendor = query.vendor;
             if (vendor === "SL") {

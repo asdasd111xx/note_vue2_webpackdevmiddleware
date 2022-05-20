@@ -27,6 +27,7 @@ export default {
       getPassRoadOrAi: {},
       curModeGroup: {},
       curPayInfo: {},
+      simpleCurPayInfo: {},
       curPassRoad: {}, // 存放當前 channel 的資料
       curPassRoadTipText: "",
       curPassRoadTipTextShowMore: true,
@@ -1640,6 +1641,83 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    /*
+    簡易模式
+    */
+    //  取得簡易支付群組 C04.61
+    getSimplePaymentGroups() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Simple/Payment/Groups`,
+        params: {}
+      }).then(res => {
+        if (res.status === "000") {
+          this.depositData = res.data;
+          console.log(res.data);
+          this.simpleCurPayInfo = this.depositData[0];
+          this.isShow = false;
+        }
+      });
+    },
+    changeSimplePayMode(info, index) {
+      if (info.id === this.simpleCurPayInfo.id) {
+        return;
+      }
+      this.resetStatus();
+      this.resetTimerStatus();
+      this.simpleCurPayInfo = info;
+      console.log(this.simpleCurPayInfo);
+      // this.chooseUSDT();
+
+      // if (info.payment_method_id === 20) {
+      //   this.checkSuccess = true;
+      // } else {
+      //   this.checkSuccess = false;
+      // }
+
+      // if (
+      //   this.curModeGroup.channel_display &&
+      //   (this.curPayInfo.bank_id ||
+      //     this.curSelectedBank.value ||
+      //     this.isSelectBankPaymentMethod)
+      // ) {
+      //   this.getPayPass();
+      // }
+
+      // if (this.allBanks && this.allBanks.length > 0) {
+      //   this.defaultCurPayBank();
+      // }
+
+      // this.checkDepositInput();
+      // this.getVendorCryptoOuterUserAddressList();
+      // this.getUserBankList();
+    },
+    //  簡易模式入款 C04.59
+    sendSimpleDeposit() {
+      return goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Simple/Deposit`,
+        params: {
+          // 必填
+          method_id: "", //方式
+          amount: "", //金額
+          // 選填
+          username: "", //使用者帳號(未登入入款必填)
+          tag_id: "", //通道標籤id
+          channel_id: "", //通道id
+          bank_id: "", //銀行id (在線支付/點卡支付必填 method_id = 1,2)
+          pay_username: "", //使用者姓名(極速到帳必填 method_id = 6)
+          wallet_token: "", //電子錢包支付密碼 (CGP/OSP密碼支付必填 method_id = 16,25)
+          currency: "", //幣別（幣希錢包入款必填 method_id = 32
+          pay_account_id: "", //使用者銀行卡id（E点付/e点富入款必填 method_id = 34,41）
+          pay_bank_name: "", //使用者銀行卡名稱（E点付/e点富入款必填 method_id = 34,41）
+          pay_account: "" //使用者轉出金額帳號（E点付/e点富入款必填 method_id = 34,41）
+        }
+      }).then(res => {
+        if (res.status === "000") {
+        }
+      });
     }
   }
 };
