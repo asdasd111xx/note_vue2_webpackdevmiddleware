@@ -321,6 +321,8 @@ export default {
      * @method login
      */
     login(validate = {}, callBackFuc) {
+      //個資核實 登入取得滑動驗證captchaobj
+      let getSlideObj = localStorage.getItem("slideObj");
       if (this.submitBtnLock) {
         return;
       }
@@ -333,7 +335,8 @@ export default {
       let params = {
         username: this.username,
         password: this.password,
-        captchaText: this.captcha || validate.captcha,
+        captchaText:
+          this.captcha || validate.captcha || JSON.parse(getSlideObj),
         host: window.location.host,
         ...validate
       };
@@ -343,7 +346,8 @@ export default {
 
       let params_m = {
         aid: getCookie("aid") || localStorage.getItem("aid") || "",
-        captchaText: this.captcha || validate.captcha || null,
+        captchaText:
+          this.captcha || validate.captcha || JSON.parse(getSlideObj),
         ...validate
       };
 
@@ -417,6 +421,7 @@ export default {
             this.checkItem = "";
             if (this.memInfo.config.login_captcha_type === 2) {
               this.$refs["slide-verification"].ncReload();
+              localStorage.removeItem("slideObj");
             }
             if (res.msg) {
               this.mobileLoginErrMsg = res.msg;
@@ -425,13 +430,6 @@ export default {
                 this.$refs.captcha.focus();
               }
 
-              if (
-                res.code === "C00011" &&
-                validate.captcha == null &&
-                this.memInfo.config.login_security
-              ) {
-                this.mobileLoginErrMsg = "帐号或密码不正确";
-              }
               return;
             }
             this.mobileLoginErrMsg = res.status;
@@ -519,19 +517,13 @@ export default {
             this.checkItem = "";
             if (this.memInfo.config.login_captcha_type === 2) {
               this.$refs["slide-verification"].ncReload();
+              localStorage.removeItem("slideObj");
             }
             if (res.msg) {
               this.errMsg = res.msg;
               // msg: "验证码错误"
               if (res.code === "C00024") {
                 this.$refs.captcha.focus();
-              }
-              if (
-                res.code === "C00011" &&
-                validate.captcha == null &&
-                this.memInfo.config.login_security
-              ) {
-                this.errMsg = "帐号或密码不正确";
               }
               return;
             }

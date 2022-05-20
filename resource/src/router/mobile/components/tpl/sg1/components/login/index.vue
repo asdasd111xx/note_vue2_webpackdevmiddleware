@@ -389,6 +389,7 @@
             :check-item.sync="checkItem"
             :theme="$styleSecurityCheck"
             :on-login="login"
+            :slide-login="slideLogin"
           />
           <div class="version">
             {{ version }}
@@ -644,6 +645,7 @@ export default {
 
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
+      localStorage.setItem("slideObj", JSON.stringify(loginInfo.data));
     },
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
