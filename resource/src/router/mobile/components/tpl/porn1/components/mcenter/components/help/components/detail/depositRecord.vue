@@ -241,7 +241,11 @@ export default {
       document.dispatchEvent(event);
 
       setTimeout(() => {
-        this.$router.push("/mobile/service?prev=true");
+        if (this.isApp) {
+          this.$router.push(`/mobile/service?prev=false&app=true`);
+        } else {
+          this.$router.push("/mobile/service?prev=true");
+        }
       }, 500);
     },
     setCategory(option) {
