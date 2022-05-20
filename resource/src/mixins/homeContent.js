@@ -293,6 +293,7 @@ export default {
     }
   },
   mounted() {
+    localStorage.removeItem("slideObj");
     // 會員首次以手機註冊登入彈窗
     if (localStorage.getItem("first_time_login")) {
       setTimeout(() => {
