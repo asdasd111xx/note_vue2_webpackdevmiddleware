@@ -166,6 +166,7 @@ import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import editDepositField from "./editDepositField";
 import member from "@/api/member";
+import appEvent from "@/lib/appEvent";
 import mixin from "@/mixins/mcenter/deposit/recordDeposit";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest.js";
