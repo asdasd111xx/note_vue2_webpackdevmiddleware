@@ -67,7 +67,7 @@
               :class="[
                 $style['confirm-btn'],
                 {
-                  [$style['disabled']]: isSubmitDisabled
+                  [$style['disabled']]: manualCardSubmitDisabled
                 },
                 $style[siteConfig.ROUTER_TPL]
               ]"
@@ -209,12 +209,13 @@ export default {
         this.speedField[value.objKey] = value.data;
       }
     },
-    isSubmitDisabled() {
+    manualCardSubmitDisabled() {
       //手動配卡 圖片欄位未填寫時提交按鈕禁能
       if (this.depositData.is_manual_card && this.speedField.payUrl === "") {
         return true;
       }
-
+    },
+    isSubmitDisabled() {
       const checkItemMap = {
         method: {
           key: "bankBranch"
