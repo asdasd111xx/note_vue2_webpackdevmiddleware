@@ -316,7 +316,7 @@ export default {
           return string;
 
         case "trade_manual_card":
-          string = "极速存款通道已建置，请至充值 > 纪录 查看提交资料";
+          string = "极速存款通道已建置，请至充值 > 记录 查看提交资料";
           return string;
 
         default:
