@@ -389,7 +389,6 @@
             :check-item.sync="checkItem"
             :theme="$styleSecurityCheck"
             :on-login="login"
-            :slide-login="slideLogin"
           />
           <div class="version">
             {{ version }}
