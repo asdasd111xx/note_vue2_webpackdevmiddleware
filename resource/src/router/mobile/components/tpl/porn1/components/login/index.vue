@@ -623,6 +623,7 @@ export default {
     },
     slideLogin(loginInfo) {
       this.loginCheck({ captcha: loginInfo.data }, loginInfo.slideFuc);
+      localStorage.setItem("slideObj", JSON.stringify(loginInfo.data));
     },
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
