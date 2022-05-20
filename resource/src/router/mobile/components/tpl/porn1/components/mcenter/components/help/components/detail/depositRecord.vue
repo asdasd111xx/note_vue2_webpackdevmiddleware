@@ -234,15 +234,11 @@ export default {
     },
     toService() {
       // 發送事件給app
-      appEvent.jsToAppMessage("TO_SERVICE");
-
-      setTimeout(() => {
-        if (this.isApp) {
-          this.$router.push(`/mobile/service?prev=true&app=true`);
-        } else {
-          this.$router.push("/mobile/service?prev=true");
-        }
-      }, 500);
+      if (this.isApp) {
+        appEvent.jsToAppMessage("TO_SERVICE");
+      } else {
+        this.$router.push("/mobile/service?prev=true");
+      }
     },
     setCategory(option) {
       if (this.isLoading) return;
