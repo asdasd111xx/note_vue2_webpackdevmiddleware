@@ -469,5 +469,5 @@ export default {
   liveFooter: null,
   activity: {},
   liveViewPath: {},
-  landingObject: {}
+  landingInfo: {}
 };
