@@ -1232,14 +1232,6 @@ export default {
             };
             return { status: "third" };
           }
-          //手動配卡不需顯示depositinfo
-          if (
-            this.manualCard &&
-            this.curPayInfo.payment_method_id === 3 &&
-            this.curPaInfo.bank_id === "464"
-          ) {
-            return { status: "third" };
-          }
           return { status: "local" };
 
           // 停權？
