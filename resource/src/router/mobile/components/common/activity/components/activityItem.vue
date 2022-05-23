@@ -107,23 +107,30 @@ export default {
       }
 
       // 活動大廳
-      // 電子棋牌大廳
       if (this.displayType !== "game-lobby") {
         switch (kind) {
           case 3:
-            if (!this.loginStatus) {
-              this.$router.push(`/mobile/casino/${vendor}?label=trial`);
-            } else {
-              this.$router.push(`/mobile/casino/${vendor}?label=hot`);
-            }
+            this.$router.push(
+              `/mobile/casino/${vendor}?label=${
+                !this.loginStatus ? "trial" : "hot"
+              }`
+            );
             return;
 
           case 5:
-            if (!this.loginStatus) {
-              this.$router.push(`/mobile/card/${vendor}?label=trial`);
-            } else {
-              this.$router.push(`/mobile/card/${vendor}?label=hot`);
-            }
+            this.$router.push(
+              `/mobile/card/${vendor}?label=${
+                !this.loginStatus ? "trial" : "hot"
+              }`
+            );
+            return;
+
+          case 6:
+            this.$router.push(
+              `/mobile/mahjong/${vendor}?label=${
+                !this.loginStatus ? "trial" : "hot"
+              }`
+            );
             return;
         }
 

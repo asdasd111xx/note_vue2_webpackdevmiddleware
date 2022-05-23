@@ -1,8 +1,7 @@
 <template>
   <div :class="`casino-wrap ${gameTheme}`">
     <template v-for="slotKey in slotSort">
-      <!-- kind = 6 麻將特例移除分類 -->
-      <template v-if="slotKey === 'label' && kind !== 6">
+      <template v-if="slotKey === 'label'">
         <game-label
           :key="`slot-${slotKey}`"
           :is-label-receive="isLabelReceive"
