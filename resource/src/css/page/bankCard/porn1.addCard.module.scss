@@ -26,7 +26,6 @@
       overflow: hidden;
       background-color: #fff;
       position: relative;
-      right: 4px;
 
       &::after {
         width: 12px;
@@ -49,6 +48,11 @@
         border: none;
         text-align-last: left;
         color: #414655;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 0;
+        padding: 0;
       }
 
       select:focus {
@@ -70,6 +74,11 @@
   input {
     background: #fff;
     color: #414655;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    padding: 0;
   }
 }
 
