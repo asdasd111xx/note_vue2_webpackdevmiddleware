@@ -2180,6 +2180,10 @@ export default {
           }
 
           if (response.status === "local") {
+            //手動配卡不需顯示depositinfo
+            if (this.manualCard) {
+              return;
+            }
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
 

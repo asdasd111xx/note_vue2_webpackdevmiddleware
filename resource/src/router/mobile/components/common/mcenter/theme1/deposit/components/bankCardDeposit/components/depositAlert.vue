@@ -3,11 +3,8 @@
     <div :class="[$style['deposit-alert-wrap']]">
       <template v-if="['sg1', 'porn1'].includes(themeTPL)">
         <div :class="$style['alert-wrap']">
+          <!-- 一般充值＆手動配卡成功彈窗標題 -->
           <div :class="$style['alert-body-wrap']">
-            <!-- 手動配卡成功彈窗標題 -->
-            <div :class="$style['deposit-title']">
-              {{ manualcard ? "存款申请" : "" }}
-            </div>
             <div :class="$style['success-icon-wrap']">
               <img
                 :class="$style['success-icon']"
