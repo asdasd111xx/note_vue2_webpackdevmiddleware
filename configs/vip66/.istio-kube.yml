@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: istio-vip666
+  namespace: istio-vip66y
   labels:
     app: vip66-frontend-proxy-{{.env}}
     base: vip66-frontend
