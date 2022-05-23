@@ -132,7 +132,6 @@ export default {
         if (temp.event != "vendor_maintain_notice") {
           this.noticeData.pop();
         }
-
         if (temp.extend && temp.extend === "verification_code") {
           return;
         }
@@ -202,6 +201,7 @@ export default {
             return;
           case "verification_code":
           case "service_maintain_notice":
+          case "trade_manual_card":
             this.noticeQueue.push({
               ...temp,
               timestamp: Date.now(),
@@ -246,6 +246,11 @@ export default {
     handleClick() {
       let content = this.data.content;
       localStorage.setItem("click-notification", 1);
+
+      if (this.data.event === "trade_manual_card") {
+        this.$router.push("/mobile/mcenter/help/detail?type=deposit");
+        return;
+      }
 
       switch (content) {
         case "C_WS_FEEDBACK_REPLY":
@@ -308,6 +313,10 @@ export default {
               ? "取款"
               : "";
           string = `即将进行 ${type}功能 维护，于 <span style="color: red;">${this.data.countdown}</span> 分钟后开始`;
+          return string;
+
+        case "trade_manual_card":
+          string = "极速存款通道已建置，请至充值 > 记录 查看提交资料";
           return string;
 
         default:

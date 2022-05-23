@@ -21,7 +21,7 @@
   max-height: 90vh;
   background: #ffffff;
   border-radius: 8px;
-  margin: 0 auto;
+  margin: 60px auto 0 auto;
   overflow-y: scroll;
   overflow-x: hidden;
 
@@ -110,11 +110,13 @@
     display: none;
   }
 }
+
 .alert-body-wrap {
   background: #ffffff;
   color: #414655;
   font-size: 14px;
 
+  //一般提交欄位
   .detail-cell {
     height: 36px;
     line-height: 36px;
@@ -131,6 +133,81 @@
       text-align: right;
       width: 100%;
       padding: 0;
+    }
+  }
+
+  //手動配卡提交欄位
+  .detail-cell-manual {
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    line-height: 36px;
+    border-bottom: solid 1px #eaeaea;
+    margin: 0 8px;
+
+    > div {
+      display: inline-block;
+      &.title {
+        width: 30%;
+      }
+      &.value {
+        width: 65%;
+        padding: 0 0 0 10px;
+      }
+      &.waiting {
+        color: #a6a9b2;
+      }
+    }
+
+    &input {
+      text-align: left;
+      width: 100%;
+    }
+
+    &.payUrl {
+      display: flex;
+      flex-direction: column;
+      margin: 0 5px 0px 5px;
+      height: 95px;
+      border-bottom: solid 1px #eaeaea;
+      > div {
+        display: block;
+      }
+      .title {
+        > a {
+          color: #6aaaf5;
+          text-decoration: underline;
+        }
+      }
+      .value {
+        width: 100%;
+        padding: 0;
+      }
+
+      textarea {
+        width: 100%;
+        height: 50px;
+        line-height: 22px;
+        text-align: left;
+        border: 1px solid #bbb;
+        border-radius: 5px;
+        resize: none;
+        outline: none;
+      }
+    }
+
+    .icon-wrap {
+      text-align: end;
+      > img {
+        width: 20px;
+      }
+    }
+
+    .icon-wrap-text {
+      text-align: end;
+      > img {
+        width: 23px;
+      }
     }
   }
 }
@@ -164,6 +241,10 @@
     // color: var(--popup_text_color1);
     color: #6aaaf5;
     background: #ffffff;
+
+    &.disabled {
+      color: #cccccc;
+    }
   }
   > div:last-child::before {
     position: absolute;
