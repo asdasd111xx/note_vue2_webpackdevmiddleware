@@ -242,6 +242,14 @@
     width: 47px;
     height: 15px;
   }
+
+  &.pay-mode-currency {
+    width: 20%;
+  }
+
+  &.pay-mode-rode {
+    width: 20%;
+  }
 }
 
 .no-bind-wallet {
@@ -249,7 +257,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -640,6 +648,7 @@
     p {
       margin: 0px;
     }
+
     a {
       color: #6aaaf5 !important;
       text-decoration: underline;
@@ -666,8 +675,8 @@
     margin-right: 4px;
     vertical-align: text-bottom;
     transition: transform 0.5s ease;
-    background: url("/static/image/common/ic_arrow_expand.png") 0 0 / contain
-      no-repeat;
+    background: url("/static/image/common/ic_arrow_expand.png") 0 0 / contain no-repeat;
+
     &.active {
       transform: rotate(-180deg);
     }
@@ -940,7 +949,7 @@
   display: flex;
   align-items: center;
 
-  > img {
+  >img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1101,9 +1110,11 @@
     text-align: left;
     color: #222;
   }
+
   p {
     margin: 0px;
   }
+
   a {
     color: #6aaaf5 !important;
     text-decoration: underline;
@@ -1115,6 +1126,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1192,6 +1204,7 @@
   p {
     margin: 0;
   }
+
   a {
     color: #6aaaf5 !important;
     text-decoration: underline;
@@ -1227,7 +1240,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 

@@ -62,8 +62,6 @@
                   :src="$getCdnPath(`/static/image/common/select_active.png`)"
                 />
               </div>
-
-              <!-- Yabo  -->
               <!-- 客製額度轉帳入口 -->
               <template v-if="['porn1', 'sg1'].includes(themeTPL)">
                 <div
@@ -86,69 +84,133 @@
               </template>
             </div>
           </div>
-
-          <!-- 選擇銀行 or 選擇點卡 -->
+          <!-- 幣別 -->
           <div
-            v-if="allBanks && allBanks.length > 0"
-            :class="[
-              $style['feature-wrap'],
-              $style['select-card-wrap'],
-              'clearfix'
-            ]"
-            @click="changeType('changeBank'), (isShowPop = true)"
-          >
-            <span :class="$style['select-bank-title']"
-              >{{
-                curPayInfo.payment_type_id === 5
-                  ? $text("S_YOUR_BANK", "您的银行")
-                  : curPayInfo.payment_method_id === 2
-                  ? $text("S_SELECT_POINT_CARD", "请选择点卡")
-                  : $text("S_SELECT_BANKS", "请选择银行")
-              }}
-            </span>
-
-            <div :class="$style['select-bank-item']">
-              {{ curSelectedBank.label }}
-            </div>
-
-            <img
-              :class="$style['select-bank-icon']"
-              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-            />
-
-            <div v-if="isShowPop" :class="$style['pop-wrap']">
-              <div
-                :class="$style['pop-mask']"
-                @click.stop="isShowPop = false"
-              />
-              <div :class="$style['pop-menu']">
-                <div :class="$style['pop-title']">
-                  <span @click.stop="isShowPop = false">{{
-                    $text("S_CANCEL", "取消")
-                  }}</span>
-                  选择银行
+              v-if="
+                simpleCurPayInfo.content.length > 1 
+              "
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <div :class="$style['bank-feature-wrap']">
+                <div
+                  v-for="info in simpleCurPayInfo.content"
+                  :key="info.currency"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-currency'],
+                    { [$style['current-data']]: info.currency === simpleCurrency.currency }
+                  ]"
+                  @click="changeSimpleCurrency(info)"
+                >
+                  {{ info.currency }}
+                  <img
+                    v-if="info.currency === simpleCurrency.currency"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
                 </div>
-
-                <ul :class="$style['pop-list']">
-                  <li
-                    v-for="item in paySelectData['changeBank'].allData"
-                    :key="item.selectId"
-                    @click.stop="changeSelectValue(item.value)"
-                  >
-                    <img v-lazy="getImg(item.image_url)" />
-                    {{ item.label }}
-                    <icon
-                      v-if="item.value === curSelectedBank.value"
-                      :class="[$style['select-active']]"
-                      name="check"
-                    />
-                  </li>
-                </ul>
               </div>
             </div>
-          </div>
+          <!-- 類型 -->
+          <div
+              v-if="
+                simpleCurrency.data.length > 1 
+              "
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <div :class="$style['bank-feature-wrap']">
+                <div
+                  v-for="data in simpleCurrency.data"
+                  :key="data.currency"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-currency'],
+                    { [$style['current-data']]: data.method_id === simplePayType.method_id }
+                  ]"
+                  @click="changeSimplePayType(data)"
+                >
+                  {{ data.method_name }}
+                  <img
+                    v-if="data.method_id === simplePayType.method_id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+              </div>
+            </div>
+          <!-- 通道 -->
+          <div
+              v-if="
+                simplePayType.channels.length > 0 || simplePayType.tags.length > 0
+              "
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <div :class="$style['bank-feature-wrap']">
+                <div
+                  v-for="road in simplePayType.channels"
+                  :key="road.id"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-rode'],
+                    { [$style['current-data']]: road.id === simplePayRode.id }
+                  ]"
+                  @click="changeSimpleRoad(road)"
+                >
+                  {{ road.name }}
+                  <img
+                    v-if="tipTrans[road.display_tag]"
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/mcenter/deposit/icon_${
+                          tipTrans[road.display_tag]
+                        }.png`
+                      )
+                    "
+                    :class="$style['pay-mode-tag']"
+                  />
+                  <img
+                    v-if="road.id === simplePayRode.id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+                <div
+                  v-for="road in simplePayType.tags"
+                  :key="road.id"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-rode'],
+                    { [$style['current-data']]: road.id === simplePayRode.id }
+                  ]"
+                  @click="changeSimpleRoad(road)"
+                >
+                  {{ tipTransName[road.name] }}
+                  <img
+                    v-if="road.id === simplePayRode.id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+              </div>
+              <div
+                v-if="simplePayRode.tip != ''"
+                :class="[
+                  $style['pass-road-text'],
+                  [
+                    simplePayRodeTipTextShowMore
+                      ? [$style['pay-mode-tip-show']]
+                      : [$style['pay-mode-tip-close']]
+                  ]
+                ]"
+              >
+                <div
+                  :class="[$style['pay-mode-tip'], $style[themeTPL]]"
+                  v-html="simplePayRodeTipText"
+                ></div>
+              </div>
+            </div>
 
-          <template v-if="curPayInfo.payment_method_id !== 20">
+          <template v-if="simplePayType.method_id !== 20">
             <!-- 充值人姓名 -->
             <div
               v-if="depositNameInput.showCondition"
@@ -195,7 +257,7 @@
             <!-- e點富銀行 -->
             <div
               v-if="
-                isSelectBindWallet(34, 41) && this.curPassRoad.is_bind_wallet
+                isSelectBindWallet(34, 41) && this.simplePayType.is_bind_wallet
               "
               :class="[
                 $style['feature-wrap'],
@@ -220,7 +282,7 @@
             <div
               v-if="
                 isSelectBindWallet(34, 41) &&
-                  curPassRoad.is_bind_wallet &&
+                  simplePayType.is_bind_wallet &&
                   showEpointWalletAddress
               "
               :class="[
@@ -255,91 +317,31 @@
                 为即时到帐，请务必输入正确的银行资讯
               </div>
             </div>
-            <!-- 支付通道 -->
-            <!-- 加密貨幣會隱藏 -->
-            <div
-              v-if="
-                passRoad.length > 0 &&
-                  !isSelectBindWallet(402) &&
-                  !isSelectBindWallet(404)
-              "
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <span :class="$style['bank-card-title']">支付通道</span>
-              <div :class="$style['bank-feature-wrap']">
-                <div
-                  v-for="data in paySelectData.payPass.allData"
-                  :key="data.id"
-                  :class="[
-                    $style['pay-mode-pass'],
-
-                    { [$style['current-data']]: data.id === curPassRoad.id }
-                  ]"
-                  @click="changePassRoad(data)"
-                >
-                  {{ data.mainTitle }}
-                  <img
-                    v-if="tipTrans[data.display_tag]"
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/mcenter/deposit/icon_${
-                          tipTrans[data.display_tag]
-                        }.png`
-                      )
-                    "
-                    :class="$style['pay-mode-tag']"
-                  />
-                  <img
-                    v-if="data.id === curPassRoad.id"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
-              </div>
-              <div
-                v-if="curPassRoad.tip != ''"
-                :class="[
-                  $style['pass-road-text'],
-                  [
-                    curPassRoadTipTextShowMore
-                      ? [$style['pay-mode-tip-show']]
-                      : [$style['pay-mode-tip-close']]
-                  ]
-                ]"
-              >
-                <div
-                  :class="[$style['pay-mode-tip'], $style[themeTPL]]"
-                  v-html="curPassRoadTipText"
-                ></div>
-              </div>
-            </div>
 
             <div
               v-if="
-                passRoad.length > 0 &&
-                  curPassRoadTipText != '' &&
+                  simplePayRodeTipText != '' &&
                   !isSelectBindWallet(402) &&
                   !isSelectBindWallet(404)
               "
-              @click="curPassRoadTipTextShowMore = !curPassRoadTipTextShowMore"
+              @click="simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore"
               :class="$style['show-more-header']"
             >
               <span>通道提示详情</span>
               <div
                 :class="[
                   $style['collapse-img'],
-                  { [$style.active]: curPassRoadTipTextShowMore }
+                  { [$style.active]: simplePayRodeTipTextShowMore }
                 ]"
               />
             </div>
 
-            <!-- Yabo -->
             <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,38) ||購寶(22) || USDT(402) || E点付(34,41)-->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
                   isSelectBindWallet() &&
-                  !this.curPassRoad.is_bind_wallet
+                  !this.simplePayType.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -349,10 +351,10 @@
                   充值前请先绑定钱包
                 </template>
                 <template v-else-if="isSelectBindWallet(32)">
-                  充值前请先绑定{{ curPayInfo.payment_method_name }}
+                  充值前请先绑定{{ simplePayType.method_name }}
                 </template>
                 <template v-else-if="isSelectBindWallet(34, 41)">
-                  充值前请先绑定{{ curPayInfo.payment_method_name }}钱包
+                  充值前请先绑定{{ simplePayType.method_name }}钱包
                 </template>
                 <template v-else-if="isSelectBindWallet(16, 25, 30)">
                   充值前请先绑定CGPay钱包
@@ -361,7 +363,7 @@
                   充值前请先绑定OSPay钱包
                 </template>
                 <template v-else>
-                  充值前请先绑定{{ curPayInfo.payment_method_name }}帐号
+                  充值前请先绑定{{ simplePayType.method_name }}帐号
                 </template>
 
                 <div :class="$style['no-bind-wallet']">
@@ -377,13 +379,12 @@
               </span>
             </div>
 
-            <!-- Yabo：顯示 CGPay 餘額 -->
-            <!-- IF 選擇 CGPay 且 已綁定 -->
+            <!-- CGPay/OSPay 餘額 -->
             <div
               v-if="
                 ['porn1', 'sg1'].includes(themeTPL) &&
                   isSelectBindWallet(16, 36) &&
-                  curPassRoad.is_bind_wallet
+                  simplePayType.is_bind_wallet
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -419,8 +420,8 @@
             <div
               v-if="
                 isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
-                  this.curPassRoad.is_outer_crypto &&
-                  this.curPassRoad.is_bind_wallet
+                  this.simplePayType.is_outer_crypto &&
+                  this.simplePayType.is_bind_wallet
               "
               :class="[
                 $style['feature-wrap'],
@@ -443,10 +444,6 @@
                   {{ option }}
                 </option>
               </select>
-
-              <!-- <div :class="$style['select-bank-item']">
-              {{ curSelectedBank.label }}
-              </div> -->
             </div>
             <div
               v-if="showOuterCryptoAddress"
@@ -468,7 +465,7 @@
               </div>
             </div>
             <div
-              v-if="isSelectBindWallet(32) && this.curPassRoad.is_bind_wallet"
+              v-if="isSelectBindWallet(32) && this.simplePayType.is_bind_wallet"
               :class="[$style['feature-wrap'], $style['bc-coint']]"
               @click="setPopupStatus(true, 'bcWalletCurrency')"
             >
@@ -491,7 +488,7 @@
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div
               v-if="
-                (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
+                (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
                   !isSelectBindWallet()
               "
               :class="[
@@ -503,11 +500,11 @@
               <div :class="$style['bank-card-title']">充值金额</div>
               <!-- 選擇金額區塊 -->
               <div
-                v-if="curPassRoad.is_recommend_amount"
+                v-if="simplePayType.is_recommend_amount"
                 :class="[$style['speed-money-wrap'], 'clearfix']"
               >
                 <div
-                  v-for="(item, index) in getPassRoadOrAi.amounts"
+                  v-for="(item, index) in simplePayFeeData.amounts"
                   :key="`pay-money-${index}`"
                   :class="[
                     $style['pay-money-item'],
@@ -674,7 +671,7 @@
                         {{ formatThousandsCurrency(cryptoMoney) }}
                       </span>
                       <span>
-                        {{ curPayInfo.payment_method_name }}
+                        {{ simplePayType.method_name }}
                       </span>
                     </span>
                   </div>
@@ -732,7 +729,7 @@
             <!-- 驗證方式 -->
             <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
             <div
-              v-if="isSelectBindWallet(16) && curPassRoad.is_bind_wallet"
+              v-if="isSelectBindWallet(16) && simplePayType.is_bind_wallet"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">验证方式</span>
@@ -819,7 +816,7 @@
 
             <!-- If 選擇 OSPay且已綁定 : 顯示 OSPay 餘額 -->
             <div
-              v-if="isSelectBindWallet(36) && curPassRoad.is_bind_wallet"
+              v-if="isSelectBindWallet(36) && simplePayType.is_bind_wallet"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
               <span :class="$style['bank-card-title']">验证方式</span>
@@ -1118,13 +1115,13 @@
           <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
           <div
             v-if="
-              (isSelectBindWallet() && curPassRoad.is_bind_wallet) ||
+              (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
                 !isSelectBindWallet()
             "
             :class="$style['money-info-wrap']"
           >
             <span
-              v-if="curPayInfo.payment_method_name === '代客充值'"
+              v-if="simplePayType.method_name === '代客充值'"
               :class="$style['feature-tip-title']"
             >
               <!-- 实际到帐： ¥{{ realSaveMoney }} -->
@@ -1205,7 +1202,7 @@
                   !checkSuccess ||
                   isBlockChecking ||
                   nameCheckFail ||
-                  (isSelectBindWallet() && !this.curPassRoad.is_bind_wallet) ||
+                  (isSelectBindWallet() && !this.simplePayType.is_bind_wallet) ||
                   (isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
                     !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
@@ -1237,7 +1234,7 @@
 
           <!-- 温馨提醒 -->
           <div
-            v-if="curModeGroup.payment_group_memo"
+            v-if="simpleCurPayInfo.memo"
             :class="[$style['feature-tip-wrap'], 'clearfix']"
           >
             <p :class="$style['warm-tip-title']">
@@ -1246,7 +1243,7 @@
             <!-- eslint-disable vue/no-v-html -->
             <div
               :class="$style['warm-tip']"
-              v-html="curModeGroup.payment_group_memo"
+              v-html="simpleCurPayInfo.memo"
             />
             <!-- eslint-enable vue/no-v-html -->
           </div>
@@ -1427,6 +1424,13 @@ export default {
         HIGH: "high",
         LOW: "low"
       },
+      tipTransName: {
+        HOT: "推荐",
+        EVENT: "活动",
+        FAST: "极速",
+        HIGH: "大额",
+        LOW: "小额"
+      },
 
       nameCheckFail: false,
 
@@ -1463,7 +1467,26 @@ export default {
       displayMoneyValue: "",
       isShowCGPPwd: false,
       isShowOSPPwd: false,
-      bcMoneyShowType: false
+      bcMoneyShowType: false,
+
+
+
+
+      simplePayRodeTipText: "",
+      simplePayRodeTipTextShowMore: true,
+      simpleCurPayInfo: {},
+      simpleCurrency:{},
+      simplePayType:{},
+      simplePayRode:{},
+      simplePayFeeData:{
+        amounts:"",
+        fee_amount:"",
+        fee_percent:"",
+        is_custom_amount:"",
+        is_recommend_amount:"",
+        per_trade_max:"",
+        per_trade_min:"",
+      }
     };
   },
   watch: {
@@ -1474,25 +1497,23 @@ export default {
         ? this.defaultEpointWallet.account === "新增挂单银行卡"
         : false;
     },
-    curPassRoad() {
-      console.log("passRoad", this.curPassRoad);
-      if (this.curPassRoad.tip != undefined) {
-        if (this.curPassRoad.tip === "" && this.curPassRoadTipText != "") {
+    simplePayType(){
+      console.log("simplePayType", this.simplePayType);
+      this.simplePayRodeTipText = '';
+    },
+    simplePayRode() {
+      console.log("simplePayRode", this.simplePayRode);
+      if (this.simplePayRode !== null && this.simplePayRode.tip != undefined) {
+        if (this.simplePayRode.tip === "" && this.simplePayRodeTipText != "") {
           //有到無因特效需delay
           setTimeout(() => {
-            this.curPassRoadTipText = this.curPassRoad.tip.replace(
+            this.simplePayRodeTipText = this.simplePayRode.tip.replace(
               "\n",
               "<br>"
             );
-            // this.curPassRoadTipTextShowMore =
-            //   this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
-            //     45 || this.curPassRoadTipText.indexOf("<br>") != -1;
           }, 500);
         } else {
-          this.curPassRoadTipText = this.curPassRoad.tip.replace("\n", "<br>");
-          // this.curPassRoadTipTextShowMore =
-          //   this.curPassRoadTipText.replace(/[^\x00-\xff]/g, "**").length >
-          //     45 || this.curPassRoadTipText.indexOf("<br>") != -1;
+          this.simplePayRodeTipText = this.simplePayRode.tip.replace("\n", "<br>");
         }
       }
     },
@@ -1507,15 +1528,15 @@ export default {
       }
     },
     curPayInfo(value) {
-      if (!this.curPayInfo.payment_method_name) {
+      if (!this.simplePayType.method_name) {
         return;
       }
-      if (this.curPayInfo.payment_method_name === "代客充值") {
+      if (this.simplePayType.method_name === "代客充值") {
         this.checkSuccess = true;
       }
 
       if (
-        this.curPayInfo.banks.length === 1 &&
+        this.simpleCurPayInfo.banks.length === 1 &&
         this.paySelectData["changeBank"] &&
         this.paySelectData["changeBank"].allData
       ) {
@@ -1604,7 +1625,7 @@ export default {
           selectTitle: this.$text("S_SELECT_PAY_MODE", "请选择支付方式"),
           curInfo: {
             ...this.curPayInfo,
-            selectId: this.curPayInfo.payment_method_id,
+            selectId: this.simplePayType.method_id,
             objKey: "payMethod"
           },
           allData: this.curModeGroup.payment_group_content.map(info => ({
@@ -1719,7 +1740,6 @@ export default {
           showCondition: this.curPayInfo.field.find(
             e => e.name === "method" && e.required
           ),
-          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'method'),
           isError: false
         },
         {
@@ -1730,7 +1750,6 @@ export default {
           showCondition: this.curPayInfo.field.find(
             e => e.name === "pay_account" && e.required
           ),
-          //   showCondition: this.curPayInfo.field.find((e) => e.name === 'pay_account'),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
@@ -1746,19 +1765,6 @@ export default {
           showCondition: this.curPayInfo.field.find(
             e => e.name === "deposit_at" && e.required
           ),
-          // showCondition: this.curPayInfo.field.find(e => {
-          //   const isShow = e.name === "deposit_at";
-          //   // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
-          //   if (
-          //     isShow &&
-          //     this.curPayInfo.payment_method_id === 6 &&
-          //     this.curPayInfo.payment_type_id === 5
-          //   ) {
-          //     return true;
-          //   } else {
-          //     return false;
-          //   }
-          // }),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
@@ -1796,22 +1802,6 @@ export default {
           showCondition: this.curPayInfo.field.find(
             e => e.name === "sn" && e.required
           ),
-          // showCondition:
-          //   this.curPayInfo &&
-          //   this.curPayInfo.field &&
-          //   this.curPayInfo.field.find(e => {
-          //     const isShow = e.name === "sn";
-          //     // 目前需求：只有極速xx銀行，要在第一頁連同顯示此欄位
-          //     if (
-          //       isShow &&
-          //       this.curPayInfo.payment_method_id === 6 &&
-          //       this.curPayInfo.payment_type_id === 5
-          //     ) {
-          //       return true;
-          //     } else {
-          //       return false;
-          //     }
-          //   }),
           isError:
             this.showError &&
             this.curPayInfo.field.find(
@@ -1957,7 +1947,7 @@ document.dispatchEvent(event);
       });
     },
     handleBindWallet() {
-      switch (this.curPayInfo.payment_method_id) {
+      switch (this.simplePayType.method_id) {
         // CGPay
         case 16:
         // CGPay-USDT(ERC20)
@@ -2016,22 +2006,6 @@ document.dispatchEvent(event);
       }
       return;
     },
-    modeChange(listItem, index) {
-      if (this.curModeGroup.payment_group_id === listItem.payment_group_id) {
-        return;
-      }
-      if (this.submitStatus === "stepTwo") {
-        this.submitStatus = "stepOne";
-      }
-
-      this.curPassRoadTipText = "";
-      this.curPassRoadTipTextShowMore = true;
-      this.changeMode(listItem);
-
-      if (this.allBanks && this.allBanks.length > 0) {
-        this.defaultCurPayBank();
-      }
-    },
     /**
      * 顯示選擇框
      * @method changeType
@@ -2048,14 +2022,14 @@ document.dispatchEvent(event);
         }
         // 代客充值
         if (
-          this.curPayInfo.payment_method_id === 20 &&
+          this.simplePayType.method_id === 20 &&
           this.entryBlockStatusData.status < 3
         ) {
           this.submitInfo();
           return;
         }
         //幣希檢查餘額
-        if (this.curPayInfo.payment_method_id === 32) {
+        if (this.simplePayType.method_id === 32) {
           if (+this.cryptoMoney > +this.selectBcCoin.balance) {
             this.actionSetGlobalMessage({
               msg: "币希钱包余额不足"
@@ -2351,22 +2325,22 @@ document.dispatchEvent(event);
     isSelectBindWallet(...args) {
       // 選擇特定錢包種類
       if (args.length > 0) {
-        return args.includes(this.curPayInfo.payment_method_id);
+        return args.includes(this.simplePayType.method_id);
       }
 
       return (
-        this.curPayInfo.payment_method_id === 16 ||
-        this.curPayInfo.payment_method_id === 25 ||
-        this.curPayInfo.payment_method_id === 30 ||
-        this.curPayInfo.payment_method_id === 36 || //OSPay-CGP
-        this.curPayInfo.payment_method_id === 37 || //OSPay-USDT(ERC20)
-        this.curPayInfo.payment_method_id === 38 || //OSPay-USDT(TRC20)
-        this.curPayInfo.payment_method_id === 22 ||
-        this.curPayInfo.payment_method_id === 32 ||
-        this.curPayInfo.payment_method_id === 34 ||
-        this.curPayInfo.payment_method_id === 41 ||
-        this.curPayInfo.payment_method_id === 402 ||
-        this.curPayInfo.payment_method_id === 404
+        this.simplePayType.method_id === 16 ||
+        this.simplePayType.method_id === 25 ||
+        this.simplePayType.method_id === 30 ||
+        this.simplePayType.method_id === 36 || //OSPay-CGP
+        this.simplePayType.method_id === 37 || //OSPay-USDT(ERC20)
+        this.simplePayType.method_id === 38 || //OSPay-USDT(TRC20)
+        this.simplePayType.method_id === 22 ||
+        this.simplePayType.method_id === 32 ||
+        this.simplePayType.method_id === 34 ||
+        this.simplePayType.method_id === 41 ||
+        this.simplePayType.method_id === 402 ||
+        this.simplePayType.method_id === 404
       );
     },
     handleServiceMain(target) {
@@ -2532,6 +2506,138 @@ document.dispatchEvent(event);
     },
     openBCWalletPopup() {
       this.setPopupStatus(true, "bcWalletPopup");
+    },
+
+
+
+    /*
+    簡易模式
+    */
+    //  取得簡易支付群組 C04.61
+    getSimplePaymentGroups() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Simple/Payment/Groups`,
+        params: {}
+      }).then(res => {
+        if (res.status === "000") {
+          this.depositData = res.data;
+          console.log(res.data);
+          this.simpleCurPayInfo = this.depositData[0];
+          this.changeSimpleCurrency(this.simpleCurPayInfo.content[0])
+          this.isShow = false;
+        }
+      });
+    },
+    changeSimplePayMode(info, index) {
+      if (info.id === this.simpleCurPayInfo.id) {
+        return;
+      }
+      this.resetStatus();
+      this.resetTimerStatus();
+      this.simpleCurPayInfo = info;
+      console.log(this.simpleCurPayInfo);
+      this.changeSimpleCurrency(this.simpleCurPayInfo.content[0])
+      // this.chooseUSDT();
+
+      // if (info.payment_method_id === 20) {
+      //   this.checkSuccess = true;
+      // } else {
+      //   this.checkSuccess = false;
+      // }
+
+      // if (
+      //   this.curModeGroup.channel_display &&
+      //   (this.curPayInfo.bank_id ||
+      //     this.curSelectedBank.value ||
+      //     this.isSelectBankPaymentMethod)
+      // ) {
+      //   this.getPayPass();
+      // }
+
+      // if (this.allBanks && this.allBanks.length > 0) {
+      //   this.defaultCurPayBank();
+      // }
+
+      // this.checkDepositInput();
+      // this.getVendorCryptoOuterUserAddressList();
+      // this.getUserBankList();
+    },
+    //  簡易模式入款 C04.59
+    sendSimpleDeposit() {
+      return goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Simple/Deposit`,
+        params: {
+          // 必填
+          method_id: "", //方式
+          amount: "", //金額
+          // 選填
+          username: "", //使用者帳號(未登入入款必填)
+          tag_id: "", //通道標籤id
+          channel_id: "", //通道id
+          bank_id: "", //銀行id (在線支付/點卡支付必填 method_id = 1,2)
+          pay_username: "", //使用者姓名(極速到帳必填 method_id = 6)
+          wallet_token: "", //電子錢包支付密碼 (CGP/OSP密碼支付必填 method_id = 16,25)
+          currency: "", //幣別（幣希錢包入款必填 method_id = 32
+          pay_account_id: "", //使用者銀行卡id（E点付/e点富入款必填 method_id = 34,41）
+          pay_bank_name: "", //使用者銀行卡名稱（E点付/e点富入款必填 method_id = 34,41）
+          pay_account: "" //使用者轉出金額帳號（E点付/e点富入款必填 method_id = 34,41）
+        }
+      }).then(res => {
+        if (res.status === "000") {
+        }
+      });
+    },
+     /**
+     * 切換幣別
+     * @method changeSimpleCurrency
+     */
+    changeSimpleCurrency(info) {
+      this.simpleCurrency = info
+      this.changeSimplePayType(info.data[0])
+    },
+    /**
+     * 切換類型
+     * @method changeSimplePayType
+     */
+    changeSimplePayType(info) {
+      this.simplePayType = info
+      if(this.simplePayType.channels.length >0){
+        this.changeSimpleRoad(this.simplePayType.channels[0])
+      }else if(this.simplePayType.tags.length >0){
+        this.changeSimpleRoad(this.simplePayType.tags[0])
+      }else{
+        this.changeSimpleRoad({})
+        this.simplePayFeeData = {
+          amounts:info.amounts,
+          fee_amount:info.fee_amount,
+          fee_percent:info.fee_percent,
+          is_custom_amount:info.is_custom_amount,
+          is_recommend_amount:info.is_recommend_amount,
+          per_trade_max:info.per_trade_max,
+          per_trade_min:info.per_trade_min,
+        }
+      }
+    },
+    /**
+     * 切換通道
+     * @method changeSimplePayType
+     */
+    changeSimpleRoad(info){
+      this.simplePayRode = info;
+      if(info !== null){
+        this.simplePayFeeData = {
+          amounts:info.amounts,
+          fee_amount:info.fee_amount,
+          fee_percent:info.fee_percent,
+          is_custom_amount:info.is_custom_amount,
+          is_recommend_amount:info.is_recommend_amount,
+          per_trade_max:info.per_trade_max,
+          per_trade_min:info.per_trade_min,
+        }
+      }
+      
     }
   }
 };
