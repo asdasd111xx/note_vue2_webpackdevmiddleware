@@ -147,12 +147,6 @@ export default {
     temp["_allGame"] = gameData;
     state.gameData = temp;
   },
-  [types.SETTRIALLIST](state, trialList) {
-    state.trialList = trialList;
-  },
-  [types.SETNEEDFILTERGAMEDATA](state, needFilterGameData) {
-    state.needFilterGameData = needFilterGameData;
-  },
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     客端 page
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
