@@ -135,6 +135,7 @@ export const actionGetTrialList = ({ state, commit }) => {
   }).then(res => {
     if (res && res.status === "000" && res.data) {
       commit(types.SETTRIALLIST, res.data);
+      console.log(state.trialList);
     }
   });
 };
@@ -2651,7 +2652,7 @@ export const actionGetLandingURL = ({ state, commit }) => {
     });
   }
   return Promise.all([getLandingurl(), getPromotionHostnameCode()]).then(() => {
-    commit(types.SET_LANDINGINFO, { landingurl, promotionHostnameCode });
+    commit(types.SET_LANDINGOBJECT, { landingurl, promotionHostnameCode });
   });
 };
 // 取得BundleID APP下載開關

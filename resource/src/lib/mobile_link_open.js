@@ -270,22 +270,22 @@ export default async target => {
       case "mobile-bet": //手機下注
         actionGetLandingURL(store).then(() => {
           const refCode =
-            store.state.landingInfo.promotionHostnameCode ||
+            store.state.landingObject.promotionHostnameCode ||
             localStorage.getItem("x-code");
           const channelid = localStorage.getItem("x-channelid");
 
           // 渠道移除 有帶推廣碼的需要登入
           if (
-            !store.state.landingInfo.landingurl ||
-            store.state.landingInfo.landingurl === ""
+            !store.state.landingObject.landingurl ||
+            store.state.landingObject.landingurl === ""
           ) {
             return;
           }
 
           let url = new URL(
-            store.state.landingInfo.landingurl.startsWith("http")
-              ? store.state.landingInfo.landingurl
-              : `https://${store.state.landingInfo.landingurl}`
+            store.state.landingObject.landingurl.startsWith("http")
+              ? store.state.landingObject.landingurl
+              : `https://${store.state.landingObject.landingurl}`
           );
 
           if (channelid) {
