@@ -260,6 +260,11 @@ export default async target => {
         router.push("/mobile/mcenter/information");
         return;
       case "binding-card":
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+
         router.push(
           `/mobile/mcenter/bankCard?redirect=promotion&type=bankCard`
         );
