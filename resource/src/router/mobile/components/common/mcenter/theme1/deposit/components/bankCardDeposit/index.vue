@@ -123,8 +123,9 @@
           </div>
 
           <!-- 選擇銀行 or 選擇點卡 -->
+          <!-- 極速存款bank_id=464（手動配卡）不需顯示 -->
           <div
-            v-if="allBanks && allBanks.length > 0"
+            v-if="allBanks && allBanks.length > 0 && curPayInfo.bank_id !== 464"
             :class="[
               $style['feature-wrap'],
               $style['select-card-wrap'],
@@ -1306,6 +1307,12 @@
 
     <!-- 彈窗 -->
     <template>
+      <!-- 手動配卡成功彈窗 -->
+      <deposit-alert
+        :manualcard="manualCard"
+        v-if="successAlert"
+        :close-fuc="goBack"
+      />
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1426,6 +1433,10 @@ export default {
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
+      ),
+    depositAlert: () =>
+      import(
+        /* webpackChunkName: 'depositAlert' */ "./components/depositAlert"
       ),
     Swiper,
     SwiperSlide,
@@ -2169,6 +2180,10 @@ export default {
           }
 
           if (response.status === "local") {
+            //手動配卡不需顯示depositinfo
+            if (this.manualCard) {
+              return;
+            }
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
 

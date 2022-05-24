@@ -30,6 +30,9 @@
     </div>
 
     <div :class="[$style['detail-wrap']]" style="margin-top: calc(50px + 10px)">
+      <div :class="[$style['deposit-detail-help']]">
+        如需帮助，请<a @click="toService">联系客服</a>
+      </div>
       <div v-if="data" :class="$style['detail-content-wrap']">
         <div
           v-for="(item, index) in data"
@@ -154,6 +157,7 @@
         <div :class="$style['tips']">暂时没有新的充值记录</div>
       </div>
     </div>
+    <infinite-loading v-if="isLoading" />
   </div>
 </template>
 
@@ -162,14 +166,17 @@ import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import editDepositField from "./editDepositField";
 import member from "@/api/member";
+import appEvent from "@/lib/appEvent";
 import mixin from "@/mixins/mcenter/deposit/recordDeposit";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest.js";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   mixins: [mixin],
   components: {
-    editDepositField
+    editDepositField,
+    InfiniteLoading
   },
   props: {
     isApp: {
@@ -183,6 +190,7 @@ export default {
       detailRate: null,
       editOpen: false,
       isShowDepositInfo: false,
+      isLoading: false,
       columns: [
         // 日期
         { key: "created_at", title: "S_DATE" },
@@ -224,10 +232,21 @@ export default {
     showDetailPop(item) {
       this.detailRate = item;
     },
+    toService() {
+      // 發送事件給app
+      if (this.isApp) {
+        appEvent.jsToAppMessage("TO_SERVICE");
+      } else {
+        this.$router.push("/mobile/service?prev=true");
+      }
+    },
     setCategory(option) {
+      if (this.isLoading) return;
+      this.showCondition = false;
+      this.isLoading = true;
       this.currentCategory = option;
       this.getData(option.key).then(() => {
-        this.showCondition = false;
+        this.isLoading = false;
       });
     },
     getData(key = "all") {
@@ -308,5 +327,17 @@ export default {
   }
 };
 </script>
-
+<style scoped>
+.infinite-loading-container {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+</style>
 <style src="../../css/index.module.scss" lang="scss" module />

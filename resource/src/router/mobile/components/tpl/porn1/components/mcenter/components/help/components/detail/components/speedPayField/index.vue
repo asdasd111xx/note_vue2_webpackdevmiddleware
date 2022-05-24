@@ -1,5 +1,81 @@
 <template>
-  <div :class="[$style['speed-field-wrap'], 'clearfix']">
+  <!-- 手動配卡提交欄位 -->
+  <div v-if="manualCard" :class="[$style['speed-field-wrap'], 'clearfix']">
+    <message v-if="msg" @close="msg = ''">
+      <div slot="msg">
+        {{ msg }}
+      </div>
+    </message>
+    <template v-for="info in manualInputData">
+      <div
+        v-if="info.showCondition"
+        :key="`field-${info.objKey}`"
+        :class="[$style['detail-cell-manual'], $style[`${info.objKey}`]]"
+      >
+        <div v-if="info.objKey === 'payUrl'" :class="$style['title']">
+          <a href="https://imgbb.com/" target="_blank"> {{ info.title }}</a>
+        </div>
+        <div v-else :class="$style['title']">
+          {{ info.title }}
+        </div>
+        <div
+          :class="[
+            $style['speed-edit-value'],
+            $style['value'],
+            { [$style['waiting']]: manualCardProcessing }
+          ]"
+        >
+          <template>
+            <textarea
+              v-if="info.objKey === 'payUrl'"
+              v-model="info.value"
+              :class="$style['speed-deposit-input']"
+              :placeholder="info.placeholderText"
+              maxlength="50"
+              @input="submitInput($event.target.value, info.objKey)"
+            />
+            <div v-else :class="$style['speed-deposit-input']">
+              {{ info.value }}
+            </div>
+          </template>
+        </div>
+        <!-- icon1 -->
+        <div
+          v-if="info.copyShow_t"
+          :class="$style['icon-wrap-text']"
+          @click="handleCopy(info)"
+        >
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/common/ic_copy_${
+                  manualCardProcessing ? 'd' : 'n'
+                }.png`
+              )
+            "
+          />
+        </div>
+        <!-- icon2 -->
+        <div
+          v-if="info.copyShow"
+          :class="$style['icon-wrap']"
+          @click="handleCopy(info)"
+        >
+          <img
+            :src="
+              $getCdnPath(
+                `/static/image/common/ic_copy${
+                  manualCardProcessing ? '_d2' : ''
+                }.png`
+              )
+            "
+          />
+        </div>
+      </div>
+    </template>
+  </div>
+  <!-- 一般提交欄位 -->
+  <div v-else :class="[$style['speed-field-wrap'], 'clearfix']">
     <template v-for="info in allInputData">
       <div
         v-if="info.showCondition"
@@ -75,9 +151,11 @@
 
 <script>
 import DatePicker from "vue2-datepicker";
+import message from "@/router/mobile/components/common/message";
 
 export default {
   components: {
+    message,
     selectBox: () =>
       import(
         /* webpackChunkName: 'selectBox' */ "@/router/mobile/components/common/mcenter/theme1/deposit/components/common/selectBox"
@@ -112,10 +190,15 @@ export default {
     typeId: {
       type: Number,
       default: 0
+    },
+    manualCard: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
+      msg: "",
       isSelectShow: false,
       // 只有show必填欄位的狀況下不顯示錯誤提示
       showError: !this.showByRequiredFields
@@ -252,6 +335,78 @@ export default {
         }
       ];
     },
+    //手動配卡通道建置中
+    manualCardProcessing() {
+      if (
+        this.speedField.manualCard.account === "" ||
+        this.speedField.manualCard.account_branch === "" ||
+        this.speedField.manualCard.account_name === "" ||
+        this.speedField.manualCard.bank_name === ""
+      ) {
+        return true;
+      }
+      return false;
+    },
+    manualInputData() {
+      return [
+        {
+          objKey: "manualCardBankName",
+          title: "收款银行",
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.bank_name,
+          placeholderText: "通道建置中",
+          showCondition: true,
+          isError: this.showError,
+          copyShow: true
+          // copyShow_t: true
+        },
+        {
+          objKey: "manualCardBankBranch",
+          title: "收款支行",
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.account_branch,
+          placeholderText: "通道建置中",
+          showCondition: true,
+          isError: this.showError,
+          copyShow: true
+          // copyShow_t: true
+        },
+        {
+          objKey: "manualCardAccount",
+          title: "收款帐号",
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.account,
+          placeholderText: "通道建置中",
+          showCondition: true,
+          isError: this.showError,
+          copyShow: true
+        },
+
+        {
+          objKey: "manualCardAccountName",
+          title: "收款人姓名",
+          value: this.manualCardProcessing
+            ? "通道建置中"
+            : this.speedField.manualCard.account_name,
+          placeholderText: "请输入充值人姓名",
+          showCondition: true,
+          isError: this.showError,
+          copyShow: true
+        },
+        {
+          objKey: "payUrl",
+          title: "上传图片",
+          value: this.speedField.payUrl,
+          placeholderText: "请贴上图片网址",
+          showCondition: true,
+          isError: this.showError,
+          copyShow: false
+        }
+      ];
+    },
     nowSelectData: {
       get() {
         return {
@@ -267,6 +422,19 @@ export default {
     }
   },
   methods: {
+    handleCopy(info) {
+      if (this.manualCardProcessing) {
+        return;
+      }
+
+      let copy = info.value;
+      this.msg = "已复制到剪贴板";
+      this.copyInfo(copy);
+    },
+    copyInfo(text) {
+      this.$copyText(text);
+      this.msg = "已复制到剪贴板";
+    },
     submitInput(data, objKey) {
       this.$emit("update:speedField", { data, objKey });
     },
