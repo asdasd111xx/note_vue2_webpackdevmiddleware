@@ -41,7 +41,6 @@ import { mapGetters, mapActions } from "vuex";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
-import axios from "axios";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {

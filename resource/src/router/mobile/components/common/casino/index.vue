@@ -14,11 +14,7 @@
       <template v-if="slotKey === 'list'">
         <div
           :key="`slot-${slotKey}`"
-          :class="[
-            [$style['game-item-wrap']],
-            { [$style['game-item-mahjong']]: kind === 6 },
-            'clearfix'
-          ]"
+          :class="[[$style['game-item-wrap']], 'clearfix']"
         >
           <div
             :class="$style['jackpot-wrap']"
@@ -627,9 +623,6 @@ export default {
   margin-top: 45px;
 }
 
-.game-item-mahjong {
-  margin-top: 30px;
-}
 .empty-wrap {
   padding-top: 90px;
   color: #a6a9b2;
