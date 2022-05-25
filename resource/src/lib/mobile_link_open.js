@@ -227,6 +227,19 @@ export default target => {
         router.push(`/mobile/mcenter/wallet?redirect=home`);
         return;
 
+      case "mcenter":
+        router.push(`/mobile/mcenter/`);
+        return;
+
+      case "account-vip":
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+
+        router.push(`/mobile/mcenter/accountVip`);
+        return;
+
       case "cgPay":
       case "mobileBet":
       default:
