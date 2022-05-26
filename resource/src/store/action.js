@@ -1670,7 +1670,7 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
 
   if (!!info.locked || !!info.tied) {
     dispatch("actionSetGlobalMessage", {
-      msg: "请先登入",
+      msg: "请重新登入",
       cb: () => {
         member.logout().then(() => {
           window.location.href = "/mobile/login?logout=true";
@@ -1811,23 +1811,10 @@ export const actionGetRechargeStatus = ({ state, dispatch, commit }, data) => {
       });
     })
     .catch(error => {
-      console.log(error);
-      if (error.response.data.code === "M00001") {
-        dispatch("actionSetGlobalMessage", {
-          msg: "请先登入",
-          cb: () => {
-            member.logout().then(() => {
-              window.location.href = "/mobile/login?logout=true";
-            });
-          }
-        });
-      } else {
-        dispatch("actionSetGlobalMessage", {
-          msg: error.response.data.msg,
-          code: error.response.data.code
-        });
-      }
-
+      dispatch("actionSetGlobalMessage", {
+        msg: error.response.data.msg,
+        code: error.response.data.code
+      });
       return "error";
     });
 };

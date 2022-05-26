@@ -1,14 +1,14 @@
 import {
+  API_MCENTER_DEPOSIT_BANK,
   API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO,
-  API_MCENTER_DEPOSIT_BANK
+  API_WITHDRAW_INFO
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
 import ajax from "@/lib/ajax";
 import axios from "axios";
-import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import isMobile from "@/lib/is_mobile";
 
 export default {
   data() {
@@ -517,11 +517,6 @@ export default {
             this.actionSetGlobalMessage({
               msg: res.data.msg,
               code: res.data.code
-              // cb: () => {
-              //   if (res.data.code == "C600001") {
-              //     this.$router.back();
-              //   }
-              // }
             });
           }
         }
