@@ -203,7 +203,6 @@ export default {
       isGameDataReceive: false,
       gameData: [],
       activityData: [],
-      trialList: [],
       hasActivity: false,
       jackpotData: null
     };
@@ -213,7 +212,8 @@ export default {
       loginStatus: "getLoginStatus",
       favoriteGame: "getFavoriteGame",
       showRedEnvelope: "getShowRedEnvelope",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      trialList: "getTrialList"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -269,10 +269,22 @@ export default {
       this.actionSetFavoriteGame(this.vendor);
     }
     this.getActivityList();
-    this.getTrialList();
+    if (this.loginStatus) {
+      this.labelData = this.labelData.filter(i => i.label !== "trial");
+      return;
+    }
+    this.actionGetTrialList().then(() => {
+      if (!this.trialList.find(i => i.vendor === this.$route.params.vendor)) {
+        this.labelData = this.labelData.filter(i => i.label !== "trial");
+      }
+    });
   },
   methods: {
-    ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetFavoriteGame",
+      "actionSetGlobalMessage",
+      "actionGetTrialList"
+    ]),
     setJackpotData(data) {
       if (
         data &&
@@ -287,27 +299,7 @@ export default {
     redirectBankCard() {
       return `casino-${this.vendor}-${this.paramsData.label}`;
     },
-    getTrialList() {
-      if (this.loginStatus) {
-        this.labelData = this.labelData.filter(i => i.label !== "trial");
-        return;
-      }
 
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
-      }).then(res => {
-        if (res && res.status === "000") {
-          this.trialList = res.data;
-
-          if (
-            !this.trialList.find(i => i.vendor === this.$route.params.vendor)
-          ) {
-            this.labelData = this.labelData.filter(i => i.label !== "trial");
-          }
-        }
-      });
-    },
     /**
      * 取得遊戲平台分類
      */
