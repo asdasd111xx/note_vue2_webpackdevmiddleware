@@ -191,6 +191,15 @@ export default {
         lang: "zh-cn",
         phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
       };
+      //開戶分行非必填,若輸入為空值則帶入 -
+      if (this.formData.branch === "") {
+        params["branch"] = "-";
+      }
+      //系統端 銀行卡驗證二元素 關閉時 api強制帶入省/縣市
+      if (this.domainConfig.player_user_bank_verify === 0) {
+        params["province"] = "-";
+        params["city"] = "-";
+      }
 
       goLangApiRequest({
         method: "post",
@@ -305,6 +314,11 @@ export default {
         if (this.addBankCardStep === "one") {
           if (key === "account") {
             return this.formData[key].length > 15;
+          }
+
+          //開戶分行非必填,提交按鈕不禁能
+          if (key === "branch") {
+            return true;
           }
 
           // 需要填入時才檢查
