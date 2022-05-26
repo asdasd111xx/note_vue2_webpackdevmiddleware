@@ -1,7 +1,6 @@
 import {
   API_MCENTER_DEPOSIT_BANK,
-  API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO
+  API_WITHDRAW_CGPAY_BINDING
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
@@ -33,7 +32,7 @@ export default {
         method_id: 35
       },
       isAlertTip: false,
-      isAjaxUse: false,
+      isUpdatedAmount: false,
       alertData: {
         title: this.$text("S_WITHDRAW_APPLY", "取款申请"),
         closeBtnText: this.$text("S_ENTER01", "我知道了"),
@@ -498,35 +497,34 @@ export default {
      * @method updateAmount
      */
     updateAmount(swift_code = "") {
-      if (this.isAjaxUse) {
+      if (this.isUpdatedAmount) {
         return;
       }
 
-      this.isAjaxUse = true;
+      this.isUpdatedAmount = true;
 
-      return ajax({
-        method: "get",
-        url: API_WITHDRAW_INFO,
-        errorAlert: false,
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Withdraw/Info`,
         params: {
           swift_code: swift_code
-        },
-        fail: res => {
-          this.actionSetIsLoading(false);
-          if (res.data && res.data.msg) {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-            });
-          }
         }
-      }).then(response => {
-        this.withdrawData = response;
-        // if (this.memInfo.config.withdraw === "迅付") {
-        //   this.getWithdrawAccount();
-        // }
-        this.isAjaxUse = false;
-      });
+      })
+        .then(res => {
+          if (res && res.data) {
+            this.withdrawData = res.data;
+          }
+          // if (this.memInfo.config.withdraw === "迅付") {
+          //   this.getWithdrawAccount();
+          // }
+          this.isUpdatedAmount = false;
+        })
+        .catch(error => {
+          dispatch("actionSetGlobalMessage", {
+            msg: error.res?.data?.msg,
+            code: error.res?.data?.code
+          });
+        });
     },
     /**
      * 使用者層級並取得 card type & 電子錢包綁綁開關
@@ -726,7 +724,6 @@ export default {
         }
       }).then(response => {
         if (response && response.data && response.status === "000") {
-          // console.log(response.data);
           this.offerInfo = response.data;
         } else {
           this.actionSetGlobalMessage({
