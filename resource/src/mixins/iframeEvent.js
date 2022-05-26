@@ -1,4 +1,5 @@
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import { setCookie } from "@/lib/cookie";
 
 export function iframeEvent(_this, data, origin) {
   console.log("[EVENT]:", data.event);

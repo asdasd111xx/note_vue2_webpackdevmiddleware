@@ -131,7 +131,7 @@ export default {
       memInfo: "getMemInfo",
       loginStatus: "getLoginStatus",
       systemConfig: "getSystemConfig",
-      landingObject: "getLandingObject"
+      landingInfo: "getLandingInfo"
     }),
     siteName() {
       switch (this.siteConfig.ROUTER_TPL) {
@@ -201,22 +201,22 @@ export default {
       this.actionGetLandingURL().then(() => {
         this.isDownloading = false;
         const refCode =
-          this.landingObject.promotionHostnameCode ||
+          this.landingInfo.promotionHostnameCode ||
           localStorage.getItem("x-code");
         const channelid = localStorage.getItem("x-channelid");
 
         // 渠道移除 有帶推廣碼的需要登入
         if (
-          !this.landingObject.landingurl ||
-          this.landingObject.landingurl === ""
+          !this.landingInfo.landingurl ||
+          this.landingInfo.landingurl === ""
         ) {
           return;
         }
 
         let url = new URL(
-          this.landingObject.landingurl.startsWith("http")
-            ? this.landingObject.landingurl
-            : `https://${this.landingObject.landingurl}`
+          this.landingInfo.landingurl.startsWith("http")
+            ? this.landingInfo.landingurl
+            : `https://${this.landingInfo.landingurl}`
         );
 
         if (channelid) {

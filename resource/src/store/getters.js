@@ -222,5 +222,5 @@ export default {
   getLiveFooterMask: state => state.liveFooterMask,
   getLiveFooter: state => state.liveFooter,
   getLiveViewPath: state => state.liveViewPath,
-  getLandingObject: state => state.landingObject
+  getLandingInfo: state => state.landingInfo
 };
