@@ -2144,11 +2144,7 @@ export default {
       //手機註冊按鈕阻擋
       if (this.currentJoin === "mobilejoin") {
         Object.keys(this.allValue).forEach(key => {
-          if (
-            key === "mphone" ||
-            key === "mpassword" ||
-            key === "mconfirm_password"
-          ) {
+          if (key === "mphone" || key === "mpassword") {
             if (this.allValue[key] === "") {
               hasError = true;
               this.allTip[key] = this.joinMemInfo[key].errorMsg;
