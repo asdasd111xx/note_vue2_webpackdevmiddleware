@@ -2114,29 +2114,25 @@ export default {
         );
       }
 
-      if (
-        !this.allValue["password"].match(
-          new RegExp(joinMemInfo["password"].regExp)
-        )
-      ) {
-        this.allTip["password"] = joinMemInfo["password"].errorMsg;
-      }
-
-      if (
-        !this.allValue["username"].match(
-          new RegExp(joinMemInfo["username"].regExp)
-        )
-      ) {
-        this.allTip["username"] = joinMemInfo["username"].errorMsg;
-      }
-
       let hasError = false;
 
       //帳號註冊按鈕阻擋
       if (this.currentJoin === "accountjoin") {
-        Object.keys(this.allTip).forEach(key => {
-          if (this.allTip[key] !== "") {
-            hasError = true;
+        Object.keys(this.allValue).forEach(key => {
+          if (key === "username" || key === "password") {
+            if (this.allValue[key] === "") {
+              hasError = true;
+              this.allTip[key] = this.joinMemInfo[key].errorMsg;
+            }
+
+            if (
+              !this.allValue["username"].match(
+                new RegExp(joinMemInfo["username"].regExp)
+              )
+            ) {
+              hasError = true;
+              this.allTip["username"] = joinMemInfo["username"].errorMsg;
+            }
           }
         });
       }
