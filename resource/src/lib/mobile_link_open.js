@@ -22,19 +22,7 @@ export default async target => {
   const linkItem = target?.linkItem?.[curLang];
   const linkBack = target?.linkBack;
   const eventRedirect = target.eventRedirect || "";
-
-  if (eventRedirect === "promotion") {
-    let url = localStorage.getItem("iframe-third-url");
-    let title = localStorage.getItem("iframe-third-url-title");
-    let origin = localStorage.getItem("iframe-third-origin");
-    setTimeout(() => {
-      localStorage.setItem("iframe-third-url", url);
-      localStorage.setItem("iframe-third-origin", origin);
-      localStorage.setItem("iframe-third-url-title", title);
-    }, 300);
-  } else {
-    localStorage.removeItem("iframe-third-url-title");
-  }
+  localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
     console.log(target);
