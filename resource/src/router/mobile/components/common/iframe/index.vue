@@ -7,7 +7,9 @@
       },
       { [$style['fullScreen']]: isFullScreen }
     ]"
-    :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
+    :style="{
+      height: `calc(${innerHeight}px - ${iframeHeight}px)`
+    }"
   >
     <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
     <transition name="fade">
@@ -101,6 +103,14 @@
       frameborder="0"
       crossorigin
       style="width: 1px !important; min-width: 100%"
+      :style="[
+        isFullScreen
+          ? {
+              height: `calc(${innerHeight}px)`,
+              marginTop: 'unset'
+            }
+          : ''
+      ]"
     />
     <page-loading :is-show="isLoading" />
   </div>
@@ -197,6 +207,9 @@ export default {
         default:
           return "/mobile";
       }
+    },
+    innerHeight() {
+      return window.innerHeight;
     },
     iframeHeight() {
       let result = [];
@@ -714,16 +727,10 @@ export default {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
-  &.fullScreen {
-    > iframe {
-      margin-top: unset !important;
-      height: 100vh !important;
-    }
-  }
-
   &.has-header {
     > iframe {
       margin-top: 43px;
+      height: calc(100% - 43px);
     }
   }
 }
