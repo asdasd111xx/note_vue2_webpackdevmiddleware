@@ -12,6 +12,8 @@ export const SETSLIDECDNDOMAIN = "SETSLIDECDNDOMAIN";
 
 // 遊戲資料
 export const SETGAMEDATA = "SETGAMEDATA";
+export const SETTRIALLIST = "SETTRIALLIST";
+export const SETNEEDFILTERGAMEDATA = "SETNEEDFILTERGAMEDATA";
 export const SETVERSION = "SETVERSION";
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
