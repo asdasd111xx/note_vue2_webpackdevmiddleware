@@ -647,5 +647,8 @@ export default {
   },
   [types.SET_LIVEVIEWPATH](state, data) {
     state.liveViewPath = data;
+  },
+  [types.SET_LANDINGOBJECT](state, data) {
+    state.landingObject = data;
   }
 };

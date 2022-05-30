@@ -113,6 +113,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { getEmbedGameVendor } from "@/lib/game_option";
+import { iframeEvent } from "@/mixins/iframeEvent";
 
 export default {
   data() {
@@ -388,6 +389,8 @@ export default {
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
+            this.contentTitle = localStorage.getItem("iframe-third-url-title");
+
             return;
           }
 
@@ -596,106 +599,11 @@ export default {
     onListener(e) {
       if (e.data) {
         let data = e.data;
-        // console.log(data);
 
         if (!data.event) {
           return;
         }
-
-        console.log("[EVENT]:", data.event);
-        console.log("[DATA]:", data.data);
-
-        switch (data.event) {
-          case "EVENT_GET_GAME_URL":
-          case "EVENT_THIRDPARTY_SWITCH_GAME":
-            if (this.loginStatus) {
-              this.linkToGame(data.data);
-            } else {
-              this.actionSetGlobalMessage({
-                msg: "请重新登入",
-                cb: () => {
-                  this.$router.push("/mobile/login");
-                }
-              });
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_CLOSE":
-            this.$router.replace(this.originUrl);
-            return;
-
-          // 避免迴圈重複本站
-          case "SELF_INTO":
-            if (
-              this.$route.params.page.toUpperCase() === "PROMOTION" &&
-              !this.src.includes("popcontrol")
-            ) {
-              this.$router.replace("/mobile/login");
-              return;
-            }
-            return;
-          case "EVENT_THIRDPARTY_LOGIN":
-            if (this.loginStatus) {
-              return;
-            } else {
-              this.$router.push("/mobile/login");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_JOINMEMBER":
-            if (this.loginStatus) {
-              return;
-            } else {
-              this.$router.push("/mobile/joinmember?prev=home");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_WALLET":
-            if (this.loginStatus) {
-              this.$router.push("/mobile/mcenter/wallet?prev=back");
-              return;
-            } else {
-              this.$router.push("/mobile/login");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
-            if (this.loginStatus) {
-              this.$router.push("/mobile/mcenter/deposit?prev=back");
-            } else {
-              this.$router.replace("/mobile/login");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_HOME":
-            this.$router.push("/mobile");
-            return;
-
-          // 彩金任務
-          // 去推广
-          case "EVENT_BOUNS_PROMOTE":
-            const { tagId, cid, userid, domain } = data;
-            return;
-
-          // 绑定银行卡
-          case "EVENT_THIRDPARTY_BANKCARD":
-            localStorage.setItem(
-              "bank-card-back-redirect",
-              location.pathname + location.search
-            );
-            this.$router.push(
-              `/mobile/mcenter/bankCard?redirect=iframe&type=bankCard`
-            );
-            return;
-
-          default:
-            return;
-        }
+        return iframeEvent(this, data, "iframe");
       }
     },
     linkToGame(data) {
