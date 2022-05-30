@@ -371,6 +371,11 @@ export default {
         this.$router.replace("/mobile/mcenter/tcenterLobby");
         return;
       }
+
+      if (!this.memInfo.user.show_promotion) {
+        this.$router.replace("/mobile/mcenter/home");
+        return;
+      }
     }
   }
 };
