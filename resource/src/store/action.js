@@ -153,6 +153,7 @@ export const actionGetFilterGameList = ({ state, commit, dispatch }) => {
     if (res.errorCode === "00" && res.status === "000" && res.data) {
       // console.log(`needFilterGameData is ${response}`);
       commit(types.SETNEEDFILTERGAMEDATA, res.data);
+      console.log(state.needFilterGameData);
     }
   });
 };
@@ -2611,7 +2612,9 @@ export const actionGetLandingURL = ({ state, commit }) => {
   function getLandingurl() {
     return goLangApiRequest({
       method: "get",
-      url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/Hostnames/V2",
+      url:
+        state.siteConfig.YABO_GOLANG_API_DOMAIN +
+        "/xbb/Domain/Hostnames/V2?lang=zh-cn",
       params: {
         clientType: 3
       }
