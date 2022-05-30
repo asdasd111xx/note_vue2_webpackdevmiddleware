@@ -118,12 +118,12 @@
 import { mapGetters, mapActions } from "vuex";
 import mobileContainer from "../../common/mobileContainer";
 import goLangApiRequest from "@/api/goLangApiRequest";
-import iframeLiveEvent from "@/mixins/iframeLiveEvent";
+import iframeEvent from "@/mixins/iframeEvent";
 import moment from "moment";
 import html2canvas from "html2canvas";
 
 export default {
-  mixins: [iframeLiveEvent],
+  mixins: [iframeEvent],
   components: {
     pageLoading: () =>
       import(
