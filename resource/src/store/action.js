@@ -1863,6 +1863,7 @@ export const actionVerificationFormData = (
   let val = data.value.replace(" ", "").trim();
 
   switch (data.target) {
+    case "friend_username":
     case "username":
       val = val
         .replace(/[\W]/g, "")
@@ -1986,6 +1987,15 @@ export const actionVerificationFormData = (
     case "search_video":
       regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF[0-9a-zA-Z]/g;
       val = val.replace(regex, "");
+      break;
+
+    case "friend_code":
+      regex = /[^0-9a-zA-Z]/g;
+      val = val
+        .replace(regex, "")
+        .toLowerCase()
+        .substring(4, 0);
+
       break;
 
     // case "USDT-address":

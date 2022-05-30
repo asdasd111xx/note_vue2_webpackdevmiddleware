@@ -1,5 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
-
+import goLangApiRequest from "@/api/goLangApiRequest";
 import isMobile from "@/lib/is_mobile";
 
 export default {
@@ -7,14 +7,16 @@ export default {
     return {
       isRegister: false,
       isPopup: false,
-      popupType: ""
+      popupType: "",
+      friendCode: ""
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       agentLink: "getAgentLink",
-      promotionLink: "getPromotionLink"
+      promotionLink: "getPromotionLink",
+      siteConfig: "getSiteConfig"
     }),
     /**
      * 推廣連結
@@ -35,6 +37,7 @@ export default {
   },
   created() {
     this.actionSetAgentLink();
+    this.getBindFriendCode();
   },
   methods: {
     ...mapActions(["actionSetAgentLink", "actionSetGlobalMessage"]),
@@ -61,6 +64,12 @@ export default {
           type = key;
           this.actionSetGlobalMessage({ msg: "连结已复制" });
           break;
+
+        case "FRIEND":
+          value = this.friendCode;
+          type = key;
+          this.actionSetGlobalMessage({ msg: "绑定码已复制" });
+          break;
       }
 
       this.$copyText(value);
@@ -85,6 +94,25 @@ export default {
       }
 
       this.isPopup = false;
+    },
+    /**
+     * 取得綁定好友綁定碼 C02.349
+     * @method getBindFriendCode
+     */
+    getBindFriendCode() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Bind/Code`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res && res.status === "000") {
+          //friendCode="" 代表已綁過不可以轉移
+          this.friendCode = res.data || "";
+        }
+        return;
+      });
     }
   }
 };

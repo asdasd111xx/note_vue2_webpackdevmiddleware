@@ -6,7 +6,11 @@
         :src="
           `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/tcenter/btn_member_add.png`
         "
-        @click="$router.push('/mobile/mcenter/newRecommend?makeFriend=false')"
+        @click="
+          $router.push(
+            '/mobile/mcenter/newRecommend?makeFriend=false&bindFriend=0'
+          )
+        "
       />
       <img
         :src="
@@ -379,9 +383,10 @@ export default {
   created() {
     this.getTimeRecord(this.allTotalData[0]);
     this.getRebateSwitch();
+    this.actionSetDomainConfigV2();
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetDomainConfigV2"]),
     handleClickInqStartDate() {
       const el = this.$refs["startInput"];
       el.click();
