@@ -116,11 +116,6 @@ export default {
       delete this.formData["accountName"];
     }
 
-    if (["porn1", "sg1"].includes(this.themeTPL)) {
-      delete this.formData["city"];
-      delete this.formData["province"];
-    }
-
     // 推播返回 補齊資料
     if (
       localStorage.getItem("click-notification") &&
@@ -139,13 +134,15 @@ export default {
     }
 
     // 國碼
-    ajax({
+    goLangApiRequest({
       method: "get",
-      url: API_MCENTER_USER_CONFIG,
-      errorAlert: false
-    }).then(response => {
-      if (response && response.result === "ok") {
-        this.phoneHeadOption = response.ret.config.phone.country_codes;
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/UserConfig/WithVerify`,
+      params: {
+        lang: "zh-cn"
+      }
+    }).then(res => {
+      if (res && res.status === "000") {
+        this.phoneHeadOption = res.data.config.phone.country_codes;
       }
     });
   },
@@ -189,17 +186,13 @@ export default {
       const params = {
         ...this.formData,
         lang: "zh-cn",
-        phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`
+        phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+        //企劃：無論開啟/關閉 系統端銀行卡二元素，會員綁定銀行卡時，開戶分行、省/直轄市、縣/市 這三個欄位沒填寫須自動帶--給後端
+        //因現行幣發泡泡前端無輸入欄位故一律帶入 --
+        province: "--",
+        city: "--",
+        branch: this.formData.branch === "" ? "--" : this.formData.branch
       };
-      //開戶分行非必填,若輸入為空值則帶入 -
-      if (this.formData.branch === "") {
-        params["branch"] = "-";
-      }
-      //系統端 銀行卡驗證二元素 關閉時 api強制帶入省/縣市
-      if (this.domainConfig.player_user_bank_verify === 0) {
-        params["province"] = "-";
-        params["city"] = "-";
-      }
 
       goLangApiRequest({
         method: "post",
