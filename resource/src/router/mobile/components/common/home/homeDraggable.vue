@@ -140,6 +140,7 @@ export default {
           switch (this.floatData.kind) {
             case 1:
               gameLinkType = "sport";
+              console.log("floatData", this.floatData);
               break;
 
             case 2:
@@ -168,7 +169,9 @@ export default {
           this.mobileLinkOpen({
             linkType: gameLinkType,
             linkTo: this.floatData.vendor,
-            linkItem: { "zh-cn": this.floatData.code }
+            linkItem: { "zh-cn": this.floatData.code },
+            linkTitle: this.floatData.name,
+            linkEntrance: this.floatData.entrance
           });
           break;
         case "promotion":

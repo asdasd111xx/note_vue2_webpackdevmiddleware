@@ -180,6 +180,7 @@ export default {
       });
     },
     linkTo(value) {
+      console.log("vvv", value);
       // link_type 1/外部連結, 2/內部連結, 3/遊戲連結, 4/優小秘連結
       switch (value.link_type) {
         case 1:
@@ -250,7 +251,9 @@ export default {
           this.mobileLinkOpen({
             linkType: gameLinkType,
             linkTo: value.vendor,
-            linkItem: { "zh-cn": value.code }
+            linkItem: { "zh-cn": value.code },
+            title: value.title,
+            entrance: value.entrance
           });
           break;
         case 4:

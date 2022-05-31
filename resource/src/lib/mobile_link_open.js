@@ -1,5 +1,11 @@
 import * as moment from "moment-timezone";
 
+import {
+  actionGetFilterGameList,
+  actionGetLandingURL,
+  actionGetTrialList
+} from "@/store/action";
+
 import axios from "axios";
 import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -9,11 +15,6 @@ import links from "@/config/links";
 import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
-import {
-  actionGetLandingURL,
-  actionGetTrialList,
-  actionGetFilterGameList
-} from "@/store/action";
 
 export default async target => {
   const curLang = store.state.curLang || "zh-cn";
@@ -21,6 +22,7 @@ export default async target => {
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
   const linkBack = target?.linkBack;
+  const entrance = target?.entrance || target?.linkEntrance;
   const eventRedirect = target.eventRedirect || "";
   localStorage.removeItem("iframe-third-url-title");
 
@@ -34,7 +36,9 @@ export default async target => {
       "linkItem:",
       linkItem,
       "linkBack:",
-      linkBack
+      linkBack,
+      "linkEntrance:",
+      entrance
     );
   }
 
@@ -600,7 +604,8 @@ export default async target => {
         kind: kind,
         vendor: vendor,
         code: code,
-        getGames: true
+        getGames: true,
+        entrance: entrance
       },
       openGameSuccessFunc,
       openGameFailFunc

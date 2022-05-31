@@ -20,7 +20,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   console.log("[OPEN GAME]", params);
 
-  const { vendor, kind, code, gameType, gameName, getGames } = params;
+  const { vendor, kind, code, gameType, gameName, getGames, entrance } = params;
   // IM電競 在 IE 瀏覽器最小寬度要 1280
   // if (params.kind === 1 && params.vendor === "tgp") {
   //   width = 1280;
@@ -39,6 +39,12 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   if (vendor === "bbin") {
     temp.mobile = "1";
+  }
+
+  //開啟沙巴電競須多帶參數
+  if (vendor === "sp" && entrance === "esports") {
+    temp.kind = 1;
+    temp.entrance = "esports";
   }
 
   let newWindow = "";
