@@ -2,13 +2,17 @@
   <div>
     <div :class="$style['header-option']">
       <img
-        v-if="memInfo.config.infinity_register"
+        v-if="
+          memInfo.config.infinity_register || domainConfig.player_bind_friend
+        "
         :src="
           `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/tcenter/btn_member_add.png`
         "
         @click="
           $router.push(
-            '/mobile/mcenter/newRecommend?makeFriend=false&bindFriend=0'
+            `/mobile/mcenter/newRecommend?makeFriend=false&bindFriend=${
+              memInfo.config.infinity_register ? 0 : 1
+            }`
           )
         "
       />
@@ -276,7 +280,8 @@ export default {
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      domainConfig: "getDomainConfig"
     }),
     $style() {
       const style =

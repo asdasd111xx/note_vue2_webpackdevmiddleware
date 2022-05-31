@@ -60,7 +60,10 @@
         />
       </div>
 
-      <div v-if="currentTab === 0" :class="$style['register-wrap']">
+      <div
+        v-if="friendTab[currentTab].key === 'add'"
+        :class="$style['register-wrap']"
+      >
         <div v-for="key in allInput" :key="key" :class="$style['input-group']">
           <!-- 欄位名稱 -->
           <div :class="$style['input-title']">
@@ -175,7 +178,10 @@
         />
       </div>
 
-      <div v-if="currentTab === 1" :class="$style['register-wrap']">
+      <div
+        v-if="friendTab[currentTab].key === 'bind'"
+        :class="$style['register-wrap']"
+      >
         <div
           v-for="key in bindFriendInput"
           :key="key"
@@ -222,10 +228,10 @@
       </div>
 
       <div :class="$style['content-footer']">
-        <button v-if="currentTab === 0" @click="checkInput">
+        <button v-if="friendTab[currentTab].key === 'add'" @click="checkInput">
           {{ $text("S_ADD") }}
         </button>
-        <template v-if="currentTab === 1">
+        <template v-if="friendTab[currentTab].key === 'bind'">
           <button @click="FriendcheckInput">
             {{ $text("S_CONFIRM_2") }}
           </button>
@@ -305,16 +311,16 @@ export default {
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
     },
+    isAddFriend() {
+      return this.memInfo.config.infinity_register;
+    },
     isBindFriend() {
       // /xbb/Domain/Config/V2
-      const bindFriend = this.domainConfig.player_bind_friend;
-      if (!bindFriend) this.currentTab = 0;
-
-      return bindFriend;
+      return this.domainConfig.player_bind_friend;
     },
     friendTab() {
       return [
-        { key: "add", name: "新增", show: true },
+        { key: "add", name: "新增", show: this.isAddFriend },
         { key: "bind", name: "绑定", show: this.isBindFriend }
       ].filter(item => item.show);
     },
@@ -332,6 +338,10 @@ export default {
     this.getCaptcha();
     // console.log(this.$route.query);
     this.makeFriendPage = this.$route.query.makeFriend === "true";
+
+    if (String(this.friendTab[this.currentTab]) === "undefined") {
+      this.currentTab = 0;
+    }
   },
   methods: {
     showCaptchaPopup() {
@@ -367,7 +377,7 @@ export default {
       });
     },
     pageStatus() {
-      if (!this.memInfo.config.infinity_register && !this.isBindFriend) {
+      if (!this.isAddFriend && !this.isBindFriend) {
         this.$router.replace("/mobile/mcenter/tcenterLobby");
         return;
       }
