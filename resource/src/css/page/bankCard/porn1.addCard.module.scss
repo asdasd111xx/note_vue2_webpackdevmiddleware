@@ -12,7 +12,10 @@
   .select-name-wrap {
     display: flex;
     position: relative;
-
+    > input {
+      width: 100%;
+      height: 19px;
+    }
     .line {
       content: "";
       position: absolute;
