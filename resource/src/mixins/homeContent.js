@@ -1447,10 +1447,14 @@ export default {
         }
       }).then(response => {
         // console.log(`needFilterGameData is ${response}`);
-        localStorage.setItem(
-          "needFilterGameData",
-          JSON.stringify(response.data)
-        );
+        if (response && response.data) {
+          localStorage.setItem(
+            "needFilterGameData",
+            JSON.stringify(response.data)
+          );
+        } else {
+          localStorage.setItem("needFilterGameData", JSON.stringify([]));
+        }
       });
     },
     getTaskCheck() {
