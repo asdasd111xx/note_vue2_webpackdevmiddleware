@@ -1990,11 +1990,11 @@ export const actionVerificationFormData = (
       break;
 
     case "friend_code":
-      regex = /[^0-9a-zA-Z]/g;
-      val = val
-        .replace(regex, "")
-        .toLowerCase()
-        .substring(4, 0);
+      // regex = /[^0-9a-zA-Z]/g;
+      // val = val
+      //   .replace(regex, "")
+      //   .toLowerCase()
+      //   .substring(4, 0);
 
       break;
 

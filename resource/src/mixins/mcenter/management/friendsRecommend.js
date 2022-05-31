@@ -76,7 +76,7 @@ export default {
         friend_code: {
           title: this.$text("S_FRIEND_CODE", "好友绑定码"),
           type: "text",
-          maxLength: "4",
+          maxLength: "",
           placeholder: this.$text(
             "S_PLEASE_ENTER_RIEND_CODE",
             "请输入好友绑定码"
