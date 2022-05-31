@@ -447,30 +447,16 @@ export default {
           this.showBack = false;
         case "PROMOTION":
         case "LIVEPROMOTION":
-          // 優小秘
-          let url = localStorage.getItem("iframe-third-url") || "";
-          if (url) {
-            if (!url.includes("v=m")) {
-              url = `${url}&v=m`;
-            }
-
-            const isH5 = !window.navigator.standalone;
-            if (!url.includes("platform=h5") && isH5) {
-              url = `${url}&platform=h5`;
-            }
-
-            this.contentTitle = localStorage.getItem("iframe-third-url-title");
-            this.src = url;
+          const { promoUri, alias, title } = this.$route.query;
+          if (promoUri) {
+            this.getCustomizeLink(promoUri);
+            if (!title) this.getPromotionTitle();
             return;
           }
 
-          switch (query.alias) {
-            // alias: "self_collect_promotion",
-            // name: "领取优惠"
-            // alias: "verify_promotion",
-            // name: "审核查询"
-            case "self_collect_promotion":
-            case "verify_promotion":
+          switch (alias) {
+            case "self_collect_promotion": // 领取优惠
+            case "verify_promotion": // 审核查询
               let uri = "";
               let targetUri = {
                 self_collect_promotion: "collect_status",
@@ -483,33 +469,17 @@ export default {
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/Forestage/Config`
                 }).then(res => {
                   if (res && res.data && res.data.path) {
-                    uri = res.data.path[targetUri[query.alias]];
-                  }
-                });
-              };
-
-              let getCustomizeLink = () => {
-                if (!uri) {
-                  this.src = "";
-                  return;
-                }
-
-                return goLangApiRequest({
-                  method: "post",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-                  params: {
-                    code: "promotion",
-                    clientUri: uri
-                  }
-                }).then(res => {
-                  if (res && res.data && res.data.uri) {
-                    this.src = res.data.uri;
+                    uri = res.data.path[targetUri[alias]];
                   }
                 });
               };
 
               getPromotionForestageConfig().then(() => {
-                getCustomizeLink();
+                if (!uri) {
+                  this.src = "";
+                  return;
+                }
+                this.getCustomizeLink(uri);
               });
               return;
             default:
@@ -560,54 +530,66 @@ export default {
           return;
         }
 
-        // 標題
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-          params: {
-            lang: "zh-cn"
-          }
-        }).then(res => {
-          if (res.status === "000") {
-            let promotionId = this.src.split("?")[0].split("/")[
-              this.src.split("?")[0].split("/").length - 1
-            ];
-
-            if (!promotionId) {
-              this.contentTitle = "";
-              return;
-            }
-
-            res.data.ret.forEach(promo => {
-              if (promo.link.includes(promotionId)) {
-                this.contentTitle = promo.name;
-              }
-            });
-          }
-        });
+        thi.getPromotionTitle();
       });
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
-    getCustomizeLink(params) {
-      axios({
+    getCustomizeLink(clientUri) {
+      this.isLoading = true;
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+        params: { code: "promotion", clientUri }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.status === "000" && res.errorCode === "00") {
+          if (res.data && res.data.uri) {
+            let uri = res.data.uri;
+            if (!uri.includes("v=m")) {
+              uri = `${uri}&v=m`;
+            }
+
+            const isH5 = !window.navigator.standalone;
+            if (!uri.includes("platform=h5") && isH5) {
+              uri = `${uri}&platform=h5`;
+            }
+            this.src = uri;
+          } else {
+            this.src = "";
+          }
+        } else {
+          this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+        }
+      });
+    },
+    getPromotionTitle() {
+      // 標題
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/link/customize",
-        params: params
-      })
-        .then(res => {
-          this.isLoading = false;
-          if (res && res.data && res.data.ret && res.data.ret.uri) {
-            this.src = res.data.ret.uri;
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          let promotionId = this.src.split("?")[0].split("/")[
+            this.src.split("?")[0].split("/").length - 1
+          ];
+
+          if (!promotionId) {
+            this.contentTitle = "";
+            return;
           }
-        })
-        .catch(error => {
-          this.isLoading = false;
-          if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
-        });
+
+          res.data.ret.forEach(promo => {
+            if (promo.link.includes(promotionId)) {
+              this.contentTitle = promo.name;
+            }
+          });
+        }
+      });
     },
     onListener(e) {
       if (e.data) {

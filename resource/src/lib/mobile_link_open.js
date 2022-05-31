@@ -23,18 +23,7 @@ export default async target => {
   const linkBack = target?.linkBack;
   const eventRedirect = target.eventRedirect || "";
 
-  if (eventRedirect === "promotion") {
-    let url = localStorage.getItem("iframe-third-url");
-    let title = localStorage.getItem("iframe-third-url-title");
-    let origin = localStorage.getItem("iframe-third-origin");
-    setTimeout(() => {
-      localStorage.setItem("iframe-third-url", url);
-      localStorage.setItem("iframe-third-origin", origin);
-      localStorage.setItem("iframe-third-url-title", title);
-    }, 300);
-  } else {
-    localStorage.removeItem("iframe-third-url-title");
-  }
+  localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
     console.log(target);
@@ -84,35 +73,12 @@ export default async target => {
     //   `/popcontrol/promo/${JSON.stringify({ linkItem })}`,
     //   "_blank"
     // );
-
-    axios({
-      method: "get",
-      url: "/api/v1/c/link/customize",
-      params: {
-        code: "promotion",
-        client_uri: linkTo
-      }
-    })
-      .then(res => {
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          localStorage.setItem("iframe-third-url", res.data.ret.uri);
-          localStorage.setItem("iframe-third-url-title", linkTitle);
-          linkBack !== "live"
-            ? localStorage.setItem("iframe-third-origin", `home`)
-            : "";
-          window.location.href = `/mobile/iframe/${
-            linkBack === "live" ? "livepromotion" : "promotion"
-          }`;
-        }
-      })
-      .catch(error => {
-        if (newWindow) {
-          newWindow.close();
-        }
-        if (error && error.data && error.data.msg) {
-          store.dispatch("actionSetGlobalMessage", { msg: error.data.msg });
-        }
-      });
+    linkBack !== "live"
+      ? localStorage.setItem("iframe-third-origin", `home`)
+      : "";
+    window.location.href = `/mobile/iframe/${
+      linkBack === "live" ? "livepromotion" : "promotion"
+    }?promoUri=${linkTo}&title=${linkTitle}`;
 
     return;
   }
@@ -219,8 +185,6 @@ export default async target => {
       case "discount":
       case "promotion":
         if (eventRedirect === "promotion" && linkItem) {
-          localStorage.removeItem("iframe-third-url");
-
           switch (linkItem) {
             case "verify":
               router.push(

@@ -189,24 +189,14 @@ export default {
     },
     onClick(target) {
       sendUmeng(77, `${target.name}_${target.id}`);
-      goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-        params: {
-          code: "promotion",
-          clientUri: target.link
-        }
-      }).then(res => {
-        if (res && res.data && res.data.uri) {
-          localStorage.setItem("iframe-third-url", res.data.uri);
-          localStorage.setItem("iframe-third-url-title", target.name);
-          localStorage.setItem(
-            "iframe-third-origin",
-            `promotion?tab=${this.tabId}`
-          );
-          this.$router.push(`/mobile/iframe/promotion`);
-        }
-      });
+
+      localStorage.setItem(
+        "iframe-third-origin",
+        `promotion?tab=${this.tabId}`
+      );
+      this.$router.push(
+        `/mobile/iframe/promotion?promoUri=${target.link}&title=${target.name}`
+      );
 
       //   let newWindow = '';
       //   // 辨別裝置是否為ios寰宇瀏覽器
