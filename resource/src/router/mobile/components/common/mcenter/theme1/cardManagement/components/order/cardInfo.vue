@@ -116,6 +116,8 @@ export default {
             };
           });
           this.order_card = temp;
+        } else {
+          this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
         }
       });
     },

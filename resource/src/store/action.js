@@ -950,36 +950,30 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 export const actionSetUserBalance = ({ commit, dispatch, state }) => {
   return goLangApiRequest({
     method: "get",
-    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Vendor/All/Balance",
-    params: {
-      lang: "zh-cn"
-    }
-  })
-    .then(res => {
-      if (res && res.status === "000" && res.data) {
-        commit(types.SETUSERBALANCE, res.data);
-      } else {
-        const data = res && res.data;
-        if (data && data.code === "M00001") {
-          dispatch("actionSetGlobalMessage", {
-            msg: data.msg,
-            cb: () => {
-              member.logout().then(() => {
-                window.location.href = "/mobile/login?logout=true";
-              });
-            }
-          });
-        } else {
-          if (res) {
-            dispatch("actionSetGlobalMessage", {
-              msg: res.msg,
-              code: res.code
+    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Vendor/All/Balance"
+  }).then(res => {
+    if (res && res.status === "000" && res.data) {
+      commit(types.SETUSERBALANCE, res.data);
+    } else {
+      const data = res && res.data;
+
+      if (data && data.code === "M00001") {
+        dispatch("actionSetGlobalMessage", {
+          msg: data.msg,
+          cb: () => {
+            member.logout().then(() => {
+              window.location.href = "/mobile/login?logout=true";
             });
           }
-        }
+        });
+      } else if (res && res.msg) {
+        dispatch("actionSetGlobalMessage", {
+          msg: res.msg,
+          code: res.code
+        });
       }
-    })
-    .catch(error => {});
+    }
+  });
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
