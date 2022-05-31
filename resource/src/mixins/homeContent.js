@@ -444,7 +444,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/cxbb/Game/list`
       }).then(response => {
-        console.log("cxbb/Game/list ", response);
         if (!response.data) {
           return;
         }
@@ -795,7 +794,6 @@ export default {
     },
     // 開啟遊戲
     onOpenGame(game) {
-      console.log("game content", game);
       if (localStorage.getItem("is-open-game")) {
         return;
       }
@@ -1411,8 +1409,6 @@ export default {
           method: "get",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Maintains`
         }).then(res => {
-          console.log("get maintain list", res);
-
           if (res && res.status === "000") {
             localStorage.removeItem("vendorMaintainList");
             this.maintainList = res.data;

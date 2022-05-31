@@ -137,7 +137,7 @@ export default {
             }, 1500);
 
             let target = list[element.target.dataset.key];
-            console.log("ttttar", target);
+
             mobileLinkOpen({
               ...target,
               site: this.themeTPL,

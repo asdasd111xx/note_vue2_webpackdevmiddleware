@@ -140,7 +140,6 @@ export default {
           switch (this.floatData.kind) {
             case 1:
               gameLinkType = "sport";
-              console.log("floatData", this.floatData);
               break;
 
             case 2:

@@ -180,7 +180,6 @@ export default {
       });
     },
     linkTo(value) {
-      console.log("vvv", value);
       // link_type 1/外部連結, 2/內部連結, 3/遊戲連結, 4/優小秘連結
       switch (value.link_type) {
         case 1:

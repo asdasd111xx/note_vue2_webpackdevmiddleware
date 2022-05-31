@@ -172,7 +172,6 @@ export default {
           switch (value.kind) {
             case 1:
               gameLinkType = "sport";
-              console.log("iiii", value);
               break;
 
             case 2:
