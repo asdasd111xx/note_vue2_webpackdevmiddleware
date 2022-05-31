@@ -185,6 +185,10 @@ export default async target => {
       case "discount":
       case "promotion":
         if (eventRedirect === "promotion" && linkItem) {
+          if (!store.state.loginStatus) {
+            router.push("/mobile/login");
+            return;
+          }
           switch (linkItem) {
             case "verify":
               router.push(
