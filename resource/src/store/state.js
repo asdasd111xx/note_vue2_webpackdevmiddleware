@@ -64,9 +64,6 @@ export default {
   //     遊戲資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   gameData,
-  trialList: [],
-  needFilterGameData: null,
-
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     電子彩金
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -468,6 +465,5 @@ export default {
   liveFooterMask: false,
   liveFooter: null,
   activity: {},
-  liveViewPath: {},
-  landingInfo: {}
+  liveViewPath: {}
 };

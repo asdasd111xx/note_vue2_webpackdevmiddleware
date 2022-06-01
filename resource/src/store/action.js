@@ -124,39 +124,6 @@ export const actionSetGameData = ({ commit }) =>
     }
   });
 
-//取試玩清單
-export const actionGetTrialList = ({ state, commit }) => {
-  return goLangApiRequest({
-    method: "get",
-    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`,
-    params: {
-      kind: 3
-    }
-  }).then(res => {
-    if (res && res.status === "000" && res.data) {
-      commit(types.SETTRIALLIST, res.data);
-    }
-  });
-};
-
-//取對應vip等級未開放遊戲清單
-export const actionGetFilterGameList = ({ state, commit, dispatch }) => {
-  dispatch("actionSetVip");
-
-  return goLangApiRequest({
-    method: "get",
-    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Vip/Filter`,
-    params: {
-      vipId: state.vip.now_level_id || 0
-    }
-  }).then(res => {
-    if (res.errorCode === "00" && res.status === "000" && res.data) {
-      // console.log(`needFilterGameData is ${response}`);
-      commit(types.SETNEEDFILTERGAMEDATA, res.data);
-    }
-  });
-};
-
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 //     客端 page
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -983,36 +950,30 @@ export const actionIsLogin = ({ commit }, isLogin) => {
 export const actionSetUserBalance = ({ commit, dispatch, state }) => {
   return goLangApiRequest({
     method: "get",
-    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Vendor/All/Balance",
-    params: {
-      lang: "zh-cn"
-    }
-  })
-    .then(res => {
-      if (res && res.status === "000" && res.data) {
-        commit(types.SETUSERBALANCE, res.data);
-      } else {
-        const data = res && res.data;
-        if (data && data.code === "M00001") {
-          dispatch("actionSetGlobalMessage", {
-            msg: data.msg,
-            cb: () => {
-              member.logout().then(() => {
-                window.location.href = "/mobile/login?logout=true";
-              });
-            }
-          });
-        } else {
-          if (res) {
-            dispatch("actionSetGlobalMessage", {
-              msg: res.msg,
-              code: res.code
+    url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Vendor/All/Balance"
+  }).then(res => {
+    if (res && res.status === "000" && res.data) {
+      commit(types.SETUSERBALANCE, res.data);
+    } else {
+      const data = res && res.data;
+
+      if (data && data.code === "M00001") {
+        dispatch("actionSetGlobalMessage", {
+          msg: data.msg,
+          cb: () => {
+            member.logout().then(() => {
+              window.location.href = "/mobile/login?logout=true";
             });
           }
-        }
+        });
+      } else if (res && res.msg) {
+        dispatch("actionSetGlobalMessage", {
+          msg: res.msg,
+          code: res.code
+        });
       }
-    })
-    .catch(error => {});
+    }
+  });
 };
 // 會員端-設定APP下載資訊
 export const actionSetAppDownloadInfo = ({ commit }) => {
@@ -2604,39 +2565,6 @@ export const actionGetRegisterURL = ({ state }) => {
         code
       });
     });
-};
-export const actionGetLandingURL = ({ state, commit }) => {
-  let landingurl = "";
-  let promotionHostnameCode = "";
-  function getLandingurl() {
-    return goLangApiRequest({
-      method: "get",
-      url: state.siteConfig.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/Hostnames/V2",
-      params: {
-        clientType: 3
-      }
-    }).then(res => {
-      if (res && res.data && res.data[0]) {
-        landingurl = `${res.data[0]}`;
-      }
-    });
-  }
-  function getPromotionHostnameCode() {
-    return goLangApiRequest({
-      method: "get",
-      url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Domain/Hostname/Promotion`,
-      params: {
-        hostname: window.location.hostname
-      }
-    }).then(res => {
-      if (res && res.data) {
-        promotionHostnameCode = res.data && res.data.code ? res.data.code : "";
-      }
-    });
-  }
-  return Promise.all([getLandingurl(), getPromotionHostnameCode()]).then(() => {
-    commit(types.SET_LANDINGINFO, { landingurl, promotionHostnameCode });
-  });
 };
 // 取得BundleID APP下載開關
 export const actionSetLCFSystemConfig = (

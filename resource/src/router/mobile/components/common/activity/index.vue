@@ -96,7 +96,8 @@ export default {
       ],
       currentLabel: 0,
       needShowRedEnvelope: false,
-      redEnvelopeData: {}
+      redEnvelopeData: {},
+      trialList: []
     };
   },
   watch: {
@@ -109,8 +110,7 @@ export default {
     ...mapGetters({
       loginStatus: "getLoginStatus",
       siteConfig: "getSiteConfig",
-      showRedEnvelope: "getShowRedEnvelope",
-      trialList: "getTrialList"
+      showRedEnvelope: "getShowRedEnvelope"
     }),
     options() {
       return {
@@ -132,7 +132,7 @@ export default {
     let title = localStorage.getItem("iframe-third-url-title") || "强档活动";
     this.$emit("update:lobbyName", title);
     if (!this.loginStatus) {
-      this.actionGetTrialList();
+      this.getTrialList();
     }
   },
   mounted() {
@@ -142,8 +142,17 @@ export default {
     this.getActivityList();
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage", "actionGetTrialList"]),
-
+    ...mapActions(["actionSetGlobalMessage"]),
+    getTrialList() {
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.trialList = res.data;
+        }
+      });
+    },
     closeEvelope() {
       this.needShowRedEnvelope = false;
       this.actionSetGlobalMessage({

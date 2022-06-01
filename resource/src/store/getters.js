@@ -49,8 +49,6 @@ export default {
   //     遊戲資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   getGameData: state => state.gameData,
-  getTrialList: state => state.trialList,
-  getNeedFilterGameData: state => state.needFilterGameData,
   getSportData: state => ({
     bbsport: state.gameData.bbsport,
     sunplus: state.gameData.sunplus,
@@ -221,6 +219,5 @@ export default {
   getActivity: state => state.activity,
   getLiveFooterMask: state => state.liveFooterMask,
   getLiveFooter: state => state.liveFooter,
-  getLiveViewPath: state => state.liveViewPath,
-  getLandingInfo: state => state.landingInfo
+  getLiveViewPath: state => state.liveViewPath
 };

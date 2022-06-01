@@ -509,22 +509,20 @@ export default {
         params: {
           swift_code: swift_code
         }
-      })
-        .then(res => {
-          if (res && res.data) {
+      }).then(res => {
+        if (res) {
+          if (res.data) {
             this.withdrawData = res.data;
+          } else {
+            this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
           }
-          // if (this.memInfo.config.withdraw === "迅付") {
-          //   this.getWithdrawAccount();
-          // }
-          this.isUpdatedAmount = false;
-        })
-        .catch(error => {
-          dispatch("actionSetGlobalMessage", {
-            msg: error.res?.data?.msg,
-            code: error.res?.data?.code
-          });
-        });
+        }
+
+        // if (this.memInfo.config.withdraw === "迅付") {
+        //   this.getWithdrawAccount();
+        // }
+        this.isUpdatedAmount = false;
+      });
     },
     /**
      * 使用者層級並取得 card type & 電子錢包綁綁開關
@@ -535,23 +533,16 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`
-      })
-        .then(res => {
-          const { status, errorCode, msg } = res;
+      }).then(res => {
+        const { status, errorCode, msg } = res;
 
-          if (errorCode !== "00" || status !== "000") {
-            this.actionSetGlobalMessage({ code: errorCode, msg: msg });
-            return;
-          }
+        if (errorCode !== "00" || status !== "000") {
+          this.actionSetGlobalMessage({ code: errorCode, msg: msg });
+          return;
+        }
 
-          this.userLevelObj = res.data;
-        })
-        .catch(error => {
-          dispatch("actionSetGlobalMessage", {
-            msg: error.res?.data?.msg,
-            code: error.res?.data?.code
-          });
-        });
+        this.userLevelObj = res.data;
+      });
     },
     /**
      * 回傳使用者出入款統計資料
