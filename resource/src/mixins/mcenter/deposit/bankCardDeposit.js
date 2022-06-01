@@ -1303,6 +1303,7 @@ export default {
     },
     checkOrderData() {
       // 金額輸入錯誤
+      console.log("checkOrderData?");
       if (
         this.isErrorMoney ||
         !this.moneyValue ||
@@ -1314,7 +1315,6 @@ export default {
         this.checkSuccess = false;
         return;
       }
-
       // 檢查銀行匯款、支付轉帳的極速到帳表單必填欄位
       if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
         const checkItemMap = {

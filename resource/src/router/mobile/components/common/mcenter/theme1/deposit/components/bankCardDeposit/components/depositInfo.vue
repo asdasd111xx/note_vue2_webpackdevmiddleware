@@ -1,5 +1,11 @@
 <template>
-  <div :class="[$style['deposit-info-wrap'], 'clearfix']">
+  <div
+    :class="[
+      $style['deposit-info-wrap'],
+      { [$style['simple-type']]: isSimpleType },
+      'clearfix'
+    ]"
+  >
     <!-- 訂單時間 -->
     <div v-if="isShowTimer" :class="$style['time-tip']">
       <template v-if="countdownSec > 0">
@@ -123,6 +129,22 @@
             {{ info.title }}
           </div>
           <div
+            v-if="info.objKey === 'yourBank'"
+            :class="[
+              $style['basic-info-text'],
+              { [$style['info-important']]: info.isBorderBottom },
+              { [$style['info-placeholder-color']]: selectBank.name === '' }
+            ]"
+            @click="isShowBankPop = true"
+          >
+            {{ selectBank.name === "" ? "请选择您的银行" : selectBank.name }}
+            <img
+              :class="$style['select-bank-icon']"
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+            />
+          </div>
+          <div
+            v-else
             :class="[
               $style['basic-info-text'],
               { [$style['info-important']]: info.isBorderBottom }
@@ -193,6 +215,33 @@
         />
       </div>
     </message>
+    <div v-if="isShowBankPop" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" @click.stop="isShowBankPop = false" />
+      <div :class="$style['pop-menu']">
+        <div :class="$style['pop-title']">
+          <span @click.stop="isShowBankPop = false">{{
+            $text("S_CANCEL", "取消")
+          }}</span>
+          选择银行
+        </div>
+
+        <ul :class="$style['pop-list']">
+          <li
+            v-for="item in bankList"
+            :key="item.id"
+            @click.stop="changeBank(item)"
+          >
+            <img v-lazy="getImg(item.image_url)" />
+            {{ item.name }}
+            <icon
+              v-if="item.id === selectBank.id"
+              :class="[$style['select-active']]"
+              name="check"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -215,6 +264,10 @@ export default {
   },
   mixins: [mixin],
   props: {
+    isSimpleType: {
+      type: Boolean,
+      default: false
+    },
     orderData: {
       type: Object,
       default: () => {}
@@ -244,7 +297,8 @@ export default {
       countdownSec: this.limitTime,
       // countdownSec: 70, // 測試用
       timer: null,
-      isShowTimer: false
+      isShowTimer: false,
+      isShowBankPop: false
     };
   },
   computed: {
@@ -280,6 +334,23 @@ export default {
         }
         this.countdownSec -= 1;
       }, 1000);
+    }
+    console.log("this.orderData", this.orderData);
+    this.getBankList();
+    //傳統模式 必填 -> 自動帶入第一頁的選項
+    if (
+      !this.isSimpleType &&
+      this.orderData.method_id === 3 &&
+      this.orderData.orderInfo.field.find(item => {
+        return item.name === "bank_id" && item.required;
+      })
+    ) {
+      this.changeBank({
+        id: this.orderData.bank_id,
+        image_url: "",
+        name: this.orderData.method_name,
+        swift_code: ""
+      });
     }
   },
   methods: {
@@ -349,6 +420,21 @@ export default {
         default:
           return `${sec}秒`;
       }
+    },
+    changeBank(info) {
+      this.selectBank = info;
+      this.isShowBankPop = false;
+    },
+    getImg(image_url) {
+      return {
+        src: image_url,
+        error: this.$getCdnPath(
+          "/static/image/common/default/bank_card_default.png"
+        ),
+        loading: this.$getCdnPath(
+          "/static/image/common/default/bank_card_default.png"
+        )
+      };
     }
   },
   beforeDestroy() {

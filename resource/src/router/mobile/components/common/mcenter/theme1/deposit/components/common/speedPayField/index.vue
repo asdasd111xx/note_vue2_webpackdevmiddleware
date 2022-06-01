@@ -158,9 +158,6 @@ export default {
               selectId: "16"
             }
           ],
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(e => e.name === "method" && e.required)
-          //   : this.methodId === 3 || this.methodId === 6,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "method")
             : this.methodId === 3 || this.methodId === 6,
@@ -172,11 +169,6 @@ export default {
           title: "充值时间(当地)",
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(
-          //       e => e.name === "deposit_at" && e.required
-          //     )
-          //   : true,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "deposit_at")
             : true,
@@ -192,11 +184,6 @@ export default {
           title: "充值银行帐号",
           value: this.speedField.depositAccount,
           placeholderText: "请输入充值银行帐号",
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(
-          //       e => e.name === "pay_account" && e.required
-          //     )
-          //   : true,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "pay_account")
             : true,
@@ -256,9 +243,6 @@ export default {
             "S_PLZ_ENTER_SERIAL_NUMBER",
             "请输入流水号"
           ),
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(e => e.name === "sn" && e.required)
-          //   : true,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "sn")
             : true,

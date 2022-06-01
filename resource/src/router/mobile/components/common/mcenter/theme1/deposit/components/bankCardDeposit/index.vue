@@ -1291,6 +1291,7 @@
 
     <deposit-info
       v-if="submitStatus === 'stepTwo'"
+      :is-simple-type="false"
       :order-data="orderData"
       :is-show.sync="isShow"
       :required-fields="curPayInfo.field"
