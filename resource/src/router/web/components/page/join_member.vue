@@ -1563,127 +1563,135 @@ export default {
 
         document.head.appendChild(this.script);
       }
-
-      const username = {
-        key: "username",
-        content: {
-          note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
-          note2: ""
-        }
-      };
-      const password = {
-        key: "password",
-        content: {
-          note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母及数字"),
-          note2: ""
-        }
-      };
-      const confirmPassword = {
-        key: "confirm_password",
-        content: {
-          note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
-          note2: ""
-        }
-      };
-      const captchaText = {
-        key: "captcha_text",
-        content: {
-          note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
-          note2: ""
-        }
-      };
-
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
-      }).then(res => {
-        if (res && res.status === "000") {
-          const data = res.data;
-
-          //是否顯示mail驗證按鈕
-          if (data.email.code_register == true) {
-            this.mailNeedCode = true;
-          } else {
-            this.mailNeedCode = false;
+      this.getPlaceholderList().then(() => {
+        const username = {
+          key: "username",
+          content: {
+            note1: this.$text(
+              "S_ACCOUNT_PLACEHOLDER",
+              "请输入4-20位字母或数字"
+            ),
+            note2: ""
           }
-
-          //是否顯示手機驗證按鈕
-          if (data.phone.code_register == true) {
-            this.NeedCode = true;
-          } else {
-            this.NeedCode = false;
+        };
+        const password = {
+          key: "password",
+          content: {
+            note1: this.$text(
+              "S_PASSWORD_PLACEHOLDER",
+              "请输入6-12位字母及数字"
+            ),
+            note2: ""
           }
+        };
 
-          Object.keys(this.joinMemInfo).forEach(key => {
-            if (
-              key === "captcha_text" &&
-              this.memInfo.config.register_captcha_type !== 1
-            ) {
-              this.joinMemInfo[key].show = false;
-              return;
+        const confirmPassword = {
+          key: "confirm_password",
+          content: {
+            note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
+            note2: ""
+          }
+        };
+        const captchaText = {
+          key: "captcha_text",
+          content: {
+            note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
+            note2: ""
+          }
+        };
+
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
+        }).then(res => {
+          if (res && res.status === "000") {
+            const data = res.data;
+
+            //是否顯示mail驗證按鈕
+            if (data.email.code_register == true) {
+              this.mailNeedCode = true;
+            } else {
+              this.mailNeedCode = false;
             }
 
-            if (!data[key]) {
-              return;
+            //是否顯示手機驗證按鈕
+            if (data.phone.code_register == true) {
+              this.NeedCode = true;
+            } else {
+              this.NeedCode = false;
             }
 
-            if (
-              key === "introducer" &&
-              (localStorage.getItem("x-code") ||
-                localStorage.getItem("x-channelid"))
-            ) {
+            Object.keys(this.joinMemInfo).forEach(key => {
+              if (
+                key === "captcha_text" &&
+                this.memInfo.config.register_captcha_type !== 1
+              ) {
+                this.joinMemInfo[key].show = false;
+                return;
+              }
+
+              if (!data[key]) {
+                return;
+              }
+
+              if (
+                key === "introducer" &&
+                (localStorage.getItem("x-code") ||
+                  localStorage.getItem("x-channelid"))
+              ) {
+                this.joinMemInfo[key] = {
+                  ...this.joinMemInfo[key],
+                  isRequired: true,
+                  show: false,
+                  hasVerify: data[key].code_register
+                };
+                return;
+              }
+
+              if (key === "gender") {
+                let tip = this.placeholderKeyValue("gender", "tip");
+                if (tip) {
+                  this.selectData.gender.options[0].label = tip;
+                  this.selectData.gender.selected.label = tip;
+                }
+              }
+
+              if (key === "phone") {
+                this.selectData.phone.options = [
+                  ...this.selectData.phone.options,
+                  ...data[key].country_codes.map(label => ({
+                    label,
+                    value: label
+                  }))
+                ];
+
+                [
+                  this.selectData.phone.selected
+                ] = this.selectData.phone.options;
+              }
+
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
-                isRequired: true,
-                show: false,
+                isRequired: data[key].required,
+                show: !data[key].none,
                 hasVerify: data[key].code_register
               };
-              return;
-            }
-
-            if (key === "gender") {
-              let tip = this.placeholderKeyValue("gender", "tip");
-              if (tip) {
-                this.selectData.gender.options[0].label = tip;
-                this.selectData.gender.selected.label = tip;
-              }
-            }
-
-            if (key === "phone") {
-              this.selectData.phone.options = [
-                ...this.selectData.phone.options,
-                ...data[key].country_codes.map(label => ({
-                  label,
-                  value: label
-                }))
+              joinConfig = [
+                ...joinConfig,
+                { key, content: { note1: "", note2: "" } }
               ];
 
-              [this.selectData.phone.selected] = this.selectData.phone.options;
-            }
-
-            this.joinMemInfo[key] = {
-              ...this.joinMemInfo[key],
-              isRequired: data[key].required,
-              show: !data[key].none,
-              hasVerify: data[key].code_register
-            };
-            joinConfig = [
-              ...joinConfig,
-              { key, content: { note1: "", note2: "" } }
-            ];
-
-            this.registerData = [
-              username,
-              password,
-              confirmPassword,
-              ...joinConfig,
-              captchaText
-            ];
-          });
-        }
+              this.registerData = [
+                username,
+                password,
+                confirmPassword,
+                ...joinConfig,
+                captchaText
+              ];
+            });
+          }
+        });
       });
-
-      this.getPlaceholderList();
     });
   },
   methods: {
