@@ -583,6 +583,14 @@ export default {
         this.gameData.push(...list);
         this.isReceive = false;
         this.isGameDataReceive = true;
+
+        if (
+          !activityGames ||
+          (activityGames.length === 0 && this.$route.query.label === "activity")
+        ) {
+          this.changeGameLabel("hot");
+          return;
+        }
         $state.loaded();
 
         if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
