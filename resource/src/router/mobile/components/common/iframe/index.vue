@@ -97,6 +97,7 @@
       :ref="'iframe'"
       :class="[$style['iframe'], $style[$route.params.page]]"
       :src="src"
+      :key="src"
       @load="onLoadiframe"
       allow="geolocation; fullscreen"
       scrolling="auto"
@@ -161,13 +162,12 @@ export default {
   watch: {
     "$route.params.page"() {
       this.isLoading = true;
-      this.src = "";
       this.initIframe();
     },
     "$route.query"() {
       this.isLoading = true;
-      this.src = "";
       this.initIframe();
+      if (this.$route.query.title) this.contentTitle = this.$route.query.title;
     }
   },
   computed: {
