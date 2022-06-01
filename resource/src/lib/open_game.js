@@ -41,10 +41,9 @@ export default (params, success = () => {}, fail = () => {}) => {
     temp.mobile = "1";
   }
 
-  //開啟沙巴電競須多帶參數
-  if (vendor === "sp" && entrance === "esports") {
-    temp.kind = 1;
-    temp.entrance = "esports";
+  //開啟特定遊戲需多帶entrance參數 , 例：沙巴電競...
+  if (entrance && entrance !== "") {
+    temp.entrance = entrance;
   }
 
   let newWindow = "";
