@@ -267,10 +267,7 @@ export default target => {
           method: "post",
           url:
             store.state.siteConfig.YABO_GOLANG_API_DOMAIN +
-            `/xbb/Vendor/all/Event`,
-          params: {
-            lang: "zh-cn"
-          }
+            `/xbb/Vendor/all/Event`
         })
           .then(res => {
             if (res && res.status === "000") {

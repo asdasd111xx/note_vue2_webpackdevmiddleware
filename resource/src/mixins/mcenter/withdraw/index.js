@@ -1,14 +1,13 @@
 import {
-  API_WITHDRAW_CGPAY_BINDING,
-  API_WITHDRAW_INFO,
-  API_MCENTER_DEPOSIT_BANK
+  API_MCENTER_DEPOSIT_BANK,
+  API_WITHDRAW_CGPAY_BINDING
 } from "@/config/api";
 import { mapActions, mapGetters } from "vuex";
 
 import ajax from "@/lib/ajax";
 import axios from "axios";
-import isMobile from "@/lib/is_mobile";
 import goLangApiRequest from "@/api/goLangApiRequest";
+import isMobile from "@/lib/is_mobile";
 
 export default {
   data() {
@@ -33,7 +32,7 @@ export default {
         method_id: 35
       },
       isAlertTip: false,
-      isAjaxUse: false,
+      isUpdatedAmount: false,
       alertData: {
         title: this.$text("S_WITHDRAW_APPLY", "取款申请"),
         closeBtnText: this.$text("S_ENTER01", "我知道了"),
@@ -498,39 +497,31 @@ export default {
      * @method updateAmount
      */
     updateAmount(swift_code = "") {
-      if (this.isAjaxUse) {
+      if (this.isUpdatedAmount) {
         return;
       }
 
-      this.isAjaxUse = true;
+      this.isUpdatedAmount = true;
 
-      return ajax({
-        method: "get",
-        url: API_WITHDRAW_INFO,
-        errorAlert: false,
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Withdraw/Info`,
         params: {
           swift_code: swift_code
-        },
-        fail: res => {
-          this.actionSetIsLoading(false);
-          if (res.data && res.data.msg) {
-            this.actionSetGlobalMessage({
-              msg: res.data.msg,
-              code: res.data.code
-              // cb: () => {
-              //   if (res.data.code == "C600001") {
-              //     this.$router.back();
-              //   }
-              // }
-            });
+        }
+      }).then(res => {
+        if (res) {
+          if (res.data) {
+            this.withdrawData = res.data;
+          } else {
+            this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
           }
         }
-      }).then(response => {
-        this.withdrawData = response;
+
         // if (this.memInfo.config.withdraw === "迅付") {
         //   this.getWithdrawAccount();
         // }
-        this.isAjaxUse = false;
+        this.isUpdatedAmount = false;
       });
     },
     /**
@@ -542,23 +533,16 @@ export default {
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Level`
-      })
-        .then(res => {
-          const { status, errorCode, msg } = res;
+      }).then(res => {
+        const { status, errorCode, msg } = res;
 
-          if (errorCode !== "00" || status !== "000") {
-            this.actionSetGlobalMessage({ code: errorCode, msg: msg });
-            return;
-          }
+        if (errorCode !== "00" || status !== "000") {
+          this.actionSetGlobalMessage({ code: errorCode, msg: msg });
+          return;
+        }
 
-          this.userLevelObj = res.data;
-        })
-        .catch(error => {
-          dispatch("actionSetGlobalMessage", {
-            msg: error.res?.data?.msg,
-            code: error.res?.data?.code
-          });
-        });
+        this.userLevelObj = res.data;
+      });
     },
     /**
      * 回傳使用者出入款統計資料
@@ -731,7 +715,6 @@ export default {
         }
       }).then(response => {
         if (response && response.data && response.status === "000") {
-          // console.log(response.data);
           this.offerInfo = response.data;
         } else {
           this.actionSetGlobalMessage({

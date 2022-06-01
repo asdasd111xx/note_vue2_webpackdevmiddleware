@@ -107,30 +107,30 @@ export default {
 
       // 活動大廳
       if (this.displayType !== "game-lobby") {
-        switch (kind) {
-          case 3:
-            this.$router.push(
-              `/mobile/casino/${vendor}?label=${
-                !this.loginStatus ? "trial" : "hot"
-              }`
-            );
-            return;
+        let lobbyType = "";
+        if (kind) {
+          switch (kind) {
+            case 3:
+              lobbyType = "casino";
+              break;
 
-          case 5:
-            this.$router.push(
-              `/mobile/card/${vendor}?label=${
-                !this.loginStatus ? "trial" : "hot"
-              }`
-            );
-            return;
+            case 5:
+              lobbyType = "card";
+              break;
 
-          case 6:
+            case 6:
+              lobbyType = "mahjong";
+              break;
+          }
+
+          if (lobbyType) {
             this.$router.push(
-              `/mobile/mahjong/${vendor}?label=${
-                !this.loginStatus ? "trial" : "hot"
+              `/mobile/${lobbyType}/${vendor}?label=${
+                !this.loginStatus ? "trial" : "activity"
               }`
             );
             return;
+          }
         }
 
         if (this.isLoading) {

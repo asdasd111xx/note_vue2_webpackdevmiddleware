@@ -110,15 +110,7 @@
   margin-bottom: 15px;
   font-size: 0;
 
-  .show-red-star-sp1 {
-    span {
-      &::before {
-        content: "*";
-        color: red;
-      }
-    }
-  }
-  .show-red-star-aobo1 {
+  .show-red-star {
     span {
       &::before {
         content: "*";
