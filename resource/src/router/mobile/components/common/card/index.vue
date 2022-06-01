@@ -551,14 +551,17 @@ export default {
         this.gameData.push(...list);
         this.isReceive = false;
         this.isGameDataReceive = true;
+
+        $state.loaded();
         if (
-          !activityGames ||
-          (activityGames.length === 0 && this.$route.query.label === "activity")
+          (!activityGames || activityGames.length === 0) &&
+          (!activityEvents || activityEvents.length === 0) &&
+          this.$route.query.label === "activity"
         ) {
+          $state.complete();
           this.changeGameLabel("hot");
           return;
         }
-        $state.loaded();
 
         if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();
