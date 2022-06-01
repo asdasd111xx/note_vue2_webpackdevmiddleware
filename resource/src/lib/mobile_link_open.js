@@ -22,7 +22,7 @@ export default async target => {
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
   const linkBack = target?.linkBack;
-  const entrance = target?.entrance || target?.linkEntrance;
+  const entrance = target?.entrance || target?.linkEntrance || "";
   const eventRedirect = target.eventRedirect || "";
   localStorage.removeItem("iframe-third-url-title");
 
