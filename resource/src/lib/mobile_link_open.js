@@ -237,7 +237,17 @@ export default target => {
           return;
         }
 
-        router.push(`/mobile/mcenter/accountVip`);
+        store.dispatch("actionSetVip").then(() => {
+          if (!store.state.allVip || store.state.allVip.length === 0) {
+            store.dispatch("actionSetGlobalMessage", {
+              msg: "VIP尚未开放，请联系在线客服"
+            });
+            return;
+          }
+
+          router.push(`/mobile/mcenter/accountVip`);
+        });
+
         return;
 
       case "cgPay":
