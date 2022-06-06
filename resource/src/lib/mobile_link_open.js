@@ -1,5 +1,11 @@
 import * as moment from "moment-timezone";
 
+import {
+  actionGetFilterGameList,
+  actionGetLandingURL,
+  actionGetTrialList
+} from "@/store/action";
+
 import axios from "axios";
 import { getCookie } from "@/lib/cookie";
 import goLangApiRequest from "@/api/goLangApiRequest";
@@ -16,6 +22,8 @@ export default target => {
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
   const linkItem = target?.linkItem?.[curLang];
   const linkBack = target?.linkBack;
+  const entrance = target?.entrance || target?.linkEntrance || "";
+  const eventRedirect = target.eventRedirect || "";
   localStorage.removeItem("iframe-third-url-title");
 
   if (process.env.NODE_ENV === "development") {
@@ -28,7 +36,9 @@ export default target => {
       "linkItem:",
       linkItem,
       "linkBack:",
-      linkBack
+      linkBack,
+      "linkEntrance:",
+      entrance
     );
   }
 
@@ -468,6 +478,8 @@ export default target => {
       if (i.vendor === linkTo && i.kind === kind) {
         linkTitle = i.alias;
         return true;
+      } else if (i.vendor === "sp" && linkTo === "sp_esports") {
+        return true;
       }
     });
     // let activedGame = Object.keys(gameData).some(obj => {
@@ -519,9 +531,10 @@ export default target => {
     openGame(
       {
         kind: kind,
-        vendor: vendor,
+        vendor: linkTo === "sp_esports" ? "sp" : vendor,
         code: code,
-        getGames: true
+        getGames: true,
+        entrance: entrance
       },
       openGameSuccessFunc,
       openGameFailFunc
