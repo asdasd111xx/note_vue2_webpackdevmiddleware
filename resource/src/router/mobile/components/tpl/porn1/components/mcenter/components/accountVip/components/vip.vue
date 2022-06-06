@@ -93,7 +93,8 @@ export default {
     ...mapGetters({
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      loginStatus: "getLoginStatus"
+      loginStatus: "getLoginStatus",
+      allVip: "getAllVip"
     }),
     $style() {
       const style =
@@ -115,10 +116,22 @@ export default {
     if (!this.loginStatus) {
       this.$router.push("/mobile/login");
     }
+
+    this.actionSetVip().then(() => {
+      if (!this.allVip || this.allVip.length === 0) {
+        this.actionSetGlobalMessage({
+          msg: "VIP尚未开放，请联系在线客服",
+          cb: () => {
+            this.$router.push("/mobile");
+          }
+        });
+      }
+    });
+
     this.getVipConfig();
   },
   methods: {
-    ...mapActions(["actionSetGlobalMessage"]),
+    ...mapActions(["actionSetGlobalMessage", "actionSetVip"]),
     getUserDetail() {
       goLangApiRequest({
         method: "get",

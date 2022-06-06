@@ -680,7 +680,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         //   : ""
       };
 
-      // dispatch('actionSetVip');
+      // dispatch("actionSetVip");
       dispatch("actionSetUserBalance");
       dispatch("actionSetUserConfig");
       // 取得會員我的返水

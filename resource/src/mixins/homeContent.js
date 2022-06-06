@@ -775,8 +775,18 @@ export default {
           this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
           return;
         case "accountVip":
-          sendUmeng(9);
-          this.$router.push(`/mobile/mcenter/accountVip`);
+          this.actionSetVip().then(() => {
+            if (!this.allVip || this.allVip.length === 0) {
+              this.actionSetGlobalMessage({
+                msg: "VIP尚未开放，请联系在线客服"
+              });
+
+              return;
+            } else {
+              sendUmeng(9);
+              this.$router.push(`/mobile/mcenter/accountVip`);
+            }
+          });
           return;
         case "btse":
           goLangApiRequest({
