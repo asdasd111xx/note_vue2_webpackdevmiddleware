@@ -126,7 +126,7 @@ export default {
           if (lobbyType) {
             this.$router.push(
               `/mobile/${lobbyType}/${vendor}?label=${
-                !this.loginStatus ? "trial" : "activity"
+                !this.loginStatus ? "activity" : "activity"
               }`
             );
             return;
