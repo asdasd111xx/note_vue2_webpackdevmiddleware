@@ -250,6 +250,10 @@ export default async target => {
         return;
 
       case "message":
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
         router.push("/mobile/mcenter/information");
         return;
 
