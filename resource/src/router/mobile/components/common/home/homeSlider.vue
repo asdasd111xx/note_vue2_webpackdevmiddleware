@@ -140,7 +140,7 @@ export default {
 
             mobileLinkOpen({
               ...target,
-              site: this.themeTP,
+              site: this.themeTPL,
               vendor:
                 target.linkTo[`${i18n.locale}`] === "sp_esports"
                   ? "sp" //沙巴電競
