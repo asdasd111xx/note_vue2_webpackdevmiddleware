@@ -140,11 +140,15 @@ export default {
 
             mobileLinkOpen({
               ...target,
-              site: this.themeTPL,
+              site: this.themeTP,
+              vendor:
+                target.linkTo[`${i18n.locale}`] === "sp_esports"
+                  ? "sp" //沙巴電競
+                  : target.linkTo[`${i18n.locale}`],
               entrance:
                 target.linkTo[`${i18n.locale}`] === "sp_esports"
                   ? "esports" //沙巴電競
-                  : target.linkTo[`${i18n.locale}`]
+                  : ""
             });
           }
         }

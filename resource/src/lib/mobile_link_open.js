@@ -468,6 +468,8 @@ export default target => {
       if (i.vendor === linkTo && i.kind === kind) {
         linkTitle = i.alias;
         return true;
+      } else if (i.vendor === "sp" && linkTo === "sp_esports") {
+        return true;
       }
     });
     // let activedGame = Object.keys(gameData).some(obj => {
@@ -519,7 +521,7 @@ export default target => {
     openGame(
       {
         kind: kind,
-        vendor: vendor,
+        vendor: linkTo === "sp_esports" ? "sp" : vendor,
         code: code,
         getGames: true,
         entrance: entrance
