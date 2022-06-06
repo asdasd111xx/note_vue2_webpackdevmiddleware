@@ -65,7 +65,7 @@
             <div :class="$style['clear-input']" v-if="formData.branch">
               <img
                 :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                @click="formData.branch = ''"
+                @click="clearValue('branch')"
               />
             </div>
           </div>
@@ -85,7 +85,7 @@
             <div :class="$style['clear-input']" v-if="formData.account">
               <img
                 :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-                @click="formData.account = ''"
+                @click="clearValue('account')"
               />
             </div>
           </div>
@@ -277,6 +277,10 @@ export default {
           this.formData.phone = res;
         });
       }
+    },
+    clearValue(key) {
+      this.formData[key] = "";
+      this.checkData(this.formData[key], key);
     },
     clearMsg() {
       const { query } = this.$route;
