@@ -137,19 +137,20 @@ export default {
             }, 1500);
 
             let target = list[element.target.dataset.key];
-
-            mobileLinkOpen({
-              ...target,
-              site: this.themeTPL,
-              vendor:
-                target.linkTo[`${i18n.locale}`] === "sp_esports"
-                  ? "sp" //沙巴電競
-                  : target.linkTo[`${i18n.locale}`],
-              entrance:
-                target.linkTo[`${i18n.locale}`] === "sp_esports"
-                  ? "esports" //沙巴電競
-                  : ""
-            });
+            if (target) {
+              mobileLinkOpen({
+                ...target,
+                site: this.themeTPL,
+                vendor:
+                  target.linkTo[`${i18n.locale}`] === "sp_esports"
+                    ? "sp" //沙巴電競
+                    : target.linkTo[`${i18n.locale}`],
+                entrance:
+                  target.linkTo[`${i18n.locale}`] === "sp_esports"
+                    ? "esports" //沙巴電競
+                    : ""
+              });
+            }
           }
         }
       };
