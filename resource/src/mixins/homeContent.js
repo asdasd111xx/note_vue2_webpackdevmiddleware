@@ -775,8 +775,18 @@ export default {
           this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
           return;
         case "accountVip":
-          sendUmeng(9);
-          this.$router.push(`/mobile/mcenter/accountVip`);
+          this.actionSetVip().then(() => {
+            if (!this.allVip || this.allVip.length === 0) {
+              this.actionSetGlobalMessage({
+                msg: "VIP尚未开放，请联系在线客服"
+              });
+
+              return;
+            } else {
+              sendUmeng(9);
+              this.$router.push(`/mobile/mcenter/accountVip`);
+            }
+          });
           return;
         case "btse":
           goLangApiRequest({
@@ -1368,7 +1378,8 @@ export default {
               vendor: game.vendor,
               code: game.code,
               gameType: game.type,
-              gameName: game.name
+              gameName: game.name,
+              entrance: game.entrance
             },
             openGameSuccessFunc,
             openGameFailFunc
@@ -1416,26 +1427,41 @@ export default {
     getMaintainList() {
       if (this.loginStatus) {
         //取維護狀態
-        axios({
+        goLangApiRequest({
           method: "get",
-          url: "/api/v1/c/vendor/maintains"
-        })
-          .then(res => {
-            if (res.data.result == "ok") {
-              localStorage.removeItem("vendorMaintainList");
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Maintains`
+        }).then(res => {
+          if (res && res.status === "000") {
+            localStorage.removeItem("vendorMaintainList");
+            this.maintainList = res.data;
+            localStorage.setItem(
+              "vendorMaintainList",
+              JSON.stringify(this.maintainList)
+            );
+          }
+        });
 
-              // console.log("取維護狀態");
-              // console.log(res.data);
-              this.maintainList = res.data.ret;
-              localStorage.setItem(
-                "vendorMaintainList",
-                JSON.stringify(this.maintainList)
-              );
-            }
-          })
-          .catch(res => {
-            // console.log("取維護狀態XXXX");
-          });
+        //取維護狀態
+        // axios({
+        //   method: "get",
+        //   url: "/api/v1/c/vendor/maintains"
+        // })
+        //   .then(res => {
+        //     if (res.data.result == "ok") {
+        //       localStorage.removeItem("vendorMaintainList");
+
+        //       // console.log("取維護狀態");
+        //       // console.log(res.data);
+        //       this.maintainList = res.data.ret;
+        //       localStorage.setItem(
+        //         "vendorMaintainList",
+        //         JSON.stringify(this.maintainList)
+        //       );
+        //     }
+        //   })
+        //   .catch(res => {
+        //     // console.log("取維護狀態XXXX");
+        //   });
       }
     },
     getFilterList() {

@@ -37,7 +37,11 @@
         <p :class="$style['input-title']">手机号码</p>
         <div :class="$style['address-input-wrap']">
           <select v-model="phoneHead" :class="$style['phone-selected']">
-            <option v-for="option in phoneHeadOption" v-bind:value="option">
+            <option
+              v-for="option in phoneHeadOption"
+              :key="option"
+              :value="option"
+            >
               {{ option }}
             </option>
           </select>

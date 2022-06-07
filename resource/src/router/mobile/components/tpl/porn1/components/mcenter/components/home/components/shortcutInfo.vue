@@ -82,7 +82,6 @@
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import mcenterPageAuthControl from "@/lib/mcenterPageAuthControl";
-import mcenter from "@/api/mcenter";
 import member from "@/api/member";
 import { sendUmeng } from "@/lib/sendUmeng";
 
@@ -106,7 +105,8 @@ export default {
       memInfo: "getMemInfo",
       memCurrency: "getMemCurrency",
       memBalance: "getMemBalance",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      allVip: "getAllVip"
     }),
     routerTPL() {
       //先用ROUTER_TPL判斷aobo,51sp
@@ -121,7 +121,11 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["actionSetUserdata"]),
+    ...mapActions([
+      "actionSetUserdata",
+      "actionSetVip",
+      "actionSetGlobalMessage"
+    ]),
     onListClick(listIndex) {
       const item = this.list[listIndex];
 
@@ -136,6 +140,20 @@ export default {
 
       mcenterPageAuthControl(item.pageName).then(response => {
         if (response && response.status) {
+          if (item.pageName === "accountVIP") {
+            this.actionSetVip().then(() => {
+              if (!this.allVip || this.allVip.length === 0) {
+                this.actionSetGlobalMessage({
+                  msg: "VIP尚未开放，请联系在线客服"
+                });
+
+                return;
+              } else {
+                this.$router.push(`/mobile/mcenter/accountVip`);
+              }
+            });
+            return;
+          }
           this.$router.push(item.path);
         }
       });
@@ -174,6 +192,22 @@ export default {
           default:
             break;
         }
+
+        if (type === "accountVIP") {
+          this.actionSetVip().then(() => {
+            if (!this.allVip || this.allVip.length === 0) {
+              this.actionSetGlobalMessage({
+                msg: "VIP尚未开放，请联系在线客服"
+              });
+
+              return;
+            } else {
+              this.$router.push(`/mobile/mcenter/accountVip`);
+            }
+          });
+          return;
+        }
+
         this.$router.push(`/mobile/mcenter/${type}`);
       }
     }

@@ -200,7 +200,9 @@ export default {
           this.mobileLinkOpen({
             linkType: gameLinkType,
             linkTo: value.vendor,
-            linkItem: { "zh-cn": value.code }
+            linkItem: { "zh-cn": value.code },
+            linkTitle: value.title,
+            linkEntrance: value.entrance
           });
           break;
         case 4:

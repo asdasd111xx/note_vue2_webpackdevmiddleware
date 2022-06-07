@@ -249,7 +249,8 @@ export default {
       memInfo: "getMemInfo",
       membalance: "getMemBalance",
       siteConfig: "getSiteConfig",
-      liveMaintain: "getLiveMaintain"
+      liveMaintain: "getLiveMaintain",
+      allVip: "getAllVip"
     }),
     memAmount() {
       return (this.membalance && this.membalance.vendor.default.amount) || "--";
@@ -309,7 +310,8 @@ export default {
       "actionGetExtRedirect",
       "actionSetUserBalance",
       "actionGetMemInfoV3",
-      "actionGetRechargeStatus"
+      "actionGetRechargeStatus",
+      "actionSetVip"
     ]),
     formatThousandsCurrency(value, point) {
       return thousandsCurrency(value.toFixed(point));
@@ -355,6 +357,21 @@ export default {
         }
         this.$router.push(`/mobile/live/iframe/${target}`);
       } else {
+        if (target === "accountVIP") {
+          this.actionSetVip().then(() => {
+            if (!this.allVip || this.allVip.length === 0) {
+              this.actionSetGlobalMessage({
+                msg: "VIP尚未开放，请联系在线客服"
+              });
+
+              return;
+            } else {
+              this.$router.push(`/mobile/mcenter/accountVip`);
+            }
+          });
+          return;
+        }
+
         this.$router.push(`/mobile/mcenter/${target}`);
       }
     },
