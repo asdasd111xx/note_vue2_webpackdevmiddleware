@@ -122,11 +122,19 @@ export default {
               lobbyType = "mahjong";
               break;
           }
-
           if (lobbyType) {
+            const isActiviy = +this.eventData.status === 3;
+
+            if (this.loginStatus && !isActiviy) {
+              this.$router.push(`/mobile/${lobbyType}/${vendor}?label=hot`);
+              return;
+            }
+
             this.$router.push(
               `/mobile/${lobbyType}/${vendor}?label=${
-                !this.loginStatus ? "activity" : "activity"
+                isActiviy || (isActiviy && this.loginStatus)
+                  ? "activity"
+                  : "trial"
               }`
             );
             return;
