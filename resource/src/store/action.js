@@ -6,7 +6,6 @@ import * as types from "./mutations_type";
 
 import {
   API_AGENT_USER_CONFIG,
-  API_GETAPPINFO,
   API_MCENTER_USER_CONFIG,
   API_QRCODE
 } from "@/config/api";
@@ -17,9 +16,9 @@ import Vue from "vue";
 import agcenter from "@/api/agcenter";
 import agent from "@/api/agent";
 import ajax from "@/lib/ajax";
-import bbosRequest from "@/api/bbosRequest";
 import common from "@/api/common";
 import game from "@/api/game";
+import { getDomainJson } from "@/lib/getDomainList";
 import getLang from "@/lib/getLang";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import i18n from "@/config/i18n";
@@ -31,7 +30,6 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
-import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { v4 as uuidv4 } from "uuid";
 import version from "@/config/version.json";
 
@@ -590,8 +588,6 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
       })
       .catch(res => {});
     // dispatch("actionSetSystemTime");
-    // 暫時移除
-    // dispatch('actionSetAppDownloadInfo');
 
     // 取得當前廳號
     await dispatch("actionSetWebDomain");
@@ -613,12 +609,20 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     let allDomainList = [];
     await goLangApiRequest({
       method: "get",
-      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/List"
-    }).then(res => {
-      if (res.status === "000") {
-        allDomainList = res.data;
-      }
-    });
+      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/31232131231"
+    })
+      .then(res => {
+        if (res.status === "000") {
+          allDomainList = res.data;
+        } else {
+          console.log("catch");
+          getDomainJson(configInfo);
+        }
+      })
+      .catch(() => {
+        console.log("catch");
+        getDomainJson(configInfo);
+      });
     let domainNotSucess = true;
     let domainIdx = 0;
     while (domainNotSucess && domainIdx < allDomainList.length) {
@@ -975,18 +979,7 @@ export const actionSetUserBalance = ({ commit, dispatch, state }) => {
     }
   });
 };
-// 會員端-設定APP下載資訊
-export const actionSetAppDownloadInfo = ({ commit }) => {
-  ajax({
-    method: "get",
-    url: API_GETAPPINFO,
-    errorAlert: false
-  }).then(response => {
-    if (response && response.result === "ok") {
-      commit(types.SET_APP_DOWNLOAD_INFO, response.ret);
-    }
-  });
-};
+
 // 會員端-設定APP QR Code
 export const actionSetAppQrcode = ({ commit }) =>
   ajax({

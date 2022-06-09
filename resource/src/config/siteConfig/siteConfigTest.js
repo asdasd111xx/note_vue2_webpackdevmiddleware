@@ -9,7 +9,12 @@ export const preset = {
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com"
+  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com",
+  // 非色站 cxbb
+  // https://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yiyuan_qa.json
+  DOMAIN_LIST_JSON: [
+    "http://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yabo_qa.json"
+  ]
 };
 
 /* ---------- ↓ 測試站 ---------- */
