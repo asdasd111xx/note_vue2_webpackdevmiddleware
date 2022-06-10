@@ -268,6 +268,10 @@ export default {
       type: Boolean,
       default: false
     },
+    yourBankList: {
+      type: Array,
+      default: []
+    },
     orderData: {
       type: Object,
       default: () => {}
@@ -321,6 +325,41 @@ export default {
       set(value) {
         this.speedField[value.objKey] = value.data;
       }
+    },
+    yourDepositData() {
+      // 加密貨幣不顯示
+      if (this.orderData.is_crypto) return;
+      let showArray = [
+        {
+          objKey: "yourAccount",
+          title: this.$text("S_NAME", "会员帐号"),
+          value: this.orderData.username,
+          isFontBold: false
+        },
+        {
+          objKey: "yourMoney",
+          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
+          value: this.formatThousandsCurrency(this.orderData.amount),
+          isFontBold: true
+        }
+      ];
+      if (
+        this.orderData.orderInfo.field.find(item => {
+          return item.name === "bank_id";
+        })
+      ) {
+        showArray.push({
+            objKey: "yourBank",
+            title:
+              this.orderData.method_id === 3
+                ? this.$text("S_USE_BANK", "您的银行")
+                : this.$text("S_PAY_MODE", "支付方式"),
+            value: this.selectBank.name,
+            isFontBold: false
+          })
+      }
+
+      return showArray;
     }
   },
   created() {
@@ -336,7 +375,13 @@ export default {
       }, 1000);
     }
     console.log("this.orderData", this.orderData);
-    this.getBankList();
+
+    if (this.isSimpleType) {
+      this.getBankList();
+    } else {
+      this.bankList = this.yourBankList;
+    }
+
     //傳統模式 必填 -> 自動帶入第一頁的選項
     if (
       !this.isSimpleType &&

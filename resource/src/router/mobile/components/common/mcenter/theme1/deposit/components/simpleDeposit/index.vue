@@ -1149,24 +1149,6 @@
           </div>
         </div>
       </template>
-      <!-- 通道提示 -->
-      <template v-if="showPopStatus.type === 'payTip'">
-        <div>
-          <div :class="$style['pop-message-mark']" />
-          <div :class="$style['entry-message-container']">
-            <div :class="[$style['entry-message-content']]">
-              <p>通道提示</p>
-              <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
-            </div>
-            <div
-              :class="[$style['entry-message-confirm']]"
-              @click="setPopupStatus(false, '')"
-            >
-              关闭
-            </div>
-          </div>
-        </div>
-      </template>
 
       <!-- 被列為黑名單提示 -->
       <template v-if="showPopStatus.type === 'blockTips'">
@@ -1937,7 +1919,7 @@ export default {
     showRealStatusType(type) {
       this.showRealStatus = type;
       if (type) {
-        // this.getPayOffer(this.moneyValue);
+        // this.getSimplePayOffer(this.moneyValue);
         console.log("get offer??");
       }
     },
@@ -2397,7 +2379,7 @@ export default {
         };
       }
 
-      if (this.curPassRoad.is_outer_crypto) {
+      if (this.simplePayType.is_outer_crypto) {
         if (this.showOuterCryptoAddress) {
           paramsData = {
             ...paramsData,
@@ -2617,6 +2599,27 @@ export default {
             this.getPayGroup();
           }
         });
+    },
+    /**
+     * 取得支付優惠
+     * @method getSimplePayOffer
+     */
+    getSimplePayOffer(amount) {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Offer/And/Fee`,
+        params: {
+          paymentMethodId: this.simplePayType.method_id,
+          amount: amount,
+          lang: "zh-cn",
+          t_user_id: this.memInfo.user.user_id,
+          t_user_name: this.memInfo.user.username
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          this.offerInfo = res.data;
+        }
+      });
     },
   }
 };
