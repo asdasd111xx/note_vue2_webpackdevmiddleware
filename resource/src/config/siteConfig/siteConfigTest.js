@@ -8,7 +8,8 @@ export const preset = {
   ...basic,
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
+  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
+  YABO_GOLANG_API_DOMAIN: "error",
   ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com",
   // 非色站 cxbb
   // https://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yiyuan_qa.json

@@ -587,16 +587,11 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         // }
       })
       .catch(res => {});
-    // dispatch("actionSetSystemTime");
 
-    // 取得當前廳號
+    // 取得當前廳號 nginx
     await dispatch("actionSetWebDomain");
-    await dispatch("actionSetUserdata");
-    await dispatch("actionSetWebInfo", state.webDomain.domain);
-    await dispatch("actionGetMobileInfo");
-    await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
 
-    // 設定網站設定檔資訊 (start)
+    // 取得可用 api domain list
     let configInfo;
 
     if (state.webDomain) {
@@ -609,42 +604,49 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     let allDomainList = [];
     await goLangApiRequest({
       method: "get",
-      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/31232131231"
+      url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Domain/List`
     })
       .then(res => {
         if (res.status === "000") {
           allDomainList = res.data;
         } else {
-          console.log("catch");
-          getDomainJson(configInfo);
+          (async () => {
+            return await getDomainJson(configInfo);
+            console.log(("then ", configInfo.YABO_GOLANG_API_DOMAIN));
+          })();
         }
       })
       .catch(() => {
-        console.log("catch");
-        getDomainJson(configInfo);
+        (async () => {
+          await getDomainJson(configInfo);
+          console.log("catc22222h ", configInfo.YABO_GOLANG_API_DOMAIN);
+        })();
       });
-    let domainNotSucess = true;
-    let domainIdx = 0;
-    while (domainNotSucess && domainIdx < allDomainList.length) {
-      await goLangApiRequest({
-        method: "post",
-        url: `${allDomainList[domainIdx]}/api-v2/xbb/Captcha`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res && res.status === "000" && res.data) {
-          configInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[domainIdx]}/api-v2`;
-          configInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
-            domainIdx
-          ].replace("https", "wss")}`;
-          domainIdx += 1;
-          domainNotSucess = false;
-        } else {
-          domainIdx += 1;
-        }
-      });
-    }
+
+    // let domainNotSucess = true;
+    // let domainIdx = 0;
+    // while (domainNotSucess && domainIdx < allDomainList.length) {
+    //   await goLangApiRequest({
+    //     method: "post",
+    //     url: `${allDomainList[domainIdx]}/api-v2/xbb/Captcha`
+    //   }).then(res => {
+    //     if (res && res.status === "000" && res.data) {
+    //       configInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[domainIdx]}/api-v2`;
+    //       configInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
+    //         domainIdx
+    //       ].replace("https", "wss")}`;
+    //       domainIdx += 1;
+    //       domainNotSucess = false;
+    //     } else {
+    //       domainIdx += 1;
+    //     }
+    //   });
+
+    // }
+    await dispatch("actionSetWebInfo", state.webDomain.domain);
+    await dispatch("actionSetUserdata");
+    await dispatch("actionGetMobileInfo");
+    await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
     await dispatch("actionSetSiteConfig", configInfo);
     await dispatch("actionSetSystemDomain");
 
