@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      tabId: 1209,
+      tabId: 0,
       tabList: [],
       promotionList: [],
       hasNewGift: false,
@@ -89,6 +89,17 @@ export default {
   },
   created() {
     sendUmeng(52);
+    //預設tabid
+    switch (this.routerTPL) {
+      case "porn1":
+        this.tabId = 1209;
+        break;
+      case "sp1":
+        this.tabId = 1235;
+        break;
+      default:
+        break;
+    }
   },
   mounted() {
     // this.tabId = (this.$route.query && this.$route.query.tab) || 0;
