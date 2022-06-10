@@ -20,11 +20,11 @@
       <div :class="$style['type-wrap']">
         <swiper :options="{ slidesPerView: 'auto' }">
           <swiper-slide
-            v-for="(tab, index) in tabList"
+            v-for="tab in tabList"
             :key="tab.id"
             :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
           >
-            <div @click="currentTab(index)">{{ tab.name }}</div>
+            <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
             <div v-if="tab.id === tabId" :class="[$style['tab-slider']]" />
           </swiper-slide>
         </swiper>
@@ -147,11 +147,8 @@ export default {
     closePop() {
       this.isShowPop = false;
     },
-    currentTab(index) {
-      this.tabId = this.tabList[index].id;
-      this.getPromotionList(this.tabList[index].id);
-    },
     getPromotionList(id) {
+      this.tabId = +id;
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,

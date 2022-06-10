@@ -86,7 +86,7 @@ export default {
   },
   data() {
     return {
-      tabId: 0,
+      tabId: 1224,
       tabList: [],
       promotionList: [],
       hasNewGift: false,
@@ -97,7 +97,7 @@ export default {
     sendUmeng(51);
   },
   mounted() {
-    this.tabId = (this.$route.query && this.$route.query.tab) || 0;
+    // this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
 
     if (localStorage.getItem("do-not-show-home-post") !== "true") {
@@ -164,7 +164,6 @@ export default {
             return;
           }
           this.tabList = res.data.tab_list;
-          this.tabList[0].name = "全部";
         } else {
           this.tabList = [];
         }
