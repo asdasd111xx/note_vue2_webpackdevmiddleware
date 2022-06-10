@@ -30,6 +30,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import i18n from "@/config/i18n";
 
 export default {
   data() {
@@ -136,10 +137,20 @@ export default {
             }, 1500);
 
             let target = list[element.target.dataset.key];
-            mobileLinkOpen({
-              ...target,
-              site: this.themeTPL
-            });
+            if (target) {
+              mobileLinkOpen({
+                ...target,
+                site: this.themeTPL,
+                vendor:
+                  target.linkTo[`${i18n.locale}`] === "sp_esports"
+                    ? "sp" //沙巴電競
+                    : target.linkTo[`${i18n.locale}`],
+                entrance:
+                  target.linkTo[`${i18n.locale}`] === "sp_esports"
+                    ? "esports" //沙巴電競
+                    : ""
+              });
+            }
           }
         }
       };

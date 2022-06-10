@@ -241,8 +241,7 @@
                   $style[siteConfig.ROUTER_TPL],
                   $style[`field-${field.key}`],
                   {
-                    [$style[`show-red-star-${siteConfig.ROUTER_TPL}`]]:
-                      joinMemInfo[field.key].isRequired
+                    [$style['show-red-star']]: joinMemInfo[field.key].isRequired
                   },
                   'clearfix'
                 ]"
@@ -1231,7 +1230,7 @@ export default {
       phoneSubmitSuccess: false,
       phoneSubmitFail: false,
       phoneSubmitFailMsg: "",
-      phoneVerifyCode: "",
+      phoneVerifyCode: "", //一般註冊簡訊驗證碼
       showMailCheckIcon: false,
       showPhoneCheckIcon: false,
       mailVerifybtnActive: false,
@@ -1251,14 +1250,14 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        mphone: "",
-        mpassword: "",
-        mconfirm_password: "",
+        mphone: "", //手機註冊 電話號碼
+        phonettl: "", //手機註冊 簡訊驗證碼
+        mpassword: "", //手機註冊 密碼
+        mconfirm_password: "", //手機註冊 確認密碼
         introducer: localStorage.getItem("code") || "",
         name: "",
         email: "",
         phone: "",
-        phonettl: "",
         alias: "",
         birthday: "",
         gender: "",
@@ -1280,14 +1279,14 @@ export default {
         username: "",
         password: "",
         confirm_password: "",
-        mphone: "",
-        mpassword: "",
-        mconfirm_password: "",
+        mphone: "", //手機註冊 電話號碼
+        mpassword: "", //手機註冊 密碼
+        mconfirm_password: "", //手機註冊 確認密碼
+        phonettl: "", //手機註冊 簡訊驗證碼
         introducer: "",
         name: "",
         email: "",
         phone: "",
-        phonettl: "",
         alias: "",
         birthday: "",
         gender: "",
@@ -1563,127 +1562,135 @@ export default {
 
         document.head.appendChild(this.script);
       }
-
-      const username = {
-        key: "username",
-        content: {
-          note1: this.$text("S_ACCOUNT_PLACEHOLDER", "请输入4-20位字母或数字"),
-          note2: ""
-        }
-      };
-      const password = {
-        key: "password",
-        content: {
-          note1: this.$text("S_PASSWORD_PLACEHOLDER", "请输入6-12位字母及数字"),
-          note2: ""
-        }
-      };
-      const confirmPassword = {
-        key: "confirm_password",
-        content: {
-          note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
-          note2: ""
-        }
-      };
-      const captchaText = {
-        key: "captcha_text",
-        content: {
-          note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
-          note2: ""
-        }
-      };
-
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
-      }).then(res => {
-        if (res && res.status === "000") {
-          const data = res.data;
-
-          //是否顯示mail驗證按鈕
-          if (data.email.code_register == true) {
-            this.mailNeedCode = true;
-          } else {
-            this.mailNeedCode = false;
+      this.getPlaceholderList().then(() => {
+        const username = {
+          key: "username",
+          content: {
+            note1: this.$text(
+              "S_ACCOUNT_PLACEHOLDER",
+              "请输入4-20位字母或数字"
+            ),
+            note2: ""
           }
-
-          //是否顯示手機驗證按鈕
-          if (data.phone.code_register == true) {
-            this.NeedCode = true;
-          } else {
-            this.NeedCode = false;
+        };
+        const password = {
+          key: "password",
+          content: {
+            note1: this.$text(
+              "S_PASSWORD_PLACEHOLDER",
+              "请输入6-12位字母及数字"
+            ),
+            note2: ""
           }
+        };
 
-          Object.keys(this.joinMemInfo).forEach(key => {
-            if (
-              key === "captcha_text" &&
-              this.memInfo.config.register_captcha_type !== 1
-            ) {
-              this.joinMemInfo[key].show = false;
-              return;
+        const confirmPassword = {
+          key: "confirm_password",
+          content: {
+            note1: this.$text("S_PLS_PWD", "请再次输入设置密码"),
+            note2: ""
+          }
+        };
+        const captchaText = {
+          key: "captcha_text",
+          content: {
+            note1: this.$text("S_PLS_CAPTCHA", "请填写验证码"),
+            note2: ""
+          }
+        };
+
+        goLangApiRequest({
+          method: "get",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Register/Config`
+        }).then(res => {
+          if (res && res.status === "000") {
+            const data = res.data;
+
+            //是否顯示mail驗證按鈕
+            if (data.email.code_register == true) {
+              this.mailNeedCode = true;
+            } else {
+              this.mailNeedCode = false;
             }
 
-            if (!data[key]) {
-              return;
+            //是否顯示手機驗證按鈕
+            if (data.phone.code_register == true) {
+              this.NeedCode = true;
+            } else {
+              this.NeedCode = false;
             }
 
-            if (
-              key === "introducer" &&
-              (localStorage.getItem("x-code") ||
-                localStorage.getItem("x-channelid"))
-            ) {
+            Object.keys(this.joinMemInfo).forEach(key => {
+              if (
+                key === "captcha_text" &&
+                this.memInfo.config.register_captcha_type !== 1
+              ) {
+                this.joinMemInfo[key].show = false;
+                return;
+              }
+
+              if (!data[key]) {
+                return;
+              }
+
+              if (
+                key === "introducer" &&
+                (localStorage.getItem("x-code") ||
+                  localStorage.getItem("x-channelid"))
+              ) {
+                this.joinMemInfo[key] = {
+                  ...this.joinMemInfo[key],
+                  isRequired: true,
+                  show: false,
+                  hasVerify: data[key].code_register
+                };
+                return;
+              }
+
+              if (key === "gender") {
+                let tip = this.placeholderKeyValue("gender", "tip");
+                if (tip) {
+                  this.selectData.gender.options[0].label = tip;
+                  this.selectData.gender.selected.label = tip;
+                }
+              }
+
+              if (key === "phone") {
+                this.selectData.phone.options = [
+                  ...this.selectData.phone.options,
+                  ...data[key].country_codes.map(label => ({
+                    label,
+                    value: label
+                  }))
+                ];
+
+                [
+                  this.selectData.phone.selected
+                ] = this.selectData.phone.options;
+              }
+
               this.joinMemInfo[key] = {
                 ...this.joinMemInfo[key],
-                isRequired: true,
-                show: false,
+                isRequired: data[key].required,
+                show: !data[key].none,
                 hasVerify: data[key].code_register
               };
-              return;
-            }
-
-            if (key === "gender") {
-              let tip = this.placeholderKeyValue("gender", "tip");
-              if (tip) {
-                this.selectData.gender.options[0].label = tip;
-                this.selectData.gender.selected.label = tip;
-              }
-            }
-
-            if (key === "phone") {
-              this.selectData.phone.options = [
-                ...this.selectData.phone.options,
-                ...data[key].country_codes.map(label => ({
-                  label,
-                  value: label
-                }))
+              joinConfig = [
+                ...joinConfig,
+                { key, content: { note1: "", note2: "" } }
               ];
 
-              [this.selectData.phone.selected] = this.selectData.phone.options;
-            }
-
-            this.joinMemInfo[key] = {
-              ...this.joinMemInfo[key],
-              isRequired: data[key].required,
-              show: !data[key].none,
-              hasVerify: data[key].code_register
-            };
-            joinConfig = [
-              ...joinConfig,
-              { key, content: { note1: "", note2: "" } }
-            ];
-
-            this.registerData = [
-              username,
-              password,
-              confirmPassword,
-              ...joinConfig,
-              captchaText
-            ];
-          });
-        }
+              this.registerData = [
+                username,
+                password,
+                confirmPassword,
+                ...joinConfig,
+                captchaText
+              ];
+            });
+          }
+        });
       });
-
-      this.getPlaceholderList();
     });
   },
   methods: {
@@ -1809,7 +1816,7 @@ export default {
         this.joinMemInfo["gender"].isRequired &&
         this.allValue["gender"] === ""
       ) {
-        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE");
+        this.allTip[key] = this.$text("S_JM_FIELD_REQUIRE", "该栏位不得为空");
       } else if (data.isRequired && this.allValue[key] === "") {
         //必填 欄位為空
         switch (key) {
@@ -2114,44 +2121,40 @@ export default {
         );
       }
 
-      if (
-        !this.allValue["password"].match(
-          new RegExp(joinMemInfo["password"].regExp)
-        )
-      ) {
-        this.allTip["password"] = joinMemInfo["password"].errorMsg;
-      }
-
-      if (
-        !this.allValue["username"].match(
-          new RegExp(joinMemInfo["username"].regExp)
-        )
-      ) {
-        this.allTip["username"] = joinMemInfo["username"].errorMsg;
-      }
-
       let hasError = false;
-      /**
+
       //帳號註冊按鈕阻擋
       if (this.currentJoin === "accountjoin") {
-        Object.keys(this.allTip).forEach(key => {
-          if (this.allTip[key] !== "") {
-            hasError = true;
+        Object.keys(this.allValue).forEach(key => {
+          if (key === "username" || key === "password") {
+            if (this.allValue[key] === "") {
+              hasError = true;
+              this.allTip[key] = this.joinMemInfo[key].errorMsg;
+            }
+
+            if (
+              !this.allValue["username"].match(
+                new RegExp(joinMemInfo["username"].regExp)
+              )
+            ) {
+              hasError = true;
+              this.allTip["username"] = joinMemInfo["username"].errorMsg;
+            }
           }
         });
-      } else {
-        //手機註冊按鈕阻擋
-        Object.keys(this.allTip).forEach(key => {
-          if (
-            this.allTip["phone"] !== "" ||
-            this.allTip["phonettl"] !== "" ||
-            this.allTip["password"] !== "" ||
-            this.allTip["confirm_password"] !== ""
-          ) {
-            hasError = true;
+      }
+
+      //手機註冊按鈕阻擋
+      if (this.currentJoin === "mobilejoin") {
+        Object.keys(this.allValue).forEach(key => {
+          if (key === "mphone" || key === "mpassword") {
+            if (this.allValue[key] === "") {
+              hasError = true;
+              this.allTip[key] = this.joinMemInfo[key].errorMsg;
+            }
           }
         });
-      } */
+      }
       if (hasError) {
         this.isLoading = false;
         return false;
@@ -2167,7 +2170,10 @@ export default {
             this.joinMemInfo["withdraw_password"].isRequired &&
             this.allValue.withdraw_password.value.join("").length === 0
           ) {
-            this.allTip[item] = this.$text("S_JM_FIELD_REQUIRE");
+            this.allTip[item] = this.$text(
+              "S_JM_FIELD_REQUIRE",
+              "该栏位不得为空"
+            );
           } else if (
             this.allValue.withdraw_password.value.join("").length > 1
           ) {
@@ -2189,7 +2195,10 @@ export default {
       // 拼圖
       else if ([3, 4, 5].includes(this.memInfo.config.register_captcha_type)) {
         if (!this.thirdyCaptchaObj) {
-          this.allTip["captcha_text"] = this.$text("S_PLS_CLICK_CAPTCHA_FIRST");
+          this.allTip["captcha_text"] = this.$text(
+            "S_PLS_CLICK_CAPTCHA_FIRST",
+            "请先点击按钮进行验证"
+          );
           this.isLoading = false;
         } else {
           this.allTip["captcha_text"] = "";
@@ -2201,16 +2210,21 @@ export default {
       // 圖形
       else if (this.memInfo.config.register_captcha_type === 1) {
         if (!this.allValue.captcha_text) {
-          this.allTip["captcha_text"] = this.$text("S_ENABLE_KEYRING");
+          this.allTip["captcha_text"] = this.$text(
+            "S_ENABLE_KEYRING",
+            "请输入验证码"
+          );
           this.isLoading = false;
         } else {
           this.allTip["captcha_text"] = "";
         }
       }
 
+      //欄位驗證hasError 就不發送api
       if (!this.checkField()) {
         return;
       }
+
       //手機註冊submit
       if (this.currentJoin === "mobilejoin") {
         const params = {
@@ -2266,9 +2280,7 @@ export default {
           this.allValue.captcha_text = "";
 
           if (res.status !== "000") {
-            if (res.code === "C20077") {
-              this.allTip["phonettl"] = res.msg;
-            } else if (res.errors && res.errors.phone) {
+            if (res.errors && res.errors.phone) {
               this.allTip["mphone"] = res.errors.phone;
             } else {
               this.mobileJoinErrMag = res.msg;

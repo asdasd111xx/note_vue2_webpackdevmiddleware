@@ -1536,7 +1536,10 @@ export default {
       if (!this.withdrawData) return;
 
       // 單筆最高提現
-      let withdraw_max = this.withdrawData.payment_charge.ret.withdraw_max;
+      let withdraw_max =
+        this.withdrawData.payment_charge &&
+        this.withdrawData.payment_charge.ret &&
+        this.withdrawData.payment_charge.ret.withdraw_max;
       let balance = this.withdrawData.cash.available_balance;
 
       if (!withdraw_max || Number(withdraw_max) == 0) {

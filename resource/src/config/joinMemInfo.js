@@ -82,7 +82,7 @@ export default {
     hasVerify: false,
     show: true,
     regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
-    errorMsg: i18n.t("S_PASSWORD_ERROR")
+    errorMsg: ""
     // errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
   },
   mpassword: {
@@ -105,8 +105,7 @@ export default {
     hasVerify: false,
     show: true,
     regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,12}/g,
-    errorMsg: i18n.t("S_PASSWORD_ERROR")
-    // errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
+    errorMsg: i18n.t("S_PASSWD_CONFIRM_ERROR").replace("%s", "<br/>")
   },
   new_password: {
     key: "new_password",

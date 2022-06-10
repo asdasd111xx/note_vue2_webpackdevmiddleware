@@ -30,6 +30,9 @@
     </div>
 
     <div :class="[$style['detail-wrap']]" style="margin-top: calc(50px + 10px)">
+      <div :class="[$style['deposit-detail-help']]">
+        如需帮助，请<a @click="toService">联系客服</a>
+      </div>
       <div v-if="data" :class="$style['detail-content-wrap']">
         <div
           v-for="(item, index) in data"
@@ -163,6 +166,7 @@ import { getCookie } from "@/lib/cookie";
 import { mapGetters, mapActions } from "vuex";
 import editDepositField from "./editDepositField";
 import member from "@/api/member";
+import appEvent from "@/lib/appEvent";
 import mixin from "@/mixins/mcenter/deposit/recordDeposit";
 import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest.js";
@@ -227,6 +231,14 @@ export default {
     ...mapActions(["actionSetGlobalMessage"]),
     showDetailPop(item) {
       this.detailRate = item;
+    },
+    toService() {
+      // 發送事件給app
+      if (this.isApp) {
+        appEvent.jsToAppMessage("TO_SERVICE");
+      } else {
+        this.$router.push("/mobile/service?prev=true");
+      }
     },
     setCategory(option) {
       if (this.isLoading) return;

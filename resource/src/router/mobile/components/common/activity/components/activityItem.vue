@@ -41,7 +41,6 @@ import { mapGetters, mapActions } from "vuex";
 import openGame from "@/lib/open_game";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { getCookie } from "@/lib/cookie";
-import axios from "axios";
 import { sendUmeng } from "@/lib/sendUmeng";
 
 export default {
@@ -107,24 +106,39 @@ export default {
       }
 
       // 活動大廳
-      // 電子棋牌大廳
       if (this.displayType !== "game-lobby") {
-        switch (kind) {
-          case 3:
-            if (!this.loginStatus) {
-              this.$router.push(`/mobile/casino/${vendor}?label=trial`);
-            } else {
-              this.$router.push(`/mobile/casino/${vendor}?label=hot`);
-            }
-            return;
+        let lobbyType = "";
+        if (kind) {
+          switch (kind) {
+            case 3:
+              lobbyType = "casino";
+              break;
 
-          case 5:
-            if (!this.loginStatus) {
-              this.$router.push(`/mobile/card/${vendor}?label=trial`);
-            } else {
-              this.$router.push(`/mobile/card/${vendor}?label=hot`);
+            case 5:
+              lobbyType = "card";
+              break;
+
+            case 6:
+              lobbyType = "mahjong";
+              break;
+          }
+          if (lobbyType) {
+            const isActiviy = +this.eventData.status === 3;
+
+            if (this.loginStatus && !isActiviy) {
+              this.$router.push(`/mobile/${lobbyType}/${vendor}?label=hot`);
+              return;
             }
+
+            this.$router.push(
+              `/mobile/${lobbyType}/${vendor}?label=${
+                isActiviy || (isActiviy && this.loginStatus)
+                  ? "activity"
+                  : "trial"
+              }`
+            );
             return;
+          }
         }
 
         if (this.isLoading) {

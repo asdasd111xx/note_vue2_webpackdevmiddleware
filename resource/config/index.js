@@ -12,7 +12,7 @@ const outputDirName = process.env.CDN_HOST
 // Demo 69
 // const domain = 'https://yb0t.66relish.com/';
 // Prod 67
-// const domain = "https://bf0168q.com/";
+// const domain = "https://bf6077.com/";
 
 // 泡泡 500035
 // const domain = "https://sgtt.66boxing.com/";

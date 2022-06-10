@@ -89,9 +89,20 @@ export default {
   },
   created() {
     sendUmeng(52);
+    //預設tabid
+    switch (this.routerTPL) {
+      case "porn1":
+        this.tabId = 1209;
+        break;
+      case "sp1":
+        this.tabId = 1235;
+        break;
+      default:
+        break;
+    }
   },
   mounted() {
-    this.tabId = (this.$route.query && this.$route.query.tab) || 0;
+    // this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
 
     if (localStorage.getItem("do-not-show-home-post") !== "true") {
@@ -162,7 +173,6 @@ export default {
             return;
           }
           this.tabList = res.data.tab_list;
-          this.tabList[0].name = "全部";
         } else {
           this.tabList = [];
         }

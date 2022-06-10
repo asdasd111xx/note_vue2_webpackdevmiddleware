@@ -99,7 +99,9 @@ export default {
       cgPromotionMessage: "",
 
       // 充值上方跑馬燈&支付方式高度
-      depositWrapMarignTop: 70
+      depositWrapMarignTop: 70,
+      manualCard: false, //極速存款-手動配卡
+      successAlert: false
     };
   },
   watch: {
@@ -399,6 +401,11 @@ export default {
      * @return string
      */
     receiptInfo() {
+      //極速存款bank_id=464（手動配卡）不需顯示
+      if (this.curPayInfo.bank_id === 464) {
+        return;
+      }
+
       if (this.curPassRoad.safe_account === false) {
         // 支付轉帳
         if (
@@ -1105,6 +1112,12 @@ export default {
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
+          //手動配卡提交成功顯示彈窗
+          if (ret.remit.is_manual_card) {
+            this.manualCard = true;
+            this.successAlert = true;
+          }
+
           if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -1224,7 +1237,6 @@ export default {
             };
             return { status: "third" };
           }
-
           return { status: "local" };
 
           // 停權？
@@ -1645,6 +1657,11 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    goBack() {
+      this.successAlert = false;
+      this.$emit("update:submitStatus", "stepOne");
+      window.scrollTo(0, 0);
     }
   }
 };

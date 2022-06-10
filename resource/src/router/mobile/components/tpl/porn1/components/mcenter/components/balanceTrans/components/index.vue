@@ -576,7 +576,6 @@ export default {
       //   }
     });
     this.getDomainConfig();
-    // this.getRecentlyOpened()
     this.initTranList(true);
     this.getRedJackpot();
   },
@@ -955,9 +954,12 @@ export default {
       }
     },
     getRecentlyOpened() {
-      mcenter.lastVendor({
-        success: response => {
-          this.recentlyData = response.ret;
+      goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Last`
+      }).then(res => {
+        if (res && res.status === "000") {
+          this.recentlyData = res.data;
         }
       });
     },

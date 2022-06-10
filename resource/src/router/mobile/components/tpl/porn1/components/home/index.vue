@@ -129,7 +129,6 @@ export default {
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Float/Image/List`
       }).then(res => {
-        // console.log(res);
         if (res.status === "000") {
           if (!localStorage.getItem("do-not-show-float-list")) {
             localStorage.setItem("do-not-show-float-list", JSON.stringify([]));

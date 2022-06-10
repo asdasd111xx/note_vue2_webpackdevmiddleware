@@ -104,6 +104,7 @@ import { mapGetters, mapActions } from "vuex";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import mixin from "@/mixins/mcenter/message/message";
 import mobileLinkOpen from "@/lib/mobile_link_open";
+import i18n from "@/config/i18n";
 
 export default {
   mixins: [mixin],
@@ -247,10 +248,16 @@ export default {
             default:
               break;
           }
+
+          let lang = i18n.locale.toString().replace("-", "_");
+          let lang_entrance = lang + "_entrance";
+
           this.mobileLinkOpen({
             linkType: gameLinkType,
             linkTo: value.vendor,
-            linkItem: { "zh-cn": value.code }
+            linkItem: { "zh-cn": value.code },
+            title: value.title,
+            entrance: value[lang_entrance]
           });
           break;
         case 4:

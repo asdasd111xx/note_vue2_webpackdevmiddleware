@@ -279,3 +279,43 @@ export const site_95 = {
   YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
   YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2"
 };
+
+/**
+ * GM正式站 正式站正式環境
+ */
+export const site_100 = {
+  ...preset,
+  ROUTER_TPL: "aobo1",
+  MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
+  VERSION: getVersion("aobo1"),
+  SITE_NAME: "GM正式站",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "16",
+      YV: "9",
+      AV: "17"
+    }
+  },
+  CDN_HEADER: "x-cdn-ab"
+};
+
+/**
+ * 66VIP推廣站 正式站正式環境
+ */
+export const site_101 = {
+  ...preset,
+  ROUTER_TPL: "aobo1",
+  MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
+  VERSION: getVersion("aobo1"),
+  SITE_NAME: "66VIP推廣站",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
+  PORN_CONFIG: {
+    ID: {
+      SPACE: "16",
+      YV: "9",
+      AV: "17"
+    }
+  },
+  CDN_HEADER: "x-cdn-ab"
+};

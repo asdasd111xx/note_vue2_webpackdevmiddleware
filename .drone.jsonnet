@@ -350,6 +350,16 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
             ,"prod","sp51-frontend-prod","","sp51-frontend-nginx-config-prod"
             ,"yaboxxx-web","10.17.1.94","sp51","istio","env","prod"),
 
+        # istio-gm            
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"prod","gm-frontend-prod","","gm-frontend-nginx-config-prod"
+            ,"yaboxxx-web","10.17.1.94","gm","istio","env","prod"),
+        
+        # istio-vip66    
+        onlyGKE("Prod","yaboxxx-prod","asia-east1-b"
+            ,"prod","vip66-frontend-prod","","vip66-frontend-nginx-config-prod"
+            ,"yaboxxx-web","10.17.1.94","vip66","istio","env","prod"),
+
  
     ],
     trigger:
@@ -371,6 +381,21 @@ local buildall(name="QA",imageName="yaboxxx-landingpage",shortProduct="yb")={
     // Pipeline("QA","yaboxxx-test","asia-east1-b"
     //     ,"qa","yiyuan-frontend-proxy-qa","","yiyuan-frontend-proxy-nginx-config-qa"
     //     ,"yaboxxx-web","","yiyuan","istio","ey","env","qa"),
+    
+    #istio gm
+
+    Pipeline("Prod","yaboxxx-prod","asia-east1-b"
+    ,"prod","gm-frontend-prod","","gm-frontend-nginx-config-prod"
+    ,"yaboxxx-web","10.17.1.94","gm","istio","gm","env","prod"),    
+
+    #istio vip66
+
+    Pipeline("Prod","yaboxxx-prod","asia-east1-b"
+    ,"prod","vip66-frontend-prod","","vip66-frontend-nginx-config-prod"
+    ,"yaboxxx-web","10.17.1.94","vip66","istio","vip66","env","prod"),
+    
+
+    
     # istio-sp51
 
 
