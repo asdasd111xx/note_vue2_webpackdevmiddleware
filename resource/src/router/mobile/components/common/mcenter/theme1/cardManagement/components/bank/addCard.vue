@@ -8,7 +8,9 @@
     </p>
     <template v-if="addBankCardStep === 'one'">
       <div v-if="notMyBankSwitch" :class="$style['notMyBank-wrap']">
-        <span :class="$style['username']">您好，{{ username }}**</span>
+        <span :class="$style['username']" v-if="username"
+          >您好，{{ username }}**</span
+        >
         <p :class="$style['username-tip']">
           请填写跟持卡人一致的银行卡信息。
         </p>
@@ -78,7 +80,10 @@
           </div>
         </div>
       </div>
-      <p v-if="!memInfo.user.name" :class="$style['username-remind']">
+      <p
+        v-if="!notMyBankSwitch && !memInfo.user.name"
+        :class="$style['username-remind']"
+      >
         为了您的资金能够迅速到帐，请确保填写的姓名与银行卡的开户姓名一致
       </p>
     </template>

@@ -34,22 +34,6 @@ export default {
       thirdyCaptchaObj: null,
       isShowCaptcha: false,
       isClickedCaptcha: false,
-      chooseName: [
-        {
-          key: 0,
-          title: "本人",
-          name: "",
-          placehoder: "",
-          disabled: true
-        },
-        {
-          key: 1,
-          title: "非本人",
-          name: "",
-          placeholder: "请输入持卡人姓名，仅支持中文、“·”",
-          disabled: false
-        }
-      ],
       chooseNameResult: {},
       notMyBankSwitch: false,
       isShowPop: false
@@ -69,7 +53,7 @@ export default {
       if (!this.memInfo.user.name) {
         return "";
       }
-      console.log(this.memInfo.user);
+
       return this.memInfo.user.name.slice(0, 1);
 
       // return this.memInfo.user.name
@@ -99,6 +83,24 @@ export default {
       }
 
       return result;
+    },
+    chooseName() {
+      return [
+        {
+          key: 0,
+          title: "本人",
+          name: this.username ? this.username + "**" : "",
+          placeholder: this.username ? "" : "请输入持卡人姓名，仅支持中文、“·”",
+          disabled: this.username ? true : false
+        },
+        {
+          key: 1,
+          title: "非本人",
+          name: "",
+          placeholder: "请输入持卡人姓名，仅支持中文、“·”",
+          disabled: false
+        }
+      ];
     }
   },
   watch: {
@@ -130,7 +132,6 @@ export default {
     }
   },
   created() {
-    this.chooseName[0].name = this.username ? this.username + "**" : "";
     this.chooseNameResult = this.chooseName[0];
 
     this.actionSetNotMyBankSwitch().then(() => {
@@ -138,7 +139,10 @@ export default {
         this.getWidthdrawList().then(data => {
           if (data.length > 0) {
             this.notMyBankSwitch = true;
-            delete this.formData["accountName"];
+
+            if (this.username) {
+              delete this.formData["accountName"];
+            }
           }
         });
       }
