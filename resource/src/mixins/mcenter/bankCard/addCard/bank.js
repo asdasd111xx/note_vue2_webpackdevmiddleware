@@ -46,12 +46,13 @@ export default {
           key: 1,
           title: "非本人",
           name: "",
-          placeholder: "请输入持卡人姓名",
+          placeholder: "请输入持卡人姓名，仅支持中文、“·”",
           disabled: false
         }
       ],
       chooseNameResult: {},
-      notMyBankSwitch: false
+      notMyBankSwitch: false,
+      isShowPop: false
     };
   },
   computed: {
@@ -68,7 +69,7 @@ export default {
       if (!this.memInfo.user.name) {
         return "";
       }
-
+      console.log(this.memInfo.user);
       return this.memInfo.user.name.slice(0, 1);
 
       // return this.memInfo.user.name
@@ -253,38 +254,31 @@ export default {
           kind: "pwa"
         },
         params
-      })
-        .then(response => {
-          const { status, errorCode, msg } = response;
+      }).then(response => {
+        const { status, errorCode, msg, code } = response;
 
-          if (errorCode !== "00" || status !== "000") {
-            this.lockStatus = false;
-            this.errorMsg = msg;
-
-            // if (this.addBankCardStep === "one") {
-            //   this.msg = msg;
-            // }
-            return;
-          }
-
-          this.msg = "绑定成功";
+        if (errorCode !== "00" || status !== "000") {
           this.lockStatus = false;
-          this.addBankCardStep === "one";
 
-          if (!this.memInfo.user.name) {
-            this.actionSetUserdata(true);
-          }
-        })
-        .catch(error => {
-          const { msg } = error.response.data;
-
-          this.lockStatus = false;
           this.errorMsg = msg;
+          if (this.addBankCardStep === "one") {
+            this.isShowPop = true;
+          }
 
           // if (this.addBankCardStep === "one") {
           //   this.msg = msg;
           // }
-        });
+          return;
+        }
+
+        this.msg = "绑定成功";
+        this.lockStatus = false;
+        this.addBankCardStep === "one";
+
+        if (!this.memInfo.user.name) {
+          this.actionSetUserdata(true);
+        }
+      });
 
       // ajax({
       //   method: "post",
@@ -327,7 +321,7 @@ export default {
 
       if (key === "notMyBankName") {
         const regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-        value = value.replace(regex, "").substring(0, 20);
+        value = value.replace(regex, "").substring(0, 30);
 
         //accountName開戶姓名 (非本人銀行卡時必填)
         this.formData.accountName = this.chooseNameResult.name = value;

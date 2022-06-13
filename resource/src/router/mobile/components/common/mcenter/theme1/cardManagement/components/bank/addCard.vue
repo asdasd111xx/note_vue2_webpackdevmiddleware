@@ -37,6 +37,7 @@
             v-model="chooseNameResult.name"
             :placeholder="chooseNameResult.placeholder"
             :disabled="chooseNameResult.disabled"
+            maxlength="30"
             @input="checkData($event.target.value, 'notMyBankName')"
           />
           <div :class="$style['clear-input']" v-if="formData.accountName">
@@ -242,6 +243,21 @@
         {{ msg }}
       </div>
     </message>
+
+    <div v-if="isShowPop" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" />
+      <div :class="$style['pop-block']">
+        <div :class="$style['content']">
+          <span>{{ errorMsg }}</span>
+        </div>
+
+        <div :class="[$style['button-block']]">
+          <span @click="isShowPop = false">
+            {{ $text("S_CLOSE", "关闭") }}
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

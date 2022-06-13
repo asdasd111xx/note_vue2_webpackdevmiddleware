@@ -101,7 +101,10 @@
       删除审核中
     </div>
 
-    <div v-if="isStopped" :class="[$style['card__status-stopped']]">
+    <div
+      v-if="isStopped && !isOther.other"
+      :class="[$style['card__status-stopped']]"
+    >
       停用
     </div>
 
