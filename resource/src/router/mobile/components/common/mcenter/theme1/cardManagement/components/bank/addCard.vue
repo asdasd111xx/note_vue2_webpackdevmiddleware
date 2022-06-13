@@ -48,7 +48,9 @@
           </div>
           <div
             :class="$style['line']"
-            :style="{ width: chooseNameResult.placeholder ? '100%' : '115px' }"
+            :style="{
+              width: chooseNameResult.placeholder ? '100%' : '95px'
+            }"
           ></div>
         </div>
         <div v-else :class="$style['input-wrap']">
