@@ -320,7 +320,7 @@ export default {
       }
 
       if (key === "notMyBankName") {
-        const regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+        const regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·..]/g;
         value = value.replace(regex, "").substring(0, 30);
 
         //accountName開戶姓名 (非本人銀行卡時必填)
