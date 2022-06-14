@@ -98,6 +98,17 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    //未登入觀影開關
+    //true:未登入可觀影，false:未登入不可觀影
+    noLoginVideoSwitch() {
+      return this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
+    },
+    //免費區專用-未登入觀影開關
+    //true:未登入可觀影，false:未登入不可觀影
+    noLoginVideoSwitchFree() {
+      return this.yaboConfig.find(i => i.name === "NoLoginVideoSwitchFree")
+        .value;
     }
   },
   mounted() {
@@ -707,17 +718,24 @@ export default {
           this.isInit = true;
         }, 400);
 
-        let noLoginVideoSwitch = this.yaboConfig.find(
-          i => i.name === "NoLoginVideoSwitch"
-        ).value;
-
-        if (noLoginVideoSwitch === "false" && !this.loginStatus) {
-          this.disableVideo = true;
-          return;
+        //免費區-未登入不可觀影
+        if (this.$route.query.source.includes("free")) {
+          if (this.noLoginVideoSwitchFree === "false" && !this.loginStatus) {
+            this.disableVideo = true;
+            return;
+          }
+        } else {
+          //其他區-未登入不可觀影
+          if (this.noLoginVideoSwitch === "false" && !this.loginStatus) {
+            this.disableVideo = true;
+            return;
+          }
         }
 
         // 訪客模式/一般模式
-        this.isUnloginMode = noLoginVideoSwitch === "false";
+        this.isUnloginMode =
+          this.noLoginVideoSwitch === "false" ||
+          this.noLoginVideoSwitchFree === "false";
         if (this.isActiveBouns) {
           this.$refs.bonunsProcess.processType = "process";
         }
