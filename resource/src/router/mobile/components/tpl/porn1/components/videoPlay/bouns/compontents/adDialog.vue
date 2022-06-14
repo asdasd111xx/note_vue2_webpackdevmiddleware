@@ -141,7 +141,9 @@ export default {
             //   // linkTitle: "    ",
             //   linkTo: this.adData.AdUrl
             // });
-            newWindow.location.href = this.adData.AdUrl;
+            setTimeout(() => {
+              newWindow.location.href = this.adData.AdUrl;
+            }, 200);
           }
         }
       });
