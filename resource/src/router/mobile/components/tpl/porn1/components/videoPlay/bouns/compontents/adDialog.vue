@@ -109,6 +109,7 @@ export default {
       this.getPromotionList(usmCode);
     },
     getPromotionList(id) {
+      let newWindow = window.open();
       this.promotionId = +id;
       goLangApiRequest({
         method: "get",
@@ -125,20 +126,22 @@ export default {
             localStorage.setItem("iframe-third-url", linkData.link);
             localStorage.setItem("iframe-third-url-title", linkData.name);
             this.$router.push(`/mobile/iframe/usm`);
+            newWindow.close();
             // this.mobileLinkOpen({
             //   linkType: "mi",
             //   linkTitle: linkData.name,
             //   linkTo: linkData.link
             // });
           } else {
-            localStorage.setItem("iframe-third-url", this.adData.AdUrl);
-            localStorage.setItem("iframe-third-url-title", "  ");
-            this.$router.push(`/mobile/iframe/usm`);
+            // localStorage.setItem("iframe-third-url", this.adData.AdUrl);
+            // localStorage.setItem("iframe-third-url-title", "  ");
+            // this.$router.push(`/mobile/iframe/usm`);
             // this.mobileLinkOpen({
-            //   linkType: "mi",
-            //   linkTitle: "    ",
+            //   linkType: "external",
+            //   // linkTitle: "    ",
             //   linkTo: this.adData.AdUrl
             // });
+            newWindow.location.href = this.adData.AdUrl;
           }
         }
       });
