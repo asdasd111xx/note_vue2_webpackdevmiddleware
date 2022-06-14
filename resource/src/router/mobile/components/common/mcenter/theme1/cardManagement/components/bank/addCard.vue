@@ -18,7 +18,12 @@
       <div :class="$style['username-wrap']">
         <p :class="$style['input-title']">持卡人姓名</p>
         <div v-if="notMyBankSwitch" :class="$style['select-name-wrap']">
-          <div :class="$style['select-wrap']">
+          <div
+            :class="[
+              $style['select-wrap'],
+              { [$style['has-line']]: !chooseNameResult.placeholder }
+            ]"
+          >
             <select
               :class="$style['choose-name']"
               :value="chooseNameResult.title"
@@ -49,10 +54,7 @@
             />
           </div>
           <div
-            :class="$style['line']"
-            :style="{
-              width: chooseNameResult.placeholder ? '100%' : '95px'
-            }"
+            :class="[{ [$style['line']]: chooseNameResult.placeholder }]"
           ></div>
         </div>
         <div v-else :class="$style['input-wrap']">
