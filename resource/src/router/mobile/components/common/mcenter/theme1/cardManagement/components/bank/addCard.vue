@@ -44,7 +44,6 @@
             v-model="chooseNameResult.name"
             :placeholder="chooseNameResult.placeholder"
             :disabled="chooseNameResult.disabled"
-            maxlength="30"
             @input="checkData($event.target.value, 'notMyBankName')"
           />
           <div :class="$style['clear-input']" v-if="formData.accountName">
