@@ -112,8 +112,13 @@ export default {
   },
   created() {
     if (this.loginStatus) {
-      this.$router.replace("/mobile");
-      return;
+      if (this.siteConfig.ROUTER_TPL === "sg1") {
+        this.$router.replace("/mobile/live/iframe/home?hasFooter=true");
+        return;
+      } else {
+        this.$router.replace("/mobile");
+        return;
+      }
     }
     this.getCaptcha();
     this.phone = localStorage.getItem("mobileusername") || "";
