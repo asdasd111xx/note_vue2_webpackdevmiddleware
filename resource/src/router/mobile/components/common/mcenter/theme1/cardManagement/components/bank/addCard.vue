@@ -49,12 +49,6 @@
             :disabled="chooseNameResult.disabled"
             @input="checkData($event.target.value, 'notMyBankName')"
           />
-          <div :class="$style['clear-input']" v-if="formData.accountName">
-            <img
-              :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
-              @click="clearNotMyBankName"
-            />
-          </div>
           <div
             :class="[{ [$style['line']]: chooseNameResult.placeholder }]"
           ></div>
@@ -348,10 +342,6 @@ export default {
       } else {
         delete this.formData["accountName"];
       }
-      this.checkData();
-    },
-    clearNotMyBankName() {
-      this.formData.accountName = this.chooseNameResult.name = "";
       this.checkData();
     },
     verification(key) {
