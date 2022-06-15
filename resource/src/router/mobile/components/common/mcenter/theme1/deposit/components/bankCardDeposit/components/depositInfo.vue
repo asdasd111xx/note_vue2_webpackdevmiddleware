@@ -349,14 +349,14 @@ export default {
         })
       ) {
         showArray.push({
-            objKey: "yourBank",
-            title:
-              this.orderData.method_id === 3
-                ? this.$text("S_USE_BANK", "您的银行")
-                : this.$text("S_PAY_MODE", "支付方式"),
-            value: this.selectBank.name,
-            isFontBold: false
-          })
+          objKey: "yourBank",
+          title:
+            this.orderData.method_id === 3
+              ? this.$text("S_YOUR_BANK", "您的银行")
+              : this.$text("S_PAY_MODE", "支付方式"),
+          value: this.selectBank.name,
+          isFontBold: false
+        });
       }
 
       return showArray;

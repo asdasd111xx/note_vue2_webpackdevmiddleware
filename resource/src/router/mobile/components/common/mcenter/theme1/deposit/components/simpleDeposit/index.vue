@@ -26,8 +26,7 @@
                 :class="[
                   $style['pay-mode-item'],
                   {
-                    [$style['is-current']]:
-                      simpleCurPayInfo.id === info.id
+                    [$style['is-current']]: simpleCurPayInfo.id === info.id
                   }
                 ]"
                 @click="changeSimplePayMode(info, index)"
@@ -49,15 +48,11 @@
                 />
 
                 <div :class="$style['pay-main-title']">
-                  {{
-                    info.name
-                  }}
+                  {{ info.name }}
                 </div>
 
                 <img
-                  v-if="
-                    simpleCurPayInfo.id === info.id 
-                  "
+                  v-if="simpleCurPayInfo.id === info.id"
                   :class="$style['pay-active']"
                   :src="$getCdnPath(`/static/image/common/select_active.png`)"
                 />
@@ -113,129 +108,133 @@
           </div>
           <!-- 幣別 -->
           <div
-              v-if="
-                simpleCurPayInfo.content.length > 1 
-              "
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <div :class="$style['bank-feature-wrap']">
-                <div
-                  v-for="info in simpleCurPayInfo.content"
-                  :key="info.currency"
-                  :class="[
-                    $style['pay-mode-pass'],
-                    $style['pay-mode-currency'],
-                    { [$style['current-data']]: info.currency === simpleCurrency.currency }
-                  ]"
-                  @click="changeSimpleCurrency(info)"
-                >
-                  {{ info.currency }}
-                  <img
-                    v-if="info.currency === simpleCurrency.currency"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
+            v-if="simpleCurPayInfo.content.length > 1"
+            :class="[$style['feature-wrap'], 'clearfix']"
+          >
+            <div :class="$style['bank-feature-wrap']">
+              <div
+                v-for="info in simpleCurPayInfo.content"
+                :key="info.currency"
+                :class="[
+                  $style['pay-mode-pass'],
+                  $style['pay-mode-currency'],
+                  {
+                    [$style['current-data']]:
+                      info.currency === simpleCurrency.currency
+                  }
+                ]"
+                @click="changeSimpleCurrency(info)"
+              >
+                {{ info.currency }}
+                <img
+                  v-if="info.currency === simpleCurrency.currency"
+                  :class="$style['pay-active']"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                />
               </div>
             </div>
+          </div>
           <!-- 類型 -->
           <div
-              v-if="
-                simpleCurrency.data.length > 1 
-              "
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <div :class="$style['bank-feature-wrap']">
-                <div
-                  v-for="data in simpleCurrency.data"
-                  :key="data.currency"
-                  :class="[
-                    $style['pay-mode-pass'],
-                    $style['pay-mode-currency'],
-                    { [$style['current-data']]: data.method_id === simplePayType.method_id }
-                  ]"
-                  @click="changeSimplePayType(data)"
-                >
-                  {{ data.method_name }}
-                  <img
-                    v-if="data.method_id === simplePayType.method_id"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
+            v-if="simpleCurrency.data.length > 1"
+            :class="[$style['feature-wrap'], 'clearfix']"
+          >
+            <div :class="$style['bank-feature-wrap']">
+              <div
+                v-for="data in simpleCurrency.data"
+                :key="data.currency"
+                :class="[
+                  $style['pay-mode-pass'],
+                  $style['pay-mode-currency'],
+                  {
+                    [$style['current-data']]:
+                      data.method_id === simplePayType.method_id
+                  }
+                ]"
+                @click="changeSimplePayType(data)"
+              >
+                {{ data.method_name }}
+                <img
+                  v-if="data.method_id === simplePayType.method_id"
+                  :class="$style['pay-active']"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                />
               </div>
             </div>
+          </div>
           <!-- 通道 -->
           <div
-              v-if="
-                simplePayType.channels.length > 0 || simplePayType.tags.length > 0
-              "
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <div :class="$style['bank-feature-wrap']">
-                <div
-                  v-for="road in simplePayType.channels"
-                  :key="road.id"
-                  :class="[
-                    $style['pay-mode-pass'],
-                    $style['pay-mode-rode'],
-                    { [$style['current-data']]: road.id === simplePayRode.id }
-                  ]"
-                  @click="changeSimpleRoad(road)"
-                >
-                  {{ road.name }}
-                  <img
-                    v-if="tipTrans[road.display_tag]"
-                    :src="
-                      $getCdnPath(
-                        `/static/image/common/mcenter/deposit/icon_${
-                          tipTrans[road.display_tag]
-                        }.png`
-                      )
-                    "
-                    :class="$style['pay-mode-tag']"
-                  />
-                  <img
-                    v-if="road.id === simplePayRode.id"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
-                <div
-                  v-for="road in simplePayType.tags"
-                  :key="road.id"
-                  :class="[
-                    $style['pay-mode-pass'],
-                    $style['pay-mode-rode'],
-                    { [$style['current-data']]: road.id === simplePayRode.id }
-                  ]"
-                  @click="changeSimpleRoad(road)"
-                >
-                  {{ tipTransName[road.name] }}
-                  <img
-                    v-if="road.id === simplePayRode.id"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
+            v-if="
+              simplePayType.channels.length > 0 || simplePayType.tags.length > 0
+            "
+            :class="[$style['feature-wrap'], 'clearfix']"
+          >
+            <div :class="$style['bank-feature-wrap']">
+              <div
+                v-for="(road, index) in simplePayType.channels"
+                :key="road.id"
+                :class="[
+                  $style['pay-mode-pass'],
+                  $style['pay-mode-rode'],
+                  { [$style['current-data']]: road.id === simplePayRode.id }
+                ]"
+                @click="changeSimpleRoad(road)"
+              >
+                {{ `通道${index + 1}` }}
+                <img
+                  v-if="tipTrans[road.display_tag]"
+                  :src="
+                    $getCdnPath(
+                      `/static/image/common/mcenter/deposit/icon_${
+                        tipTrans[road.display_tag]
+                      }.png`
+                    )
+                  "
+                  :class="$style['pay-mode-tag']"
+                />
+                <img
+                  v-if="road.id === simplePayRode.id"
+                  :class="$style['pay-active']"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                />
               </div>
               <div
-                v-if="simplePayRode.tip != ''"
+                v-for="road in simplePayType.tags"
+                :key="road.id"
                 :class="[
-                  $style['pass-road-text'],
-                  [
-                    simplePayRodeTipTextShowMore
-                      ? [$style['pay-mode-tip-show']]
-                      : [$style['pay-mode-tip-close']]
-                  ]
+                  $style['pay-mode-pass'],
+                  $style['pay-mode-rode'],
+                  { [$style['current-data']]: road.id === simplePayRode.id }
                 ]"
+                @click="changeSimpleRoad(road)"
               >
-                <div
-                  :class="[$style['pay-mode-tip'], $style[themeTPL]]"
-                  v-html="simplePayRodeTipText"
-                ></div>
+                {{ tipTransName[road.name] }}
+                <img
+                  v-if="road.id === simplePayRode.id"
+                  :class="$style['pay-active']"
+                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                />
               </div>
             </div>
+            <div
+              v-if="
+                simplePayType.channels.length > 0 && simplePayRode.tip != ''
+              "
+              :class="[
+                $style['pass-road-text'],
+                [
+                  simplePayRodeTipTextShowMore
+                    ? [$style['pay-mode-tip-show']]
+                    : [$style['pay-mode-tip-close']]
+                ]
+              ]"
+            >
+              <div
+                :class="[$style['pay-mode-tip'], $style[themeTPL]]"
+                v-html="simplePayRodeTipText"
+              ></div>
+            </div>
+          </div>
 
           <template v-if="simplePayType.method_id !== 20">
             <!-- 充值人姓名 -->
@@ -345,11 +344,13 @@
 
             <div
               v-if="
-                  simplePayRodeTipText != '' &&
+                simplePayRodeTipText != '' &&
                   !isSelectBindWallet(402) &&
                   !isSelectBindWallet(404)
               "
-              @click="simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore"
+              @click="
+                simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
+              "
               :class="$style['show-more-header']"
             >
               <span>通道提示详情</span>
@@ -512,8 +513,10 @@
             <!-- 存款金額 -->
             <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
             <div
-              v-if="(isSelectBindWallet() && simplePayType.is_bind_wallet) ||
-                  !isSelectBindWallet()"
+              v-if="
+                (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
+                  !isSelectBindWallet()
+              "
               :class="[
                 $style['feature-wrap'],
                 $style['select-money'],
@@ -553,8 +556,8 @@
                   />
                 </div> -->
 
-                <!-- 自訂金額 -->
-                <!-- <div
+              <!-- 自訂金額 -->
+              <!-- <div
                   v-if="simplePayFeeData &&
                       simplePayFeeData.is_custom_amount &&
                       simplePayFeeData.amounts.length > 0"
@@ -583,7 +586,7 @@
                     <br />
                     <span>
                       ({{
-                        getSingleLimit(
+                        getSampleSingleLimit(
                           simplePayFeeData.per_trade_min,
                           simplePayFeeData.per_trade_max
                         )
@@ -620,11 +623,12 @@
                       }
                     ]"
                     :placeholder="
-                      getSingleLimit(
+                      getSampleSingleLimit(
                         simplePayFeeData.per_trade_min,
                         simplePayFeeData.per_trade_max,
                         'placeholder'
-                      )"
+                      )
+                    "
                     type="text"
                     inputmode="decimal"
                     @blur="
@@ -649,7 +653,8 @@
                         ) {
                           moneyUSDT($event);
                         }
-                      }"
+                      }
+                    "
                   />
                 </div>
                 <span :class="$style['deposit-input-icon']">¥</span>
@@ -658,7 +663,7 @@
               <!-- 金額錯誤訊息 -->
               <div v-if="isErrorMoney" :class="$style['money-input-tip']">
                 {{
-                  getSingleLimit(
+                  getSampleSingleLimit(
                     simplePayFeeData.per_trade_min,
                     simplePayFeeData.per_trade_max,
                     "placeholder"
@@ -944,7 +949,9 @@
             >
               实际到帐： ¥{{ realSaveMoney }}
               <span
-                v-if="simplePayType.offer_enable && +simplePayType.offer_percent > 0"
+                v-if="
+                  simplePayType.offer_enable && +simplePayType.offer_percent > 0
+                "
                 @click="showRealStatusType(true)"
               >
                 (充值优惠)
@@ -976,13 +983,14 @@
                 >
                   <li :class="$style['tip-list']" v-html="promitionText" />
                 </template>
-                <li
+                <!-- 簡易模式無手續費 -->
+                <!-- <li
                   v-if="
                     +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
                   "
                 >
                   • {{ feeText }}
-                </li>
+                </li> -->
 
                 <li>• 实际存入依审核结果为准</li>
               </ul>
@@ -1028,7 +1036,8 @@
                   !checkSuccess ||
                   isBlockChecking ||
                   nameCheckFail ||
-                  (isSelectBindWallet() && !this.simplePayType.is_bind_wallet) ||
+                  (isSelectBindWallet() &&
+                    !this.simplePayType.is_bind_wallet) ||
                   (isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
                     !isClickCoversionBtn) ||
                   (isSelectBindWallet(16) &&
@@ -1067,10 +1076,7 @@
               {{ $text("S_TIPS", "温馨提示") }}
             </p>
             <!-- eslint-disable vue/no-v-html -->
-            <div
-              :class="$style['warm-tip']"
-              v-html="simpleCurPayInfo.memo"
-            />
+            <div :class="$style['warm-tip']" v-html="simpleCurPayInfo.memo" />
             <!-- eslint-enable vue/no-v-html -->
           </div>
         </div>
@@ -1105,7 +1111,7 @@
           <div :class="$style['pop-menu']">
             <div :class="$style['pop-title']">
               <span @click.stop="setPopupStatus(false, '')">
-                {{$text("S_CANCEL", "取消")}}
+                {{ $text("S_CANCEL", "取消") }}
               </span>
               选择银行
             </div>
@@ -1116,13 +1122,13 @@
                 :key="item.selectId"
                 @click.stop="changeSimplePayBank(item)"
               >
-              <img v-lazy="getImg(item.image_url)" />
+                <img v-lazy="getImg(item.image_url)" />
                 {{ item.name }}
-              <icon
-                v-if="item.swift_code === simplePayBank.swift_code"
-                :class="[$style['select-active']]"
-                name="check"
-              />
+                <icon
+                  v-if="item.swift_code === simplePayBank.swift_code"
+                  :class="[$style['select-active']]"
+                  name="check"
+                />
               </li>
             </ul>
           </div>
@@ -1233,7 +1239,9 @@ import { getCookie } from "@/lib/cookie";
 export default {
   components: {
     depositInfo: () =>
-      import(/* webpackChunkName: 'depositInfo' */ "../bankCardDeposit/components/depositInfo"),
+      import(
+        /* webpackChunkName: 'depositInfo' */ "../bankCardDeposit/components/depositInfo"
+      ),
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
@@ -1318,32 +1326,29 @@ export default {
       isShowOSPPwd: false,
       bcMoneyShowType: false,
 
-
-
-
       simplePayRodeTipText: "",
       simplePayRodeTipTextShowMore: true,
       simpleCurPayInfo: {},
-      simplePayBank:{},
-      simpleCurrency:{},
-      simplePayType:{},
-      simplePayRode:{},
-      simplePayFeeData:{
-        amounts:"",
-        fee_amount:"",
-        fee_percent:"",
-        is_custom_amount:"",
-        is_recommend_amount:"",
-        per_trade_max:"",
-        per_trade_min:"",
+      simplePayBank: {},
+      simpleCurrency: {},
+      simplePayType: {},
+      simplePayRode: {},
+      simplePayFeeData: {
+        amounts: "",
+        fee_amount: "",
+        fee_percent: "",
+        is_custom_amount: "",
+        is_recommend_amount: "",
+        per_trade_max: "",
+        per_trade_min: ""
       },
-      simplePayField:[],
+      simplePayField: []
     };
   },
   watch: {
-    simplePayType(){
+    simplePayType() {
       console.log("simplePayType", this.simplePayType);
-      this.simplePayRodeTipText = '';
+      this.simplePayRodeTipText = "";
       this.showEpointWalletAddress = this.isSelectBindWallet(34, 41)
         ? this.defaultEpointWallet.account === "新增挂单银行卡"
         : false;
@@ -1364,7 +1369,10 @@ export default {
             );
           }, 500);
         } else {
-          this.simplePayRodeTipText = this.simplePayRode.tip.replace("\n", "<br>");
+          this.simplePayRodeTipText = this.simplePayRode.tip.replace(
+            "\n",
+            "<br>"
+          );
         }
       }
     },
@@ -1731,7 +1739,7 @@ export default {
             // if (this.simplePayFeeData.amounts.length > 0) {
             //   this.changeSimpleMoney(this.simplePayFeeData.amounts[0]);
             // } else {
-              this.changeSimpleMoney("", true);
+            this.changeSimpleMoney("", true);
             // }
             this.cryptoMoney = "--";
             this.resetTimerStatus();
@@ -1820,8 +1828,11 @@ export default {
           this.displayMoneyValue = this.moneyValue
             ? this.formatThousandsCurrency(this.moneyValue)
             : "";
-          this.isErrorMoney = (+this.simplePayFeeData.per_trade_min && +this.simplePayFeeData.per_trade_min > this.moneyValue) ||
-            (+this.simplePayFeeData.per_trade_max >0 && +this.simplePayFeeData.per_trade_max < this.moneyValue)
+          this.isErrorMoney =
+            (+this.simplePayFeeData.per_trade_min &&
+              +this.simplePayFeeData.per_trade_min > this.moneyValue) ||
+            (+this.simplePayFeeData.per_trade_max > 0 &&
+              +this.simplePayFeeData.per_trade_max < this.moneyValue);
 
           this.cryptoMoney = val ? this.cryptoMoney : "--";
 
@@ -1850,7 +1861,6 @@ export default {
             target: "name",
             value: value
           }).then(val => {
-
             this.speedField.depositName = val;
           });
         }
@@ -1919,8 +1929,8 @@ export default {
     showRealStatusType(type) {
       this.showRealStatus = type;
       if (type) {
-        // this.getSimplePayOffer(this.moneyValue);
-        console.log("get offer??");
+        this.getSimplePayOffer(this.moneyValue);
+        // console.log("get offer??");
       }
     },
     onClickService() {
@@ -2040,20 +2050,27 @@ export default {
       this.resetStatus();
       this.resetTimerStatus();
       this.simpleCurPayInfo = info;
-      console.log("simpleCurPayInfo" ,this.simpleCurPayInfo);
+      console.log("simpleCurPayInfo", this.simpleCurPayInfo);
       //代客充值
       if (this.simpleCurPayInfo.bank_swift_code === "BBVALREC") {
         this.checkSuccess = true;
       } else {
         this.checkSuccess = false;
       }
-      this.changeSimpleCurrency(this.simpleCurPayInfo.content[0])
+      if (this.simpleCurPayInfo.is_link) {
+        let openPage = window.open(this.simpleCurPayInfo.link, "_blank");
+        return;
+      }
+      this.changeSimpleCurrency(this.simpleCurPayInfo.content[0]);
 
-      if ([25,30,37,38,402,404].includes(this.simplePayType.method_id)) {
+      if ([25, 30, 37, 38, 402, 404].includes(this.simplePayType.method_id)) {
         this.resetTimerStatus(); //讓timeUSDT()跑進this.countdownSec === 0
       }
-      if(this.simpleCurPayInfo.banks && this.simpleCurPayInfo.banks.length > 0){
-        this.changeSimplePayBank(this.simpleCurPayInfo.banks[0])
+      if (
+        this.simpleCurPayInfo.banks &&
+        this.simpleCurPayInfo.banks.length > 0
+      ) {
+        this.changeSimplePayBank(this.simpleCurPayInfo.banks[0]);
       }
 
       // if (
@@ -2077,29 +2094,29 @@ export default {
      * 切換銀行
      * @method changeSimplePayBank
      */
-    changeSimplePayBank(info){
+    changeSimplePayBank(info) {
       this.simplePayBank = info;
-        this.setPopupStatus(false, '');
+      this.setPopupStatus(false, "");
     },
-     /**
+    /**
      * 切換幣別
      * @method changeSimpleCurrency
      */
     changeSimpleCurrency(info) {
-      this.simpleCurrency = info
-      this.changeSimplePayType(info.data[0])
+      this.simpleCurrency = info;
+      this.changeSimplePayType(info.data[0]);
     },
     /**
      * 切換類型
      * @method changeSimplePayType
      */
     changeSimplePayType(info) {
-      this.simplePayType = info
-      if(this.simplePayType.channels.length >0){
-        this.changeSimpleRoad(this.simplePayType.channels[0])
-      }else if(this.simplePayType.tags.length >0){
-        this.changeSimpleRoad(this.simplePayType.tags[0])
-      }else{
+      this.simplePayType = info;
+      if (this.simplePayType.channels.length > 0) {
+        this.changeSimpleRoad(this.simplePayType.channels[0]);
+      } else if (this.simplePayType.tags.length > 0) {
+        this.changeSimpleRoad(this.simplePayType.tags[0]);
+      } else {
         this.changeSimpleRoad(null);
         this.setSimpleFeeData(info);
       }
@@ -2108,9 +2125,9 @@ export default {
      * 切換通道
      * @method changeSimplePayType
      */
-    changeSimpleRoad(info){
+    changeSimpleRoad(info) {
       this.simplePayRode = info;
-      this.setSimpleFeeData(info)
+      this.setSimpleFeeData(info);
     },
     /**
      * 選擇通道金額
@@ -2139,8 +2156,10 @@ export default {
       if (
         this.isErrorMoney ||
         !this.moneyValue ||
-        (+this.simplePayFeeData.per_trade_min && +this.simplePayFeeData.per_trade_min > +this.moneyValue) || 
-        (+this.simplePayFeeData.per_trade_max && +this.simplePayFeeData.per_trade_max < +this.moneyValue)
+        (+this.simplePayFeeData.per_trade_min &&
+          +this.simplePayFeeData.per_trade_min > +this.moneyValue) ||
+        (+this.simplePayFeeData.per_trade_max &&
+          +this.simplePayFeeData.per_trade_max < +this.moneyValue)
       ) {
         console.log("checkSuccess faile");
         this.checkSuccess = false;
@@ -2151,21 +2170,21 @@ export default {
      * 設定充值金額資訊
      * @method setSimpleFeeData
      */
-    setSimpleFeeData(info){
-      if(info !== null){
+    setSimpleFeeData(info) {
+      if (info !== null) {
         this.simplePayFeeData = {
-          amounts:info.amounts,
-          fee_amount:info.fee_amount,
-          fee_percent:info.fee_percent,
-          is_custom_amount:info.is_custom_amount,
-          is_recommend_amount:info.is_recommend_amount,
-          per_trade_max:info.per_trade_max,
-          per_trade_min:info.per_trade_min,
-        }
+          amounts: info.amounts,
+          fee_amount: info.fee_amount,
+          fee_percent: info.fee_percent,
+          is_custom_amount: info.is_custom_amount,
+          is_recommend_amount: info.is_recommend_amount,
+          per_trade_max: info.per_trade_max,
+          per_trade_min: info.per_trade_min
+        };
         // if(this.simplePayFeeData.amounts.length > 0){
         //   this.changeSimpleMoney(this.simplePayFeeData.amounts[0])
         // }else{
-          this.changeSimpleMoney('', true);
+        this.changeSimpleMoney("", true);
         // }
       }
     },
@@ -2180,8 +2199,7 @@ export default {
       })
         .then(response => {
           const { result, ret, msg, code } = response.data;
-          let paymode =
-            this.simplePayType.method_id === 16 ? "CGPay" : "OSPay";
+          let paymode = this.simplePayType.method_id === 16 ? "CGPay" : "OSPay";
           if (!response || result !== "ok") {
             this.walletData[paymode].balance = "--";
             this.actionSetGlobalMessage({
@@ -2195,8 +2213,7 @@ export default {
         })
         .catch(error => {
           const { msg, code } = error.response.data;
-          let paymode =
-            this.simplePayType.method_id === 16 ? "CGPay" : "OSPay";
+          let paymode = this.simplePayType.method_id === 16 ? "CGPay" : "OSPay";
           this.walletData[paymode].balance = "--";
           this.actionSetGlobalMessage({
             msg,
@@ -2206,10 +2223,7 @@ export default {
     },
     // 取得存/取款加密貨幣試算金額
     convertCryptoMoney() {
-      if (
-        this.simplePayType.method_id === 32 &&
-        !this.selectBcCoin.currency
-      ) {
+      if (this.simplePayType.method_id === 32 && !this.selectBcCoin.currency) {
         return;
       }
       return axios({
@@ -2338,22 +2352,24 @@ export default {
         api_uri: "/api/trade/v2/c/simple/entry",
         method_id: this.simplePayType.method_id,
         amount: this.moneyValue,
-        username:"",        //使用者帳號(未登入入款必填)
+        username: "" //使用者帳號(未登入入款必填)
         // pay_username:"",    //使用者姓名(極速到帳必填 method_id = 6)
       };
 
       if (this.simplePayRode && this.simplePayRode.id) {
         paramsData = {
           ...paramsData,
-          tag_id:this.simplePayType.tags.length > 0 ? this.simplePayRode.id : "",          //通道標籤id
-          channel_id:this.simplePayType.channels.length > 0 ? this.simplePayRode.id : "",      //通道id
+          tag_id:
+            this.simplePayType.tags.length > 0 ? this.simplePayRode.id : "", //通道標籤id
+          channel_id:
+            this.simplePayType.channels.length > 0 ? this.simplePayRode.id : "" //通道id
         };
       }
       //銀行id (在線支付/點卡支付必填 method_id = 1,2)
-      if([1, 2].includes(this.simplePayType.method_id)){
+      if ([1, 2].includes(this.simplePayType.method_id)) {
         paramsData = {
           ...paramsData,
-          bank_id:this.simplePayBank.id,
+          bank_id: this.simplePayBank.id
         };
       }
 
@@ -2438,8 +2454,7 @@ export default {
           this.actionSetIsLoading(false);
 
           const { result, ret, msg, code } = response.data;
-          let _isWebview =
-            getCookie("platform") === "H";
+          let _isWebview = getCookie("platform") === "H";
           if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -2476,8 +2491,8 @@ export default {
           if (ret.remit.limit_time) {
             this.limitTime = ret.remit.limit_time;
           }
-          if(ret.remit.field && ret.remit.field.length > 0){
-            this.simplePayField = ret.remit.field
+          if (ret.remit.field && ret.remit.field.length > 0) {
+            this.simplePayField = ret.remit.field;
           }
 
           if (ret.deposit.url) {
@@ -2621,17 +2636,38 @@ export default {
         }
       });
     },
+    getSampleSingleLimit(minMoney, maxMoney) {
+      let str = "单笔充值金额：";
+
+      if (isNaN(minMoney) || isNaN(maxMoney)) {
+        return str;
+      }
+
+      minMoney = this.formatThousandsCurrency((+minMoney).toFixed(2));
+      maxMoney = this.formatThousandsCurrency((+maxMoney).toFixed(2));
+
+      switch (true) {
+        // 最大金額不為0的時候，顯示最小值~最大值
+        case Number(maxMoney) !== 0:
+          str += `¥${minMoney} ~ ¥${maxMoney}`;
+          break;
+
+        // 最小金額不為0的時候，顯示最低金額~无限制
+        case Number(minMoney) !== 0 && Number(maxMoney) === 0:
+          str += `¥${minMoney} ~ 无限制`;
+          break;
+
+        // 最大金額 & 最低金額 都為0的時候，顯示無限制
+        case Number(minMoney) === 0 && Number(maxMoney) === 0:
+          str += `无限制`;
+          break;
+      }
+
+      return str;
+    }
   }
 };
 </script>
 
-<style
-  lang="scss"
-  src="./css/porn1.scss"
-  module="$style_porn1"
-></style>
-<style
-  lang="scss"
-  src="./css/sg1.scss"
-  module="$style_sg1"
-></style>
+<style lang="scss" src="./css/porn1.scss" module="$style_porn1"></style>
+<style lang="scss" src="./css/sg1.scss" module="$style_sg1"></style>
