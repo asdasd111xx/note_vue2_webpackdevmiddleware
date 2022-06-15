@@ -54,7 +54,7 @@ export default {
         return "";
       }
 
-      return this.memInfo.user.name.slice(0, 1);
+      return this.memInfo.user.name;
 
       // return this.memInfo.user.name
       //   .split("")
