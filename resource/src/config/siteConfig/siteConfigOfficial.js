@@ -8,26 +8,15 @@ export const preset = {
   ...basic,
   BBOS_DOMIAN: "https://bbos.canarycherrytart.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
-
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api-v2",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.armadillobrulee.com",
-  CDN_HEADER: ""
+  YABO_GOLANG_API_DOMAIN: "",
+  ACTIVES_BOUNS_WEBSOCKET: "",
+  CDN_HEADER: "",
+  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_BASE_DOMAIN: [
+    "https://yaboapi.armadillobrulee.com",
+    "https://armadillobrulee.com"
+  ]
 };
-
-/* ---------- ↓ 正式站 ---------- */
-
-// domain list
-// yaboapi.dormousepie.com
-// yaboapi.gophertart.com
-// yaboapi.slothwafer.com
-// yaboapi.armadillobrulee.com
-// yaboapi.chimpanzeescone.com
-// yaboapi.duckbillcaramel.com
-// yaboapi.quailtortillas.com
-// yaboapi.parrotbostonpie.com
-// yaboapi.armadillobrulee.com
-// yaboapi.iguanagingercake.com
 
 /**
  * 币发BIFA 正式站正式環境
@@ -38,7 +27,6 @@ export const site_67 = {
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("porn1"),
   SITE_NAME: "币发BIFA",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -110,8 +98,13 @@ export const site_41 = {
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.chessrunroll.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://cxbb.chessrunroll.com/api-v2",
-  CDN_HEADER: "x-cdn-ey"
+  YABO_GOLANG_API_DOMAIN: "",
+  CDN_HEADER: "x-cdn-ey",
+  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_BASE_DOMAIN: [
+    "https://cxbb.chesspink.com",
+    "https://cxbb.chessrunroll.com"
+  ]
 };
 
 /**
@@ -151,7 +144,6 @@ export const site_80 = {
   MOBILE_WEB_TPL: "sg1", // 手機網頁版模版
   VERSION: getVersion("sg1"),
   SITE_NAME: "泡泡直播",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "12",
@@ -223,7 +215,6 @@ export const site_92 = {
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
@@ -244,7 +235,6 @@ export const site_93 = {
   VERSION: getVersion("aobo1"),
   SITE_NAME: "澳博国际",
   YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
@@ -263,7 +253,6 @@ export const site_94 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("sp1"),
   SITE_NAME: "51体育",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   CDN_HEADER: "x-cdn-sp51"
 };
 
@@ -289,7 +278,6 @@ export const site_100 = {
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("aobo1"),
   SITE_NAME: "GM正式站",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",
@@ -309,7 +297,6 @@ export const site_101 = {
   MOBILE_WEB_TPL: "porn1", // 手機網頁版模版
   VERSION: getVersion("aobo1"),
   SITE_NAME: "66VIP推廣站",
-  YABO_GOLANG_API_DOMAIN: "https://yaboapi.dormousepie.com/api-v2",
   PORN_CONFIG: {
     ID: {
       SPACE: "16",

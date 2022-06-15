@@ -8,14 +8,12 @@ export const preset = {
   ...basic,
   BBOS_DOMIAN: "https://bbos.bbin-asia.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.bbin-asia.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://yaboapi.bbin-asia.com/api-v2",
-  YABO_GOLANG_API_DOMAIN: "error",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://yaboapi.bbin-asia.com",
+  YABO_GOLANG_API_DOMAIN: "", // from API
+  ACTIVES_BOUNS_WEBSOCKET: "",
   // 非色站 cxbb
   // https://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yiyuan_qa.json
-  DOMAIN_LIST_JSON: [
-    "http://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yabo_qa.json"
-  ]
+  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_BASE_DOMAIN: ["https://yaboapi.bbin-asia.com1"]
 };
 
 /* ---------- ↓ 測試站 ---------- */
@@ -51,8 +49,9 @@ export const site_500023 = {
   VERSION: getVersion("ey1"),
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.bbin-asia.com/api",
-  // YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2/cxbb",
-  YABO_GOLANG_API_DOMAIN: "https://cxbb.bbin-asia.com/api-v2"
+  YABO_GOLANG_API_DOMAIN: "",
+  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_BASE_DOMAIN: ["https://cxbb.bbin-asia.com.com"]
 };
 /* eslint-enable camelcase */
 

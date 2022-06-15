@@ -18,7 +18,7 @@ import agent from "@/api/agent";
 import ajax from "@/lib/ajax";
 import common from "@/api/common";
 import game from "@/api/game";
-import { getDomainJson } from "@/lib/getDomainList";
+import { getDomainListEncrypt } from "@/lib/getDomainList";
 import getLang from "@/lib/getLang";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import i18n from "@/config/i18n";
@@ -591,9 +591,7 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
     // 取得當前廳號 nginx
     await dispatch("actionSetWebDomain");
 
-    // 取得可用 api domain list
     let configInfo;
-
     if (state.webDomain) {
       configInfo =
         siteConfigTest[`site_${state.webDomain.domain}`] ||
@@ -601,53 +599,80 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         siteConfigOfficial.preset;
     }
 
-    let allDomainList = [];
-    await goLangApiRequest({
-      method: "get",
-      url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Domain/List`
-    })
-      .then(res => {
-        if (res.status === "000") {
-          allDomainList = res.data;
-        } else {
-          (async () => {
-            return await getDomainJson(configInfo);
-            console.log(("then ", configInfo.YABO_GOLANG_API_DOMAIN));
-          })();
+    let checkDomain = false;
+    let checkJsonDomain = false;
+    let checkTime = 0;
+    let localBaseDomain = configInfo.LOCAL_BASE_DOMAIN;
+
+    if (
+      localStorage.getItem("base-list-domain") &&
+      atob(localStorage.getItem("base-list-domain"))
+    ) {
+      console.log(atob(localStorage.getItem("base-list-domain")));
+      localBaseDomain = atob(localStorage.getItem("base-list-domain")).split
+        ? atob(localStorage.getItem("base-list-domain")).split(",")
+        : "";
+    }
+
+    console.log("localBaseDomain", localBaseDomain);
+
+    try {
+      // 1.檢查預設domianlist是否可用
+      while (!checkDomain && checkTime < localBaseDomain.length) {
+        console.log("getDomainListEncrypt", localBaseDomain[checkTime]);
+        await getDomainListEncrypt(localBaseDomain[checkTime], configInfo).then(
+          result => {
+            checkTime++;
+            if (result === false || checkTime === localBaseDomain.length - 1) {
+            } else {
+              checkDomain = true;
+              checkJsonDomain = true;
+            }
+          }
+        );
+      }
+
+      // 2.預設檢查皆失敗,備案使用靜態json檔
+      if (!checkDomain) {
+        alert("重新连线中(168107)");
+        console.log("%c 重新连线中(168107)", "color: red; font-size:14px");
+
+        let localJsonDomain = configInfo.LOCAL_JSON_DOMAIN;
+        checkTime = 0;
+
+        while (!checkJsonDomain && checkTime < localJsonDomain.length) {
+          console.log(localJsonDomain[checkTime]);
+          await getDomainListEncrypt(
+            localJsonDomain[checkTime],
+            configInfo
+          ).then(result => {
+            checkTime++;
+            if (result === false || checkTime === localJsonDomain.length - 1) {
+              console.log("check:", result);
+            } else {
+              checkJsonDomain = true;
+            }
+          });
         }
-      })
-      .catch(() => {
-        (async () => {
-          await getDomainJson(configInfo);
-          console.log("catc22222h ", configInfo.YABO_GOLANG_API_DOMAIN);
-        })();
-      });
+      }
 
-    // let domainNotSucess = true;
-    // let domainIdx = 0;
-    // while (domainNotSucess && domainIdx < allDomainList.length) {
-    //   await goLangApiRequest({
-    //     method: "post",
-    //     url: `${allDomainList[domainIdx]}/api-v2/xbb/Captcha`
-    //   }).then(res => {
-    //     if (res && res.status === "000" && res.data) {
-    //       configInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[domainIdx]}/api-v2`;
-    //       configInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
-    //         domainIdx
-    //       ].replace("https", "wss")}`;
-    //       domainIdx += 1;
-    //       domainNotSucess = false;
-    //     } else {
-    //       domainIdx += 1;
-    //     }
-    //   });
+      if (!checkDomain && !checkJsonDomain) {
+        alert("重新连线中(168109)");
+        window.location.reload();
+        return;
+      }
+    } catch (e) {
+      if (!checkDomain && !checkJsonDomain) {
+        alert("重新连线中(168109)");
+        alert(e);
+      }
+    }
 
-    // }
+    console.log("success.");
     await dispatch("actionSetWebInfo", state.webDomain.domain);
     await dispatch("actionSetUserdata");
     await dispatch("actionGetMobileInfo");
     await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
-    await dispatch("actionSetSiteConfig", configInfo);
     await dispatch("actionSetSystemDomain");
 
     // 取得免費區影片token
@@ -2029,7 +2054,10 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     }
 
     axios
-      .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
+      .post(
+        `${uri}/api/v1/video/getspaceIdJWT${isGetFreeSpace ? `?free=1` : ``}`,
+        bodyFormData
+      )
       .then(function(res) {
         if (res.data && res.data.result && res.data.status === 100) {
           if (isGetFreeSpace) {
@@ -2134,14 +2162,10 @@ export const actionSetWebDomain = ({ commit }) => {
         site: ""
       };
 
-      console.log(
-        "%c [conf/domain]:",
-        "background: #222; color: yellow; font-size:14px",
-        {
-          ...res.data,
-          version: version.find(i => i.site === "normal").version
-        }
-      );
+      console.log("%c [conf/domain]:", "color: yellow; font-size:14px", {
+        ...res.data,
+        version: version.find(i => i.site === "normal").version
+      });
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
       if (!site || !domain) {
