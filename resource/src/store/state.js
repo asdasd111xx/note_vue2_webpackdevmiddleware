@@ -465,5 +465,9 @@ export default {
   liveFooterMask: false,
   liveFooter: null,
   activity: {},
-  liveViewPath: {}
+  liveViewPath: {},
+  bindFriend: {
+    code: "",
+    enable: false
+  }
 };

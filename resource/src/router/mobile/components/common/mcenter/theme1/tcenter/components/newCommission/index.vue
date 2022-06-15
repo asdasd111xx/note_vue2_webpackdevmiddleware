@@ -2,9 +2,7 @@
   <div>
     <div :class="$style['header-option']">
       <img
-        v-if="
-          memInfo.config.infinity_register || domainConfig.player_bind_friend
-        "
+        v-if="memInfo.config.infinity_register || bindFriend.enable"
         :src="
           `/static/image/${siteConfig.MOBILE_WEB_TPL}/mcenter/tcenter/btn_member_add.png`
         "
@@ -281,7 +279,7 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      domainConfig: "getDomainConfig"
+      bindFriend: "getBindFriend"
     }),
     $style() {
       const style =

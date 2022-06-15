@@ -7,8 +7,7 @@ export default {
     return {
       isRegister: false,
       isPopup: false,
-      popupType: "",
-      friendCode: ""
+      popupType: ""
     };
   },
   computed: {
@@ -16,7 +15,8 @@ export default {
       memInfo: "getMemInfo",
       agentLink: "getAgentLink",
       promotionLink: "getPromotionLink",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      bindFriend: "getBindFriend"
     }),
     /**
      * 推廣連結
@@ -33,14 +33,21 @@ export default {
       }
 
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    },
+    friendCode() {
+      return this.bindFriend.code;
     }
   },
   created() {
     this.actionSetAgentLink();
-    this.getBindFriendCode();
+    this.actionBindFriendCode();
   },
   methods: {
-    ...mapActions(["actionSetAgentLink", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetAgentLink",
+      "actionSetGlobalMessage",
+      "actionBindFriendCode"
+    ]),
     /**
      * 複製推廣代碼或連結
      * @method onCopy
@@ -94,25 +101,6 @@ export default {
       }
 
       this.isPopup = false;
-    },
-    /**
-     * 取得綁定好友綁定碼 C02.349
-     * @method getBindFriendCode
-     */
-    getBindFriendCode() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Bind/Code`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res && res.status === "000") {
-          //friendCode="" 代表已綁過不可以轉移
-          this.friendCode = res.data || "";
-        }
-        return;
-      });
     }
   }
 };

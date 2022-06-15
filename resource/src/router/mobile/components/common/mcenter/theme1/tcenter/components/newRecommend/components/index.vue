@@ -315,8 +315,7 @@ export default {
       return this.memInfo.config.infinity_register;
     },
     isBindFriend() {
-      // /xbb/Domain/Config/V2
-      return this.domainConfig.player_bind_friend;
+      return this.bindFriend.enable;
     },
     friendTab() {
       return [

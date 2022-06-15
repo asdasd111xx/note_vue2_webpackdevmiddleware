@@ -337,14 +337,15 @@ export default {
 
     this.getRebateSwitch();
     this.getLevelList();
-    this.actionSetDomainConfigV2();
+    this.actionBindFriendCode();
   },
   watch: {},
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      domainConfig: "getDomainConfig"
+      domainConfig: "getDomainConfig",
+      bindFriend: "getBindFriend"
     }),
     $style() {
       const style = this[`$style_${this.siteConfig.ROUTER_TPL}`];
@@ -364,7 +365,7 @@ export default {
       return this.memInfo.config.wage.indexOf("commission") === -1;
     },
     isBindFriend() {
-      return this.domainConfig.player_bind_friend;
+      return this.bindFriend.enable;
     },
     specialData() {
       return [
@@ -406,7 +407,7 @@ export default {
     this.promotionImageLink();
   },
   methods: {
-    ...mapActions(["actionSetDomainConfigV2"]),
+    ...mapActions(["actionBindFriendCode"]),
     formatToPrice(value) {
       //千分位
       return `${Number(value)

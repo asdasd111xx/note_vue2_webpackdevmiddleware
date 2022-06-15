@@ -2712,3 +2712,18 @@ export const actionSetActivity = ({ state, commit }) => {
     }
   });
 };
+
+//綁定好友開關
+export const actionBindFriendCode = ({ state, commit }) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Bind/Code`,
+    params: {
+      lang: "zh-cn"
+    }
+  }).then(res => {
+    if (res && res.status === "000") {
+      commit(types.SET_BINDFRIEND, res.data);
+    }
+  });
+};
