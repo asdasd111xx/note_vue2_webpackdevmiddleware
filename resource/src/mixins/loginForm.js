@@ -84,6 +84,15 @@ export default {
     }
   },
   beforeCreate() {
+    if (this.$route.query.logout) {
+      console.log("logout");
+      setCookie("cid", "");
+      setCookie("y_token", "");
+      setCookie("aid", "");
+      localStorage.removeItem("aid");
+
+      this.$router.replace("/mobile/login");
+    }
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
       this.script = document.createElement("script");
       this.script.setAttribute("type", "text/javascript");
@@ -103,15 +112,6 @@ export default {
   },
   created() {
     if (this.loginStatus) {
-      if (this.$route.query.logout) {
-        setCookie("cid", "");
-        setCookie("y_token", "");
-        setCookie("aid", "");
-        localStorage.removeItem("aid");
-
-        this.$router.replace("/mobile/login");
-        return;
-      }
       this.$router.replace("/mobile");
       return;
     }
@@ -123,6 +123,7 @@ export default {
     this.rememberPwd = localStorage.getItem("rememberPwd") === "true";
     this.m_rememberPwd = localStorage.getItem("m_rememberPwd") === "true";
   },
+
   methods: {
     ...mapActions([
       "actionIsLogin",
