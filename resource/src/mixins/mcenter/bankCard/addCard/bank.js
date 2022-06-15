@@ -35,8 +35,7 @@ export default {
       isShowCaptcha: false,
       isClickedCaptcha: false,
       chooseNameResult: {},
-      notMyBankSwitch: false,
-      isShowPop: false
+      notMyBankSwitch: false
     };
   },
   computed: {
@@ -265,9 +264,6 @@ export default {
           this.lockStatus = false;
 
           this.errorMsg = msg;
-          if (this.addBankCardStep === "one") {
-            this.isShowPop = true;
-          }
 
           // if (this.addBankCardStep === "one") {
           //   this.msg = msg;

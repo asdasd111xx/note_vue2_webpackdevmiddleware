@@ -8,6 +8,9 @@
     </p>
     <template v-if="addBankCardStep === 'one'">
       <div v-if="notMyBankSwitch" :class="$style['notMyBank-wrap']">
+        <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
+          {{ errorMsg }}
+        </p>
         <span :class="$style['username']" v-if="username"
           >您好，{{ username }}**</span
         >
