@@ -12,7 +12,7 @@
           {{ errorMsg }}
         </p>
         <span :class="$style['username']" v-if="username"
-          >您好，{{ username }}**</span
+          >您好，{{ username }}</span
         >
         <p :class="$style['username-tip']">
           请填写跟持卡人一致的银行卡信息。
@@ -61,7 +61,7 @@
               { [$style['has-name']]: memInfo.user.name }
             ]"
           >
-            {{ username }}**
+            {{ username }}
           </div>
           <input
             v-else

@@ -88,7 +88,7 @@ export default {
         {
           key: 0,
           title: "本人",
-          name: this.username ? this.username + "**" : "",
+          name: this.username ? this.username : "",
           placeholder: this.username ? "" : "请输入持卡人姓名，仅支持中文、“·”",
           disabled: this.username ? true : false
         },
