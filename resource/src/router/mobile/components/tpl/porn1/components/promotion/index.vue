@@ -22,7 +22,7 @@
           <swiper-slide
             v-for="tab in tabList"
             :key="tab.id"
-            :style="{ width: tab.name.length * 18 + 'px' }"
+            :style="{ width: tab.name.length * 17 + 'px' }"
             :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
           >
             <div @click="getPromotionList(tab.id)">
@@ -277,10 +277,6 @@ export default {
 @import "~@/css/variable.scss";
 $fixed_spacing_height: 43px;
 
-.swiper-wrapper {
-  flex-wrap: nowrap;
-}
-
 .promotion-wrap {
   background: #fefffe;
   padding: $fixed_spacing_height 0 10px;
@@ -327,6 +323,7 @@ $fixed_spacing_height: 43px;
 .type-btn {
   position: relative;
   // flex: 1;
+  padding: 0 5px;
   height: 43px;
   line-height: 43px;
   font-weight: 500;
