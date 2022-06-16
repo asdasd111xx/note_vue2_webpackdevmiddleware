@@ -31,11 +31,6 @@
           {{ `领取彩金：${formatThousandsCurrency(activity.totalAmount)} 元` }}
         </div></template
       >
-      <template v-if="themeTPL === 'sg1'"
-        ><div :class="[$style['visitor-get'], $style[themeTPL]]">
-          注册即送 123 钻
-        </div></template
-      >
     </div>
 
     <div :class="$style.join">
