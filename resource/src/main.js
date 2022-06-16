@@ -127,6 +127,8 @@ document.body.onpageshow = event => {
 
   const isSafari = navigator.userAgent.indexOf("Safari") !== -1;
   if (isSafari && needReload.includes(to) && event.persisted) {
+    document.getElementById("mobile-wrap").style.display = "none";
+    document.getElementById("main-loading").style.display = "block";
     window.location.reload();
   }
 };
