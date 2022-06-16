@@ -248,21 +248,6 @@
         {{ msg }}
       </div>
     </message>
-
-    <div v-if="isShowPop" :class="$style['pop-wrap']">
-      <div :class="$style['pop-mask']" />
-      <div :class="$style['pop-block']">
-        <div :class="$style['content']">
-          <span>{{ errorMsg }}</span>
-        </div>
-
-        <div :class="[$style['button-block']]">
-          <span @click="isShowPop = false">
-            {{ $text("S_CLOSE", "关闭") }}
-          </span>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
