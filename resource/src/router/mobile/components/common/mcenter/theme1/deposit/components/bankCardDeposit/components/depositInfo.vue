@@ -177,7 +177,9 @@
         $style['submit-btn'],
         {
           [$style['disabled']]:
-            isSubmitDisabled || (countdownSec < 1 && isShowTimer)
+            isSubmitDisabled ||
+            (countdownSec < 1 && isShowTimer) ||
+            (bankNameRequired && selectBank.name === '')
         }
       ]"
       :title="
@@ -302,7 +304,8 @@ export default {
       // countdownSec: 70, // 測試用
       timer: null,
       isShowTimer: false,
-      isShowBankPop: false
+      isShowBankPop: false,
+      bankNameRequired: false
     };
   },
   computed: {
@@ -344,6 +347,7 @@ export default {
         }
       ];
       if (
+        this.orderData.is_remit &&
         this.orderData.orderInfo.field.find(item => {
           return item.name === "bank_id";
         })
@@ -383,12 +387,15 @@ export default {
     }
 
     //傳統模式 必填 -> 自動帶入第一頁的選項
+    this.bankNameRequired =
+      this.orderData.is_remit &&
+      this.orderData.orderInfo.field.find(item => {
+        return item.name === "bank_id" && item.required;
+      });
     if (
       !this.isSimpleType &&
       this.orderData.method_id === 3 &&
-      this.orderData.orderInfo.field.find(item => {
-        return item.name === "bank_id" && item.required;
-      })
+      this.bankNameRequired
     ) {
       this.changeBank({
         id: this.orderData.bank_id,

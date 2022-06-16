@@ -79,499 +79,468 @@
               </template>
             </div>
           </div>
-          <!-- 選擇銀行 or 選擇點卡 -->
-          <div
-            v-if="simpleCurPayInfo.banks && simpleCurPayInfo.banks.length > 0"
-            :class="[
-              $style['feature-wrap'],
-              $style['select-card-wrap'],
-              'clearfix'
-            ]"
-            @click="setPopupStatus(true, 'showBank')"
-          >
-            <span :class="$style['select-bank-title']"
-              >{{
-                simplePayType.method_id === 2
-                  ? $text("S_SELECT_POINT_CARD", "请选择点卡")
-                  : $text("S_SELECT_BANKS", "请选择银行")
-              }}
-            </span>
-
-            <div :class="$style['select-bank-item']">
-              {{ simplePayBank.name }}
-            </div>
-
-            <img
-              :class="$style['select-bank-icon']"
-              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-            />
-          </div>
-          <!-- 幣別 -->
-          <div
-            v-if="simpleCurPayInfo.content.length > 1"
-            :class="[$style['feature-wrap'], 'clearfix']"
-          >
-            <div :class="$style['bank-feature-wrap']">
-              <div
-                v-for="info in simpleCurPayInfo.content"
-                :key="info.currency"
-                :class="[
-                  $style['pay-mode-pass'],
-                  $style['pay-mode-currency'],
-                  {
-                    [$style['current-data']]:
-                      info.currency === simpleCurrency.currency
-                  }
-                ]"
-                @click="changeSimpleCurrency(info)"
-              >
-                {{ info.currency }}
-                <img
-                  v-if="info.currency === simpleCurrency.currency"
-                  :class="$style['pay-active']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
-            </div>
-          </div>
-          <!-- 類型 -->
-          <div
-            v-if="simpleCurrency.data.length > 1"
-            :class="[$style['feature-wrap'], 'clearfix']"
-          >
-            <div :class="$style['bank-feature-wrap']">
-              <div
-                v-for="data in simpleCurrency.data"
-                :key="data.currency"
-                :class="[
-                  $style['pay-mode-pass'],
-                  $style['pay-mode-currency'],
-                  {
-                    [$style['current-data']]:
-                      data.method_id === simplePayType.method_id
-                  }
-                ]"
-                @click="changeSimplePayType(data)"
-              >
-                {{ data.method_name }}
-                <img
-                  v-if="data.method_id === simplePayType.method_id"
-                  :class="$style['pay-active']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
-            </div>
-          </div>
-          <!-- 通道 -->
-          <div
-            v-if="
-              simplePayType.channels.length > 0 || simplePayType.tags.length > 0
-            "
-            :class="[$style['feature-wrap'], 'clearfix']"
-          >
-            <div :class="$style['bank-feature-wrap']">
-              <div
-                v-for="(road, index) in simplePayType.channels"
-                :key="road.id"
-                :class="[
-                  $style['pay-mode-pass'],
-                  $style['pay-mode-rode'],
-                  { [$style['current-data']]: road.id === simplePayRode.id }
-                ]"
-                @click="changeSimpleRoad(road)"
-              >
-                {{ `通道${index + 1}` }}
-                <img
-                  v-if="tipTrans[road.display_tag]"
-                  :src="
-                    $getCdnPath(
-                      `/static/image/common/mcenter/deposit/icon_${
-                        tipTrans[road.display_tag]
-                      }.png`
-                    )
-                  "
-                  :class="$style['pay-mode-tag']"
-                />
-                <img
-                  v-if="road.id === simplePayRode.id"
-                  :class="$style['pay-active']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
-              <div
-                v-for="road in simplePayType.tags"
-                :key="road.id"
-                :class="[
-                  $style['pay-mode-pass'],
-                  $style['pay-mode-rode'],
-                  { [$style['current-data']]: road.id === simplePayRode.id }
-                ]"
-                @click="changeSimpleRoad(road)"
-              >
-                {{ tipTransName[road.name] }}
-                <img
-                  v-if="road.id === simplePayRode.id"
-                  :class="$style['pay-active']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
-            </div>
-            <div
-              v-if="
-                simplePayType.channels.length > 0 && simplePayRode.tip != ''
-              "
-              :class="[
-                $style['pass-road-text'],
-                [
-                  simplePayRodeTipTextShowMore
-                    ? [$style['pay-mode-tip-show']]
-                    : [$style['pay-mode-tip-close']]
-                ]
-              ]"
-            >
-              <div
-                :class="[$style['pay-mode-tip'], $style[themeTPL]]"
-                v-html="simplePayRodeTipText"
-              ></div>
-            </div>
-          </div>
-
           <template v-if="simplePayType.method_id !== 20">
-            <!-- 充值人姓名 -->
-            <!-- <div
-              v-if="depositNameInput.showCondition"
-              :class="$style['depositName-wrap']"
-            >
-              <div
-                :key="`field-${depositNameInput.objKey}`"
-                :class="[
-                  $style['speed-field-name'],
-                  { [$style.error]: depositNameInput.isError },
-                  'clearfix'
-                ]"
-              >
-                <div :class="$style['field-title']">
-                  {{ depositNameInput.title }}
-                </div>
-
-                <div :class="$style['field-info']">
-                  <input
-                    v-model="speedField.depositName"
-                    :class="$style['speed-deposit-input']"
-                    :placeholder="depositNameInput.placeholderText"
-                    @input="
-                      verification(
-                        depositNameInput.objKey,
-                        $event.target.value,
-                        true
-                      )
-                    "
-                  />
-                </div>
-              </div>
-              <div
-                :class="[
-                  $style['deposit-name-messgae'],
-                  {
-                    [$style['hide']]: !nameCheckFail && speedField.depositName
-                  }
-                ]"
-              >
-                为即时到帐，请务必输入正确的汇款人姓名
-              </div>
-            </div> -->
-            <!-- e點富銀行 -->
+            <!-- 選擇銀行 or 選擇點卡 -->
             <div
-              v-if="
-                isSelectBindWallet(34, 41) && this.simplePayType.is_bind_wallet
-              "
+              v-if="simpleCurPayInfo.banks && simpleCurPayInfo.banks.length > 0"
               :class="[
                 $style['feature-wrap'],
                 $style['select-card-wrap'],
                 'clearfix'
               ]"
-              @click="setPopupStatus(true, 'epointBank')"
+              @click="setPopupStatus(true, 'showBank')"
             >
-              <span :class="$style['select-bank-title']">
-                挂单银行
+              <span :class="$style['select-bank-title']"
+                >{{
+                  simplePayType.method_id === 2
+                    ? $text("S_SELECT_POINT_CARD", "请选择点卡")
+                    : $text("S_SELECT_BANKS", "请选择银行")
+                }}
               </span>
-              <div :class="$style['select-epoint-bank-item']">
-                {{ defaultEpointWallet.account }}
+
+              <div :class="$style['select-bank-item']">
+                {{ simplePayBank.name }}
               </div>
+
               <img
                 :class="$style['select-bank-icon']"
                 :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
               />
             </div>
+            <!-- 幣別 -->
             <div
-              v-if="
-                isSelectBindWallet(34, 41) &&
-                  simplePayType.is_bind_wallet &&
-                  showEpointWalletAddress
-              "
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-            >
-              <div :class="$style['other-bank-input-text']">
-                银行名称
-                <input
-                  v-model="epointBankName"
-                  :class="$style['input-cgpay-address']"
-                  type="text"
-                  :placeholder="'请输入银行名称'"
-                  @input="verification('order-bank', $event.target.value)"
-                />
-              </div>
-              <div :class="[$style['other-bank-input-text'], $style['border']]">
-                银行帐号
-                <input
-                  v-model="epointBankAccount"
-                  :class="$style['input-cgpay-address']"
-                  type="text"
-                  :placeholder="'请输入银行卡号/钱包'"
-                  @input="
-                    verification('order-bank-account', $event.target.value)
-                  "
-                />
-              </div>
-              <div :class="[$style['wallet-address-text'], $style['less']]">
-                为即时到帐，请务必输入正确的银行资讯
-              </div>
-            </div>
-
-            <div
-              v-if="
-                simplePayRodeTipText != '' &&
-                  !isSelectBindWallet(402) &&
-                  !isSelectBindWallet(404)
-              "
-              @click="
-                simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
-              "
-              :class="$style['show-more-header']"
-            >
-              <span>通道提示详情</span>
-              <div
-                :class="[
-                  $style['collapse-img'],
-                  { [$style.active]: simplePayRodeTipTextShowMore }
-                ]"
-              />
-            </div>
-
-            <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,38) ||購寶(22) || USDT(402) || E点付(34,41)-->
-            <div
-              v-if="
-                ['porn1', 'sg1'].includes(themeTPL) &&
-                  isSelectBindWallet() &&
-                  !this.simplePayType.is_bind_wallet
-              "
+              v-if="simpleCurPayInfo.content.length > 1"
               :class="[$style['feature-wrap'], 'clearfix']"
             >
-              <!-- Yabo: 尚未綁定直接跳轉到添加卡片頁面 -->
-              <span :class="[$style['bank-card-title'], $style['no-margin']]">
-                <!-- <template v-if="cgPromotionMessage">
-                  充值前请先绑定钱包
-                </template> -->
-                <template v-if="isSelectBindWallet(32)">
-                  充值前请先绑定{{ simpleCurPayInfo.name }}
-                </template>
-                <template v-else-if="isSelectBindWallet(34, 41)">
-                  充值前请先绑定{{ simpleCurPayInfo.name }}钱包
-                </template>
-                <template v-else-if="isSelectBindWallet(16, 25, 30)">
-                  充值前请先绑定CGPay钱包
-                </template>
-                <template v-else-if="isSelectBindWallet(36, 37, 38)">
-                  充值前请先绑定OSPay钱包
-                </template>
-                <template v-else>
-                  充值前请先绑定{{ simpleCurPayInfo.name }}帐号
-                </template>
-
-                <div :class="$style['no-bind-wallet']">
-                  <span @click="handleBindWallet">立即绑定</span>
-                </div>
-
-                <!-- <div
-                  v-if="isSelectBindWallet(16) && cgPromotionMessage"
-                  :class="$style['cgpay-promotion']"
-                >
-                  {{ cgPromotionMessage }}
-                </div> -->
-              </span>
-            </div>
-
-            <!-- CGPay/OSPay 餘額 -->
-            <div
-              v-if="
-                ['porn1', 'sg1'].includes(themeTPL) &&
-                  isSelectBindWallet(16, 36) &&
-                  simplePayType.is_bind_wallet
-              "
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <span :class="$style['bank-card-title']">
-                {{ isSelectBindWallet(36) ? "OS" : "CG" }}币余额
-                <img
-                  :class="$style['CGPay-update-img']"
-                  :src="$getCdnPath(`/static/image/common/btn_update.png`)"
-                  alt="update"
-                  @click="getCGPayBalance"
-                />
-              </span>
-
-              <div :class="$style['CGPay-money']">
-                {{ isSelectBindWallet(36) ? "OS" : "CG" }}P
-                <span v-if="isSelectBindWallet(36)">
-                  {{
-                    walletData["OSPay"].balance !== undefined
-                      ? formatThousandsCurrency(walletData["OSPay"].balance)
-                      : "--"
-                  }}
-                </span>
-                <span v-else>
-                  {{
-                    walletData["CGPay"].balance !== undefined
-                      ? formatThousandsCurrency(walletData["CGPay"].balance)
-                      : "--"
-                  }}
-                </span>
-              </div>
-            </div>
-
-            <div
-              v-if="
-                isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
-                  this.simplePayType.is_outer_crypto &&
-                  this.simplePayType.is_bind_wallet
-              "
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-            >
-              <span :class="$style['select-bank-title']">
-                您的位址
-              </span>
-              <select
-                v-model="defaultOuterCrypto"
-                :class="$style['outer-crypto-selected']"
-              >
-                <option
-                  v-for="(option, idx) in outerCryptoOption"
-                  :key="idx"
-                  v-bind:value="option"
-                >
-                  {{ option }}
-                </option>
-              </select>
-            </div>
-            <div
-              v-if="showOuterCryptoAddress"
-              :class="[
-                $style['feature-wrap'],
-                $style['select-card-wrap'],
-                'clearfix'
-              ]"
-            >
-              钱包位址
-              <input
-                v-model="outerCryptoAddress"
-                :class="$style['input-cgpay-address']"
-                type="text"
-                :placeholder="'请输入钱包位址'"
-              />
-              <div :class="$style['wallet-address-text']">
-                为即时到帐，请务必输入正确的钱包位址
-              </div>
-            </div>
-            <div
-              v-if="isSelectBindWallet(32) && this.simplePayType.is_bind_wallet"
-              :class="[$style['feature-wrap'], $style['bc-coint']]"
-              @click="setPopupStatus(true, 'bcWalletCurrency')"
-            >
-              <div>充值币种</div>
-              <div
-                v-if="selectBcCoin && selectBcCoin.balance > 0"
-                :class="[$style['coin-money']]"
-              >
-                {{
-                  `${formatThousandsCurrency(selectBcCoin.balance)} ${
-                    selectBcCoin.currency
-                  }`
-                }}
-              </div>
-              <div v-else :class="[$style['coin-money']]">--</div>
-              <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
-            </div>
-
-            <!-- 存款金額 -->
-            <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
-            <div
-              v-if="
-                (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
-                  !isSelectBindWallet()
-              "
-              :class="[
-                $style['feature-wrap'],
-                $style['select-money'],
-                'clearfix'
-              ]"
-            >
-              <div :class="$style['bank-card-title']">充值金额</div>
-              <!-- 選擇金額區塊 -->
-              <!-- <div
-                v-if="simplePayFeeData.is_recommend_amount"
-                :class="[$style['speed-money-wrap'], 'clearfix']"
-              >
+              <div :class="$style['bank-feature-wrap']">
                 <div
-                  v-for="(item, index) in simplePayFeeData.amounts"
-                  :key="`pay-money-${index}`"
+                  v-for="info in simpleCurPayInfo.content"
+                  :key="info.currency"
                   :class="[
-                    $style['pay-money-item'],
-                    $style[siteConfig.ROUTER_TPL],
-                    { [$style['is-current']]: moneyValue === item }
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-currency'],
+                    {
+                      [$style['current-data']]:
+                        info.currency === simpleCurrency.currency
+                    }
                   ]"
-                  @click="() => {
-                      changeSimpleMoney(item);
-                      if (
-                        isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
-                        isClickCoversionBtn &&
-                        moneyValue > 0
-                      ) {
-                        convertCryptoMoney();
-                      }
-                    }"
+                  @click="changeSimpleCurrency(info)"
                 >
-                  ¥ {{ formatThousandsCurrency(item) }}
+                  {{ info.currency }}
                   <img
-                    v-if="moneyValue === item"
+                    v-if="info.currency === simpleCurrency.currency"
                     :class="$style['pay-active']"
                     :src="$getCdnPath(`/static/image/common/select_active.png`)"
                   />
-                </div> -->
+                </div>
+              </div>
+            </div>
+            <!-- 類型 -->
+            <div
+              v-if="simpleCurrency.data.length > 1"
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <div :class="$style['bank-feature-wrap']">
+                <div
+                  v-for="data in simpleCurrency.data"
+                  :key="data.currency"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-currency'],
+                    {
+                      [$style['current-data']]:
+                        data.method_id === simplePayType.method_id
+                    }
+                  ]"
+                  @click="changeSimplePayType(data)"
+                >
+                  {{ data.method_name }}
+                  <img
+                    v-if="data.method_id === simplePayType.method_id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- 通道 -->
+            <div
+              v-if="
+                simplePayType.channels.length > 0 || simplePayType.tags.length > 0
+              "
+              :class="[$style['feature-wrap'], 'clearfix']"
+            >
+              <div :class="$style['bank-feature-wrap']">
+                <div
+                  v-for="(road, index) in simplePayType.channels"
+                  :key="road.id"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-rode'],
+                    { [$style['current-data']]: road.id === simplePayRode.id }
+                  ]"
+                  @click="changeSimpleRoad(road)"
+                >
+                  {{ `通道${index + 1}` }}
+                  <img
+                    v-if="tipTrans[road.display_tag]"
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/mcenter/deposit/icon_${
+                          tipTrans[road.display_tag]
+                        }.png`
+                      )
+                    "
+                    :class="$style['pay-mode-tag']"
+                  />
+                  <img
+                    v-if="road.id === simplePayRode.id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+                <div
+                  v-for="road in simplePayType.tags"
+                  :key="road.id"
+                  :class="[
+                    $style['pay-mode-pass'],
+                    $style['pay-mode-rode'],
+                    { [$style['current-data']]: road.id === simplePayRode.id }
+                  ]"
+                  @click="changeSimpleRoad(road)"
+                >
+                  {{ road.name === "" ? "其他" :tipTransName[road.name] }}
+                  <img
+                    v-if="road.id === simplePayRode.id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </div>
+              </div>
+              <div
+                v-if="
+                  simplePayType.channels.length > 0 && simplePayRode.tip != ''
+                "
+                :class="[
+                  $style['pass-road-text'],
+                  [
+                    simplePayRodeTipTextShowMore
+                      ? [$style['pay-mode-tip-show']]
+                      : [$style['pay-mode-tip-close']]
+                  ]
+                ]"
+              >
+                <div
+                  :class="[$style['pay-mode-tip'], $style[themeTPL]]"
+                  v-html="simplePayRodeTipText"
+                ></div>
+              </div>
+            </div>
 
-              <!-- 自訂金額 -->
+            <template v-if="simplePayType.method_id !== 20">
+              <!-- 充值人姓名 -->
               <!-- <div
-                  v-if="simplePayFeeData &&
-                      simplePayFeeData.is_custom_amount &&
-                      simplePayFeeData.amounts.length > 0"
+                v-if="depositNameInput.showCondition"
+                :class="$style['depositName-wrap']"
+              >
+                <div
+                  :key="`field-${depositNameInput.objKey}`"
+                  :class="[
+                    $style['speed-field-name'],
+                    { [$style.error]: depositNameInput.isError },
+                    'clearfix'
+                  ]"
+                >
+                  <div :class="$style['field-title']">
+                    {{ depositNameInput.title }}
+                  </div>
+
+                  <div :class="$style['field-info']">
+                    <input
+                      v-model="speedField.depositName"
+                      :class="$style['speed-deposit-input']"
+                      :placeholder="depositNameInput.placeholderText"
+                      @input="
+                        verification(
+                          depositNameInput.objKey,
+                          $event.target.value,
+                          true
+                        )
+                      "
+                    />
+                  </div>
+                </div>
+                <div
+                  :class="[
+                    $style['deposit-name-messgae'],
+                    {
+                      [$style['hide']]: !nameCheckFail && speedField.depositName
+                    }
+                  ]"
+                >
+                  为即时到帐，请务必输入正确的汇款人姓名
+                </div>
+              </div> -->
+              <!-- e點富銀行 -->
+              <div
+                v-if="
+                  isSelectBindWallet(34, 41) && this.simplePayType.is_bind_wallet
+                "
+                :class="[
+                  $style['feature-wrap'],
+                  $style['select-card-wrap'],
+                  'clearfix'
+                ]"
+                @click="setPopupStatus(true, 'epointBank')"
+              >
+                <span :class="$style['select-bank-title']">
+                  挂单银行
+                </span>
+                <div :class="$style['select-epoint-bank-item']">
+                  {{ defaultEpointWallet.account }}
+                </div>
+                <img
+                  :class="$style['select-bank-icon']"
+                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+                />
+              </div>
+              <div
+                v-if="
+                  isSelectBindWallet(34, 41) &&
+                    simplePayType.is_bind_wallet &&
+                    showEpointWalletAddress
+                "
+                :class="[
+                  $style['feature-wrap'],
+                  $style['select-card-wrap'],
+                  'clearfix'
+                ]"
+              >
+                <div :class="$style['other-bank-input-text']">
+                  银行名称
+                  <input
+                    v-model="epointBankName"
+                    :class="$style['input-cgpay-address']"
+                    type="text"
+                    :placeholder="'请输入银行名称'"
+                    @input="verification('order-bank', $event.target.value)"
+                  />
+                </div>
+                <div :class="[$style['other-bank-input-text'], $style['border']]">
+                  银行帐号
+                  <input
+                    v-model="epointBankAccount"
+                    :class="$style['input-cgpay-address']"
+                    type="text"
+                    :placeholder="'请输入银行卡号/钱包'"
+                    @input="
+                      verification('order-bank-account', $event.target.value)
+                    "
+                  />
+                </div>
+                <div :class="[$style['wallet-address-text'], $style['less']]">
+                  为即时到帐，请务必输入正确的银行资讯
+                </div>
+              </div>
+
+              <div
+                v-if="
+                  simplePayType.channels.length > 0 &&
+                  simplePayRodeTipText != '' &&
+                    !isSelectBindWallet(402) &&
+                    !isSelectBindWallet(404)
+                "
+                @click="
+                  simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
+                "
+                :class="$style['show-more-header']"
+              >
+                <span>通道提示详情</span>
+                <div
+                  :class="[
+                    $style['collapse-img'],
+                    { [$style.active]: simplePayRodeTipTextShowMore }
+                  ]"
+                />
+              </div>
+
+              <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,38) ||購寶(22) || USDT(402) || E点付(34,41)-->
+              <div
+                v-if="
+                  ['porn1', 'sg1'].includes(themeTPL) &&
+                    isSelectBindWallet() &&
+                    !this.simplePayType.is_bind_wallet
+                "
+                :class="[$style['feature-wrap'], 'clearfix']"
+              >
+                <!-- Yabo: 尚未綁定直接跳轉到添加卡片頁面 -->
+                <span :class="[$style['bank-card-title'], $style['no-margin']]">
+                  <!-- <template v-if="cgPromotionMessage">
+                    充值前请先绑定钱包
+                  </template> -->
+                  <template v-if="isSelectBindWallet(32)">
+                    充值前请先绑定{{ simpleCurPayInfo.name }}
+                  </template>
+                  <template v-else-if="isSelectBindWallet(34, 41)">
+                    充值前请先绑定{{ simpleCurPayInfo.name }}钱包
+                  </template>
+                  <template v-else-if="isSelectBindWallet(16, 25, 30)">
+                    充值前请先绑定CGPay钱包
+                  </template>
+                  <template v-else-if="isSelectBindWallet(36, 37, 38)">
+                    充值前请先绑定OSPay钱包
+                  </template>
+                  <template v-else>
+                    充值前请先绑定{{ simpleCurPayInfo.name }}帐号
+                  </template>
+
+                  <div :class="$style['no-bind-wallet']">
+                    <span @click="handleBindWallet">立即绑定</span>
+                  </div>
+
+                  <!-- <div
+                    v-if="isSelectBindWallet(16) && cgPromotionMessage"
+                    :class="$style['cgpay-promotion']"
+                  >
+                    {{ cgPromotionMessage }}
+                  </div> -->
+                </span>
+              </div>
+
+              <!-- CGPay/OSPay 餘額 -->
+              <div
+                v-if="
+                  ['porn1', 'sg1'].includes(themeTPL) &&
+                    isSelectBindWallet(16, 36) &&
+                    simplePayType.is_bind_wallet
+                "
+                :class="[$style['feature-wrap'], 'clearfix']"
+              >
+                <span :class="$style['bank-card-title']">
+                  {{ isSelectBindWallet(36) ? "OS" : "CG" }}币余额
+                  <img
+                    :class="$style['CGPay-update-img']"
+                    :src="$getCdnPath(`/static/image/common/btn_update.png`)"
+                    alt="update"
+                    @click="getCGPayBalance"
+                  />
+                </span>
+
+                <div :class="$style['CGPay-money']">
+                  {{ isSelectBindWallet(36) ? "OS" : "CG" }}P
+                  <span v-if="isSelectBindWallet(36)">
+                    {{
+                      walletData["OSPay"].balance !== undefined
+                        ? formatThousandsCurrency(walletData["OSPay"].balance)
+                        : "--"
+                    }}
+                  </span>
+                  <span v-else>
+                    {{
+                      walletData["CGPay"].balance !== undefined
+                        ? formatThousandsCurrency(walletData["CGPay"].balance)
+                        : "--"
+                    }}
+                  </span>
+                </div>
+              </div>
+
+              <div
+                v-if="
+                  isSelectBindWallet(25, 30, 37, 38, 402, 404) &&
+                    this.simplePayType.is_outer_crypto &&
+                    this.simplePayType.is_bind_wallet
+                "
+                :class="[
+                  $style['feature-wrap'],
+                  $style['select-card-wrap'],
+                  'clearfix'
+                ]"
+              >
+                <span :class="$style['select-bank-title']">
+                  您的位址
+                </span>
+                <select
+                  v-model="defaultOuterCrypto"
+                  :class="$style['outer-crypto-selected']"
+                >
+                  <option
+                    v-for="(option, idx) in outerCryptoOption"
+                    :key="idx"
+                    v-bind:value="option"
+                  >
+                    {{ option }}
+                  </option>
+                </select>
+              </div>
+              <div
+                v-if="showOuterCryptoAddress"
+                :class="[
+                  $style['feature-wrap'],
+                  $style['select-card-wrap'],
+                  'clearfix'
+                ]"
+              >
+                钱包位址
+                <input
+                  v-model="outerCryptoAddress"
+                  :class="$style['input-cgpay-address']"
+                  type="text"
+                  :placeholder="'请输入钱包位址'"
+                />
+                <div :class="$style['wallet-address-text']">
+                  为即时到帐，请务必输入正确的钱包位址
+                </div>
+              </div>
+              <div
+                v-if="isSelectBindWallet(32) && this.simplePayType.is_bind_wallet"
+                :class="[$style['feature-wrap'], $style['bc-coint']]"
+                @click="setPopupStatus(true, 'bcWalletCurrency')"
+              >
+                <div>充值币种</div>
+                <div
+                  v-if="selectBcCoin && selectBcCoin.balance > 0"
+                  :class="[$style['coin-money']]"
+                >
+                  {{
+                    `${formatThousandsCurrency(selectBcCoin.balance)} ${
+                      selectBcCoin.currency
+                    }`
+                  }}
+                </div>
+                <div v-else :class="[$style['coin-money']]">--</div>
+                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
+              </div>
+
+              <!-- 存款金額 -->
+              <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
+              <div
+                v-if="
+                  (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
+                    !isSelectBindWallet()
+                "
+                :class="[
+                  $style['feature-wrap'],
+                  $style['select-money'],
+                  'clearfix'
+                ]"
+              >
+                <div :class="$style['bank-card-title']">充值金额</div>
+                <!-- 選擇金額區塊 -->
+                <!-- <div
+                  v-if="simplePayFeeData.is_recommend_amount"
                   :class="[$style['speed-money-wrap'], 'clearfix']"
                 >
                   <div
+                    v-for="(item, index) in simplePayFeeData.amounts"
+                    :key="`pay-money-${index}`"
                     :class="[
                       $style['pay-money-item'],
-                      $style['custom-item'],
-                      { [$style['is-current']]: isSelectedCustomMoney }
+                      $style[siteConfig.ROUTER_TPL],
+                      { [$style['is-current']]: moneyValue === item }
                     ]"
-                    @click="
-                      () => {
-                        changeSimpleMoney('', true);
+                    @click="() => {
+                        changeSimpleMoney(item);
                         if (
                           isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
                           isClickCoversionBtn &&
@@ -579,429 +548,463 @@
                         ) {
                           convertCryptoMoney();
                         }
-                      }
-                    "
+                      }"
                   >
-                    <span> 其他金额 </span>
-                    <br />
-                    <span>
-                      ({{
+                    ¥ {{ formatThousandsCurrency(item) }}
+                    <img
+                      v-if="moneyValue === item"
+                      :class="$style['pay-active']"
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                    />
+                  </div> -->
+
+                <!-- 自訂金額 -->
+                <!-- <div
+                    v-if="simplePayFeeData &&
+                        simplePayFeeData.is_custom_amount &&
+                        simplePayFeeData.amounts.length > 0"
+                    :class="[$style['speed-money-wrap'], 'clearfix']"
+                  >
+                    <div
+                      :class="[
+                        $style['pay-money-item'],
+                        $style['custom-item'],
+                        { [$style['is-current']]: isSelectedCustomMoney }
+                      ]"
+                      @click="
+                        () => {
+                          changeSimpleMoney('', true);
+                          if (
+                            isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
+                            isClickCoversionBtn &&
+                            moneyValue > 0
+                          ) {
+                            convertCryptoMoney();
+                          }
+                        }
+                      "
+                    >
+                      <span> 其他金额 </span>
+                      <br />
+                      <span>
+                        ({{
+                          getSampleSingleLimit(
+                            simplePayFeeData.per_trade_min,
+                            simplePayFeeData.per_trade_max
+                          )
+                        }})
+                      </span>
+                      <img
+                        v-if="isSelectedCustomMoney"
+                        :class="$style['pay-active']"
+                        :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                      />
+                    </div>
+                  </div>
+                </div> -->
+                <!-- 金額輸入欄 -->
+                <div
+                  v-if="simplePayFeeData.is_custom_amount"
+                  :class="[
+                    $style['feature-deposit-wrap'],
+                    {
+                      [$style['hidden']]:
+                        simplePayFeeData.is_custom_amount &&
+                        moneyValue &&
+                        isDisableDepositInput
+                    }
+                  ]"
+                >
+                  <div class="money-input-wrap">
+                    <input
+                      v-model="displayMoneyValue"
+                      :class="[
+                        $style['deposit-input'],
+                        {
+                          [$style.disable]: isDisableDepositInput
+                        }
+                      ]"
+                      :placeholder="
                         getSampleSingleLimit(
                           simplePayFeeData.per_trade_min,
-                          simplePayFeeData.per_trade_max
+                          simplePayFeeData.per_trade_max,
+                          'placeholder'
                         )
-                      }})
-                    </span>
+                      "
+                      type="text"
+                      inputmode="decimal"
+                      @blur="
+                        $event => {
+                          verification('money', $event.target.value);
+                          if (
+                            isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
+                            isClickCoversionBtn &&
+                            moneyValue
+                          ) {
+                            convertCryptoMoney();
+                          }
+                        }
+                      "
+                      @input="verification('money', $event.target.value)"
+                      @keyup="
+                        $event => {
+                          if (
+                            isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
+                            isClickCoversionBtn &&
+                            moneyValue
+                          ) {
+                            moneyUSDT($event);
+                          }
+                        }
+                      "
+                    />
+                  </div>
+                  <span :class="$style['deposit-input-icon']">¥</span>
+                </div>
+
+                <!-- 金額錯誤訊息 -->
+                <div v-if="isErrorMoney" :class="$style['money-input-tip']">
+                  {{
+                    getSampleSingleLimit(
+                      simplePayFeeData.per_trade_min,
+                      simplePayFeeData.per_trade_max,
+                      "placeholder"
+                    )
+                  }}
+                </div>
+
+                <!-- USDT 匯率試算 -->
+                <template v-if="isSelectBindWallet(25, 30, 37, 38, 402, 404)">
+                  <div :class="$style['crypto-block']">
+                    <span>转入数量</span>
+                    <div :class="[$style['content']]">
+                      <span
+                        :class="[
+                          $style['no-money'],
+                          { [$style['money']]: cryptoMoney > 0 }
+                        ]"
+                      >
+                        <span
+                          :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
+                        >
+                          {{ formatThousandsCurrency(cryptoMoney) }}
+                        </span>
+                        <span>
+                          {{ simpleCurrency.currency }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  <!-- 參考匯率 -->
+                  <div :class="$style['exchange-rate']">
+                    <span>参考汇率 </span>
+                    <div :class="[$style['content']]">
+                      <span :class="[$style['rate']]"
+                        >1 USDT ≈ {{ rate }} CNY (
+                        <span :class="[$style['time']]">{{ timeUSDT() }}</span>
+                        后更新 )</span
+                      >
+                    </div>
+                  </div>
+                </template>
+                <!-- 幣希 匯率試算 -->
+                <template v-if="isSelectBindWallet(32)">
+                  <div :class="$style['crypto-block']">
+                    <span>转入数量</span>
+                    <div :class="[$style['content']]">
+                      <span
+                        :class="[
+                          $style['no-money'],
+                          { [$style['money']]: cryptoMoney > 0 }
+                        ]"
+                      >
+                        <span
+                          :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
+                        >
+                          {{ formatThousandsCurrency(cryptoMoney) }}
+                        </span>
+                        <span>
+                          {{ selectBcCoin.currency }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  <!-- 參考匯率 -->
+                  <div :class="$style['exchange-rate']">
+                    <span>参考汇率 </span>
+                    <div :class="[$style['content']]">
+                      <span :class="[$style['rate']]"
+                        >1 {{ selectBcCoin.currency }} ≈ {{ rate }} CNY (
+                        <span :class="[$style['time'], $style[themeTPL]]">{{
+                          timeUSDT()
+                        }}</span>
+                        后更新 )</span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </div>
+
+              <!-- 驗證方式 -->
+              <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
+              <div
+                v-if="isSelectBindWallet(16) && simplePayType.is_bind_wallet"
+                :class="[$style['feature-wrap'], 'clearfix']"
+              >
+                <span :class="$style['bank-card-title']">验证方式</span>
+                <div :class="$style['bank-feature-wrap']">
+                  <!-- 支付密碼 -->
+                  <div
+                    :class="[
+                      $style['pay-auth-method'],
+                      {
+                        [$style['current-data']]: walletData['CGPay'].method === 0
+                      },
+                      {
+                        [$style['disable']]: walletData['CGPay'].balance === '--'
+                      }
+                    ]"
+                    @click="() => (walletData['CGPay'].method = 0)"
+                  >
+                    CGPay安全防护码
                     <img
-                      v-if="isSelectedCustomMoney"
+                      v-if="walletData['CGPay'].method === 0"
                       :class="$style['pay-active']"
                       :src="$getCdnPath(`/static/image/common/select_active.png`)"
                     />
                   </div>
+
+                  <div
+                    :class="[
+                      $style['pay-auth-method'],
+                      {
+                        [$style['current-data']]: walletData['CGPay'].method === 1
+                      }
+                    ]"
+                    @click="walletData['CGPay'].method = 1"
+                  >
+                    扫码支付
+                    <img
+                      v-if="walletData['CGPay'].method === 1"
+                      :class="$style['pay-active']"
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                    />
+                  </div>
+
+                  <!-- CGP 安全防護碼 -->
+                  <div
+                    v-show="walletData['CGPay'].method === 0 && isShowCGPPwd"
+                    :class="$style['input-wrap']"
+                  >
+                    <input
+                      id="cgp-password"
+                      :class="$style['wallet-password']"
+                      v-model="walletData['CGPay'].password"
+                      type="text"
+                      :placeholder="walletData['CGPay'].placeholder"
+                      @input="verification('CGPPwd', $event.target.value)"
+                    />
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
+                      "
+                      @click="toggleEye('cg')"
+                    />
+                  </div>
+                  <div
+                    v-show="walletData['CGPay'].method === 0 && !isShowCGPPwd"
+                    :class="$style['input-wrap']"
+                  >
+                    <input
+                      id="cgp-password"
+                      :class="$style['wallet-password']"
+                      v-model="walletData['CGPay'].password"
+                      type="password"
+                      :placeholder="walletData['CGPay'].placeholder"
+                      @input="verification('CGPPwd', $event.target.value)"
+                    />
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
+                      "
+                      @click="toggleEye('cg')"
+                    />
+                  </div>
                 </div>
-              </div> -->
-              <!-- 金額輸入欄 -->
+              </div>
+
+              <!-- If 選擇 OSPay且已綁定 : 顯示 OSPay 餘額 -->
               <div
-                v-if="simplePayFeeData.is_custom_amount"
+                v-if="isSelectBindWallet(36) && simplePayType.is_bind_wallet"
+                :class="[$style['feature-wrap'], 'clearfix']"
+              >
+                <span :class="$style['bank-card-title']">验证方式</span>
+                <div :class="$style['bank-feature-wrap']">
+                  <!-- 支付密碼 -->
+                  <div
+                    :class="[
+                      $style['pay-auth-method'],
+                      {
+                        [$style['current-data']]: walletData['OSPay'].method === 0
+                      },
+                      {
+                        [$style['disable']]: walletData['OSPay'].balance === '--'
+                      }
+                    ]"
+                    @click="() => (walletData['OSPay'].method = 0)"
+                  >
+                    OSPay安全防护码
+                    <img
+                      v-if="walletData['OSPay'].method === 0"
+                      :class="$style['pay-active']"
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                    />
+                  </div>
+
+                  <div
+                    :class="[
+                      $style['pay-auth-method'],
+                      {
+                        [$style['current-data']]: walletData['OSPay'].method === 1
+                      }
+                    ]"
+                    @click="walletData['OSPay'].method = 1"
+                  >
+                    扫码支付
+                    <img
+                      v-if="walletData['OSPay'].method === 1"
+                      :class="$style['pay-active']"
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                    />
+                  </div>
+
+                  <!-- OSP 安全防護碼 -->
+                  <div
+                    v-show="walletData['OSPay'].method === 0 && isShowOSPPwd"
+                    :class="$style['input-wrap']"
+                  >
+                    <input
+                      id="osp-password"
+                      :class="$style['wallet-password']"
+                      v-model="walletData['OSPay'].password"
+                      type="text"
+                      :placeholder="walletData['OSPay'].placeholder"
+                      @input="verification('OSPPwd', $event.target.value)"
+                    />
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
+                      "
+                      @click="toggleEye('os')"
+                    />
+                  </div>
+                  <div
+                    v-show="walletData['OSPay'].method === 0 && !isShowOSPPwd"
+                    :class="$style['input-wrap']"
+                  >
+                    <input
+                      id="osp-password"
+                      :class="$style['wallet-password']"
+                      v-model="walletData['OSPay'].password"
+                      type="password"
+                      :placeholder="walletData['OSPay'].placeholder"
+                      @input="verification('OSPPwd', $event.target.value)"
+                    />
+                    <img
+                      :src="
+                        $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
+                      "
+                      @click="toggleEye('os')"
+                    />
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- 實際到帳 -->
+            <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
+            <div
+              v-if="
+                (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
+                  !isSelectBindWallet()
+              "
+              :class="$style['money-info-wrap']"
+            >
+              <span
+                v-if="simpleCurrency.currency === '代客充值'"
+                :class="$style['feature-tip-title']"
+              >
+              </span>
+
+              <!-- 109/11/10 實際到帳常註顯示 -->
+              <span
+                v-else
                 :class="[
-                  $style['feature-deposit-wrap'],
+                  $style['feature-tip-title'],
+                  $style[siteConfig.ROUTER_TPL],
                   {
-                    [$style['hidden']]:
-                      simplePayFeeData.is_custom_amount &&
-                      moneyValue &&
-                      isDisableDepositInput
+                    [$style['success']]:
+                      realSaveMoney &&
+                      Number(String(realSaveMoney).replace(/\,/g, '')) > 0
                   }
                 ]"
               >
-                <div class="money-input-wrap">
-                  <input
-                    v-model="displayMoneyValue"
-                    :class="[
-                      $style['deposit-input'],
-                      {
-                        [$style.disable]: isDisableDepositInput
-                      }
-                    ]"
-                    :placeholder="
-                      getSampleSingleLimit(
-                        simplePayFeeData.per_trade_min,
-                        simplePayFeeData.per_trade_max,
-                        'placeholder'
-                      )
-                    "
-                    type="text"
-                    inputmode="decimal"
-                    @blur="
-                      $event => {
-                        verification('money', $event.target.value);
-                        if (
-                          isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
-                          isClickCoversionBtn &&
-                          moneyValue
-                        ) {
-                          convertCryptoMoney();
-                        }
-                      }
-                    "
-                    @input="verification('money', $event.target.value)"
-                    @keyup="
-                      $event => {
-                        if (
-                          isSelectBindWallet(25, 30, 37, 38, 32, 402, 404) &&
-                          isClickCoversionBtn &&
-                          moneyValue
-                        ) {
-                          moneyUSDT($event);
-                        }
-                      }
-                    "
-                  />
-                </div>
-                <span :class="$style['deposit-input-icon']">¥</span>
-              </div>
-
-              <!-- 金額錯誤訊息 -->
-              <div v-if="isErrorMoney" :class="$style['money-input-tip']">
-                {{
-                  getSampleSingleLimit(
-                    simplePayFeeData.per_trade_min,
-                    simplePayFeeData.per_trade_max,
-                    "placeholder"
-                  )
-                }}
-              </div>
-
-              <!-- USDT 匯率試算 -->
-              <template v-if="isSelectBindWallet(25, 30, 37, 38, 402, 404)">
-                <div :class="$style['crypto-block']">
-                  <span>转入数量</span>
-                  <div :class="[$style['content']]">
-                    <span
-                      :class="[
-                        $style['no-money'],
-                        { [$style['money']]: cryptoMoney > 0 }
-                      ]"
-                    >
-                      <span
-                        :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
-                      >
-                        {{ formatThousandsCurrency(cryptoMoney) }}
-                      </span>
-                      <span>
-                        {{ simplePayType.method_name }}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <!-- 參考匯率 -->
-                <div :class="$style['exchange-rate']">
-                  <span>参考汇率 </span>
-                  <div :class="[$style['content']]">
-                    <span :class="[$style['rate']]"
-                      >1 USDT ≈ {{ rate }} CNY (
-                      <span :class="[$style['time']]">{{ timeUSDT() }}</span>
-                      后更新 )</span
-                    >
-                  </div>
-                </div>
-              </template>
-              <!-- 幣希 匯率試算 -->
-              <template v-if="isSelectBindWallet(32)">
-                <div :class="$style['crypto-block']">
-                  <span>转入数量</span>
-                  <div :class="[$style['content']]">
-                    <span
-                      :class="[
-                        $style['no-money'],
-                        { [$style['money']]: cryptoMoney > 0 }
-                      ]"
-                    >
-                      <span
-                        :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
-                      >
-                        {{ formatThousandsCurrency(cryptoMoney) }}
-                      </span>
-                      <span>
-                        {{ selectBcCoin.currency }}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <!-- 參考匯率 -->
-                <div :class="$style['exchange-rate']">
-                  <span>参考汇率 </span>
-                  <div :class="[$style['content']]">
-                    <span :class="[$style['rate']]"
-                      >1 {{ selectBcCoin.currency }} ≈ {{ rate }} CNY (
-                      <span :class="[$style['time'], $style[themeTPL]]">{{
-                        timeUSDT()
-                      }}</span>
-                      后更新 )</span
-                    >
-                  </div>
-                </div>
-              </template>
+                实际到帐： ¥{{ realSaveMoney }}
+                <span
+                  v-if="
+                    simplePayType.offer_enable && +simplePayType.offer_percent > 0
+                  "
+                  @click="showRealStatusType(true)"
+                >
+                  (充值优惠)
+                </span>
+                <span
+                  v-else-if="
+                    +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
+                  "
+                  @click="showRealStatusType(true)"
+                >
+                  (详情)
+                </span>
+              </span>
             </div>
 
-            <!-- 驗證方式 -->
-            <!-- If 選擇 CGPay且已綁定 : 顯示 CGPay 餘額 -->
-            <div
-              v-if="isSelectBindWallet(16) && simplePayType.is_bind_wallet"
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <span :class="$style['bank-card-title']">验证方式</span>
-              <div :class="$style['bank-feature-wrap']">
-                <!-- 支付密碼 -->
-                <div
-                  :class="[
-                    $style['pay-auth-method'],
-                    {
-                      [$style['current-data']]: walletData['CGPay'].method === 0
-                    },
-                    {
-                      [$style['disable']]: walletData['CGPay'].balance === '--'
-                    }
-                  ]"
-                  @click="() => (walletData['CGPay'].method = 0)"
-                >
-                  CGPay安全防护码
-                  <img
-                    v-if="walletData['CGPay'].method === 0"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
-
-                <div
-                  :class="[
-                    $style['pay-auth-method'],
-                    {
-                      [$style['current-data']]: walletData['CGPay'].method === 1
-                    }
-                  ]"
-                  @click="walletData['CGPay'].method = 1"
-                >
-                  扫码支付
-                  <img
-                    v-if="walletData['CGPay'].method === 1"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
-
-                <!-- CGP 安全防護碼 -->
-                <div
-                  v-show="walletData['CGPay'].method === 0 && isShowCGPPwd"
-                  :class="$style['input-wrap']"
-                >
-                  <input
-                    id="cgp-password"
-                    :class="$style['wallet-password']"
-                    v-model="walletData['CGPay'].password"
-                    type="text"
-                    :placeholder="walletData['CGPay'].placeholder"
-                    @input="verification('CGPPwd', $event.target.value)"
-                  />
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
+            <div v-if="showRealStatus" :class="$style['pop-message']">
+              <div :class="$style['pop-message-mark']" />
+              <div :class="$style['message-container']">
+                <ul :class="$style['message-content']">
+                  <div :class="$style['message-content-title']">
+                    {{
+                      offerInfo.offer_enable && +offerInfo.offer_percent > 0
+                        ? "充值优惠"
+                        : "详情"
+                    }}
+                  </div>
+                  <template
+                    v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
+                  >
+                    <li :class="$style['tip-list']" v-html="promitionText" />
+                  </template>
+                  <!-- 簡易模式無手續費 -->
+                  <!-- <li
+                    v-if="
+                      +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
                     "
-                    @click="toggleEye('cg')"
-                  />
-                </div>
-                <div
-                  v-show="walletData['CGPay'].method === 0 && !isShowCGPPwd"
-                  :class="$style['input-wrap']"
-                >
-                  <input
-                    id="cgp-password"
-                    :class="$style['wallet-password']"
-                    v-model="walletData['CGPay'].password"
-                    type="password"
-                    :placeholder="walletData['CGPay'].placeholder"
-                    @input="verification('CGPPwd', $event.target.value)"
-                  />
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
-                    "
-                    @click="toggleEye('cg')"
-                  />
-                </div>
-              </div>
-            </div>
+                  >
+                    • {{ feeText }}
+                  </li> -->
 
-            <!-- If 選擇 OSPay且已綁定 : 顯示 OSPay 餘額 -->
-            <div
-              v-if="isSelectBindWallet(36) && simplePayType.is_bind_wallet"
-              :class="[$style['feature-wrap'], 'clearfix']"
-            >
-              <span :class="$style['bank-card-title']">验证方式</span>
-              <div :class="$style['bank-feature-wrap']">
-                <!-- 支付密碼 -->
+                  <li>• 实际存入依审核结果为准</li>
+                </ul>
                 <div
-                  :class="[
-                    $style['pay-auth-method'],
-                    {
-                      [$style['current-data']]: walletData['OSPay'].method === 0
-                    },
-                    {
-                      [$style['disable']]: walletData['OSPay'].balance === '--'
-                    }
-                  ]"
-                  @click="() => (walletData['OSPay'].method = 0)"
+                  :class="$style['message-close']"
+                  @click="showRealStatusType(false)"
                 >
-                  OSPay安全防护码
-                  <img
-                    v-if="walletData['OSPay'].method === 0"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
-
-                <div
-                  :class="[
-                    $style['pay-auth-method'],
-                    {
-                      [$style['current-data']]: walletData['OSPay'].method === 1
-                    }
-                  ]"
-                  @click="walletData['OSPay'].method = 1"
-                >
-                  扫码支付
-                  <img
-                    v-if="walletData['OSPay'].method === 1"
-                    :class="$style['pay-active']"
-                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                  />
-                </div>
-
-                <!-- OSP 安全防護碼 -->
-                <div
-                  v-show="walletData['OSPay'].method === 0 && isShowOSPPwd"
-                  :class="$style['input-wrap']"
-                >
-                  <input
-                    id="osp-password"
-                    :class="$style['wallet-password']"
-                    v-model="walletData['OSPay'].password"
-                    type="text"
-                    :placeholder="walletData['OSPay'].placeholder"
-                    @input="verification('OSPPwd', $event.target.value)"
-                  />
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/btn_eye_n.png`)
-                    "
-                    @click="toggleEye('os')"
-                  />
-                </div>
-                <div
-                  v-show="walletData['OSPay'].method === 0 && !isShowOSPPwd"
-                  :class="$style['input-wrap']"
-                >
-                  <input
-                    id="osp-password"
-                    :class="$style['wallet-password']"
-                    v-model="walletData['OSPay'].password"
-                    type="password"
-                    :placeholder="walletData['OSPay'].placeholder"
-                    @input="verification('OSPPwd', $event.target.value)"
-                  />
-                  <img
-                    :src="
-                      $getCdnPath(`/static/image/common/login/btn_eye_d.png`)
-                    "
-                    @click="toggleEye('os')"
-                  />
+                  关闭
                 </div>
               </div>
             </div>
           </template>
-
-          <!-- 實際到帳 -->
-          <!-- 出現條件：選擇需要绑定的錢包且已綁定 || 選非綁定錢包的支付方式 -->
-          <div
-            v-if="
-              (isSelectBindWallet() && simplePayType.is_bind_wallet) ||
-                !isSelectBindWallet()
-            "
-            :class="$style['money-info-wrap']"
-          >
-            <span
-              v-if="simplePayType.method_name === '代客充值'"
-              :class="$style['feature-tip-title']"
-            >
-            </span>
-
-            <!-- 109/11/10 實際到帳常註顯示 -->
-            <span
-              v-else
-              :class="[
-                $style['feature-tip-title'],
-                $style[siteConfig.ROUTER_TPL],
-                {
-                  [$style['success']]:
-                    realSaveMoney &&
-                    Number(String(realSaveMoney).replace(/\,/g, '')) > 0
-                }
-              ]"
-            >
-              实际到帐： ¥{{ realSaveMoney }}
-              <span
-                v-if="
-                  simplePayType.offer_enable && +simplePayType.offer_percent > 0
-                "
-                @click="showRealStatusType(true)"
-              >
-                (充值优惠)
-              </span>
-              <span
-                v-else-if="
-                  +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
-                "
-                @click="showRealStatusType(true)"
-              >
-                (详情)
-              </span>
-            </span>
-          </div>
-
-          <div v-if="showRealStatus" :class="$style['pop-message']">
-            <div :class="$style['pop-message-mark']" />
-            <div :class="$style['message-container']">
-              <ul :class="$style['message-content']">
-                <div :class="$style['message-content-title']">
-                  {{
-                    offerInfo.offer_enable && +offerInfo.offer_percent > 0
-                      ? "充值优惠"
-                      : "详情"
-                  }}
-                </div>
-                <template
-                  v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
-                >
-                  <li :class="$style['tip-list']" v-html="promitionText" />
-                </template>
-                <!-- 簡易模式無手續費 -->
-                <!-- <li
-                  v-if="
-                    +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
-                  "
-                >
-                  • {{ feeText }}
-                </li> -->
-
-                <li>• 实际存入依审核结果为准</li>
-              </ul>
-              <div
-                :class="$style['message-close']"
-                @click="showRealStatusType(false)"
-              >
-                关闭
-              </div>
-            </div>
-          </div>
           <!-- <div>{{`!checkSuccess ${!checkSuccess}`}}</div>
           <div>{{`isBlockChecking ${isBlockChecking}`}}</div>
           <div>{{`nameCheckFail ${nameCheckFail}`}}</div>
@@ -1086,6 +1089,7 @@
     <deposit-info
       v-if="submitStatus === 'stepTwo'"
       :is-simple-type="true"
+      :your-bank-list="[]"
       :order-data="orderData"
       :is-show.sync="isShow"
       :required-fields="simplePayField"
@@ -1286,7 +1290,7 @@ export default {
         EVENT: "活动",
         FAST: "极速",
         HIGH: "大额",
-        LOW: "小额"
+        LOW: "小额",
       },
 
       nameCheckFail: false,
@@ -1592,32 +1596,32 @@ export default {
         // 幣希
         case 32:
           this.$router.push(
-            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=bcwallet&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=bcwallet&swift=${this.simpleCurPayInfo.bank_swift_code}`
           );
           break;
         // E点付
         case 34:
           this.$router.push(
-            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epoint&swift=${this.simpleCurPayInfo.bank_swift_code}`
           );
           break;
         // e点富
         case 41:
           this.$router.push(
-            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epointNew&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=epointNew&swift=${this.simpleCurPayInfo.bank_swift_code}`
           );
           break;
         // 購寶
         case 22:
           this.$router.push(
-            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=goBao&swift=${this.simpleCurPayInfo.bank_swift_code}`
           );
           break;
         // usdt
         case 402:
         case 404:
           this.$router.push(
-            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.curPayInfo.swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.simpleCurPayInfo.bank_swift_code}`
           );
           break;
       }
@@ -2087,8 +2091,8 @@ export default {
       // }
 
       // this.checkDepositInput();
-      // this.getVendorCryptoOuterUserAddressList();
-      // this.getUserBankList();
+      this.getVendorCryptoOuterUserAddressList();
+      this.getUserBankList();
     },
     /**
      * 切換銀行
@@ -2127,7 +2131,10 @@ export default {
      */
     changeSimpleRoad(info) {
       this.simplePayRode = info;
-      this.setSimpleFeeData(info);
+      if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
+        this.setSimpleFeeData(info);
+      }
+      
     },
     /**
      * 選擇通道金額
