@@ -1095,10 +1095,12 @@ export default {
                     }
                     return;
                   } else {
-                    localStorage.setItem("iframe-third-url", "res.data");
                     this.$router.push(
                       `/mobile/iframe/thirdParty?vendor=${game.vendor}`
                     );
+                    if (res && res.data) {
+                      localStorage.setItem("iframe-third-url", res.data);
+                    }
                     return;
                   }
                 });
