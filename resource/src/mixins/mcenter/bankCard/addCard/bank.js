@@ -320,6 +320,7 @@ export default {
       }
 
       if (key === "notMyBankName") {
+        this.$refs.inputNotMyBankName.focus();
         const regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·..]/g;
         value = value.replace(regex, "").substring(0, 30);
 
