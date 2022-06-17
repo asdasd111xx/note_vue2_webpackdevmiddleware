@@ -48,7 +48,6 @@
             :placeholder="chooseNameResult.placeholder"
             :disabled="chooseNameResult.disabled"
             @input="checkData($event.target.value, 'notMyBankName')"
-            ref="inputNotMyBankName"
           />
           <div :class="[$style['line']]"></div>
         </div>
