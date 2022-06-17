@@ -733,9 +733,11 @@ export default {
         }
 
         // 訪客模式/一般模式
-        this.isUnloginMode =
-          this.noLoginVideoSwitch === "false" ||
-          this.noLoginVideoSwitchFree === "false";
+        if (this.$route.query.source.includes("free")) {
+          this.isUnloginMode = this.noLoginVideoSwitchFree === "false";
+        } else {
+          this.isUnloginMode = this.noLoginVideoSwitch === "false";
+        }
         if (this.isActiveBouns) {
           this.$refs.bonunsProcess.processType = "process";
         }
