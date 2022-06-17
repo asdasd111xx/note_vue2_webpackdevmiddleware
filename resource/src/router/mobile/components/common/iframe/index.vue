@@ -134,7 +134,8 @@ export default {
       src: "",
       showBack: true,
       contentTitle: "",
-      exitCheck: false
+      exitCheck: false,
+      innerHeight: window.innerHeight
     };
   },
   components: {
@@ -150,6 +151,12 @@ export default {
     }
   },
   created() {
+    //行動裝置翻轉重取innerHeight
+    window.onorientationchange = () => {
+      setTimeout(() => {
+        this.innerHeight = window.innerHeight;
+      }, 200);
+    };
     localStorage.removeItem("_iframe-back-route");
     // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
   },
@@ -208,9 +215,7 @@ export default {
           return "/mobile";
       }
     },
-    innerHeight() {
-      return window.innerHeight;
-    },
+
     iframeHeight() {
       let result = [];
       // if (this.headerConfig.hasHeader && !this.isFullScreen) {
