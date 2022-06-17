@@ -76,9 +76,9 @@ export const domainListInit = async (configInfo, target = "local") => {
         result => {
           if (result) {
             const webApiDomain = result;
-            if (target === "local") {
-              return setAPIDomain(["error/test/api"].concat(webApiDomain));
-            }
+            // if (target === "local") {
+            //   return setAPIDomain(["error/test/api"].concat(webApiDomain));
+            // }
             return setAPIDomain(webApiDomain);
           } else {
             checkAPIDomain = false;
