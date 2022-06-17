@@ -30,11 +30,13 @@ let checkDomainList = false;
 let baseDomain;
 let baseDomainLength = 0;
 
-let isDev =
-  process.env.NODE_ENV === "development" ||
-  ["500015", "500035", "9999905"].includes(store.state.webDomain.domain);
+let isDev = process.env.NODE_ENV === "development";
 
 export const domainListInit = async (configInfo, target = "local") => {
+  isDev =
+    process.env.NODE_ENV === "development" ||
+    ["500015", "500035", "9999905"].includes(store.state.webDomain.domain);
+
   let checkDomainListTimes = 1;
 
   curConfigInfo = configInfo;
