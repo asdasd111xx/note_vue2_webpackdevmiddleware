@@ -72,6 +72,9 @@
 
 .my-card {
   padding: 15px 17px 0;
+  width: 100%;
+  position: sticky;
+  min-height: 100vh;
 }
 
 .card-count {
@@ -108,7 +111,7 @@
   overflow-y: scroll;
   margin-bottom: 10px;
   margin-top: 72px;
-  height: 520px;
+  height: 450px;
 }
 
 .audit-block {
