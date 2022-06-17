@@ -74,8 +74,8 @@ export const site_100003 = {
   SITE_NAME: "币发BIFA",
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://ybbe2.777vendor.com/api",
-  YABO_GOLANG_API_DOMAIN: "",
-  ACTIVES_BOUNS_WEBSOCKET: "",
+  YABO_GOLANG_API_DOMAIN: "https://ybbe2.777vendor.com/api-v2",
+  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.777vendor.com",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
