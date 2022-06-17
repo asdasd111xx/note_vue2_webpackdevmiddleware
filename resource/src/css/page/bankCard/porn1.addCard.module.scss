@@ -223,21 +223,30 @@
   }
 }
 
-.notMyBank-wrap {
+.notmybank-wrap {
   background: #f8f8f8;
   margin-bottom: 0;
   line-height: 17px;
-  padding: 0px 30px 20px 14px;
+  padding: 10px 30px 10px 14px;
   font-size: 14px;
-  .username {
-    color: #414655;
+
+  .notmybank-username {
+    padding: 10px 0;
+    .username {
+      color: #414655;
+    }
+    .username-tip {
+      padding-top: 8px;
+      color: #a5a9a3;
+    }
   }
-  .username-tip {
-    padding-top: 8px;
-    color: #a5a9a3;
-  }
+
   .error-msg {
     padding: 0;
+
+    &.is-hide {
+      opacity: 0;
+    }
   }
 }
 
@@ -357,17 +366,18 @@
   margin-left: 5px;
   color: #6aaaf5;
 }
-
+.error-wrap {
+  padding: 10px 0;
+}
 .error-msg {
-  height: 35px;
-  line-height: 35px;
   margin-bottom: 0;
   font-size: 14px;
   color: #db6372;
-  padding: 0 14px;
+  padding: 0px 14px;
 
   &.is-hide {
     opacity: 0;
+    padding: 0;
   }
 }
 

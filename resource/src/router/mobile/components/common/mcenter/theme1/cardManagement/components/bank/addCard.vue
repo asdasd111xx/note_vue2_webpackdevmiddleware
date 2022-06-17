@@ -1,22 +1,27 @@
 <template>
   <div :class="$style['add-bankcard']">
-    <p
+    <div
+      :class="$style['error-wrap']"
       v-if="!notMyBankSwitch || addBankCardStep === 'two'"
-      :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]"
     >
-      {{ errorMsg }}
-    </p>
+      <p :class="[$style['error-msg'], { [$style['is-hide']]: true }]">
+        {{ errorMsg }}
+      </p>
+    </div>
+
     <template v-if="addBankCardStep === 'one'">
-      <div v-if="notMyBankSwitch" :class="$style['notMyBank-wrap']">
+      <div v-if="notMyBankSwitch" :class="$style['notmybank-wrap']">
         <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
           {{ errorMsg }}
         </p>
-        <span :class="$style['username']" v-if="username"
-          >您好，{{ username }}</span
-        >
-        <p :class="$style['username-tip']">
-          请填写跟持卡人一致的银行卡信息。
-        </p>
+        <div :class="$style['notmybank-username']">
+          <span :class="$style['username']" v-if="username"
+            >您好，{{ username }}</span
+          >
+          <p :class="$style['username-tip']">
+            请填写跟持卡人一致的银行卡信息。
+          </p>
+        </div>
       </div>
       <div :class="$style['username-wrap']">
         <p :class="$style['input-title']">持卡人姓名</p>
