@@ -52,7 +52,7 @@
             v-model="chooseNameResult.name"
             :placeholder="chooseNameResult.placeholder"
             :disabled="chooseNameResult.disabled"
-            @keyup="checkData($event.target.value, 'notMyBankName')"
+            @input="checkData($event.target.value, 'notMyBankName')"
           />
           <div
             :class="[{ [$style['line']]: chooseNameResult.placeholder }]"
