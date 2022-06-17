@@ -72,10 +72,10 @@ export const site_100003 = {
   MOBILE_WEB_TPL: "porn1",
   VERSION: getVersion("porn1"),
   SITE_NAME: "币发BIFA",
-  YABO_API_DOMAIN: "https://ybbe2.777vendor.com/api",
-  YABO_GOLANG_API_DOMAIN: "https://ybbe2.777vendor.com/api-v2",
   BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
-  ACTIVES_BOUNS_WEBSOCKET: "wss://ybbe2.777vendor.com",
+  YABO_API_DOMAIN: "https://ybbe2.777vendor.com/api",
+  YABO_GOLANG_API_DOMAIN: "",
+  ACTIVES_BOUNS_WEBSOCKET: "",
   PORN_CONFIG: {
     ID: {
       SPACE: "1",
@@ -85,7 +85,9 @@ export const site_100003 = {
       GAY: "7",
       LES: "8"
     }
-  }
+  },
+  LOCAL_JSON_DOMAIN: [],
+  LOCAL_BASE_DOMAIN: ["https://ybbe2.777vendor.com"]
 };
 
 /**
@@ -100,7 +102,7 @@ export const site_41 = {
   YABO_API_DOMAIN: "https://cxbb.chessrunroll.com/api",
   YABO_GOLANG_API_DOMAIN: "",
   CDN_HEADER: "x-cdn-ey",
-  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_JSON_DOMAIN: [""],
   LOCAL_BASE_DOMAIN: [
     "https://cxbb.chesspink.com",
     "https://cxbb.chessrunroll.com"
@@ -203,7 +205,9 @@ export const site_100009 = {
       GAY: "7",
       LES: "8"
     }
-  }
+  },
+  LOCAL_JSON_DOMAIN: [""],
+  LOCAL_BASE_DOMAIN: ["https://ybbe2.777vendor.com"]
 };
 
 /**

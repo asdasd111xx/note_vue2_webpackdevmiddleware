@@ -9,6 +9,7 @@ import {
   API_MCENTER_USER_CONFIG,
   API_QRCODE
 } from "@/config/api";
+import { domainListInit, setDomainListErrorMsg } from "@/lib/getDomainList";
 import { getCookie, setCookie } from "@/lib/cookie";
 
 import EST from "@/lib/EST";
@@ -18,7 +19,6 @@ import agent from "@/api/agent";
 import ajax from "@/lib/ajax";
 import common from "@/api/common";
 import game from "@/api/game";
-import { getDomainListEncrypt } from "@/lib/getDomainList";
 import getLang from "@/lib/getLang";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import i18n from "@/config/i18n";
@@ -599,73 +599,29 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         siteConfigOfficial.preset;
     }
 
-    let checkDomain = false;
-    let checkJsonDomain = false;
-    let checkTime = 0;
-    let localBaseDomain = configInfo.LOCAL_BASE_DOMAIN;
-
-    if (
-      localStorage.getItem("base-list-domain") &&
-      atob(localStorage.getItem("base-list-domain"))
-    ) {
-      console.log(atob(localStorage.getItem("base-list-domain")));
-      localBaseDomain = atob(localStorage.getItem("base-list-domain")).split
-        ? atob(localStorage.getItem("base-list-domain")).split(",")
-        : "";
-    }
-
-    console.log("localBaseDomain", localBaseDomain);
+    let checkLocalDomainList = false;
+    let checkJSONDomainList = false;
 
     try {
       // 1.檢查預設domianlist是否可用
-      while (!checkDomain && checkTime < localBaseDomain.length) {
-        console.log("getDomainListEncrypt", localBaseDomain[checkTime]);
-        await getDomainListEncrypt(localBaseDomain[checkTime], configInfo).then(
-          result => {
-            checkTime++;
-            if (result === false || checkTime === localBaseDomain.length - 1) {
-            } else {
-              checkDomain = true;
-              checkJsonDomain = true;
-            }
-          }
-        );
+      checkLocalDomainList = await domainListInit(configInfo, "local");
+
+      if (!checkLocalDomainList) {
+        // 2.檢查remote json domianlist是否可用
+        checkJSONDomainList = await domainListInit(configInfo, "json");
       }
 
-      // 2.預設檢查皆失敗,備案使用靜態json檔
-      if (!checkDomain) {
-        alert("重新连线中(168107)");
-        console.log("%c 重新连线中(168107)", "color: red; font-size:14px");
-
-        let localJsonDomain = configInfo.LOCAL_JSON_DOMAIN;
-        checkTime = 0;
-
-        while (!checkJsonDomain && checkTime < localJsonDomain.length) {
-          console.log(localJsonDomain[checkTime]);
-          await getDomainListEncrypt(
-            localJsonDomain[checkTime],
-            configInfo
-          ).then(result => {
-            checkTime++;
-            if (result === false || checkTime === localJsonDomain.length - 1) {
-              console.log("check:", result);
-            } else {
-              checkJsonDomain = true;
-            }
-          });
-        }
-      }
-
-      if (!checkDomain && !checkJsonDomain) {
-        alert("重新连线中(168109)");
-        window.location.reload();
-        return;
-      }
+      localStorage.getItem("api-error-code");
     } catch (e) {
-      if (!checkDomain && !checkJsonDomain) {
-        alert("重新连线中(168109)");
-        alert(e);
-      }
+      console.log(e);
+    }
+
+    console.log("checkLocalDomainList", checkLocalDomainList);
+    console.log("checkJSONDomainList", checkJSONDomainList);
+
+    if (!checkLocalDomainList && !checkJSONDomainList) {
+      setDomainListErrorMsg(168110);
+      return;
     }
 
     console.log("success.");

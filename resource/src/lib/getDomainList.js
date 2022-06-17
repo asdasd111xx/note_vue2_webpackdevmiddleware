@@ -24,12 +24,108 @@ import store from "@/store";
 // },
 
 let curConfigInfo = {};
-export const getDomainListEncrypt = (url, configInfo) => {
-  let isDev =
-    process.env.NODE_ENV === "development" ||
-    ["500015", "500035", "9999905"].includes(store.state.webDomain.domain);
+let checkAPIDomain = false;
+let checkDomainList = false;
+
+let baseDomain;
+let baseDomainLength = 0;
+
+let isDev =
+  process.env.NODE_ENV === "development" ||
+  ["500015", "500035", "9999905"].includes(store.state.webDomain.domain);
+
+export const domainListInit = async (configInfo, target = "local") => {
+  let checkDomainListTimes = 1;
 
   curConfigInfo = configInfo;
+  checkAPIDomain = false;
+  checkDomainList = false;
+  baseDomain =
+    target === "local"
+      ? configInfo.LOCAL_BASE_DOMAIN
+      : configInfo.LOCAL_JSON_DOMAIN;
+
+  if (
+    target === "local" &&
+    localStorage.getItem("base-list") &&
+    window.atob(localStorage.getItem("base-list"))
+  ) {
+    baseDomain = window.atob(localStorage.getItem("base-list")).split
+      ? window.atob(localStorage.getItem("base-list")).split(",")
+      : "";
+  }
+
+  baseDomainLength = baseDomain.length;
+
+  return (async () => {
+    while (
+      !checkDomainList &&
+      !checkAPIDomain &&
+      checkDomainListTimes <= baseDomainLength
+    ) {
+      if (isDev) {
+        console.log(
+          "check domain list encrypt: ",
+          baseDomain[checkDomainListTimes - 1]
+        );
+      }
+
+      await getDomainListEncrypt(baseDomain[checkDomainListTimes - 1]).then(
+        result => {
+          if (result) {
+            const webApiDomain = result;
+            if (target === "local") {
+              return setAPIDomain(["error/test/api"].concat(webApiDomain));
+            }
+            return setAPIDomain(webApiDomain);
+          } else {
+            checkAPIDomain = false;
+          }
+
+          checkDomainListTimes++;
+        }
+      );
+    }
+
+    if (isDev) {
+      console.log("checkDomainList", checkDomainList);
+      console.log("checkAPIDomain", checkAPIDomain);
+    }
+
+    if (target === "local") {
+      // Local domain 皆不可用
+      if (!checkDomainList && checkDomainListTimes >= baseDomainLength) {
+        setDomainListErrorMsg(168107);
+        // Local api domain 皆不可用
+        return false;
+      } else if (checkDomainList && !checkAPIDomain) {
+        setDomainListErrorMsg(168109);
+        return false;
+      }
+    }
+
+    if (target === "json") {
+      // remote api domain 皆不可用
+      if (!checkDomainList || !checkAPIDomain) {
+        setDomainListErrorMsg(168110);
+        return false;
+      } else if (checkDomainList && !checkAPIDomain) {
+        setDomainListErrorMsg(168109);
+        return false;
+      }
+    }
+
+    // 檢查完成
+    if (checkDomainList && checkAPIDomain) {
+      if (isDev) {
+        console.log("set api domain: ", curConfigInfo.YABO_GOLANG_API_DOMAIN);
+      }
+      return true;
+    }
+  })();
+};
+
+export const getDomainListEncrypt = url => {
   return axios({
     method: "get",
     url: `${url}/api-v2/xbb/DomainList/Encrypt`
@@ -44,54 +140,53 @@ export const getDomainListEncrypt = (url, configInfo) => {
             jsonResult.data[store.state.webDomain.domain].web.apiDomainList,
           listDomainList =
             jsonResult.data[store.state.webDomain.domain].web.listDomainList;
-        localStorage.setItem("base-list-domain", btoa(listDomainList));
+        localStorage.setItem("base-list", window.btoa(listDomainList));
+
+        checkDomainList = true;
 
         if (isDev) {
           console.log("jsonResult:", jsonResult);
           console.log("webApiDomain:", webApiDomain);
         }
 
-        if (webApiDomain) {
-          return setAPIDomain(webApiDomain);
-        } else {
-          return false;
-        }
+        return webApiDomain;
       }
     })
     .catch(() => {
       return false;
     });
 };
-function setAPIDomain(allDomainList) {
-  let checkDomain = false,
-    checkTime = 0,
+
+async function setAPIDomain(allDomainList) {
+  let checkTime = 0,
     limitTest = 0; // 避免迴圈
 
-  let isDev =
-    process.env.NODE_ENV === "development" ||
-    ["500015", "500035", "9999905"].includes(store.state.webDomain.domain);
+  if (!allDomainList || allDomainList.length === 0) {
+    return false;
+  }
 
   async function checkHealth() {
+    if (isDev) {
+      console.log("check api health");
+    }
     return await axios({
       method: "get",
       url: `${allDomainList[checkTime]}/api-v2/cxbb/Health/health`
     })
       .then(res => {
+        if (isDev) {
+          console.log("check: ", allDomainList[checkTime]);
+        }
+
         if (res.status === 200) {
+          console.log("set:", allDomainList[checkTime]);
           curConfigInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[checkTime]}/api-v2`;
           curConfigInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
             checkTime
           ].replace("https", "wss")}`;
 
-          if (isDev) {
-            console.log("checkTime: ", checkTime);
-            console.log(
-              "set api domain: ",
-              curConfigInfo.YABO_GOLANG_API_DOMAIN
-            );
-          }
-
-          checkDomain = true;
+          checkAPIDomain = true;
+          return true;
         }
         checkTime += 1;
       })
@@ -103,7 +198,11 @@ function setAPIDomain(allDomainList) {
   }
 
   return (async () => {
-    while (!checkDomain && checkTime < allDomainList.length && limitTest < 20) {
+    while (
+      !checkAPIDomain &&
+      checkTime < allDomainList.length &&
+      limitTest < 20
+    ) {
       limitTest++;
       await checkHealth();
     }
@@ -112,7 +211,7 @@ function setAPIDomain(allDomainList) {
       console.log("check all api domian done");
     }
 
-    if (checkDomain) {
+    if (checkAPIDomain) {
       return store.dispatch("actionSetSiteConfig", curConfigInfo);
     } else {
       return false;
@@ -131,4 +230,14 @@ function decrypt(data) {
 
   let base64String = CryptoJS.enc.Base64.stringify(decrypt);
   return atob(base64String);
+}
+
+export function setDomainListErrorMsg(code) {
+  console.log(`%c 重新连线中(${code})`, "color: red; font-size:14px");
+  alert(`重新连线中(${code})`);
+  localStorage.setItem("api-error-code", code);
+
+  if (code === 168110) {
+    window.location.reload();
+  }
 }

@@ -13,7 +13,7 @@ export const preset = {
   // 非色站 cxbb
   // https://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yiyuan_qa.json
   LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
-  LOCAL_BASE_DOMAIN: ["https://yaboapi.bbin-asia.com1"]
+  LOCAL_BASE_DOMAIN: ["error/test/api", "https://yaboapi.bbin-asia.com"]
 };
 
 /* ---------- ↓ 測試站 ---------- */
