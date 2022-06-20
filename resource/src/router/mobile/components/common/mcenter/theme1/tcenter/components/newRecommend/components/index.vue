@@ -25,7 +25,7 @@
         </div>
       </div>
       <div
-        v-if="isBindFriend && friendCode"
+        v-if="isBindFriend && friendCode !== ''"
         :class="[$style['bind-code-wrap'], 'clearfix']"
       >
         <span :class="$style['sub-title']">我的绑定码</span>
