@@ -18,7 +18,7 @@
         </div>
       </div>
       <div :class="$style['type-wrap']">
-        <swiper :options="{ slidesPerView: 'auto' }">
+        <swiper :options="{ slidesPerView: 'auto', slideToClickedSlide: true }">
           <swiper-slide
             v-for="tab in tabList"
             :key="tab.id"
