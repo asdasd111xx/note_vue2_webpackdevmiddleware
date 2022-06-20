@@ -11,7 +11,12 @@ export const preset = {
   YABO_GOLANG_API_DOMAIN: "",
   ACTIVES_BOUNS_WEBSOCKET: "",
   CDN_HEADER: "",
-  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_JSON_DOMAIN: [
+    "https://s3.ap-northeast-1.amazonaws.com/dnk5hpuy67",
+    "https://cos.ap-nanjing.myqcloud.com/dnk5hpuy67-1305726917",
+    "https://dnk5hpuy67.oss-cn-hangzhou.aliyuncs.com",
+    "https://d15xg0jxmcsiyp.cloudfront.net"
+  ],
   LOCAL_BASE_DOMAIN: [
     "https://yaboapi.armadillobrulee.com",
     "https://armadillobrulee.com"
@@ -86,7 +91,11 @@ export const site_100003 = {
       LES: "8"
     }
   },
-  LOCAL_JSON_DOMAIN: [],
+  LOCAL_JSON_DOMAIN: [
+    "https://s3.ap-northeast-1.amazonaws.com/be5c100003",
+    "https://cos.ap-nanjing.myqcloud.com/be5c100003-1305726917",
+    "https://be5c100003.oss-cn-hangzhou.aliyuncs.com"
+  ],
   LOCAL_BASE_DOMAIN: ["https://ybbe2.777vendor.com"]
 };
 
@@ -102,7 +111,11 @@ export const site_41 = {
   YABO_API_DOMAIN: "https://cxbb.chessrunroll.com/api",
   YABO_GOLANG_API_DOMAIN: "",
   CDN_HEADER: "x-cdn-ey",
-  LOCAL_JSON_DOMAIN: [""],
+  LOCAL_JSON_DOMAIN: [
+    "https://s3.ap-northeast-1.amazonaws.com/xv2ysd6b58",
+    "https://cos.ap-chongqing.myqcloud.com/xv2ysd6b58-1305726917",
+    "https://xv2ysd6b58.oss-cn-shanghai.aliyuncs.com"
+  ],
   LOCAL_BASE_DOMAIN: [
     "https://cxbb.chesspink.com",
     "https://cxbb.chessrunroll.com"
@@ -133,7 +146,13 @@ export const site_100004 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://eybe2.77num.com/api",
   YABO_GOLANG_API_DOMAIN: "https://eybe2.77num.com/api-v2",
-  BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService"
+  BBOS_DOMIAN: "https://xbb.qghco.com/elibomApi/WebService",
+  LOCAL_JSON_DOMAIN: [
+    "https://s3.ap-northeast-1.amazonaws.com/sk6esbbeta",
+    "https://cos.ap-chongqing.myqcloud.com/sk6esbbeta-1305726917",
+    "https://sk6esbbeta.oss-cn-shanghai.aliyuncs.com"
+  ],
+  LOCAL_BASE_DOMAIN: ["https://eybe2.77num.com"]
 };
 /* eslint-enable camelcase */
 

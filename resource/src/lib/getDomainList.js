@@ -57,7 +57,19 @@ export const domainListInit = async (configInfo, target = "local") => {
       : "";
   }
 
-  baseDomainLength = baseDomain.length;
+  if (target === "local") {
+    if (!baseDomain || !baseDomain.length) {
+      setDomainListErrorMsg(168107);
+      return false;
+    }
+  } else if (target === "json") {
+    if (!baseDomain || !baseDomain.length) {
+      setDomainListErrorMsg(168110);
+      return false;
+    }
+  }
+
+  baseDomainLength = baseDomain.length || 0;
 
   return (async () => {
     while (
@@ -98,7 +110,6 @@ export const domainListInit = async (configInfo, target = "local") => {
       // Local domain 皆不可用
       if (!checkDomainList && checkDomainListTimes >= baseDomainLength) {
         setDomainListErrorMsg(168107);
-        // Local api domain 皆不可用
         return false;
       } else if (checkDomainList && !checkAPIDomain) {
         setDomainListErrorMsg(168109);

@@ -12,7 +12,12 @@ export const preset = {
   ACTIVES_BOUNS_WEBSOCKET: "",
   // 非色站 cxbb
   // https://d15xg0jxmcsiyp.cloudfront.net/json/domainList_yiyuan_qa.json
-  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_JSON_DOMAIN: [
+    "https://cos.ap-nanjing.myqcloud.com/rg2d500015-1305726917",
+    "https://rg2d500015.oss-cn-hangzhou.aliyuncs.com",
+    "https://s3.ap-northeast-1.amazonaws.com/rg2d500015",
+    "https://d15xg0jxmcsiyp.cloudfront.net"
+  ],
   LOCAL_BASE_DOMAIN: ["https://yaboapi.bbin-asia.com"]
 };
 
@@ -50,7 +55,12 @@ export const site_500023 = {
   SITE_NAME: "亿元",
   YABO_API_DOMAIN: "https://cxbb.bbin-asia.com/api",
   YABO_GOLANG_API_DOMAIN: "",
-  LOCAL_JSON_DOMAIN: ["https://d15xg0jxmcsiyp.cloudfront.net"],
+  LOCAL_JSON_DOMAIN: [
+    "https://s3.ap-northeast-1.amazonaws.com/hje6xxxx25",
+    "https://cos.ap-chongqing.myqcloud.com/hje6xxxx25-1305726917",
+    "https://hje6xxxx25.oss-cn-shanghai.aliyuncs.com",
+    "https://d15xg0jxmcsiyp.cloudfront.net"
+  ],
   LOCAL_BASE_DOMAIN: ["https://cxbb.bbin-asia.com.com"]
 };
 /* eslint-enable camelcase */
