@@ -203,6 +203,10 @@ export default {
     checkInput() {
       this.$validator.validateAll("form-page").then(response => {
         if (!response) {
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_JM_MSG_COMPLETE", "请填写完整")
+          });
+
           Object.keys(this.allValue).forEach(key => {
             // console.log(key, this.allValue[key]);
             if (!this.allValue[key]) {
