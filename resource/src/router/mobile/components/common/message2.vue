@@ -182,7 +182,7 @@ export default {
             setCookie("aid", "");
             localStorage.removeItem("aid");
 
-            this.$router.push("/mobile/login");
+            this.$router.push("/mobile/login?logout=true");
             break;
 
           // 維護

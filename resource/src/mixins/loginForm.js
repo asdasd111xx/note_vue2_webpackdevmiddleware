@@ -37,7 +37,8 @@ export default {
       isBackEnd: "getIsBackEnd",
       siteConfig: "getSiteConfig",
       memInfo: "getMemInfo",
-      version: "getVersion"
+      version: "getVersion",
+      loginStatus: "getLoginStatus"
     }),
     isSlideAble() {
       // 簡訊驗證登入 0: 關, 1:簡訊, 2:密碼
@@ -84,6 +85,7 @@ export default {
   },
   beforeCreate() {
     if (this.$route.query.logout) {
+      console.log("logout");
       setCookie("cid", "");
       setCookie("y_token", "");
       setCookie("aid", "");
@@ -91,7 +93,6 @@ export default {
 
       this.$router.replace("/mobile/login");
     }
-
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
       this.script = document.createElement("script");
       this.script.setAttribute("type", "text/javascript");
@@ -110,6 +111,15 @@ export default {
     }
   },
   created() {
+    if (this.loginStatus) {
+      if (this.siteConfig.ROUTER_TPL === "sg1") {
+        this.$router.replace("/mobile/live/iframe/home?hasFooter=true");
+        return;
+      } else {
+        this.$router.replace("/mobile");
+        return;
+      }
+    }
     this.getCaptcha();
     this.phone = localStorage.getItem("mobileusername") || "";
     this.mpassword = localStorage.getItem("mpassword") || "";
@@ -118,6 +128,7 @@ export default {
     this.rememberPwd = localStorage.getItem("rememberPwd") === "true";
     this.m_rememberPwd = localStorage.getItem("m_rememberPwd") === "true";
   },
+
   methods: {
     ...mapActions([
       "actionIsLogin",

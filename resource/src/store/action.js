@@ -2696,3 +2696,24 @@ export const actionSetActivity = ({ state, commit }) => {
     }
   });
 };
+
+// 非本人銀行卡開關
+export const actionSetNotMyBankSwitch = ({ state, commit }) => {
+  //取得會員設定
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Config`
+  }).then(res => {
+    if (res && res.data) {
+      const { data } = res;
+      //允許客端新增/編輯非本人銀行 && 允許非本人銀行卡
+      if (data) {
+        commit(types.SET_NOTMYBANK, {
+          otherUbEdit: data.other_ub_edit,
+          otherUserBank: data.other_user_bank
+        });
+      }
+      return;
+    }
+  });
+};
