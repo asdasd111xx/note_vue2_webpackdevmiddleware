@@ -535,7 +535,7 @@ export default {
           return;
         }
 
-        thi.getPromotionTitle();
+        this.getPromotionTitle();
       });
     },
     toggleFullScreen() {
