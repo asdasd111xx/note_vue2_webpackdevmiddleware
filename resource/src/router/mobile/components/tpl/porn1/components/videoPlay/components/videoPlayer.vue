@@ -300,12 +300,12 @@ export default {
         return;
       }
 
-      if (this.isUnloginMode && !this.mission) {
-        this.$refs.bonunsDialog.isShow = true;
-        this.dialogType = "tips";
-        this.playerPause();
-        return;
-      }
+      // if (this.isUnloginMode && !this.mission) {
+      //   this.$refs.bonunsDialog.isShow = true;
+      //   this.dialogType = "tips";
+      //   this.playerPause();
+      //   return;
+      // }
 
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
