@@ -4,7 +4,7 @@
       :class="$style['error-wrap']"
       v-if="!notMyBankSwitch || addBankCardStep === 'two'"
     >
-      <p :class="[$style['error-msg'], { [$style['is-hide']]: true }]">
+      <p :class="[$style['error-msg'], { [$style['is-hide']]: !errorMsg }]">
         {{ errorMsg }}
       </p>
     </div>
