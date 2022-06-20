@@ -4,6 +4,14 @@
 //src為/game/lg_sport/1 其實連到內部的 path: 'game/:vendor/:kind/:code?'的檔案（resource/src/router/game/components/index.vue）
 
 //headerConfig 控制標題
+
+//reload
+//開遊戲時src="/game/jdb/3/39045" 但進去之後會用iframe-third-url跳轉（https://game.jygrq.com/?lang=cn&homeUrl=&isAPP=false&gameType=15&mType=15009&gName=NinjaRush_99f865c&e=api_demo_2&mute=0&x=e9tkQRED2CC-OKWfOynIr9Q8AQFAu3F_mDPfQAv-BDn-ZzAm51JEr5E85poniuj9uDavBBIPQOZ5THrv_AsGE3Ue_QXVMsc-D-cQZwC_QVVkgH5Fd9X1gzj-NvRaSm6Cvt_VCh4mMyhxvf4R）
+//開優小蜜時src = https://yb01.iplay.bet/p/2205260001?code=promotion&jwt_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjg4MTM2LCJ1c2VybmFtZSI6Imphc29udHNhaSIsInJvbGUiOiJwbGF5ZXIiLCJkb21haW4iOiI1MDAwMTUiLCJsYW5ndWFnZSI6InpoLWNuIiwic291cmNlX2RldmljZSI6Img1IiwiZG9tYWluX25hbWUiOiLluIHlj5FCSUZB5byA5Y-R56uZIiwiaWF0IjoxNjU0MDU0MjE3LCJleHAiOjE2NTQwNTQ1MTd9.iXoCldgoraCBPSnI18DqF52tmccA3PqLzSmivqtBbGw&type=customize&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjg4MTM2LCJ1c2VybmFtZSI6Imphc29udHNhaSIsInJvbGUiOiJwbGF5ZXIiLCJkb21haW4iOiI1MDAwMTUiLCJsYW5ndWFnZSI6InpoLWNuIiwic291cmNlX2RldmljZSI6Img1IiwiZG9tYWluX25hbWUiOiLluIHlj5FCSUZB5byA5Y-R56uZIiwiaWF0IjoxNjU0MDU0MjE3LCJleHAiOjE2NTQwNTQ1MTd9.iXoCldgoraCBPSnI18DqF52tmccA3PqLzSmivqtBbGw&source=http%3A%2F%2Flocalhost%3A8787&v=m&platform=h5
+//所以在reload遊戲時，要先src ＝‘’ (讓game.vue重啟) ，並重新存('iframe-third-url')(讓game.vue有新的網址去replace)
+
+//iframe 加key
+//iframe的歷史紀錄也會算在瀏覽器的history裡面，但用這種方式，整個iframe會被砍掉重新插進dom裡面，iframe就是最新的，不會有歷史記錄了
 </script>
 <template>
   <div

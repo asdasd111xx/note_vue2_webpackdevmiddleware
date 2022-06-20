@@ -1,3 +1,12 @@
+<script>
+//影片入口
+//免費區流程 (一小格就是一個聽主)(先拿到廳主的token) ()
+//1.actionMemInit   await dispatch("actionSetSystemDomain", { isGetFreeSpace: true });  寫死泡泡幣發isGetFreeSpace :free
+//2.actionSetSystemDomain    /getspaceIdJWT  payload {spaceId:123(廳主) 密鑰:xxx(寫死)}  responce {jwt=xxxxxxx} 拿到token
+//3  /videolist  payload { videoSpaceId: 9(供影商) jwt: xxxxxx } responce {全部標籤}
+//1.
+</script>
+
 <template>
   <mobile-container
     :header-config="headerConfig"
