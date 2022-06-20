@@ -2364,14 +2364,16 @@ export default {
       // 如果是迅付欄位
       if (isSpeedField) {
         if (target === "depositName") {
-          this.actionVerificationFormData({
-            target: "name",
-            value: value
-          }).then(val => {
-            // this.checkSuccess = val ? true : false;
+          //充值人姓名移除中文限制
+          this.speedField.depositName = value;
+          // this.actionVerificationFormData({
+          //   target: "name",
+          //   value: value
+          // }).then(val => {
+          //   // this.checkSuccess = val ? true : false;
 
-            this.speedField.depositName = val;
-          });
+          //   this.speedField.depositName = val;
+          // });
         }
         this.checkOrderData();
       }

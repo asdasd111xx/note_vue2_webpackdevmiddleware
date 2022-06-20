@@ -273,11 +273,12 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     submitInput(data, objKey) {
-      if (objKey === "depositName") {
-        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-        this.depositName = data.replace(re, "");
-        data = data.replace(re, "");
-      }
+      //充值人姓名移除中文限制
+      // if (objKey === "depositName") {
+      //   const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+      //   this.depositName = data.replace(re, "");
+      //   data = data.replace(re, "");
+      // }
 
       this.$emit("update:speedField", { data, objKey });
     },

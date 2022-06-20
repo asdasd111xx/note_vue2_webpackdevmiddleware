@@ -166,7 +166,9 @@
             <!-- 通道 -->
             <div
               v-if="
-                simplePayType.channels.length > 0 || simplePayType.tags.length > 0
+                (simplePayType.channels.length > 0 || simplePayType.tags.length > 0)&&
+                !isSelectBindWallet(402) &&
+                !isSelectBindWallet(404)
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -346,7 +348,7 @@
               <div
                 v-if="
                   simplePayType.channels.length > 0 &&
-                  simplePayRodeTipText != '' &&
+                  simplePayRode.tip != '' &&
                     !isSelectBindWallet(402) &&
                     !isSelectBindWallet(404)
                 "
@@ -1150,7 +1152,7 @@
               </div>
             </div>
             <ul :class="[$style['entry-message-confirm']]">
-              <li @click="submitInfo">确定</li>
+              <li @click="submitInfo(true)">确定</li>
               <!-- has_csr: 是否啟用代客充值 -->
               <li v-if="entryBlockStatusData.has_csr" @click="goToValetDeposit">
                 代客充值
@@ -1346,7 +1348,8 @@ export default {
         per_trade_max: "",
         per_trade_min: ""
       },
-      simplePayField: []
+      simplePayField: [],
+      newWindow:""
     };
   },
   watch: {
@@ -1619,9 +1622,13 @@ export default {
           break;
         // usdt
         case 402:
+          this.$router.push(
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=BBUSDTCN1`
+          );
+          break;
         case 404:
           this.$router.push(
-            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=${this.simpleCurPayInfo.bank_swift_code}`
+            `/mobile/mcenter/bankCard?redirect=deposit&type=wallet&wallet=usdt&swift=BBUSDTCN3`
           );
           break;
       }
@@ -1629,6 +1636,12 @@ export default {
     },
     //點擊立即充值
     clickSubmit() {
+      this.newWindow = "";
+      this.newWindow = window.open(
+        "",
+        "",
+        "width=1024, height=768, target=_blank, toolbar=yes"
+      );
       this.checkEntryBlockStatus().then(() => {
         if (this.routerTPL === "sg1") {
           sendUmeng(49);
@@ -1649,6 +1662,7 @@ export default {
             this.actionSetGlobalMessage({
               msg: "币希钱包余额不足"
             });
+            this.newWindow.close();
             return;
           }
         }
@@ -1661,6 +1675,7 @@ export default {
             break;
 
           case 4:
+            this.newWindow.close();
             this.actionSetGlobalMessage({
               msg: this.entryBlockStatusData.custom_point
             });
@@ -1673,6 +1688,7 @@ export default {
             break;
 
           default:
+            this.newWindow.close();
             this.setPopupStatus(true, "blockStatus");
 
             break;
@@ -1683,7 +1699,7 @@ export default {
      * 提交訂單
      * @method submitInfo
      */
-    submitInfo() {
+    submitInfo(needReOpen) {
       // status = 5-> 封鎖阻擋與跳轉網址
       if (this.entryBlockStatusData.status === 5) {
         this.actionSetGlobalMessage({
@@ -1713,6 +1729,14 @@ export default {
           });
           return;
         }
+      }
+      if(needReOpen){
+        this.newWindow = "";
+        this.newWindow = window.open(
+          "",
+          "",
+          "width=1024, height=768, target=_blank, toolbar=yes"
+        );
       }
       this.sendSimpleDeposit().then(response => {
         // 重置阻擋狀態
@@ -1783,6 +1807,7 @@ export default {
               msg: res.msg,
               code: res.code
             });
+            this.newWindow.close();
           }
         })
         .catch(error => {
@@ -1791,6 +1816,7 @@ export default {
             msg,
             code
           });
+          this.newWindow.close();
         });
     },
     // 代客充值
@@ -2091,7 +2117,6 @@ export default {
       // }
 
       // this.checkDepositInput();
-      this.getVendorCryptoOuterUserAddressList();
       this.getUserBankList();
     },
     /**
@@ -2116,13 +2141,16 @@ export default {
      */
     changeSimplePayType(info) {
       this.simplePayType = info;
+      this.getVendorCryptoOuterUserAddressList();
       if (this.simplePayType.channels.length > 0) {
         this.changeSimpleRoad(this.simplePayType.channels[0]);
       } else if (this.simplePayType.tags.length > 0) {
         this.changeSimpleRoad(this.simplePayType.tags[0]);
       } else {
         this.changeSimpleRoad(null);
-        this.setSimpleFeeData(info);
+        if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
+          this.setSimpleFeeData(info);
+        }
       }
     },
     /**
@@ -2131,6 +2159,7 @@ export default {
      */
     changeSimpleRoad(info) {
       this.simplePayRode = info;
+      this.getSimplePayOffer();
       if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
         this.setSimpleFeeData(info);
       }
@@ -2326,16 +2355,9 @@ export default {
     sendSimpleDeposit() {
       this.nameCheckFail = false;
 
-      let newWindow = "";
-      newWindow = window.open(
-        "",
-        "",
-        "width=1024, height=768, target=_blank, toolbar=yes"
-      );
-
       const newWindowHref = uri => {
         setTimeout(() => {
-          newWindow.location.href = uri;
+          this.newWindow.location.href = uri;
         }, 200);
       };
 
@@ -2476,7 +2498,7 @@ export default {
               code
             });
 
-            newWindow.close();
+            this.newWindow.close();
 
             return { status: "error" };
           }
@@ -2518,7 +2540,7 @@ export default {
               localStorage.setItem("iframe-third-url", ret.wallet.url);
               localStorage.setItem("iframe-third-url-title", "");
               this.$router.push(`/mobile/iframe/deposit?func=false`);
-              newWindow.close();
+              this.newWindow.close();
               return;
             }
             if (_isWebview) {
@@ -2556,7 +2578,7 @@ export default {
           });
 
           if (_isPWA) {
-            newWindow.close();
+            this.newWindow.close();
           }
 
           // CGPay 不需要進入詳細入款單
@@ -2588,7 +2610,7 @@ export default {
           this.actionSetIsLoading(false);
 
           if (_isPWA) {
-            newWindow.close();
+            this.newWindow.close();
           }
           if (code === 1501020021) {
             (async () => {
