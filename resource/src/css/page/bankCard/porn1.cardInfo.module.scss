@@ -23,50 +23,59 @@
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
-  background-color: #F8F8F7;
+  background-color: #f8f8f7;
   padding-top: 5px;
 }
 
 // -----添加區塊-----
-.add-wrap {
-  margin-bottom: 10px;
-  text-align: center;
 
-  img,
-  span {
-    display: inline-block;
+.add-card-button-wrap {
+  position: sticky;
+
+  .add-wrap {
+    margin-bottom: 10px;
+    text-align: center;
+
+    img,
+    span {
+      display: inline-block;
+    }
+
+    img {
+      max-width: 18px;
+      vertical-align: top;
+    }
+
+    span {
+      line-height: 18px;
+      margin-left: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mcenter_slider_text_active_color);
+    }
+
+    .add-btn {
+      padding: 31px 0;
+      background: #fff;
+      border-radius: 10px;
+    }
   }
 
-  img {
-    max-width: 18px;
-    vertical-align: top;
+  .remind {
+    font-size: 14px;
+    color: #a6a9b2;
+    text-align: center;
+    padding: 10px;
   }
-
-  span {
-    line-height: 18px;
-    margin-left: 6px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--mcenter_slider_text_active_color);
-  }
-
-  .add-btn {
-    padding: 31px 0;
-    background: #fff;
-    border-radius: 10px;
-  }
-}
-
-.remind {
-  font-size: 14px;
-  color: #a6a9b2;
-  text-align: center;
 }
 
 // -----銀行卡列表-----
 
 .my-card {
   padding: 15px 17px 0;
+  width: 100%;
+  position: sticky;
+  min-height: 100%;
 }
 
 .card-count {
@@ -100,8 +109,10 @@
 }
 
 .card-list {
+  overflow-y: scroll;
   margin-bottom: 10px;
   margin-top: 72px;
+  height: 450px;
 }
 
 .audit-block {
@@ -188,11 +199,11 @@
 
 .content {
   padding: 17px 18px;
-  color: var(--mcenter_slider_text_color);
+  color: var(--mcenter_text_color);
   text-align: center;
 
   .title {
-    color: var(--mcenter_slider_text_active_color);
+    color: #414655;
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 10px;

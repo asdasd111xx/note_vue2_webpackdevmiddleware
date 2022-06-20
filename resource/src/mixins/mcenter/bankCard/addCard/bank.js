@@ -3,7 +3,6 @@ import { mapActions, mapGetters } from "vuex";
 
 import { API_MCENTER_USER_CONFIG } from "@/config/api";
 import ajax from "@/lib/ajax";
-import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 
 export default {
@@ -34,14 +33,17 @@ export default {
       smsTimer: null,
       thirdyCaptchaObj: null,
       isShowCaptcha: false,
-      isClickedCaptcha: false
+      isClickedCaptcha: false,
+      chooseNameResult: {},
+      notMyBankSwitch: false
     };
   },
   computed: {
     ...mapGetters({
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
-      domainConfig: "getDomainConfig"
+      domainConfig: "getDomainConfig",
+      notMyBank: "getNotMyBank"
     }),
     themeTPL() {
       return this.siteConfig.MOBILE_WEB_TPL;
@@ -51,7 +53,7 @@ export default {
         return "";
       }
 
-      return this.memInfo.user.name.slice(0, 1);
+      return this.memInfo.user.name;
 
       // return this.memInfo.user.name
       //   .split("")
@@ -80,6 +82,24 @@ export default {
       }
 
       return result;
+    },
+    chooseName() {
+      return [
+        {
+          key: 0,
+          title: "本人",
+          name: this.username ? this.username : "",
+          placeholder: this.username ? "" : "请输入持卡人姓名，仅支持中文、“·”",
+          disabled: this.username ? true : false
+        },
+        {
+          key: 1,
+          title: "非本人",
+          name: "",
+          placeholder: "请输入持卡人姓名，仅支持中文、“·”",
+          disabled: false
+        }
+      ];
     }
   },
   watch: {
@@ -111,6 +131,22 @@ export default {
     }
   },
   created() {
+    this.chooseNameResult = this.chooseName[0];
+
+    this.actionSetNotMyBankSwitch().then(() => {
+      if (this.notMyBank.otherUbEdit && this.notMyBank.otherUserBank) {
+        this.getWidthdrawList().then(data => {
+          if (data.length > 0) {
+            this.notMyBankSwitch = true;
+
+            if (this.username) {
+              delete this.formData["accountName"];
+            }
+          }
+        });
+      }
+    });
+
     // 已經有真實姓名時不送該欄位
     if (this.memInfo.user.name) {
       delete this.formData["accountName"];
@@ -157,10 +193,30 @@ export default {
       "actionVerificationFormData",
       "actionSetGlobalMessage",
       "actionGetToManyRequestMsg",
-      "actionSetDomainConfigV2"
+      "actionSetDomainConfigV2",
+      "actionSetNotMyBankSwitch"
     ]),
     setCaptcha(obj) {
       this.thirdyCaptchaObj = obj;
+    },
+    getWidthdrawList() {
+      //回傳銀行卡清單與狀態/查詢會員出款銀行 C02.221
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`
+      })
+        .then(response => {
+          const { data, status, errorCode } = response;
+
+          if (errorCode !== "00" || status !== "000") {
+            return;
+          }
+          return data;
+        })
+        .catch(error => {
+          const { msg } = error.response.data;
+          this.actionSetGlobalMessage({ msg });
+        });
     },
     showCaptcha() {
       this.isShowCaptcha = !this.isShowCaptcha;
@@ -178,13 +234,14 @@ export default {
 
       this.lockStatus = true;
 
-      // 已經有真實姓名時不送該欄位
-      if (this.memInfo.user.name) {
+      // 已經有真實姓名且是本人銀行卡時不送該欄位
+      if (this.memInfo.user.name && this.chooseNameResult.key === 0) {
         delete this.formData["accountName"];
       }
 
       const params = {
         ...this.formData,
+        otherUserBank: this.chooseNameResult.key === 1 ? true : false,
         lang: "zh-cn",
         phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
         //企劃：無論開啟/關閉 系統端銀行卡二元素，會員綁定銀行卡時，開戶分行、省/直轄市、縣/市 這三個欄位沒填寫須自動帶--給後端
@@ -194,6 +251,7 @@ export default {
         branch: this.formData.branch === "" ? "--" : this.formData.branch
       };
 
+      //新增會員出款帳號資料(有驗證功能)C02.223
       goLangApiRequest({
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank`,
@@ -201,38 +259,28 @@ export default {
           kind: "pwa"
         },
         params
-      })
-        .then(response => {
-          const { status, errorCode, msg } = response;
+      }).then(response => {
+        const { status, errorCode, msg, code } = response;
 
-          if (errorCode !== "00" || status !== "000") {
-            this.lockStatus = false;
-            this.errorMsg = msg;
-
-            // if (this.addBankCardStep === "one") {
-            //   this.msg = msg;
-            // }
-            return;
-          }
-
-          this.msg = "绑定成功";
+        if (errorCode !== "00" || status !== "000") {
           this.lockStatus = false;
-          this.addBankCardStep === "one";
 
-          if (!this.memInfo.user.name) {
-            this.actionSetUserdata(true);
-          }
-        })
-        .catch(error => {
-          const { msg } = error.response.data;
-
-          this.lockStatus = false;
           this.errorMsg = msg;
 
           // if (this.addBankCardStep === "one") {
           //   this.msg = msg;
           // }
-        });
+          return;
+        }
+
+        this.msg = "绑定成功";
+        this.lockStatus = false;
+        this.addBankCardStep === "one";
+
+        if (!this.memInfo.user.name) {
+          this.actionSetUserdata(true);
+        }
+      });
 
       // ajax({
       //   method: "post",
@@ -271,6 +319,14 @@ export default {
             this.formData.accountName = val;
           }
         );
+      }
+
+      if (key === "notMyBankName") {
+        const regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·..]/g;
+        value = value.replace(regex, "").substring(0, 30);
+
+        //accountName開戶姓名 (非本人銀行卡時必填)
+        this.formData.accountName = this.chooseNameResult.name = value;
       }
 
       if (key === "province" || key === "city") {

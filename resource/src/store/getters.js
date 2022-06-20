@@ -201,6 +201,7 @@ export default {
   getGlobalMessage: state => state.globalMessage,
   getRechargeConfig: state => state.rechargeConfig,
   getHasBank: state => state.hasBank,
+  getNotMyBank: state => state.notMyBank,
   getVideoBounsPageStatus: state => state.videoBounsPageStatus,
   getMemInfoV3: state => state.memInfoV3,
   getRechargeBonusConfig: state => state.rechargeBonusConfig, //取得廳首次額度轉讓優惠設定
