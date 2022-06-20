@@ -27,13 +27,22 @@
         <swiper
           :options="{
             slidesPerView: 'auto',
-            slideToClickedSlide: true
+            slideToClickedSlide: true,
+            centeredSlides: true,
+            centeredSlidesBounds: true,
+            spaceBetween: 5,
+            slidesOffsetBefore: 30,
+            slidesOffsetAfter: 30
           }"
         >
           <swiper-slide
             v-for="tab in tabList"
             :key="tab.id"
-            :style="{ width: tab.name.length * 17 + 'px' }"
+            :style="[
+              tab.name.includes('(') || tab.name.match(/^[A-Za-z]+$/)
+                ? { width: tab.name.length * 10 + 'px' }
+                : { width: tab.name.length * 16 + 'px' }
+            ]"
             :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
           >
             <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
