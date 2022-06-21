@@ -124,9 +124,7 @@ if (cid && !isApp) {
 document.body.onpageshow = event => {
   const needReload = ["login"];
   const to = router.history.current.name || router.history.pending.name || "";
-
-  const isSafari = navigator.userAgent.indexOf("Safari") !== -1;
-  if (isSafari && needReload.includes(to) && event.persisted) {
+  if (needReload.includes(to) && event.persisted) {
     document.getElementById("mobile-wrap").style.display = "none";
     document.getElementById("main-loading").style.display = "block";
     window.location.reload();
