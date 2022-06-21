@@ -5,7 +5,6 @@
 import version from "@/config/version.json";
 
 export const basic = {
-  TESTER: "N", // 可使用 Cookies 測試設定客製首頁
   CUSTOMIZE_HOME_TPL_PATH: [], // 有客製首頁的模版編號
   MCENTER_COLOR: "basic", // 會員中心及代理中心色系
   JOIN_MEMBER_THEME: "default", // 加入會員 / 加入代理樣式

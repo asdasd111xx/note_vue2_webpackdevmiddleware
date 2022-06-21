@@ -6,10 +6,10 @@ import * as types from "./mutations_type";
 
 import {
   API_AGENT_USER_CONFIG,
-  API_GETAPPINFO,
   API_MCENTER_USER_CONFIG,
   API_QRCODE
 } from "@/config/api";
+import { domainListInit, setDomainListErrorMsg } from "@/lib/getDomainList";
 import { getCookie, setCookie } from "@/lib/cookie";
 
 import EST from "@/lib/EST";
@@ -17,7 +17,6 @@ import Vue from "vue";
 import agcenter from "@/api/agcenter";
 import agent from "@/api/agent";
 import ajax from "@/lib/ajax";
-import bbosRequest from "@/api/bbosRequest";
 import common from "@/api/common";
 import game from "@/api/game";
 import getLang from "@/lib/getLang";
@@ -31,7 +30,6 @@ import member from "@/api/member";
 // eslint-disable-next-line import/no-cycle
 import openGame from "@/lib/open_game";
 import router from "../router";
-import { thousandsCurrency } from "@/lib/thousandsCurrency";
 import { v4 as uuidv4 } from "uuid";
 import version from "@/config/version.json";
 
@@ -589,20 +587,11 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         // }
       })
       .catch(res => {});
-    // dispatch("actionSetSystemTime");
-    // 暫時移除
-    // dispatch('actionSetAppDownloadInfo');
 
-    // 取得當前廳號
+    // 取得當前廳號 nginx
     await dispatch("actionSetWebDomain");
-    await dispatch("actionSetUserdata");
-    await dispatch("actionSetWebInfo", state.webDomain.domain);
-    await dispatch("actionGetMobileInfo");
-    await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
 
-    // 設定網站設定檔資訊 (start)
     let configInfo;
-
     if (state.webDomain) {
       configInfo =
         siteConfigTest[`site_${state.webDomain.domain}`] ||
@@ -610,38 +599,36 @@ export const actionMemInit = ({ state, dispatch, commit, store }) => {
         siteConfigOfficial.preset;
     }
 
-    let allDomainList = [];
-    await goLangApiRequest({
-      method: "get",
-      url: configInfo.YABO_GOLANG_API_DOMAIN + "/xbb/Domain/List"
-    }).then(res => {
-      if (res.status === "000") {
-        allDomainList = res.data;
+    let checkLocalDomainList = false;
+    let checkJSONDomainList = false;
+
+    try {
+      // 1.檢查預設domianlist是否可用
+      checkLocalDomainList = await domainListInit(configInfo, "local");
+
+      if (!checkLocalDomainList) {
+        // 2.檢查remote json domianlist是否可用
+        checkJSONDomainList = await domainListInit(configInfo, "json");
       }
-    });
-    let domainNotSucess = true;
-    let domainIdx = 0;
-    while (domainNotSucess && domainIdx < allDomainList.length) {
-      await goLangApiRequest({
-        method: "post",
-        url: `${allDomainList[domainIdx]}/api-v2/xbb/Captcha`,
-        params: {
-          lang: "zh-cn"
-        }
-      }).then(res => {
-        if (res && res.status === "000" && res.data) {
-          configInfo.YABO_GOLANG_API_DOMAIN = `${allDomainList[domainIdx]}/api-v2`;
-          configInfo.ACTIVES_BOUNS_WEBSOCKET = `${allDomainList[
-            domainIdx
-          ].replace("https", "wss")}`;
-          domainIdx += 1;
-          domainNotSucess = false;
-        } else {
-          domainIdx += 1;
-        }
-      });
+
+      localStorage.getItem("api-error-code");
+    } catch (e) {
+      console.log(e);
     }
-    await dispatch("actionSetSiteConfig", configInfo);
+
+    console.log("checkLocalDomainList", checkLocalDomainList);
+    console.log("checkJSONDomainList", checkJSONDomainList);
+
+    if (!checkLocalDomainList && !checkJSONDomainList) {
+      setDomainListErrorMsg(168110);
+      return;
+    }
+
+    console.log("success.");
+    await dispatch("actionSetWebInfo", state.webDomain.domain);
+    await dispatch("actionSetUserdata");
+    await dispatch("actionGetMobileInfo");
+    await getLang(state.mobileInfo && state.mobileInfo.language, "zh-cn");
     await dispatch("actionSetSystemDomain");
 
     // 取得免費區影片token
@@ -975,18 +962,7 @@ export const actionSetUserBalance = ({ commit, dispatch, state }) => {
     }
   });
 };
-// 會員端-設定APP下載資訊
-export const actionSetAppDownloadInfo = ({ commit }) => {
-  ajax({
-    method: "get",
-    url: API_GETAPPINFO,
-    errorAlert: false
-  }).then(response => {
-    if (response && response.result === "ok") {
-      commit(types.SET_APP_DOWNLOAD_INFO, response.ret);
-    }
-  });
-};
+
 // 會員端-設定APP QR Code
 export const actionSetAppQrcode = ({ commit }) =>
   ajax({
@@ -2034,7 +2010,10 @@ export const actionSetSystemDomain = ({ commit, state }, data) => {
     }
 
     axios
-      .post(`${uri}/api/v1/video/getspaceIdJWT`, bodyFormData)
+      .post(
+        `${uri}/api/v1/video/getspaceIdJWT${isGetFreeSpace ? `?free=1` : ``}`,
+        bodyFormData
+      )
       .then(function(res) {
         if (res.data && res.data.result && res.data.status === 100) {
           if (isGetFreeSpace) {
@@ -2139,14 +2118,10 @@ export const actionSetWebDomain = ({ commit }) => {
         site: ""
       };
 
-      console.log(
-        "%c [conf/domain]:",
-        "background: #222; color: yellow; font-size:14px",
-        {
-          ...res.data,
-          version: version.find(i => i.site === "normal").version
-        }
-      );
+      console.log("%c [conf/domain]:", "color: yellow; font-size:14px", {
+        ...res.data,
+        version: version.find(i => i.site === "normal").version
+      });
       const site = (res && res.data && String(res.data.site)) || "";
       const domain = (res && res.data && String(res.data.domain)) || "";
       if (!site || !domain) {
