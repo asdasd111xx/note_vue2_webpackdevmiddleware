@@ -137,11 +137,7 @@ export default {
         .then(response => {
           this.isRevice = true;
           this.isShowPop = false;
-          this.$emit("update:statusList", {
-            key: "editStatus",
-            value: false
-          });
-
+          this.$emit("update:statusList", { key: "editDetail", value: false });
           const { status, errorCode, msg } = response;
 
           if (errorCode !== "00" || status !== "000") {

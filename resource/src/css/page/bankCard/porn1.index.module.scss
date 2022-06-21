@@ -3,7 +3,9 @@
 .wrap {
   padding-top: 43px;
   background: #f8f8f8;
-  min-height: 100vh;
+  min-height: 100%;
+  position: sticky;
+  width: 100%;
 }
 
 .header {

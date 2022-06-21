@@ -64,7 +64,12 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <div :class="{ [$style['fix-bottom']]: wallet_card.length > 3 }">
+      <div
+        :class="[
+          $style['add-card-button-wrap'],
+          { [$style['fix-bottom']]: wallet_card.length > 3 }
+        ]"
+      >
         <div v-if="isCommon && isShowAddCardButton" :class="$style['add-wrap']">
           <div
             :class="$style['add-btn']"

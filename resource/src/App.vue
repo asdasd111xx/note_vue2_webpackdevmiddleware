@@ -53,10 +53,11 @@ export default {
       videoBounsPageStatus: "getVideoBounsPageStatus"
     }),
     isDebug() {
-      return (
-        process.env.NODE_ENV === "development" ||
-        (this.$route.query && this.$route.query.testmode)
-      );
+      // return (
+      //   process.env.NODE_ENV === "development" ||
+      //   (this.$route.query && this.$route.query.testmode)
+      // );
+      return false;
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
