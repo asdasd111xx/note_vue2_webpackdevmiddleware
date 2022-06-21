@@ -30,7 +30,7 @@
           }"
         >
           <swiper-slide
-            v-for="tab in tabList"
+            v-for="(tab, index) in tabList"
             :key="tab.id"
             :style="[
               tab.name.includes('(') || tab.name.match(/^[A-Za-z]+$/)
@@ -109,10 +109,10 @@ export default {
     //預設tabid
     switch (this.routerTPL) {
       case "porn1":
-        this.tabId = 1209;
+        this.tabId = 308 || 1209;
         break;
       case "sp1":
-        this.tabId = 1235;
+        this.tabId = 310 || 1235;
         break;
       default:
         break;
