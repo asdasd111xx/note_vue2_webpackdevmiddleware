@@ -101,7 +101,7 @@ export default {
   },
   data() {
     return {
-      tabId: 1224,
+      tabId: 309 || 1224,
       tabList: [],
       promotionList: [],
       hasNewGift: false,
