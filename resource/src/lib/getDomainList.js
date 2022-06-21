@@ -247,7 +247,19 @@ function decrypt(data) {
 
 export function setDomainListErrorMsg(code) {
   console.log(`%c 重新连线中(${code})`, "color: red; font-size:14px");
-  alert(`重新连线中(${code})`);
+
+  switch (code) {
+    case 168107:
+    case 168109:
+      alert(`请确认您的网路连线能力(${code})`);
+      break;
+    case 168110:
+      alert(`重新确认您的网路连线能力(${code})`);
+      break;
+    default:
+      alert(`重新连线中(${code})`);
+      break;
+  }
   localStorage.setItem("api-error-code", code);
 
   if (code === 168110) {
