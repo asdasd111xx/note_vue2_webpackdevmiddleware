@@ -30,7 +30,7 @@
           }"
         >
           <swiper-slide
-            v-for="(tab, index) in tabList"
+            v-for="tab in tabList"
             :key="tab.id"
             :style="[
               tab.name.includes('(') || tab.name.match(/^[A-Za-z]+$/)
@@ -87,6 +87,8 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
 import { sendUmeng } from "@/lib/sendUmeng";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
+import store from "@/store";
 
 export default {
   components: {
@@ -109,10 +111,18 @@ export default {
     //預設tabid
     switch (this.routerTPL) {
       case "porn1":
-        this.tabId = 308 || 1209;
+        if (siteConfigTest[`site_${store.state.webDomain.domain}`]) {
+          this.tabId = 1209;
+        } else {
+          this.tabId = 308;
+        }
         break;
       case "sp1":
-        this.tabId = 310 || 1235;
+        if (siteConfigTest[`site_${store.state.webDomain.domain}`]) {
+          this.tabId = 1235;
+        } else {
+          this.tabId = 310;
+        }
         break;
       default:
         break;

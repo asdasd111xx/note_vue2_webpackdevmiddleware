@@ -91,6 +91,8 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
 import { sendUmeng } from "@/lib/sendUmeng";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
+import store from "@/store";
 
 export default {
   components: {
@@ -101,7 +103,9 @@ export default {
   },
   data() {
     return {
-      tabId: 309 || 1224,
+      tabId: siteConfigTest[`site_${store.state.webDomain.domain}`]
+        ? 1224
+        : 309,
       tabList: [],
       promotionList: [],
       hasNewGift: false,
