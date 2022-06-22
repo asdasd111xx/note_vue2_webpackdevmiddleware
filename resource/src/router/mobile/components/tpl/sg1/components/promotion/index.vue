@@ -36,17 +36,23 @@
           }"
         >
           <swiper-slide
-            v-for="tab in tabList"
+            v-for="(tab, index) in tabList"
             :key="tab.id"
             :style="[
               tab.name.includes('(') || tab.name.match(/^[A-Za-z]+$/)
                 ? { width: tab.name.length * 10 + 'px' }
                 : { width: tab.name.length * 16 + 'px' }
             ]"
-            :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
+            :class="[
+              $style['type-btn'],
+              { [$style.active]: tabId === index || tab.id === tabId }
+            ]"
           >
             <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
-            <div v-if="tab.id === tabId" :class="$style['tab-slider']" />
+            <div
+              v-if="tabId === index || tab.id === tabId"
+              :class="$style['tab-slider']"
+            />
           </swiper-slide>
         </swiper>
       </div>
@@ -91,6 +97,8 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
 import { sendUmeng } from "@/lib/sendUmeng";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
+import store from "@/store";
 
 export default {
   components: {
@@ -101,7 +109,7 @@ export default {
   },
   data() {
     return {
-      tabId: 309 || 1224,
+      tabId: 0,
       tabList: [],
       promotionList: [],
       hasNewGift: false,
@@ -112,7 +120,6 @@ export default {
     sendUmeng(51);
   },
   mounted() {
-    // this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
 
     if (localStorage.getItem("do-not-show-home-post") !== "true") {
