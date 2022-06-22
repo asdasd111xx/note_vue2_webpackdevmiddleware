@@ -30,19 +30,27 @@
           }"
         >
           <swiper-slide
-            v-for="tab in tabList"
+            v-for="(tab, index) in tabList"
             :key="tab.id"
             :style="[
               tab.name.includes('(') || tab.name.match(/^[A-Za-z]+$/)
                 ? { width: tab.name.length * 10 + 'px' }
                 : { width: tab.name.length * 16 + 'px' }
             ]"
-            :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
+            :class="[
+              $style['type-btn'],
+              {
+                [$style.active]: tabId === index || tabId === tab.id
+              }
+            ]"
           >
-            <div @click="getPromotionList(tab.id)">
+            <div @click="getPromotionList(tab.id, index)">
               {{ tab.name }}
             </div>
-            <div v-if="tab.id === tabId" :class="[$style['tab-slider']]" />
+            <div
+              v-if="tabId === index || tabId === tab.id"
+              :class="[$style['tab-slider']]"
+            />
           </swiper-slide>
         </swiper>
       </div>
@@ -108,30 +116,9 @@ export default {
   },
   created() {
     sendUmeng(52);
-    //預設tabid
-    switch (this.routerTPL) {
-      case "porn1":
-        if (siteConfigTest[`site_${store.state.webDomain.domain}`]) {
-          this.tabId = 1209;
-        } else {
-          this.tabId = 308;
-        }
-        break;
-      case "sp1":
-        if (siteConfigTest[`site_${store.state.webDomain.domain}`]) {
-          this.tabId = 1235;
-        } else {
-          this.tabId = 310;
-        }
-        break;
-      default:
-        break;
-    }
   },
   mounted() {
-    // this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
-
     if (localStorage.getItem("do-not-show-home-post") !== "true") {
       this.actionSetPost("2").then(() => {
         if (this.post && this.post.list && this.post.list.length > 0) {
