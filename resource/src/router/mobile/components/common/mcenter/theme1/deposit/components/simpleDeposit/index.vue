@@ -241,30 +241,30 @@
 
             <template v-if="simplePayType.method_id !== 20">
               <!-- 充值人姓名 -->
-              <!-- <div
-                v-if="depositNameInput.showCondition"
+              <div
+                v-if="simplePayType.method_id === 6"
                 :class="$style['depositName-wrap']"
               >
                 <div
-                  :key="`field-${depositNameInput.objKey}`"
+                  :key="`field-depositName`"
                   :class="[
                     $style['speed-field-name'],
-                    { [$style.error]: depositNameInput.isError },
+                    { [$style.error]: !speedName },
                     'clearfix'
                   ]"
                 >
                   <div :class="$style['field-title']">
-                    {{ depositNameInput.title }}
+                    {{ this.$text("S_DEPOSIT_NAME", "请充值人姓名") }}
                   </div>
 
                   <div :class="$style['field-info']">
                     <input
-                      v-model="speedField.depositName"
+                      v-model="speedName"
                       :class="$style['speed-deposit-input']"
-                      :placeholder="depositNameInput.placeholderText"
+                      :placeholder="$text('S_ENTER_DEPOSIT_NAME', '请输入充值人姓名')"
                       @input="
                         verification(
-                          depositNameInput.objKey,
+                          'depositName',
                           $event.target.value,
                           true
                         )
@@ -276,13 +276,13 @@
                   :class="[
                     $style['deposit-name-messgae'],
                     {
-                      [$style['hide']]: !nameCheckFail && speedField.depositName
+                      [$style['hide']]: !nameCheckFail && speedName
                     }
                   ]"
                 >
                   为即时到帐，请务必输入正确的汇款人姓名
                 </div>
-              </div> -->
+              </div>
               <!-- e點富銀行 -->
               <div
                 v-if="
@@ -1349,7 +1349,8 @@ export default {
         per_trade_min: ""
       },
       simplePayField: [],
-      newWindow:""
+      newWindow:"",
+      speedName:""
     };
   },
   watch: {
@@ -1743,6 +1744,12 @@ export default {
         this.entryBlockStatusData = null;
 
         if (response) {
+          if (response.status === "NameFail") {
+            this.actionSetGlobalMessage({
+              msg: "请输入正确名称"
+            });
+            this.nameCheckFail = true;
+          }
           if (response.status === "local") {
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
@@ -2382,7 +2389,6 @@ export default {
         method_id: this.simplePayType.method_id,
         amount: this.moneyValue,
         username: "" //使用者帳號(未登入入款必填)
-        // pay_username:"",    //使用者姓名(極速到帳必填 method_id = 6)
       };
 
       if (this.simplePayRode && this.simplePayRode.id) {
@@ -2392,6 +2398,13 @@ export default {
             this.simplePayType.tags.length > 0 ? this.simplePayRode.id : "", //通道標籤id
           channel_id:
             this.simplePayType.channels.length > 0 ? this.simplePayRode.id : "" //通道id
+        };
+      }
+      //使用者姓名(極速到帳必填 method_id = 6)
+      if(this.simplePayType.method_id === 6){
+        paramsData = {
+          ...paramsData,
+          pay_username:this.speedName,
         };
       }
       //銀行id (在線支付/點卡支付必填 method_id = 1,2)
@@ -2442,8 +2455,7 @@ export default {
       //使用者銀行卡名稱（E点付/e点富入款必填 method_id = 34,41）
       //使用者轉出金額帳號（E点付/e点富入款必填 method_id = 34,41）?
       if (
-        this.simplePayType.method_id === 34 ||
-        this.simplePayType.method_id === 41
+        [34, 41].includes(this.simplePayType.method_id)
       ) {
         if (this.showEpointWalletAddress) {
           //新增的掛單銀行卡
