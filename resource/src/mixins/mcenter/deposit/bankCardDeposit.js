@@ -414,20 +414,20 @@ export default {
               title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
               value: this.curPassRoad.bank_account,
               isFontBold: false,
-              copyShow: true
+              copyShow_t: true
             },
             {
               objKey: "withdrawNickname",
               title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
               value: this.curPassRoad.bank_account_name,
               isFontBold: false,
-              copyShow: true
+              copyShow_t: true
             },
             {
               objKey: "withdrawDeliver",
               title: this.$text("S_DELIVER_INFO", "收款资讯"),
               isFontBold: true,
-              copyShow: false,
+              copyShow_t: false,
               qrcode: [
                 {
                   title: this.curPassRoad.photo_name,
@@ -444,7 +444,7 @@ export default {
               title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
               value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
               isFontBold: false,
-              copyShow: false,
+              copyShow_t: false,
               htmlShow: true
             }
           ];
@@ -457,34 +457,34 @@ export default {
             title: this.$text("S_WITHDRAW_BANK", "收款银行"),
             value: this.curPassRoad.bank_name,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawBranch",
             title: this.$text("S_WITHDRAW_BRANCH", "收款支行"),
             value: this.curPassRoad.bank_branch,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawAccount",
             title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
             value: this.curPassRoad.bank_account,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawName",
             title: this.$text("S_WITHDRAW_NAME", "收款人姓名"),
             value: this.curPassRoad.bank_account_name,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawDeliver",
             title: this.$text("S_DELIVER_INFO", "收款资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: this.curPassRoad.bank_account_qrcode_name,
@@ -497,7 +497,7 @@ export default {
             title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
             value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
             isFontBold: false,
-            copyShow: false,
+            copyShow_t: false,
             htmlShow: true
           }
         ].filter(item => {
