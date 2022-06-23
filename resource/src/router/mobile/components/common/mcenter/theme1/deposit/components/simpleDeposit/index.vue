@@ -2483,20 +2483,21 @@ export default {
 
       let _isPWA = true;
 
-      return axios({
+      return goLangApiRequest({
         method: "post",
-        url: API_TRADE_RELAY,
-        data: {
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Simple/Deposit`,
+        params: {
           ...paramsData
         }
       })
         .then(response => {
           this.isShow = false;
           this.actionSetIsLoading(false);
-
-          const { result, ret, msg, code } = response.data;
+          const ret = response.data
+          const msg = response.msg
+          const code = response.code
           let _isWebview = getCookie("platform") === "H";
-          if (result !== "ok") {
+          if (response.status !== "000") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
               event: "ga_click",
