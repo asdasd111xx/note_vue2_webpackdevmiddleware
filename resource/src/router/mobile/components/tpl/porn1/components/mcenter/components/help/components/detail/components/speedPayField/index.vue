@@ -39,7 +39,7 @@
             </div>
           </template>
         </div>
-        <!-- icon1 -->
+        <!-- icon1 有字-->
         <div
           v-if="info.copyShow_t"
           :class="$style['icon-wrap-text']"
@@ -55,7 +55,7 @@
             "
           />
         </div>
-        <!-- icon2 -->
+        <!-- icon2 無字-->
         <div
           v-if="info.copyShow"
           :class="$style['icon-wrap']"
@@ -358,8 +358,7 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow: true
-          // copyShow_t: true
+          copyShow_t: true
         },
         {
           objKey: "manualCardBankBranch",
@@ -370,8 +369,7 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow: true
-          // copyShow_t: true
+          copyShow_t: true
         },
         {
           objKey: "manualCardAccount",
@@ -382,7 +380,7 @@ export default {
           placeholderText: "通道建置中",
           showCondition: true,
           isError: this.showError,
-          copyShow: true
+          copyShow_t: true
         },
 
         {
@@ -394,7 +392,7 @@ export default {
           placeholderText: "请输入充值人姓名",
           showCondition: true,
           isError: this.showError,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "payUrl",
@@ -403,7 +401,7 @@ export default {
           placeholderText: "请贴上图片网址",
           showCondition: true,
           isError: this.showError,
-          copyShow: false
+          copyShow_t: false
         }
       ];
     },

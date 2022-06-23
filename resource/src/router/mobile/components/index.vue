@@ -3,7 +3,6 @@ import { mapGetters } from "vuex";
 import apiBalanceAutoBack from "@/lib/balance_auto_back";
 import store from "@/store";
 import config from "./route/config";
-import { getCookie, setCookie } from "@/lib/cookie";
 
 export default {
   components: config.root,

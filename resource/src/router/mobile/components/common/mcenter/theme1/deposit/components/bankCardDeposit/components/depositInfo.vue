@@ -93,8 +93,15 @@
             >
               {{ info.value }}
             </div>
-
-            <!-- icon -->
+            <!-- icon1 有字-->
+            <div
+              v-if="info.copyShow_t"
+              :class="$style['icon-wrap-text']"
+              @click="handleCopy(info)"
+            >
+              <img :src="$getCdnPath(`/static/image/common/ic_copy_n.png`)" />
+            </div>
+            <!-- icon2 無字-->
             <div
               v-if="info.copyShow"
               :class="$style['icon-wrap']"

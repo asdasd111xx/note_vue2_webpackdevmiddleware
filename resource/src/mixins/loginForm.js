@@ -84,15 +84,6 @@ export default {
     }
   },
   beforeCreate() {
-    if (this.$route.query.logout) {
-      console.log("logout");
-      setCookie("cid", "");
-      setCookie("y_token", "");
-      setCookie("aid", "");
-      localStorage.removeItem("aid");
-
-      this.$router.replace("/mobile/login");
-    }
     if (!document.querySelector('script[data-name="esabgnixob"]')) {
       this.script = document.createElement("script");
       this.script.setAttribute("type", "text/javascript");
@@ -111,13 +102,30 @@ export default {
     }
   },
   created() {
-    if (this.loginStatus) {
-      if (this.siteConfig.ROUTER_TPL === "sg1") {
-        this.$router.replace("/mobile/live/iframe/home?hasFooter=true");
-        return;
-      } else {
-        this.$router.replace("/mobile");
-        return;
+    //華為瀏覽器-登入後按返回
+    if (navigator.userAgent.includes("HuaweiBrowser")) {
+      document.addEventListener("visibilitychange", e => {
+        if (e.target.visibilityState === "visible" && this.loginStatus) {
+          location.reload();
+        }
+      });
+    }
+    if (this.$route.query.logout) {
+      setCookie("cid", "");
+      setCookie("y_token", "");
+      setCookie("aid", "");
+      localStorage.removeItem("aid");
+      this.$router.replace("/mobile/login");
+      return;
+    } else {
+      if (this.loginStatus) {
+        if (this.siteConfig.ROUTER_TPL === "sg1") {
+          this.$router.replace("/mobile/live/iframe/home?hasFooter=true");
+          return;
+        } else {
+          this.$router.replace("/mobile");
+          return;
+        }
       }
     }
     this.getCaptcha();

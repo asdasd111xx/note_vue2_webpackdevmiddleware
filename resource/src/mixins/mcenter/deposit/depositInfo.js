@@ -47,13 +47,13 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "payInfo",
             title: this.$text("S_PAY_INFO", "支付资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 // title: this.$text("S_SCANNING", "扫一扫"),
@@ -73,13 +73,13 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "payInfo",
             title: this.$text("S_PAY_INFO", "支付资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: this.$text("S_SCANNING", "扫一扫"),
@@ -99,20 +99,20 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "receiveWalletAddress",
             title: this.$text("S_RECEIVE_WITHDRAW_ADDRESS", "收款钱包位址"),
             value: this.orderData.orderInfo.address,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "payInfo",
             title: this.$text("S_DELIVER_INFO", "收款资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: "点击图片截屏扫码",
@@ -129,7 +129,7 @@ export default {
             cryptoNum: this.orderData.orderInfo.crypto_num,
             isFontBold: true,
             isHighlightValue: true,
-            copyShow: true
+            copyShow_t: true
           }
         ];
       }
@@ -144,27 +144,27 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawAccount",
             title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
             value: this.orderData.orderInfo.bank_account,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawNickname",
             title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
             value: this.orderData.orderInfo.bank_account_name,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawDeliver",
             title: this.$text("S_DELIVER_INFO", "收款资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: this.orderData.orderInfo.photo_name,
@@ -181,7 +181,7 @@ export default {
             title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
             value: this.orderData.reminder.replace(/\n/gi, "<br/>"),
             isFontBold: false,
-            copyShow: false,
+            copyShow_t: false,
             htmlShow: true
           }
         ];
@@ -193,41 +193,41 @@ export default {
           title: this.$text("S_ORDER_NUMBER_2", "订单号"),
           value: this.orderData.id,
           isFontBold: true,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawBank",
           title: this.$text("S_WITHDRAW_BANK", "收款银行"),
           value: this.orderData.orderInfo.bank_name,
           isFontBold: false,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawBranch",
           title: this.$text("S_WITHDRAW_BRANCH", "收款支行"),
           value: this.orderData.orderInfo.bank_branch,
           isFontBold: false,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawAccount",
           title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
           value: this.orderData.orderInfo.bank_account,
           isFontBold: true,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawName",
           title: this.$text("S_WITHDRAW_NAME", "收款人姓名"),
           value: this.orderData.orderInfo.bank_account_name,
           isFontBold: false,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawDeliver",
           title: this.$text("S_DELIVER_INFO", "收款资讯"),
           isFontBold: true,
-          copyShow: false,
+          copyShow_t: false,
           qrcode: [
             {
               title: this.orderData.orderInfo.bank_account_qrcode_name,
@@ -240,7 +240,7 @@ export default {
           title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
           value: this.orderData.reminder.replace(/\n/gi, "<br/>"),
           isFontBold: false,
-          copyShow: false,
+          copyShow_t: false,
           htmlShow: true
         }
       ].filter(item => {
