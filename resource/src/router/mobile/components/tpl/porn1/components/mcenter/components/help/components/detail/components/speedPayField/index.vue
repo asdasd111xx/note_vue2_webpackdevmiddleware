@@ -401,7 +401,7 @@ export default {
           placeholderText: "请贴上图片网址",
           showCondition: true,
           isError: this.showError,
-          copyShow_t: true
+          copyShow_t: false
         }
       ];
     },
