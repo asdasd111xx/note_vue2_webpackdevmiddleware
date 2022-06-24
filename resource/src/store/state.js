@@ -65,7 +65,7 @@ export default {
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   gameData,
   trialList: [],
-  needFilterGameData: null,
+  needFilterGameData: [],
 
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     電子彩金

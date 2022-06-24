@@ -175,7 +175,7 @@ export default async target => {
             if (res.redirect_url) {
               window.location.replace(res.redirect_url + "/mobile/joinmember");
             } else {
-              store.state.$router.push(`/mobile/joinmember`);
+              router.push(`/mobile/joinmember`);
             }
           });
         } else {
@@ -431,13 +431,12 @@ export default async target => {
   const hasHall = [3, 5, 6];
   if (!store.state.loginStatus) {
     if (eventRedirect === "promotion") {
-      await actionGetTrialList(store).then(() => {
-        if (hasHall.includes(kind) && !linkItem) {
-          hasTrial = store.state.trialList.find(
-            i => i.vendor === vendor && i.mobile_trial
-          );
-        }
-      });
+      await actionGetTrialList(store);
+      if (hasHall.includes(kind) && !linkItem) {
+        hasTrial = store.state.trialList.find(
+          i => i.vendor === vendor && i.mobile_trial
+        );
+      }
     } else {
       if (hasHall.includes(kind) && !linkItem) {
         hasTrial = store.state.trialList.find(
@@ -514,8 +513,7 @@ export default async target => {
     if (
       vendor != "sigua_ly" &&
       vendor != "sigua2_ly" &&
-      vendor != "sigua3_ly" &&
-      store.state.needFilterGameData
+      vendor != "sigua3_ly"
     ) {
       let notVipGame = store.state.needFilterGameData.find(filterData => {
         return filterData.gameCode === code;

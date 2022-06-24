@@ -140,18 +140,17 @@ export const actionGetTrialList = ({ state, commit }) => {
 };
 
 //取對應vip等級未開放遊戲清單
-export const actionGetFilterGameList = ({ state, commit, dispatch }) => {
-  dispatch("actionSetVip");
+export const actionGetFilterGameList = async ({ state, commit, dispatch }) => {
+  await dispatch("actionSetVip");
 
   return goLangApiRequest({
     method: "get",
     url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Vip/Filter`,
     params: {
-      vipId: state.vip.now_level_id || 0
+      vipId: state?.vip?.now_level_id || 0
     }
   }).then(res => {
     if (res.errorCode === "00" && res.status === "000" && res.data) {
-      // console.log(`needFilterGameData is ${response}`);
       commit(types.SETNEEDFILTERGAMEDATA, res.data);
     }
   });
