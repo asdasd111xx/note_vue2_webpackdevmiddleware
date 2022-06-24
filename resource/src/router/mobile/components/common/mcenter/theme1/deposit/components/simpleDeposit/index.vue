@@ -1140,6 +1140,12 @@
           </div>
         </div>
       </template>
+      <!-- 手動配卡成功彈窗 -->
+      <deposit-alert
+        :manualcard="manualCard"
+        v-if="successAlert"
+        :close-fuc="goBack"
+      />
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1251,6 +1257,10 @@ export default {
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
+      ),
+    depositAlert: () =>
+      import(
+        /* webpackChunkName: 'depositAlert' */ "../bankCardDeposit/components/depositAlert"
       ),
     Swiper,
     SwiperSlide,
@@ -1751,6 +1761,10 @@ export default {
             this.nameCheckFail = true;
           }
           if (response.status === "local") {
+            //手動配卡不需顯示depositinfo
+            if (this.manualCard) {
+              return;
+            }
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
 
@@ -1771,6 +1785,7 @@ export default {
           }
 
           if (response.status === "third") {
+            this.getSimplePaymentGroups()
             // if (this.simplePayFeeData.amounts.length > 0) {
             //   this.changeSimpleMoney(this.simplePayFeeData.amounts[0]);
             // } else {
@@ -2481,7 +2496,7 @@ export default {
         };
       }
 
-      let _isPWA = true;
+      // let _isPWA = true;
 
       return goLangApiRequest({
         method: "post",
@@ -2496,7 +2511,8 @@ export default {
           const ret = response.data
           const msg = response.msg
           const code = response.code
-          let _isWebview = getCookie("platform") === "H";
+          // let _isWebview = getCookie("platform") === "h";
+
           if (response.status !== "000") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -2524,6 +2540,12 @@ export default {
             eventLabel: "success"
           });
 
+          //手動配卡提交成功顯示彈窗
+          if (ret.remit.is_manual_card) {
+            this.manualCard = true;
+            this.successAlert = true;
+          }
+
           if (this.showEpointWalletAddress) {
             this.getUserBankList();
             this.epointBankName = "";
@@ -2538,15 +2560,15 @@ export default {
           }
 
           if (ret.deposit.url) {
-            if (_isWebview) {
-              this.webviewOpenUrl = ret.deposit.url;
-              return { status: "third" };
-            } else if (_isPWA) {
-              newWindowHref(ret.deposit.url);
-              return { status: "third" };
-            }
-            window.open(ret.deposit.url, "third");
+            // if (_isWebview) {
+            //   this.webviewOpenUrl = ret.deposit.url;
+            //   return { status: "third" };
+            // } else if (_isPWA) {
+            newWindowHref(ret.deposit.url);
             return { status: "third" };
+            // }
+            // window.open(ret.deposit.url, "third");
+            // return { status: "third" };
           }
           if (ret.wallet.url) {
             if (this.simplePayType.method_id === 34) {
@@ -2556,15 +2578,15 @@ export default {
               this.newWindow.close();
               return;
             }
-            if (_isWebview) {
-              this.webviewOpenUrl = ret.wallet.url;
-              return { status: "third" };
-            } else if (_isPWA) {
-              newWindowHref(ret.wallet.url);
-              return { status: "third" };
-            }
-            window.open(ret.wallet.url, "third");
+            // if (_isWebview) {
+            //   this.webviewOpenUrl = ret.wallet.url;
+            //   return { status: "third" };
+            // } else if (_isPWA) {
+            newWindowHref(ret.wallet.url);
             return { status: "third" };
+            // }
+            // window.open(ret.wallet.url, "third");
+            // return { status: "third" };
           }
 
           Object.keys(ret).forEach(info => {
@@ -2590,9 +2612,9 @@ export default {
             this.orderData[info] = ret[info];
           });
 
-          if (_isPWA) {
-            this.newWindow.close();
-          }
+          // if (_isPWA) {
+          this.newWindow.close();
+          // }
 
           // CGPay 不需要進入詳細入款單
           if (
@@ -2622,9 +2644,9 @@ export default {
           this.isShow = false;
           this.actionSetIsLoading(false);
 
-          if (_isPWA) {
-            this.newWindow.close();
-          }
+          // if (_isPWA) {
+          this.newWindow.close();
+          // }
           if (code === 1501020021) {
             (async () => {
               await this.getPayPass();

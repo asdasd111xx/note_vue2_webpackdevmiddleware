@@ -576,6 +576,10 @@ export default {
       }
     }
   },
+  beforeDestroy() {
+    document.removeEventListener("visibilitychange", () => {}, false);
+    document.removeEventListener("pageshow", () => {}, false);
+  },
   created() {
     // 國碼
     goLangApiRequest({
