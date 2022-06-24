@@ -45,7 +45,7 @@ export default {
           title: this.$text("S_MEMBER_NAME"),
           type: "text",
           maxLength: "",
-          placeholder: this.$text("S_REGISTER_TIPS"),
+          placeholder: this.$text("S_NO_SYMBOL_DIGIT_CHEN"),
           error: ""
         }
       },

@@ -175,6 +175,11 @@
     background-color: #fff;
     padding: 20px 6%;
   }
+  .add-tip {
+    color: #222;
+    opacity: 0.3;
+    padding: 8px 7px;
+  }
   .content-footer {
     width: 100%;
     background-color: #f2f2f2;
@@ -254,11 +259,10 @@
     left: 0;
     width: 100%;
     margin: 0;
-    padding: 0 5px;
     border: none;
     color: #222;
     outline: none;
-    font-size: 13px;
+    font-size: 16px;
 
     &.show-placeholder {
       opacity: 0.4;

@@ -176,6 +176,7 @@
           @set-captcha="setCaptcha"
           :page-type="'friends'"
         />
+        <div :class="$style['add-tip']">{{ $text("S_REGISTER_TIPS") }}</div>
       </div>
 
       <div
