@@ -118,7 +118,6 @@
                   :key="info.currency"
                   :class="[
                     $style['pay-mode-pass'],
-                    $style['pay-mode-currency'],
                     {
                       [$style['current-data']]:
                         info.currency === simpleCurrency.currency
@@ -146,7 +145,6 @@
                   :key="data.currency"
                   :class="[
                     $style['pay-mode-pass'],
-                    $style['pay-mode-currency'],
                     {
                       [$style['current-data']]:
                         data.method_id === simplePayType.method_id
@@ -178,7 +176,6 @@
                   :key="road.id"
                   :class="[
                     $style['pay-mode-pass'],
-                    $style['pay-mode-rode'],
                     { [$style['current-data']]: road.id === simplePayRode.id }
                   ]"
                   @click="changeSimpleRoad(road)"
@@ -206,7 +203,6 @@
                   :key="road.id"
                   :class="[
                     $style['pay-mode-pass'],
-                    $style['pay-mode-rode'],
                     { [$style['current-data']]: road.id === simplePayRode.id }
                   ]"
                   @click="changeSimpleRoad(road)"

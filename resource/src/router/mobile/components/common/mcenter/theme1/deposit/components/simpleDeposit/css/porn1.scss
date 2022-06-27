@@ -210,7 +210,7 @@
 
 .pay-mode-pass {
   display: inline-block;
-  width: 18.5%;
+  width: 23.5%;
   height: 44px;
   line-height: 40px;
   font-size: 12px;
@@ -241,14 +241,6 @@
     left: -1px;
     width: 47px;
     height: 15px;
-  }
-
-  &.pay-mode-currency {
-    width: 22%;
-  }
-
-  &.pay-mode-rode {
-    width: 20%;
   }
 }
 
