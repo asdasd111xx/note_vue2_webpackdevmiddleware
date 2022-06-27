@@ -24,8 +24,8 @@
             slideToClickedSlide: true,
             centeredSlides: true,
             centeredSlidesBounds: true,
-            spaceBetween: 5,
-            slidesOffsetBefore: 30,
+            spaceBetween: 20,
+            slidesOffsetBefore: 33,
             slidesOffsetAfter: 30
           }"
         >
