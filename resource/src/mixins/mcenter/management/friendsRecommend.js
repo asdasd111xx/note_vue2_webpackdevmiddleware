@@ -374,7 +374,16 @@ export default {
         if (res && res.status && res.status !== "000") {
           if (res.status === "504") {
             this.errorLine = true;
-            this.bindFriendTip["friend_username"].error = res.msg;
+
+            if (res.code === "C21003") {
+              this.bindFriendTip["friend_username"].error = this.$text(
+                "S_BIND_FAILED",
+                "绑定失败"
+              );
+            } else {
+              this.bindFriendTip["friend_username"].error = res.msg;
+            }
+
             return;
           }
           this.actionSetGlobalMessage({
