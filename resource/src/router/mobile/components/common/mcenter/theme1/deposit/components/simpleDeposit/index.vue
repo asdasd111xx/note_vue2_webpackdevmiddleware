@@ -31,41 +31,36 @@
                 ]"
                 @click="changeSimplePayMode(info, index)"
               >
-                <img
-                  v-if="tagTrans[info.tag]"
-                  :src="
-                    $getCdnPath(
-                      `/static/image/common/mcenter/deposit/icon_${
-                        tagTrans[info.tag]
-                      }.png`
-                    )
-                  "
-                  :class="$style['pay-mode-tag']"
-                />
-                <img
-                  v-lazy="getImg(info.image_url)"
-                  :class="$style['pay-mode-img']"
-                />
+                <template v-if="info.id !== 26987">
+                  <img
+                    v-if="tagTrans[info.tag]"
+                    :src="
+                      $getCdnPath(
+                        `/static/image/common/mcenter/deposit/icon_${
+                          tagTrans[info.tag]
+                        }.png`
+                      )
+                    "
+                    :class="$style['pay-mode-tag']"
+                  />
+                  <img
+                    v-lazy="getImg(info.image_url)"
+                    :class="$style['pay-mode-img']"
+                  />
 
-                <div :class="$style['pay-main-title']">
-                  {{ info.name }}
-                </div>
+                  <div :class="$style['pay-main-title']">
+                    {{ info.name }}
+                  </div>
 
-                <img
-                  v-if="simpleCurPayInfo.id === info.id"
-                  :class="$style['pay-active']"
-                  :src="$getCdnPath(`/static/image/common/select_active.png`)"
-                />
-              </div>
-              <!-- 客製額度轉帳入口 -->
-              <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-                <div
-                  :class="[
-                    $style['pay-mode-item'],
-                    $style[siteConfig.ROUTER_TPL]
-                  ]"
-                  @click="handleCreditTrans"
-                >
+                  <img
+                    v-if="simpleCurPayInfo.id === info.id"
+                    :class="$style['pay-active']"
+                    :src="$getCdnPath(`/static/image/common/select_active.png`)"
+                  />
+                </template>
+                <!-- 客製額度轉帳入口 -->
+              <template v-else 
+                @click="handleCreditTrans">
                   <div :class="[$style['pay-sub-title'], $style['custom']]">
                     代收代付
                   </div>
@@ -75,8 +70,8 @@
                   >
                     代理分红
                   </div>
-                </div>
               </template>
+              </div>
             </div>
           </div>
           <template v-if="simplePayType.method_id !== 20">
@@ -2085,6 +2080,9 @@ export default {
       }).then(res => {
         if (res.status === "000") {
           this.depositData = res.data;
+          if(['porn1', 'sg1'].includes(this.themeTPL)){
+            this.depositData.push({id:26987})
+          }
           console.log(res.data);
           this.changeSimplePayMode(this.depositData[0]);
           this.isShow = false;

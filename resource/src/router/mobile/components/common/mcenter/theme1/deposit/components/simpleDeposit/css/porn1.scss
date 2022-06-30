@@ -210,7 +210,7 @@
 
 .pay-mode-pass {
   display: inline-block;
-  width: 23.5%;
+  width: 23%;
   height: 44px;
   line-height: 40px;
   font-size: 12px;
@@ -222,7 +222,7 @@
   cursor: pointer;
   position: relative;
 
-  &:nth-child(5n) {
+  &:nth-child(4n) {
     margin-right: 0;
   }
 

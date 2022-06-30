@@ -976,6 +976,8 @@ export default {
       if (this.isBackFromService) localStorage.removeItem("isBackFromService");
     },
     clearMsgCallback(_redirect = null) {
+      //更新卡片列表
+      this.getUserBindList();
       const { query } = this.$route;
       localStorage.removeItem("selectTarget");
       let redirect = _redirect || query?.redirect;
