@@ -229,6 +229,26 @@
                 ></div>
               </div>
             </div>
+            <div
+                v-if="
+                  simplePayType.channels.length > 0 &&
+                  simplePayRode.tip != '' &&
+                    !isSelectBindWallet(402) &&
+                    !isSelectBindWallet(404)
+                "
+                @click="
+                  simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
+                "
+                :class="$style['show-more-header']"
+              >
+                <span>通道提示详情</span>
+                <div
+                  :class="[
+                    $style['collapse-img'],
+                    { [$style.active]: simplePayRodeTipTextShowMore }
+                  ]"
+                />
+              </div>
 
             <template v-if="simplePayType.method_id !== 20">
               <!-- 充值人姓名 -->
@@ -334,27 +354,6 @@
                 <div :class="[$style['wallet-address-text'], $style['less']]">
                   为即时到帐，请务必输入正确的银行资讯
                 </div>
-              </div>
-
-              <div
-                v-if="
-                  simplePayType.channels.length > 0 &&
-                  simplePayRode.tip != '' &&
-                    !isSelectBindWallet(402) &&
-                    !isSelectBindWallet(404)
-                "
-                @click="
-                  simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
-                "
-                :class="$style['show-more-header']"
-              >
-                <span>通道提示详情</span>
-                <div
-                  :class="[
-                    $style['collapse-img'],
-                    { [$style.active]: simplePayRodeTipTextShowMore }
-                  ]"
-                />
               </div>
 
               <!-- 尚未綁定 CGPay(16) || CGPay-USDT(25,30) || OSPay(36) || OSPay-USDT(37,38) ||購寶(22) || USDT(402) || E点付(34,41)-->
