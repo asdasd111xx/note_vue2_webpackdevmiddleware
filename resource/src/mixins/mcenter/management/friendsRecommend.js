@@ -29,7 +29,7 @@ export default {
           title: this.$text("SS_LOGIN_PW"),
           type: "password",
           maxLength: "12",
-          placeholder: "6-12位须含英文大小写及数字",
+          placeholder: "请输入6-12码英文大小写及数字",
           error: ""
         },
         // 確認密碼
