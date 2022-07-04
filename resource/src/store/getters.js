@@ -8,6 +8,7 @@ export default {
   getSidebarWidth: state => state.sidebarWidth,
   // 環境 (會員端/代理客端)
   getEnv: state => state.env,
+  getWebDomain: state => state.webDomain,
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     後台(mangosteen_front)共用
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
