@@ -169,6 +169,7 @@
         </div>
 
         <div
+          v-if="isShowPromotion"
           :class="$style['cell']"
           @click="onListClick('tcenterLobby', false)"
         >
@@ -293,6 +294,19 @@ export default {
           this.diamondTotal = 0;
         }
       });
+
+      this.isShowPromotion =
+        localStorage.getItem("is-show-promotion") === "true";
+      this.actionSetUserdata(true).then(() => {
+        this.isShowPromotion = this.memInfo.user.show_promotion;
+        localStorage.setItem(
+          "is-show-promotion",
+          this.memInfo.user.show_promotion
+        );
+      });
+    } else {
+      this.isShowPromotion = true;
+      return;
     }
   },
   filters: {

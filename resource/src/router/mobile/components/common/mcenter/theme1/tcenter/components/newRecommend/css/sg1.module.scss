@@ -17,10 +17,16 @@
   border: 1px solid #eeeeee;
 }
 
-.button-wrap {
-  > div {
-    border: 1px solid #000000;
+.bind-code-wrap {
+  .bind-code-item {
     border-radius: 23px;
-    background-color: #ededed;
+  }
+}
+
+.friend-and-register-wrap {
+  .content-footer {
+    > button {
+      border-radius: 23px;
+    }
   }
 }

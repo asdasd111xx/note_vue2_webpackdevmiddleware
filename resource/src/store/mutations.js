@@ -651,5 +651,8 @@ export default {
   },
   [types.SET_LIVEVIEWPATH](state, data) {
     state.liveViewPath = data;
+  },
+  [types.SET_BINDFRIEND](state, data) {
+    state.bindFriend = data;
   }
 };

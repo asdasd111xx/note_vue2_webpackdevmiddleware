@@ -1833,6 +1833,7 @@ export const actionVerificationFormData = (
   let val = data.value.replace(" ", "").trim();
 
   switch (data.target) {
+    case "friend_username":
     case "username":
       val = val
         .replace(/[\W]/g, "")
@@ -1956,6 +1957,15 @@ export const actionVerificationFormData = (
     case "search_video":
       regex = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF[0-9a-zA-Z]/g;
       val = val.replace(regex, "");
+      break;
+
+    case "friend_code":
+      // regex = /[^0-9a-zA-Z]/g;
+      // val = val
+      //   .replace(regex, "")
+      //   .toLowerCase()
+      //   .substring(4, 0);
+
       break;
 
     // case "USDT-address":
@@ -2689,6 +2699,21 @@ export const actionSetNotMyBankSwitch = ({ state, commit }) => {
         });
       }
       return;
+    }
+  });
+};
+
+//綁定好友開關
+export const actionBindFriendCode = ({ state, commit }) => {
+  return goLangApiRequest({
+    method: "get",
+    url: `${state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Bind/Code`,
+    params: {
+      lang: "zh-cn"
+    }
+  }).then(res => {
+    if (res && res.status === "000") {
+      commit(types.SET_BINDFRIEND, res.data);
     }
   });
 };
