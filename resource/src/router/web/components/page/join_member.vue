@@ -1531,13 +1531,16 @@ export default {
     }
   },
   created() {
+    //先註解，待7/6 取消註解，並刪除line:1541
+    // if (this.webDomain.domain === "80") {
+    //   this.$router.replace("/mobile/iframe/pao8d?fullscreen=true");
+    //   return;
+    // }
+
     // this.submitBtnLock = true;
+    //取得成為主播網址
     if (this.siteConfig.ROUTER_TPL === "sg1") {
-      if (this.webDomain.domain === "80") {
-        this.$router.replace("/mobile/iframe/pao8d?hasHeader=false");
-        return;
-      }
-      //取得成為主播網址
+      this.$router.replace("/mobile/iframe/pao8d?fullscreen=true");
       this.getBeHostUrl();
     }
 
