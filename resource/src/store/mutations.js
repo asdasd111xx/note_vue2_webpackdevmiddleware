@@ -147,6 +147,12 @@ export default {
     temp["_allGame"] = gameData;
     state.gameData = temp;
   },
+  [types.SETTRIALLIST](state, trialList) {
+    state.trialList = trialList;
+  },
+  [types.SETNEEDFILTERGAMEDATA](state, needFilterGameData) {
+    state.needFilterGameData = needFilterGameData;
+  },
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     客端 page
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -654,5 +660,8 @@ export default {
   },
   [types.SET_BINDFRIEND](state, data) {
     state.bindFriend = data;
+  },
+  [types.SET_LANDINGINFO](state, data) {
+    state.landingInfo = data;
   }
 };

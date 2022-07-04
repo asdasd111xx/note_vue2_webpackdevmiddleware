@@ -16,7 +16,7 @@ import openGame from "@/lib/open_game";
 import router from "@/router";
 import store from "@/store";
 
-export default target => {
+export default async target => {
   const curLang = store.state.curLang || "zh-cn";
   const linkType = target?.linkType?.[curLang] || target?.linkType;
   const linkTo = target?.linkTo?.[curLang] || target?.linkTo;
@@ -76,35 +76,12 @@ export default target => {
     //   `/popcontrol/promo/${JSON.stringify({ linkItem })}`,
     //   "_blank"
     // );
-
-    axios({
-      method: "get",
-      url: "/api/v1/c/link/customize",
-      params: {
-        code: "promotion",
-        client_uri: linkTo
-      }
-    })
-      .then(res => {
-        if (res && res.data && res.data.ret && res.data.ret.uri) {
-          localStorage.setItem("iframe-third-url", res.data.ret.uri);
-          localStorage.setItem("iframe-third-url-title", linkTitle);
-          linkBack !== "live"
-            ? localStorage.setItem("iframe-third-origin", `home`)
-            : "";
-          window.location.href = `/mobile/iframe/${
-            linkBack === "live" ? "livepromotion" : "promotion"
-          }`;
-        }
-      })
-      .catch(error => {
-        if (newWindow) {
-          newWindow.close();
-        }
-        if (error && error.data && error.data.msg) {
-          store.dispatch("actionSetGlobalMessage", { msg: error.data.msg });
-        }
-      });
+    linkBack !== "live"
+      ? localStorage.setItem("iframe-third-origin", `home`)
+      : "";
+    window.location.href = `/mobile/iframe/${
+      linkBack === "live" ? "livepromotion" : "promotion"
+    }?promoUri=${linkTo}&title=${linkTitle}`;
 
     return;
   }
@@ -173,14 +150,18 @@ export default target => {
 
   if (linkType === "internal") {
     switch (linkTo) {
+      case "login":
+        if (store.state.loginStatus) return;
+        router.replace("/mobile/login");
+        return;
       case "join":
         if (store.state.loginStatus) {
           return;
         }
-        if (getCookie("platform") === "h") {
+        if (getCookie("platform") === "h" && eventRedirect !== "promotion") {
           // store.dispatch("actionGetActingURL").then(res => {
           //   if (res.length > 0 && res.indexOf(window.location.host) != -1) {
-          //     this.$router.push(`/mobile/joinmember`);
+          //     store.state.$router.push(`/mobile/joinmember`);
           //   } else {
           //     store.dispatch("actionGetLayeredURL").then(res => {
           //       if (res.indexOf(window.location.host) != -1 || res.length < 1) {
@@ -197,7 +178,7 @@ export default target => {
             if (res.redirect_url) {
               window.location.replace(res.redirect_url + "/mobile/joinmember");
             } else {
-              this.$router.push(`/mobile/joinmember`);
+              router.push(`/mobile/joinmember`);
             }
           });
         } else {
@@ -206,11 +187,32 @@ export default target => {
         return;
       case "discount":
       case "promotion":
+        if (eventRedirect === "promotion" && linkItem) {
+          if (!store.state.loginStatus) {
+            router.push("/mobile/login");
+            return;
+          }
+          switch (linkItem) {
+            case "verify":
+              router.push(
+                `/mobile/iframe/promotion?alias=verify_promotion&fullscreen=true`
+              );
+              break;
+            case "collect":
+              router.push(
+                `/mobile/iframe/promotion?alias=self_collect_promotion&fullscreen=true`
+              );
+              break;
+            default:
+              break;
+          }
+          return;
+        }
         router.push("/mobile/promotion");
         return;
       // ?
       case "home":
-        // router.push("/mobile/home");
+        if (eventRedirect === "promotion") router.push("/mobile/home");
         return;
 
       case "service":
@@ -260,7 +262,70 @@ export default target => {
 
         return;
 
-      case "cgPay":
+      case "message":
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+        router.push("/mobile/mcenter/information");
+        return;
+
+      case "binding-card":
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+
+        router.push(
+          `/mobile/mcenter/bankCard?redirect=promotion&type=bankCard`
+        );
+        return;
+
+      case "mobile-bet": //手機下注
+        actionGetLandingURL(store).then(() => {
+          const refCode =
+            store.state.landingInfo.promotionHostnameCode ||
+            localStorage.getItem("x-code");
+          const channelid = localStorage.getItem("x-channelid");
+
+          // 渠道移除 有帶推廣碼的需要登入
+          if (
+            !store.state.landingInfo.landingurl ||
+            store.state.landingInfo.landingurl === ""
+          ) {
+            return;
+          }
+
+          let url = new URL(
+            store.state.landingInfo.landingurl.startsWith("http")
+              ? store.state.landingInfo.landingurl
+              : `https://${store.state.landingInfo.landingurl}`
+          );
+
+          if (channelid) {
+            url.searchParams.append("channelid", channelid);
+          }
+
+          if (refCode) {
+            url.searchParams.append("code", refCode);
+          }
+
+          if (localStorage.getItem("x-action") === "download") {
+            url.searchParams.append("action", "download");
+          }
+
+          setTimeout(() => {
+            location.href = url.href;
+          }, 250);
+        });
+
+        return;
+
+      case "join-agent": //代理登入
+      case "agent-login":
+      case "ubb": //寰宇瀏覽器
+      case "cgpay": //CGP教程
+      case "domain":
       case "mobileBet":
       default:
         return;
@@ -374,25 +439,21 @@ export default target => {
   }
 
   const hasHall = [3, 5, 6];
-  function getTrialList() {
-    if (hasHall.includes(kind) && !linkItem) {
-      let trialList = JSON.parse(localStorage.getItem("trial-game-list")) || [];
-      hasTrial = trialList.find(i => i.vendor === vendor && i.mobile_trial);
-    }
-
-    // return  goLangApiRequest({
-    //   method: "get",
-    //   url: `${store.state.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
-    // }).then(res => {
-    //   let trialList = res.data;
-    //   hasTrial = trialList.find(
-    //     i => i.vendor === vendor && +i.kind === +game.kind && i.mobile_trial
-    //   );
-    // });
-  }
-
   if (!store.state.loginStatus) {
-    getTrialList();
+    if (eventRedirect === "promotion") {
+      await actionGetTrialList(store);
+      if (hasHall.includes(kind) && !linkItem) {
+        hasTrial = store.state.trialList.find(
+          i => i.vendor === vendor && i.mobile_trial
+        );
+      }
+    } else {
+      if (hasHall.includes(kind) && !linkItem) {
+        hasTrial = store.state.trialList.find(
+          i => i.vendor === vendor && i.mobile_trial
+        );
+      }
+    }
   }
 
   // 有遊戲大廳的遊戲
@@ -456,14 +517,15 @@ export default target => {
       default:
         break;
     }
+
+    if (eventRedirect === "promotion") await actionGetFilterGameList(store);
+
     if (
       vendor != "sigua_ly" &&
       vendor != "sigua2_ly" &&
       vendor != "sigua3_ly"
     ) {
-      let notVipGame = JSON.parse(
-        localStorage.getItem("needFilterGameData")
-      ).find(filterData => {
+      let notVipGame = store.state.needFilterGameData.find(filterData => {
         return filterData.gameCode === code;
       });
 
@@ -527,7 +589,6 @@ export default target => {
         });
       }
     };
-
     openGame(
       {
         kind: kind,

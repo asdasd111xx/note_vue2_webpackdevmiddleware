@@ -64,6 +64,9 @@ export default {
   //     遊戲資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   gameData,
+  trialList: [],
+  needFilterGameData: [],
+
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     電子彩金
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -470,5 +473,6 @@ export default {
   bindFriend: {
     code: "",
     enable: false
-  }
+  },
+  landingInfo: {}
 };
