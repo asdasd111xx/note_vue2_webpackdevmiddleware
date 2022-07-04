@@ -1301,6 +1301,8 @@
 
     <deposit-info
       v-if="submitStatus === 'stepTwo'"
+      :is-simple-type="false"
+      :your-bank-list="paySelectData['changeBank'].allData"
       :order-data="orderData"
       :is-show.sync="isShow"
       :required-fields="curPayInfo.field"
@@ -1340,24 +1342,6 @@
                 代客充值
               </li>
             </ul>
-          </div>
-        </div>
-      </template>
-      <!-- 通道提示 -->
-      <template v-if="showPopStatus.type === 'payTip'">
-        <div>
-          <div :class="$style['pop-message-mark']" />
-          <div :class="$style['entry-message-container']">
-            <div :class="[$style['entry-message-content']]">
-              <p>通道提示</p>
-              <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
-            </div>
-            <div
-              :class="[$style['entry-message-confirm']]"
-              @click="setPopupStatus(false, '')"
-            >
-              关闭
-            </div>
           </div>
         </div>
       </template>
@@ -2389,14 +2373,16 @@ export default {
       // 如果是迅付欄位
       if (isSpeedField) {
         if (target === "depositName") {
-          this.actionVerificationFormData({
-            target: "name",
-            value: value
-          }).then(val => {
-            // this.checkSuccess = val ? true : false;
+          //充值人姓名移除中文限制
+          this.speedField.depositName = value;
+          // this.actionVerificationFormData({
+          //   target: "name",
+          //   value: value
+          // }).then(val => {
+          //   // this.checkSuccess = val ? true : false;
 
-            this.speedField.depositName = val;
-          });
+          //   this.speedField.depositName = val;
+          // });
         }
         this.checkOrderData();
       }

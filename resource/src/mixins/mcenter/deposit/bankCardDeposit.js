@@ -144,10 +144,15 @@ export default {
      * @return array
      */
     allBanks() {
+      //充值優化 第一頁你的銀行需“必填”才會出現
+      const yourBankRequired = this.curPayInfo.field.find(item => {
+        return item.name === "bank_id" && item.required;
+      });
       // 銀行匯款一律吃 your_Bank 裡面所有的資料
       if (
         this.yourBankList.length > 0 &&
-        this.curPayInfo.payment_type_id === 5
+        this.curPayInfo.payment_type_id === 5 &&
+        yourBankRequired
       ) {
         return this.yourBankList.map(bankInfo => ({
           label: bankInfo.name,
@@ -1315,6 +1320,7 @@ export default {
     },
     checkOrderData() {
       // 金額輸入錯誤
+      console.log("checkOrderData?");
       if (
         this.isErrorMoney ||
         !this.moneyValue ||
@@ -1326,7 +1332,6 @@ export default {
         this.checkSuccess = false;
         return;
       }
-
       // 檢查銀行匯款、支付轉帳的極速到帳表單必填欄位
       if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
         const checkItemMap = {

@@ -5,18 +5,29 @@
       :header-setting.sync="resultHeaderSetting"
       ref="bankCardDeposit"
     />
+    <simple-deposit
+      v-if="nowTabCurrent === 'simpleDeposit'"
+      :header-setting.sync="resultHeaderSetting"
+      ref="simpleDeposit"
+    />
     <record-deposit v-if="nowTabCurrent === 'record'" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import goLangApiRequest from "@/api/goLangApiRequest";
+import axios from "axios";
 
 export default {
   components: {
     bankCardDeposit: () =>
       import(
         /* webpackChunkName: 'bankCardDeposit' */ "./components/bankCardDeposit"
+      ),
+    simpleDeposit: () =>
+      import(
+        /* webpackChunkName: 'simpleDeposit' */ "./components/simpleDeposit"
       ),
     recordDeposit: () =>
       import(
@@ -26,7 +37,7 @@ export default {
 
   data() {
     return {
-      tabCurrent: "deposit",
+      tabCurrent: "null",
       headerSetting: {
         title: this.$text("S_ONLINE_DEPOSIT", "线上存款"),
         leftBtns: {
@@ -58,6 +69,7 @@ export default {
     },
     nowTabCurrent: {
       get() {
+        console.log(this.tabCurrent);
         return this.tabCurrent;
       },
       set(val) {
@@ -96,7 +108,7 @@ export default {
     if (!this.loginStatus) {
       this.$router.push("/mobile/login");
     }
-
+    this.getDepositMode();
     this.isFastPay();
   },
   methods: {
@@ -115,6 +127,21 @@ export default {
           }
         };
       }
+    },
+
+    // 取得入款模式 C04.60
+    getDepositMode() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Deposit/Mode`,
+        params: {}
+      }).then(res => {
+        if (res.status === "000") {
+          this.nowTabCurrent = res.data.deposit_mode
+            ? "simpleDeposit"
+            : "deposit";
+        }
+      });
     }
   }
 };

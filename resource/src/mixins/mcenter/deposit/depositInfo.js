@@ -3,6 +3,7 @@ import Vue from "vue";
 import axios from "axios";
 import { mapActions } from "vuex";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   props: {
     requiredFields: {
@@ -23,12 +24,18 @@ export default {
               "YYYY-MM-DD HH:mm:ss"
             )
           : "",
-        // Vue.moment(this.orderData.orderInfo.deposit_at).utcOffset(+8).format("YYYY-MM-DD HH:mm:ss")
         depositAccount: this.orderData.orderInfo.pay_account,
         depositName: this.orderData.orderInfo.pay_username,
         bankBranch: this.orderData.orderInfo.branch,
         serialNumber: this.orderData.orderInfo.sn
-      }
+      },
+      selectBank: {
+        id: 0,
+        image_url: "",
+        name: "",
+        swift_code: ""
+      },
+      bankList: []
     };
   },
   computed: {
@@ -244,34 +251,6 @@ export default {
         }
       });
     },
-    yourDepositData() {
-      // 加密貨幣不顯示
-      if (this.orderData.is_crypto) return;
-
-      return [
-        {
-          objKey: "yourAccount",
-          title: this.$text("S_NAME", "会员帐号"),
-          value: this.orderData.username,
-          isFontBold: false
-        },
-        {
-          objKey: "yourBank",
-          title:
-            this.orderData.method_id === 3
-              ? this.$text("S_USE_BANK", "使用银行")
-              : this.$text("S_PAY_MODE", "支付方式"),
-          value: this.orderData.method_name,
-          isFontBold: false
-        },
-        {
-          objKey: "yourMoney",
-          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
-          value: this.formatThousandsCurrency(this.orderData.amount),
-          isFontBold: true
-        }
-      ];
-    },
     isSubmitDisabled() {
       // 檢查銀行匯款、支付轉帳的必填欄位
       if ([5, 6].includes(this.orderData.type_id)) {
@@ -321,6 +300,7 @@ export default {
         let paramData = {};
 
         paramData = {
+          bankId: this.selectBank.id,
           deposit_at: this.speedField.depositTime,
           pay_account: this.speedField.depositAccount,
           pay_username: this.speedField.depositName,
@@ -382,6 +362,18 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    // 取得廠商支援銀行列表資料 C04.06
+    getBankList() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/SupportBank`,
+        params: {}
+      }).then(res => {
+        if (res.status === "000") {
+          this.bankList = res.data;
+        }
+      });
     }
   }
 };
