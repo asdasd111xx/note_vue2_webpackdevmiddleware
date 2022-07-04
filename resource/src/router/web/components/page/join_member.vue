@@ -1390,6 +1390,7 @@ export default {
     ...mapGetters({
       isWebview: "getIsWebview",
       webInfo: "getWebInfo",
+      webDomain: "getWebDomain",
       memInfo: "getMemInfo",
       siteConfig: "getSiteConfig",
       version: "getVersion",
@@ -1531,8 +1532,12 @@ export default {
   },
   created() {
     // this.submitBtnLock = true;
-    //取得成為主播網址
     if (this.siteConfig.ROUTER_TPL === "sg1") {
+      if (this.webDomain.domain === "80") {
+        this.$router.replace("/mobile/iframe/pao8d?hasHeader=false");
+        return;
+      }
+      //取得成為主播網址
       this.getBeHostUrl();
     }
 

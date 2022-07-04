@@ -506,6 +506,11 @@ export default {
           this.showBack = false;
           this.src = localStorage.getItem("iframe-third-url");
           break;
+
+        case "PAO8D":
+          this.src = "https://pao8d.tv";
+          break;
+
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
