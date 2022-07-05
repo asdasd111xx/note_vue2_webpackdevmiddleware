@@ -222,8 +222,8 @@ export default {
       // deductionValue = Math.floor(deductionValue * 100) / 100;
       let total = "0.00";
 
-      // 尚未輸入金額
-      if (!this.moneyValue) {
+      // 尚未輸入金額或金額錯誤
+      if (!this.moneyValue || this.isErrorMoney) {
         return "0.00";
       }
 
