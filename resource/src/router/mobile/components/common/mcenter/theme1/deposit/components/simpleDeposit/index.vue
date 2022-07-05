@@ -59,7 +59,7 @@
                   />
                 </template>
                 <!-- 客製額度轉帳入口 -->
-                <template v-else @click="handleCreditTrans">
+                <template v-else>
                   <div :class="[$style['pay-sub-title'], $style['custom']]">
                     代收代付
                   </div>
@@ -2122,6 +2122,10 @@ export default {
       });
     },
     changeSimplePayMode(info) {
+      if (info.id === 26987) {
+        this.handleCreditTrans();
+        return;
+      }
       if (info.id === this.simpleCurPayInfo.id) {
         return;
       }
