@@ -1538,6 +1538,19 @@ export default {
     }
   },
   created() {
+    //載入時檢查是否需綁卡
+    goLangApiRequest({
+      method: "get",
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`
+    }).then(res => {
+      if (res && res.code === "C150099") {
+        this.actionSetGlobalMessage({
+          msg: res.msg,
+          code: res.code
+        });
+      }
+    });
+
     if (this.routerTPL === "sg1") {
       sendUmeng(46);
     } else {
