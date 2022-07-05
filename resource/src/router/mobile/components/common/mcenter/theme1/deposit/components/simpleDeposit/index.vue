@@ -1495,9 +1495,15 @@ export default {
           this.resetStatus();
           this.getSimplePaymentGroups();
           //重置通道
-          this.changeSimplePayMode(this.depositData[0]);
-          this.changeSimplePayType(this.simpleCurrency.data[0]);
-          this.changeSimpleRoad(this.simplePayType.tags[0]);
+          if (this.depositData[0]) {
+            this.changeSimplePayMode(this.depositData[0]);
+          }
+          if (this.simpleCurrency.data[0]) {
+            this.changeSimplePayType(this.simpleCurrency.data[0]);
+          }
+          if (this.simplePayType.tags[0]) {
+            this.changeSimpleRoad(this.simplePayType.tags[0]);
+          }
         }
 
         this.submitStatus = value;
