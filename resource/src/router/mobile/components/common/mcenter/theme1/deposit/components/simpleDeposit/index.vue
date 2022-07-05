@@ -1541,12 +1541,13 @@ export default {
     //載入時檢查是否需綁卡
     goLangApiRequest({
       method: "get",
-      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/Payment/Group`
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Deposit/Check`
     }).then(res => {
-      if (res && res.code === "C150099") {
+      console.log("checkcheck", res);
+      if (res && res.data.bank === false) {
         this.actionSetGlobalMessage({
-          msg: res.msg,
-          code: res.code
+          msg: "请先绑定提现银行卡",
+          code: "C150099"
         });
       }
     });
