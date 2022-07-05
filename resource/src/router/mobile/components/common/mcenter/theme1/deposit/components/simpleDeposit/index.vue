@@ -59,7 +59,8 @@
                   />
                 </template>
                 <!-- 客製額度轉帳入口 -->
-                <template v-else @click="handleCreditTrans">
+              <template v-else 
+                @click="handleCreditTrans">
                   <div :class="[$style['pay-sub-title'], $style['custom']]">
                     代收代付
                   </div>
@@ -69,7 +70,7 @@
                   >
                     代理分红
                   </div>
-                </template>
+              </template>
               </div>
             </div>
           </div>
@@ -158,10 +159,9 @@
             <!-- 通道 -->
             <div
               v-if="
-                (simplePayType.channels.length > 0 ||
-                  simplePayType.tags.length > 0) &&
-                  !isSelectBindWallet(402) &&
-                  !isSelectBindWallet(404)
+                (simplePayType.channels.length > 0 || simplePayType.tags.length > 0)&&
+                !isSelectBindWallet(402) &&
+                !isSelectBindWallet(404)
               "
               :class="[$style['feature-wrap'], 'clearfix']"
             >
@@ -202,7 +202,7 @@
                   ]"
                   @click="changeSimpleRoad(road)"
                 >
-                  {{ road.name === "" ? "其他" : tipTransName[road.name] }}
+                  {{ road.name === "" ? "其他" :tipTransName[road.name] }}
                   <img
                     v-if="road.id === simplePayRode.id"
                     :class="$style['pay-active']"
@@ -230,25 +230,25 @@
               </div>
             </div>
             <div
-              v-if="
-                simplePayType.channels.length > 0 &&
+                v-if="
+                  simplePayType.channels.length > 0 &&
                   simplePayRode.tip != '' &&
-                  !isSelectBindWallet(402) &&
-                  !isSelectBindWallet(404)
-              "
-              @click="
-                simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
-              "
-              :class="$style['show-more-header']"
-            >
-              <span>通道提示详情</span>
-              <div
-                :class="[
-                  $style['collapse-img'],
-                  { [$style.active]: simplePayRodeTipTextShowMore }
-                ]"
-              />
-            </div>
+                    !isSelectBindWallet(402) &&
+                    !isSelectBindWallet(404)
+                "
+                @click="
+                  simplePayRodeTipTextShowMore = !simplePayRodeTipTextShowMore
+                "
+                :class="$style['show-more-header']"
+              >
+                <span>通道提示详情</span>
+                <div
+                  :class="[
+                    $style['collapse-img'],
+                    { [$style.active]: simplePayRodeTipTextShowMore }
+                  ]"
+                />
+              </div>
 
             <template v-if="simplePayType.method_id !== 20">
               <!-- 充值人姓名 -->
@@ -272,11 +272,13 @@
                     <input
                       v-model="speedName"
                       :class="$style['speed-deposit-input']"
-                      :placeholder="
-                        $text('S_ENTER_DEPOSIT_NAME', '请输入充值人姓名')
-                      "
+                      :placeholder="$text('S_ENTER_DEPOSIT_NAME', '请输入充值人姓名')"
                       @input="
-                        verification('depositName', $event.target.value, true)
+                        verification(
+                          'depositName',
+                          $event.target.value,
+                          true
+                        )
                       "
                     />
                   </div>
@@ -295,8 +297,7 @@
               <!-- e點富銀行 -->
               <div
                 v-if="
-                  isSelectBindWallet(34, 41) &&
-                    this.simplePayType.is_bind_wallet
+                  isSelectBindWallet(34, 41) && this.simplePayType.is_bind_wallet
                 "
                 :class="[
                   $style['feature-wrap'],
@@ -338,9 +339,7 @@
                     @input="verification('order-bank', $event.target.value)"
                   />
                 </div>
-                <div
-                  :class="[$style['other-bank-input-text'], $style['border']]"
-                >
+                <div :class="[$style['other-bank-input-text'], $style['border']]">
                   银行帐号
                   <input
                     v-model="epointBankAccount"
@@ -486,9 +485,7 @@
                 </div>
               </div>
               <div
-                v-if="
-                  isSelectBindWallet(32) && this.simplePayType.is_bind_wallet
-                "
+                v-if="isSelectBindWallet(32) && this.simplePayType.is_bind_wallet"
                 :class="[$style['feature-wrap'], $style['bc-coint']]"
                 @click="setPopupStatus(true, 'bcWalletCurrency')"
               >
@@ -504,9 +501,7 @@
                   }}
                 </div>
                 <div v-else :class="[$style['coin-money']]">--</div>
-                <img
-                  :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
-                />
+                <img :src="$getCdnPath(`/static/image/common/arrow_next.png`)" />
               </div>
 
               <!-- 存款金額 -->
@@ -682,9 +677,7 @@
                         ]"
                       >
                         <span
-                          :class="[
-                            { [$style['crypto-money']]: cryptoMoney > 0 }
-                          ]"
+                          :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
                         >
                           {{ formatThousandsCurrency(cryptoMoney) }}
                         </span>
@@ -718,9 +711,7 @@
                         ]"
                       >
                         <span
-                          :class="[
-                            { [$style['crypto-money']]: cryptoMoney > 0 }
-                          ]"
+                          :class="[{ [$style['crypto-money']]: cryptoMoney > 0 }]"
                         >
                           {{ formatThousandsCurrency(cryptoMoney) }}
                         </span>
@@ -759,12 +750,10 @@
                     :class="[
                       $style['pay-auth-method'],
                       {
-                        [$style['current-data']]:
-                          walletData['CGPay'].method === 0
+                        [$style['current-data']]: walletData['CGPay'].method === 0
                       },
                       {
-                        [$style['disable']]:
-                          walletData['CGPay'].balance === '--'
+                        [$style['disable']]: walletData['CGPay'].balance === '--'
                       }
                     ]"
                     @click="() => (walletData['CGPay'].method = 0)"
@@ -773,9 +762,7 @@
                     <img
                       v-if="walletData['CGPay'].method === 0"
                       :class="$style['pay-active']"
-                      :src="
-                        $getCdnPath(`/static/image/common/select_active.png`)
-                      "
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
                     />
                   </div>
 
@@ -783,8 +770,7 @@
                     :class="[
                       $style['pay-auth-method'],
                       {
-                        [$style['current-data']]:
-                          walletData['CGPay'].method === 1
+                        [$style['current-data']]: walletData['CGPay'].method === 1
                       }
                     ]"
                     @click="walletData['CGPay'].method = 1"
@@ -793,9 +779,7 @@
                     <img
                       v-if="walletData['CGPay'].method === 1"
                       :class="$style['pay-active']"
-                      :src="
-                        $getCdnPath(`/static/image/common/select_active.png`)
-                      "
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
                     />
                   </div>
 
@@ -853,12 +837,10 @@
                     :class="[
                       $style['pay-auth-method'],
                       {
-                        [$style['current-data']]:
-                          walletData['OSPay'].method === 0
+                        [$style['current-data']]: walletData['OSPay'].method === 0
                       },
                       {
-                        [$style['disable']]:
-                          walletData['OSPay'].balance === '--'
+                        [$style['disable']]: walletData['OSPay'].balance === '--'
                       }
                     ]"
                     @click="() => (walletData['OSPay'].method = 0)"
@@ -867,9 +849,7 @@
                     <img
                       v-if="walletData['OSPay'].method === 0"
                       :class="$style['pay-active']"
-                      :src="
-                        $getCdnPath(`/static/image/common/select_active.png`)
-                      "
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
                     />
                   </div>
 
@@ -877,8 +857,7 @@
                     :class="[
                       $style['pay-auth-method'],
                       {
-                        [$style['current-data']]:
-                          walletData['OSPay'].method === 1
+                        [$style['current-data']]: walletData['OSPay'].method === 1
                       }
                     ]"
                     @click="walletData['OSPay'].method = 1"
@@ -887,9 +866,7 @@
                     <img
                       v-if="walletData['OSPay'].method === 1"
                       :class="$style['pay-active']"
-                      :src="
-                        $getCdnPath(`/static/image/common/select_active.png`)
-                      "
+                      :src="$getCdnPath(`/static/image/common/select_active.png`)"
                     />
                   </div>
 
@@ -967,8 +944,7 @@
                 实际到帐： ¥{{ realSaveMoney }}
                 <span
                   v-if="
-                    simplePayType.offer_enable &&
-                      +simplePayType.offer_percent > 0
+                    simplePayType.offer_enable && +simplePayType.offer_percent > 0
                   "
                   @click="showRealStatusType(true)"
                 >
@@ -976,8 +952,7 @@
                 </span>
                 <span
                   v-else-if="
-                    +simplePayFeeData.fee_percent ||
-                      +simplePayFeeData.fee_amount
+                    +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
                   "
                   @click="showRealStatusType(true)"
                 >
@@ -998,9 +973,7 @@
                     }}
                   </div>
                   <template
-                    v-if="
-                      offerInfo.offer_enable && +offerInfo.offer_percent > 0
-                    "
+                    v-if="offerInfo.offer_enable && +offerInfo.offer_percent > 0"
                   >
                     <li :class="$style['tip-list']" v-html="promitionText" />
                   </template>
@@ -1319,7 +1292,7 @@ export default {
         EVENT: "活动",
         FAST: "极速",
         HIGH: "大额",
-        LOW: "小额"
+        LOW: "小额",
       },
 
       nameCheckFail: false,
@@ -1376,8 +1349,8 @@ export default {
         per_trade_min: ""
       },
       simplePayField: [],
-      newWindow: "",
-      speedName: ""
+      newWindow:"",
+      speedName:""
     };
   },
   watch: {
@@ -1758,7 +1731,7 @@ export default {
           return;
         }
       }
-      if (needReOpen) {
+      if(needReOpen){
         this.newWindow = "";
         this.newWindow = window.open(
           "",
@@ -1802,7 +1775,7 @@ export default {
           }
 
           if (response.status === "third") {
-            this.getSimplePaymentGroups();
+            this.getSimplePaymentGroups()
             // if (this.simplePayFeeData.amounts.length > 0) {
             //   this.changeSimpleMoney(this.simplePayFeeData.amounts[0]);
             // } else {
@@ -2106,8 +2079,8 @@ export default {
       }).then(res => {
         if (res.status === "000") {
           this.depositData = res.data;
-          if (["porn1", "sg1"].includes(this.themeTPL)) {
-            this.depositData.push({ id: 26987 });
+          if(['porn1', 'sg1'].includes(this.themeTPL)){
+            this.depositData.push({id:26987})
           }
           console.log(res.data);
           this.changeSimplePayMode(this.depositData[0]);
@@ -2116,9 +2089,9 @@ export default {
       });
     },
     changeSimplePayMode(info) {
-      // if (info.id === this.simpleCurPayInfo.id) {
-      //   return;
-      // }
+      if (info.id === this.simpleCurPayInfo.id) {
+        return;
+      }
       this.resetStatus();
       this.resetTimerStatus();
       this.simpleCurPayInfo = info;
@@ -2205,6 +2178,7 @@ export default {
       if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
         this.setSimpleFeeData(info);
       }
+      
     },
     /**
      * 選擇通道金額
@@ -2435,10 +2409,10 @@ export default {
         };
       }
       //使用者姓名(極速到帳必填 method_id = 6)
-      if (this.simplePayType.method_id === 6) {
+      if(this.simplePayType.method_id === 6){
         paramsData = {
           ...paramsData,
-          pay_username: this.speedName
+          pay_username:this.speedName,
         };
       }
       //銀行id (在線支付/點卡支付必填 method_id = 1,2)
@@ -2488,7 +2462,9 @@ export default {
       //使用者銀行卡id（E点付/e点富入款必填 method_id = 34,41）
       //使用者銀行卡名稱（E点付/e点富入款必填 method_id = 34,41）
       //使用者轉出金額帳號（E点付/e点富入款必填 method_id = 34,41）?
-      if ([34, 41].includes(this.simplePayType.method_id)) {
+      if (
+        [34, 41].includes(this.simplePayType.method_id)
+      ) {
         if (this.showEpointWalletAddress) {
           //新增的掛單銀行卡
           paramsData = {
@@ -2525,9 +2501,9 @@ export default {
         .then(response => {
           this.isShow = false;
           this.actionSetIsLoading(false);
-          const ret = response.data;
-          const msg = response.msg;
-          const code = response.code;
+          const ret = response.data
+          const msg = response.msg
+          const code = response.code
           // let _isWebview = getCookie("platform") === "h";
 
           if (response.status !== "000") {
