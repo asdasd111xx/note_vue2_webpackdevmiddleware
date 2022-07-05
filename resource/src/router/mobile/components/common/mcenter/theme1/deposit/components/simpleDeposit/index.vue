@@ -1072,7 +1072,10 @@
                   (showEpointWalletAddress &&
                     (epointBankName === '' || epointBankAccount === '')) ||
                   (isSelectBindWallet(32) &&
-                    (cryptoMoney <= 0 || selectBcCoin.balance <= 0))
+                    (cryptoMoney <= 0 || selectBcCoin.balance <= 0)) ||
+                  (simplePayType.method_id !== 20 &&
+                    simplePayType.method_id === 6 &&
+                    speedName === '')
               }
             ]"
             :title="$text('S_ENTER_PAY', '立即充值')"
