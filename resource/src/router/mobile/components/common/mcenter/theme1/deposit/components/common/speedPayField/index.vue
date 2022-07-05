@@ -158,9 +158,6 @@ export default {
               selectId: "16"
             }
           ],
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(e => e.name === "method" && e.required)
-          //   : this.methodId === 3 || this.methodId === 6,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "method")
             : this.methodId === 3 || this.methodId === 6,
@@ -172,11 +169,6 @@ export default {
           title: "充值时间(当地)",
           value: this.speedField.depositTime,
           placeholderText: "请选择充值时间",
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(
-          //       e => e.name === "deposit_at" && e.required
-          //     )
-          //   : true,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "deposit_at")
             : true,
@@ -192,11 +184,6 @@ export default {
           title: "充值银行帐号",
           value: this.speedField.depositAccount,
           placeholderText: "请输入充值银行帐号",
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(
-          //       e => e.name === "pay_account" && e.required
-          //     )
-          //   : true,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "pay_account")
             : true,
@@ -256,9 +243,6 @@ export default {
             "S_PLZ_ENTER_SERIAL_NUMBER",
             "请输入流水号"
           ),
-          // showCondition: this.showByRequiredFields
-          //   ? this.requiredFields.find(e => e.name === "sn" && e.required)
-          //   : true,
           showCondition: this.showByRequiredFields
             ? this.requiredFields.find(e => e.name === "sn")
             : true,
@@ -289,11 +273,12 @@ export default {
   methods: {
     ...mapActions(["actionSetGlobalMessage"]),
     submitInput(data, objKey) {
-      if (objKey === "depositName") {
-        const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
-        this.depositName = data.replace(re, "");
-        data = data.replace(re, "");
-      }
+      //充值人姓名移除中文限制
+      // if (objKey === "depositName") {
+      //   const re = /[^\u3000\u3400-\u4DBF\u4E00-\u9FFF.．·]/g;
+      //   this.depositName = data.replace(re, "");
+      //   data = data.replace(re, "");
+      // }
 
       this.$emit("update:speedField", { data, objKey });
     },

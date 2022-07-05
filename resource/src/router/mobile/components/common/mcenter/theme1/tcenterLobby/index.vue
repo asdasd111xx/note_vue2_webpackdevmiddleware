@@ -305,7 +305,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import friendsStatistics from "@/mixins/mcenter/management/friendsStatistics";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import { API_COMMISSION_SUMMARY } from "@/config/api";
@@ -325,7 +325,50 @@ export default {
       transPointType: false,
       summary: { today: { amount: 0 } },
       immediateData: [],
-      specialList: [
+      cardList: []
+    };
+  },
+  created() {
+    //推廣開關
+    if (!this.memInfo.user.show_promotion) {
+      this.$router.replace("/mobile/mcenter/home");
+      return;
+    }
+
+    this.getRebateSwitch();
+    this.getLevelList();
+    this.actionBindFriendCode();
+  },
+  watch: {},
+  computed: {
+    ...mapGetters({
+      memInfo: "getMemInfo",
+      siteConfig: "getSiteConfig",
+      domainConfig: "getDomainConfig",
+      bindFriend: "getBindFriend"
+    }),
+    $style() {
+      const style = this[`$style_${this.siteConfig.ROUTER_TPL}`];
+      return style;
+    },
+    themeTPL() {
+      return this.siteConfig.MOBILE_WEB_TPL;
+    },
+    routerTPL() {
+      //先用ROUTER_TPL判斷aobo
+      return this.siteConfig.ROUTER_TPL;
+    },
+    /**
+     * 返利是否有開啟第三方返利時
+     */
+    rewardOnlyLocal() {
+      return this.memInfo.config.wage.indexOf("commission") === -1;
+    },
+    isBindFriend() {
+      return this.bindFriend.enable;
+    },
+    specialData() {
+      return [
         {
           showType: true,
           name: "推广信息",
@@ -346,56 +389,25 @@ export default {
             "/mobile/mcenter/tcenterManageTeam/nextLevelCount/today-register"
         },
         {
-          showType: true,
+          showType: !this.isBindFriend && this.memInfo.config.festival,
           name: "推荐礼金",
           image: "ic_giftmoney",
           path: "/mobile/mcenter/tcenterManageRebate/recommendGift/today"
+        },
+        {
+          showType: this.isBindFriend,
+          name: "绑定好友",
+          image: "ic_friends",
+          path: "/mobile/mcenter/newRecommend?makeFriend=false&bindFriend=1"
         }
-      ],
-      cardList: []
-    };
-  },
-  created() {
-    this.getRebateSwitch();
-    this.getLevelList();
-
-    this.specialData.forEach(element => {
-      if (element.name === "推荐礼金") {
-        element.showType = this.memInfo.config.festival;
-      }
-    });
-  },
-  watch: {},
-  computed: {
-    ...mapGetters({
-      memInfo: "getMemInfo",
-      siteConfig: "getSiteConfig"
-    }),
-    specialData() {
-      return this.specialList.filter(i => i.showType);
-    },
-    $style() {
-      const style = this[`$style_${this.siteConfig.ROUTER_TPL}`];
-      return style;
-    },
-    themeTPL() {
-      return this.siteConfig.MOBILE_WEB_TPL;
-    },
-    routerTPL() {
-      //先用ROUTER_TPL判斷aobo
-      return this.siteConfig.ROUTER_TPL;
-    },
-    /**
-     * 返利是否有開啟第三方返利時
-     */
-    rewardOnlyLocal() {
-      return this.memInfo.config.wage.indexOf("commission") === -1;
+      ].filter(item => item.showType);
     }
   },
   mounted() {
     this.promotionImageLink();
   },
   methods: {
+    ...mapActions(["actionBindFriendCode"]),
     formatToPrice(value) {
       //千分位
       return `${Number(value)

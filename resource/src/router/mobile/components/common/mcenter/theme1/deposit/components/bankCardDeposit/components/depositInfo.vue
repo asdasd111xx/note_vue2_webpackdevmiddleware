@@ -1,5 +1,11 @@
 <template>
-  <div :class="[$style['deposit-info-wrap'], 'clearfix']">
+  <div
+    :class="[
+      $style['deposit-info-wrap'],
+      { [$style['simple-type']]: isSimpleType },
+      'clearfix'
+    ]"
+  >
     <!-- 訂單時間 -->
     <div v-if="isShowTimer" :class="$style['time-tip']">
       <template v-if="countdownSec > 0">
@@ -87,8 +93,15 @@
             >
               {{ info.value }}
             </div>
-
-            <!-- icon -->
+            <!-- icon1 有字-->
+            <div
+              v-if="info.copyShow_t"
+              :class="$style['icon-wrap-text']"
+              @click="handleCopy(info)"
+            >
+              <img :src="$getCdnPath(`/static/image/common/ic_copy_n.png`)" />
+            </div>
+            <!-- icon2 無字-->
             <div
               v-if="info.copyShow"
               :class="$style['icon-wrap']"
@@ -123,6 +136,22 @@
             {{ info.title }}
           </div>
           <div
+            v-if="info.objKey === 'yourBank'"
+            :class="[
+              $style['basic-info-text'],
+              { [$style['info-important']]: info.isBorderBottom },
+              { [$style['info-placeholder-color']]: selectBank.name === '' }
+            ]"
+            @click="isShowBankPop = true"
+          >
+            {{ selectBank.name === "" ? "请选择您的银行" : selectBank.name }}
+            <img
+              :class="$style['select-bank-icon']"
+              :src="$getCdnPath(`/static/image/common/arrow_next.png`)"
+            />
+          </div>
+          <div
+            v-else
             :class="[
               $style['basic-info-text'],
               { [$style['info-important']]: info.isBorderBottom }
@@ -155,7 +184,9 @@
         $style['submit-btn'],
         {
           [$style['disabled']]:
-            isSubmitDisabled || (countdownSec < 1 && isShowTimer)
+            isSubmitDisabled ||
+            (countdownSec < 1 && isShowTimer) ||
+            (bankNameRequired && selectBank.name === '')
         }
       ]"
       :title="
@@ -193,6 +224,33 @@
         />
       </div>
     </message>
+    <div v-if="isShowBankPop" :class="$style['pop-wrap']">
+      <div :class="$style['pop-mask']" @click.stop="isShowBankPop = false" />
+      <div :class="$style['pop-menu']">
+        <div :class="$style['pop-title']">
+          <span @click.stop="isShowBankPop = false">{{
+            $text("S_CANCEL", "取消")
+          }}</span>
+          选择银行
+        </div>
+
+        <ul :class="$style['pop-list']">
+          <li
+            v-for="item in bankList"
+            :key="item.id"
+            @click.stop="changeBank(item)"
+          >
+            <img v-lazy="getImg(item.image_url)" />
+            {{ item.name }}
+            <icon
+              v-if="item.id === selectBank.id"
+              :class="[$style['select-active']]"
+              name="check"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -215,6 +273,14 @@ export default {
   },
   mixins: [mixin],
   props: {
+    isSimpleType: {
+      type: Boolean,
+      default: false
+    },
+    yourBankList: {
+      type: Array,
+      default: []
+    },
     orderData: {
       type: Object,
       default: () => {}
@@ -244,7 +310,9 @@ export default {
       countdownSec: this.limitTime,
       // countdownSec: 70, // 測試用
       timer: null,
-      isShowTimer: false
+      isShowTimer: false,
+      isShowBankPop: false,
+      bankNameRequired: false
     };
   },
   computed: {
@@ -267,6 +335,42 @@ export default {
       set(value) {
         this.speedField[value.objKey] = value.data;
       }
+    },
+    yourDepositData() {
+      // 加密貨幣不顯示
+      if (this.orderData.is_crypto) return;
+      let showArray = [
+        {
+          objKey: "yourAccount",
+          title: this.$text("S_NAME", "会员帐号"),
+          value: this.orderData.username,
+          isFontBold: false
+        },
+        {
+          objKey: "yourMoney",
+          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
+          value: this.formatThousandsCurrency(this.orderData.amount),
+          isFontBold: true
+        }
+      ];
+      if (
+        this.orderData.is_remit &&
+        this.orderData.orderInfo.field.find(item => {
+          return item.name === "bank_id";
+        })
+      ) {
+        showArray.push({
+          objKey: "yourBank",
+          title:
+            this.orderData.method_id === 3
+              ? this.$text("S_YOUR_BANK", "您的银行")
+              : this.$text("S_PAY_MODE", "支付方式"),
+          value: this.selectBank.name,
+          isFontBold: false
+        });
+      }
+
+      return showArray;
     }
   },
   created() {
@@ -280,6 +384,32 @@ export default {
         }
         this.countdownSec -= 1;
       }, 1000);
+    }
+    console.log("this.orderData", this.orderData);
+
+    if (this.isSimpleType) {
+      this.getBankList();
+    } else {
+      this.bankList = this.yourBankList;
+    }
+
+    //傳統模式 必填 -> 自動帶入第一頁的選項
+    this.bankNameRequired =
+      this.orderData.is_remit &&
+      this.orderData.orderInfo.field.find(item => {
+        return item.name === "bank_id" && item.required;
+      });
+    if (
+      !this.isSimpleType &&
+      this.orderData.method_id === 3 &&
+      this.bankNameRequired
+    ) {
+      this.changeBank({
+        id: this.orderData.bank_id,
+        image_url: "",
+        name: this.orderData.method_name,
+        swift_code: ""
+      });
     }
   },
   methods: {
@@ -349,6 +479,21 @@ export default {
         default:
           return `${sec}秒`;
       }
+    },
+    changeBank(info) {
+      this.selectBank = info;
+      this.isShowBankPop = false;
+    },
+    getImg(image_url) {
+      return {
+        src: image_url,
+        error: this.$getCdnPath(
+          "/static/image/common/default/bank_card_default.png"
+        ),
+        loading: this.$getCdnPath(
+          "/static/image/common/default/bank_card_default.png"
+        )
+      };
     }
   },
   beforeDestroy() {

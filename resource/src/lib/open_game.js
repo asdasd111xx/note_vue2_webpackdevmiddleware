@@ -57,10 +57,13 @@ export default (params, success = () => {}, fail = () => {}) => {
     gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
   }
 
+  function openNewWindow(url) {
+    newWindow = window.open(url, "_blank", option);
+  }
+
   if (!embedGame && !isWebview && gameType !== "event") {
-    newWindow = window.open("", "_blank", option);
     setTimeout(() => {
-      newWindow.location = "/game/loading/true";
+      openNewWindow("/game/loading/true");
     }, 200);
   }
 

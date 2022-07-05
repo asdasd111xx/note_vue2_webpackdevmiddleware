@@ -7,7 +7,9 @@
       },
       { [$style['fullScreen']]: isFullScreen }
     ]"
-    :style="{ height: `calc(100vh - ${iframeHeight}px)` }"
+    :style="{
+      height: `calc(${innerHeight}px - ${iframeHeight}px)`
+    }"
   >
     <!-- 泡泡真人視訊離開防呆提示 ⬇️-->
     <transition name="fade">
@@ -95,12 +97,21 @@
       :ref="'iframe'"
       :class="[$style['iframe'], $style[$route.params.page]]"
       :src="src"
+      :key="src"
       @load="onLoadiframe"
       allow="geolocation; fullscreen"
       scrolling="auto"
       frameborder="0"
       crossorigin
       style="width: 1px !important; min-width: 100%"
+      :style="[
+        isFullScreen
+          ? {
+              height: `calc(${innerHeight}px)`,
+              marginTop: 'unset'
+            }
+          : ''
+      ]"
     />
     <page-loading :is-show="isLoading" />
   </div>
@@ -113,6 +124,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import openGame from "@/lib/open_game";
 import { lib_useGlobalWithdrawCheck } from "@/lib/withdrawCheckMethod";
 import { getEmbedGameVendor } from "@/lib/game_option";
+import { iframeEvent } from "@/mixins/iframeEvent";
 
 export default {
   data() {
@@ -122,7 +134,8 @@ export default {
       src: "",
       showBack: true,
       contentTitle: "",
-      exitCheck: false
+      exitCheck: false,
+      innerHeight: window.innerHeight
     };
   },
   components: {
@@ -138,6 +151,12 @@ export default {
     }
   },
   created() {
+    //行動裝置翻轉重取innerHeight
+    window.onorientationchange = () => {
+      setTimeout(() => {
+        this.innerHeight = window.innerHeight;
+      }, 200);
+    };
     localStorage.removeItem("_iframe-back-route");
     // localStorage.setItem('open-game-link', 'https://star.xbb-slot-test.com:8888/starfruit/slot/1000030?lang=zh-cn&sid=8eedfbc72ec4e46dc8e83fcafee5c7afe292dcc40546150ce9dffdd54116ff14')
   },
@@ -150,13 +169,12 @@ export default {
   watch: {
     "$route.params.page"() {
       this.isLoading = true;
-      this.src = "";
       this.initIframe();
     },
     "$route.query"() {
       this.isLoading = true;
-      this.src = "";
       this.initIframe();
+      if (this.$route.query.title) this.contentTitle = this.$route.query.title;
     }
   },
   computed: {
@@ -197,6 +215,7 @@ export default {
           return "/mobile";
       }
     },
+
     iframeHeight() {
       let result = [];
       // if (this.headerConfig.hasHeader && !this.isFullScreen) {
@@ -388,6 +407,8 @@ export default {
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
+            this.contentTitle = localStorage.getItem("iframe-third-url-title");
+
             return;
           }
 
@@ -431,30 +452,16 @@ export default {
           this.showBack = false;
         case "PROMOTION":
         case "LIVEPROMOTION":
-          // 優小秘
-          let url = localStorage.getItem("iframe-third-url") || "";
-          if (url) {
-            if (!url.includes("v=m")) {
-              url = `${url}&v=m`;
-            }
-
-            const isH5 = !window.navigator.standalone;
-            if (!url.includes("platform=h5") && isH5) {
-              url = `${url}&platform=h5`;
-            }
-
-            this.contentTitle = localStorage.getItem("iframe-third-url-title");
-            this.src = url;
+          const { promoUri, alias, title } = this.$route.query;
+          if (promoUri) {
+            this.getCustomizeLink(promoUri);
+            if (!title) this.getPromotionTitle();
             return;
           }
 
-          switch (query.alias) {
-            // alias: "self_collect_promotion",
-            // name: "领取优惠"
-            // alias: "verify_promotion",
-            // name: "审核查询"
-            case "self_collect_promotion":
-            case "verify_promotion":
+          switch (alias) {
+            case "self_collect_promotion": // 领取优惠
+            case "verify_promotion": // 审核查询
               let uri = "";
               let targetUri = {
                 self_collect_promotion: "collect_status",
@@ -467,33 +474,17 @@ export default {
                   url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/Forestage/Config`
                 }).then(res => {
                   if (res && res.data && res.data.path) {
-                    uri = res.data.path[targetUri[query.alias]];
-                  }
-                });
-              };
-
-              let getCustomizeLink = () => {
-                if (!uri) {
-                  this.src = "";
-                  return;
-                }
-
-                return goLangApiRequest({
-                  method: "post",
-                  url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-                  params: {
-                    code: "promotion",
-                    clientUri: uri
-                  }
-                }).then(res => {
-                  if (res && res.data && res.data.uri) {
-                    this.src = res.data.uri;
+                    uri = res.data.path[targetUri[alias]];
                   }
                 });
               };
 
               getPromotionForestageConfig().then(() => {
-                getCustomizeLink();
+                if (!uri) {
+                  this.src = "";
+                  return;
+                }
+                this.getCustomizeLink(uri);
               });
               return;
             default:
@@ -506,6 +497,11 @@ export default {
           this.showBack = false;
           this.src = localStorage.getItem("iframe-third-url");
           break;
+
+        case "PAO8D":
+          this.src = "https://pao8d.tv";
+          break;
+
         default:
           this.src = localStorage.getItem("iframe-third-url");
           break;
@@ -544,158 +540,75 @@ export default {
           return;
         }
 
-        // 標題
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
-          params: {
-            lang: "zh-cn"
-          }
-        }).then(res => {
-          if (res.status === "000") {
-            let promotionId = this.src.split("?")[0].split("/")[
-              this.src.split("?")[0].split("/").length - 1
-            ];
-
-            if (!promotionId) {
-              this.contentTitle = "";
-              return;
-            }
-
-            res.data.ret.forEach(promo => {
-              if (promo.link.includes(promotionId)) {
-                this.contentTitle = promo.name;
-              }
-            });
-          }
-        });
+        this.getPromotionTitle();
       });
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
-    getCustomizeLink(params) {
-      axios({
+    getCustomizeLink(clientUri) {
+      this.isLoading = true;
+      return goLangApiRequest({
+        method: "post",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
+        params: { code: "promotion", clientUri }
+      }).then(res => {
+        this.isLoading = false;
+        if (res && res.status === "000" && res.errorCode === "00") {
+          if (res.data && res.data.uri) {
+            let uri = res.data.uri;
+            if (!uri.includes("v=m")) {
+              uri = `${uri}&v=m`;
+            }
+
+            const isH5 = !window.navigator.standalone;
+            if (!uri.includes("platform=h5") && isH5) {
+              uri = `${uri}&platform=h5`;
+            }
+            this.src = uri;
+          } else {
+            this.src = "";
+          }
+        } else {
+          this.actionSetGlobalMessage({ msg: res.msg, code: res.code });
+        }
+      });
+    },
+    getPromotionTitle() {
+      // 標題
+      return goLangApiRequest({
         method: "get",
-        url: "/api/v1/c/link/customize",
-        params: params
-      })
-        .then(res => {
-          this.isLoading = false;
-          if (res && res.data && res.data.ret && res.data.ret.uri) {
-            this.src = res.data.ret.uri;
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Promotion/List`,
+        params: {
+          lang: "zh-cn"
+        }
+      }).then(res => {
+        if (res.status === "000") {
+          let promotionId = this.src.split("?")[0].split("/")[
+            this.src.split("?")[0].split("/").length - 1
+          ];
+
+          if (!promotionId) {
+            this.contentTitle = "";
+            return;
           }
-        })
-        .catch(error => {
-          this.isLoading = false;
-          if (error && error.data && error.data.msg) {
-            this.actionSetGlobalMessage({ msg: error.data.msg });
-          }
-        });
+
+          res.data.ret.forEach(promo => {
+            if (promo.link.includes(promotionId)) {
+              this.contentTitle = promo.name;
+            }
+          });
+        }
+      });
     },
     onListener(e) {
       if (e.data) {
         let data = e.data;
-        // console.log(data);
 
         if (!data.event) {
           return;
         }
-
-        console.log("[EVENT]:", data.event);
-        console.log("[DATA]:", data.data);
-
-        switch (data.event) {
-          case "EVENT_GET_GAME_URL":
-          case "EVENT_THIRDPARTY_SWITCH_GAME":
-            if (this.loginStatus) {
-              this.linkToGame(data.data);
-            } else {
-              this.actionSetGlobalMessage({
-                msg: "请重新登入",
-                cb: () => {
-                  this.$router.push("/mobile/login");
-                }
-              });
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_CLOSE":
-            this.$router.replace(this.originUrl);
-            return;
-
-          // 避免迴圈重複本站
-          case "SELF_INTO":
-            if (
-              this.$route.params.page.toUpperCase() === "PROMOTION" &&
-              !this.src.includes("popcontrol")
-            ) {
-              this.$router.replace("/mobile/login");
-              return;
-            }
-            return;
-          case "EVENT_THIRDPARTY_LOGIN":
-            if (this.loginStatus) {
-              return;
-            } else {
-              this.$router.push("/mobile/login");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_JOINMEMBER":
-            if (this.loginStatus) {
-              return;
-            } else {
-              this.$router.push("/mobile/joinmember?prev=home");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_WALLET":
-            if (this.loginStatus) {
-              this.$router.push("/mobile/mcenter/wallet?prev=back");
-              return;
-            } else {
-              this.$router.push("/mobile/login");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_MAIN_DEPOSIT":
-            if (this.loginStatus) {
-              this.$router.push("/mobile/mcenter/deposit?prev=back");
-            } else {
-              this.$router.replace("/mobile/login");
-            }
-
-            return;
-
-          case "EVENT_THIRDPARTY_HOME":
-            this.$router.push("/mobile");
-            return;
-
-          // 彩金任務
-          // 去推广
-          case "EVENT_BOUNS_PROMOTE":
-            const { tagId, cid, userid, domain } = data;
-            return;
-
-          // 绑定银行卡
-          case "EVENT_THIRDPARTY_BANKCARD":
-            localStorage.setItem(
-              "bank-card-back-redirect",
-              location.pathname + location.search
-            );
-            this.$router.push(
-              `/mobile/mcenter/bankCard?redirect=iframe&type=bankCard`
-            );
-            return;
-
-          default:
-            return;
-        }
+        return iframeEvent(this, data, "iframe");
       }
     },
     linkToGame(data) {
@@ -806,16 +719,10 @@ export default {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 
-  &.fullScreen {
-    > iframe {
-      margin-top: unset !important;
-      height: 100vh !important;
-    }
-  }
-
   &.has-header {
     > iframe {
       margin-top: 43px;
+      height: calc(100% - 43px);
     }
   }
 }
