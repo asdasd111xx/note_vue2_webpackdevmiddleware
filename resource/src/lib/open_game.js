@@ -54,7 +54,8 @@ export default (params, success = () => {}, fail = () => {}) => {
   let embedGame = getEmbedGameVendor(vendor, kind, code);
 
   if (embedGame) {
-    gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
+    // gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
+    gameTitle = embedGame.alias || vendor.toUpperCase();
   }
 
   function openNewWindow(url) {

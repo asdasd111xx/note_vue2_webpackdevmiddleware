@@ -90,7 +90,9 @@
       </div>
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
-        <!-- <div @click="reload">刷新</div> -->
+        <div v-if="$route.params.page === 'game'" @click="reloadIframe">
+          刷新
+        </div>
       </div>
     </div>
     <iframe
@@ -506,6 +508,12 @@ export default {
           this.src = localStorage.getItem("iframe-third-url");
           break;
       }
+    },
+    reloadIframe() {
+      if (this.isLoading) return;
+      this.isLoading = true;
+      this.src = "";
+      this.initIframe();
     },
     getExternalUrl(externalCode = "promotion") {
       this.isLoading = true;
