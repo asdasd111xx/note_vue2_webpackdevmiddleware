@@ -224,6 +224,7 @@
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import mixin from "@/mixins/homeContent";
 import popup from "@/router/mobile/components/common/home/popup";
+import html2canvas from "html2canvas";
 
 export default {
   mixins: [mixin],

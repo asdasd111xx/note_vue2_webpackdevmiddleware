@@ -131,6 +131,15 @@ if (cid && !isApp) {
     ];
   };
 }
+document.body.onpageshow = event => {
+  const needReload = ["login"];
+  const to = router.history.current.name || router.history.pending.name || "";
+  if (needReload.includes(to) && event.persisted) {
+    document.getElementById("mobile-wrap").style.display = "none";
+    document.getElementById("main-loading").style.display = "block";
+    window.location.reload();
+  }
+};
 
 // 推播測試
 // window.testmsg = function() {
@@ -187,8 +196,8 @@ new Vue({
 
 // 換頁前，顯示loading圖
 // router.beforeEach((to, from, next) => {
-//     document.getElementById('main-loading').style.display = 'block';
-//     next();
+// document.getElementById('main-loading').style.display = 'block';
+// next();
 // });
 
 // router載入完畢後，移除loading圖

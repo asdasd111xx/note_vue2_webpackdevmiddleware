@@ -8,7 +8,6 @@
       <casino-wrap
         :is-show-search.sync="isShowSearch"
         :game-show-jackpot="true"
-        :kind="kind"
       />
     </div>
   </mobile-container>

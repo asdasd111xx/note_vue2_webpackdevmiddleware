@@ -9,6 +9,7 @@ export default {
   getSidebarWidth: state => state.sidebarWidth,
   // 環境 (會員端/代理客端)
   getEnv: state => state.env,
+  getWebDomain: state => state.webDomain,
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     後台(mangosteen_front)共用
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -50,6 +51,8 @@ export default {
   //     遊戲資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   getGameData: state => state.gameData,
+  getTrialList: state => state.trialList,
+  getNeedFilterGameData: state => state.needFilterGameData,
   getSportData: state => ({
     bbsport: state.gameData.bbsport,
     sunplus: state.gameData.sunplus,
@@ -202,6 +205,7 @@ export default {
   getGlobalMessage: state => state.globalMessage,
   getRechargeConfig: state => state.rechargeConfig,
   getHasBank: state => state.hasBank,
+  getNotMyBank: state => state.notMyBank,
   getVideoBounsPageStatus: state => state.videoBounsPageStatus,
   getMemInfoV3: state => state.memInfoV3,
   getRechargeBonusConfig: state => state.rechargeBonusConfig, //取得廳首次額度轉讓優惠設定
@@ -219,5 +223,8 @@ export default {
   getLiveMaintain: state => state.liveMaintain,
   getActivity: state => state.activity,
   getLiveFooterMask: state => state.liveFooterMask,
-  getLiveViewPath: state => state.liveViewPath
+  getLiveFooter: state => state.liveFooter,
+  getLiveViewPath: state => state.liveViewPath,
+  getBindFriend: state => state.bindFriend,
+  getLandingInfo: state => state.landingInfo
 };

@@ -210,7 +210,7 @@
 
 .pay-mode-pass {
   display: inline-block;
-  width: 18.5%;
+  width: 23%;
   height: 44px;
   line-height: 40px;
   font-size: 12px;
@@ -222,7 +222,7 @@
   cursor: pointer;
   position: relative;
 
-  &:nth-child(5n) {
+  &:nth-child(4n) {
     margin-right: 0;
   }
 
@@ -249,7 +249,7 @@
   color: #979797;
   margin-left: 10px;
 
-  > span {
+  >span {
     color: #6aaaf5;
     border-bottom: 1px solid #6aaaf5;
   }
@@ -523,10 +523,11 @@
 
 .select-epoint-bank-item {
   height: 23px;
-  margin-left: 100px;
+  margin-left: 45px;
   margin-right: 20px;
   font-size: 14px;
   word-break: break-all;
+  float: left;
 }
 
 .select-bank-icon {
@@ -638,10 +639,11 @@
 
     p {
       margin: 0px;
-      a {
-        color: #6aaaf5;
-        text-decoration: underline;
-      }
+    }
+
+    a {
+      color: #6aaaf5 !important;
+      text-decoration: underline;
     }
   }
 }
@@ -665,8 +667,8 @@
     margin-right: 4px;
     vertical-align: text-bottom;
     transition: transform 0.5s ease;
-    background: url("/static/image/common/ic_arrow_expand.png") 0 0 / contain
-      no-repeat;
+    background: url("/static/image/common/ic_arrow_expand.png") 0 0 / contain no-repeat;
+
     &.active {
       transform: rotate(-180deg);
     }
@@ -939,7 +941,7 @@
   display: flex;
   align-items: center;
 
-  > img {
+  >img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -1100,6 +1102,15 @@
     text-align: left;
     color: #222;
   }
+
+  p {
+    margin: 0px;
+  }
+
+  a {
+    color: #6aaaf5 !important;
+    text-decoration: underline;
+  }
 }
 
 .qrcode-wrap {
@@ -1107,6 +1118,7 @@
 }
 
 .qrcode-item {
+
   // display: inline-block;
   &:last-child {
     margin-right: 0;
@@ -1131,6 +1143,22 @@
   position: absolute;
   width: 14px;
   height: 14px;
+  top: 50%;
+  right: 12px;
+  text-align: center;
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.icon-wrap-text {
+  position: absolute;
+  width: 30px;
+  height: 20px;
   top: 50%;
   right: 12px;
   text-align: center;
@@ -1183,10 +1211,11 @@
 
   p {
     margin: 0;
-    a {
-      color: #6aaaf5;
-      text-decoration: underline;
-    }
+  }
+
+  a {
+    color: #6aaaf5 !important;
+    text-decoration: underline;
   }
 }
 
@@ -1219,7 +1248,7 @@
     font-weight: 700;
   }
 
-  > div {
+  >div {
     line-height: 22px;
   }
 

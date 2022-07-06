@@ -47,7 +47,7 @@
       </div>
 
       <!-- 添加卡片按鈕區塊 -->
-      <template>
+      <div :class="$style['add-card-button-wrap']">
         <div
           v-if="
             isRevice && isCommon && bank_card.length < userLevelObj.bank_max
@@ -66,7 +66,7 @@
         <p :class="$style['remind']">
           {{ $t("S_BANKCARD_LIMIT").replace("%s", userLevelObj.bank_max) }}
         </p>
-      </template>
+      </div>
     </template>
 
     <!-- 卡片詳細資料 -->

@@ -1,8 +1,6 @@
 import { getCookie, setCookie } from "@/lib/cookie";
 import { mapActions, mapGetters } from "vuex";
 
-import { API_FIRST_LEVEL_REGISTER } from "@/config/api";
-import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import joinMemInfo from "@/config/joinMemInfo";
 
@@ -31,7 +29,7 @@ export default {
           title: this.$text("SS_LOGIN_PW"),
           type: "password",
           maxLength: "12",
-          placeholder: "6-12位须含英文大小写及数字",
+          placeholder: "请输入6-12码英文大小写及数字",
           error: ""
         },
         // 確認密碼
@@ -47,7 +45,7 @@ export default {
           title: this.$text("S_MEMBER_NAME"),
           type: "text",
           maxLength: "",
-          placeholder: this.$text("S_REGISTER_TIPS"),
+          placeholder: this.$text("S_NO_SYMBOL_DIGIT_CHEN"),
           error: ""
         }
       },
@@ -60,7 +58,38 @@ export default {
         //驗證碼
         captcha_text: ""
       },
-      errorMsg: ""
+      errorMsg: "",
+
+      //綁定好友
+      bindFriendInput: ["friend_username", "friend_code"],
+      bindFriendTip: {
+        friend_username: {
+          title: this.$text("S_FRIEND_ACCOUNT", "好友帐号"),
+          type: "text",
+          maxLength: "20",
+          placeholder: this.$text(
+            "S_PLEASE_ENTER_FRIEND_ACCOUNT",
+            "请输入好友帐号"
+          ),
+          error: ""
+        },
+        friend_code: {
+          title: this.$text("S_FRIEND_CODE", "好友绑定码"),
+          type: "text",
+          maxLength: "",
+          placeholder: this.$text(
+            "S_PLEASE_ENTER_RIEND_CODE",
+            "请输入好友绑定码"
+          ),
+          error: ""
+        }
+      },
+      errorLine: false,
+      bindFriendValue: {
+        friend_username: "",
+        friend_code: ""
+      },
+      timer: null
     };
   },
   computed: {
@@ -99,11 +128,11 @@ export default {
      * @param {String} key - 欄位名稱
      */
     onInput(value, key) {
-      const regex = new RegExp(joinMemInfo[key].regExp);
-      const errorMsg = joinMemInfo[key].errorMsg;
-
-      this.allTip[key].error = "";
       if (["username", "password", "confirm_password", "name"].includes(key)) {
+        this.allTip[key].error = "";
+        const regex = new RegExp(joinMemInfo[key].regExp);
+        const errorMsg = joinMemInfo[key].errorMsg;
+
         this.actionVerificationFormData({ target: key, value: value }).then(
           val => {
             this.allValue[key] = val;
@@ -159,11 +188,25 @@ export default {
         this.captchaErrorMsg = this.$text("S_ENABLE_KEYRING", "请输入验证码");
         allValue["captcha_text"] = value.replace(/[\W\_]/g, "");
       }
+
+      if (["friend_username", "friend_code"].includes(key)) {
+        this.bindFriendTip[key].error = "";
+        this.errorLine = false;
+        this.actionVerificationFormData({ target: key, value: value }).then(
+          val => {
+            this.bindFriendValue[key] = val;
+          }
+        );
+      }
     },
 
     checkInput() {
       this.$validator.validateAll("form-page").then(response => {
         if (!response) {
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_JM_MSG_COMPLETE", "请填写完整")
+          });
+
           Object.keys(this.allValue).forEach(key => {
             // console.log(key, this.allValue[key]);
             if (!this.allValue[key]) {
@@ -275,6 +318,78 @@ export default {
           });
 
           return;
+        }
+      });
+    },
+
+    FriendcheckInput() {
+      this.$validator.validateAll("friend").then(response => {
+        if (!response) {
+          this.errorLine = true;
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_JM_MSG_COMPLETE", "请填写完整")
+          });
+        } else {
+          this.FriendSubmit();
+        }
+        return;
+      });
+    },
+
+    /**
+     * 綁定好友
+     * @method FriendSubmit
+     */
+    FriendSubmit() {
+      if (this.isSend) {
+        return;
+      }
+
+      this.isSend = true;
+      setTimeout(() => {
+        this.isSend = false;
+      }, 1200);
+
+      clearTimeout(this.timer);
+
+      goLangApiRequest({
+        method: "put",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/Bind/Friend`,
+        params: {
+          username: this.bindFriendValue.friend_username,
+          code: this.bindFriendValue.friend_code
+        }
+      }).then(res => {
+        if (res.result === "ok" || res.status === "000") {
+          this.errorLine = false;
+          this.bindFriendTip["friend_username"].error = "";
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_BIND_SUCCESSFULLY", "绑定成功")
+          }).then(() => {
+            this.timer = setTimeout(() => {
+              this.bindFriendValue = { friend_username: "", friend_code: "" };
+            }, 2100);
+          });
+        }
+        if (res && res.status && res.status !== "000") {
+          if (res.status === "504") {
+            this.errorLine = true;
+            this.bindFriendTip["friend_username"].error = res.msg;
+          }
+          this.actionSetGlobalMessage({
+            msg: this.$text("S_BIND_FAILED", "绑定失败"),
+            code: res.code
+          });
+          return;
+        } else {
+          // network error
+          if (res && res.message) {
+            this.actionSetGlobalMessage({
+              msg: this.$text("S_BIND_FAILED", "绑定失败"),
+              code: res.message
+            });
+            return;
+          }
         }
       });
     },

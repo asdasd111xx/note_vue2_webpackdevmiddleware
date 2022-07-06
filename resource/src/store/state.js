@@ -64,6 +64,9 @@ export default {
   //     遊戲資料
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   gameData,
+  trialList: [],
+  needFilterGameData: [],
+
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     電子彩金
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -446,6 +449,7 @@ export default {
   rechargeConfig: {},
   rechargeBonusConfig: {},
   hasBank: false,
+  notMyBank: {},
   videoBounsPageStatus: false,
   systemDomain: {},
   pornDomain: "",
@@ -463,6 +467,12 @@ export default {
   systemConfig: {},
   liveMaintain: null,
   liveFooterMask: false,
+  liveFooter: null,
   activity: {},
-  liveViewPath: {}
+  liveViewPath: {},
+  bindFriend: {
+    code: "",
+    enable: false
+  },
+  landingInfo: {}
 };

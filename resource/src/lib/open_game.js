@@ -37,8 +37,7 @@ export default (params, success = () => {}, fail = () => {}) => {
 
   console.log("[OPEN GAME]", params);
 
-  const { vendor, kind, code, gameType, gameName, getGames } = params;
-
+  const { vendor, kind, code, gameType, gameName, getGames, entrance } = params;
   // IM電競 在 IE 瀏覽器最小寬度要 1280
   // if (params.kind === 1 && params.vendor === "tgp") {
   //   width = 1280;
@@ -59,6 +58,11 @@ export default (params, success = () => {}, fail = () => {}) => {
     temp.mobile = "1";
   }
 
+  //開啟特定遊戲需多帶entrance參數 , 例：沙巴電競...
+  if (entrance && entrance !== "") {
+    temp.entrance = entrance;
+  }
+
   let newWindow = "";
   let isWebview = getCookie("platform") === "H";
   let gameTitle = "";
@@ -70,10 +74,13 @@ export default (params, success = () => {}, fail = () => {}) => {
     gameTitle = embedGame.alias || vendor.toUpperCase();
   }
 
+  function openNewWindow(url) {
+    newWindow = window.open(url, "_blank", option);
+  }
+
   if (!embedGame && !isWebview && gameType !== "event") {
-    newWindow = window.open("", "_blank", option);
     setTimeout(() => {
-      newWindow.location = "/game/loading/true";
+      openNewWindow("/game/loading/true");
     }, 200);
   }
 
@@ -212,7 +219,7 @@ export default (params, success = () => {}, fail = () => {}) => {
             ) {
               if (
                 store.state.siteConfig.ROUTER_TPL === "sg1" &&
-                vendor === "ai"
+                vendor === "lg_sport"
               ) {
                 router.push(
                   `/mobile/iframe/game?vendor=${vendor}&kind=${kind}&code=${code}&title=${gameTitle}&hasFooter=true&hasHeader=false`

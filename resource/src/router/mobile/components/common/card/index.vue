@@ -77,9 +77,7 @@
 </template>
 
 <script>
-import { gameType, gameList } from "@/config/api";
 import { mapGetters, mapActions } from "vuex";
-import ajax from "@/lib/ajax";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import gameItem from "../gameItem";
 import gameLabel from "../gameLabel";
@@ -108,10 +106,6 @@ export default {
       )
   },
   props: {
-    kind: {
-      type: Number,
-      default: 5
-    },
     slotSort: {
       type: Array,
       default: () => ["search", "label", "list"]
@@ -154,7 +148,7 @@ export default {
       needShowRedEnvelope: false,
       redEnvelopeData: {},
       paramsData: {
-        kind: 5,
+        kind: "",
         label: "hot",
         enable: true,
         firstResult: 0,
@@ -188,7 +182,7 @@ export default {
       isGameDataReceive: false,
       gameData: [],
       activityData: [],
-      trialList: [],
+
       hasActivity: false
     };
   },
@@ -197,7 +191,8 @@ export default {
       loginStatus: "getLoginStatus",
       favoriteGame: "getFavoriteGame",
       showRedEnvelope: "getShowRedEnvelope",
-      siteConfig: "getSiteConfig"
+      siteConfig: "getSiteConfig",
+      trialList: "getTrialList"
     }),
     vendor() {
       return this.$route.params.vendor === "all"
@@ -248,38 +243,32 @@ export default {
   },
   created() {
     localStorage.removeItem("is-open-game");
+    this.paramsData.kind = this.$route.meta.kind;
+
     if (this.loginStatus) {
       this.actionSetFavoriteGame(this.vendor);
     }
     this.getActivityList();
-    this.getTrialList();
+    if (this.loginStatus) {
+      this.labelData = this.labelData.filter(i => i.label !== "trial");
+      return;
+    }
+    this.actionGetTrialList().then(() => {
+      if (!this.trialList.find(i => i.vendor === this.$route.params.vendor)) {
+        this.labelData = this.labelData.filter(i => i.label !== "trial");
+      }
+    });
   },
   methods: {
-    ...mapActions(["actionSetFavoriteGame", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetFavoriteGame",
+      "actionSetGlobalMessage",
+      "actionGetTrialList"
+    ]),
     redirectBankCard() {
       return `card-${this.vendor}-${this.paramsData.label}`;
     },
-    getTrialList() {
-      if (this.loginStatus) {
-        this.labelData = this.labelData.filter(i => i.label !== "trial");
-        return;
-      }
 
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`
-      }).then(res => {
-        if (res && res.status === "000") {
-          this.trialList = res.data;
-
-          if (
-            !this.trialList.find(i => i.vendor === this.$route.params.vendor)
-          ) {
-            this.labelData = this.labelData.filter(i => i.label !== "trial");
-          }
-        }
-      });
-    },
     /**
      * 取得遊戲平台分類
      */
@@ -290,33 +279,30 @@ export default {
 
       if (!this.isLabelReceive) {
         // 抓取遊戲導覽清單
-        ajax({
-          method: "get",
-          url: `${gameType}?kind=${this.paramsData.kind}&vendor=${this.vendor}`,
-          success: response => {
-            this.labelData = this.labelData.concat(response.ret);
+        goLangApiRequest({
+          method: "post",
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Label/List`,
+          params: {
+            kind: this.paramsData.kind,
+            vendor: this.vendor
           }
-        }).then(response => {
+        }).then(res => {
+          if (res && res.status === "000") {
+            this.labelData = this.labelData.concat(res.data);
+          }
+          this.isLabelReceive = true;
+
           if (this.loginStatus) {
             let favData = { label: "favorite", name: this.$t("S_FAVORITE") };
             this.labelData = this.labelData.concat(favData);
           }
-          this.isLabelReceive = true;
+
+          if (this.$route.query.label == "favorite") {
+            this.isFavorite = "favorite";
+            this.paramsData.label = "favorite";
+          }
         });
-
-        if (this.$route.query.label == "favorite") {
-          this.isFavorite = "favorite";
-          this.paramsData.label = "favorite";
-        }
       }
-
-      // if (
-      //   !this.labelData
-      //     .concat(response.ret)
-      //     .some(item => item.label === this.paramsData.label)
-      // ) {
-      //   this.paramsData.label = "";
-      // }
 
       if (this.$route.query.label) {
         this.paramsData.label = this.$route.query.label;
@@ -335,8 +321,7 @@ export default {
         method: "post",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/${this.vendor}/Event`,
         params: {
-          lang: "zh-cn",
-          kind: 5,
+          kind: this.paramsData.kind,
           games: true,
           enable: true,
           firstResult: 0,
@@ -496,23 +481,14 @@ export default {
         _params = { ..._params, label: "" };
       }
 
-      const gameApiInfo = {
-        url: gameList,
-        params: {
-          ..._params,
-          vendor: this.vendor
-        }
-      };
-
       new Promise(resolve => {
         goLangApiRequest({
           method: "post",
           url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games`,
           errorAlert: false,
           params: {
-            ...gameApiInfo.params,
-            firstResult: _params["firstResult"],
-            maxResults: _params["maxResults"]
+            ..._params,
+            vendor: this.vendor
           }
         }).then(res => {
           if (res && res.status === "000") {
@@ -568,7 +544,17 @@ export default {
         this.gameData.push(...list);
         this.isReceive = false;
         this.isGameDataReceive = true;
+
         $state.loaded();
+        if (
+          (!activityGames || activityGames.length === 0) &&
+          (!activityEvents || activityEvents.length === 0) &&
+          this.$route.query.label === "activity"
+        ) {
+          $state.complete();
+          this.changeGameLabel("hot");
+          return;
+        }
 
         if (isActivityLabel && (!activityGames || activityGames.length === 0)) {
           $state.complete();

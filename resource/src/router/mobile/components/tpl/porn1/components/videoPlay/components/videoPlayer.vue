@@ -60,9 +60,6 @@ export default {
     videoInfo: {
       type: Object,
       required: true
-    },
-    source: {
-      type: String
     }
   },
   data() {
@@ -107,6 +104,17 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    //未登入觀影開關
+    //true:未登入可觀影，false:未登入不可觀影
+    noLoginVideoSwitch() {
+      return this.yaboConfig.find(i => i.name === "NoLoginVideoSwitch").value;
+    },
+    //免費區專用-未登入觀影開關
+    //true:未登入可觀影，false:未登入不可觀影
+    noLoginVideoSwitchFree() {
+      return this.yaboConfig.find(i => i.name === "NoLoginVideoSwitchFree")
+        .value;
     }
   },
   mounted() {
@@ -176,6 +184,19 @@ export default {
     initPlayerEvent() {
       //活動開關
       if (this.isActiveBouns) {
+        // this.player.on("loadstart", e => {
+        //   this.player.tech().hls.xhr.beforeRequest = function(options) {
+        //     console.log(options.uri);
+
+        //     if (!options.uri.includes("getvdokey")) {
+        //       return;
+        //     }
+
+        //     options.headers = options.headers || {};
+        //     options.headers["Custom-Header"] = "test-key";
+        //   };
+        // });
+
         this.player.on("playing", () => {
           if (!this.firstPlay) {
             this.firstPlay = true;
@@ -285,12 +306,12 @@ export default {
         return;
       }
 
-      if (this.isUnloginMode && !this.mission) {
-        this.$refs.bonunsDialog.isShow = true;
-        this.dialogType = "tips";
-        this.playerPause();
-        return;
-      }
+      // if (this.isUnloginMode && !this.mission) {
+      //   this.$refs.bonunsDialog.isShow = true;
+      //   this.dialogType = "tips";
+      //   this.playerPause();
+      //   return;
+      // }
 
       const bonunsProcess = this.$refs.bonunsProcess;
       const bonunsDialog = this.$refs.bonunsDialog;
@@ -703,17 +724,26 @@ export default {
           this.isInit = true;
         }, 400);
 
-        let noLoginVideoSwitch = this.yaboConfig.find(
-          i => i.name === "NoLoginVideoSwitch"
-        ).value;
-
-        if (noLoginVideoSwitch === "false" && !this.loginStatus) {
-          this.disableVideo = true;
-          return;
+        //免費區-未登入不可觀影
+        if (this.$route.query.source.includes("free")) {
+          if (this.noLoginVideoSwitchFree === "false" && !this.loginStatus) {
+            this.disableVideo = true;
+            return;
+          }
+        } else {
+          //其他區-未登入不可觀影
+          if (this.noLoginVideoSwitch === "false" && !this.loginStatus) {
+            this.disableVideo = true;
+            return;
+          }
         }
 
         // 訪客模式/一般模式
-        this.isUnloginMode = noLoginVideoSwitch === "false";
+        if (this.$route.query.source.includes("free")) {
+          this.isUnloginMode = this.noLoginVideoSwitchFree === "false";
+        } else {
+          this.isUnloginMode = this.noLoginVideoSwitch === "false";
+        }
         if (this.isActiveBouns) {
           this.$refs.bonunsProcess.processType = "process";
         }

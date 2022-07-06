@@ -2,6 +2,7 @@ import { getCookie, setCookie } from "@/lib/cookie";
 
 import axios from "axios";
 import querystring from "querystring";
+import store from "@/store";
 
 export default ({
   method = "",
@@ -69,19 +70,13 @@ export default ({
       // 收到重新登入需要導向登入頁面
       if (errorResponse) {
         if (errorResponse.code === "M00001") {
-          if (getCookie("cid")) {
-            alert(`${errorResponse.msg}`);
-          }
-
-          setCookie("cid", "");
-          setCookie("y_token", "");
-          setCookie("aid", "");
-          localStorage.removeItem("aid");
-
-          window.location.reload();
-          window.location.href = "/mobile/login";
+          store.dispatch("actionSetGlobalMessage", {
+            msg: errorResponse.msg,
+            code: errorResponse.code
+          });
           return;
         }
+
         // 維護中導向
         if (
           errorResponse.code === "M00002" &&

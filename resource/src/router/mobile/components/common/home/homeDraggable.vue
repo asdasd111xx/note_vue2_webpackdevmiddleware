@@ -168,7 +168,9 @@ export default {
           this.mobileLinkOpen({
             linkType: gameLinkType,
             linkTo: this.floatData.vendor,
-            linkItem: { "zh-cn": this.floatData.code }
+            linkItem: { "zh-cn": this.floatData.code },
+            linkTitle: this.floatData.name,
+            linkEntrance: this.floatData.entrance
           });
           break;
         case "promotion":

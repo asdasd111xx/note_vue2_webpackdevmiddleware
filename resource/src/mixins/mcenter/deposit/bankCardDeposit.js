@@ -99,7 +99,9 @@ export default {
       cgPromotionMessage: "",
 
       // 充值上方跑馬燈&支付方式高度
-      depositWrapMarignTop: 70
+      depositWrapMarignTop: 70,
+      manualCard: false, //極速存款-手動配卡
+      successAlert: false
     };
   },
   watch: {
@@ -142,10 +144,15 @@ export default {
      * @return array
      */
     allBanks() {
+      //充值優化 第一頁你的銀行需“必填”才會出現
+      const yourBankRequired = this.curPayInfo.field.find(item => {
+        return item.name === "bank_id" && item.required;
+      });
       // 銀行匯款一律吃 your_Bank 裡面所有的資料
       if (
         this.yourBankList.length > 0 &&
-        this.curPayInfo.payment_type_id === 5
+        this.curPayInfo.payment_type_id === 5 &&
+        yourBankRequired
       ) {
         return this.yourBankList.map(bankInfo => ({
           label: bankInfo.name,
@@ -215,8 +222,8 @@ export default {
       // deductionValue = Math.floor(deductionValue * 100) / 100;
       let total = "0.00";
 
-      // 尚未輸入金額
-      if (!this.moneyValue) {
+      // 尚未輸入金額或金額錯誤
+      if (!this.moneyValue || this.isErrorMoney) {
         return "0.00";
       }
 
@@ -394,6 +401,11 @@ export default {
      * @return string
      */
     receiptInfo() {
+      //極速存款bank_id=464（手動配卡）不需顯示
+      if (this.curPayInfo.bank_id === 464) {
+        return;
+      }
+
       if (this.curPassRoad.safe_account === false) {
         // 支付轉帳
         if (
@@ -407,20 +419,20 @@ export default {
               title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
               value: this.curPassRoad.bank_account,
               isFontBold: false,
-              copyShow: true
+              copyShow_t: true
             },
             {
               objKey: "withdrawNickname",
               title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
               value: this.curPassRoad.bank_account_name,
               isFontBold: false,
-              copyShow: true
+              copyShow_t: true
             },
             {
               objKey: "withdrawDeliver",
               title: this.$text("S_DELIVER_INFO", "收款资讯"),
               isFontBold: true,
-              copyShow: false,
+              copyShow_t: false,
               qrcode: [
                 {
                   title: this.curPassRoad.photo_name,
@@ -437,7 +449,7 @@ export default {
               title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
               value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
               isFontBold: false,
-              copyShow: false,
+              copyShow_t: false,
               htmlShow: true
             }
           ];
@@ -450,34 +462,34 @@ export default {
             title: this.$text("S_WITHDRAW_BANK", "收款银行"),
             value: this.curPassRoad.bank_name,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawBranch",
             title: this.$text("S_WITHDRAW_BRANCH", "收款支行"),
             value: this.curPassRoad.bank_branch,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawAccount",
             title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
             value: this.curPassRoad.bank_account,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawName",
             title: this.$text("S_WITHDRAW_NAME", "收款人姓名"),
             value: this.curPassRoad.bank_account_name,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawDeliver",
             title: this.$text("S_DELIVER_INFO", "收款资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: this.curPassRoad.bank_account_qrcode_name,
@@ -490,7 +502,7 @@ export default {
             title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
             value: this.curPassRoad.reminder.replace(/\n/gi, "<br/>"),
             isFontBold: false,
-            copyShow: false,
+            copyShow_t: false,
             htmlShow: true
           }
         ].filter(item => {
@@ -872,6 +884,8 @@ export default {
      * @param {Object} info - 支付方式資訊
      */
     changePassRoad(info) {
+      this.curPassRoadTipText = "";
+      this.curPassRoadTipTextShowMore = true;
       this.curPassRoad = info;
       this.PassRoadOrAi();
       this.changeMoney(
@@ -1099,6 +1113,12 @@ export default {
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
+          //手動配卡提交成功顯示彈窗
+          if (ret.remit.is_manual_card) {
+            this.manualCard = true;
+            this.successAlert = true;
+          }
+
           if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
@@ -1218,7 +1238,6 @@ export default {
             };
             return { status: "third" };
           }
-
           return { status: "local" };
 
           // 停權？
@@ -1302,6 +1321,7 @@ export default {
     },
     checkOrderData() {
       // 金額輸入錯誤
+      console.log("checkOrderData?");
       if (
         this.isErrorMoney ||
         !this.moneyValue ||
@@ -1313,7 +1333,6 @@ export default {
         this.checkSuccess = false;
         return;
       }
-
       // 檢查銀行匯款、支付轉帳的極速到帳表單必填欄位
       if ([5, 6].includes(this.curPayInfo.payment_type_id)) {
         const checkItemMap = {
@@ -1639,6 +1658,11 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    goBack() {
+      this.successAlert = false;
+      this.$emit("update:submitStatus", "stepOne");
+      window.scrollTo(0, 0);
     }
   }
 };

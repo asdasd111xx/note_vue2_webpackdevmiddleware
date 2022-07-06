@@ -147,6 +147,12 @@ export default {
     temp["_allGame"] = gameData;
     state.gameData = temp;
   },
+  [types.SETTRIALLIST](state, trialList) {
+    state.trialList = trialList;
+  },
+  [types.SETNEEDFILTERGAMEDATA](state, needFilterGameData) {
+    state.needFilterGameData = needFilterGameData;
+  },
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
   //     客端 page
   // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -578,6 +584,10 @@ export default {
   [types.SET_HASBANK](state, data) {
     state.hasBank = data;
   },
+  // 非本人銀行卡開關
+  [types.SET_NOTMYBANK](state, data) {
+    state.notMyBank = data;
+  },
   [types.SET_VIDEO_BOUNS_PAGE_STATUS](state, data) {
     state.videoBounsPageStatus = data;
   },
@@ -642,7 +652,16 @@ export default {
   [types.SET_LIVEFOOTERMASK](state, data) {
     state.liveFooterMask = data;
   },
+  [types.SET_LIVEFOOTER](state, data) {
+    state.liveFooter = data;
+  },
   [types.SET_LIVEVIEWPATH](state, data) {
     state.liveViewPath = data;
+  },
+  [types.SET_BINDFRIEND](state, data) {
+    state.bindFriend = data;
+  },
+  [types.SET_LANDINGINFO](state, data) {
+    state.landingInfo = data;
   }
 };

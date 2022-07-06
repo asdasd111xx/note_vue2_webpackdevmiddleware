@@ -1,5 +1,5 @@
 import { mapActions, mapGetters } from "vuex";
-
+import goLangApiRequest from "@/api/goLangApiRequest";
 import isMobile from "@/lib/is_mobile";
 
 export default {
@@ -14,7 +14,9 @@ export default {
     ...mapGetters({
       memInfo: "getMemInfo",
       agentLink: "getAgentLink",
-      promotionLink: "getPromotionLink"
+      promotionLink: "getPromotionLink",
+      siteConfig: "getSiteConfig",
+      bindFriend: "getBindFriend"
     }),
     /**
      * 推廣連結
@@ -31,13 +33,21 @@ export default {
       }
 
       return `https://${this.agentLink.domain}/a/${this.agentLink.agentCode}`;
+    },
+    friendCode() {
+      return this.bindFriend.code;
     }
   },
   created() {
     this.actionSetAgentLink();
+    this.actionBindFriendCode();
   },
   methods: {
-    ...mapActions(["actionSetAgentLink", "actionSetGlobalMessage"]),
+    ...mapActions([
+      "actionSetAgentLink",
+      "actionSetGlobalMessage",
+      "actionBindFriendCode"
+    ]),
     /**
      * 複製推廣代碼或連結
      * @method onCopy
@@ -60,6 +70,12 @@ export default {
           console.log(this.promotionLink);
           type = key;
           this.actionSetGlobalMessage({ msg: "连结已复制" });
+          break;
+
+        case "FRIEND":
+          value = this.friendCode;
+          type = key;
+          this.actionSetGlobalMessage({ msg: "绑定码已复制" });
           break;
       }
 

@@ -18,14 +18,39 @@
         </div>
       </div>
       <div :class="$style['type-wrap']">
-        <swiper :options="{ slidesPerView: 'auto' }">
+        <swiper
+          :options="{
+            slidesPerView: 'auto',
+            slideToClickedSlide: true,
+            centeredSlides: true,
+            centeredSlidesBounds: true,
+            spaceBetween: 20,
+            slidesOffsetBefore: 33,
+            slidesOffsetAfter: 30
+          }"
+        >
           <swiper-slide
-            v-for="tab in tabList"
+            v-for="(tab, index) in tabList"
             :key="tab.id"
-            :class="[$style['type-btn'], { [$style.active]: tab.id === tabId }]"
+            :style="[
+              tab.name.includes('(') || tab.name.match(/^[A-Za-z]+$/)
+                ? { width: tab.name.length * 10 + 'px' }
+                : { width: tab.name.length * 16 + 'px' }
+            ]"
+            :class="[
+              $style['type-btn'],
+              {
+                [$style.active]: tabId === index || tabId === tab.id
+              }
+            ]"
           >
-            <div @click="getPromotionList(tab.id)">{{ tab.name }}</div>
-            <div v-if="tab.id === tabId" :class="[$style['tab-slider']]" />
+            <div @click="getPromotionList(tab.id, index)">
+              {{ tab.name }}
+            </div>
+            <div
+              v-if="tabId === index || tabId === tab.id"
+              :class="[$style['tab-slider']]"
+            />
           </swiper-slide>
         </swiper>
       </div>
@@ -70,6 +95,8 @@ import axios from "axios";
 import goLangApiRequest from "@/api/goLangApiRequest";
 import popup from "@/router/mobile/components/common/home/popup";
 import { sendUmeng } from "@/lib/sendUmeng";
+import * as siteConfigTest from "@/config/siteConfig/siteConfigTest";
+import store from "@/store";
 
 export default {
   components: {
@@ -91,9 +118,7 @@ export default {
     sendUmeng(52);
   },
   mounted() {
-    this.tabId = (this.$route.query && this.$route.query.tab) || 0;
     this.getPromotionList(this.tabId);
-
     if (localStorage.getItem("do-not-show-home-post") !== "true") {
       this.actionSetPost("2").then(() => {
         if (this.post && this.post.list && this.post.list.length > 0) {
@@ -162,7 +187,6 @@ export default {
             return;
           }
           this.tabList = res.data.tab_list;
-          this.tabList[0].name = "全部";
         } else {
           this.tabList = [];
         }
@@ -186,25 +210,20 @@ export default {
       );
     },
     onClick(target) {
-      sendUmeng(77, `${target.name}_${target.id}`);
-      goLangApiRequest({
-        method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/Customize`,
-        params: {
-          code: "promotion",
-          clientUri: target.link
-        }
-      }).then(res => {
-        if (res && res.data && res.data.uri) {
-          localStorage.setItem("iframe-third-url", res.data.uri);
-          localStorage.setItem("iframe-third-url-title", target.name);
-          localStorage.setItem(
-            "iframe-third-origin",
-            `promotion?tab=${this.tabId}`
-          );
-          this.$router.push(`/mobile/iframe/promotion`);
-        }
-      });
+      if (target) {
+        sendUmeng(77, `${target.name}_${target.id}`);
+        localStorage.setItem(
+          "iframe-third-origin",
+          `promotion?tab=${this.tabId}`
+        );
+        this.$router.push({
+          path: "/mobile/iframe/promotion",
+          query: {
+            promoUri: target.link,
+            title: target.name
+          }
+        });
+      }
 
       //   let newWindow = '';
       //   // 辨別裝置是否為ios寰宇瀏覽器
@@ -309,7 +328,7 @@ $fixed_spacing_height: 43px;
 
 .type-btn {
   position: relative;
-  flex: 1;
+  // flex: 1;
   height: 43px;
   line-height: 43px;
   font-weight: 500;

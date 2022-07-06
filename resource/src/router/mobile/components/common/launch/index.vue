@@ -1,6 +1,14 @@
 <template>
   <div :class="$style['container']">
-    <img :src="$getCdnPath(`/static/image/${routerTPL}/common/loading.png`)" />
+    <img
+      :src="
+        $getCdnPath(
+          `/static/image/${routerTPL}/common/loading.${
+            routerTPL === 'sg1' ? 'gif' : 'png'
+          }`
+        )
+      "
+    />
     <div :class="$style['timer']" @click="click">
       <span>{{ sec }}</span>
       <span>|</span>

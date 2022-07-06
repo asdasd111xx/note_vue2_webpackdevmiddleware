@@ -28,7 +28,6 @@ export default {
       maintainList: [],
       selectedIndex: 0,
       currentLevel: 0,
-      userViplevelId: 0,
       showPromotion: false,
       isLoading: false,
       isCheckWithdraw: false,
@@ -58,9 +57,9 @@ export default {
       timer: null,
       isShowPop: false,
       sitePostList: null,
-      trialList: [],
       isNotLoopTypeList: false,
-      notFirstDeposit: false //首儲
+      notFirstDeposit: false, //首儲
+      joinmemberPop: false //首次手機註冊登入彈窗
     };
   },
   watch: {
@@ -117,7 +116,8 @@ export default {
       withdrawCheckStatus: "getWithdrawCheckStatus",
       post: "getPost",
       domainConfig: "getDomainConfig",
-      allVip: "getAllVip"
+      allVip: "getAllVip",
+      trialList: "getTrialList"
     }),
     isAdult() {
       return true;
@@ -157,6 +157,7 @@ export default {
         slideClass: this.$style.tag
       };
     },
+
     allGameList() {
       if (this.maintainList.length > 0) {
         // console.log("存入維護狀態");
@@ -231,6 +232,9 @@ export default {
     },
     routerTPL() {
       return this.siteConfig.ROUTER_TPL;
+    },
+    domainName() {
+      return this.memInfo.config.domain_name[this.$i18n.locale];
     }
   },
   created() {
@@ -289,6 +293,15 @@ export default {
     }
   },
   mounted() {
+    localStorage.removeItem("slideObj");
+    // 會員首次以手機註冊登入彈窗
+    if (localStorage.getItem("first_time_login")) {
+      setTimeout(() => {
+        this.joinmemberPop = true;
+        localStorage.removeItem("first_time_login");
+      }, 1000);
+    }
+
     window.addEventListener("resize", this.onResize);
 
     if (this.siteConfig.ROUTER_TPL === "porn1") {
@@ -345,8 +358,7 @@ export default {
 
     this.actionSetVip().then(() => {
       this.currentLevel = this.allVip.find(item => item.complex).now_level_seq;
-      this.userViplevelId = this.allVip.find(item => item.complex).now_level_id;
-      this.getFilterList();
+      this.actionGetFilterGameList();
     });
   },
   beforeDestroy() {
@@ -363,22 +375,11 @@ export default {
       "actionSetShowRedEnvelope",
       "actionSetPost",
       "actionSetDomainConfigV2",
-      "actionSetVip"
+      "actionSetVip",
+      "actionGetTrialList",
+      "actionGetFilterGameList"
     ]),
-    getTrialList() {
-      goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Trial/List`,
-        params: {
-          kind: 3
-        }
-      }).then(res => {
-        if (res && res.status === "000") {
-          localStorage.setItem("trial-game-list", JSON.stringify(res.data));
-          this.trialList = res.data;
-        }
-      });
-    },
+
     // 關閉彈跳公告後是否顯示公告
     closePop(isFromSitePost) {
       this.isShowPop = false;
@@ -436,7 +437,7 @@ export default {
     // 取得所有遊戲
     getAllGame() {
       if (!this.loginStatus) {
-        this.getTrialList();
+        this.actionGetTrialList();
       }
 
       return goLangApiRequest({
@@ -762,8 +763,18 @@ export default {
           this.$router.push(`/mobile/mcenter/wallet?redirect=home`);
           return;
         case "accountVip":
-          sendUmeng(9);
-          this.$router.push(`/mobile/mcenter/accountVip`);
+          this.actionSetVip().then(() => {
+            if (!this.allVip || this.allVip.length === 0) {
+              this.actionSetGlobalMessage({
+                msg: "VIP尚未开放，请联系在线客服"
+              });
+
+              return;
+            } else {
+              sendUmeng(9);
+              this.$router.push(`/mobile/mcenter/accountVip`);
+            }
+          });
           return;
         case "btse":
           goLangApiRequest({
@@ -1072,10 +1083,12 @@ export default {
                     }
                     return;
                   } else {
-                    localStorage.setItem("iframe-third-url", res.data);
                     this.$router.push(
                       `/mobile/iframe/thirdParty?vendor=${game.vendor}`
                     );
+                    if (res && res.data) {
+                      localStorage.setItem("iframe-third-url", res.data);
+                    }
                     return;
                   }
                 });
@@ -1355,7 +1368,8 @@ export default {
               vendor: game.vendor,
               code: game.code,
               gameType: game.type,
-              gameName: game.name
+              gameName: game.name,
+              entrance: game.entrance
             },
             openGameSuccessFunc,
             openGameFailFunc
@@ -1403,42 +1417,42 @@ export default {
     getMaintainList() {
       if (this.loginStatus) {
         //取維護狀態
-        axios({
+        goLangApiRequest({
           method: "get",
-          url: "/api/v1/c/vendor/maintains"
-        })
-          .then(res => {
-            if (res.data.result == "ok") {
-              localStorage.removeItem("vendorMaintainList");
+          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vendor/Maintains`
+        }).then(res => {
+          if (res && res.status === "000") {
+            localStorage.removeItem("vendorMaintainList");
+            this.maintainList = res.data;
+            localStorage.setItem(
+              "vendorMaintainList",
+              JSON.stringify(this.maintainList)
+            );
+          }
+        });
 
-              // console.log("取維護狀態");
-              // console.log(res.data);
-              this.maintainList = res.data.ret;
-              localStorage.setItem(
-                "vendorMaintainList",
-                JSON.stringify(this.maintainList)
-              );
-            }
-          })
-          .catch(res => {
-            // console.log("取維護狀態XXXX");
-          });
+        //取維護狀態
+        // axios({
+        //   method: "get",
+        //   url: "/api/v1/c/vendor/maintains"
+        // })
+        //   .then(res => {
+        //     if (res.data.result == "ok") {
+        //       localStorage.removeItem("vendorMaintainList");
+
+        //       // console.log("取維護狀態");
+        //       // console.log(res.data);
+        //       this.maintainList = res.data.ret;
+        //       localStorage.setItem(
+        //         "vendorMaintainList",
+        //         JSON.stringify(this.maintainList)
+        //       );
+        //     }
+        //   })
+        //   .catch(res => {
+        //     // console.log("取維護狀態XXXX");
+        //   });
       }
-    },
-    getFilterList() {
-      return goLangApiRequest({
-        method: "get",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Games/Vip/Filter`,
-        params: {
-          vipId: this.userViplevelId
-        }
-      }).then(response => {
-        // console.log(`needFilterGameData is ${response}`);
-        localStorage.setItem(
-          "needFilterGameData",
-          JSON.stringify(response.data)
-        );
-      });
     },
     getTaskCheck() {
       goLangApiRequest({

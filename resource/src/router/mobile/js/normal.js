@@ -43,18 +43,27 @@ export default [
     // 棋牌大廳
     path: "card/:vendor?",
     name: "card",
+    meta: {
+      kind: 5
+    },
     component
   },
   {
     // 麻將大廳
     path: "mahjong/:vendor?",
     name: "mahjong",
+    meta: {
+      kind: 6
+    },
     component
   },
   {
     // 電子大廳
     path: "casino/:vendor?/:type?",
     name: "casino",
+    meta: {
+      kind: 3
+    },
     component
   },
   {

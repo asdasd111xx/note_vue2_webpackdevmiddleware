@@ -123,8 +123,9 @@
           </div>
 
           <!-- 選擇銀行 or 選擇點卡 -->
+          <!-- 極速存款bank_id=464（手動配卡）不需顯示 -->
           <div
-            v-if="allBanks && allBanks.length > 0"
+            v-if="allBanks && allBanks.length > 0 && curPayInfo.bank_id !== 464"
             :class="[
               $style['feature-wrap'],
               $style['select-card-wrap'],
@@ -237,14 +238,12 @@
                 $style['select-card-wrap'],
                 'clearfix'
               ]"
+              @click="setPopupStatus(true, 'epointBank')"
             >
               <span :class="$style['select-bank-title']">
                 挂单银行
               </span>
-              <div
-                :class="$style['select-epoint-bank-item']"
-                @click="setPopupStatus(true, 'epointBank')"
-              >
+              <div :class="$style['select-epoint-bank-item']">
                 {{ defaultEpointWallet.account }}
               </div>
               <img
@@ -272,9 +271,8 @@
                   v-model="epointBankName"
                   :class="$style['input-cgpay-address']"
                   type="text"
-                  maxlength="36"
                   :placeholder="'请输入银行名称'"
-                  @input="replaceEpointWhiteSpace"
+                  @input="verification('order-bank', $event.target.value)"
                 />
               </div>
               <div :class="[$style['other-bank-input-text'], $style['border']]">
@@ -283,9 +281,10 @@
                   v-model="epointBankAccount"
                   :class="$style['input-cgpay-address']"
                   type="text"
-                  maxlength="36"
-                  :placeholder="'请输入银行帐号'"
-                  @input="replaceEpointWhiteSpace"
+                  :placeholder="'请输入银行卡号/钱包'"
+                  @input="
+                    verification('order-bank-account', $event.target.value)
+                  "
                 />
               </div>
               <div :class="[$style['wallet-address-text'], $style['less']]">
@@ -1129,8 +1128,17 @@
                     <div v-else :class="$style['basic-info-text']">
                       {{ info.value }}
                     </div>
-
-                    <!-- icon -->
+                    <!-- icon1 有字-->
+                    <div
+                      v-if="info.copyShow_t"
+                      :class="$style['icon-wrap-text']"
+                      @click="copyInfo(info.value)"
+                    >
+                      <img
+                        :src="$getCdnPath(`/static/image/common/ic_copy_n.png`)"
+                      />
+                    </div>
+                    <!-- icon2 無字-->
                     <div
                       v-if="info.copyShow"
                       :class="$style['icon-wrap']"
@@ -1293,6 +1301,8 @@
 
     <deposit-info
       v-if="submitStatus === 'stepTwo'"
+      :is-simple-type="false"
+      :your-bank-list="paySelectData['changeBank'].allData"
       :order-data="orderData"
       :is-show.sync="isShow"
       :required-fields="curPayInfo.field"
@@ -1308,6 +1318,12 @@
 
     <!-- 彈窗 -->
     <template>
+      <!-- 手動配卡成功彈窗 -->
+      <deposit-alert
+        :manualcard="manualCard"
+        v-if="successAlert"
+        :close-fuc="goBack"
+      />
       <!-- 使用者存款封鎖狀態 -->
       <template v-if="showPopStatus.type === 'blockStatus'">
         <div>
@@ -1326,24 +1342,6 @@
                 代客充值
               </li>
             </ul>
-          </div>
-        </div>
-      </template>
-      <!-- 通道提示 -->
-      <template v-if="showPopStatus.type === 'payTip'">
-        <div>
-          <div :class="$style['pop-message-mark']" />
-          <div :class="$style['entry-message-container']">
-            <div :class="[$style['entry-message-content']]">
-              <p>通道提示</p>
-              <div :class="$style['wrap-line']" v-html="curPassRoad.tip" />
-            </div>
-            <div
-              :class="[$style['entry-message-confirm']]"
-              @click="setPopupStatus(false, '')"
-            >
-              关闭
-            </div>
           </div>
         </div>
       </template>
@@ -1428,6 +1426,10 @@ export default {
     eleLoading: () =>
       import(
         /* webpackChunkName: 'eleLoading' */ "@/router/web/components/tpl/common/element/loading/circle"
+      ),
+    depositAlert: () =>
+      import(
+        /* webpackChunkName: 'depositAlert' */ "./components/depositAlert"
       ),
     Swiper,
     SwiperSlide,
@@ -2171,6 +2173,10 @@ export default {
           }
 
           if (response.status === "local") {
+            //手動配卡不需顯示depositinfo
+            if (this.manualCard) {
+              return;
+            }
             this.checkSuccess = false;
             this.submitStatus = "stepTwo";
 
@@ -2349,18 +2355,34 @@ export default {
           this.checkOrderData();
         });
       }
+      if (target === "order-bank")
+        this.actionVerificationFormData({
+          target: "order-bank",
+          value: value
+        }).then(val => {
+          this.epointBankName = val;
+        });
+      if (target === "order-bank-account")
+        this.actionVerificationFormData({
+          target: "order-bank-account",
+          value: value
+        }).then(val => {
+          this.epointBankAccount = val;
+        });
 
       // 如果是迅付欄位
       if (isSpeedField) {
         if (target === "depositName") {
-          this.actionVerificationFormData({
-            target: "name",
-            value: value
-          }).then(val => {
-            // this.checkSuccess = val ? true : false;
+          //充值人姓名移除中文限制
+          this.speedField.depositName = value;
+          // this.actionVerificationFormData({
+          //   target: "name",
+          //   value: value
+          // }).then(val => {
+          //   // this.checkSuccess = val ? true : false;
 
-            this.speedField.depositName = val;
-          });
+          //   this.speedField.depositName = val;
+          // });
         }
         this.checkOrderData();
       }

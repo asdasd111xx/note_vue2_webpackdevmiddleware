@@ -15,6 +15,13 @@ export default {
     text: "S_GAME_GROUP_BY_SUNPLUS",
     vendor: "sp"
   },
+  // 沙巴電競
+  sp_esports: {
+    kind: 1,
+    switch: "N",
+    text: "S_ESPORTS_SP",
+    vendor: "sp"
+  },
   // IM電競
   tgp: {
     kind: 1,
@@ -44,12 +51,12 @@ export default {
     vendor: "csc"
   },
   // XBB體育
-  // lg_sport: {
-  //     kind: 1,
-  //     switch: 'N',
-  //     text: 'S_XBB',
-  //     vendor: 'lg_sport'
-  // },
+  lg_sport: {
+    kind: 1,
+    switch: "N",
+    text: "S_XBB",
+    vendor: "lg_sport"
+  },
   // 皇冠體育
   crown: {
     kind: 1,

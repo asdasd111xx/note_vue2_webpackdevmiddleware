@@ -68,11 +68,11 @@ export default {
           path: "/mobile/live/iframe/home?hasFooter=true"
         },
         {
-          // 泡泡直播體育開啟AI體育
+          // 泡泡直播體育開啟BB體育
           key: "sport",
           routeName: "live-sport",
           name: this.$text("S_SPORTS_SHORT", "体育"),
-          path: `/mobile/iframe/game?kind=1&vendor=ai&hasFooter=true&hasHeader=false`
+          path: `/mobile/iframe/game?kind=1&vendor=lg_sport&hasFooter=true&hasHeader=false`
         },
         {
           // 泡泡直播娛樂城

@@ -3,6 +3,7 @@ import Vue from "vue";
 import axios from "axios";
 import { mapActions } from "vuex";
 import { thousandsCurrency } from "@/lib/thousandsCurrency";
+import goLangApiRequest from "@/api/goLangApiRequest";
 export default {
   props: {
     requiredFields: {
@@ -23,12 +24,18 @@ export default {
               "YYYY-MM-DD HH:mm:ss"
             )
           : "",
-        // Vue.moment(this.orderData.orderInfo.deposit_at).utcOffset(+8).format("YYYY-MM-DD HH:mm:ss")
         depositAccount: this.orderData.orderInfo.pay_account,
         depositName: this.orderData.orderInfo.pay_username,
         bankBranch: this.orderData.orderInfo.branch,
         serialNumber: this.orderData.orderInfo.sn
-      }
+      },
+      selectBank: {
+        id: 0,
+        image_url: "",
+        name: "",
+        swift_code: ""
+      },
+      bankList: []
     };
   },
   computed: {
@@ -40,13 +47,13 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "payInfo",
             title: this.$text("S_PAY_INFO", "支付资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 // title: this.$text("S_SCANNING", "扫一扫"),
@@ -66,13 +73,13 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "payInfo",
             title: this.$text("S_PAY_INFO", "支付资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: this.$text("S_SCANNING", "扫一扫"),
@@ -92,20 +99,20 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "receiveWalletAddress",
             title: this.$text("S_RECEIVE_WITHDRAW_ADDRESS", "收款钱包位址"),
             value: this.orderData.orderInfo.address,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "payInfo",
             title: this.$text("S_DELIVER_INFO", "收款资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: "点击图片截屏扫码",
@@ -122,7 +129,7 @@ export default {
             cryptoNum: this.orderData.orderInfo.crypto_num,
             isFontBold: true,
             isHighlightValue: true,
-            copyShow: true
+            copyShow_t: true
           }
         ];
       }
@@ -137,27 +144,27 @@ export default {
             title: this.$text("S_ORDER_NUMBER_2", "订单号"),
             value: this.orderData.id,
             isFontBold: true,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawAccount",
             title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
             value: this.orderData.orderInfo.bank_account,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawNickname",
             title: this.$text("S_WITHDRAW_NICKNAME", "收款昵称"),
             value: this.orderData.orderInfo.bank_account_name,
             isFontBold: false,
-            copyShow: true
+            copyShow_t: true
           },
           {
             objKey: "withdrawDeliver",
             title: this.$text("S_DELIVER_INFO", "收款资讯"),
             isFontBold: true,
-            copyShow: false,
+            copyShow_t: false,
             qrcode: [
               {
                 title: this.orderData.orderInfo.photo_name,
@@ -174,7 +181,7 @@ export default {
             title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
             value: this.orderData.reminder.replace(/\n/gi, "<br/>"),
             isFontBold: false,
-            copyShow: false,
+            copyShow_t: false,
             htmlShow: true
           }
         ];
@@ -186,41 +193,41 @@ export default {
           title: this.$text("S_ORDER_NUMBER_2", "订单号"),
           value: this.orderData.id,
           isFontBold: true,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawBank",
           title: this.$text("S_WITHDRAW_BANK", "收款银行"),
           value: this.orderData.orderInfo.bank_name,
           isFontBold: false,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawBranch",
           title: this.$text("S_WITHDRAW_BRANCH", "收款支行"),
           value: this.orderData.orderInfo.bank_branch,
           isFontBold: false,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawAccount",
           title: this.$text("S_WITHDRAW_ACCOUNT", "收款帐号"),
           value: this.orderData.orderInfo.bank_account,
           isFontBold: true,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawName",
           title: this.$text("S_WITHDRAW_NAME", "收款人姓名"),
           value: this.orderData.orderInfo.bank_account_name,
           isFontBold: false,
-          copyShow: true
+          copyShow_t: true
         },
         {
           objKey: "withdrawDeliver",
           title: this.$text("S_DELIVER_INFO", "收款资讯"),
           isFontBold: true,
-          copyShow: false,
+          copyShow_t: false,
           qrcode: [
             {
               title: this.orderData.orderInfo.bank_account_qrcode_name,
@@ -233,7 +240,7 @@ export default {
           title: this.$text("S_DEPOSIT_TIP05", "提醒事项"),
           value: this.orderData.reminder.replace(/\n/gi, "<br/>"),
           isFontBold: false,
-          copyShow: false,
+          copyShow_t: false,
           htmlShow: true
         }
       ].filter(item => {
@@ -243,34 +250,6 @@ export default {
           return true;
         }
       });
-    },
-    yourDepositData() {
-      // 加密貨幣不顯示
-      if (this.orderData.is_crypto) return;
-
-      return [
-        {
-          objKey: "yourAccount",
-          title: this.$text("S_NAME", "会员帐号"),
-          value: this.orderData.username,
-          isFontBold: false
-        },
-        {
-          objKey: "yourBank",
-          title:
-            this.orderData.method_id === 3
-              ? this.$text("S_USE_BANK", "使用银行")
-              : this.$text("S_PAY_MODE", "支付方式"),
-          value: this.orderData.method_name,
-          isFontBold: false
-        },
-        {
-          objKey: "yourMoney",
-          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
-          value: this.formatThousandsCurrency(this.orderData.amount),
-          isFontBold: true
-        }
-      ];
     },
     isSubmitDisabled() {
       // 檢查銀行匯款、支付轉帳的必填欄位
@@ -321,6 +300,7 @@ export default {
         let paramData = {};
 
         paramData = {
+          bankId: this.selectBank.id,
           deposit_at: this.speedField.depositTime,
           pay_account: this.speedField.depositAccount,
           pay_username: this.speedField.depositName,
@@ -382,6 +362,18 @@ export default {
     },
     formatThousandsCurrency(value) {
       return thousandsCurrency(value);
+    },
+    // 取得廠商支援銀行列表資料 C04.06
+    getBankList() {
+      return goLangApiRequest({
+        method: "get",
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Vendor/SupportBank`,
+        params: {}
+      }).then(res => {
+        if (res.status === "000") {
+          this.bankList = res.data;
+        }
+      });
     }
   }
 };

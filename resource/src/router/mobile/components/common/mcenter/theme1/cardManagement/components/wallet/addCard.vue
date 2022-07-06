@@ -582,15 +582,21 @@ export default {
       }
     }
   },
+  beforeDestroy() {
+    document.removeEventListener("visibilitychange", () => {}, false);
+    document.removeEventListener("pageshow", () => {}, false);
+  },
   created() {
     // 國碼
-    ajax({
+    goLangApiRequest({
       method: "get",
-      url: API_MCENTER_USER_CONFIG,
-      errorAlert: false
-    }).then(response => {
-      if (response && response.result === "ok") {
-        this.phoneHeadOption = response.ret.config.phone.country_codes;
+      url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Player/UserConfig/WithVerify`,
+      params: {
+        lang: "zh-cn"
+      }
+    }).then(res => {
+      if (res && res.status === "000") {
+        this.phoneHeadOption = res.data.config.phone.country_codes;
       }
     });
     Promise.all([this.getWalletAllLink(), this.getUserBindList()]).then(() => {
@@ -976,6 +982,8 @@ export default {
       if (this.isBackFromService) localStorage.removeItem("isBackFromService");
     },
     clearMsgCallback(_redirect = null) {
+      //更新卡片列表
+      this.getUserBindList();
       const { query } = this.$route;
       localStorage.removeItem("selectTarget");
       let redirect = _redirect || query?.redirect;

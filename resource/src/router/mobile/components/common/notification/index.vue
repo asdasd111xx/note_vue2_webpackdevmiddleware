@@ -100,6 +100,7 @@ export default {
     //   this.data = {
     //     content: "maintain_notice",
     //     event: "maintain_notice",
+    //     countdown: 1,
     //     message: {
     //       countdown: 978
     //     },
@@ -148,7 +149,6 @@ export default {
         if (temp.event != "vendor_maintain_notice") {
           this.noticeData.pop();
         }
-
         if (temp.extend && temp.extend === "verification_code") {
           return;
         }
@@ -207,21 +207,18 @@ export default {
           // 外接平台維護通知
           // case 'outer_maintain':
           case "maintain_notice":
-          // 分廳維護 - 全廳 - 增加可單獨掛撤維護APP端口功能（C-2342）
-          // if (
-          //   (getCookie("platform") === "h" && temp.device === 2) ||device: 不分裝置(0), iOS/Android/APP(1), PC/H5/PWA/馬甲(2)
-          //   (getCookie("platform") === "pwa" && temp.device === 3) ||
-          //   temp.device === 0
-          // ) {
-          //   this.noticeQueue.push({
-          //     ...temp,
-          //     timestamp: Date.now(),
-          //     showType: "show"
-          //   });
-          // }
-          // return;
+            // 分廳維護 - 全廳 - 增加可單獨掛撤維護APP端口功能（C-2342）
+            if (temp.device === 0 || temp.device === 2) {
+              this.noticeQueue.push({
+                ...temp,
+                timestamp: Date.now(),
+                showType: "show"
+              });
+            }
+            return;
           case "verification_code":
           case "service_maintain_notice":
+          case "trade_manual_card":
             this.noticeQueue.push({
               ...temp,
               timestamp: Date.now(),
@@ -266,6 +263,11 @@ export default {
     handleClick() {
       let content = this.data.content;
       localStorage.setItem("click-notification", 1);
+
+      if (this.data.event === "trade_manual_card") {
+        this.$router.push("/mobile/mcenter/help/detail?type=deposit");
+        return;
+      }
 
       switch (content) {
         case "C_WS_FEEDBACK_REPLY":
@@ -313,7 +315,7 @@ export default {
       let string = "";
       switch (event) {
         case "maintain_notice":
-          string = `即将进行系统维护 <br /> 于<span>${this.data.countdown}</span>分钟后开始`;
+          string = ` <span>${this.data.countdown}</span>分钟后进行系统升级`;
           return string;
 
         case "verification_code":
@@ -328,6 +330,10 @@ export default {
               ? "取款"
               : "";
           string = `即将进行 ${type}功能 维护，于 <span style="color: red;">${this.data.countdown}</span> 分钟后开始`;
+          return string;
+
+        case "trade_manual_card":
+          string = "极速存款通道已建置，请至充值 > 记录 查看提交资料";
           return string;
 
         default:

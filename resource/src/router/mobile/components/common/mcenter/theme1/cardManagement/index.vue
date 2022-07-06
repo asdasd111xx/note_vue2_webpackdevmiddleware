@@ -145,7 +145,7 @@ export default {
       return [
         {
           key: "bank",
-          text: "银行卡",
+          text: "银行卡",
           isShow: this.userLevelObj.bank
         },
         {

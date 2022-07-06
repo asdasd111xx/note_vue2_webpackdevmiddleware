@@ -11,8 +11,7 @@
             v-model="formData.bank"
             type="text"
             placeholder="请输入所属银行"
-            maxlength="36"
-            @input="handleType"
+            @input="handleType($event.target.value, 'order-bank')"
           />
           <div :class="$style['clear-input']" v-if="formData.bank">
             <img
@@ -28,9 +27,8 @@
           <input
             v-model="formData.account"
             type="text"
-            placeholder="请输入银行卡卡号"
-            maxlength="36"
-            @input="handleType"
+            placeholder="请输入银行卡号/钱包"
+            @input="handleType($event.target.value, 'order-bank-account')"
           />
           <div :class="$style['clear-input']" v-if="formData.account">
             <img
@@ -60,7 +58,7 @@
 
 <script>
 import goLangApiRequest from "@/api/goLangApiRequest";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -84,9 +82,28 @@ export default {
     }
   },
   methods: {
-    handleType() {
-      this.formData.bank = this.formData.bank.replace(/\s+/, "");
-      this.formData.account = this.formData.account.replace(/\s+/, "");
+    ...mapActions(["actionVerificationFormData"]),
+    handleType(value, key) {
+      switch (key) {
+        case "order-bank":
+          this.actionVerificationFormData({
+            target: "order-bank",
+            value: value
+          }).then(val => {
+            this.formData.bank = val;
+          });
+          break;
+        case "order-bank-account":
+          this.actionVerificationFormData({
+            target: "order-bank-account",
+            value: value
+          }).then(val => {
+            this.formData.account = val;
+          });
+          break;
+        default:
+          break;
+      }
       this.errorMsg = "";
       this.$emit(
         "update",
