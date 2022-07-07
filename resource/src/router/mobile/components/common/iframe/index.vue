@@ -86,7 +86,7 @@
         <div v-if="showBack">{{ $text("S_GO_BACK") }}</div>
       </div>
       <div v-if="headerConfig.title" :class="[$style.title, $style[themeTPL]]">
-        {{ contentTitle || headerConfig.title }}
+        {{ headerConfig.title }}
       </div>
       <div v-if="headerConfig.hasFunc" :class="[$style.func, $style[themeTPL]]">
         <div @click="toggleFullScreen">全屏</div>
@@ -176,7 +176,6 @@ export default {
     "$route.query"() {
       this.isLoading = true;
       this.initIframe();
-      if (this.$route.query.title) this.contentTitle = this.$route.query.title;
     }
   },
   computed: {
@@ -253,7 +252,6 @@ export default {
           localStorage.getItem("iframe-third-url-title") ||
           ""
       };
-
       return {
         ...baseConfig,
         onClick: () => {
@@ -409,7 +407,6 @@ export default {
         case "GAME":
           if (localStorage.getItem("iframe-third-url")) {
             this.src = localStorage.getItem("iframe-third-url");
-            this.contentTitle = localStorage.getItem("iframe-third-url-title");
 
             return;
           }
