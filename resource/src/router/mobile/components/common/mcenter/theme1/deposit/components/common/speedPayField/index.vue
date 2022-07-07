@@ -37,6 +37,7 @@
               <date-picker
                 v-model="info.value"
                 :placeholder="info.placeholderText"
+                :class="[{ [$style['placeholder-error']]: info.isError }]"
                 type="datetime"
                 format="YYYY-MM-DD HH:mm:ss"
                 value-type="format"
@@ -47,27 +48,33 @@
             <input
               v-else-if="info.objKey === 'depositName'"
               v-model="depositName"
-              :class="$style['speed-deposit-input']"
+              :class="[
+                $style['speed-deposit-input'],
+                { [$style['placeholder-error']]: info.isError }
+              ]"
               :placeholder="info.placeholderText"
               @input="submitInput($event.target.value, info.objKey)"
             />
             <input
               v-else
               v-model="info.value"
-              :class="$style['speed-deposit-input']"
+              :class="[
+                $style['speed-deposit-input'],
+                { [$style['placeholder-error']]: info.isError }
+              ]"
               :placeholder="info.placeholderText"
               @input="submitInput($event.target.value, info.objKey)"
             />
           </template>
         </div>
       </div>
-      <div
+      <!-- <div
         v-if="info.isError"
         :key="`field-error-${info.objKey}`"
         :class="$style['speed-deposit-input-error-messgae']"
       >
         {{ info.placeholderText }}
-      </div>
+      </div> -->
     </template>
     <select-box
       v-if="isSelectShow"
@@ -90,6 +97,10 @@ export default {
   },
   props: {
     showByRequiredFields: {
+      type: Boolean,
+      default: true
+    },
+    showByRequiredFieldsError: {
       type: Boolean,
       default: true
     },
@@ -123,7 +134,7 @@ export default {
       depositName: this.speedField.depositName,
       isSelectShow: false,
       // 只有show必填欄位的狀況下不顯示錯誤提示
-      showError: !this.showByRequiredFields
+      showError: this.showByRequiredFieldsError
     };
   },
   computed: {

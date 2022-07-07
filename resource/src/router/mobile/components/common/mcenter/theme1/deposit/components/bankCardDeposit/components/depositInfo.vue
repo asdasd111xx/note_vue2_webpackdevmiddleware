@@ -164,6 +164,7 @@
 
       <speed-pay-field
         v-if="orderData.methodType === 'remit'"
+        :show-by-required-fields-error="showRequiredError"
         :speed-field.sync="resultSpeedField"
         :required-fields="requiredFields"
         :is-edit="true"
@@ -183,10 +184,7 @@
       :class="[
         $style['submit-btn'],
         {
-          [$style['disabled']]:
-            isSubmitDisabled ||
-            (countdownSec < 1 && isShowTimer) ||
-            (bankNameRequired && selectBank.name === '')
+          [$style['disabled']]: countdownSec < 1 && isShowTimer
         }
       ]"
       :title="
@@ -241,9 +239,11 @@
             @click.stop="changeBank(item)"
           >
             <img v-lazy="getImg(item.image_url)" />
-            {{ item.name }}
+            {{ item.name || item.label }}
             <icon
-              v-if="item.id === selectBank.id"
+              v-if="
+                item.id === selectBank.id || item.selectId === selectBank.id
+              "
               :class="[$style['select-active']]"
               name="check"
             />
@@ -312,7 +312,8 @@ export default {
       timer: null,
       isShowTimer: false,
       isShowBankPop: false,
-      bankNameRequired: false
+      bankNameRequired: false,
+      showRequiredError: false
     };
   },
   computed: {
@@ -434,6 +435,7 @@ export default {
     },
     submitData() {
       if (this.isSubmitDisabled) {
+        this.showRequiredError = true;
         return;
       }
 
@@ -481,8 +483,13 @@ export default {
       }
     },
     changeBank(info) {
-      this.selectBank = info;
-      this.isShowBankPop = false;
+      (this.selectBank = {
+        id: info.id || info.selectId,
+        image_url: info.image_url,
+        name: info.name || info.mainTitle,
+        swift_code: info.swift_code
+      }),
+        (this.isShowBankPop = false);
     },
     getImg(image_url) {
       return {

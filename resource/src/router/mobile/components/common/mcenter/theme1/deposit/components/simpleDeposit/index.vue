@@ -2309,6 +2309,11 @@ export default {
         }
       }
       this.setSimpleFeeData(info);
+      if(this.simplePayType.method_id === 36){
+        this.walletData['OSPay'].method = 0
+      }else if(this.simplePayType.method_id === 16){
+        this.walletData['CGPay'].method = 0
+      }
     },
     /**
      * 切換通道
