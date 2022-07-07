@@ -1493,17 +1493,8 @@ export default {
         if (value === "stepOne") {
           this.$emit("update:headerSetting", this.initHeaderSetting);
           this.resetStatus();
+          this.simpleCurPayInfo.id = 0
           this.getSimplePaymentGroups();
-          //重置通道
-          if (this.depositData[0]) {
-            this.changeSimplePayMode(this.depositData[0]);
-          }
-          if (this.simpleCurrency.data[0]) {
-            this.changeSimplePayType(this.simpleCurrency.data[0]);
-          }
-          if (this.simplePayType.tags[0]) {
-            this.changeSimpleRoad(this.simplePayType.tags[0]);
-          }
         }
 
         this.submitStatus = value;
@@ -2135,7 +2126,7 @@ export default {
           if (["porn1", "sg1"].includes(this.themeTPL)) {
             this.depositData.push({ id: 26987 });
           }
-          console.log(res.data);
+          // console.log(res.data);
           this.changeSimplePayMode(this.depositData[0]);
           this.isShow = false;
         }
