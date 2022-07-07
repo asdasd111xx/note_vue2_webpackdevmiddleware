@@ -38,3 +38,18 @@ Location.href 属性一般用于页面的迭代，也就是重新定位当前页
 //路由會更新（多上一頁）
 //watch $route 會觸發
 //但由於是在同個元件下執行，並不會重新render(不會再created)
+
+
+瀏覽器解析特殊字元(中文 ＃＄％...)
+https://github.com/vuejs/vue-router/issues/2786
+
+有問題的優惠頁標題是“泡泡直播 月红包加赠60%”
+用router.push('path') 空白符會被轉成“%20”. 但“％” 還是“％”
+解決方式
+1.用query物件的方式 “％”會被解析成“％25"
+2.encodeURI()
+this.$router.push(
+      `/mobile/iframe/promotion?promoUri=${encodeURI(
+        target.link
+      )}&title=${encodeURI(target.name)}`
+    );
