@@ -371,17 +371,17 @@
                   <!-- <template v-if="cgPromotionMessage">
                     充值前请先绑定钱包
                   </template> -->
-                  <template v-if="isSelectBindWallet(32)">
+                  <template v-if="isSelectBindWallet(22,32)">
                     充值前请先绑定{{ simpleCurPayInfo.name }}
                   </template>
                   <template v-else-if="isSelectBindWallet(34, 41)">
                     充值前请先绑定{{ simpleCurPayInfo.name }}钱包
                   </template>
                   <template v-else-if="isSelectBindWallet(16, 25, 30)">
-                    充值前请先绑定CGPay钱包
+                    尚未绑定CGPay钱包
                   </template>
                   <template v-else-if="isSelectBindWallet(36, 37, 38)">
-                    充值前请先绑定OSPay钱包
+                    尚未绑定OSPay钱包
                   </template>
                   <template v-else>
                     充值前请先绑定{{ simpleCurPayInfo.name }}帐号
@@ -959,12 +959,12 @@
                   $style[siteConfig.ROUTER_TPL],
                   {
                     [$style['success']]:
-                      realSaveMoney &&
-                      Number(String(realSaveMoney).replace(/\,/g, '')) > 0
+                      realSandMoney &&
+                      Number(String(realSandMoney).replace(/\,/g, '')) > 0
                   }
                 ]"
               >
-                实际到帐： ¥{{ realSaveMoney }}
+                实际到帐： ¥{{ realSandMoney }}
                 <span
                   v-if="
                     simplePayType.offer_enable &&
@@ -1005,13 +1005,13 @@
                     <li :class="$style['tip-list']" v-html="promitionText" />
                   </template>
                   <!-- 簡易模式無手續費 -->
-                  <!-- <li
+                  <li
                     v-if="
                       +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
                     "
                   >
                     • {{ feeText }}
-                  </li> -->
+                  </li>
 
                   <li>• 实际存入依审核结果为准</li>
                 </ul>
@@ -1261,6 +1261,7 @@ import goLangApiRequest from "@/api/goLangApiRequest";
 import bcWalletPopup from "@/router/mobile/components/tpl/porn1/components/mcenter/components/wallet/components/bcWalletPopup";
 import { sendUmeng } from "@/lib/sendUmeng";
 import axios from "axios";
+import BigNumber from "bignumber.js/bignumber";
 import {
   API_CRYPTO_MONEY,
   API_MCENTER_DEPOSIT_OUTER_WALLET,
@@ -1526,7 +1527,99 @@ export default {
         };
       });
       return arr;
-    }
+    },
+    /**
+     * 實際金額
+     *
+     * @return number or string
+     */
+    realSandMoney() {
+      let promotionValue = this.offerInfo.offer_enable
+        ? new BigNumber(this.moneyValue)
+            .multipliedBy(
+              new BigNumber(this.offerInfo.offer_percent).dividedBy(100)
+            )
+            .toNumber()
+        : 0;
+      //充值優惠小數點後兩位捨去
+      // promotionValue = Math.floor(promotionValue * 100) / 100;
+      // 超過優惠金額以單筆上限為主
+      if (
+        +this.offerInfo.per_offer_limit > 0 &&
+        promotionValue > +this.offerInfo.per_offer_limit
+      ) {
+        promotionValue = +this.offerInfo.per_offer_limit;
+      }
+      // 檢查每日優惠金額有無達到上限
+      if (this.offerInfo.is_full_offer) {
+        promotionValue = 0;
+      } else if (
+        +this.offerInfo.offer_limit > 0 &&
+        promotionValue >
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer
+      ) {
+        promotionValue =
+          +this.offerInfo.offer_limit - +this.offerInfo.gotten_offer;
+
+        //充值優惠小數點後兩位捨去
+        promotionValue = Math.floor(promotionValue * 100) / 100;
+      }
+
+      let deductionValue = +this.simplePayFeeData.fee_percent
+        ? new BigNumber(this.moneyValue)
+            .multipliedBy(
+              new BigNumber(this.simplePayFeeData.fee_percent).dividedBy(100)
+            )
+            .toNumber()
+        : Number(this.simplePayFeeData.fee_amount);
+      //手續費小數點後兩位捨去
+      // deductionValue = Math.floor(deductionValue * 100) / 100;
+      let total = "0.00";
+
+      // 尚未輸入金額或金額錯誤
+      if (!this.moneyValue || this.isErrorMoney) {
+        return "0.00";
+      }
+
+      if (
+        (+this.simplePayFeeData.per_trade_min &&
+          +this.simplePayFeeData.per_trade_min > +this.moneyValue) ||
+        (+this.simplePayFeeData.per_trade_max &&
+          +this.simplePayFeeData.per_trade_max < +this.moneyValue) ||
+        (+this.simplePayFeeData.fee_percent <= 0 &&
+          +this.simplePayFeeData.fee_amount > +this.moneyValue + promotionValue)
+      ) {
+        return "0.00";
+      }
+
+      // 未達到單筆存款金額，無優惠
+      if (+this.moneyValue < +this.offerInfo.offer_amount) {
+        total = deductionValue
+          ? new BigNumber(this.moneyValue)
+              .minus(new BigNumber(deductionValue))
+              .toNumber(2)
+          : Number(this.moneyValue);
+
+        // 取小數點後二位，若為整數則補小數點
+        total = total.toString().replace(/^([-]?(\d*))$/, "$1.");
+        // 只取小數點後二位
+        total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
+        return this.formatThousandsCurrency(total);
+      }
+
+      // 總額計算
+      total = deductionValue
+        ? new BigNumber(this.moneyValue)
+            .plus(promotionValue)
+            .minus(new BigNumber(deductionValue))
+            .toNumber(2)
+        : new BigNumber(this.moneyValue).plus(promotionValue);
+      // 取小數點後二位，若為整數則補小數點
+      total = total.toString().replace(/^([-]?(\d*))$/, "$1.");
+      // 只取小數點後二位
+      total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
+      return this.formatThousandsCurrency(total);
+    },
   },
   created() {
     //載入時檢查是否需綁卡
@@ -2212,9 +2305,10 @@ export default {
       } else {
         this.changeSimpleRoad(null);
         if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
-          this.setSimpleFeeData(info);
+          this.setSimpleMoneyData(info)
         }
       }
+      this.setSimpleFeeData(info);
     },
     /**
      * 切換通道
@@ -2224,7 +2318,7 @@ export default {
       this.simplePayRode = info;
       this.getSimplePayOffer();
       if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
-        this.setSimpleFeeData(info);
+        this.setSimpleMoneyData(info);
       }
     },
     /**
@@ -2265,25 +2359,33 @@ export default {
       }
     },
     /**
-     * 設定充值金額資訊
+     * 設定充值手續費資訊
      * @method setSimpleFeeData
      */
     setSimpleFeeData(info) {
       if (info !== null) {
         this.simplePayFeeData = {
-          amounts: info.amounts,
+          ...this.simplePayFeeData,
           fee_amount: info.fee_amount,
           fee_percent: info.fee_percent,
+        };
+      }
+    },
+    /**
+     * 設定充值金額資訊
+     * @method setSimpleMoneyData
+     */
+    setSimpleMoneyData(info) {
+      if (info !== null) {
+        this.simplePayFeeData = {
+          ...this.simplePayFeeData,
+          amounts: info.amounts,
           is_custom_amount: info.is_custom_amount,
           is_recommend_amount: info.is_recommend_amount,
           per_trade_max: info.per_trade_max,
           per_trade_min: info.per_trade_min
         };
-        // if(this.simplePayFeeData.amounts.length > 0){
-        //   this.changeSimpleMoney(this.simplePayFeeData.amounts[0])
-        // }else{
         this.changeSimpleMoney("", true);
-        // }
       }
     },
     // 取得 CGPay 餘額
@@ -2668,7 +2770,7 @@ export default {
                 this.closePopup();
                 this.$emit("update:headerSetting", this.initHeaderSetting);
                 this.resetStatus();
-                this.getPayGroup();
+                this.getSimplePaymentGroups();
               }
             };
             return { status: "third" };
@@ -2713,7 +2815,7 @@ export default {
           if (errorsList.includes(code)) {
             this.$emit("update:headerSetting", this.initHeaderSetting);
             this.resetStatus();
-            this.getPayGroup();
+            this.getSimplePaymentGroups();
           }
         });
     },
