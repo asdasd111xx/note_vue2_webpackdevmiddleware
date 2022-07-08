@@ -350,14 +350,24 @@ export default {
           title: this.$text("S_NAME", "会员帐号"),
           value: this.orderData.username,
           isFontBold: false
-        },
-        {
-          objKey: "yourMoney",
-          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
-          value: this.formatThousandsCurrency(this.orderData.amount),
-          isFontBold: true
         }
       ];
+      if (!this.orderData.is_remit) {
+        showArray.push({
+          objKey: "payType",
+          title: this.$text("S_PAY_MODE", "支付方式"),
+          value: this.orderData.method_name,
+          isFontBold: false
+        });
+      }
+
+      showArray.push({
+        objKey: "yourMoney",
+        title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
+        value: this.formatThousandsCurrency(this.orderData.amount),
+        isFontBold: true
+      });
+
       if (
         this.orderData.is_remit &&
         this.orderData.orderInfo.field.find(item => {
@@ -366,10 +376,7 @@ export default {
       ) {
         showArray.push({
           objKey: "yourBank",
-          title:
-            this.orderData.method_id === 3
-              ? this.$text("S_YOUR_BANK", "您的银行")
-              : this.$text("S_PAY_MODE", "支付方式"),
+          title: this.$text("S_YOUR_BANK", "您的银行"),
           value: this.selectBank.name,
           isFontBold: false
         });
