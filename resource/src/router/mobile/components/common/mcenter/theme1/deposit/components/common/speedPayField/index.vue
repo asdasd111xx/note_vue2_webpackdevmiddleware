@@ -11,7 +11,12 @@
         ]"
       >
         <div :class="$style['field-title']">{{ info.title }}</div>
-        <div :class="$style['field-info']">
+        <div
+          :class="[
+            $style['field-info'],
+            { [$style['placeholder-error']]: info.isError }
+          ]"
+        >
           <template v-if="!isEdit">
             <span :class="$style['speed-field-title']">{{
               info.objKey === "depositMethod"
@@ -36,14 +41,19 @@
             <template v-else-if="info.objKey === 'depositTime'">
               <date-picker
                 v-model="info.value"
-                :placeholder="info.placeholderText"
-                :class="[{ [$style['placeholder-error']]: info.isError }]"
+                :placeholder="info.isError ? '' : info.placeholderText"
                 type="datetime"
                 format="YYYY-MM-DD HH:mm:ss"
                 value-type="format"
                 @open="setDefaultDate"
                 @input="submitInput(info.value, info.objKey)"
               />
+              <div
+                v-if="info.isError"
+                :class="$style['time-placeholder-error']"
+              >
+                请选择充值时间
+              </div>
             </template>
             <input
               v-else-if="info.objKey === 'depositName'"
@@ -132,9 +142,7 @@ export default {
   data() {
     return {
       depositName: this.speedField.depositName,
-      isSelectShow: false,
-      // 只有show必填欄位的狀況下不顯示錯誤提示
-      showError: this.showByRequiredFieldsError
+      isSelectShow: false
     };
   },
   computed: {
@@ -184,7 +192,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "deposit_at")
             : true,
           isError:
-            this.showError &&
+            this.showByRequiredFieldsError &&
             this.requiredFields.find(
               item => item.name === "deposit_at" && item.required
             ) &&
@@ -199,7 +207,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "pay_account")
             : true,
           isError:
-            this.showError &&
+            this.showByRequiredFieldsError &&
             this.requiredFields.find(
               item => item.name === "pay_account" && item.required
             ) &&
@@ -221,7 +229,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "pay_username")
             : true,
           isError:
-            this.showError &&
+            this.showByRequiredFieldsError &&
             this.requiredFields.find(
               item => item.name === "pay_username" && item.required
             ) &&
@@ -239,7 +247,7 @@ export default {
             this.speedField.depositMethod === "2" ||
             this.speedField.depositMethod === "4",
           isError:
-            this.showError &&
+            this.showByRequiredFieldsError &&
             this.requiredFields.find(
               item => item.name === "method" && item.required
             ) &&
@@ -258,7 +266,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "sn")
             : true,
           isError:
-            this.showError &&
+            this.showByRequiredFieldsError &&
             this.requiredFields.find(
               item => item.name === "sn" && item.required
             ) &&

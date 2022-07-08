@@ -140,7 +140,11 @@
             :class="[
               $style['basic-info-text'],
               { [$style['info-important']]: info.isBorderBottom },
-              { [$style['info-placeholder-color']]: selectBank.name === '' }
+              { [$style['info-placeholder-color']]: selectBank.name === '' },
+              {
+                [$style['info-placeholder-error']]:
+                  selectBank.name === '' && showRequiredError
+              }
             ]"
             @click="isShowBankPop = true"
           >

@@ -66,8 +66,19 @@
   &:-moz-placeholder {
     color: #bebcbc;
   }
+}
 
-  &.placeholder-error {
+.time-placeholder-error {
+  color: rgb(219, 99, 114);
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+}
+
+
+.placeholder-error {
+
+  >input {
 
     // Chrome/Opera/Safari
     &::-webkit-input-placeholder {
