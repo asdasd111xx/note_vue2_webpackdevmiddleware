@@ -397,7 +397,7 @@ export default {
         this.countdownSec -= 1;
       }, 1000);
     }
-    console.log("this.orderData", this.orderData);
+    // console.log("this.orderData", this.orderData);
 
     if (this.isSimpleType) {
       this.getBankList();
