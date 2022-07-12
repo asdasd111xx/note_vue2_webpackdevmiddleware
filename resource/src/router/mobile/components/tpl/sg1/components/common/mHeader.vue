@@ -341,24 +341,7 @@ export default {
       this.currentMenu = this.currentMenu === value ? "" : value;
     },
     handleClickService() {
-      lib_newWindowOpen(
-        goLangApiRequest({
-          method: "get",
-          url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Common/Jackfruit/List`,
-          params: {
-            version: "2"
-          }
-        }).then(res => {
-          if (
-            res &&
-            res.data &&
-            res.data.data &&
-            res.data.data.service["url"]
-          ) {
-            return res.data.data.service["url"];
-          }
-        })
-      );
+      this.$router.push("/mobile/service");
     },
     handleClickAsk() {
       if (this.loginStatus) {
