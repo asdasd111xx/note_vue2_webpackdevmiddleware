@@ -144,6 +144,9 @@ export default {
      * @return array
      */
     allBanks() {
+      if (!this.curPayInfo || !this.curPayInfo.banks) {
+        return [];
+      }
       //充值優化 第一頁你的銀行需“必填”才會出現
       this.yourBankRequired = this.curPayInfo.field.find(item => {
         return item.name === "bank_id" && item.required;
@@ -160,10 +163,6 @@ export default {
           swift_code: bankInfo.swift_code,
           image_url: bankInfo.image_url
         }));
-      }
-
-      if (!this.curPayInfo || !this.curPayInfo.banks) {
-        return [];
       }
 
       // 在線支付 & 點卡儲值 => 吃當前支付方式的 banks
