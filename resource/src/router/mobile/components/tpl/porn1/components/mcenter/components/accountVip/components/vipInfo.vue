@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <div :class="$style['cell']">
+        <div v-if="currentLevelData.monthly_gift != ''" :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
               :src="
@@ -112,10 +112,7 @@
               alt="icon"
             />
           </div>
-          <div
-            :class="$style['cell-text']"
-            v-if="currentLevelData.monthly_gift != ''"
-          >
+          <div :class="$style['cell-text']">
             <template>
               <div>
                 {{ currentLevelData.monthly_gift_str }}
