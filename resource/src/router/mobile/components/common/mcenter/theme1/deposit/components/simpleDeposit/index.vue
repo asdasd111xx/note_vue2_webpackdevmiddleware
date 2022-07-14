@@ -371,7 +371,7 @@
                   <!-- <template v-if="cgPromotionMessage">
                     充值前请先绑定钱包
                   </template> -->
-                  <template v-if="isSelectBindWallet(22,32)">
+                  <template v-if="isSelectBindWallet(22, 32)">
                     充值前请先绑定{{ simpleCurPayInfo.name }}
                   </template>
                   <template v-else-if="isSelectBindWallet(34, 41)">
@@ -1007,7 +1007,8 @@
                   <!-- 簡易模式無手續費 -->
                   <li
                     v-if="
-                      +simplePayFeeData.fee_percent || +simplePayFeeData.fee_amount
+                      +simplePayFeeData.fee_percent ||
+                        +simplePayFeeData.fee_amount
                     "
                   >
                     • {{ feeText }}
@@ -1494,7 +1495,7 @@ export default {
         if (value === "stepOne") {
           this.$emit("update:headerSetting", this.initHeaderSetting);
           this.resetStatus();
-          this.simpleCurPayInfo.id = 0
+          this.simpleCurPayInfo.id = 0;
           this.getSimplePaymentGroups();
         }
 
@@ -1619,7 +1620,7 @@ export default {
       // 只取小數點後二位
       total = `${total}00`.replace(/(\d*\.\d{2})\d*/, "$1");
       return this.formatThousandsCurrency(total);
-    },
+    }
   },
   created() {
     //載入時檢查是否需綁卡
@@ -2305,14 +2306,14 @@ export default {
       } else {
         this.changeSimpleRoad(null);
         if (this.simpleCurPayInfo.bank_swift_code !== "BBVALREC") {
-          this.setSimpleMoneyData(info)
+          this.setSimpleMoneyData(info);
         }
       }
       this.setSimpleFeeData(info);
-      if(this.simplePayType.method_id === 36){
-        this.walletData['OSPay'].method = 0
-      }else if(this.simplePayType.method_id === 16){
-        this.walletData['CGPay'].method = 0
+      if (this.simplePayType.method_id === 36) {
+        this.walletData["OSPay"].method = 0;
+      } else if (this.simplePayType.method_id === 16) {
+        this.walletData["CGPay"].method = 0;
       }
     },
     /**
@@ -2372,7 +2373,7 @@ export default {
         this.simplePayFeeData = {
           ...this.simplePayFeeData,
           fee_amount: info.fee_amount,
-          fee_percent: info.fee_percent,
+          fee_percent: info.fee_percent
         };
       }
     },
