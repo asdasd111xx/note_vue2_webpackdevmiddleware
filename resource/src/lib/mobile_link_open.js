@@ -210,6 +210,16 @@ export default async target => {
         }
         router.push("/mobile/promotion");
         return;
+      case "self-promotion": //自領優惠
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+        router.push(
+          `/mobile/iframe/promotion?alias=self_collect_promotion&fullscreen=true`
+        );
+        return;
+
       // ?
       case "home":
         if (eventRedirect === "promotion") router.push("/mobile/home");
@@ -269,6 +279,13 @@ export default async target => {
         }
         router.push("/mobile/mcenter/information");
         return;
+      case "post": //公告
+        if (!store.state.loginStatus) {
+          router.push("/mobile/login");
+          return;
+        }
+        router.push("/mobile/mcenter/information?page=post");
+        return;
 
       case "binding-card":
         if (!store.state.loginStatus) {
@@ -280,6 +297,7 @@ export default async target => {
           `/mobile/mcenter/bankCard?redirect=promotion&type=bankCard`
         );
         return;
+      case "post": //公告
 
       case "mobile-bet": //手機下注
         actionGetLandingURL(store).then(() => {
