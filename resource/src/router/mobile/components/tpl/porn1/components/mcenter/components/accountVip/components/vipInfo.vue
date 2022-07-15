@@ -101,7 +101,14 @@
           </div>
         </div>
 
-        <div v-if="currentLevelData.monthly_gift != ''" :class="$style['cell']">
+        <div
+          v-if="
+            currentLevelData.monthly_gift != '0' &&
+              currentLevelData.monthly_gift != '-' &&
+              currentLevelData.monthly_gift != ''
+          "
+          :class="$style['cell']"
+        >
           <div :class="$style['cell-icon']">
             <img
               :src="
