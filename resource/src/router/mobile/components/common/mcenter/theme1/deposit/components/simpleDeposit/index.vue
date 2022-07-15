@@ -1629,10 +1629,17 @@ export default {
       url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Deposit/Check`
     }).then(res => {
       console.log("checkcheck", res);
-      if (res && res.data.bank === false) {
+      if (res && res.status === "000" && res.errorCode === "00") {
+        if (res.data.bank === false) {
+          this.actionSetGlobalMessage({
+            msg: "请先绑定提现银行卡",
+            code: "C150099"
+          });
+        }
+      } else {
         this.actionSetGlobalMessage({
-          msg: "请先绑定提现银行卡",
-          code: "C150099"
+          msg: res.msg,
+          code: res.code
         });
       }
     });

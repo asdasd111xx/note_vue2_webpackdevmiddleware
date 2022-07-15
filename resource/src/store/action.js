@@ -768,7 +768,15 @@ export const actionSetUserdata = (
       method: "get",
       url: `${configInfo.YABO_GOLANG_API_DOMAIN}/xbb/Player/User/Bank/List`
     }).then(res => {
-      commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
+      if (res.status === "000" && res.errorCode === "00") {
+        commit(types.SET_HASBANK, res && res.data && res.data.length > 0);
+      } else {
+        dispatch("actionSetGlobalMessage", {
+          msg: res.msg,
+          code: res.code
+        });
+        return;
+      }
     });
   }
   //判斷uuid
@@ -2264,25 +2272,19 @@ export const actionGetWithdrawAccount = ({ state, dispatch }) => {
     params: {
       lang: "zh-cn"
     }
-  })
-    .then(res => {
-      const { data, status, errorCode, msg } = res;
+  }).then(res => {
+    const { data, status, errorCode, code, msg } = res;
 
-      if (errorCode !== "00" || status !== "000") {
-        dispatch("actionSetGlobalMessage", {
-          msg
-        });
-        return Promise.resolve(false);
-      }
-
-      return Promise.resolve(data);
-    })
-    .catch(error => {
-      const { msg } = error.response.data;
+    if (errorCode !== "00" || status !== "000") {
       dispatch("actionSetGlobalMessage", {
-        msg
+        msg,
+        code
       });
-    });
+      return Promise.resolve(false);
+    }
+
+    return Promise.resolve(data);
+  });
 };
 
 /**
