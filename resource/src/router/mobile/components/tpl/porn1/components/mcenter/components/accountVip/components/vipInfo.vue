@@ -105,7 +105,8 @@
           v-if="
             currentLevelData.monthly_gift != '0' &&
               currentLevelData.monthly_gift != '-' &&
-              currentLevelData.monthly_gift != ''
+              currentLevelData.monthly_gift != '' &&
+              currentLevelData.monthly_gift != '0/0'
           "
           :class="$style['cell']"
         >
