@@ -297,6 +297,7 @@ export default async target => {
           `/mobile/mcenter/bankCard?redirect=promotion&type=bankCard`
         );
         return;
+      case "post": //公告
 
       case "mobile-bet": //手機下注
         actionGetLandingURL(store).then(() => {
