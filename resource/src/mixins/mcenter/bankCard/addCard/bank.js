@@ -263,13 +263,20 @@ export default {
         const { status, errorCode, msg, code } = response;
 
         if (errorCode !== "00" || status !== "000") {
+          if (code === "M00001") {
+            this.actionSetGlobalMessage({
+              msg,
+              code
+            });
+            return;
+          }
           this.lockStatus = false;
-
           this.errorMsg = msg;
 
           // if (this.addBankCardStep === "one") {
           //   this.msg = msg;
           // }
+
           return;
         }
 
