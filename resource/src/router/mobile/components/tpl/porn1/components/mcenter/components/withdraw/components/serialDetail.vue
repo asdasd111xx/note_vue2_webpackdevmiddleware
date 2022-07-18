@@ -40,7 +40,12 @@
           <div :class="$style['serial-basic-title']">
             {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}
           </div>
-          <div :class="$style['serial-basic-value']">
+          <div
+            :class="[
+              $style['serial-basic-value'],
+              { [$style['red']]: data.deduction > 0 }
+            ]"
+          >
             {{
               +data.deduction > 0
                 ? "-" + formatThousandsCurrency(data.deduction)
@@ -71,16 +76,28 @@
             <span>{{ item.title }} </span>
             <span>{{ item.rateValue }} </span>
           </span>
-          <span
-            >{{
-              item.deduction
-                ? item.deduction + ":" + `${item.value}`
-                : item.rateValue === "-"
-                ? "-"
-                : item.value
-                ? $text("S_COMPLETE", "完成")
-                : $text("S_NOT_FINISH", "未完成")
-            }}
+          <span>
+            <!-- 完成/未完成 -->
+            <template v-if="item.deduction">
+              <span>{{ item.deduction }}</span>
+              <span
+                :class="{
+                  [$style['red']]: item.value !== '0.00'
+                }"
+                >{{ item.value }}
+              </span>
+            </template>
+
+            <!-- 扣除金額 -->
+            <template v-else>
+              <span
+                :class="{
+                  [$style['red']]:
+                    item.value === $text('S_NOT_FINISH', '未完成')
+                }"
+                >{{ item.value }}
+              </span>
+            </template>
           </span>
         </div>
       </div>
@@ -161,7 +178,12 @@ export default {
           {
             title: this.$text("S_SERIAL_AUDIT", "充值稽核倍数"),
             rateValue: this.data.audit_rate > 0 ? this.data.audit_rate : "-",
-            value: this.data.administrative_checked
+            value:
+              this.data.audit_rate > 0
+                ? this.data.administrative_checked
+                  ? this.$text("S_COMPLETE", "完成")
+                  : this.$text("S_NOT_FINISH", "未完成")
+                : "-"
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
@@ -175,7 +197,7 @@ export default {
                     this.data.administrative_amount
                   )}`
                 : "0.00",
-            deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
+            deduction: `${this.$text("S_DEDUCTION_MONEY", "扣除金额")}:`
           }
         ],
         [
@@ -183,7 +205,12 @@ export default {
             title: this.$text("S_SERIAL_STATUS02", "优惠稽核倍数"),
             rateValue:
               this.data.offer_audit_rate > 0 ? this.data.offer_audit_rate : "-",
-            value: this.data.offer_checked
+            value:
+              this.data.offer_audit_rate > 0
+                ? this.data.offer_checked
+                  ? this.$text("S_COMPLETE", "完成")
+                  : this.$text("S_NOT_FINISH", "未完成")
+                : "-"
           },
           {
             title: this.$text("S_SERIAL_NUMBER", "流水要求"),
@@ -195,7 +222,7 @@ export default {
               +this.data.offer_deduction > 0
                 ? `-${this.formatThousandsCurrency(this.data.offer_deduction)}`
                 : "0.00",
-            deduction: this.$text("S_DEDUCTION_MONEY", "扣除金额")
+            deduction: `${this.$text("S_DEDUCTION_MONEY", "扣除金额")}:`
           }
         ]
       ];

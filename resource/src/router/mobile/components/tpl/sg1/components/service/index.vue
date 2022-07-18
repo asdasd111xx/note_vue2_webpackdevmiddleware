@@ -46,54 +46,21 @@
         </div>
       </div>
 
-      <div :class="$style['info-card']" @click="clickService(2)">
-        <div>
-          <div>
-            <img
-              :src="
-                $getCdnPath(`/static/image/common/service/ic_service01.png`)
-              "
-            />
-            &nbsp;
-            <span>在线客服1</span>
-          </div>
-          <div>Main Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
-
-        <div :class="$style['btn-next']">
-          <img
-            :src="
-              $getCdnPath(`/static/image/common/service/ic_service_arrow.png`)
-            "
-          />
-        </div>
-      </div>
-
-      <div :class="$style['info-card2']" @click="clickService">
-        <div>
-          <div>
-            <img
-              :src="
-                $getCdnPath(`/static/image/common/service/ic_service02.png`)
-              "
-            />
-            &nbsp;
-            <span>在线客服2</span>
-          </div>
-          <div>Reserve Customer Support</div>
-          <div>7*24小时专线服务 贴心至上</div>
-        </div>
-
-        <div :class="$style['btn-next']">
-          <img
-            :src="
-              $getCdnPath(`/static/image/sg1/common/ic_arrow_next_white.png`)
-            "
-          />
-        </div>
-      </div>
-
+      <template v-for="(item, index) in serviceList">
+        <img
+          :key="index"
+          :class="$style[`info-card`]"
+          @click="clickService(index)"
+          :src="
+            item.image
+              ? item.image
+              : $getCdnPath(
+                  `/static/image/${routerTPL}/service/service_service0${index +
+                    1}.png`
+                )
+          "
+        />
+      </template>
       <div
         v-if="isIos && !isStatic"
         :class="$style['tip-block']"
@@ -191,7 +158,8 @@ export default {
       divHeight: 0,
       isShowPop: false,
       linkArray: [],
-      avatarSrc: `/static/image/common/default/avatar_nologin.png`
+      avatarSrc: `/static/image/common/default/avatar_nologin.png`,
+      serviceList: []
     };
   },
   created() {
@@ -199,6 +167,7 @@ export default {
     if (this.$route.query.prev !== undefined) {
       this.hasPrev = this.$route.query.prev === "true";
     }
+    this.getService();
   },
   mounted() {
     if (this.loginStatus) {
@@ -261,9 +230,17 @@ export default {
           break;
       }
     },
-    clickService() {
-      let url = this.mobileInfo.service.url;
-      window.open(url);
+    getService() {
+      goLangApiRequest({
+        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Link/For/Customer/Service`
+      }).then(res => {
+        if (res && res.status === "000" && res.errorCode === "00") {
+          this.serviceList = res.data;
+        }
+      });
+    },
+    clickService(item) {
+      window.open(this.serviceList[item].url);
     },
     clickPopTip() {
       this.isShowPop = true;
@@ -401,77 +378,10 @@ div.container {
   }
 }
 
-.info-card,
-.info-card2 {
-  color: white;
-  background-image: -webkit-linear-gradient(196deg, #fd5183, #e53266);
-  background-image: linear-gradient(254deg, #fd5183, #e53266);
-  margin: 15px;
-  height: 100px;
-  border-radius: 10px;
-  position: relative;
-
-  -webkit-box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-
-  > div:first-child {
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    background-image: url("/static/image/sg1/service/bg_service01.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-
-    > div {
-      height: 25px;
-      line-height: 25px;
-    }
-
-    > div:first-child {
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-    }
-
-    > div:nth-child(2) {
-      color: hsla(0, 0%, 100%, 0.5);
-    }
-
-    > div > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-}
-
-.info-card2 {
-  margin-top: 20px;
-  background-image: -webkit-linear-gradient(16deg, #61d2eb, #4cbed8);
-  background-image: linear-gradient(74deg, #61d2eb, #4cbed8);
-
-  > div:first-child {
-    background: url("/static/image/common/service/bg_service02.png");
-    background-size: auto 100%;
-    background-position: top 0 right 0;
-    background-repeat: no-repeat;
-  }
-}
-
-.btn-next {
-  position: absolute;
-  height: 100%;
-  top: calc(50% - 7px);
-  right: 14px;
-
-  > img {
-    height: 14px;
-    width: 14px;
-  }
-}
-
-.card-bg {
-  height: 100%;
+.info-card {
+  display: block;
+  margin: 5px auto;
+  width: 100%;
 }
 
 .btn-prev {

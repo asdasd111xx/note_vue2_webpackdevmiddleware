@@ -1302,7 +1302,7 @@
     <deposit-info
       v-if="submitStatus === 'stepTwo'"
       :is-simple-type="false"
-      :your-bank-list="paySelectData['changeBank'].allData"
+      :your-bank-list="yourBankList"
       :order-data="orderData"
       :is-show.sync="isShow"
       :required-fields="curPayInfo.field"

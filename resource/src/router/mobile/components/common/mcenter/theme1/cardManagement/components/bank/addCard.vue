@@ -99,6 +99,46 @@
           </div>
         </div>
 
+        <template v-if="showCityProvinceFields">
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">省/直辖市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.province"
+                type="text"
+                placeholder="请输入省/直辖市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'province')"
+              />
+              <div :class="$style['clear-input']" v-if="formData.province">
+                <img
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                  @click="formData.province = ''"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div :class="$style['info-item']">
+            <p :class="$style['input-title']">县/市</p>
+            <div :class="$style['input-wrap']">
+              <input
+                v-model.trim="formData.city"
+                type="text"
+                placeholder="请输入县/市"
+                maxlength="36"
+                @input="checkData($event.target.value, 'city')"
+              />
+              <div :class="$style['clear-input']" v-if="formData.city">
+                <img
+                  :src="$getCdnPath(`/static/image/common/ic_clear.png`)"
+                  @click="formData.city = ''"
+                />
+              </div>
+            </div>
+          </div>
+        </template>
+
         <div :class="$style['info-item']">
           <p :class="$style['input-title']">开户支行</p>
           <div :class="$style['input-wrap']">

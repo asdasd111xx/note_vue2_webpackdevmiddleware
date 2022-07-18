@@ -277,11 +277,7 @@ export default {
     },
 
     clickService(item) {
-      if (this.routerTPL === "sp1") {
-        window.open(this.serviceList[item].url);
-      } else {
-        window.open(this.mobileInfo.service.url);
-      }
+      window.open(this.serviceList[item].url);
 
       // 在線客服流量分析事件
       window.dataLayer.push({

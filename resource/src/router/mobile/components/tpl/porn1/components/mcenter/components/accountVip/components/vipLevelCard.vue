@@ -78,33 +78,41 @@
               alt="vipLevel_bg"
             />
             <div :class="$style['card-desc-block']">
-              <div v-if="vipConfig.base_type != 3">
-                {{ commaFormat(item.deposit_total) }}
-                <br />
-                累计充值
-              </div>
-              <div v-else>
+              <template v-if="vipConfig.base_type != 3">
+                <div v-if="item.deposit_total > 0">
+                  {{ commaFormat(item.deposit_total) }}
+                  <br />
+                  累计充值
+                </div>
+              </template>
+              <template v-else>
+                <div v-if="item.deposit_limit > 0">
+                  {{ commaFormat(item.deposit_limit) }}
+                  <br />
+                  充值要求
+                </div>
+              </template>
+              <template v-if="vipConfig.base_type != 3">
+                <div v-if="item.valid_bet_limit > 0">
+                  {{ commaFormat(item.valid_bet_limit) }}
+                  <br />
+                  累计流水
+                </div>
+              </template>
+              <template v-else>
+                <div v-if="item.valid_bet_range > 0">
+                  {{ commaFormat(item.valid_bet_range) }}
+                  <br />
+                  流水要求
+                </div>
+              </template>
+              <div v-if="vipConfig.base_type != 3 && item.deposit_limit > 0">
                 {{ commaFormat(item.deposit_limit) }}
                 <br />
-                当前充值
-              </div>
-              <div v-if="vipConfig.base_type != 3">
-                {{ commaFormat(item.valid_bet_limit) }}
-                <br />
-                累计流水
-              </div>
-              <div v-else>
-                {{ commaFormat(item.valid_bet_range) }}
-                <br />
-                当前流水
-              </div>
-              <div v-if="vipConfig.base_type != 3">
-                {{ commaFormat(item.deposit_limit) }}
-                <br />
-                当前充值
+                充值要求
               </div>
 
-              <div>
+              <div v-if="item.deposit_time > 0">
                 {{ commaFormat(item.deposit_time) }}
                 <br />
                 充值次数
