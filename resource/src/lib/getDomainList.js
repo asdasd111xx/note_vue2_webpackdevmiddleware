@@ -145,7 +145,7 @@ export const getDomainListEncrypt = url => {
   })
     .then(res => {
       if (res && res.data) {
-        let base64String = decrypt(res.data.data.trim());
+        let base64String = decrypt(res.data.data.trim()); //請看base64String.json
         base64String = base64String.replace(/[\n\r]+/g, "\\n").trim();
 
         const jsonResult = JSON.parse(base64String),

@@ -1,0 +1,80 @@
+{
+  "status": "000",
+  "errorCode": "00",
+  "data": {
+    "500015": {
+      "web": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      },
+      "app": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://ybqa2-io.bbin-asia.com",
+          "https://yaboapi.bbin-asia.com"
+        ]
+      }
+    },
+    "500035": {
+      "web": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      },
+      "app": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      }
+    },
+    "9999894": {
+      "web": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      },
+      "app": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      }
+    },
+    "9999905": {
+      "web": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      },
+      "app": {
+        "listDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ],
+        "apiDomainList": [
+          "https://yaboapi.bbin-asia.com"
+        ]
+      }
+    }
+  },
+  "version": ""
+}
