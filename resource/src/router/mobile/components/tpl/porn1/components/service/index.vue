@@ -277,7 +277,11 @@ export default {
     },
 
     clickService(item) {
-      window.open(this.serviceList[item].url);
+      if (this.routerTPL === "sp1") {
+        window.open(this.serviceList[item].url);
+      } else {
+        window.open(this.mobileInfo.service.url);
+      }
 
       // 在線客服流量分析事件
       window.dataLayer.push({

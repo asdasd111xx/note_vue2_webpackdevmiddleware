@@ -43,12 +43,7 @@
           <div :class="$style['serial-basic-title']">
             {{ $text("S_SERIAL_POOR", "流水不足") }}
           </div>
-          <div
-            :class="[
-              $style['serial-basic-value'],
-              { [$style['red']]: serialNumberData.total.audit_amount_lack > 0 }
-            ]"
-          >
+          <div :class="$style['serial-basic-value']">
             {{
               formatThousandsCurrency(serialNumberData.total.audit_amount_lack)
             }}
@@ -65,15 +60,7 @@
               )}%`
             }})
           </div>
-          <div
-            :class="[
-              $style['serial-basic-value'],
-              {
-                [$style['red']]:
-                  serialNumberData.total.administrative_amount > 0
-              }
-            ]"
-          >
+          <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.administrative_amount > 0
                 ? `-${formatThousandsCurrency(
@@ -87,12 +74,7 @@
           <div :class="$style['serial-basic-title']">
             扣除优惠
           </div>
-          <div
-            :class="[
-              $style['serial-basic-value'],
-              { [$style['red']]: serialNumberData.total.offer_deduction > 0 }
-            ]"
-          >
+          <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.offer_deduction > 0
                 ? `-${formatThousandsCurrency(
@@ -106,12 +88,7 @@
           <div :class="$style['serial-basic-title']">
             {{ $text("S_FEE", "手续费") }}
           </div>
-          <div
-            :class="[
-              $style['serial-basic-value'],
-              { [$style['red']]: serialNumberData.total.fee > 0 }
-            ]"
-          >
+          <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.fee > 0
                 ? `-${formatThousandsCurrency(serialNumberData.total.fee)}`
@@ -122,12 +99,7 @@
 
         <div :class="$style['serial-basic-cell']">
           <div :class="$style['serial-basic-title']">扣除总计</div>
-          <div
-            :class="[
-              $style['serial-basic-value'],
-              { [$style['red']]: serialNumberData.total.total_deduction > 0 }
-            ]"
-          >
+          <div :class="$style['serial-basic-value']">
             {{
               serialNumberData.total.total_deduction > 0
                 ? `-${formatThousandsCurrency(
@@ -184,14 +156,7 @@
                 <span :class="$style['sub-title']">
                   {{ $text("S_DEDUCTION_MONEY", "扣除金额") }}:
                 </span>
-                <span
-                  :class="[
-                    $style['money'],
-                    {
-                      [$style['red']]: serialInfo.deduction > 0
-                    }
-                  ]"
-                >
+                <span :class="$style['money']">
                   {{
                     serialInfo.deduction > 0
                       ? `-${formatThousandsCurrency(serialInfo.deduction)}`

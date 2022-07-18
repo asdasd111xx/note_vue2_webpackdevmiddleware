@@ -76,7 +76,7 @@
           </div>
         </div>
 
-        <div v-if="currentLevelData.gift_amount > 0" :class="$style['cell']">
+        <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
               :src="
@@ -101,15 +101,7 @@
           </div>
         </div>
 
-        <div
-          v-if="
-            currentLevelData.monthly_gift != '0' &&
-              currentLevelData.monthly_gift != '-' &&
-              currentLevelData.monthly_gift != '' &&
-              currentLevelData.monthly_gift != '0/0'
-          "
-          :class="$style['cell']"
-        >
+        <div :class="$style['cell']">
           <div :class="$style['cell-icon']">
             <img
               :src="
@@ -123,44 +115,49 @@
           <div :class="$style['cell-text']">
             <template>
               <div>
-                {{ currentLevelData.monthly_gift_str }}
+                {{
+                  `${
+                    currentLevelData.monthly_gift == ""
+                      ? "--"
+                      : currentLevelData.monthly_gift_str
+                  }`
+                }}
               </div>
-              <div>
+              <div v-if="currentLevelData.monthly_memo_1 != ''">
                 {{ currentLevelData.monthly_memo_1 }}
               </div>
             </template>
+          </div>
 
-            <div :class="$style['special-cell']">
-              {{ currentLevelData.monthly_memo_2 }}
-            </div>
+          <div :class="$style['special-cell']">
+            {{ currentLevelData.monthly_memo_2 }}
           </div>
         </div>
-        <template v-if="['porn1', 'sg1'].includes(themeTPL)">
-          <div v-if="currentLevelData > 0" :class="$style['cell']">
-            <div :class="$style['cell-icon']">
-              <img
-                :src="
-                  themeTPL == 'sg1'
-                    ? $getCdnPath(`/static/image/sg1/mcenter/vip/img005.png`)
-                    : $getCdnPath(`/static/image/common/vip/pic_vip_5.png`)
-                "
-                alt="icon"
-              />
-            </div>
-            <div :class="$style['cell-text']">
-              <div
-                :class="{
-                  [$style['long']]:
-                    currentLevelData.withdraw_fee.withdraw_limit &&
-                    currentLevelData.withdraw_fee.withdraw_limit.length > 9
-                }"
-              >
-                {{ formatThousandsCurrency(currentLevelData.birth_amount) }}
-              </div>
-              <div>生日礼金</div>
-            </div>
+
+        <div v-if="['porn1', 'sg1'].includes(themeTPL)" :class="$style['cell']">
+          <div :class="$style['cell-icon']">
+            <img
+              :src="
+                themeTPL == 'sg1'
+                  ? $getCdnPath(`/static/image/sg1/mcenter/vip/img005.png`)
+                  : $getCdnPath(`/static/image/common/vip/pic_vip_5.png`)
+              "
+              alt="icon"
+            />
           </div>
-        </template>
+          <div :class="$style['cell-text']">
+            <div
+              :class="{
+                [$style['long']]:
+                  currentLevelData.withdraw_fee.withdraw_limit &&
+                  currentLevelData.withdraw_fee.withdraw_limit.length > 9
+              }"
+            >
+              {{ formatThousandsCurrency(currentLevelData.birth_amount) }}
+            </div>
+            <div>生日礼金</div>
+          </div>
+        </div>
       </div>
       <div
         :class="[$style['vip-detail']]"

@@ -18,9 +18,7 @@ export default {
         // 充值方式如果為選填，則在 depositInfo 預設為網銀
         depositMethod: this.orderData.orderInfo.method
           ? String(this.orderData.orderInfo.method)
-          : this.requiredFields.find(e => e.name === "method")
-          ? "1"
-          : "",
+          : "1",
         depositTime: this.orderData.orderInfo.deposit_at
           ? Vue.moment(this.orderData.orderInfo.deposit_at).format(
               "YYYY-MM-DD HH:mm:ss"

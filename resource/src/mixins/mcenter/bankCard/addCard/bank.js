@@ -35,8 +35,7 @@ export default {
       isShowCaptcha: false,
       isClickedCaptcha: false,
       chooseNameResult: {},
-      notMyBankSwitch: false,
-      showCityProvinceFields: false
+      notMyBankSwitch: false
     };
   },
   computed: {
@@ -153,13 +152,6 @@ export default {
       delete this.formData["accountName"];
     }
 
-    //是否顯示省/直轄市、縣/市欄位 (會員銀行卡驗證開關，0：關閉，1：銀行卡二元素，2：銀行卡四元素)
-    //0顯示 1或2不顯示
-    this.actionSetDomainConfigV2().then(() => {
-      const result = this.domainConfig.player_user_bank_verify || 0;
-      this.showCityProvinceFields = result === 0 ? true : false;
-    });
-
     // 推播返回 補齊資料
     if (
       localStorage.getItem("click-notification") &&
@@ -252,14 +244,12 @@ export default {
         otherUserBank: this.chooseNameResult.key === 1 ? true : false,
         lang: "zh-cn",
         phone: `${this.phoneHead.replace("+", "")}-${this.formData.phone}`,
+        //企劃：無論開啟/關閉 系統端銀行卡二元素，會員綁定銀行卡時，開戶分行、省/直轄市、縣/市 這三個欄位沒填寫須自動帶--給後端
+        //因現行幣發泡泡前端無輸入欄位故一律帶入 --
+        province: "--",
+        city: "--",
         branch: this.formData.branch === "" ? "--" : this.formData.branch
       };
-
-      //不顯示省/直轄市、縣市欄位 api送出預設帶入"-"
-      if (!this.showCityProvinceFields) {
-        params["province"] = "-";
-        params["city"] = "-";
-      }
 
       //新增會員出款帳號資料(有驗證功能)C02.223
       goLangApiRequest({
@@ -273,20 +263,13 @@ export default {
         const { status, errorCode, msg, code } = response;
 
         if (errorCode !== "00" || status !== "000") {
-          if (code === "M00001") {
-            this.actionSetGlobalMessage({
-              msg,
-              code
-            });
-            return;
-          }
           this.lockStatus = false;
+
           this.errorMsg = msg;
 
           // if (this.addBankCardStep === "one") {
           //   this.msg = msg;
           // }
-
           return;
         }
 

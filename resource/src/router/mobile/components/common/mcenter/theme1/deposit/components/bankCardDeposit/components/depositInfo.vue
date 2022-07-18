@@ -140,11 +140,7 @@
             :class="[
               $style['basic-info-text'],
               { [$style['info-important']]: info.isBorderBottom },
-              { [$style['info-placeholder-color']]: selectBank.name === '' },
-              {
-                [$style['info-placeholder-error']]:
-                  selectBank.name === '' && showRequiredError
-              }
+              { [$style['info-placeholder-color']]: selectBank.name === '' }
             ]"
             @click="isShowBankPop = true"
           >
@@ -168,7 +164,6 @@
 
       <speed-pay-field
         v-if="orderData.methodType === 'remit'"
-        :show-by-required-fields-error="showRequiredError"
         :speed-field.sync="resultSpeedField"
         :required-fields="requiredFields"
         :is-edit="true"
@@ -188,7 +183,10 @@
       :class="[
         $style['submit-btn'],
         {
-          [$style['disabled']]: countdownSec < 1 && isShowTimer
+          [$style['disabled']]:
+            isSubmitDisabled ||
+            (countdownSec < 1 && isShowTimer) ||
+            (bankNameRequired && selectBank.name === '')
         }
       ]"
       :title="
@@ -243,11 +241,9 @@
             @click.stop="changeBank(item)"
           >
             <img v-lazy="getImg(item.image_url)" />
-            {{ item.name || item.label }}
+            {{ item.name }}
             <icon
-              v-if="
-                item.id === selectBank.id || item.selectId === selectBank.id
-              "
+              v-if="item.id === selectBank.id"
               :class="[$style['select-active']]"
               name="check"
             />
@@ -316,8 +312,7 @@ export default {
       timer: null,
       isShowTimer: false,
       isShowBankPop: false,
-      bankNameRequired: false,
-      showRequiredError: false
+      bankNameRequired: false
     };
   },
   computed: {
@@ -350,24 +345,14 @@ export default {
           title: this.$text("S_NAME", "会员帐号"),
           value: this.orderData.username,
           isFontBold: false
+        },
+        {
+          objKey: "yourMoney",
+          title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
+          value: this.formatThousandsCurrency(this.orderData.amount),
+          isFontBold: true
         }
       ];
-      if (!this.orderData.is_remit) {
-        showArray.push({
-          objKey: "payType",
-          title: this.$text("S_PAY_MODE", "支付方式"),
-          value: this.orderData.method_name,
-          isFontBold: false
-        });
-      }
-
-      showArray.push({
-        objKey: "yourMoney",
-        title: this.$text("S_DEPOSIT_MONEY", "充值金额"),
-        value: this.formatThousandsCurrency(this.orderData.amount),
-        isFontBold: true
-      });
-
       if (
         this.orderData.is_remit &&
         this.orderData.orderInfo.field.find(item => {
@@ -376,7 +361,10 @@ export default {
       ) {
         showArray.push({
           objKey: "yourBank",
-          title: this.$text("S_YOUR_BANK", "您的银行"),
+          title:
+            this.orderData.method_id === 3
+              ? this.$text("S_YOUR_BANK", "您的银行")
+              : this.$text("S_PAY_MODE", "支付方式"),
           value: this.selectBank.name,
           isFontBold: false
         });
@@ -397,7 +385,7 @@ export default {
         this.countdownSec -= 1;
       }, 1000);
     }
-    // console.log("this.orderData", this.orderData);
+    console.log("this.orderData", this.orderData);
 
     if (this.isSimpleType) {
       this.getBankList();
@@ -446,7 +434,6 @@ export default {
     },
     submitData() {
       if (this.isSubmitDisabled) {
-        this.showRequiredError = true;
         return;
       }
 
@@ -494,13 +481,8 @@ export default {
       }
     },
     changeBank(info) {
-      (this.selectBank = {
-        id: info.id || info.selectId,
-        image_url: info.image_url,
-        name: info.name || info.mainTitle,
-        swift_code: info.swift_code
-      }),
-        (this.isShowBankPop = false);
+      this.selectBank = info;
+      this.isShowBankPop = false;
     },
     getImg(image_url) {
       return {

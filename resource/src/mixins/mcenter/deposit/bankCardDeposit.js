@@ -144,18 +144,15 @@ export default {
      * @return array
      */
     allBanks() {
-      if (!this.curPayInfo || !this.curPayInfo.banks) {
-        return [];
-      }
       //充值優化 第一頁你的銀行需“必填”才會出現
-      this.yourBankRequired = this.curPayInfo.field.find(item => {
+      const yourBankRequired = this.curPayInfo.field.find(item => {
         return item.name === "bank_id" && item.required;
       });
       // 銀行匯款一律吃 your_Bank 裡面所有的資料
       if (
         this.yourBankList.length > 0 &&
         this.curPayInfo.payment_type_id === 5 &&
-        this.yourBankRequired
+        yourBankRequired
       ) {
         return this.yourBankList.map(bankInfo => ({
           label: bankInfo.name,
@@ -163,6 +160,10 @@ export default {
           swift_code: bankInfo.swift_code,
           image_url: bankInfo.image_url
         }));
+      }
+
+      if (!this.curPayInfo || !this.curPayInfo.banks) {
+        return [];
       }
 
       // 在線支付 & 點卡儲值 => 吃當前支付方式的 banks
@@ -1007,7 +1008,7 @@ export default {
       let paramsData = {
         api_uri: "/api/trade/v2/c/entry",
         username: this.username,
-        methodId: this.curPayInfo.payment_method_id,
+        method_id: this.curPayInfo.payment_method_id,
         bank_id: this.curSelectedBank.value || this.curPayInfo.bank_id,
         amount: this.moneyValue
       };
@@ -1096,26 +1097,29 @@ export default {
 
       let _isPWA = true;
 
-      return goLangApiRequest({
+      return axios({
         method: "post",
-        url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Ext/Entry`,
-        params: {
+        url: API_TRADE_RELAY,
+        data: {
           ...paramsData
         }
       })
         .then(response => {
           this.isShow = false;
           this.actionSetIsLoading(false);
-          const ret = response.data;
-          const msg = response.msg;
-          const code = response.code;
 
-          // const { result, ret, msg, code } = response.data;
+          const { result, ret, msg, code } = response.data;
           let _isWebview =
             getCookie("platform") === "H" ||
             window.location.host === "yaboxxxapp02.com";
 
-          if (response.status !== "000") {
+          //手動配卡提交成功顯示彈窗
+          if (ret.remit.is_manual_card) {
+            this.manualCard = true;
+            this.successAlert = true;
+          }
+
+          if (result !== "ok") {
             // 流量分析事件 - 失敗
             window.dataLayer.push({
               event: "ga_click",
@@ -1141,12 +1145,6 @@ export default {
             eventAction: "pay",
             eventLabel: "success"
           });
-
-          //手動配卡提交成功顯示彈窗
-          if (ret.remit.is_manual_card) {
-            this.manualCard = true;
-            this.successAlert = true;
-          }
 
           if (this.showEpointWalletAddress) {
             this.getUserBankList();
@@ -1257,7 +1255,6 @@ export default {
           // }
         })
         .catch(error => {
-          console.log(error);
           const { msg, code } = error.response.data;
 
           this.isShow = false;

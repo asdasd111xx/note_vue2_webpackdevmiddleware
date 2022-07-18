@@ -80,9 +80,6 @@
     float: right;
   }
 }
-.red {
-  color: #db6372 !important;
-}
 
 // 單號
 .serial-number-wrap {
@@ -198,6 +195,12 @@
 
 .audit-wrap {
   margin-top: 1px;
+}
+
+.audit-cell {
+  > span:last-child {
+    color: #6aaaf5;
+  }
 }
 
 .tips {

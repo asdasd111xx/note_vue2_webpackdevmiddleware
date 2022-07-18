@@ -630,7 +630,7 @@ export default {
           // 如果在外部 App or Web 有綁定成功
           if (newWallet_length > oldWallet_length) {
             console.log("wallet length change");
-            oldWallet_length = this.userBindWalletList.length;
+
             this.actionSetGlobalMessage({
               msg: "绑定成功",
               cb: this.clearMsgCallback(redirect)

@@ -11,12 +11,7 @@
         ]"
       >
         <div :class="$style['field-title']">{{ info.title }}</div>
-        <div
-          :class="[
-            $style['field-info'],
-            { [$style['placeholder-error']]: info.isError }
-          ]"
-        >
+        <div :class="$style['field-info']">
           <template v-if="!isEdit">
             <span :class="$style['speed-field-title']">{{
               info.objKey === "depositMethod"
@@ -41,50 +36,38 @@
             <template v-else-if="info.objKey === 'depositTime'">
               <date-picker
                 v-model="info.value"
-                :placeholder="info.isError ? '' : info.placeholderText"
+                :placeholder="info.placeholderText"
                 type="datetime"
                 format="YYYY-MM-DD HH:mm:ss"
                 value-type="format"
                 @open="setDefaultDate"
                 @input="submitInput(info.value, info.objKey)"
               />
-              <div
-                v-if="info.isError"
-                :class="$style['time-placeholder-error']"
-              >
-                请选择充值时间
-              </div>
             </template>
             <input
               v-else-if="info.objKey === 'depositName'"
               v-model="depositName"
-              :class="[
-                $style['speed-deposit-input'],
-                { [$style['placeholder-error']]: info.isError }
-              ]"
+              :class="$style['speed-deposit-input']"
               :placeholder="info.placeholderText"
               @input="submitInput($event.target.value, info.objKey)"
             />
             <input
               v-else
               v-model="info.value"
-              :class="[
-                $style['speed-deposit-input'],
-                { [$style['placeholder-error']]: info.isError }
-              ]"
+              :class="$style['speed-deposit-input']"
               :placeholder="info.placeholderText"
               @input="submitInput($event.target.value, info.objKey)"
             />
           </template>
         </div>
       </div>
-      <!-- <div
+      <div
         v-if="info.isError"
         :key="`field-error-${info.objKey}`"
         :class="$style['speed-deposit-input-error-messgae']"
       >
         {{ info.placeholderText }}
-      </div> -->
+      </div>
     </template>
     <select-box
       v-if="isSelectShow"
@@ -107,10 +90,6 @@ export default {
   },
   props: {
     showByRequiredFields: {
-      type: Boolean,
-      default: true
-    },
-    showByRequiredFieldsError: {
       type: Boolean,
       default: true
     },
@@ -142,7 +121,9 @@ export default {
   data() {
     return {
       depositName: this.speedField.depositName,
-      isSelectShow: false
+      isSelectShow: false,
+      // 只有show必填欄位的狀況下不顯示錯誤提示
+      showError: !this.showByRequiredFields
     };
   },
   computed: {
@@ -192,7 +173,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "deposit_at")
             : true,
           isError:
-            this.showByRequiredFieldsError &&
+            this.showError &&
             this.requiredFields.find(
               item => item.name === "deposit_at" && item.required
             ) &&
@@ -207,7 +188,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "pay_account")
             : true,
           isError:
-            this.showByRequiredFieldsError &&
+            this.showError &&
             this.requiredFields.find(
               item => item.name === "pay_account" && item.required
             ) &&
@@ -229,7 +210,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "pay_username")
             : true,
           isError:
-            this.showByRequiredFieldsError &&
+            this.showError &&
             this.requiredFields.find(
               item => item.name === "pay_username" && item.required
             ) &&
@@ -247,7 +228,7 @@ export default {
             this.speedField.depositMethod === "2" ||
             this.speedField.depositMethod === "4",
           isError:
-            this.showByRequiredFieldsError &&
+            this.showError &&
             this.requiredFields.find(
               item => item.name === "method" && item.required
             ) &&
@@ -266,7 +247,7 @@ export default {
             ? this.requiredFields.find(e => e.name === "sn")
             : true,
           isError:
-            this.showByRequiredFieldsError &&
+            this.showError &&
             this.requiredFields.find(
               item => item.name === "sn" && item.required
             ) &&

@@ -181,7 +181,6 @@ export default {
       if (!this.loginStatus || !getCookie("cid")) {
         this.$router.push("/mobile/login");
       }
-      //取得vip參數檔(即後台vip標籤項目列表) rd5 第三方 C07.04
       goLangApiRequest({
         method: "get",
         url: `${this.siteConfig.YABO_GOLANG_API_DOMAIN}/xbb/Vip/Config/List`,

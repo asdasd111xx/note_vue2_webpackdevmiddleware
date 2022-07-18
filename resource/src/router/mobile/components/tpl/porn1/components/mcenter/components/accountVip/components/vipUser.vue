@@ -70,55 +70,34 @@
     <!-- //說明資訊 -->
     <!-- base_type	有效投注計算方式(1.廳開始日, 2.自訂時間, 3.區間統計) -->
     <div :class="[$style['user-desc-block']]">
-      <template v-if="vipConfig.base_type != 3">
-        <div v-if="nextLevelDepositTotalData > 0" :class="$style['desc-text']">
-          ●累计充值(元)：
-          <span :class="$style['money']">{{
-            formatThousandsCurrency(userVipInfo.amount_info.deposit_total)
-          }}</span>
-          ({{
-            formatThousandsCurrency(userVipInfo.amount_info.deposit_total)
-          }}/{{ formatThousandsCurrency(nextLevelDepositTotalData) }})
-        </div>
-      </template>
-      <template v-else>
-        <div v-if="nextLevelDepositLimitData > 0" :class="$style['desc-text']">
-          ●当前充值(元)
-          <span :class="$style['money']">{{
-            formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
-          }}</span>
-          ({{
-            formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
-          }}/{{ formatThousandsCurrency(nextLevelDepositLimitData) }})
-        </div>
-      </template>
-      <template v-if="vipConfig.base_type != 3">
-        <div v-if="nextLevelValidBetData > 0" :class="$style['desc-text']">
-          ●累计流水(元)：
-          <span :class="$style['money']">{{
-            formatThousandsCurrency(userVipInfo.amount_info.valid_bet)
-          }}</span>
-          ({{ formatThousandsCurrency(userVipInfo.amount_info.valid_bet) }}/{{
-            formatThousandsCurrency(nextLevelValidBetData)
-          }})
-        </div>
-      </template>
-      <template v-else>
-        <div v-if="nextLevelValidBetData > 0" :class="$style['desc-text']">
-          ●当前流水(元)：
-          <span :class="$style['money']">{{
-            formatThousandsCurrency(userVipInfo.amount_info.valid_bet)
-          }}</span>
-          ({{ formatThousandsCurrency(userVipInfo.amount_info.valid_bet) }}/{{
-            formatThousandsCurrency(nextLevelValidBetData)
-          }})
-        </div>
-      </template>
-
-      <div
-        v-if="vipConfig.base_type != 3 && nextLevelDepositLimitData > 0"
-        :class="$style['desc-text']"
-      >
+      <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
+        ●累计充值(元)：
+        <span :class="$style['money']">{{
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_total)
+        }}</span>
+        ({{ formatThousandsCurrency(userVipInfo.amount_info.deposit_total) }}/{{
+          formatThousandsCurrency(nextLevelDepositTotalData)
+        }})
+      </div>
+      <div v-else :class="$style['desc-text']">
+        ●当前充值(元)
+        <span :class="$style['money']">{{
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
+        }}</span>
+        ({{
+          formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
+        }}/{{ formatThousandsCurrency(nextLevelDepositLimitData) }})
+      </div>
+      <div :class="$style['desc-text']">
+        {{ vipConfig.base_type != 3 ? "●累计流水(元)：" : "●当前流水(元)：" }}
+        <span :class="$style['money']">{{
+          formatThousandsCurrency(userVipInfo.amount_info.valid_bet)
+        }}</span>
+        ({{ formatThousandsCurrency(userVipInfo.amount_info.valid_bet) }}/{{
+          formatThousandsCurrency(nextLevelValidBetData)
+        }})
+      </div>
+      <div v-if="vipConfig.base_type != 3" :class="$style['desc-text']">
         ●当前充值(元)：
         <span :class="$style['money']">{{
           formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
@@ -127,7 +106,7 @@
           formatThousandsCurrency(userVipInfo.amount_info.deposit_amount)
         }}/{{ formatThousandsCurrency(nextLevelDepositLimitData) }})
       </div>
-      <div v-if="nextLevelDepositTimeData" :class="$style['desc-text']">
+      <div :class="$style['desc-text']">
         ●充值次数
         <span :class="$style['money']">{{
           userVipInfo.amount_info.deposit_count

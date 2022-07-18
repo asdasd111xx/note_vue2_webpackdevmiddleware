@@ -442,13 +442,17 @@ export default async target => {
   if (!store.state.loginStatus) {
     if (eventRedirect === "promotion") {
       await actionGetTrialList(store);
-      hasTrial = store.state.trialList.find(
-        i => i.vendor === vendor && i.mobile_trial
-      );
+      if (hasHall.includes(kind) && !linkItem) {
+        hasTrial = store.state.trialList.find(
+          i => i.vendor === vendor && i.mobile_trial
+        );
+      }
     } else {
-      hasTrial = store.state.trialList.find(
-        i => i.vendor === vendor && i.mobile_trial
-      );
+      if (hasHall.includes(kind) && !linkItem) {
+        hasTrial = store.state.trialList.find(
+          i => i.vendor === vendor && i.mobile_trial
+        );
+      }
     }
   }
 
@@ -482,8 +486,7 @@ export default async target => {
     !store.state.loginStatus &&
     vendor != "sigua_ly" &&
     vendor != "sigua2_ly" &&
-    vendor != "sigua3_ly" &&
-    !hasTrial
+    vendor != "sigua3_ly"
   ) {
     router.push("/mobile/login");
     return;
