@@ -7,6 +7,7 @@
 
 .speed-field {
   padding: 0 17px;
+
   &:nth-child(2n-1) {
     background: #f6f4f4;
   }
@@ -50,17 +51,54 @@
   &::-webkit-input-placeholder {
     color: #bebcbc;
   }
+
   // Firefox 19+
   &::-moz-placeholder {
     color: #bebcbc;
   }
+
   // IE 10+
   &:-ms-input-placeholder {
     color: #bebcbc;
   }
+
   // Firefox 18-
   &:-moz-placeholder {
     color: #bebcbc;
+  }
+}
+
+.time-placeholder-error {
+  color: rgb(219, 99, 114);
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+}
+
+
+.placeholder-error {
+
+  >input {
+
+    // Chrome/Opera/Safari
+    &::-webkit-input-placeholder {
+      color: #db6372;
+    }
+
+    // Firefox 19+
+    &::-moz-placeholder {
+      color: #db6372;
+    }
+
+    // IE 10+
+    &:-ms-input-placeholder {
+      color: #db6372;
+    }
+
+    // Firefox 18-
+    &:-moz-placeholder {
+      color: #db6372;
+    }
   }
 }
 
@@ -86,18 +124,22 @@
       box-shadow: none;
       border: none;
       background: transparent;
+
       // Chrome/Opera/Safari
       &::-webkit-input-placeholder {
         color: #bebcbc;
       }
+
       // Firefox 19+
       &::-moz-placeholder {
         color: #bebcbc;
       }
+
       // IE 10+
       &:-ms-input-placeholder {
         color: #bebcbc;
       }
+
       // Firefox 18-
       &:-moz-placeholder {
         color: #bebcbc;

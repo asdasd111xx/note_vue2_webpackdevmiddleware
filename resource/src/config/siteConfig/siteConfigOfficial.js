@@ -8,7 +8,7 @@ export const preset = {
   ...basic,
   BBOS_DOMIAN: "https://bbos.canarycherrytart.com/elibomApi/WebService",
   YABO_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api",
-  YABO_GOLANG_API_DOMAIN: "",
+  YABO_GOLANG_API_DOMAIN: "https://yaboapi.armadillobrulee.com/api-v2",
   ACTIVES_BOUNS_WEBSOCKET: "",
   CDN_HEADER: "",
   LOCAL_JSON_DOMAIN: [
