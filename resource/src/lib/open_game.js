@@ -54,9 +54,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   let embedGame = getEmbedGameVendor(vendor, kind, code);
 
   if (embedGame) {
-    gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
+    // gameTitle = gameName || embedGame.alias || vendor.toUpperCase();
+    gameTitle = embedGame.alias || vendor.toUpperCase();
   }
-
   function openNewWindow(url) {
     newWindow = window.open(url, "_blank", option);
   }
@@ -96,9 +96,9 @@ export default (params, success = () => {}, fail = () => {}) => {
   // }
 
   // 是否強制取得遊戲標題
-  if (getGames) {
-    reqs.push(getGameName());
-  }
+  // if (getGames) {
+  //   reqs.push(getGameName());
+  // }
 
   axios.all(reqs).then(() => {
     //XBB棋牌須額外修改platform=AIO 移除上滑全屏遮罩
