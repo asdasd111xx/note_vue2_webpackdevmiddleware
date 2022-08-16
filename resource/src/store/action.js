@@ -925,7 +925,7 @@ export const actionSetUserdata = (
     fail: response => {
       // 連線逾時
       if (typeof response === "string") {
-        window.location.href = "/timeout";
+        window.location.href = "/timeout"; //重現方式：chrome網速custom用10秒延遲來模擬timeout (先slow3G到要call player才切換custom)
         return;
       }
       const code = response.status;

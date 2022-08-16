@@ -110,7 +110,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: "url-loader",
         query: {
-          limit: 10000,
+          limit: 10000, //小於10000byte url-loader會把檔案轉成base64(不會輸出道dist文件夾被引入，會直接在程式中)，大於則用fileloader
           name: utils.assetsPath("img/[name].[hash:7].[ext]")
         }
       },
